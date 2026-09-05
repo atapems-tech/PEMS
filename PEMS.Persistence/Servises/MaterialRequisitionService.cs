@@ -178,10 +178,26 @@ public class MaterialRequisitionService : IMaterialRequisitionService
         }
 
         await _context.MaterialRequisitions.AddAsync(mr);
-        await _context.SaveChangesAsync();
+
+        // طبق ممیزی مستقل (P1-03): بررسی AnyAsync بالا صرفاً پیام دوستانه‌ی سریع است، نه ضامن
+        // نهایی - در برابر Race Condition امن نیست (دو درخواست هم‌زمان هر دو AnyAsync==false
+        // می‌بینند). ایندکس Unique روی MRNumber (ProcurementConfigurations) ضامن نهایی است؛
+        // همون الگوی EngineeringDocumentsController.IsDuplicateDocumentNo.
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex) when (IsDuplicateMrNumber(ex))
+        {
+            return (false, $"شماره MR «{mrNumber}» هم‌زمان توسط یک درخواست دیگر استفاده شد.", null);
+        }
 
         return (true, null, mr.MRId);
     }
+
+    private static bool IsDuplicateMrNumber(DbUpdateException ex) =>
+        ex.InnerException is Microsoft.Data.SqlClient.SqlException sqlEx
+            && (sqlEx.Number == 2601 || sqlEx.Number == 2627);
 
     // طبق ممیزی مستقل فاز ۶B Wave A (P1): قبلاً هر رشته‌ای بدون بررسی گذار قانونی پذیرفته
     // می‌شد و روی MR ناموجود بی‌صدا هیچ کاری نمی‌کرد (بدون گزارش خطا).

@@ -13,6 +13,12 @@ public class MaterialRequisitionConfiguration : IEntityTypeConfiguration<Materia
 {
     public void Configure(EntityTypeBuilder<MaterialRequisition> builder)
     {
+        // طبق ممیزی مستقل فاز ۶B Wave A (P1): یکتایی MRNumber قبلاً فقط سطح Application بود
+        // (AnyAsync قبل از Insert) که در برابر Race Condition امن نیست - همون الگوی
+        // WorkOrderAssignmentConfiguration.WorkOrderNumber. طول ستون توسط Convention پیش‌فرض
+        // SQL Server برای ستون‌های ایندکس‌شده (nvarchar(450)) تعیین می‌شود.
+        builder.HasIndex(x => x.MRNumber).IsUnique();
+
         builder.HasOne(x => x.Project)
             .WithMany()
             .HasForeignKey(x => x.ProjectId)

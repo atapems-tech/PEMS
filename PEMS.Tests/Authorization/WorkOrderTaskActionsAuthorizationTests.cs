@@ -93,4 +93,87 @@ public class WorkOrderTaskActionsAuthorizationTests
         Assert.IsType<RedirectToActionResult>(result);
         Assert.False(ctx.WorkOrderTasks.Single().IsCompleted);
     }
+
+    // ==============================================================================
+    // طبق ممیزی مستقل فاز ۶B Wave A (نهایی) بند P1-01: CompleteTask/ReopenTask قبلاً فقط با
+    // WorkOrderTaskId پیدا می‌شدند - بدون اثبات اینکه واقعاً به workOrderId درخواستی تعلق دارند.
+    // این یعنی درخواست‌کننده می‌توانست Task یک WorkOrder دیگر را با فرستادن workOrderId دلخواه
+    // در فرم تغییر دهد.
+    // ==============================================================================
+
+    [Fact]
+    public async Task CompleteTask_MismatchedWorkOrderId_ReturnsNotFound_DoesNotModifyTask()
+    {
+        var (controller, ctx) = await CreateController(nameof(CompleteTask_MismatchedWorkOrderId_ReturnsNotFound_DoesNotModifyTask));
+        var task = new WorkOrderTask { WorkOrderTaskId = 500, WorkOrderId = 200, TaskNumber = 1, Title = "T", IsCompleted = false };
+        ctx.WorkOrderTasks.Add(task);
+        await ctx.SaveChangesAsync();
+
+        // درخواست ادعا می‌کند Task 500 متعلق به WorkOrder 100 است، اما واقعاً متعلق به 200 است.
+        var result = await controller.CompleteTask(workOrderTaskId: 500, workOrderId: 100);
+
+        Assert.IsType<NotFoundResult>(result);
+        Assert.False(ctx.WorkOrderTasks.Single(x => x.WorkOrderTaskId == 500).IsCompleted);
+    }
+
+    [Fact]
+    public async Task ReopenTask_MismatchedWorkOrderId_ReturnsNotFound_DoesNotModifyTask()
+    {
+        var (controller, ctx) = await CreateController(nameof(ReopenTask_MismatchedWorkOrderId_ReturnsNotFound_DoesNotModifyTask));
+        var task = new WorkOrderTask { WorkOrderTaskId = 500, WorkOrderId = 200, TaskNumber = 1, Title = "T", IsCompleted = true, CompletedDate = DateTime.Now, CompletedBy = "someone" };
+        ctx.WorkOrderTasks.Add(task);
+        await ctx.SaveChangesAsync();
+
+        var result = await controller.ReopenTask(workOrderTaskId: 500, workOrderId: 100);
+
+        Assert.IsType<NotFoundResult>(result);
+        var unchanged = ctx.WorkOrderTasks.Single(x => x.WorkOrderTaskId == 500);
+        Assert.True(unchanged.IsCompleted);
+        Assert.Equal("someone", unchanged.CompletedBy);
+    }
+
+    [Fact]
+    public async Task CompleteTask_MismatchedWorkOrderId_DoesNotModifyAnyUnrelatedTask()
+    {
+        var (controller, ctx) = await CreateController(nameof(CompleteTask_MismatchedWorkOrderId_DoesNotModifyAnyUnrelatedTask));
+        var targetTask = new WorkOrderTask { WorkOrderTaskId = 500, WorkOrderId = 200, TaskNumber = 1, Title = "Target", IsCompleted = false };
+        var unrelatedTask1 = new WorkOrderTask { WorkOrderTaskId = 501, WorkOrderId = 100, TaskNumber = 1, Title = "Unrelated in claimed WorkOrder", IsCompleted = false };
+        var unrelatedTask2 = new WorkOrderTask { WorkOrderTaskId = 502, WorkOrderId = 300, TaskNumber = 1, Title = "Unrelated elsewhere", IsCompleted = false };
+        ctx.WorkOrderTasks.AddRange(targetTask, unrelatedTask1, unrelatedTask2);
+        await ctx.SaveChangesAsync();
+
+        var result = await controller.CompleteTask(workOrderTaskId: 500, workOrderId: 100);
+
+        Assert.IsType<NotFoundResult>(result);
+        Assert.All(ctx.WorkOrderTasks, t => Assert.False(t.IsCompleted));
+    }
+
+    [Fact]
+    public async Task CompleteTask_MatchingWorkOrderId_Succeeds()
+    {
+        var (controller, ctx) = await CreateController(nameof(CompleteTask_MatchingWorkOrderId_Succeeds));
+        var task = new WorkOrderTask { WorkOrderTaskId = 500, WorkOrderId = 100, TaskNumber = 1, Title = "T", IsCompleted = false };
+        ctx.WorkOrderTasks.Add(task);
+        await ctx.SaveChangesAsync();
+
+        var result = await controller.CompleteTask(workOrderTaskId: 500, workOrderId: 100);
+
+        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(ctx.WorkOrderTasks.Single().IsCompleted);
+    }
+
+    [Fact]
+    public async Task CompleteTask_UnauthorizedUser_MismatchedWorkOrderId_ReturnsForbid_NotNotFound()
+    {
+        // ترتیب کنترل‌ها مهم است: مجوز باید قبل از هر Query ای بررسی شود - حتی وقتی ownership هم
+        // نامعتبر است، پیام باید Forbid باشد (نه NotFound که اطلاعات وجود/عدم‌وجود Task را افشا کند).
+        var (controller, ctx) = await CreateController(nameof(CompleteTask_UnauthorizedUser_MismatchedWorkOrderId_ReturnsForbid_NotNotFound), role: null);
+        var task = new WorkOrderTask { WorkOrderTaskId = 500, WorkOrderId = 200, TaskNumber = 1, Title = "T", IsCompleted = false };
+        ctx.WorkOrderTasks.Add(task);
+        await ctx.SaveChangesAsync();
+
+        var result = await controller.CompleteTask(workOrderTaskId: 500, workOrderId: 100);
+
+        Assert.IsType<ForbidResult>(result);
+    }
 }

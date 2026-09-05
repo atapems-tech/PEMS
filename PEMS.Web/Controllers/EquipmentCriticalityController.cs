@@ -134,9 +134,27 @@ public class EquipmentCriticalityController : Controller
             CreatedDate = DateTime.Now
         });
 
-        await _context.SaveChangesAsync();
+        // طبق ممیزی مستقل (P1-02): «یک رکورد فعال به‌ازای هر Equipment» اکنون با یک ایندکس
+        // Unique فیلترشده (WHERE IsActive=1) روی EquipmentId در DB هم تضمین می‌شود - نه فقط با
+        // خواندن existing بالا (که زیر بار همزمان، هر دو درخواست existing==null می‌بینند). اگر
+        // دو درخواست هم‌زمان برای همین تجهیز Assess بزنند، یکی با نقض همین Index رد می‌شود.
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex) when (IsDuplicateActiveCriticality(ex))
+        {
+            TempData["Error"] = "هم‌زمان یک تحلیل بحرانی‌بودن فعال دیگر برای این تجهیز ثبت شد. لطفاً دوباره تلاش کنید.";
+            return RedirectToAction(nameof(Index));
+        }
 
         TempData["Message"] = "تحلیل بحرانی‌بودن ثبت شد.";
         return RedirectToAction(nameof(Index));
     }
+
+    // طبق همون الگوی EngineeringDocumentsController.IsDuplicateDocumentNo - تشخیص نقض ایندکس
+    // Unique سطح SQL Server (نه هر DbUpdateException دیگری).
+    private static bool IsDuplicateActiveCriticality(DbUpdateException ex) =>
+        ex.InnerException is Microsoft.Data.SqlClient.SqlException sqlEx
+            && (sqlEx.Number == 2601 || sqlEx.Number == 2627);
 }

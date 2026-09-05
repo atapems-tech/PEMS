@@ -2915,7 +2915,9 @@ namespace PEMS.Persistence.Migrations
 
                     b.HasKey("EquipmentCriticalityId");
 
-                    b.HasIndex("EquipmentId");
+                    b.HasIndex("EquipmentId")
+                        .IsUnique()
+                        .HasFilter("[IsActive] = 1");
 
                     b.ToTable("EquipmentCriticalities");
                 });
@@ -5637,7 +5639,7 @@ namespace PEMS.Persistence.Migrations
 
                     b.Property<string>("MRNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
@@ -5672,6 +5674,9 @@ namespace PEMS.Persistence.Migrations
                     b.HasKey("MRId");
 
                     b.HasIndex("DisciplineId");
+
+                    b.HasIndex("MRNumber")
+                        .IsUnique();
 
                     b.HasIndex("ProcurementPackageId");
 

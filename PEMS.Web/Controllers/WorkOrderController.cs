@@ -278,6 +278,9 @@ public class WorkOrderController : Controller
     // طبق ممیزی مستقل فاز ۶B Wave A (P0): CompleteTask/ReopenTask هیچ بررسی مجوزی نداشتند -
     // مثل بقیه‌ی جهش‌های این کنترلر (Hold/Resume/AddLaborEntry/...) نیازمند "WorkOrder"/"Edit"
     // هستند، نه یک مجوز جدید.
+    // طبق ممیزی مستقل (P1-01): قبلاً فقط با WorkOrderTaskId پیدا می‌شد - بدون اثبات اینکه واقعاً
+    // به workOrderId درخواستی تعلق دارد (امکان دستکاری Task یک WorkOrder دیگر با فرستادن
+    // workOrderId دلخواه در فرم). حالا هر دو شناسه با هم Query می‌شوند.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CompleteTask(int workOrderTaskId, int workOrderId)
@@ -285,14 +288,13 @@ public class WorkOrderController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit"))
             return Forbid();
 
-        var task = await _context.WorkOrderTasks.FirstOrDefaultAsync(x => x.WorkOrderTaskId == workOrderTaskId);
-        if (task != null)
-        {
-            task.IsCompleted = true;
-            task.CompletedBy = _currentUser.UserName;
-            task.CompletedDate = DateTime.Now;
-            await _context.SaveChangesAsync();
-        }
+        var task = await GetOwnedWorkOrderTaskAsync(workOrderTaskId, workOrderId);
+        if (task == null) return NotFound();
+
+        task.IsCompleted = true;
+        task.CompletedBy = _currentUser.UserName;
+        task.CompletedDate = DateTime.Now;
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }
@@ -304,17 +306,21 @@ public class WorkOrderController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit"))
             return Forbid();
 
-        var task = await _context.WorkOrderTasks.FirstOrDefaultAsync(x => x.WorkOrderTaskId == workOrderTaskId);
-        if (task != null)
-        {
-            task.IsCompleted = false;
-            task.CompletedBy = null;
-            task.CompletedDate = null;
-            await _context.SaveChangesAsync();
-        }
+        var task = await GetOwnedWorkOrderTaskAsync(workOrderTaskId, workOrderId);
+        if (task == null) return NotFound();
+
+        task.IsCompleted = false;
+        task.CompletedBy = null;
+        task.CompletedDate = null;
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }
+
+    // طبق ممیزی مستقل (P1-01): هر دو شناسه با هم Query می‌شوند - نه بارگذاری با TaskId و بررسی
+    // بعدی - تا Task یک WorkOrder دیگر هرگز حتی برای خواندن هم بازگردانده نشود.
+    private Task<WorkOrderTask?> GetOwnedWorkOrderTaskAsync(int workOrderTaskId, int workOrderId) =>
+        _context.WorkOrderTasks.FirstOrDefaultAsync(x => x.WorkOrderTaskId == workOrderTaskId && x.WorkOrderId == workOrderId);
 
     [HttpPost]
     [ValidateAntiForgeryToken]
