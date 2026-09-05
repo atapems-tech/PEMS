@@ -82,11 +82,22 @@ public class PermitController : Controller
 
         if (pendingMyApproval)
         {
-            var items = await _service.GetListAsync(status);
-
-            // طبق PEMS-UI-04: از همون IWorkflowRuntime.GetPendingTasksAsync موجود (بدون
-            // مصرف‌کننده‌ی قبلی) برای "Pending My Approval" استفاده می‌شود - نه یک موتور تطبیق
-            // نقش موازی جدید.
+            // ==============================================================================
+            // طبق ممیزی مستقل فاز ۶B Wave A (P1): این مسیر دیگر کل جدول Permit را بارگذاری
+            // نمی‌کند. طبق PEMS-UI-04 از همون IWorkflowRuntime.GetPendingTasksAsync موجود
+            // استفاده می‌شود - که از پیش به صف تایید همین کاربر محدود است (نه کل جدول Permit)،
+            // پس شمارش/مرتب‌سازی روی همین مجموعه‌ی کوچک ایمن است:
+            //   ۱. شناسه‌های Permit در انتظار تایید همین کاربر (از Workflow Runtime - محدود)
+            //   ۲. محدود کردن به شناسه‌هایی که IsActive/Status هم مطابقت دارند (یک پرس‌وجوی DB
+            //      فقط روی همین شناسه‌های کوچک - نه کل جدول)
+            //   ۳. مرتب‌سازی بر اساس AssignedDate (Workflow Runtime، نه ستونی از DB) روی همین
+            //      شناسه‌های کوچک - نه صدها/هزاران ردیف Permit
+            //   ۴. Skip/Take روی شناسه‌ها (نه روی DTO کامل)
+            //   ۵. فقط دقیقاً همون صفحه از DB با DTO کامل خوانده می‌شود
+            // محدودیت مستند: چون AssignedDate از Workflow Runtime می‌آید نه از جدول Permits،
+            // ORDER BY واقعی روی آن در SQL ممکن نیست - اما چون مرتب‌سازی روی صف تایید یک کاربر
+            // (نه کل جدول) انجام می‌شود، این محدودیت به بارگذاری کامل جدول منجر نمی‌شود.
+            // ==============================================================================
             var employeeId = await GetCurrentEmployeeIdAsync();
             var pendingByPermitId = employeeId.HasValue
                 ? (await _runtime.GetPendingTasksAsync(employeeId.Value, _currentUser.Roles))
@@ -94,18 +105,34 @@ public class PermitController : Controller
                     .GroupBy(t => t.BusinessObjectId)
                     .ToDictionary(g => g.Key, g => g.First())
                 : new Dictionary<int, PEMS.WorkflowPlatform.Dtos.PendingTaskDto>();
-
-            // طولانی‌ترین‌منتظرها اول - تا Approver اول به Permit ای رسیدگی کند که بیشترین زمان
-            // در صف مانده.
-            var filtered = items.Where(p => pendingByPermitId.ContainsKey(p.PermitId))
-                .OrderBy(p => pendingByPermitId[p.PermitId].AssignedDate)
-                .ThenBy(p => p.PermitId)
-                .ToList();
             ViewBag.PendingTasksByPermitId = pendingByPermitId;
 
-            var totalCount = filtered.Count;
-            var pageItems = filtered.Skip((normalizedPage - 1) * normalizedPageSize).Take(normalizedPageSize).ToList();
-            result = new PagedResult<PermitListDto> { Items = pageItems, Page = normalizedPage, PageSize = normalizedPageSize, TotalCount = totalCount };
+            if (pendingByPermitId.Count == 0)
+            {
+                result = new PagedResult<PermitListDto> { Page = normalizedPage, PageSize = normalizedPageSize };
+            }
+            else
+            {
+                var candidateIds = pendingByPermitId.Keys.ToList();
+                var matchingIds = (await _service.GetActiveIdsMatchingAsync(candidateIds, status)).ToHashSet();
+
+                // طولانی‌ترین‌منتظرها اول - تا Approver اول به Permit ای رسیدگی کند که بیشترین
+                // زمان در صف مانده. این مرتب‌سازی فقط روی صف تایید همین کاربر انجام می‌شود.
+                var orderedIds = pendingByPermitId
+                    .Where(kv => matchingIds.Contains(kv.Key))
+                    .OrderBy(kv => kv.Value.AssignedDate)
+                    .ThenBy(kv => kv.Key)
+                    .Select(kv => kv.Key)
+                    .ToList();
+
+                var totalCount = orderedIds.Count;
+                var pageIds = orderedIds.Skip((normalizedPage - 1) * normalizedPageSize).Take(normalizedPageSize).ToList();
+
+                var pageItemsById = (await _service.GetByIdsAsync(pageIds)).ToDictionary(x => x.PermitId);
+                var pageItems = pageIds.Where(pageItemsById.ContainsKey).Select(id => pageItemsById[id]).ToList();
+
+                result = new PagedResult<PermitListDto> { Items = pageItems, Page = normalizedPage, PageSize = normalizedPageSize, TotalCount = totalCount };
+            }
         }
         else
         {

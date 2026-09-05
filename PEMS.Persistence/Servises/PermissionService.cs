@@ -18,7 +18,8 @@ public class PermissionService : IPermissionService
     {
         "EngineeringDocuments", "VDR", "Contracts", "Vendors",
         "MaterialRequisition", "Equipment", "DisciplineWorkspace", "Correspondence", "WorkOrder",
-        "StoreRequisition", "WorkRequest", "Inspection", "Transmittal"
+        "StoreRequisition", "WorkRequest", "Inspection", "Transmittal",
+        "Task", "FunctionalLocation", "EquipmentCriticality"
     };
 
     public PermissionService(PEMSDbContext context, IAccessControlService accessControlService)
@@ -295,6 +296,52 @@ public class PermissionService : IPermissionService
             New(SystemRoles.EngineeringSupervisor, "Correspondence", create: true, edit: true),
             New(SystemRoles.DisciplineEngineer, "Correspondence", create: true),
             New(SystemRoles.ContractManager, "Correspondence", create: true, edit: true)
+        });
+
+        // ==============================================================================
+        // طبق ممیزی مستقل فاز ۶B Wave A (P0): Task/FunctionalLocation/EquipmentCriticality
+        // قبلاً هیچ بررسی مجوزی نداشتند - یعنی هر کاربر احرازهویت‌شده‌ای (بدون توجه به نقش)
+        // می‌توانست از آن‌ها استفاده کند. برای این‌که افزودن گیت مجوز، این رفتار فعلی را برای
+        // نقش‌های واقعاً درگیر نشکند، همه‌ی نقش‌های غیر-SystemAdmin زیر دریافت کرده‌اند:
+        //
+        // Task: ابزار عمومی کارتابل شخصی («اقدام وظایف»/«پیگیری وظایف») است - نه یک ماژول
+        // دامنه‌محور. GetMyActionItemsAsync/GetAssignedByMeAsync از قبل نتیجه را به همین کاربر
+        // محدود می‌کنند (AssignedToEmployeeId/AssignedByApplicationUserId)، پس اعطای گسترده
+        // اینجا هیچ داده‌ی بین-کاربری را افشا نمی‌کند. Edit لازم است چون UpdateStatus (خودِ
+        // عملکرد اصلی صفحه) به آن گیت شده.
+        await SeedMissingRolesAsync("Task", new List<RolePermission>
+        {
+            New(SystemRoles.EngineeringManager, "Task", create: true, edit: true),
+            New(SystemRoles.EngineeringSupervisor, "Task", create: true, edit: true),
+            New(SystemRoles.DisciplineEngineer, "Task", create: true, edit: true),
+            New(SystemRoles.DocumentController, "Task", create: true, edit: true),
+            New(SystemRoles.MaintenanceEngineer, "Task", create: true, edit: true),
+            New(SystemRoles.ContractManager, "Task", create: true, edit: true),
+            New(SystemRoles.QAManager, "Task", create: true, edit: true),
+            New(SystemRoles.Viewer, "Task", create: true, edit: true)
+        });
+
+        // FunctionalLocation: داده‌ی مرجع/پایه (سلسله‌مراتب Plant/Area/Unit) که از صفحات
+        // Equipment/Asset هم به‌عنوان Picker List خوانده می‌شود - View باید گسترده باشد؛
+        // Create/Edit به نقش‌های مسئول ساختار دارایی محدود شده (طبق الگوی ماژول Equipment).
+        await SeedMissingRolesAsync("FunctionalLocation", new List<RolePermission>
+        {
+            New(SystemRoles.EngineeringManager, "FunctionalLocation", create: true, edit: true),
+            New(SystemRoles.EngineeringSupervisor, "FunctionalLocation", create: true, edit: true),
+            New(SystemRoles.MaintenanceEngineer, "FunctionalLocation", create: true, edit: true),
+            New(SystemRoles.DisciplineEngineer, "FunctionalLocation"),
+            New(SystemRoles.Viewer, "FunctionalLocation")
+        });
+
+        // EquipmentCriticality: تحلیل بحرانی‌بودن (ISO 55000/RCM) - دقیقاً همون نقش‌های
+        // ماژول Inspection (نزدیک‌ترین ماژول موجود از نظر دامنه: ارزیابی دوره‌ای/وضعیت تجهیز).
+        await SeedMissingRolesAsync("EquipmentCriticality", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "EquipmentCriticality", create: true),
+            New(SystemRoles.QAManager, "EquipmentCriticality", create: true),
+            New(SystemRoles.EngineeringSupervisor, "EquipmentCriticality", create: true),
+            New(SystemRoles.EngineeringManager, "EquipmentCriticality", create: true),
+            New(SystemRoles.Viewer, "EquipmentCriticality")
         });
     }
 }

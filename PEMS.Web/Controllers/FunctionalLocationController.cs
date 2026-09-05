@@ -14,17 +14,24 @@ public class FunctionalLocationController : Controller
 {
     private readonly IFunctionalLocationService _service;
     private readonly ICurrentUserService _currentUser;
+    private readonly IPermissionService _permissionService;
 
-    public FunctionalLocationController(IFunctionalLocationService service, ICurrentUserService currentUser)
+    public FunctionalLocationController(IFunctionalLocationService service, ICurrentUserService currentUser,
+        IPermissionService permissionService)
     {
         _service = service;
         _currentUser = currentUser;
+        _permissionService = permissionService;
     }
 
     // طبق سند «PEMS — Global Data Grid Standard» (فاز ۶B - Wave A): قبلاً کل درخت با
     // ToListAsync (بدون Skip/Take) بارگذاری می‌شد.
+    // طبق ممیزی مستقل فاز ۶B Wave A (P0): این Action هیچ بررسی مجوزی نداشت.
     public async Task<IActionResult> Index(int page = 1, int? pageSize = null)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "FunctionalLocation", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Functional Locations";
         ViewData["Section"] = "CMMS Integration";
 
@@ -39,6 +46,9 @@ public class FunctionalLocationController : Controller
     public async Task<IActionResult> Create(
         string code, string name, int? parentId, string? plant, string? area, string? unit, string? description)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "FunctionalLocation", "Create"))
+            return Forbid();
+
         var (success, error, _) = await _service.CreateAsync(
             code, name, parentId, plant, area, unit, description, _currentUser.UserName);
 
@@ -51,6 +61,9 @@ public class FunctionalLocationController : Controller
     public async Task<IActionResult> Edit(
         int id, string code, string name, int? parentId, string? plant, string? area, string? unit, string? description)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "FunctionalLocation", "Edit"))
+            return Forbid();
+
         var (success, error) = await _service.UpdateAsync(
             id, code, name, parentId, plant, area, unit, description, _currentUser.UserName);
 

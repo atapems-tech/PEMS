@@ -219,4 +219,110 @@ public class PermitGridPaginationTests
         Assert.Equal(15, result.Items.Count);
         Assert.All(result.Items, item => Assert.Contains(item.PermitId, runtime.PendingPermitIds));
     }
+
+    // طبق ممیزی مستقل فاز ۶B Wave A (P1): این تست‌ها موارد صریح خواسته‌شده در بند ۹ را پوشش
+    // می‌دهند: چند صفحه، بدون هیچ تاییدِ در انتظار، فیلتر Status + pendingMyApproval با هم، و
+    // مرتب‌سازی قطعی. هیچ‌کدام کل جدول Permit را بارگذاری نمی‌کنند - GetActiveIdsMatchingAsync/
+    // GetByIdsAsync فقط روی شناسه‌های از پیش محدودشده‌ی PendingPermitIds کار می‌کنند.
+
+    private static async Task<(PermitController Controller, PEMS.Persistence.Context.PEMSDbContext Ctx,
+        FakeCurrentUserService CurrentUser, FakeWorkflowRuntime Runtime)> CreateControllerWithEmployee(string dbName)
+    {
+        var created = await CreateController(dbName);
+        created.Ctx.Departments.Add(new Department { DepartmentId = 1, Name = "Ops" });
+        created.Ctx.Employees.Add(new Employee { EmployeeId = 1, FirstName = "Test", LastName = "User", DepartmentId = 1, IsActive = true });
+        created.Ctx.Users.Add(new ApplicationUser { Id = 1, UserName = "test", EmployeeId = 1 });
+        await created.Ctx.SaveChangesAsync();
+        created.CurrentUser.UserId = 1;
+        return created;
+    }
+
+    [Fact]
+    public async Task Index_PendingMyApproval_MultiplePages_AreStableAndDisjoint()
+    {
+        var (controller, ctx, _, runtime) = await CreateControllerWithEmployee(nameof(Index_PendingMyApproval_MultiplePages_AreStableAndDisjoint));
+
+        var pending = new List<Permit>();
+        for (var i = 0; i < 25; i++)
+        {
+            var p = NewPermit(DateTime.Today.AddMinutes(-i));
+            ctx.Permits.Add(p);
+            pending.Add(p);
+        }
+        await ctx.SaveChangesAsync();
+
+        runtime.PendingPermitIds = pending.Select(p => p.PermitId).ToHashSet();
+
+        var page1 = await RunIndex(controller, pendingMyApproval: true, page: 1, pageSize: 20);
+        var page2 = await RunIndex(controller, pendingMyApproval: true, page: 2, pageSize: 20);
+
+        Assert.Equal(25, page1.TotalCount);
+        Assert.Equal(20, page1.Items.Count);
+        Assert.Equal(5, page2.Items.Count);
+
+        var allIds = page1.Items.Concat(page2.Items).Select(x => x.PermitId).ToList();
+        Assert.Equal(25, allIds.Distinct().Count());
+    }
+
+    [Fact]
+    public async Task Index_PendingMyApproval_NoPendingApprovals_ReturnsEmptyPagedResult_WithoutQueryingPermits()
+    {
+        var (controller, ctx, _, runtime) = await CreateControllerWithEmployee(nameof(Index_PendingMyApproval_NoPendingApprovals_ReturnsEmptyPagedResult_WithoutQueryingPermits));
+        ctx.Permits.Add(NewPermit(DateTime.Today));
+        await ctx.SaveChangesAsync();
+
+        runtime.PendingPermitIds = new HashSet<int>();
+
+        var result = await RunIndex(controller, pendingMyApproval: true, page: 1, pageSize: 20);
+
+        Assert.Empty(result.Items);
+        Assert.Equal(0, result.TotalCount);
+        Assert.Equal(0, result.TotalPages);
+    }
+
+    [Fact]
+    public async Task Index_PendingMyApproval_CombinedWithStatusFilter_OnlyMatchingStatusReturned()
+    {
+        var (controller, ctx, _, runtime) = await CreateControllerWithEmployee(nameof(Index_PendingMyApproval_CombinedWithStatusFilter_OnlyMatchingStatusReturned));
+
+        var underReview = NewPermit(DateTime.Today, status: "UnderReview");
+        var draft = NewPermit(DateTime.Today.AddMinutes(-1), status: "Draft");
+        ctx.Permits.Add(underReview);
+        ctx.Permits.Add(draft);
+        await ctx.SaveChangesAsync();
+
+        // هر دو Permit در صف تایید همین کاربر هستند، اما فقط UnderReview باید با فیلتر Status عبور کند.
+        runtime.PendingPermitIds = new HashSet<int> { underReview.PermitId, draft.PermitId };
+
+        var result = await RunIndex(controller, status: "UnderReview", pendingMyApproval: true, page: 1, pageSize: 20);
+
+        Assert.Single(result.Items);
+        Assert.Equal(underReview.PermitId, result.Items[0].PermitId);
+        Assert.Equal(1, result.TotalCount);
+    }
+
+    [Fact]
+    public async Task Index_PendingMyApproval_DeterministicOrdering_SameAssignedDate_TieBrokenByPermitId()
+    {
+        var (controller, ctx, _, runtime) = await CreateControllerWithEmployee(nameof(Index_PendingMyApproval_DeterministicOrdering_SameAssignedDate_TieBrokenByPermitId));
+
+        var permits = new List<Permit>();
+        for (var i = 0; i < 5; i++)
+        {
+            var p = NewPermit(DateTime.Today);
+            ctx.Permits.Add(p);
+            permits.Add(p);
+        }
+        await ctx.SaveChangesAsync();
+
+        var sameDate = DateTime.Today;
+        runtime.PendingPermitIds = permits.Select(p => p.PermitId).ToHashSet();
+        runtime.ExplicitAssignedDates = permits.ToDictionary(p => p.PermitId, _ => sameDate);
+
+        var first = await RunIndex(controller, pendingMyApproval: true, page: 1, pageSize: 20);
+        var second = await RunIndex(controller, pendingMyApproval: true, page: 1, pageSize: 20);
+
+        Assert.Equal(first.Items.Select(x => x.PermitId), second.Items.Select(x => x.PermitId));
+        Assert.Equal(permits.Select(p => p.PermitId).OrderBy(id => id), first.Items.Select(x => x.PermitId));
+    }
 }

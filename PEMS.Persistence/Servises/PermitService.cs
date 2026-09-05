@@ -90,6 +90,30 @@ public class PermitService : IPermitService
         return query;
     }
 
+    // طبق ممیزی مستقل فاز ۶B Wave A (P1): این متد فقط روی یک مجموعه‌ی از پیش محدودشده کار
+    // می‌کند (candidateIds = شناسه‌های Permit در صف تایید همین کاربر، نه کل جدول) - پرس‌وجو
+    // فقط PermitId برمی‌گرداند (نه کل DTO)، چون در این مرحله فقط برای محاسبه‌ی مجموعه‌ی معتبر/
+    // فیلترشده لازم است، نه نمایش.
+    public async Task<List<int>> GetActiveIdsMatchingAsync(IReadOnlyList<int> candidateIds, string? status)
+    {
+        if (candidateIds.Count == 0) return new List<int>();
+
+        return await BuildListQuery(status)
+            .Where(x => candidateIds.Contains(x.PermitId))
+            .Select(x => x.PermitId)
+            .ToListAsync();
+    }
+
+    public async Task<List<PermitListDto>> GetByIdsAsync(IReadOnlyList<int> permitIds)
+    {
+        if (permitIds.Count == 0) return new List<PermitListDto>();
+
+        return await _context.Permits
+            .Where(x => x.IsActive && permitIds.Contains(x.PermitId))
+            .Select(PermitListProjection)
+            .ToListAsync();
+    }
+
     private static readonly System.Linq.Expressions.Expression<Func<Permit, PermitListDto>> PermitListProjection = x => new PermitListDto
     {
         PermitId = x.PermitId,

@@ -97,8 +97,14 @@ public class MaterialRequisitionController : Controller
                 i < itemUnits.Count ? itemUnits[i] : null));
         }
 
-        var id = await _service.CreateAsync(mrNumber, projectId, disciplineId, equipmentTagNumber,
+        var (success, error, id) = await _service.CreateAsync(mrNumber, projectId, disciplineId, equipmentTagNumber,
             description, requiredDate, responsibleEngineerId, null, items);
+
+        if (!success)
+        {
+            TempData["Error"] = error;
+            return RedirectToAction(nameof(Create));
+        }
 
         TempData["Message"] = "MR created successfully";
         return RedirectToAction(nameof(Details), new { id });
@@ -114,7 +120,8 @@ public class MaterialRequisitionController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaterialRequisition", requiredAction))
             return Forbid();
 
-        await _service.ChangeStatusAsync(mrId, status);
+        var (success, error) = await _service.ChangeStatusAsync(mrId, status);
+        TempData[success ? "Message" : "Error"] = success ? "وضعیت MR به‌روزرسانی شد." : error;
         return RedirectToAction(nameof(Details), new { id = mrId });
     }
 
@@ -126,8 +133,8 @@ public class MaterialRequisitionController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaterialRequisition", "Edit"))
             return Forbid();
 
-        await _service.AddQuotationAsync(mrId, mrqNumber, vendorName, inquiryDate, quotedAmount, currency, notes);
-        TempData["Message"] = "Quotation (MRQ) added";
+        var (success, error, _) = await _service.AddQuotationAsync(mrId, mrqNumber, vendorName, inquiryDate, quotedAmount, currency, notes);
+        TempData[success ? "Message" : "Error"] = success ? "Quotation (MRQ) added" : error;
         return RedirectToAction(nameof(Details), new { id = mrId });
     }
 

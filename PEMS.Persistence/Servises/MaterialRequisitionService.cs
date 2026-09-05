@@ -11,6 +11,21 @@ public class MaterialRequisitionService : IMaterialRequisitionService
 {
     private readonly PEMSDbContext _context;
 
+    // طبق ممیزی مستقل فاز ۶B Wave A (P1): ChangeStatusAsync قبلاً هر رشته‌ای را بدون بررسی
+    // گذار قانونی می‌پذیرفت. طبق الگوی WorkRequestService.LegalTransitions - نه یک موتور
+    // گردش‌کار جدید - فقط همون توالی‌ای که خودِ View (Details.cshtml) در Dropdown نمایش
+    // می‌دهد: Draft → Submitted → Under Technical Review → Approved → Issued to Procurement
+    // → Closed، به‌علاوه‌ی Cancelled به‌عنوان مسیر خروج زودهنگام (قبل از ورود به Procurement -
+    // بعد از آن مثل WorkRequest's "Converted" یک نقطه‌ی بی‌بازگشت است).
+    private static readonly Dictionary<string, string[]> LegalTransitions = new()
+    {
+        ["Draft"] = new[] { "Submitted", "Cancelled" },
+        ["Submitted"] = new[] { "Under Technical Review", "Cancelled" },
+        ["Under Technical Review"] = new[] { "Approved", "Cancelled" },
+        ["Approved"] = new[] { "Issued to Procurement", "Cancelled" },
+        ["Issued to Procurement"] = new[] { "Closed" },
+    };
+
     public MaterialRequisitionService(PEMSDbContext context)
     {
         _context = context;
@@ -113,10 +128,30 @@ public class MaterialRequisitionService : IMaterialRequisitionService
         };
     }
 
-    public async Task<int> CreateAsync(string mrNumber, int projectId, int disciplineId, string? equipmentTag,
+    // طبق ممیزی مستقل فاز ۶B Wave A (P1): قبلاً هیچ‌کدام از ProjectId/DisciplineId/
+    // ResponsibleEngineerId یا یکتایی MRNumber بررسی نمی‌شدند - فقط به Exception سطح FK
+    // تکیه می‌شد که پیام معنادار به کاربر نمی‌دهد.
+    public async Task<(bool Success, string? Error, int? Id)> CreateAsync(string mrNumber, int projectId, int disciplineId, string? equipmentTag,
         string description, DateTime? requiredDate, int? responsibleEngineerId, int? relatedDocumentId,
         List<(string desc, string? part, double qty, string? unit)> items)
     {
+        mrNumber = mrNumber?.Trim() ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(mrNumber))
+            return (false, "شماره MR الزامی است.", null);
+
+        if (await _context.MaterialRequisitions.AnyAsync(x => x.MRNumber == mrNumber))
+            return (false, $"شماره MR «{mrNumber}» قبلاً استفاده شده است.", null);
+
+        if (!await _context.Projects.AnyAsync(x => x.ProjectId == projectId && x.IsActive))
+            return (false, "پروژه‌ی انتخاب‌شده نامعتبر یا غیرفعال است.", null);
+
+        if (!await _context.Disciplines.AnyAsync(x => x.DisciplineId == disciplineId && x.IsActive))
+            return (false, "دیسیپلین انتخاب‌شده نامعتبر یا غیرفعال است.", null);
+
+        if (responsibleEngineerId.HasValue &&
+            !await _context.Employees.AnyAsync(x => x.EmployeeId == responsibleEngineerId.Value && x.IsActive))
+            return (false, "مهندس مسئول انتخاب‌شده نامعتبر یا غیرفعال است.", null);
+
         var mr = new MaterialRequisition
         {
             MRNumber = mrNumber,
@@ -145,20 +180,33 @@ public class MaterialRequisitionService : IMaterialRequisitionService
         await _context.MaterialRequisitions.AddAsync(mr);
         await _context.SaveChangesAsync();
 
-        return mr.MRId;
+        return (true, null, mr.MRId);
     }
 
-    public async Task ChangeStatusAsync(int mrId, string newStatus)
+    // طبق ممیزی مستقل فاز ۶B Wave A (P1): قبلاً هر رشته‌ای بدون بررسی گذار قانونی پذیرفته
+    // می‌شد و روی MR ناموجود بی‌صدا هیچ کاری نمی‌کرد (بدون گزارش خطا).
+    public async Task<(bool Success, string? Error)> ChangeStatusAsync(int mrId, string newStatus)
     {
         var mr = await _context.MaterialRequisitions.FirstOrDefaultAsync(x => x.MRId == mrId);
-        if (mr == null) return;
+        if (mr == null) return (false, "MR پیدا نشد.");
+
+        if (!LegalTransitions.TryGetValue(mr.Status, out var allowed) || !allowed.Contains(newStatus))
+            return (false, $"گذار از وضعیت «{mr.Status}» به «{newStatus}» مجاز نیست.");
+
         mr.Status = newStatus;
         await _context.SaveChangesAsync();
+
+        return (true, null);
     }
 
-    public async Task<int> AddQuotationAsync(int mrId, string mrqNumber, string vendorName, DateTime? inquiryDate,
+    // طبق ممیزی مستقل فاز ۶B Wave A (P1): قبلاً وجود MR مرجع را قبل از ساخت Quotation بررسی
+    // نمی‌کرد - فقط به Exception سطح FK تکیه می‌شد.
+    public async Task<(bool Success, string? Error, int? Id)> AddQuotationAsync(int mrId, string mrqNumber, string vendorName, DateTime? inquiryDate,
         decimal? amount, string? currency, string? notes)
     {
+        if (!await _context.MaterialRequisitions.AnyAsync(x => x.MRId == mrId))
+            return (false, "MR پیدا نشد.", null);
+
         var mrq = new MaterialRequisitionQuotation
         {
             MRId = mrId,
@@ -175,7 +223,7 @@ public class MaterialRequisitionService : IMaterialRequisitionService
         await _context.MaterialRequisitionQuotations.AddAsync(mrq);
         await _context.SaveChangesAsync();
 
-        return mrq.MRQId;
+        return (true, null, mrq.MRQId);
     }
 
     public async Task UpdateQuotationEvaluationAsync(int mrqId, string technical, string commercial, string approval)

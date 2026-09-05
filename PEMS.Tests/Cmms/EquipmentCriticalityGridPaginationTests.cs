@@ -1,35 +1,54 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.DTOs;
 using PEMS.Domain.Entities;
+using PEMS.Persistence.Identity;
+using PEMS.Persistence.Seed;
+using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
 using PEMS.Web.Controllers;
 
 namespace PEMS.Tests.Cmms;
 
 /// <summary>
-/// طبق «PEMS Phase 6B — Wave A: EquipmentCriticality Grid». قبلاً کل جدول فیلترشده (با Include)
-/// با ToListAsync (بدون Skip/Take) بارگذاری می‌شد؛ شمارنده‌های Dashboard (ClassA/B/C،
-/// Unassessed) هم با یک بارگذاری کامل دوم در حافظه محاسبه می‌شدند - اکنون با GroupBy/EXISTS در
-/// SQL. Index هیچ Permission gate ای ندارد (طبق کد موجود) - این رفتار عمداً دست‌نخورده باقی
-/// مانده است.
+/// طبق «PEMS Phase 6B — Wave A: EquipmentCriticality Grid» + ممیزی مستقل (P0). قبلاً کل جدول
+/// فیلترشده (با Include) با ToListAsync (بدون Skip/Take) بارگذاری می‌شد؛ شمارنده‌های Dashboard
+/// (ClassA/B/C، Unassessed) هم با یک بارگذاری کامل دوم در حافظه محاسبه می‌شدند - اکنون با
+/// GroupBy/EXISTS در SQL. طبق ممیزی مستقل: Index/Assess قبلاً هیچ Permission gate ای نداشتند -
+/// این‌جا با HasPermissionAsync("EquipmentCriticality", ...) اصلاح شده.
 /// </summary>
 public class EquipmentCriticalityGridPaginationTests
 {
-    private static EquipmentCriticalityController CreateController(string dbName, out PEMS.Persistence.Context.PEMSDbContext ctx)
+    private static async Task<(EquipmentCriticalityController Controller, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateController(
+        string dbName, string? role = SystemRoles.MaintenanceEngineer)
     {
-        ctx = PemsDbContextFactory.CreateInMemory($"EqCritGrid_{dbName}");
+        var ctx = PemsDbContextFactory.CreateInMemory($"EqCritGrid_{dbName}");
         ctx.Projects.Add(new Project { ProjectId = 1, ProjectCode = "TP", ProjectName = "Test Project" });
         ctx.Disciplines.Add(new Discipline { DisciplineId = 1, Code = "MECH", Name = "Mechanical" });
-        ctx.SaveChanges();
-        return new EquipmentCriticalityController(ctx);
+        foreach (var roleName in SystemRoles.All)
+            ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
+        await ctx.SaveChangesAsync();
+
+        var accessControl = new AccessControlService(ctx);
+        var permissionService = new PermissionService(ctx, accessControl);
+        await permissionService.SeedDefaultsAsync();
+
+        var services = new ServiceCollection();
+        services.AddSingleton(ctx);
+        await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
+
+        var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
+
+        var controller = new EquipmentCriticalityController(ctx, permissionService, currentUser).WithTempData();
+        return (controller, ctx);
     }
 
     private static int _nextId = 1;
 
-    private static Equipment NewEquipment(string tag)
+    private static Equipment NewEquipment(string tag, bool isActive = true)
     {
         var id = _nextId++;
-        return new Equipment { EquipmentId = id, TagNumber = tag, Name = tag, EquipmentType = "Pump", ProjectId = 1, DisciplineId = 1, IsActive = true };
+        return new Equipment { EquipmentId = id, TagNumber = tag, Name = tag, EquipmentType = "Pump", ProjectId = 1, DisciplineId = 1, IsActive = isActive };
     }
 
     private static EquipmentCriticality NewCriticality(int equipmentId, string criticalityClass = "A") => new()
@@ -47,9 +66,19 @@ public class EquipmentCriticalityGridPaginationTests
             ((ViewResult)await controller.Index(criticalityClass, page, pageSize)).Model);
 
     [Fact]
+    public async Task Index_WithoutViewPermission_ReturnsForbid()
+    {
+        var (controller, _) = await CreateController(nameof(Index_WithoutViewPermission_ReturnsForbid), role: null);
+
+        var result = await controller.Index(null, 1, null);
+
+        Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
     public async Task Index_DefaultPageSize_Is50()
     {
-        var controller = CreateController(nameof(Index_DefaultPageSize_Is50), out var ctx);
+        var (controller, ctx) = await CreateController(nameof(Index_DefaultPageSize_Is50));
         for (var i = 0; i < 60; i++)
         {
             var eq = NewEquipment($"TAG-{i:D3}");
@@ -71,7 +100,7 @@ public class EquipmentCriticalityGridPaginationTests
     [InlineData(100)]
     public async Task Index_AllowedPageSizes_ReturnExactlyThatCount(int pageSize)
     {
-        var controller = CreateController($"{nameof(Index_AllowedPageSizes_ReturnExactlyThatCount)}_{pageSize}", out var ctx);
+        var (controller, ctx) = await CreateController($"{nameof(Index_AllowedPageSizes_ReturnExactlyThatCount)}_{pageSize}");
         for (var i = 0; i < 120; i++)
         {
             var eq = NewEquipment($"TAG-{i:D3}");
@@ -89,7 +118,7 @@ public class EquipmentCriticalityGridPaginationTests
     [Fact]
     public async Task Index_Page1AndPage2_AreStableAndDisjoint()
     {
-        var controller = CreateController(nameof(Index_Page1AndPage2_AreStableAndDisjoint), out var ctx);
+        var (controller, ctx) = await CreateController(nameof(Index_Page1AndPage2_AreStableAndDisjoint));
         for (var i = 0; i < 25; i++)
         {
             var eq = NewEquipment($"TAG-{i:D3}");
@@ -112,7 +141,7 @@ public class EquipmentCriticalityGridPaginationTests
     [Fact]
     public async Task Index_ClassFilter_StillWorksAfterPageSizeChange()
     {
-        var controller = CreateController(nameof(Index_ClassFilter_StillWorksAfterPageSizeChange), out var ctx);
+        var (controller, ctx) = await CreateController(nameof(Index_ClassFilter_StillWorksAfterPageSizeChange));
         var eqA = NewEquipment("TAG-A");
         var eqB = NewEquipment("TAG-B");
         ctx.Equipments.AddRange(eqA, eqB);
@@ -129,7 +158,7 @@ public class EquipmentCriticalityGridPaginationTests
     [Fact]
     public async Task Index_InactiveCriticalities_AreExcluded()
     {
-        var controller = CreateController(nameof(Index_InactiveCriticalities_AreExcluded), out var ctx);
+        var (controller, ctx) = await CreateController(nameof(Index_InactiveCriticalities_AreExcluded));
         var eq1 = NewEquipment("TAG-ACTIVE");
         var eq2 = NewEquipment("TAG-INACTIVE");
         ctx.Equipments.AddRange(eq1, eq2);
@@ -149,7 +178,7 @@ public class EquipmentCriticalityGridPaginationTests
     [Fact]
     public async Task Index_EmptyDataset_ReturnsEmptyPagedResult()
     {
-        var controller = CreateController(nameof(Index_EmptyDataset_ReturnsEmptyPagedResult), out _);
+        var (controller, _) = await CreateController(nameof(Index_EmptyDataset_ReturnsEmptyPagedResult));
 
         var result = await RunIndex(controller);
 
@@ -161,7 +190,7 @@ public class EquipmentCriticalityGridPaginationTests
     [Fact]
     public async Task Index_DashboardCounts_AreGlobal_NotRestrictedByClassFilter()
     {
-        var controller = CreateController(nameof(Index_DashboardCounts_AreGlobal_NotRestrictedByClassFilter), out var ctx);
+        var (controller, ctx) = await CreateController(nameof(Index_DashboardCounts_AreGlobal_NotRestrictedByClassFilter));
         var eqA1 = NewEquipment("TAG-A1");
         var eqA2 = NewEquipment("TAG-A2");
         var eqB = NewEquipment("TAG-B");
@@ -178,5 +207,77 @@ public class EquipmentCriticalityGridPaginationTests
         Assert.Equal(1, (int)view.ViewData["ClassBCount"]!); // مستقل از فیلتر "A" فعلی
         Assert.Equal(0, (int)view.ViewData["ClassCCount"]!);
         Assert.Equal(1, (int)view.ViewData["UnassessedCount"]!);
+    }
+
+    [Fact]
+    public async Task Assess_WithoutCreatePermission_ReturnsForbid()
+    {
+        var (controller, ctx) = await CreateController(nameof(Assess_WithoutCreatePermission_ReturnsForbid), role: SystemRoles.Viewer);
+        var eq = NewEquipment("TAG-001");
+        ctx.Equipments.Add(eq);
+        await ctx.SaveChangesAsync();
+
+        var result = await controller.Assess(eq.EquipmentId, "A", null, null, null, null, null);
+
+        Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
+    public async Task Assess_NonexistentEquipment_DoesNotCreateAssessment()
+    {
+        var (controller, ctx) = await CreateController(nameof(Assess_NonexistentEquipment_DoesNotCreateAssessment));
+
+        var result = await controller.Assess(999, "A", null, null, null, null, null);
+
+        Assert.IsType<RedirectToActionResult>(result);
+        Assert.Empty(ctx.EquipmentCriticalities);
+    }
+
+    [Fact]
+    public async Task Assess_InactiveEquipment_DoesNotCreateAssessment()
+    {
+        var (controller, ctx) = await CreateController(nameof(Assess_InactiveEquipment_DoesNotCreateAssessment));
+        var eq = NewEquipment("TAG-INACTIVE", isActive: false);
+        ctx.Equipments.Add(eq);
+        await ctx.SaveChangesAsync();
+
+        var result = await controller.Assess(eq.EquipmentId, "A", null, null, null, null, null);
+
+        Assert.IsType<RedirectToActionResult>(result);
+        Assert.Empty(ctx.EquipmentCriticalities);
+    }
+
+    [Fact]
+    public async Task Assess_ActiveEquipment_CreatesAssessment()
+    {
+        var (controller, ctx) = await CreateController(nameof(Assess_ActiveEquipment_CreatesAssessment));
+        var eq = NewEquipment("TAG-001");
+        ctx.Equipments.Add(eq);
+        await ctx.SaveChangesAsync();
+
+        var result = await controller.Assess(eq.EquipmentId, "A", "High", null, null, null, null);
+
+        Assert.IsType<RedirectToActionResult>(result);
+        var created = Assert.Single(ctx.EquipmentCriticalities);
+        Assert.Equal(eq.EquipmentId, created.EquipmentId);
+        Assert.True(created.IsActive);
+    }
+
+    [Fact]
+    public async Task Assess_ExistingActiveAssessment_ReplacesNotDuplicates()
+    {
+        var (controller, ctx) = await CreateController(nameof(Assess_ExistingActiveAssessment_ReplacesNotDuplicates));
+        var eq = NewEquipment("TAG-001");
+        ctx.Equipments.Add(eq);
+        var previous = NewCriticality(eq.EquipmentId, "B");
+        ctx.EquipmentCriticalities.Add(previous);
+        await ctx.SaveChangesAsync();
+
+        await controller.Assess(eq.EquipmentId, "A", null, null, null, null, null);
+
+        var all = ctx.EquipmentCriticalities.ToList();
+        Assert.Equal(2, all.Count);
+        Assert.False(all.Single(x => x.EquipmentCriticalityId == previous.EquipmentCriticalityId).IsActive);
+        Assert.Single(all, x => x.IsActive);
     }
 }

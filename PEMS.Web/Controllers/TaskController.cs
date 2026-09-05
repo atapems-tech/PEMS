@@ -17,18 +17,27 @@ public class TaskController : Controller
     private readonly ITaskService _service;
     private readonly PEMSDbContext _context;
     private readonly ICurrentUserService _currentUser;
+    private readonly IPermissionService _permissionService;
 
-    public TaskController(ITaskService service, PEMSDbContext context, ICurrentUserService currentUser)
+    public TaskController(ITaskService service, PEMSDbContext context, ICurrentUserService currentUser,
+        IPermissionService permissionService)
     {
         _service = service;
         _context = context;
         _currentUser = currentUser;
+        _permissionService = permissionService;
     }
 
     // طبق سند «PEMS — Global Data Grid Standard» (فاز ۶B - Wave A): قبلاً کل جدول فیلترشده با
     // ToListAsync (بدون Skip/Take) بارگذاری می‌شد.
+    // طبق ممیزی مستقل فاز ۶B Wave A (P0): این Action هیچ بررسی مجوزی نداشت - هر کاربر
+    // احرازهویت‌شده‌ای (بدون توجه به نقش) می‌توانست وظایف را ببیند. الگوی
+    // WorkOrder/WorkRequest/MaterialRequisition/Inspection/Permit عیناً استفاده شده.
     public async Task<IActionResult> Index(string tab = "action", int page = 1, int? pageSize = null)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Task", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Tasks";
         ViewData["Section"] = "Correspondence Management";
 
@@ -54,6 +63,9 @@ public class TaskController : Controller
     public async Task<IActionResult> Create(string title, string? description, int? assignedToEmployeeId,
         DateTime? dueDate, string priority)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Task", "Create"))
+            return Forbid();
+
         await _service.CreateAsync(title, description, assignedToEmployeeId, dueDate, priority,
             null, null, _currentUser.UserId, _currentUser.FullName);
 
@@ -61,10 +73,16 @@ public class TaskController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    // طبق ممیزی مستقل فاز ۶B Wave A (P0): تغییر وضعیت یک رکورد موجود است - طبق الگوی پروژه
+    // (مثلاً MaterialRequisitionController.ChangeStatus) نیازمند مجوز "Edit" است، نه یک مجوز
+    // اختصاصیِ جدید.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateStatus(int taskItemId, string status, string? completionNote, string tab = "action")
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Task", "Edit"))
+            return Forbid();
+
         await _service.UpdateStatusAsync(taskItemId, status, completionNote);
         return RedirectToAction(nameof(Index), new { tab });
     }

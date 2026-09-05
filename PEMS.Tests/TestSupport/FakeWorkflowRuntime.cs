@@ -12,6 +12,13 @@ public class FakeWorkflowRuntime : IWorkflowRuntime
 {
     public HashSet<int> PendingPermitIds { get; set; } = new();
 
+    /// <summary>
+    /// وقتی ست شود، به‌جای AssignedDate خودکار (بر اساس ترتیب Enumerate شدن HashSet - که
+    /// تضمین‌شده نیست)، برای هر PermitId دقیقاً همین تاریخ استفاده می‌شود - برای تست‌های
+    /// مرتب‌سازی قطعی (چند Permit با AssignedDate یکسان) لازم است.
+    /// </summary>
+    public Dictionary<int, DateTime>? ExplicitAssignedDates { get; set; }
+
     public Task<int> StartInstanceAsync(string module, string businessObjectType, int businessObjectId,
         string workflowCategory, int? projectId, int? initiatedByEmployeeId,
         IReadOnlyList<string>? firstStageParticipantRoles = null) => throw new NotImplementedException();
@@ -39,7 +46,9 @@ public class FakeWorkflowRuntime : IWorkflowRuntime
             BusinessObjectType = "Permit",
             BusinessObjectId = permitId,
             StageName = "Approval",
-            AssignedDate = DateTime.Today.AddMinutes(-idx)
+            AssignedDate = ExplicitAssignedDates != null && ExplicitAssignedDates.TryGetValue(permitId, out var explicitDate)
+                ? explicitDate
+                : DateTime.Today.AddMinutes(-idx)
         }).ToList();
 
         return Task.FromResult<IReadOnlyList<PendingTaskDto>>(tasks);

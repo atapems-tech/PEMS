@@ -11,11 +11,24 @@ public interface IPermitService
 {
     Task<List<PermitListDto>> GetListAsync(string? status = null);
 
-    // طبق سند «PEMS — Global Data Grid Standard» (فاز ۶B - Wave A): مسیر pendingMyApproval باید
-    // با GetListAsync کامل کار کند (چون فیلتر آن روی IWorkflowRuntime است، نه ستونی از DB که
-    // بشود در SQL فیلتر کرد) - اما مسیر معمولی (بدون pendingMyApproval) باید واقعاً در DB
-    // صفحه‌بندی شود.
+    // مسیر معمولی (بدون pendingMyApproval) واقعاً در DB صفحه‌بندی می‌شود.
     Task<PagedResult<PermitListDto>> GetPagedListAsync(string? status, int page, int pageSize);
+
+    // ==============================================================================
+    // طبق ممیزی مستقل فاز ۶B Wave A (P1): مسیر pendingMyApproval دیگر کل جدول Permit را
+    // بارگذاری نمی‌کند. IWorkflowRuntime.GetPendingTasksAsync از پیش شناسه‌های Permit در
+    // انتظار تایید همین کاربر را برمی‌گرداند (صف تایید یک کاربر، نه کل جدول) - این دو متد
+    // آن مجموعه‌ی کوچک و از پیش محدودشده را با فیلتر Status محدودتر می‌کنند و فقط دقیقاً
+    // همان صفحه را از DB می‌خوانند. ترتیب واقعی (بر اساس AssignedDate از Workflow Runtime -
+    // ستونی از DB نیست) در Controller روی همین شناسه‌های کوچک محاسبه می‌شود؛ جزئیات در
+    // PermitController.Index مستند شده است.
+    // ==============================================================================
+
+    /// <summary>شناسه‌های فعال Permit از میان candidateIds که با فیلتر Status هم مطابقت دارند.</summary>
+    Task<List<int>> GetActiveIdsMatchingAsync(IReadOnlyList<int> candidateIds, string? status);
+
+    /// <summary>DTOهای کامل Permit فقط برای شناسه‌های داده‌شده (بدون هیچ فیلتر یا صفحه‌بندی اضافه).</summary>
+    Task<List<PermitListDto>> GetByIdsAsync(IReadOnlyList<int> permitIds);
 
     Task<PermitDetailDto?> GetDetailsAsync(int permitId);
 

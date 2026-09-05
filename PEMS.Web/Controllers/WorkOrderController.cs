@@ -275,10 +275,16 @@ public class WorkOrderController : Controller
         return View(workOrder);
     }
 
+    // طبق ممیزی مستقل فاز ۶B Wave A (P0): CompleteTask/ReopenTask هیچ بررسی مجوزی نداشتند -
+    // مثل بقیه‌ی جهش‌های این کنترلر (Hold/Resume/AddLaborEntry/...) نیازمند "WorkOrder"/"Edit"
+    // هستند، نه یک مجوز جدید.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CompleteTask(int workOrderTaskId, int workOrderId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit"))
+            return Forbid();
+
         var task = await _context.WorkOrderTasks.FirstOrDefaultAsync(x => x.WorkOrderTaskId == workOrderTaskId);
         if (task != null)
         {
@@ -295,6 +301,9 @@ public class WorkOrderController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ReopenTask(int workOrderTaskId, int workOrderId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit"))
+            return Forbid();
+
         var task = await _context.WorkOrderTasks.FirstOrDefaultAsync(x => x.WorkOrderTaskId == workOrderTaskId);
         if (task != null)
         {

@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
+using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
+using PEMS.Web.Security;
 
 namespace PEMS.Web.Controllers;
 
@@ -15,18 +17,27 @@ namespace PEMS.Web.Controllers;
 public class EquipmentCriticalityController : Controller
 {
     private readonly PEMSDbContext _context;
+    private readonly IPermissionService _permissionService;
+    private readonly ICurrentUserService _currentUser;
 
-    public EquipmentCriticalityController(PEMSDbContext context)
+    public EquipmentCriticalityController(PEMSDbContext context, IPermissionService permissionService,
+        ICurrentUserService currentUser)
     {
         _context = context;
+        _permissionService = permissionService;
+        _currentUser = currentUser;
     }
 
     // طبق سند «PEMS — Global Data Grid Standard» (فاز ۶B - Wave A): قبلاً کل جدول فیلترشده با
     // ToListAsync (بدون Skip/Take) بارگذاری می‌شد؛ شمارنده‌های Dashboard هم با یک بارگذاری کامل
     // دوم (allActive.ToListAsync سپس شمارش در حافظه) محاسبه می‌شدند - این‌جا با GroupBy/CountAsync
     // در خودِ SQL انجام می‌شود. شمارنده‌ها عمداً کلی/بدون فیلتر باقی مانده‌اند (رفتار قبلی).
+    // طبق ممیزی مستقل فاز ۶B Wave A (P0): این Action هیچ بررسی مجوزی نداشت.
     public async Task<IActionResult> Index(string? criticalityClass, int page = 1, int? pageSize = null)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentCriticality", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Equipment Criticality Analysis";
         ViewData["Section"] = "CMMS Integration";
 
@@ -84,12 +95,23 @@ public class EquipmentCriticalityController : Controller
         });
     }
 
+    // طبق ممیزی مستقل فاز ۶B Wave A (P0): این Action هیچ بررسی مجوزی نداشت و وجود/فعال‌بودن
+    // Equipment مقصد را هم چک نمی‌کرد - فقط به Exception سطح FK تکیه می‌کرد.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Assess(
         int equipmentId, string criticalityClass, string? riskLevel,
         string? safetyImpact, string? productionImpact, string? environmentImpact, string? description)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentCriticality", "Create"))
+            return Forbid();
+
+        if (!await _context.Equipments.AnyAsync(x => x.EquipmentId == equipmentId && x.IsActive))
+        {
+            TempData["Error"] = "تجهیز انتخاب‌شده نامعتبر یا غیرفعال است.";
+            return RedirectToAction(nameof(Index));
+        }
+
         var existing = await _context.EquipmentCriticalities
             .FirstOrDefaultAsync(x => x.EquipmentId == equipmentId && x.IsActive);
 
