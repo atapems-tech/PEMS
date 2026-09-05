@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+<html class="light" dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Supplier Directory &amp; Performance - UtilityCorp PEMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#daeaff",
+                        "inverse-primary": "#bbc7e0",
+                        "on-secondary-fixed": "#2c1700",
+                        "outline-variant": "#c5c6cd",
+                        "inverse-surface": "#1f3245",
+                        "on-secondary-container": "#6e4100",
+                        "secondary-container": "#fdaa47",
+                        "error": "#ba1a1a",
+                        "on-background": "#081d2f",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "primary": "#000819",
+                        "on-tertiary-fixed": "#001d36",
+                        "on-surface": "#081d2f",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#d7e3fd",
+                        "tertiary-container": "#00213d",
+                        "inverse-on-surface": "#e9f1ff",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary-container": "#498bcd",
+                        "surface-container": "#e4efff",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "surface-dim": "#c8dcf5",
+                        "surface-tint": "#535f75",
+                        "on-primary-container": "#7c889f",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#eef4ff",
+                        "background": "#f8f9ff",
+                        "tertiary": "#000815",
+                        "primary-container": "#142033",
+                        "on-surface-variant": "#44474c",
+                        "surface-variant": "#d0e4fe",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "secondary": "#895200",
+                        "outline": "#75777d",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#d0e4fe",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-primary-fixed": "#101c2f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "topbar-height": "60px",
+                        "lg": "24px",
+                        "sidebar-width": "260px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "unit": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "table-header": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "body-base": ["Inter"],
+                        "kpi-stat": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Custom scrollbar for high-density tables */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: theme('colors.surface');
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: theme('colors.outline-variant');
+            border-radius: theme('borderRadius.full');
+            border: 2px solid theme('colors.surface');
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased overflow-hidden flex">
+<!-- SideNavBar -->
+<nav class="hidden lg:flex flex-col bg-primary dark:bg-primary-container border-r border-outline-variant fixed left-0 top-0 h-screen w-sidebar-width z-50">
+<!-- Brand Header -->
+<div class="px-lg py-lg border-b border-outline-variant/20 flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-surface flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-xl" data-weight="fill">factory</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-primary dark:text-primary-fixed">UtilityCorp PEMS</h1>
+<p class="font-label-caps text-label-caps text-on-primary/70">Procurement Module</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 overflow-y-auto custom-scrollbar py-lg px-sm space-y-xs">
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:bg-on-primary/10 hover:text-on-primary rounded-lg font-body-medium transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:bg-on-primary/10 hover:text-on-primary rounded-lg font-body-medium transition-all" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span>Purchase Orders</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-body-medium transition-all shadow-sm scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-weight="fill">business</span>
+<span>Supplier Directory</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:bg-on-primary/10 hover:text-on-primary rounded-lg font-body-medium transition-all" href="#">
+<span class="material-symbols-outlined">request_quote</span>
+<span>Procurement Requests</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:bg-on-primary/10 hover:text-on-primary rounded-lg font-body-medium transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Inventory Assets</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:bg-on-primary/10 hover:text-on-primary rounded-lg font-body-medium transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Reports</span>
+</a>
+</div>
+<!-- CTA & Footer -->
+<div class="p-lg border-t border-outline-variant/20 space-y-md">
+<button class="w-full bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-on-primary font-body-medium py-sm px-md rounded-lg shadow-sm hover:shadow-md transition-shadow flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined">add</span>
+<span>Create New Order</span>
+</button>
+<div class="flex flex-col gap-xs pt-sm">
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Support</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col lg:ml-sidebar-width h-screen overflow-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface-container-low dark:bg-surface-dim border-b border-outline-variant h-topbar-height flex justify-between items-center px-lg z-40 shrink-0">
+<!-- Left: Search -->
+<div class="flex-1 max-w-md">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-md text-on-surface-variant/70">search</span>
+<input class="w-full bg-surface border border-outline-variant text-body-base rounded-lg pl-xl pr-md py-xs focus:ring-2 focus:ring-secondary focus:border-secondary transition-all" placeholder="Search suppliers, IDs, or categories..." type="text"/><div class="absolute top-full left-0 w-full mt-1 bg-white border border-outline-variant rounded-lg shadow-lg z-50 overflow-hidden">
+<div class="p-2 border-b border-outline-variant/10 hover:bg-surface-variant cursor-pointer">
+<p class="text-sm font-medium">ElectroTech Industries</p>
+<p class="text-xs text-outline">ID: <span class="bg-secondary-container/30 text-on-secondary-container px-1 rounded">VND-8492-E</span></p>
+</div>
+<div class="p-2 border-b border-outline-variant/10 hover:bg-surface-variant cursor-pointer">
+<p class="text-sm font-medium">MechWorks Global</p>
+<p class="text-xs text-outline">ID: <span class="bg-secondary-container/30 text-on-secondary-container px-1 rounded">VND-3321-M</span></p>
+</div>
+<div class="p-2 bg-surface-container-low text-center">
+<button class="text-xs text-secondary font-medium">View all 1,248 results</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Center: Nav Links (Hidden on small) -->
+<div class="hidden md:flex items-center gap-lg px-xl h-full">
+<a class="text-on-surface-variant font-medium hover:text-secondary h-full flex items-center border-b-2 border-transparent transition-colors" href="#">Global View</a>
+<a class="text-primary border-b-2 border-secondary font-bold h-full flex items-center transition-colors" href="#">Metrics</a>
+<a class="text-on-surface-variant font-medium hover:text-secondary h-full flex items-center border-b-2 border-transparent transition-colors" href="#">Logs</a>
+</div>
+<!-- Right: Actions -->
+<div class="flex items-center gap-md">
+<button class="hidden sm:flex bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-on-primary font-body-medium py-xs px-md rounded-lg shadow-sm hover:shadow-md transition-shadow items-center gap-sm">
+                    New Request
+                </button>
+<div class="flex items-center gap-sm border-l border-outline-variant pl-md ml-sm">
+<button class="p-xs text-on-surface-variant hover:text-secondary transition-colors rounded-full hover:bg-surface-variant"><span class="material-symbols-outlined">notifications</span></button>
+<button class="p-xs text-on-surface-variant hover:text-secondary transition-colors rounded-full hover:bg-surface-variant"><span class="material-symbols-outlined">language</span></button>
+<button class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-xs">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional corporate headshot of a person looking forward, well-lit, industrial background context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHtc5b3CwWhW9vCqI9zftLm7anTbTxA1gY7gWG7V12syjxB6dXquQUYshrUzM3k1_Y366YDTkZhovH7LWBfkNO48tkKs5Gi5RH746oorBVV7w1K7WVB1JX5PDNTTFgofV2yaKULveP4_qkeGQmUGb0eMbz872HKJh233MZg1-RCW26aBBOY4tnTFTomv16pWTtibxy72SM7PXzJfG_ebZdFkVEF_jzOhQ5PnM1MazS1nopFxJS6AC3"/>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 overflow-y-auto bg-background p-md lg:p-lg">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-md mb-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-background">Supplier Directory &amp; Performance</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-1">Manage vendor details, track delivery metrics, and review quality scores. <span class="text-xs text-outline ml-2">FA/EN Enabled</span></p>
+</div>
+<div class="flex gap-sm w-full sm:w-auto">
+<button class="flex-1 sm:flex-none px-md py-sm border border-outline-variant rounded-lg font-body-medium text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors bg-surface flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined">filter_list</span> Filter
+                    </button>
+<button class="flex-1 sm:flex-none px-md py-sm bg-surface-container-high rounded-lg font-body-medium text-primary hover:bg-surface-variant transition-colors flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined">download</span> Export
+                    </button>
+</div>
+</div>
+<!-- KPI Summary Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md mb-lg">
+<!-- KPI 1 -->
+<div class="bg-surface border border-[#edf0f4] rounded-xl p-md flex items-center gap-md hover:border-secondary transition-colors shadow-sm">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] flex items-center justify-center shrink-0 text-white">
+<span class="material-symbols-outlined">group</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">TOTAL ACTIVE SUPPLIERS</p>
+<p class="font-kpi-stat text-kpi-stat text-on-background">1,248</p>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface border border-[#edf0f4] rounded-xl p-md flex items-center gap-md hover:border-secondary transition-colors shadow-sm">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-[#166534] to-[#22c55e] flex items-center justify-center shrink-0 text-white">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">AVG QUALITY SCORE</p>
+<p class="font-kpi-stat text-kpi-stat text-on-background">94.2%</p>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface border border-[#edf0f4] rounded-xl p-md flex items-center gap-md hover:border-secondary transition-colors shadow-sm">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-[#d97706] to-[#fbbf24] flex items-center justify-center shrink-0 text-white">
+<span class="material-symbols-outlined">local_shipping</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">ON-TIME DELIVERY</p>
+<p class="font-kpi-stat text-kpi-stat text-on-background">88.5%</p>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface border border-[#edf0f4] rounded-xl p-md flex items-center gap-md hover:border-secondary transition-colors shadow-sm">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-[#991b1b] to-[#ef4444] flex items-center justify-center shrink-0 text-white">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">CRITICAL INCIDENTS</p>
+<p class="font-kpi-stat text-kpi-stat text-on-background">3</p>
+</div>
+</div>
+</div>
+<!-- Bento Layout for List & Details -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-md h-[calc(100vh-300px)] min-h-[600px]">
+<!-- Left Pane: Supplier List -->
+<div class="lg:col-span-8 bg-surface border border-[#edf0f4] rounded-xl flex flex-col shadow-sm overflow-hidden h-full">
+<!-- Table Toolbar -->
+<div class="px-md py-2 bg-surface-container-high border-b border-outline-variant flex items-center justify-between animate-in fade-in slide-in-from-top-2">
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-2">
+<input checked="" class="rounded border-outline-variant text-secondary focus:ring-secondary" type="checkbox"/>
+<span class="text-xs font-medium text-primary">3 Suppliers Selected</span>
+</div>
+<div class="h-4 w-px bg-outline-variant/30"></div>
+<div class="flex gap-sm">
+<button class="flex items-center gap-1 px-2 py-1 text-xs font-medium text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[16px]">compare_arrows</span> Compare
+            </button>
+<button class="flex items-center gap-1 px-2 py-1 text-xs font-medium text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[16px]">download</span> Export
+            </button>
+<button class="flex items-center gap-1 px-2 py-1 text-xs font-medium text-error hover:bg-error-container/20 rounded transition-colors">
+<span class="material-symbols-outlined text-[16px]">block</span> Deactivate
+            </button>
+</div>
+</div>
+<button class="text-xs text-outline hover:text-primary">Clear Selection</button>
+</div><div class="p-sm bg-[#f5f7fa] border-b border-[#edf0f4] flex justify-between items-center shrink-0">
+<div class="flex gap-sm">
+<button class="px-sm py-xs bg-white border border-outline-variant rounded-md text-xs font-medium text-on-surface-variant hover:border-secondary">All Categories</button>
+<button class="px-sm py-xs bg-white border border-outline-variant rounded-md text-xs font-medium text-on-surface-variant hover:border-secondary">Rating &gt; 90%</button>
+</div>
+<div class="flex items-center gap-xs text-xs text-outline">
+<span>Showing 1-10 of 1,248</span>
+</div>
+</div>
+<!-- Data Table -->
+<div class="flex-1 overflow-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-[#f5f7fa] z-10 shadow-[0_1px_0_#edf0f4]">
+<tr>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Supplier / تامین کننده</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Category</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Rating</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">On-Time / Quality</th><th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Trend / روند</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-background divide-y divide-[#edf0f4]">
+<!-- Row 1 -->
+<tr class="hover:bg-[rgba(31,78,120,0.04)] transition-colors group cursor-pointer bg-[rgba(31,78,120,0.02)] border-l-2 border-secondary">
+<td class="py-sm px-md">
+<div class="flex flex-col">
+<span class="font-medium">ElectroTech Industries</span>
+<span class="text-xs text-on-surface-variant font-[Tahoma]" dir="rtl">صنایع الکتروتک</span>
+<span class="text-xs text-outline font-mono mt-0.5">VND-8492-E</span>
+</div>
+</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-blue-100 text-blue-800">Electrical</span>
+</td>
+<td class="py-sm px-md">
+<div class="flex items-center gap-1">
+<span class="font-semibold text-[#166534]">A+</span>
+<span class="text-xs text-outline">(98%)</span>
+</div>
+</td>
+<td class="py-sm px-md">
+<div class="flex flex-col gap-1 w-24">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary" style="width: 95%"></div>
+</div>
+<span class="text-[10px] w-6 text-right">95%</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-[#166534]" style="width: 99%"></div>
+</div>
+<span class="text-[10px] w-6 text-right">99%</span>
+</div>
+</div>
+</td>
+<td class="py-sm px-md">
+<div class="flex items-end gap-0.5 h-6 w-20">
+<div class="flex-1 bg-secondary/20 h-[40%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary/40 h-[60%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary/60 h-[55%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary/80 h-[85%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary h-full rounded-t-sm"></div>
+</div>
+</td><td class="py-sm px-md text-right">
+<div class="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-[#dde3ea] text-[#5c6f85] hover:border-secondary hover:text-secondary bg-white"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-[#dde3ea] text-[#5c6f85] hover:border-secondary hover:text-secondary bg-white"><span class="material-symbols-outlined text-[18px]">history</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-[rgba(31,78,120,0.04)] transition-colors group cursor-pointer border-l-2 border-transparent">
+<td class="py-sm px-md">
+<div class="flex flex-col">
+<span class="font-medium">MechWorks Global</span>
+<span class="text-xs text-on-surface-variant font-[Tahoma]" dir="rtl">شرکت مکانیک ورکس</span>
+<span class="text-xs text-outline font-mono mt-0.5">VND-3321-M</span>
+</div>
+</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-800">Mechanical</span>
+</td>
+<td class="py-sm px-md">
+<div class="flex items-center gap-1">
+<span class="font-semibold text-[#d97706]">B</span>
+<span class="text-xs text-outline">(82%)</span>
+</div>
+</td>
+<td class="py-sm px-md">
+<div class="flex flex-col gap-1 w-24">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-[#d97706]" style="width: 78%"></div>
+</div>
+<span class="text-[10px] w-6 text-right">78%</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary" style="width: 86%"></div>
+</div>
+<span class="text-[10px] w-6 text-right">86%</span>
+</div>
+</div>
+</td>
+<td class="py-sm px-md">
+<div class="flex items-end gap-0.5 h-6 w-20">
+<div class="flex-1 bg-secondary/20 h-[70%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary/40 h-[50%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary/60 h-[40%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary/80 h-[30%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary h-[45%] rounded-t-sm"></div>
+</div>
+</td><td class="py-sm px-md text-right">
+<div class="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-[#dde3ea] text-[#5c6f85] hover:border-secondary hover:text-secondary bg-white"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-[#dde3ea] text-[#5c6f85] hover:border-secondary hover:text-secondary bg-white"><span class="material-symbols-outlined text-[18px]">history</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-[rgba(31,78,120,0.04)] transition-colors group cursor-pointer border-l-2 border-transparent">
+<td class="py-sm px-md">
+<div class="flex flex-col">
+<span class="font-medium">Apex Facility Services</span>
+<span class="text-xs text-on-surface-variant font-[Tahoma]" dir="rtl">خدمات تاسیسات اپکس</span>
+<span class="text-xs text-outline font-mono mt-0.5">VND-9011-S</span>
+</div>
+</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-purple-100 text-purple-800">Services</span>
+</td>
+<td class="py-sm px-md">
+<div class="flex items-center gap-1">
+<span class="font-semibold text-[#166534]">A</span>
+<span class="text-xs text-outline">(91%)</span>
+</div>
+</td>
+<td class="py-sm px-md">
+<div class="flex flex-col gap-1 w-24">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary" style="width: 92%"></div>
+</div>
+<span class="text-[10px] w-6 text-right">92%</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-[#166534]" style="width: 90%"></div>
+</div>
+<span class="text-[10px] w-6 text-right">90%</span>
+</div>
+</div>
+</td>
+<td class="py-sm px-md">
+<div class="flex items-end gap-0.5 h-6 w-20">
+<div class="flex-1 bg-secondary/20 h-[30%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary/40 h-[45%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary/60 h-[65%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary/80 h-[80%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary h-[95%] rounded-t-sm"></div>
+</div>
+</td><td class="py-sm px-md text-right">
+<div class="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-[#dde3ea] text-[#5c6f85] hover:border-secondary hover:text-secondary bg-white"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-[#dde3ea] text-[#5c6f85] hover:border-secondary hover:text-secondary bg-white"><span class="material-symbols-outlined text-[18px]">history</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right Pane: Supplier Details (Glassmorphism inspired panel) -->
+<div class="lg:col-span-4 flex flex-col gap-md h-full overflow-y-auto custom-scrollbar">
+<!-- Profile Card -->
+<div class="bg-surface border border-[#edf0f4] rounded-xl p-md shadow-sm relative overflow-hidden">
+<!-- Decorative bg -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary-container rounded-bl-full opacity-10"></div>
+<div class="flex justify-between items-start mb-md relative z-10">
+<div class="w-12 h-12 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-700 font-bold text-lg">
+                                ET
+                            </div>
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200">
+                                Status: Active
+                            </span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background">ElectroTech Industries</h3>
+<p class="text-sm text-on-surface-variant font-[Tahoma] mt-1" dir="rtl">صنایع الکتروتک</p>
+<div class="grid grid-cols-2 gap-sm mt-md pt-md border-t border-[#edf0f4]">
+<div>
+<p class="text-[10px] text-outline uppercase font-bold tracking-wider">Vendor ID</p>
+<p class="font-mono text-sm text-on-background">VND-8492-E</p>
+</div>
+<div>
+<p class="text-[10px] text-outline uppercase font-bold tracking-wider">Since</p>
+<p class="text-sm text-on-background">Oct 2018</p>
+</div>
+</div>
+</div>
+<!-- Contact Info -->
+<div class="bg-surface border border-[#edf0f4] rounded-xl p-md shadow-sm">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-md uppercase border-b border-[#edf0f4] pb-xs">Contact Information</h4>
+<div class="space-y-sm">
+<div class="flex gap-sm items-start">
+<span class="material-symbols-outlined text-outline text-[18px] mt-0.5">location_on</span>
+<div class="flex-1">
+<p class="text-sm text-on-background">142 Industrial Pkwy, Sector 4<br/>Tech Hub, TH 90210</p>
+<p class="text-xs text-on-surface-variant font-[Tahoma] mt-1 border-t border-dashed border-[#edf0f4] pt-1" dir="rtl">پارک صنعتی ۱۴۲، بخش ۴<br/>مرکز فناوری، کد پستی ۹۰۲۱۰</p>
+</div>
+</div>
+<div class="flex gap-sm items-center mt-sm">
+<span class="material-symbols-outlined text-outline text-[18px]">badge</span>
+<div>
+<p class="text-sm text-on-background">Sarah Jenkins <span class="text-xs text-outline">(Tech Lead)</span></p>
+</div>
+</div>
+<div class="flex gap-sm items-center">
+<span class="material-symbols-outlined text-outline text-[18px]">mail</span>
+<a class="text-sm text-secondary hover:underline" href="#">s.jenkins@electrotech.ind</a>
+</div>
+<div class="flex gap-sm items-center">
+<span class="material-symbols-outlined text-outline text-[18px]">call</span>
+<p class="text-sm text-on-background font-mono">+1 (555) 019-2834</p>
+</div>
+</div>
+</div>
+<!-- Action Panel -->
+<div class="bg-surface border border-[#edf0f4] rounded-xl p-md shadow-sm mb-md">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-md uppercase border-b border-[#edf0f4] pb-xs flex justify-between">
+<span>Compliance / انطباق</span>
+<span class="text-green-800">100% Verified</span>
+</h4>
+<div class="space-y-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-[#166534] text-[18px]">verified</span>
+<span class="text-sm text-on-background">ISO 9001:2015</span>
+</div>
+<span class="text-[10px] text-outline font-mono">EXP: 2025</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-[#166534] text-[18px]">verified</span>
+<span class="text-sm text-on-background">OHSAS 18001</span>
+</div>
+<span class="text-[10px] text-outline font-mono">EXP: 2024</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-[#166534] text-[18px]">verified</span>
+<span class="text-sm text-on-background">Cyber Essentials+</span>
+</div>
+<span class="text-[10px] text-outline font-mono">EXP: 2024</span>
+</div>
+</div>
+</div><div class="bg-surface border border-[#edf0f4] rounded-xl p-md shadow-sm mt-auto">
+<div class="flex flex-col gap-sm">
+<button class="w-full bg-white border border-[#dde3ea] text-[#5c6f85] font-body-medium py-sm px-md rounded-lg hover:border-secondary hover:text-secondary transition-colors flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">edit_document</span>
+                                Edit Supplier Record
+                            </button>
+<button class="w-full bg-white border border-[#dde3ea] text-[#5c6f85] font-body-medium py-sm px-md rounded-lg hover:border-secondary hover:text-secondary transition-colors flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+                                View Order History
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

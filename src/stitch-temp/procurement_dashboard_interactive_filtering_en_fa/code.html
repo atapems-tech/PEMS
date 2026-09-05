@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Inventory Procurement Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#daeaff",
+                        "inverse-primary": "#bbc7e0",
+                        "on-secondary-fixed": "#2c1700",
+                        "outline-variant": "#c5c6cd",
+                        "inverse-surface": "#1f3245",
+                        "on-secondary-container": "#6e4100",
+                        "secondary-container": "#fdaa47",
+                        "error": "#ba1a1a",
+                        "on-background": "#081d2f",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "primary": "#000819",
+                        "on-tertiary-fixed": "#001d36",
+                        "on-surface": "#081d2f",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#d7e3fd",
+                        "tertiary-container": "#00213d",
+                        "inverse-on-surface": "#e9f1ff",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary-container": "#498bcd",
+                        "surface-container": "#e4efff",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "surface-dim": "#c8dcf5",
+                        "surface-tint": "#535f75",
+                        "on-primary-container": "#7c889f",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#eef4ff",
+                        "background": "#f8f9ff",
+                        "tertiary": "#000815",
+                        "primary-container": "#142033",
+                        "on-surface-variant": "#44474c",
+                        "surface-variant": "#d0e4fe",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "secondary": "#895200",
+                        "outline": "#75777d",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#d0e4fe",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-primary-fixed": "#101c2f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "topbar-height": "60px",
+                        "lg": "24px",
+                        "sidebar-width": "260px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "unit": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "table-header": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "body-base": ["Inter"],
+                        "kpi-stat": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .bg-industrial-gradient { background: linear-gradient(135deg, #d98c2b 0%, #b8721e 100%); }
+    </style>
+</head>
+<body class="bg-background text-on-surface h-screen overflow-hidden flex font-body-base">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-primary dark:bg-primary-container border-r border-outline-variant flex flex-col py-lg z-50 transition-transform duration-300 md:translate-x-0 -translate-x-full" id="sidebar">
+<div class="px-lg mb-lg flex items-center gap-md">
+<img alt="UtilityCorp Logo" class="w-10 h-10 rounded" data-alt="A minimalist and sharp corporate logo for a heavy industrial logistics and procurement company. The logo features a solid geometric shape resembling a container or steel beam, rendered in crisp white against a deep navy blue background. The aesthetic is highly professional, clean, and modern." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPksp4il98zVbJm0hsWzmLg8Ffvte9qa_GD0Xbct-FhNCvYNoIdEhD2bmN1qp_RLaNAz0ZiCZ4e8R1b2P2CMT27U3fL39-L0fjN0xLdgJQt4MZA4vEO6lMWru3v1nEWtvJVpV-VrMFYShMS58co1adGMWaUE1MsWTWCgoI-BNnfbuW_suC3D9W-nfdbHRuhKaYeYsFxVK6U-kEgGuKuo2WblGsXo0NhNs6ySIWlaebfksN16aRd5oh"/>
+<div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-primary dark:text-primary-fixed">PEMS Enterprise</h1>
+<p class="font-body-medium text-body-medium text-on-primary/70">Procurement Module</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto px-sm flex flex-col gap-xs">
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-body-medium scale-[0.98] duration-150 transition-all" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+                Purchase Orders
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">business</span>
+                Supplier Directory
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">request_quote</span>
+                Procurement Requests
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                Inventory Assets
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                Reports
+            </a>
+</nav>
+<div class="px-lg mt-auto pt-lg border-t border-outline-variant/20 flex flex-col gap-sm">
+<button class="w-full bg-industrial-gradient text-white rounded-lg py-sm px-md font-body-medium hover:opacity-90 transition-opacity">
+                Create New Order
+            </button>
+<div class="flex flex-col gap-xs mt-sm">
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Settings
+                </a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">help</span>
+                    Support
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 ml-0 md:ml-[260px] flex flex-col h-screen relative">
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 left-0 md:left-[260px] h-topbar-height bg-surface-container-low dark:bg-surface-dim border-b border-outline-variant flex justify-between items-center px-lg z-40">
+<div class="flex items-center gap-md">
+<button class="md:hidden text-on-surface hover:text-secondary transition-colors" onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">UtilityCorp PEMS</span>
+</div>
+<nav class="hidden lg:flex items-center gap-lg">
+<a class="text-on-surface-variant dark:text-outline font-medium hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">Global View</a>
+<a class="text-primary dark:text-primary-fixed-dim border-b-2 border-secondary font-bold pb-4 mt-4" href="#">Metrics</a>
+<a class="text-on-surface-variant dark:text-outline font-medium hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">Logs</a>
+</nav>
+<div class="flex items-center gap-sm">
+<button class="text-on-surface-variant hover:text-secondary p-2 rounded-full transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="text-on-surface-variant hover:text-secondary p-2 rounded-full transition-colors"><span class="material-symbols-outlined">language</span></button>
+<img alt="User Profile" class="w-8 h-8 rounded-full border border-outline-variant cursor-pointer" data-alt="A professional headshot of a female logistics manager in a high-tech control room setting. She is wearing corporate attire. The lighting is cool and slightly blue, indicating screen glare, set against a pristine, modern office environment. High resolution, 4k, photorealistic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeRQ-faq_jQgG_Zh15H4PK6Lxs8WTVhs-rNJu19XgAhOP69FdEeQ1KEANI4KzneWaRsFUQEzHCiGjGdXZw9S5jP_gSPgUzfnFv59VLXFKdc_iRavm9f0n2HL0H2B87BXLnSZy4FTo1_ui9Cf2YIIxMGv31KooFZcSU159fvq9Am7zYql-PtLvD_JEocNBCf3-CtJd-i4tUPLb1z4W1HueVear5CZ9wBCndn2t91N4IJ0BgCNhBzTtN"/>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="flex-1 mt-[60px] p-md md:p-lg overflow-y-auto">
+<div class="max-w-7xl mx-auto space-y-lg">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-background">Purchase Orders Overview</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-1" dir="rtl">مروری بر سفارشات خرید</p>
+</div>
+<div class="flex items-center bg-surface border border-outline-variant rounded-lg p-1">
+<button class="time-filter-btn active bg-secondary-container text-on-secondary-container rounded-md px-3 py-1 flex flex-col items-center justify-center transition-all duration-200" data-period="daily">
+<span class="text-xs font-bold">Daily</span>
+<span class="text-[10px] opacity-70" dir="rtl">روزانه</span>
+</button>
+<button class="time-filter-btn text-on-surface-variant hover:bg-surface-container-low rounded-md px-3 py-1 flex flex-col items-center justify-center transition-all duration-200" data-period="weekly">
+<span class="text-xs font-bold">Weekly</span>
+<span class="text-[10px] opacity-70" dir="rtl">هفتگی</span>
+</button>
+<button class="time-filter-btn text-on-surface-variant hover:bg-surface-container-low rounded-md px-3 py-1 flex flex-col items-center justify-center transition-all duration-200" data-period="monthly">
+<span class="text-xs font-bold">Monthly</span>
+<span class="text-[10px] opacity-70" dir="rtl">ماهانه</span>
+</button>
+</div><button class="bg-industrial-gradient text-white px-md py-sm rounded-lg font-body-medium shadow-sm hover:opacity-95 flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                        New Request
+                    </button>
+</div>
+<!-- KPI Cards Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md">
+<!-- Total POs -->
+<div class="bg-surface rounded border border-outline-variant/30 p-md flex items-center gap-md hover:border-[#b8721e] transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined">receipt_long</span>
+</div>
+<div class="min-w-0">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase truncate">Total POs / مجموع سفارشات</p>
+<p class="font-kpi-stat text-kpi-stat text-on-background mt-1 transition-all duration-300" id="kpi-total-pos">1,248</p>
+</div>
+</div>
+<!-- Pending Approvals -->
+<div class="bg-surface rounded border border-outline-variant/30 p-md flex items-center gap-md hover:border-[#b8721e] transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined">pending_actions</span>
+</div>
+<div class="min-w-0">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase truncate">Pending / در انتظار تایید</p>
+<p class="font-kpi-stat text-kpi-stat text-on-background mt-1 transition-all duration-300" id="kpi-pending">42</p>
+</div>
+</div>
+<!-- In Transit -->
+<div class="bg-surface rounded border border-outline-variant/30 p-md flex items-center gap-md hover:border-[#b8721e] transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined">local_shipping</span>
+</div>
+<div class="min-w-0">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase truncate">In Transit / در حال ارسال</p>
+<p class="font-kpi-stat text-kpi-stat text-on-background mt-1 transition-all duration-300" id="kpi-transit">156</p>
+</div>
+</div>
+<!-- Inventory Value -->
+<div class="bg-surface rounded border border-outline-variant/30 p-md flex items-center gap-md hover:border-[#b8721e] transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+<div class="min-w-0">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase truncate">Value / ارزش موجودی</p>
+<p class="font-kpi-stat text-kpi-stat text-on-background mt-1 transition-all duration-300" id="kpi-value">$4.2M</p>
+</div>
+</div>
+</div>
+<!-- Filters & Table Section -->
+<div class="bg-surface rounded border border-outline-variant/30 overflow-hidden flex flex-col">
+<!-- Toolbar -->
+<div class="p-sm bg-surface-container-low border-b border-outline-variant/30 flex flex-wrap gap-sm items-center justify-between">
+<div class="flex flex-wrap gap-sm items-center">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="pl-8 pr-3 py-1.5 rounded bg-surface border border-outline-variant text-body-medium focus:border-secondary focus:ring-1 focus:ring-secondary/50 outline-none w-64" placeholder="Search POs..." type="text"/>
+</div>
+<select class="py-1.5 px-3 rounded bg-surface border border-outline-variant text-body-medium focus:border-secondary outline-none appearance-none">
+<option>Status / وضعیت</option>
+<option>Draft</option>
+<option>Approved</option>
+<option>Shipped</option>
+</select>
+<select class="py-1.5 px-3 rounded bg-surface border border-outline-variant text-body-medium focus:border-secondary outline-none appearance-none">
+<option>Supplier / تامین کننده</option>
+<option>TechCorp Industrial</option>
+<option>Global Steel Ltd</option>
+</select>
+</div>
+<div class="flex gap-sm">
+<button class="border border-outline-variant text-on-surface-variant px-sm py-1.5 rounded hover:bg-surface-container-highest transition-colors flex items-center gap-xs font-body-medium">
+<span class="material-symbols-outlined text-[18px]">filter_list</span> Filter
+                            </button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[800px]">
+<thead class="bg-[#f5f7fa] border-b border-outline-variant/30">
+<tr>
+<th class="py-2 px-md font-table-header text-table-header text-on-surface-variant uppercase">
+                                        Order ID<br/><span class="text-[9px] opacity-70" dir="rtl">شناسه سفارش</span>
+</th>
+<th class="py-2 px-md font-table-header text-table-header text-on-surface-variant uppercase">
+                                        Supplier<br/><span class="text-[9px] opacity-70" dir="rtl">تامین کننده</span>
+</th>
+<th class="py-2 px-md font-table-header text-table-header text-on-surface-variant uppercase">
+                                        Date<br/><span class="text-[9px] opacity-70" dir="rtl">تاریخ</span>
+</th>
+<th class="py-2 px-md font-table-header text-table-header text-on-surface-variant uppercase text-right">
+                                        Amount<br/><span class="text-[9px] opacity-70" dir="rtl">مبلغ</span>
+</th>
+<th class="py-2 px-md font-table-header text-table-header text-on-surface-variant uppercase">
+                                        Status<br/><span class="text-[9px] opacity-70" dir="rtl">وضعیت</span>
+</th>
+<th class="py-2 px-md w-16"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 transition-opacity duration-300" id="po-table-body">
+<tr class="hover:bg-[#1f4e78]/[0.04] transition-colors group">
+<td class="py-2 px-md font-table-cell text-table-cell font-mono text-on-background">PO-2023-8901</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-background font-medium">TechCorp Industrial Parts</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface-variant">Oct 24, 2023</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-background text-right font-medium">$45,200.00</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-badge-label text-badge-label">
+                                            Delivered
+                                        </span>
+</td>
+<td class="py-2 px-md text-right">
+<button class="w-8 h-8 rounded border border-outline-variant/50 text-on-surface-variant hover:border-secondary hover:text-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-[#1f4e78]/[0.04] transition-colors group">
+<td class="py-2 px-md font-table-cell text-table-cell font-mono text-on-background">PO-2023-8902</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-background font-medium">Global Steel Ltd.</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface-variant">Oct 25, 2023</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-background text-right font-medium">$128,500.00</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-badge-label text-badge-label">
+                                            Shipped
+                                        </span>
+</td>
+<td class="py-2 px-md text-right">
+<button class="w-8 h-8 rounded border border-outline-variant/50 text-on-surface-variant hover:border-secondary hover:text-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-[#1f4e78]/[0.04] transition-colors group">
+<td class="py-2 px-md font-table-cell text-table-cell font-mono text-on-background">PO-2023-8903</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-background font-medium">Advanced Fluid Systems</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface-variant">Oct 26, 2023</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-background text-right font-medium">$12,450.00</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-200 text-slate-800 font-badge-label text-badge-label">
+                                            Draft
+                                        </span>
+</td>
+<td class="py-2 px-md text-right">
+<button class="w-8 h-8 rounded border border-outline-variant/50 text-on-surface-variant hover:border-secondary hover:text-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-[#1f4e78]/[0.04] transition-colors group">
+<td class="py-2 px-md font-table-cell text-table-cell font-mono text-on-background">PO-2023-8904</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-background font-medium">Heavy Machinery Co.</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface-variant">Oct 26, 2023</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-background text-right font-medium">$340,000.00</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-badge-label text-badge-label">
+                                            Approved
+                                        </span>
+</td>
+<td class="py-2 px-md text-right">
+<button class="w-8 h-8 rounded border border-outline-variant/50 text-on-surface-variant hover:border-secondary hover:text-secondary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination (Static for visual) -->
+<div class="p-sm border-t border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
+<span class="font-body-base text-body-base text-on-surface-variant text-sm">Showing 1-4 of 1,248</span>
+<div class="flex gap-1">
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface disabled:opacity-50" disabled=""><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+    (function() {
+        const dataMock = {
+            daily: { total: '1,248', pending: '42', transit: '156', value: '$4.2M' },
+            weekly: { total: '8,540', pending: '210', transit: '940', value: '$28.5M' },
+            monthly: { total: '34,120', pending: '845', transit: '3,210', value: '$112.4M' }
+        };
+
+        const buttons = document.querySelectorAll('.time-filter-btn');
+        const kpis = {
+            total: document.getElementById('kpi-total-pos'),
+            pending: document.getElementById('kpi-pending'),
+            transit: document.getElementById('kpi-transit'),
+            value: document.getElementById('kpi-value')
+        };
+        const tableBody = document.getElementById('po-table-body');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => {
+                    b.classList.remove('active', 'bg-secondary-container', 'text-on-secondary-container');
+                    b.classList.add('text-on-surface-variant', 'hover:bg-surface-container-low');
+                });
+                btn.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-low');
+                btn.classList.add('active', 'bg-secondary-container', 'text-on-secondary-container');
+
+                const period = btn.getAttribute('data-period');
+                const data = dataMock[period];
+
+                // Animate out
+                Object.values(kpis).forEach(el => el.style.opacity = '0');
+                tableBody.style.opacity = '0.5';
+
+                setTimeout(() => {
+                    kpis.total.textContent = data.total;
+                    kpis.pending.textContent = data.pending;
+                    kpis.transit.textContent = data.transit;
+                    kpis.value.textContent = data.value;
+
+                    // Animate in
+                    Object.values(kpis).forEach(el => el.style.opacity = '1');
+                    tableBody.style.opacity = '1';
+                }, 200);
+            });
+        });
+    })();
+</script></body></html>

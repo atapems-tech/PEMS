@@ -1,0 +1,63 @@
+/* PEMS — Global Data Grid Standard (بندهای ۱۲–۲۲)
+   طبق سند: جدول‌های کسب‌وکاری سازمانی نباید بر اساس محتوای سلول به‌طور خودکار عریض شوند.
+   این فایل عمداً از admin.css/administration-design-system.css جدا نگه داشته شده تا فقط
+   وقتی یک Grid صریحاً به کلاس pems-grid-table مهاجرت کرده، رفتار ستون ثابت اعمال شود - جدول‌های
+   قدیمی‌ای که هنوز مهاجرت نکرده‌اند (table-layout: auto پیش‌فرض Bootstrap) دست‌نخورده می‌مانند. */
+
+.pems-grid-table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.pems-grid-table th,
+.pems-grid-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+}
+
+/* طبق بند ۱۶: مقدار کامل هرگز نباید فقط به‌خاطر محدودیت عرض از بین برود - title همیشه مقدار
+   کامل را از طریق Tooltip مرورگر در دسترس نگه می‌دارد؛ هر Grid می‌تواند علاوه بر این یک
+   data-bs-toggle="tooltip" واقعی هم اضافه کند */
+.pems-grid-table td[title] {
+    cursor: default;
+}
+
+/* دستگیره‌ی تغییر‌اندازه‌ی ستون - طبق بند ۱۷/۲۲: باید در RTL هم قابل استفاده باشد */
+.pems-col-resize-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    cursor: col-resize;
+    user-select: none;
+    z-index: 3;
+    right: -3px;
+}
+
+[dir="rtl"] .pems-col-resize-handle {
+    right: auto;
+    left: -3px;
+}
+
+.pems-col-resize-handle:hover,
+.pems-col-resize-handle.pems-resizing {
+    background: var(--pems-accent, #4a7dff);
+    opacity: .5;
+}
+
+/* طبق بند ۲۱: در صفحات کوچک، عرض ستون فشرده نمی‌شود تا خوانا نماند - به‌جایش Scroll افقی
+   روی Container ظاهر می‌شود، خود جدول عرض پایدار خود را حفظ می‌کند */
+.pems-grid-scroll {
+    overflow-x: auto;
+}
+
+.pems-grid-scroll .pems-grid-table {
+    min-width: max-content;
+}
+
+/* نوار ابزار Rows-per-page - طبق بند ۴ */
+.pems-grid-pagesize .btn {
+    min-width: 2.5rem;
+}

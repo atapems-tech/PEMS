@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Enterprise Reporting &amp; BI - Dual Language (EN/FA)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#d0e4fe",
+                        "tertiary-container": "#00213d",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#d7e3fd",
+                        "outline": "#75777d",
+                        "error-container": "#ffdad6",
+                        "secondary": "#895200",
+                        "on-secondary-container": "#6e4100",
+                        "secondary-container": "#fdaa47",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c5c6cd",
+                        "surface-tint": "#535f75",
+                        "on-secondary-fixed": "#2c1700",
+                        "surface-container": "#e4efff",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "tertiary": "#000815",
+                        "surface-container-low": "#eef4ff",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#f8f9ff",
+                        "on-surface": "#081d2f",
+                        "primary": "#000819",
+                        "on-primary-fixed": "#101c2f",
+                        "on-surface-variant": "#44474c",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "surface-container-highest": "#d0e4fe",
+                        "surface-container-high": "#daeaff",
+                        "background": "#f8f9ff",
+                        "primary-container": "#142033",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "on-tertiary-container": "#498bcd",
+                        "on-primary-container": "#7c889f",
+                        "inverse-primary": "#bbc7e0",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-background": "#081d2f",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "surface-dim": "#c8dcf5",
+                        "inverse-surface": "#1f3245",
+                        "inverse-on-surface": "#e9f1ff",
+                        "on-tertiary-fixed": "#001d36",
+                        "on-tertiary-fixed-variant": "#00497c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "sidebar-width": "260px",
+                        "unit": "4px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "gutter": "16px",
+                        "xl": "32px",
+                        "topbar-height": "60px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "table-cell": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "body-base": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "table-header": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-medium": ["Inter"]
+                    },
+                    "fontSize": {
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .persian-text { direction: rtl; }
+        .gradient-primary { background: linear-gradient(135deg, #d98c2b, #b8721e); }
+        .gradient-blue { background: linear-gradient(135deg, #498bcd, #00213d); }
+        .gradient-red { background: linear-gradient(135deg, #ba1a1a, #93000a); }
+        .gradient-slate { background: linear-gradient(135deg, #7c889f, #44474c); }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex font-body-base overflow-x-hidden">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex fixed left-0 top-0 h-full w-sidebar-width z-40 bg-primary-container shadow-sm flex-col py-md px-sm transition-all duration-200 ease-in-out">
+<div class="flex items-center gap-3 px-sm mb-lg">
+<span class="material-symbols-outlined text-surface-container-lowest text-2xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">widgets</span>
+<div>
+<h1 class="font-headline-md text-headline-md text-surface-container-lowest">PEMS Enterprise</h1>
+<p class="text-on-primary-container text-xs">Industrial Operations</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1 mt-4">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-primary-container/70 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">factory</span>
+<span class="font-label-caps text-label-caps uppercase">Assets</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-primary-container/70 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-caps text-label-caps uppercase">Work Orders</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-primary-container/70 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">engineering</span>
+<span class="font-label-caps text-label-caps uppercase">Engineering</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-secondary-container border-r-4 border-secondary-container bg-surface-variant/10" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-label-caps uppercase">Analytics</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col gap-1 border-t border-white/10 pt-4">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-primary-container/70 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps uppercase">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-primary-container/70 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-caps text-label-caps uppercase">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-sidebar-width flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="w-full h-topbar-height sticky top-0 z-30 bg-surface-bright border-b border-outline-variant flex justify-between items-center px-lg">
+<div class="flex items-center gap-4">
+<button class="lg:hidden text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-headline-md text-headline-md text-primary uppercase tracking-tight hidden sm:block">PEMS Enterprise Utility</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative hidden md:block mr-4">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="pl-9 pr-4 py-1.5 bg-surface-container rounded-lg border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary text-sm w-64 transition-all" placeholder="Search..." type="text"/>
+</div>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full border border-surface-bright"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="p-lg flex-1 bg-surface-container-low">
+<div class="mb-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Enterprise Reporting &amp; BI</h2>
+<h3 class="font-headline-md text-headline-md text-on-surface-variant persian-text mt-1">گزارش‌دهی سازمانی و هوش تجاری</h3>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 border border-outline-variant text-surface-tint rounded-lg font-body-medium text-body-medium hover:bg-surface-container transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">calendar_month</span>
+<span>Q3 2023</span>
+</button>
+<button class="px-4 py-2 gradient-primary text-white rounded-lg font-body-medium text-body-medium hover:opacity-90 transition-opacity flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-sm">download</span>
+<span>Export Report</span>
+</button>
+</div>
+</div>
+<!-- Executive Summary KPIs (Bento Grid Style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md mb-xl">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col shadow-sm hover:border-secondary transition-colors relative overflow-hidden group">
+<div class="absolute inset-0 bg-surface-variant opacity-0 group-hover:opacity-10 transition-opacity"></div>
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="font-label-caps text-label-caps text-outline uppercase mb-1">Total Operational Cost</div>
+<div class="font-body-medium text-body-medium text-on-surface-variant persian-text">هزینه عملیاتی کل</div>
+</div>
+<div class="w-11 h-11 rounded-[10px] gradient-blue flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined">payments</span>
+</div>
+</div>
+<div class="mt-auto">
+<div class="font-kpi-stat text-kpi-stat text-on-surface">$4.2M</div>
+<div class="flex items-center gap-1 mt-2 text-error text-sm">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span class="font-body-medium">+5.2% vs last quarter</span>
+</div>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col shadow-sm hover:border-secondary transition-colors relative overflow-hidden group">
+<div class="absolute inset-0 bg-surface-variant opacity-0 group-hover:opacity-10 transition-opacity"></div>
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="font-label-caps text-label-caps text-outline uppercase mb-1">Asset Availability</div>
+<div class="font-body-medium text-body-medium text-on-surface-variant persian-text">در دسترس بودن دارایی‌ها</div>
+</div>
+<div class="w-11 h-11 rounded-[10px] gradient-slate flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined">precision_manufacturing</span>
+</div>
+</div>
+<div class="mt-auto">
+<div class="font-kpi-stat text-kpi-stat text-on-surface">98.4%</div>
+<div class="flex items-center gap-1 mt-2 text-secondary-container text-sm">
+<span class="material-symbols-outlined text-sm">trending_flat</span>
+<span class="font-body-medium">Stable</span>
+</div>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col shadow-sm hover:border-secondary transition-colors relative overflow-hidden group">
+<div class="absolute inset-0 bg-surface-variant opacity-0 group-hover:opacity-10 transition-opacity"></div>
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="font-label-caps text-label-caps text-outline uppercase mb-1">Maintenance Backlog</div>
+<div class="font-body-medium text-body-medium text-on-surface-variant persian-text">عقب‌افتادگی تعمیرات</div>
+</div>
+<div class="w-11 h-11 rounded-[10px] gradient-red flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined">assignment_late</span>
+</div>
+</div>
+<div class="mt-auto">
+<div class="font-kpi-stat text-kpi-stat text-on-surface">142</div>
+<div class="flex items-center gap-1 mt-2 text-error text-sm">
+<span class="material-symbols-outlined text-sm">warning</span>
+<span class="font-body-medium">Critical Threshold</span>
+</div>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col shadow-sm hover:border-secondary transition-colors relative overflow-hidden group">
+<div class="absolute inset-0 bg-surface-variant opacity-0 group-hover:opacity-10 transition-opacity"></div>
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="font-label-caps text-label-caps text-outline uppercase mb-1">Energy Intensity</div>
+<div class="font-body-medium text-body-medium text-on-surface-variant persian-text">شدت مصرف انرژی</div>
+</div>
+<div class="w-11 h-11 rounded-[10px] gradient-primary flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+</div>
+<div class="mt-auto">
+<div class="font-kpi-stat text-kpi-stat text-on-surface">42.8 <span class="text-sm font-normal text-outline">kWh/unit</span></div>
+<div class="flex items-center gap-1 mt-2 text-primary-container text-sm">
+<span class="material-symbols-outlined text-sm">trending_down</span>
+<span class="font-body-medium">-2.1% improved</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Charts Section (Asymmetric Layout) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-md mb-xl">
+<!-- Operational Performance (Spans 2 cols) -->
+<div class="lg:col-span-2 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-md flex flex-col h-[400px]">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Operational Performance</h3>
+<h4 class="font-body-base text-body-base text-outline persian-text">عملکرد عملیاتی</h4>
+</div>
+<button class="p-1 text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="flex-1 relative border-l border-b border-outline-variant/30 ml-8 mb-6 mt-4">
+<!-- Mock Chart Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between">
+<div class="w-full border-t border-outline-variant/10 h-0"></div>
+<div class="w-full border-t border-outline-variant/10 h-0"></div>
+<div class="w-full border-t border-outline-variant/10 h-0"></div>
+<div class="w-full border-t border-outline-variant/10 h-0"></div>
+</div>
+<!-- Mock Lines -->
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none">
+<path class="opacity-80" d="M0,80 C50,40 100,100 150,60 C200,20 250,90 300,50 C350,10 400,70 500,30 L800,20" fill="none" stroke="#d98c2b" stroke-width="2"></path>
+<path class="opacity-80" d="M0,120 C50,140 100,90 150,110 C200,130 250,80 300,100 C350,120 400,90 500,110 L800,90" fill="none" stroke="#498bcd" stroke-width="2"></path>
+</svg>
+<!-- Y-Axis Labels -->
+<div class="absolute -left-8 inset-y-0 flex flex-col justify-between text-xs text-outline py-2">
+<span>100</span>
+<span>75</span>
+<span>50</span>
+<span>25</span>
+<span>0</span>
+</div>
+<!-- X-Axis Labels -->
+<div class="absolute -bottom-6 inset-x-0 flex justify-between text-xs text-outline px-4">
+<span>Jan</span>
+<span>Feb</span>
+<span>Mar</span>
+<span>Apr</span>
+<span>May</span>
+<span>Jun</span>
+</div>
+</div>
+<div class="flex justify-center gap-6 mt-auto">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+<span class="text-sm text-on-surface-variant">Production (تولید)</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-tertiary-container"></div>
+<span class="text-sm text-on-surface-variant">Maintenance (تعمیرات)</span>
+</div>
+</div>
+</div>
+<!-- Departmental Health Score -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-md flex flex-col h-[400px]">
+<div class="flex justify-between items-center mb-4">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Health Score</h3>
+<h4 class="font-body-base text-body-base text-outline persian-text">امتیاز سلامت</h4>
+</div>
+</div>
+<div class="flex-1 flex items-center justify-center relative">
+<!-- Mock Radar Chart using CSS/SVG -->
+<svg class="overflow-visible" height="240" viewbox="0 0 240 240" width="240">
+<!-- Background Grid -->
+<polygon fill="none" points="120,20 206.6,70 206.6,170 120,220 33.4,170 33.4,70" stroke="#e4efff" stroke-width="1"></polygon>
+<polygon fill="none" points="120,45 185,82.5 185,157.5 120,195 55,157.5 55,82.5" stroke="#e4efff" stroke-width="1"></polygon>
+<polygon fill="none" points="120,70 163.3,95 163.3,145 120,170 76.7,145 76.7,95" stroke="#e4efff" stroke-width="1"></polygon>
+<!-- Axes -->
+<line stroke="#e4efff" stroke-width="1" x1="120" x2="120" y1="120" y2="20"></line>
+<line stroke="#e4efff" stroke-width="1" x1="120" x2="206.6" y1="120" y2="70"></line>
+<line stroke="#e4efff" stroke-width="1" x1="120" x2="206.6" y1="120" y2="170"></line>
+<line stroke="#e4efff" stroke-width="1" x1="120" x2="120" y1="120" y2="220"></line>
+<line stroke="#e4efff" stroke-width="1" x1="120" x2="33.4" y1="120" y2="170"></line>
+<line stroke="#e4efff" stroke-width="1" x1="120" x2="33.4" y1="120" y2="70"></line>
+<!-- Data Polygon -->
+<polygon fill="rgba(217, 140, 43, 0.2)" points="120,40 180,90 190,150 120,180 60,140 70,80" stroke="#d98c2b" stroke-width="2"></polygon>
+<!-- Points -->
+<circle cx="120" cy="40" fill="#d98c2b" r="4"></circle>
+<circle cx="180" cy="90" fill="#d98c2b" r="4"></circle>
+<circle cx="190" cy="150" fill="#d98c2b" r="4"></circle>
+<circle cx="120" cy="180" fill="#d98c2b" r="4"></circle>
+<circle cx="60" cy="140" fill="#d98c2b" r="4"></circle>
+<circle cx="70" cy="80" fill="#d98c2b" r="4"></circle>
+</svg>
+<!-- Labels -->
+<div class="absolute top-0 text-[10px] text-on-surface-variant text-center font-body-medium w-full flex flex-col items-center">
+<span>Mechanical</span>
+<span class="persian-text">مکانیکی</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

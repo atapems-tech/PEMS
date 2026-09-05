@@ -1,0 +1,604 @@
+@model PEMS.Application.DTOs.EquipmentPassportDto
+@{
+    var eq = Model.Equipment;
+    var inst = Model.Instrument;
+    var asset = Model.Asset;
+    var inspections = ViewBag.Inspections as List<PEMS.Application.DTOs.InspectionListItemDto> ?? new();
+
+    var calBadgeClass = inst?.CalibrationStatus switch
+    {
+        "Overdue" => "bg-danger",
+        "DueSoon" => "bg-warning text-dark",
+        "OK" => "bg-success",
+        _ => "bg-secondary"
+    };
+
+    string NA(string? v) => string.IsNullOrWhiteSpace(v) ? "N/A" : v;
+}
+
+@* طراحی جدید: به‌جای یک صفحه‌ی طولانی با هفت جدول/بخش پشت سر هم، محتوا در تب‌ها سازمان‌دهی شده -
+   همان الگویی که در EngineeringDocuments/Details.cshtml و VDR/Details.cshtml استفاده شده. هیچ
+   داده‌ای حذف نشده - فقط پشت تب‌هایی که فقط وقتی کاربر انتخاب کند نمایش داده می‌شوند، دسته‌بندی شده.
+   طبق درخواست: شناسنامه‌ی ابزاردقیق (در صورت وجود) حالا بخشی از همین صفحه است، نه فقط یک لینک بیرونی. *@
+
+<div class="content-card mb-3">
+    <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
+        <div class="kpi-icon bg-icon-blue" style="width:56px;height:56px;font-size:26px;"><i class="bi bi-gear"></i></div>
+        <div>
+            <h5 class="mb-0">
+                @eq.TagNumber &mdash; @eq.Name
+                @if (!string.IsNullOrWhiteSpace(eq.CriticalityClass))
+                {
+                    <span class="badge @(eq.CriticalityClass == "A" ? "bg-danger" : eq.CriticalityClass == "B" ? "bg-warning text-dark" : "bg-secondary")" title="Criticality Class">
+                        Class @eq.CriticalityClass
+                    </span>
+                }
+                <span class="badge bg-success">@eq.Status</span>
+                @if (inst != null)
+                {
+                    <span class="badge @calBadgeClass" title="Calibration status"><i class="bi bi-speedometer2"></i> Cal: @inst.CalibrationStatus</span>
+                }
+            </h5>
+            <span class="text-muted small">@eq.EquipmentType &middot; @eq.ProjectName &middot; @eq.DisciplineName @(string.IsNullOrWhiteSpace(eq.Area) ? "" : "· " + eq.Area)</span>
+        </div>
+        <a asp-controller="Relationship" asp-action="Equipment" asp-route-id="@eq.EquipmentId" class="btn btn-outline-primary btn-sm ms-auto">
+            <i class="bi bi-diagram-3"></i> Explore Relationships
+        </a>
+    </div>
+    <div class="row g-2 small mt-1">
+        <div class="col-md-3">
+            <strong>P&amp;ID:</strong>
+            @if (Model.PIDDocument != null)
+            {
+                <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.PIDDocument.DocumentId" class="fw-bold">
+                    @eq.PIDNumber <i class="bi bi-box-arrow-up-right small"></i>
+                </a>
+            }
+            else if (!string.IsNullOrWhiteSpace(eq.PIDNumber))
+            {
+                <span title="مدرکی با این شماره پیدا نشد">@eq.PIDNumber</span>
+            }
+            else
+            {
+                <span class="text-muted">-</span>
+            }
+        </div>
+        <div class="col-md-4"><strong>Manufacturer / Model:</strong> @NA(eq.Manufacturer) / @NA(eq.Model)</div>
+        <div class="col-md-5"><strong>Description:</strong> @NA(eq.Description)</div>
+    </div>
+    <div class="row g-2 small mt-1">
+        <div class="col-md-4"><strong>Functional Location:</strong> @NA(eq.FunctionalLocationBreadcrumb)</div>
+        <div class="col-md-4">
+            <strong>Parent Equipment:</strong>
+            @if (eq.ParentEquipmentId.HasValue)
+            {
+                <a asp-action="Details" asp-route-id="@eq.ParentEquipmentId">@eq.ParentEquipmentTagNumber</a>
+            }
+            else
+            {
+                <span class="text-muted">N/A</span>
+            }
+        </div>
+        <div class="col-md-3"><strong>Installation Date:</strong> @(eq.InstallationDate?.ToString("yyyy-MM-dd") ?? "N/A")</div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#assignFoundationModal" title="Assign Functional Location / Parent Equipment">
+                <i class="bi bi-pencil"></i>
+            </button>
+        </div>
+    </div>
+    @if (eq.ChildEquipments.Any())
+    {
+        <div class="row g-2 small mt-1">
+            <div class="col-12">
+                <strong>Child Equipment (@eq.ChildEquipmentCount):</strong>
+                @foreach (var c in eq.ChildEquipments)
+                {
+                    <a asp-action="Details" asp-route-id="@c.EquipmentId" class="badge bg-light text-dark border me-1">@c.TagNumber</a>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<div class="modal fade" id="assignFoundationModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="AssignFoundation" method="post">
+            <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
+            <div class="modal-header"><h6 class="modal-title">Assign Functional Location / Parent Equipment</h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">Functional Location</label>
+                    <select name="functionalLocationId" class="form-select form-select-sm">
+                        <option value="">-- not linked --</option>
+                        @foreach (var fl in (List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations)
+                        {
+                            <option value="@fl.FunctionalLocationId" selected="@(fl.FunctionalLocationId == eq.FunctionalLocationId)">@fl.PathBreadcrumb</option>
+                        }
+                    </select>
+                    <div class="form-text">Real link, distinct from the raw "@NA(eq.Area)" import value. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">Manage list</a></div>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Parent Equipment</label>
+                    <input type="text" class="form-control form-control-sm" placeholder="Search tag, name..."
+                           data-pems-search data-search-type="Equipment" data-search-hidden="#parentEquipmentIdHidden" autocomplete="off" />
+                    <input type="hidden" name="parentEquipmentId" id="parentEquipmentIdHidden" value="@eq.ParentEquipmentId" />
+                    @if (eq.ParentEquipmentId.HasValue)
+                    {
+                        <div class="form-text">Currently: @eq.ParentEquipmentTagNumber</div>
+                    }
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Installation Date</label>
+                    <input name="installationDate" type="date" class="form-control form-control-sm" value="@eq.InstallationDate?.ToString("yyyy-MM-dd")" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">Save</button>
+            </div>
+        </form>
+    </div></div>
+</div>
+
+@if (Model.SuggestedLinks.Any())
+{
+    <div class="content-card mb-3 border-warning">
+        <h6 class="mb-3"><i class="bi bi-lightbulb"></i> پیشنهادهای اتصال (تاییدنشده)</h6>
+        <p class="text-muted small">
+            این‌ها از روی شماره‌ی MRQ/PO خام ثبت‌شده روی تجهیز، با داده‌ی موجود منطبق شده‌اند.
+            برای تایید و برقراری رسمی رابطه، به <a asp-controller="Relationship" asp-action="Equipment" asp-route-id="@eq.EquipmentId">Relationship Explorer</a> برو.
+        </p>
+        <div class="d-flex flex-wrap gap-2">
+            @foreach (var s in Model.SuggestedLinks)
+            {
+                <span class="badge bg-warning text-dark"><i class="bi bi-robot"></i> @s.Label <span class="small">(@s.SubLabel)</span></span>
+            }
+        </div>
+    </div>
+}
+
+<ul class="nav nav-tabs mb-3" id="equipmentTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
+            <i class="bi bi-info-circle"></i> Overview
+        </button>
+    </li>
+    @if (inst != null)
+    {
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-instrument" type="button">
+                <i class="bi bi-card-text"></i> Instrument Passport
+            </button>
+        </li>
+    }
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-asset" type="button">
+            <i class="bi bi-diagram-2"></i> Asset
+            @if (asset != null) { <span class="badge bg-secondary">@asset.Status</span> }
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-documents" type="button">
+            <i class="bi bi-file-earmark-text"></i> Documents
+            <span class="badge bg-secondary">@(Model.Documents.Count + Model.VDRItems.Count)</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-procurement" type="button">
+            <i class="bi bi-cart-check"></i> Procurement <span class="badge bg-secondary">@Model.RelatedMRs.Count</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance" type="button">
+            <i class="bi bi-tools"></i> Maintenance <span class="badge bg-secondary">@Model.WorkOrders.Count</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-inspection" type="button">
+            <i class="bi bi-clipboard-pulse"></i> Inspections
+            @if (inspections.Any()) { <span class="badge bg-secondary">@inspections.Count</span> }
+            @if (inspections.Any(x => x.ConditionStatus == "Alert")) { <span class="badge bg-danger">Alert</span> }
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-quality" type="button">
+            <i class="bi bi-shield-exclamation"></i> Quality &amp; Change
+            @{ var qcCount = Model.NonConformanceReports.Count + Model.MOCs.Count + Model.TechnicalQueries.Count; }
+            @if (qcCount > 0) { <span class="badge bg-secondary">@qcCount</span> }
+        </button>
+    </li>
+</ul>
+
+<div class="tab-content">
+
+    @* ===================== Overview ===================== *@
+    <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
+        <div class="row g-3">
+            <div class="col-md-3 col-sm-6">
+                <div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-file-earmark-text"></i></div>
+                    <div><div class="kpi-value">@Model.Documents.Count</div><div class="kpi-label">Engineering Documents</div></div></div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-journal-check"></i></div>
+                    <div><div class="kpi-value">@Model.VDRItems.Count</div><div class="kpi-label">VDR / Vendor Documents</div></div></div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-cart-check"></i></div>
+                    <div><div class="kpi-value">@Model.RelatedMRs.Count</div><div class="kpi-label">Material Requisitions</div></div></div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="kpi-card"><div class="kpi-icon bg-icon-teal"><i class="bi bi-tools"></i></div>
+                    <div><div class="kpi-value">@Model.WorkOrders.Count</div><div class="kpi-label">Maintenance / Work Orders</div></div></div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-exclamation-triangle"></i></div>
+                    <div><div class="kpi-value">@Model.NonConformanceReports.Count</div><div class="kpi-label">NCR</div></div></div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-arrow-repeat"></i></div>
+                    <div><div class="kpi-value">@Model.MOCs.Count</div><div class="kpi-label">MOC</div></div></div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-question-circle"></i></div>
+                    <div><div class="kpi-value">@Model.TechnicalQueries.Count</div><div class="kpi-label">TQ / TSR / RFI</div></div></div>
+            </div>
+        </div>
+
+        @if (inst != null)
+        {
+            <div class="content-card mt-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0"><i class="bi bi-card-text"></i> Instrument Passport</h6>
+                    <span class="small text-muted">See the "Instrument Passport" tab for full details, calibration history and print.</span>
+                </div>
+                <div class="row g-2 small mt-2">
+                    <div class="col-md-3"><strong>Type</strong><div>@NA(inst.InstrumentType)</div></div>
+                    <div class="col-md-3"><strong>Loop No.</strong><div>@NA(inst.LoopNumber)</div></div>
+                    <div class="col-md-3"><strong>System / Signal</strong><div>@NA(inst.System) / @NA(inst.SignalClass)</div></div>
+                    <div class="col-md-3"><strong>Next Calibration</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <span class="badge @calBadgeClass">@inst.CalibrationStatus</span></div></div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @* ===================== Instrument Passport ===================== *@
+    @if (inst != null)
+    {
+        <div class="tab-pane fade" id="tab-instrument" role="tabpanel">
+            <div class="content-card mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="mb-0">Instrument Passport</h6>
+                    <a asp-controller="Instrument" asp-action="Passport" asp-route-id="@inst.InstrumentId" class="btn btn-sm btn-pems-solid">
+                        <i class="bi bi-card-text"></i> Full Passport / Print / Record Calibration
+                    </a>
+                </div>
+                <div class="row g-2 small">
+                    <div class="col-md-3"><strong>Instrument Type</strong><div>@NA(inst.InstrumentType)</div></div>
+                    <div class="col-md-3"><strong>Loop No.</strong><div>@NA(inst.LoopNumber)</div></div>
+                    <div class="col-md-3"><strong>System</strong><div>@NA(inst.System)</div></div>
+                    <div class="col-md-3"><strong>Signal Class</strong><div>@NA(inst.SignalClass)</div></div>
+
+                    <div class="col-md-3"><strong>Process Variable</strong><div>@NA(inst.ProcessVariable)</div></div>
+                    <div class="col-md-3"><strong>Range</strong><div>@(inst.RangeMin?.ToString() ?? "N/A") - @(inst.RangeMax?.ToString() ?? "N/A") @inst.Unit</div></div>
+                    <div class="col-md-3"><strong>Output Signal</strong><div>@NA(inst.OutputSignal)</div></div>
+                    <div class="col-md-3"><strong>Current Status</strong><div>@NA(inst.CurrentStatus)</div></div>
+
+                    <div class="col-md-3"><strong>Hazardous Area</strong><div>@NA(inst.HazardousArea)</div></div>
+                    <div class="col-md-3"><strong>Ex Protection</strong><div>@NA(inst.ExProtection)</div></div>
+                    <div class="col-md-3"><strong>SIL</strong><div>@NA(inst.SIL)</div></div>
+                    <div class="col-md-3"><strong>Calibration Interval</strong><div>@(inst.CalibrationInterval.HasValue ? inst.CalibrationInterval + " days" : "N/A")</div></div>
+
+                    <div class="col-md-3"><strong>Junction Box</strong><div>@NA(inst.JunctionBox)</div></div>
+                    <div class="col-md-3"><strong>Marshalling Cabinet</strong><div>@NA(inst.MarshallingCabinet)</div></div>
+                    <div class="col-md-3"><strong>Cable No.</strong><div>@NA(inst.CableNumber)</div></div>
+                    <div class="col-md-3"><strong>I/O Card / Channel</strong><div>@NA(inst.IOCardChannel)</div></div>
+
+                    <div class="col-md-3"><strong>System Cabinet</strong><div>@NA(inst.SystemCabinet)</div></div>
+                    <div class="col-md-3"><strong>Last Calibration</strong><div>@(inst.LastCalibrationDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
+                    <div class="col-md-3"><strong>Next Calibration Due</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <span class="badge @calBadgeClass">@inst.CalibrationStatus</span></div></div>
+                    <div class="col-md-3"><strong>Next Maintenance Due</strong><div>@(inst.NextMaintenanceDue?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @* ===================== Asset ===================== *@
+    <div class="tab-pane fade" id="tab-asset" role="tabpanel">
+        <div class="content-card">
+            @if (asset != null)
+            {
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="mb-0">Asset - @asset.AssetNumber</h6>
+                    <a asp-controller="Asset" asp-action="Details" asp-route-id="@asset.AssetId" class="btn btn-sm btn-pems-solid">
+                        <i class="bi bi-diagram-2"></i> Full Asset - Maintenance / Inspection / Failure / Cost
+                    </a>
+                </div>
+                <div class="row g-2 small">
+                    <div class="col-md-3"><strong>Status</strong><div>@NA(asset.Status)</div></div>
+                    <div class="col-md-3"><strong>Criticality</strong><div>@NA(asset.CriticalityClass)</div></div>
+                    <div class="col-md-3"><strong>Maintenance Class</strong><div>@NA(asset.MaintenanceClass)</div></div>
+                    <div class="col-md-3"><strong>Functional Location</strong><div>@NA(asset.FunctionalLocation)</div></div>
+                    <div class="col-md-3"><strong>Commissioning Date</strong><div>@(asset.CommissioningDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted small">این تجهیز هنوز پروفایل Asset (چرخه‌عمر CMMS) ندارد.</p>
+                <form asp-controller="Asset" asp-action="Create" method="post" class="row g-2 align-items-end">
+                    <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
+                    <div class="col-md-4">
+                        <label class="form-label small">Asset Number</label>
+                        <input name="assetNumber" class="form-control form-control-sm" placeholder="AST-@eq.TagNumber" required />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small">Maintenance Class</label>
+                        <input name="maintenanceClass" class="form-control form-control-sm" placeholder="Rotating, Static ..." />
+                    </div>
+                    <div class="col-md-2">
+                        <input type="hidden" name="status" value="Active" />
+                        <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-plus-lg"></i> Create Asset</button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+
+    @* ===================== Documents ===================== *@
+    <div class="tab-pane fade" id="tab-documents" role="tabpanel">
+        <div class="content-card mb-3">
+            <h6 class="mb-3"><i class="bi bi-file-earmark-text"></i> Engineering Documents</h6>
+            <div class="table-responsive table-scroll-area" style="max-height:55vh; overflow-y:auto;">
+            <table class="table table-enterprise">
+                <thead><tr><th>Doc No</th><th>Title</th><th>Type</th><th>Discipline</th><th>Rev</th><th>Status</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var d in Model.Documents)
+                    {
+                        <tr>
+                            <td>@d.DocumentNo</td><td>@d.Title</td><td>@d.DocumentType</td><td>@d.DisciplineName</td>
+                            <td>@d.RevisionNo</td><td><span class="badge badge-status-@d.Status">@d.Status</span></td>
+                            <td><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            </div>
+            @if (!Model.Documents.Any()) { <p class="text-muted mb-0">No engineering documents linked to this equipment yet.</p> }
+        </div>
+
+        <div class="content-card">
+            <h6 class="mb-3"><i class="bi bi-journal-check"></i> Vendor Documents (VDR)</h6>
+            <div class="table-responsive table-scroll-area" style="max-height:55vh; overflow-y:auto;">
+            <table class="table table-enterprise">
+                <thead><tr><th>Doc No</th><th>Description</th><th>Vendor</th><th>Rev</th><th>Category</th><th>Status</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var v in Model.VDRItems)
+                    {
+                        <tr>
+                            <td>@v.DocumentNumber</td><td>@v.DocumentDescription</td><td>@v.VendorName</td>
+                            <td>@v.LatestRevisionNo</td><td>@v.LatestReviewCategory</td>
+                            <td><span class="badge bg-secondary">@v.WorkflowStatus</span></td>
+                            <td><a asp-controller="VDR" asp-action="Details" asp-route-id="@v.VDRItemId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            </div>
+            @if (!Model.VDRItems.Any()) { <p class="text-muted mb-0">No vendor documents linked yet. Link the equipment when importing or creating VDR items.</p> }
+        </div>
+    </div>
+
+    @* ===================== Procurement ===================== *@
+    <div class="tab-pane fade" id="tab-procurement" role="tabpanel">
+        <div class="content-card">
+            <h6 class="mb-3"><i class="bi bi-cart-check"></i> Material Requisitions (MR/MRQ)</h6>
+            <div class="table-responsive table-scroll-area" style="max-height:60vh; overflow-y:auto;">
+            <table class="table table-enterprise">
+                <thead><tr><th>MR Number</th><th>Project</th><th>Discipline</th><th>Description</th><th>Status</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var m in Model.RelatedMRs)
+                    {
+                        <tr>
+                            <td>@m.MRNumber</td><td>@m.ProjectName</td><td>@m.DisciplineName</td><td>@m.Description</td>
+                            <td><span class="badge bg-secondary">@m.Status</span></td>
+                            <td><a asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@m.MRId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            </div>
+            @if (!Model.RelatedMRs.Any()) { <p class="text-muted mb-0">No MR/MRQ found for this equipment tag.</p> }
+        </div>
+    </div>
+
+    @* ===================== Maintenance ===================== *@
+    <div class="tab-pane fade" id="tab-maintenance" role="tabpanel">
+        @{ var reliability = ViewBag.Reliability as PEMS.Application.DTOs.EquipmentReliabilityDto; }
+        @if (reliability != null && reliability.FailureCount > 0)
+        {
+            <div class="content-card mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0"><i class="bi bi-graph-up-arrow"></i> Reliability</h6>
+                    <a asp-controller="Reliability" asp-action="Details" asp-route-id="@eq.EquipmentId" class="btn btn-sm btn-outline-secondary">
+                        <i class="bi bi-clock-history"></i> Failure History
+                    </a>
+                </div>
+                <div class="row g-2 text-center">
+                    <div class="col-md-3"><div class="small text-muted">MTBF</div><div class="fw-bold">@(reliability.MTBFHours.HasValue ? $"{reliability.MTBFHours.Value:N1} h" : "N/A")</div></div>
+                    <div class="col-md-3"><div class="small text-muted">MTTR</div><div class="fw-bold">@(reliability.MTTRHours.HasValue ? $"{reliability.MTTRHours.Value:N1} h" : "N/A")</div></div>
+                    <div class="col-md-3"><div class="small text-muted">Availability</div><div class="fw-bold">@(reliability.AvailabilityPercent.HasValue ? $"{reliability.AvailabilityPercent.Value:N1}%" : "N/A")</div></div>
+                    <div class="col-md-3"><div class="small text-muted">Failure Count</div><div class="fw-bold">@reliability.FailureCount</div></div>
+                </div>
+            </div>
+        }
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0"><i class="bi bi-tools"></i> Maintenance History (Work Orders)</h6>
+                <a asp-controller="WorkOrder" asp-action="Create" asp-route-equipmentId="@eq.EquipmentId" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-plus-lg"></i> New Work Order
+                </a>
+            </div>
+            <div class="table-responsive table-scroll-area" style="max-height:60vh; overflow-y:auto;">
+            <table class="table table-enterprise">
+                <thead><tr><th>WO Number</th><th>Description</th><th>Status</th><th>Date</th></tr></thead>
+                <tbody>
+                    @foreach (var w in Model.WorkOrders)
+                    {
+                        <tr>
+                            <td><a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@w.WorkOrderId">@w.WorkOrderNo</a></td><td>@w.Description</td>
+                            <td><span class="badge bg-secondary">@w.Status</span></td>
+                            <td>@(w.CreatedDate?.ToString("yyyy-MM-dd"))</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            </div>
+            @if (!Model.WorkOrders.Any()) { <p class="text-muted mb-0">No maintenance history recorded yet.</p> }
+        </div>
+    </div>
+
+    @* ===================== Inspections ===================== *@
+    <div class="tab-pane fade" id="tab-inspection" role="tabpanel">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0"><i class="bi bi-clipboard-pulse"></i> Condition Monitoring Inspections</h6>
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newInspectionModal">
+                    <i class="bi bi-plus-lg"></i> New Inspection
+                </button>
+            </div>
+            <table class="table table-enterprise mb-0">
+                <thead>
+                    <tr><th>Type</th><th>Date</th><th>Measurement</th><th>Condition</th><th>Next Due</th><th>Due Status</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var i in inspections)
+                    {
+                        <tr>
+                            <td class="small">@i.InspectionType</td>
+                            <td class="small">@i.InspectionDate.ToString("yyyy-MM-dd")</td>
+                            <td class="small">@(i.MeasurementValue.HasValue ? $"{i.MeasurementValue.Value:N2} {i.MeasurementUnit}" : "-")</td>
+                            <td class="small">
+                                @switch (i.ConditionStatus)
+                                {
+                                    case "Alert": <span class="badge bg-danger">Alert</span> break;
+                                    case "Normal": <span class="badge bg-success">Normal</span> break;
+                                    default: <span class="text-muted">N/A</span> break;
+                                }
+                            </td>
+                            <td class="small">@(i.NextInspectionDate?.ToString("yyyy-MM-dd") ?? "-")</td>
+                            <td class="small">
+                                @switch (i.DueStatus)
+                                {
+                                    case "Overdue": <span class="badge bg-danger">Overdue</span> break;
+                                    case "DueSoon": <span class="badge bg-warning text-dark">Due Soon</span> break;
+                                    case "OK": <span class="badge bg-success">OK</span> break;
+                                    default: <span class="text-muted">N/A</span> break;
+                                }
+                            </td>
+                            <td>
+                                @if (i.ConditionStatus == "Alert")
+                                {
+                                    <form asp-controller="Inspection" asp-action="RaiseWorkRequest" method="post" class="d-inline">
+                                        <input type="hidden" name="inspectionRecordId" value="@i.InspectionRecordId" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-exclamation-triangle"></i> Raise Work Request</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!inspections.Any()) { <p class="text-muted mb-0">هنوز هیچ بازرسی‌ای برای این تجهیز ثبت نشده.</p> }
+        </div>
+
+        <div class="modal fade" id="newInspectionModal" tabindex="-1">
+            <div class="modal-dialog"><div class="modal-content">
+                <form asp-controller="Inspection" asp-action="Create" method="post">
+                    <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
+                    <div class="modal-header"><h6 class="modal-title">New Inspection</h6></div>
+                    <div class="modal-body">
+                        <div class="mb-2"><label class="form-label small">Inspection Type</label>
+                            <input name="inspectionType" class="form-control form-control-sm" placeholder="Vibration, Thickness, Visual..." required /></div>
+                        <div class="mb-2"><label class="form-label small">Inspection Date</label>
+                            <input name="inspectionDate" type="date" class="form-control form-control-sm" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
+                        <div class="mb-2"><label class="form-label small">Inspector</label>
+                            <input name="inspector" class="form-control form-control-sm" /></div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6"><label class="form-label small">Measurement Value</label>
+                                <input name="measurementValue" type="number" step="0.01" class="form-control form-control-sm" /></div>
+                            <div class="col-6"><label class="form-label small">Unit</label>
+                                <input name="measurementUnit" class="form-control form-control-sm" placeholder="mm/s, mm, °C..." /></div>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6"><label class="form-label small">Lower Limit</label>
+                                <input name="lowerLimit" type="number" step="0.01" class="form-control form-control-sm" /></div>
+                            <div class="col-6"><label class="form-label small">Upper Limit</label>
+                                <input name="upperLimit" type="number" step="0.01" class="form-control form-control-sm" /></div>
+                        </div>
+                        <div class="mb-2"><label class="form-label small">Next Inspection Date</label>
+                            <input name="nextInspectionDate" type="date" class="form-control form-control-sm" /></div>
+                        <div class="mb-2"><label class="form-label small">Recommendation</label>
+                            <textarea name="recommendation" class="form-control form-control-sm" rows="2"></textarea></div>
+                        <div class="mb-2"><label class="form-label small">Description</label>
+                            <textarea name="description" class="form-control form-control-sm" rows="2"></textarea></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-pems-solid btn-sm">Save</button>
+                    </div>
+                </form>
+            </div></div>
+        </div>
+    </div>
+
+    @* ===================== Quality & Change ===================== *@
+    <div class="tab-pane fade" id="tab-quality" role="tabpanel">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="content-card h-100">
+                    <h6 class="mb-3"><i class="bi bi-exclamation-triangle"></i> NCR <span class="badge bg-secondary">@Model.NonConformanceReports.Count</span></h6>
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var n in Model.NonConformanceReports)
+                        {
+                            <li class="d-flex justify-content-between border-bottom py-1">
+                                <a asp-controller="QC" asp-action="NcrDetails" asp-route-id="@n.NodeId">@n.Label</a>
+                                <span class="badge @(n.Priority == "Urgent" ? "bg-danger" : "bg-secondary")">@n.SubLabel</span>
+                            </li>
+                        }
+                    </ul>
+                    @if (!Model.NonConformanceReports.Any()) { <p class="text-muted small mb-0">موردی ثبت نشده.</p> }
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="content-card h-100">
+                    <h6 class="mb-3"><i class="bi bi-arrow-repeat"></i> MOC <span class="badge bg-secondary">@Model.MOCs.Count</span></h6>
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var m in Model.MOCs)
+                        {
+                            <li class="d-flex justify-content-between border-bottom py-1">
+                                <a asp-controller="MOC" asp-action="Details" asp-route-id="@m.NodeId">@m.Label</a>
+                                <span class="badge @(m.Priority == "Urgent" ? "bg-danger" : "bg-secondary")">@m.SubLabel</span>
+                            </li>
+                        }
+                    </ul>
+                    @if (!Model.MOCs.Any()) { <p class="text-muted small mb-0">موردی ثبت نشده.</p> }
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="content-card h-100">
+                    <h6 class="mb-3"><i class="bi bi-question-circle"></i> TQ / TSR / RFI <span class="badge bg-secondary">@Model.TechnicalQueries.Count</span></h6>
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var t in Model.TechnicalQueries)
+                        {
+                            <li class="d-flex justify-content-between border-bottom py-1">
+                                <a asp-controller="TechnicalQuery" asp-action="Details" asp-route-id="@t.NodeId">@t.Label</a>
+                                <span class="badge @(t.Priority == "Urgent" ? "bg-danger" : "bg-secondary")">@t.SubLabel</span>
+                            </li>
+                        }
+                    </ul>
+                    @if (!Model.TechnicalQueries.Any()) { <p class="text-muted small mb-0">موردی ثبت نشده.</p> }
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

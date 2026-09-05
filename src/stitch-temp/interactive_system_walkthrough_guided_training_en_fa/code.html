@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS - Interactive Guided Tour</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-container": "#6e4100",
+                    "secondary": "#895200",
+                    "on-background": "#081d2f",
+                    "inverse-on-surface": "#e9f1ff",
+                    "secondary-container": "#fdaa47",
+                    "on-error": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-container-high": "#daeaff",
+                    "background": "#f8f9ff",
+                    "on-primary-fixed-variant": "#3b475c",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#9ecaff",
+                    "primary": "#000819",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#d0e4fe",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#d1e4ff",
+                    "on-tertiary-container": "#498bcd",
+                    "on-tertiary-fixed-variant": "#00497c",
+                    "primary-fixed": "#d7e3fd",
+                    "on-secondary-fixed-variant": "#683d00",
+                    "surface-bright": "#f8f9ff",
+                    "tertiary-container": "#00213d",
+                    "surface-dim": "#c8dcf5",
+                    "on-primary-fixed": "#101c2f",
+                    "surface-container-highest": "#d0e4fe",
+                    "secondary-fixed": "#ffdcbc",
+                    "surface-container": "#e4efff",
+                    "primary-fixed-dim": "#bbc7e0",
+                    "surface-tint": "#535f75",
+                    "surface": "#f8f9ff",
+                    "secondary-fixed-dim": "#ffb86a",
+                    "outline-variant": "#c5c6cd",
+                    "on-tertiary-fixed": "#001d36",
+                    "on-secondary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "inverse-surface": "#1f3245",
+                    "primary-container": "#142033",
+                    "inverse-primary": "#bbc7e0",
+                    "on-surface-variant": "#44474c",
+                    "on-surface": "#081d2f",
+                    "surface-container-low": "#eef4ff",
+                    "on-primary-container": "#7c889f",
+                    "tertiary": "#000815",
+                    "on-error-container": "#93000a",
+                    "outline": "#75777d",
+                    "on-secondary-fixed": "#2c1700",
+                    "industrial-amber": "#d98c2b" // Adding explicitly as it's key in style guide
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sidebar-width": "260px",
+                    "unit": "4px",
+                    "lg": "24px",
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "xs": "4px",
+                    "sm": "8px",
+                    "topbar-height": "60px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "table-cell": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "badge-label": ["Inter"],
+                    "body-medium": ["Inter"],
+                    "body-base": ["Inter"],
+                    "kpi-stat": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "table-header": ["Inter"],
+                    "label-caps": ["Inter"]
+            },
+            "fontSize": {
+                    "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                    "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}],
+                    "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                    "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .tour-highlight {
+            position: relative;
+            z-index: 60; /* Above overlay */
+            box-shadow: 0 0 0 9999px rgba(0, 8, 25, 0.7); /* Simulating overlay */
+            border-radius: 0.25rem;
+            background: white; /* Ensure background is opaque for highlighted element */
+        }
+        
+        .pulse-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            border: 2px solid #d98c2b;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0; transform: translate(-50%, -50%) scale(1.05); }
+        }
+        
+        /* Gradient Button */
+        .btn-primary-gradient {
+            background: linear-gradient(135deg, #d98c2b, #b8721e);
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="bg-background font-body-base text-on-surface h-screen overflow-hidden antialiased">
+<!-- JSON Component: SideNavBar (Semantic Shell) -->
+<nav class="hidden lg:flex flex-col py-lg z-40 bg-primary text-on-primary font-body-medium text-body-medium fixed left-0 top-0 h-full w-[260px] shadow-sm">
+<div class="px-lg mb-8">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">factory</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-primary">Industrial Academy</h1>
+<p class="text-[11px] text-on-primary/60 uppercase tracking-wider">Enterprise Training</p>
+</div>
+</div>
+</div>
+<ul class="flex-1 space-y-2">
+<li>
+<a class="flex items-center gap-3 px-4 py-2 text-on-primary/70 hover:bg-primary-fixed-dim/10 transition-all scale-95 duration-150 mx-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+</li>
+<li>
+<!-- Active State -->
+<a class="flex items-center gap-3 px-4 py-2 bg-secondary-container text-on-secondary-container rounded-lg mx-2 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+                    Guided Tours
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2 text-on-primary/70 hover:bg-primary-fixed-dim/10 transition-all scale-95 duration-150 mx-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+                    Knowledge Base
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2 text-on-primary/70 hover:bg-primary-fixed-dim/10 transition-all scale-95 duration-150 mx-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">verified</span>
+                    Certifications
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2 text-on-primary/70 hover:bg-primary-fixed-dim/10 transition-all scale-95 duration-150 mx-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">support_agent</span>
+                    Help Center
+                </a>
+</li>
+</ul>
+<div class="mt-auto border-t border-primary-container pt-4">
+<ul class="space-y-2">
+<li>
+<a class="flex items-center gap-3 px-4 py-2 text-on-primary/70 hover:bg-primary-fixed-dim/10 transition-all mx-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+                        Settings
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2 text-on-primary/70 hover:bg-primary-fixed-dim/10 transition-all mx-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">logout</span>
+                        Logout
+                    </a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- JSON Component: TopAppBar -->
+<header class="fixed top-0 w-full z-30 h-[60px] flex items-center justify-between px-md lg:px-lg bg-surface font-headline-md text-headline-md border-b border-outline-variant lg:pl-[284px]">
+<div class="flex items-center gap-4">
+<button class="lg:hidden p-2 text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-headline-md text-headline-md font-bold text-primary">PEMS Training</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full cursor-pointer active:opacity-80 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="ml-2 w-8 h-8 rounded-full bg-surface-variant overflow-hidden border border-outline-variant">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A professional headshot of a female industrial engineer in a modern control room setting, well-lit, corporate aesthetic, high quality, 4k." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAj4K-3j8NLkKq9uZlEa41X6AixpHZF-BRzJLheCn1bAstF_4_-tez_gNyya9qtBDNZLM5jBbHAy16T5qj5HCeAeXTkjL0U6RzGCN0L8W5mJgPi0OO8cTiBTtsOvNT1jA5opuRpKbHRa3DjCDsE69mLrfJ6PNd_v1Ool_PzBecxAWSm5iOFffWripK9oiJkO8UukBcioQKZWydgVhcTozmeb93d-AQjtPerr62G-8IaxrVaicW2LIoj"/>
+</div>
+</div>
+</header>
+<!-- JSON Component: BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-2 lg:hidden bg-surface shadow-lg border-t border-outline-variant rounded-t-xl">
+<a class="flex flex-col items-center text-on-surface-variant transition-transform active:scale-90 active:bg-surface-container p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-caps text-label-caps mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center text-secondary-container bg-primary-container rounded-full p-2 transition-transform active:scale-90 active:bg-surface-container" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-label-caps text-label-caps mt-1">Learn</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant transition-transform active:scale-90 active:bg-surface-container p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-label-caps text-label-caps mt-1">Library</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant transition-transform active:scale-90 active:bg-surface-container p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-caps text-label-caps mt-1">Profile</span>
+</a>
+</nav>
+<!-- Main Content Area (Background UI - Asset Management) -->
+<main class="pt-[60px] lg:pl-[260px] pb-[80px] lg:pb-0 h-full overflow-y-auto w-full relative z-10">
+<!-- Global Overlay for Tour (Implemented via box-shadow on highlighted element, but adding a fallback block just in case) -->
+<div aria-hidden="true" class="fixed inset-0 bg-primary/70 z-50 pointer-events-none"></div>
+<div class="p-gutter lg:p-lg max-w-7xl mx-auto space-y-6">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Asset Registry</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-1">Manage and track industrial equipment.</p>
+</div>
+<div class="flex gap-2">
+<button class="px-sm py-xs border border-outline-variant rounded text-[#5c6f85] font-body-medium text-body-medium bg-surface-container-lowest hover:bg-surface-container-low">Export</button>
+<button class="px-sm py-xs btn-primary-gradient rounded font-body-medium text-body-medium shadow-sm">Add Asset</button>
+</div>
+</div>
+<!-- KPI Cards Row -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded flex items-center gap-4">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-surface-variant to-surface-dim flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Total Assets</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface">1,248</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded flex items-center gap-4">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-[#e8f5e9] to-[#c8e6c9] flex items-center justify-center">
+<span class="material-symbols-outlined text-[#2e7d32]">check_circle</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Operational</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface">1,102</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded flex items-center gap-4">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-[#fff3e0] to-[#ffe0b2] flex items-center justify-center">
+<span class="material-symbols-outlined text-[#e65100]">warning</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Maintenance Due</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface">84</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded flex items-center gap-4">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-[#ffebee] to-[#ffcdd2] flex items-center justify-center">
+<span class="material-symbols-outlined text-error">error</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Critical Failures</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface">12</p>
+</div>
+</div>
+</div>
+<!-- Data Table Area with Highlighted Filter -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded overflow-hidden">
+<!-- HIGHLIGHTED ELEMENT: Filter Bar -->
+<div class="tour-highlight p-4 border-b border-outline-variant bg-[#f5f7fa] flex flex-col md:flex-row gap-4 items-center justify-between relative">
+<div class="pulse-ring"></div> <!-- Animation hint -->
+<div class="flex-1 w-full flex items-center gap-2">
+<div class="relative w-full md:max-w-xs">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-sm">search</span>
+<input class="w-full pl-9 pr-3 py-[6px] text-[13px] border border-[#dde3ea] rounded-[8px] focus:outline-none focus:border-[#d98c2b] focus:ring-1 focus:ring-[#d98c2b] bg-white text-on-surface placeholder:text-on-surface-variant/50" placeholder="Search Tag ID or Name..." type="text"/>
+</div>
+<button class="p-[6px] border border-[#dde3ea] rounded-[8px] bg-white text-on-surface-variant hover:text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+</div>
+<!-- Tooltip attached to highlighted element -->
+<div class="absolute top-full left-4 mt-4 w-[320px] bg-surface-container-lowest rounded shadow-[0_4px_20px_rgba(20,32,51,0.15)] border border-outline-variant z-[70] p-4 flex flex-col gap-3">
+<!-- Arrow -->
+<div class="absolute -top-[6px] left-[30px] w-3 h-3 bg-surface-container-lowest border-t border-l border-outline-variant transform rotate-45"></div>
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-2">
+<span class="flex items-center justify-center w-6 h-6 rounded-full bg-secondary-container text-on-secondary-container font-body-medium text-[12px]">1</span>
+<h3 class="font-headline-md text-[16px] text-on-surface">Global Search &amp; Filters</h3>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<p class="font-body-base text-[13px] text-on-surface-variant leading-relaxed">
+                            Use this search bar to quickly locate equipment by its Tag ID, Manufacturer, or current location. Click the filter icon to narrow down by status.
+                        </p>
+<!-- Persian Translation -->
+<div class="bg-surface-container-low p-3 rounded border border-outline-variant/50 mt-1" dir="rtl">
+<p class="font-body-base text-[13px] text-on-surface text-right font-[Tahoma,Arial,sans-serif] leading-relaxed">
+                                از این نوار جستجو برای پیدا کردن سریع تجهیزات بر اساس شناسه برچسب (Tag ID)، سازنده یا مکان فعلی استفاده کنید. برای محدود کردن بر اساس وضعیت، روی نماد فیلتر کلیک کنید.
+                            </p>
+</div>
+<div class="flex items-center justify-between mt-2 pt-3 border-t border-outline-variant/30">
+<button class="text-on-surface-variant font-body-medium text-[12px] uppercase tracking-wider disabled:opacity-50" disabled="">Previous</button>
+<button class="btn-primary-gradient px-3 py-1.5 rounded font-body-medium text-[13px] shadow-sm flex items-center gap-1">
+                                Next
+                                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- END HIGHLIGHTED ELEMENT -->
+<!-- Data Table (Dimmed) -->
+<div class="overflow-x-auto opacity-40">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#f5f7fa] border-b border-outline-variant">
+<th class="p-2 pl-4 font-table-header text-table-header text-on-surface-variant uppercase">Tag ID</th>
+<th class="p-2 font-table-header text-table-header text-on-surface-variant uppercase">Description</th>
+<th class="p-2 font-table-header text-table-header text-on-surface-variant uppercase">Location</th>
+<th class="p-2 font-table-header text-table-header text-on-surface-variant uppercase">Status</th>
+<th class="p-2 pr-4 font-table-header text-table-header text-on-surface-variant uppercase text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface">
+<tr class="border-b border-outline-variant/50">
+<td class="p-2 pl-4 font-mono text-[12px]">PMP-1024-A</td>
+<td class="p-2">Centrifugal Feed Pump</td>
+<td class="p-2 text-on-surface-variant">Unit 4, Block B</td>
+<td class="p-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded-[999px] bg-[#e8f5e9] text-[#1b5e20] font-badge-label text-badge-label">Active</span>
+</td>
+<td class="p-2 pr-4 text-right">
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center hover:bg-surface-container"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/50">
+<td class="p-2 pl-4 font-mono text-[12px]">CMP-2099-X</td>
+<td class="p-2">Main Air Compressor</td>
+<td class="p-2 text-on-surface-variant">Utility Station 1</td>
+<td class="p-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded-[999px] bg-[#ffebee] text-[#b71c1c] font-badge-label text-badge-label">Critical</span>
+</td>
+<td class="p-2 pr-4 text-right">
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center hover:bg-surface-container"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Tour Progress Card -->
+<div class="fixed bottom-6 right-6 z-[80] bg-surface-container-lowest border border-outline-variant rounded shadow-[0_4px_20px_rgba(20,32,51,0.12)] p-4 w-[280px] hidden md:flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<h4 class="font-body-medium text-[14px] text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">explore</span>
+                Module Tour
+            </h4>
+<button class="text-on-surface-variant hover:text-error font-body-medium text-[12px] uppercase tracking-wider">Exit</button>
+</div>
+<div>
+<div class="flex justify-between font-label-caps text-[10px] text-on-surface-variant mb-1">
+<span>Progress</span>
+<span>1 of 5 Steps</span>
+</div>
+<div class="w-full h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-1/5 rounded-full"></div>
+</div>
+</div>
+</div>
+</body></html>

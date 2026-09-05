@@ -1,0 +1,96 @@
+﻿@{
+    var letterType = (string)ViewBag.LetterType;
+    var projects = (IEnumerable<dynamic>)ViewBag.Projects;
+    var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
+}
+
+<div class="content-card" style="max-width:800px;">
+    <h6 class="mb-3">New @letterType Letter</h6>
+    <form asp-action="Create" method="post">
+        <input type="hidden" name="letterType" value="@letterType" />
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Letter Number</label>
+                <input name="letterNumber" class="form-control" placeholder="Generated automatically on save" disabled="disabled" />
+                @if ((bool)(ViewBag.CanManualNumber ?? false))
+                {
+                    <div class="form-check mt-1">
+                        <input class="form-check-input" type="checkbox" name="useManualNumber" value="true" id="useManualNumberCheck" />
+                        <label class="form-check-label small" for="useManualNumberCheck">Enter manually</label>
+                    </div>
+                }
+                <script>
+                    var manualNumCheck = document.getElementById('useManualNumberCheck');
+                    var letterNoInput = document.querySelector('[name="letterNumber"]');
+                    if (manualNumCheck) {
+                        manualNumCheck.addEventListener('change', function () { letterNoInput.disabled = !this.checked; });
+                    }
+                </script>
+            </div>
+            <div class="col-md-4"><label class="form-label">Date</label><input name="letterDate" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" required /></div>
+            <div class="col-md-4">
+                <label class="form-label">Priority</label>
+                <select name="priority" class="form-select">
+                    <option>Normal</option><option>Low</option><option>High</option><option>Urgent</option>
+                </select>
+            </div>
+
+            @if (letterType == "Incoming")
+            {
+                <div class="col-md-6"><label class="form-label">Sender</label><input name="sender" class="form-control" required /></div>
+            }
+            else
+            {
+                <div class="col-md-6"><label class="form-label">Receiver</label><input name="receiver" class="form-control" required /></div>
+            }
+
+            <div class="col-md-6">
+                <label class="form-label">Confidentiality Level</label>
+                <select name="confidentialityLevel" class="form-select">
+                    <option>Internal</option><option>Public</option><option>Confidential</option>
+                    <option>Restricted</option><option>HighlyConfidential</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Related Project <span class="text-muted small">(optional)</span></label>
+                <select name="projectId" class="form-select">
+                    <option value="">-- none --</option>
+                    @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Related Discipline <span class="text-muted small">(optional)</span></label>
+                <select name="disciplineId" class="form-select">
+                    <option value="">-- none --</option>
+                    @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
+                </select>
+            </div>
+
+            <div class="col-12"><label class="form-label">Subject</label><input name="subject" class="form-control" required /></div>
+            <div class="col-12"><label class="form-label">Body / Summary</label><textarea name="body" id="letterBodyEditor" class="form-control" rows="6"></textarea></div>
+
+            <div class="col-md-6">
+                <label class="form-label">Related Engineering/Vendor Document <span class="text-muted small">(optional)</span></label>
+                <select name="relatedDocumentId" class="form-select">
+                    <option value="">-- none --</option>
+                    @foreach (var d in (IEnumerable<dynamic>)ViewBag.RelatedDocuments) { <option value="@d.DocumentId">@d.DocumentNo - @d.Title</option> }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Related MR <span class="text-muted small">(optional)</span></label>
+                <select name="relatedMRId" class="form-select">
+                    <option value="">-- none --</option>
+                    @foreach (var m in (IEnumerable<dynamic>)ViewBag.RelatedMRs) { <option value="@m.MRId">@m.MRNumber</option> }
+                </select>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-pems-solid">Save</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@await Html.PartialAsync("_RichTextEditorScripts", "letterBodyEditor")

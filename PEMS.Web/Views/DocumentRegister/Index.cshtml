@@ -1,0 +1,277 @@
+﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.EngineeringDocumentDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var savedFilters = (List<PEMS.Application.DTOs.SavedFilterDto>)ViewBag.SavedFilters;
+    var selectedDisciplines = (List<string>)ViewBag.SelectedDisciplines;
+}
+
+<div class="d-flex flex-wrap gap-2 mb-3">
+    <a asp-controller="EngineeringDocuments" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-text"></i> Documents</a>
+    <a asp-controller="DocumentRegister" asp-action="Index" class="btn btn-sm btn-pems-solid"><i class="bi bi-journal-bookmark"></i> Register</a>
+    <a asp-controller="MDRImport" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-arrow-up"></i> Import (MDR)</a>
+    <a asp-controller="VDR" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-journal-check"></i> Vendor Documents (VDR)</a>
+    <a asp-controller="Transmittal" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-send"></i> Transmittals</a>
+</div>
+
+
+<div class="content-card mb-3">
+    <div class="d-flex flex-wrap gap-2 mb-3">
+        <span class="text-muted small align-self-center">Quick filters:</span>
+        <a asp-action="Index" asp-route-status="Approved" class="btn btn-sm btn-outline-success">Approved</a>
+        <a asp-action="Index" asp-route-status="Submitted" class="btn btn-sm btn-outline-warning">Pending Review</a>
+
+        @if (savedFilters.Any())
+        {
+            <span class="text-muted small align-self-center ms-3">Saved:</span>
+            foreach (var sf in savedFilters)
+            {
+                <a href="/DocumentRegister?@sf.QueryString" class="btn btn-sm btn-outline-primary">
+                    @if (sf.IsDefault) { <i class="bi bi-star-fill"></i> }
+                    @sf.Name
+                </a>
+                <form asp-action="DeleteFilter" method="post" class="d-inline">
+                    <input type="hidden" name="id" value="@sf.SavedFilterId" />
+                    <button class="btn btn-sm btn-outline-danger" title="Delete this saved filter" onclick="return confirm('Delete this saved filter?')"><i class="bi bi-x"></i></button>
+                </form>
+            }
+        }
+    </div>
+
+    <form method="get" id="registerFilterForm" class="row g-2 align-items-end">
+        <div class="col-md-3">
+            <label class="form-label small">Project</label>
+            <select name="project" class="form-select form-select-sm">
+                <option value="">All</option>
+                @foreach (var p in (List<string>)ViewBag.Projects)
+                {
+                    <option value="@p" selected="@(p == (string?)ViewBag.SelectedProject)">@p</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label small">Discipline <span class="text-muted">(multi-select)</span></label>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle w-100 text-start" type="button" data-bs-toggle="dropdown">
+                    @(selectedDisciplines.Any() ? string.Join(", ", selectedDisciplines) : "All Disciplines")
+                </button>
+                <div class="dropdown-menu p-2" style="max-height:250px;overflow-y:auto;">
+                    @foreach (var d in (List<string>)ViewBag.Disciplines)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input discipline-check" type="checkbox" value="@d" id="disc_@d.GetHashCode()"
+                                   checked="@selectedDisciplines.Contains(d)" />
+                            <label class="form-check-label" for="disc_@d.GetHashCode()">@d</label>
+                        </div>
+                    }
+                </div>
+            </div>
+            <input type="hidden" name="disciplines" id="disciplinesInput" value="@string.Join(",", selectedDisciplines)" />
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label small">Status</label>
+            <select name="status" class="form-select form-select-sm">
+                <option value="">All</option>
+                @foreach (var s in (List<string>)ViewBag.Statuses)
+                {
+                    <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small">Search</label>
+            <input type="text" name="q" value="@ViewBag.SearchTerm" class="form-control form-control-sm" placeholder="Doc No / Title" />
+        </div>
+        <div class="col-md-2 d-flex gap-1">
+            <button type="submit" class="btn btn-sm btn-pems-solid flex-fill"><i class="bi bi-funnel"></i></button>
+            <a asp-action="Index" class="btn btn-sm btn-outline-danger" title="Reset"><i class="bi bi-x-lg"></i></a>
+        </div>
+
+        <div class="col-12 d-flex gap-2 mt-2">
+            <a asp-action="ExportExcel"
+               asp-route-project="@ViewBag.SelectedProject"
+               asp-route-disciplines="@string.Join(",", selectedDisciplines)"
+               asp-route-status="@ViewBag.SelectedStatus"
+               asp-route-q="@ViewBag.SearchTerm"
+               class="btn btn-sm btn-outline-success">
+                <i class="bi bi-file-earmark-excel"></i> Export
+            </a>
+            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#saveFilterModal">
+                <i class="bi bi-bookmark-plus"></i> Save this filter
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="content-card">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="text-muted small" id="selectedCount"></span>
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('DocumentRegister')">
+                <i class="bi bi-arrow-counterclockwise"></i> @Localizer["ResetColumns"]
+            </button>
+            <form asp-action="ExportSelected" method="post" id="bulkExportForm">
+                <span id="selectedIdsContainer"></span>
+                <button type="submit" class="btn btn-sm btn-outline-success d-none" id="bulkExportBtn">
+                    <i class="bi bi-file-earmark-excel"></i> Export Selected
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="table-responsive pems-grid-scroll table-scroll-area">
+        <table class="table table-enterprise pems-grid-table" data-grid-key="DocumentRegister">
+            <thead>
+                <tr>
+                    <th data-col-key="select" data-resizable="false" style="width:40px"><input type="checkbox" id="selectAllDocs" /></th>
+                    <th data-col-key="docNo" data-resizable="true" data-min-width="120" data-max-width="260" style="width:160px">Document No</th>
+                    <th data-col-key="title" data-resizable="true" data-min-width="180" data-max-width="500" style="width:300px">Title</th>
+                    <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px">Type</th>
+                    <th data-col-key="area" data-resizable="true" data-min-width="80" data-max-width="200" style="width:110px">Area</th>
+                    <th data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">Discipline</th>
+                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="240" style="width:160px">Project</th>
+                    <th data-col-key="rev" data-resizable="true" data-min-width="60" data-max-width="120" style="width:80px">Rev</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="180" style="width:130px">Status</th>
+                    <th data-col-key="commentStatus" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Comment Status</th>
+                    <th data-col-key="freeze" data-resizable="true" data-min-width="80" data-max-width="140" style="width:90px">Freeze</th>
+                    <th data-col-key="delay" data-resizable="true" data-min-width="80" data-max-width="140" style="width:90px">Delay</th>
+                    <th data-col-key="created" data-resizable="true" data-min-width="90" data-max-width="160" style="width:120px">Created</th>
+                    <th data-col-key="actions" data-resizable="false" style="width:70px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model.Items)
+                {
+                    <tr>
+                        <td><input type="checkbox" class="doc-select" value="@d.DocumentId" /></td>
+                        <td title="@d.DocumentNo">@d.DocumentNo</td>
+                        <td title="@d.Title">@d.Title</td>
+                        <td title="@d.DocumentType">@d.DocumentType</td>
+                        <td title="@d.Area">@d.Area</td>
+                        <td>
+                            @if (string.IsNullOrWhiteSpace(d.DisciplineName))
+                            { <span class="badge bg-secondary">Unassigned</span> }
+                            else { <span title="@d.DisciplineName">@d.DisciplineName</span> }
+                        </td>
+                        <td title="@d.ProjectName">@d.ProjectName</td>
+                        <td>@d.RevisionNo</td>
+                        <td><span class="badge badge-status-@d.Status">@d.Status</span></td>
+                        <td title="@d.CommentStatus">@d.CommentStatus</td>
+                        <td>@(d.IsFrozen ? "❄ Frozen" : "")</td>
+                        <td>
+                            @if (d.DelayDays.HasValue && d.DelayDays > 0)
+                            { <span class="badge bg-danger">@d.DelayDays d</span> }
+                        </td>
+                        <td>@d.CreatedDate.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId"
+                               class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (!Model.Items.Any())
+        {
+            <p class="text-muted text-center py-4">No documents match the selected filters.</p>
+        }
+    </div>
+
+    @{
+        var qsParts = new List<string>();
+        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedProject)) qsParts.Add($"project={Uri.EscapeDataString((string)ViewBag.SelectedProject)}");
+        if (selectedDisciplines.Any()) qsParts.Add($"disciplines={Uri.EscapeDataString(string.Join(",", selectedDisciplines))}");
+        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus)) qsParts.Add($"status={Uri.EscapeDataString((string)ViewBag.SelectedStatus)}");
+        if (!string.IsNullOrEmpty((string?)ViewBag.SearchTerm)) qsParts.Add($"q={Uri.EscapeDataString((string)ViewBag.SearchTerm)}");
+    }
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "DocumentRegister",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = string.Join("&", qsParts)
+    })
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('DocumentRegister');
+        });
+    </script>
+}
+
+<div class="modal fade" id="saveFilterModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="SaveFilter" method="post">
+                <div class="modal-header"><h6 class="modal-title">Save Current Filter</h6></div>
+                <div class="modal-body">
+                    <label class="form-label small">Filter Name</label>
+                    <input name="name" class="form-control" required />
+                    <input type="hidden" name="queryString" id="saveFilterQueryString" />
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="checkbox" name="isDefault" value="true" id="saveFilterDefault" />
+                        <label class="form-check-label" for="saveFilterDefault">Set as my default view for this page</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-pems-solid btn-sm">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var selectAll = document.getElementById('selectAllDocs');
+    var checks = document.querySelectorAll('.doc-select');
+    var bulkExportBtn = document.getElementById('bulkExportBtn');
+    var selectedCount = document.getElementById('selectedCount');
+    var idsContainer = document.getElementById('selectedIdsContainer');
+
+    function updateBulkUI() {
+        var selected = Array.prototype.filter.call(checks, function (c) { return c.checked; });
+        idsContainer.innerHTML = '';
+        selected.forEach(function (c) {
+            var input = document.createElement('input');
+            input.type = 'hidden'; input.name = 'ids'; input.value = c.value;
+            idsContainer.appendChild(input);
+        });
+        bulkExportBtn.classList.toggle('d-none', selected.length === 0);
+        selectedCount.textContent = selected.length > 0 ? selected.length + ' selected' : '';
+    }
+
+    if (selectAll) {
+        selectAll.addEventListener('change', function () {
+            checks.forEach(function (c) { c.checked = selectAll.checked; });
+            updateBulkUI();
+        });
+    }
+    checks.forEach(function (c) { c.addEventListener('change', updateBulkUI); });
+
+    var disciplineChecks = document.querySelectorAll('.discipline-check');
+    var disciplinesInput = document.getElementById('disciplinesInput');
+
+    disciplineChecks.forEach(function (chk) {
+        chk.addEventListener('change', function () {
+            var selected = Array.prototype.filter.call(disciplineChecks, function (c) { return c.checked; })
+                .map(function (c) { return c.value; });
+            disciplinesInput.value = selected.join(',');
+        });
+    });
+
+    document.getElementById('saveFilterModal').addEventListener('show.bs.modal', function () {
+        var form = document.getElementById('registerFilterForm');
+        var params = new URLSearchParams(new FormData(form));
+        document.getElementById('saveFilterQueryString').value = params.toString();
+    });
+</script>

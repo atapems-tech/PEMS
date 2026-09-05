@@ -1,0 +1,108 @@
+﻿namespace PEMS.Application.DTOs;
+
+public class LetterDto
+{
+    public int LetterId { get; set; }
+    public string LetterType { get; set; } = "";
+    public string LetterNumber { get; set; } = "";
+    public DateTime LetterDate { get; set; }
+    public string? Sender { get; set; }
+    public string? Receiver { get; set; }
+    public string Subject { get; set; } = "";
+    public string Priority { get; set; } = "Normal";
+    public string ConfidentialityLevel { get; set; } = "Internal";
+    public string? ProjectName { get; set; }
+    public string? DisciplineName { get; set; }
+    public int? RelatedDocumentId { get; set; }
+    public string? RelatedDocumentNo { get; set; }
+    public int? RelatedMRId { get; set; }
+    public string? RelatedMRNumber { get; set; }
+    public string Status { get; set; } = "";
+    public DateTime CreatedDate { get; set; }
+    public int AttachmentsCount { get; set; }
+    public int OpenReferralsCount { get; set; }
+    public bool HasOverdueReferral { get; set; }
+    public bool IsStarred { get; set; }
+
+    // To / Cc از دید کاربر جاری (اگر گیرنده‌ی این نامه باشد) - طبق نمونه‌ی کارتابل مرجع
+    // ("نامه" در برابر "رونوشت")
+    public string? MyRecipientType { get; set; }
+
+    public List<TagDto> Tags { get; set; } = new();
+
+    public string? SignedByName { get; set; }
+    public DateTime? SignedDate { get; set; }
+}
+
+public class LetterRecipientDto
+{
+    public int LetterRecipientId { get; set; }
+    public string RecipientType { get; set; } = "To";
+    public string DisplayName { get; set; } = "";
+    public bool IsRead { get; set; }
+    public DateTime? ReadDate { get; set; }
+}
+
+public class LetterReferralDto
+{
+    public int LetterReferralId { get; set; }
+    public int LetterId { get; set; }
+    public string? ReferredToEmployeeName { get; set; }
+    public string? ReferredToDepartmentName { get; set; }
+    public string? Instructions { get; set; }
+    public DateTime? DueDate { get; set; }
+    public string Status { get; set; } = "Pending";
+    public bool IsRead { get; set; }
+    public DateTime? ReadDate { get; set; }
+    public string? ReferredByName { get; set; }
+    public DateTime ReferredDate { get; set; }
+    public string? ResponseNote { get; set; }
+    public bool IsOverdue { get; set; }
+}
+
+public class LetterAttachmentDto
+{
+    public int AttachmentId { get; set; }
+    public string FileName { get; set; } = "";
+    public string FilePath { get; set; } = "";
+}
+
+public class LetterDetailDto
+{
+    public LetterDto Letter { get; set; } = new();
+    public string? Body { get; set; }
+    public List<LetterReferralDto> Referrals { get; set; } = new();
+    public List<LetterAttachmentDto> Attachments { get; set; } = new();
+    public List<LetterRecipientDto> Recipients { get; set; } = new();
+}
+
+public class LetterDashboardDto
+{
+    public int PendingLetters { get; set; }
+    public int OverdueReferrals { get; set; }
+    public int MyOpenReferrals { get; set; }
+    public int RecentlyReceived { get; set; }
+    public int RecentlySent { get; set; }
+    public Dictionary<string, int> ByStatus { get; set; } = new();
+    public Dictionary<string, int> ByType { get; set; } = new();
+}
+
+public class RelatedLetterDto
+{
+    public int LetterId { get; set; }
+    public string LetterType { get; set; } = "";
+    public string LetterNumber { get; set; } = "";
+    public string Subject { get; set; } = "";
+    public DateTime LetterDate { get; set; }
+    public string Status { get; set; } = "";
+}
+
+public class NotificationDto
+{
+    public int NotificationId { get; set; }
+    public string Title { get; set; } = "";
+    public string Message { get; set; } = "";
+    public string? LinkUrl { get; set; }
+    public bool IsRead { get; set; }
+    public DateTime CreatedDate { get; set; }
+}

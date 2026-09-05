@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS Academy Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-container": "#6e4100",
+                        "secondary": "#895200",
+                        "on-background": "#081d2f",
+                        "inverse-on-surface": "#e9f1ff",
+                        "secondary-container": "#fdaa47",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#daeaff",
+                        "background": "#f8f9ff",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "primary": "#000819",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#d0e4fe",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-tertiary-container": "#498bcd",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "primary-fixed": "#d7e3fd",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "surface-bright": "#f8f9ff",
+                        "tertiary-container": "#00213d",
+                        "surface-dim": "#c8dcf5",
+                        "on-primary-fixed": "#101c2f",
+                        "surface-container-highest": "#d0e4fe",
+                        "secondary-fixed": "#ffdcbc",
+                        "surface-container": "#e4efff",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "surface-tint": "#535f75",
+                        "surface": "#f8f9ff",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "outline-variant": "#c5c6cd",
+                        "on-tertiary-fixed": "#001d36",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#1f3245",
+                        "primary-container": "#142033",
+                        "inverse-primary": "#bbc7e0",
+                        "on-surface-variant": "#44474c",
+                        "on-surface": "#081d2f",
+                        "surface-container-low": "#eef4ff",
+                        "on-primary-container": "#7c889f",
+                        "tertiary": "#000815",
+                        "on-error-container": "#93000a",
+                        "outline": "#75777d",
+                        "on-secondary-fixed": "#2c1700"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.125rem",
+                        lg: "0.25rem",
+                        xl: "0.5rem",
+                        full: "0.75rem",
+                        kpi: "10px"
+                    },
+                    spacing: {
+                        "sidebar-width": "260px",
+                        unit: "4px",
+                        lg: "24px",
+                        xl: "32px",
+                        gutter: "16px",
+                        xs: "4px",
+                        sm: "8px",
+                        "topbar-height": "60px",
+                        md: "16px"
+                    },
+                    fontFamily: {
+                        "table-cell": ["Inter", "sans-serif"],
+                        "headline-lg-mobile": ["Inter", "sans-serif"],
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "badge-label": ["Inter", "sans-serif"],
+                        "body-medium": ["Inter", "sans-serif"],
+                        "body-base": ["Inter", "sans-serif"],
+                        "kpi-stat": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "table-header": ["Inter", "sans-serif"],
+                        "label-caps": ["Inter", "sans-serif"]
+                    },
+                    fontSize: {
+                        "table-cell": ["13px", { lineHeight: "18px", letterSpacing: "0", fontWeight: "400" }],
+                        "headline-lg-mobile": ["20px", { lineHeight: "28px", fontWeight: "700" }],
+                        "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }],
+                        "badge-label": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "600" }],
+                        "body-medium": ["13.5px", { lineHeight: "20px", letterSpacing: "0", fontWeight: "600" }],
+                        "body-base": ["13.5px", { lineHeight: "20px", letterSpacing: "0", fontWeight: "400" }],
+                        "kpi-stat": ["22px", { lineHeight: "24px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "headline-md": ["18px", { lineHeight: "24px", letterSpacing: "0", fontWeight: "700" }],
+                        "table-header": ["11.5px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "700" }],
+                        "label-caps": ["11px", { lineHeight: "14px", letterSpacing: "0.06em", fontWeight: "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border: 1px solid #edf0f4;
+            box-shadow: 0 4px 20px rgba(20,32,51,0.03);
+        }
+        .amber-gradient {
+            background: linear-gradient(135deg, #d98c2b 0%, #b8721e 100%);
+        }
+        .blue-gradient {
+            background: linear-gradient(135deg, #142033 0%, #3b475c 100%);
+        }
+        .persian-text {
+            font-family: Tahoma, Arial, sans-serif;
+            direction: rtl;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface h-screen overflow-hidden flex font-body-base antialiased">
+<!-- SideNavBar -->
+<nav class="hidden lg:flex flex-col py-lg z-40 bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-fixed font-body-medium text-body-medium fixed left-0 top-0 h-full w-[sidebar-width] shadow-sm">
+<div class="px-lg pb-xl border-b border-on-primary/10">
+<h1 class="font-headline-md text-headline-md text-on-primary mb-1">Industrial Academy</h1>
+<p class="text-on-primary/70 text-xs">Enterprise Training</p>
+</div>
+<div class="flex-1 overflow-y-auto py-md">
+<ul class="space-y-sm">
+<!-- Dashboard (Active) -->
+<li>
+<a class="flex items-center gap-sm px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg mx-2 hover:bg-primary-fixed-dim/10 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span>Dashboard</span>
+</a>
+</li>
+<!-- Guided Tours -->
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-on-primary/70 dark:text-on-primary-fixed-variant mx-2 hover:bg-primary-fixed-dim/10 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">precision_manufacturing</span>
+<span>Guided Tours</span>
+</a>
+</li>
+<!-- Knowledge Base -->
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-on-primary/70 dark:text-on-primary-fixed-variant mx-2 hover:bg-primary-fixed-dim/10 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span>Knowledge Base</span>
+</a>
+</li>
+<!-- Certifications -->
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-on-primary/70 dark:text-on-primary-fixed-variant mx-2 hover:bg-primary-fixed-dim/10 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">verified</span>
+<span>Certifications</span>
+</a>
+</li>
+<!-- Help Center -->
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-on-primary/70 dark:text-on-primary-fixed-variant mx-2 hover:bg-primary-fixed-dim/10 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">support_agent</span>
+<span>Help Center</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="px-lg pt-md border-t border-on-primary/10">
+<ul class="space-y-sm">
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-on-primary/70 mx-2 hover:bg-primary-fixed-dim/10 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-on-primary/70 mx-2 hover:bg-primary-fixed-dim/10 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Workspace -->
+<main class="flex-1 flex flex-col h-full lg:ml-[260px] relative">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full lg:w-[calc(100%-260px)] z-50 h-[topbar-height] flex items-center justify-between px-md lg:px-lg bg-surface dark:bg-primary-container border-b border-outline-variant dark:border-primary flat no shadows">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary">PEMS Training</span>
+</div>
+<div class="flex items-center gap-lg">
+<!-- Search -->
+<div class="hidden md:flex relative items-center">
+<span class="material-symbols-outlined absolute left-sm text-outline">search</span>
+<input class="pl-xl pr-sm py-sm rounded-lg border border-outline-variant bg-surface-container-lowest text-body-medium focus:border-secondary focus:ring-1 focus:ring-secondary outline-none w-64 transition-colors" placeholder="Search modules..." type="text"/>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-sm text-secondary dark:text-secondary-fixed">
+<button class="p-xs rounded-full hover:bg-surface-container-high dark:hover:bg-primary transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="p-xs rounded-full hover:bg-surface-container-high dark:hover:bg-primary transition-colors cursor-pointer active:opacity-80 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-error"></span>
+</button>
+<button class="p-xs rounded-full hover:bg-surface-container-high dark:hover:bg-primary transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-fixed overflow-hidden ml-sm border border-outline-variant cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of an industrial engineer in a modern control room setting, bright lighting, corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5De7YMhI7kQMKKgI_M3vyAIjiNanCY_j0oNBi9hOPX2AqXSj2M8H4jtcvl3j_o6-IN0pgGswh9hwtVB6KI9Z9PMXqEZhuEKRqPQTo_Aw2fPXIROeCgdfp2_h3MYsCBNe_s2ukhE7xnOnW_weU5RXydhX4tlS1cCU86pmRqJk5mYS1BoA3k2RxJi620db0yUSZ9Btvm5k4NHg2HbpzESkBsc3sFpgGmqhFO3jlakgNK6m_QRq0ZNSH"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<div class="flex-1 overflow-y-auto mt-[60px] pb-24 lg:pb-lg bg-background p-md lg:p-lg space-y-lg">
+<!-- Header Section -->
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Training Dashboard</h2>
+<p class="text-on-surface-variant font-body-base mt-1 persian-text text-right" dir="rtl">داشبورد آموزش و یادگیری</p>
+</div>
+<button class="amber-gradient text-on-primary px-lg py-sm rounded-lg font-body-medium flex items-center gap-sm hover:opacity-90 transition-opacity shadow-sm">
+<span class="material-symbols-outlined text-[18px]">play_circle</span>
+                    Resume Last Course
+                </button>
+</div>
+<!-- KPI Row (Bento Grid Style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- KPI 1 -->
+<div class="glass-card p-md rounded-xl flex items-center gap-md relative overflow-hidden group hover:border-secondary-container transition-colors">
+<div class="absolute right-0 top-0 w-16 h-16 bg-surface-container-high rounded-bl-full opacity-50 z-0"></div>
+<div class="w-[46px] h-[46px] rounded-kpi blue-gradient flex items-center justify-center text-on-primary z-10 shadow-sm">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div class="z-10">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">Courses Completed</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface">24 <span class="text-xs text-primary-container/60 font-body-base ml-1">/ 30</span></p>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="glass-card p-md rounded-xl flex items-center gap-md relative overflow-hidden group hover:border-secondary-container transition-colors">
+<div class="absolute right-0 top-0 w-16 h-16 bg-surface-container-high rounded-bl-full opacity-50 z-0"></div>
+<div class="w-[46px] h-[46px] rounded-kpi amber-gradient flex items-center justify-center text-on-primary z-10 shadow-sm">
+<span class="material-symbols-outlined">workspace_premium</span>
+</div>
+<div class="z-10">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">Active Certifications</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface">5 <span class="text-xs text-secondary-container font-body-base ml-1">+1 Expiring</span></p>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="glass-card p-md rounded-xl flex items-center gap-md relative overflow-hidden group hover:border-secondary-container transition-colors">
+<div class="absolute right-0 top-0 w-16 h-16 bg-surface-container-high rounded-bl-full opacity-50 z-0"></div>
+<div class="w-[46px] h-[46px] rounded-kpi bg-surface-variant flex items-center justify-center text-primary z-10 border border-outline-variant">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div class="z-10">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">Hours Logged</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface">128.5</p>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="glass-card p-md rounded-xl flex items-center gap-md relative overflow-hidden group hover:border-secondary-container transition-colors">
+<div class="absolute right-0 top-0 w-16 h-16 bg-surface-container-high rounded-bl-full opacity-50 z-0"></div>
+<div class="w-[46px] h-[46px] rounded-kpi bg-surface-variant flex items-center justify-center text-primary z-10 border border-outline-variant">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+<div class="z-10">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">Skill Score</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface">92%</p>
+</div>
+</div>
+</div>
+<!-- Main Content Area: Split Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Left Column: Guided Tours & Knowledge Base -->
+<div class="lg:col-span-2 space-y-lg">
+<!-- Guided Tours Section -->
+<div class="glass-card rounded-xl p-lg">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant/50 pb-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface">Guided Tours</h3>
+<button class="text-secondary font-badge-label text-badge-label hover:underline">View All</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Tour Card 1 -->
+<div class="border border-outline-variant rounded-lg p-md hover:border-secondary-container transition-colors bg-surface-container-lowest group cursor-pointer">
+<div class="flex justify-between items-start mb-sm">
+<div class="w-10 h-10 rounded-lg bg-primary-container text-inverse-primary flex items-center justify-center">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<span class="bg-surface-variant text-on-surface-variant px-2 py-1 rounded-full font-badge-label text-badge-label">15 Min</span>
+</div>
+<h4 class="font-body-medium text-body-medium text-on-surface mb-1">Asset Lifecycle Management</h4>
+<p class="text-on-surface-variant text-xs mb-md line-clamp-2">Interactive walkthrough of entering, tracking, and decommissioning heavy industrial assets.</p>
+<div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full w-[40%] rounded-full"></div>
+</div>
+</div>
+<!-- Tour Card 2 -->
+<div class="border border-outline-variant rounded-lg p-md hover:border-secondary-container transition-colors bg-surface-container-lowest group cursor-pointer">
+<div class="flex justify-between items-start mb-sm">
+<div class="w-10 h-10 rounded-lg bg-primary-container text-inverse-primary flex items-center justify-center">
+<span class="material-symbols-outlined">build</span>
+</div>
+<span class="bg-surface-variant text-on-surface-variant px-2 py-1 rounded-full font-badge-label text-badge-label">20 Min</span>
+</div>
+<h4 class="font-body-medium text-body-medium text-on-surface mb-1">Preventative Maintenance</h4>
+<p class="text-on-surface-variant text-xs mb-md line-clamp-2">Learn how to schedule and execute routine maintenance tasks efficiently.</p>
+<div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full w-[0%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Knowledge Base Grid -->
+<div class="glass-card rounded-xl p-lg">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant/50 pb-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface">Knowledge Base Categories</h3>
+<p class="text-on-surface-variant text-xs persian-text" dir="rtl">پایگاه دانش</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-md">
+<a class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-lg bg-surface-container-lowest hover:bg-surface-container-low hover:border-primary-fixed-dim transition-all text-center group" href="#">
+<span class="material-symbols-outlined text-3xl text-primary-container mb-2 group-hover:scale-110 transition-transform">architecture</span>
+<span class="font-body-medium text-body-medium text-on-surface">Engineering Standards</span>
+</a>
+<a class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-lg bg-surface-container-lowest hover:bg-surface-container-low hover:border-primary-fixed-dim transition-all text-center group" href="#">
+<span class="material-symbols-outlined text-3xl text-primary-container mb-2 group-hover:scale-110 transition-transform">health_and_safety</span>
+<span class="font-body-medium text-body-medium text-on-surface">HSE Protocols</span>
+</a>
+<a class="flex flex-col items-center justify-center p-md border border-outline-variant rounded-lg bg-surface-container-lowest hover:bg-surface-container-low hover:border-primary-fixed-dim transition-all text-center group" href="#">
+<span class="material-symbols-outlined text-3xl text-primary-container mb-2 group-hover:scale-110 transition-transform">smart_toy</span>
+<span class="font-body-medium text-body-medium text-on-surface">AI Tools &amp; Analytics</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Right Column: Certification Status -->
+<div class="space-y-lg">
+<div class="glass-card rounded-xl p-lg h-full">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant/50 pb-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface">Certification Status</h3>
+<span class="material-symbols-outlined text-on-surface-variant">verified_user</span>
+</div>
+<div class="space-y-sm">
+<!-- Cert Item 1 -->
+<div class="flex items-center justify-between p-sm border border-outline-variant rounded-lg bg-surface-container-lowest">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-[#e8f5e9] text-[#2e7d32] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+</div>
+<div>
+<p class="font-body-medium text-body-medium text-on-surface text-sm">ISO 9001 Auditing</p>
+<p class="text-xs text-on-surface-variant">Valid until Oct 2025</p>
+</div>
+</div>
+<span class="bg-[#e8f5e9] text-[#2e7d32] px-2 py-0.5 rounded-full font-badge-label text-badge-label">Active</span>
+</div>
+<!-- Cert Item 2 (Expiring) -->
+<div class="flex items-center justify-between p-sm border border-secondary-container bg-[#fff8f0] rounded-lg">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-[#ffe0b2] text-[#e65100] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+</div>
+<div>
+<p class="font-body-medium text-body-medium text-on-surface text-sm">HazMat Handling Level 2</p>
+<p class="text-xs text-[#e65100]">Expires in 14 days</p>
+</div>
+</div>
+<button class="text-xs font-body-medium text-secondary hover:underline">Renew</button>
+</div>
+<!-- Cert Item 3 -->
+<div class="flex items-center justify-between p-sm border border-outline-variant rounded-lg bg-surface-container-lowest">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-[#e8f5e9] text-[#2e7d32] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+</div>
+<div>
+<p class="font-body-medium text-body-medium text-on-surface text-sm">Advanced Data Security</p>
+<p class="text-xs text-on-surface-variant">Valid until Jan 2026</p>
+</div>
+</div>
+<span class="bg-[#e8f5e9] text-[#2e7d32] px-2 py-0.5 rounded-full font-badge-label text-badge-label">Active</span>
+</div>
+</div>
+<div class="mt-md pt-md border-t border-outline-variant/50 text-center">
+<button class="text-sm font-body-medium border border-outline-variant text-surface-tint px-4 py-1.5 rounded hover:bg-surface-container transition-colors w-full">View Complete Registry</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-2 lg:hidden bg-surface dark:bg-inverse-surface shadow-lg border-t border-outline-variant rounded-t-xl">
+<a class="flex flex-col items-center text-secondary-container bg-primary-container rounded-full p-2 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-caps text-label-caps mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant transition-transform active:scale-90 hover:bg-surface-container p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-label-caps text-label-caps mt-1">Learn</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant transition-transform active:scale-90 hover:bg-surface-container p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-label-caps text-label-caps mt-1">Library</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant transition-transform active:scale-90 hover:bg-surface-container p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-caps text-label-caps mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

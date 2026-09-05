@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FieldOps Utility - Offline Document Library</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom scrollbar for high-density lists */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #c5c6cd;
+            border-radius: 10px;
+        }
+    </style>
+<!-- Tailwind Config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-container": "#6e4100",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#d0e4fe",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "primary-container": "#142033",
+                        "on-primary-fixed": "#101c2f",
+                        "on-surface": "#081d2f",
+                        "inverse-primary": "#bbc7e0",
+                        "on-secondary-fixed": "#2c1700",
+                        "surface-container": "#e4efff",
+                        "primary": "#000819",
+                        "secondary": "#895200",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-tertiary-container": "#498bcd",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "tertiary-fixed": "#d1e4ff",
+                        "surface-variant": "#d0e4fe",
+                        "inverse-on-surface": "#e9f1ff",
+                        "surface-dim": "#c8dcf5",
+                        "outline-variant": "#c5c6cd",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "surface-tint": "#535f75",
+                        "on-surface-variant": "#44474c",
+                        "background": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "outline": "#75777d",
+                        "inverse-surface": "#1f3245",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#7c889f",
+                        "secondary-container": "#fdaa47",
+                        "surface": "#f8f9ff",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container-low": "#eef4ff",
+                        "tertiary": "#000815",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "tertiary-container": "#00213d",
+                        "surface-container-high": "#daeaff",
+                        "primary-fixed": "#d7e3fd",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "on-background": "#081d2f"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "sidebar-width": "260px",
+                        "sm": "8px",
+                        "topbar-height": "60px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "md": "16px"
+                    },
+                    fontFamily: {
+                        "table-header": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-base": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    fontSize: {
+                        "table-header": ["11.5px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "700" }],
+                        "label-caps": ["11px", { lineHeight: "14px", letterSpacing: "0.06em", fontWeight: "700" }],
+                        "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }],
+                        "headline-lg-mobile": ["20px", { lineHeight: "28px", fontWeight: "700" }],
+                        "body-base": ["13.5px", { lineHeight: "20px", letterSpacing: "0", fontWeight: "400" }],
+                        "kpi-stat": ["22px", { lineHeight: "24px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "table-cell": ["13px", { lineHeight: "18px", letterSpacing: "0", fontWeight: "400" }],
+                        "body-medium": ["13.5px", { lineHeight: "20px", letterSpacing: "0", fontWeight: "600" }],
+                        "badge-label": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "600" }],
+                        "headline-md": ["18px", { lineHeight: "24px", letterSpacing: "0", fontWeight: "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface flex h-screen overflow-hidden selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Desktop Navigation Drawer (Hidden on Mobile) -->
+<nav class="hidden md:flex bg-surface text-primary font-body-medium text-body-medium h-full w-sidebar-width fixed left-0 top-0 border-r border-outline-variant shadow-md transition-all duration-200 flex-col p-md z-40">
+<!-- Header: Profile -->
+<div class="flex items-center gap-sm mb-lg border-b border-outline-variant pb-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden shrink-0">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-medium text-body-medium text-primary">S. Miller</span>
+<span class="font-table-cell text-table-cell text-on-surface-variant">Lead Field Engineer</span>
+<span class="font-badge-label text-badge-label text-on-primary-container mt-xs">Shift A - Online</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<ul class="flex flex-col gap-unit flex-grow">
+<li>
+<a class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">factory</span>
+                    Equipment Registry
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+                    Maintenance Logs
+                </a>
+</li>
+<!-- Active State: Safety Manuals (Maps to Document Library intent) -->
+<li>
+<a class="flex items-center gap-sm p-sm text-on-secondary-container bg-secondary-container rounded-lg font-bold transition-colors" href="#">
+<span class="material-symbols-outlined icon-filled">security</span>
+                    Safety Manuals
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+                    Team Sync
+                </a>
+</li>
+</ul>
+<!-- Bottom Link -->
+<div class="mt-auto border-t border-outline-variant pt-sm">
+<a class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex flex-col flex-grow md:ml-[260px] h-screen overflow-hidden">
+<!-- TopAppBar -->
+<header class="bg-surface text-primary font-headline-md text-headline-md w-full top-0 sticky border-b border-outline-variant flat no shadows flex items-center justify-between px-md h-topbar-height shrink-0 z-30">
+<!-- Leading: Avatar -->
+<div class="flex items-center gap-sm md:hidden">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-primary text-[20px]">person</span>
+</div>
+</div>
+<!-- Headline -->
+<h1 class="font-headline-md text-headline-md text-primary font-bold">FieldOps Utility</h1>
+<!-- Trailing: Icon -->
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors active:opacity-80 text-on-surface-variant">
+<span class="material-symbols-outlined">wifi</span>
+</button>
+</header>
+<!-- Canvas (Offline Document Library) -->
+<main class="flex-grow p-gutter md:p-lg overflow-y-auto bg-background flex flex-col gap-md pb-[80px] md:pb-lg">
+<!-- Page Header & Controls -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Offline Document Library</h2>
+<span class="bg-surface-variant text-on-surface-variant font-badge-label text-badge-label px-2 py-1 rounded-full flex items-center gap-xs border border-outline-variant">
+<span class="material-symbols-outlined text-[14px]">cloud_off</span>
+                            Offline Ready
+                        </span>
+</div>
+<p class="font-body-base text-body-base text-on-surface-variant">Access cached technical drawings and manuals.</p>
+</div>
+<!-- Tools: Lang, Search, Filter -->
+<div class="flex flex-wrap items-center gap-sm w-full md:w-auto">
+<!-- Dual Language Toggle -->
+<div class="flex bg-surface border border-outline-variant rounded-lg overflow-hidden shrink-0 h-[36px]">
+<button class="px-3 py-1 font-badge-label text-badge-label bg-surface-container-high text-primary font-bold">EN</button>
+<button class="px-3 py-1 font-badge-label text-badge-label text-on-surface-variant hover:bg-surface-container-low transition-colors">FA</button>
+</div>
+<!-- Search Bar -->
+<div class="relative flex-grow md:w-[240px] h-[36px]">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full h-full pl-8 pr-3 py-1 bg-surface border border-outline-variant rounded-lg font-body-base text-body-base text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all" placeholder="Search documents..." type="text"/>
+</div>
+<!-- Filter Dropdown -->
+<div class="relative shrink-0 h-[36px]">
+<button class="flex items-center gap-xs px-3 py-1 h-full bg-surface border border-outline-variant rounded-lg font-body-base text-body-base text-on-surface hover:bg-surface-container-low transition-colors focus:outline-none focus:border-secondary">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                            Asset Group
+                            <span class="material-symbols-outlined text-[18px]">arrow_drop_down</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bento Grid Split Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-md flex-grow min-h-[500px]">
+<!-- Left: Document List (Categories) -->
+<div class="lg:col-span-4 bg-surface border border-outline-variant rounded-xl flex flex-col overflow-hidden">
+<div class="bg-surface-container-low border-b border-outline-variant px-md py-sm">
+<h3 class="font-table-header text-table-header text-on-surface uppercase">Pump Systems (Centrifugal)</h3>
+</div>
+<div class="flex-grow overflow-y-auto p-sm flex flex-col gap-unit">
+<!-- Doc Item 1 (Active) -->
+<button class="w-full text-left flex items-start gap-sm p-sm rounded-lg bg-surface-container-high border border-outline-variant transition-colors group relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary"></div>
+<div class="w-10 h-10 rounded bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">picture_as_pdf</span>
+</div>
+<div class="flex flex-col flex-grow min-w-0">
+<span class="font-body-medium text-body-medium text-on-surface truncate">PMP-0912 Overhaul Manual</span>
+<div class="flex items-center gap-sm mt-xs">
+<span class="font-table-cell text-table-cell text-on-surface-variant flex items-center gap-[2px]">
+<span class="material-symbols-outlined text-[14px]">sd_card</span> 4.2 MB
+                                    </span>
+<span class="font-table-cell text-table-cell text-on-surface-variant flex items-center gap-[2px]">
+<span class="material-symbols-outlined text-[14px]">sync</span> 2h ago
+                                    </span>
+</div>
+</div>
+</button>
+<!-- Doc Item 2 -->
+<button class="w-full text-left flex items-start gap-sm p-sm rounded-lg hover:bg-surface-container-low border border-transparent hover:border-outline-variant transition-colors group">
+<div class="w-10 h-10 rounded bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">image</span>
+</div>
+<div class="flex flex-col flex-grow min-w-0">
+<span class="font-body-medium text-body-medium text-on-surface truncate">Impeller Clearance Spec (Drawing)</span>
+<div class="flex items-center gap-sm mt-xs">
+<span class="font-table-cell text-table-cell text-on-surface-variant flex items-center gap-[2px]">
+<span class="material-symbols-outlined text-[14px]">sd_card</span> 1.8 MB
+                                    </span>
+<span class="font-table-cell text-table-cell text-on-surface-variant flex items-center gap-[2px]">
+<span class="material-symbols-outlined text-[14px]">sync</span> 1d ago
+                                    </span>
+</div>
+</div>
+</button>
+</div>
+<div class="bg-surface-container-low border-b border-t border-outline-variant px-md py-sm">
+<h3 class="font-table-header text-table-header text-on-surface uppercase">HVAC &amp; Ventilation</h3>
+</div>
+<div class="p-sm flex flex-col gap-unit">
+<!-- Doc Item 3 -->
+<button class="w-full text-left flex items-start gap-sm p-sm rounded-lg hover:bg-surface-container-low border border-transparent hover:border-outline-variant transition-colors group">
+<div class="w-10 h-10 rounded bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">picture_as_pdf</span>
+</div>
+<div class="flex flex-col flex-grow min-w-0">
+<span class="font-body-medium text-body-medium text-on-surface truncate">AHU-Line 4 Wiring Diagram</span>
+<div class="flex items-center gap-sm mt-xs">
+<span class="font-table-cell text-table-cell text-on-surface-variant flex items-center gap-[2px]">
+<span class="material-symbols-outlined text-[14px]">sd_card</span> 3.1 MB
+                                    </span>
+<span class="font-table-cell text-table-cell text-on-surface-variant flex items-center gap-[2px]">
+<span class="material-symbols-outlined text-[14px]">sync</span> 5d ago
+                                    </span>
+</div>
+</div>
+</button>
+</div>
+</div>
+<!-- Right: Document Viewer -->
+<div class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col overflow-hidden relative min-h-[400px]">
+<!-- Viewer Toolbar -->
+<div class="h-[48px] border-b border-outline-variant bg-surface px-sm flex items-center justify-between shrink-0">
+<div class="flex items-center gap-sm">
+<span class="font-body-medium text-body-medium text-on-surface truncate max-w-[200px] md:max-w-[400px]">PMP-0912 Overhaul Manual - Page 14</span>
+</div>
+<div class="flex items-center gap-xs">
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-high text-on-surface-variant transition-colors" title="Zoom Out">
+<span class="material-symbols-outlined text-[20px]">zoom_out</span>
+</button>
+<span class="font-table-cell text-table-cell text-on-surface w-[40px] text-center">100%</span>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-high text-on-surface-variant transition-colors" title="Zoom In">
+<span class="material-symbols-outlined text-[20px]">zoom_in</span>
+</button>
+<div class="w-px h-4 bg-outline-variant mx-1"></div>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-high text-on-surface-variant transition-colors" title="Fit to Screen">
+<span class="material-symbols-outlined text-[20px]">fit_screen</span>
+</button>
+</div>
+</div>
+<!-- Viewer Canvas -->
+<div class="flex-grow bg-[#edf0f4] relative overflow-hidden flex items-center justify-center p-md">
+<!-- Simulated Technical Drawing -->
+<div class="bg-white shadow-lg w-full max-w-[800px] aspect-[1/1.4] border border-outline-variant relative overflow-hidden flex items-center justify-center">
+<img class="w-full h-full object-cover opacity-90" data-alt="A detailed, high-resolution technical blueprint drawing of an industrial centrifugal pump. The drawing features crisp, precise white linework on a classic cyan-blue background, typical of traditional cyanotype blueprints. The schematic includes various cross-sections, dimension lines, and numbered annotations detailing internal components like the impeller, casing, and bearings. The style is strictly technical, orthographic, and highly professional, suitable for a mission-critical engineering environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUkE8YMYq3Jsj7J-qr2iE1EpoXpeXDsQXiOTQsf35sMPFPrgMmlf7k2qWB1XzPfSBO9ARwQYq_OPKt0XpWrd0mn0asRVYzUvEU0DtMBwh5c5ma3dV5TUSuV2WBvCFiUdRPTf1UB8ZmNFpREs-5j6c4lwKjNWa5HSoohFm8HxDX1v7B2UIrv0YP9SAgKqRyMd7K_OvYT6IX19x51kR1uWGsrEPaDVjdLeHfV0ZcoBxLxqn_9z7QN_ij"/>
+<!-- Simulated Viewer Overlay Grid (Aesthetic) -->
+<div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(#c5c6cd 1px, transparent 1px); background-size: 20px 20px; opacity: 0.3;"></div>
+</div>
+<!-- Floating Action (Print/Share - Disabled offline styling) -->
+<div class="absolute bottom-md right-md flex flex-col gap-sm">
+<button class="w-10 h-10 rounded-full bg-surface border border-outline-variant text-outline flex items-center justify-center shadow-sm cursor-not-allowed" title="Print (Unavailable Offline)">
+<span class="material-symbols-outlined">print_disabled</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Mobile Bottom Navigation Bar (Hidden on md+) -->
+<nav class="md:hidden bg-surface-container-high text-secondary font-label-caps text-label-caps font-headline-lg text-headline-lg fixed bottom-0 w-full z-50 border-t border-outline-variant shadow-lg left-0 flex justify-around items-center py-sm">
+<!-- Tab 1 -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-highest active:scale-95 transition-transform duration-150 rounded-full" href="#">
+<span class="material-symbols-outlined mb-[2px]">assignment</span>
+<span>Tasks</span>
+</a>
+<!-- Tab 2 -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-highest active:scale-95 transition-transform duration-150 rounded-full" href="#">
+<span class="material-symbols-outlined mb-[2px]">qr_code_scanner</span>
+<span>Scan</span>
+</a>
+<!-- Tab 3 -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-highest active:scale-95 transition-transform duration-150 rounded-full" href="#">
+<span class="material-symbols-outlined mb-[2px]">report_problem</span>
+<span>Incidents</span>
+</a>
+<!-- Tab 4 (Active mapped to Document Library intent) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 hover:bg-surface-container-highest active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined icon-filled mb-[2px]">description</span>
+<span>Docs</span>
+</a>
+</nav>
+</body></html>

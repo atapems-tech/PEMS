@@ -1,0 +1,233 @@
+﻿@model PEMS.Domain.Entities.EngineeringDocument
+
+
+<h2>Create Engineering Document</h2>
+
+
+<form asp-action="Create" method="post">
+
+    <div class="mb-3">
+        <label>Document No</label>
+        <div class="input-group">
+            <span class="input-group-text bg-light" id="autoNumberBadge">
+                <i class="bi bi-magic"></i>
+            </span>
+            <input asp-for="DocumentNo"
+                   class="form-control" placeholder="Generated automatically on save" disabled="disabled" />
+        </div>
+
+        @if ((bool)(ViewBag.CanManualNumber ?? false))
+        {
+            <div class="form-check mt-2">
+                <input class="form-check-input" type="checkbox" name="useManualNumber" value="true" id="useManualNumberCheck" />
+                <label class="form-check-label small" for="useManualNumberCheck">
+                    Enter document number manually (overrides automatic numbering)
+                </label>
+            </div>
+            <div class="form-text small">Automatic numbering is the default for everyone; manual override requires your current permission.</div>
+        }
+        else
+        {
+            <div class="form-text small">Document numbers are generated automatically based on Project / Discipline / Type. Your role does not have permission to override this.</div>
+        }
+    </div>
+
+    <script>
+        var manualCheck = document.getElementById('useManualNumberCheck');
+        var docNoInput = document.querySelector('[name="DocumentNo"]');
+        if (manualCheck) {
+            manualCheck.addEventListener('change', function () {
+                docNoInput.disabled = !this.checked;
+                if (this.checked) docNoInput.focus();
+            });
+        }
+    </script>
+
+
+
+    <div class="mb-3">
+        <label>Title</label>
+
+        <input asp-for="Title"
+               class="form-control" />
+    </div>
+
+
+
+    <div class="mb-3">
+        <label>Description</label>
+
+        <textarea asp-for="Description"
+                  class="form-control"></textarea>
+    </div>
+
+
+    <div class="mb-3">
+        <label>Area / Stage <span class="text-muted small">(optional - طبق MDR)</span></label>
+        <input asp-for="Area" class="form-control" placeholder="e.g. ABS &amp; Common, Rubber" />
+    </div>
+
+
+    <div class="mb-3">
+        <label>Document Type</label>
+
+        <select asp-for="DocumentType"
+                class="form-control">
+
+            <option value="">
+                Select Type
+            </option>
+
+            <option value="Drawing">
+                Drawing
+            </option>
+
+            <option value="Datasheet">
+                Datasheet
+            </option>
+
+            <option value="Calculation">
+                Calculation
+            </option>
+
+            <option value="Specification">
+                Specification
+            </option>
+
+        </select>
+
+    </div>
+
+
+
+    <div class="mb-3">
+
+        <label>Project</label>
+
+        <select asp-for="ProjectId"
+                asp-items="ViewBag.Projects"
+                class="form-control">
+
+            <option value="">
+                Select Project
+            </option>
+
+        </select>
+
+    </div>
+
+
+
+
+    <div class="mb-3">
+
+        <label>Discipline</label>
+
+        <select asp-for="DisciplineId"
+                asp-items="ViewBag.Disciplines"
+                class="form-control">
+
+            <option value="">
+                Select Discipline
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="mb-3">
+
+        <label>Related Equipment <span class="text-muted small">(optional - for traceability)</span></label>
+
+        <select asp-for="EquipmentId"
+                asp-items="ViewBag.Equipments"
+                class="form-control">
+
+            <option value="">
+                -- None --
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="mb-3">
+
+        <label>Related Contract <span class="text-muted small">(optional - for traceability)</span></label>
+
+        <select asp-for="ContractId"
+                asp-items="ViewBag.Contracts"
+                class="form-control">
+
+            <option value="">
+                -- None --
+            </option>
+
+        </select>
+
+    </div>
+
+
+
+
+    <div class="mb-3">
+
+        <label>Status</label>
+
+        <select asp-for="Status"
+                class="form-control">
+
+            <option value="Draft">
+                Draft
+            </option>
+
+            <option value="Review">
+                Review
+            </option>
+
+            <option value="Approved">
+                Approved
+            </option>
+
+            <option value="Rejected">
+                Rejected
+            </option>
+
+        </select>
+
+    </div>
+
+
+
+
+    <div class="mb-3">
+
+        <label>Revision No</label>
+
+        <input asp-for="RevisionNo"
+               class="form-control" />
+
+    </div>
+
+
+
+
+    <button type="submit"
+            class="btn btn-primary">
+
+        Save
+
+    </button>
+
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+
+        Back
+
+    </a>
+
+
+</form>

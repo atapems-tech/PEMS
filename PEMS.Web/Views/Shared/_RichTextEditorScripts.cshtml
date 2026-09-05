@@ -1,0 +1,111 @@
+@using System.Globalization
+@* پارشیال مشترک ادیتور متن غنی (طبق درخواست: "نسخه‌ی کوچک‌شده‌ی Word" برای نامه‌نگاری) -
+   Quill.js: راست‌چین/چپ‌چین واقعی، نوع/اندازه‌ی فونت، رنگ، لیست، تراز، جدول‌بندی با Indent،
+   لینک، Undo/Redo - بدون نیاز به لایسنس (برخلاف نسخه‌های جدید CKEditor 4).
+   Model: id عنصر textarea هدف (بدون #) *@
+@model string
+@{
+    var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
+    var editorDivId = Model + "_quillEditor";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css" />
+<style>
+    #@editorDivId { min-height: 180px; background: var(--pems-surface, #fff); }
+    #@editorDivId .ql-editor { font-size: 14px; }
+    .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="tahoma"]::before,
+    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="tahoma"]::before { content: 'Tahoma'; font-family: Tahoma; }
+    .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="arial"]::before,
+    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="arial"]::before { content: 'Arial'; font-family: Arial; }
+    .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="times-new-roman"]::before,
+    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="times-new-roman"]::before { content: 'Times New Roman'; font-family: 'Times New Roman'; }
+    .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="b-nazanin"]::before,
+    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="b-nazanin"]::before { content: 'B Nazanin'; font-family: 'B Nazanin', Tahoma; }
+</style>
+
+<div id="@editorDivId" style="display:none;"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js"></script>
+<script>
+    (function () {
+        var targetTextarea = document.getElementById('@Model');
+        var container = document.getElementById('@editorDivId');
+        container.style.display = '';
+        targetTextarea.style.display = 'none';
+
+        var Font = Quill.import('formats/font');
+        Font.whitelist = ['sans-serif', 'serif', 'monospace', 'tahoma', 'arial', 'times-new-roman', 'b-nazanin'];
+        Quill.register(Font, true);
+
+        var Size = Quill.import('attributors/style/size');
+        Size.whitelist = ['10px', '12px', '14px', '16px', '18px', '20px', '24px', '32px', '40px'];
+        Quill.register(Size, true);
+
+        var quill = new Quill('#@editorDivId', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'font': Font.whitelist }, { 'size': Size.whitelist }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'script': 'sub' }, { 'script': 'super' }],
+                    [{ 'header': [1, 2, 3, false] }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }],
+                    [{ 'align': [] }],
+                    ['blockquote', 'link', 'image'],
+                    ['clean']
+                ]
+            }
+        });
+
+        // جهت پیش‌فرض ادیتور طبق زبان فعلی رابط کاربری (فارسی = راست‌چین)
+        var defaultIsRtl = @(isRtl ? "true" : "false");
+        if (defaultIsRtl) {
+            quill.format('direction', 'rtl');
+            quill.format('align', 'right');
+        }
+
+        // آپلود واقعی تصویر به سرور (نه Base64 داخل متن) - دکمه‌ی تصویر توکار Quill را بازنویسی می‌کند
+        quill.getModule('toolbar').addHandler('image', function () {
+            var input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/png,image/jpeg,image/gif,image/webp');
+            input.click();
+
+            input.onchange = function () {
+                var file = input.files[0];
+                if (!file) return;
+
+                var formData = new FormData();
+                formData.append('file', file);
+                var tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+                if (tokenInput) formData.append('__RequestVerificationToken', tokenInput.value);
+
+                fetch('/Letter/UploadEditorImage', { method: 'POST', body: formData })
+                    .then(function (r) { return r.json(); })
+                    .then(function (data) {
+                        var range = quill.getSelection(true);
+                        quill.insertEmbed(range.index, 'image', data.url);
+                    })
+                    .catch(function () { alert('Image upload failed.'); });
+            };
+        });
+
+        if (targetTextarea.value) {
+            quill.clipboard.dangerouslyPasteHTML(targetTextarea.value);
+        }
+
+        quill.on('text-change', function () {
+            targetTextarea.value = quill.root.innerHTML;
+        });
+
+        var form = targetTextarea.closest('form');
+        if (form) {
+            form.addEventListener('submit', function () {
+                targetTextarea.value = quill.root.innerHTML;
+            });
+        }
+    })();
+</script>

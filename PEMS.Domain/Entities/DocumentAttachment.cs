@@ -1,0 +1,82 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PEMS.Domain.Entities;
+
+public class DocumentAttachment
+{
+    [Key]
+    public int AttachmentId { get; set; }
+
+
+    public int? DocumentId { get; set; }
+
+    // طبق بررسی قبلی: "چه کسی این فایل را آپلود کرد" اصلاً هیچ‌جا ذخیره نمی‌شد - پارامترش
+    // در سرویس وجود داشت ولی نادیده گرفته می‌شد
+    public int? UploadedById { get; set; }
+    public Employee? UploadedBy { get; set; }
+
+    public EngineeringDocument? Document { get; set; }
+
+
+    // =========================
+    // AI Intake Queue (طبق AI Engineering Intelligence Redesign)
+    // =========================
+    // Upload دیگر خودکار یک EngineeringDocument نمی‌سازد. فایل ابتدا این‌جا (بدون DocumentId)
+    // می‌نشیند تا AI آن را دسته‌بندی کند و بعد به ماژول درست هدایت شود.
+
+    public int? IntakeProjectId { get; set; }
+    public Project? IntakeProject { get; set; }
+
+    // Uploaded, Classifying, PendingEngineeringReview, PendingManualClassification, Routed, Rejected
+    public string? IntakeStage { get; set; }
+
+    // MDR, VDR, MR, MRQ, Contract, CMMS, Unrouted
+    public string? RoutedModule { get; set; }
+
+    public int? RoutedEntityId { get; set; }
+
+    // پیوست نامه (Correspondence Module) - همان زیرساخت آپلود موجود، بدون کد جدید
+    public int? LetterId { get; set; }
+    public Letter? Letter { get; set; }
+
+    // طبق درخواست: TQ/TSR/RFI و MOC واقعی همیشه با فرم پرشده/نقشه/برگه‌ی ارزیابی همراهند -
+    // از همون زیرساخت پیوست موجود بازاستفاده می‌شود، نه جدول جدید
+    public int? TechnicalQueryId { get; set; }
+    public TechnicalQuery? TechnicalQuery { get; set; }
+
+    public int? MOCId { get; set; }
+    public MOC? MOC { get; set; }
+
+
+    public string FileName { get; set; } = string.Empty;
+
+    public string FileExtension { get; set; } = string.Empty;
+
+    public string FilePath { get; set; } = string.Empty;
+
+    public long FileSize { get; set; }
+
+    public string? MimeType { get; set; }
+
+    public string AIStatus { get; set; } = "Pending";
+
+    public string? AISummary { get; set; }
+
+    public string? AIKeywords { get; set; }
+
+    public string? AITags { get; set; }
+
+    public double? AIConfidence { get; set; }
+
+    public string? AIError { get; set; }
+
+    public DateTime? AIProcessedDate { get; set; }
+
+    public DateTime UploadDate { get; set; } = DateTime.Now;
+
+    public bool IsActive { get; set; } = true;
+
+    public ICollection<AIExtractedTag> ExtractedTags { get; set; } = new List<AIExtractedTag>();
+
+    public ICollection<AIExtractedSpecification> ExtractedSpecifications { get; set; } = new List<AIExtractedSpecification>();
+}

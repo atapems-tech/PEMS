@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Drawing Detail: P&amp;ID-102-GFL</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Custom Scrollbar for dense technical views */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8f9ff; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c5c6cd; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #75777d; 
+        }
+    </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#9ecaff",
+                    "inverse-on-surface": "#e9f1ff",
+                    "surface-container": "#e4efff",
+                    "outline-variant": "#c5c6cd",
+                    "surface-dim": "#c8dcf5",
+                    "on-error": "#ffffff",
+                    "surface-container-low": "#eef4ff",
+                    "primary-container": "#142033",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#bbc7e0",
+                    "secondary-container": "#fdaa47",
+                    "secondary-fixed": "#ffdcbc",
+                    "tertiary-container": "#00213d",
+                    "primary-fixed": "#d7e3fd",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-high": "#daeaff",
+                    "background": "#f8f9ff",
+                    "on-surface-variant": "#44474c",
+                    "on-tertiary-container": "#498bcd",
+                    "on-tertiary-fixed-variant": "#00497c",
+                    "secondary": "#895200",
+                    "on-primary-fixed-variant": "#3b475c",
+                    "surface-bright": "#f8f9ff",
+                    "error-container": "#ffdad6",
+                    "surface": "#f8f9ff",
+                    "inverse-surface": "#1f3245",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed": "#d1e4ff",
+                    "on-surface": "#081d2f",
+                    "on-background": "#081d2f",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#d0e4fe",
+                    "surface-tint": "#535f75",
+                    "on-secondary-container": "#6e4100",
+                    "error": "#ba1a1a",
+                    "surface-variant": "#d0e4fe",
+                    "secondary-fixed-dim": "#ffb86a",
+                    "on-secondary-fixed": "#2c1700",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#683d00",
+                    "tertiary": "#000815",
+                    "primary-fixed-dim": "#bbc7e0",
+                    "primary": "#000819",
+                    "on-primary-fixed": "#101c2f",
+                    "on-tertiary-fixed": "#001d36",
+                    "outline": "#75777d",
+                    "on-primary-container": "#7c889f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "topbar-height": "60px",
+                    "md": "16px",
+                    "sidebar-width": "260px",
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "xs": "4px",
+                    "sm": "8px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "table-header": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "body-medium": ["Inter"],
+                    "kpi-stat": ["Inter"],
+                    "body-base": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "badge-label": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "table-cell": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                    "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                    "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                    "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant flex justify-between items-center h-topbar-height px-lg text-primary font-body-medium">
+<div class="flex items-center gap-sm">
+<span class="font-headline-md text-headline-md font-bold text-primary">PEMS Engineering</span>
+</div>
+<div class="flex items-center bg-surface-container-low rounded-full px-sm py-xs border border-outline-variant w-64 mr-auto ml-xl">
+<span class="material-symbols-outlined text-on-surface-variant mr-xs" style="font-size: 18px;">search</span>
+<input class="bg-transparent border-none outline-none text-body-base w-full p-0 focus:ring-0 text-on-surface" placeholder="Search..." type="text"/>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full p-sm cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full p-sm cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined" data-icon="translate">translate</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full p-sm cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full p-sm cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-sm cursor-pointer hover:opacity-90">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A professional headshot of an engineer in a control room environment, high quality, well lit." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8xu7evg7une9oh_qL4a33pUHVq9tPR_1uoM9nbwj9VHffksFIqK8eKnrZujjAm6_m2iqB3nMvExjiUfJQkSGcayYccgJyImxvacgBvgsDYGmX3074vejWAFqjSJDL9a358zXqBO25c2QWAqxAI6diYLZs0sKOKgY5zqkT48TYPkdboqFCbiwcqHNK3b0vgDM9jWcKsTYmWaV8MfY2V1sQdjmAhD--TcfgfMxSSYHJpk4HZpH_WNEC"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col fixed left-0 top-0 h-full w-sidebar-width bg-primary text-on-primary py-md shadow-sm z-40 pt-[76px]">
+<div class="px-md mb-lg">
+<div class="flex items-center gap-sm mb-xs">
+<div class="w-8 h-8 bg-surface-container rounded flex items-center justify-center text-primary font-bold">U</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-secondary-container">PEMS</h1>
+<p class="font-label-caps text-label-caps opacity-80">Management System</p>
+</div>
+</div>
+</div>
+<div class="px-md mb-md">
+<button class="w-full py-sm bg-[#d98c2b] text-white rounded font-body-medium flex items-center justify-center gap-xs hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" style="font-size: 18px;">add</span>
+                New Document
+            </button>
+</div>
+<div class="flex-1 overflow-y-auto">
+<ul class="flex flex-col gap-xs font-label-caps text-label-caps">
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-primary-fixed-variant opacity-80 hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                        Dashboard
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-primary-fixed-variant opacity-80 hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+                        Asset Registry
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm bg-secondary text-on-secondary font-bold border-r-4 border-secondary-fixed transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+                        Document Control
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-primary-fixed-variant opacity-80 hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="forward_to_inbox">forward_to_inbox</span>
+                        Transmittals
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-primary-fixed-variant opacity-80 hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+                        Version History
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-primary-fixed-variant opacity-80 hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+                        Workflow
+                    </a>
+</li>
+</ul>
+</div>
+<div class="mt-auto px-md pt-md border-t border-surface-tint border-opacity-20">
+<ul class="flex flex-col gap-xs font-label-caps text-label-caps">
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-primary-fixed-variant opacity-80 hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+                        Support
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-primary-fixed-variant opacity-80 hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                        Sign Out
+                    </a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Workspace -->
+<main class="md:ml-sidebar-width pt-[76px] p-lg min-h-screen">
+<!-- Header -->
+<div class="mb-lg flex justify-between items-end">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="bg-surface-variant text-on-surface-variant font-badge-label text-badge-label px-sm py-xs rounded-full">P&amp;ID</span>
+<span class="bg-[#eef4ff] text-[#00497c] font-badge-label text-badge-label px-sm py-xs rounded-full border border-[#9ecaff]">V 2.4 - Current</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-background m-0 flex items-baseline gap-sm">
+                    P&amp;ID-102-GFL: Main Gas Feed Line
+                    <span class="font-body-medium text-body-medium text-on-surface-variant opacity-70">/ خط لوله اصلی تامین گاز</span>
+</h2>
+</div>
+<div class="flex gap-sm">
+<button class="bg-surface border border-outline-variant text-on-surface-variant font-body-medium px-md py-sm rounded flex items-center gap-xs hover:border-[#fdaa47] hover:text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-size: 18px;">download</span>
+<div>
+<div class="leading-tight">Download PDF</div>
+<div class="text-[9px] opacity-70 font-normal leading-tight">دانلود PDF</div>
+</div>
+</button>
+<button class="bg-[#d98c2b] text-white font-body-medium px-md py-sm rounded flex items-center gap-xs hover:opacity-90 shadow-sm transition-opacity">
+<span class="material-symbols-outlined" style="font-size: 18px;">check_circle</span>
+<div>
+<div class="leading-tight">Approve Drawing</div>
+<div class="text-[9px] opacity-80 font-normal leading-tight">تایید نقشه</div>
+</div>
+</button>
+</div>
+</div>
+<!-- Split Layout Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-lg">
+<!-- Left Column: Document Canvas & Versions -->
+<div class="xl:col-span-2 flex flex-col gap-lg">
+<!-- Document Canvas -->
+<div class="bg-surface border border-outline-variant rounded-lg shadow-sm overflow-hidden flex flex-col h-[600px]">
+<div class="bg-[#f5f7fa] border-b border-outline-variant px-md py-sm flex justify-between items-center">
+<div class="flex items-center gap-sm text-on-surface-variant">
+<button class="p-xs hover:bg-surface-variant rounded"><span class="material-symbols-outlined" style="font-size: 20px;">zoom_in</span></button>
+<button class="p-xs hover:bg-surface-variant rounded"><span class="material-symbols-outlined" style="font-size: 20px;">zoom_out</span></button>
+<button class="p-xs hover:bg-surface-variant rounded"><span class="material-symbols-outlined" style="font-size: 20px;">pan_tool</span></button>
+<div class="w-px h-4 bg-outline-variant mx-xs"></div>
+<span class="font-table-cell text-table-cell">Page 1 of 1</span>
+</div>
+<button class="p-xs hover:bg-surface-variant rounded text-on-surface-variant"><span class="material-symbols-outlined" style="font-size: 20px;">fullscreen</span></button>
+</div>
+<div class="flex-1 bg-surface-container-low p-md overflow-auto relative flex items-center justify-center">
+<!-- Simulated Technical Drawing Image -->
+<div class="w-full max-w-4xl bg-white shadow-sm border border-outline-variant p-md" style="aspect-ratio: 1.414/1;">
+<img alt="Technical Drawing Preview" class="w-full h-full object-cover opacity-90" data-alt="A highly detailed, schematic piping and instrumentation diagram (P&amp;ID) for an industrial gas facility, rendered in sharp black lines on a clean white background. Blueprint aesthetic, complex engineering drawing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBehG1Fmc6-Zel7RGpxmoNV8wH2Fc4eEpWU-g73fWCC1w9Klei9jEddj5zwRg3ELmRKfQOMxvq8paWLnw-pD1xxCQ9oiKrekeeNVO_tjm1kKlIe6zW-PSBmfloxZhv7AMO7W77uqIpj7cZLMwPvrfa8g4jKBM3_xFj2nWQ29AChVNObLeYDMLxHalxySYO30Daqq3jtrTT6NiU1haWejmuioiDfUaI8AbIn-8QUjnx0KQvyMesTMgiw"/>
+</div>
+</div>
+</div>
+<!-- Version Control -->
+<div class="bg-surface border border-outline-variant rounded-lg shadow-sm p-lg">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant pb-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-[#fdaa47]">history</span>
+                            Version History <span class="text-on-surface-variant font-body-base font-normal">/ تاریخچه نسخه‌ها</span>
+</h3>
+<button class="text-on-surface-variant hover:text-primary font-body-medium text-sm flex items-center gap-xs">
+<span class="material-symbols-outlined" style="font-size: 16px;">edit_document</span>
+                            Request Revision
+                        </button>
+</div>
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#f5f7fa] font-table-header text-table-header text-on-surface-variant border-b border-outline-variant">
+<th class="py-sm px-md font-bold uppercase">Rev</th>
+<th class="py-sm px-md font-bold uppercase">Date</th>
+<th class="py-sm px-md font-bold uppercase">Author</th>
+<th class="py-sm px-md font-bold uppercase">Comments</th>
+<th class="py-sm px-md font-bold uppercase text-right">Action</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface">
+<tr class="border-b border-outline-variant hover:bg-[#1f4e780a] transition-colors bg-[#f8f9ff]">
+<td class="py-sm px-md font-bold flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+                                    2.4 (Current)
+                                </td>
+<td class="py-sm px-md">2023-10-24</td>
+<td class="py-sm px-md">J. Smith</td>
+<td class="py-sm px-md text-on-surface-variant truncate max-w-[200px]">Updated valve tags near compressor K-101.</td>
+<td class="py-sm px-md text-right">
+<button class="p-xs text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined" style="font-size: 18px;">visibility</span></button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-[#1f4e780a] transition-colors">
+<td class="py-sm px-md text-on-surface-variant">2.3</td>
+<td class="py-sm px-md text-on-surface-variant">2023-09-12</td>
+<td class="py-sm px-md text-on-surface-variant">A. Rezaei</td>
+<td class="py-sm px-md text-on-surface-variant truncate max-w-[200px]">Incorporated safety review feedback.</td>
+<td class="py-sm px-md text-right">
+<button class="p-xs text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined" style="font-size: 18px;">history</span></button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-[#1f4e780a] transition-colors">
+<td class="py-sm px-md text-on-surface-variant">1.0</td>
+<td class="py-sm px-md text-on-surface-variant">2023-01-15</td>
+<td class="py-sm px-md text-on-surface-variant">System</td>
+<td class="py-sm px-md text-on-surface-variant truncate max-w-[200px]">Initial release for construction.</td>
+<td class="py-sm px-md text-right">
+<button class="p-xs text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined" style="font-size: 18px;">history</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right Column: Metadata Sidebar -->
+<div class="xl:col-span-1">
+<div class="bg-surface border border-outline-variant rounded-lg shadow-sm p-lg sticky top-[92px]">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md border-b border-outline-variant pb-sm flex items-center gap-sm">
+<span class="material-symbols-outlined text-[#fdaa47]">info</span>
+                        Document Properties
+                    </h3>
+<div class="flex flex-col gap-md font-body-base text-body-base">
+<div class="flex flex-col">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-xs flex justify-between">
+                                Document ID <span>شناسه سند</span>
+</span>
+<span class="font-mono text-[13px] bg-surface-container-low px-sm py-xs rounded border border-outline-variant">P&amp;ID-102-GFL-00</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-xs flex justify-between">
+                                Discipline <span>رشته</span>
+</span>
+<span class="text-on-surface font-semibold">Process Engineering</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-xs flex justify-between">
+                                Owner / Lead <span>مالک</span>
+</span>
+<div class="flex items-center gap-sm">
+<div class="w-6 h-6 rounded-full bg-surface-tint text-white flex items-center justify-center text-[10px] font-bold">JS</div>
+<span class="text-on-surface">John Smith</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-xs flex justify-between">
+                                Facility Area <span>ناحیه</span>
+</span>
+<span class="text-on-surface">Unit 100 - Gas Reception</span>
+</div>
+<div class="h-px w-full bg-outline-variant my-sm"></div>
+<div class="flex flex-col">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-xs flex justify-between">
+                                Status <span>وضعیت</span>
+</span>
+<span class="inline-flex items-center gap-xs px-sm py-xs bg-[#eef4ff] text-[#00497c] rounded-full text-[12px] font-bold w-max border border-[#9ecaff]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#00497c]"></span> Approved for Design
+                            </span>
+</div>
+<div class="flex flex-col">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-xs flex justify-between">
+                                Last Modified <span>آخرین تغییر</span>
+</span>
+<span class="text-on-surface">Oct 24, 2023 - 14:30 IRST</span>
+</div>
+<div class="flex flex-col mt-sm">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-xs">
+                                Tags Referenced
+                            </span>
+<div class="flex flex-wrap gap-xs font-mono text-[11px]">
+<span class="bg-surface-variant px-sm py-0.5 rounded text-on-surface-variant border border-outline-variant hover:border-[#fdaa47] cursor-pointer">V-102A</span>
+<span class="bg-surface-variant px-sm py-0.5 rounded text-on-surface-variant border border-outline-variant hover:border-[#fdaa47] cursor-pointer">K-101</span>
+<span class="bg-surface-variant px-sm py-0.5 rounded text-on-surface-variant border border-outline-variant hover:border-[#fdaa47] cursor-pointer">FT-1025</span>
+<span class="bg-surface-variant px-sm py-0.5 rounded text-on-surface-variant border border-outline-variant hover:border-[#fdaa47] cursor-pointer">+12 More</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

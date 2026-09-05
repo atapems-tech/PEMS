@@ -1,0 +1,392 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>PEMS Enterprise Utility - Employee Directory</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=Noto+Sans:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "primary-container": "#142033",
+                      "on-primary-fixed": "#101c2f",
+                      "inverse-on-surface": "#e9f1ff",
+                      "tertiary-container": "#00213d",
+                      "background": "#f8f9ff",
+                      "surface-tint": "#535f75",
+                      "surface-container-low": "#eef4ff",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "surface-container-highest": "#d0e4fe",
+                      "on-tertiary-container": "#498bcd",
+                      "on-tertiary-fixed": "#001d36",
+                      "primary-fixed": "#d7e3fd",
+                      "outline": "#75777d",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "secondary": "#895200",
+                      "tertiary": "#000815",
+                      "inverse-surface": "#1f3245",
+                      "outline-variant": "#c5c6cd",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-high": "#daeaff",
+                      "secondary-fixed": "#ffdcbc",
+                      "tertiary-fixed": "#d1e4ff",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-error-container": "#93000a",
+                      "primary": "#000819",
+                      "on-error": "#ffffff",
+                      "on-secondary-fixed": "#2c1700",
+                      "surface-variant": "#d0e4fe",
+                      "on-secondary-container": "#6e4100",
+                      "surface-container": "#e4efff",
+                      "on-surface-variant": "#44474c",
+                      "on-background": "#081d2f",
+                      "surface-bright": "#f8f9ff",
+                      "on-primary-container": "#7c889f",
+                      "error": "#ba1a1a",
+                      "inverse-primary": "#bbc7e0",
+                      "on-surface": "#081d2f",
+                      "error-container": "#ffdad6",
+                      "surface-dim": "#c8dcf5",
+                      "secondary-container": "#fdaa47",
+                      "surface": "#f8f9ff",
+                      "on-primary": "#ffffff",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "secondary-fixed-dim": "#ffb86a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "xs": "4px",
+                      "xl": "32px",
+                      "sidebar-width": "260px",
+                      "unit": "4px",
+                      "topbar-height": "60px",
+                      "md": "16px",
+                      "gutter": "16px",
+                      "sm": "8px"
+              },
+              "fontFamily": {
+                      "badge-label": ["Inter"],
+                      "body-base": ["Inter"],
+                      "table-cell": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "kpi-stat": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-medium": ["Inter"],
+                      "table-header": ["Inter"]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff;
+        }
+        .modal-backdrop {
+            background-color: rgba(8, 29, 47, 0.4);
+            backdrop-filter: blur(2px);
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+<!-- Main Layout Container -->
+<div class="relative flex h-screen w-full flex-col bg-surface overflow-hidden">
+<!-- Shared TopNavBar (Read-only) -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#eaecf0] px-10 py-3 bg-white z-10">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-[#111418]">
+<div class="size-4 text-primary-container">
+<svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-[#111418] text-lg font-bold leading-tight tracking-[-0.015em]">PEMS Enterprise Utility</h2>
+</div>
+<label class="flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded h-full">
+<div class="text-[#5f6e86] flex border-none bg-[#eaecf0] items-center justify-center pl-4 rounded-l border-r-0" data-icon="MagnifyingGlass">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded text-[#111418] focus:outline-0 focus:ring-0 border-none bg-[#eaecf0] focus:border-none h-full placeholder:text-[#5f6e86] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" placeholder="Search" value="">
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="flex gap-2">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded h-10 bg-[#eaecf0] text-[#111418] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
+<div class="text-[#111418]" data-icon="Bell">
+<span class="material-symbols-outlined">notifications</span>
+</div>
+</button>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded h-10 bg-[#eaecf0] text-[#111418] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
+<div class="text-[#111418]" data-icon="Gear">
+<span class="material-symbols-outlined">settings</span>
+</div>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuDsB7CbtWgqnbJbTZNywT94T_jn7gIXezsoDfVA350BoTmLabenrfueILcu5L1zD223Kb3f6p6Bz6GYY7ZEtFDS4GzmMJjII-AUF33kwEzXtgfb4QNUe4xn0_nRJi6Lgf-UX-vAHL-V1Tih4lTpYdG1ERN3XXk4B1shtMpS4h2UHTMcOAMCMdDAlJ4KAwRXzX5xuNRsuMDY9Yox7a7RsBnbTDy2LSUuCZnRcTWNER1T7OmvF1wXBuBD&quot;);"></div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 border-r border-outline-variant bg-white flex flex-col p-4 gap-4">
+<div class="flex gap-3 items-center mb-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuBkth5H-U1kRx5HPpBU0qFPppzSnAQLkaIKKUzyXomINXlMjg_IDFJg6uiwaTLnlcy0NBAPItmXOY-QajXHlELj4XqWKarEMUOdarjMBG1hfihSCl06QzTET7iiJA572a7GvfwMl5rkaJkAHGNeVY6Q6Pikjy-_O-JpN3aCLY9HvyoUTP2dPL-9u_RXEPFrrfbriixrey2RzNk-mAoP286hG7ZsFcrqVQYssd44gCEUmA-SsuRKl8Kw&quot;);"></div>
+<h1 class="text-[#111418] text-base font-medium leading-normal">UtilityCorp Admin</h1>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface hover:bg-surface-container rounded transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-medium">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface hover:bg-surface-container rounded transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<p class="text-sm font-medium">Assets</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-surface-container text-on-surface rounded font-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<p class="text-sm font-medium">Employees</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface hover:bg-surface-container rounded transition-colors" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<p class="text-sm font-medium">Work Orders</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface hover:bg-surface-container rounded transition-colors" href="#">
+<span class="material-symbols-outlined">description</span>
+<p class="text-sm font-medium">Reports</p>
+</a>
+</nav>
+</aside>
+<!-- Main Content (Dashboard Backdrop) -->
+<main class="flex-1 overflow-y-auto p-8">
+<div class="flex flex-wrap justify-between gap-3 mb-8">
+<p class="text-[#111418] text-4xl font-black leading-tight tracking-[-0.033em] min-w-72">Employee Directory</p>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded h-10 px-4 bg-primary-container text-white text-sm font-bold leading-normal tracking-[0.015em]">
+<span class="truncate">Add Employee</span>
+</button>
+</div>
+<div class="overflow-hidden rounded border border-outline-variant bg-white">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-6 py-4 text-table-header text-on-surface uppercase">Name</th>
+<th class="px-6 py-4 text-table-header text-on-surface uppercase">Email</th>
+<th class="px-6 py-4 text-table-header text-on-surface uppercase">Department</th>
+<th class="px-6 py-4 text-table-header text-on-surface uppercase">Role</th>
+<th class="px-6 py-4 text-table-header text-on-surface uppercase">Status</th>
+<th class="px-6 py-4 text-table-header text-on-surface-variant text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-6 py-4 text-table-cell font-medium text-on-surface">Marcus Thorne</td>
+<td class="px-6 py-4 text-table-cell text-on-surface-variant">m.thorne@utilitycorp.com</td>
+<td class="px-6 py-4 text-table-cell">
+<span class="px-3 py-1 bg-surface-container-high text-on-surface text-xs font-semibold rounded-full">Engineering</span>
+</td>
+<td class="px-6 py-4 text-table-cell text-on-surface-variant">Senior Plant Engineer</td>
+<td class="px-6 py-4 text-table-cell">
+<span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full">Active</span>
+</td>
+<td class="px-6 py-4 text-table-cell text-right">
+<button class="text-primary-container font-bold hover:underline">Edit</button>
+</td>
+</tr>
+<!-- Additional Rows for Context -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-6 py-4 text-table-cell font-medium text-on-surface">Elena Rodriguez</td>
+<td class="px-6 py-4 text-table-cell text-on-surface-variant">e.rodriguez@utilitycorp.com</td>
+<td class="px-6 py-4 text-table-cell">
+<span class="px-3 py-1 bg-surface-container-high text-on-surface text-xs font-semibold rounded-full">Operations</span>
+</td>
+<td class="px-6 py-4 text-table-cell text-on-surface-variant">Site Supervisor</td>
+<td class="px-6 py-4 text-table-cell">
+<span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full">Active</span>
+</td>
+<td class="px-6 py-4 text-table-cell text-right">
+<button class="text-primary-container font-bold hover:underline">Edit</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</main>
+</div>
+</div>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4" id="editModal">
+<!-- Backdrop -->
+<div class="absolute inset-0 modal-backdrop"></div>
+<!-- Modal Content -->
+<div class="relative w-full max-w-lg bg-white rounded-xl shadow-2xl overflow-hidden border border-outline-variant transform transition-all">
+<!-- Modal Header -->
+<div class="px-6 py-5 border-b border-outline-variant flex items-center justify-between bg-white">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-cover bg-center border border-outline-variant" data-alt="A professional headshot of a middle-aged male engineer named Marcus Thorne, with a confident expression and graying hair, wearing a high-visibility utility vest. The background is a brightly lit, modern industrial facility with clean metallic textures and soft blue-toned ambient light, adhering to a high-key light mode aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCfyZ4XR65nPsE1vkL8vlIVNlLUK6sER96dsVgqPLwE0Ese9Z_X0CxaodJ7JWCfQ4IuLM_gJYZsRJ0OOhhU9yZwFoyzfOcXe4h55l6BhRmfJpyXEbHPhW3EujV69ejuagbYt9PBJxy7bMPt3LyzxdVhaoBWBe5jyNfMpj87E4qM9P6-J1j8IipBnvQfUmuGotZ-l1tlVbf9bzpdiHxFIChP8MPxe7wT7FISS4krX39q1MCU_WadZ-wH')">
+</div>
+<div>
+<h3 class="text-headline-md text-on-surface">Edit Employee</h3>
+<p class="text-xs text-on-surface-variant font-medium">EMP-4829 • Marcus Thorne • Senior Plant Engineer</p>
+</div>
+</div>
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Modal Body -->
+<form class="p-6 space-y-5 max-h-[60vh] overflow-y-auto"><!-- Employee ID & Full Name -->
+<div class="grid grid-cols-3 gap-4">
+  <div class="flex flex-col gap-1.5">
+    <label class="text-label-caps text-on-surface-variant uppercase tracking-wider" for="empId">Employee ID</label>
+    <input class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:ring-2 focus:ring-primary-container focus:border-primary-container text-body-base" id="empId" type="text" value="EMP-4829" readonly="">
+  </div>
+  <div class="col-span-2 flex flex-col gap-1.5">
+    <label class="text-label-caps text-on-surface-variant uppercase tracking-wider" for="fullName">Full Name</label>
+    <input class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:ring-2 focus:ring-primary-container focus:border-primary-container text-body-base" id="fullName" type="text" value="Marcus Thorne">
+  </div>
+</div>
+
+<!-- Email & Phone -->
+<div class="grid grid-cols-2 gap-4">
+  <div class="flex flex-col gap-1.5">
+    <label class="text-label-caps text-on-surface-variant uppercase tracking-wider" for="email">Email Address</label>
+    <input class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:ring-2 focus:ring-primary-container focus:border-primary-container text-body-base" id="email" type="email" value="m.thorne@utilitycorp.com">
+  </div>
+  <div class="flex flex-col gap-1.5">
+    <label class="text-label-caps text-on-surface-variant uppercase tracking-wider" for="phone">Phone Number</label>
+    <input class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:ring-2 focus:ring-primary-container focus:border-primary-container text-body-base" id="phone" type="tel" value="+1 (555) 012-3456">
+  </div>
+</div>
+
+<!-- Department & Role -->
+<div class="grid grid-cols-2 gap-4">
+  <div class="flex flex-col gap-1.5">
+    <label class="text-label-caps text-on-surface-variant uppercase tracking-wider" for="department">Department</label>
+    <select class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:ring-2 focus:ring-primary-container focus:border-primary-container text-body-base appearance-none cursor-pointer" id="department">
+      <option selected="" value="engineering">Engineering</option>
+      <option value="operations">Operations</option>
+      <option value="hr">HR</option>
+    </select>
+  </div>
+  <div class="flex flex-col gap-1.5">
+    <label class="text-label-caps text-on-surface-variant uppercase tracking-wider" for="role">Role</label>
+    <select class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:ring-2 focus:ring-primary-container focus:border-primary-container text-body-base appearance-none cursor-pointer" id="role">
+      <option selected="" value="senior_engineer">Senior Plant Engineer</option>
+      <option value="site_supervisor">Site Supervisor</option>
+      <option value="technician">Technician</option>
+    </select>
+  </div>
+</div>
+
+<!-- Status & Hire Date -->
+<div class="grid grid-cols-2 gap-4">
+  <div class="flex flex-col gap-1.5">
+    <label class="text-label-caps text-on-surface-variant uppercase tracking-wider" for="status">Status</label>
+    <select class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:ring-2 focus:ring-primary-container focus:border-primary-container text-body-base appearance-none cursor-pointer" id="status">
+      <option selected="" value="active">Active</option>
+      <option value="onleave">On Leave</option>
+      <option value="inactive">Inactive</option>
+    </select>
+  </div>
+  <div class="flex flex-col gap-1.5">
+    <label class="text-label-caps text-on-surface-variant uppercase tracking-wider" for="hireDate">Hire Date</label>
+    <input class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:ring-2 focus:ring-primary-container focus:border-primary-container text-body-base" id="hireDate" type="date" value="2018-05-12">
+  </div>
+</div>
+
+<!-- Emergency Contact -->
+<div class="flex flex-col gap-1.5">
+  <label class="text-label-caps text-on-surface-variant uppercase tracking-wider" for="emergency">Emergency Contact</label>
+  <input class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:ring-2 focus:ring-primary-container focus:border-primary-container text-body-base" id="emergency" type="text" value="Sarah Thorne (+1 555-012-3457)">
+</div>
+
+<!-- Health & Safety Section -->
+<div class="pt-4 border-t border-outline-variant">
+  <h4 class="text-sm font-bold text-on-surface mb-4 uppercase tracking-widest">Health &amp; Safety</h4>
+  <div class="grid grid-cols-3 gap-4">
+    <div class="flex flex-col gap-1.5">
+      <label class="text-label-caps text-on-surface-variant uppercase tracking-wider" for="bloodType">Blood Type</label>
+      <select class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:ring-2 focus:ring-primary-container focus:border-primary-container text-body-base appearance-none cursor-pointer" id="bloodType">
+        <option selected="" value="O+">O+</option>
+        <option value="A+">A+</option>
+        <option value="B+">B+</option>
+        <option value="AB+">AB+</option>
+      </select>
+    </div>
+    <div class="col-span-2 flex flex-col gap-1.5">
+      <label class="text-label-caps text-on-surface-variant uppercase tracking-wider" for="allergies">Allergies</label>
+      <input class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:ring-2 focus:ring-primary-container focus:border-primary-container text-body-base" id="allergies" type="text" value="None reported">
+    </div>
+  </div>
+  <div class="flex flex-col gap-1.5 mt-4">
+    <label class="text-label-caps text-on-surface-variant uppercase tracking-wider" for="medical">Medical Conditions</label>
+    <textarea class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded focus:ring-2 focus:ring-primary-container focus:border-primary-container text-body-base resize-none" id="medical" rows="2">No chronic conditions.</textarea>
+  </div>
+</div></form>
+<!-- Modal Footer -->
+<div class="px-6 py-4 bg-surface-container-low border-t border-outline-variant flex justify-end gap-3">
+<button class="px-6 py-2.5 rounded border border-outline-variant bg-white text-on-surface font-bold text-sm hover:bg-surface-container transition-colors">
+                Cancel
+            </button>
+<button class="px-6 py-2.5 rounded bg-primary-container text-white font-bold text-sm hover:opacity-90 transition-all shadow-md">
+                Save Changes
+            </button>
+</div>
+</div>
+</div>
+<script>
+    // Minimal interactivity for the modal (Cancel/Close/Save buttons)
+    const modal = document.getElementById('editModal');
+    const closeButtons = modal.querySelectorAll('button');
+    
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            // Prevent form submission
+            e.preventDefault();
+            
+            // Simple visual feedback before "closing" (hiding)
+            modal.style.opacity = '0';
+            modal.style.transition = 'opacity 0.2s ease-out';
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }, 200);
+        });
+    });
+
+    // Backdrop click to close
+    modal.querySelector('.modal-backdrop').addEventListener('click', () => {
+        modal.style.opacity = '0';
+        setTimeout(() => modal.classList.add('hidden'), 200);
+        document.body.classList.remove('overflow-hidden');
+    });
+</script>
+
+
+</body></html>

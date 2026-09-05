@@ -1,0 +1,720 @@
+﻿@model PEMS.Application.DTOs.VDRItemDto
+
+@{
+    var sbTop = Model.WorkflowStatus switch { "Closed" => "bg-success", "PendingResubmission" => "bg-warning text-dark", "UnderReview" => "bg-info text-dark", _ => "bg-secondary" };
+    var relatedLetters = (List<PEMS.Application.DTOs.RelatedLetterDto>)(ViewBag.RelatedLetters ?? new List<PEMS.Application.DTOs.RelatedLetterDto>());
+    var workflowHistory = (IReadOnlyList<PEMS.WorkflowPlatform.Dtos.WorkflowHistoryDto>)(ViewBag.WorkflowHistory ?? new List<PEMS.WorkflowPlatform.Dtos.WorkflowHistoryDto>());
+}
+
+<div class="content-card mb-3">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <h5 class="mb-0">@Model.DocumentNumber <span class="text-muted small">Rev @(Model.LatestRevisionNo ?? 0)</span></h5>
+            <span class="text-muted small">@Model.VendorName &middot; @Model.ProjectName</span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge @sbTop fs-6">@Model.WorkflowStatus</span>
+            @if (Model.IsOverdue) { <span class="badge bg-danger fs-6">Overdue</span> }
+        </div>
+    </div>
+
+    <hr class="my-2" />
+    <partial name="_VdrWorkflowStagesDiagram" model="@(( Model.WorkflowStatus, (string?)ViewBag.CurrentStageName ))" />
+</div>
+
+<ul class="nav nav-tabs mb-3" id="vdrTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
+            <i class="bi bi-info-circle"></i> Overview
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-submissions" type="button">
+            <i class="bi bi-clock-history"></i> Submissions <span class="badge bg-secondary">@Model.Submissions.Count</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
+            <i class="bi bi-chat-square-text"></i> Comments
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
+            <i class="bi bi-signpost-split"></i> Workflow
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
+            <i class="bi bi-envelope-paper"></i> Correspondence
+            @if (relatedLetters.Any()) { <span class="badge bg-secondary">@relatedLetters.Count</span> }
+        </button>
+    </li>
+</ul>
+
+<div class="tab-content">
+
+@* ===================== Overview ===================== *@
+<div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
+<div class="content-card mb-3">
+    <div class="row g-3">
+        <div class="col-md-3"><strong>Document No:</strong> @Model.DocumentNumber</div>
+        <div class="col-md-3"><strong>Type:</strong> @Model.DocumentTypeCode</div>
+        <div class="col-md-3"><strong>Vendor:</strong> @Model.VendorName</div>
+        <div class="col-md-3"><strong>PO:</strong> @Model.PoNumber</div>
+        <div class="col-md-3">
+            <strong>Equipment:</strong>
+            @if (Model.EquipmentId.HasValue)
+            { <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</a> }
+            else
+            { <span class="text-muted">-</span> }
+        </div>
+        <div class="col-md-3"><strong>Discipline:</strong> @Model.DisciplineCodeRaw @(Model.IsMultiDiscipline ? "(Multi-Discipline)" : "")</div>
+        <div class="col-md-3"><strong>Class:</strong> @Model.DocumentClass</div>
+        <div class="col-md-3"><strong>Planned 1st Issue:</strong> @(Model.PlannedFirstIssueDate?.ToString("yyyy-MM-dd"))</div>
+        <div class="col-md-3">
+            <strong>Status:</strong>
+            <span class="badge @sbTop">@Model.WorkflowStatus</span>
+            @if (Model.IsOverdue) { <span class="badge bg-danger">Overdue</span> }
+        </div>
+        <div class="col-12"><strong>Description:</strong> @Model.DocumentDescription</div>
+    </div>
+</div>
+
+@* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۳.۱: شماره‌ی رسمی مدرک به فرمت
+   CONTRACTOR. هر فیلد مرجع خالی این‌جا پر می‌شود و همزمان روی Vendor/Project/VDR Item ذخیره
+   می‌شود - دفعه‌ی بعد از قبل پرشده می‌آید. *@
+<div class="content-card mb-3">
+    <h6 class="mb-2">Official Document Number (CONTRACTOR format)</h6>
+    <p class="text-muted small mb-3">
+        Format: Plant-Unit-VendorCode-DisciplineCode-DocType-MaterialCode-MRLast4-Sequence-Revision.
+        Requires this item to already be linked to a real MR (via Relationship Explorer).
+    </p>
+    <form asp-action="GenerateContractorNumber" method="post">
+        <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+        <div class="row g-3">
+            <div class="col-md-3"><label class="form-label">Vendor Code</label><input name="vendorCode" class="form-control" placeholder="e.g. FSK" /></div>
+            <div class="col-md-3"><label class="form-label">Plant Code</label><input name="plantCode" class="form-control" placeholder="e.g. J" /></div>
+            <div class="col-md-3"><label class="form-label">Unit Code</label><input name="unitCode" class="form-control" placeholder="e.g. 85" /></div>
+            <div class="col-md-3"><label class="form-label">Material Code</label><input name="materialCode" class="form-control" value="@Model.MaterialCode" placeholder="e.g. 0611" /></div>
+        </div>
+        <button type="submit" class="btn btn-outline-primary btn-sm mt-3">
+            <i class="bi bi-hash"></i> Generate Official Number
+        </button>
+    </form>
+</div>
+
+@* طبق بخش ۴.۳.۲ همان سند: شماره‌ی موازی به فرمت SUB-CONTRACTOR/Vendor *@
+<div class="content-card mb-3">
+    <h6 class="mb-2">Vendor-format Document Number (SUB-CONTRACTOR)</h6>
+    <p class="text-muted small mb-3">
+        Format: Job-DisciplineCode-VD-TypologyCode-Unit-MRLast4-EquipmentTagLast6-Sequence.
+        @if (!string.IsNullOrWhiteSpace(Model.VendorFormatDocumentNumber))
+        {
+            <span>Current: <strong>@Model.VendorFormatDocumentNumber</strong></span>
+        }
+    </p>
+    <form asp-action="GenerateVendorNumber" method="post">
+        <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+        <div class="row g-3">
+            <div class="col-md-4"><label class="form-label">Job Number</label><input name="jobNumber" class="form-control" placeholder="e.g. 3863" /></div>
+            <div class="col-md-4"><label class="form-label">Unit Code</label><input name="unitCode" class="form-control" placeholder="e.g. 85" /></div>
+            <div class="col-md-4"><label class="form-label">Typology Code</label><input name="typologyCode" class="form-control" value="@Model.TypologyCode" placeholder="e.g. GS, LG, IS ..." /></div>
+        </div>
+        <button type="submit" class="btn btn-outline-primary btn-sm mt-3">
+            <i class="bi bi-hash"></i> Generate Vendor-format Number
+        </button>
+    </form>
+</div>
+</div>
+
+@* ===================== Submissions ===================== *@
+<div class="tab-pane fade" id="tab-submissions" role="tabpanel">
+<div class="content-card mb-3">
+    <h6 class="mb-3">Submission / Review History</h6>
+    <table class="table table-enterprise">
+        <thead>
+            <tr><th>Rev</th><th>Vendor Transmittal</th><th>Client Transmittal</th><th>Vendor Issued</th><th>POI</th><th>SLA (10/15 working days, Fri off)</th><th>FTP</th><th>Comment Sheet</th><th>Comment Date</th><th>Category</th><th>Resubmit?</th><th>Comment File</th><th>Reply File</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var s in Model.Submissions)
+            {
+                <tr>
+                    <td>@s.RevisionNo</td>
+                    <td>@s.VendorTransmittalNo</td>
+                    <td>
+                        @if (s.ClientTransmittalId.HasValue)
+                        {
+                            <a asp-controller="Transmittal" asp-action="Details" asp-route-id="@s.ClientTransmittalId">@s.ClientTransmittalNo</a>
+                        }
+                        else
+                        {
+                            @s.ClientTransmittalNo
+                        }
+                    </td>
+                    <td>@(s.VendorActualIssuedDate?.ToString("yyyy-MM-dd"))</td>
+                    <td>@s.PurposeOfIssueCode</td>
+                    <td>
+                        @if (s.ClientCommentDate == null && s.ContractorCommentDueDate.HasValue)
+                        {
+                            <span class="badge @(s.IsContractorCommentOverdue ? "bg-danger" : "bg-info text-dark")">
+                                Contractor comment due @s.ContractorCommentDueDate.Value.ToString("yyyy-MM-dd")@(s.IsContractorCommentOverdue ? " (overdue)" : "")
+                            </span>
+                        }
+                        else if (s.ReplySheetDate == null && s.VendorReturnDueDate.HasValue)
+                        {
+                            <span class="badge @(s.IsVendorReturnOverdue ? "bg-danger" : "bg-info text-dark")">
+                                Return to vendor due @s.VendorReturnDueDate.Value.ToString("yyyy-MM-dd")@(s.IsVendorReturnOverdue ? " (overdue)" : "")
+                            </span>
+                        }
+                    </td>
+                    <td>
+                        @if (s.FtpUploadedDate.HasValue)
+                        {
+                            <span class="badge bg-success" title="@s.FtpRemotePath"><i class="bi bi-check-circle"></i> @s.FtpUploadedDate.Value.ToString("yyyy-MM-dd")</span>
+                        }
+                        else
+                        {
+                            <form asp-action="UploadToFtp" method="post" enctype="multipart/form-data" class="d-flex gap-1">
+                                <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+                                <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
+                                <input type="file" name="file" class="form-control form-control-sm" style="max-width:120px;" required />
+                                <button class="btn btn-sm btn-outline-primary" title="Upload to FTP"><i class="bi bi-cloud-upload"></i></button>
+                            </form>
+                        }
+                    </td>
+                    <td>@s.ClientCommentSheetNo</td>
+                    <td>@(s.ClientCommentDate?.ToString("yyyy-MM-dd"))</td>
+                    <td><span class="badge bg-secondary">@s.ReviewCategory</span></td>
+                    <td>@(s.RequiresResubmission ? "Yes" : "")</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(s.CommentSheetFilePath))
+                        {
+                            <a href="@Url.Action("Download", "Files", new { id = s.CommentSheetAttachmentId })" target="_blank" class="btn btn-sm btn-outline-secondary" title="@s.CommentSheetFileName"><i class="bi bi-file-earmark-text"></i></a>
+                        }
+                        else
+                        {
+                            <form asp-action="UploadCommentSheet" method="post" enctype="multipart/form-data" class="d-flex gap-1">
+                                <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+                                <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
+                                <input type="file" name="file" class="form-control form-control-sm" style="max-width:120px;" required />
+                                <button class="btn btn-sm btn-outline-primary"><i class="bi bi-upload"></i></button>
+                            </form>
+                        }
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(s.ReplySheetFilePath))
+                        {
+                            <a href="@Url.Action("Download", "Files", new { id = s.ReplySheetAttachmentId })" target="_blank" class="btn btn-sm btn-outline-secondary" title="@s.ReplySheetFileName"><i class="bi bi-file-earmark-text"></i></a>
+                        }
+                        else
+                        {
+                            <form asp-action="UploadReplySheet" method="post" enctype="multipart/form-data" class="d-flex gap-1">
+                                <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+                                <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
+                                <input type="file" name="file" class="form-control form-control-sm" style="max-width:120px;" required />
+                                <button class="btn btn-sm btn-outline-primary"><i class="bi bi-upload"></i></button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!Model.Submissions.Any()) { <p class="text-muted">No submissions recorded yet.</p> }
+</div>
+</div>
+
+@* ===================== Comments (شامل PDF Viewer) ===================== *@
+<div class="tab-pane fade" id="tab-comments" role="tabpanel">
+
+@{
+    var comments = (List<PEMS.Application.DTOs.VDRCommentDto>)ViewBag.Comments;
+    var latestSubmissionWithFile = Model.Submissions.OrderByDescending(s => s.RevisionNo)
+        .FirstOrDefault(s => !string.IsNullOrEmpty(s.MainFilePath) && s.MainFilePath.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase));
+}
+
+@if (latestSubmissionWithFile != null)
+{
+    <div class="content-card mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></h6>
+            <div class="d-flex align-items-center gap-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfPrevPage"><i class="bi bi-chevron-left"></i></button>
+                <span class="small" id="pdfPageLabel">Page - / -</span>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfNextPage"><i class="bi bi-chevron-right"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomOut"><i class="bi bi-zoom-out"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomIn"><i class="bi bi-zoom-in"></i></button>
+            </div>
+        </div>
+        <div id="pdfCanvasWrapper" style="position:relative; border:1px solid var(--pems-surface-border,#dee2e6); overflow:auto; max-height:75vh; text-align:center; cursor:crosshair;">
+            <canvas id="pdfCanvas"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.js"></script>
+    <script>
+        (function () {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js';
+
+            var pdfUrl = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Url.Action("Download", "Files", new { id = latestSubmissionWithFile.AttachmentId })));
+            var wrapper = document.getElementById('pdfCanvasWrapper');
+            var canvas = document.getElementById('pdfCanvas');
+            var ctx = canvas.getContext('2d');
+            var pdfDoc = null, currentPage = 1, scale = 1.2;
+
+            // پین‌های کامنت موجود، فقط برای همان چرخه‌ی ارسال فعلی (@latestSubmissionWithFile.VDRSubmissionId)
+            var pins = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(comments
+                .Where(c => c.VDRSubmissionId == latestSubmissionWithFile.VDRSubmissionId && c.PageNumber.HasValue)
+                .Select(c => new { c.CommentNo, c.PageNumber, c.PinX, c.PinY, c.CommentText }),
+                new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase }));
+
+            function renderPage(num) {
+                pdfDoc.getPage(num).then(function (page) {
+                    var viewport = page.getViewport({ scale: scale });
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function () {
+                        document.getElementById('pdfPageLabel').textContent = 'Page ' + num + ' / ' + pdfDoc.numPages;
+                        renderPins(num, viewport.width, viewport.height);
+                    });
+                });
+            }
+
+            function renderPins(pageNum, width, height) {
+                wrapper.querySelectorAll('.pdf-pin').forEach(function (el) { el.remove(); });
+
+                pins.filter(function (p) { return p.pageNumber === pageNum; }).forEach(function (p) {
+                    var pin = document.createElement('div');
+                    pin.className = 'pdf-pin';
+                    pin.title = p.commentNo + ': ' + p.commentText;
+                    pin.style.cssText = 'position:absolute;width:22px;height:22px;border-radius:50% 50% 50% 0;' +
+                        'background:#ef4444;border:2px solid #fff;transform:translate(-50%,-100%) rotate(-45deg);' +
+                        'left:' + (p.pinX / 100 * width) + 'px;top:' + (p.pinY / 100 * height) + 'px;cursor:pointer;';
+                    wrapper.appendChild(pin);
+                });
+            }
+
+            pdfjsLib.getDocument(pdfUrl).promise.then(function (doc) {
+                pdfDoc = doc;
+                renderPage(currentPage);
+            }).catch(function () {
+                wrapper.innerHTML = '<p class="text-muted py-4">Could not load the PDF preview. Use the download link in the submission history above.</p>';
+            });
+
+            document.getElementById('pdfPrevPage').addEventListener('click', function () {
+                if (currentPage > 1) { currentPage--; renderPage(currentPage); }
+            });
+            document.getElementById('pdfNextPage').addEventListener('click', function () {
+                if (pdfDoc && currentPage < pdfDoc.numPages) { currentPage++; renderPage(currentPage); }
+            });
+            document.getElementById('pdfZoomIn').addEventListener('click', function () { scale += 0.2; renderPage(currentPage); });
+            document.getElementById('pdfZoomOut').addEventListener('click', function () { if (scale > 0.4) { scale -= 0.2; renderPage(currentPage); } });
+
+            canvas.addEventListener('click', function (e) {
+                var rect = canvas.getBoundingClientRect();
+                var xPct = ((e.clientX - rect.left) / rect.width) * 100;
+                var yPct = ((e.clientY - rect.top) / rect.height) * 100;
+
+                document.getElementById('pinPageNumber').value = currentPage;
+                document.getElementById('pinX').value = xPct.toFixed(2);
+                document.getElementById('pinY').value = yPct.toFixed(2);
+                document.getElementById('pinLocationLabel').textContent = 'Pinned on page ' + currentPage;
+
+                var modal = new bootstrap.Modal(document.getElementById('addCommentModal'));
+                modal.show();
+            });
+
+            document.getElementById('addCommentModal').addEventListener('hidden.bs.modal', function () {
+                document.getElementById('pinPageNumber').value = '';
+                document.getElementById('pinX').value = '';
+                document.getElementById('pinY').value = '';
+                document.getElementById('pinLocationLabel').textContent = '';
+            });
+        })();
+    </script>
+}
+
+<div class="content-card mb-3">
+    <h6 class="mb-3">Comment Management <span class="text-muted small">(Action Status is tracked independently from Review Status)</span></h6>
+
+    <table class="table table-enterprise">
+        <thead><tr><th>No</th><th>Rev</th><th>Category</th><th>Sheet/Zone</th><th>Comment</th><th>Raised By</th><th>Raised</th><th>Action Status</th><th>Response</th></tr></thead>
+        <tbody>
+            @foreach (var c in comments)
+            {
+                <tr>
+                    <td><strong>@c.CommentNo</strong></td>
+                    <td>@c.RevisionNo</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(c.Category)) { <span class="badge bg-secondary">@c.Category</span> }
+                        @if (!string.IsNullOrEmpty(c.Severity)) { <span class="badge bg-dark">@c.Severity</span> }
+                    </td>
+                    <td class="small">@c.Sheet @c.Zone</td>
+                    <td class="small">
+                        @c.CommentText
+                        @if (!string.IsNullOrEmpty(c.AttachmentFilePath))
+                        {
+                            <div><a href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.AttachmentFileName</a></div>
+                        }
+                        @if (!string.IsNullOrEmpty(c.RequiredAction))
+                        {
+                            <div class="text-muted">Required: @c.RequiredAction</div>
+                        }
+                    </td>
+                    <td>@c.RaisedByName</td>
+                    <td>@c.RaisedDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @{
+                            var ab = c.ActionStatus switch
+                            {
+                                "Closed" => "bg-success",
+                                "Verified" => "bg-info text-dark",
+                                "VendorResponsePending" => "bg-warning text-dark",
+                                "NoActionRequired" => "bg-secondary",
+                                _ => "bg-danger"
+                            };
+                        }
+                        <span class="badge @ab">@c.ActionStatus</span>
+                        <form asp-action="SetCommentAction" method="post" class="d-inline">
+                            <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+                            <input type="hidden" name="commentId" value="@c.VDRCommentId" />
+                            <select name="actionStatus" class="form-select form-select-sm mt-1" style="width:170px;" onchange="this.form.submit()">
+                                @foreach (var s in new[] { "OpenComment", "VendorResponsePending", "Verified", "Closed", "NoActionRequired" })
+                                { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
+                            </select>
+                        </form>
+                    </td>
+                    <td class="small">
+                        @c.ResponseText
+                        @if (!string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
+                        {
+                            <div><a href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.ReplyAttachmentFileName</a></div>
+                        }
+                        @if (string.IsNullOrEmpty(c.ResponseText) && string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
+                        {
+                            <button type="button" class="btn btn-sm btn-outline-primary mt-1" data-bs-toggle="modal" data-bs-target="#replyModal_@c.VDRCommentId">
+                                <i class="bi bi-reply"></i> Reply
+                            </button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!comments.Any()) { <p class="text-muted">No comments recorded yet.</p> }
+
+    @if (Model.Submissions.Any())
+    {
+        <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#addCommentModal">
+            <i class="bi bi-plus-lg"></i> Add Comment
+        </button>
+    }
+</div>
+</div>
+@* پایان تب Comments - مدال‌های زیر مستقل از تب فعال همیشه در دسترس‌اند *@
+
+@* طبق درخواست: افزودن کامنت به‌صورت Popup تا کاربر از صفحه‌ی اصلی خارج نشود *@
+<div class="modal fade" id="addCommentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form asp-action="AddComment" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+                <input type="hidden" name="pageNumber" id="pinPageNumber" value="" />
+                <input type="hidden" name="pinX" id="pinX" value="" />
+                <input type="hidden" name="pinY" id="pinY" value="" />
+                <div class="modal-header"><h6 class="modal-title">Add Comment</h6></div>
+                <div class="modal-body">
+                    <div id="pinLocationLabel" class="small text-primary mb-2"></div>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label small">Revision</label>
+                            <select name="vdrSubmissionId" class="form-select form-select-sm">
+                                @foreach (var s in Model.Submissions)
+                                { <option value="@s.VDRSubmissionId">Rev @s.RevisionNo</option> }
+                            </select>
+                        </div>
+                        <div class="col-md-4"><label class="form-label small">Raised By</label><input name="raisedByName" class="form-control form-control-sm" /></div>
+                        <div class="col-md-4">
+                            <label class="form-label small">Category</label>
+                            <select name="category" class="form-select form-select-sm">
+                                <option value="">-- select --</option>
+                                @foreach (var cat in new[] { "Technical", "Safety", "Constructability", "Documentation", "Specification", "Calculation", "Typographical", "Clarification" })
+                                { <option value="@cat">@cat</option> }
+                            </select>
+                        </div>
+                        <div class="col-md-3"><label class="form-label small">Sheet</label><input name="sheet" class="form-control form-control-sm" placeholder="e.g. Sheet 4" /></div>
+                        <div class="col-md-3"><label class="form-label small">Zone</label><input name="zone" class="form-control form-control-sm" placeholder="e.g. Grid B3" /></div>
+                        <div class="col-md-3"><label class="form-label small">Reference</label><input name="reference" class="form-control form-control-sm" placeholder="e.g. Note 12" /></div>
+                        <div class="col-md-3">
+                            <label class="form-label small">Severity</label>
+                            <select name="severity" class="form-select form-select-sm">
+                                <option value="">-- select --</option>
+                                @foreach (var sev in new[] { "Low", "Medium", "High", "Critical" })
+                                { <option value="@sev">@sev</option> }
+                            </select>
+                        </div>
+                        <div class="col-12"><label class="form-label small">Comment</label><textarea name="commentText" class="form-control form-control-sm" rows="3" required></textarea></div>
+                        <div class="col-md-6"><label class="form-label small">Required Action</label><input name="requiredAction" class="form-control form-control-sm" placeholder="e.g. Revise Drawing" /></div>
+                        <div class="col-md-6"><label class="form-label small">Due Date</label><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
+                        <div class="col-12"><label class="form-label small">Attachment <span class="text-muted">(optional)</span></label><input type="file" name="attachment" class="form-control form-control-sm" /></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-pems-solid">Save Comment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* طبق درخواست: پاسخ به کامنت هم Popup است و می‌تواند خودِ فایل را پیوست کند تا کاربر همه‌چیز
+   را دستی تایپ نکند *@
+@foreach (var c in comments)
+{
+    <div class="modal fade" id="replyModal_@c.VDRCommentId" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form asp-action="RecordCommentResponse" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+                    <input type="hidden" name="commentId" value="@c.VDRCommentId" />
+                    <div class="modal-header"><h6 class="modal-title">Reply to @c.CommentNo</h6></div>
+                    <div class="modal-body">
+                        <p class="small text-muted">@c.CommentText</p>
+                        <div class="mb-2">
+                            <label class="form-label small">Vendor Reply <span class="text-muted">(optional if attaching a file)</span></label>
+                            <textarea name="responseText" class="form-control form-control-sm" rows="3"></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small">Or attach the Reply Sheet file</label>
+                            <input type="file" name="replyAttachment" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-pems-solid btn-sm">Save Reply</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+@* ===================== Workflow (اکشن‌ها + تاریخچه‌ی واقعی) ===================== *@
+<div class="tab-pane fade" id="tab-workflow" role="tabpanel">
+<div class="content-card mb-3">
+    <h6 class="mb-3"><i class="bi bi-signpost-split"></i> Review Workflow</h6>
+
+    @if (Model.Submissions.Any())
+    {
+        <p class="text-muted small">Already recorded: @string.Join(", ", Model.Submissions.OrderBy(s => s.RevisionNo).Select(s => "Rev " + s.RevisionNo))</p>
+    }
+
+    @{
+        var workflowRunning = (bool)(ViewBag.WorkflowRunning ?? false);
+        var currentStageName = (string?)ViewBag.CurrentStageName;
+    }
+
+    @if (!workflowRunning)
+    {
+        <p class="text-muted small">هیچ چرخه‌ی بازبینی فعالی نیست - وندور مدرک را ارسال کرده؟ اطلاعات ترانسمیتال رو ثبت کن تا چرخه‌ی بازبینی شروع بشه.</p>
+        <form asp-action="SubmitForReview" method="post" class="row g-2">
+            <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+            <div class="col-md-2"><label class="form-label small">Rev</label><input name="revisionNo" type="number" min="0" class="form-control form-control-sm" value="@((Model.LatestRevisionNo ?? -1) + 1)" required /></div>
+            <div class="col-md-3"><label class="form-label small">Vendor Transmittal <span class="text-danger">*</span></label><input name="vendorTransmittalNo" class="form-control form-control-sm" required /></div>
+            <div class="col-md-2"><label class="form-label small">Vendor Issued Date</label><input name="vendorActualIssuedDate" type="date" class="form-control form-control-sm" /></div>
+            <div class="col-md-2">
+                <label class="form-label small">POI</label>
+                @* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۶.۱ - همین لیست دقیقاً در
+                   EngineeringDocuments/Edit.cshtml (فیلد IssuePurpose) هم تکرار شده؛ اگر این‌جا تغییر داد آن‌جا را هم به‌روزرسانی کنید. *@
+                <select name="purposeOfIssueCode" class="form-select form-select-sm">
+                    <option value="">--</option>
+                    <option value="IFA">IFA</option>
+                    <option value="IFR">IFR</option>
+                    <option value="IFI">IFI</option>
+                    <option value="FI">FI</option>
+                    <option value="AB">AB (legacy)</option>
+                    <option value="AFD">AFD (legacy)</option>
+                </select>
+            </div>
+
+            <div class="col-12 mt-2">
+                <label class="form-label small fw-bold">دیسیپلین‌هایی که باید بازبینی کنن (اختیاری)</label>
+                <div class="row">
+                    @foreach (var d in (IEnumerable<PEMS.Domain.Entities.Discipline>)ViewBag.AllDisciplines)
+                    {
+                        <div class="col-6 col-md-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="disciplineIds" value="@d.DisciplineId" id="vdrDisc_@d.DisciplineId">
+                                <label class="form-check-label small" for="vdrDisc_@d.DisciplineId">@d.Name</label>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-12 mt-2">
+                <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-play-fill"></i> شروع بازبینی</button>
+            </div>
+        </form>
+    }
+    else if (currentStageName == "DisciplineReview")
+    {
+        var reviewStatus = (IEnumerable<PEMS.Application.Interfaces.VdrReviewStatusItemDto>)ViewBag.ReviewStatus;
+        var myDisciplineId = ViewBag.MyDisciplineId as int?;
+        var myPending = reviewStatus.FirstOrDefault(x => x.DisciplineId == myDisciplineId && x.Status == "Pending");
+
+        <h6 class="small fw-bold">بازبینی موازی دیسیپلین‌ها</h6>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            @foreach (var r in reviewStatus)
+            {
+                var badgeClass = r.Status switch { "Approve" => "bg-success", "Comment" => "bg-warning text-dark", "Reject" => "bg-danger", _ => "bg-secondary" };
+                <span class="badge @badgeClass">@r.DisciplineName: @r.Status</span>
+            }
+        </div>
+
+        @if (myPending != null)
+        {
+            <div class="d-flex gap-2">
+                <form asp-action="DisciplineRespond" method="post" class="d-inline">
+                    <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+                    <input type="hidden" name="decision" value="Approve" />
+                    <button class="btn btn-success btn-sm">Approve</button>
+                </form>
+                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#vdrCommentModal">Comment</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#vdrRejectModal">Reject</button>
+            </div>
+
+            <div class="modal fade" id="vdrCommentModal" tabindex="-1">
+                <div class="modal-dialog"><div class="modal-content">
+                    <form asp-action="DisciplineRespond" method="post">
+                        <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+                        <input type="hidden" name="decision" value="Comment" />
+                        <div class="modal-header"><h6 class="modal-title">ثبت کامنت</h6></div>
+                        <div class="modal-body"><textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                            <button type="submit" class="btn btn-warning btn-sm">ثبت</button>
+                        </div>
+                    </form>
+                </div></div>
+            </div>
+            <div class="modal fade" id="vdrRejectModal" tabindex="-1">
+                <div class="modal-dialog"><div class="modal-content">
+                    <form asp-action="DisciplineRespond" method="post">
+                        <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+                        <input type="hidden" name="decision" value="Reject" />
+                        <div class="modal-header"><h6 class="modal-title">رد کردن</h6></div>
+                        <div class="modal-body"><textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                            <button type="submit" class="btn btn-danger btn-sm">رد کن</button>
+                        </div>
+                    </form>
+                </div></div>
+            </div>
+        }
+        else
+        {
+            <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> منتظر پاسخ سایر دیسیپلین‌ها</span>
+        }
+    }
+    else if (currentStageName == "LeadReview")
+    {
+        <h6 class="small fw-bold">تصمیم نهایی بازبینی</h6>
+        <form asp-action="LeadReview" method="post" class="row g-2">
+            <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+            <div class="col-md-3">
+                <label class="form-label small">Review Category</label>
+                <select name="reviewCategory" class="form-select form-select-sm" required>
+                    <option value="AP">AP - Approved</option>
+                    <option value="NC">NC - No Comment</option>
+                    <option value="AC">AC - Accepted w/ Comments</option>
+                    <option value="CO">CO - Comments (Resubmit)</option>
+                    <option value="RE">RE - Rejected</option>
+                </select>
+            </div>
+            <div class="col-md-3"><label class="form-label small">Comment Sheet No</label><input name="clientCommentSheetNo" class="form-control form-control-sm" /></div>
+            <div class="col-md-3"><label class="form-label small">Comment Date</label><input name="clientCommentDate" type="date" class="form-control form-control-sm" /></div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-sm btn-pems-solid w-100">ثبت تصمیم نهایی</button>
+            </div>
+        </form>
+    }
+    else if (currentStageName == "ReturnToVendor")
+    {
+        <h6 class="small fw-bold">بازگشت رسمی به وندور</h6>
+        <p class="text-muted small">با ثبت، یک نامه‌ی خروجی رسمی خودکار برای وندور ساخته می‌شه.</p>
+        <form asp-action="ReturnToVendor" method="post" class="row g-2">
+            <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+            <div class="col-md-4"><label class="form-label small">Reply Sheet No</label><input name="replySheetNo" class="form-control form-control-sm" /></div>
+            <div class="col-md-4"><label class="form-label small">Client Transmittal No</label><input name="clientTransmittalNo" class="form-control form-control-sm" /></div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-send"></i> بازگشت به وندور</button>
+            </div>
+        </form>
+    }
+</div>
+
+@* تاریخچه‌ی واقعی گردش‌کار از موتور عمومی (نه فقط رشته‌ی خلاصه‌ی وضعیت) *@
+<div class="content-card">
+    <h6 class="mb-3"><i class="bi bi-clock-history"></i> Workflow History</h6>
+    @if (workflowHistory.Any())
+    {
+        <table class="table table-enterprise mb-0">
+            <thead><tr><th>From</th><th>To</th><th>Action</th><th>Decision</th><th>Comment</th><th>Date</th></tr></thead>
+            <tbody>
+                @foreach (var h in workflowHistory.OrderByDescending(x => x.ActionDate))
+                {
+                    <tr>
+                        <td class="small">@h.FromStageName</td>
+                        <td class="small">@h.ToStageName</td>
+                        <td><span class="badge bg-secondary">@h.ActionType</span></td>
+                        <td class="small">@h.Decision</td>
+                        <td class="small">@h.Comment</td>
+                        <td class="small text-muted">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-muted text-center py-4 mb-0">هنوز هیچ گردش‌کاری برای این مدرک شروع نشده.</p>
+    }
+</div>
+</div>
+
+@* ===================== Correspondence ===================== *@
+<div class="tab-pane fade" id="tab-correspondence" role="tabpanel">
+<div class="content-card">
+    <h6 class="mb-3"><i class="bi bi-envelope-paper"></i> Related Correspondence</h6>
+    @if (relatedLetters.Any())
+    {
+        <table class="table table-enterprise">
+            <thead><tr><th>Type</th><th>Letter No</th><th>Subject</th><th>Date</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+                @foreach (var l in relatedLetters)
+                {
+                    <tr>
+                        <td><span class="badge bg-secondary">@l.LetterType</span></td>
+                        <td>@l.LetterNumber</td>
+                        <td>@l.Subject</td>
+                        <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
+                        <td><span class="badge bg-info text-dark">@l.Status</span></td>
+                        <td><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-muted text-center py-4 mb-0">هنوز هیچ مکاتبه‌ای به این مدرک وصل نشده - وقتی مرحله‌ی ReturnToVendor انجام بشه، خودکار یک نامه‌ی خروجی این‌جا ظاهر می‌شه.</p>
+    }
+</div>
+</div>
+
+</div>
+@* پایان tab-content *@

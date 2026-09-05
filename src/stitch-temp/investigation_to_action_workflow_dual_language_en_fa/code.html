@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="light" dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Investigation-to-Action Workflow | PEMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#6e4100",
+                        "tertiary-container": "#00213d",
+                        "surface-tint": "#535f75",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container-high": "#daeaff",
+                        "tertiary": "#000815",
+                        "primary-container": "#142033",
+                        "primary": "#000819",
+                        "on-primary-container": "#7c889f",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "primary-fixed": "#d7e3fd",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#081d2f",
+                        "surface": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#ffdcbc",
+                        "surface-container-low": "#eef4ff",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-background": "#081d2f",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "surface-variant": "#d0e4fe",
+                        "on-tertiary-container": "#498bcd",
+                        "surface-container": "#e4efff",
+                        "on-secondary-fixed": "#2c1700",
+                        "secondary": "#895200",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "on-primary-fixed": "#101c2f",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#bbc7e0",
+                        "secondary-container": "#fdaa47",
+                        "surface-dim": "#c8dcf5",
+                        "tertiary-fixed": "#d1e4ff",
+                        "inverse-surface": "#1f3245",
+                        "background": "#f8f9ff",
+                        "outline-variant": "#c5c6cd",
+                        "on-surface-variant": "#44474c",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#001d36",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "outline": "#75777d",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#d0e4fe",
+                        "inverse-on-surface": "#e9f1ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "sidebar-width": "260px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "topbar-height": "60px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "table-header": ["Inter"],
+                        "body-base": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background font-body-base text-body-base text-on-background overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim text-primary dark:text-on-primary-fixed font-body-medium text-body-medium fixed top-0 right-0 w-[calc(100%-260px)] h-topbar-height border-b border-outline-variant flex justify-between items-center px-lg z-50">
+<div class="font-headline-md text-headline-md text-primary dark:text-primary-fixed-dim">
+            PEMS
+        </div>
+<div class="flex items-center gap-md">
+<button aria-label="language" class="hover:bg-surface-container-high dark:hover:bg-surface-container-highest p-sm rounded-full transition-colors duration-200">
+<span class="material-symbols-outlined text-on-surface-variant">language</span>
+</button>
+<button aria-label="notifications" class="hover:bg-surface-container-high dark:hover:bg-surface-container-highest p-sm rounded-full transition-colors duration-200 relative">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button aria-label="account_circle" class="hover:bg-surface-container-high dark:hover:bg-surface-container-highest p-sm rounded-full transition-colors duration-200">
+<span class="material-symbols-outlined text-on-surface-variant">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="bg-primary-container dark:bg-tertiary-container text-secondary-container font-body-base text-body-base fixed left-0 top-0 h-screen w-sidebar-width border-r border-outline-variant shadow-sm flex flex-col h-full py-lg z-50">
+<div class="px-lg mb-xl flex items-center gap-sm">
+<div class="w-8 h-8 bg-secondary-container rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container font-bold" style="font-variation-settings: 'FILL' 1;">factory</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-primary font-bold tracking-tight">PEMS</h1>
+<p class="text-[11px] text-on-primary-container leading-none mt-1">Utility Operations</p>
+</div>
+</div>
+<nav class="flex-1 px-sm space-y-1">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-container/70 hover:text-on-primary-container hover:bg-primary/50 transition-colors duration-200 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-container/70 hover:text-on-primary-container hover:bg-primary/50 transition-colors duration-200 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">factory</span>
+<span>Assets</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-container/70 hover:text-on-primary-container hover:bg-primary/50 transition-colors duration-200 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">engineering</span>
+<span>Maintenance</span>
+</a>
+<a aria-current="page" class="flex items-center gap-md px-md py-sm rounded-lg text-secondary-container font-bold border-l-4 border-secondary-container bg-surface-variant/10 hover:bg-primary/50 transition-colors duration-200 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">construction</span>
+<span>Engineering</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-container/70 hover:text-on-primary-container hover:bg-primary/50 transition-colors duration-200 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">security</span>
+<span>Safety</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-container/70 hover:text-on-primary-container hover:bg-primary/50 transition-colors duration-200 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>System Admin</span>
+</a>
+</nav>
+<div class="px-sm mt-auto space-y-1">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-container/70 hover:text-on-primary-container hover:bg-primary/50 transition-colors duration-200 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Help</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-container/70 hover:text-on-primary-container hover:bg-primary/50 transition-colors duration-200 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-sidebar-width mt-topbar-height p-lg md:p-xl">
+<!-- Header Section -->
+<div class="flex justify-between items-end mb-xl border-b border-outline-variant pb-md">
+<div>
+<div class="flex items-center gap-sm mb-sm text-on-surface-variant text-sm">
+<span class="material-symbols-outlined text-[16px]">arrow_back</span>
+<a class="hover:underline" href="#">Engineering</a>
+<span>/</span>
+<a class="hover:underline" href="#">Workflows</a>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface flex items-center gap-md">
+                    Investigation-to-Action Workflow
+                    <span class="inline-flex items-center px-2 py-1 rounded-full bg-surface-container-high text-on-surface font-badge-label text-badge-label border border-outline-variant">
+                        ID: WF-2023-0891
+                    </span>
+</h2>
+<p class="text-on-surface-variant mt-1 max-w-2xl">Visualizing the lifecycle of operational improvement derived from Root Cause Analysis (RCA). / تجسم چرخه حیات بهبود عملیاتی مشتق شده از تحلیل علت ریشه‌ای (RCA).</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-sm rounded-lg border border-outline-variant text-surface-tint font-body-medium text-body-medium hover:bg-surface-container-low transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">print</span>
+                    Export
+                </button>
+<button class="px-md py-sm rounded-lg bg-gradient-to-b from-[#d98c2b] to-[#b8721e] text-white font-body-medium text-body-medium hover:opacity-90 transition-opacity shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                    Edit Workflow
+                </button>
+</div>
+</div>
+<!-- Flowchart Layout -->
+<div class="relative bg-surface rounded-xl border border-outline-variant p-lg shadow-sm">
+<!-- Connection Line (Vertical for Desktop mostly, handles horizontal flow conceptually) -->
+<div class="absolute left-[40px] top-[100px] bottom-[100px] w-[2px] bg-outline-variant z-0 hidden lg:block"></div>
+<div class="space-y-xl relative z-10">
+<!-- Step 1: Source RCA -->
+<div class="flex flex-col lg:flex-row gap-lg items-start">
+<div class="hidden lg:flex w-12 h-12 rounded-full bg-surface-container-high border-2 border-outline-variant items-center justify-center flex-shrink-0 z-10 mt-2">
+<span class="material-symbols-outlined text-surface-tint">search</span>
+</div>
+<div class="flex-1 bg-surface-container-lowest rounded-lg border border-outline-variant p-md hover:border-secondary transition-colors group w-full">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-error">warning</span>
+<h3 class="font-body-medium text-body-medium text-on-surface">1. Source RCA / منبع RCA</h3>
+</div>
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-surface-container-low text-on-surface font-badge-label text-badge-label border border-outline-variant">Completed / تکمیل شده</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md bg-surface-bright p-md rounded border border-surface-container-high">
+<div>
+<span class="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">Event Reference</span>
+<p class="font-body-base text-body-base font-bold text-on-surface">Boiler Failure #102</p>
+</div>
+<div>
+<span class="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">Date Logged</span>
+<p class="font-body-base text-body-base text-on-surface">Oct 12, 2023</p>
+</div>
+<div class="md:col-span-2">
+<span class="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">Primary Finding</span>
+<p class="font-body-base text-body-base text-on-surface">Premature bearing wear detected due to insufficient lubrication frequency under high-load conditions.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 2: Proposed Mitigation -->
+<div class="flex flex-col lg:flex-row gap-lg items-start">
+<div class="hidden lg:flex w-12 h-12 rounded-full bg-surface-container-high border-2 border-outline-variant items-center justify-center flex-shrink-0 z-10 mt-2">
+<span class="material-symbols-outlined text-surface-tint">lightbulb</span>
+</div>
+<div class="flex-1 bg-surface-container-lowest rounded-lg border border-outline-variant p-md hover:border-secondary transition-colors group w-full">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary-container">build</span>
+<h3 class="font-body-medium text-body-medium text-on-surface">2. Proposed Mitigation / کاهش پیشنهادی</h3>
+</div>
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-surface-container-low text-on-surface font-badge-label text-badge-label border border-outline-variant">Completed / تکمیل شده</span>
+</div>
+<div class="bg-surface-bright p-md rounded border border-surface-container-high">
+<span class="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Strategy Adjustment</span>
+<div class="flex items-center gap-md">
+<div class="flex-1 bg-surface-variant/30 p-sm rounded border border-outline-variant/50 line-through text-on-surface-variant text-center">
+                                     PM Freq: 3 Months
+                                 </div>
+<span class="material-symbols-outlined text-secondary">arrow_forward</span>
+<div class="flex-1 bg-secondary-fixed/30 p-sm rounded border border-secondary-container text-on-secondary-fixed font-bold text-center">
+                                     PM Freq: 1 Month
+                                 </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 3: Approval Chain -->
+<div class="flex flex-col lg:flex-row gap-lg items-start">
+<div class="hidden lg:flex w-12 h-12 rounded-full bg-surface-container-high border-2 border-secondary items-center justify-center flex-shrink-0 z-10 mt-2">
+<span class="material-symbols-outlined text-secondary">pending_actions</span>
+</div>
+<div class="flex-1 bg-surface-container-lowest rounded-lg border-2 border-secondary p-md shadow-sm w-full relative overflow-hidden">
+<!-- Active Indicator Glow -->
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary"></div>
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">verified_user</span>
+<h3 class="font-body-medium text-body-medium text-on-surface font-bold">3. Approval Chain / زنجیره تایید</h3>
+</div>
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-badge-label text-badge-label border border-secondary-fixed-dim">In Progress / در حال انجام</span>
+</div>
+<div class="space-y-sm">
+<!-- Approver 1 -->
+<div class="flex items-center justify-between p-sm rounded bg-surface-bright border border-surface-container-high">
+<div class="flex items-center gap-md">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-sm font-bold text-on-surface">EM</div>
+<div>
+<p class="font-body-medium text-body-medium text-on-surface leading-tight">Engineering Manager</p>
+<p class="font-table-cell text-table-cell text-on-surface-variant">Sarah Jenkins</p>
+</div>
+</div>
+<div class="flex items-center gap-xs text-[#2e7d32]">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+<span class="font-badge-label text-badge-label">Approved</span>
+</div>
+</div>
+<!-- Approver 2 -->
+<div class="flex items-center justify-between p-sm rounded bg-surface border border-outline-variant/50 opacity-80">
+<div class="flex items-center gap-md">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-sm font-bold text-on-surface">SL</div>
+<div>
+<p class="font-body-medium text-body-medium text-on-surface leading-tight">Site Lead</p>
+<p class="font-table-cell text-table-cell text-on-surface-variant">Ahmed Reza</p>
+</div>
+</div>
+<div class="flex items-center gap-xs text-secondary">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+<span class="font-badge-label text-badge-label">Pending Review</span>
+</div>
+</div>
+</div>
+<div class="mt-md pt-md border-t border-outline-variant flex justify-end">
+<button class="px-sm py-xs rounded bg-surface-container-high text-on-surface font-body-medium text-body-medium hover:bg-surface-container-highest transition-colors flex items-center gap-1 text-sm">
+<span class="material-symbols-outlined text-[16px]">notifications_active</span>
+                                Send Reminder
+                            </button>
+</div>
+</div>
+</div>
+<!-- Step 4: Target System Update -->
+<div class="flex flex-col lg:flex-row gap-lg items-start">
+<div class="hidden lg:flex w-12 h-12 rounded-full bg-surface-bright border-2 border-outline-variant border-dashed items-center justify-center flex-shrink-0 z-10 mt-2 opacity-50">
+<span class="material-symbols-outlined text-outline-variant">update</span>
+</div>
+<div class="flex-1 bg-surface-bright rounded-lg border border-outline-variant border-dashed p-md opacity-70 w-full">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-outline-variant">database</span>
+<h3 class="font-body-medium text-body-medium text-on-surface-variant">4. Target System Update / به روز رسانی سیستم هدف</h3>
+</div>
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-surface text-on-surface-variant font-badge-label text-badge-label border border-outline-variant">Awaiting Approvals / در انتظار تایید</span>
+</div>
+<div class="p-md rounded border border-outline-variant/30 flex items-center gap-md">
+<span class="material-symbols-outlined text-outline-variant text-[32px]">link</span>
+<div>
+<span class="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">Target Module</span>
+<p class="font-body-base text-body-base text-on-surface-variant font-mono">RCM Strategy Builder -&gt; PM Schedule</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

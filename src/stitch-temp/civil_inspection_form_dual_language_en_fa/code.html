@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS Utility - Civil/Structural Inspection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#ffb86a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "primary": "#000819",
+                        "error": "#ba1a1a",
+                        "tertiary": "#000815",
+                        "secondary-container": "#fdaa47",
+                        "surface-container": "#e4efff",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#081d2f",
+                        "surface-container-low": "#eef4ff",
+                        "on-surface-variant": "#44474c",
+                        "surface-tint": "#535f75",
+                        "on-surface": "#081d2f",
+                        "on-tertiary-container": "#498bcd",
+                        "on-secondary-fixed": "#2c1700",
+                        "surface-container-highest": "#d0e4fe",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "surface": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f8f9ff",
+                        "surface-dim": "#c8dcf5",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "on-secondary-container": "#6e4100",
+                        "background": "#f8f9ff",
+                        "primary-container": "#142033",
+                        "on-primary-container": "#7c889f",
+                        "inverse-primary": "#bbc7e0",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "secondary": "#895200",
+                        "surface-container-high": "#daeaff",
+                        "error-container": "#ffdad6",
+                        "outline": "#75777d",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "surface-variant": "#d0e4fe",
+                        "primary-fixed": "#d7e3fd",
+                        "outline-variant": "#c5c6cd",
+                        "inverse-surface": "#1f3245",
+                        "tertiary-container": "#00213d",
+                        "on-primary-fixed": "#101c2f",
+                        "secondary-fixed": "#ffdcbc",
+                        "inverse-on-surface": "#e9f1ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#001d36",
+                        "industrial-amber": {
+                            500: '#d98c2b',
+                            600: '#b8721e'
+                        }
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "gutter": "16px",
+                        "sm": "8px",
+                        "unit": "4px",
+                        "topbar-height": "60px",
+                        "lg": "24px",
+                        "sidebar-width": "260px",
+                        "xs": "4px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "table-cell": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-base": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "table-header": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                        "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                        "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                        "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                        "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                        "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #f3f5f8; }
+        .amber-gradient { background: linear-gradient(135deg, #d98c2b, #b8721e); }
+        .input-focus-ring:focus {
+            border-color: #d98c2b;
+            box-shadow: 0 0 0 2px rgba(217, 140, 43, 0.2);
+            outline: none;
+        }
+        .form-section {
+            background-color: #ffffff;
+            border: 1px solid #edf0f4;
+            border-radius: 0.25rem;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #081d2f;
+        }
+        .form-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #dde3ea;
+            border-radius: 0.125rem;
+            color: #081d2f;
+            background-color: #ffffff;
+            transition: all 0.2s;
+        }
+    </style>
+</head>
+<body class="font-body-base text-body-base text-on-surface antialiased flex flex-col md:flex-row min-h-screen">
+<!-- TopNavBar (Mobile Only) -->
+<header class="md:hidden bg-surface dark:bg-surface-container-lowest text-primary dark:text-primary-fixed docked full-width top-0 border-b border-outline-variant dark:border-outline flat no shadows flex justify-between items-center h-topbar-height px-lg w-full sticky z-50">
+<div class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed">PEMS Utility</div>
+<div class="flex gap-4">
+<button class="text-on-surface-variant hover:text-secondary transition-colors"><span class="material-symbols-outlined">language</span></button>
+<button class="text-on-surface-variant hover:text-secondary transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="text-on-surface-variant hover:text-secondary transition-colors"><span class="material-symbols-outlined">settings</span></button>
+</div>
+</header>
+<!-- SideNavBar (Desktop) -->
+<nav class="bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-on-primary-fixed hidden lg:flex flex-col py-lg gap-sm docked fixed left-0 top-0 h-full w-sidebar-width shadow-sm z-40">
+<div class="px-lg mb-8">
+<div class="flex items-center gap-4 mb-2">
+<div class="w-10 h-10 rounded-full bg-surface flex items-center justify-center overflow-hidden">
+<img alt="PEMS Logo" class="w-full h-full object-cover" data-alt="A minimalist, highly legible corporate logo for a technical utility platform, featuring a geometric cog or architectural structural icon in deep navy and industrial amber, set against a pristine white background. The style is sharp, modern, and authoritative, suitable for a mission-critical dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB65MkKufVKL8CE0fplygoKvwEbQaQXQYBd0lGd_wLQTvIh6IlW7hJZh8LqjMxwr0BUVe3leSklGX-l1JzdIt0I3STEnybpmFM6e2umInryPyCLUcgB1bjRqJSSy2qDe_tj10uUu5KFxvqLN1Qw509306pWJZ-lvETxz4RfNgDwIGKVyB70SjZNS7wSnasZRz4HoLVkwjPJkWfSciDoQ-lKSg0kjRGAOTtDUpTYYuJ6KEeBlzwx0Ojd"/>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-primary dark:text-on-primary-fixed font-bold">PEMS Utility</h1>
+<p class="font-body-medium text-body-medium text-on-primary-container">Technical Inspection</p>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<a class="flex items-center gap-4 px-4 py-3 text-on-primary-container hover:bg-on-primary-container/10 rounded-lg mx-md hover:bg-on-primary-container/5 transition-all scale-95 duration-150 font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Overview</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg mx-md font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<span>Inspections</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-primary-container hover:bg-on-primary-container/10 rounded-lg mx-md hover:bg-on-primary-container/5 transition-all scale-95 duration-150 font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">engineering</span>
+<span>Assets</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-primary-container hover:bg-on-primary-container/10 rounded-lg mx-md hover:bg-on-primary-container/5 transition-all scale-95 duration-150 font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Team</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-primary-container hover:bg-on-primary-container/10 rounded-lg mx-md hover:bg-on-primary-container/5 transition-all scale-95 duration-150 font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Reports</span>
+</a>
+</div>
+<div class="mt-auto px-lg flex flex-col gap-2">
+<button class="flex items-center gap-4 px-4 py-3 text-on-primary-container hover:bg-on-primary-container/10 rounded-lg font-body-medium text-body-medium w-full text-left transition-colors">
+<span class="material-symbols-outlined">translate</span>
+<span>Switch Language (EN/FA)</span>
+</button>
+<button class="flex items-center gap-4 px-4 py-3 text-on-primary-container hover:bg-on-primary-container/10 rounded-lg font-body-medium text-body-medium w-full text-left transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-1 lg:ml-[260px] p-4 md:p-[24px] lg:p-[28px] max-w-[1200px] w-full">
+<!-- Header Section -->
+<div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="px-3 py-1 bg-surface-container-low text-on-surface-variant rounded-full font-badge-label text-badge-label uppercase tracking-wider">Civil / Structural</span>
+<span class="px-3 py-1 bg-[#eef4ff] text-[#00497c] rounded-full font-badge-label text-badge-label uppercase tracking-wider">Draft / پیش نویس</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary">Foundation &amp; Structure Inspection</h2>
+<p class="text-on-surface-variant font-body-medium text-body-medium mt-1">بازرسی فونداسیون و سازه - Facility ID: F-1042</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-surface text-surface-tint border border-[#dde3ea] rounded-[0.125rem] font-body-medium text-body-medium hover:bg-surface-container transition-colors">Save Draft</button>
+<button class="px-4 py-2 amber-gradient text-white rounded-[0.125rem] font-body-medium text-body-medium shadow-sm hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                    Submit Report
+                </button>
+</div>
+</div>
+<!-- Form Layout (Bento-style Grid) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Left Column: Core Data & Metrics -->
+<div class="lg:col-span-2 space-y-6">
+<!-- General Info -->
+<section class="form-section">
+<h3 class="font-headline-md text-headline-md border-b border-outline-variant pb-3 mb-5 flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint">info</span>
+                        General Information / اطلاعات عمومی
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+<div>
+<label class="form-label font-body-medium text-body-medium">Inspector Name / نام بازرس</label>
+<input class="form-input input-focus-ring font-body-base text-body-base" readonly="" type="text" value="John Doe (ID: 8842)"/>
+</div>
+<div>
+<label class="form-label font-body-medium text-body-medium">Date of Inspection / تاریخ بازرسی</label>
+<input class="form-input input-focus-ring font-body-base text-body-base" type="date" value="2023-10-27"/>
+</div>
+<div>
+<label class="form-label font-body-medium text-body-medium">Asset Tag / تگ دارایی</label>
+<input class="form-input input-focus-ring font-table-cell text-table-cell tracking-widest bg-surface-container-low" type="text" value="STR-FND-1042-A"/>
+</div>
+<div>
+<label class="form-label font-body-medium text-body-medium">Weather Conditions / شرایط جوی</label>
+<select class="form-input input-focus-ring font-body-base text-body-base">
+<option>Clear / صاف</option>
+<option>Rain / بارانی</option>
+<option>Windy / وزش باد</option>
+</select>
+</div>
+</div>
+</section>
+<!-- Crack Monitoring -->
+<section class="form-section">
+<h3 class="font-headline-md text-headline-md border-b border-outline-variant pb-3 mb-5 flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint">ssid_chart</span>
+                        Crack Monitoring / پایش ترک
+                    </h3>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#f5f7fa] border-b border-[#edf0f4]">
+<th class="p-2 font-table-header text-table-header text-on-surface-variant uppercase">Location / محل</th>
+<th class="p-2 font-table-header text-table-header text-on-surface-variant uppercase">Width (mm) / عرض</th>
+<th class="p-2 font-table-header text-table-header text-on-surface-variant uppercase">Length (mm) / طول</th>
+<th class="p-2 font-table-header text-table-header text-on-surface-variant uppercase">Active? / فعال؟</th>
+<th class="p-2"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-[#edf0f4] hover:bg-surface transition-colors">
+<td class="p-2"><input class="form-input input-focus-ring py-1 px-2" type="text" value="North Wall Base"/></td>
+<td class="p-2"><input class="form-input input-focus-ring py-1 px-2 w-24" type="number" value="2.5"/></td>
+<td class="p-2"><input class="form-input input-focus-ring py-1 px-2 w-24" type="number" value="150"/></td>
+<td class="p-2">
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="w-4 h-4 text-[#d98c2b] border-outline-variant rounded focus:ring-[#d98c2b]" type="checkbox"/>
+<span class="font-body-base text-body-base">Yes</span>
+</label>
+</td>
+<td class="p-2 text-right">
+<button class="w-8 h-8 rounded-[0.5rem] bg-surface border border-[#dde3ea] flex items-center justify-center text-error hover:bg-error/10 transition-colors">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</td>
+</tr>
+<tr class="border-b border-[#edf0f4] hover:bg-surface transition-colors">
+<td class="p-2"><input class="form-input input-focus-ring py-1 px-2" placeholder="Enter location..." type="text"/></td>
+<td class="p-2"><input class="form-input input-focus-ring py-1 px-2 w-24" placeholder="0.0" type="number"/></td>
+<td class="p-2"><input class="form-input input-focus-ring py-1 px-2 w-24" placeholder="0" type="number"/></td>
+<td class="p-2">
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="w-4 h-4 text-[#d98c2b] border-outline-variant rounded focus:ring-[#d98c2b]" type="checkbox"/>
+<span class="font-body-base text-body-base">Yes</span>
+</label>
+</td>
+<td class="p-2 text-right">
+<button class="w-8 h-8 rounded-[0.5rem] bg-surface border border-[#dde3ea] flex items-center justify-center text-surface-tint hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Concrete Assessment Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<section class="form-section mb-0">
+<h3 class="font-headline-md text-headline-md border-b border-outline-variant pb-3 mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint">layers</span>
+                            Spalling / پوسته شدن
+                        </h3>
+<div class="space-y-4">
+<div>
+<label class="form-label font-body-medium text-body-medium">Severity / شدت</label>
+<div class="flex gap-2">
+<button class="flex-1 py-2 border border-[#dde3ea] rounded bg-surface text-on-surface hover:border-[#d98c2b] focus:border-[#d98c2b] focus:bg-[#d98c2b]/10 transition-all font-body-medium text-body-medium">Low</button>
+<button class="flex-1 py-2 border border-[#d98c2b] rounded bg-[#d98c2b]/10 text-on-surface transition-all font-body-medium text-body-medium">Med</button>
+<button class="flex-1 py-2 border border-[#dde3ea] rounded bg-surface text-on-surface hover:border-error focus:border-error focus:bg-error/10 transition-all font-body-medium text-body-medium">High</button>
+</div>
+</div>
+<div>
+<label class="form-label font-body-medium text-body-medium">Estimated Area (m²) / مساحت تقریبی</label>
+<input class="form-input input-focus-ring font-body-base text-body-base" type="number" value="1.2"/>
+</div>
+<label class="flex items-center gap-2 cursor-pointer mt-2">
+<input class="w-4 h-4 text-[#d98c2b] border-outline-variant rounded focus:ring-[#d98c2b]" type="checkbox"/>
+<span class="font-body-base text-body-base">Exposed Rebar / میلگرد نمایان است</span>
+</label>
+</div>
+</section>
+<section class="form-section mb-0">
+<h3 class="font-headline-md text-headline-md border-b border-outline-variant pb-3 mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint">water_drop</span>
+                            Drainage / زهکشی
+                        </h3>
+<div class="space-y-4">
+<div>
+<label class="form-label font-body-medium text-body-medium">Condition / وضعیت</label>
+<select class="form-input input-focus-ring font-body-base text-body-base">
+<option>Clear - Functioning / باز - در حال کار</option>
+<option selected="">Partially Blocked / نیمه مسدود</option>
+<option>Blocked - Needs Cleaning / مسدود - نیاز به تمیزکاری</option>
+</select>
+</div>
+<div>
+<label class="form-label font-body-medium text-body-medium">Ponding Observed? / آبگرفتگی مشاهده شد؟</label>
+<div class="flex gap-4 mt-2">
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="w-4 h-4 text-[#d98c2b] border-outline-variant focus:ring-[#d98c2b]" name="ponding" type="radio"/>
+<span class="font-body-base text-body-base">Yes / بله</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="w-4 h-4 text-[#d98c2b] border-outline-variant focus:ring-[#d98c2b]" name="ponding" type="radio"/>
+<span class="font-body-base text-body-base">No / خیر</span>
+</label>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Right Column: Visuals & Attachments -->
+<div class="space-y-6">
+<!-- Location Diagram -->
+<section class="form-section">
+<h3 class="font-headline-md text-headline-md border-b border-outline-variant pb-3 mb-4 flex justify-between items-center">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint">map</span>
+                            Defect Map
+                        </span>
+<button class="text-secondary hover:text-industrial-amber-600 font-label-caps text-label-caps uppercase flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[16px]">edit</span> Mark
+                        </button>
+</h3>
+<div class="relative w-full aspect-square bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+<div class="w-full h-full bg-cover bg-center opacity-80 mix-blend-multiply" data-alt="A highly detailed technical engineering blueprint diagram of an industrial foundation slab, rendered in crisp white lines over a deep navy blueprint background. Red circular markers indicate structural defect locations. The style is authoritative, precise, and professional, fitting for a CMMS platform." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAlE-k6a4l0NfR72jNbdsMq1e-0-Lb0jIPvUeJV0ENtb2x_WIW16Ilwz_T2qwIQmcaFmflPSpG2LtVeinLWf7OYl3-Z1LJ3wRGzk6X2XUQ8Ti7niRXQ8OVuaXCOeEDnm83JgOhJ2598InAG7nXGrTtiPIFQv2oPhTo1jj3OKGbemgRJ5RGewTk645LioKSCM11LPe8eh5SwwsdN2Y5aJkleyo50cB__3x4i8f-TbSHQSVANpZMEsZze')"></div>
+<!-- Overlay Pins (Simulated) -->
+<div class="absolute top-1/4 left-1/3 w-3 h-3 bg-error rounded-full shadow-[0_0_0_4px_rgba(186,26,26,0.3)] pointer-events-none"></div>
+<div class="absolute bottom-1/3 right-1/4 w-3 h-3 bg-industrial-amber-500 rounded-full shadow-[0_0_0_4px_rgba(217,140,43,0.3)] pointer-events-none"></div>
+<div class="absolute bottom-2 left-2 bg-surface/90 px-2 py-1 rounded text-[10px] font-label-caps text-on-surface tracking-wider backdrop-blur-sm border border-outline-variant">
+                            Tap to add marker
+                        </div>
+</div>
+</section>
+<!-- Settlement Measurement -->
+<section class="form-section">
+<h3 class="font-headline-md text-headline-md border-b border-outline-variant pb-3 mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint">straighten</span>
+                        Settlement / نشست
+                    </h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 border border-[#dde3ea] rounded bg-surface">
+<span class="font-body-medium text-body-medium">Point A (NW)</span>
+<div class="flex items-center gap-2">
+<input class="form-input input-focus-ring py-1 px-2 w-20 text-right font-table-cell text-table-cell" type="number" value="-12"/>
+<span class="font-label-caps text-label-caps text-on-surface-variant">mm</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 border border-[#dde3ea] rounded bg-surface">
+<span class="font-body-medium text-body-medium">Point B (NE)</span>
+<div class="flex items-center gap-2">
+<input class="form-input input-focus-ring py-1 px-2 w-20 text-right font-table-cell text-table-cell" type="number" value="-8"/>
+<span class="font-label-caps text-label-caps text-on-surface-variant">mm</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 border border-[#dde3ea] rounded bg-surface">
+<span class="font-body-medium text-body-medium">Point C (SW)</span>
+<div class="flex items-center gap-2">
+<input class="form-input input-focus-ring py-1 px-2 w-20 text-right font-table-cell text-table-cell" type="number" value="-15"/>
+<span class="font-label-caps text-label-caps text-on-surface-variant">mm</span>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant">
+<label class="form-label font-body-medium text-body-medium">Differential Settlement Alert</label>
+<div class="flex items-center gap-2 text-error font-body-base text-body-base mt-1 bg-error-container/30 p-2 rounded border border-error-container">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+                                 Exceeds 5mm threshold between A &amp; C
+                             </div>
+</div>
+</div>
+</section>
+<!-- Photos Attachment -->
+<section class="form-section">
+<h3 class="font-headline-md text-headline-md border-b border-outline-variant pb-3 mb-4 flex justify-between items-center">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint">photo_camera</span>
+                            Photos
+                        </span>
+<span class="bg-surface-container-highest text-on-surface px-2 py-0.5 rounded font-label-caps text-label-caps">2 Added</span>
+</h3>
+<div class="grid grid-cols-2 gap-2">
+<div class="aspect-square bg-surface border border-outline-variant rounded relative group overflow-hidden cursor-pointer">
+<img alt="Crack detail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A close-up, highly detailed photograph of a hairline crack in a concrete foundation wall. The lighting is harsh industrial white light, emphasizing the texture of the concrete. A small, yellow plastic ruler with black millimeter markings is placed next to the crack for scale. Technical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_ijLr7LX68oZag0xEYA85I_9lIkIUF-fgaTZ-8sJuqfOISWHvZ8H3-_sWblagy2y2tBkIqsDq_z_kwc3ycKDnHJ84ttg0GhLJAd4He4TUERQir9haL_NcJi7VCbCvAmlEcx_u-cJ9d8hYZw55ISYJWPc1t7vhRN3m7KLbYM_CPOSMXnD4T5GnASxSrvqwry9Qf1lSihnwwsUD4QeVaQiN6LRmJey_h7oo3V6sIFGYGy_NLWUmA_qH"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-white">zoom_in</span>
+</div>
+</div>
+<div class="aspect-square bg-surface border border-outline-variant rounded relative group overflow-hidden cursor-pointer">
+<img alt="Drainage detail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A clear, high-resolution photograph showing a partially blocked drainage grate set into an industrial concrete floor. The grate is made of heavy-duty steel. There is slight debris accumulation and minor water ponding around the edges. Industrial lighting, professional documentation style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCM3H3AYB4spbCMTXewonoS7Lx_newDViXsd97zMDDiAcV6boHjT8olAtT6natqc9Iq57zs-34HC9-HncPmsfaNUrjHcq806T8LKFVYDJ5leSUl_Is1kE7_pOj4vyWGxKVvxeCaoEs5AuMKI8kTFeN2QMUC90qEe4d_xYOcsN-fMGwanPaTJ0YfKpIZTlTo9YdNk8s3m7Jd-hB_zwvryABGPcqS5qDLMYYtpW6rkZ9C9ZCYD2ODN8A_"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-white">zoom_in</span>
+</div>
+</div>
+<button class="col-span-2 py-3 border-2 border-dashed border-outline-variant rounded flex flex-col items-center justify-center text-surface-tint hover:border-secondary hover:text-secondary hover:bg-secondary/5 transition-colors">
+<span class="material-symbols-outlined mb-1">add_a_photo</span>
+<span class="font-body-medium text-body-medium">Capture or Upload</span>
+</button>
+</div>
+</section>
+</div>
+</div>
+</main>
+</body></html>

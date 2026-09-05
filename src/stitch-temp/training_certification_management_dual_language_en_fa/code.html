@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Training &amp; Certification Management - PEMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-low": "#eef4ff",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "primary-fixed": "#d7e3fd",
+                      "on-secondary-container": "#6e4100",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container": "#e4efff",
+                      "surface": "#f8f9ff",
+                      "surface-variant": "#d0e4fe",
+                      "inverse-surface": "#1f3245",
+                      "surface-bright": "#f8f9ff",
+                      "outline-variant": "#c5c6cd",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "tertiary-fixed": "#d1e4ff",
+                      "secondary-container": "#fdaa47",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-tertiary-fixed": "#001d36",
+                      "on-error": "#ffffff",
+                      "surface-dim": "#c8dcf5",
+                      "surface-tint": "#535f75",
+                      "outline": "#75777d",
+                      "on-surface": "#081d2f",
+                      "on-secondary-fixed": "#2c1700",
+                      "error-container": "#ffdad6",
+                      "on-error-container": "#93000a",
+                      "surface-container-highest": "#d0e4fe",
+                      "secondary-fixed": "#ffdcbc",
+                      "inverse-on-surface": "#e9f1ff",
+                      "on-primary-fixed": "#101c2f",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "on-tertiary-container": "#498bcd",
+                      "on-primary-container": "#7c889f",
+                      "on-primary": "#ffffff",
+                      "on-surface-variant": "#44474c",
+                      "error": "#ba1a1a",
+                      "background": "#f8f9ff",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "secondary": "#895200",
+                      "tertiary": "#000815",
+                      "on-tertiary": "#ffffff",
+                      "primary": "#000819",
+                      "tertiary-container": "#00213d",
+                      "inverse-primary": "#bbc7e0",
+                      "on-background": "#081d2f",
+                      "primary-container": "#142033",
+                      "surface-container-high": "#daeaff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "md": "16px",
+                      "topbar-height": "60px",
+                      "sidebar-width": "260px",
+                      "lg": "24px",
+                      "gutter": "16px",
+                      "xl": "32px",
+                      "sm": "8px",
+                      "unit": "4px",
+                      "xs": "4px"
+              },
+              "fontFamily": {
+                      "body-medium": ["Inter"],
+                      "table-header": ["Inter"],
+                      "badge-label": ["Inter"],
+                      "body-base": ["Inter"],
+                      "table-cell": ["Inter"],
+                      "kpi-stat": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "headline-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                      "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                      "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                      "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                      "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}],
+                      "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .dir-rtl {
+            direction: rtl;
+        }
+        .dir-ltr {
+            direction: ltr;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full flex flex-col py-md z-40 bg-surface border-r border-outline-variant docked left-0 h-full w-sidebar-width hidden md:flex">
+<div class="px-md mb-xl flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined">factory</span>
+</div>
+<div>
+<h1 class="text-headline-md font-headline-md text-on-surface">PEMS Enterprise</h1>
+<p class="text-label-caps font-label-caps text-on-surface-variant">Operational Control</p>
+</div>
+</div>
+<nav class="flex-1 px-sm space-y-unit overflow-y-auto">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="badge">badge</span>
+<span class="font-label-caps text-label-caps">Employees</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps">Assets</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="build">build</span>
+<span class="font-label-caps text-label-caps">Work Orders</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg bg-secondary-container text-on-secondary-container font-bold transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="security" data-weight="fill" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-label-caps text-label-caps">Safety</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+<span class="font-label-caps text-label-caps">Logistics</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-label-caps">Analytics</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</nav>
+<div class="px-md mt-auto">
+<button class="w-full py-sm rounded-lg bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white font-body-medium shadow-sm hover:opacity-90 transition-opacity mb-md">
+                Create New Order
+            </button>
+<div class="space-y-unit">
+<a class="flex items-center gap-md px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+<a class="flex items-center gap-md px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-caps text-label-caps">Sign Out</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col md:ml-[260px] h-full overflow-hidden">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-lg h-topbar-height z-50 bg-surface-container-low border-b border-outline-variant docked full-width top-0">
+<div class="flex items-center gap-lg">
+<span class="text-headline-md font-headline-md text-primary">PEMS Industrial Suite</span>
+<div class="hidden md:flex items-center h-full">
+<a class="px-md h-full flex items-center text-on-surface-variant font-body-medium hover:bg-surface-variant transition-colors" href="#">Overview</a>
+<a class="px-md h-full flex items-center text-primary font-bold border-b-2 border-secondary bg-surface-variant transition-colors" href="#">Training &amp; Certs</a>
+<a class="px-md h-full flex items-center text-on-surface-variant font-body-medium hover:bg-surface-variant transition-colors" href="#">Incidents</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="pl-xl pr-sm py-sm rounded-lg border border-outline-variant bg-surface focus:border-secondary focus:ring-1 focus:ring-secondary text-body-base w-64" placeholder="Search records..." type="text"/>
+</div>
+<button class="w-10 h-10 rounded-full hover:bg-surface-variant flex items-center justify-center text-on-surface transition-colors" id="langToggle">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+</button>
+<button class="w-10 h-10 rounded-full hover:bg-surface-variant flex items-center justify-center text-on-surface transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="w-10 h-10 rounded-full hover:bg-surface-variant flex items-center justify-center text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Page Content -->
+<div class="flex-1 overflow-y-auto p-md md:p-lg bg-background">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-lg gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-background" data-lang-en="Training &amp; Certification Dashboard" data-lang-fa="داشبورد آموزش و گواهینامه">Training &amp; Certification Dashboard</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-unit" data-lang-en="Monitor compliance and skill matrices across operational teams." data-lang-fa="نظارت بر انطباق و ماتریس مهارت‌ها در تیم‌های عملیاتی.">Monitor compliance and skill matrices across operational teams.</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-sm rounded-lg border border-outline-variant text-on-surface-variant font-body-medium flex items-center gap-sm hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+<span data-lang-en="Filter" data-lang-fa="فیلتر">Filter</span>
+</button>
+<button class="px-md py-sm rounded-lg bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white font-body-medium shadow-sm hover:opacity-90 transition-opacity flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span data-lang-en="Schedule Training" data-lang-fa="زمان‌بندی آموزش">Schedule Training</span>
+</button>
+</div>
+</div>
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md mb-xl">
+<!-- Compliance Rate -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm hover:border-secondary transition-colors">
+<div class="flex items-center justify-between mb-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant" data-lang-en="Overall Compliance" data-lang-fa="انطباق کلی">Overall Compliance</span>
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-tertiary-fixed to-primary-fixed-dim flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">verified</span>
+</div>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">94.2%</div>
+<div class="mt-sm flex items-center gap-unit text-[12px] text-green-700 font-semibold">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+<span>+1.5% from last quarter</span>
+</div>
+</div>
+<!-- Expiring Soon -->
+<div class="bg-surface-container-lowest border border-error-container rounded-xl p-md shadow-sm hover:border-error transition-colors relative overflow-hidden">
+<div class="absolute right-0 top-0 w-16 h-16 bg-error-container opacity-20 rounded-bl-full"></div>
+<div class="flex items-center justify-between mb-md">
+<span class="font-label-caps text-label-caps text-error" data-lang-en="Expiring ≤ 30 Days" data-lang-fa="انقضا ≤ ۳۰ روز">Expiring ≤ 30 Days</span>
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-error-container to-[#ffb4ab] flex items-center justify-center text-on-error-container">
+<span class="material-symbols-outlined">warning</span>
+</div>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">18</div>
+<div class="mt-sm flex items-center gap-unit text-[12px] text-on-surface-variant">
+<span>Requires immediate action</span>
+</div>
+</div>
+<!-- Active Training -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm hover:border-secondary transition-colors">
+<div class="flex items-center justify-between mb-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant" data-lang-en="Active Trainees" data-lang-fa="کارآموزان فعال">Active Trainees</span>
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-surface-variant to-tertiary-fixed-dim flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined">school</span>
+</div>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">142</div>
+<div class="mt-sm flex items-center gap-unit text-[12px] text-on-surface-variant">
+<span>Across 12 sessions</span>
+</div>
+</div>
+<!-- Missing Certs -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm hover:border-secondary transition-colors">
+<div class="flex items-center justify-between mb-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant" data-lang-en="Critical Gaps" data-lang-fa="شکاف‌های حیاتی">Critical Gaps</span>
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-secondary-fixed to-secondary-fixed-dim flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined">assignment_late</span>
+</div>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">3</div>
+<div class="mt-sm flex items-center gap-unit text-[12px] text-[#b3261e] font-semibold">
+<span class="material-symbols-outlined text-[14px]">priority_high</span>
+<span>Role mismatch detected</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Left Column: Cert Matrix & List -->
+<div class="lg:col-span-2 space-y-lg">
+<!-- Certification Matrix -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm flex flex-col h-full max-h-[500px]">
+<div class="p-md border-b border-outline-variant bg-[#f5f7fa] rounded-t-xl flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-on-surface" data-lang-en="Role Certification Matrix" data-lang-fa="ماتریس گواهینامه نقش">Role Certification Matrix</h3>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div class="overflow-x-auto flex-1 p-sm">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-surface-container-lowest z-10">
+<tr>
+<th class="p-sm font-table-header text-table-header text-on-surface-variant border-b border-outline-variant uppercase">Employee / ID</th>
+<th class="p-sm font-table-header text-table-header text-on-surface-variant border-b border-outline-variant uppercase text-center">Confined Space</th>
+<th class="p-sm font-table-header text-table-header text-on-surface-variant border-b border-outline-variant uppercase text-center">LOTO</th>
+<th class="p-sm font-table-header text-table-header text-on-surface-variant border-b border-outline-variant uppercase text-center">Elec L2</th>
+<th class="p-sm font-table-header text-table-header text-on-surface-variant border-b border-outline-variant uppercase text-center">First Aid</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface">
+<tr class="hover:bg-[rgba(31,78,120,0.04)] transition-colors border-b border-outline-variant">
+<td class="p-sm">
+<div class="font-body-medium">John Smith</div>
+<div class="font-mono text-[11px] text-on-surface-variant">EMP-9021</div>
+<div class="text-[11px] text-on-surface-variant">Electrician L2</div>
+</td>
+<td class="p-sm text-center">
+<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#d3ebd3] text-[#146c2e]"><span class="material-symbols-outlined text-[16px]">check</span></span>
+</td>
+<td class="p-sm text-center">
+<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#d3ebd3] text-[#146c2e]"><span class="material-symbols-outlined text-[16px]">check</span></span>
+</td>
+<td class="p-sm text-center">
+<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#fde9d9] text-[#9c4d00]"><span class="material-symbols-outlined text-[16px]">schedule</span></span>
+</td>
+<td class="p-sm text-center">
+<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#e0e0e0] text-[#5e5e5e]"><span class="material-symbols-outlined text-[16px]">remove</span></span>
+</td>
+</tr>
+<tr class="hover:bg-[rgba(31,78,120,0.04)] transition-colors border-b border-outline-variant">
+<td class="p-sm">
+<div class="font-body-medium">Ali Reza</div>
+<div class="font-mono text-[11px] text-on-surface-variant">EMP-9144</div>
+<div class="text-[11px] text-on-surface-variant">Safety Officer</div>
+</td>
+<td class="p-sm text-center">
+<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#d3ebd3] text-[#146c2e]"><span class="material-symbols-outlined text-[16px]">check</span></span>
+</td>
+<td class="p-sm text-center">
+<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#f8d7da] text-[#842029]"><span class="material-symbols-outlined text-[16px]">close</span></span>
+</td>
+<td class="p-sm text-center">
+<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#e0e0e0] text-[#5e5e5e]"><span class="material-symbols-outlined text-[16px]">remove</span></span>
+</td>
+<td class="p-sm text-center">
+<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#d3ebd3] text-[#146c2e]"><span class="material-symbols-outlined text-[16px]">check</span></span>
+</td>
+</tr>
+<tr class="hover:bg-[rgba(31,78,120,0.04)] transition-colors">
+<td class="p-sm">
+<div class="font-body-medium">Sarah Connor</div>
+<div class="font-mono text-[11px] text-on-surface-variant">EMP-8832</div>
+<div class="text-[11px] text-on-surface-variant">Mech. Technician</div>
+</td>
+<td class="p-sm text-center">
+<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#d3ebd3] text-[#146c2e]"><span class="material-symbols-outlined text-[16px]">check</span></span>
+</td>
+<td class="p-sm text-center">
+<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#d3ebd3] text-[#146c2e]"><span class="material-symbols-outlined text-[16px]">check</span></span>
+</td>
+<td class="p-sm text-center">
+<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#e0e0e0] text-[#5e5e5e]"><span class="material-symbols-outlined text-[16px]">remove</span></span>
+</td>
+<td class="p-sm text-center">
+<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#d3ebd3] text-[#146c2e]"><span class="material-symbols-outlined text-[16px]">check</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Right Column: Alerts & Upcoming -->
+<div class="space-y-lg">
+<!-- Alert Indicators -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-md">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant pb-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">notifications_active</span>
+<span data-lang-en="Action Required" data-lang-fa="اقدام لازم">Action Required</span>
+</h3>
+</div>
+<div class="space-y-sm">
+<div class="flex gap-md p-sm rounded-lg bg-error-container bg-opacity-30 border border-error-container">
+<span class="material-symbols-outlined text-error mt-unit">error</span>
+<div>
+<div class="font-body-medium text-on-surface">LOTO Certification Expired</div>
+<div class="font-body-base text-[12px] text-on-surface-variant">Ali Reza (EMP-9144) • Expired 2 days ago</div>
+<button class="mt-sm text-error font-body-medium text-[12px] hover:underline">Revoke Site Access</button>
+</div>
+</div>
+<div class="flex gap-md p-sm rounded-lg bg-surface-variant border border-outline-variant">
+<span class="material-symbols-outlined text-secondary mt-unit">warning</span>
+<div>
+<div class="font-body-medium text-on-surface">Elec L2 Renewal Due</div>
+<div class="font-body-base text-[12px] text-on-surface-variant">John Smith (EMP-9021) • Due in 14 days</div>
+<button class="mt-sm text-primary font-body-medium text-[12px] hover:underline">Enroll in Session</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Upcoming Sessions -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-md flex-1">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant pb-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface" data-lang-en="Upcoming Sessions" data-lang-fa="جلسات آینده">Upcoming Sessions</h3>
+<a class="text-[12px] font-body-medium text-primary hover:underline" href="#">View Calendar</a>
+</div>
+<div class="relative pl-lg border-l-2 border-surface-variant space-y-md">
+<div class="relative">
+<div class="absolute -left-[25px] top-1 w-3 h-3 rounded-full bg-secondary border-2 border-surface-container-lowest"></div>
+<div class="font-label-caps text-label-caps text-secondary mb-unit">Tomorrow, 09:00 AM</div>
+<div class="font-body-medium text-on-surface">Confined Space Refresher</div>
+<div class="text-[12px] text-on-surface-variant flex items-center gap-xs mt-unit">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Room A2 • 12 Enrolled
+                                </div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] top-1 w-3 h-3 rounded-full bg-outline-variant border-2 border-surface-container-lowest"></div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-unit">Oct 24, 14:00 PM</div>
+<div class="font-body-medium text-on-surface">Advanced LOTO Procedures</div>
+<div class="text-[12px] text-on-surface-variant flex items-center gap-xs mt-unit">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Workshop 3 • 8 Enrolled
+                                </div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] top-1 w-3 h-3 rounded-full bg-outline-variant border-2 border-surface-container-lowest"></div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-unit">Oct 28, 08:30 AM</div>
+<div class="font-body-medium text-on-surface">First Aid Level 1</div>
+<div class="text-[12px] text-on-surface-variant flex items-center gap-xs mt-unit">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Clinic Main • 20 Enrolled
+                                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Simple LTR/RTL toggle for demonstration
+        const langToggle = document.getElementById('langToggle');
+        let currentLang = 'en';
+
+        langToggle.addEventListener('click', () => {
+            const htmlTag = document.documentElement;
+            const elements = document.querySelectorAll('[data-lang-en]');
+            
+            if (currentLang === 'en') {
+                htmlTag.setAttribute('dir', 'rtl');
+                htmlTag.setAttribute('lang', 'fa');
+                htmlTag.classList.remove('dir-ltr');
+                htmlTag.classList.add('dir-rtl');
+                
+                elements.forEach(el => {
+                    if (el.tagName === 'INPUT' && el.type === 'text') {
+                        el.placeholder = el.getAttribute('data-lang-fa');
+                    } else {
+                        el.textContent = el.getAttribute('data-lang-fa');
+                    }
+                });
+                currentLang = 'fa';
+            } else {
+                htmlTag.setAttribute('dir', 'ltr');
+                htmlTag.setAttribute('lang', 'en');
+                htmlTag.classList.remove('dir-rtl');
+                htmlTag.classList.add('dir-ltr');
+                
+                elements.forEach(el => {
+                    if (el.tagName === 'INPUT' && el.type === 'text') {
+                        el.placeholder = el.getAttribute('data-lang-en');
+                    } else {
+                        el.textContent = el.getAttribute('data-lang-en');
+                    }
+                });
+                currentLang = 'en';
+            }
+        });
+    </script>
+</body></html>

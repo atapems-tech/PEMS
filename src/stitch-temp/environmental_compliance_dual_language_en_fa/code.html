@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Environmental Compliance &amp; Emissions Monitoring</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config Injection -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#f8f9ff",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#44474c",
+                        "on-tertiary-container": "#498bcd",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#1f3245",
+                        "primary": "#000819",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#081d2f",
+                        "tertiary-container": "#00213d",
+                        "primary-fixed": "#d7e3fd",
+                        "surface-container-high": "#daeaff",
+                        "background": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "surface-container": "#e4efff",
+                        "secondary": "#895200",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "surface-variant": "#d0e4fe",
+                        "surface-container-low": "#eef4ff",
+                        "on-primary-container": "#7c889f",
+                        "on-secondary-container": "#6e4100",
+                        "outline-variant": "#c5c6cd",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#fdaa47",
+                        "on-secondary-fixed": "#2c1700",
+                        "tertiary-fixed": "#d1e4ff",
+                        "secondary-fixed": "#ffdcbc",
+                        "tertiary": "#000815",
+                        "surface": "#f8f9ff",
+                        "primary-container": "#142033",
+                        "surface-tint": "#535f75",
+                        "surface-dim": "#c8dcf5",
+                        "surface-container-highest": "#d0e4fe",
+                        "outline": "#75777d",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#101c2f",
+                        "inverse-on-surface": "#e9f1ff",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#081d2f",
+                        "inverse-primary": "#bbc7e0",
+                        "secondary-fixed-dim": "#ffb86a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "xl": "32px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "topbar-height": "60px",
+                        "sidebar-width": "260px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-medium": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "body-base": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "table-header": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Custom scrollbar for dense data areas */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: theme('colors.surface-container');
+        }
+        ::-webkit-scrollbar-thumb {
+            background: theme('colors.outline-variant');
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.outline');
+        }
+        
+        /* Language direction support */
+        html[dir="rtl"] {
+            font-family: Tahoma, Arial, sans-serif; /* Fallback for Persian if Inter doesn't support well, though Inter handles basic Arabic script */
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased flex">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col bg-primary dark:bg-primary-container docked fixed left-0 top-0 h-full w-sidebar-width py-lg shadow-sm z-50">
+<!-- Header -->
+<div class="px-lg mb-xl flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-primary-container flex items-center justify-center text-on-primary font-bold">
+<img alt="PEMS Logo" class="w-full h-full object-cover rounded" data-alt="A minimalist logo for a plant environmental management system, featuring geometric shapes representing water and air, in a crisp white and deep navy color palette, symbolizing industrial precision and environmental care." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6Aa9sXu5DSOO1KbXDSSnP6M0jtDepW3Rw4jA4He5u1rbMB6HHUaKaRRieoY3uiApiwUlWUNin09zvCTHAo6nIzqAjTHhV9TgSjr7mFtCN9WL4ST48_m6enCKFWZMQVeJSMDZoTJKjf_tSgovaHk2cZwFn0q1Z7QoUTshSCTt1Ifbn26wKJo7AzlREB8qFcTOXMxeC8m0WB1WuVJzCUYenyjFSkXTP1aZqR-iYQ3CFuUQ7wgED3Qt1"/>
+</div>
+<div>
+<h1 class="text-headline-md font-headline-md text-on-primary dark:text-primary-fixed">PEMS</h1>
+<p class="text-xs text-on-primary-container">Utility Management</p>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex-1 flex flex-col gap-sm overflow-y-auto">
+<!-- Active Tab: Analytics & Reports (closest to Dashboard/Compliance) -->
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary transition-colors hover:bg-primary-fixed-dim/10" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">badge</span>
+<span class="font-body-medium text-body-medium">Employee Management</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary transition-colors hover:bg-primary-fixed-dim/10" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">inventory_2</span>
+<span class="font-body-medium text-body-medium">Asset Inventory</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary transition-colors hover:bg-primary-fixed-dim/10" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">build_circle</span>
+<span class="font-body-medium text-body-medium">Work Orders</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary transition-colors hover:bg-primary-fixed-dim/10" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">security</span>
+<span class="font-body-medium text-body-medium">Safety</span>
+</a>
+<!-- Active state applied here based on semantic match to dashboard/monitoring -->
+<a class="flex items-center gap-md px-md py-sm bg-surface-variant/10 text-secondary-container font-bold border-l-4 border-secondary-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-body-medium text-body-medium">Analytics &amp; Reports</span>
+</a>
+</div>
+<!-- Footer -->
+<div class="mt-auto flex flex-col gap-sm px-md border-t border-primary-container pt-md">
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary transition-colors hover:bg-primary-fixed-dim/10" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+<span class="font-body-medium text-body-medium">Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary transition-colors hover:bg-primary-fixed-dim/10" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">logout</span>
+<span class="font-body-medium text-body-medium">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-h-screen md:ml-sidebar-width w-full transition-all duration-300">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim docked sticky top-0 right-0 w-full z-40 border-b border-outline-variant dark:border-outline flex justify-between items-center h-topbar-height px-lg">
+<!-- Mobile Menu Toggle (Visible only on mobile) -->
+<button class="md:hidden text-primary p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<!-- Brand / Title -->
+<div class="flex items-center gap-md hidden md:flex">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">PEMS</span>
+<span class="text-on-surface-variant px-sm border-l border-outline-variant text-sm">Environmental Compliance Dashboard</span>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-sm">
+<!-- Language Switcher (EN/FA) -->
+<button class="text-primary dark:text-primary-fixed-dim p-2 hover:bg-surface-container-low transition-colors rounded-full cursor-pointer active:scale-95 flex items-center gap-1 group" id="langToggle">
+<span class="material-symbols-outlined">language</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant group-hover:text-primary transition-colors">EN</span>
+</button>
+<button class="text-primary dark:text-primary-fixed-dim p-2 hover:bg-surface-container-low transition-colors rounded-full cursor-pointer active:scale-95 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full border border-surface"></span>
+</button>
+<button class="text-primary dark:text-primary-fixed-dim p-2 hover:bg-surface-container-low transition-colors rounded-full cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Canvas / Dashboard Content -->
+<main class="flex-1 p-4 md:p-lg lg:p-xl space-y-lg overflow-x-hidden">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-xl">
+<div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background" data-i18n="dashboard_title">Emissions &amp; Compliance Monitoring</h2>
+<p class="text-on-surface-variant mt-1" data-i18n="dashboard_subtitle">Real-time telemetry and regulatory status for Plant Alpha</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-md bg-surface text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors text-sm font-semibold">
+<span class="material-symbols-outlined text-sm">download</span>
+<span data-i18n="export_report">Export Report</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#d98c2b] to-[#b8721e] rounded-md text-on-secondary shadow-sm hover:shadow transition-shadow text-sm font-semibold">
+<span class="material-symbols-outlined text-sm">add_alert</span>
+<span data-i18n="new_alert">New Alert</span>
+</button>
+</div>
+</div>
+<!-- Bento Grid: Main Dashboard -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md">
+<!-- KPI: Air Quality (NOx) -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex flex-col gap-sm hover:border-secondary hover:bg-[#1f4e780a] transition-all group">
+<div class="flex justify-between items-start">
+<div class="w-11 h-11 rounded-[10px] bg-gradient-to-br from-error-container to-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-error">air</span>
+</div>
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-error-container/50 text-error font-badge-label text-badge-label">
+                            Critical
+                        </span>
+</div>
+<div>
+<p class="text-on-surface-variant text-xs uppercase tracking-wider font-semibold mb-1" data-i18n="kpi_nox">NOx Emissions (Stack A)</p>
+<div class="flex items-baseline gap-2">
+<span class="font-kpi-stat text-kpi-stat text-on-background">42.5</span>
+<span class="text-on-surface-variant text-sm">ppm</span>
+</div>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 mt-2">
+<div class="bg-error h-1.5 rounded-full" style="width: 85%"></div>
+</div>
+<p class="text-xs text-on-surface-variant mt-1 text-right">Limit: 50 ppm</p>
+</div>
+<!-- KPI: Air Quality (SO2) -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex flex-col gap-sm hover:border-secondary hover:bg-[#1f4e780a] transition-all group">
+<div class="flex justify-between items-start">
+<div class="w-11 h-11 rounded-[10px] bg-gradient-to-br from-surface-container-high to-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary-container">cloud</span>
+</div>
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-[#e6f4ea] text-[#137333] font-badge-label text-badge-label">
+                            Normal
+                        </span>
+</div>
+<div>
+<p class="text-on-surface-variant text-xs uppercase tracking-wider font-semibold mb-1" data-i18n="kpi_so2">SO2 Emissions (Stack A)</p>
+<div class="flex items-baseline gap-2">
+<span class="font-kpi-stat text-kpi-stat text-on-background">12.1</span>
+<span class="text-on-surface-variant text-sm">ppm</span>
+</div>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 mt-2">
+<div class="bg-[#137333] h-1.5 rounded-full" style="width: 30%"></div>
+</div>
+<p class="text-xs text-on-surface-variant mt-1 text-right">Limit: 40 ppm</p>
+</div>
+<!-- KPI: Water Discharge -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex flex-col gap-sm hover:border-secondary hover:bg-[#1f4e780a] transition-all group">
+<div class="flex justify-between items-start">
+<div class="w-11 h-11 rounded-[10px] bg-gradient-to-br from-secondary-container/30 to-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">water_drop</span>
+</div>
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-secondary-container/20 text-secondary-container font-badge-label text-badge-label">
+                            Warning
+                        </span>
+</div>
+<div>
+<p class="text-on-surface-variant text-xs uppercase tracking-wider font-semibold mb-1" data-i18n="kpi_ph">Effluent pH Level</p>
+<div class="flex items-baseline gap-2">
+<span class="font-kpi-stat text-kpi-stat text-on-background">8.4</span>
+<span class="text-on-surface-variant text-sm">pH</span>
+</div>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 mt-2">
+<div class="bg-secondary-container h-1.5 rounded-full" style="width: 75%"></div>
+</div>
+<p class="text-xs text-on-surface-variant mt-1 text-right">Range: 6.5 - 8.5</p>
+</div>
+<!-- KPI: Waste Management -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex flex-col gap-sm hover:border-secondary hover:bg-[#1f4e780a] transition-all group">
+<div class="flex justify-between items-start">
+<div class="w-11 h-11 rounded-[10px] bg-gradient-to-br from-surface-container-high to-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary-container">recycling</span>
+</div>
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-[#e6f4ea] text-[#137333] font-badge-label text-badge-label">
+                            Active
+                        </span>
+</div>
+<div>
+<p class="text-on-surface-variant text-xs uppercase tracking-wider font-semibold mb-1" data-i18n="kpi_waste">Solid Waste Generated</p>
+<div class="flex items-baseline gap-2">
+<span class="font-kpi-stat text-kpi-stat text-on-background">1,240</span>
+<span class="text-on-surface-variant text-sm">kg/day</span>
+</div>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5 mt-2">
+<div class="bg-[#137333] h-1.5 rounded-full" style="width: 45%"></div>
+</div>
+<p class="text-xs text-on-surface-variant mt-1 text-right">Target: &lt; 2000 kg</p>
+</div>
+</div>
+<!-- Complex Layout Area: Charts & Tables -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-md mt-lg">
+<!-- Main Chart Area (Spans 2 columns) -->
+<div class="lg:col-span-2 bg-surface border border-outline-variant rounded-lg p-md flex flex-col">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant pb-sm">
+<h3 class="font-headline-md text-headline-md text-on-background" data-i18n="chart_title">CO2 Emissions Trend vs Limit</h3>
+<div class="flex gap-2">
+<button class="px-3 py-1 text-xs border border-outline-variant rounded hover:bg-surface-container-low transition-colors">24h</button>
+<button class="px-3 py-1 text-xs border border-secondary text-secondary bg-secondary/5 rounded font-bold">7d</button>
+<button class="px-3 py-1 text-xs border border-outline-variant rounded hover:bg-surface-container-low transition-colors">30d</button>
+</div>
+</div>
+<!-- Simulated Chart Area using CSS Grid/Flex for visual representation -->
+<div class="flex-1 relative min-h-[300px] flex items-end gap-1 pt-xl pb-6 px-4">
+<!-- Y-Axis Labels -->
+<div class="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-on-surface-variant pb-6 pr-2">
+<span>100</span><span>75</span><span>50</span><span>25</span><span>0</span>
+</div>
+<!-- Regulatory Limit Line -->
+<div class="absolute top-[25%] left-8 right-4 h-px border-t border-dashed border-error z-10 flex items-center justify-end">
+<span class="text-xs text-error bg-surface px-1 -mt-4">Reg Limit (75t)</span>
+</div>
+<!-- Bar Chart Simulation -->
+<div class="w-full h-full flex items-end justify-between pl-6 z-20">
+<div class="w-1/12 bg-tertiary-container/80 hover:bg-secondary transition-colors rounded-t-sm h-[40%] relative group"><div class="hidden group-hover:block absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded">40t</div></div>
+<div class="w-1/12 bg-tertiary-container/80 hover:bg-secondary transition-colors rounded-t-sm h-[45%] relative group"><div class="hidden group-hover:block absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded">45t</div></div>
+<div class="w-1/12 bg-tertiary-container/80 hover:bg-secondary transition-colors rounded-t-sm h-[60%] relative group"><div class="hidden group-hover:block absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded">60t</div></div>
+<div class="w-1/12 bg-tertiary-container/80 hover:bg-secondary transition-colors rounded-t-sm h-[70%] relative group"><div class="hidden group-hover:block absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded">70t</div></div>
+<div class="w-1/12 bg-error hover:bg-error-container transition-colors rounded-t-sm h-[85%] relative group"><div class="hidden group-hover:block absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded">85t</div></div>
+<div class="w-1/12 bg-tertiary-container/80 hover:bg-secondary transition-colors rounded-t-sm h-[65%] relative group"><div class="hidden group-hover:block absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded">65t</div></div>
+<div class="w-1/12 bg-tertiary-container/80 hover:bg-secondary transition-colors rounded-t-sm h-[50%] relative group"><div class="hidden group-hover:block absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded">50t</div></div>
+</div>
+<!-- X-Axis Labels -->
+<div class="absolute bottom-0 left-8 right-4 flex justify-between text-xs text-on-surface-variant pt-2 border-t border-outline-variant">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Permits & Deadlines -->
+<div class="flex flex-col gap-md h-full">
+<!-- Permit Status Summary -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex-1">
+<h3 class="font-headline-md text-headline-md text-on-background mb-4" data-i18n="permits_title">Environmental Permits</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-2 rounded hover:bg-surface-container-low transition-colors border border-transparent hover:border-outline-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline">description</span>
+<div>
+<p class="font-body-medium text-body-medium text-on-background">Air Title V</p>
+<p class="text-xs text-on-surface-variant font-mono">ID: EPA-TV-001</p>
+</div>
+</div>
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-[#e6f4ea] text-[#137333] font-badge-label text-badge-label">Active</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded hover:bg-surface-container-low transition-colors border border-transparent hover:border-outline-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline">water</span>
+<div>
+<p class="font-body-medium text-body-medium text-on-background">NPDES Water</p>
+<p class="text-xs text-on-surface-variant font-mono">ID: WA-NP-402</p>
+</div>
+</div>
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-secondary-container/20 text-secondary-container font-badge-label text-badge-label">Renewal Due</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded hover:bg-surface-container-low transition-colors border border-transparent hover:border-outline-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline">delete</span>
+<div>
+<p class="font-body-medium text-body-medium text-on-background">RCRA HazWaste</p>
+<p class="text-xs text-on-surface-variant font-mono">ID: HW-RC-998</p>
+</div>
+</div>
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-[#e6f4ea] text-[#137333] font-badge-label text-badge-label">Active</span>
+</div>
+</div>
+</div>
+<!-- Upcoming Deadlines -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex-1">
+<h3 class="font-headline-md text-headline-md text-on-background mb-4" data-i18n="deadlines_title">Compliance Deadlines</h3>
+<ul class="space-y-4">
+<li class="relative pl-4 border-l-2 border-error">
+<div class="absolute w-2 h-2 bg-error rounded-full -left-[5px] top-1.5"></div>
+<p class="font-body-medium text-body-medium text-on-background">Submit Q3 Emissions Report</p>
+<p class="text-xs text-error font-semibold mt-1">Due in 3 Days (Oct 15)</p>
+</li>
+<li class="relative pl-4 border-l-2 border-secondary-container">
+<div class="absolute w-2 h-2 bg-secondary-container rounded-full -left-[5px] top-1.5"></div>
+<p class="font-body-medium text-body-medium text-on-background">NPDES Permit Renewal App</p>
+<p class="text-xs text-on-surface-variant mt-1">Due Nov 01, 2023</p>
+</li>
+<li class="relative pl-4 border-l-2 border-outline-variant">
+<div class="absolute w-2 h-2 bg-outline-variant rounded-full -left-[5px] top-1.5"></div>
+<p class="font-body-medium text-body-medium text-on-background">Annual Stack Testing</p>
+<p class="text-xs text-on-surface-variant mt-1">Due Dec 15, 2023</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Dense Data Table: Live Sensor Feed -->
+<div class="bg-surface border border-outline-variant rounded-lg overflow-hidden mt-lg">
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+<h3 class="font-headline-md text-headline-md text-on-background" data-i18n="table_title">Live Sensor Telemetry Registry</h3>
+<div class="flex gap-2">
+<input class="h-8 px-2 py-1 text-sm border border-outline-variant rounded focus:border-secondary focus:ring-1 focus:ring-secondary outline-none w-48" placeholder="Filter tags..." type="text"/>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#f5f7fa] border-b border-outline-variant font-table-header text-table-header text-on-surface-variant uppercase">
+<th class="p-2 pl-4">Tag Number</th>
+<th class="p-2">Parameter</th>
+<th class="p-2">Location</th>
+<th class="p-2 text-right">Current Value</th>
+<th class="p-2 text-right">Threshold</th>
+<th class="p-2 text-center">Status</th>
+<th class="p-2 pr-4 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-background divide-y divide-outline-variant/50">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-2 pl-4 font-mono text-on-surface-variant">AE-1042-A</td>
+<td class="p-2 font-medium">Nitrogen Oxides (NOx)</td>
+<td class="p-2 text-on-surface-variant">Main Stack Alpha</td>
+<td class="p-2 text-right font-mono text-error font-semibold">42.5 ppm</td>
+<td class="p-2 text-right text-on-surface-variant">50.0 ppm</td>
+<td class="p-2 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-error-container/50 text-error font-badge-label text-[10px]">Alert</span>
+</td>
+<td class="p-2 pr-4 text-right">
+<button class="w-8 h-8 rounded bg-surface border border-outline-variant hover:border-secondary flex items-center justify-center text-on-surface-variant hover:text-secondary ml-auto">
+<span class="material-symbols-outlined text-[18px]">timeline</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-2 pl-4 font-mono text-on-surface-variant">AE-1043-B</td>
+<td class="p-2 font-medium">Sulfur Dioxide (SO2)</td>
+<td class="p-2 text-on-surface-variant">Main Stack Alpha</td>
+<td class="p-2 text-right font-mono">12.1 ppm</td>
+<td class="p-2 text-right text-on-surface-variant">40.0 ppm</td>
+<td class="p-2 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#e6f4ea] text-[#137333] font-badge-label text-[10px]">OK</span>
+</td>
+<td class="p-2 pr-4 text-right">
+<button class="w-8 h-8 rounded bg-surface border border-outline-variant hover:border-secondary flex items-center justify-center text-on-surface-variant hover:text-secondary ml-auto">
+<span class="material-symbols-outlined text-[18px]">timeline</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-2 pl-4 font-mono text-on-surface-variant">WT-2091-C</td>
+<td class="p-2 font-medium">Effluent pH</td>
+<td class="p-2 text-on-surface-variant">Discharge Outfall 001</td>
+<td class="p-2 text-right font-mono text-secondary-container font-semibold">8.4</td>
+<td class="p-2 text-right text-on-surface-variant">6.5 - 8.5</td>
+<td class="p-2 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-secondary-container/20 text-secondary-container font-badge-label text-[10px]">Warn</span>
+</td>
+<td class="p-2 pr-4 text-right">
+<button class="w-8 h-8 rounded bg-surface border border-outline-variant hover:border-secondary flex items-center justify-center text-on-surface-variant hover:text-secondary ml-auto">
+<span class="material-symbols-outlined text-[18px]">timeline</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-2 pl-4 font-mono text-on-surface-variant">WT-2092-D</td>
+<td class="p-2 font-medium">Total Suspended Solids</td>
+<td class="p-2 text-on-surface-variant">Discharge Outfall 001</td>
+<td class="p-2 text-right font-mono">18 mg/L</td>
+<td class="p-2 text-right text-on-surface-variant">30 mg/L</td>
+<td class="p-2 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#e6f4ea] text-[#137333] font-badge-label text-[10px]">OK</span>
+</td>
+<td class="p-2 pr-4 text-right">
+<button class="w-8 h-8 rounded bg-surface border border-outline-variant hover:border-secondary flex items-center justify-center text-on-surface-variant hover:text-secondary ml-auto">
+<span class="material-symbols-outlined text-[18px]">timeline</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+<!-- Micro-interactions & LTR/RTL Toggle Logic -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const langToggle = document.getElementById('langToggle');
+            const htmlTag = document.documentElement;
+            const langText = langToggle.querySelector('.font-label-caps');
+            
+            // Simple translation dictionary for demo
+            const translations = {
+                'en': {
+                    'dashboard_title': 'Emissions & Compliance Monitoring',
+                    'dashboard_subtitle': 'Real-time telemetry and regulatory status for Plant Alpha',
+                    'export_report': 'Export Report',
+                    'new_alert': 'New Alert',
+                    'kpi_nox': 'NOx Emissions (Stack A)',
+                    'kpi_so2': 'SO2 Emissions (Stack A)',
+                    'kpi_ph': 'Effluent pH Level',
+                    'kpi_waste': 'Solid Waste Generated',
+                    'chart_title': 'CO2 Emissions Trend vs Limit',
+                    'permits_title': 'Environmental Permits',
+                    'deadlines_title': 'Compliance Deadlines',
+                    'table_title': 'Live Sensor Telemetry Registry'
+                },
+                'fa': {
+                    'dashboard_title': 'نظارت بر انتشار و انطباق محیط زیست',
+                    'dashboard_subtitle': 'تله‌متری بلادرنگ و وضعیت نظارتی برای پلنت آلفا',
+                    'export_report': 'دریافت گزارش',
+                    'new_alert': 'هشدار جدید',
+                    'kpi_nox': 'انتشار NOx (دودکش الف)',
+                    'kpi_so2': 'انتشار SO2 (دودکش الف)',
+                    'kpi_ph': 'سطح pH پساب',
+                    'kpi_waste': 'پسماند جامد تولید شده',
+                    'chart_title': 'روند انتشار CO2 در مقابل حد مجاز',
+                    'permits_title': 'مجوزهای زیست محیطی',
+                    'deadlines_title': 'مهلت‌های انطباق',
+                    'table_title': 'ثبت تله‌متری سنسورهای زنده'
+                }
+            };
+
+            let currentLang = 'en';
+
+            langToggle.addEventListener('click', () => {
+                currentLang = currentLang === 'en' ? 'fa' : 'en';
+                
+                // Toggle Direction
+                htmlTag.setAttribute('dir', currentLang === 'fa' ? 'rtl' : 'ltr');
+                htmlTag.setAttribute('lang', currentLang);
+                langText.textContent = currentLang.toUpperCase();
+
+                // Update text content based on data-i18n attribute
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (translations[currentLang][key]) {
+                        el.textContent = translations[currentLang][key];
+                    }
+                });
+            });
+        });
+    </script>
+</body></html>

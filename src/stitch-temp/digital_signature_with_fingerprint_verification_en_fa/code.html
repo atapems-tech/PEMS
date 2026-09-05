@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Verification &amp; Signature - FieldOps</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#895200",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#2c1700",
+                    "inverse-primary": "#bbc7e0",
+                    "on-primary-fixed-variant": "#3b475c",
+                    "surface-dim": "#c8dcf5",
+                    "secondary-fixed": "#ffdcbc",
+                    "on-surface-variant": "#44474c",
+                    "tertiary": "#000815",
+                    "on-tertiary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-background": "#081d2f",
+                    "on-tertiary-fixed-variant": "#00497c",
+                    "surface-container-highest": "#d0e4fe",
+                    "primary-fixed-dim": "#bbc7e0",
+                    "outline-variant": "#c5c6cd",
+                    "primary-fixed": "#d7e3fd",
+                    "surface-container": "#e4efff",
+                    "tertiary-container": "#00213d",
+                    "surface-bright": "#f8f9ff",
+                    "surface-tint": "#535f75",
+                    "on-tertiary-fixed": "#001d36",
+                    "error-container": "#ffdad6",
+                    "on-primary-container": "#7c889f",
+                    "secondary-container": "#fdaa47",
+                    "primary-container": "#142033",
+                    "on-surface": "#081d2f",
+                    "surface-variant": "#d0e4fe",
+                    "secondary-fixed-dim": "#ffb86a",
+                    "surface-container-low": "#eef4ff",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed-variant": "#683d00",
+                    "outline": "#75777d",
+                    "on-primary": "#ffffff",
+                    "background": "#f8f9ff",
+                    "on-primary-fixed": "#101c2f",
+                    "surface-container-high": "#daeaff",
+                    "primary": "#000819",
+                    "inverse-on-surface": "#e9f1ff",
+                    "tertiary-fixed": "#d1e4ff",
+                    "on-secondary-container": "#6e4100",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-container": "#498bcd",
+                    "on-error-container": "#93000a",
+                    "surface": "#f8f9ff",
+                    "tertiary-fixed-dim": "#9ecaff",
+                    "inverse-surface": "#1f3245"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "sidebar-width": "260px",
+                    "lg": "24px",
+                    "unit": "4px",
+                    "xl": "32px",
+                    "topbar-height": "60px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "xs": "4px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "body-medium": ["Inter"],
+                    "kpi-stat": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-base": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "table-cell": ["Inter"],
+                    "table-header": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "badge-label": ["Inter"]
+            },
+            "fontSize": {
+                    "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                    "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}],
+                    "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                    "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for mobile feel */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c5c6cd; border-radius: 4px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-medium text-body-medium antialiased flex flex-col min-h-screen overscroll-none">
+<!-- Transactional Header: Navigation shell suppressed per rules -->
+<header class="sticky top-0 z-40 w-full bg-surface border-b border-outline-variant flex flex-col">
+<!-- Top App Bar Content -->
+<div class="h-topbar-height px-md flex items-center justify-between">
+<button aria-label="Go Back" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors active:opacity-80">
+<span class="material-symbols-outlined text-primary" data-icon="close">close</span>
+</button>
+<div class="font-headline-md text-headline-md text-primary tracking-tight">Verification</div>
+<div class="flex items-center gap-2">
+<div class="bg-surface-container-low border border-outline-variant rounded px-2 py-1 flex items-center gap-1 cursor-pointer">
+<span class="font-label-caps text-label-caps text-primary">EN</span>
+<span class="text-outline-variant text-[10px]">|</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">FA</span>
+</div>
+</div>
+</div>
+<!-- Offline Status Banner -->
+<div class="bg-surface-container w-full px-md py-sm flex items-center justify-center gap-2 border-t border-outline-variant">
+<span class="material-symbols-outlined text-[16px] text-on-tertiary-fixed-variant" data-icon="cloud_off">cloud_off</span>
+<span class="font-badge-label text-badge-label text-on-tertiary-fixed-variant">Offline - Sync Pending</span>
+</div>
+</header>
+<!-- Scrollable Canvas -->
+<main class="flex-1 overflow-y-auto p-md flex flex-col gap-lg pb-[100px]">
+<!-- Work Order Summary -->
+<section class="flex flex-col gap-sm">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant ml-1">WORK ORDER SUMMARY</h2>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm relative overflow-hidden">
+<!-- Decorative accent -->
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary-container"></div>
+<div class="flex justify-between items-start mb-3 pl-2">
+<div>
+<div class="font-table-cell text-table-cell text-on-surface-variant font-mono tracking-wide mb-1">WO-2024-8902A</div>
+<h3 class="font-headline-md text-headline-md text-primary">Main Turbine Inspection</h3>
+</div>
+<span class="bg-surface-container text-primary font-badge-label text-badge-label px-2 py-1 rounded-full border border-surface-dim">Pending Sign-off</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-4 pl-2 border-t border-outline-variant pt-4">
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span> Completed Date
+                        </span>
+<span class="font-body-medium text-body-medium text-on-surface">Oct 26, 2024</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">engineering</span> Lead Tech
+                        </span>
+<span class="font-body-medium text-body-medium text-on-surface">J. Doe (ENG-04)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Safety Verifications -->
+<section class="flex flex-col gap-sm">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant ml-1">CRITICAL VERIFICATIONS</h2>
+<div class="flex flex-col gap-2">
+<!-- Checklist Item 1 -->
+<label class="flex items-start gap-3 p-3 bg-surface-container-lowest border border-outline-variant rounded-xl cursor-pointer hover:border-secondary transition-colors relative">
+<input checked="" class="mt-1 w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary focus:ring-offset-0 bg-surface accent-secondary" disabled="" type="checkbox"/>
+<div class="flex-1 flex flex-col gap-1">
+<span class="font-body-medium text-body-medium text-on-surface">LOTO protocol completed and verified.</span>
+<span class="font-body-base text-body-base text-on-surface-variant" dir="rtl">پروتکل LOTO تکمیل و تایید شد.</span>
+</div>
+</label>
+<!-- Checklist Item 2 -->
+<label class="flex items-start gap-3 p-3 bg-surface-container-lowest border border-outline-variant rounded-xl cursor-pointer hover:border-secondary transition-colors relative">
+<input checked="" class="mt-1 w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary focus:ring-offset-0 bg-surface accent-secondary" disabled="" type="checkbox"/>
+<div class="flex-1 flex flex-col gap-1">
+<span class="font-body-medium text-body-medium text-on-surface">Workspace cleared of all tools and debris.</span>
+<span class="font-body-base text-body-base text-on-surface-variant" dir="rtl">فضای کار از ابزار و زباله پاکسازی شد.</span>
+</div>
+</label>
+<!-- Checklist Item 3 (Actionable) -->
+<label class="flex items-start gap-3 p-3 bg-surface-container-low border border-secondary rounded-xl cursor-pointer hover:bg-surface-container transition-colors relative shadow-[0_0_0_1px_rgba(137,82,0,0.2)]">
+<input class="mt-1 w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary focus:ring-offset-0 bg-surface accent-secondary" type="checkbox"/>
+<div class="flex-1 flex flex-col gap-1">
+<span class="font-body-medium text-body-medium text-on-surface">I confirm all work meets operational standards.</span>
+<span class="font-body-base text-body-base text-on-surface-variant" dir="rtl">تایید می‌کنم تمام کارها مطابق استانداردهای عملیاتی است.</span>
+</div>
+</label>
+</div>
+</section>
+<!-- Digital Signature Pad -->
+<section class="flex flex-col gap-sm">
+<div class="flex justify-between items-center ml-1">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant">AUTHORIZATION SIGNATURE</h2>
+<button class="font-label-caps text-label-caps text-primary underline active:opacity-70">Clear Pad</button>
+</div>
+<div class="bg-surface-container-lowest border-2 border-dashed border-outline-variant rounded-xl h-48 relative overflow-hidden flex flex-col items-center justify-center touch-none">
+<!-- Watermark / Placeholder -->
+<div class="absolute inset-0 flex flex-col items-center justify-center opacity-30 pointer-events-none select-none">
+<span class="material-symbols-outlined text-[32px] text-on-surface-variant mb-2" data-icon="draw">draw</span>
+<span class="font-body-medium text-body-medium text-on-surface-variant">Sign within bounds</span>
+<span class="font-body-base text-body-base text-on-surface-variant mt-1" dir="rtl">در این کادر امضا کنید</span>
+</div>
+<!-- Simulated Drawn Signature Path (Inline SVG) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none stroke-primary drop-shadow-sm" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 400 200">
+<path d="M 80,120 Q 100,60 120,130 T 160,90 T 200,140 Q 220,100 260,130 Q 300,80 320,110" stroke-dasharray="1000" stroke-dashoffset="0"></path>
+</svg>
+</div>
+<div class="flex justify-end mt-1">
+<span class="font-table-cell text-table-cell text-on-surface-variant text-[10px]">Timestamp: 2024-10-26 14:32:01 UTC</span>
+</div>
+</section><section class="flex flex-col gap-sm">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant ml-1">BIOMETRIC AUTHENTICATION</h2>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-4 shadow-sm">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[32px] text-secondary" data-icon="fingerprint">fingerprint</span>
+</div>
+<div class="flex-1 flex flex-col">
+<div class="flex justify-between items-start">
+<span class="font-body-medium text-body-medium text-on-surface">Fingerprint Verification</span>
+<span class="font-badge-label text-badge-label text-secondary bg-secondary-fixed px-2 py-0.5 rounded-full">Ready to scan</span>
+</div>
+<span class="font-body-base text-body-base text-on-surface-variant mt-1" dir="rtl">تایید هویت با اثر انگشت</span>
+</div>
+<button class="bg-secondary text-on-secondary px-4 py-2 rounded-lg font-label-caps text-label-caps active:scale-95 transition-transform">Scan</button>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom Action -->
+<footer class="fixed bottom-0 w-full bg-surface border-t border-outline-variant p-md shadow-[0_-4px_20px_rgba(20,32,51,0.08)] z-50">
+<button class="w-full bg-secondary text-on-secondary font-headline-md text-headline-md py-3 rounded-lg flex justify-center items-center gap-2 active:scale-95 transition-transform duration-150 shadow-md">
+<span class="material-symbols-outlined" data-icon="lock" data-weight="fill" style="font-variation-settings: 'FILL' 1;">lock</span>
+            Sign &amp; Complete
+        </button>
+</footer>
+</body></html>

@@ -1,0 +1,70 @@
+﻿@model List<PEMS.Domain.Entities.DocumentRevision>
+@{
+    var documents = (IEnumerable<dynamic>)ViewBag.Documents;
+    int? selectedDoc = ViewBag.DocumentId;
+}
+
+
+<div class="content-card mb-3">
+    <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-4">
+            <label class="form-label small">Document</label>
+            <select name="documentId" class="form-select form-select-sm" onchange="this.form.submit()">
+                <option value="">All Documents</option>
+                @foreach (var d in documents)
+                {
+                    <option value="@d.DocumentId" selected="@(d.DocumentId == selectedDoc)">@d.DocumentNo - @d.Title</option>
+                }
+            </select>
+        </div>
+        @if (selectedDoc.HasValue)
+        {
+            <div class="col-md-3">
+                <a asp-action="Create" asp-route-documentId="@selectedDoc" class="btn btn-pems-solid btn-sm">
+                    <i class="bi bi-plus-lg"></i> New Revision
+                </a>
+            </div>
+        }
+    </form>
+</div>
+
+<div class="content-card">
+    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise">
+            <thead>
+                <tr>
+                    <th>Document No</th>
+                    <th>Revision</th>
+                    <th>Previous Rev</th>
+                    <th>Status</th>
+                    <th>Issue Purpose</th>
+                    <th>Prepared By</th>
+                    <th>Checked By</th>
+                    <th>Approved By</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td>@r.Document?.DocumentNo</td>
+                        <td><span class="badge bg-secondary">@r.RevisionNo</span></td>
+                        <td>@r.PreviousRevisionNo</td>
+                        <td><span class="badge badge-status-@r.Status">@r.Status</span></td>
+                        <td>@r.IssuePurpose</td>
+                        <td>@(r.PreparedBy != null ? r.PreparedBy.FirstName + " " + r.PreparedBy.LastName : "-")</td>
+                        <td>@(r.CheckedBy != null ? r.CheckedBy.FirstName + " " + r.CheckedBy.LastName : "-")</td>
+                        <td>@(r.ApprovedBy != null ? r.ApprovedBy.FirstName + " " + r.ApprovedBy.LastName : "-")</td>
+                        <td>@r.RevisionDate.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (!Model.Any())
+        {
+            <p class="text-muted text-center py-4">No revisions recorded yet. Select a document above and create one.</p>
+        }
+    </div>
+</div>

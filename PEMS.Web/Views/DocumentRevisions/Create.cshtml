@@ -1,0 +1,45 @@
+﻿@model PEMS.Domain.Entities.DocumentRevision
+@{
+    dynamic document = ViewBag.Document;
+}
+
+<div class="content-card" style="max-width:640px;">
+    <p class="text-muted mb-3">Document: <strong>@document.DocumentNo - @document.Title</strong> (current revision: @document.RevisionNo)</p>
+
+    <form asp-action="Create" method="post">
+        <input type="hidden" asp-for="DocumentId" />
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">New Revision No</label>
+                <input asp-for="RevisionNo" class="form-control" placeholder="e.g. 01" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Previous Revision No</label>
+                <input asp-for="PreviousRevisionNo" class="form-control" readonly />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Status</label>
+                <select asp-for="Status" class="form-select">
+                    <option>Draft</option>
+                    <option>Review</option>
+                    <option>Approved</option>
+                    <option>Rejected</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Issue Purpose</label>
+                <input asp-for="IssuePurpose" class="form-control" placeholder="For Approval / For Construction / For Information" />
+            </div>
+            <div class="col-12">
+                <label class="form-label">Comment</label>
+                <textarea asp-for="Comment" class="form-control" rows="3"></textarea>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-pems-solid">Save Revision</button>
+            <a asp-action="Index" asp-route-documentId="@document.DocumentId" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

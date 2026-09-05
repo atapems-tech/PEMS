@@ -1,0 +1,299 @@
+@model List<PEMS.Domain.Entities.MaintenanceGroup>
+@{
+    var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
+    var skills = (List<PEMS.Domain.Entities.Skill>)ViewBag.Skills;
+    var qualifications = (List<PEMS.Domain.Entities.Qualification>)ViewBag.Qualifications;
+    var certifications = (List<PEMS.Domain.Entities.Certification>)ViewBag.Certifications;
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+}
+
+<ul class="nav nav-tabs mb-3" id="mmdTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-groups" type="button">
+            <i class="bi bi-diagram-3"></i> Maintenance Groups <span class="badge bg-secondary">@Model.Count</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-skills" type="button">
+            <i class="bi bi-mortarboard"></i> Skills <span class="badge bg-secondary">@skills.Count</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-qualifications" type="button">
+            <i class="bi bi-patch-check"></i> Qualifications <span class="badge bg-secondary">@qualifications.Count</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-certifications" type="button">
+            <i class="bi bi-award"></i> Certifications <span class="badge bg-secondary">@certifications.Count</span>
+        </button>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="tab-groups" role="tabpanel">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="text-muted small mb-0">
+                    گروه‌بندی تعمیراتی دقیق‌تر از Discipline (مثلاً «Rotating Equipment» زیر «Mechanical») -
+                    Team ها زیر همین گروه‌ها تعریف می‌شوند.
+                </p>
+                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createGroupModal">
+                    <i class="bi bi-plus-lg"></i> گروه جدید
+                </button>
+            </div>
+
+            <table class="table table-enterprise">
+                <thead><tr><th>کد</th><th>نام</th><th>دیسیپلین</th><th>توضیحات</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var g in Model)
+                    {
+                        <tr>
+                            <td>@g.Code</td>
+                            <td>@g.Name</td>
+                            <td>@g.Discipline?.Name</td>
+                            <td class="small text-muted">@(g.Description ?? "-")</td>
+                            <td class="text-end">
+                                <form asp-action="ToggleGroupActive" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@g.MaintenanceGroupId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این گروه غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!Model.Any()) { <p class="text-muted text-center py-4">هنوز گروه تعمیراتی‌ای ساخته نشده.</p> }
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-skills" role="tabpanel">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="text-muted small mb-0">
+                    فهرست مشترک مهارت‌ها - از صفحه‌ی هر کارمند به او تخصیص داده می‌شود، یا به‌عنوان
+                    پیش‌نیاز روی یک Work Order ثبت می‌شود.
+                </p>
+                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createSkillModal">
+                    <i class="bi bi-plus-lg"></i> مهارت جدید
+                </button>
+            </div>
+
+            <table class="table table-enterprise">
+                <thead><tr><th>نام</th><th>دیسیپلین</th><th>توضیحات</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var s in skills)
+                    {
+                        <tr>
+                            <td>@s.Name</td>
+                            <td>@(s.Discipline?.Name ?? "-")</td>
+                            <td class="small text-muted">@(s.Description ?? "-")</td>
+                            <td class="text-end">
+                                <form asp-action="ToggleSkillActive" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@s.SkillId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این مهارت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!skills.Any()) { <p class="text-muted text-center py-4">هنوز مهارتی ساخته نشده.</p> }
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-qualifications" role="tabpanel">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="text-muted small mb-0">
+                    فهرست مشترک انواع صلاحیت - نمونه‌ی هر کارمند از صفحه‌ی جزئیات همان کارمند ثبت می‌شود.
+                </p>
+                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createQualificationModal">
+                    <i class="bi bi-plus-lg"></i> صلاحیت جدید
+                </button>
+            </div>
+
+            <table class="table table-enterprise">
+                <thead><tr><th>نام</th><th>دیسیپلین</th><th>توضیحات</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var q in qualifications)
+                    {
+                        <tr>
+                            <td>@q.Name</td>
+                            <td>@(q.Discipline?.Name ?? "-")</td>
+                            <td class="small text-muted">@(q.Description ?? "-")</td>
+                            <td class="text-end">
+                                <form asp-action="ToggleQualificationActive" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@q.QualificationId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این صلاحیت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!qualifications.Any()) { <p class="text-muted text-center py-4">هنوز صلاحیتی ساخته نشده.</p> }
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-certifications" role="tabpanel">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="text-muted small mb-0">
+                    فهرست مشترک انواع گواهینامه - شماره‌ی گواهی و تاریخ انقضای هر کارمند از صفحه‌ی جزئیات همان کارمند ثبت می‌شود.
+                </p>
+                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createCertificationModal">
+                    <i class="bi bi-plus-lg"></i> گواهینامه جدید
+                </button>
+            </div>
+
+            <table class="table table-enterprise">
+                <thead><tr><th>نام</th><th>دیسیپلین</th><th>توضیحات</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var c in certifications)
+                    {
+                        <tr>
+                            <td>@c.Name</td>
+                            <td>@(c.Discipline?.Name ?? "-")</td>
+                            <td class="small text-muted">@(c.Description ?? "-")</td>
+                            <td class="text-end">
+                                <form asp-action="ToggleCertificationActive" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@c.CertificationId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این گواهینامه غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!certifications.Any()) { <p class="text-muted text-center py-4">هنوز گواهینامه‌ای ساخته نشده.</p> }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createSkillModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="CreateSkill" method="post">
+            <div class="modal-header"><h6 class="modal-title">مهارت جدید</h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">نام</label>
+                    <input name="name" class="form-control form-control-sm" required placeholder="مثلاً Pump Alignment" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">دیسیپلین (اختیاری)</label>
+                    <select name="disciplineId" class="form-select form-select-sm">
+                        <option value="">-- ندارد --</option>
+                        @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+            </div>
+        </form>
+    </div></div>
+</div>
+
+<div class="modal fade" id="createGroupModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="CreateGroup" method="post">
+            <div class="modal-header"><h6 class="modal-title">گروه تعمیراتی جدید</h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">کد</label>
+                    <input name="code" class="form-control form-control-sm" required placeholder="مثلاً ROT-EQ" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">نام</label>
+                    <input name="name" class="form-control form-control-sm" required placeholder="مثلاً Rotating Equipment" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">دیسیپلین</label>
+                    <select name="disciplineId" class="form-select form-select-sm" required>
+                        @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+            </div>
+        </form>
+    </div></div>
+</div>
+
+<div class="modal fade" id="createQualificationModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="CreateQualification" method="post">
+            <div class="modal-header"><h6 class="modal-title">صلاحیت جدید</h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">نام</label>
+                    <input name="name" class="form-control form-control-sm" required placeholder="مثلاً Qualified Pump Maintenance Technician" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">دیسیپلین (اختیاری)</label>
+                    <select name="disciplineId" class="form-select form-select-sm">
+                        <option value="">-- ندارد --</option>
+                        @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+            </div>
+        </form>
+    </div></div>
+</div>
+
+<div class="modal fade" id="createCertificationModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="CreateCertification" method="post">
+            <div class="modal-header"><h6 class="modal-title">گواهینامه جدید</h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">نام</label>
+                    <input name="name" class="form-control form-control-sm" required placeholder="مثلاً NDT Level II" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">دیسیپلین (اختیاری)</label>
+                    <select name="disciplineId" class="form-select form-select-sm">
+                        <option value="">-- ندارد --</option>
+                        @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+            </div>
+        </form>
+    </div></div>
+</div>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS - Inventory Management Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#c5c6cd",
+                        "surface-bright": "#f8f9ff",
+                        "primary-container": "#142033",
+                        "on-secondary-fixed": "#2c1700",
+                        "secondary-container": "#fdaa47",
+                        "tertiary-fixed": "#d1e4ff",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "on-background": "#081d2f",
+                        "surface-container-high": "#daeaff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#498bcd",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "surface-container": "#e4efff",
+                        "secondary": "#895200",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#f8f9ff",
+                        "on-primary-container": "#7c889f",
+                        "inverse-primary": "#bbc7e0",
+                        "secondary-fixed": "#ffdcbc",
+                        "inverse-surface": "#1f3245",
+                        "on-surface-variant": "#44474c",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-low": "#eef4ff",
+                        "on-secondary-container": "#6e4100",
+                        "on-primary-fixed": "#101c2f",
+                        "tertiary": "#000815",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#00213d",
+                        "on-surface": "#081d2f",
+                        "surface": "#f8f9ff",
+                        "surface-tint": "#535f75",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-tertiary-fixed": "#001d36",
+                        "error-container": "#ffdad6",
+                        "primary": "#000819",
+                        "surface-container-highest": "#d0e4fe",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#d7e3fd",
+                        "outline": "#75777d",
+                        "surface-dim": "#c8dcf5",
+                        "surface-variant": "#d0e4fe",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "inverse-on-surface": "#e9f1ff",
+                        "on-tertiary-fixed-variant": "#00497c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "md": "16px",
+                        "topbar-height": "60px",
+                        "gutter": "16px",
+                        "xl": "32px",
+                        "sidebar-width": "260px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "body-base": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "table-header": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "table-cell": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #f3f5f8; } /* Explicit level 0 */
+        .gradient-primary { background: linear-gradient(135deg, #d98c2b, #b8721e); }
+        .gradient-blue { background: linear-gradient(135deg, #1f4e78, #143553); }
+        .gradient-red { background: linear-gradient(135deg, #d9534f, #c9302c); }
+        .gradient-green { background: linear-gradient(135deg, #5cb85c, #449d44); }
+        .surface-card { background-color: #ffffff; border: 1px solid #edf0f4; }
+        .surface-card:hover { border-color: #fdaa47; transition: border-color 0.2s ease; }
+        
+        /* Sidebar Active State Overlay (Hack for non-tailwind native pseudo) */
+        .sidebar-active { background-color: #fdaa47; color: #6e4100; border-radius: 0.25rem; }
+    </style>
+</head>
+<body class="font-body-base text-body-base text-on-surface antialiased bg-background">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim docked full-width top-0 sticky z-50 border-b border-outline-variant bg-surface-container-low flat no shadows flex justify-between items-center h-topbar-height px-lg ml-sidebar-width hidden md:flex transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">PEMS Utility</span>
+<div class="flex items-center bg-white border border-outline-variant rounded-lg px-2 py-1 ml-8">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2" data-icon="search">search</span>
+<input class="border-none bg-transparent focus:ring-0 text-body-base p-0 w-64 outline-none" placeholder="Search inventory..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<span class="text-secondary font-bold border-b-2 border-secondary pb-1 cursor-pointer">EN</span>
+<span class="text-on-surface-variant hover:text-secondary-container transition-colors cursor-pointer">FA</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-secondary-container transition-colors cursor-pointer active:opacity-80" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-secondary-container transition-colors cursor-pointer active:opacity-80" data-icon="language">language</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-secondary-container transition-colors cursor-pointer active:opacity-80" data-icon="apps">apps</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-outline-variant overflow-hidden">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="A professional corporate headshot of a utility engineer wearing safety gear and a hard hat, set against a clean industrial control room background. The lighting is crisp and modern, emphasizing the technical nature of the PEMS enterprise environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhT06wWSZsnpchk0wBQnqLZRFIWKevusm4aGCWfInLdLTHFityxvB5dEwiod20b2z8r2rsJZygIlOJpxZ3RFY_s67D_gEC8IQ8i_H3e0eMxdLf3mZ-tVD757DvCanhDDL77wMc-OruNujO4Y9UUl0ePFrh-SdgQXSzqi-tF5-RpXzhxFWYhYRHKLKiYChVpVPex69fVadmUocjym3aCMrgkT4zlZf4cIsSjwa5gUJbdQbU_ixhRLIl"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="bg-primary-container dark:bg-primary-container font-body-medium text-body-medium fixed left-0 top-0 h-full w-sidebar-width border-r border-outline-variant flat no shadows flex flex-col h-full py-lg px-md hidden md:flex z-40">
+<div class="mb-8 flex flex-col gap-1">
+<span class="font-headline-md text-headline-md text-surface-lowest dark:text-surface-bright">PEMS Enterprise</span>
+<span class="text-on-primary-container text-xs">Utility Management</span>
+</div>
+<div class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:text-surface-lowest transition-colors hover:bg-primary/50 transition-all rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:text-surface-lowest transition-colors hover:bg-primary/50 transition-all rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="precision_manufacturing">precision_manufacturing</span>
+                Assets
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:text-surface-lowest transition-colors hover:bg-primary/50 transition-all rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="engineering">engineering</span>
+                Maintenance
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 bg-secondary-container text-on-secondary-container font-body-medium rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+                Inventory
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:text-surface-lowest transition-colors hover:bg-primary/50 transition-all rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="warehouse">warehouse</span>
+                Warehouse Map
+            </a>
+</div>
+<div class="mt-auto flex flex-col gap-4 border-t border-primary pt-4">
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:text-surface-lowest transition-colors hover:bg-primary/50 transition-all rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                    Settings
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-primary-container hover:text-surface-lowest transition-colors hover:bg-primary/50 transition-all rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="help_center">help_center</span>
+                    Support
+                </a>
+</div>
+<div class="px-3 py-2 bg-primary-fixed/10 rounded-lg text-primary-fixed-dim text-xs flex items-center justify-between">
+                System Status: Active <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="md:ml-sidebar-width p-4 md:p-6 lg:p-8 min-h-screen transition-all">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-6">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Inventory Management</h1>
+<p class="text-on-surface-variant font-body-base mt-1">MRO Stock &amp; Warehouse Status Overview</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-white border border-[#dde3ea] text-[#5c6f85] px-4 py-2 rounded-lg font-body-medium flex items-center gap-2 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span> Export
+                </button>
+<button class="gradient-primary text-white px-4 py-2 rounded-lg font-body-medium flex items-center gap-2 shadow-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span> New Stock Entry
+                </button>
+</div>
+</div>
+<!-- KPI Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+<div class="surface-card p-4 rounded-xl flex items-center gap-4">
+<div class="w-[46px] h-[46px] rounded-[10px] gradient-blue flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined" data-icon="inventory">inventory</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase">Total Unique Parts</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface mt-1">12,450</div>
+</div>
+</div>
+<div class="surface-card p-4 rounded-xl flex items-center gap-4">
+<div class="w-[46px] h-[46px] rounded-[10px] gradient-red flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase">Critical Low Stock (MRO)</div>
+<div class="font-kpi-stat text-kpi-stat text-error mt-1">87</div>
+</div>
+</div>
+<div class="surface-card p-4 rounded-xl flex items-center gap-4">
+<div class="w-[46px] h-[46px] rounded-[10px] gradient-primary flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined" data-icon="pending_actions">pending_actions</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase">Pending Stock-Ins</div>
+<div class="font-kpi-stat text-kpi-stat text-secondary mt-1">342</div>
+</div>
+</div>
+<div class="surface-card p-4 rounded-xl flex items-center gap-4">
+<div class="w-[46px] h-[46px] rounded-[10px] gradient-green flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined" data-icon="warehouse">warehouse</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase">Warehouse Utilization</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface mt-1">84%</div>
+</div>
+</div>
+</div>
+<!-- Main Data Area (Bento Layout) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Table Section (Takes up 2 columns on large screens) -->
+<div class="lg:col-span-2 surface-card rounded-xl overflow-hidden flex flex-col">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-white">
+<h2 class="font-headline-md text-headline-md text-on-surface">MRO Inventory Registry</h2>
+<div class="flex gap-2">
+<select class="border border-[#dde3ea] rounded-lg px-3 py-1.5 text-body-base bg-transparent focus:border-secondary focus:ring-1 focus:ring-secondary/50 outline-none">
+<option>All Categories</option>
+<option>Electrical</option>
+<option>Mechanical</option>
+<option>Consumables</option>
+</select>
+<button class="p-1.5 border border-[#dde3ea] rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#f5f7fa] sticky top-0 font-table-header text-table-header text-on-surface-variant uppercase border-b border-outline-variant">
+<tr>
+<th class="py-3 px-4 w-32">Part Number</th>
+<th class="py-3 px-4">Description</th>
+<th class="py-3 px-4">Category</th>
+<th class="py-3 px-4 text-right">Stock</th>
+<th class="py-3 px-4 text-center">Min/Max</th>
+<th class="py-3 px-4">Location</th>
+<th class="py-3 px-4 text-center">Status</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell bg-white divide-y divide-[#edf0f4]">
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors h-[40px]">
+<td class="py-2 px-4 font-mono text-xs text-on-surface">PRT-9923-EL</td>
+<td class="py-2 px-4 text-on-surface font-medium">3-Phase Induction Motor, 50HP</td>
+<td class="py-2 px-4 text-on-surface-variant">Electrical</td>
+<td class="py-2 px-4 text-right font-medium">4</td>
+<td class="py-2 px-4 text-center text-on-surface-variant text-xs">2 / 10</td>
+<td class="py-2 px-4 text-on-surface-variant text-xs">WH-A, Rack 12</td>
+<td class="py-2 px-4 text-center">
+<span class="px-2 py-0.5 rounded-full bg-green-100 text-green-800 font-badge-label text-badge-label">Normal</span>
+</td>
+</tr>
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors h-[40px]">
+<td class="py-2 px-4 font-mono text-xs text-on-surface">PRT-1145-ME</td>
+<td class="py-2 px-4 text-on-surface font-medium">Heavy Duty Ball Bearing, SKF</td>
+<td class="py-2 px-4 text-on-surface-variant">Mechanical</td>
+<td class="py-2 px-4 text-right font-medium text-error">12</td>
+<td class="py-2 px-4 text-center text-on-surface-variant text-xs">20 / 100</td>
+<td class="py-2 px-4 text-on-surface-variant text-xs">WH-B, Bin 45</td>
+<td class="py-2 px-4 text-center">
+<span class="px-2 py-0.5 rounded-full bg-red-100 text-red-800 font-badge-label text-badge-label">Critical</span>
+</td>
+</tr>
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors h-[40px]">
+<td class="py-2 px-4 font-mono text-xs text-on-surface">CNS-0042-LU</td>
+<td class="py-2 px-4 text-on-surface font-medium">Industrial Lubricant, 50L Drum</td>
+<td class="py-2 px-4 text-on-surface-variant">Consumables</td>
+<td class="py-2 px-4 text-right font-medium text-secondary">15</td>
+<td class="py-2 px-4 text-center text-on-surface-variant text-xs">15 / 50</td>
+<td class="py-2 px-4 text-on-surface-variant text-xs">Yard C, Zone 2</td>
+<td class="py-2 px-4 text-center">
+<span class="px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800 font-badge-label text-badge-label">Reorder</span>
+</td>
+</tr>
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors h-[40px]">
+<td class="py-2 px-4 font-mono text-xs text-on-surface">PRT-8821-VL</td>
+<td class="py-2 px-4 text-on-surface font-medium">Gate Valve, 8 inch, Flanged</td>
+<td class="py-2 px-4 text-on-surface-variant">Piping</td>
+<td class="py-2 px-4 text-right font-medium">28</td>
+<td class="py-2 px-4 text-center text-on-surface-variant text-xs">10 / 40</td>
+<td class="py-2 px-4 text-on-surface-variant text-xs">WH-A, Rack 05</td>
+<td class="py-2 px-4 text-center">
+<span class="px-2 py-0.5 rounded-full bg-green-100 text-green-800 font-badge-label text-badge-label">Normal</span>
+</td>
+</tr>
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors h-[40px]">
+<td class="py-2 px-4 font-mono text-xs text-on-surface">PRT-5510-EL</td>
+<td class="py-2 px-4 text-on-surface font-medium">Variable Frequency Drive, 15kW</td>
+<td class="py-2 px-4 text-on-surface-variant">Electrical</td>
+<td class="py-2 px-4 text-right font-medium text-error">0</td>
+<td class="py-2 px-4 text-center text-on-surface-variant text-xs">1 / 5</td>
+<td class="py-2 px-4 text-on-surface-variant text-xs">WH-C, Shelf 02</td>
+<td class="py-2 px-4 text-center">
+<span class="px-2 py-0.5 rounded-full bg-red-100 text-red-800 font-badge-label text-badge-label">Stockout</span>
+</td>
+</tr>
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors h-[40px]">
+<td class="py-2 px-4 font-mono text-xs text-on-surface">PRT-3392-IN</td>
+<td class="py-2 px-4 text-on-surface font-medium">Pressure Transmitter, 0-100 bar</td>
+<td class="py-2 px-4 text-on-surface-variant">Instrumentation</td>
+<td class="py-2 px-4 text-right font-medium text-secondary">6</td>
+<td class="py-2 px-4 text-center text-on-surface-variant text-xs">5 / 20</td>
+<td class="py-2 px-4 text-on-surface-variant text-xs">WH-B, Cabinet 3</td>
+<td class="py-2 px-4 text-center">
+<span class="px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800 font-badge-label text-badge-label">Reorder</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-outline-variant bg-white flex justify-between items-center text-sm text-on-surface-variant">
+<span>Showing 1 to 6 of 12,450 entries</span>
+<div class="flex gap-1">
+<button class="px-2 py-1 border border-outline-variant rounded hover:bg-surface-container-low disabled:opacity-50" disabled="">&lt;</button>
+<button class="px-2 py-1 bg-primary text-white rounded">1</button>
+<button class="px-2 py-1 border border-outline-variant rounded hover:bg-surface-container-low">2</button>
+<button class="px-2 py-1 border border-outline-variant rounded hover:bg-surface-container-low">3</button>
+<button class="px-2 py-1 border border-outline-variant rounded hover:bg-surface-container-low">&gt;</button>
+</div>
+</div>
+</div>
+<!-- Side Panel Area -->
+<div class="lg:col-span-1 flex flex-col gap-6">
+<!-- Quick Actions / Alerts -->
+<div class="surface-card rounded-xl p-5">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="warning_amber">warning_amber</span>
+                        Action Required
+                    </h3>
+<div class="space-y-3">
+<div class="bg-red-50 border border-red-100 p-3 rounded-lg flex items-start gap-3">
+<span class="material-symbols-outlined text-error mt-0.5" data-icon="block">block</span>
+<div>
+<div class="font-body-medium text-error">Stockout: VFD 15kW (PRT-5510-EL)</div>
+<div class="text-xs text-red-700 mt-1">Maintenance Job #4492 is blocked waiting for this part.</div>
+<button class="mt-2 text-xs font-bold uppercase text-error hover:underline">Expedite Order</button>
+</div>
+</div>
+<div class="bg-yellow-50 border border-yellow-100 p-3 rounded-lg flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary mt-0.5" data-icon="trending_down">trending_down</span>
+<div>
+<div class="font-body-medium text-secondary">Low Stock: Ball Bearing SKF</div>
+<div class="text-xs text-yellow-800 mt-1">Current stock (12) is below minimum threshold (20).</div>
+<button class="mt-2 text-xs font-bold uppercase text-secondary hover:underline">Generate PO</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Warehouse Map Teaser -->
+<div class="surface-card rounded-xl overflow-hidden flex flex-col">
+<div class="p-4 border-b border-outline-variant bg-white">
+<h3 class="font-headline-md text-headline-md text-on-surface">Warehouse Capacity</h3>
+</div>
+<div class="relative h-48 w-full bg-slate-100 flex items-center justify-center p-4">
+<div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0ibm9uZSI+PC9yZWN0Pgo8Y2lyY2xlIGN4PSIyIiBjeT0iMiIgcj0iMSIgZmlsbD0iIzAwMCI+PC9jaXJjbGU+Cjwvc3ZnPg==')]"></div>
+<!-- Abstract Bar Chart Representation -->
+<div class="relative z-10 w-full flex items-end justify-between h-32 px-4 gap-2">
+<div class="w-1/4 bg-blue-900 rounded-t-sm h-[85%] flex flex-col justify-end items-center pb-2 text-white text-xs font-bold relative group cursor-pointer hover:bg-secondary transition-colors">
+<div class="absolute -top-8 bg-black text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">WH-A</div>
+                                 85%
+                             </div>
+<div class="w-1/4 bg-blue-800 rounded-t-sm h-[92%] flex flex-col justify-end items-center pb-2 text-white text-xs font-bold relative group cursor-pointer hover:bg-secondary transition-colors">
+<div class="absolute -top-8 bg-black text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">WH-B</div>
+                                 92%
+                             </div>
+<div class="w-1/4 bg-blue-700 rounded-t-sm h-[45%] flex flex-col justify-end items-center pb-2 text-white text-xs font-bold relative group cursor-pointer hover:bg-secondary transition-colors">
+<div class="absolute -top-8 bg-black text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">WH-C</div>
+                                 45%
+                             </div>
+<div class="w-1/4 bg-blue-600 rounded-t-sm h-[60%] flex flex-col justify-end items-center pb-2 text-white text-xs font-bold relative group cursor-pointer hover:bg-secondary transition-colors">
+<div class="absolute -top-8 bg-black text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">Yard</div>
+                                 60%
+                             </div>
+</div>
+</div>
+<div class="p-3 bg-surface-container-low text-center">
+<a class="text-sm font-body-medium text-primary hover:text-secondary flex items-center justify-center gap-1" href="#">
+                            View Interactive Map <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

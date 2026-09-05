@@ -1,0 +1,301 @@
+﻿using Microsoft.EntityFrameworkCore;
+using PEMS.Application.DTOs;
+using PEMS.Application.Interfaces;
+using PEMS.Domain.Entities;
+using PEMS.Persistence.Context;
+
+namespace PEMS.Persistence.Services;
+
+/// <summary>
+/// پیاده‌سازی Procurement Package طبق سند Engineering Intelligence Redesign: MR، MRQ،
+/// Vendor Inquiry/Technical Clarification/Engineering Question/Response، و Approval History
+/// همه زیر یک Entity والد یکپارچه مدیریت می‌شوند.
+/// </summary>
+public class ProcurementPackageService : IProcurementPackageService
+{
+    private readonly PEMSDbContext _context;
+
+    private static readonly string[] StageOrder =
+        { "MR", "VendorInquiry", "TechnicalClarification", "MRQ", "Response", "Approval", "Closeout" };
+
+    public ProcurementPackageService(PEMSDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<List<ProcurementPackageDto>> GetAllAsync()
+    {
+        return await _context.ProcurementPackages
+            .Include(x => x.Project)
+            .Include(x => x.Discipline)
+            .Where(x => x.IsActive)
+            .OrderByDescending(x => x.CreatedDate)
+            .Select(x => new ProcurementPackageDto
+            {
+                ProcurementPackageId = x.ProcurementPackageId,
+                PackageNumber = x.PackageNumber,
+                ProjectName = x.Project!.ProjectName,
+                DisciplineName = x.Discipline != null ? x.Discipline.Name : null,
+                Title = x.Title,
+                Stage = x.Stage,
+                Status = x.Status,
+                MRCount = x.MaterialRequisitions.Count,
+                MRQCount = x.Quotations.Count,
+                OpenCommunicationsCount = x.Communications.Count(c => c.ActionStatus != "Closed"),
+                CreatedDate = x.CreatedDate
+            })
+            .ToListAsync();
+    }
+
+    public async Task<ProcurementPackageDetailDto?> GetDetailAsync(int packageId)
+    {
+        var package = await _context.ProcurementPackages
+            .Include(x => x.Project)
+            .Include(x => x.Discipline)
+            .FirstOrDefaultAsync(x => x.ProcurementPackageId == packageId);
+
+        if (package == null) return null;
+
+        var mrs = await _context.MaterialRequisitions
+            .Include(x => x.Project)
+            .Include(x => x.Discipline)
+            .Include(x => x.ResponsibleEngineer)
+            .Where(x => x.ProcurementPackageId == packageId)
+            .ToListAsync();
+
+        var quotations = await _context.MaterialRequisitionQuotations
+            .Where(x => x.ProcurementPackageId == packageId)
+            .ToListAsync();
+
+        var communications = await _context.ProcurementCommunications
+            .Include(x => x.Vendor)
+            .Where(x => x.ProcurementPackageId == packageId)
+            .OrderByDescending(x => x.RaisedDate)
+            .ToListAsync();
+
+        var approvals = await _context.ProcurementApprovals
+            .Where(x => x.ProcurementPackageId == packageId)
+            .OrderByDescending(x => x.ApprovalDate)
+            .ToListAsync();
+
+        return new ProcurementPackageDetailDto
+        {
+            Summary = new ProcurementPackageDto
+            {
+                ProcurementPackageId = package.ProcurementPackageId,
+                PackageNumber = package.PackageNumber,
+                ProjectName = package.Project?.ProjectName ?? "",
+                DisciplineName = package.Discipline?.Name,
+                Title = package.Title,
+                Stage = package.Stage,
+                Status = package.Status,
+                MRCount = mrs.Count,
+                MRQCount = quotations.Count,
+                OpenCommunicationsCount = communications.Count(c => c.ActionStatus != "Closed"),
+                CreatedDate = package.CreatedDate
+            },
+            MaterialRequisitions = mrs.Select(m => new MRDto
+            {
+                MRId = m.MRId,
+                MRNumber = m.MRNumber,
+                ProjectName = m.Project?.ProjectName ?? "",
+                DisciplineName = m.Discipline?.Name ?? "",
+                EquipmentTagNumber = m.EquipmentTagNumber,
+                Description = m.Description,
+                ResponsibleEngineerName = m.ResponsibleEngineer != null
+                    ? m.ResponsibleEngineer.FirstName + " " + m.ResponsibleEngineer.LastName
+                    : null,
+                Status = m.Status,
+                CreatedDate = m.CreatedDate
+            }).ToList(),
+            Quotations = quotations.Select(q => new MRQDto
+            {
+                MRQId = q.MRQId,
+                MRQNumber = q.MRQNumber,
+                MRId = q.MRId,
+                VendorName = q.VendorName,
+                InquiryDate = q.InquiryDate,
+                QuotedAmount = q.QuotedAmount,
+                Currency = q.Currency,
+                QuotationStatus = q.QuotationStatus,
+                TechnicalEvaluation = q.TechnicalEvaluation,
+                CommercialEvaluation = q.CommercialEvaluation,
+                ApprovalStatus = q.ApprovalStatus,
+                Notes = q.Notes
+            }).ToList(),
+            Communications = communications.Select(c => new ProcurementCommunicationDto
+            {
+                ProcurementCommunicationId = c.ProcurementCommunicationId,
+                Type = c.Type,
+                Subject = c.Subject,
+                Body = c.Body,
+                VendorName = c.Vendor?.Name,
+                RaisedByName = c.RaisedByName,
+                RaisedDate = c.RaisedDate,
+                ActionStatus = c.ActionStatus,
+                ResponseText = c.ResponseText,
+                RespondedByName = c.RespondedByName,
+                ResponseDate = c.ResponseDate,
+                AttachmentId = c.AttachmentId
+            }).ToList(),
+            Approvals = approvals.Select(a => new ProcurementApprovalDto
+            {
+                ProcurementApprovalId = a.ProcurementApprovalId,
+                ApproverName = a.ApproverName,
+                Decision = a.Decision,
+                Comment = a.Comment,
+                ApprovalDate = a.ApprovalDate
+            }).ToList()
+        };
+    }
+
+    public async Task<int> CreateAsync(string packageNumber, int projectId, int? disciplineId, string title, string? description)
+    {
+        var package = new ProcurementPackage
+        {
+            PackageNumber = packageNumber,
+            ProjectId = projectId,
+            DisciplineId = disciplineId,
+            Title = title,
+            Description = description,
+            Stage = "MR",
+            Status = "Open",
+            CreatedDate = DateTime.Now
+        };
+
+        await _context.ProcurementPackages.AddAsync(package);
+        await _context.SaveChangesAsync();
+
+        return package.ProcurementPackageId;
+    }
+
+    public async Task AdvanceStageAsync(int packageId, string newStage)
+    {
+        if (!StageOrder.Contains(newStage))
+            throw new Exception($"مرحله‌ی نامعتبر: {newStage}");
+
+        var package = await _context.ProcurementPackages.FirstOrDefaultAsync(x => x.ProcurementPackageId == packageId);
+        if (package == null) throw new Exception("Package یافت نشد");
+
+        package.Stage = newStage;
+
+        if (newStage == "Closeout")
+        {
+            package.Status = "Closed";
+            package.ClosedDate = DateTime.Now;
+        }
+        else
+        {
+            package.Status = "InProgress";
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task CloseoutAsync(int packageId)
+    {
+        await AdvanceStageAsync(packageId, "Closeout");
+    }
+
+    public async Task LinkExistingMRAsync(int packageId, int mrId)
+    {
+        var mr = await _context.MaterialRequisitions.FirstOrDefaultAsync(x => x.MRId == mrId);
+        if (mr == null) throw new Exception("MR یافت نشد");
+
+        mr.ProcurementPackageId = packageId;
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<int> AddCommunicationAsync(int packageId, string type, string subject, string body,
+        int? vendorId, string? raisedByName, int? attachmentId)
+    {
+        var communication = new ProcurementCommunication
+        {
+            ProcurementPackageId = packageId,
+            Type = type,
+            Subject = subject,
+            Body = body,
+            VendorId = vendorId,
+            RaisedByName = raisedByName,
+            AttachmentId = attachmentId,
+            ActionStatus = "Open",
+            RaisedDate = DateTime.Now
+        };
+
+        await _context.ProcurementCommunications.AddAsync(communication);
+
+        // پیشرفت خودکار مرحله بر اساس نوع ارتباط ثبت‌شده (طبق زنجیره‌ی سند)
+        var package = await _context.ProcurementPackages.FirstOrDefaultAsync(x => x.ProcurementPackageId == packageId);
+
+        if (package != null)
+        {
+            var impliedStage = type switch
+            {
+                "VendorInquiry" => "VendorInquiry",
+                "TechnicalClarification" or "EngineeringQuestion" => "TechnicalClarification",
+                "Response" => "Response",
+                _ => package.Stage
+            };
+
+            if (Array.IndexOf(StageOrder, impliedStage) > Array.IndexOf(StageOrder, package.Stage))
+            {
+                package.Stage = impliedStage;
+                package.Status = "InProgress";
+            }
+        }
+
+        await _context.SaveChangesAsync();
+
+        return communication.ProcurementCommunicationId;
+    }
+
+    public async Task RespondToCommunicationAsync(int communicationId, string responseText, string? respondedByName)
+    {
+        var communication = await _context.ProcurementCommunications
+            .FirstOrDefaultAsync(x => x.ProcurementCommunicationId == communicationId);
+
+        if (communication == null) return;
+
+        communication.ResponseText = responseText;
+        communication.RespondedByName = respondedByName;
+        communication.ResponseDate = DateTime.Now;
+        communication.ActionStatus = "Answered";
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task SetCommunicationStatusAsync(int communicationId, string actionStatus)
+    {
+        var communication = await _context.ProcurementCommunications
+            .FirstOrDefaultAsync(x => x.ProcurementCommunicationId == communicationId);
+
+        if (communication == null) return;
+
+        communication.ActionStatus = actionStatus;
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task AddApprovalAsync(int packageId, string approverName, string decision, string? comment)
+    {
+        await _context.ProcurementApprovals.AddAsync(new ProcurementApproval
+        {
+            ProcurementPackageId = packageId,
+            ApproverName = approverName,
+            Decision = decision,
+            Comment = comment,
+            ApprovalDate = DateTime.Now
+        });
+
+        var package = await _context.ProcurementPackages.FirstOrDefaultAsync(x => x.ProcurementPackageId == packageId);
+
+        if (package != null && decision == "Approved" && Array.IndexOf(StageOrder, "Approval") > Array.IndexOf(StageOrder, package.Stage))
+        {
+            package.Stage = "Approval";
+            package.Status = "InProgress";
+        }
+
+        await _context.SaveChangesAsync();
+    }
+}

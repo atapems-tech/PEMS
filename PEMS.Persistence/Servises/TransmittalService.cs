@@ -1,0 +1,328 @@
+using Microsoft.EntityFrameworkCore;
+using PEMS.Application.DTOs;
+using PEMS.Application.Interfaces;
+using PEMS.Domain.Common;
+using PEMS.Domain.Entities;
+using PEMS.Persistence.Context;
+
+namespace PEMS.Persistence.Services;
+
+public class TransmittalService : ITransmittalService
+{
+    private readonly PEMSDbContext _context;
+
+    public TransmittalService(PEMSDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<List<TransmittalDto>> GetAllAsync()
+    {
+        var transmittals = await _context.Transmittals
+            .Include(x => x.Project)
+            .Include(x => x.SupersedesTransmittal)
+            .OrderByDescending(x => x.TransmittalDate)
+            .ToListAsync();
+
+        var supersededByLookup = await _context.Transmittals
+            .Where(x => x.SupersedesTransmittalId != null)
+            .ToDictionaryAsync(x => x.SupersedesTransmittalId!.Value);
+
+        return transmittals.Select(x => MapHeader(x, supersededByLookup)).ToList();
+    }
+
+    public async Task<TransmittalDto?> GetByIdAsync(int id)
+    {
+        var t = await _context.Transmittals
+            .Include(x => x.Project)
+            .Include(x => x.SupersedesTransmittal)
+            .Include(x => x.Items).ThenInclude(i => i.Document)
+            .Include(x => x.Recipients)
+            .FirstOrDefaultAsync(x => x.TransmittalId == id);
+
+        if (t == null) return null;
+
+        var supersededBy = await _context.Transmittals
+            .Where(x => x.SupersedesTransmittalId == id)
+            .FirstOrDefaultAsync();
+
+        var dto = MapHeader(t, supersededBy != null
+            ? new Dictionary<int, Transmittal> { [id] = supersededBy }
+            : new Dictionary<int, Transmittal>());
+
+        dto.Items = t.Items.Select(i => new TransmittalItemDto
+        {
+            TransmittalItemId = i.TransmittalItemId,
+            DocumentId = i.DocumentId,
+            DocumentNo = i.Document?.DocumentNo ?? "",
+            DocumentTitle = i.Document?.Title ?? "",
+            RevisionNo = i.RevisionNo,
+            Remarks = i.Remarks
+        }).ToList();
+
+        dto.Recipients = t.Recipients.Where(r => r.IsActive).Select(r => new TransmittalRecipientDto
+        {
+            TransmittalRecipientId = r.TransmittalRecipientId,
+            Name = r.Name,
+            RecipientType = r.RecipientType,
+            Organization = r.Organization,
+            ResponseRequired = r.ResponseRequired
+        }).ToList();
+
+        return dto;
+    }
+
+    public async Task<int> CreateAsync(string transmittalNo, int projectId, string from, string to,
+        string purpose, string? description, List<int> documentIds,
+        bool responseRequired, List<TransmittalRecipientInput> recipients)
+    {
+        if (string.IsNullOrWhiteSpace(transmittalNo))
+            throw new InvalidOperationException("شماره‌ی ترانسمیتال الزامی است.");
+
+        if (await _context.Transmittals.AnyAsync(x => x.TransmittalNo == transmittalNo))
+            throw new InvalidOperationException($"شماره‌ی ترانسمیتال '{transmittalNo}' قبلاً استفاده شده - شماره‌ی تکراری مجاز نیست.");
+
+        // طبق بخش M (تعامل Hold با Transmittal): مدرکی که هنوز Hold است نباید توزیع رسمی شود -
+        // این بررسی در لحظه‌ی Create (نه فقط Send) انجام می‌شود چون کاربر باید همین‌جا بفهمد.
+        var heldDocs = await _context.Documents
+            .Where(d => documentIds.Contains(d.DocumentId) && d.IsOnHold)
+            .Select(d => d.DocumentNo)
+            .ToListAsync();
+
+        if (heldDocs.Count > 0)
+            throw new InvalidOperationException(
+                $"این مدارک هنوز در وضعیت Hold هستند و نمی‌توانند در ترانسمیتال قرار بگیرند: {string.Join(", ", heldDocs)}");
+
+        var transmittal = new Transmittal
+        {
+            TransmittalNo = transmittalNo,
+            ProjectId = projectId,
+            From = from,
+            To = to,
+            Purpose = purpose,
+            Description = description,
+            Status = "Draft",
+            ResponseRequired = responseRequired,
+            TransmittalDate = DateTime.Now,
+            CreatedDate = DateTime.Now
+        };
+
+        foreach (var docId in documentIds.Distinct())
+        {
+            var doc = await _context.Documents.FirstOrDefaultAsync(x => x.DocumentId == docId);
+
+            transmittal.Items.Add(new TransmittalItem
+            {
+                DocumentId = docId,
+                RevisionNo = doc?.RevisionNo ?? "00"
+            });
+        }
+
+        foreach (var r in recipients.Where(r => !string.IsNullOrWhiteSpace(r.Name)))
+        {
+            transmittal.Recipients.Add(new TransmittalRecipient
+            {
+                Name = r.Name.Trim(),
+                RecipientType = string.IsNullOrWhiteSpace(r.RecipientType) ? "External" : r.RecipientType,
+                Organization = r.Organization,
+                ResponseRequired = r.ResponseRequired,
+                IsActive = true,
+                CreatedDate = DateTime.Now
+            });
+        }
+
+        // To آزاد برای سازگاری نمایشی با کدهای قدیمی، از روی گیرندگان ساختاریافته خلاصه می‌شود -
+        // اگر گیرنده‌ای وارد نشده (فرم قدیمی)، همان مقدار دستی to حفظ می‌شود
+        if (transmittal.Recipients.Count > 0)
+            transmittal.To = string.Join("; ", transmittal.Recipients.Select(r => r.Name));
+
+        await _context.Transmittals.AddAsync(transmittal);
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
+        {
+            // طبق بخش G (بند ۲۲ - Numbering Regression): پنجره‌ی Race بین AnyAsync بالا و این
+            // SaveChanges - اگر دو درخواست هم‌زمان با همین شماره برسند، ایندکس Unique سطح
+            // دیتابیس (TransmittalConfiguration) دومی را رد می‌کند؛ این‌جا فقط پیام دوستانه می‌دهیم.
+            throw new InvalidOperationException($"شماره‌ی ترانسمیتال '{transmittalNo}' هم‌زمان توسط درخواست دیگری ثبت شد - شماره‌ی دیگری انتخاب کنید.");
+        }
+
+        return transmittal.TransmittalId;
+    }
+
+    private static bool IsUniqueConstraintViolation(DbUpdateException ex)
+    {
+        return ex.InnerException is Microsoft.Data.SqlClient.SqlException sqlEx
+            && (sqlEx.Number == 2601 || sqlEx.Number == 2627);
+    }
+
+    public async Task MarkSentAsync(int id, int responseDueWorkingDays = 10)
+    {
+        var t = await _context.Transmittals.Include(x => x.Items).FirstOrDefaultAsync(x => x.TransmittalId == id);
+        if (t == null) throw new InvalidOperationException("ترانسمیتال یافت نشد.");
+
+        if (t.Status != "Draft")
+            throw new InvalidOperationException($"ترانسمیتال {t.TransmittalNo} از قبل صادر شده ({t.Status}) - قابل صدور دوباره نیست.");
+
+        if (!t.Items.Any())
+            throw new InvalidOperationException("ترانسمیتال بدون مدرک قابل صدور نیست.");
+
+        if (!t.Recipients.Any() && string.IsNullOrWhiteSpace(t.To))
+            throw new InvalidOperationException("ترانسمیتال باید حداقل یک گیرنده داشته باشد.");
+
+        // طبق بخش ۵ (Response Required Rules): نباید حالت ناسازگار ResponseRequired=true و
+        // ResponseDueDate=null اجازه داده شود - این‌جا دقیقاً همان لحظه‌ای است که محاسبه می‌شود
+        if (t.ResponseRequired)
+            t.ResponseDueDate = WorkingDayCalculator.AddWorkingDays(DateTime.Now, responseDueWorkingDays);
+
+        t.Status = "Sent";
+        t.SentDate = DateTime.Now;
+
+        await SaveWithConcurrencyCheckAsync();
+    }
+
+    public async Task CancelAsync(int id, string reason, int? actorEmployeeId)
+    {
+        if (string.IsNullOrWhiteSpace(reason))
+            throw new InvalidOperationException("دلیل لغو (Cancel Reason) الزامی است.");
+
+        var t = await _context.Transmittals.FirstOrDefaultAsync(x => x.TransmittalId == id);
+        if (t == null) throw new InvalidOperationException("ترانسمیتال یافت نشد.");
+
+        if (t.Status == "Cancelled")
+            throw new InvalidOperationException($"ترانسمیتال {t.TransmittalNo} از قبل لغو شده است.");
+
+        // طبق بخش ۸: Cancel یک وضعیت جدید است، نه پاک‌کردن/بازنویسی رکورد صادرشده - تاریخچه‌ی
+        // Sent/SentDate/گیرندگان/مدارک دست‌نخورده می‌ماند
+        t.Status = "Cancelled";
+        t.CancelledDate = DateTime.Now;
+        t.CancelledReason = reason;
+        t.CancelledById = actorEmployeeId;
+
+        await SaveWithConcurrencyCheckAsync();
+    }
+
+    public async Task<int> ReissueAsync(int id, int? actorEmployeeId)
+    {
+        var original = await _context.Transmittals
+            .Include(x => x.Items)
+            .Include(x => x.Recipients)
+            .FirstOrDefaultAsync(x => x.TransmittalId == id);
+
+        if (original == null) throw new InvalidOperationException("ترانسمیتال یافت نشد.");
+
+        if (original.Status != "Cancelled")
+            throw new InvalidOperationException("فقط ترانسمیتال لغوشده قابل صدور مجدد (Reissue) است.");
+
+        var reissued = new Transmittal
+        {
+            // طبق بخش ۸: باید شماره‌ی جدید بگیرد (نه بازاستفاده از شماره‌ی رسمی قدیمی) - کاربر
+            // آن را در فرم ویرایش/تکمیل می‌کند، این‌جا فقط یک Placeholder موقت تا ذخیره شود
+            TransmittalNo = $"{original.TransmittalNo}-R{DateTime.Now:HHmmss}",
+            ProjectId = original.ProjectId,
+            From = original.From,
+            To = original.To,
+            Purpose = original.Purpose,
+            Description = original.Description,
+            Status = "Draft",
+            ResponseRequired = original.ResponseRequired,
+            TransmittalDate = DateTime.Now,
+            CreatedDate = DateTime.Now,
+            SupersedesTransmittalId = original.TransmittalId
+        };
+
+        foreach (var item in original.Items)
+        {
+            reissued.Items.Add(new TransmittalItem
+            {
+                DocumentId = item.DocumentId,
+                RevisionNo = item.RevisionNo,
+                Remarks = item.Remarks
+            });
+        }
+
+        foreach (var r in original.Recipients.Where(r => r.IsActive))
+        {
+            reissued.Recipients.Add(new TransmittalRecipient
+            {
+                Name = r.Name,
+                RecipientType = r.RecipientType,
+                Organization = r.Organization,
+                ResponseRequired = r.ResponseRequired,
+                IsActive = true,
+                CreatedDate = DateTime.Now
+            });
+        }
+
+        await _context.Transmittals.AddAsync(reissued);
+        await SaveWithConcurrencyCheckAsync();
+
+        return reissued.TransmittalId;
+    }
+
+    public async Task RecordResponseAsync(int id, string? responseNote)
+    {
+        var t = await _context.Transmittals.FirstOrDefaultAsync(x => x.TransmittalId == id);
+        if (t == null) throw new InvalidOperationException("ترانسمیتال یافت نشد.");
+
+        if (!t.ResponseRequired)
+            throw new InvalidOperationException("این ترانسمیتال اصلاً پاسخ لازم ندارد.");
+
+        if (!t.IsIssued)
+            throw new InvalidOperationException("پاسخ فقط برای ترانسمیتال صادرشده قابل ثبت است.");
+
+        t.ResponseReceivedDate = DateTime.Now;
+        t.ResponseNote = responseNote;
+
+        await SaveWithConcurrencyCheckAsync();
+    }
+
+    private async Task SaveWithConcurrencyCheckAsync()
+    {
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            throw new InvalidOperationException(
+                "این ترانسمیتال هم‌زمان توسط کاربر دیگری تغییر کرده است. لطفاً صفحه را رفرش کنید و دوباره تلاش کنید.");
+        }
+    }
+
+    private static TransmittalDto MapHeader(Transmittal x, Dictionary<int, Transmittal> supersededByLookup)
+    {
+        supersededByLookup.TryGetValue(x.TransmittalId, out var supersededBy);
+
+        return new TransmittalDto
+        {
+            TransmittalId = x.TransmittalId,
+            TransmittalNo = x.TransmittalNo,
+            ProjectId = x.ProjectId,
+            ProjectName = x.Project?.ProjectName ?? "",
+            From = x.From,
+            To = x.To,
+            Purpose = x.Purpose,
+            Description = x.Description,
+            Status = x.Status,
+            TransmittalDate = x.TransmittalDate,
+            SentDate = x.SentDate,
+            ItemsCount = x.Items.Count,
+            ResponseRequired = x.ResponseRequired,
+            ResponseDueDate = x.ResponseDueDate,
+            ResponseReceivedDate = x.ResponseReceivedDate,
+            ResponseNote = x.ResponseNote,
+            IsResponseOverdue = x.IsResponseOverdue,
+            IsIssued = x.IsIssued,
+            CancelledDate = x.CancelledDate,
+            CancelledReason = x.CancelledReason,
+            SupersedesTransmittalId = x.SupersedesTransmittalId,
+            SupersedesTransmittalNo = x.SupersedesTransmittal?.TransmittalNo,
+            SupersededByTransmittalId = supersededBy?.TransmittalId,
+            SupersededByTransmittalNo = supersededBy?.TransmittalNo
+        };
+    }
+}

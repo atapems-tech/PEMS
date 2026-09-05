@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Security Configuration - PEMS Enterprise</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error-container": "#ffdad6",
+                      "primary": "#000819",
+                      "on-secondary-fixed": "#2c1700",
+                      "primary-fixed": "#d7e3fd",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-secondary": "#ffffff",
+                      "surface-dim": "#c8dcf5",
+                      "on-background": "#081d2f",
+                      "on-error": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed": "#ffdcbc",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "error": "#ba1a1a",
+                      "surface": "#f8f9ff",
+                      "tertiary-container": "#00213d",
+                      "surface-variant": "#d0e4fe",
+                      "secondary": "#895200",
+                      "surface-bright": "#f8f9ff",
+                      "surface-container-highest": "#d0e4fe",
+                      "background": "#f8f9ff",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "on-tertiary": "#ffffff",
+                      "secondary-container": "#fdaa47",
+                      "on-tertiary-fixed": "#001d36",
+                      "on-primary": "#ffffff",
+                      "primary-container": "#142033",
+                      "inverse-on-surface": "#e9f1ff",
+                      "inverse-primary": "#bbc7e0",
+                      "on-primary-fixed": "#101c2f",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "outline-variant": "#c5c6cd",
+                      "inverse-surface": "#1f3245",
+                      "tertiary-fixed": "#d1e4ff",
+                      "on-primary-container": "#7c889f",
+                      "outline": "#75777d",
+                      "on-surface-variant": "#44474c",
+                      "on-tertiary-container": "#498bcd",
+                      "tertiary": "#000815",
+                      "surface-container": "#e4efff",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "surface-tint": "#535f75",
+                      "on-secondary-container": "#6e4100",
+                      "surface-container-low": "#eef4ff",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-high": "#daeaff",
+                      "on-surface": "#081d2f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "gutter": "16px",
+                      "xl": "32px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "topbar-height": "60px",
+                      "unit": "4px",
+                      "md": "16px",
+                      "sidebar-width": "260px"
+              },
+              "fontFamily": {
+                      "kpi-stat": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "table-header": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "body-medium": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "badge-label": ["Inter"],
+                      "table-cell": ["Inter"],
+                      "body-base": ["Inter"]
+              },
+              "fontSize": {
+                      "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                      "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                      "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}],
+                      "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                      "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f5f8; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.filled { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #d98c2b;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #d98c2b;
+        }
+        .toggle-checkbox:checked + .toggle-label:after {
+            transform: translateX(100%);
+            border-color: white;
+        }
+        .toggle-label {
+            width: 36px;
+            height: 20px;
+            background-color: #dde3ea;
+            border-radius: 9999px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .toggle-label:after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.2s ease-in-out;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width bg-primary dark:bg-primary-container text-secondary-container dark:text-secondary-fixed-dim font-body-medium text-body-medium border-r border-outline-variant dark:border-primary-fixed-variant flex flex-col py-xl z-20">
+<div class="px-lg mb-8 flex items-center gap-3">
+<div class="w-8 h-8 bg-secondary-container rounded-sm flex items-center justify-center text-primary font-bold">U</div>
+<div>
+<div class="font-headline-md text-headline-md text-inverse-on-surface leading-tight">UtilityCorp</div>
+<div class="text-[11px] text-primary-fixed-dim uppercase tracking-wider">Enterprise Admin</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1 px-2">
+<a class="flex items-center gap-md px-md py-sm text-primary-fixed-dim hover:text-inverse-on-surface hover:bg-primary-container/50 transition-colors rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-primary-fixed-dim hover:text-inverse-on-surface hover:bg-primary-container/50 transition-colors rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+                Directory
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-primary-fixed-dim hover:text-inverse-on-surface hover:bg-primary-container/50 transition-colors rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+                Attendance
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-primary-fixed-dim hover:text-inverse-on-surface hover:bg-primary-container/50 transition-colors rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                Payroll
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-primary-fixed-dim hover:text-inverse-on-surface hover:bg-primary-container/50 transition-colors rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+                Performance
+            </a>
+<a class="flex items-center gap-md px-md py-sm bg-primary-container dark:bg-tertiary-container text-secondary-container border-r-4 border-secondary-container rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined filled" data-icon="settings">settings</span>
+                Settings
+            </a>
+</nav>
+<div class="mt-auto px-lg">
+<button class="w-full py-2 bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white rounded-DEFAULT font-body-medium text-body-medium hover:opacity-90 transition-opacity">
+                Onboard Employee
+            </button>
+</div>
+<div class="mt-8 flex flex-col gap-1 px-2 border-t border-primary-fixed-variant pt-4 mx-2">
+<a class="flex items-center gap-md px-md py-sm text-primary-fixed-dim hover:text-inverse-on-surface hover:bg-primary-container/50 transition-colors rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+                Support
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-primary-fixed-dim hover:text-inverse-on-surface hover:bg-primary-container/50 transition-colors rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Sign Out
+            </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="ml-sidebar-width flex-1 flex flex-col h-screen">
+<!-- TopAppBar -->
+<header class="h-topbar-height bg-surface-container-lowest border-b border-outline-variant flex justify-between items-center px-lg shrink-0 z-10 sticky top-0">
+<div class="flex items-center gap-4">
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface">Employee Management</h1>
+<div class="h-4 w-px bg-outline-variant mx-2"></div>
+<div class="flex items-center gap-2 text-sm text-on-surface-variant font-body-medium">
+<span class="text-on-surface-variant">Settings</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-primary font-bold border-b-2 border-secondary pb-0.5">Security Configuration</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex bg-surface-container-low rounded-lg p-1 mr-4">
+<button class="px-3 py-1 text-xs font-bold rounded bg-white shadow-sm text-primary">EN</button>
+<button class="px-3 py-1 text-xs font-bold rounded text-on-surface-variant hover:text-primary transition-colors" dir="rtl">FA</button>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+<div class="h-8 w-px bg-outline-variant mx-2"></div>
+<button class="px-4 py-1.5 border border-[#dde3ea] text-[#5c6f85] font-body-medium text-body-medium rounded-DEFAULT hover:bg-surface-container-low transition-colors">
+                    Feedback
+                </button>
+<button class="px-4 py-1.5 bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white font-body-medium text-body-medium rounded-DEFAULT hover:opacity-90 transition-opacity">
+                    Quick Action
+                </button>
+<img alt="User Profile" class="w-8 h-8 rounded-full border border-outline-variant object-cover ml-2" data-alt="A small, professional portrait of a corporate administrator in a light gray suit against a neutral white background, well-lit studio photography, high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuANdV9Tz1Zhxyfnu3t1guhgSwkR0c-r-hQLWhTsfh4I3w6HZl90N9ce-trS79buLiC26ILwlT3up_5OWoIPYgOyu2GuMZ6xj9WVDj8Q4_20UWQpJhiAdzBDRvQUNXIo6qxWs0T035SMyxrKjeHAriETmu0hp4o4_qtT67kAteiPikzHDDBZ35bh_EyY_RXUBua8FesaMiNh5LHDFF5deaaxXrI0Vn_EJzIdwaXNNIS3iYZoH1_Yptdx"/>
+</div>
+</header>
+<!-- Scrollable Workspace -->
+<main class="flex-1 overflow-y-auto p-lg lg:p-xl bg-[#f3f5f8]">
+<div class="max-w-6xl mx-auto space-y-6">
+<!-- Page Header -->
+<div class="flex justify-between items-end pb-4 border-b border-outline-variant">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-1">Security Configuration</h2>
+<p class="font-body-base text-body-base text-on-surface-variant">Manage enterprise security policies, authentication methods, and access controls.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-white border border-[#dde3ea] text-[#5c6f85] rounded-DEFAULT font-body-medium text-body-medium hover:border-secondary transition-colors">Discard Changes</button>
+<button class="px-4 py-2 bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white rounded-DEFAULT font-body-medium text-body-medium shadow-sm hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">save</span>
+                            Save Configuration
+                        </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Left Column: Password & Session -->
+<div class="lg:col-span-2 space-y-6">
+<!-- Password Policy Card -->
+<div class="bg-white rounded-lg border border-[#edf0f4] p-6 hover:border-[#d98c2b] transition-colors duration-300 shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-surface-container-low rounded-bl-full -z-10 opacity-50 group-hover:bg-[#d98c2b]/10 transition-colors"></div>
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-[10px] bg-gradient-to-br from-primary-fixed to-primary-fixed-dim flex items-center justify-center text-primary">
+<span class="material-symbols-outlined filled">password</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Password Policy</h3>
+<p class="text-xs text-on-surface-variant mt-0.5">Define complexity and rotation requirements</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-x-8 gap-y-5">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5 uppercase">Minimum Length</label>
+<div class="relative">
+<input class="w-full bg-surface border border-[#dde3ea] rounded-DEFAULT px-3 py-2 text-body-medium focus:border-secondary focus:ring-1 focus:ring-secondary/20 transition-all outline-none" type="number" value="12"/>
+<span class="absolute right-3 top-2 text-on-surface-variant text-sm">chars</span>
+</div>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5 uppercase">Expiration Period</label>
+<div class="relative">
+<input class="w-full bg-surface border border-[#dde3ea] rounded-DEFAULT px-3 py-2 text-body-medium focus:border-secondary focus:ring-1 focus:ring-secondary/20 transition-all outline-none" type="number" value="90"/>
+<span class="absolute right-3 top-2 text-on-surface-variant text-sm">days</span>
+</div>
+</div>
+<div class="col-span-2 border-t border-outline-variant/30 pt-4 mt-2">
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase">Complexity Requirements</label>
+<div class="grid grid-cols-2 gap-3">
+<label class="flex items-center gap-3 p-3 border border-[#dde3ea] rounded-DEFAULT bg-surface cursor-pointer hover:border-secondary/50 transition-colors">
+<input checked="" class="w-4 h-4 text-secondary border-[#dde3ea] rounded-[4px] focus:ring-secondary" type="checkbox"/>
+<span class="font-body-medium text-body-medium text-on-surface">Require Uppercase (A-Z)</span>
+</label>
+<label class="flex items-center gap-3 p-3 border border-[#dde3ea] rounded-DEFAULT bg-surface cursor-pointer hover:border-secondary/50 transition-colors">
+<input checked="" class="w-4 h-4 text-secondary border-[#dde3ea] rounded-[4px] focus:ring-secondary" type="checkbox"/>
+<span class="font-body-medium text-body-medium text-on-surface">Require Lowercase (a-z)</span>
+</label>
+<label class="flex items-center gap-3 p-3 border border-[#dde3ea] rounded-DEFAULT bg-surface cursor-pointer hover:border-secondary/50 transition-colors">
+<input checked="" class="w-4 h-4 text-secondary border-[#dde3ea] rounded-[4px] focus:ring-secondary" type="checkbox"/>
+<span class="font-body-medium text-body-medium text-on-surface">Require Numbers (0-9)</span>
+</label>
+<label class="flex items-center gap-3 p-3 border border-[#dde3ea] rounded-DEFAULT bg-surface cursor-pointer hover:border-secondary/50 transition-colors">
+<input checked="" class="w-4 h-4 text-secondary border-[#dde3ea] rounded-[4px] focus:ring-secondary" type="checkbox"/>
+<span class="font-body-medium text-body-medium text-on-surface">Require Special (!@#$)</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- Session Management Card -->
+<div class="bg-white rounded-lg border border-[#edf0f4] p-6 hover:border-[#d98c2b] transition-colors duration-300 shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-surface-container-low rounded-bl-full -z-10 opacity-50 group-hover:bg-[#d98c2b]/10 transition-colors"></div>
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-[10px] bg-gradient-to-br from-secondary-fixed to-secondary-fixed-dim flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined filled">timer</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Session Management</h3>
+<p class="text-xs text-on-surface-variant mt-0.5">Control active sessions and timeouts</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="space-y-4">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5 uppercase">Idle Auto-Logout Timeout</label>
+<div class="flex items-center gap-3">
+<input class="flex-1 h-2 bg-[#dde3ea] rounded-lg appearance-none cursor-pointer accent-[#d98c2b]" max="120" min="5" type="range" value="15"/>
+<div class="w-16 px-2 py-1 bg-surface border border-[#dde3ea] rounded text-center font-body-medium text-body-medium">15 min</div>
+</div>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1.5 uppercase">Max Concurrent Sessions</label>
+<select class="w-full bg-surface border border-[#dde3ea] rounded-DEFAULT px-3 py-2 text-body-medium focus:border-secondary focus:ring-1 focus:ring-secondary/20 outline-none">
+<option>1 (Strict Single Device)</option>
+<option selected="">2 (Desktop + Mobile)</option>
+<option>3 (Multiple Devices)</option>
+<option>Unlimited</option>
+</select>
+</div>
+</div>
+<div class="bg-surface border border-outline-variant/30 rounded-DEFAULT p-4 flex flex-col justify-center border-l-4 border-l-[#d98c2b]">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-[#d98c2b] text-[20px]">info</span>
+<div>
+<h4 class="font-body-medium text-body-medium text-on-surface mb-1">Session Termination</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed">Lowering the concurrent session limit will immediately terminate oldest active sessions for users currently exceeding the new threshold.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: MFA & IP Access -->
+<div class="space-y-6">
+<!-- MFA Enforcement Card -->
+<div class="bg-white rounded-lg border border-[#edf0f4] p-6 hover:border-[#d98c2b] transition-colors duration-300 shadow-sm relative overflow-hidden group">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-[10px] bg-gradient-to-br from-tertiary-fixed to-tertiary-fixed-dim flex items-center justify-center text-on-tertiary-fixed">
+<span class="material-symbols-outlined filled">security</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Multi-Factor Auth</h3>
+<p class="text-xs text-on-surface-variant mt-0.5">Enforcement settings</p>
+</div>
+</div>
+<div class="space-y-5">
+<div class="flex items-center justify-between p-3 bg-surface border border-[#dde3ea] rounded-DEFAULT">
+<div>
+<div class="font-body-medium text-body-medium text-on-surface">Require MFA for All Admins</div>
+<div class="text-[11px] text-on-surface-variant mt-0.5">Mandatory for system roles</div>
+</div>
+<label class="flex items-center cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-label"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface border border-[#dde3ea] rounded-DEFAULT">
+<div>
+<div class="font-body-medium text-body-medium text-on-surface">Require MFA for Staff</div>
+<div class="text-[11px] text-on-surface-variant mt-0.5">Optional user enrollment</div>
+</div>
+<label class="flex items-center cursor-pointer">
+<input class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-label"></div>
+</label>
+</div>
+<div class="pt-4 border-t border-outline-variant/30">
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase">Allowed MFA Methods</label>
+<div class="space-y-2">
+<label class="flex items-center gap-2">
+<input checked="" class="w-4 h-4 text-secondary border-[#dde3ea] rounded-[4px] bg-surface-container opacity-60" disabled="" type="checkbox"/>
+<span class="text-sm text-on-surface">Authenticator App (TOTP)</span>
+<span class="ml-auto text-[10px] bg-surface-container-high px-1.5 py-0.5 rounded text-on-surface-variant">Default</span>
+</label>
+<label class="flex items-center gap-2">
+<input checked="" class="w-4 h-4 text-secondary border-[#dde3ea] rounded-[4px]" type="checkbox"/>
+<span class="text-sm text-on-surface">SMS Verification</span>
+</label>
+<label class="flex items-center gap-2">
+<input class="w-4 h-4 text-secondary border-[#dde3ea] rounded-[4px]" type="checkbox"/>
+<span class="text-sm text-on-surface">Hardware Key (FIDO2)</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- IP Whitelisting Card -->
+<div class="bg-white rounded-lg border border-[#edf0f4] p-6 hover:border-[#d98c2b] transition-colors duration-300 shadow-sm relative overflow-hidden group flex flex-col h-[calc(100%-25rem)] min-h-[300px]">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-[10px] bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">router</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">IP Access Control</h3>
+<p class="text-xs text-on-surface-variant mt-0.5">Restrict admin access by IP</p>
+</div>
+</div>
+<label class="flex items-center cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-label"></div>
+</label>
+</div>
+<div class="flex-1 flex flex-col">
+<div class="flex gap-2 mb-3">
+<input class="flex-1 bg-surface border border-[#dde3ea] rounded-DEFAULT px-3 py-1.5 text-sm outline-none focus:border-secondary" placeholder="e.g. 192.168.1.0/24" type="text"/>
+<button class="px-3 py-1.5 bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors rounded-DEFAULT text-sm font-body-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">add</span> Add
+                                    </button>
+</div>
+<div class="flex-1 border border-[#dde3ea] rounded-DEFAULT bg-surface overflow-hidden flex flex-col">
+<div class="bg-surface-container-highest px-3 py-2 border-b border-[#dde3ea] flex justify-between">
+<span class="font-table-header text-table-header text-on-surface-variant uppercase">Whitelisted Range</span>
+<span class="font-table-header text-table-header text-on-surface-variant uppercase">Action</span>
+</div>
+<div class="overflow-y-auto flex-1 divide-y divide-[#dde3ea]/50">
+<div class="px-3 py-2 flex justify-between items-center hover:bg-surface-container-low">
+<span class="font-[monospace] text-[13px] text-on-surface">10.0.0.0/8</span>
+<button class="text-error hover:bg-error-container p-1 rounded transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+</div>
+<div class="px-3 py-2 flex justify-between items-center hover:bg-surface-container-low">
+<span class="font-[monospace] text-[13px] text-on-surface">192.168.100.45/32</span>
+<button class="text-error hover:bg-error-container p-1 rounded transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+</div>
+<div class="px-3 py-2 flex justify-between items-center hover:bg-surface-container-low">
+<span class="font-[monospace] text-[13px] text-on-surface">172.16.0.0/12</span>
+<button class="text-error hover:bg-error-container p-1 rounded transition-colors"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom spacing -->
+<div class="h-8"></div>
+</div>
+</main>
+</div>
+</body></html>

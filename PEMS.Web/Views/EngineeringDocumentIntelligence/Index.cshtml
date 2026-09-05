@@ -1,0 +1,61 @@
+﻿@model List<PEMS.Application.DTOs.DocumentIntelligenceDetailDto>
+@{
+    var dash = (PEMS.Application.DTOs.DocumentIntelligenceDashboardDto)ViewBag.Dashboard;
+}
+
+
+<div class="row g-3 mb-3">
+    <div class="col-md-3 col-sm-6">
+        <div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-file-earmark-text"></i></div>
+            <div><div class="kpi-value">@dash.TotalDocuments</div><div class="kpi-label">Total Documents</div></div></div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-robot"></i></div>
+            <div><div class="kpi-value">@dash.PendingClassificationReview</div><div class="kpi-label">Pending AI Classification Review</div></div></div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-tags"></i></div>
+            <div><div class="kpi-value">@dash.PendingTagLinkReview</div><div class="kpi-label">Pending Tag Links</div></div></div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-chat-dots"></i></div>
+            <div><div class="kpi-value">@dash.OpenComments</div><div class="kpi-label">Open Comments</div></div></div>
+    </div>
+</div>
+
+<div class="content-card mb-3">
+    <h6 class="mb-3">Documents by Workflow Stage</h6>
+    <div class="d-flex flex-wrap gap-2">
+        @foreach (var s in new[] { "Uploaded", "AIProcessing", "Classified", "DisciplineAssigned", "UnderReview", "CommentOpen", "Revision", "Approved", "KnowledgeBase" })
+        {
+            var count = dash.ByStage.TryGetValue(s, out var c) ? c : 0;
+            <span class="badge bg-secondary p-2">@s: @count</span>
+        }
+    </div>
+</div>
+
+<div class="content-card">
+    <p class="text-muted">
+        مدارکی که تحلیل AI روی آن‌ها کامل شده و منتظر بازبینی مهندسی هستند (Discipline, Vendor, MR,
+        Revision, Tag های پیشنهادی).
+    </p>
+    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise">
+            <thead><tr><th>Doc No</th><th>Title</th><th>Stage</th><th>Pending Classifications</th><th>Pending Tags</th><th></th></tr></thead>
+            <tbody>
+                @foreach (var d in Model)
+                {
+                    <tr>
+                        <td>@d.DocumentNo</td>
+                        <td>@d.Title</td>
+                        <td><span class="badge bg-info text-dark">@d.AIWorkflowStage</span></td>
+                        <td><span class="badge bg-warning text-dark">@d.Classifications.Count(c => c.ReviewStatus == "Draft")</span></td>
+                        <td><span class="badge bg-warning text-dark">@d.TagLinks.Count(t => t.IsAIProposed && t.ReviewStatus == "Draft")</span></td>
+                        <td><a asp-action="Review" asp-route-id="@d.DocumentId" class="btn btn-sm btn-pems-solid">Review</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (!Model.Any()) { <p class="text-muted text-center py-4">No documents pending AI classification review.</p> }
+    </div>
+</div>

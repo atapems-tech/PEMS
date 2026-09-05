@@ -1,0 +1,88 @@
+﻿@{
+    var strategies = (IEnumerable<dynamic>)ViewBag.Strategies;
+    var jobPlans = (IEnumerable<dynamic>)ViewBag.JobPlans;
+}
+
+<div class="content-card" style="max-width:700px;">
+    <form asp-action="Create" method="post">
+        <div class="row g-3">
+            <div class="col-12">
+                <label class="form-label">Equipment</label>
+                <input type="text" class="form-control" placeholder="جستجوی تگ، نام یا سازنده..."
+                       value="@ViewBag.PreselectedEquipmentLabel"
+                       data-pems-search data-search-type="Equipment" data-search-hidden="#planEquipmentIdHidden" autocomplete="off" />
+                <input type="hidden" name="equipmentId" id="planEquipmentIdHidden" value="@ViewBag.PreselectedEquipmentId" />
+            </div>
+            <div class="col-12">
+                <label class="form-label">Maintenance Strategy</label>
+                <select name="maintenanceStrategyId" class="form-select" required id="planStrategySelect">
+                    @foreach (var s in strategies)
+                    {
+                        <option value="@s.MaintenanceStrategyId" data-equipment="@s.EquipmentId" selected="@(s.MaintenanceStrategyId == (int?)ViewBag.PreselectedStrategyId)">
+                            @s.StrategyType (@s.Frequency)
+                        </option>
+                    }
+                </select>
+                <div class="form-text small">Define a strategy for the equipment first if none is listed.</div>
+            </div>
+            <div class="col-12"><label class="form-label">Title</label><input name="title" class="form-control" placeholder="e.g. Quarterly lubrication check" required /></div>
+
+            <div class="col-12">
+                <label class="form-label">Trigger Type</label>
+                <select name="triggerType" class="form-select" id="triggerTypeSelect" onchange="pemsToggleTriggerFields()">
+                    <option value="Calendar">Calendar (تقویمی)</option>
+                    <option value="Meter">Meter (کارکرد/سیکل)</option>
+                    <option value="Both">Both (هردو)</option>
+                </select>
+            </div>            <div class="col-md-6" id="intervalDaysWrap"><label class="form-label">Interval (days)</label><input name="intervalDays" type="number" class="form-control" /></div>
+            <div class="col-md-6" id="nextDueDateWrap"><label class="form-label">Next Due Date</label><input name="nextDueDate" type="date" class="form-control" /></div>
+            <div class="col-md-6" id="meterTypeWrap" style="display:none;">
+                <label class="form-label">Meter Type</label>
+                <select name="meterType" class="form-select">
+                    <option value="RunningHours">Running Hours</option>
+                    <option value="Cycles">Cycles</option>
+                    <option value="ProductionUnits">Production Units</option>
+                </select>
+            </div>
+            <div class="col-md-6" id="meterIntervalWrap" style="display:none;">
+                <label class="form-label">Meter Interval (هر چند واحد یک‌بار)</label>
+                <input name="meterInterval" type="number" step="0.01" class="form-control" placeholder="e.g. 2000" />
+            </div>
+            <script>
+                function pemsToggleTriggerFields() {
+                    var t = document.getElementById('triggerTypeSelect').value;
+                    document.getElementById('meterTypeWrap').style.display = (t === 'Meter' || t === 'Both') ? '' : 'none';
+                    document.getElementById('meterIntervalWrap').style.display = (t === 'Meter' || t === 'Both') ? '' : 'none';
+                    document.getElementById('intervalDaysWrap').style.display = (t === 'Calendar' || t === 'Both') ? '' : 'none';
+                    document.getElementById('nextDueDateWrap').style.display = (t === 'Calendar' || t === 'Both') ? '' : 'none';
+                }
+
+                // طبق رفع ناهماهنگی Strategy/Plan: اگه از یک استراتژی خاص اومده باشیم،
+                // نوع تریگر پیشنهادی همون استراتژی از قبل انتخاب می‌شه
+                var preselectedTrigger = '@ViewBag.PreselectedTriggerType';
+                if (preselectedTrigger) {
+                    document.getElementById('triggerTypeSelect').value = preselectedTrigger;
+                }
+                pemsToggleTriggerFields();
+            </script>
+
+            <div class="col-12">
+                <label class="form-label">Job Plan</label>
+                <select name="jobPlanId" class="form-select">
+                    <option value="">-- none (WorkOrder Description only) --</option>
+                    @foreach (var jp in jobPlans)
+                    {
+                        <option value="@jp.JobPlanId">@jp.JobPlanNumber &mdash; @jp.Title</option>
+                    }
+                </select>
+                <div class="form-text small">When set, generating a WorkOrder from this plan copies the Job Plan's Tasks/Skills/Materials onto it. <a asp-controller="JobPlan" asp-action="Index" target="_blank">Manage Job Plans</a></div>
+            </div>
+
+            <div class="col-12"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-pems-solid">Create Plan</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

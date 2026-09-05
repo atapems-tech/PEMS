@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Engineering Standards Library</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#081d2f",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#6e4100",
+                        "primary-fixed": "#d7e3fd",
+                        "secondary": "#895200",
+                        "on-tertiary-fixed": "#001d36",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#d1e4ff",
+                        "surface-dim": "#c8dcf5",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container": "#e4efff",
+                        "secondary-container": "#fdaa47",
+                        "surface-tint": "#535f75",
+                        "outline-variant": "#c5c6cd",
+                        "primary": "#000819",
+                        "inverse-surface": "#1f3245",
+                        "surface-variant": "#d0e4fe",
+                        "on-secondary-fixed": "#2c1700",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#498bcd",
+                        "tertiary": "#000815",
+                        "surface-container-highest": "#d0e4fe",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "inverse-on-surface": "#e9f1ff",
+                        "primary-container": "#142033",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "on-secondary": "#ffffff",
+                        "background": "#f8f9ff",
+                        "inverse-primary": "#bbc7e0",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "on-surface-variant": "#44474c",
+                        "on-primary-container": "#7c889f",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#eef4ff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "outline": "#75777d",
+                        "tertiary-container": "#00213d",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "surface-container-high": "#daeaff",
+                        "on-primary-fixed": "#101c2f",
+                        "on-background": "#081d2f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "topbar-height": "60px",
+                        "sidebar-width": "260px",
+                        "sm": "8px",
+                        "unit": "4px",
+                        "xs": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "body-base": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "table-header": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f8f9ff; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c5c6cd; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #75777d; }
+        .grid-striped > div:nth-child(even) { background-color: #f8f9ff; }
+        .grid-striped > div:nth-child(odd) { background-color: #ffffff; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-base overflow-hidden flex flex-col h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-inverse-surface fixed top-0 w-full z-50 border-b border-outline-variant dark:border-outline flat no shadows flex justify-between items-center h-topbar-height px-lg">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md text-primary dark:text-primary-fixed-dim tracking-tight">PEMS Engineering</span>
+</div>
+<div class="flex-1 max-w-2xl px-xl hidden md:block">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline" style="font-variation-settings: 'FILL' 0;">search</span>
+<input class="w-full pl-[36px] pr-sm py-[6px] bg-surface-container-low border border-outline-variant rounded-lg font-body-base text-body-base text-on-surface placeholder-on-surface-variant focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-colors" placeholder="Search Engineering Standards (e.g., API 610, ASME Sec VIII)..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<button aria-label="notifications" class="w-[36px] h-[36px] flex items-center justify-center rounded-full hover:bg-surface-container-high dark:hover:bg-primary-container transition-colors cursor-pointer active:opacity-80 text-on-surface-variant dark:text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<button aria-label="translate" class="w-[36px] h-[36px] flex items-center justify-center rounded-full hover:bg-surface-container-high dark:hover:bg-primary-container transition-colors cursor-pointer active:opacity-80 text-on-surface-variant dark:text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="translate" style="font-variation-settings: 'FILL' 0;">translate</span>
+<span class="ml-1 font-label-caps text-label-caps">EN/FA</span>
+</button>
+<button aria-label="settings" class="w-[36px] h-[36px] flex items-center justify-center rounded-full hover:bg-surface-container-high dark:hover:bg-primary-container transition-colors cursor-pointer active:opacity-80 text-on-surface-variant dark:text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="settings" style="font-variation-settings: 'FILL' 0;">settings</span>
+</button>
+<button aria-label="help" class="w-[36px] h-[36px] flex items-center justify-center rounded-full hover:bg-surface-container-high dark:hover:bg-primary-container transition-colors cursor-pointer active:opacity-80 text-on-surface-variant dark:text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="help" style="font-variation-settings: 'FILL' 0;">help</span>
+</button>
+<div class="ml-sm w-[32px] h-[32px] rounded-full bg-primary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="User profile" class="object-cover w-full h-full" data-alt="A professional headshot of an engineer in a control room, high-contrast corporate lighting, authoritative tone, wearing a hard hat and safety glasses, looking slightly off-camera. Dark navy and slate background. 8k resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVpVw6zSRC2M2lqaqIylp0e1ot_RzFtQtOG-JLLQFIrKsw8tIQIeitBUK-1Jm--ubeK5p3RYHO_SVJgrYqVvcANt-cAikXoxzHwUOmia_Eb3yEEJIx1DU1bCLfkk710uyBUzM2Ts_wSwTfq6HNhx1WA1-SdYnkEHk3YXlXa-Q4EhFi3vqWkV4MdM5Uzu3XKtM3StGEMGTB0S8m6K4URvhcKFcyEybDpdwp860x_nVLR8gnFHgBeWgs"/>
+</div>
+</div>
+</header>
+<div class="flex h-full pt-topbar-height">
+<!-- SideNavBar -->
+<nav class="bg-primary dark:bg-primary fixed left-0 top-0 h-full w-sidebar-width shadow-sm flex flex-col py-md z-40 hidden lg:flex border-r border-outline-variant pt-[76px]">
+<div class="px-md mb-xl flex items-center gap-sm">
+<div class="w-[40px] h-[40px] bg-surface-container-highest rounded-lg flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md font-bold text-secondary-container">PEMS</h2>
+<p class="font-label-caps text-label-caps text-on-primary-fixed-variant">Management System</p>
+</div>
+</div>
+<div class="px-md mb-lg">
+<button class="w-full bg-gradient-to-br from-[#d98c2b] to-[#b8721e] text-on-secondary font-body-medium text-body-medium py-sm px-md rounded-lg flex items-center justify-center gap-sm hover:opacity-90 transition-opacity scale-98 active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">add</span>
+                    New Document
+                </button>
+</div>
+<ul class="flex-1 flex flex-col gap-unit px-sm">
+<li>
+<a class="flex items-center gap-sm px-sm py-[8px] rounded-lg text-on-primary-fixed-variant opacity-80 font-label-caps text-label-caps hover:bg-primary-container dark:hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="dashboard">dashboard</span>
+                        Dashboard
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-[8px] rounded-lg text-on-primary-fixed-variant opacity-80 font-label-caps text-label-caps hover:bg-primary-container dark:hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="inventory_2">inventory_2</span>
+                        Asset Registry
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-[8px] rounded-lg bg-secondary dark:bg-secondary text-on-secondary font-bold border-r-4 border-secondary-fixed font-label-caps text-label-caps hover:bg-primary-container dark:hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="description" style="font-variation-settings: 'FILL' 1;">description</span>
+                        Document Control
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-[8px] rounded-lg text-on-primary-fixed-variant opacity-80 font-label-caps text-label-caps hover:bg-primary-container dark:hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="forward_to_inbox">forward_to_inbox</span>
+                        Transmittals
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-[8px] rounded-lg text-on-primary-fixed-variant opacity-80 font-label-caps text-label-caps hover:bg-primary-container dark:hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="history">history</span>
+                        Version History
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-[8px] rounded-lg text-on-primary-fixed-variant opacity-80 font-label-caps text-label-caps hover:bg-primary-container dark:hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="account_tree">account_tree</span>
+                        Workflow
+                    </a>
+</li>
+</ul>
+<div class="mt-auto px-sm pt-md border-t border-primary-container">
+<ul class="flex flex-col gap-unit">
+<li>
+<a class="flex items-center gap-sm px-sm py-[8px] rounded-lg text-on-primary-fixed-variant opacity-80 font-label-caps text-label-caps hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="contact_support">contact_support</span>
+                            Support
+                        </a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-sm py-[8px] rounded-lg text-on-primary-fixed-variant opacity-80 font-label-caps text-label-caps hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="logout">logout</span>
+                            Sign Out
+                        </a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Workspace -->
+<main class="flex-1 lg:ml-sidebar-width flex flex-col h-full bg-background overflow-hidden relative">
+<!-- Page Header -->
+<div class="px-lg py-md border-b border-outline-variant bg-surface-container-lowest shrink-0 flex justify-between items-end">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Engineering Standards Library</h1>
+<p class="font-body-base text-body-base text-on-surface-variant mt-1">Authoritative repository for design, operation, and maintenance standards.</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-[6px] border border-outline-variant rounded-lg font-body-medium text-body-medium text-surface-tint hover:bg-surface-container-low transition-colors flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                        Filter View
+                    </button>
+<button class="px-md py-[6px] border border-outline-variant rounded-lg font-body-medium text-body-medium text-surface-tint hover:bg-surface-container-low transition-colors flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Export List
+                    </button>
+</div>
+</div>
+<!-- Content Area (Split View) -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Data Grid (Left) -->
+<div class="flex-1 flex flex-col min-w-0 border-r border-outline-variant bg-surface-container-lowest">
+<!-- Quick Filters -->
+<div class="px-md py-sm border-b border-outline-variant bg-[#f5f7fa] flex gap-sm overflow-x-auto custom-scrollbar shrink-0">
+<button class="px-sm py-unit bg-surface-container border border-outline-variant rounded-lg font-label-caps text-label-caps text-on-surface whitespace-nowrap">All Standards</button>
+<button class="px-sm py-unit bg-surface-container-lowest border border-outline-variant rounded-lg font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-colors whitespace-nowrap">API</button>
+<button class="px-sm py-unit bg-surface-container-lowest border border-outline-variant rounded-lg font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-colors whitespace-nowrap">ASME</button>
+<button class="px-sm py-unit bg-surface-container-lowest border border-outline-variant rounded-lg font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-colors whitespace-nowrap">ISO</button>
+<div class="w-[1px] bg-outline-variant mx-unit"></div>
+<button class="px-sm py-unit bg-surface-container-lowest border border-outline-variant rounded-lg font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-colors whitespace-nowrap">Mechanical</button>
+<button class="px-sm py-unit bg-surface-container-lowest border border-outline-variant rounded-lg font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-colors whitespace-nowrap">Electrical</button>
+</div>
+<!-- Table Header -->
+<div class="grid grid-cols-12 gap-sm px-md py-sm bg-[#f5f7fa] border-b border-outline-variant shrink-0">
+<div class="col-span-2 font-table-header text-table-header text-on-surface-variant uppercase">Standard ID</div>
+<div class="col-span-5 font-table-header text-table-header text-on-surface-variant uppercase">Title (EN / FA)</div>
+<div class="col-span-2 font-table-header text-table-header text-on-surface-variant uppercase">Discipline</div>
+<div class="col-span-2 font-table-header text-table-header text-on-surface-variant uppercase">Status</div>
+<div class="col-span-1 font-table-header text-table-header text-on-surface-variant uppercase text-right">Actions</div>
+</div>
+<!-- Table Body -->
+<div class="flex-1 overflow-y-auto custom-scrollbar grid-striped">
+<!-- Row 1 -->
+<div class="grid grid-cols-12 gap-sm px-md py-sm border-b border-outline-variant items-center hover:bg-[rgba(31,78,120,0.04)] cursor-pointer group transition-colors">
+<div class="col-span-2 font-mono text-[12px] font-medium text-on-surface">API STD 610</div>
+<div class="col-span-5">
+<div class="font-table-cell text-table-cell text-on-surface truncate">Centrifugal Pumps for Petroleum, Petrochemical and Natural Gas Industries</div>
+<div class="font-table-cell text-table-cell text-on-surface-variant text-[11px] truncate mt-[2px]" dir="rtl">پمپ‌های گریز از مرکز برای صنایع نفت، پتروشیمی و گاز طبیعی</div>
+</div>
+<div class="col-span-2 font-table-cell text-table-cell text-on-surface-variant">Mechanical</div>
+<div class="col-span-2">
+<span class="inline-flex items-center px-[8px] py-[2px] rounded-full bg-[#e6f4ea] text-[#1e8e3e] font-badge-label text-badge-label">Active</span>
+</div>
+<div class="col-span-1 flex justify-end">
+<button class="w-[32px] h-[32px] flex items-center justify-center rounded-lg border border-transparent group-hover:border-outline-variant text-surface-tint hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-12 gap-sm px-md py-sm border-b border-outline-variant items-center hover:bg-[rgba(31,78,120,0.04)] cursor-pointer group transition-colors bg-[rgba(31,78,120,0.04)] border-l-2 border-l-secondary-container pl-[14px]">
+<div class="col-span-2 font-mono text-[12px] font-medium text-on-surface">ASME BPVC VIII</div>
+<div class="col-span-5">
+<div class="font-table-cell text-table-cell text-on-surface truncate font-semibold">Rules for Construction of Pressure Vessels</div>
+<div class="font-table-cell text-table-cell text-on-surface-variant text-[11px] truncate mt-[2px]" dir="rtl">قوانین ساخت مخازن تحت فشار</div>
+</div>
+<div class="col-span-2 font-table-cell text-table-cell text-on-surface-variant">Mechanical</div>
+<div class="col-span-2">
+<span class="inline-flex items-center px-[8px] py-[2px] rounded-full bg-[#fef7e0] text-[#b06000] font-badge-label text-badge-label">Under Review</span>
+</div>
+<div class="col-span-1 flex justify-end">
+<button class="w-[32px] h-[32px] flex items-center justify-center rounded-lg border border-outline-variant text-surface-tint hover:bg-surface-container-low transition-all bg-surface-container-lowest">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="grid grid-cols-12 gap-sm px-md py-sm border-b border-outline-variant items-center hover:bg-[rgba(31,78,120,0.04)] cursor-pointer group transition-colors">
+<div class="col-span-2 font-mono text-[12px] font-medium text-on-surface">ISO 9001:2015</div>
+<div class="col-span-5">
+<div class="font-table-cell text-table-cell text-on-surface truncate">Quality management systems — Requirements</div>
+<div class="font-table-cell text-table-cell text-on-surface-variant text-[11px] truncate mt-[2px]" dir="rtl">سیستم‌های مدیریت کیفیت — الزامات</div>
+</div>
+<div class="col-span-2 font-table-cell text-table-cell text-on-surface-variant">QA/QC</div>
+<div class="col-span-2">
+<span class="inline-flex items-center px-[8px] py-[2px] rounded-full bg-[#e6f4ea] text-[#1e8e3e] font-badge-label text-badge-label">Active</span>
+</div>
+<div class="col-span-1 flex justify-end">
+<button class="w-[32px] h-[32px] flex items-center justify-center rounded-lg border border-transparent group-hover:border-outline-variant text-surface-tint hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- Row 4 -->
+<div class="grid grid-cols-12 gap-sm px-md py-sm border-b border-outline-variant items-center hover:bg-[rgba(31,78,120,0.04)] cursor-pointer group transition-colors">
+<div class="col-span-2 font-mono text-[12px] font-medium text-on-surface text-on-surface-variant line-through">API RP 14C</div>
+<div class="col-span-5 opacity-70">
+<div class="font-table-cell text-table-cell text-on-surface truncate">Analysis, Design, Installation, and Testing of Safety Systems</div>
+<div class="font-table-cell text-table-cell text-on-surface-variant text-[11px] truncate mt-[2px]" dir="rtl">تحلیل، طراحی، نصب و آزمایش سیستم‌های ایمنی</div>
+</div>
+<div class="col-span-2 font-table-cell text-table-cell text-on-surface-variant opacity-70">Safety</div>
+<div class="col-span-2">
+<span class="inline-flex items-center px-[8px] py-[2px] rounded-full bg-[#fce8e6] text-[#c5221f] font-badge-label text-badge-label">Superseded</span>
+</div>
+<div class="col-span-1 flex justify-end">
+<button class="w-[32px] h-[32px] flex items-center justify-center rounded-lg border border-transparent group-hover:border-outline-variant text-surface-tint hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Detail Panel (Right) -->
+<div class="w-[400px] bg-surface-container-lowest flex flex-col shrink-0">
+<!-- Panel Header -->
+<div class="px-lg py-md border-b border-outline-variant bg-[#f5f7fa] flex justify-between items-start shrink-0">
+<div>
+<div class="font-mono text-[13px] font-bold text-on-surface mb-unit">ASME BPVC VIII</div>
+<h3 class="font-headline-md text-headline-md text-on-surface leading-tight">Rules for Construction of Pressure Vessels</h3>
+<h4 class="font-body-medium text-body-medium text-on-surface-variant mt-sm leading-tight" dir="rtl">قوانین ساخت مخازن تحت فشار</h4>
+</div>
+<div class="flex flex-col gap-sm items-end shrink-0 ml-sm">
+<span class="inline-flex items-center px-[8px] py-[2px] rounded-full bg-[#fef7e0] text-[#b06000] font-badge-label text-badge-label">Under Review</span>
+<button aria-label="Close panel" class="w-[32px] h-[32px] flex items-center justify-center rounded-lg border border-outline-variant text-surface-tint hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<!-- Panel Content -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-lg flex flex-col gap-lg">
+<!-- Metadata Grid -->
+<div class="grid grid-cols-2 gap-md p-md bg-surface-container-low rounded-lg border border-outline-variant">
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-unit">Category</div>
+<div class="font-body-medium text-body-medium text-on-surface">Mechanical</div>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-unit">Latest Revision</div>
+<div class="font-body-medium text-body-medium text-on-surface">2023 Edition</div>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-unit">Issuing Body</div>
+<div class="font-body-medium text-body-medium text-on-surface">ASME</div>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-unit">Plant Applicability</div>
+<div class="font-body-medium text-body-medium text-on-surface">Unit 1, Unit 3</div>
+</div>
+</div>
+<!-- Summary -->
+<div>
+<h5 class="font-body-medium text-body-medium text-on-surface border-b border-outline-variant pb-unit mb-sm">Executive Summary</h5>
+<p class="font-body-base text-body-base text-on-surface-variant leading-relaxed">
+                                Provides mandatory requirements, specific prohibitions, and nonmandatory guidance for materials, design, fabrication, inspection, and testing, markings and reports, overpressure protection, and certification of pressure vessels having an internal or external pressure exceeding 15 psig (100 kPa).
+                            </p>
+</div>
+<!-- Related Drawings -->
+<div>
+<h5 class="font-body-medium text-body-medium text-on-surface border-b border-outline-variant pb-unit mb-sm flex justify-between items-center">
+                                Related Project Drawings
+                                <span class="material-symbols-outlined text-[16px] text-surface-tint cursor-pointer">open_in_new</span>
+</h5>
+<div class="flex flex-col gap-sm mt-sm">
+<a class="flex items-center gap-md p-sm rounded-lg border border-outline-variant hover:border-secondary-container hover:shadow-[0_2px_8px_rgba(20,32,51,0.05)] transition-all group" href="#">
+<div class="w-[40px] h-[40px] bg-primary-container rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-inverse-on-surface">draw</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="font-mono text-[12px] font-semibold text-on-surface truncate group-hover:text-secondary">DWG-MECH-V-104</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant truncate">High Pressure Separator Vessel</div>
+</div>
+</a>
+<a class="flex items-center gap-md p-sm rounded-lg border border-outline-variant hover:border-secondary-container hover:shadow-[0_2px_8px_rgba(20,32,51,0.05)] transition-all group" href="#">
+<div class="w-[40px] h-[40px] bg-primary-container rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-inverse-on-surface">draw</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="font-mono text-[12px] font-semibold text-on-surface truncate group-hover:text-secondary">DWG-MECH-V-211</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant truncate">Flash Drum Internals</div>
+</div>
+</a>
+</div>
+</div>
+</div>
+<!-- Panel Footer Actions -->
+<div class="p-md border-t border-outline-variant bg-surface-container-lowest flex gap-sm shrink-0">
+<button class="flex-1 py-sm px-md border border-[#dde3ea] rounded-lg font-body-medium text-body-medium text-[#5c6f85] hover:bg-surface-container-low transition-colors text-center">Download PDF</button>
+<button class="flex-1 py-sm px-md bg-gradient-to-br from-[#d98c2b] to-[#b8721e] rounded-lg font-body-medium text-body-medium text-white hover:opacity-90 transition-opacity text-center shadow-sm">View Full Text</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

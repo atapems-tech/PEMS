@@ -1,0 +1,257 @@
+@using System.Globalization
+@using System.Security.Claims
+@using Microsoft.Extensions.Localization
+@using PEMS.Application.Interfaces
+@using PEMS.Web.Resources
+@using PEMS.Web.Security
+@inject IStringLocalizer<SharedResource> Localizer
+@inject INotificationService NotificationService
+@inject ICurrentUserService CurrentUser
+@{
+    var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
+    var currentTheme = Context.Request.Cookies[PEMS.Web.Controllers.ThemeController.CookieName] == "dark" ? "dark" : "light";
+    var currentUrl = Context.Request.PathBase + Context.Request.Path + Context.Request.QueryString;
+    var isAdminArea = string.Equals(ViewContext.RouteData.Values["area"]?.ToString(), "Admin", StringComparison.OrdinalIgnoreCase);
+
+    // طبق PEMS-UI-01 (UI01-007): بج اعلان قبلاً فقط با رویدادهای زنده‌ی SignalR افزایش می‌یافت،
+    // هرگز با تعداد واقعی خوانده‌نشده در بارگذاری اولیه‌ی صفحه مقداردهی نمی‌شد.
+    var unreadCount = CurrentUser.IsAuthenticated && CurrentUser.UserId.HasValue
+        ? await NotificationService.GetUnreadCountAsync(CurrentUser.UserId.Value)
+        : 0;
+}
+<!DOCTYPE html>
+<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" dir="@(isRtl ? "rtl" : "ltr")" data-theme="@currentTheme">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>@ViewData["Title"] - PEMS</title>
+    <link rel="manifest" href="~/manifest.json" />
+    <meta name="theme-color" content="#0d6efd" />
+    <script type="importmap"></script>
+
+    @if (isRtl)
+    {
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" />
+    }
+    else
+    {
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    }
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-global-search.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-data-grid.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+
+    @if (isRtl)
+    {
+        <link rel="stylesheet" href="~/css/admin.rtl.css" asp-append-version="true" />
+    }
+
+    @if (isAdminArea)
+    {
+        <link rel="stylesheet" href="~/css/admin-enterprise.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/administration-design-system.css" asp-append-version="true" />
+    }
+
+    <link rel="stylesheet" href="~/PEMS.Web.styles.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="@(isAdminArea ? "admin-area" : "")" data-user-id="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value">
+    <header class="pems-topbar">
+        <div class="d-flex align-items-center gap-2">
+            <button class="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" aria-label="Toggle menu">
+                <i class="bi bi-list"></i>
+            </button>
+            <a class="brand text-decoration-none" asp-controller="Home" asp-action="Index">
+                <span class="brand-icon"><i class="bi bi-diagram-3-fill"></i></span>
+                <span class="d-none d-sm-inline">PEMS</span>
+            </a>
+        </div>
+
+        <div class="pems-search d-none d-md-block">
+            <form class="d-flex" role="search" asp-controller="GlobalSearch" asp-action="Index" method="get">
+                <input type="search" name="q" class="form-control" placeholder="@Localizer["Search"]" />
+            </form>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <div class="dropdown">
+                <a href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="Change Theme">
+                    <i class="bi bi-palette-fill fs-5"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item theme-switch" href="#" data-theme="light"><i class="bi bi-sun me-2"></i> Light (Default)</a></li>
+                    <li><a class="dropdown-item theme-switch" href="#" data-theme="dark"><i class="bi bi-moon-stars me-2"></i> Dark</a></li>
+                    <li><a class="dropdown-item theme-switch" href="#" data-theme="ocean"><i class="bi bi-water me-2"></i> Ocean</a></li>
+                    <li><a class="dropdown-item theme-switch" href="#" data-theme="warm"><i class="bi bi-tree me-2"></i> Warm</a></li>
+                    <li><a class="dropdown-item theme-switch" href="#" data-theme="midnight"><i class="bi bi-moon me-2"></i> Midnight</a></li>
+                </ul>
+            </div>
+
+            <div class="dropdown">
+                <a href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="Language / زبان">
+                    <i class="bi bi-translate fs-5"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item @(!isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { culture = "en", returnUrl = currentUrl })">English</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item @(isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { culture = "fa", returnUrl = currentUrl })">فارسی</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="dropdown">
+                <a href="#" class="text-secondary position-relative dropdown-toggle" data-bs-toggle="dropdown" id="notifBell" title="@Localizer["Notifications"]" onclick="loadNotifDropdown()">
+                    <i class="bi bi-bell fs-5"></i>
+                    <span id="notifBadge" class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle @(unreadCount > 0 ? "" : "d-none")">@(unreadCount > 0 ? unreadCount.ToString() : "")</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end p-0" style="min-width:320px;max-height:400px;overflow-y:auto;" id="notifDropdownBody">
+                    <span class="dropdown-item small text-muted">@Localizer["Loading"]</span>
+                </div>
+            </div>
+
+            <div class="dropdown pems-user-menu">
+                <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="pems-user-avatar">@(string.IsNullOrEmpty(User.Identity?.Name) ? "?" : User.Identity!.Name!.Substring(0, 1).ToUpper())</span>
+                    <span class="d-none d-sm-flex flex-column text-start">
+                        <span class="fw-semibold">@(User.FindFirst("FullName")?.Value ?? User.Identity?.Name)</span>
+                        <span class="text-muted" style="font-size:11px;">@(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value)</span>
+                    </span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><h6 class="dropdown-header">@User.Identity?.Name</h6></li>
+                    <li><a class="dropdown-item" asp-controller="MyProfile" asp-action="Index"><i class="bi bi-person-badge"></i> پروفایل من</a></li>
+                    <li><a class="dropdown-item" asp-controller="Account" asp-action="ManagePasskeys"><i class="bi bi-key"></i> Manage Passkeys</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> @Localizer["Logout"]</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <div class="pems-shell">
+        <partial name="_SidebarMenu" />
+        <main class="pems-content">
+            @if (isAdminArea)
+            {
+                <div class="admin-ui-surface">
+                    <partial name="_Breadcrumb" />
+                    @if (ViewData["Title"] != null)
+                    {
+                        <h1 class="pems-page-title">@ViewData["Title"]</h1>
+                    }
+                    @RenderBody()
+                </div>
+            }
+            else
+            {
+                <partial name="_Breadcrumb" />
+                @if (ViewData["Title"] != null)
+                {
+                    <h1 class="pems-page-title">@ViewData["Title"]</h1>
+                }
+                @RenderBody()
+            }
+        </main>
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1080;">
+        @if (TempData["Message"] != null)
+        {
+            <div class="toast align-items-center text-bg-success border-0 show" role="alert" data-bs-delay="5000" data-bs-autohide="true">
+                <div class="d-flex">
+                    <div class="toast-body"><i class="bi bi-check-circle-fill me-1"></i> @TempData["Message"]</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="toast align-items-center text-bg-danger border-0 show" role="alert" data-bs-delay="7000" data-bs-autohide="true">
+                <div class="d-flex">
+                    <div class="toast-body"><i class="bi bi-exclamation-triangle-fill me-1"></i> @TempData["Error"]</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        }
+        <div id="liveToastArea"></div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/pems-global-search.js" asp-append-version="true"></script>
+    <script src="~/js/pems-data-grid.js" asp-append-version="true"></script>
+    <script src="~/js/admin.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+    <script src="~/js/notifications-hub.js" asp-append-version="true"></script>
+
+    <script>
+        async function loadNotifDropdown() {
+            const res = await fetch('/Notification/Dropdown', { cache: 'no-store' });
+            document.getElementById('notifDropdownBody').innerHTML = await res.text();
+        }
+
+        function showLiveToast(message, isError) {
+            const area = document.getElementById('liveToastArea');
+            const el = document.createElement('div');
+            el.className = 'toast align-items-center border-0 ' + (isError ? 'text-bg-danger' : 'text-bg-primary');
+            el.setAttribute('role', 'alert');
+            el.innerHTML = '<div class="d-flex"><div class="toast-body"><i class="bi bi-bell-fill me-1"></i> ' + message + '</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>';
+            area.appendChild(el);
+            new bootstrap.Toast(el, { delay: 6000 }).show();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.toast').forEach(function (el) {
+                new bootstrap.Toast(el).show();
+            });
+
+            const toggleBtn = document.getElementById('sidebarToggleBtn');
+            const sidebar = document.querySelector('.pems-sidebar');
+            if (toggleBtn && sidebar) {
+                toggleBtn.addEventListener('click', function () {
+                    if (window.innerWidth >= 992) {
+                        sidebar.classList.toggle('pems-collapsed');
+                    } else {
+                        sidebar.classList.toggle('pems-opened');
+                    }
+                });
+            }
+
+            window.addEventListener('pageshow', function (event) {
+                if (event.persisted) window.location.reload();
+            });
+
+            document.querySelectorAll('.culture-switch').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    document.documentElement.setAttribute('data-culture-switching', 'true');
+                    document.body.style.visibility = 'hidden';
+                });
+            });
+        });
+    </script>
+
+    <script>
+        // طبق سند PEMS-SEC-PERMIT-AUTH-001 بند ۱۴: پایه‌ی PWA برای دسترسی موبایل قابل‌نصب.
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/service-worker.js').catch(function () { /* غیرحیاتی */ });
+            });
+        }
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

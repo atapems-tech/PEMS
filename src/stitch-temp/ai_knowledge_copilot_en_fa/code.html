@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<html class="h-full antialiased dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Knowledge Copilot - PEMS Industrial Utility</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#f8f9ff",
+                      "on-surface": "#081d2f",
+                      "on-tertiary-container": "#498bcd",
+                      "on-error-container": "#93000a",
+                      "secondary": "#895200",
+                      "error": "#ba1a1a",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "tertiary-fixed": "#d1e4ff",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-high": "#daeaff",
+                      "on-secondary": "#ffffff",
+                      "on-primary-container": "#7c889f",
+                      "primary-fixed": "#d7e3fd",
+                      "on-secondary-container": "#6e4100",
+                      "secondary-container": "#fdaa47",
+                      "surface-variant": "#d0e4fe",
+                      "primary-container": "#142033",
+                      "tertiary": "#000815",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "error-container": "#ffdad6",
+                      "surface-container-highest": "#d0e4fe",
+                      "secondary-fixed": "#ffdcbc",
+                      "inverse-surface": "#1f3245",
+                      "on-primary": "#ffffff",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "surface-container": "#e4efff",
+                      "on-surface-variant": "#44474c",
+                      "on-background": "#081d2f",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "on-tertiary-fixed": "#001d36",
+                      "surface-dim": "#c8dcf5",
+                      "surface-tint": "#535f75",
+                      "outline-variant": "#c5c6cd",
+                      "inverse-on-surface": "#e9f1ff",
+                      "tertiary-container": "#00213d",
+                      "outline": "#75777d",
+                      "surface-container-lowest": "#ffffff",
+                      "primary": "#000819",
+                      "surface": "#f8f9ff",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-primary-fixed": "#101c2f",
+                      "inverse-primary": "#bbc7e0",
+                      "on-error": "#ffffff",
+                      "on-secondary-fixed": "#2c1700",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "surface-container-low": "#eef4ff",
+                      "surface-bright": "#f8f9ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "lg": "24px",
+                      "xl": "32px",
+                      "md": "16px",
+                      "sm": "8px",
+                      "xs": "4px",
+                      "topbar-height": "60px",
+                      "sidebar-width": "260px"
+              },
+              "fontFamily": {
+                      "kpi-stat": [
+                              "Inter"
+                      ],
+                      "badge-label": [
+                              "Inter"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "body-medium": [
+                              "Inter"
+                      ],
+                      "table-cell": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "kpi-stat": [
+                              "22px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "badge-label": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-base": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-header": [
+                              "11.5px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-medium": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "table-cell": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        /* Custom scrollbar for chat area */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .chat-gradient {
+            background: linear-gradient(135deg, rgba(20, 32, 51, 0.02) 0%, rgba(20, 32, 51, 0.05) 100%);
+        }
+        .amber-glow:focus-within {
+            box-shadow: 0 0 0 2px rgba(253, 170, 71, 0.3);
+            border-color: #fdaa47;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface h-full flex overflow-hidden">
+<!-- TopNavBar (Rendered for structural context, though technically side nav is the primary anchor here in the requested layout, blending them) -->
+<div class="fixed top-0 left-0 right-0 h-topbar-height bg-surface-container dark:bg-surface-container-high border-b border-outline-variant dark:border-outline z-50 flex justify-between items-center px-lg">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">PEMS Industrial Utility</span>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded font-badge-label text-badge-label uppercase ml-4">Knowledge Copilot</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex items-center bg-surface-variant rounded-full p-1 mr-4">
+<button class="px-3 py-1 rounded-full bg-white text-on-surface font-body-medium text-body-medium shadow-sm text-xs">EN</button>
+<button class="px-3 py-1 rounded-full text-on-surface-variant font-body-medium text-body-medium hover:text-on-surface transition-colors text-xs">FA</button>
+</div>
+<button class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/40 dark:hover:bg-primary-container/20 transition-colors p-2 rounded-full flex items-center justify-center active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-weight="regular">language</span>
+</button>
+<button class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/40 dark:hover:bg-primary-container/20 transition-colors p-2 rounded-full flex items-center justify-center active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-weight="regular">notifications</span>
+</button>
+<button class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/40 dark:hover:bg-primary-container/20 transition-colors p-2 rounded-full flex items-center justify-center active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-weight="regular">account_circle</span>
+</button>
+</div>
+</div>
+<!-- SideNavBar (Adapted for Chat History) -->
+<nav class="fixed left-0 top-topbar-height h-[calc(100vh-60px)] w-sidebar-width bg-primary dark:bg-primary-container border-r border-outline/20 flex flex-col py-md z-40">
+<div class="px-lg pb-md mb-md border-b border-outline/10">
+<button class="w-full bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white font-body-medium text-body-medium py-2 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity active:scale-95">
+<span class="material-symbols-outlined text-sm">add</span>
+                New Query Session
+            </button>
+</div>
+<div class="flex-1 overflow-y-auto px-sm">
+<h3 class="font-label-caps text-label-caps text-primary-fixed-dim uppercase tracking-wider mb-sm px-sm">Recent Queries</h3>
+<ul class="space-y-1">
+<!-- Active Item -->
+<li>
+<a class="flex items-center gap-3 bg-secondary-container text-on-secondary-container rounded-lg font-bold px-3 py-2 transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-sm">chat_bubble</span>
+<span class="font-body-medium text-body-medium truncate">Pump P-102 Cavitation</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-primary-fixed-dim hover:text-white hover:bg-white/10 dark:hover:bg-white/5 transition-all rounded-lg px-3 py-2" href="#">
+<span class="material-symbols-outlined text-sm">history</span>
+<span class="font-body-medium text-body-medium truncate">Heat Exchanger T-90 Cleaning</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-primary-fixed-dim hover:text-white hover:bg-white/10 dark:hover:bg-white/5 transition-all rounded-lg px-3 py-2" href="#">
+<span class="material-symbols-outlined text-sm">history</span>
+<span class="font-body-medium text-body-medium truncate">Valve V-404 Actuator Specs</span>
+</a>
+</li>
+</ul>
+<h3 class="font-label-caps text-label-caps text-primary-fixed-dim uppercase tracking-wider mt-lg mb-sm px-sm">Saved Documents</h3>
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 text-primary-fixed-dim hover:text-white hover:bg-white/10 dark:hover:bg-white/5 transition-all rounded-lg px-3 py-2" href="#">
+<span class="material-symbols-outlined text-sm">description</span>
+<span class="font-body-medium text-body-medium truncate">ISO-9001 Compliance Matrix</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-primary-fixed-dim hover:text-white hover:bg-white/10 dark:hover:bg-white/5 transition-all rounded-lg px-3 py-2" href="#">
+<span class="material-symbols-outlined text-sm">engineering</span>
+<span class="font-body-medium text-body-medium truncate">P&amp;ID Subsystem B</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="mt-auto px-sm pt-md border-t border-outline/10">
+<a class="flex items-center gap-3 text-primary-fixed-dim hover:text-white hover:bg-white/10 dark:hover:bg-white/5 transition-all rounded-lg px-3 py-2" href="#">
+<span class="material-symbols-outlined text-sm">settings</span>
+<span class="font-body-medium text-body-medium">Copilot Settings</span>
+</a>
+<a class="flex items-center gap-3 text-primary-fixed-dim hover:text-white hover:bg-white/10 dark:hover:bg-white/5 transition-all rounded-lg px-3 py-2" href="#">
+<span class="material-symbols-outlined text-sm">help</span>
+<span class="font-body-medium text-body-medium">Support</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width mt-topbar-height flex-1 h-[calc(100vh-60px)] flex flex-col bg-surface-lowest relative">
+<!-- Chat Canvas -->
+<div class="flex-1 overflow-y-auto p-lg chat-gradient flex flex-col gap-lg">
+<!-- System Greeting / Suggested Actions -->
+<div class="max-w-4xl mx-auto w-full mb-xl pt-lg">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 rounded-xl bg-primary-container flex items-center justify-center text-white shadow-md">
+<span class="material-symbols-outlined">smart_toy</span>
+</div>
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">PEMS Engineering Copilot</h1>
+<p class="font-body-base text-body-base text-on-surface-variant">Query historical maintenance records, engineering drawings, and technical specs.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- Suggested Action Card 1 -->
+<button class="bg-white border border-[#edf0f4] rounded-lg p-md text-left hover:border-secondary-container hover:bg-[#1f4e78]/5 transition-all group">
+<div class="flex items-center justify-between mb-sm text-secondary-container">
+<span class="material-symbols-outlined text-lg">troubleshoot</span>
+<span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+</div>
+<h4 class="font-body-medium text-body-medium text-on-surface mb-xs">Troubleshoot Cavitation</h4>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm">Find common resolutions for centrifugal pump cavitation.</p>
+</button>
+<!-- Suggested Action Card 2 -->
+<button class="bg-white border border-[#edf0f4] rounded-lg p-md text-left hover:border-secondary-container hover:bg-[#1f4e78]/5 transition-all group">
+<div class="flex items-center justify-between mb-sm text-tertiary-fixed-dim">
+<span class="material-symbols-outlined text-lg">plumbing</span>
+<span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+</div>
+<h4 class="font-body-medium text-body-medium text-on-surface mb-xs">Review P&amp;ID Changes</h4>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm">Show recent redlines for Cooling Water Subsystem.</p>
+</button>
+<!-- Suggested Action Card 3 -->
+<button class="bg-white border border-[#edf0f4] rounded-lg p-md text-left hover:border-secondary-container hover:bg-[#1f4e78]/5 transition-all group">
+<div class="flex items-center justify-between mb-sm text-primary-fixed-dim">
+<span class="material-symbols-outlined text-lg">assignment_turned_in</span>
+<span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+</div>
+<h4 class="font-body-medium text-body-medium text-on-surface mb-xs">Standard Operating Proc.</h4>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm">Retrieve SOP for emergency generator startup.</p>
+</button>
+</div>
+</div>
+<!-- Chat Message: User -->
+<div class="max-w-4xl mx-auto w-full flex gap-4 justify-end">
+<div class="bg-surface-variant text-on-surface px-lg py-md rounded-2xl rounded-tr-sm max-w-[80%] shadow-sm border border-outline-variant/30">
+<p class="font-body-base text-body-base">What are the historical resolutions for high vibration on Pump P-102 over the last 24 months? Please include references to any redlined drawings.</p>
+<div class="mt-2 text-xs text-on-surface-variant flex justify-end">
+<span>10:42 AM</span>
+</div>
+</div>
+</div>
+<!-- Chat Message: AI Copilot -->
+<div class="max-w-4xl mx-auto w-full flex gap-4">
+<div class="w-8 h-8 rounded-full bg-primary flex-shrink-0 flex items-center justify-center text-white mt-1 shadow-sm">
+<span class="material-symbols-outlined text-sm">smart_toy</span>
+</div>
+<div class="bg-white text-on-surface px-lg py-md rounded-2xl rounded-tl-sm max-w-[85%] shadow-sm border border-[#edf0f4]">
+<div class="prose prose-sm max-w-none font-body-base text-body-base text-on-surface">
+<p class="mb-4">Based on historical work order data and engineering logs, Pump P-102 has experienced <strong>3 incidents of high vibration</strong> exceeding 7.5 mm/s RMS in the last 24 months.</p>
+<h4 class="font-body-medium text-body-medium mb-2 border-b border-[#edf0f4] pb-1">Historical Resolutions:</h4>
+<ul class="list-disc pl-5 mb-4 space-y-2">
+<li><strong>WO-88234 (Oct 2022):</strong> Misalignment detected between motor and pump shaft. Laser alignment performed. Vibration reduced to 2.1 mm/s.</li>
+<li><strong>WO-91002 (Mar 2023):</strong> Bearing degradation on outboard side. Replaced SKF spherical roller bearings.</li>
+<li><strong>WO-95411 (Jan 2024):</strong> Baseplate anchor bolt loosened due to continuous operation. Re-torqued and grouted.</li>
+</ul>
+<div class="bg-surface p-sm rounded-md border border-outline-variant/50 flex items-start gap-3 mb-4">
+<span class="material-symbols-outlined text-secondary-container mt-0.5">info</span>
+<p class="text-sm"><em>Context Note:</em> Following the January 2024 incident, structural reinforcement was proposed in the latest structural redlines.</p>
+</div>
+<h4 class="font-body-medium text-body-medium mb-2 border-b border-[#edf0f4] pb-1">Referenced Documents:</h4>
+<div class="flex flex-wrap gap-2 mt-2">
+<button class="flex items-center gap-2 bg-background border border-[#dde3ea] px-3 py-1.5 rounded hover:border-secondary-container transition-colors">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">image</span>
+<span class="font-label-caps text-label-caps text-on-surface">DWG-STR-102-R1</span>
+</button>
+<button class="flex items-center gap-2 bg-background border border-[#dde3ea] px-3 py-1.5 rounded hover:border-secondary-container transition-colors">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">picture_as_pdf</span>
+<span class="font-label-caps text-label-caps text-on-surface">VIB-REPORT-24</span>
+</button>
+</div>
+</div>
+<!-- Action Bar for AI Message -->
+<div class="mt-4 pt-3 border-t border-[#edf0f4] flex items-center justify-between">
+<div class="flex gap-2">
+<button class="text-on-surface-variant hover:text-secondary-container transition-colors p-1" title="Helpful">
+<span class="material-symbols-outlined text-sm">thumb_up</span>
+</button>
+<button class="text-on-surface-variant hover:text-error transition-colors p-1" title="Not Helpful">
+<span class="material-symbols-outlined text-sm">thumb_down</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors p-1" title="Copy Text">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+<span class="text-xs text-on-surface-variant font-body-base">Generated in 1.2s • Enterprise AI v4</span>
+</div>
+</div>
+</div>
+<!-- Padding at bottom to ensure scrolling past input -->
+<div class="h-24 w-full"></div>
+</div>
+<!-- Input Area (Fixed at bottom of main content) -->
+<div class="absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-[#edf0f4] p-md z-10 shadow-[0_-4px_20px_rgba(20,32,51,0.04)]">
+<div class="max-w-4xl mx-auto w-full relative amber-glow rounded-lg bg-white border border-[#dde3ea] transition-all">
+<!-- Toolbar above input -->
+<div class="flex items-center gap-2 px-3 py-2 border-b border-[#edf0f4] bg-background/50 rounded-t-lg">
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-on-surface transition-colors px-2 py-1 rounded hover:bg-surface-variant/50 text-xs font-body-medium">
+<span class="material-symbols-outlined text-[16px]">attach_file</span>
+                        Attach Asset
+                    </button>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-on-surface transition-colors px-2 py-1 rounded hover:bg-surface-variant/50 text-xs font-body-medium">
+<span class="material-symbols-outlined text-[16px]">history_edu</span>
+                        Include Redlines
+                    </button>
+<div class="w-px h-4 bg-outline-variant/50 mx-1"></div>
+<!-- Farsi Keyboard Toggle visually implied -->
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-on-surface transition-colors px-2 py-1 rounded hover:bg-surface-variant/50 text-xs font-body-medium ml-auto">
+<span class="material-symbols-outlined text-[16px]">keyboard</span>
+                        FA Input
+                    </button>
+</div>
+<div class="flex items-end">
+<textarea class="w-full bg-transparent border-none focus:ring-0 resize-none font-body-base text-body-base p-3 min-h-[60px] max-h-[200px]" placeholder="Ask about equipment history, specs, or troubleshooting... (Type in EN or FA)" rows="2"></textarea>
+<div class="p-2 flex-shrink-0">
+<button class="w-10 h-10 rounded-lg bg-gradient-to-br from-[#d98c2b] to-[#b8721e] text-white flex items-center justify-center hover:shadow-md transition-all active:scale-95 disabled:opacity-50">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+<div class="text-center mt-2">
+<span class="text-[10px] text-on-surface-variant font-body-base">AI-generated information may be incomplete. Verify critical data against official PEMS registries.</span>
+</div>
+</div>
+</main>
+</body></html>

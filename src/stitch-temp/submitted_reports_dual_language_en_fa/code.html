@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Submitted Reports / گزارش‌های ارسال شده</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#d7e3fd",
+                      "surface-tint": "#535f75",
+                      "surface-variant": "#d0e4fe",
+                      "on-error": "#ffffff",
+                      "secondary": "#895200",
+                      "tertiary": "#000815",
+                      "on-primary": "#ffffff",
+                      "primary": "#000819",
+                      "on-surface": "#081d2f",
+                      "on-primary-container": "#7c889f",
+                      "tertiary-container": "#00213d",
+                      "surface-container-highest": "#d0e4fe",
+                      "surface-container-lowest": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "surface-container-high": "#daeaff",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "error": "#ba1a1a",
+                      "surface-container": "#e4efff",
+                      "outline-variant": "#c5c6cd",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "outline": "#75777d",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "on-secondary-fixed": "#2c1700",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "surface-container-low": "#eef4ff",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed": "#101c2f",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-container": "#6e4100",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "on-tertiary-container": "#498bcd",
+                      "inverse-primary": "#bbc7e0",
+                      "surface-bright": "#f8f9ff",
+                      "on-surface-variant": "#44474c",
+                      "primary-container": "#142033",
+                      "secondary-fixed": "#ffdcbc",
+                      "on-background": "#081d2f",
+                      "tertiary-fixed": "#d1e4ff",
+                      "secondary-container": "#fdaa47",
+                      "surface-dim": "#c8dcf5",
+                      "inverse-on-surface": "#e9f1ff",
+                      "background": "#f8f9ff",
+                      "surface": "#f8f9ff",
+                      "on-tertiary-fixed": "#001d36",
+                      "on-error-container": "#93000a",
+                      "inverse-surface": "#1f3245",
+                      "primary-fixed-dim": "#bbc7e0"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "md": "16px",
+                      "topbar-height": "60px",
+                      "gutter": "16px",
+                      "lg": "24px",
+                      "xs": "4px",
+                      "xl": "32px",
+                      "unit": "4px",
+                      "sidebar-width": "260px",
+                      "sm": "8px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "body-medium": ["Inter"],
+                      "badge-label": ["Inter"],
+                      "kpi-stat": ["Inter"],
+                      "table-header": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "table-cell": ["Inter"],
+                      "body-base": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                      "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                      "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                      "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}],
+                      "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                      "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .safe-pb { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 72px); }
+        .bidi-override { direction: ltr; unicode-bidi: bidi-override; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased flex flex-col h-screen overflow-hidden font-body-base">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline flex justify-between items-center px-md h-topbar-height transition-colors">
+<button class="text-on-surface dark:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors active:scale-95 duration-150 p-sm rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<div class="flex flex-col items-center justify-center flex-1 mx-sm truncate">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary dark:text-primary-fixed-dim truncate w-full text-center">Submitted Reports</h1>
+<span class="font-badge-label text-badge-label text-on-surface-variant truncate w-full text-center" dir="rtl">گزارش‌های ارسال شده</span>
+</div>
+<button class="text-on-surface dark:text-inverse-on-surface hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors active:scale-95 duration-150 rounded-full flex items-center justify-center overflow-hidden w-10 h-10 border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of an industrial engineer wearing a hardhat and safety glasses, well lit, neutral background, high resolution, corporate style, exuding confidence and competence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEjZ72tKTHHVhFYN0QDcns3x1kpn9gSCPiy4d0DCP0pGR5Jdo6pTn3EfYJHrl5P7t9SM3CRNX8bjmao4LJLwcGY1W5_7QZVK12kiuhRXSFJO5tepv1CKz-ew26HlUzqvFvc8aw0Wi6YYrDhrYHqZvpc0IdxQ6F6NCo9EPUgdgITyLFemqcUm74k2zTr264fpbRFdeVo8tseOKmTkOB1gR_ECnf9_G2QgmOGVZkKZJGPdplumOBn5TM"/>
+</button>
+</header>
+<!-- Main Content -->
+<main class="flex-1 mt-[60px] overflow-y-auto safe-pb bg-surface px-md py-lg">
+<!-- Search & Filter Area -->
+<div class="mb-lg sticky top-0 z-40 bg-surface py-sm shadow-[0_10px_10px_-10px_rgba(0,0,0,0.05)]">
+<div class="relative mb-md">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-sm pl-[40px] pr-sm focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-body-base text-body-base text-on-surface transition-colors" placeholder="Search reports / جستجوی گزارش‌ها..." type="text"/>
+</div>
+<div class="flex overflow-x-auto gap-sm pb-sm no-scrollbar hide-scroll" style="scrollbar-width: none; -ms-overflow-style: none;">
+<button class="shrink-0 bg-primary text-on-primary rounded-full px-md py-xs font-badge-label text-badge-label flex flex-col items-center">
+<span>All</span>
+<span class="text-[9px] opacity-80" dir="rtl">همه</span>
+</button>
+<button class="shrink-0 bg-surface-container border border-outline-variant text-on-surface-variant rounded-full px-md py-xs font-badge-label text-badge-label flex flex-col items-center hover:bg-surface-container-high transition-colors">
+<span>Pending</span>
+<span class="text-[9px] opacity-80" dir="rtl">در انتظار</span>
+</button>
+<button class="shrink-0 bg-surface-container border border-outline-variant text-on-surface-variant rounded-full px-md py-xs font-badge-label text-badge-label flex flex-col items-center hover:bg-surface-container-high transition-colors">
+<span>Approved</span>
+<span class="text-[9px] opacity-80" dir="rtl">تایید شده</span>
+</button>
+<button class="shrink-0 bg-surface-container border border-outline-variant text-on-surface-variant rounded-full px-md py-xs font-badge-label text-badge-label flex flex-col items-center hover:bg-surface-container-high transition-colors">
+<span>Rejected</span>
+<span class="text-[9px] opacity-80" dir="rtl">رد شده</span>
+</button>
+</div>
+</div>
+<!-- Report List -->
+<div class="flex flex-col gap-md">
+<!-- Card 1: Pending -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm hover:border-secondary transition-colors group relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary-container"></div>
+<div class="flex justify-between items-start mb-sm pl-xs">
+<div>
+<div class="font-table-header text-table-header text-on-surface-variant mb-xs">RPT-2023-8991</div>
+<div class="font-body-medium text-body-medium text-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-outline">build</span>
+                            Pump Failure / خرابی پمپ
+                        </div>
+</div>
+<div class="bg-secondary-container/20 text-on-secondary-container px-sm py-xs rounded-full font-badge-label text-badge-label flex items-center gap-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container animate-pulse"></span>
+                        Pending / در انتظار
+                    </div>
+</div>
+<div class="pl-xs font-table-cell text-table-cell text-on-surface-variant mb-md line-clamp-2">
+                    Main cooling pump bearing seal leaking. Requires immediate inspection to prevent complete failure. / نشتی آب‌بند یاتاقان پمپ خنک‌کننده اصلی. نیاز به بازرسی فوری...
+                </div>
+<div class="pl-xs flex justify-between items-center border-t border-outline-variant/30 pt-sm">
+<div class="font-badge-label text-badge-label text-outline flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                        24 Oct 2023, 14:30
+                    </div>
+<div class="font-badge-label text-badge-label text-outline flex items-center gap-xs bg-surface-container px-sm py-xs rounded">
+<span class="material-symbols-outlined text-[14px]">sell</span>
+                        TAG-PMP-102
+                    </div>
+</div>
+</div>
+<!-- Card 2: Approved -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm hover:border-[#1e6f43] transition-colors group relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-[#1e6f43]"></div>
+<div class="flex justify-between items-start mb-sm pl-xs">
+<div>
+<div class="font-table-header text-table-header text-on-surface-variant mb-xs">RPT-2023-8985</div>
+<div class="font-body-medium text-body-medium text-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-outline">electrical_services</span>
+                            Circuit Breaker Trip / قطعی مدار شکن
+                        </div>
+</div>
+<div class="bg-[#1e6f43]/10 text-[#1e6f43] px-sm py-xs rounded-full font-badge-label text-badge-label flex items-center gap-xs">
+<span class="material-symbols-outlined text-[12px]">check_circle</span>
+                        Approved / تایید شده
+                    </div>
+</div>
+<div class="pl-xs font-table-cell text-table-cell text-on-surface-variant mb-md line-clamp-2">
+                    Substation B breaker tripped during load transfer. Reset and tested successfully. / قطع کننده پست B در طول انتقال بار قطع شد. با موفقیت تنظیم مجدد و آزمایش شد.
+                </div>
+<div class="pl-xs flex justify-between items-center border-t border-outline-variant/30 pt-sm">
+<div class="font-badge-label text-badge-label text-outline flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                        22 Oct 2023, 09:15
+                    </div>
+<div class="font-badge-label text-badge-label text-outline flex items-center gap-xs bg-surface-container px-sm py-xs rounded">
+<span class="material-symbols-outlined text-[14px]">sell</span>
+                        TAG-SUB-B01
+                    </div>
+</div>
+</div>
+<!-- Card 3: Rejected -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm hover:border-error transition-colors group relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-error"></div>
+<div class="flex justify-between items-start mb-sm pl-xs">
+<div>
+<div class="font-table-header text-table-header text-on-surface-variant mb-xs">RPT-2023-8972</div>
+<div class="font-body-medium text-body-medium text-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-outline">water_drop</span>
+                            Valve Leak / نشتی شیرآلات
+                        </div>
+</div>
+<div class="bg-error-container text-on-error-container px-sm py-xs rounded-full font-badge-label text-badge-label flex items-center gap-xs">
+<span class="material-symbols-outlined text-[12px]">cancel</span>
+                        Rejected / رد شده
+                    </div>
+</div>
+<div class="pl-xs font-table-cell text-table-cell text-on-surface-variant mb-md line-clamp-2">
+                    Minor condensation on exterior casing incorrectly logged as active leak. Requires photographic evidence. / تراکم جزئی روی پوشش بیرونی به اشتباه به عنوان نشت فعال ثبت شده است. نیاز به شواهد عکاسی دارد.
+                </div>
+<div class="pl-xs flex justify-between items-center border-t border-outline-variant/30 pt-sm">
+<div class="font-badge-label text-badge-label text-outline flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                        20 Oct 2023, 16:45
+                    </div>
+<div class="font-badge-label text-badge-label text-outline flex items-center gap-xs bg-surface-container px-sm py-xs rounded">
+<span class="material-symbols-outlined text-[14px]">sell</span>
+                        TAG-VLV-442
+                    </div>
+</div>
+</div>
+<!-- Loading Skeleton -->
+<div class="flex justify-center py-md">
+<div class="w-8 h-8 border-2 border-outline-variant border-t-secondary rounded-full animate-spin"></div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-sm pb-safe h-[72px] bg-surface-container dark:bg-primary-container shadow-lg rounded-t-xl md:hidden">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant opacity-70 hover:bg-surface-container-highest dark:hover:bg-surface-variant active:scale-90 transition-transform duration-200 px-lg py-xs rounded-full w-20">
+<span class="material-symbols-outlined text-[24px] mb-1" style="font-variation-settings: 'FILL' 0;">assignment</span>
+<span class="font-badge-label text-badge-label font-label-caps text-label-caps uppercase tracking-widest truncate w-full text-center">Tasks</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant opacity-70 hover:bg-surface-container-highest dark:hover:bg-surface-variant active:scale-90 transition-transform duration-200 px-lg py-xs rounded-full w-20">
+<span class="material-symbols-outlined text-[24px] mb-1" style="font-variation-settings: 'FILL' 0;">qr_code_scanner</span>
+<span class="font-badge-label text-badge-label font-label-caps text-label-caps uppercase tracking-widest truncate w-full text-center">Scan</span>
+</button>
+<!-- ACTIVE TAB -->
+<button class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full px-lg py-xs hover:bg-surface-container-highest dark:hover:bg-surface-variant active:scale-90 transition-transform duration-200 w-20 relative -top-2 shadow-sm">
+<span class="material-symbols-outlined text-[24px] mb-1" style="font-variation-settings: 'FILL' 1;">report_problem</span>
+<span class="font-badge-label text-badge-label font-label-caps text-label-caps uppercase tracking-widest truncate w-full text-center">Incidents</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant opacity-70 hover:bg-surface-container-highest dark:hover:bg-surface-variant active:scale-90 transition-transform duration-200 px-lg py-xs rounded-full w-20">
+<span class="material-symbols-outlined text-[24px] mb-1" style="font-variation-settings: 'FILL' 0;">description</span>
+<span class="font-badge-label text-badge-label font-label-caps text-label-caps uppercase tracking-widest truncate w-full text-center">Documents</span>
+</button>
+</nav>
+<style>
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</body></html>

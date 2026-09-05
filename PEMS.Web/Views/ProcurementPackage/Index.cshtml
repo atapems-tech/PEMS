@@ -1,0 +1,86 @@
+﻿@model List<PEMS.Application.DTOs.ProcurementPackageDto>
+
+
+<div class="content-card">
+    <p class="text-muted">
+        MR، MRQ، Vendor Inquiry، Technical Clarification و تاریخچه‌ی تایید همه زیر یک Procurement
+        Package یکپارچه مدیریت می‌شوند - طبق جریان: MR &rarr; Vendor Inquiry &rarr; Technical
+        Clarification &rarr; MRQ &rarr; Response &rarr; Approval &rarr; Closeout.
+    </p>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex gap-2">
+            <a asp-controller="MaterialRequisition" asp-action="Index" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-cart-check"></i> All MRs <span class="text-muted small">(legacy view)</span>
+            </a>
+            <a asp-controller="MaterialRequisition" asp-action="Quotations" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-file-earmark-spreadsheet"></i> All MRQs <span class="text-muted small">(legacy view)</span>
+            </a>
+        </div>
+        <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createPackageModal">
+            <i class="bi bi-plus-lg"></i> New Package
+        </button>
+    </div>
+    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise">
+            <thead><tr><th>Package No</th><th>Title</th><th>Project</th><th>Discipline</th>
+                <th>Stage</th><th>Status</th><th>MRs</th><th>MRQs</th><th>Open Comms</th><th></th></tr></thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.PackageNumber</td>
+                        <td>@p.Title</td>
+                        <td>@p.ProjectName</td>
+                        <td>@p.DisciplineName</td>
+                        <td><span class="badge bg-info text-dark">@p.Stage</span></td>
+                        <td><span class="badge @(p.Status == "Closed" ? "bg-success" : p.Status == "Open" ? "bg-secondary" : "bg-warning text-dark")">@p.Status</span></td>
+                        <td><span class="badge bg-secondary">@p.MRCount</span></td>
+                        <td><span class="badge bg-secondary">@p.MRQCount</span></td>
+                        <td>
+                            @if (p.OpenCommunicationsCount > 0)
+                            { <span class="badge bg-danger">@p.OpenCommunicationsCount</span> }
+                            else
+                            { <span class="badge bg-success">0</span> }
+                        </td>
+                        <td><a asp-action="Details" asp-route-id="@p.ProcurementPackageId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (!Model.Any()) { <p class="text-muted text-center py-4">No procurement packages yet.</p> }
+    </div>
+</div>
+
+<div class="modal fade" id="createPackageModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-controller="ProcurementPackage" asp-action="Create" method="post">
+                <div class="modal-header"><h6 class="modal-title">New Procurement Package</h6></div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6"><label class="form-label">Package Number</label><input name="packageNumber" class="form-control" placeholder="e.g. PP-2026-001" required /></div>
+                        <div class="col-md-6">
+                            <label class="form-label">Project</label>
+                            <select name="projectId" class="form-select" required>
+                                @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Discipline</label>
+                            <select name="disciplineId" class="form-select">
+                                <option value="">-- none --</option>
+                                @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
+                            </select>
+                        </div>
+                        <div class="col-md-6"><label class="form-label">Title</label><input name="title" class="form-control" required /></div>
+                        <div class="col-12"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-pems-solid">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,90 @@
+﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MaintenancePlanListDto>
+
+<div class="content-card">
+    <div class="d-flex justify-content-between mb-3">
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('MaintenancePlan')">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+        </button>
+        <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> New Plan</a>
+    </div>
+    <div class="table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise pems-grid-table" data-grid-key="MaintenancePlan">
+            <thead>
+                <tr>
+                    <th data-col-key="planNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Plan No</th>
+                    <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Equipment</th>
+                    <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">Title</th>
+                    <th data-col-key="strategy" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">Strategy</th>
+                    <th data-col-key="trigger" data-resizable="true" data-min-width="140" data-max-width="320" style="width:220px">Trigger</th>
+                    <th data-col-key="lastDone" data-resizable="true" data-min-width="100" data-max-width="180" style="width:120px">Last Done</th>
+                    <th data-col-key="nextDue" data-resizable="true" data-min-width="100" data-max-width="200" style="width:150px">Next Due</th>
+                    <th data-col-key="actions" data-resizable="false" style="width:170px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model.Items)
+                {
+                    <tr class="@(p.IsOverdue ? "table-danger" : "")">
+                        <td>@p.PlanNumber</td>
+                        <td><a asp-controller="Equipment" asp-action="Details" asp-route-id="@p.EquipmentId">@p.EquipmentTagNumber</a></td>
+                        <td>@p.Title</td>
+                        <td><span class="badge bg-secondary">@p.StrategyType</span></td>
+                        <td class="small">
+                            @if (p.TriggerType is "Calendar" or "Both")
+                            {
+                                <div>@(p.IntervalDays.HasValue ? p.IntervalDays + " روز" : "-")</div>
+                            }
+                            @if (p.TriggerType is "Meter" or "Both")
+                            {
+                                <div>
+                                    <span class="badge bg-info text-dark">@p.MeterType: هر @p.MeterInterval</span>
+                                    @if (p.NextDueMeterReading.HasValue) { <span class="text-muted">(سررسید در @p.NextDueMeterReading)</span> }
+                                </div>
+                                <form asp-action="RecordMeterReading" method="post" class="d-flex gap-1 mt-1">
+                                    <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
+                                    <input type="number" step="0.01" name="currentReading" class="form-control form-control-sm" style="width:90px;" placeholder="قرائت فعلی" required />
+                                    <button type="submit" class="btn btn-sm btn-outline-info">ثبت</button>
+                                </form>
+                            }
+                        </td>
+                        <td class="small">@(p.LastExecutionDate?.ToString("yyyy-MM-dd"))</td>
+                        <td class="small">
+                            @(p.NextDueDate?.ToString("yyyy-MM-dd"))
+                            @if (p.IsOverdue) { <span class="badge bg-danger ms-1">Overdue</span> }
+                        </td>
+                        <td class="text-end">
+                            <form asp-action="GenerateWorkOrder" method="post" class="d-inline">
+                                <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
+                                <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-clipboard-plus"></i> Generate WO</button>
+                            </form>
+                            <form asp-action="Deactivate" method="post" class="d-inline">
+                                <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-slash-circle"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No maintenance plans yet.</p> }
+
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "MaintenancePlan",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = ""
+    })
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('MaintenancePlan');
+        });
+    </script>
+}

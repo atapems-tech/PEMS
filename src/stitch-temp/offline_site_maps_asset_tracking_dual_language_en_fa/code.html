@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Offline Site Map - PEMS Field App</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary": "#895200",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed": "#2c1700",
+                      "inverse-primary": "#bbc7e0",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "surface-dim": "#c8dcf5",
+                      "secondary-fixed": "#ffdcbc",
+                      "on-surface-variant": "#44474c",
+                      "tertiary": "#000815",
+                      "on-tertiary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-background": "#081d2f",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "surface-container-highest": "#d0e4fe",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "outline-variant": "#c5c6cd",
+                      "primary-fixed": "#d7e3fd",
+                      "surface-container": "#e4efff",
+                      "tertiary-container": "#00213d",
+                      "surface-bright": "#f8f9ff",
+                      "surface-tint": "#535f75",
+                      "on-tertiary-fixed": "#001d36",
+                      "error-container": "#ffdad6",
+                      "on-primary-container": "#7c889f",
+                      "secondary-container": "#fdaa47",
+                      "primary-container": "#142033",
+                      "on-surface": "#081d2f",
+                      "surface-variant": "#d0e4fe",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "surface-container-low": "#eef4ff",
+                      "error": "#ba1a1a",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "outline": "#75777d",
+                      "on-primary": "#ffffff",
+                      "background": "#f8f9ff",
+                      "on-primary-fixed": "#101c2f",
+                      "surface-container-high": "#daeaff",
+                      "primary": "#000819",
+                      "inverse-on-surface": "#e9f1ff",
+                      "tertiary-fixed": "#d1e4ff",
+                      "on-secondary-container": "#6e4100",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-container": "#498bcd",
+                      "on-error-container": "#93000a",
+                      "surface": "#f8f9ff",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "inverse-surface": "#1f3245"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "sidebar-width": "260px",
+                      "lg": "24px",
+                      "unit": "4px",
+                      "xl": "32px",
+                      "topbar-height": "60px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "xs": "4px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "body-medium": [
+                              "Inter"
+                      ],
+                      "kpi-stat": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "table-cell": [
+                              "Inter"
+                      ],
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "badge-label": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "body-medium": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "kpi-stat": [
+                              "22px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-base": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-cell": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "table-header": [
+                              "11.5px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "badge-label": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .map-container {
+            background-image: linear-gradient(#e4efff 1px, transparent 1px),
+            linear-gradient(90deg, #e4efff 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-color: #f8f9ff;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased h-screen w-full flex flex-col overflow-hidden">
+<!-- Top App Bar -->
+<header class="bg-surface dark:bg-primary-container text-primary dark:text-primary-fixed w-full top-0 sticky border-b border-outline-variant dark:border-primary z-50">
+<div class="flex items-center justify-between px-md h-topbar-height w-full">
+<div class="flex items-center gap-sm">
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors active:opacity-80">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">person</span>
+</button>
+<div class="flex flex-col">
+<h1 class="font-headline-md text-headline-md text-primary dark:text-secondary-fixed">FieldOps Utility</h1>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold">Offline Map / نقشه آفلاین</span>
+</div>
+</div>
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors rounded-full active:opacity-80">
+<span class="material-symbols-outlined text-[24px]">wifi</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 relative overflow-hidden flex flex-col">
+<!-- Offline Status Banner -->
+<div class="bg-surface-dim text-on-background px-md py-sm flex items-center justify-between z-10 shadow-sm border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">cloud_done</span>
+<div class="flex flex-col">
+<span class="font-body-medium text-body-medium">Plant Site Alpha - Floor 2</span>
+<span class="text-[11px] text-on-surface-variant">Available Offline / در دسترس آفلاین</span>
+</div>
+</div>
+<span class="text-[10px] font-bold bg-surface-container-highest px-2 py-1 rounded text-on-primary-fixed-variant">142 MB</span>
+</div>
+<!-- Map Area -->
+<div class="flex-1 relative map-container touch-pan-x touch-pan-y" id="map-area">
+<!-- Asset Markers (Simulated) -->
+<div class="absolute top-1/4 left-1/3 flex flex-col items-center group cursor-pointer">
+<div class="w-8 h-8 rounded-full bg-[#142033] border-2 border-surface-container-lowest flex items-center justify-center shadow-md z-10 relative">
+<span class="material-symbols-outlined text-[16px] text-surface-container-lowest" style="font-variation-settings: 'FILL' 1;">electrical_services</span>
+</div>
+<div class="bg-surface-container-lowest px-2 py-1 rounded shadow-sm border border-outline-variant mt-1 text-center hidden group-hover:block absolute top-full">
+<span class="font-badge-label text-badge-label text-on-background whitespace-nowrap block">Panel P-402</span>
+<span class="text-[9px] text-on-surface-variant block">Electrical / برق</span>
+</div>
+</div>
+<div class="absolute top-1/2 left-2/3 flex flex-col items-center group cursor-pointer">
+<div class="w-8 h-8 rounded-full bg-[#ba1a1a] border-2 border-surface-container-lowest flex items-center justify-center shadow-md z-10 relative">
+<span class="material-symbols-outlined text-[16px] text-surface-container-lowest" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<div class="bg-surface-container-lowest px-2 py-1 rounded shadow-sm border border-outline-variant mt-1 text-center hidden group-hover:block absolute top-full">
+<span class="font-badge-label text-badge-label text-on-background whitespace-nowrap block">Valve V-19</span>
+<span class="text-[9px] text-error block">Critical / بحرانی</span>
+</div>
+</div>
+<!-- User Location Marker -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center z-20">
+<div class="w-12 h-12 rounded-full bg-secondary-container/30 animate-pulse absolute"></div>
+<div class="w-4 h-4 rounded-full bg-secondary border-2 border-surface-container-lowest shadow-sm z-10 relative"></div>
+</div>
+<!-- Overlay Controls (Floating) -->
+<div class="absolute right-md top-md flex flex-col gap-sm z-30">
+<button class="w-10 h-10 rounded-lg bg-surface-container-lowest border border-outline-variant shadow-md flex items-center justify-center text-on-background active:bg-surface-container-high">
+<span class="material-symbols-outlined text-[20px]">my_location</span>
+</button>
+<button class="w-10 h-10 rounded-lg bg-surface-container-lowest border border-outline-variant shadow-md flex items-center justify-center text-on-background active:bg-surface-container-high">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+</button>
+<div class="w-10 h-[1px] bg-outline-variant my-1"></div>
+<button class="w-10 h-10 rounded-t-lg bg-surface-container-lowest border border-outline-variant border-b-0 shadow-md flex items-center justify-center text-on-background active:bg-surface-container-high">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+<button class="w-10 h-10 rounded-b-lg bg-surface-container-lowest border border-outline-variant shadow-md flex items-center justify-center text-on-background active:bg-surface-container-high">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+</div>
+<!-- Layer Switcher Panel (Mockup - normally hidden, shown for UI demonstration) -->
+<div class="absolute bottom-md left-md right-md bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-md z-30">
+<div class="flex justify-between items-center mb-sm">
+<span class="font-body-medium text-body-medium text-on-background">Map Layers / لایه‌های نقشه</span>
+<button class="text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">close</span></button>
+</div>
+<div class="flex gap-sm overflow-x-auto pb-1 hide-scrollbar">
+<button class="px-sm py-xs rounded-full border border-secondary text-secondary bg-secondary/10 font-badge-label text-badge-label whitespace-nowrap flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">done</span> Electrical
+                    </button>
+<button class="px-sm py-xs rounded-full border border-outline-variant text-on-surface-variant bg-surface-container-lowest font-badge-label text-badge-label whitespace-nowrap">
+                        Mechanical
+                    </button>
+<button class="px-sm py-xs rounded-full border border-outline-variant text-on-surface-variant bg-surface-container-lowest font-badge-label text-badge-label whitespace-nowrap">
+                        Safety
+                    </button>
+<button class="px-sm py-xs rounded-full border border-outline-variant text-on-surface-variant bg-surface-container-lowest font-badge-label text-badge-label whitespace-nowrap">
+                        HVAC
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container-high dark:bg-primary-container border-t border-outline-variant shadow-lg hidden md:hidden flex justify-around items-center py-sm" style="display: flex;">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-primary-fixed-dim px-4 py-1 hover:bg-surface-container-highest active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-caps text-label-caps mt-1">Tasks</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-primary-fixed-dim px-4 py-1 hover:bg-surface-container-highest active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+<span class="font-label-caps text-label-caps mt-1">Scan</span>
+</button>
+<!-- 'Explore'/'Map' semantic intent mapped to Incidents visually for this specific JSON constraint, but usually we'd want an Explore icon. Using closest JSON label logic: user is 'browsing' site, but requirement strictly forbids altering labels. The prompt implies 'Offline Site Map'. None of the labels map perfectly. I will use 'Docs' as it is a blueprint/document. -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-primary-fixed-dim px-4 py-1 hover:bg-surface-container-highest active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined">report_problem</span>
+<span class="font-label-caps text-label-caps mt-1">Incidents</span>
+</button>
+<!-- Making Docs active as Blueprints fall under documentation in CMMS context -->
+<button class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full px-4 py-1 hover:bg-surface-container-highest active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">description</span>
+<span class="font-label-caps text-label-caps mt-1">Docs</span>
+</button>
+</nav>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

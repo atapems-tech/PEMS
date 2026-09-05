@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html class="light" dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Edit Employee Modal Overlay - PEMS Enterprise</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        html[lang="en"] [lang="fa"] { display: none; }
+        html[lang="fa"] [lang="en"] { display: none; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-dim": "#c8dcf5",
+                      "on-secondary-fixed": "#2c1700",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "on-primary-fixed": "#101c2f",
+                      "on-tertiary-container": "#498bcd",
+                      "surface-container": "#e4efff",
+                      "surface-tint": "#535f75",
+                      "inverse-on-surface": "#e9f1ff",
+                      "on-tertiary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "secondary-container": "#fdaa47",
+                      "tertiary": "#000815",
+                      "tertiary-container": "#00213d",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "inverse-surface": "#1f3245",
+                      "surface-container-high": "#daeaff",
+                      "surface-variant": "#d0e4fe",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "surface-container-low": "#eef4ff",
+                      "error": "#ba1a1a",
+                      "on-secondary": "#ffffff",
+                      "on-background": "#081d2f",
+                      "on-secondary-container": "#6e4100",
+                      "outline-variant": "#c5c6cd",
+                      "on-surface": "#081d2f",
+                      "on-primary": "#ffffff",
+                      "primary-container": "#142033",
+                      "tertiary-fixed": "#d1e4ff",
+                      "surface-bright": "#f8f9ff",
+                      "secondary": "#895200",
+                      "outline": "#75777d",
+                      "on-tertiary-fixed": "#001d36",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-highest": "#d0e4fe",
+                      "on-error": "#ffffff",
+                      "background": "#f8f9ff",
+                      "primary-fixed": "#d7e3fd",
+                      "on-error-container": "#93000a",
+                      "surface": "#f8f9ff",
+                      "secondary-fixed": "#ffdcbc",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "primary": "#000819",
+                      "on-surface-variant": "#44474c",
+                      "inverse-primary": "#bbc7e0",
+                      "on-primary-container": "#7c889f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "topbar-height": "60px",
+                      "lg": "24px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "xs": "4px",
+                      "sidebar-width": "260px",
+                      "xl": "32px",
+                      "gutter": "16px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "body-medium": [
+                              "Inter"
+                      ],
+                      "table-cell": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "badge-label": [
+                              "Inter"
+                      ],
+                      "kpi-stat": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-medium": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "table-cell": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-header": [
+                              "11.5px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-base": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "badge-label": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "kpi-stat": [
+                              "22px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+            },
+          }
+        }
+    </script>
+<script>
+        function toggleLang() {
+            const html = document.documentElement;
+            if (html.lang === 'en') {
+                html.lang = 'fa';
+                html.dir = 'rtl';
+            } else {
+                html.lang = 'en';
+                html.dir = 'ltr';
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex items-center justify-center font-body-base">
+<!-- Blurred Background Backdrop -->
+<div class="fixed inset-0 bg-primary/20 backdrop-blur-md z-40"></div>
+<!-- Modal Container -->
+<div class="relative z-50 w-full max-w-3xl bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(20,32,51,0.08)] flex flex-col max-h-[921px] mx-4 border border-outline-variant/30">
+<!-- Modal Header -->
+<div class="flex items-start justify-between px-lg py-md border-b border-outline-variant/30 bg-surface-bright rounded-t-xl">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">
+<span lang="en">Edit Employee</span>
+<span lang="fa">ویرایش کارمند</span>
+</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-xs">
+<span lang="en">Marcus Thorne • Senior Plant Engineer</span>
+<span lang="fa">مارکوس تورن • مهندس ارشد کارخانه</span>
+</p>
+</div>
+<div class="flex items-center space-x-2 rtl:space-x-reverse">
+<button class="px-sm py-xs rounded-md border border-outline-variant text-on-surface-variant font-body-medium text-badge-label hover:bg-surface-variant/20 transition-colors" onclick="toggleLang()">
+<span lang="en">FA</span>
+<span lang="fa">EN</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors p-sm rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- Modal Body (Scrollable) -->
+<div class="flex-1 overflow-y-auto p-lg space-y-lg">
+<!-- Core Info Section -->
+<section>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-md border-b border-outline-variant/30 pb-xs">
+<span lang="en">Core Information</span>
+<span lang="fa">اطلاعات پایه</span>
+</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div>
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs">
+<span lang="en">Full Name</span>
+<span lang="fa">نام کامل</span>
+</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm font-body-base text-body-base focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all rtl:text-right" type="text" value="Marcus Thorne"/>
+</div>
+<div>
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs">
+<span lang="en">Employee ID</span>
+<span lang="fa">شناسه کارمند</span>
+</label>
+<input class="w-full bg-surface-container-low border border-outline-variant/50 text-on-surface-variant rounded-lg px-md py-sm font-table-cell text-table-cell outline-none cursor-not-allowed rtl:text-right dir-ltr" disabled="" type="text" value="EMP-8492"/>
+</div>
+<div>
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs">
+<span lang="en">Email Address</span>
+<span lang="fa">آدرس ایمیل</span>
+</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm font-body-base text-body-base focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all rtl:text-right dir-ltr" type="email" value="m.thorne@pems.enterprises"/>
+</div>
+<div>
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs">
+<span lang="en">Hire Date</span>
+<span lang="fa">تاریخ استخدام</span>
+</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm font-body-base text-body-base focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all rtl:text-right dir-ltr" type="date" value="2018-04-12"/>
+</div>
+<div>
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs">
+<span lang="en">Department</span>
+<span lang="fa">بخش</span>
+</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm font-body-base text-body-base focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all appearance-none rtl:bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] rtl:bg-[position:left_0.5rem_center] rtl:bg-[length:1.2em_1.2em] rtl:bg-no-repeat rtl:pl-10 rtl:pr-4">
+<option lang="en">Engineering</option><option lang="fa">مهندسی</option>
+<option lang="en">Operations</option><option lang="fa">عملیات</option>
+<option lang="en">Maintenance</option><option lang="fa">نگهداری</option>
+<option lang="en">Safety</option><option lang="fa">ایمنی</option>
+</select>
+</div>
+<div>
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs">
+<span lang="en">Status</span>
+<span lang="fa">وضعیت</span>
+</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm font-body-base text-body-base focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all appearance-none rtl:bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] rtl:bg-[position:left_0.5rem_center] rtl:bg-[length:1.2em_1.2em] rtl:bg-no-repeat rtl:pl-10 rtl:pr-4">
+<option lang="en" selected="">Active</option><option lang="fa" selected="">فعال</option>
+<option lang="en">On Leave</option><option lang="fa">در مرخصی</option>
+<option lang="en">Suspended</option><option lang="fa">معلق</option>
+<option lang="en">Terminated</option><option lang="fa">اخراج شده</option>
+</select>
+</div>
+<div class="md:col-span-2">
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs">
+<span lang="en">Role</span>
+<span lang="fa">نقش</span>
+</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm font-body-base text-body-base focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all rtl:text-right" type="text" value="Senior Plant Engineer"/>
+</div>
+<div class="md:col-span-2">
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs">
+<span lang="en">Home Address</span>
+<span lang="fa">آدرس منزل</span>
+</label>
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm font-body-base text-body-base focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all rtl:text-right" rows="2">442 Industrial Parkway, Suite 100, Sector 4</textarea>
+</div>
+</div>
+</section>
+<!-- Contact Section -->
+<section>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-md border-b border-outline-variant/30 pb-xs">
+<span lang="en">Contact Details</span>
+<span lang="fa">اطلاعات تماس</span>
+</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div>
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs">
+<span lang="en">Phone Number</span>
+<span lang="fa">شماره تماس</span>
+</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm font-body-base text-body-base focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all rtl:text-right dir-ltr" type="tel" value="+1 (555) 019-8234"/>
+</div>
+<div>
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs">
+<span lang="en">Emergency Contact</span>
+<span lang="fa">تماس اضطراری</span>
+</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm font-body-base text-body-base focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all rtl:text-right" type="text" value="Sarah Thorne - +1 (555) 019-8235"/>
+</div>
+</div>
+</section>
+<!-- Health & Safety Section -->
+<section>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-md border-b border-outline-variant/30 pb-xs">
+<span lang="en">Health &amp; Safety</span>
+<span lang="fa">سلامت و ایمنی</span>
+</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div>
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs">
+<span lang="en">Blood Type</span>
+<span lang="fa">گروه خونی</span>
+</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm font-body-base text-body-base focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all appearance-none rtl:bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22currentColor%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] rtl:bg-[position:left_0.5rem_center] rtl:bg-[length:1.2em_1.2em] rtl:bg-no-repeat rtl:pl-10 rtl:pr-4">
+<option>O+</option>
+<option>O-</option>
+<option>A+</option>
+<option>A-</option>
+<option>B+</option>
+<option>B-</option>
+<option>AB+</option>
+<option>AB-</option>
+</select>
+</div>
+<div>
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs">
+<span lang="en">Allergies</span>
+<span lang="fa">آلرژی‌ها</span>
+</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm font-body-base text-body-base focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all rtl:text-right" type="text" value="Penicillin, Latex"/>
+</div>
+<div class="md:col-span-2">
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs">
+<span lang="en">Medical Conditions</span>
+<span lang="fa">شرایط پزشکی</span>
+</label>
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm font-body-base text-body-base focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all rtl:text-right" rows="2">Mild Asthma (Inhaler kept on person)</textarea>
+</div>
+</div>
+</section>
+</div>
+<!-- Modal Footer Actions -->
+<div class="flex items-center justify-end px-lg py-md border-t border-outline-variant/30 bg-surface-bright rounded-b-xl space-x-md rtl:space-x-reverse">
+<button class="px-lg py-sm rounded-lg border border-outline-variant text-on-surface-variant font-body-medium text-body-medium hover:bg-surface-variant/20 transition-colors">
+<span lang="en">Cancel</span>
+<span lang="fa">لغو</span>
+</button>
+<button class="px-lg py-sm rounded-lg bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-on-primary font-body-medium text-body-medium shadow-sm hover:opacity-90 transition-opacity">
+<span lang="en">Save Changes</span>
+<span lang="fa">ذخیره تغییرات</span>
+</button>
+</div>
+</div>
+</body></html>

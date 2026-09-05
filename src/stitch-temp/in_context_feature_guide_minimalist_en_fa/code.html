@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS - In-Context Documentation</title>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#001d36",
+                    "on-primary-container": "#7c889f",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#ffb86a",
+                    "tertiary": "#000815",
+                    "secondary": "#895200",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed": "#d7e3fd",
+                    "on-secondary-fixed": "#2c1700",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#bbc7e0",
+                    "primary": "#000819",
+                    "surface-container-highest": "#d0e4fe",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#c8dcf5",
+                    "secondary-container": "#fdaa47",
+                    "secondary-fixed": "#ffdcbc",
+                    "background": "#f8f9ff",
+                    "tertiary-fixed": "#d1e4ff",
+                    "on-primary-fixed": "#101c2f",
+                    "on-tertiary-container": "#498bcd",
+                    "surface-container": "#e4efff",
+                    "surface-container-high": "#daeaff",
+                    "on-tertiary-fixed-variant": "#00497c",
+                    "outline": "#75777d",
+                    "on-surface-variant": "#44474c",
+                    "on-secondary-container": "#6e4100",
+                    "error-container": "#ffdad6",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#00213d",
+                    "primary-container": "#142033",
+                    "surface-tint": "#535f75",
+                    "surface": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-on-surface": "#e9f1ff",
+                    "surface-container-low": "#eef4ff",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#3b475c",
+                    "on-background": "#081d2f",
+                    "primary-fixed-dim": "#bbc7e0",
+                    "tertiary-fixed-dim": "#9ecaff",
+                    "on-secondary-fixed-variant": "#683d00",
+                    "outline-variant": "#c5c6cd",
+                    "on-surface": "#081d2f",
+                    "inverse-surface": "#1f3245",
+                    "surface-variant": "#d0e4fe"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "lg": "24px",
+                    "unit": "4px",
+                    "md": "16px",
+                    "topbar-height": "60px",
+                    "sidebar-width": "260px",
+                    "xs": "4px",
+                    "sm": "8px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "table-header": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "table-cell": ["Inter"],
+                    "body-base": ["Inter"],
+                    "badge-label": ["Inter"],
+                    "kpi-stat": ["Inter"],
+                    "body-medium": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}],
+                    "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                    "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            80%, 100% { transform: scale(2); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-base h-screen overflow-hidden flex flex-col lg:flex-row antialiased selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Mobile TopAppBar -->
+<header class="fixed top-0 w-full z-50 h-[topbar-height] flex items-center justify-between px-md lg:hidden bg-surface border-b border-outline-variant shadow-sm lg:shadow-none">
+<div class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+            PEMS Training
+        </div>
+<div class="flex items-center gap-sm">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full"><span class="material-symbols-outlined">help_outline</span></button>
+<img alt="User profile" class="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A small, professional headshot of an industrial engineer in a bright, modern control room setting. Lighting is crisp white with subtle blue tones. High quality corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDw4pTveEbyJ1qsM7NJyl82v7uHiMLyleLnqCjhr4_PKPh5U5LchKiPTsdb5cLrT3sKjdun4IxKO_vv-fjrnoHGRHU257yWC1IZWrF6Tu-0PePBI0Y1f7qOLHOIn1bmWy-2Mml9gCrN-UTgFrCJ43wxR1TOW5eztxN5423CeyB6PB6ImOXHHuzC8IBwC-MGMLPj2fVwZfGpG-KEGqiAorY6OPPWZWqP8QRXlS5IY-2oCX11Ob936rkh"/>
+</div>
+</header>
+<!-- Desktop SideNavBar -->
+<nav class="hidden lg:flex flex-col py-lg z-40 fixed left-0 top-0 h-full w-[sidebar-width] bg-primary shadow-sm justify-between">
+<div>
+<div class="px-lg mb-xl flex items-center gap-3">
+<div class="w-10 h-10 bg-secondary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-primary">Industrial Academy</h1>
+<p class="font-label-caps text-label-caps text-on-primary/70 uppercase">Enterprise Training</p>
+</div>
+</div>
+<ul class="flex flex-col gap-1 px-sm">
+<li><a class="flex items-center gap-3 px-3 py-2 text-on-primary/70 mx-2 hover:bg-primary-fixed-dim/10 transition-all rounded-lg font-body-medium text-body-medium" href="#"><span class="material-symbols-outlined">dashboard</span> Dashboard</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 text-on-primary/70 mx-2 hover:bg-primary-fixed-dim/10 transition-all rounded-lg font-body-medium text-body-medium" href="#"><span class="material-symbols-outlined">precision_manufacturing</span> Guided Tours</a></li>
+<!-- Active State: Knowledge Base -->
+<li><a class="flex items-center gap-3 px-3 py-2 bg-secondary-container text-on-secondary-container rounded-lg mx-2 font-body-medium text-body-medium font-bold" href="#"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span> Knowledge Base</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 text-on-primary/70 mx-2 hover:bg-primary-fixed-dim/10 transition-all rounded-lg font-body-medium text-body-medium" href="#"><span class="material-symbols-outlined">verified</span> Certifications</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 text-on-primary/70 mx-2 hover:bg-primary-fixed-dim/10 transition-all rounded-lg font-body-medium text-body-medium" href="#"><span class="material-symbols-outlined">support_agent</span> Help Center</a></li>
+</ul>
+</div>
+<ul class="flex flex-col gap-1 px-sm border-t border-on-primary/10 pt-4">
+<li><a class="flex items-center gap-3 px-3 py-2 text-on-primary/70 mx-2 hover:bg-primary-fixed-dim/10 transition-all rounded-lg font-body-medium text-body-medium" href="#"><span class="material-symbols-outlined">settings</span> Settings</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 text-on-primary/70 mx-2 hover:bg-primary-fixed-dim/10 transition-all rounded-lg font-body-medium text-body-medium" href="#"><span class="material-symbols-outlined">logout</span> Logout</a></li>
+</ul>
+</nav>
+<!-- Main Workspace -->
+<main class="flex-1 lg:ml-[sidebar-width] h-full flex flex-col relative bg-background">
+<!-- Desktop TopAppBar -->
+<header class="hidden lg:flex fixed top-0 w-[calc(100%-260px)] z-30 h-[topbar-height] items-center justify-between px-lg bg-surface border-b border-outline-variant">
+<div class="font-headline-md text-headline-md font-bold text-primary">
+                In-Context Learning
+            </div>
+<div class="flex items-center gap-md">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full"><span class="material-symbols-outlined">language</span></button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full"><span class="material-symbols-outlined">notifications</span></button>
+<button class="p-2 text-secondary font-bold border-b-2 border-secondary transition-colors"><span class="material-symbols-outlined">help_outline</span></button>
+<div class="h-6 w-px bg-outline-variant mx-2"></div>
+<img alt="User profile" class="w-8 h-8 rounded-full object-cover border border-outline-variant cursor-pointer" data-alt="A small, professional headshot of an industrial engineer in a bright, modern control room setting. Lighting is crisp white with subtle blue tones. High quality corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBM-nM3O7dGdZGGiTxA3dpqBvHkcmYwnfQGrQNX3VtDmelH2Xek_DUrpR3M0UA6onBkkFcWzBB3lg7Li5mcxY1YHo8UpZJGHsgLmVHy5aa0lamCySpFJBlnzq3Op-U-ypEPmwGnBjIEA9Cx4HpiCZgCujxWO0ICOlqw0QQ3oPVMIMd8XwgfVMJvKT8jLpgl8l3Yg-XapRIsrAaROBdKxpTZtxlzJ5XfkILb1z-vuHtppFMUt2jgxh8M"/>
+</div>
+</header>
+<!-- Content Area with Overlay -->
+<div class="flex-1 mt-[topbar-height] overflow-y-auto relative p-md lg:p-lg">
+<!-- THE DIMMED DASHBOARD (Background Layer) -->
+<div aria-hidden="true" class="space-y-lg opacity-40 grayscale-[30%] pointer-events-none select-none blur-[1px] transition-all duration-500">
+<!-- Header -->
+<div class="flex justify-between items-end">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Asset Registry</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-1">Manage and monitor physical plant assets.</p>
+</div>
+<button class="bg-primary-container text-on-primary-container px-4 py-2 rounded-lg font-body-medium text-body-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span> Add Asset
+                    </button>
+</div>
+<!-- KPIs -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm">
+<div class="flex items-center gap-sm mb-3">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-tertiary-fixed to-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-container">inventory_2</span>
+</div>
+<span class="font-body-medium text-body-medium text-on-surface-variant">Total Assets</span>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">1,248</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm">
+<div class="flex items-center gap-sm mb-3">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-error-container to-[#ffb4ab] flex items-center justify-center">
+<span class="material-symbols-outlined text-error">warning</span>
+</div>
+<span class="font-body-medium text-body-medium text-on-surface-variant">Critical Alerts</span>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">12</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm">
+<div class="flex items-center gap-sm mb-3">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-surface-variant to-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">update</span>
+</div>
+<span class="font-body-medium text-body-medium text-on-surface-variant">Pending Maintenance</span>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">45</div>
+</div>
+</div>
+<!-- Data Table -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+<div class="px-md py-3 bg-surface-container-low border-b border-outline-variant flex justify-between items-center">
+<div class="flex items-center gap-2 bg-surface border border-outline-variant rounded-lg px-3 py-1.5 w-64">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
+<input class="bg-transparent border-none text-body-base p-0 focus:ring-0 w-full text-on-surface-variant placeholder:text-outline" disabled="" placeholder="Search Tag ID..." type="text"/>
+</div>
+<button class="text-on-surface-variant"><span class="material-symbols-outlined">filter_list</span></button>
+</div>
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#f5f7fa] border-b border-outline-variant">
+<th class="py-2 px-md font-table-header text-table-header text-on-surface-variant uppercase">Tag ID</th>
+<th class="py-2 px-md font-table-header text-table-header text-on-surface-variant uppercase">Description</th>
+<th class="py-2 px-md font-table-header text-table-header text-on-surface-variant uppercase">Status</th>
+<th class="py-2 px-md font-table-header text-table-header text-on-surface-variant uppercase text-right">Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant/50">
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface font-mono">PMP-101A</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface">Centrifugal Water Pump Main</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#e6f4ea] text-[#137333] font-badge-label text-badge-label">Active</span>
+</td>
+<td class="py-2 px-md text-right">
+<button class="w-8 h-8 rounded-lg border border-outline-variant text-on-surface-variant flex items-center justify-center ml-auto"><span class="material-symbols-outlined text-sm">more_vert</span></button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/50">
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface font-mono">VLV-304B</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface">Pressure Relief Valve - Line 3</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-badge-label text-badge-label">Critical</span>
+</td>
+<td class="py-2 px-md text-right">
+<button class="w-8 h-8 rounded-lg border border-outline-variant text-on-surface-variant flex items-center justify-center ml-auto"><span class="material-symbols-outlined text-sm">more_vert</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- THE OVERLAY / DOCUMENTATION LAYER (Active Layer) -->
+<div class="absolute inset-0 z-20 pointer-events-none">
+<!-- Tooltip 1: Pointing to KPIs -->
+<div class="absolute top-[140px] left-lg md:left-[10%] max-w-sm pointer-events-auto group">
+<div class="absolute -top-3 -left-3 w-6 h-6 rounded-full bg-secondary border-2 border-surface shadow-md flex items-center justify-center z-10">
+<div class="absolute inset-0 rounded-full border-2 border-secondary pulse-ring"></div>
+<span class="material-symbols-outlined text-on-secondary text-[14px] font-bold">mobile_arrow_right</span>
+</div>
+<div class="bg-primary text-on-primary rounded-xl shadow-2xl border border-outline/20 p-lg relative overflow-hidden backdrop-blur-md bg-opacity-95">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary"></div>
+<div class="flex items-start gap-3 mb-2">
+<span class="material-symbols-outlined text-secondary-fixed-dim">monitoring</span>
+<h3 class="font-headline-md text-headline-md text-surface-bright">System KPIs</h3>
+</div>
+<p class="font-body-base text-body-base text-on-primary/90 mb-3 leading-relaxed">
+                            Monitor high-level system health and critical alerts here. Tap any card to drill down into specific metrics.
+                        </p>
+<div class="border-t border-on-primary/20 pt-3">
+<p class="font-body-base text-body-base text-primary-fixed-dim leading-relaxed" dir="rtl">
+                                سلامت سطح بالای سیستم و هشدارهای مهم را در اینجا نظارت کنید. برای بررسی دقیق معیارهای خاص، روی هر کارت ضربه بزنید.
+                            </p>
+</div>
+</div>
+</div>
+<!-- Tooltip 2: Pointing to Table Actions -->
+<div class="absolute top-[380px] right-lg md:right-[15%] max-w-[320px] pointer-events-auto group">
+<div class="absolute -top-3 -right-3 w-6 h-6 rounded-full bg-secondary border-2 border-surface shadow-md flex items-center justify-center z-10">
+<div class="absolute inset-0 rounded-full border-2 border-secondary pulse-ring"></div>
+<span class="material-symbols-outlined text-on-secondary text-[14px] font-bold">waves</span>
+</div>
+<div class="bg-primary text-on-primary rounded-xl shadow-2xl border border-outline/20 p-lg relative overflow-hidden backdrop-blur-md bg-opacity-95">
+<div class="absolute top-0 right-0 w-1 h-full bg-secondary"></div>
+<div class="flex items-start gap-3 mb-2">
+<span class="material-symbols-outlined text-secondary-fixed-dim">bolt</span>
+<h3 class="font-headline-md text-headline-md text-surface-bright">Quick Actions</h3>
+</div>
+<p class="font-body-base text-body-base text-on-primary/90 mb-3 leading-relaxed">
+                            Instantly edit, flag, or create work orders for assets directly from the registry view without losing context.
+                        </p>
+<div class="border-t border-on-primary/20 pt-3">
+<p class="font-body-base text-body-base text-primary-fixed-dim leading-relaxed" dir="rtl">
+                                دارایی‌ها را فوراً ویرایش یا پرچم‌گذاری کنید، یا بدون از دست دادن زمینه، مستقیماً از نمای ثبت، سفارش‌های کاری ایجاد کنید.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Global Overlay Action (Exit) -->
+<div class="fixed bottom-[80px] lg:bottom-lg right-lg z-50">
+<button class="bg-surface border-2 border-outline-variant hover:border-secondary hover:text-secondary text-on-surface rounded-full px-6 py-3 font-body-medium text-body-medium shadow-lg flex items-center gap-2 transition-all bg-opacity-90 backdrop-blur-sm">
+<span class="material-symbols-outlined">close</span> Exit Tutorial
+                </button>
+</div>
+</div>
+</main>
+<!-- Mobile BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-2 lg:hidden bg-surface shadow-[0_-4px_12px_rgba(0,0,0,0.05)] border-t border-outline-variant/30 rounded-t-xl">
+<button class="flex flex-col items-center text-on-surface-variant hover:bg-surface-container transition-transform active:scale-90 p-2 rounded-lg">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-caps text-label-caps mt-1">Home</span>
+</button>
+<!-- Active State: Learn -->
+<button class="flex flex-col items-center text-secondary-container bg-primary-container rounded-full p-2 px-4 transition-transform active:scale-90">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-label-caps text-label-caps mt-1">Learn</span>
+</button>
+<button class="flex flex-col items-center text-on-surface-variant hover:bg-surface-container transition-transform active:scale-90 p-2 rounded-lg">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-label-caps text-label-caps mt-1">Library</span>
+</button>
+<button class="flex flex-col items-center text-on-surface-variant hover:bg-surface-container transition-transform active:scale-90 p-2 rounded-lg">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-caps text-label-caps mt-1">Profile</span>
+</button>
+</nav>
+</body></html>

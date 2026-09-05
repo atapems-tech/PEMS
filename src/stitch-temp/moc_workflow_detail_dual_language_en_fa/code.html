@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MOC Workflow - PEMS Enterprise Utility</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with custom config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#f8f9ff",
+                        "background": "#f8f9ff",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#081d2f",
+                        "on-error-container": "#93000a",
+                        "secondary": "#895200",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "primary-container": "#142033",
+                        "on-secondary": "#ffffff",
+                        "surface-container-high": "#daeaff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#6e4100",
+                        "surface-container-low": "#eef4ff",
+                        "primary-fixed": "#d7e3fd",
+                        "outline-variant": "#c5c6cd",
+                        "inverse-primary": "#bbc7e0",
+                        "on-primary-container": "#7c889f",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed": "#101c2f",
+                        "secondary-fixed": "#ffdcbc",
+                        "tertiary": "#000815",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "inverse-on-surface": "#e9f1ff",
+                        "tertiary-container": "#00213d",
+                        "surface-dim": "#c8dcf5",
+                        "secondary-container": "#fdaa47",
+                        "on-tertiary-container": "#498bcd",
+                        "inverse-surface": "#1f3245",
+                        "on-surface-variant": "#44474c",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "tertiary-fixed": "#d1e4ff",
+                        "surface": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "primary": "#000819",
+                        "outline": "#75777d",
+                        "on-background": "#081d2f",
+                        "on-secondary-fixed": "#2c1700",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "surface-tint": "#535f75",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-container-highest": "#d0e4fe",
+                        "surface-variant": "#d0e4fe",
+                        "surface-container": "#e4efff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "topbar-height": "60px",
+                        "unit": "4px",
+                        "sidebar-width": "260px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "kpi-stat": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "table-header": ["Inter"],
+                        "body-base": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+                    },
+                    "fontSize": {
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .industrial-gradient {
+            background: linear-gradient(135deg, #d98c2b 0%, #b8721e 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface-bright text-on-surface h-screen w-full flex overflow-hidden font-body-base">
+<!-- SideNavBar -->
+<aside class="w-sidebar-width h-full fixed left-0 top-0 bg-primary border-r border-outline-variant flex flex-col py-lg px-md z-50">
+<!-- Brand Header -->
+<div class="mb-xl px-sm flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary-container text-3xl" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-primary">Asset Integrity</h1>
+<p class="font-label-caps text-label-caps text-on-primary-container">MOC Management System</p>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<nav class="flex-1 space-y-sm">
+<a class="flex items-center gap-md px-sm py-sm text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 transition-colors rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-sm py-sm text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 transition-colors rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">inventory</span>
+<span>MOC Registry</span>
+</a>
+<a class="flex items-center gap-md px-sm py-sm bg-secondary text-on-secondary rounded-lg font-bold font-body-medium text-body-medium transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">alt_route</span>
+<span>Workflows</span>
+</a>
+<a class="flex items-center gap-md px-sm py-sm text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 transition-colors rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<span>PSSR Checklist</span>
+</a>
+<a class="flex items-center gap-md px-sm py-sm text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 transition-colors rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Impact Analysis</span>
+</a>
+<a class="flex items-center gap-md px-sm py-sm text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 transition-colors rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span>Reports</span>
+</a>
+</nav>
+<!-- Footer Tabs -->
+<div class="mt-auto border-t border-on-primary-container/20 pt-md space-y-sm">
+<a class="flex items-center gap-md px-sm py-sm text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 transition-colors rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-md px-sm py-sm text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 transition-colors rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Help</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="ml-sidebar-width flex-1 flex flex-col h-full bg-background relative">
+<!-- TopAppBar -->
+<header class="docked full-width top-0 sticky z-40 bg-surface border-b border-outline-variant shadow-sm flex justify-between items-center h-topbar-height px-xl">
+<!-- Left: Search/Product Name -->
+<div class="flex items-center gap-lg">
+<span class="font-headline-md text-headline-md font-extrabold text-primary">MOC Enterprise</span>
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="pl-xl pr-md py-1 bg-surface-container-low border border-outline-variant rounded-full text-table-cell font-table-cell focus:outline-none focus:border-secondary transition-colors w-64" placeholder="Search MOCs..." type="text"/>
+</div>
+</div>
+<!-- Center: Navigation Links -->
+<nav class="hidden md:flex items-center gap-md font-label-caps text-label-caps">
+<a class="text-on-surface-variant hover:text-secondary-container transition-colors py-2" href="#">My Tasks</a>
+<a class="text-secondary border-b-2 border-secondary pb-1 pt-2" href="#">Pending Approvals</a>
+<a class="text-on-surface-variant hover:text-secondary-container transition-colors py-2" href="#">Archive</a>
+</nav>
+<!-- Right: Actions -->
+<div class="flex items-center gap-md">
+<button class="bg-primary text-on-primary font-body-medium text-body-medium px-md py-sm rounded-lg hover:bg-tertiary-container transition-colors active:scale-95 duration-150">
+                    Create Change Request
+                </button>
+<div class="flex items-center gap-sm text-on-surface-variant border-l border-outline-variant pl-sm ml-sm">
+<button class="p-1 hover:text-secondary hover:bg-surface-container rounded-full transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="p-1 hover:text-secondary hover:bg-surface-container rounded-full transition-colors"><span class="material-symbols-outlined">language</span></button>
+<button class="p-1 hover:text-secondary hover:bg-surface-container rounded-full transition-colors"><span class="material-symbols-outlined">account_circle</span></button>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 overflow-y-auto p-lg lg:px-xl">
+<div class="max-w-7xl mx-auto space-y-lg">
+<!-- Page Header & Actions -->
+<div class="flex flex-col md:flex-row md:items-start justify-between gap-md">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="font-mono text-table-cell text-on-surface-variant font-medium bg-surface-container-high px-2 py-0.5 rounded">MOC-2023-089</span>
+<span class="bg-error-container text-on-error-container font-badge-label text-badge-label px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">priority_high</span> Critical
+                            </span>
+<span class="bg-surface-container-high text-on-surface font-badge-label text-badge-label px-2 py-0.5 rounded-full">In Progress</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Upgrade Primary Cooling Pump</h2>
+<h3 class="font-headline-md text-headline-md text-on-surface-variant mt-1" dir="rtl">ارتقاء پمپ خنک کننده اصلی</h3>
+</div>
+<div class="flex items-center gap-sm">
+<button class="px-md py-sm border border-outline-variant text-on-surface-variant font-body-medium text-body-medium rounded-lg hover:bg-surface-container transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">history</span> Request Revision
+                        </button>
+<button class="px-md py-sm border border-error text-error font-body-medium text-body-medium rounded-lg hover:bg-error-container transition-colors">
+                            Reject
+                        </button>
+<button class="px-xl py-sm industrial-gradient text-on-primary font-body-medium text-body-medium rounded-lg shadow-sm hover:shadow-md transition-all">
+                            Approve Step
+                        </button>
+</div>
+</div>
+<!-- Progress Stepper -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md">
+<div class="flex items-center justify-between relative">
+<!-- Connecting Line Background -->
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-outline-variant/30 z-0"></div>
+<!-- Connecting Line Progress -->
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-[50%] h-0.5 bg-secondary z-0"></div>
+<!-- Steps -->
+<div class="relative z-10 flex flex-col items-center gap-2 bg-surface-container-lowest px-2">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-primary flex items-center justify-center border-2 border-surface-variant">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-center">Initiation<br/><span class="text-[9px] opacity-70" dir="rtl">آغاز</span></span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-2 bg-surface-container-lowest px-2">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-primary flex items-center justify-center border-2 border-surface-variant">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-center">Impact Analysis<br/><span class="text-[9px] opacity-70" dir="rtl">تحلیل اثرات</span></span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-2 bg-surface-container-lowest px-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest text-secondary flex items-center justify-center border-2 border-secondary shadow-[0_0_0_4px_rgba(253,170,71,0.2)]">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">rate_review</span>
+</div>
+<span class="font-label-caps text-label-caps text-secondary text-center font-bold">Technical Review<br/><span class="text-[9px] opacity-70 font-normal" dir="rtl">بررسی فنی</span></span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-2 bg-surface-container-lowest px-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest text-outline-variant flex items-center justify-center border-2 border-outline-variant">
+<span class="material-symbols-outlined text-sm">fact_check</span>
+</div>
+<span class="font-label-caps text-label-caps text-outline text-center">PSSR<br/><span class="text-[9px] opacity-70" dir="rtl">بازنگری پیش از راه‌اندازی</span></span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-2 bg-surface-container-lowest px-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest text-outline-variant flex items-center justify-center border-2 border-outline-variant">
+<span class="material-symbols-outlined text-sm">verified</span>
+</div>
+<span class="font-label-caps text-label-caps text-outline text-center">Approval<br/><span class="text-[9px] opacity-70" dir="rtl">تایید نهایی</span></span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Main Content Column (Left 2/3) -->
+<div class="lg:col-span-2 space-y-lg">
+<!-- Description -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+<div class="flex items-center justify-between mb-md border-b border-outline-variant/50 pb-sm">
+<h3 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">description</span>
+                                    Change Description & Reason
+                                </h3>
+<span class="text-sm text-on-surface-variant" dir="rtl">شرح و دلیل تغییر</span>
+</div>
+<div class="space-y-sm text-body-base font-body-base text-on-surface-variant leading-relaxed">
+<p>The current primary cooling pump (Tag: PMP-102A) has exhibited degraded performance over the last two quarters, leading to intermittent thermal throttling in Sector 4. This MOC proposes replacing it with a high-capacity centrifugal unit (Model: HX-9000).</p>
+<p class="text-right border-r-2 border-outline-variant/30 pr-sm mt-4" dir="rtl">پمپ خنک کننده اصلی فعلی در دو سه ماهه گذشته عملکرد ضعیفی داشته است که منجر به کاهش حرارتی متناوب در بخش ۴ شده است. این فرم پیشنهاد جایگزینی آن با یک واحد سانتریفیوژ با ظرفیت بالا را دارد.</p>
+</div>
+</section>
+<!-- Impact Analysis -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+<div class="flex items-center justify-between mb-md border-b border-outline-variant/50 pb-sm">
+<h3 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">warning</span>
+                                    Impact Analysis
+                                </h3>
+<span class="text-sm text-on-surface-variant" dir="rtl">تحلیل اثرات</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Safety -->
+<div class="p-sm rounded-lg bg-surface-container-low border border-outline-variant/50 flex items-start gap-md">
+<span class="material-symbols-outlined text-secondary-container mt-1">health_and_safety</span>
+<div>
+<h4 class="font-body-medium text-body-medium text-on-surface">Safety / <span class="text-xs font-normal" dir="rtl">ایمنی</span></h4>
+<p class="font-table-cell text-table-cell text-on-surface-variant mt-1">Lockout/Tagout procedures required during installation. No new hazardous materials.</p>
+</div>
+</div>
+<!-- Environment -->
+<div class="p-sm rounded-lg bg-surface-container-low border border-outline-variant/50 flex items-start gap-md">
+<span class="material-symbols-outlined text-secondary-container mt-1">eco</span>
+<div>
+<h4 class="font-body-medium text-body-medium text-on-surface">Environment / <span class="text-xs font-normal" dir="rtl">محیط زیست</span></h4>
+<p class="font-table-cell text-table-cell text-on-surface-variant mt-1">Old pump requires standard disposal. Minor risk of coolant leak during swap.</p>
+</div>
+</div>
+<!-- Operational -->
+<div class="p-sm rounded-lg bg-surface-container-low border border-outline-variant/50 flex items-start gap-md">
+<span class="material-symbols-outlined text-secondary-container mt-1">settings_suggest</span>
+<div>
+<h4 class="font-body-medium text-body-medium text-on-surface">Operational / <span class="text-xs font-normal" dir="rtl">عملیاتی</span></h4>
+<p class="font-table-cell text-table-cell text-on-surface-variant mt-1">4-hour scheduled downtime for Sector 4 required.</p>
+</div>
+</div>
+<!-- Training -->
+<div class="p-sm rounded-lg border border-error-container bg-error-container/10 flex items-start gap-md">
+<span class="material-symbols-outlined text-error mt-1">school</span>
+<div>
+<h4 class="font-body-medium text-body-medium text-on-surface">Training / <span class="text-xs font-normal" dir="rtl">آموزش</span></h4>
+<p class="font-table-cell text-table-cell text-error mt-1">New maintenance SOP requires training for shift operators before startup.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- PSSR Status -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+<div class="flex items-center justify-between mb-md border-b border-outline-variant/50 pb-sm">
+<h3 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">fact_check</span>
+                                    Pre-Startup Safety Review (PSSR)
+                                </h3>
+<span class="bg-surface-variant text-on-surface-variant font-badge-label text-badge-label px-2 py-1 rounded">Pending</span>
+</div>
+<div class="flex items-center justify-center p-xl border-2 border-dashed border-outline-variant/50 rounded-lg bg-surface-bright">
+<div class="text-center">
+<span class="material-symbols-outlined text-4xl text-outline-variant mb-2">pending_actions</span>
+<p class="font-body-medium text-body-medium text-on-surface-variant">PSSR will be unlocked after Technical Review is approved.</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Sidebar Column (Right 1/3) -->
+<div class="space-y-lg">
+<!-- Meta Data Card -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm">
+<h3 class="font-table-header text-table-header text-on-surface-variant uppercase mb-md">Details</h3>
+<div class="space-y-sm">
+<div class="flex justify-between border-b border-outline-variant/30 pb-sm">
+<span class="text-table-cell text-on-surface-variant">Initiator</span>
+<span class="text-body-medium font-body-medium">Sarah Jenkins</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/30 pb-sm">
+<span class="text-table-cell text-on-surface-variant">Department</span>
+<span class="text-body-medium font-body-medium">Mechanical Eng</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/30 pb-sm">
+<span class="text-table-cell text-on-surface-variant">Target Date</span>
+<span class="text-body-medium font-body-medium">Oct 24, 2023</span>
+</div>
+<div class="flex justify-between">
+<span class="text-table-cell text-on-surface-variant">Asset Tag</span>
+<span class="font-mono text-table-cell font-bold text-secondary-container">PMP-102A</span>
+</div>
+</div>
+</section>
+<!-- Document Updates -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm">
+<h3 class="font-table-header text-table-header text-on-surface-variant uppercase mb-md flex items-center justify-between">
+                                Required Document Updates
+                                <span class="material-symbols-outlined text-sm">post_add</span>
+</h3>
+<ul class="space-y-xs">
+<li class="flex items-center gap-sm p-sm hover:bg-surface-container-low rounded transition-colors cursor-pointer border border-transparent hover:border-outline-variant/50">
+<span class="material-symbols-outlined text-error">picture_as_pdf</span>
+<div class="flex-1">
+<p class="font-body-medium text-body-medium text-on-surface text-sm">P&ID-SEC4-V2.pdf</p>
+<p class="text-[10px] text-on-surface-variant">Needs revision</p>
+</div>
+</li>
+<li class="flex items-center gap-sm p-sm hover:bg-surface-container-low rounded transition-colors cursor-pointer border border-transparent hover:border-outline-variant/50">
+<span class="material-symbols-outlined text-secondary-container">description</span>
+<div class="flex-1">
+<p class="font-body-medium text-body-medium text-on-surface text-sm">SOP-Maint-044.docx</p>
+<p class="text-[10px] text-on-surface-variant">Draft attached</p>
+</div>
+</li>
+</ul>
+</section>
+<!-- Activity Feed -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col h-[400px]">
+<h3 class="font-table-header text-table-header text-on-surface-variant uppercase mb-md flex items-center gap-2">
+                                Activity Feed <span class="text-[10px] font-normal lowercase" dir="rtl">(نظرات)</span>
+</h3>
+<!-- Messages -->
+<div class="flex-1 overflow-y-auto space-y-md pr-2 mb-md">
+<div class="flex gap-sm">
+<img class="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A small professional headshot of a female engineer in a hardhat, modern bright office background, high contrast corporate style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAF4ggXmUp6bvZDovDSdo0hNkXJd7dnT5FunxwJOvIXKYG3uURvI4otSbrgS4J_8FWtfwuHt3rIweLyLLV7okVScym072baFVf8VPklRp1hyju36kfX3UITDFZOg3cX3jJwT0gZhIi89kRsy7cGwkE6riiQdUbnmVmN0R0cr-ZUY50vHnrQ1cFsI5st0dAZxRhFCU404ht75Mw6ZY84LVjxRlhuqK4w_wAyuTwCR5tlrC2o1oJ78G-Z"/>
+<div class="bg-surface-container-low p-sm rounded-lg rounded-tl-none border border-outline-variant/50 flex-1">
+<div class="flex justify-between items-start mb-1">
+<span class="font-body-medium text-body-medium text-sm">Sarah J.</span>
+<span class="text-[10px] text-on-surface-variant">2h ago</span>
+</div>
+<p class="text-table-cell text-on-surface-variant">Updated the Impact Analysis to include the new SOP training requirement.</p>
+</div>
+</div>
+<div class="flex gap-sm">
+<img class="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A small professional headshot of a male manager in a button down shirt, industrial control room background, cool lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuByEC52BD_FOKsJjF7HLJBJnRdx5zFlwLNxwE1AnC7T4SSvw5rwb4LzQXVR6TTPIOPMKOmDHdC-u9HiOToUU7F2doXFoPKmzdsT53JIwXe8x4k5HDgZ63ir_ZM6Pr15E9fCJQ8_5f9jry93hs4ZQiEb12AfGuGZ6Ro6VnRGmXJxjqIOsLGPs-iSh21JacS6CWMtR090O2c-FU7p9jfK9VtcnoFAjzwuJQePAUBlK4iQ3ghnlxb-fyFw"/>
+<div class="bg-surface-container-low p-sm rounded-lg rounded-tl-none border border-outline-variant/50 flex-1">
+<div class="flex justify-between items-start mb-1">
+<span class="font-body-medium text-body-medium text-sm">Mike T.</span>
+<span class="text-[10px] text-on-surface-variant">1h ago</span>
+</div>
+<p class="text-table-cell text-on-surface-variant">Looks good. Will review the attached P&ID draft shortly.</p>
+</div>
+</div>
+</div>
+<!-- Input -->
+<div class="mt-auto relative">
+<input class="w-full bg-surface text-body-base border border-outline-variant rounded-lg pl-sm pr-xl py-2 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all" placeholder="Add a comment..." type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 text-secondary hover:text-secondary-container transition-colors">
+<span class="material-symbols-outlined text-xl">send</span>
+</button>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

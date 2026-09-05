@@ -1,0 +1,80 @@
+﻿@model PEMS.Application.DTOs.VDRImportBatchDto
+
+<div class="content-card mb-3">
+    <div class="row g-3">
+        <div class="col-md-3"><strong>File:</strong> @Model.FileName</div>
+        <div class="col-md-3"><strong>Project:</strong> @Model.ProjectName</div>
+        <div class="col-md-2"><strong>Total:</strong> @Model.RowsTotal</div>
+        <div class="col-md-2"><strong>Duplicates:</strong> @Model.RowsDuplicate</div>
+        <div class="col-md-2"><strong>Status:</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
+    </div>
+
+    @if (Model.Status == "Staged")
+    {
+        <div class="d-flex gap-2 mt-3">
+            <form asp-action="Commit" method="post">
+                <input type="hidden" name="batchId" value="@Model.VDRImportBatchId" />
+                <button type="submit" class="btn btn-pems-solid" onclick="return confirm('Commit the selected rows into the live VDR register?')">
+                    <i class="bi bi-check-circle"></i> Commit Selected Rows
+                </button>
+            </form>
+            <form asp-action="Discard" method="post">
+                <input type="hidden" name="batchId" value="@Model.VDRImportBatchId" />
+                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Discard this entire import batch?')">
+                    <i class="bi bi-trash"></i> Discard Batch
+                </button>
+            </form>
+        </div>
+    }
+</div>
+
+<div class="content-card">
+    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise">
+            <thead>
+                <tr>
+                    <th>Include</th><th>#</th><th>Document No</th><th>Vendor</th><th>Type</th>
+                    <th>Discipline</th><th>Revisions</th><th>Validation</th><th>Message</th><th>Duplicate</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model.Rows)
+                {
+                    <tr class="@(r.ValidationStatus == "Error" ? "table-danger" : r.ValidationStatus == "Warning" ? "table-warning" : "")">
+                        <td>
+                            @if (Model.Status == "Staged")
+                            {
+                                <form asp-action="ToggleRow" method="post">
+                                    <input type="hidden" name="rowId" value="@r.VDRImportRowId" />
+                                    <input type="hidden" name="batchId" value="@Model.VDRImportBatchId" />
+                                    <input type="hidden" name="include" value="@(!r.IncludeInCommit)" />
+                                    <button type="submit" class="btn btn-sm @(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" style="width:36px;">
+                                        <i class="bi @(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")"></i>
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                @(r.IncludeInCommit ? "Yes" : "No")
+                            }
+                        </td>
+                        <td>@r.RowNumber</td>
+                        <td>@r.DocumentNumber</td>
+                        <td>@r.VendorNameRaw</td>
+                        <td>@r.Payload?.DocumentTypeCode</td>
+                        <td>@r.Payload?.DisciplineCodeRaw</td>
+                        <td><span class="badge bg-secondary">@(r.Payload?.Submissions.Count ?? 0)</span></td>
+                        <td>
+                            @{
+                                var vb = r.ValidationStatus switch { "Error" => "bg-danger", "Warning" => "bg-warning text-dark", _ => "bg-success" };
+                            }
+                            <span class="badge @vb">@r.ValidationStatus</span>
+                        </td>
+                        <td class="small text-muted">@r.ValidationMessage</td>
+                        <td>@(r.IsDuplicate ? "Update existing" : "New")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

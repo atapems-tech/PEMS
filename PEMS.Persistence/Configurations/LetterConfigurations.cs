@@ -1,0 +1,120 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PEMS.Domain.Entities;
+
+namespace PEMS.Persistence.Configurations;
+
+/// <summary>
+/// پیکربندی ماژول مکاتبات رسمی (Letter, LetterReferral, Notification، و FK جدید روی
+/// DocumentAttachment) - طبق استاندارد جدید (Volume V): یک کلاس به‌ازای هر Entity.
+/// </summary>
+public class LetterConfiguration : IEntityTypeConfiguration<Letter>
+{
+    public void Configure(EntityTypeBuilder<Letter> builder)
+    {
+        builder.HasOne(x => x.Project)
+            .WithMany()
+            .HasForeignKey(x => x.ProjectId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.Discipline)
+            .WithMany()
+            .HasForeignKey(x => x.DisciplineId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.ReceiverDepartment)
+            .WithMany()
+            .HasForeignKey(x => x.ReceiverDepartmentId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.ReceiverEmployee)
+            .WithMany()
+            .HasForeignKey(x => x.ReceiverEmployeeId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.RelatedDocument)
+            .WithMany()
+            .HasForeignKey(x => x.RelatedDocumentId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.RelatedMR)
+            .WithMany()
+            .HasForeignKey(x => x.RelatedMRId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.ParentLetter)
+            .WithMany()
+            .HasForeignKey(x => x.ParentLetterId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(x => x.LetterNumber);
+
+        // طبق بهینه‌سازی عملکرد: این‌ها دقیقاً همان فیلدهایی هستند که SearchAsync همیشه
+        // با آن‌ها فیلتر/مرتب‌سازی می‌کند
+        builder.HasIndex(x => new { x.IsActive, x.LetterDate });
+        builder.HasIndex(x => x.Status);
+        builder.HasIndex(x => x.LetterType);
+    }
+}
+
+public class LetterReferralConfiguration : IEntityTypeConfiguration<LetterReferral>
+{
+    public void Configure(EntityTypeBuilder<LetterReferral> builder)
+    {
+        builder.HasOne(x => x.Letter)
+            .WithMany(x => x.Referrals)
+            .HasForeignKey(x => x.LetterId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(x => x.ReferredToEmployee)
+            .WithMany()
+            .HasForeignKey(x => x.ReferredToEmployeeId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.ReferredToDepartment)
+            .WithMany()
+            .HasForeignKey(x => x.ReferredToDepartmentId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+}
+
+public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
+{
+    public void Configure(EntityTypeBuilder<Notification> builder)
+    {
+        builder.HasIndex(x => new { x.UserId, x.IsRead });
+    }
+}
+
+public class DocumentAttachmentLetterConfiguration : IEntityTypeConfiguration<DocumentAttachment>
+{
+    public void Configure(EntityTypeBuilder<DocumentAttachment> builder)
+    {
+        builder.HasOne(x => x.Letter)
+            .WithMany(x => x.Attachments)
+            .HasForeignKey(x => x.LetterId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+}
+
+public class DocumentAttachmentTechnicalQueryConfiguration : IEntityTypeConfiguration<DocumentAttachment>
+{
+    public void Configure(EntityTypeBuilder<DocumentAttachment> builder)
+    {
+        builder.HasOne(x => x.TechnicalQuery)
+            .WithMany(x => x.Attachments)
+            .HasForeignKey(x => x.TechnicalQueryId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+}
+
+public class DocumentAttachmentMOCConfiguration : IEntityTypeConfiguration<DocumentAttachment>
+{
+    public void Configure(EntityTypeBuilder<DocumentAttachment> builder)
+    {
+        builder.HasOne(x => x.MOC)
+            .WithMany(x => x.Attachments)
+            .HasForeignKey(x => x.MOCId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+}

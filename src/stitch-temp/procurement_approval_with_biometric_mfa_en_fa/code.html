@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS Enterprise - Procurement Approval</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "surface-container-high": "#daeaff",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "primary-fixed": "#d7e3fd",
+                      "on-error": "#ffffff",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-tertiary-container": "#498bcd",
+                      "on-primary-container": "#7c889f",
+                      "secondary-container": "#fdaa47",
+                      "inverse-primary": "#bbc7e0",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "tertiary-fixed": "#d1e4ff",
+                      "on-surface-variant": "#44474c",
+                      "background": "#f8f9ff",
+                      "surface-container": "#e4efff",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "surface-container-low": "#eef4ff",
+                      "on-secondary-container": "#6e4100",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "outline-variant": "#c5c6cd",
+                      "on-background": "#081d2f",
+                      "on-tertiary": "#ffffff",
+                      "secondary": "#895200",
+                      "tertiary": "#000815",
+                      "surface-variant": "#d0e4fe",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-container": "#00213d",
+                      "on-primary-fixed": "#101c2f",
+                      "on-secondary-fixed": "#2c1700",
+                      "on-tertiary-fixed": "#001d36",
+                      "inverse-surface": "#1f3245",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed": "#ffdcbc",
+                      "on-primary": "#ffffff",
+                      "primary": "#000819",
+                      "primary-container": "#142033",
+                      "on-surface": "#081d2f",
+                      "surface-tint": "#535f75",
+                      "inverse-on-surface": "#e9f1ff",
+                      "error": "#ba1a1a",
+                      "surface": "#f8f9ff",
+                      "error-container": "#ffdad6",
+                      "surface-dim": "#c8dcf5",
+                      "surface-container-highest": "#d0e4fe",
+                      "outline": "#75777d",
+                      "surface-bright": "#f8f9ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "md": "16px",
+                      "lg": "24px",
+                      "gutter": "16px",
+                      "sidebar-width": "260px",
+                      "xs": "4px",
+                      "unit": "4px",
+                      "topbar-height": "60px",
+                      "xl": "32px",
+                      "sm": "8px"
+              },
+              "fontFamily": {
+                      "label-caps": ["Inter"],
+                      "body-base": ["Inter"],
+                      "kpi-stat": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-medium": ["Inter"],
+                      "table-header": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "table-cell": ["Inter"],
+                      "badge-label": ["Inter"]
+              },
+              "fontSize": {
+                      "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                      "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                      "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                      "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                      "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .symbol-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for data tables */
+        .table-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+        .table-scroll::-webkit-scrollbar-track { background: transparent; }
+        .table-scroll::-webkit-scrollbar-thumb { background: #c5c6cd; border-radius: 3px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-base antialiased min-h-screen">
+<!-- Shared Component: SideNavBar -->
+<aside class="hidden md:flex flex-col fixed left-0 top-0 h-screen w-sidebar-width bg-primary border-r border-outline-variant py-lg z-50">
+<div class="px-lg mb-xl flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">corporate_fare</span>
+</div>
+<div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-primary">PEMS Enterprise</h1>
+<p class="font-label-caps text-label-caps text-on-primary/70">Procurement Module</p>
+</div>
+</div>
+<div class="px-md mb-lg">
+<button class="w-full flex items-center justify-center gap-sm bg-secondary-container text-on-secondary-container py-sm rounded-lg font-body-medium hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">add</span>
+                Create New Order
+            </button>
+</div>
+<nav class="flex-1 flex flex-col gap-xs px-sm overflow-y-auto">
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">shopping_cart</span> Purchase Orders
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">business</span> Supplier Directory
+            </a>
+<!-- Active Tab -->
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-body-medium scale-[0.98] duration-150" href="#">
+<span class="material-symbols-outlined symbol-filled">request_quote</span> Procurement Requests
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">inventory_2</span> Inventory Assets
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span> Reports
+            </a>
+</nav>
+<div class="mt-auto px-sm flex flex-col gap-xs pt-md border-t border-on-primary/10">
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 rounded-lg" href="#">
+<span class="material-symbols-outlined">help</span> Support
+            </a>
+</div>
+</aside>
+<!-- Shared Component: TopNavBar -->
+<header class="fixed top-0 right-0 left-0 md:left-sidebar-width h-topbar-height bg-surface-container-low border-b border-outline-variant flex justify-between items-center px-lg z-40">
+<div class="flex items-center gap-lg h-full">
+<button class="md:hidden text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<nav class="hidden md:flex h-full gap-lg">
+<a class="flex items-center h-full text-on-surface-variant font-medium hover:text-secondary transition-colors" href="#">Global View</a>
+<a class="flex items-center h-full text-primary border-b-2 border-secondary font-bold transition duration-100 ease-in-out" href="#">Metrics</a>
+<a class="flex items-center h-full text-on-surface-variant font-medium hover:text-secondary transition-colors" href="#">Logs</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="hidden md:flex items-center gap-sm bg-surface-container-high text-primary px-md py-sm rounded-lg font-body-medium border border-outline-variant hover:bg-surface-variant transition-colors">
+                New Request
+            </button>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<button class="p-xs hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-xs hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="p-xs hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-[calc(60px+24px)] md:pl-[calc(260px+24px)] pr-lg pb-xl min-h-screen">
+<!-- Header Section -->
+<div class="mb-lg flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<div class="flex items-center gap-xs text-on-surface-variant mb-sm">
+<a class="hover:text-primary transition-colors" href="#">Procurement</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Requests</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-on-surface font-medium">PRQ-2023-8942</span>
+</div>
+<div class="flex items-center gap-md">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Purchase Order: #8942-ALPHA</h2>
+<span class="px-sm py-xs rounded-full bg-secondary-fixed text-on-secondary-fixed font-badge-label text-badge-label border border-secondary-fixed-dim">
+                        PENDING APPROVAL
+                    </span>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-sm rounded-lg border border-outline-variant text-on-surface-variant font-body-medium hover:bg-surface-container transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">print</span> Print
+                </button>
+<button class="px-md py-sm rounded-lg border border-outline-variant text-on-surface-variant font-body-medium hover:bg-surface-container transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">edit</span> Edit Draft
+                </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-md">
+<!-- Column 1: Metadata & Summary -->
+<div class="xl:col-span-1 flex flex-col gap-md">
+<!-- Vendor Info Card -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md shadow-[0_4px_20px_rgba(20,32,51,0.02)]">
+<h3 class="font-headline-md text-headline-md mb-md border-b border-outline-variant pb-sm">Vendor Details</h3>
+<div class="space-y-sm">
+<div class="flex justify-between">
+<span class="text-on-surface-variant font-label-caps text-label-caps uppercase">Supplier</span>
+<span class="font-body-medium text-right">Global Heavy Industries Ltd.</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant font-label-caps text-label-caps uppercase">Vendor ID</span>
+<span class="font-mono text-sm text-right">VND-4491-GHI</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant font-label-caps text-label-caps uppercase">Contract</span>
+<span class="font-body-medium text-right text-primary underline">MSA-2022-A</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant font-label-caps text-label-caps uppercase">Risk Rating</span>
+<span class="font-badge-label text-badge-label text-on-primary-container bg-surface-container-highest px-xs rounded">LOW</span>
+</div>
+</div>
+</div>
+<!-- Financial Summary Card -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md shadow-[0_4px_20px_rgba(20,32,51,0.02)]">
+<h3 class="font-headline-md text-headline-md mb-md border-b border-outline-variant pb-sm">Financial Summary</h3>
+<div class="space-y-sm">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant font-body-base">Subtotal</span>
+<span class="font-body-base">$1,150,000.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant font-body-base">Tax (8.5%)</span>
+<span class="font-body-base">$97,750.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant font-body-base">Freight & Logistics</span>
+<span class="font-body-base">$2,250.00</span>
+</div>
+<div class="pt-sm border-t border-outline-variant flex justify-between items-center mt-sm">
+<span class="text-on-surface font-headline-md text-headline-md">Total Request</span>
+<span class="font-kpi-stat text-kpi-stat text-secondary">$1,250,000.00</span>
+</div>
+<div class="mt-md bg-surface-container-low p-sm rounded-lg flex items-start gap-sm border border-outline-variant">
+<span class="material-symbols-outlined text-secondary text-[20px]">warning</span>
+<p class="text-xs text-on-surface-variant leading-tight">This PO exceeds the standard departmental threshold. Executive multi-factor authorization is required.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Column 2 & 3: Line Items & Approval Action -->
+<div class="xl:col-span-2 flex flex-col gap-md">
+<!-- Line Items Table Card -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant flex flex-col overflow-hidden shadow-[0_4px_20px_rgba(20,32,51,0.02)] flex-1">
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest">
+<h3 class="font-headline-md text-headline-md">Line Items Registry</h3>
+<div class="flex gap-sm">
+<button class="w-8 h-8 flex items-center justify-center rounded bg-surface-container hover:bg-surface-variant text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded bg-surface-container hover:bg-surface-variant text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto table-scroll flex-1">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low sticky top-0 z-10 border-b border-outline-variant">
+<tr>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase whitespace-nowrap">Item Code</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase whitespace-nowrap">Description</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase whitespace-nowrap">Qty</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase whitespace-nowrap">Unit Price</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase whitespace-nowrap text-right">Total</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/50">
+<tr class="hover:bg-inverse-on-surface/50 transition-colors">
+<td class="py-sm px-md font-mono text-sm">TRB-900-X</td>
+<td class="py-sm px-md font-table-cell text-table-cell">Industrial Gas Turbine Core</td>
+<td class="py-sm px-md font-table-cell text-table-cell">1</td>
+<td class="py-sm px-md font-table-cell text-table-cell">$850,000.00</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-right font-medium">$850,000.00</td>
+</tr>
+<tr class="hover:bg-inverse-on-surface/50 transition-colors">
+<td class="py-sm px-md font-mono text-sm">VLV-332-A</td>
+<td class="py-sm px-md font-table-cell text-table-cell">High-Pressure Control Valves</td>
+<td class="py-sm px-md font-table-cell text-table-cell">10</td>
+<td class="py-sm px-md font-table-cell text-table-cell">$15,000.00</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-right font-medium">$150,000.00</td>
+</tr>
+<tr class="hover:bg-inverse-on-surface/50 transition-colors">
+<td class="py-sm px-md font-mono text-sm">SNS-091-B</td>
+<td class="py-sm px-md font-table-cell text-table-cell">Vibration Monitoring Sensors</td>
+<td class="py-sm px-md font-table-cell text-table-cell">50</td>
+<td class="py-sm px-md font-table-cell text-table-cell">$1,000.00</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-right font-medium">$50,000.00</td>
+</tr>
+<tr class="hover:bg-inverse-on-surface/50 transition-colors">
+<td class="py-sm px-md font-mono text-sm">SRV-INST-1</td>
+<td class="py-sm px-md font-table-cell text-table-cell">Installation & Commissioning</td>
+<td class="py-sm px-md font-table-cell text-table-cell">1</td>
+<td class="py-sm px-md font-table-cell text-table-cell">$100,000.00</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-right font-medium">$100,000.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Action Panel -->
+<div class="bg-surface-container-highest rounded-xl border border-outline-variant p-md flex items-center justify-between shadow-[0_4px_20px_rgba(20,32,51,0.02)]">
+<div>
+<h4 class="font-headline-md text-headline-md">Final Authorization</h4>
+<p class="text-sm text-on-surface-variant">Review all details before committing.</p>
+</div>
+<div class="flex gap-md">
+<button class="px-xl py-sm rounded-lg border border-outline-variant bg-surface-container-lowest text-on-surface-variant font-body-medium hover:bg-surface-container transition-colors">
+                            Reject Order
+                        </button>
+<button class="px-xl py-sm rounded-lg bg-secondary text-on-secondary font-headline-md text-headline-md flex items-center gap-sm hover:opacity-90 transition-opacity shadow-sm" onclick="document.getElementById('mfa-modal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+                            Approve Order
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- MFA Biometric Modal (Hidden by default) -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center bg-primary-container/80 backdrop-blur-sm px-md" id="mfa-modal">
+<div class="bg-surface-container-lowest w-full max-w-md rounded-xl shadow-[0_4px_30px_rgba(0,8,25,0.2)] border border-outline-variant overflow-hidden flex flex-col relative animate-[fadeIn_0.2s_ease-out]">
+<!-- Close button -->
+<button class="absolute top-md right-md text-on-surface-variant hover:text-on-surface transition-colors" onclick="document.getElementById('mfa-modal').classList.add('hidden')">
+<span class="material-symbols-outlined">close</span>
+</button>
+<div class="p-lg flex flex-col items-center text-center border-b border-outline-variant bg-surface-container-low">
+<div class="w-16 h-16 rounded-full bg-secondary-container/20 flex items-center justify-center mb-md border border-secondary/30">
+<span class="material-symbols-outlined text-[32px] text-secondary">security</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Security Verification</h2>
+<h3 class="font-headline-md text-headline-md text-on-surface-variant mb-sm" dir="rtl">نیاز به تایید امنیتی</h3>
+<p class="font-body-base text-on-surface-variant px-md">
+                    Authorizing PO-2023-8942 for <strong>$1,250,000.00</strong> requires multi-factor authentication.
+                </p>
+</div>
+<div class="p-lg flex flex-col gap-md bg-surface-container-lowest">
+<!-- Fingerprint Option -->
+<button class="w-full flex items-center justify-between p-md rounded-lg border border-outline-variant hover:border-secondary hover:bg-secondary-container/5 transition-all group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-[28px] text-on-surface-variant group-hover:text-secondary transition-colors">fingerprint</span>
+<div class="text-left">
+<span class="block font-body-medium text-on-surface group-hover:text-secondary transition-colors">Use Fingerprint</span>
+<span class="block font-label-caps text-label-caps text-on-surface-variant" dir="rtl">اثر انگشت</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-secondary">chevron_right</span>
+</button>
+<!-- FaceID Option -->
+<button class="w-full flex items-center justify-between p-md rounded-lg border border-outline-variant hover:border-secondary hover:bg-secondary-container/5 transition-all group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-[28px] text-on-surface-variant group-hover:text-secondary transition-colors">face</span>
+<div class="text-left">
+<span class="block font-body-medium text-on-surface group-hover:text-secondary transition-colors">Use FaceID</span>
+<span class="block font-label-caps text-label-caps text-on-surface-variant" dir="rtl">تشخیص چهره</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-secondary">chevron_right</span>
+</button>
+<div class="relative flex items-center py-sm">
+<div class="flex-grow border-t border-outline-variant"></div>
+<span class="flex-shrink-0 mx-4 text-xs text-on-surface-variant uppercase tracking-wider">OR / یا</span>
+<div class="flex-grow border-t border-outline-variant"></div>
+</div>
+<!-- Secure PIN Fallback -->
+<div class="flex flex-col gap-sm">
+<div class="flex justify-between items-end">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Secure PIN Fallback</label>
+<label class="font-label-caps text-label-caps text-on-surface-variant" dir="rtl">رمز عبور امن</label>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">dialpad</span>
+<input class="w-full pl-xl pr-sm py-sm rounded-lg border border-outline-variant bg-surface-container focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none transition-all font-mono text-center tracking-[0.5em]" placeholder="••••••" type="password"/>
+</div>
+<button class="w-full mt-sm py-sm rounded-lg border border-outline-variant text-on-surface font-body-medium hover:bg-surface-container transition-colors">
+                        Verify with PIN
+                    </button>
+</div>
+</div>
+</div>
+</div>
+<style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+    </style>
+</body></html>

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Employee Management - PEMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#c8dcf5",
+                        "on-secondary-fixed": "#2c1700",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "on-primary-fixed": "#101c2f",
+                        "on-tertiary-container": "#498bcd",
+                        "surface-container": "#e4efff",
+                        "surface-tint": "#535f75",
+                        "inverse-on-surface": "#e9f1ff",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#fdaa47",
+                        "tertiary": "#000815",
+                        "tertiary-container": "#00213d",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "inverse-surface": "#1f3245",
+                        "surface-container-high": "#daeaff",
+                        "surface-variant": "#d0e4fe",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "surface-container-low": "#eef4ff",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#081d2f",
+                        "on-secondary-container": "#6e4100",
+                        "outline-variant": "#c5c6cd",
+                        "on-surface": "#081d2f",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#142033",
+                        "tertiary-fixed": "#d1e4ff",
+                        "surface-bright": "#f8f9ff",
+                        "secondary": "#895200",
+                        "outline": "#75777d",
+                        "on-tertiary-fixed": "#001d36",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#d0e4fe",
+                        "on-error": "#ffffff",
+                        "background": "#f8f9ff",
+                        "primary-fixed": "#d7e3fd",
+                        "on-error-container": "#93000a",
+                        "surface": "#f8f9ff",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "primary": "#000819",
+                        "on-surface-variant": "#44474c",
+                        "inverse-primary": "#bbc7e0",
+                        "on-primary-container": "#7c889f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "topbar-height": "60px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "sidebar-width": "260px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "table-header": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-base": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "kpi-stat": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f5f8; }
+        .gradient-amber { background: linear-gradient(180deg, #d98c2b 0%, #b8721e 100%); }
+        .focus-ring-amber:focus-within { border-color: #d98c2b; box-shadow: 0 0 0 2px rgba(217, 140, 43, 0.2); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<nav class="bg-primary dark:bg-primary-container text-secondary-fixed dark:text-secondary-fixed-dim font-body-medium text-body-medium fixed left-0 top-0 h-full w-[260px] shadow-sm flex flex-col py-md z-20 hidden md:flex">
+<div class="px-lg mb-8">
+<h1 class="font-headline-md text-headline-md text-surface-container-lowest">PEMS Enterprise</h1>
+<p class="text-on-primary-container text-xs mt-1">Utility Operations</p>
+</div>
+<div class="flex-1 overflow-y-auto w-full">
+<ul class="w-full flex flex-col gap-1">
+<li>
+<a class="flex items-center gap-3 text-on-primary-fixed-variant hover:text-surface-container-lowest px-4 py-3 hover:bg-primary-container dark:hover:bg-surface-variant/5 transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                        Dashboard
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 bg-surface-variant/10 text-secondary-fixed border-l-4 border-secondary-fixed px-4 py-3 hover:bg-primary-container dark:hover:bg-surface-variant/5 transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="badge">badge</span>
+                        Employees
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-primary-fixed-variant hover:text-surface-container-lowest px-4 py-3 hover:bg-primary-container dark:hover:bg-surface-variant/5 transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="factory">factory</span>
+                        Assets
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-primary-fixed-variant hover:text-surface-container-lowest px-4 py-3 hover:bg-primary-container dark:hover:bg-surface-variant/5 transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="engineering">engineering</span>
+                        Work Orders
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-primary-fixed-variant hover:text-surface-container-lowest px-4 py-3 hover:bg-primary-container dark:hover:bg-surface-variant/5 transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="safety_check">safety_check</span>
+                        Safety
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-primary-fixed-variant hover:text-surface-container-lowest px-4 py-3 hover:bg-primary-container dark:hover:bg-surface-variant/5 transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                        Reports
+                    </a>
+</li>
+</ul>
+</div>
+<div class="px-4 mt-auto">
+<button class="w-full gradient-amber text-on-primary py-2 rounded font-body-medium flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                Log Work
+            </button>
+</div>
+<div class="mt-6 border-t border-on-primary-fixed-variant/30 pt-4">
+<ul class="w-full flex flex-col gap-1">
+<li>
+<a class="flex items-center gap-3 text-on-primary-fixed-variant hover:text-surface-container-lowest px-4 py-2 hover:bg-primary-container dark:hover:bg-surface-variant/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="settings">settings</span>
+                        Settings
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-primary-fixed-variant hover:text-surface-container-lowest px-4 py-2 hover:bg-primary-container dark:hover:bg-surface-variant/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="help">help</span>
+                        Support
+                    </a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-[260px] h-full overflow-hidden">
+<!-- TopAppBar -->
+<header class="bg-surface-bright dark:bg-surface-container-low text-primary dark:text-primary-fixed font-body-base text-body-base h-topbar-height border-b border-outline-variant/30 flex justify-between items-center px-lg z-10 shrink-0 w-full">
+<div class="flex items-center gap-4 flex-1">
+<div class="md:hidden">
+<button class="text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+<div class="relative w-full max-w-md focus-ring-amber rounded border border-[#dde3ea] bg-surface-container-lowest flex items-center px-sm py-1.5 transition-all focus-within:ring-2 focus-within:ring-secondary hidden sm:flex">
+<span class="material-symbols-outlined text-outline text-[20px] mr-2">search</span>
+<input class="bg-transparent border-none outline-none w-full text-table-cell placeholder:text-outline p-0 focus:ring-0" placeholder="Search employees, tags, or IDs..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:bg-surface-container-high transition-all p-2 rounded-full relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-high transition-all p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="apps">apps</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/30 ml-2">
+<img alt="Employee Profile" class="w-full h-full object-cover" data-alt="A small professional headshot of an industrial worker wearing safety gear, set against a clean slate background, well-lit to represent a modern corporate profile avatar in a light-mode utility management dashboard context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUjgg_RXT6C87oHxlSO1jcMGwBfmwHVPR2j4H5JPu-gDBn6U0VX1klETxbX1G_GqZ05-i7vEcSqX4tFpWyAIFAciC47ZL2AkFGSMzZg8rHQHf-USuSYjntcKn_XK_8rGKA7cCGAw5Us9Oi7Zwznl4PuIYWSI-QCzVWbtaa5y8AH1A96wdZRc4gRoKGDZpVxwh5dXP8NA9AOSB5SKwykHxTeqaOBFmYEQF_wvIVKHqe9yUB05a099rW"/>
+</div>
+</div>
+</header>
+<!-- Scrollable Workspace -->
+<main class="flex-1 overflow-y-auto p-4 md:p-6 pb-20">
+<!-- Page Header & Actions -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-1">Employee Directory</h2>
+<p class="font-body-base text-body-base text-on-surface-variant">Manage workforce deployment and registry details.</p>
+</div>
+<div class="flex items-center gap-2 w-full sm:w-auto">
+<button class="flex-1 sm:flex-none border border-[#dde3ea] text-[#5c6f85] px-4 py-2 rounded bg-surface-container-lowest hover:bg-surface-bright transition-colors font-body-medium text-body-medium flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+                        Customize Fields
+                    </button>
+<button class="flex-1 sm:flex-none border border-[#dde3ea] text-[#5c6f85] px-4 py-2 rounded bg-surface-container-lowest hover:bg-surface-bright transition-colors font-body-medium text-body-medium flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Export to CSV
+                    </button>
+<button class="flex-1 sm:flex-none gradient-amber text-on-primary px-4 py-2 rounded font-body-medium text-body-medium flex items-center justify-center gap-2 shadow-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+                        New Employee
+                    </button>
+</div>
+</div>
+<!-- KPI Cards -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+<!-- Total Employees -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded p-4 flex items-center gap-4 hover:border-[#d98c2b] transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] flex items-center justify-center text-on-tertiary" style="background: linear-gradient(135deg, #498bcd 0%, #1f3245 100%);">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Total Employees</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface">1,248</p>
+</div>
+</div>
+<!-- Active -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded p-4 flex items-center gap-4 hover:border-[#d98c2b] transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] flex items-center justify-center text-on-tertiary" style="background: linear-gradient(135deg, #22c55e 0%, #166534 100%);">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Active</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface">1,180</p>
+</div>
+</div>
+<!-- On Leave -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded p-4 flex items-center gap-4 hover:border-[#d98c2b] transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] flex items-center justify-center text-on-tertiary" style="background: linear-gradient(135deg, #fdaa47 0%, #895200 100%);">
+<span class="material-symbols-outlined" data-icon="hotel">hotel</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">On Leave</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface">42</p>
+</div>
+</div>
+<!-- Pending Onboard -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded p-4 flex items-center gap-4 hover:border-[#d98c2b] transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] flex items-center justify-center text-on-tertiary" style="background: linear-gradient(135deg, #c5c6cd 0%, #535f75 100%);">
+<span class="material-symbols-outlined" data-icon="hourglass_empty">hourglass_empty</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Pending Onboard</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface">26</p>
+</div>
+</div>
+</div>
+<!-- Filters & Data Table Container -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded flex flex-col shadow-sm">
+<!-- Quick Filters -->
+<div class="p-sm border-b border-[#edf0f4] flex flex-wrap gap-2 items-center bg-[#f5f7fa]">
+<button class="px-3 py-1.5 rounded-full bg-surface-variant text-on-surface-variant font-body-medium text-table-cell hover:bg-surface-container-high transition-colors">All</button>
+<button class="px-3 py-1.5 rounded-full text-on-surface-variant font-body-medium text-table-cell hover:bg-surface-container-high transition-colors">Engineering</button>
+<button class="px-3 py-1.5 rounded-full text-on-surface-variant font-body-medium text-table-cell hover:bg-surface-container-high transition-colors">Operations</button>
+<button class="px-3 py-1.5 rounded-full text-on-surface-variant font-body-medium text-table-cell hover:bg-surface-container-high transition-colors">HR</button>
+<div class="h-4 w-px bg-outline-variant/30 mx-2"></div>
+<!-- Advanced Filters (Compact Form Inputs) -->
+<div class="flex items-center gap-2 flex-1 min-w-[200px]">
+<div class="focus-ring-amber border border-[#dde3ea] rounded bg-white flex items-center px-2 py-1 flex-1">
+<span class="material-symbols-outlined text-[16px] text-outline mr-1">filter_alt</span>
+<select class="bg-transparent border-none outline-none w-full text-table-cell text-on-surface p-0 focus:ring-0 text-[13px]">
+<option>Department</option>
+</select>
+</div>
+<div class="focus-ring-amber border border-[#dde3ea] rounded bg-white flex items-center px-2 py-1 flex-1">
+<select class="bg-transparent border-none outline-none w-full text-table-cell text-on-surface p-0 focus:ring-0 text-[13px]">
+<option>Role</option>
+</select>
+</div>
+<div class="focus-ring-amber border border-[#dde3ea] rounded bg-white flex items-center px-2 py-1 flex-1">
+<select class="bg-transparent border-none outline-none w-full text-table-cell text-on-surface p-0 focus:ring-0 text-[13px]">
+<option>Location</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#f5f7fa] sticky top-0 z-10 border-b border-[#edf0f4]">
+<tr>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase w-10">
+<input class="rounded border-[#dde3ea] text-secondary focus:ring-secondary" type="checkbox"/>
+</th>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase min-w-[200px]">Employee</th>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase">ID Tag</th>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase">Department</th>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase">Role</th>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase">Location</th>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase">Status</th>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface divide-y divide-[#edf0f4]">
+<!-- Row 1 -->
+<tr class="hover:bg-[rgba(31,78,120,0.04)] transition-colors group">
+<td class="py-2 px-4 align-middle">
+<input class="rounded border-[#dde3ea] text-secondary focus:ring-secondary" type="checkbox"/>
+</td>
+<td class="py-2 px-4 align-middle flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-dim flex items-center justify-center text-on-surface-variant font-bold text-xs">
+                                        JD
+                                    </div>
+<div>
+<p class="font-body-medium text-on-surface">John Doe</p>
+<p class="text-[12px] text-on-surface-variant">john.doe@pems.com</p>
+</div>
+</td>
+<td class="py-2 px-4 align-middle font-mono text-[12px]">EMP-8472A</td>
+<td class="py-2 px-4 align-middle">Engineering</td>
+<td class="py-2 px-4 align-middle">Senior Tech</td>
+<td class="py-2 px-4 align-middle">Plant Alpha</td>
+<td class="py-2 px-4 align-middle">
+<span class="bg-green-100 text-green-800 font-badge-label text-badge-label px-2.5 py-0.5 rounded-full">Active</span>
+</td>
+<td class="py-2 px-4 align-middle text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded flex items-center justify-center text-[#5c6f85] border border-[#dde3ea] hover:bg-surface-bright bg-white">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-[#5c6f85] border border-[#dde3ea] hover:bg-surface-bright bg-white">
+<span class="material-symbols-outlined text-[16px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-[rgba(31,78,120,0.04)] transition-colors group">
+<td class="py-2 px-4 align-middle">
+<input class="rounded border-[#dde3ea] text-secondary focus:ring-secondary" type="checkbox"/>
+</td>
+<td class="py-2 px-4 align-middle flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-dim flex items-center justify-center text-on-surface-variant font-bold text-xs">
+                                        AS
+                                    </div>
+<div>
+<p class="font-body-medium text-on-surface">Alice Smith</p>
+<p class="text-[12px] text-on-surface-variant">alice.smith@pems.com</p>
+</div>
+</td>
+<td class="py-2 px-4 align-middle font-mono text-[12px]">EMP-9211B</td>
+<td class="py-2 px-4 align-middle">Operations</td>
+<td class="py-2 px-4 align-middle">Shift Manager</td>
+<td class="py-2 px-4 align-middle">Control Room B</td>
+<td class="py-2 px-4 align-middle">
+<span class="bg-slate-100 text-slate-800 font-badge-label text-badge-label px-2.5 py-0.5 rounded-full">On Leave</span>
+</td>
+<td class="py-2 px-4 align-middle text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded flex items-center justify-center text-[#5c6f85] border border-[#dde3ea] hover:bg-surface-bright bg-white">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-[#5c6f85] border border-[#dde3ea] hover:bg-surface-bright bg-white">
+<span class="material-symbols-outlined text-[16px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-[rgba(31,78,120,0.04)] transition-colors group">
+<td class="py-2 px-4 align-middle">
+<input class="rounded border-[#dde3ea] text-secondary focus:ring-secondary" type="checkbox"/>
+</td>
+<td class="py-2 px-4 align-middle flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-dim flex items-center justify-center text-on-surface-variant font-bold text-xs">
+                                        MJ
+                                    </div>
+<div>
+<p class="font-body-medium text-on-surface">Michael Johnson</p>
+<p class="text-[12px] text-on-surface-variant">m.johnson@pems.com</p>
+</div>
+</td>
+<td class="py-2 px-4 align-middle font-mono text-[12px]">EMP-1045C</td>
+<td class="py-2 px-4 align-middle">HR</td>
+<td class="py-2 px-4 align-middle">Recruiter</td>
+<td class="py-2 px-4 align-middle">HQ Office</td>
+<td class="py-2 px-4 align-middle">
+<span class="bg-amber-100 text-amber-800 font-badge-label text-badge-label px-2.5 py-0.5 rounded-full">Pending</span>
+</td>
+<td class="py-2 px-4 align-middle text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded flex items-center justify-center text-[#5c6f85] border border-[#dde3ea] hover:bg-surface-bright bg-white">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-[#5c6f85] border border-[#dde3ea] hover:bg-surface-bright bg-white">
+<span class="material-symbols-outlined text-[16px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-[rgba(31,78,120,0.04)] transition-colors group">
+<td class="py-2 px-4 align-middle">
+<input class="rounded border-[#dde3ea] text-secondary focus:ring-secondary" type="checkbox"/>
+</td>
+<td class="py-2 px-4 align-middle flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-dim flex items-center justify-center text-on-surface-variant font-bold text-xs">
+                                        RW
+                                    </div>
+<div>
+<p class="font-body-medium text-on-surface">Rachel Wong</p>
+<p class="text-[12px] text-on-surface-variant">r.wong@pems.com</p>
+</div>
+</td>
+<td class="py-2 px-4 align-middle font-mono text-[12px]">EMP-5521X</td>
+<td class="py-2 px-4 align-middle">Safety</td>
+<td class="py-2 px-4 align-middle">Inspector</td>
+<td class="py-2 px-4 align-middle">Field Ops South</td>
+<td class="py-2 px-4 align-middle">
+<span class="bg-green-100 text-green-800 font-badge-label text-badge-label px-2.5 py-0.5 rounded-full">Active</span>
+</td>
+<td class="py-2 px-4 align-middle text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded flex items-center justify-center text-[#5c6f85] border border-[#dde3ea] hover:bg-surface-bright bg-white">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-[#5c6f85] border border-[#dde3ea] hover:bg-surface-bright bg-white">
+<span class="material-symbols-outlined text-[16px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-3 border-t border-[#edf0f4] flex items-center justify-between bg-surface-container-lowest text-[#5c6f85] font-body-base text-[13px]">
+<div>Showing 1 to 10 of 1,248 entries</div>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 rounded flex items-center justify-center border border-[#dde3ea] hover:bg-surface-bright transition-colors disabled:opacity-50">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center bg-surface-variant text-on-surface-variant font-bold border border-transparent">1</button>
+<button class="w-8 h-8 rounded flex items-center justify-center border border-[#dde3ea] hover:bg-surface-bright transition-colors">2</button>
+<button class="w-8 h-8 rounded flex items-center justify-center border border-[#dde3ea] hover:bg-surface-bright transition-colors">3</button>
+<span class="px-2">...</span>
+<button class="w-8 h-8 rounded flex items-center justify-center border border-[#dde3ea] hover:bg-surface-bright transition-colors disabled:opacity-50">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

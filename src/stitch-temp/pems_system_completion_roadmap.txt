@@ -1,0 +1,31 @@
+# PEMS Enterprise Utility - Remaining Modules & System Gaps
+
+Based on industry standards for CMMS, EIUMS, and the technical scope of the PEMS repository, here is the roadmap to reach a "Complete" system state.
+
+## 1. Advanced Maintenance & Reliability (The "Intelligence" Layer)
+While basic Work Orders and Asset Inventory exist, a complete system requires the transition from reactive to proactive:
+- **Predictive Maintenance (PdM) Analytics:** Integration of vibration, thermography, and oil analysis data to predict failure before it occurs.
+- **RCM & FMEA Workbench:** Reliability Centered Maintenance (RCM) and Failure Mode and Effects Analysis (FMEA) modules to define asset criticality and optimize PM tasks.
+- **Root Cause Analysis (RCA) Tool:** A structured wizard (5 Whys, Fishbone) for investigating repeat failures.
+
+## 2. The "WAGES" Utility Management (Energy & Resources)
+A true Utility Enterprise system must manage the core utilities: Water, Air, Gas, Electricity, and Steam.
+- **Load Balancing & Grid Interaction:** Real-time interface for throttling non-critical loads during peak demand.
+- **Digital Twin & Sankey Diagrams:** Visual flow of energy through the facility to identify leaks or inefficiencies.
+- **Emission Trading & Carbon Credit Ledger:** Direct integration of PEMS (Predictive Emission Monitoring) data into financial compliance reports.
+
+## 3. Human Capital & "Tribal Knowledge"
+- **GenAI Knowledge Copilot:** A conversational interface for technicians to query 30+ years of redlined blueprints and historical work order resolutions.
+- **Competency & Skill Matrix:** Tracking certifications (e.g., Boiler Operator, High Voltage Electrician) against work order assignments to ensure safety compliance.
+
+## 4. Supply Chain & Financial Governance
+- **MRO Inventory Optimization:** AI-driven reorder points for spare parts based on lead times and criticality.
+- **Total Cost of Ownership (TCO) Tracker:** Lifecycle financial modeling that combines CAPEX (purchase) and OPEX (maintenance/energy) into a single metric.
+
+## 5. Engineering & Field Mobility
+- **BIM/CAD 3D Integration:** View 3D models of assets directly in the technical drawing detail page.
+- **Offline Field App Sync:** Specialized UI for mobile technicians working in areas with no connectivity (Explosion-proof tablet layouts).
+
+---
+**Status:** In Progress
+**Next Priority:** Predictive Maintenance & Utility Load Balancing.

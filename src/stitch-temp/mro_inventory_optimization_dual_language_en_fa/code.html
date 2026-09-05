@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MRO Inventory Optimization | بهینه سازی موجودی MRO</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#000815",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "inverse-primary": "#bbc7e0",
+                        "surface-container-high": "#daeaff",
+                        "on-surface-variant": "#44474c",
+                        "tertiary-container": "#00213d",
+                        "surface-container-highest": "#d0e4fe",
+                        "surface-bright": "#f8f9ff",
+                        "inverse-on-surface": "#e9f1ff",
+                        "on-tertiary-container": "#498bcd",
+                        "on-surface": "#081d2f",
+                        "tertiary-fixed": "#d1e4ff",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "primary-container": "#142033",
+                        "primary": "#000819",
+                        "on-background": "#081d2f",
+                        "secondary-fixed": "#ffdcbc",
+                        "surface-tint": "#535f75",
+                        "on-primary-fixed": "#101c2f",
+                        "surface-dim": "#c8dcf5",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#d7e3fd",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#fdaa47",
+                        "on-secondary-fixed": "#2c1700",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#e4efff",
+                        "secondary": "#895200",
+                        "surface-variant": "#d0e4fe",
+                        "inverse-surface": "#1f3245",
+                        "outline": "#75777d",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "outline-variant": "#c5c6cd",
+                        "on-tertiary-fixed": "#001d36",
+                        "on-primary-container": "#7c889f",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#6e4100",
+                        "surface-container-low": "#eef4ff",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "background": "#f8f9ff",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "md": "16px",
+                        "topbar-height": "60px",
+                        "sidebar-width": "260px",
+                        "xl": "32px",
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "sm": "8px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "kpi-stat": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "table-header": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "body-base": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .industrial-amber-gradient {
+            background: linear-gradient(135deg, #d98c2b 0%, #b8721e 100%);
+        }
+        .btn-secondary {
+            border: 1px solid #dde3ea;
+            color: #5c6f85;
+        }
+        .registry-mono {
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased flex">
+<!-- Sidebar -->
+<aside class="hidden md:flex flex-col h-screen w-sidebar-width fixed left-0 top-0 bg-tertiary dark:bg-primary text-on-tertiary dark:text-on-primary py-md shrink-0 z-40">
+<div class="px-md mb-lg">
+<h1 class="text-headline-md font-headline-md text-on-tertiary">PEMS Enterprise</h1>
+<p class="font-body-medium text-body-medium text-on-tertiary-fixed-variant mt-xs">Utility Optimization</p>
+</div>
+<nav class="flex-1 overflow-y-auto">
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 text-on-tertiary-fixed-variant hover:text-on-tertiary mx-sm my-xs px-md py-sm transition-all duration-200 ease-in-out hover:bg-on-tertiary-fixed-variant/10 rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 bg-secondary-container text-on-secondary-container rounded-lg mx-sm my-xs px-md py-sm transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-label-caps text-label-caps">Inventory</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-tertiary-fixed-variant hover:text-on-tertiary mx-sm my-xs px-md py-sm transition-all duration-200 ease-in-out hover:bg-on-tertiary-fixed-variant/10 rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">engineering</span>
+<span class="font-label-caps text-label-caps">Maintenance</span>
+</a>
+</li>
+</ul>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-[260px] min-h-screen flex flex-col">
+<!-- Top App Bar -->
+<header class="h-topbar-height bg-surface dark:bg-tertiary border-b border-outline-variant dark:border-outline flex justify-between items-center px-lg sticky top-0 z-30">
+<div class="flex items-center gap-4">
+<div class="text-headline-md font-headline-md text-primary dark:text-primary-fixed-dim md:hidden">PEMS</div>
+<div class="hidden md:flex items-center bg-surface-container-high rounded-full px-3 py-1.5 border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-medium font-body-medium w-64 h-8 p-0" placeholder="Search inventory..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant dark:text-on-primary-container hover:bg-surface-container dark:hover:bg-primary-container p-2 rounded-full transition-colors duration-200">
+<span class="material-symbols-outlined">translate</span>
+</button>
+<button class="text-on-surface-variant dark:text-on-primary-container hover:bg-surface-container dark:hover:bg-primary-container p-2 rounded-full transition-colors duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold ml-2">
+                    AC
+                </div>
+</div>
+</header>
+<!-- Dashboard Content -->
+<div class="p-md md:p-lg lg:px-xl flex-1 max-w-7xl mx-auto w-full">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-lg gap-4">
+<div>
+<h2 class="text-headline-lg font-headline-lg text-on-surface">MRO Inventory Optimization</h2>
+<p class="text-body-medium font-body-medium text-on-surface-variant mt-1">بهینه سازی موجودی MRO</p>
+</div>
+<button class="industrial-amber-gradient text-on-secondary rounded-lg px-4 py-2 font-body-medium text-body-medium shadow-sm hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">shopping_cart_checkout</span>
+                    Execute Bulk Reorder
+                </button>
+</div>
+<!-- KPIs -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md mb-lg">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-4 shadow-sm hover:border-secondary transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-tertiary-fixed to-surface-container-highest flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div>
+<div class="text-label-caps font-label-caps text-on-surface-variant mb-1 uppercase tracking-wider">Total Value <span class="text-xs ml-1 text-outline">ارزش کل</span></div>
+<div class="text-kpi-stat font-kpi-stat text-on-surface">$2.4M</div>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-4 shadow-sm hover:border-secondary transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-error-container to-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<div>
+<div class="text-label-caps font-label-caps text-on-surface-variant mb-1 uppercase tracking-wider">Critical OOS <span class="text-xs ml-1 text-outline">بحرانی</span></div>
+<div class="text-kpi-stat font-kpi-stat text-error">12 Items</div>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-4 shadow-sm hover:border-secondary transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-secondary-fixed to-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+<div>
+<div class="text-label-caps font-label-caps text-on-surface-variant mb-1 uppercase tracking-wider">AI Savings <span class="text-xs ml-1 text-outline">صرفه جویی</span></div>
+<div class="text-kpi-stat font-kpi-stat text-on-surface">$145k</div>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-4 shadow-sm hover:border-secondary transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-tertiary-fixed to-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">schedule</span>
+</div>
+<div>
+<div class="text-label-caps font-label-caps text-on-surface-variant mb-1 uppercase tracking-wider">Lead Time Acc <span class="text-xs ml-1 text-outline">دقت</span></div>
+<div class="text-kpi-stat font-kpi-stat text-on-surface">94.2%</div>
+</div>
+</div>
+</div>
+<!-- Main Content Area: Table & Sidebar -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-lg">
+<!-- Table Section -->
+<div class="xl:col-span-2 bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col">
+<!-- Filters -->
+<div class="p-md border-b border-outline-variant bg-surface flex flex-wrap gap-sm items-center">
+<div class="relative">
+<select class="appearance-none bg-surface-container-lowest border border-outline-variant rounded-lg pl-3 pr-8 py-1.5 text-body-base font-body-base focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none">
+<option>All Categories</option>
+<option>Mechanical</option>
+<option>Electrical</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 text-[16px] text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<div class="relative">
+<select class="appearance-none bg-surface-container-lowest border border-outline-variant rounded-lg pl-3 pr-8 py-1.5 text-body-base font-body-base focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none">
+<option>All Criticality</option>
+<option>A (High)</option>
+<option>B (Medium)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 text-[16px] text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Table -->
+<div class="overflow-x-auto flex-1">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-variant border-b border-outline-variant">
+<th class="py-2 px-md font-table-header text-table-header text-on-surface uppercase tracking-wider">Part ID / شناسه</th>
+<th class="py-2 px-md font-table-header text-table-header text-on-surface uppercase tracking-wider">Name / نام</th>
+<th class="py-2 px-md font-table-header text-table-header text-on-surface uppercase tracking-wider text-right">Stock</th>
+<th class="py-2 px-md font-table-header text-table-header text-on-surface uppercase tracking-wider text-right">Min/Max</th>
+<th class="py-2 px-md font-table-header text-table-header text-on-surface uppercase tracking-wider">Risk</th>
+<th class="py-2 px-md font-table-header text-table-header text-on-surface uppercase tracking-wider">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant bg-surface-container-lowest">
+<tr class="hover:bg-primary-fixed/30 transition-colors group">
+<td class="py-2 px-md registry-mono text-table-cell text-on-surface-variant">TG-4920-A</td>
+<td class="py-2 px-md">
+<div class="font-body-medium text-body-medium text-on-surface">Turbine Gasket</div>
+<div class="text-xs text-on-surface-variant mt-0.5" dir="rtl">واشر توربین</div>
+</td>
+<td class="py-2 px-md text-table-cell text-right font-medium">12</td>
+<td class="py-2 px-md text-table-cell text-right text-on-surface-variant">15 / 50</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-badge-label font-badge-label bg-error-container text-on-error-container">High</span>
+</td>
+<td class="py-2 px-md">
+<button class="w-[32px] h-[32px] rounded-lg border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary-fixed/30 transition-colors group">
+<td class="py-2 px-md registry-mono text-table-cell text-on-surface-variant">HS-110-X</td>
+<td class="py-2 px-md">
+<div class="font-body-medium text-body-medium text-on-surface">High-Temp Sealant</div>
+<div class="text-xs text-on-surface-variant mt-0.5" dir="rtl">درزگیر نسوز</div>
+</td>
+<td class="py-2 px-md text-table-cell text-right font-medium">45</td>
+<td class="py-2 px-md text-table-cell text-right text-on-surface-variant">20 / 100</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-badge-label font-badge-label bg-surface-dim text-on-surface">Low</span>
+</td>
+<td class="py-2 px-md">
+<button class="w-[32px] h-[32px] rounded-lg border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Intelligence Panel -->
+<div class="xl:col-span-1 bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm flex flex-col">
+<div class="flex items-center gap-2 mb-md border-b border-outline-variant pb-sm">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<h3 class="text-headline-md font-headline-md text-on-surface">AI Prediction</h3>
+</div>
+<div class="flex-1 flex flex-col gap-md">
+<div class="bg-surface-container rounded-lg p-sm border border-outline-variant/50">
+<div class="text-label-caps font-label-caps text-on-surface-variant mb-2">30-DAY FORECAST</div>
+<div class="h-32 w-full bg-surface-variant rounded flex items-end p-2 gap-1 relative overflow-hidden">
+<!-- Mock Chart Bars -->
+<div class="w-1/6 bg-secondary-fixed-dim rounded-t h-[40%]"></div>
+<div class="w-1/6 bg-secondary-fixed-dim rounded-t h-[30%]"></div>
+<div class="w-1/6 bg-secondary-fixed-dim rounded-t h-[60%]"></div>
+<div class="w-1/6 bg-secondary-fixed-dim rounded-t h-[80%]"></div>
+<div class="w-1/6 bg-secondary rounded-t h-[95%]"></div>
+<div class="w-1/6 bg-error rounded-t h-[20%]"></div>
+<!-- Overlay line -->
+<div class="absolute bottom-[20%] left-0 w-full h-[1px] border-t border-dashed border-error"></div>
+</div>
+<div class="text-xs text-on-surface-variant mt-2 text-center">Predicted stockout for <span class="font-bold">TG-4920-A</span> in 14 days.</div>
+</div>
+<div class="mt-auto">
+<button class="w-full btn-secondary rounded-lg py-2 font-body-medium text-body-medium hover:bg-surface-container transition-colors">
+                                View Full Analysis
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html class="light" dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS AI - Predictive Insights / بینش‌های پیش‌بینی‌کننده</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed-dim": "#bbc7e0",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "error": "#ba1a1a",
+                      "on-error-container": "#93000a",
+                      "tertiary": "#000815",
+                      "surface-container-highest": "#d0e4fe",
+                      "error-container": "#ffdad6",
+                      "surface-container-low": "#eef4ff",
+                      "surface-container": "#e4efff",
+                      "secondary-fixed": "#ffdcbc",
+                      "inverse-primary": "#bbc7e0",
+                      "inverse-surface": "#1f3245",
+                      "tertiary-fixed": "#d1e4ff",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "on-primary-container": "#7c889f",
+                      "primary-container": "#142033",
+                      "surface-tint": "#535f75",
+                      "on-primary": "#ffffff",
+                      "on-surface-variant": "#44474c",
+                      "surface-bright": "#f8f9ff",
+                      "on-error": "#ffffff",
+                      "on-background": "#081d2f",
+                      "background": "#f8f9ff",
+                      "tertiary-container": "#00213d",
+                      "surface-container-high": "#daeaff",
+                      "on-tertiary-fixed": "#001d36",
+                      "primary": "#000819",
+                      "outline-variant": "#c5c6cd",
+                      "inverse-on-surface": "#e9f1ff",
+                      "outline": "#75777d",
+                      "on-primary-fixed": "#101c2f",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-surface": "#081d2f",
+                      "on-secondary-fixed": "#2c1700",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "on-tertiary-container": "#498bcd",
+                      "on-tertiary": "#ffffff",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "secondary": "#895200",
+                      "surface-dim": "#c8dcf5",
+                      "primary-fixed": "#d7e3fd",
+                      "secondary-container": "#fdaa47",
+                      "surface": "#f8f9ff",
+                      "on-secondary-container": "#6e4100",
+                      "surface-variant": "#d0e4fe"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "topbar-height": "60px",
+                      "sm": "8px",
+                      "lg": "24px",
+                      "unit": "4px",
+                      "md": "16px",
+                      "gutter": "16px",
+                      "sidebar-width": "260px",
+                      "xs": "4px",
+                      "xl": "32px"
+              },
+              "fontFamily": {
+                      "table-header": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "kpi-stat": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "body-base": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "badge-label": ["Inter"],
+                      "body-medium": ["Inter"],
+                      "table-cell": ["Inter"]
+              },
+              "fontSize": {
+                      "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                      "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                      "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}],
+                      "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                      "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Ambient Chart Styles */
+        .chart-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(197, 198, 205, 0.1) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(197, 198, 205, 0.1) 1px, transparent 1px);
+        }
+        
+        .kpi-gradient-blue { background: linear-gradient(135deg, #eef4ff 0%, #d0e4fe 100%); border-color: #bbc7e0; }
+        .kpi-gradient-amber { background: linear-gradient(135deg, #fff3e0 0%, #ffdcbc 100%); border-color: #fdaa47; }
+        .kpi-gradient-green { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-color: #81c784; }
+        .kpi-gradient-red { background: linear-gradient(135deg, #ffebee 0%, #ffdad6 100%); border-color: #ffb4ab; }
+        
+        .status-pill-critical { background-color: #ffebee; color: #ba1a1a; }
+        .status-pill-warning { background-color: #fff8e1; color: #895200; }
+        .status-pill-stable { background-color: #e8f5e9; color: #1b5e20; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased min-h-screen">
+<!-- JSON Component: SideNavBar -->
+<nav class="hidden md:flex flex-col h-screen w-[sidebar-width] p-md fixed left-0 top-0 bg-primary dark:bg-primary-container shadow-sm z-50">
+<!-- Header -->
+<div class="flex items-center gap-sm mb-xl px-sm">
+<div class="w-10 h-10 rounded bg-primary-container flex items-center justify-center border border-on-primary-container/20">
+<span class="material-symbols-outlined text-secondary-container text-2xl">electric_bolt</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-primary tracking-tight">PEMS AI</h1>
+<p class="font-label-caps text-label-caps text-primary-fixed-dim uppercase tracking-wider">Predictive Maintenance</p>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full mb-lg py-sm px-md rounded bg-gradient-to-r from-secondary-container to-secondary text-on-primary font-body-medium text-body-medium shadow-sm hover:opacity-90 active:scale-95 transition-all flex justify-center items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+            New Asset
+        </button>
+<!-- Main Navigation -->
+<div class="flex-1 flex flex-col gap-unit">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary-fixed-dim opacity-70 hover:opacity-100 hover:bg-primary-container/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="font-body-medium text-body-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary-fixed-dim opacity-70 hover:opacity-100 hover:bg-primary-container/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">precision_manufacturing</span>
+<span class="font-body-medium text-body-medium">Assets</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary-fixed-dim opacity-70 hover:opacity-100 hover:bg-primary-container/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">settings_suggest</span>
+<span class="font-body-medium text-body-medium">Maintenance</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary-fixed-dim opacity-70 hover:opacity-100 hover:bg-primary-container/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">monitoring</span>
+<span class="font-body-medium text-body-medium">Risk Analysis</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-secondary-container bg-primary-container dark:bg-primary-fixed-dim dark:text-on-primary-fixed font-bold hover:bg-primary-container/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px] fill">insights</span>
+<span class="font-body-medium text-body-medium">Predictions</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary-fixed-dim opacity-70 hover:opacity-100 hover:bg-primary-container/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">assessment</span>
+<span class="font-body-medium text-body-medium">Reports</span>
+</a>
+</div>
+<!-- Footer Navigation -->
+<div class="mt-auto pt-md border-t border-primary-container flex flex-col gap-unit">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary-fixed-dim opacity-70 hover:opacity-100 hover:bg-primary-container/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">help</span>
+<span class="font-body-medium text-body-medium">Support</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary-fixed-dim opacity-70 hover:opacity-100 hover:bg-primary-container/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-body-medium text-body-medium">Settings</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<div class="md:ml-[sidebar-width] min-h-screen flex flex-col">
+<!-- JSON Component: TopAppBar -->
+<header class="fixed top-0 right-0 w-full md:w-[calc(100%-sidebar-width)] h-[topbar-height] bg-surface-container-lowest dark:bg-surface-container-low border-b border-outline-variant flex items-center justify-between px-lg py-sm z-40">
+<!-- Left: Brand / Links -->
+<div class="flex items-center gap-lg h-full">
+<span class="font-headline-md text-headline-md text-primary font-black md:hidden">PEMS Industrial</span>
+<nav class="hidden md:flex items-center gap-md h-full">
+<a class="text-on-surface-variant font-body-medium text-body-medium h-full flex items-center hover:text-secondary transition-all" href="#">Global View</a>
+<a class="text-on-surface-variant font-body-medium text-body-medium h-full flex items-center hover:text-secondary transition-all" href="#">Critical Assets</a>
+</nav>
+</div>
+<!-- Right: Actions -->
+<div class="flex items-center gap-md">
+<button class="font-label-caps text-label-caps text-primary border border-outline-variant rounded px-sm py-xs hover:border-secondary transition-colors">EN/FA</button>
+<div class="flex items-center gap-sm text-primary dark:text-primary-fixed">
+<button class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 mt-[topbar-height] p-md md:p-lg space-y-lg">
+<!-- Page Header Dual Language -->
+<div class="flex flex-col gap-xs mb-md">
+<h2 class="font-headline-lg text-headline-lg md:text-headline-lg text-on-surface">Predictive Insights Dashboard</h2>
+<h3 class="font-body-medium text-body-medium text-on-surface-variant text-right dir-rtl font-arabic">داشبورد بینش‌های پیش‌بینی‌کننده</h3>
+</div>
+<!-- Section 1: Executive AI Summary (KPIs) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm hover:border-secondary-container transition-colors relative overflow-hidden">
+<div class="flex justify-between items-start mb-md">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-xs">System Reliability Index</p>
+<p class="font-label-caps text-[10px] text-on-surface-variant/70 text-right dir-rtl font-arabic">شاخص قابلیت اطمینان سیستم</p>
+</div>
+<div class="w-[46px] h-[46px] rounded-[10px] border kpi-gradient-green flex items-center justify-center">
+<span class="material-symbols-outlined text-[#388e3c]">verified_user</span>
+</div>
+</div>
+<div class="flex items-baseline gap-sm">
+<span class="font-kpi-stat text-kpi-stat text-on-surface">94.2%</span>
+<span class="font-badge-label text-badge-label text-[#388e3c] flex items-center"><span class="material-symbols-outlined text-[14px]">arrow_upward</span> 1.5%</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full mt-sm overflow-hidden">
+<div class="bg-[#4caf50] h-full" style="width: 94.2%"></div>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm hover:border-secondary-container transition-colors">
+<div class="flex justify-between items-start mb-md">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-xs">Predicted Downtime (48h)</p>
+<p class="font-label-caps text-[10px] text-on-surface-variant/70 text-right dir-rtl font-arabic">زمان خرابی پیش‌بینی شده</p>
+</div>
+<div class="w-[46px] h-[46px] rounded-[10px] border kpi-gradient-red flex items-center justify-center">
+<span class="material-symbols-outlined text-[#d32f2f]">timer_off</span>
+</div>
+</div>
+<div class="flex items-baseline gap-sm">
+<span class="font-kpi-stat text-kpi-stat text-on-surface">14.5 Hrs</span>
+<span class="font-badge-label text-badge-label text-[#d32f2f] flex items-center"><span class="material-symbols-outlined text-[14px]">arrow_upward</span> Risk</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm hover:border-secondary-container transition-colors">
+<div class="flex justify-between items-start mb-md">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-xs">Optimized Savings</p>
+<p class="font-label-caps text-[10px] text-on-surface-variant/70 text-right dir-rtl font-arabic">صرفه‌جویی بهینه‌سازی شده</p>
+</div>
+<div class="w-[46px] h-[46px] rounded-[10px] border kpi-gradient-amber flex items-center justify-center">
+<span class="material-symbols-outlined text-[#f57c00]">savings</span>
+</div>
+</div>
+<div class="flex items-baseline gap-sm">
+<span class="font-kpi-stat text-kpi-stat text-on-surface">$124.5K</span>
+<span class="font-badge-label text-badge-label text-on-surface-variant">YTD</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout for Complex Data -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-md">
+<!-- Section 2: Risk Heatmap / Asset List (Takes up 1 column, spans 2 rows conceptually) -->
+<div class="lg:col-span-1 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm flex flex-col h-[500px]">
+<div class="p-sm md:p-md border-b border-outline-variant bg-[#f5f7fa] flex justify-between items-center rounded-t-xl">
+<div>
+<h3 class="font-table-header text-table-header text-on-surface uppercase">Critical Asset Risk Map</h3>
+<p class="text-[10px] text-on-surface-variant text-right dir-rtl font-arabic">نقشه خطر دارایی‌های حیاتی</p>
+</div>
+<button class="p-xs hover:bg-surface-container rounded transition-colors text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">filter_list</span></button>
+</div>
+<div class="flex-1 overflow-y-auto p-xs space-y-xs">
+<!-- Risk Item 1 -->
+<div class="p-sm rounded-lg border border-outline-variant hover:border-[#ffb4ab] bg-surface-bright transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-table-cell text-table-cell font-bold font-mono text-on-surface group-hover:text-error transition-colors">TRB-004</span>
+<span class="font-badge-label text-badge-label px-2 py-0.5 rounded-full status-pill-critical">85% Prob</span>
+</div>
+<p class="font-body-base text-[12px] text-on-surface-variant mb-1">Bearing failure imminent in 48h.</p>
+<p class="text-[11px] text-on-surface-variant/80 text-right dir-rtl font-arabic">خرابی بلبرینگ در ۴۸ ساعت آینده</p>
+<div class="w-full bg-surface-container h-1 rounded-full mt-sm overflow-hidden">
+<div class="bg-error h-full" style="width: 85%"></div>
+</div>
+</div>
+<!-- Risk Item 2 -->
+<div class="p-sm rounded-lg border border-outline-variant hover:border-[#fdaa47] bg-surface-bright transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-table-cell text-table-cell font-bold font-mono text-on-surface">PMP-102</span>
+<span class="font-badge-label text-badge-label px-2 py-0.5 rounded-full status-pill-warning">62% Prob</span>
+</div>
+<p class="font-body-base text-[12px] text-on-surface-variant mb-1">Vibration anomaly detected.</p>
+<p class="text-[11px] text-on-surface-variant/80 text-right dir-rtl font-arabic">ناهنجاری ارتعاش تشخیص داده شد</p>
+<div class="w-full bg-surface-container h-1 rounded-full mt-sm overflow-hidden">
+<div class="bg-secondary-container h-full" style="width: 62%"></div>
+</div>
+</div>
+<!-- Risk Item 3 -->
+<div class="p-sm rounded-lg border border-outline-variant hover:border-[#81c784] bg-surface-bright transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-table-cell text-table-cell font-bold font-mono text-on-surface">CMP-055</span>
+<span class="font-badge-label text-badge-label px-2 py-0.5 rounded-full status-pill-stable">12% Prob</span>
+</div>
+<p class="font-body-base text-[12px] text-on-surface-variant mb-1">Operating within normal parameters.</p>
+<p class="text-[11px] text-on-surface-variant/80 text-right dir-rtl font-arabic">عملکرد در پارامترهای عادی</p>
+<div class="w-full bg-surface-container h-1 rounded-full mt-sm overflow-hidden">
+<div class="bg-[#4caf50] h-full" style="width: 12%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Middle / Right Columns Container -->
+<div class="lg:col-span-2 flex flex-col gap-md">
+<!-- Section 3: Failure Pattern Trends (Line Chart Placeholder) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-md h-[240px] flex flex-col">
+<div class="flex justify-between items-center mb-sm">
+<div>
+<h3 class="font-table-header text-table-header text-on-surface uppercase">AI Prediction vs Actual Failure Patterns</h3>
+<p class="text-[10px] text-on-surface-variant text-right dir-rtl font-arabic">الگوهای خرابی پیش‌بینی شده در برابر واقعی</p>
+</div>
+<div class="flex gap-sm">
+<div class="flex items-center gap-xs"><span class="w-2 h-2 rounded-full bg-secondary-container"></span><span class="text-[11px] text-on-surface-variant">Predicted</span></div>
+<div class="flex items-center gap-xs"><span class="w-2 h-2 rounded-full bg-primary-container"></span><span class="text-[11px] text-on-surface-variant">Actual</span></div>
+</div>
+</div>
+<!-- Abstract Chart Visualization -->
+<div class="flex-1 chart-grid relative rounded border border-outline-variant/30 overflow-hidden mt-sm">
+<!-- Fake Line 1 (Actual) -->
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+<path d="M0,80 Q20,75 40,60 T80,40 T100,50" fill="none" stroke="#142033" stroke-opacity="0.6" stroke-width="2"></path>
+</svg>
+<!-- Fake Line 2 (Predicted) -->
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+<path d="M0,85 Q20,70 40,55 T80,30 T100,20" fill="none" stroke="#fdaa47" stroke-dasharray="4,4" stroke-width="2"></path>
+<!-- Highlight Point -->
+<circle class="animate-pulse" cx="80" cy="30" fill="#ba1a1a" r="3"></circle>
+</svg>
+</div>
+</div>
+<!-- Bottom Split: Recommendations & Telemetry -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md h-[244px]">
+<!-- Section 4: Intelligent Recommendations -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm flex flex-col overflow-hidden">
+<div class="p-sm border-b border-outline-variant bg-[#f5f7fa]">
+<h3 class="font-table-header text-table-header text-on-surface uppercase flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px] text-secondary">auto_awesome</span> 
+                                    AI Recommendations
+                                </h3>
+</div>
+<div class="flex-1 overflow-y-auto p-sm space-y-sm">
+<!-- Action 1 -->
+<div class="flex items-start gap-sm p-sm rounded bg-surface border border-outline-variant/50 hover:bg-surface-container transition-colors">
+<button class="mt-0.5 w-6 h-6 rounded flex items-center justify-center bg-secondary-container text-on-secondary-container hover:bg-secondary transition-colors shrink-0">
+<span class="material-symbols-outlined text-[14px]">build</span>
+</button>
+<div>
+<p class="font-body-medium text-[12.5px] text-on-surface">Schedule immediate lubrication for <span class="font-mono font-bold">PMP-102</span></p>
+<p class="text-[11px] text-on-surface-variant text-right dir-rtl font-arabic mt-1">روغن‌کاری فوری برای پمپ PMP-102 برنامه‌ریزی کنید</p>
+</div>
+</div>
+<!-- Action 2 -->
+<div class="flex items-start gap-sm p-sm rounded bg-surface border border-outline-variant/50 hover:bg-surface-container transition-colors">
+<button class="mt-0.5 w-6 h-6 rounded flex items-center justify-center bg-surface-tint text-on-primary hover:bg-primary transition-colors shrink-0">
+<span class="material-symbols-outlined text-[14px]">shopping_cart</span>
+</button>
+<div>
+<p class="font-body-medium text-[12.5px] text-on-surface">Order spare part <span class="font-mono font-bold">TRB-99</span> based on predicted wear</p>
+<p class="text-[11px] text-on-surface-variant text-right dir-rtl font-arabic mt-1">سفارش قطعه یدکی TRB-99 بر اساس فرسودگی پیش‌بینی شده</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 5: Telemetry Correlation -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-md flex flex-col">
+<div class="mb-sm">
+<h3 class="font-table-header text-table-header text-on-surface uppercase">Telemetry Correlation</h3>
+<p class="text-[10px] text-on-surface-variant text-right dir-rtl font-arabic">همبستگی تله‌متری</p>
+</div>
+<!-- Mini Data Table / Metrics -->
+<div class="flex-1 flex flex-col gap-unit justify-center">
+<div class="flex justify-between items-center p-sm border-b border-outline-variant/50">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">vibration</span>
+<span class="font-body-medium text-[12px]">Vibration Peak</span>
+</div>
+<div class="text-right">
+<span class="font-mono text-[13px] font-bold text-error">12.4 mm/s</span>
+<span class="material-symbols-outlined text-[14px] text-error align-middle">warning</span>
+</div>
+</div>
+<div class="flex justify-between items-center p-sm border-b border-outline-variant/50">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">device_thermostat</span>
+<span class="font-body-medium text-[12px]">Temp Delta</span>
+</div>
+<div class="text-right">
+<span class="font-mono text-[13px] font-bold text-secondary-container">+4.2 °C</span>
+</div>
+</div>
+<div class="flex justify-between items-center p-sm">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">speed</span>
+<span class="font-body-medium text-[12px]">Load Strain</span>
+</div>
+<div class="text-right">
+<span class="font-mono text-[13px] font-bold text-[#4caf50]">Normal</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

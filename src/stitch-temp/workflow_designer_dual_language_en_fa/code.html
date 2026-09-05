@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Workflow Designer / طراح گردش کار</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary": "#895200",
+                      "on-surface-variant": "#44474c",
+                      "surface-dim": "#c8dcf5",
+                      "surface-container-highest": "#d0e4fe",
+                      "on-secondary": "#ffffff",
+                      "tertiary-container": "#00213d",
+                      "surface-container-high": "#daeaff",
+                      "on-error-container": "#93000a",
+                      "on-surface": "#081d2f",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-container": "#142033",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "outline-variant": "#c5c6cd",
+                      "background": "#f8f9ff",
+                      "surface-bright": "#f8f9ff",
+                      "primary": "#000819",
+                      "on-primary-fixed": "#101c2f",
+                      "surface-tint": "#535f75",
+                      "surface-container-low": "#eef4ff",
+                      "on-secondary-fixed": "#2c1700",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "surface-variant": "#d0e4fe",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "primary-fixed": "#d7e3fd",
+                      "outline": "#75777d",
+                      "secondary-container": "#fdaa47",
+                      "secondary-fixed": "#ffdcbc",
+                      "on-primary": "#ffffff",
+                      "on-secondary-container": "#6e4100",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "inverse-surface": "#1f3245",
+                      "inverse-primary": "#bbc7e0",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "on-tertiary-container": "#498bcd",
+                      "on-tertiary-fixed": "#001d36",
+                      "on-background": "#081d2f",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "inverse-on-surface": "#e9f1ff",
+                      "surface-container": "#e4efff",
+                      "tertiary-fixed": "#d1e4ff",
+                      "on-error": "#ffffff",
+                      "surface": "#f8f9ff",
+                      "on-primary-container": "#7c889f",
+                      "tertiary": "#000815",
+                      "error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "topbar-height": "60px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "unit": "4px",
+                      "gutter": "16px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "xl": "32px",
+                      "sidebar-width": "260px"
+              },
+              "fontFamily": {
+                      "kpi-stat": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "table-cell": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "body-medium": [
+                              "Inter"
+                      ],
+                      "badge-label": [
+                              "Inter"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "kpi-stat": [
+                              "22px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-header": [
+                              "11.5px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-cell": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-medium": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "badge-label": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-base": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .workflow-line {
+            background: linear-gradient(180deg, #142033 0%, #142033 100%);
+            width: 2px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #d98c2b, #b8721e);
+            color: white;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+        .btn-secondary {
+            border: 1px solid #dde3ea;
+            color: #5c6f85;
+            background: white;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .btn-secondary:hover {
+            background: rgba(31, 78, 120, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface border-b border-outline-variant shadow-sm flex justify-between items-center w-full px-lg h-[topbar-height] sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-2xl cursor-pointer md:hidden">menu</span>
+<div class="font-headline-md text-headline-md font-bold text-primary">
+                Engineering Management Suite
+            </div>
+</div>
+<nav class="hidden md:flex gap-6 h-full">
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 h-full flex items-center mt-1" href="#">Workflow</a>
+<a class="text-on-surface-variant font-body-medium hover:text-secondary transition-colors duration-200 h-full flex items-center" href="#">Reports</a>
+<a class="text-on-surface-variant font-body-medium hover:text-secondary transition-colors duration-200 h-full flex items-center" href="#">Archive</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary transition-colors">language</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary transition-colors">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary transition-colors">settings</span>
+</div>
+<button class="btn-primary hidden sm:block">Create New</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden border border-outline-variant cursor-pointer">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A small, professional headshot of an engineer in a hardhat, well-lit, corporate style, neutral background. Colors should match the industrial theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU3mN0C56rpu8E24Hn5eHunrAO6joiYnGolHoEugvhqQru90LwFM50fl3dQFxsCNBKxGRFka4aCkXNkibNV3PcepKrcw7wmSC9kyQBzHvJi1Zvt9PraO-tEoK3FxSz0oj054wnVur7qd7GZ38XhbWBBerU-r6kbvPMWIK2llScBfoGJLJXVvKrxpJvy5nH8tHdH-MEv5kkfsTR7VjYSvqb5Rj9IBmsseggogcFSASM5xRGy1alNpHN"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-primary text-secondary-fixed w-[sidebar-width] flex-shrink-0 flex flex-col justify-between py-6 border-r border-outline-variant hidden md:flex h-[calc(100vh-60px)] sticky top-[60px] overflow-y-auto">
+<div>
+<div class="px-6 mb-8 flex items-center gap-3 cursor-pointer">
+<div class="w-10 h-10 rounded-lg bg-surface-variant flex items-center justify-center text-primary font-bold text-xl overflow-hidden">
+<img alt="PEMS Logo" class="w-full h-full object-cover" data-alt="Minimalist abstract geometric logo for PEMS, utilizing deep navy and industrial amber, high contrast, sharp lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFe6ukR31pGGC3kSBW8xGvRpbrURWhYxclL9-lq7bfLvxvPX7WHiHhFYmS-4sWjdEqOKR1CnkeNwmynUCY72NUoiD1WQclmCQYAlk_DlqQPqjrjYPkqpGegSYtAfXe_D7v4TGrwOLLz-W85lza7NmwxipVKqbUGcukft41ep3aPueUZYbN42JHLxPFp91xrIgCGN5cbOnRnbo5D2iOHMZakcuusf75sIcOeClz5Jbfw98hB0mPi8rZ"/>
+</div>
+<div>
+<div class="text-headline-lg font-headline-lg text-secondary-fixed tracking-tight">PEMS</div>
+<div class="font-label-caps text-label-caps text-primary-fixed-dim">Utility Operations</div>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-primary-fixed-dim hover:bg-on-primary-fixed-variant hover:text-white rounded-lg mx-2 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-medium text-body-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-primary-fixed-dim hover:bg-on-primary-fixed-variant hover:text-white rounded-lg mx-2 transition-colors" href="#">
+<span class="material-symbols-outlined">engineering</span>
+<span class="font-body-medium text-body-medium">Technical Inspection</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-primary-fixed-dim hover:bg-on-primary-fixed-variant hover:text-white rounded-lg mx-2 transition-colors" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-body-medium text-body-medium">Audit Logs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-primary-fixed-dim hover:bg-on-primary-fixed-variant hover:text-white rounded-lg mx-2 transition-colors" href="#">
+<span class="material-symbols-outlined">mail</span>
+<span class="font-body-medium text-body-medium">Correspondence</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-primary-fixed-dim hover:bg-on-primary-fixed-variant hover:text-white rounded-lg mx-2 transition-colors" href="#">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span class="font-body-medium text-body-medium">Transmittals</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-primary-fixed-dim hover:bg-on-primary-fixed-variant hover:text-white rounded-lg mx-2 transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-body-medium text-body-medium">Administration</span>
+</a>
+</nav>
+</div>
+<div class="px-4 mt-8 flex flex-col gap-2">
+<button class="w-full btn-primary flex justify-center items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-sm">add</span> New Request
+                </button>
+<div class="h-px bg-on-primary-fixed-variant w-full my-2"></div>
+<a class="flex items-center gap-3 px-4 py-2 text-primary-fixed-dim hover:bg-on-primary-fixed-variant hover:text-white rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">help</span>
+<span class="font-body-medium text-body-medium">Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-primary-fixed-dim hover:bg-on-primary-fixed-variant hover:text-white rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span class="font-body-medium text-body-medium">Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-[calc(100vh-60px)] overflow-hidden bg-background">
+<!-- Content Header -->
+<div class="px-lg py-md border-b border-outline-variant bg-surface flex justify-between items-center shrink-0">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Workflow Designer <span class="text-outline mx-2">|</span> <span class="font-normal" dir="rtl">طراح گردش کار</span></h1>
+<p class="text-on-surface-variant font-body-base mt-1">Configure automated routing logic for document lifecycles.</p>
+</div>
+<div class="flex gap-3">
+<button class="btn-secondary flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">delete</span> Discard
+                    </button>
+<button class="btn-secondary flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">save</span> Save Template
+                    </button>
+<button class="btn-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">rocket_launch</span> Activate Workflow
+                    </button>
+</div>
+</div>
+<!-- Workspace -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Left Panel: Triggers -->
+<div class="w-72 bg-surface border-r border-outline-variant flex flex-col shrink-0 overflow-y-auto">
+<div class="p-4 border-b border-outline-variant bg-surface-container-lowest sticky top-0 z-10">
+<h2 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">bolt</span> Triggers
+                        </h2>
+</div>
+<div class="p-4 flex flex-col gap-4">
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-3 hover:border-secondary transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-body-medium text-on-surface group-hover:text-secondary">When Transmittal Created</span>
+<span class="material-symbols-outlined text-outline text-sm">drag_indicator</span>
+</div>
+<div class="text-xs text-on-surface-variant" dir="rtl">زمانی که یک فرستنده ایجاد می‌شود</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-3 hover:border-secondary transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-body-medium text-on-surface group-hover:text-secondary">On Status Change</span>
+<span class="material-symbols-outlined text-outline text-sm">drag_indicator</span>
+</div>
+<div class="text-xs text-on-surface-variant" dir="rtl">در صورت تغییر وضعیت</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-3 hover:border-secondary transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-body-medium text-on-surface group-hover:text-secondary">Scheduled Review</span>
+<span class="material-symbols-outlined text-outline text-sm">drag_indicator</span>
+</div>
+<div class="text-xs text-on-surface-variant" dir="rtl">بررسی زمان‌بندی شده</div>
+</div>
+</div>
+</div>
+<!-- Central Canvas: Visual Flow -->
+<div class="flex-1 bg-surface-bright p-lg overflow-y-auto relative flex flex-col items-center">
+<div class="w-full max-w-2xl relative mt-8 pb-12">
+<!-- Connector Line -->
+<div class="workflow-line h-full top-0"></div>
+<!-- Stage 1: Completed -->
+<div class="relative z-10 mb-12 flex flex-col items-center group">
+<div class="bg-white border border-outline-variant rounded-xl p-4 w-80 shadow-sm transition-all group-hover:border-secondary group-hover:shadow-md cursor-pointer relative">
+<div class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white border-2 border-[#2e7d32] flex items-center justify-center">
+<span class="material-symbols-outlined text-[#2e7d32] text-xs font-bold" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="flex justify-between items-center mb-2">
+<div class="font-label-caps text-label-caps text-[#2e7d32] bg-[#e8f5e9] px-2 py-0.5 rounded-full">Completed</div>
+<span class="material-symbols-outlined text-outline text-sm cursor-pointer hover:text-on-surface">more_vert</span>
+</div>
+<h3 class="font-body-medium text-on-surface">Originator Submission</h3>
+<h4 class="text-xs text-on-surface-variant mb-3" dir="rtl">ارسال توسط ایجاد کننده</h4>
+<div class="flex items-center gap-2 mt-2 pt-2 border-t border-outline-variant">
+<div class="w-6 h-6 rounded-full bg-surface-variant overflow-hidden border border-outline-variant">
+<img alt="User" class="w-full h-full object-cover" data-alt="Small avatar of an office worker, neutral corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADye_no_wH6XBuijWZNOBHjHpdv4qVR4LDzsoCHuXwKO6XGhOHXkoxTFFCybontaRemz5Pbhnx1MVFedrtB6xPRmVnGYBIjsbTOEaP4NjyXO_kXaN8dqgjzd5aK1gqELgMqWA7Qa5fkn9KUugfEcNs8Nlbq3SLSG1Ai7uHWUi1t7hEojxOUyqQ3hQBLgSmYc1lrR0vNm9hAlKdiwn_jrc08kDywWFsdSzDPz1uHtZYksK_8hNOQwbS"/>
+</div>
+<span class="text-xs text-on-surface-variant">System Auto</span>
+</div>
+</div>
+</div>
+<!-- Stage 2: In Progress -->
+<div class="relative z-10 mb-12 flex flex-col items-center group">
+<div class="bg-white border-2 border-secondary rounded-xl p-4 w-80 shadow-md transition-all cursor-pointer relative">
+<div class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white border-2 border-secondary flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
+</div>
+<div class="flex justify-between items-center mb-2">
+<div class="font-label-caps text-label-caps text-secondary bg-secondary-fixed px-2 py-0.5 rounded-full">In Progress</div>
+<span class="material-symbols-outlined text-outline text-sm cursor-pointer hover:text-on-surface">more_vert</span>
+</div>
+<h3 class="font-body-medium text-on-surface">Technical Review</h3>
+<h4 class="text-xs text-on-surface-variant mb-3" dir="rtl">بررسی فنی</h4>
+<div class="flex items-center gap-2 mt-2 pt-2 border-t border-outline-variant">
+<span class="material-symbols-outlined text-outline text-sm">groups</span>
+<span class="text-xs text-on-surface-variant">Assigned to: Engineering Dept.</span>
+</div>
+</div>
+<!-- Add button between nodes -->
+<div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-surface border border-outline-variant flex items-center justify-center cursor-pointer hover:border-secondary hover:text-secondary text-outline transition-colors z-20">
+<span class="material-symbols-outlined text-sm">add</span>
+</div>
+</div>
+<!-- Stage 3: Pending -->
+<div class="relative z-10 mb-12 flex flex-col items-center group">
+<div class="bg-white border border-outline-variant rounded-xl p-4 w-80 shadow-sm transition-all group-hover:border-secondary group-hover:shadow-md cursor-pointer relative opacity-75">
+<div class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-surface border-2 border-outline-variant flex items-center justify-center">
+</div>
+<div class="flex justify-between items-center mb-2">
+<div class="font-label-caps text-label-caps text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">Pending</div>
+<span class="material-symbols-outlined text-outline text-sm cursor-pointer hover:text-on-surface">more_vert</span>
+</div>
+<h3 class="font-body-medium text-on-surface">Manager Approval</h3>
+<h4 class="text-xs text-on-surface-variant mb-3" dir="rtl">تایید مدیر</h4>
+<div class="flex items-center gap-2 mt-2 pt-2 border-t border-outline-variant">
+<span class="material-symbols-outlined text-outline text-sm">person</span>
+<span class="text-xs text-on-surface-variant">Role: Project Manager</span>
+</div>
+</div>
+</div>
+<!-- Stage 4: Pending -->
+<div class="relative z-10 flex flex-col items-center group">
+<div class="bg-white border border-outline-variant rounded-xl p-4 w-80 shadow-sm transition-all group-hover:border-secondary group-hover:shadow-md cursor-pointer relative opacity-75">
+<div class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-surface border-2 border-outline-variant flex items-center justify-center">
+</div>
+<div class="flex justify-between items-center mb-2">
+<div class="font-label-caps text-label-caps text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">Pending</div>
+<span class="material-symbols-outlined text-outline text-sm cursor-pointer hover:text-on-surface">more_vert</span>
+</div>
+<h3 class="font-body-medium text-on-surface">Final Authorization</h3>
+<h4 class="text-xs text-on-surface-variant mb-3" dir="rtl">مجوز نهایی</h4>
+<div class="flex items-center gap-2 mt-2 pt-2 border-t border-outline-variant">
+<span class="material-symbols-outlined text-outline text-sm">admin_panel_settings</span>
+<span class="text-xs text-on-surface-variant">Role: QA Lead</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Stage Configuration -->
+<div class="w-80 bg-surface border-l border-outline-variant flex flex-col shrink-0 overflow-y-auto">
+<div class="p-4 border-b border-outline-variant bg-surface-container-lowest sticky top-0 z-10 flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-on-surface">Stage Config</h2>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-on-surface">close</span>
+</div>
+<div class="p-4 flex flex-col gap-6">
+<!-- Identity -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">Stage Name (EN)</label>
+<input class="w-full bg-surface-bright border border-outline-variant rounded-lg px-3 py-2 text-body-medium text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all" type="text" value="Technical Review"/>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-1">نام مرحله (FA)</label>
+<input class="w-full bg-surface-bright border border-outline-variant rounded-lg px-3 py-2 text-body-medium text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all" dir="rtl" type="text" value="بررسی فنی"/>
+</div>
+<!-- Assignment -->
+<div class="border-t border-outline-variant pt-4">
+<h3 class="font-body-medium text-on-surface mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">assignment_ind</span> Assignment
+                            </h3>
+<label class="block text-xs text-on-surface-variant mb-1">Assignee Type</label>
+<select class="w-full bg-surface-bright border border-outline-variant rounded-lg px-3 py-2 text-body-medium text-on-surface focus:outline-none focus:border-secondary mb-3">
+<option>Department</option>
+<option>User</option>
+<option>Role</option>
+</select>
+<label class="block text-xs text-on-surface-variant mb-1">Target Department</label>
+<div class="relative">
+<select class="w-full bg-surface-bright border border-outline-variant rounded-lg px-3 py-2 text-body-medium text-on-surface focus:outline-none focus:border-secondary appearance-none">
+<option>Engineering Dept.</option>
+<option>Quality Assurance</option>
+<option>Operations</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Logic -->
+<div class="border-t border-outline-variant pt-4">
+<h3 class="font-body-medium text-on-surface mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">schedule</span> SLA &amp; Logic
+                            </h3>
+<label class="block text-xs text-on-surface-variant mb-1">Due Date Logic</label>
+<div class="flex items-center gap-2 mb-3">
+<input class="w-20 bg-surface-bright border border-outline-variant rounded-lg px-3 py-2 text-body-medium text-on-surface focus:outline-none focus:border-secondary" type="number" value="3"/>
+<span class="text-sm text-on-surface">Days after stage entry</span>
+</div>
+<label class="flex items-center gap-2 cursor-pointer mt-4">
+<input checked="" class="rounded text-secondary focus:ring-secondary border-outline-variant" type="checkbox"/>
+<span class="text-sm text-on-surface">Require all assignees to approve</span>
+</label>
+</div>
+<!-- Notifications -->
+<div class="border-t border-outline-variant pt-4 pb-8">
+<h3 class="font-body-medium text-on-surface mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">notifications_active</span> Notification Rules
+                            </h3>
+<div class="flex flex-col gap-2">
+<label class="flex items-center justify-between cursor-pointer p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+<span class="text-sm text-on-surface">On Entry</span>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 border-secondary appearance-none cursor-pointer transition-transform duration-200 ease-in-out translate-x-5" id="toggle1" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-secondary cursor-pointer" for="toggle1"></label>
+</div>
+</label>
+<label class="flex items-center justify-between cursor-pointer p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+<span class="text-sm text-on-surface">SLA Warning (24h)</span>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 border-secondary appearance-none cursor-pointer transition-transform duration-200 ease-in-out translate-x-5" id="toggle2" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-secondary cursor-pointer" for="toggle2"></label>
+</div>
+</label>
+<label class="flex items-center justify-between cursor-pointer p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+<span class="text-sm text-on-surface">On Escalation</span>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 border-outline-variant appearance-none cursor-pointer transition-transform duration-200 ease-in-out" id="toggle3" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-outline-variant cursor-pointer" for="toggle3"></label>
+</div>
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

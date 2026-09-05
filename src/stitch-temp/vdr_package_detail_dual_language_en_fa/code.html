@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS Vendor Portal - VDR Package Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#9ecaff",
+                    "inverse-on-surface": "#e9f1ff",
+                    "surface-bright": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#142033",
+                    "on-tertiary-container": "#498bcd",
+                    "secondary-fixed": "#ffdcbc",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed-variant": "#683d00",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#bbc7e0",
+                    "background": "#f8f9ff",
+                    "surface-container-high": "#daeaff",
+                    "on-surface-variant": "#44474c",
+                    "tertiary": "#000815",
+                    "on-primary-container": "#7c889f",
+                    "primary": "#000819",
+                    "primary-fixed": "#d7e3fd",
+                    "tertiary-fixed": "#d1e4ff",
+                    "tertiary-container": "#00213d",
+                    "primary-fixed-dim": "#bbc7e0",
+                    "on-background": "#081d2f",
+                    "surface-container-low": "#eef4ff",
+                    "surface-variant": "#d0e4fe",
+                    "secondary": "#895200",
+                    "inverse-surface": "#1f3245",
+                    "surface": "#f8f9ff",
+                    "outline-variant": "#c5c6cd",
+                    "surface-dim": "#c8dcf5",
+                    "secondary-fixed-dim": "#ffb86a",
+                    "on-tertiary-fixed": "#001d36",
+                    "surface-tint": "#535f75",
+                    "on-secondary-container": "#6e4100",
+                    "surface-container-highest": "#d0e4fe",
+                    "surface-container": "#e4efff",
+                    "surface-container-lowest": "#ffffff",
+                    "outline": "#75777d",
+                    "error-container": "#ffdad6",
+                    "secondary-container": "#fdaa47",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed-variant": "#3b475c",
+                    "on-secondary-fixed": "#2c1700",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed": "#101c2f",
+                    "on-tertiary-fixed-variant": "#00497c",
+                    "on-surface": "#081d2f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "sm": "8px",
+                    "topbar-height": "60px",
+                    "sidebar-width": "260px",
+                    "unit": "4px",
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "lg": "24px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "table-cell": ["Inter"],
+                    "body-medium": ["Inter"],
+                    "table-header": ["Inter"],
+                    "body-base": ["Inter"],
+                    "badge-label": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "kpi-stat": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-caps": ["Inter"]
+            },
+            "fontSize": {
+                    "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                    "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                    "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}],
+                    "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom scrollbar for high-density tables */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: theme('colors.surface-container-low'); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: theme('colors.outline-variant'); 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.outline'); 
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base text-body-base antialiased flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<nav class="bg-primary dark:bg-tertiary-container text-on-primary dark:text-on-tertiary-container font-body-medium text-body-medium w-sidebar-width h-screen fixed left-0 top-0 shadow-sm flex flex-col h-full py-lg z-40">
+<!-- Header -->
+<div class="px-lg mb-xl flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-container icon-fill">factory</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-primary m-0 p-0 tracking-tight">Industrial PEMS</h1>
+<p class="font-badge-label text-badge-label text-primary-fixed-dim uppercase opacity-80 mt-xs">VDR Management</p>
+</div>
+</div>
+<!-- Main Nav Tabs -->
+<div class="flex-1 px-sm">
+<ul class="flex flex-col gap-xs">
+<!-- Dashboard -->
+<li>
+<a class="flex items-center gap-md cursor-pointer text-on-primary-fixed-variant hover:text-on-primary px-md py-sm hover:bg-primary-container dark:hover:bg-surface-container-high transition-all rounded-lg mx-sm" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+</li>
+<!-- Engineering -->
+<li>
+<a class="flex items-center gap-md cursor-pointer text-on-primary-fixed-variant hover:text-on-primary px-md py-sm hover:bg-primary-container dark:hover:bg-surface-container-high transition-all rounded-lg mx-sm" href="#">
+<span class="material-symbols-outlined">engineering</span>
+<span>Engineering</span>
+</a>
+</li>
+<!-- Vendors -->
+<li>
+<a class="flex items-center gap-md cursor-pointer text-on-primary-fixed-variant hover:text-on-primary px-md py-sm hover:bg-primary-container dark:hover:bg-surface-container-high transition-all rounded-lg mx-sm" href="#">
+<span class="material-symbols-outlined">factory</span>
+<span>Vendors</span>
+</a>
+</li>
+<!-- Documents (ACTIVE) -->
+<li>
+<a class="flex items-center gap-md cursor-pointer bg-secondary-container text-on-secondary-container font-bold rounded-lg mx-sm px-md py-sm hover:bg-primary-container dark:hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined icon-fill">description</span>
+<span>Documents</span>
+</a>
+</li>
+<!-- Procurement -->
+<li>
+<a class="flex items-center gap-md cursor-pointer text-on-primary-fixed-variant hover:text-on-primary px-md py-sm hover:bg-primary-container dark:hover:bg-surface-container-high transition-all rounded-lg mx-sm" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span>Procurement</span>
+</a>
+</li>
+<!-- Settings -->
+<li>
+<a class="flex items-center gap-md cursor-pointer text-on-primary-fixed-variant hover:text-on-primary px-md py-sm hover:bg-primary-container dark:hover:bg-surface-container-high transition-all rounded-lg mx-sm" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</li>
+</ul>
+</div>
+<!-- CTA & Footer -->
+<div class="px-lg mt-auto">
+<button class="w-full bg-secondary-container hover:bg-secondary text-on-secondary-container hover:text-on-secondary font-body-medium py-sm px-md rounded-lg mb-lg transition-colors flex items-center justify-center gap-sm shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Document Package
+            </button>
+<ul class="flex flex-col gap-xs border-t border-primary-container pt-md">
+<li>
+<a class="flex items-center gap-md cursor-pointer text-on-primary-fixed-variant hover:text-on-primary px-md py-xs transition-all" href="#">
+<span class="material-symbols-outlined text-[18px]">support_agent</span>
+<span class="font-body-base text-[13px]">Support</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md cursor-pointer text-on-primary-fixed-variant hover:text-on-primary px-md py-xs transition-all" href="#">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+<span class="font-body-base text-[13px]">User Guide</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 ml-sidebar-width flex flex-col h-screen overflow-hidden bg-background">
+<!-- TopNavBar -->
+<header class="bg-surface-container-highest dark:bg-primary-container font-body-base text-body-base w-full h-topbar-height border-b border-outline-variant flex justify-between items-center px-lg sticky top-0 z-50">
+<!-- Left: Search / Brand text if needed -->
+<div class="flex items-center gap-md w-1/3">
+<div class="relative w-full max-w-sm">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg pl-xl pr-sm py-[6px] text-[13px] focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all" placeholder="Search VDRs, Tags, Documents..." type="text"/>
+</div>
+</div>
+<!-- Center: Product Name Anchor -->
+<div class="font-headline-md text-headline-md text-primary dark:text-on-primary-container font-extrabold tracking-tight">
+                PEMS Vendor Portal
+            </div>
+<!-- Right: Actions & Profile -->
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-xs border-r border-outline-variant pr-md mr-xs text-on-surface-variant">
+<button class="p-xs rounded-full hover:bg-surface-variant/50 transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-xs rounded-full hover:bg-surface-variant/50 transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">translate</span>
+</button>
+<button class="p-xs rounded-full hover:bg-surface-variant/50 transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+<div class="flex items-center gap-sm cursor-pointer hover:bg-surface-variant/50 transition-colors p-xs rounded-lg">
+<div class="text-right hidden md:block">
+<p class="font-body-medium text-body-medium text-on-surface m-0 leading-tight">Admin User</p>
+<p class="font-badge-label text-badge-label text-on-surface-variant m-0">Sign Out</p>
+</div>
+<img alt="User profile" class="w-8 h-8 rounded-full border border-outline-variant object-cover" data-alt="A small, professional headshot photo of an engineer in a hardhat, used as a user profile avatar in a digital interface. The lighting is bright and corporate." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEevNWV0P1XKT-cz7TsqgQq98_QTavimB0UePXlKvgwUXk03YhVEtG8_0v8r-sS52-OP2H_ENlc_x6D5bBAyvHkWcbtUAh2SAdych1AmP1DO_WUsVMejowLTZKGvsOIX-8Q_ASVsg8hUsx1tL2-lt5ClWTwB4nvjq2U20SdlCheUKoHTqqkdSCyHXzhjHSxyXH2A-DJzJIigK29-ilCG5XWV6ufJXud_4gMJeeSFHeLSDg3IARNtE_"/>
+</div>
+</div>
+</header>
+<!-- Scrollable Workspace -->
+<main class="flex-1 overflow-y-auto p-lg flex flex-col gap-lg">
+<!-- Page Header -->
+<div class="flex justify-between items-end">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="font-badge-label text-badge-label text-on-surface-variant uppercase tracking-wider bg-surface-container-high px-sm py-[2px] rounded-sm">VDR-ST-2023-04A</span>
+<span class="font-badge-label text-badge-label text-primary bg-primary-fixed px-sm py-[2px] rounded-sm">Turbine Systems</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-background flex items-center gap-md">
+                        VDR Package Detail <span class="text-outline font-light text-[20px]">|</span> <span class="font-headline-lg text-headline-lg" dir="rtl">جزئیات بسته اسناد فروشنده</span>
+</h2>
+</div>
+<div class="flex gap-sm">
+<button class="bg-surface-container-lowest border border-outline-variant text-on-surface hover:border-secondary hover:text-secondary font-body-medium py-[6px] px-md rounded flex items-center gap-xs transition-colors shadow-sm text-[13px]">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Export Register
+                    </button>
+<button class="bg-secondary text-on-secondary hover:bg-secondary-container hover:text-on-secondary-container font-body-medium py-[6px] px-md rounded flex items-center gap-xs transition-colors shadow-sm text-[13px]">
+<span class="material-symbols-outlined text-[18px]">upload</span>
+                        Submit Transmittal
+                    </button>
+</div>
+</div>
+<!-- Top Bento Grid: Info & Workflow -->
+<div class="grid grid-cols-12 gap-lg">
+<!-- Package Info Card -->
+<div class="col-span-12 xl:col-span-5 bg-surface-container-lowest border border-outline-variant rounded-lg p-md shadow-sm relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary-container"></div>
+<h3 class="font-body-medium text-body-medium text-on-surface border-b border-outline-variant pb-xs mb-sm flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">info</span>
+                        Package Information
+                    </h3>
+<div class="grid grid-cols-2 gap-y-sm gap-x-md">
+<div>
+<p class="font-badge-label text-badge-label text-on-surface-variant uppercase mb-[2px]">Vendor Name</p>
+<p class="font-body-medium text-table-cell text-on-surface">Siemens Energy AG</p>
+</div>
+<div>
+<p class="font-badge-label text-badge-label text-on-surface-variant uppercase mb-[2px]">PO Number</p>
+<p class="font-body-base text-table-cell text-on-surface font-mono">PO-4911-M-002</p>
+</div>
+<div>
+<p class="font-badge-label text-badge-label text-on-surface-variant uppercase mb-[2px]">Lead Engineer</p>
+<div class="flex items-center gap-xs">
+<div class="w-5 h-5 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center font-badge-label text-[10px]">M.A</div>
+<p class="font-body-base text-table-cell text-on-surface">Markus Aurelius</p>
+</div>
+</div>
+<div>
+<p class="font-badge-label text-badge-label text-on-surface-variant uppercase mb-[2px]">Contract Type</p>
+<p class="font-body-base text-table-cell text-on-surface">Lump Sum Turnkey (LSTK)</p>
+</div>
+</div>
+</div>
+<!-- Workflow Tracker -->
+<div class="col-span-12 xl:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-lg p-md shadow-sm">
+<h3 class="font-body-medium text-body-medium text-on-surface border-b border-outline-variant pb-xs mb-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">timeline</span>
+                        VDR Lifecycle Workflow
+                    </h3>
+<div class="flex items-center justify-between px-md pt-sm">
+<!-- Step 1 -->
+<div class="flex flex-col items-center relative z-10 w-1/4">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center mb-xs shadow-sm ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<p class="font-badge-label text-badge-label text-on-surface font-bold text-center">Planned</p>
+<p class="font-table-cell text-[11px] text-on-surface-variant text-center">Aug 15, 2023</p>
+</div>
+<!-- Connector -->
+<div class="flex-1 h-[2px] bg-primary -mt-6 z-0"></div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center relative z-10 w-1/4">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center mb-xs shadow-sm ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<p class="font-badge-label text-badge-label text-on-surface font-bold text-center">Submitted</p>
+<p class="font-table-cell text-[11px] text-on-surface-variant text-center">Sep 02, 2023</p>
+</div>
+<!-- Connector -->
+<div class="flex-1 h-[2px] bg-secondary-container -mt-6 z-0"></div>
+<!-- Step 3 (Active) -->
+<div class="flex flex-col items-center relative z-10 w-1/4">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mb-xs shadow-sm ring-4 ring-secondary-fixed-dim/30 animate-pulse">
+<span class="material-symbols-outlined text-[16px]">rate_review</span>
+</div>
+<p class="font-badge-label text-badge-label text-on-surface font-bold text-center">Review In Progress</p>
+<p class="font-table-cell text-[11px] text-secondary text-center">Due: Oct 10, 2023</p>
+</div>
+<!-- Connector -->
+<div class="flex-1 h-[2px] bg-outline-variant -mt-6 z-0"></div>
+<!-- Step 4 -->
+<div class="flex flex-col items-center relative z-10 w-1/4 opacity-50">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant text-on-surface-variant flex items-center justify-center mb-xs ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]">task_alt</span>
+</div>
+<p class="font-badge-label text-badge-label text-on-surface font-bold text-center">Finalized</p>
+<p class="font-table-cell text-[11px] text-on-surface-variant text-center">Pending</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Area: Table & Comments Grid -->
+<div class="flex-1 grid grid-cols-12 gap-lg min-h-[400px]">
+<!-- Main Data Table -->
+<div class="col-span-12 xl:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-lg flex flex-col shadow-sm overflow-hidden">
+<div class="p-sm border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">list_alt</span>
+<h3 class="font-body-medium text-body-medium text-on-surface">Document Register</h3>
+</div>
+<div class="flex gap-xs">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[16px]">filter_list</span>
+<select class="pl-xl pr-md py-xs bg-surface-container-lowest border border-outline-variant rounded text-[12px] font-body-base focus:border-secondary focus:ring-0">
+<option>All Statuses</option>
+<option>Review Class 1</option>
+<option>Approved</option>
+</select>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-auto">
+<table class="w-full text-left border-collapse whitespace-nowrap">
+<thead class="sticky top-0 bg-surface-container-low z-10 shadow-[0_1px_0_theme('colors.outline-variant')]">
+<tr>
+<th class="px-md py-sm font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Doc Code <br/><span class="text-[9px] text-outline" dir="rtl">کد سند</span></th>
+<th class="px-md py-sm font-table-header text-table-header text-on-surface-variant uppercase tracking-wider w-full">Title <br/><span class="text-[9px] text-outline" dir="rtl">عنوان</span></th>
+<th class="px-md py-sm font-table-header text-table-header text-on-surface-variant uppercase tracking-wider text-center">Rev <br/><span class="text-[9px] text-outline" dir="rtl">ویرایش</span></th>
+<th class="px-md py-sm font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Planned / Actual</th>
+<th class="px-md py-sm font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="px-md py-sm font-table-header text-table-header text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface divide-y divide-surface-container-highest">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-variant/30 transition-colors group">
+<td class="px-md py-sm font-mono text-[12px] font-semibold text-primary">SE-TUR-MECH-001</td>
+<td class="px-md py-sm">
+<p class="truncate max-w-[200px] 2xl:max-w-[300px]" title="General Arrangement Drawing - Turbine Enclosure">General Arrangement Drawing - Turbine Enclosure</p>
+</td>
+<td class="px-md py-sm text-center font-mono">02</td>
+<td class="px-md py-sm text-[12px]">
+<div class="text-on-surface-variant">2023-10-15</div>
+<div class="text-on-surface">2023-10-18</div>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full font-badge-label text-[10px] bg-primary-fixed text-on-primary-fixed-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                            Approved w/ Comments
+                                        </span>
+</td>
+<td class="px-md py-sm text-right">
+<div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded bg-surface-container hover:bg-surface-variant flex items-center justify-center text-on-surface border border-outline-variant transition-colors" title="Download Current Rev">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+<button class="w-8 h-8 rounded bg-surface-container hover:bg-surface-variant flex items-center justify-center text-on-surface border border-outline-variant transition-colors" title="Upload New Rev">
+<span class="material-symbols-outlined text-[18px]">upload_file</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 (Active/Focus context) -->
+<tr class="bg-secondary-fixed/10 hover:bg-secondary-fixed/20 transition-colors border-l-2 border-l-secondary group relative">
+<td class="px-md py-sm font-mono text-[12px] font-semibold text-primary">SE-TUR-ELEC-045</td>
+<td class="px-md py-sm">
+<p class="truncate max-w-[200px] 2xl:max-w-[300px] font-medium" title="Terminal Box Wiring Diagram">Terminal Box Wiring Diagram</p>
+</td>
+<td class="px-md py-sm text-center font-mono">01</td>
+<td class="px-md py-sm text-[12px]">
+<div class="text-on-surface-variant">2023-11-01</div>
+<div class="text-secondary font-medium">Pending</div>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full font-badge-label text-[10px] bg-secondary-container text-on-secondary-container">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                            Review Class 1
+                                        </span>
+</td>
+<td class="px-md py-sm text-right">
+<div class="flex items-center justify-end gap-xs opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded bg-surface-container hover:bg-surface-variant flex items-center justify-center text-on-surface border border-outline-variant transition-colors" title="Download Current Rev">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+<button class="w-8 h-8 rounded bg-secondary hover:bg-secondary-container text-on-secondary hover:text-on-secondary-container flex items-center justify-center transition-colors shadow-sm" title="Action Required">
+<span class="material-symbols-outlined text-[18px]">rule</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-variant/30 transition-colors group">
+<td class="px-md py-sm font-mono text-[12px] font-semibold text-on-surface-variant">SE-TUR-CIV-012</td>
+<td class="px-md py-sm text-on-surface-variant">
+<p class="truncate max-w-[200px] 2xl:max-w-[300px]" title="Foundation Specifications &amp; Loading Data">Foundation Specifications &amp; Loading Data</p>
+</td>
+<td class="px-md py-sm text-center font-mono text-on-surface-variant">0A</td>
+<td class="px-md py-sm text-[12px]">
+<div class="text-on-surface-variant">2023-11-15</div>
+<div class="text-outline">-</div>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded-full font-badge-label text-[10px] bg-surface-variant text-on-surface-variant border border-outline-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                                            Not Submitted
+                                        </span>
+</td>
+<td class="px-md py-sm text-right">
+<div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded bg-surface-container hover:bg-surface-variant flex items-center justify-center text-on-surface border border-outline-variant transition-colors" title="Upload Initial Rev">
+<span class="material-symbols-outlined text-[18px]">upload_file</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Dummy Rows for density -->
+<tr class="hover:bg-surface-variant/30 transition-colors group">
+<td class="px-md py-sm font-mono text-[12px] font-semibold text-primary">SE-TUR-MECH-002</td>
+<td class="px-md py-sm"><p class="truncate max-w-[200px]">Lube Oil Skid Assembly</p></td>
+<td class="px-md py-sm text-center font-mono">03</td>
+<td class="px-md py-sm text-[12px]"><div class="text-on-surface-variant">2023-09-20</div><div class="text-on-surface">2023-09-22</div></td>
+<td class="px-md py-sm"><span class="inline-flex items-center gap-xs px-2 py-1 rounded-full font-badge-label text-[10px] bg-surface-container-high text-on-surface border border-outline-variant"><span class="w-1.5 h-1.5 rounded-full bg-surface-tint"></span>Approved</span></td>
+<td class="px-md py-sm text-right"></td>
+</tr>
+<tr class="hover:bg-surface-variant/30 transition-colors group">
+<td class="px-md py-sm font-mono text-[12px] font-semibold text-primary">SE-TUR-INST-101</td>
+<td class="px-md py-sm"><p class="truncate max-w-[200px]">Instrument Index &amp; I/O List</p></td>
+<td class="px-md py-sm text-center font-mono">01</td>
+<td class="px-md py-sm text-[12px]"><div class="text-on-surface-variant">2023-10-25</div><div class="text-on-surface">2023-10-26</div></td>
+<td class="px-md py-sm"><span class="inline-flex items-center gap-xs px-2 py-1 rounded-full font-badge-label text-[10px] bg-primary-fixed text-on-primary-fixed-variant"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>Approved w/ Comments</span></td>
+<td class="px-md py-sm text-right"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination/Footer -->
+<div class="p-sm border-t border-outline-variant bg-surface-container-lowest flex justify-between items-center text-[12px] text-on-surface-variant font-body-base">
+<span>Showing 1 to 5 of 24 documents</span>
+<div class="flex items-center gap-xs">
+<button class="w-6 h-6 rounded flex items-center justify-center border border-outline-variant hover:bg-surface-variant disabled:opacity-50" disabled=""><span class="material-symbols-outlined text-[16px]">chevron_left</span></button>
+<span class="px-2">Page 1 of 5</span>
+<button class="w-6 h-6 rounded flex items-center justify-center border border-outline-variant hover:bg-surface-variant"><span class="material-symbols-outlined text-[16px]">chevron_right</span></button>
+</div>
+</div>
+</div>
+<!-- Discussion / Comments Panel -->
+<div class="col-span-12 xl:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-lg flex flex-col shadow-sm relative overflow-hidden">
+<!-- Panel Header -->
+<div class="p-md border-b border-outline-variant bg-surface-bright">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-body-medium text-body-medium text-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px] text-secondary">forum</span>
+                                Technical Query / Discussion
+                            </h3>
+<span class="bg-secondary-fixed text-on-secondary-fixed-variant font-badge-label text-[10px] px-2 py-0.5 rounded-full">Active</span>
+</div>
+<p class="font-body-base text-[12px] text-on-surface-variant leading-tight">Context: <span class="font-mono font-medium text-primary">SE-TUR-ELEC-045</span> (Rev 01)</p>
+</div>
+<!-- Chat Area -->
+<div class="flex-1 overflow-y-auto p-md flex flex-col gap-md bg-surface-container-lowest/50 relative">
+<!-- Date separator -->
+<div class="flex justify-center">
+<span class="text-[10px] font-badge-label text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">Today, 09:42 AM</span>
+</div>
+<!-- Vendor Message -->
+<div class="flex gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex-shrink-0 flex items-center justify-center overflow-hidden border border-outline-variant">
+<span class="material-symbols-outlined text-outline text-[18px]">factory</span>
+</div>
+<div class="flex flex-col gap-1 max-w-[85%]">
+<div class="flex items-baseline gap-2">
+<span class="font-body-medium text-[12px] text-on-surface">Hans Weber</span>
+<span class="font-body-base text-[10px] text-outline">Siemens</span>
+</div>
+<div class="bg-surface-container-low border border-outline-variant rounded-b-lg rounded-tr-lg p-sm text-[13px] font-body-base text-on-surface shadow-sm">
+<p class="m-0">Uploaded Rev 01 of the Wiring Diagram. Please note we had to adjust the main terminal box coordinates due to the updated civil foundation specs (CIV-012) you sent last week.</p>
+</div>
+</div>
+</div>
+<!-- PEMS Engineer Message -->
+<div class="flex gap-sm flex-row-reverse">
+<div class="w-8 h-8 rounded-full bg-primary flex-shrink-0 flex items-center justify-center overflow-hidden border border-primary-container">
+<span class="font-body-medium text-[12px] text-on-primary">MA</span>
+</div>
+<div class="flex flex-col gap-1 items-end max-w-[85%]">
+<div class="flex items-baseline gap-2 flex-row-reverse">
+<span class="font-body-medium text-[12px] text-on-surface">Markus Aurelius</span>
+<span class="font-body-base text-[10px] text-outline">PEMS</span>
+</div>
+<div class="bg-primary-fixed border border-primary-fixed-dim rounded-b-lg rounded-tl-lg p-sm text-[13px] font-body-base text-on-surface shadow-sm">
+<p class="m-0">Reviewing now. Did this coordinate shift impact the cable tray routing plan (ELEC-050)? If so, please expedite that revision as well.</p>
+<div class="mt-2 pt-2 border-t border-primary-fixed-dim/50 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px] text-primary">attachment</span>
+<a class="text-[11px] text-primary hover:underline" href="#">Site_Survey_Markup_v2.pdf</a>
+</div>
+</div>
+<span class="text-[9px] text-outline">Read 10:15 AM</span>
+</div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-sm border-t border-outline-variant bg-surface-bright flex items-end gap-xs">
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">attach_file</span>
+</button>
+<textarea class="flex-1 bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-sm text-[13px] font-body-base resize-none focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary min-h-[40px] max-h-[120px]" placeholder="Type your comment..." rows="1"></textarea>
+<button class="w-10 h-10 rounded-lg bg-secondary text-on-secondary flex items-center justify-center hover:bg-secondary-container transition-colors shadow-sm flex-shrink-0">
+<span class="material-symbols-outlined text-[18px] ml-1">send</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Review &amp; Submit - PEMS Field App</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Custom scrollbar for horizontal lists */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error-container": "#93000a",
+                      "secondary": "#895200",
+                      "tertiary-container": "#00213d",
+                      "on-background": "#081d2f",
+                      "error": "#ba1a1a",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "on-surface": "#081d2f",
+                      "error-container": "#ffdad6",
+                      "surface-container-high": "#daeaff",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "on-surface-variant": "#44474c",
+                      "secondary-container": "#fdaa47",
+                      "on-primary-container": "#7c889f",
+                      "secondary-fixed": "#ffdcbc",
+                      "inverse-surface": "#1f3245",
+                      "tertiary-fixed": "#d1e4ff",
+                      "inverse-primary": "#bbc7e0",
+                      "primary-fixed": "#d7e3fd",
+                      "on-secondary-fixed": "#2c1700",
+                      "background": "#f8f9ff",
+                      "primary": "#000819",
+                      "primary-container": "#142033",
+                      "on-tertiary-container": "#498bcd",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "on-secondary-container": "#6e4100",
+                      "surface-container-lowest": "#ffffff",
+                      "outline": "#75777d",
+                      "surface-variant": "#d0e4fe",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "on-primary": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed": "#101c2f",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "outline-variant": "#c5c6cd",
+                      "surface-dim": "#c8dcf5",
+                      "inverse-on-surface": "#e9f1ff",
+                      "surface-bright": "#f8f9ff",
+                      "surface-container": "#e4efff",
+                      "surface-container-low": "#eef4ff",
+                      "surface-tint": "#535f75",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "on-error": "#ffffff",
+                      "surface-container-highest": "#d0e4fe",
+                      "surface": "#f8f9ff",
+                      "on-tertiary-fixed": "#001d36",
+                      "tertiary": "#000815",
+                      "on-tertiary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "sm": "8px",
+                      "xl": "32px",
+                      "sidebar-width": "260px",
+                      "xs": "4px",
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "lg": "24px",
+                      "topbar-height": "60px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "table-cell": [
+                              "Inter"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "kpi-stat": [
+                              "Inter"
+                      ],
+                      "badge-label": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "body-medium": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "table-header": [
+                              "11.5px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-cell": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-base": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "kpi-stat": [
+                              "22px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "badge-label": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-medium": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background font-body-base min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-surface w-full top-0 sticky border-b border-outline-variant flex items-center justify-between px-md h-topbar-height z-50">
+<div class="flex items-center gap-md">
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors active:opacity-80 text-primary">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<h1 class="font-headline-md text-headline-md text-primary">Final Review</h1>
+<span class="font-badge-label text-badge-label text-on-surface-variant">بررسی نهایی</span>
+</div>
+</div>
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors active:opacity-80 text-primary">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</header>
+<main class="p-md max-w-3xl mx-auto space-y-lg">
+<!-- Summary Header -->
+<div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant shadow-sm flex items-center justify-between hover:border-secondary-container transition-colors">
+<div>
+<p class="font-table-header text-table-header text-on-surface-variant uppercase">Report ID / شناسه گزارش</p>
+<p class="font-headline-md text-headline-md font-mono mt-xs">RPT-2023-8991</p>
+</div>
+<div class="bg-surface-container-high px-3 py-1 rounded-full border border-outline-variant flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-on-surface-variant"></span>
+<span class="font-badge-label text-badge-label text-on-surface-variant uppercase">Draft / پیش‌نویس</span>
+</div>
+</div>
+<!-- Sections -->
+<div class="space-y-md">
+<!-- Incident Summary -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden group hover:border-secondary-container transition-colors">
+<div class="bg-surface-container-low px-md py-sm border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined">description</span>
+<h2 class="font-body-medium text-body-medium">Incident Summary <span class="text-on-surface-variant text-xs font-normal">/ خلاصه حادثه</span></h2>
+</div>
+<button class="text-secondary p-1 rounded hover:bg-surface-container-high"><span class="material-symbols-outlined text-sm">edit</span></button>
+</div>
+<div class="p-md grid grid-cols-2 gap-md">
+<div>
+<p class="font-table-header text-table-header text-on-surface-variant uppercase">Date &amp; Time / تاریخ و زمان</p>
+<p class="font-body-base text-body-base mt-xs">Oct 24, 2023 • 14:30 IRST</p>
+</div>
+<div>
+<p class="font-table-header text-table-header text-on-surface-variant uppercase">Priority / اولویت</p>
+<div class="inline-flex items-center gap-1 mt-xs bg-[#ffebee] text-[#c62828] px-2 py-0.5 rounded-full border border-[#ef9a9a]">
+<span class="material-symbols-outlined fill text-[14px]">error</span>
+<span class="font-badge-label text-badge-label">High / بالا</span>
+</div>
+</div>
+<div class="col-span-2">
+<p class="font-table-header text-table-header text-on-surface-variant uppercase">Description / شرح</p>
+<p class="font-body-base text-body-base mt-xs text-on-surface bg-surface-container-low p-sm rounded-lg border border-outline-variant">Main pipeline valve leak detected in Sector 4. Pressure dropping rapidly. Requires immediate seal replacement. / نشت شیر خط لوله اصلی در بخش 4 شناسایی شد. فشار به سرعت در حال کاهش است. نیاز به تعویض فوری آب‌بند دارد.</p>
+</div>
+</div>
+</section>
+<!-- Asset Details -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden group hover:border-secondary-container transition-colors">
+<div class="bg-surface-container-low px-md py-sm border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined">precision_manufacturing</span>
+<h2 class="font-body-medium text-body-medium">Asset Details <span class="text-on-surface-variant text-xs font-normal">/ جزئیات دارایی</span></h2>
+</div>
+<button class="text-secondary p-1 rounded hover:bg-surface-container-high"><span class="material-symbols-outlined text-sm">edit</span></button>
+</div>
+<div class="p-md flex items-start gap-md">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center border border-outline-variant text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+</div>
+<div class="grid grid-cols-2 gap-md flex-grow">
+<div class="col-span-2 sm:col-span-1">
+<p class="font-table-header text-table-header text-on-surface-variant uppercase">Tag Number / شماره برچسب</p>
+<p class="font-body-base text-body-base mt-xs font-mono">VLV-NG-883A</p>
+</div>
+<div class="col-span-2 sm:col-span-1">
+<p class="font-table-header text-table-header text-on-surface-variant uppercase">Name / نام</p>
+<p class="font-body-base text-body-base mt-xs">High-Pressure Gate Valve</p>
+</div>
+<div class="col-span-2">
+<p class="font-table-header text-table-header text-on-surface-variant uppercase">Department / بخش</p>
+<p class="font-body-base text-body-base mt-xs">Fluid Control / کنترل سیالات</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Location -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden group hover:border-secondary-container transition-colors">
+<div class="bg-surface-container-low px-md py-sm border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined">location_on</span>
+<h2 class="font-body-medium text-body-medium">Location <span class="text-on-surface-variant text-xs font-normal">/ موقعیت مکانی</span></h2>
+</div>
+<button class="text-secondary p-1 rounded hover:bg-surface-container-high"><span class="material-symbols-outlined text-sm">edit</span></button>
+</div>
+<div class="p-md space-y-sm">
+<div class="w-full h-32 rounded-lg overflow-hidden border border-outline-variant relative">
+<!-- Simulated Map -->
+<div class="absolute inset-0 bg-surface-dim flex items-center justify-center">
+<img class="object-cover w-full h-full opacity-80" data-alt="A static satellite map preview of an industrial plant showing pipelines and storage tanks in daylight. The UI style is clean, modern, and professional, using a slate and white palette with a stark industrial aesthetic. A subtle location pin is visible in the center. The mood is functional and data-driven." data-location="Industrial Plant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy-RTE2AEOJ4bATPyj-iBMRcPrs8a-AdDDzVX1q-f3ybvucbjT7R6tqOJARUghXps9cAVn3sucjhRBy_hN6-8f748Uz2Y4TUxinjn4Q4Sx1qC63ALZGt5mYBJA3eJm3NcI2-arIMLqw2saFMHmu9u_F-Aj9pll_jkAFkjmc9qWY6ay20FC0GmV6tDS7VLVBwvvDt60u2A7kiMmKT23dD7b0gCCGNQnMwfPN_50tSDuHnRa6jla8xBb"/>
+<div class="absolute w-4 h-4 bg-error rounded-full border-2 border-white shadow-sm flex items-center justify-center">
+<div class="w-1.5 h-1.5 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+<div>
+<p class="font-table-header text-table-header text-on-surface-variant uppercase">Coordinates / مختصات</p>
+<p class="font-body-base text-body-base mt-xs font-mono">35.6892° N, 51.3890° E</p>
+<p class="font-body-base text-body-base text-on-surface-variant mt-1 text-sm">Sector 4, Main Pipeline Corridor / بخش 4، راهرو خط لوله اصلی</p>
+</div>
+</div>
+</section>
+<!-- Evidence Collected -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden group hover:border-secondary-container transition-colors">
+<div class="bg-surface-container-low px-md py-sm border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined">perm_media</span>
+<h2 class="font-body-medium text-body-medium">Evidence Collected <span class="text-on-surface-variant text-xs font-normal">/ شواهد جمع‌آوری شده</span></h2>
+</div>
+<button class="text-secondary p-1 rounded hover:bg-surface-container-high"><span class="material-symbols-outlined text-sm">edit</span></button>
+</div>
+<div class="p-md space-y-md">
+<!-- Photos -->
+<div>
+<p class="font-table-header text-table-header text-on-surface-variant uppercase mb-sm">Photos / عکس‌ها (3)</p>
+<div class="flex gap-sm overflow-x-auto hide-scrollbar pb-1">
+<div class="w-20 h-20 shrink-0 rounded-lg border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up photo of an industrial pipe valve leaking liquid in a brightly lit industrial setting. High contrast, technical, documentary style photography suitable for engineering reports." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB86wNl7sijn12czcG9il3TqolJCDQEkFU1xpNWRKyPtWG4YIhYiKTmygJ5CYgP4pdAQPX9ZafgFH8Bu_ga11wPBHH4wq1vz0pSb-aguC8tYxuCJMg9bswM8FdufEcVxam72fptbwGv-t9ZM43u8_-qcfWm8hA-q4k4lcZXObTcpmnP_qTn_Vnv1ZLECp7D9gGt-DNdyzR3EzWHj9c46AojF54opRRCapb_zRpTHo-9jsJpGbeFm_7G"/>
+</div>
+<div class="w-20 h-20 shrink-0 rounded-lg border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Wide shot of an industrial pipeline sector in a modern factory setting, showing safety barriers. Clean, sharp, technical documentary style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxIuWsTYP1mjcQ_Zdp4SezyJfvsCfmPEt1KARM4bbjkY73TSBpwBaOrTXCmGvFti7PdImK9tPCl_jKJLI-tumVN_LQbXzb1gRWsB6BMyFSpY9L4AhbzsF8ny5ZuWm642ebGT6ETZi6MUWSUI_DJi9BkrxlMAtE0j7a14ICSEFdpsKTgXAst1X0gqoZlMPlN2AlY_1L9xiRSCkmSth-1cL1ed1L3MJjPMbNyUoSdhMq3hX9phVlNxDM"/>
+</div>
+<div class="w-20 h-20 shrink-0 rounded-lg border border-outline-variant overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="Close up of a pressure gauge on an industrial machine reading zero. Technical, sharp, high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAv_WJ2hHpNsOEW5aGrxihbSXKrMqPUlGBUl21HQ8wbngzbR-PwEoUMTryhAMpwSQz1WEAtZZZwiERqb0jniPfoovKaTENHVDkN3XXZi7H5xudYT35biUUueyWk8SUFxR7o9PylZA1oFm8YlAh3YmJEnt6kiwtCWpVOut6NS6aQTEON6pNRLe4LVRZWInb7LtCuPWhB09Th5cTGi8WzjqTgvlYhf4fhBnP26fFsJlFttAotp9MbMLY-"/>
+</div>
+</div>
+</div>
+<!-- Documents -->
+<div>
+<p class="font-table-header text-table-header text-on-surface-variant uppercase mb-sm">Documents / اسناد (1)</p>
+<div class="flex items-center gap-sm bg-surface-container-low p-sm rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-primary">picture_as_pdf</span>
+<div class="flex-grow">
+<p class="font-body-medium text-body-medium text-sm">Valve_Specs_v2.pdf</p>
+<p class="text-xs text-on-surface-variant">1.2 MB</p>
+</div>
+</div>
+</div>
+<!-- Voice Notes -->
+<div>
+<p class="font-table-header text-table-header text-on-surface-variant uppercase mb-sm">Voice Notes / یادداشت‌های صوتی (1)</p>
+<div class="flex items-center gap-sm bg-surface-container-low p-sm rounded-lg border border-outline-variant">
+<button class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm">play_arrow</span>
+</button>
+<div class="flex-grow h-2 bg-outline-variant rounded-full overflow-hidden">
+<div class="w-1/3 h-full bg-secondary rounded-full"></div>
+</div>
+<span class="font-body-medium text-body-medium text-sm">0:45</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Safety & PPE -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden group hover:border-secondary-container transition-colors">
+<div class="bg-surface-container-low px-md py-sm border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined">health_and_safety</span>
+<h2 class="font-body-medium text-body-medium">Safety &amp; PPE <span class="text-on-surface-variant text-xs font-normal">/ ایمنی و تجهیزات</span></h2>
+</div>
+<button class="text-secondary p-1 rounded hover:bg-surface-container-high"><span class="material-symbols-outlined text-sm">edit</span></button>
+</div>
+<div class="p-md">
+<div class="flex flex-wrap gap-2">
+<div class="bg-surface-dim border border-outline-variant rounded-full px-3 py-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+<span class="font-body-base text-body-base text-sm">Hard Hat / کلاه ایمنی</span>
+</div>
+<div class="bg-surface-dim border border-outline-variant rounded-full px-3 py-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+<span class="font-body-base text-body-base text-sm">Safety Glasses / عینک ایمنی</span>
+</div>
+<div class="bg-surface-dim border border-outline-variant rounded-full px-3 py-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+<span class="font-body-base text-body-base text-sm">Gloves / دستکش</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Acknowledgment -->
+<div class="bg-surface-container-low p-md rounded-xl border border-outline-variant flex items-start gap-sm mt-lg">
+<input class="mt-1 w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary focus:ring-offset-background bg-surface-container-lowest" id="ack" type="checkbox"/>
+<label class="font-body-base text-body-base text-sm cursor-pointer" for="ack">
+                I confirm that the information provided in this report is accurate and reflects the current state of the asset to the best of my knowledge.<br/>
+<span class="text-on-surface-variant">تأیید می‌کنم که اطلاعات ارائه‌شده در این گزارش دقیق است و تا حد امکان وضعیت فعلی دارایی را منعکس می‌کند.</span>
+</label>
+</div>
+</main>
+<!-- Bottom Action Area -->
+<div class="fixed bottom-0 left-0 w-full bg-surface-container-lowest border-t border-outline-variant p-md shadow-[0_-4px_20px_rgba(20,32,51,0.08)] z-40 md:relative md:bg-transparent md:border-none md:shadow-none md:p-0 md:mt-xl">
+<div class="max-w-3xl mx-auto flex flex-col sm:flex-row gap-sm">
+<button class="flex-1 bg-surface-container-lowest border border-outline-variant text-on-surface-variant py-3 px-4 rounded-lg font-body-medium text-body-medium hover:bg-surface-container-low transition-colors active:scale-[0.98]">
+                Save as Draft <span class="text-xs font-normal">/ ذخیره به عنوان پیش‌نویس</span>
+</button>
+<button class="flex-1 bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white py-3 px-4 rounded-lg font-body-medium text-body-medium hover:opacity-90 transition-opacity active:scale-[0.98] shadow-sm">
+                Submit Report <span class="text-xs font-normal opacity-80">/ ارسال گزارش</span>
+</button>
+</div>
+</div>
+</body></html>

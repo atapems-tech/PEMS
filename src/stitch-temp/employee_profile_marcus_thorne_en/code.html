@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Employee Profile - PEMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-dim": "#c8dcf5",
+                      "on-secondary-fixed": "#2c1700",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "on-primary-fixed": "#101c2f",
+                      "on-tertiary-container": "#498bcd",
+                      "surface-container": "#e4efff",
+                      "surface-tint": "#535f75",
+                      "inverse-on-surface": "#e9f1ff",
+                      "on-tertiary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "secondary-container": "#fdaa47",
+                      "tertiary": "#000815",
+                      "tertiary-container": "#00213d",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "inverse-surface": "#1f3245",
+                      "surface-container-high": "#daeaff",
+                      "surface-variant": "#d0e4fe",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "surface-container-low": "#eef4ff",
+                      "error": "#ba1a1a",
+                      "on-secondary": "#ffffff",
+                      "on-background": "#081d2f",
+                      "on-secondary-container": "#6e4100",
+                      "outline-variant": "#c5c6cd",
+                      "on-surface": "#081d2f",
+                      "on-primary": "#ffffff",
+                      "primary-container": "#142033",
+                      "tertiary-fixed": "#d1e4ff",
+                      "surface-bright": "#f8f9ff",
+                      "secondary": "#895200",
+                      "outline": "#75777d",
+                      "on-tertiary-fixed": "#001d36",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-highest": "#d0e4fe",
+                      "on-error": "#ffffff",
+                      "background": "#f8f9ff",
+                      "primary-fixed": "#d7e3fd",
+                      "on-error-container": "#93000a",
+                      "surface": "#f8f9ff",
+                      "secondary-fixed": "#ffdcbc",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "primary": "#000819",
+                      "on-surface-variant": "#44474c",
+                      "inverse-primary": "#bbc7e0",
+                      "on-primary-container": "#7c889f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "topbar-height": "60px",
+                      "lg": "24px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "xs": "4px",
+                      "sidebar-width": "260px",
+                      "xl": "32px",
+                      "gutter": "16px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "body-medium": [
+                              "Inter"
+                      ],
+                      "table-cell": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "badge-label": [
+                              "Inter"
+                      ],
+                      "kpi-stat": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-medium": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "table-cell": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-header": [
+                              "11.5px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-base": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "badge-label": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "kpi-stat": [
+                              "22px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Custom scrollbar for better appearance */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d0e4fe;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #1f3245;
+        }
+    </style>
+</head>
+<body class="bg-background dark:bg-primary text-on-surface dark:text-surface-container-lowest font-body-base h-screen overflow-hidden">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-full w-[260px] py-md fixed left-0 top-0 bg-primary dark:bg-primary-container shadow-sm z-20">
+<div class="px-md mb-xl flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-headline-md text-headline-md">
+                P
+            </div>
+<div>
+<h1 class="font-headline-md text-headline-md text-surface-container-lowest m-0 leading-tight">PEMS Enterprise</h1>
+<p class="font-body-medium text-body-medium text-on-primary-container m-0">Utility Operations</p>
+</div>
+</div>
+<div class="px-md mb-lg">
+<button class="w-full bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white font-body-medium text-body-medium py-2 rounded-lg flex items-center justify-center gap-sm shadow-sm hover:opacity-90 transition-opacity active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[20px]" data-weight="fill">add</span>
+                Log Work
+            </button>
+</div>
+<ul class="flex-1 flex flex-col gap-sm px-sm overflow-y-auto">
+<li>
+<a class="flex items-center gap-md text-on-primary-fixed-variant hover:text-surface-container-lowest px-4 py-3 rounded-DEFAULT hover:bg-primary-container dark:hover:bg-surface-variant/5 transition-colors font-body-medium text-body-medium active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+                    Dashboard
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md bg-surface-variant/10 text-secondary-fixed border-l-4 border-secondary-fixed px-4 py-3 rounded-DEFAULT font-body-medium text-body-medium active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-weight="fill">badge</span>
+                    Employees
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md text-on-primary-fixed-variant hover:text-surface-container-lowest px-4 py-3 rounded-DEFAULT hover:bg-primary-container dark:hover:bg-surface-variant/5 transition-colors font-body-medium text-body-medium active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">factory</span>
+                    Assets
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md text-on-primary-fixed-variant hover:text-surface-container-lowest px-4 py-3 rounded-DEFAULT hover:bg-primary-container dark:hover:bg-surface-variant/5 transition-colors font-body-medium text-body-medium active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">engineering</span>
+                    Work Orders
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md text-on-primary-fixed-variant hover:text-surface-container-lowest px-4 py-3 rounded-DEFAULT hover:bg-primary-container dark:hover:bg-surface-variant/5 transition-colors font-body-medium text-body-medium active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">safety_check</span>
+                    Safety
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md text-on-primary-fixed-variant hover:text-surface-container-lowest px-4 py-3 rounded-DEFAULT hover:bg-primary-container dark:hover:bg-surface-variant/5 transition-colors font-body-medium text-body-medium active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+                    Reports
+                </a>
+</li>
+</ul>
+<div class="mt-auto px-sm flex flex-col gap-sm pt-md border-t border-surface-variant/10">
+<a class="flex items-center gap-md text-on-primary-fixed-variant hover:text-surface-container-lowest px-4 py-3 rounded-DEFAULT hover:bg-primary-container dark:hover:bg-surface-variant/5 transition-colors font-body-medium text-body-medium active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-md text-on-primary-fixed-variant hover:text-surface-container-lowest px-4 py-3 rounded-DEFAULT hover:bg-primary-container dark:hover:bg-surface-variant/5 transition-colors font-body-medium text-body-medium active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">help</span>
+                Support
+            </a>
+</div>
+</nav>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-topbar-height bg-surface-bright dark:bg-surface-container-low border-b border-outline-variant/30 flex justify-between items-center px-lg z-10 transition-all">
+<div class="flex items-center flex-1 max-w-md relative focus-within:ring-2 focus-within:ring-secondary rounded-lg overflow-hidden">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full bg-surface-container dark:bg-primary-container border-none py-2 pl-10 pr-4 font-body-base text-body-base text-primary dark:text-primary-fixed focus:outline-none focus:ring-0" placeholder="Search..." type="text"/>
+</div>
+<div class="flex items-center gap-md">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-[24px]">apps</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden ml-sm cursor-pointer border border-outline-variant/30">
+<img alt="Employee Profile" class="w-full h-full object-cover" data-alt="A small, professional circular profile picture of an industrial manager wearing a hard hat, set against a clean, well-lit white background. The image has a modern, corporate look with high contrast and sharp focus, suitable for a sophisticated enterprise dashboard UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9njaD3NmryAI9qxorpw9ugZA-7x5ev9tGq4nEIJAaEPzU2o0V6vVnGaFkJJSXhaQ0LJ6WDDGaodDjz6c9MvcbhMH_cKzpFwjjDr5Mr-w4Zrzh2YmQ3oO8bkj5hPYm89Wud5b69u2Ar6Nh-xaO6mRrSwils979ussDZkiQDt4YCiTIP2UfLw7UbTodTHu6toMInug0ATXHxz28l0F_6EnMnqkvJZ3Dz9p04oKDz_YepA7ZX1ih6Yiu"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[260px] mt-topbar-height p-lg h-[calc(100vh-60px)] overflow-y-auto bg-surface dark:bg-primary">
+<div class="max-w-[1200px] mx-auto">
+<!-- Breadcrumb / Context Actions -->
+<div class="flex justify-between items-center mb-lg">
+<div class="flex items-center gap-sm text-on-surface-variant font-body-medium text-body-medium">
+<a class="hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Employees</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-primary dark:text-primary-fixed">Marcus Thorne</span>
+</div>
+</div>
+<!-- Profile Header Card (Glassmorphism/Bento style) -->
+<div class="bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant/30 shadow-sm p-lg mb-lg relative overflow-hidden flex flex-col md:flex-row gap-lg items-start">
+<!-- Subtle background decoration -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-secondary-container/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
+<div class="w-32 h-32 rounded-xl overflow-hidden border-2 border-surface dark:border-primary-container shadow-sm flex-shrink-0 z-10">
+<img alt="Marcus Thorne Profile" class="w-full h-full object-cover" data-alt="A professional headshot of an experienced plant engineer, Marcus Thorne. He is a middle-aged man with short, neat hair, wearing a clean, high-visibility vest over a slate-blue collared shirt. The background is a slightly blurred industrial facility with bright, cool lighting. The style is crisp, high-resolution corporate photography suitable for a modern enterprise portal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4JLxavNL2_socDHnJY8tiqyyv-NsYmiygMbs8lfV-WtObj1r26Q5OC2S9ZDBI_Qs_wP5WLc2hHplu5JlDWxJZKxJ6-a9UzRyAXQHHPJZhOX5597Pf-BgZGVIURN0GUFUqHAh6hVCSy2tonC4q42n6SYnOMHxD9nOgygQ_KnenKg2jKkhAQ2MOIiY-e_jk6ZP_s_FQpF8qaYbNOEloSWvuiZ11mBMEUYfuM4N02QBXVvr9mnypbcGD"/>
+</div>
+<div class="flex-1 z-10 flex flex-col justify-between h-full">
+<div>
+<div class="flex items-center gap-md mb-xs">
+<h2 class="font-headline-lg text-headline-lg text-on-surface dark:text-surface-container-lowest m-0">Marcus Thorne</h2>
+<span class="px-2 py-1 rounded-full bg-[#e8f5e9] dark:bg-[#1b5e20] text-[#2e7d32] dark:text-[#a5d6a7] font-badge-label text-badge-label inline-flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-current"></span>
+                                Active
+                            </span>
+</div>
+<p class="font-body-medium text-body-medium text-secondary dark:text-secondary-fixed-dim m-0 mb-sm">Senior Plant Engineer • Engineering</p>
+<p class="font-table-cell text-table-cell text-on-surface-variant font-mono">ID: EMP-2024-089</p>
+</div>
+<div class="flex gap-md mt-md">
+<button class="bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white font-body-medium text-body-medium px-4 py-2 rounded-lg flex items-center gap-sm shadow-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]" data-weight="fill">edit</span>
+                            Edit Profile
+                        </button>
+<button class="bg-surface-container-lowest dark:bg-primary-container text-on-surface-variant border border-outline-variant/50 font-body-medium text-body-medium px-4 py-2 rounded-lg flex items-center gap-sm hover:bg-surface-container-low dark:hover:bg-surface-variant/10 transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                            Download Resume
+                        </button>
+</div>
+</div>
+</div>
+<!-- Bento Grid Information Sections -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Employment Details -->
+<div class="bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant/30 shadow-sm p-lg lg:col-span-2 flex flex-col hover:border-secondary-fixed-dim/50 transition-colors">
+<h3 class="font-headline-md text-headline-md text-on-surface dark:text-surface-container-lowest mb-md flex items-center gap-sm border-b border-outline-variant/20 pb-sm">
+<span class="material-symbols-outlined text-secondary dark:text-secondary-fixed-dim text-[20px]">work</span>
+                        Employment Details
+                    </h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-y-md gap-x-lg mt-sm">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Role</p>
+<p class="font-body-medium text-body-medium text-on-surface dark:text-surface-container-lowest">Senior Plant Engineer</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Department</p>
+<p class="font-body-medium text-body-medium text-on-surface dark:text-surface-container-lowest">Engineering</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Manager</p>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-variant dark:bg-surface-tint flex items-center justify-center text-xs font-bold text-on-surface-variant">SJ</div>
+<a class="font-body-medium text-body-medium text-on-tertiary-container dark:text-tertiary-fixed-dim hover:underline" href="#">Sarah Jenkins</a>
+</div>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Hire Date</p>
+<p class="font-body-medium text-body-medium text-on-surface dark:text-surface-container-lowest">Oct 12, 2018</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Location</p>
+<p class="font-body-medium text-body-medium text-on-surface dark:text-surface-container-lowest flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">location_on</span>
+                                Site A - Main Hub
+                            </p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Shift</p>
+<p class="font-body-medium text-body-medium text-on-surface dark:text-surface-container-lowest flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">schedule</span>
+                                Day Shift (08:00 - 16:00)
+                            </p>
+</div>
+</div>
+</div>
+<!-- Safety & Health -->
+<div class="bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant/30 shadow-sm p-lg flex flex-col hover:border-secondary-fixed-dim/50 transition-colors">
+<h3 class="font-headline-md text-headline-md text-on-surface dark:text-surface-container-lowest mb-md flex items-center gap-sm border-b border-outline-variant/20 pb-sm">
+<span class="material-symbols-outlined text-secondary dark:text-secondary-fixed-dim text-[20px]">medical_services</span>
+                        Safety &amp; Health
+                    </h3>
+<div class="flex flex-col gap-md mt-sm">
+<div class="bg-surface-container-low dark:bg-surface-variant/5 p-sm rounded-lg border border-outline-variant/20">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Emergency Contact</p>
+<p class="font-body-medium text-body-medium text-on-surface dark:text-surface-container-lowest">Jane Thorne</p>
+<p class="font-table-cell text-table-cell text-on-surface-variant mt-1">+1 555-9876</p>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="bg-surface-container-low dark:bg-surface-variant/5 p-sm rounded-lg border border-outline-variant/20 text-center">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Blood Type</p>
+<p class="font-kpi-stat text-kpi-stat text-[#b71c1c] dark:text-[#ff8a80]">A+</p>
+</div>
+<div class="bg-surface-container-low dark:bg-surface-variant/5 p-sm rounded-lg border border-outline-variant/20 flex flex-col justify-center">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Conditions</p>
+<p class="font-body-medium text-body-medium text-on-surface dark:text-surface-container-lowest">None</p>
+</div>
+</div>
+<div class="bg-surface-container-low dark:bg-surface-variant/5 p-sm rounded-lg border border-outline-variant/20">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Allergies</p>
+<div class="flex gap-2 mt-1 flex-wrap">
+<span class="px-2 py-1 rounded-md bg-[#ffebee] dark:bg-[#4a0000] text-[#c62828] dark:text-[#ffcdd2] font-badge-label text-badge-label">Penicillin</span>
+<span class="px-2 py-1 rounded-md bg-[#ffebee] dark:bg-[#4a0000] text-[#c62828] dark:text-[#ffcdd2] font-badge-label text-badge-label">Latex</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Contact Information -->
+<div class="bg-surface-container-lowest dark:bg-primary-container rounded-xl border border-outline-variant/30 shadow-sm p-lg lg:col-span-3 flex flex-col hover:border-secondary-fixed-dim/50 transition-colors">
+<h3 class="font-headline-md text-headline-md text-on-surface dark:text-surface-container-lowest mb-md flex items-center gap-sm border-b border-outline-variant/20 pb-sm">
+<span class="material-symbols-outlined text-secondary dark:text-secondary-fixed-dim text-[20px]">contact_mail</span>
+                        Contact Information
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md mt-sm">
+<div class="flex items-start gap-md p-md rounded-lg bg-surface-bright dark:bg-surface-variant/5 border border-outline-variant/10">
+<div class="w-10 h-10 rounded-full bg-surface-container-high dark:bg-surface-tint/30 flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-[20px]">phone_iphone</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Mobile Phone</p>
+<p class="font-body-medium text-body-medium text-on-surface dark:text-surface-container-lowest font-mono">+1 555-0123</p>
+</div>
+</div>
+<div class="flex items-start gap-md p-md rounded-lg bg-surface-bright dark:bg-surface-variant/5 border border-outline-variant/10">
+<div class="w-10 h-10 rounded-full bg-surface-container-high dark:bg-surface-tint/30 flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+</div>
+<div class="overflow-hidden">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Work Email</p>
+<a class="font-body-medium text-body-medium text-on-tertiary-container dark:text-tertiary-fixed-dim hover:underline truncate block" href="mailto:m.thorne@utilitycorp.com">m.thorne@utilitycorp.com</a>
+</div>
+</div>
+<div class="flex items-start gap-md p-md rounded-lg bg-surface-bright dark:bg-surface-variant/5 border border-outline-variant/10">
+<div class="w-10 h-10 rounded-full bg-surface-container-high dark:bg-surface-tint/30 flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-[20px]">home_pin</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Home Address</p>
+<p class="font-body-medium text-body-medium text-on-surface dark:text-surface-container-lowest leading-snug">123 Industrial Rd, Suite 400<br/>Springfield, IL</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

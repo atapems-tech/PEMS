@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Upload Attachment";
+}
+
+
+<h2>
+Upload Document Attachment
+</h2>
+
+
+<form asp-action="UploadAttachment"
+      method="post"
+      enctype="multipart/form-data">
+
+
+    <input type="hidden"
+           name="documentId"
+           value="@ViewBag.DocumentId" />
+
+
+    <div class="mb-3">
+
+        <label>
+            Select File
+        </label>
+
+
+        <input type="file"
+               name="file"
+               class="form-control" />
+
+    </div>
+
+
+
+    <button type="submit"
+            class="btn btn-primary">
+
+        Upload
+
+    </button>
+
+
+</form>

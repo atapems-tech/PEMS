@@ -1,0 +1,103 @@
+﻿@model List<PEMS.Domain.Entities.EngineeringDocument>
+@{
+    var history = (List<PEMS.Domain.Entities.DocumentWorkflow>)ViewBag.History;
+}
+
+
+<div class="content-card mb-3">
+    <h6 class="mb-3">Pending Approval Queue</h6>
+
+    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise">
+            <thead>
+                <tr>
+                    <th>Document No</th>
+                    <th>Title</th>
+                    <th>Project</th>
+                    <th>Discipline</th>
+                    <th>Status</th>
+                    <th>Rev</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model)
+                {
+                    <tr>
+                        <td>@d.DocumentNo</td>
+                        <td>@d.Title</td>
+                        <td>@d.Project?.ProjectName</td>
+                        <td>@d.Discipline?.Name</td>
+                        <td><span class="badge badge-status-@d.Status">@d.Status</span></td>
+                        <td>@d.RevisionNo</td>
+                        <td class="text-end">
+                            @if (d.Status == "Submitted")
+                            {
+                                <form asp-action="Check" method="post" class="d-inline">
+                                    <input type="hidden" name="documentId" value="@d.DocumentId" />
+                                    <button class="btn btn-sm btn-info"><i class="bi bi-clipboard-check"></i> Check</button>
+                                </form>
+                                <form asp-action="Reject" method="post" class="d-inline">
+                                    <input type="hidden" name="documentId" value="@d.DocumentId" />
+                                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i> Reject</button>
+                                </form>
+                            }
+                            else if (d.Status == "Checked")
+                            {
+                                <form asp-action="Approve" method="post" class="d-inline">
+                                    <input type="hidden" name="documentId" value="@d.DocumentId" />
+                                    <button class="btn btn-sm btn-success"><i class="bi bi-check-lg"></i> Approve</button>
+                                </form>
+                                <form asp-action="Reject" method="post" class="d-inline">
+                                    <input type="hidden" name="documentId" value="@d.DocumentId" />
+                                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i> Reject</button>
+                                </form>
+                            }
+                            <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId"
+                               class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (!Model.Any())
+        {
+            <p class="text-muted text-center py-4">No documents are currently waiting for approval.</p>
+        }
+    </div>
+</div>
+
+<div class="content-card">
+    <h6 class="mb-3">Recent Workflow History</h6>
+
+    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise">
+            <thead>
+                <tr>
+                    <th>Document</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Action</th>
+                    <th>By</th>
+                    <th>Comment</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var h in history)
+                {
+                    <tr>
+                        <td>@h.Document?.DocumentNo</td>
+                        <td>@h.FromStatus</td>
+                        <td>@h.ToStatus</td>
+                        <td>@h.ActionType</td>
+                        <td>@(h.ActionBy != null ? h.ActionBy.FirstName + " " + h.ActionBy.LastName : "-")</td>
+                        <td>@h.Comment</td>
+                        <td>@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

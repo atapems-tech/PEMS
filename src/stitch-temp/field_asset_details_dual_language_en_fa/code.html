@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FieldOps - Asset Details</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config from Brand Anchors -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#6e4100",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#d0e4fe",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "primary-container": "#142033",
+                        "on-primary-fixed": "#101c2f",
+                        "on-surface": "#081d2f",
+                        "inverse-primary": "#bbc7e0",
+                        "on-secondary-fixed": "#2c1700",
+                        "surface-container": "#e4efff",
+                        "primary": "#000819",
+                        "secondary": "#895200",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-tertiary-container": "#498bcd",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "tertiary-fixed": "#d1e4ff",
+                        "surface-variant": "#d0e4fe",
+                        "inverse-on-surface": "#e9f1ff",
+                        "surface-dim": "#c8dcf5",
+                        "outline-variant": "#c5c6cd",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "surface-tint": "#535f75",
+                        "on-surface-variant": "#44474c",
+                        "background": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "outline": "#75777d",
+                        "inverse-surface": "#1f3245",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#7c889f",
+                        "secondary-container": "#fdaa47",
+                        "surface": "#f8f9ff",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container-low": "#eef4ff",
+                        "tertiary": "#000815",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "tertiary-container": "#00213d",
+                        "surface-container-high": "#daeaff",
+                        "primary-fixed": "#d7e3fd",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "on-background": "#081d2f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sidebar-width": "260px",
+                        "sm": "8px",
+                        "topbar-height": "60px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "table-header": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-base": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto+Mono:wght@400;600&display=swap');
+        .registry-mono { font-family: 'Roboto Mono', monospace; }
+        
+        /* Custom Button Gradients */
+        .btn-primary { background: linear-gradient(180deg, #d98c2b 0%, #b8721e 100%); }
+        .btn-primary:hover { opacity: 0.9; }
+        
+        /* Hide scrollbar for tabs */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased flex flex-col min-h-screen">
+<!-- TopAppBar (Transactional - Hidden or Back Navigation only) -->
+<header class="w-full top-0 sticky bg-surface border-b border-outline-variant flat no shadows flex items-center justify-between px-md h-topbar-height w-full z-40">
+<div class="flex items-center gap-md">
+<button class="text-primary hover:bg-surface-container-high transition-colors p-2 rounded-full active:opacity-80">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">Asset Details</h1>
+</div>
+<div class="flex items-center gap-sm">
+<!-- Language Toggle (EN/FA) -->
+<button class="px-2 py-1 text-label-caps font-label-caps border border-outline-variant rounded bg-surface text-on-surface-variant hover:bg-surface-container-high">EN / FA</button>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow p-gutter flex flex-col gap-lg md:max-w-3xl md:mx-auto md:w-full pb-[100px]">
+<!-- Header & Status (Bento Style) -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant p-md flex flex-col md:flex-row gap-md items-start justify-between relative overflow-hidden">
+<!-- Decorative accent line -->
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-[#4ade80]"></div>
+<div class="flex flex-col gap-xs ml-sm z-10">
+<div class="flex items-center gap-sm">
+<span class="registry-mono text-table-cell text-on-surface-variant">ID: PMP-782-B</span>
+<span class="px-2 py-0.5 rounded-full bg-[#dcfce7] text-[#166534] font-badge-label text-badge-label border border-[#86efac]">Active</span>
+</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Centrifugal Feed Pump</h2>
+<p class="font-body-base text-body-base text-on-surface-variant">Station 4, Sector G</p>
+</div>
+<!-- Contextual Actions -->
+<div class="flex gap-sm w-full md:w-auto z-10">
+<button class="flex-1 md:flex-none flex items-center justify-center gap-sm px-4 py-2 bg-surface border border-outline-variant rounded-lg text-on-surface-variant hover:border-secondary transition-colors font-body-medium text-body-medium">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                    Request Manual
+                </button>
+</div>
+</div>
+<!-- Touch Friendly Tabs -->
+<div class="w-full border-b border-outline-variant overflow-x-auto no-scrollbar">
+<div class="flex gap-md min-w-max px-sm">
+<button class="pb-2 border-b-2 border-secondary text-primary font-body-medium text-body-medium px-2">Key Specs</button>
+<button class="pb-2 border-b-2 border-transparent text-on-surface-variant hover:text-primary font-body-base text-body-base px-2">Maintenance History</button>
+<button class="pb-2 border-b-2 border-transparent text-on-surface-variant hover:text-primary font-body-base text-body-base px-2">Parts &amp; Inventory</button>
+<button class="pb-2 border-b-2 border-transparent text-on-surface-variant hover:text-primary font-body-base text-body-base px-2">Telemetry</button>
+</div>
+</div>
+<!-- Tab Content Area -->
+<div class="flex flex-col gap-md">
+<!-- Specs Grid (Glassmorphism-lite/Bento Grid) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md">
+<!-- Spec Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-sm flex flex-col gap-xs hover:border-secondary transition-colors">
+<div class="flex items-center gap-xs text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[16px]">speed</span>
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant">Flow Rate</span>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-primary">450 <span class="font-body-base text-body-base text-on-surface-variant">GPM</span></div>
+</div>
+<!-- Spec Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-sm flex flex-col gap-xs hover:border-secondary transition-colors">
+<div class="flex items-center gap-xs text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[16px]">thermostat</span>
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant">Max Temp</span>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-primary">180 <span class="font-body-base text-body-base text-on-surface-variant">°C</span></div>
+</div>
+<!-- Spec Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-sm flex flex-col gap-xs hover:border-secondary transition-colors">
+<div class="flex items-center gap-xs text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant">Power</span>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-primary">75 <span class="font-body-base text-body-base text-on-surface-variant">kW</span></div>
+</div>
+<!-- Spec Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-sm flex flex-col gap-xs hover:border-secondary transition-colors">
+<div class="flex items-center gap-xs text-on-surface-variant mb-1">
+<span class="material-symbols-outlined text-[16px]">settings</span>
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant">RPM</span>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-primary">2950</div>
+</div>
+</div>
+<!-- Maintenance History (Condensed List) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden mt-sm">
+<div class="bg-surface-container p-sm border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-table-header text-table-header text-on-surface uppercase">Recent Maintenance</h3>
+<button class="text-secondary font-label-caps text-label-caps flex items-center gap-unit">VIEW ALL <span class="material-symbols-outlined text-[14px]">chevron_right</span></button>
+</div>
+<div class="flex flex-col">
+<!-- History Item 1 -->
+<div class="flex items-start gap-md p-sm border-b border-outline-variant hover:bg-surface-container-low transition-colors">
+<div class="bg-surface-container-highest w-[32px] h-[32px] rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">build</span>
+</div>
+<div class="flex-grow flex flex-col">
+<div class="flex justify-between items-center w-full">
+<span class="font-body-medium text-body-medium text-primary">Seal Replacement</span>
+<span class="registry-mono text-table-cell text-on-surface-variant">Oct 12</span>
+</div>
+<span class="font-table-cell text-table-cell text-on-surface-variant mt-unit">Routine preventative maintenance.</span>
+</div>
+</div>
+<!-- History Item 2 -->
+<div class="flex items-start gap-md p-sm border-b border-outline-variant hover:bg-surface-container-low transition-colors">
+<div class="bg-error-container w-[32px] h-[32px] rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px] text-error">warning</span>
+</div>
+<div class="flex-grow flex flex-col">
+<div class="flex justify-between items-center w-full">
+<span class="font-body-medium text-body-medium text-primary">Vibration Anomaly</span>
+<span class="registry-mono text-table-cell text-on-surface-variant">Sep 28</span>
+</div>
+<span class="font-table-cell text-table-cell text-on-surface-variant mt-unit">Bearing housing recalibrated.</span>
+</div>
+</div>
+<!-- History Item 3 -->
+<div class="flex items-start gap-md p-sm hover:bg-surface-container-low transition-colors">
+<div class="bg-surface-container-highest w-[32px] h-[32px] rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">check_circle</span>
+</div>
+<div class="flex-grow flex flex-col">
+<div class="flex justify-between items-center w-full">
+<span class="font-body-medium text-body-medium text-primary">Quarterly Inspection</span>
+<span class="registry-mono text-table-cell text-on-surface-variant">Jul 05</span>
+</div>
+<span class="font-table-cell text-table-cell text-on-surface-variant mt-unit">All specs within operational limits.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Image / Blueprint area (using placeholder) -->
+<div class="w-full h-48 rounded-lg overflow-hidden border border-outline-variant relative mt-sm">
+<img class="w-full h-full object-cover" data-alt="A highly detailed, technical blueprint rendering of an industrial centrifugal pump on a dark slate background. The image should feature precise linework, engineering annotations in a small monospace font, and a modern industrial aesthetic. The color palette is dark, with sharp white lines and subtle industrial amber highlights indicating key functional areas." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLPvHFCT4j7VbkK7Qq-yTQn6ViNjVPcadDkPcQIHpzOc6SJ1KRvL3-XzZhTW_cUA_FU8XBmFYFm6YvgGP8TfHP4vZjetWeWa8K1Csw2LET_fUMKOYX6Ktu-gO46TZjntm2OebtU7XR9yiaLznV0PHwHGRvOi54TetZ4LjHOU8AGyeos4UDNDmkaKIv99Jfu_hTQaPYcWhdSCN6dabeCh0DUfrEWqMJmxf-EGtLWi-fbCkAZEGVvAty"/>
+<div class="absolute bottom-sm right-sm bg-surface-container-lowest border border-outline-variant rounded p-1 shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] block">fullscreen</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB / Floating Action Bar for "Report Incident" -->
+<!-- Positioned above bottom nav if present, or fixed bottom if not -->
+<div class="fixed bottom-0 md:bottom-lg left-0 w-full md:w-auto md:left-1/2 md:-translate-x-1/2 p-gutter bg-surface md:bg-transparent border-t md:border-none border-outline-variant z-50 flex justify-center">
+<button class="w-full md:w-[300px] btn-primary text-on-primary font-body-medium text-body-medium py-3 px-6 rounded-lg shadow-lg flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined" data-weight="fill">report_problem</span>
+            Report Incident
+        </button>
+</div>
+</body></html>

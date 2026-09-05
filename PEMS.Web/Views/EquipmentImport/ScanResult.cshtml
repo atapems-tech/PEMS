@@ -1,0 +1,77 @@
+﻿@model List<string>
+@{
+    var existingTags = (List<string>)ViewBag.ExistingTags;
+}
+
+<div class="content-card mb-3">
+    <h6 class="mb-2"><i class="bi bi-file-earmark-pdf"></i> Scan result: @ViewBag.FileName</h6>
+    <p class="text-muted small mb-0">
+        This is a best-effort scan for tag-number-looking text (e.g. 80-PSH-601305, 88-B-9001) -
+        it is <strong>not</strong> a full structured extraction like the Excel import. Only the tag
+        number is recognized; review the list below, select the real equipment tags, then fill in
+        the discipline. You'll need to edit each one afterward with the actual name/type/manufacturer.
+    </p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="content-card">
+        <p class="text-muted text-center py-4">No tag-like patterns were found in this PDF.</p>
+    </div>
+}
+else
+{
+    <div class="content-card">
+        <form asp-action="CreateFromTags" method="post">
+            <input type="hidden" name="projectId" value="@ViewBag.ProjectId" />
+
+            <div class="row g-2 align-items-end mb-3">
+                <div class="col-md-4">
+                    <label class="form-label small">Discipline for all selected tags</label>
+                    <select name="disciplineId" class="form-select form-select-sm" required id="scanDisciplineSelect">
+                        <option value="">-- select --</option>
+                        @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines)
+                        {
+                            <option value="@d.DisciplineId">@d.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-8 d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="selectAllTags">Select All</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="deselectAllTags">Deselect All</button>
+                    <button type="submit" class="btn btn-sm btn-pems-solid">Create Selected as Equipment</button>
+                </div>
+            </div>
+
+            <div class="table-scroll-area" style="max-height:60vh; overflow-y:auto;">
+                <div class="row g-1">
+                    @foreach (var tag in Model)
+                    {
+                        var alreadyExists = existingTags.Contains(tag.ToUpper());
+                        <div class="col-md-3 col-sm-4 col-6">
+                            <div class="form-check">
+                                <input class="form-check-input scan-tag-checkbox" type="checkbox" name="tags" value="@tag"
+                                       id="tag_@tag" checked="@(!alreadyExists)" disabled="@alreadyExists" />
+                                <label class="form-check-label small" for="tag_@tag">
+                                    @tag
+                                    @if (alreadyExists) { <span class="text-muted">(exists)</span> }
+                                </label>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        document.getElementById('selectAllTags')?.addEventListener('click', function () {
+            document.querySelectorAll('.scan-tag-checkbox:not(:disabled)').forEach(function (cb) { cb.checked = true; });
+        });
+        document.getElementById('deselectAllTags')?.addEventListener('click', function () {
+            document.querySelectorAll('.scan-tag-checkbox').forEach(function (cb) { cb.checked = false; });
+        });
+    </script>
+}

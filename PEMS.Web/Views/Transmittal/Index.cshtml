@@ -1,0 +1,57 @@
+﻿@model List<PEMS.Application.DTOs.TransmittalDto>
+
+
+<div class="content-card">
+    <div class="d-flex justify-content-end mb-3">
+        <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> New Transmittal</a>
+    </div>
+
+    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise">
+            <thead>
+                <tr>
+                    <th>Transmittal No</th>
+                    <th>Project</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Purpose</th>
+                    <th>Items</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model)
+                {
+                    <tr>
+                        <td>@t.TransmittalNo</td>
+                        <td>@t.ProjectName</td>
+                        <td>@t.From</td>
+                        <td>@t.To</td>
+                        <td>@t.Purpose</td>
+                        <td><span class="badge bg-secondary">@t.ItemsCount</span></td>
+                        <td>
+                            <span class="badge @(t.Status == "Sent" ? "bg-success" : t.Status == "Acknowledged" ? "bg-primary" : t.Status == "Cancelled" ? "bg-danger" : "bg-secondary")">@t.Status</span>
+                            @if (t.IsResponseOverdue)
+                            {
+                                <span class="badge bg-danger">response overdue</span>
+                            }
+                        </td>
+                        <td>@t.TransmittalDate.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@t.TransmittalId" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (!Model.Any())
+        {
+            <p class="text-muted text-center py-4">No transmittals have been created yet.</p>
+        }
+    </div>
+</div>

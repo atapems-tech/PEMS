@@ -1,0 +1,42 @@
+﻿@model PEMS.Web.Models.Account.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_AuthLayout";
+}
+
+<h2>Welcome back</h2>
+<p class="subtitle">Sign in to access the Engineering Command Center</p>
+
+<div asp-validation-summary="All" class="alert alert-danger py-2 px-3 small" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></div>
+
+<form asp-controller="Account" asp-action="Login" method="post">
+    <input type="hidden" asp-for="ReturnUrl" />
+
+    <div class="mb-3">
+        <label asp-for="UserName" class="form-label">Username</label>
+        <input asp-for="UserName" class="form-control" placeholder="e.g. admin" autofocus />
+        <span asp-validation-for="UserName" class="text-danger small"></span>
+    </div>
+
+    <div class="mb-2">
+        <label asp-for="Password" class="form-label">Password</label>
+        <input asp-for="Password" class="form-control" placeholder="••••••••" />
+        <span asp-validation-for="Password" class="text-danger small"></span>
+    </div>
+
+    <div class="form-check mb-3 mt-2">
+        <input asp-for="RememberMe" class="form-check-input" />
+        <label asp-for="RememberMe" class="form-check-label small">Remember Me</label>
+    </div>
+
+    <button type="submit" class="btn btn-pems">Sign In</button>
+
+    <div class="auth-links">
+        <a asp-action="ForgotPassword">Forgot Password?</a>
+        <span class="text-muted">PEMS v1.0</span>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

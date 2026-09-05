@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>3D Spare Parts Catalog - PEMS Security</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#101c2f",
+                        "surface-dim": "#c8dcf5",
+                        "primary-fixed": "#d7e3fd",
+                        "on-tertiary-container": "#498bcd",
+                        "on-secondary-container": "#6e4100",
+                        "surface-container-high": "#daeaff",
+                        "tertiary": "#000815",
+                        "secondary": "#895200",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-bright": "#f8f9ff",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#e4efff",
+                        "inverse-primary": "#bbc7e0",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "secondary-container": "#fdaa47",
+                        "surface-container-highest": "#d0e4fe",
+                        "outline-variant": "#c5c6cd",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-secondary-fixed": "#2c1700",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#7c889f",
+                        "on-background": "#081d2f",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "primary-container": "#142033",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#1f3245",
+                        "primary": "#000819",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#75777d",
+                        "on-surface": "#081d2f",
+                        "surface-tint": "#535f75",
+                        "surface-container-low": "#eef4ff",
+                        "on-surface-variant": "#44474c",
+                        "background": "#f8f9ff",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#d0e4fe",
+                        "inverse-on-surface": "#e9f1ff",
+                        "tertiary-container": "#00213d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "topbar-height": "60px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "sidebar-width": "260px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "table-cell": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "table-header": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-base": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-medium": ["Inter"]
+                    },
+                    "fontSize": {
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .industrial-gradient { background: linear-gradient(135deg, #d98c2b, #b8721e); }
+        .industrial-amber-text { color: #d98c2b; }
+        .focus-ring:focus-within { border-color: #d98c2b; box-shadow: 0 0 0 2px rgba(217, 140, 43, 0.2); }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased overflow-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-surface-container-high font-body-medium text-body-medium docked full-width top-0 border-b border-outline-variant dark:border-outline flat no shadows flex justify-between items-center w-full px-lg h-topbar-height z-50 sticky top-0">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary">PEMS Security</span>
+</div>
+<nav class="hidden md:flex items-center gap-xl h-full">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors scale-98 active:opacity-80 transition-all h-full flex items-center" href="#">Dashboard</a>
+<a class="text-primary dark:text-tertiary-fixed-dim border-b-2 border-secondary font-bold hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors scale-98 active:opacity-80 transition-all h-full flex items-center" href="#">Assets</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors scale-98 active:opacity-80 transition-all h-full flex items-center" href="#">Analytics</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors scale-98 active:opacity-80 transition-all h-full flex items-center" href="#">Logs</a>
+</nav>
+<div class="flex items-center gap-sm">
+<button class="p-sm text-on-surface-variant hover:text-secondary transition-colors"><span class="material-symbols-outlined" data-icon="language">language</span></button>
+<button class="p-sm text-on-surface-variant hover:text-secondary transition-colors"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
+<button class="p-sm text-on-surface-variant hover:text-secondary transition-colors"><span class="material-symbols-outlined" data-icon="settings">settings</span></button>
+<button class="px-md py-sm border border-outline-variant rounded-DEFAULT text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors font-body-medium text-body-medium ml-md hidden lg:block">Support</button>
+<button class="px-md py-sm industrial-gradient rounded-DEFAULT text-on-primary font-body-medium text-body-medium ml-sm hidden lg:block shadow-sm">Save Changes</button>
+<img alt="User Security Profile Avatar" class="w-8 h-8 rounded-full ml-sm object-cover border border-outline-variant" data-alt="A clean, professional headshot of a system administrator in a well-lit server room. High contrast, corporate modern style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_nNG75kxz6-OOrlgGl71F4EPJCJh3ma7OZMtfS-yiCdYayHivZ6EUtqeA453cqCP4epb66yGu7Tq5G9hJdX_7RM-eXRNoXqMQTcIS2BrQnTVb9uTWFA9mu5Y-QIhXYQpSy75GTI3__JXLR3rk4mXh-vQgSpC32k3-Dy0Ctvzw2gypAJVPveFso5Xd3IuaQ_fPW9JmNL2q-WIU-drXJzz3-6C-r_wEG814Q1mpma1MziPCTcXz5Hfp"/>
+</div>
+</header>
+<div class="flex h-[calc(100vh-60px)] w-full">
+<!-- SideNavBar -->
+<aside class="bg-inverse-surface dark:bg-primary-container font-body-base text-body-base docked h-screen w-sidebar-width left-0 shadow-sm transition-all duration-200 ease-in-out fixed md:relative left-0 top-0 h-full w-sidebar-width flex flex-col z-40 shrink-0 hidden md:flex">
+<div class="p-lg border-b border-surface-tint/20">
+<div class="flex items-center gap-md">
+<img alt="System Administrator Profile" class="w-10 h-10 rounded-lg object-cover bg-surface-tint/20" data-alt="A detailed, abstract geometric icon representing enterprise network security nodes connecting in a deep navy and slate color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3dHHN1miCmpnjowR6RzAZ3I_sB-HBMmHyHXodPHeshrxjO0r5dmpjszNbPYk5u5r0euGyqfndwSvBAr9M-Ra3erk1HxZae-4mt8Ce6LsZlDVWWHcCzlbWifW3HqFC8G4iDGV9bHnRVgk7mcdQ3y1K0bqIjZgZWevQtZhjJSn4IXOknxq4YVIUabkxYcd5F6rvA1MyR8jDLxYXDzcIWJCCoQSk9zD4DEqafkeMGmtR33whZDXNZu7c"/>
+<div>
+<h2 class="font-headline-md text-headline-md font-black text-on-primary">Admin Console</h2>
+<p class="text-on-primary-container text-[11px] uppercase tracking-wider">Enterprise Utility Control</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto py-md px-sm flex flex-col gap-unit">
+<a class="flex items-center gap-md px-md py-sm text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="shield">shield</span>
+<span>Security Overview</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="lock_person">lock_person</span>
+<span>Role &amp; Permissions</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span>Authentication</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-secondary dark:bg-secondary-container text-on-secondary dark:text-on-secondary-container font-bold rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="devices">devices</span>
+<span>Active Sessions</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span>Activity Audit</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+<span>System Preferences</span>
+</a>
+</nav>
+<div class="p-sm border-t border-surface-tint/20">
+<a class="flex items-center gap-md px-md py-sm text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="flex-1 flex flex-col min-w-0 bg-surface-container-low overflow-hidden relative">
+<!-- Page Header -->
+<div class="px-lg py-md border-b border-outline-variant bg-surface flex justify-between items-end shrink-0">
+<div>
+<div class="flex items-center gap-sm text-on-surface-variant mb-xs">
+<span class="font-label-caps text-label-caps uppercase">Equipment Registry</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="font-label-caps text-label-caps uppercase">PUMP-CX-902</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface flex items-center gap-md">
+                        Centrifugal Pump Assembly
+                        <span class="bg-[#eef4ff] text-[#00497c] px-sm py-xs rounded-full font-badge-label text-badge-label border border-[#c8dcf5]">Active</span>
+</h1>
+</div>
+<div class="flex items-center gap-md">
+<label class="flex items-center gap-sm cursor-pointer">
+<span class="font-body-medium text-body-medium text-on-surface-variant">FA</span>
+<div class="relative">
+<input class="sr-only" type="checkbox"/>
+<div class="block bg-outline-variant w-10 h-6 rounded-full transition-colors duration-300"></div>
+<div class="dot absolute left-1 top-1 bg-surface w-4 h-4 rounded-full transition-transform duration-300"></div>
+</div>
+<span class="font-body-medium text-body-medium text-on-surface font-bold">EN</span>
+</label>
+<button class="flex items-center gap-sm px-md py-sm border border-outline-variant rounded-lg text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors bg-surface">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-body-medium text-body-medium">Toggle Maint. History</span>
+</button>
+</div>
+</div>
+<!-- 3D Canvas Area -->
+<div class="flex-1 relative bg-surface-container-low overflow-hidden flex">
+<!-- Placeholder for 3D Viewer -->
+<div class="flex-1 relative w-full h-full flex items-center justify-center bg-[#f3f5f8]">
+<div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#1f3245 1px, transparent 1px); background-size: 20px 20px;"></div>
+<div class="text-center z-10 p-lg bg-surface/80 backdrop-blur-sm rounded-xl border border-outline-variant shadow-sm">
+<span class="material-symbols-outlined text-[48px] text-surface-tint mb-md block">view_in_ar</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Interactive 3D Assembly Viewer</h3>
+<p class="font-body-base text-body-base text-on-surface-variant max-w-md mx-auto">Select components directly on the 3D model to view detailed specifications, real-time inventory levels, and maintenance records.</p>
+<p class="font-body-base text-body-base text-on-surface-variant mt-sm italic text-[12px] opacity-70">Model: PUMP-CX-902_Exploded.obj loaded successfully.</p>
+</div>
+<!-- Highlight Overlays (Simulating Maint History) -->
+<div class="absolute top-[30%] left-[40%] w-32 h-32 border-2 border-[#ba1a1a] border-dashed rounded-full animate-pulse opacity-60 pointer-events-none"></div>
+<div class="absolute top-[30%] left-[40%] translate-x-32 translate-y-[-20px] bg-surface px-sm py-xs border border-[#ba1a1a] rounded text-[#ba1a1a] font-badge-label text-badge-label shadow-sm flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">warning</span> Replaced: 2 mos ago
+                    </div>
+<div class="absolute top-[50%] left-[60%] w-24 h-24 border-2 border-secondary border-dashed rounded-full animate-pulse opacity-60 pointer-events-none"></div>
+</div>
+<!-- Part Details Sidebar (Right) -->
+<div class="w-[340px] bg-surface border-l border-outline-variant h-full flex flex-col shrink-0 z-20 shadow-[-4px_0_20px_rgba(20,32,51,0.03)]">
+<!-- Sidebar Header -->
+<div class="p-md border-b border-outline-variant bg-[#f5f7fa]">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Selected Component</span>
+<button class="text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-xs">Impeller Shaft</h2>
+<div class="flex items-center gap-sm font-table-cell text-table-cell text-on-surface-variant font-mono">
+<span class="material-symbols-outlined text-[14px]">tag</span>
+                            PT-IS-449-B
+                        </div>
+</div>
+<!-- Sidebar Content -->
+<div class="flex-1 overflow-y-auto p-md flex flex-col gap-lg">
+<!-- Inventory Stats -->
+<div class="grid grid-cols-2 gap-md">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-sm">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-xs">In Stock</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">14<span class="text-table-cell font-normal text-on-surface-variant ml-xs">units</span></div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-sm">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Lead Time</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">3-5<span class="text-table-cell font-normal text-on-surface-variant ml-xs">days</span></div>
+</div>
+</div>
+<!-- Specifications -->
+<div>
+<h4 class="font-table-header text-table-header text-on-surface uppercase border-b border-outline-variant pb-xs mb-sm">Technical Specs</h4>
+<table class="w-full font-table-cell text-table-cell">
+<tbody class="divide-y divide-outline-variant/50">
+<tr>
+<td class="py-xs text-on-surface-variant w-[40%]">Material</td>
+<td class="py-xs text-on-surface text-right font-medium">Stainless Steel 316</td>
+</tr>
+<tr>
+<td class="py-xs text-on-surface-variant">Weight</td>
+<td class="py-xs text-on-surface text-right font-medium">4.2 kg</td>
+</tr>
+<tr>
+<td class="py-xs text-on-surface-variant">Tolerance</td>
+<td class="py-xs text-on-surface text-right font-medium">±0.05 mm</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Maintenance History Highlight -->
+<div class="bg-[#fff8f0] border border-[#ffdcbc] rounded-lg p-md">
+<div class="flex items-center gap-sm mb-sm text-secondary">
+<span class="material-symbols-outlined" data-icon="build">build</span>
+<h4 class="font-body-medium text-body-medium font-bold">Recent Maintenance</h4>
+</div>
+<p class="font-table-cell text-table-cell text-on-secondary-fixed mb-sm">Replaced across 3 pump units in the last 6 months due to seal wear.</p>
+<a class="font-table-cell text-table-cell text-secondary hover:underline font-medium flex items-center gap-xs" href="#">
+                                View Work Orders <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Sidebar Actions -->
+<div class="p-md border-t border-outline-variant bg-surface-container-lowest flex gap-sm">
+<button class="flex-1 py-sm border border-outline-variant rounded-DEFAULT text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors font-body-medium text-body-medium">
+                            Request Part
+                        </button>
+<button class="flex-1 py-sm industrial-gradient rounded-DEFAULT text-on-primary font-body-medium text-body-medium shadow-sm flex justify-center items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+                            Create PO
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

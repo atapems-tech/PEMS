@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS - System Settings</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#d7e3fd",
+                        "surface-container-highest": "#d0e4fe",
+                        "on-secondary-fixed": "#2c1700",
+                        "surface-dim": "#c8dcf5",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#d0e4fe",
+                        "inverse-on-surface": "#e9f1ff",
+                        "error-container": "#ffdad6",
+                        "on-background": "#081d2f",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "primary": "#000819",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#081d2f",
+                        "on-error": "#ffffff",
+                        "primary-container": "#142033",
+                        "inverse-surface": "#1f3245",
+                        "outline-variant": "#c5c6cd",
+                        "tertiary": "#000815",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "surface": "#f8f9ff",
+                        "secondary-container": "#fdaa47",
+                        "inverse-primary": "#bbc7e0",
+                        "on-surface-variant": "#44474c",
+                        "tertiary-container": "#00213d",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#895200",
+                        "on-primary-fixed": "#101c2f",
+                        "on-tertiary-container": "#498bcd",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "surface-tint": "#535f75",
+                        "outline": "#75777d",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#6e4100",
+                        "tertiary-fixed": "#d1e4ff",
+                        "background": "#f8f9ff",
+                        "surface-container-high": "#daeaff",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-primary-container": "#7c889f",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "surface-container-low": "#eef4ff",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-bright": "#f8f9ff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "surface-container": "#e4efff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "topbar-height": "60px",
+                        "sidebar-width": "260px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "gutter": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "headline-lg-mobile": ["Inter", "sans-serif"],
+                        "body-base": ["Inter", "sans-serif"],
+                        "label-caps": ["Inter", "sans-serif"],
+                        "badge-label": ["Inter", "sans-serif"],
+                        "table-header": ["Inter", "sans-serif"],
+                        "table-cell": ["Inter", "sans-serif"],
+                        "body-medium": ["Inter", "sans-serif"],
+                        "kpi-stat": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Base styles to ensure consistency with design system */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff; /* bg-background */
+            color: #081d2f; /* text-on-background */
+        }
+        /* Custom scrollbar for data tables */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f3f5f8; }
+        ::-webkit-scrollbar-thumb { background: #dde3ea; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c5c6cd; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex overflow-hidden">
+<!-- SideNavBar (Shared Component) -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width bg-primary dark:bg-primary-container shadow-md flex flex-col py-md border-r border-outline/20 z-50 transition-transform duration-200 ease-in-out md:translate-x-0 -translate-x-full">
+<!-- Brand Header -->
+<div class="px-md pb-md mb-md border-b border-white/10 flex items-center gap-sm">
+<div class="w-8 h-8 rounded bg-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-secondary-container text-sm font-bold" data-weight="fill" style="font-variation-settings: 'FILL' 1;">build</span>
+</div>
+<div>
+<div class="font-headline-lg text-[18px] font-bold text-on-primary leading-tight">PEMS Utility</div>
+<div class="font-body-base text-[11px] text-primary-fixed-dim">Management v2.4</div>
+</div>
+</div>
+<!-- Main Nav Tabs -->
+<nav class="flex-1 overflow-y-auto px-xs space-y-1">
+<a class="flex items-center gap-sm font-body-medium text-body-medium text-primary-fixed-dim hover:text-white mx-sm p-sm rounded hover:bg-white/10 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">badge</span>
+<span>Employee Management</span>
+</a>
+<a class="flex items-center gap-sm font-body-medium text-body-medium text-primary-fixed-dim hover:text-white mx-sm p-sm rounded hover:bg-white/10 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+<span>Asset Inventory</span>
+</a>
+<a class="flex items-center gap-sm font-body-medium text-body-medium text-primary-fixed-dim hover:text-white mx-sm p-sm rounded hover:bg-white/10 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">assignment</span>
+<span>Work Orders</span>
+</a>
+<a class="flex items-center gap-sm font-body-medium text-body-medium text-primary-fixed-dim hover:text-white mx-sm p-sm rounded hover:bg-white/10 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">security</span>
+<span>Safety</span>
+</a>
+<a class="flex items-center gap-sm font-body-medium text-body-medium text-primary-fixed-dim hover:text-white mx-sm p-sm rounded hover:bg-white/10 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+<span>Analytics</span>
+</a>
+</nav>
+<!-- Footer Nav Tabs -->
+<div class="px-xs pt-md border-t border-white/10 space-y-1 mt-auto">
+<!-- ACTIVE TAB -->
+<a class="flex items-center gap-sm font-body-medium text-body-medium bg-secondary-container text-on-secondary-container rounded-lg font-bold mx-sm p-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span>System Settings</span>
+</a>
+<a class="flex items-center gap-sm font-body-medium text-body-medium text-primary-fixed-dim hover:text-white mx-sm p-sm rounded hover:bg-white/10 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">help</span>
+<span>Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-sidebar-width flex flex-col h-screen overflow-hidden bg-background">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-surface-container dark:bg-surface-container-high docked full-width top-0 h-topbar-height border-b border-outline-variant dark:border-outline flat no shadows flex justify-between items-center w-full px-lg sticky z-50 shrink-0">
+<!-- Search Bar (on_left) -->
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant rounded-full px-md py-1.5 w-64 focus-within:border-secondary focus-within:ring-1 focus-within:ring-secondary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] mr-sm">search</span>
+<input class="bg-transparent border-none outline-none font-body-base text-body-base text-on-surface w-full placeholder:text-on-surface-variant/50 focus:ring-0 p-0 h-full" placeholder="Search / جستجو..." type="text"/>
+</div>
+<!-- Trailing Icons -->
+<div class="flex items-center gap-sm">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-variant/40 dark:hover:bg-primary-container/20 transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-variant/40 dark:hover:bg-primary-container/20 transition-colors active:scale-95 duration-150 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="h-6 w-[1px] bg-outline-variant/50 mx-sm"></div>
+<button class="flex items-center gap-sm text-on-surface hover:bg-surface-variant/40 dark:hover:bg-primary-container/20 px-sm py-1 rounded transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[24px] text-primary">account_circle</span>
+<div class="text-left hidden md:block">
+<div class="font-body-medium text-[12px] leading-tight">Admin User</div>
+<div class="font-body-base text-[10px] text-on-surface-variant">System Ops</div>
+</div>
+</button>
+</div>
+</header>
+<!-- Scrollable Page Content -->
+<div class="flex-1 overflow-y-auto p-lg">
+<!-- Page Header -->
+<div class="mb-lg flex justify-between items-end border-b border-outline-variant pb-md">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-background flex items-baseline gap-sm">
+                        System Settings 
+                        <span class="font-body-base text-on-surface-variant opacity-70 text-[18px] font-normal" dir="rtl">/ تنظیمات سیستم</span>
+</h1>
+<p class="font-body-base text-body-base text-on-surface-variant mt-xs">Manage platform preferences, regional formats, and operational parameters.</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-sm rounded border border-outline-variant font-body-medium text-body-medium text-on-surface hover:bg-surface-variant/30 transition-colors">
+                        Discard Changes
+                    </button>
+<button class="px-md py-sm rounded bg-secondary text-on-secondary font-body-medium text-body-medium hover:bg-secondary/90 transition-colors shadow-sm">
+                        Save Configuration
+                    </button>
+</div>
+</div>
+<!-- Settings Layout Grid -->
+<div class="flex gap-xl">
+<!-- Settings Vertical Nav -->
+<nav class="w-64 shrink-0 flex flex-col gap-1">
+<a class="flex flex-col px-md py-sm rounded border-l-2 border-transparent text-on-surface-variant hover:bg-surface-variant/30 transition-colors group" href="#">
+<span class="font-body-medium text-body-medium group-hover:text-primary transition-colors">General</span>
+<span class="font-body-base text-[11px] opacity-70" dir="rtl">عمومی</span>
+</a>
+<!-- ACTIVE SECTION TAB -->
+<a class="flex flex-col px-md py-sm rounded border-l-2 border-secondary bg-surface-container-highest text-primary font-bold shadow-sm relative" href="#">
+<span class="font-body-medium text-body-medium">Localization &amp; Language</span>
+<span class="font-body-base text-[11px] text-primary/80 font-normal mt-0.5" dir="rtl">بومی‌سازی و زبان</span>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-[18px] text-secondary">chevron_right</span>
+</a>
+<a class="flex flex-col px-md py-sm rounded border-l-2 border-transparent text-on-surface-variant hover:bg-surface-variant/30 transition-colors group" href="#">
+<span class="font-body-medium text-body-medium group-hover:text-primary transition-colors">Users &amp; Permissions</span>
+<span class="font-body-base text-[11px] opacity-70" dir="rtl">کاربران و دسترسی‌ها</span>
+</a>
+<a class="flex flex-col px-md py-sm rounded border-l-2 border-transparent text-on-surface-variant hover:bg-surface-variant/30 transition-colors group" href="#">
+<span class="font-body-medium text-body-medium group-hover:text-primary transition-colors">Notifications</span>
+<span class="font-body-base text-[11px] opacity-70" dir="rtl">اعلان‌ها</span>
+</a>
+<a class="flex flex-col px-md py-sm rounded border-l-2 border-transparent text-on-surface-variant hover:bg-surface-variant/30 transition-colors group" href="#">
+<span class="font-body-medium text-body-medium group-hover:text-primary transition-colors">Security</span>
+<span class="font-body-base text-[11px] opacity-70" dir="rtl">امنیت</span>
+</a>
+</nav>
+<!-- Active Section Content Area -->
+<div class="flex-1 flex flex-col gap-lg max-w-4xl">
+<!-- Localization Card -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden shadow-sm">
+<div class="bg-surface px-md py-sm border-b border-outline-variant flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary text-[20px]">translate</span>
+                                Regional Configuration <span class="text-on-surface-variant/50 text-[14px] font-normal" dir="rtl">/ تنظیمات منطقه‌ای</span>
+</h2>
+</div>
+<div class="p-lg grid grid-cols-2 gap-x-xl gap-y-lg">
+<!-- System Language -->
+<div class="col-span-2 md:col-span-1">
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs flex justify-between">
+<span>Primary Language</span>
+<span class="text-[11px] text-on-surface-variant" dir="rtl">زبان اصلی</span>
+</label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded p-sm font-body-base text-body-base text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary appearance-none transition-colors">
+<option value="en">English (US)</option>
+<option selected="" value="fa">Persian / فارسی</option>
+<option value="ar">Arabic / العربية</option>
+</select>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant pointer-events-none">arrow_drop_down</span>
+</div>
+<p class="font-body-base text-[11px] text-on-surface-variant mt-1">Defines the default interface language for all unstructured data views.</p>
+</div>
+<!-- Alternate Font Handling (Simulated) -->
+<div class="col-span-2 md:col-span-1">
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs flex justify-between">
+<span>Script Direction</span>
+<span class="text-[11px] text-on-surface-variant" dir="rtl">جهت متن</span>
+</label>
+<div class="flex bg-surface-container rounded border border-outline-variant p-1">
+<button class="flex-1 py-1 text-center font-body-medium text-[12px] text-on-surface-variant rounded hover:bg-surface-variant/50 transition-colors">LTR</button>
+<button class="flex-1 py-1 text-center font-body-medium text-[12px] bg-surface-container-lowest text-on-surface shadow-sm rounded border border-outline-variant/30">Auto (RTL/LTR)</button>
+</div>
+</div>
+<div class="col-span-2 h-[1px] bg-outline-variant/40 my-xs"></div>
+<!-- Date Format -->
+<div class="col-span-2 md:col-span-1">
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs flex justify-between">
+<span>Date Format</span>
+<span class="text-[11px] text-on-surface-variant" dir="rtl">فرمت تاریخ</span>
+</label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded p-sm font-body-base text-body-base text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary appearance-none transition-colors">
+<option value="iso">YYYY-MM-DD (ISO 8601)</option>
+<option value="us">MM/DD/YYYY</option>
+<option value="eu">DD/MM/YYYY</option>
+<option selected="" value="jalali">YYYY/MM/DD (Jalali / شمسی)</option>
+</select>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant pointer-events-none">arrow_drop_down</span>
+</div>
+</div>
+<!-- Time Format -->
+<div class="col-span-2 md:col-span-1">
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs flex justify-between">
+<span>Time Format</span>
+<span class="text-[11px] text-on-surface-variant" dir="rtl">فرمت زمان</span>
+</label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded p-sm font-body-base text-body-base text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary appearance-none transition-colors">
+<option selected="" value="24h">24-Hour (14:30)</option>
+<option value="12h">12-Hour (02:30 PM)</option>
+</select>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant pointer-events-none">arrow_drop_down</span>
+</div>
+</div>
+<div class="col-span-2 h-[1px] bg-outline-variant/40 my-xs"></div>
+<!-- Measurement Units -->
+<div class="col-span-2">
+<label class="block font-body-medium text-body-medium text-on-surface mb-xs flex justify-between w-1/2">
+<span>Measurement System</span>
+<span class="text-[11px] text-on-surface-variant" dir="rtl">سیستم اندازه‌گیری</span>
+</label>
+<div class="flex gap-sm items-center mt-sm">
+<label class="flex items-center gap-xs cursor-pointer">
+<input checked="" class="text-secondary focus:ring-secondary border-outline-variant" name="units" type="radio"/>
+<span class="font-body-base text-body-base text-on-surface">Metric (Celsius, Meters, Kg)</span>
+</label>
+<span class="text-outline-variant mx-sm">|</span>
+<label class="flex items-center gap-xs cursor-pointer">
+<input class="text-secondary focus:ring-secondary border-outline-variant" name="units" type="radio"/>
+<span class="font-body-base text-body-base text-on-surface">Imperial (Fahrenheit, Feet, Lbs)</span>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- Users & Permissions Mini-View -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden shadow-sm mt-md">
+<div class="bg-surface px-md py-sm border-b border-outline-variant flex justify-between items-center">
+<div>
+<h2 class="font-headline-md text-[16px] text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[18px]">group</span>
+                                    Regional Administrators 
+                                </h2>
+<span class="text-on-surface-variant text-[11px] block mt-0.5" dir="rtl">مدیران منطقه‌ای (نمای کلی)</span>
+</div>
+<button class="text-[12px] font-body-medium text-secondary hover:underline flex items-center gap-xs">
+                                Manage Full List <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[600px]">
+<thead>
+<tr class="bg-surface-container/50 border-b border-outline-variant">
+<th class="p-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">User / کاربر</th>
+<th class="p-sm font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Role / نقش</th>
+<th class="p-sm font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Region / منطقه</th>
+<th class="p-sm px-md text-right font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Status / وضعیت</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-variant/20 transition-colors">
+<td class="p-sm px-md">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs">AH</div>
+<div>
+<div class="font-body-medium text-body-medium text-on-surface">Amir Hesami</div>
+<div class="font-body-base text-[11px] text-on-surface-variant">amir.h@pems.corp</div>
+</div>
+</div>
+</td>
+<td class="p-sm font-body-base text-table-cell text-on-surface">Super Admin</td>
+<td class="p-sm font-body-base text-table-cell text-on-surface">Global / جهانی</td>
+<td class="p-sm px-md text-right">
+<span class="inline-flex bg-surface-dim text-on-surface border border-outline-variant/50 rounded-full px-sm py-0.5 font-badge-label text-[10px] uppercase">Active</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-variant/20 transition-colors">
+<td class="p-sm px-md">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center font-bold text-xs">SJ</div>
+<div>
+<div class="font-body-medium text-body-medium text-on-surface">Sarah Jenkins</div>
+<div class="font-body-base text-[11px] text-on-surface-variant">s.jenkins@pems.corp</div>
+</div>
+</div>
+</td>
+<td class="p-sm font-body-base text-table-cell text-on-surface">Regional Manager</td>
+<td class="p-sm font-body-base text-table-cell text-on-surface">EMEA / خاورمیانه</td>
+<td class="p-sm px-md text-right">
+<span class="inline-flex bg-surface-dim text-on-surface border border-outline-variant/50 rounded-full px-sm py-0.5 font-badge-label text-[10px] uppercase">Active</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</div>
+<!-- Padding for bottom scroll -->
+<div class="h-12 w-full"></div>
+</div>
+</main>
+</body></html>

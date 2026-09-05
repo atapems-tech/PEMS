@@ -1,0 +1,460 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Incident Report - Evidence Collection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#142033",
+                        "surface-bright": "#f8f9ff",
+                        "inverse-surface": "#1f3245",
+                        "outline-variant": "#c5c6cd",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#535f75",
+                        "primary-fixed": "#d7e3fd",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#bbc7e0",
+                        "on-surface": "#081d2f",
+                        "outline": "#75777d",
+                        "on-background": "#081d2f",
+                        "on-tertiary-container": "#498bcd",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#7c889f",
+                        "tertiary-fixed": "#d1e4ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "surface-container-highest": "#d0e4fe",
+                        "surface-dim": "#c8dcf5",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#d0e4fe",
+                        "tertiary": "#000815",
+                        "error-container": "#ffdad6",
+                        "secondary": "#895200",
+                        "surface-container-low": "#eef4ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "primary": "#000819",
+                        "inverse-on-surface": "#e9f1ff",
+                        "on-secondary-container": "#6e4100",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-container-high": "#daeaff",
+                        "on-secondary-fixed": "#2c1700",
+                        "secondary-container": "#fdaa47",
+                        "surface-container": "#e4efff",
+                        "background": "#f8f9ff",
+                        "on-surface-variant": "#44474c",
+                        "on-primary-fixed": "#101c2f",
+                        "tertiary-container": "#00213d",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "surface": "#f8f9ff",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-primary-fixed-variant": "#3b475c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "sidebar-width": "260px",
+                        "topbar-height": "60px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "table-header": ["Inter"],
+                        "body-base": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "badge-label": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .industrial-amber-gradient { background: linear-gradient(135deg, #d98c2b, #b8721e); }
+        .industrial-amber-border:hover { border-color: #d98c2b; background-color: rgba(31, 78, 120, 0.04); }
+        .focus-ring:focus { outline: none; border-color: #d98c2b; box-shadow: 0 0 0 3px rgba(217, 140, 43, 0.2); }
+        body { background-color: #f3f5f8; }
+        .card-surface { background-color: #ffffff; border: 1px solid #edf0f4; }
+    </style>
+</head>
+<body class="text-on-surface font-body-base h-screen flex flex-col antialiased">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky border-b border-outline-variant bg-surface h-topbar-height flex items-center justify-between px-md z-10 shrink-0">
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:bg-surface-container-high transition-colors p-sm rounded-full active:opacity-80">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+<div class="flex flex-col">
+<h1 class="font-headline-md text-headline-md text-primary">Incident Report</h1>
+<span class="font-label-caps text-label-caps text-on-surface-variant">گزارش حادثه</span>
+</div>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="font-body-medium text-body-medium">Step 2 of 3</span>
+<span class="material-symbols-outlined text-[20px]">assignment</span>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto w-full max-w-3xl mx-auto p-md md:p-lg pb-32">
+<!-- Progress Tracker -->
+<div class="mb-xl flex items-center justify-between relative">
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-outline-variant/30 -z-10 rounded-full"></div>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-1/2 h-1 industrial-amber-gradient -z-10 rounded-full"></div>
+<div class="flex flex-col items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-body-medium text-body-medium shadow-md">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="text-center">
+<span class="font-label-caps text-label-caps text-on-surface block">Basic Info</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-[9px] block">اطلاعات اولیه</span>
+</div>
+</div>
+<div class="flex flex-col items-center gap-sm">
+<div class="w-8 h-8 rounded-full industrial-amber-gradient text-white flex items-center justify-center font-body-medium text-body-medium shadow-md ring-4 ring-surface">
+                    2
+                </div>
+<div class="text-center">
+<span class="font-label-caps text-label-caps text-primary font-bold block">Evidence</span>
+<span class="font-label-caps text-label-caps text-secondary text-[9px] block">مدارک</span>
+</div>
+</div>
+<div class="flex flex-col items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-body-medium text-body-medium border border-outline-variant shadow-sm bg-white">
+                    3
+                </div>
+<div class="text-center opacity-60">
+<span class="font-label-caps text-label-caps text-on-surface-variant block">Review</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-[9px] block">بازبینی</span>
+</div>
+</div>
+</div>
+<div class="mb-lg">
+<h2 class="font-headline-md text-headline-md text-primary mb-xs">Evidence Collection</h2>
+<p class="font-body-base text-body-base text-on-surface-variant">Attach media, voice notes, and documents related to the incident.</p>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm mt-1" dir="rtl">لطفاً رسانه‌ها، یادداشت‌های صوتی و اسناد مربوط به حادثه را پیوست کنید.</p>
+</div>
+<!-- Attachment Categories (Bento Grid Style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md mb-xl"><div class="card-surface rounded-xl p-md flex flex-col h-full md:col-span-2 hover:shadow-md transition-shadow">
+  <div class="flex justify-between items-start mb-md">
+    <div>
+      <h3 class="font-body-medium text-body-medium text-on-surface flex items-center gap-sm">
+        <span class="material-symbols-outlined text-secondary">category</span>
+        Asset Category
+      </h3>
+      <span class="font-label-caps text-label-caps text-on-surface-variant text-[10px]" dir="rtl">دسته‌بندی دارایی</span>
+    </div>
+  </div>
+  <div class="relative">
+    <select class="w-full h-12 px-md rounded-lg border border-outline-variant bg-white text-on-surface font-body-base focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none appearance-none transition-all"><option value="" disabled="" selected="" class="">Select Category | انتخاب دسته‌بندی</option><option value="mechanical" class="">Mechanical | مکانیکی</option><option value="electrical" class="">Electrical | الکتریکی</option><option value="instrumentation" class="">Instrumentation | ابزار دقیق</option><option value="piping" class="">Piping | لوله‌کشی</option><option value="civil" class="">Civil | ساختمانی</option><option value="rotary" class="">Rotary | دوار</option><option value="stationary" class="">Stationary | ثابت</option></select>
+    <div class="absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">
+      <span class="material-symbols-outlined">expand_more</span>
+    </div>
+  </div>
+</div><div class="card-surface rounded-xl p-md flex flex-col h-full md:col-span-2 hover:shadow-md transition-shadow">
+  <div class="flex justify-between items-start mb-md">
+    <div>
+      <h3 class="font-body-medium text-body-medium text-on-surface flex items-center gap-sm">
+        <span class="material-symbols-outlined text-secondary">tag</span>
+        Asset Tag
+      </h3>
+      <span class="font-label-caps text-label-caps text-on-surface-variant text-[10px]" dir="rtl">کد شناسایی دارایی</span>
+    </div>
+  </div>
+  <div class="relative">
+    <input type="text" placeholder="e.g., 110-PU-001 | مثال: ۱۱۰-PU-۰۰۱" class="w-full h-12 px-md rounded-lg border border-outline-variant bg-white text-on-surface font-body-base focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all pr-16">
+  <button class="absolute right-md top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-secondary transition-colors flex items-center gap-xs" title="Scan QR Code | اسکن کد">
+  <span class="mx-1 text-[10px] opacity-60">|</span>
+  <span class="material-symbols-outlined text-[24px]">qr_code_scanner</span>
+</button></div>
+</div>
+<!-- Photo/Video Upload -->
+<div class="card-surface rounded-xl p-md flex flex-col h-full md:col-span-2 hover:shadow-md transition-shadow">
+  <div class="flex justify-between items-start mb-md">
+    <div>
+      <h3 class="font-body-medium text-body-medium text-on-surface flex items-center gap-sm">
+        <span class="material-symbols-outlined text-secondary">location_on</span>
+        Incident Location
+      </h3>
+      <span class="font-label-caps text-label-caps text-on-surface-variant text-[10px]" dir="rtl">محل حادثه</span>
+    </div>
+  </div>
+  <div class="space-y-md">
+    <!-- Map Placeholder -->
+    <div class="w-full h-48 bg-surface-container-low rounded-lg border border-outline-variant relative overflow-hidden flex items-center justify-center"><div class="absolute inset-0 bg-[#1a2421] mix-blend-multiply"></div><div class="absolute inset-0 opacity-40" style="background-image: url(&quot;https://images.unsplash.com/photo-1584972191378-d70853fc47ba?auto=format&amp;fit=crop&amp;q=80&amp;w=800&quot;); background-size: cover; background-position: center center;"></div><div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(rgb(255, 255, 255) 1px, transparent 1px); background-size: 20px 20px;"></div><div class="relative flex flex-col items-center"><span class="material-symbols-outlined text-error text-[48px] drop-shadow-md">location_on</span><div class="w-4 h-1 bg-black/30 rounded-full blur-[1px] mt-[-4px]"></div></div><div class="absolute top-2 left-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-[9px] font-label-caps border border-white/20 text-white flex items-center gap-xs"><span class="material-symbols-outlined text-[12px]">layers</span>SATELLITE VIEW</div><div class="absolute bottom-2 right-2 bg-white/80 backdrop-blur-sm px-2 py-1 rounded text-[10px] font-label-caps border border-outline-variant">Map Preview</div><div class="absolute bottom-2 left-2 flex flex-col gap-xs z-10">
+  <button class="w-8 h-8 bg-white/90 backdrop-blur-sm rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-white hover:text-secondary transition-all shadow-sm active:opacity-80" title="Zoom In">
+    <span class="material-symbols-outlined text-[20px]">add</span>
+  </button>
+  <button class="w-8 h-8 bg-white/90 backdrop-blur-sm rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-white hover:text-secondary transition-all shadow-sm active:opacity-80" title="Zoom Out">
+    <span class="material-symbols-outlined text-[20px]">remove</span>
+  </button>
+</div></div>
+    <!-- Address/Coordinates Input -->
+    <div class="relative">
+      <input type="text" placeholder="Coordinates or Address | مختصات یا آدرس" class="w-full h-12 px-md rounded-lg border border-outline-variant bg-white text-on-surface font-body-base focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all pr-16">
+      <button class="absolute right-md top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-secondary transition-colors flex items-center gap-xs" title="Auto-detect Location | تشخیص خودکار">
+        <span class="mx-1 text-[10px] opacity-60">|</span>
+        <span class="material-symbols-outlined text-[24px]">my_location</span>
+      </button>
+    </div>
+  </div>
+</div><div class="card-surface rounded-xl p-md flex flex-col h-full hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h3 class="font-body-medium text-body-medium text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">photo_camera</span>
+                            Visual Evidence
+                        </h3>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-[10px]" dir="rtl">مدارک تصویری</span>
+</div>
+</div>
+<div class="flex-1 flex gap-sm mt-auto">
+<button class="flex-1 border border-outline-variant rounded-lg p-md flex flex-col items-center justify-center gap-sm hover:bg-surface-container-low text-on-surface-variant transition-colors group">
+<span class="material-symbols-outlined text-[28px] group-hover:text-secondary transition-colors">camera_alt</span>
+<span class="font-label-caps text-label-caps">Camera</span>
+</button>
+<button class="flex-1 border border-outline-variant rounded-lg p-md flex flex-col items-center justify-center gap-sm hover:bg-surface-container-low text-on-surface-variant transition-colors group">
+<span class="material-symbols-outlined text-[28px] group-hover:text-secondary transition-colors">image</span>
+<span class="font-label-caps text-label-caps">Gallery</span>
+</button>
+</div>
+</div>
+<!-- Voice Notes -->
+<div class="card-surface rounded-xl p-md flex flex-col h-full hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h3 class="font-body-medium text-body-medium text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">mic</span>
+                            Voice Notes
+                        </h3>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-[10px]" dir="rtl">یادداشت صوتی</span>
+</div>
+</div>
+<div class="space-y-sm w-full">
+  <!-- Sample Voice Note 1 -->
+  <div class="card-surface rounded-lg p-sm flex items-center justify-between group hover:border-outline transition-colors">
+    <div class="flex items-center gap-md">
+      <div class="w-12 h-12 rounded bg-surface-container-high text-secondary flex items-center justify-center shrink-0 border border-outline-variant">
+        <span class="material-symbols-outlined text-[24px]">mic</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="font-body-medium text-body-medium text-on-surface truncate max-w-[150px] md:max-w-xs">Voice_Note_001.m4a</span>
+        <div class="flex items-center gap-sm">
+          <span class="font-label-caps text-label-caps text-on-surface-variant">0:45 • Audio</span>
+          <div class="h-1 w-16 bg-outline-variant/30 rounded-full overflow-hidden">
+            <div class="h-full w-1/3 industrial-amber-gradient"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-sm">
+      <button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors" title="Play | پخش">
+        <span class="material-symbols-outlined text-[20px]">play_arrow</span>
+      </button>
+      <button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors" title="Edit | ویرایش">
+        <span class="material-symbols-outlined text-[20px]">edit</span>
+      </button>
+      <button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors" title="Delete | حذف">
+        <span class="material-symbols-outlined text-[20px]">delete</span>
+      </button>
+    </div>
+  </div>
+  <!-- Add New Recording Button -->
+  <button class="w-full border border-outline-variant border-dashed rounded-lg py-sm flex items-center justify-center gap-sm hover:bg-surface-container-low text-on-surface-variant transition-colors">
+    <span class="material-symbols-outlined text-[20px]">add_circle</span>
+    <span class="font-label-caps text-label-caps">Add Recording | افزودن یادداشت صوتی</span>
+  </button>
+</div>
+</div><div class="card-surface rounded-xl p-md flex flex-col h-full md:col-span-2 hover:shadow-md transition-shadow">
+  <div class="flex justify-between items-start mb-md">
+    <div>
+      <h3 class="font-body-medium text-body-medium text-on-surface flex items-center gap-sm">
+        <span class="material-symbols-outlined text-secondary">settings_suggest</span>
+        Spare Parts
+      </h3>
+      <span class="font-label-caps text-label-caps text-on-surface-variant text-[10px]" dir="rtl">قطعات یدکی</span>
+    </div>
+  </div>
+  <div class="relative">
+    <input type="text" placeholder="Part Number or Scan | شماره قطعه یا اسکن" class="w-full h-12 px-md rounded-lg border border-outline-variant bg-white text-on-surface font-body-base focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all pr-16">
+    <button class="absolute right-md top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-secondary transition-colors flex items-center gap-xs" title="Scan Part QR | اسکن قطعه">
+      <span class="mx-1 text-[10px] opacity-60">|</span>
+      <span class="material-symbols-outlined text-[24px]">qr_code_scanner</span>
+    </button>
+  </div>
+</div><div class="card-surface rounded-xl p-md flex flex-col h-full md:col-span-2 hover:shadow-md transition-shadow">
+  <div class="flex justify-between items-start mb-md">
+    <div>
+      <h3 class="font-body-medium text-body-medium text-on-surface flex items-center gap-sm">
+        <span class="material-symbols-outlined text-secondary">safety_check</span>
+        Safety Equipment (PPE)
+      </h3>
+      <span class="font-label-caps text-label-caps text-on-surface-variant text-[10px]" dir="rtl">تجهیزات ایمنی (PPE)</span>
+    </div>
+  </div>
+  <div class="relative">
+    <input type="text" placeholder="PPE ID / Serial | شناسه / سریال تجهیزات ایمنی" class="w-full h-12 px-md rounded-lg border border-outline-variant bg-white text-on-surface font-body-base focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all pr-16">
+    <button class="absolute right-md top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-secondary transition-colors flex items-center gap-xs" title="Scan PPE QR | اسکن تجهیزات">
+      <span class="mx-1 text-[10px] opacity-60">|</span>
+      <span class="material-symbols-outlined text-[24px]">qr_code_scanner</span>
+    </button>
+  </div>
+</div>
+<!-- Document Attachments -->
+<div class="card-surface rounded-xl p-md flex flex-col h-full md:col-span-2 hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h3 class="font-body-medium text-body-medium text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">attach_file</span>
+                            Document Attachments
+                        </h3>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-[10px]" dir="rtl">پیوست اسناد</span>
+</div>
+</div>
+<div class="space-y-sm w-full">
+  <!-- Sample Document 1 -->
+  <div class="card-surface rounded-lg p-sm flex items-center justify-between group hover:border-outline transition-colors">
+    <div class="flex items-center gap-md">
+      <div class="w-12 h-12 rounded bg-surface-container-high text-secondary flex items-center justify-center shrink-0 border border-outline-variant">
+        <span class="material-symbols-outlined text-[24px]">description</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="font-body-medium text-body-medium text-on-surface truncate max-w-[150px] md:max-w-xs">Maintenance_Log_Oct.pdf</span>
+        <span class="font-label-caps text-label-caps text-on-surface-variant">1.2 MB • PDF</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-sm">
+      <button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors" title="Edit | ویرایش">
+        <span class="material-symbols-outlined text-[20px]">edit</span>
+      </button>
+      <button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors" title="Delete | حذف">
+        <span class="material-symbols-outlined text-[20px]">delete</span>
+      </button>
+    </div>
+  </div>
+  <!-- Sample Document 2 -->
+  <div class="card-surface rounded-lg p-sm flex items-center justify-between group hover:border-outline transition-colors">
+    <div class="flex items-center gap-md">
+      <div class="w-12 h-12 rounded bg-surface-container-high text-secondary flex items-center justify-center shrink-0 border border-outline-variant">
+        <span class="material-symbols-outlined text-[24px]">table_chart</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="font-body-medium text-body-medium text-on-surface truncate max-w-[150px] md:max-w-xs">Equipment_Specs_v2.xlsx</span>
+        <span class="font-label-caps text-label-caps text-on-surface-variant">450 KB • Excel</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-sm">
+      <button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors" title="Edit | ویرایش">
+        <span class="material-symbols-outlined text-[20px]">edit</span>
+      </button>
+      <button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors" title="Delete | حذف">
+        <span class="material-symbols-outlined text-[20px]">delete</span>
+      </button>
+    </div>
+  </div>
+  <!-- Add More Button -->
+  <button class="w-full border border-outline-variant border-dashed rounded-lg py-sm flex items-center justify-center gap-sm hover:bg-surface-container-low text-on-surface-variant transition-colors">
+    <span class="material-symbols-outlined text-[20px]">add</span>
+    <span class="font-label-caps text-label-caps">Add Document | افزودن سند</span>
+  </button>
+</div>
+</div>
+</div>
+<!-- Attached Items List -->
+<div>
+<div class="flex items-center justify-between mb-sm">
+<h3 class="font-headline-md text-headline-md text-primary">Attached Items (3)</h3>
+<span class="font-label-caps text-label-caps text-on-surface-variant" dir="rtl">موارد پیوست شده</span>
+</div>
+<div class="space-y-sm">
+<!-- Item 1: Photo -->
+<div class="card-surface rounded-lg p-sm flex items-center justify-between group hover:border-outline transition-colors">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded bg-surface-container-high flex items-center justify-center overflow-hidden shrink-0 border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A close-up photograph of a damaged industrial pipe leaking a small amount of fluid, taken in a brightly lit, modern factory setting. The lighting highlights the metallic texture and the exact location of the damage. The image is crisp and professional, serving as clear evidence of an equipment failure in a pristine industrial environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmeac1PMNWFFtVJK7TKVrtVS0UamSoIcROfaNacBTrfIgK32F2JjB9l9aEA7tBqZj9CL9UA3guvhMxhnA29f_L-z98Rf1tsKyMETYB4BF3DZCNDBfJ-O8DAAIMZiNV44thufhaCovZ9MtDABSwPhsYQFdZxrdf5LcB0mQVs7pOLd-zKxCCUGxbjHYcQ74IPk80mzRgr4p9AMQ23xK2Pf-H1hmTei_7c3gvEBt2cHXdHDiAa6vC2Wjj">
+</div>
+<div class="flex flex-col">
+<span class="font-body-medium text-body-medium text-on-surface truncate max-w-[150px] md:max-w-xs">IMG_20231027_101530.jpg</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">2.4 MB • Photo</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+<!-- Item 2: Voice Note -->
+<div class="card-surface rounded-lg p-sm flex items-center justify-between group hover:border-outline transition-colors">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded bg-surface-container-high text-secondary flex items-center justify-center shrink-0 border border-outline-variant">
+<span class="material-symbols-outlined text-[24px]">volume_up</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-medium text-body-medium text-on-surface truncate max-w-[150px] md:max-w-xs">Voice_Note_001.m4a</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">0:45 • Audio</span>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[20px]">play_arrow</span>
+</button>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation / Action Bar -->
+<footer class="fixed bottom-0 w-full z-50 bg-surface-container-high border-t border-outline-variant p-md flex items-center justify-between shadow-lg">
+<button class="px-xl py-sm rounded-lg border border-outline-variant text-[#5c6f85] font-body-medium text-body-medium hover:bg-surface-container-highest transition-colors flex items-center justify-center bg-white shadow-sm h-12 min-w-[120px]">
+<span class="material-symbols-outlined mr-sm text-[20px]">arrow_back</span>
+            Back
+            <span class="mx-1 text-[10px] opacity-60">|</span>
+<span class="text-[11px]" dir="rtl">قبلی</span>
+</button>
+<button class="px-xl py-sm rounded-lg industrial-amber-gradient text-white font-body-medium text-body-medium hover:opacity-90 transition-opacity flex items-center justify-center shadow-sm h-12 min-w-[120px]">
+            Next
+            <span class="mx-1 text-[10px] opacity-60">|</span>
+<span class="text-[11px] mr-sm" dir="rtl">بعدی</span>
+<span class="material-symbols-outlined ml-sm text-[20px]">arrow_forward</span>
+</button>
+</footer>
+
+
+</body></html>

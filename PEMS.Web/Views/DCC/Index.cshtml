@@ -1,0 +1,121 @@
+﻿<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-building-gear"></i> Document Control Center (DCC)</h5>
+    <a asp-action="RegisterIncoming" class="btn btn-pems-solid btn-sm">
+        <i class="bi bi-envelope-plus"></i> ثبت مکاتبه‌ی وارده
+    </a>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-4">
+        <div class="content-card text-center">
+            <div class="fs-3 fw-bold text-primary">@ViewBag.PendingIssueCount</div>
+            <div class="text-muted small"><i class="bi bi-send-check"></i> مدارک آماده‌ی صدور (Approved)</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="content-card text-center">
+            <div class="fs-3 fw-bold text-warning">@ViewBag.UnlinkedIncomingCount</div>
+            <div class="text-muted small"><i class="bi bi-envelope-exclamation"></i> مکاتبات وارده‌ی وصل‌نشده</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="content-card text-center">
+            <a asp-controller="Relationship" asp-action="Index" class="text-decoration-none">
+                <div class="fs-3 fw-bold text-info"><i class="bi bi-diagram-3"></i></div>
+                <div class="text-muted small">Relationship Explorer</div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="content-card h-100">
+            <h6 class="mb-3"><i class="bi bi-send-check"></i> مدارک منتظر صدور</h6>
+            @{
+                var pendingIssueDocs = (IEnumerable<dynamic>)ViewBag.PendingIssueDocs;
+            }
+            @if (pendingIssueDocs.Any())
+            {
+                <ul class="list-unstyled mb-0">
+                    @foreach (var d in pendingIssueDocs)
+                    {
+                        <li class="d-flex justify-content-between border-bottom py-1">
+                            <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId">
+                                @d.DocumentNo &mdash; @d.Title
+                            </a>
+                            <span class="text-muted small">@(((DateTime?)d.ModifiedDate)?.ToString("yyyy-MM-dd"))</span>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted small mb-0">مدرکی در انتظار صدور نیست.</p>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="content-card h-100 border-warning">
+            <h6 class="mb-3"><i class="bi bi-envelope-exclamation"></i> مکاتبات وارده‌ی وصل‌نشده</h6>
+            @{
+                var unlinked = (IEnumerable<dynamic>)ViewBag.UnlinkedIncoming;
+            }
+            @if (unlinked.Any())
+            {
+                <ul class="list-unstyled mb-0">
+                    @foreach (var l in unlinked)
+                    {
+                        <li class="d-flex justify-content-between border-bottom py-1">
+                            <a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId">
+                                @l.LetterNumber &mdash; @l.Subject
+                            </a>
+                            <span class="text-muted small">@l.Sender</span>
+                        </li>
+                    }
+                </ul>
+                <p class="text-muted small mt-2 mb-0">این‌ها هنوز به هیچ مدرک/MR وصل نشده‌اند - روی هرکدام برو و از Relationship Explorer یا ویرایش نامه، لینکش کن.</p>
+            }
+            else
+            {
+                <p class="text-muted small mb-0">همه‌ی مکاتبات وارده به یک مدرک/MR وصل شده‌اند.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="content-card mt-3">
+    <h6 class="mb-3"><i class="bi bi-clock-history"></i> آخرین مکاتبات وارده</h6>
+    @{
+        var recentIncoming = (IEnumerable<dynamic>)ViewBag.RecentIncoming;
+    }
+    <table class="table table-enterprise mb-0">
+        <thead><tr><th>شماره</th><th>فرستنده</th><th>موضوع</th><th>تاریخ</th><th>لینک</th></tr></thead>
+        <tbody>
+            @foreach (var l in recentIncoming)
+            {
+                <tr>
+                    <td><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId">@l.LetterNumber</a></td>
+                    <td class="small">@l.Sender</td>
+                    <td class="small">@l.Subject</td>
+                    <td class="small">@(((DateTime)l.LetterDate).ToString("yyyy-MM-dd"))</td>
+                    <td>
+                        @if (l.RelatedDocumentId != null)
+                        {
+                            <span class="badge bg-success">مدرک</span>
+                        }
+                        else if (l.RelatedMRId != null)
+                        {
+                            <span class="badge bg-success">MR</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">وصل‌نشده</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

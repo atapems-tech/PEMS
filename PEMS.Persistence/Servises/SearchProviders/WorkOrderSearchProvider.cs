@@ -1,0 +1,66 @@
+﻿using Microsoft.EntityFrameworkCore;
+using PEMS.Application.DTOs;
+using PEMS.Application.Interfaces;
+using PEMS.Persistence.Context;
+using PEMS.Shared.Search;
+
+namespace PEMS.Persistence.Services.SearchProviders;
+
+public class WorkOrderSearchProvider : ISearchableEntityProvider
+{
+    private readonly PEMSDbContext _context;
+
+    public string EntityType => "WorkOrder";
+    public string DisplayName => "دستورکارهای تعمیر و نگهداری (CMMS)";
+
+    public WorkOrderSearchProvider(PEMSDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<(List<GlobalSearchResultItemDto> Items, int TotalCount)> SearchAsync(
+        string query, int page, int pageSize, int? projectId)
+    {
+        var pool = await _context.WorkOrders
+            .Include(x => x.Equipment)
+            .Where(x => x.IsActive)
+            .Where(x => x.WorkOrderNumber.Contains(query) || (x.Description != null && x.Description.Contains(query))
+                || (x.Equipment != null && x.Equipment.TagNumber.Contains(query)))
+            .Take(500)
+            .ToListAsync();
+
+        if (pool.Count < 5 && query.Length is >= 2 and <= 25)
+        {
+            var fallback = await _context.WorkOrders.Include(x => x.Equipment).Where(x => x.IsActive)
+                .OrderByDescending(x => x.CreatedDate).Take(500).ToListAsync();
+            foreach (var w in fallback)
+                if (pool.All(x => x.WorkOrderId != w.WorkOrderId)) pool.Add(w);
+        }
+
+        var scored = pool
+            .Select(w => new
+            {
+                WorkOrder = w,
+                Score = SearchScoring.ComputeWeightedScore(query,
+                    (w.WorkOrderNumber, 1.0), (w.Description, 0.6), (w.Equipment?.TagNumber, 0.8))
+            })
+            .Where(x => x.Score > 0)
+            .OrderByDescending(x => x.Score).ThenBy(x => x.WorkOrder.WorkOrderNumber)
+            .ToList();
+
+        var totalCount = scored.Count;
+        var pageItems = scored.Skip((page - 1) * pageSize).Take(pageSize)
+            .Select(x => new GlobalSearchResultItemDto
+            {
+                EntityType = EntityType,
+                Id = x.WorkOrder.WorkOrderId,
+                Label = x.WorkOrder.WorkOrderNumber,
+                HighlightedLabel = SearchScoring.Highlight(x.WorkOrder.WorkOrderNumber, query),
+                SubLabel = string.Join(" — ", new[] { x.WorkOrder.Equipment?.TagNumber, x.WorkOrder.Status, x.WorkOrder.Priority }.Where(s => !string.IsNullOrWhiteSpace(s))),
+                Url = $"/WorkOrder/Details/{x.WorkOrder.WorkOrderId}",
+                Score = x.Score
+            }).ToList();
+
+        return (pageItems, totalCount);
+    }
+}

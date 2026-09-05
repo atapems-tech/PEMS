@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS - Engineering Document Control</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for data tables */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8f9ff; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c5c6cd; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #75777d; 
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#9ecaff",
+                    "inverse-on-surface": "#e9f1ff",
+                    "surface-container": "#e4efff",
+                    "outline-variant": "#c5c6cd",
+                    "surface-dim": "#c8dcf5",
+                    "on-error": "#ffffff",
+                    "surface-container-low": "#eef4ff",
+                    "primary-container": "#142033",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#bbc7e0",
+                    "secondary-container": "#fdaa47",
+                    "secondary-fixed": "#ffdcbc",
+                    "tertiary-container": "#00213d",
+                    "primary-fixed": "#d7e3fd",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-high": "#daeaff",
+                    "background": "#f8f9ff",
+                    "on-surface-variant": "#44474c",
+                    "on-tertiary-container": "#498bcd",
+                    "on-tertiary-fixed-variant": "#00497c",
+                    "secondary": "#895200",
+                    "on-primary-fixed-variant": "#3b475c",
+                    "surface-bright": "#f8f9ff",
+                    "error-container": "#ffdad6",
+                    "surface": "#f8f9ff",
+                    "inverse-surface": "#1f3245",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed": "#d1e4ff",
+                    "on-surface": "#081d2f",
+                    "on-background": "#081d2f",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#d0e4fe",
+                    "surface-tint": "#535f75",
+                    "on-secondary-container": "#6e4100",
+                    "error": "#ba1a1a",
+                    "surface-variant": "#d0e4fe",
+                    "secondary-fixed-dim": "#ffb86a",
+                    "on-secondary-fixed": "#2c1700",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#683d00",
+                    "tertiary": "#000815",
+                    "primary-fixed-dim": "#bbc7e0",
+                    "primary": "#000819",
+                    "on-primary-fixed": "#101c2f",
+                    "on-tertiary-fixed": "#001d36",
+                    "outline": "#75777d",
+                    "on-primary-container": "#7c889f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "topbar-height": "60px",
+                    "md": "16px",
+                    "sidebar-width": "260px",
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "xs": "4px",
+                    "sm": "8px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "table-header": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "body-medium": ["Inter"],
+                    "kpi-stat": ["Inter"],
+                    "body-base": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "badge-label": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "table-cell": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                    "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                    "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                    "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background flex h-screen overflow-hidden antialiased">
+<!-- SideNavBar (JSON Component) -->
+<nav class="hidden md:flex flex-col h-full py-md fixed left-0 top-0 w-sidebar-width bg-primary dark:bg-primary shadow-sm z-40">
+<!-- Header -->
+<div class="px-md mb-xl flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">business</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-secondary-container m-0 leading-none">PEMS</h1>
+<p class="font-label-caps text-label-caps text-on-primary opacity-70 m-0 mt-xs uppercase">Management System</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 overflow-y-auto flex flex-col gap-xs px-sm">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container dark:hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-medium text-body-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container dark:hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-medium text-body-medium">Asset Registry</span>
+</a>
+<!-- ACTIVE TAB: Document Control -->
+<a class="flex items-center gap-md px-md py-sm rounded-lg bg-secondary dark:bg-secondary text-on-secondary font-bold border-r-4 border-secondary-fixed hover:bg-primary-container dark:hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">description</span>
+<span class="font-body-medium text-body-medium">Document Control</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container dark:hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">forward_to_inbox</span>
+<span class="font-body-medium text-body-medium">Transmittals</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container dark:hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-body-medium text-body-medium">Version History</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container dark:hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-body-medium text-body-medium">Workflow</span>
+</a>
+</div>
+<!-- CTA Button -->
+<div class="px-md mt-auto mb-md">
+<button class="w-full flex justify-center items-center gap-sm bg-secondary-container text-on-secondary-container font-body-medium text-body-medium py-sm px-md rounded-lg hover:brightness-105 transition-all">
+<span class="material-symbols-outlined">add</span>
+                New Document
+            </button>
+</div>
+<!-- Footer Links -->
+<div class="px-sm flex flex-col gap-xs pt-md border-t border-outline/20">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container dark:hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-body-medium text-body-medium">Support</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container dark:hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-medium text-body-medium">Sign Out</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ms-sidebar-width min-w-0 transition-all duration-300">
+<!-- TopAppBar (JSON Component) -->
+<header class="fixed top-0 w-full z-50 border-b border-outline-variant dark:border-outline bg-surface dark:bg-inverse-surface flex justify-between items-center h-topbar-height px-lg md:w-[calc(100%-260px)] right-0">
+<!-- Brand / Search (Left) -->
+<div class="flex items-center gap-xl flex-1">
+<span class="font-headline-md text-headline-md text-primary dark:text-primary-fixed-dim font-bold tracking-tight block md:hidden">PEMS</span>
+<div class="hidden sm:flex items-center bg-background rounded-lg border border-outline-variant px-sm py-xs w-full max-w-md focus-within:border-secondary-container focus-within:ring-1 focus-within:ring-secondary-container transition-all">
+<span class="material-symbols-outlined text-on-surface-variant me-sm">search</span>
+<input class="bg-transparent border-none outline-none focus:ring-0 text-body-base font-body-base w-full text-on-surface placeholder:text-outline p-0 h-6" placeholder="Search documents, tags, or metadata..." type="text"/>
+</div>
+</div>
+<!-- Actions (Right) -->
+<div class="flex items-center gap-sm shrink-0">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" title="Toggle EN/FA">
+<span class="material-symbols-outlined">translate</span>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80 hidden sm:flex">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="h-8 w-px bg-outline-variant mx-xs hidden sm:block"></div>
+<button class="ms-xs w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm uppercase overflow-hidden border border-outline-variant cursor-pointer">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5YK7AAsp2DWCHCYjNuHQSLnQLiaYyD3v8pWmyL88WiQlfwVOV-CTL87dfIO3w18muEbL-Bbk9QwTkG1eC145xp_xJIMLNVD_tADUmiNj-hVJ3W7IvibqO57A-Tfqs5v0LzeiH3frEl_cvyCl56KtBc3F-EN3I8jQ0FEAWAnrtZ7Vvph0nB71Yd_pnEga0BuAxlokZWg06MDY5P91_GLToFo2dUiV-Ya6QwGo4PSyxiNctbaZkeGM0"/>
+</button>
+</div>
+</header>
+<!-- Page Content Scroll Area -->
+<main class="flex-1 overflow-y-auto mt-topbar-height p-lg bg-background">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-md mb-lg">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">EN / FA</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-background m-0">Engineering Document Control</h2>
+</div>
+<div class="flex items-center gap-sm shrink-0">
+<button class="flex items-center gap-xs px-md py-sm rounded-lg border border-outline-variant text-on-surface hover:bg-surface-container-high transition-colors font-body-medium text-body-medium">
+<span class="material-symbols-outlined">download</span>
+                        Bulk Export
+                    </button>
+<button class="flex items-center gap-xs px-md py-sm rounded-lg bg-secondary-container text-on-secondary-container hover:brightness-105 transition-all font-body-medium text-body-medium font-bold shadow-sm">
+<span class="material-symbols-outlined">upload_file</span>
+                        Upload New Drawing
+                    </button>
+</div>
+</div>
+<!-- Filters Bar -->
+<div class="bg-surface border border-outline-variant rounded-t-lg p-sm flex flex-col md:flex-row items-center gap-md justify-between border-b-0">
+<div class="flex items-center gap-sm w-full md:w-auto">
+<div class="relative w-full md:w-48">
+<select class="w-full appearance-none bg-background border border-outline-variant rounded-lg px-sm py-[6px] pe-xl font-body-base text-body-base text-on-surface focus:border-secondary-container focus:ring-1 focus:ring-secondary-container outline-none h-[34px]">
+<option value="">All Disciplines</option>
+<option value="electrical">Electrical (ELEC)</option>
+<option value="mechanical">Mechanical (MECH)</option>
+<option value="civil">Civil (CIV)</option>
+<option value="instrumentation">Instrumentation (INST)</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-outline-variant pointer-events-none text-[20px]">arrow_drop_down</span>
+</div>
+<div class="relative w-full md:w-40">
+<select class="w-full appearance-none bg-background border border-outline-variant rounded-lg px-sm py-[6px] pe-xl font-body-base text-body-base text-on-surface focus:border-secondary-container focus:ring-1 focus:ring-secondary-container outline-none h-[34px]">
+<option value="">All Statuses</option>
+<option value="approved">Approved</option>
+<option value="review">In Review</option>
+<option value="draft">Draft</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-outline-variant pointer-events-none text-[20px]">arrow_drop_down</span>
+</div>
+</div>
+<div class="flex items-center gap-xs w-full md:w-auto justify-end text-on-surface-variant">
+<span class="font-body-base text-body-base">Showing 1-15 of 2,491 records</span>
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+</div>
+</div>
+<!-- High-Density Data Table -->
+<div class="bg-surface border border-outline-variant rounded-b-lg overflow-x-auto shadow-sm">
+<table class="w-full text-left border-collapse min-w-[800px]">
+<thead class="bg-surface-container-low border-b border-outline-variant sticky top-0">
+<tr>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider w-12 text-center">
+<input class="rounded border-outline-variant text-secondary-container focus:ring-secondary-container bg-background" type="checkbox"/>
+</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Document No.</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Title (EN / FA)</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Discipline</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider text-center">Rev</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Last Modified</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant bg-surface">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-highest transition-colors group">
+<td class="py-sm px-md text-center">
+<input class="rounded border-outline-variant text-secondary-container focus:ring-secondary-container bg-background" type="checkbox"/>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell font-mono text-on-surface whitespace-nowrap">PEMS-ELEC-DWG-00142</td>
+<td class="py-sm px-md">
+<div class="font-body-medium text-body-medium text-on-background line-clamp-1">Main Substation Single Line Diagram</div>
+<div class="font-body-base text-body-base text-on-surface-variant opacity-80 text-sm mt-0.5 line-clamp-1" dir="rtl">دیاگرام تک‌خطی پست اصلی برق</div>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-surface">Electrical</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-surface text-center font-bold">C02</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-badge-label text-badge-label border border-outline-variant/30">Approved</span>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-surface-variant whitespace-nowrap">12 Oct 2023</td>
+<td class="py-sm px-md text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high border border-transparent hover:border-outline-variant transition-all"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high border border-transparent hover:border-outline-variant transition-all"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-highest transition-colors group">
+<td class="py-sm px-md text-center">
+<input class="rounded border-outline-variant text-secondary-container focus:ring-secondary-container bg-background" type="checkbox"/>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell font-mono text-on-surface whitespace-nowrap">PEMS-MECH-SPC-00991</td>
+<td class="py-sm px-md">
+<div class="font-body-medium text-body-medium text-on-background line-clamp-1">HVAC Equipment Technical Specification</div>
+<div class="font-body-base text-body-base text-on-surface-variant opacity-80 text-sm mt-0.5 line-clamp-1" dir="rtl">مشخصات فنی تجهیزات تهویه مطبوع</div>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-surface">Mechanical</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-surface text-center font-bold">B01</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-badge-label text-badge-label border border-outline-variant/30">In Review</span>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-surface-variant whitespace-nowrap">14 Oct 2023</td>
+<td class="py-sm px-md text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high border border-transparent hover:border-outline-variant transition-all"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high border border-transparent hover:border-outline-variant transition-all"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-highest transition-colors group">
+<td class="py-sm px-md text-center">
+<input class="rounded border-outline-variant text-secondary-container focus:ring-secondary-container bg-background" type="checkbox"/>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell font-mono text-on-surface whitespace-nowrap">PEMS-CIV-LAY-00305</td>
+<td class="py-sm px-md">
+<div class="font-body-medium text-body-medium text-on-background line-clamp-1">Foundation General Arrangement Plan</div>
+<div class="font-body-base text-body-base text-on-surface-variant opacity-80 text-sm mt-0.5 line-clamp-1" dir="rtl">پلان چیدمان عمومی فونداسیون</div>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-surface">Civil</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-surface text-center font-bold">A01</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-variant text-on-surface font-badge-label text-badge-label border border-outline-variant/50">Draft</span>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-surface-variant whitespace-nowrap">15 Oct 2023</td>
+<td class="py-sm px-md text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high border border-transparent hover:border-outline-variant transition-all"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high border border-transparent hover:border-outline-variant transition-all"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-highest transition-colors group">
+<td class="py-sm px-md text-center">
+<input class="rounded border-outline-variant text-secondary-container focus:ring-secondary-container bg-background" type="checkbox"/>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell font-mono text-on-surface whitespace-nowrap">PEMS-INST-PND-00550</td>
+<td class="py-sm px-md">
+<div class="font-body-medium text-body-medium text-on-background line-clamp-1">P&amp;ID Cooling Water System Area 4</div>
+<div class="font-body-base text-body-base text-on-surface-variant opacity-80 text-sm mt-0.5 line-clamp-1" dir="rtl">نقشه لوله‌کشی و ابزار دقیق سیستم آب خنک‌کننده ناحیه ۴</div>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-surface">Instrumentation</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-surface text-center font-bold">C01</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-badge-label text-badge-label border border-outline-variant/30">Approved</span>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-surface-variant whitespace-nowrap">02 Sep 2023</td>
+<td class="py-sm px-md text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high border border-transparent hover:border-outline-variant transition-all"><span class="material-symbols-outlined text-[18px]">visibility</span></button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high border border-transparent hover:border-outline-variant transition-all"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</main>
+</div>
+</body></html>

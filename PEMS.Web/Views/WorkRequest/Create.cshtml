@@ -1,0 +1,56 @@
+@{
+    var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
+    var functionalLocations = (List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations;
+}
+
+<div class="content-card" style="max-width:700px;">
+    <form asp-action="Create" method="post">
+        <div class="row g-3">
+            <div class="col-12"><label class="form-label">Title</label><input name="title" class="form-control" placeholder="e.g. Pump P-101 unusual vibration" required /></div>
+
+            <div class="col-12">
+                <label class="form-label">Equipment (optional)</label>
+                <input type="text" class="form-control" placeholder="جستجوی تگ، نام..."
+                       data-pems-search data-search-type="Equipment" data-search-hidden="#wrEquipmentIdHidden" autocomplete="off" />
+                <input type="hidden" name="equipmentId" id="wrEquipmentIdHidden" />
+                <div class="form-text small">اگر مشکل به یک تجهیز مشخص وصل نیست، خالی بگذار و فقط Functional Location را انتخاب کن.</div>
+            </div>
+
+            <div class="col-12">
+                <label class="form-label">Functional Location (optional)</label>
+                <select name="functionalLocationId" class="form-select">
+                    <option value="">-- none --</option>
+                    @foreach (var fl in functionalLocations)
+                    {
+                        <option value="@fl.FunctionalLocationId">@fl.PathBreadcrumb</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-12"><label class="form-label">Reported Condition</label><textarea name="reportedCondition" class="form-control" rows="2" placeholder="آنچه واقعاً دیده/شنیده/اندازه‌گیری شده"></textarea></div>
+
+            <div class="col-md-6">
+                <label class="form-label">Priority</label>
+                <select name="priority" class="form-select">
+                    <option value="Low">Low</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="High">High</option>
+                    <option value="Critical">Critical</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Suggested Discipline (optional)</label>
+                <select name="suggestedDisciplineId" class="form-select">
+                    <option value="">-- none --</option>
+                    @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
+                </select>
+            </div>
+
+            <div class="col-12"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-pems-solid">Submit Request</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,790 @@
+@model PEMS.Application.DTOs.PermitDetailDto
+@using PEMS.WorkflowPlatform.Dtos
+@{
+    var nextStatus = (string?)ViewBag.NextStatus;
+    var approvalInstance = (WorkflowInstanceDto?)ViewBag.ApprovalInstance;
+    var approvalHistory = (IReadOnlyList<WorkflowHistoryDto>?)ViewBag.ApprovalHistory;
+    var currentUserRoles = ((IEnumerable<string>)ViewBag.CurrentUserRoles).ToList();
+    var isolationPoints = (List<PEMS.Application.DTOs.IsolationPointListDto>)ViewBag.IsolationPoints;
+    var isolationEnergyTypes = PEMS.Persistence.Services.IsolationService.ValidEnergyTypes;
+    var gasTests = (List<PEMS.Application.DTOs.GasTestListDto>)ViewBag.GasTests;
+    var gasRequiredParameters = PEMS.Persistence.Services.GasTestService.RequiredParameters;
+    var simopsCandidates = (List<PEMS.Application.DTOs.SimopsCandidateDto>)ViewBag.SimopsCandidates;
+    var simopsCandidateWorkOrders = (List<PEMS.Application.DTOs.SimopsCandidateWorkOrderDto>)ViewBag.SimopsCandidateWorkOrders;
+    var simopsConflicts = (List<PEMS.Application.DTOs.SimopsConflictListDto>)ViewBag.SimopsConflicts;
+    bool RoleMatchesMe(string? assignedToRole) =>
+        assignedToRole != null && assignedToRole.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Any(currentUserRoles.Contains);
+    string NA(string? v) => string.IsNullOrWhiteSpace(v) ? "N/A" : v;
+    string WaitingSince(DateTime since)
+    {
+        var span = DateTime.Now - since;
+        if (span.TotalDays >= 1) return $"waiting {(int)span.TotalDays}d {span.Hours}h";
+        if (span.TotalHours >= 1) return $"waiting {(int)span.TotalHours}h {span.Minutes}m";
+        return "waiting <1h";
+    }
+
+    var badgeClass = Model.Status switch
+    {
+        "Active" => "bg-success",
+        "Closed" => "bg-secondary",
+        "Rejected" or "Cancelled" or "Revoked" => "bg-danger",
+        "Suspended" => "bg-warning text-dark",
+        "Approved" or "Issued" => "bg-info text-dark",
+        _ => "bg-primary"
+    };
+
+    // طبق PEMS-UI-01 (UI01-003): یک‌بار خوانده می‌شوند تا هم در بنر بالای صفحه (fallback عمومی)
+    // و هم درون کارت مربوطه (وقتی ErrorArea مشخص شده) قابل استفاده باشند.
+    var pageMessage = TempData["Message"] as string;
+    var pageError = TempData["Error"] as string;
+    var errorArea = TempData["ErrorArea"] as string;
+    var passkeyMissingMarker = "هیچ Passkey";
+
+    var eg = (PEMS.Application.DTOs.ExecutionGateResultDto?)ViewBag.ExecutionGate;
+    var approveElig = (PEMS.Application.DTOs.ExecutionGateResultDto?)ViewBag.ApproveEligibility;
+    var rejectElig = (PEMS.Application.DTOs.ExecutionGateResultDto?)ViewBag.RejectEligibility;
+    var closeElig = (PEMS.Application.DTOs.ExecutionGateResultDto?)ViewBag.CloseEligibility;
+    var lotoVerifyElig = (PEMS.Application.DTOs.ExecutionGateResultDto?)ViewBag.LotoVerifyEligibility;
+    var simopsConfirmElig = (PEMS.Application.DTOs.ExecutionGateResultDto?)ViewBag.SimopsConfirmEligibility;
+    var simopsResolveElig = (PEMS.Application.DTOs.ExecutionGateResultDto?)ViewBag.SimopsResolveEligibility;
+    var simopsAcceptRiskElig = (PEMS.Application.DTOs.ExecutionGateResultDto?)ViewBag.SimopsAcceptRiskEligibility;
+
+    // طبق PEMS-UI-01 (UI01-006، نسخه‌ی سبک): به‌جای چیدمان مجدد کل کارت‌ها، یک خلاصه‌ی کوتاه
+    // «چه چیزی نیاز به اقدام شما دارد» با لینک لنگر به کارت مربوطه - داده‌اش از همون
+    // ViewBag/متغیرهای محلی موجود است، بدون Query جدید.
+    var actionItems = new List<(string Text, string Anchor)>();
+    if (approvalInstance is { Status: "Running" } && approvalInstance.PendingStages.Any(p => RoleMatchesMe(p.AssignedToRole)))
+    {
+        actionItems.Add(("Approval decision pending your review", "#approval"));
+    }
+    var awaitingVerify = isolationPoints.Count(p => p.Status == "Isolated");
+    if (awaitingVerify > 0) { actionItems.Add(($"{awaitingVerify} isolation point(s) awaiting Verify", "#loto")); }
+    var awaitingConfirm = simopsConflicts.Count(c => c.Status == "Potential");
+    if (awaitingConfirm > 0) { actionItems.Add(($"{awaitingConfirm} SIMOPS conflict(s) awaiting Confirm", "#simops")); }
+    var awaitingResolve = simopsConflicts.Count(c => c.Status == "Confirmed");
+    if (awaitingResolve > 0) { actionItems.Add(($"{awaitingResolve} SIMOPS conflict(s) awaiting Resolve", "#simops")); }
+    if (eg is { Result: "Eligible" }) { actionItems.Add(("Execution Gate is ready - Start Work available", "#executiongate")); }
+}
+
+<div class="content-card mb-3">
+    <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
+        <div class="kpi-icon bg-icon-blue" style="width:56px;height:56px;font-size:26px;"><i class="bi bi-shield-check"></i></div>
+        <div>
+            <h5 class="mb-0">@Model.PermitNumber &mdash; @Model.Title <span class="badge @badgeClass">@Model.Status</span></h5>
+            <span class="text-muted small">@Model.PermitType - Requested by @Model.RequestedByName on @Model.CreatedDate.ToString("yyyy-MM-dd")</span>
+        </div>
+    </div>
+    <div class="row g-2 small mt-1">
+        <div class="col-md-3"><strong>Equipment:</strong> @(Model.EquipmentTagNumber ?? "N/A")</div>
+        <div class="col-md-3"><strong>Functional Location:</strong> @(Model.FunctionalLocationBreadcrumb ?? "N/A")</div>
+        <div class="col-md-3">
+            <strong>Work Order:</strong>
+            @if (Model.WorkOrderId.HasValue)
+            {
+                <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@Model.WorkOrderId">@Model.WorkOrderNumber</a>
+            }
+            else { <text>N/A</text> }
+        </div>
+        <div class="col-md-3"><strong>Priority:</strong> @Model.Priority</div>
+    </div>
+    <div class="row g-2 small mt-1">
+        <div class="col-md-4"><strong>Permit Issuer:</strong> @(Model.IssuerName ?? "N/A")</div>
+        <div class="col-md-4">
+            <strong>Permit Receiver:</strong> @(Model.ReceiverName ?? "N/A")
+            @if (!string.IsNullOrWhiteSpace(Model.ReceiverPersonnelType) && Model.ReceiverPersonnelType != "Internal")
+            {
+                <span class="badge bg-light text-dark border">@Model.ReceiverPersonnelType @(Model.ReceiverVendorName != null ? $"- {Model.ReceiverVendorName}" : "")</span>
+            }
+        </div>
+        <div class="col-md-4"><strong>Validity:</strong> @(Model.ValidFrom?.ToString("yyyy-MM-dd") ?? "N/A") &rarr; @(Model.ValidTo?.ToString("yyyy-MM-dd") ?? "N/A")</div>
+    </div>
+    <div class="row g-2 small mt-1">
+        <div class="col-12"><strong>Description:</strong> @NA(Model.Description)</div>
+    </div>
+
+    @if (Model.Status == "Cancelled" && !string.IsNullOrWhiteSpace(Model.CancellationReason))
+    {
+        <div class="alert alert-secondary py-2 px-3 small mt-2 mb-0"><strong>Cancellation Reason:</strong> @Model.CancellationReason</div>
+    }
+    @if (Model.Status == "Revoked" && !string.IsNullOrWhiteSpace(Model.RevocationReason))
+    {
+        <div class="alert alert-danger py-2 px-3 small mt-2 mb-0"><strong>Revocation Reason:</strong> @Model.RevocationReason</div>
+    }
+    @if (Model.ClosedDate.HasValue)
+    {
+        <div class="alert alert-success py-2 px-3 small mt-2 mb-0">Closed on @Model.ClosedDate.Value.ToString("yyyy-MM-dd HH:mm")</div>
+    }
+</div>
+
+@if (actionItems.Any())
+{
+    <div class="content-card mb-3 border-start border-4 border-warning">
+        <h6 class="mb-2"><i class="bi bi-exclamation-circle text-warning"></i> Action Required</h6>
+        <ul class="list-unstyled mb-0">
+            @foreach (var item in actionItems)
+            {
+                <li class="py-1"><a href="@item.Anchor">@item.Text</a></li>
+            }
+        </ul>
+    </div>
+}
+
+@* طبق UI01-003: بنر عمومی فقط وقتی نمایش داده می‌شود که ErrorArea تعیین نشده باشد - در غیر این
+   صورت پیام همان‌جایی که اقدام مربوطه انجام شد نمایش داده می‌شود (پایین‌تر در این فایل). *@
+@if (pageMessage != null && errorArea == null)
+{
+    <div class="alert alert-success py-2 px-3 small">@pageMessage</div>
+}
+@if (pageError != null && errorArea == null)
+{
+    @if (pageError.Contains(passkeyMissingMarker))
+    {
+        <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+    }
+    else
+    {
+        <div class="alert alert-danger py-2 px-3 small">@pageError</div>
+    }
+}
+
+<div class="content-card mb-3" id="actions">
+    <h6 class="mb-3">Actions</h6>
+    @if (errorArea == "Actions" && (pageMessage != null || pageError != null))
+    {
+        @if (pageError != null && pageError.Contains(passkeyMissingMarker))
+        {
+            <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+        }
+        else
+        {
+            <div class="alert @(pageError != null ? "alert-danger" : "alert-success") py-2 px-3 small">@(pageError ?? pageMessage)</div>
+        }
+    }
+    @if (closeElig != null && closeElig.Result != "Eligible")
+    {
+        <div class="mb-2">
+            <span class="badge bg-danger">Not Eligible to Close</span>
+            <ul class="small text-muted mb-0 mt-1">
+                @foreach (var c in closeElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }
+            </ul>
+        </div>
+    }
+    <div class="d-flex flex-wrap gap-2">
+        @if (nextStatus != null && nextStatus != "Active")
+        {
+            <form asp-action="AdvanceStatus" method="post" class="d-flex gap-2">
+                <input type="hidden" name="id" value="@Model.PermitId" />
+                <button type="submit" class="btn btn-sm btn-pems-solid">Advance to @nextStatus</button>
+            </form>
+        }
+        @if (Model.Status == "Submitted" && approvalInstance == null)
+        {
+            <form asp-action="SubmitForApproval" method="post" class="d-flex gap-2">
+                <input type="hidden" name="id" value="@Model.PermitId" />
+                <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-signpost-split"></i> Submit for Approval</button>
+            </form>
+        }
+        @if (Model.Status == "Active")
+        {
+            <form asp-action="Suspend" method="post" class="d-flex flex-wrap gap-2">
+                <input type="hidden" name="id" value="@Model.PermitId" />
+                <input type="text" name="reason" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="Suspend reason" />
+                <button type="submit" class="btn btn-sm btn-outline-warning">Suspend</button>
+            </form>
+            <form asp-action="Close" method="post">
+                <input type="hidden" name="id" value="@Model.PermitId" />
+                <button type="button" class="btn btn-sm btn-outline-secondary" @(closeElig != null && closeElig.Result != "Eligible" ? "disabled" : "")
+                        onclick="if(confirm('این Permit بسته شود؟')) pemsSubmitWithStepUp(this)">Close</button>
+            </form>
+        }
+        @if (Model.Status is "Draft" or "Submitted")
+        {
+            <form asp-action="Cancel" method="post">
+                <input type="hidden" name="id" value="@Model.PermitId" />
+                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این Permit لغو شود؟');">Cancel</button>
+            </form>
+        }
+        @if (Model.Status is "Approved" or "Issued" or "Active")
+        {
+            <form asp-action="Revoke" method="post" class="d-flex flex-wrap gap-2">
+                <input type="hidden" name="id" value="@Model.PermitId" />
+                <input type="text" name="reason" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="Revocation reason" />
+                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('این Permit ابطال شود؟');">Revoke</button>
+            </form>
+        }
+        @if (nextStatus == null && Model.Status is not ("Active" or "Draft" or "Submitted" or "Approved" or "Issued"))
+        {
+            <span class="text-muted small">No further actions available.</span>
+        }
+    </div>
+</div>
+
+@{
+    var executionGate = (PEMS.Application.DTOs.ExecutionGateResultDto?)ViewBag.ExecutionGate;
+    var executionGateDecisions = (List<PEMS.Application.DTOs.ExecutionGateDecisionDto>)ViewBag.ExecutionGateDecisions;
+    bool canEmergencyOverride = ViewBag.CanEmergencyOverride;
+}
+@if (executionGate != null)
+{
+    var gateBadge = executionGate.Result == "Eligible" ? "bg-success" : "bg-danger";
+    <div class="content-card mb-3" id="executiongate">
+        <h6 class="mb-3">
+            <i class="bi bi-door-open"></i> Execution Gate
+            <span class="badge @gateBadge">@executionGate.Result.ToUpper()</span>
+        </h6>
+        @if (errorArea == "ExecutionGate" && pageError != null && pageError.Contains(passkeyMissingMarker))
+        {
+            <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+        }
+        else if (errorArea == "ExecutionGate" && (pageMessage != null || pageError != null))
+        {
+            <div class="alert @(pageError != null ? "alert-danger" : "alert-success") py-2 px-3 small">@(pageError ?? pageMessage)</div>
+        }
+        <ul class="list-unstyled mb-2">
+            @foreach (var c in executionGate.Checks)
+            {
+                <li class="d-flex align-items-center gap-2 py-1">
+                    @if (c.Passed) { <i class="bi bi-check-circle-fill text-success"></i> } else { <i class="bi bi-x-circle-fill text-danger"></i> }
+                    <span class="small"><strong>[@c.Category]</strong> @c.Name — @c.Detail</span>
+                </li>
+            }
+        </ul>
+        @if (executionGate.AdvisoryNotes.Any())
+        {
+            <p class="small text-muted mb-2">Advisory (does not block):</p>
+            <ul class="list-unstyled mb-2">
+                @foreach (var a in executionGate.AdvisoryNotes)
+                {
+                    <li class="d-flex align-items-center gap-2 py-1"><i class="bi bi-info-circle text-warning"></i> <span class="small">@a.Name — @a.Detail</span></li>
+                }
+            </ul>
+        }
+        <div class="d-flex gap-2 flex-wrap border-top pt-3">
+            <form asp-controller="ExecutionGate" asp-action="StartWork" method="post" class="d-inline">
+                <input type="hidden" name="permitId" value="@Model.PermitId" />
+                <button type="button" class="btn btn-sm btn-pems-solid" @(executionGate.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this)">
+                    <i class="bi bi-play-circle"></i> Start Work
+                </button>
+            </form>
+            @if (canEmergencyOverride)
+            {
+                <form asp-controller="ExecutionGate" asp-action="EmergencyOverride" method="post" class="d-flex flex-wrap gap-2">
+                    <input type="hidden" name="permitId" value="@Model.PermitId" />
+                    <input type="text" name="reason" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="Emergency reason (required)" required />
+                    <button type="button" class="btn btn-sm btn-outline-danger"
+                            onclick="if(confirm('Emergency Override یک اقدام واقعاً استثنایی است. مطمئن هستید؟')) pemsSubmitWithStepUp(this)">
+                        <i class="bi bi-exclamation-triangle"></i> Emergency Override
+                    </button>
+                </form>
+            }
+        </div>
+        @if (executionGateDecisions.Any())
+        {
+            <table class="table table-enterprise table-sm mt-3 mb-0">
+                <thead><tr><th>From</th><th>To</th><th>Result</th><th>By</th><th>Date</th><th>Emergency</th><th>Detail</th></tr></thead>
+                <tbody>
+                    @foreach (var d in executionGateDecisions)
+                    {
+                        <tr>
+                            <td class="small">@d.FromStatus</td>
+                            <td class="small">@d.ToStatus</td>
+                            <td><span class="badge @(d.Result == "Eligible" ? "bg-success" : "bg-danger")">@d.Result</span></td>
+                            <td class="small">@(d.ActorName ?? "-")</td>
+                            <td class="small">@d.DecisionDate.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>@(d.IsEmergencyOverride ? "Yes" : "-")</td>
+                            <td class="small text-muted">@(d.IsEmergencyOverride ? d.EmergencyReason : d.BlockingReasonsSummary)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+}
+
+@if (approvalInstance != null)
+{
+    <div class="content-card mb-3" id="approval">
+        <h6 class="mb-3"><i class="bi bi-diagram-3"></i> Approval Progress <span class="badge @(approvalInstance.Status == "Completed" ? "bg-success" : approvalInstance.Status == "Rejected" ? "bg-danger" : "bg-primary")">@approvalInstance.Status</span></h6>
+        @if (errorArea == "Approval" && pageError != null && pageError.Contains(passkeyMissingMarker))
+        {
+            <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+        }
+        else if (errorArea == "Approval" && (pageMessage != null || pageError != null))
+        {
+            <div class="alert @(pageError != null ? "alert-danger" : "alert-success") py-2 px-3 small">@(pageError ?? pageMessage)</div>
+        }
+
+        @{
+            // ترتیب ثابت طبق PermitApprovalWorkflowSeeder (تنها WorkflowDefinition ماژول Permit):
+            // HSEReview → MaintenanceApproval → OperationsApproval. "Permit Issuer" یک
+            // RoleModuleAction جداست، نه مرحله‌ی چهارم این زنجیره - عمداً این‌جا نیست.
+            var stageOrder = new[] { "HSEReview", "MaintenanceApproval", "OperationsApproval" };
+            var completedStages = (approvalHistory ?? new List<WorkflowHistoryDto>())
+                .Where(h => h.FromStageName != null && h.Decision != null)
+                .ToList();
+        }
+        <ul class="list-unstyled mb-3">
+            @foreach (var stageName in stageOrder)
+            {
+                var completedEntry = completedStages.FirstOrDefault(h => h.FromStageName == stageName);
+                var isCurrent = approvalInstance.CurrentStageName == stageName;
+                <li class="d-flex align-items-center gap-2 py-1">
+                    @if (completedEntry != null)
+                    {
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        <span>@stageName - <strong>@completedEntry.Decision</strong> @(completedEntry.Role != null ? $"({completedEntry.Role})" : "") @completedEntry.ActionDate.ToString("yyyy-MM-dd HH:mm")</span>
+                    }
+                    else if (isCurrent)
+                    {
+                        var stageWaitSince = approvalInstance.PendingStages.Any() ? approvalInstance.PendingStages.Min(p => p.AssignedDate) : (DateTime?)null;
+                        <i class="bi bi-record-circle text-primary"></i>
+                        <span>@stageName - <span class="text-muted">در انتظار: @string.Join(" / ", approvalInstance.PendingStages.Select(p => p.AssignedToRole)) @(stageWaitSince.HasValue ? $"({WaitingSince(stageWaitSince.Value)})" : "")</span></span>
+                    }
+                    else
+                    {
+                        <i class="bi bi-circle text-muted"></i>
+                        <span class="text-muted">@stageName</span>
+                    }
+                </li>
+            }
+        </ul>
+
+        @if (approvalInstance.Status == "Running" && approvalInstance.PendingStages.Any(p => RoleMatchesMe(p.AssignedToRole)))
+        {
+            @if ((approveElig != null && approveElig.Result != "Eligible") || (rejectElig != null && rejectElig.Result != "Eligible"))
+            {
+                <div class="border-top pt-3 mb-0">
+                    @if (approveElig != null && approveElig.Result != "Eligible")
+                    {
+                        <div class="mb-1"><span class="badge bg-danger">Not Eligible to Approve</span>
+                            <ul class="small text-muted mb-0 mt-1">@foreach (var c in approveElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
+                        </div>
+                    }
+                    @if (rejectElig != null && rejectElig.Result != "Eligible")
+                    {
+                        <div class="mb-1"><span class="badge bg-danger">Not Eligible to Reject</span>
+                            <ul class="small text-muted mb-0 mt-1">@foreach (var c in rejectElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
+                        </div>
+                    }
+                </div>
+            }
+            <form asp-action="RespondApproval" method="post" class="d-flex flex-wrap gap-2 align-items-center @(approveElig == null && rejectElig == null ? "border-top pt-3" : "")">
+                <input type="hidden" name="id" value="@Model.PermitId" />
+                <input type="text" name="comment" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="Comment (optional)" />
+                <button type="button" class="btn btn-sm btn-success" @(approveElig != null && approveElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this, 'decision', 'Approve')">Approve</button>
+                <button type="button" class="btn btn-sm btn-outline-danger" @(rejectElig != null && rejectElig.Result != "Eligible" ? "disabled" : "")
+                        onclick="if(confirm('این مرحله رد شود؟ کل زنجیره‌ی تایید با نتیجه‌ی Rejected بسته می‌شود.')) pemsSubmitWithStepUp(this, 'decision', 'Reject')">Reject</button>
+            </form>
+            <form asp-action="ReturnForRework" method="post" class="d-flex flex-wrap gap-2 align-items-center mt-2">
+                <input type="hidden" name="id" value="@Model.PermitId" />
+                <input type="text" name="comment" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="Rework instructions" />
+                <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return confirm('Permit برای اصلاح به Draft برگردد؟');">Return for Rework</button>
+            </form>
+        }
+        else if (approvalInstance.Status == "Running")
+        {
+            <p class="text-muted small mb-0">شما نقش لازم برای اقدام روی مرحله‌ی جاری این زنجیره را ندارید.</p>
+        }
+
+        @if (approvalHistory != null && approvalHistory.Any())
+        {
+            <table class="table table-enterprise table-sm mt-3 mb-0">
+                <thead><tr><th>From</th><th>To</th><th>Action</th><th>By Role</th><th>Comment</th><th>Date</th></tr></thead>
+                <tbody>
+                    @foreach (var h in approvalHistory.OrderByDescending(h => h.ActionDate))
+                    {
+                        <tr>
+                            <td class="small">@(h.FromStageName ?? "-")</td>
+                            <td class="small">@(h.ToStageName ?? "-")</td>
+                            <td class="small">@h.ActionType</td>
+                            <td class="small">@(h.Role ?? "-")</td>
+                            <td class="small text-muted">@h.Comment</td>
+                            <td class="small">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+}
+
+@{
+    var verifiedCount = isolationPoints.Count(p => p.Status is "Verified" or "Deisolated");
+    var unverifiedCount = isolationPoints.Count(p => p.Status is "Requested" or "Isolated");
+}
+<div class="content-card mb-3" id="loto">
+    <h6 class="mb-3">
+        <i class="bi bi-lock"></i> Isolation Points (LOTO)
+        @if (isolationPoints.Any())
+        {
+            <span class="badge @(unverifiedCount == 0 ? "bg-success" : "bg-warning text-dark")">@verifiedCount / @isolationPoints.Count Verified</span>
+        }
+    </h6>
+    @if (errorArea == "LOTO" && pageError != null && pageError.Contains(passkeyMissingMarker))
+    {
+        <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+    }
+    else if (errorArea == "LOTO" && (pageMessage != null || pageError != null))
+    {
+        <div class="alert @(pageError != null ? "alert-danger" : "alert-success") py-2 px-3 small">@(pageError ?? pageMessage)</div>
+    }
+    @if (lotoVerifyElig != null && lotoVerifyElig.Result != "Eligible")
+    {
+        <div class="mb-2"><span class="badge bg-danger">Not Eligible to Verify</span>
+            <ul class="small text-muted mb-0 mt-1">@foreach (var c in lotoVerifyElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
+        </div>
+    }
+
+    <table class="table table-enterprise table-sm mb-3">
+        <thead><tr><th>Energy Type</th><th>Location</th><th>Lock/Tag</th><th>Status</th><th>Isolated By</th><th>Verified By</th><th></th></tr></thead>
+        <tbody>
+            @foreach (var p in isolationPoints)
+            {
+                var isoBadge = p.Status switch
+                {
+                    "Verified" => "bg-success",
+                    "Deisolated" => "bg-secondary",
+                    "Cancelled" => "bg-danger",
+                    "Isolated" => "bg-warning text-dark",
+                    _ => "bg-primary"
+                };
+                <tr>
+                    <td class="small">@p.EnergyType</td>
+                    <td class="small">@p.Location @(p.EquipmentTagNumber != null ? $"({p.EquipmentTagNumber})" : "")</td>
+                    <td class="small">@(p.LockNumber ?? "-") / @(p.TagNumber ?? "-")</td>
+                    <td><span class="badge @isoBadge">@p.Status</span></td>
+                    <td class="small">@(p.IsolatedByName ?? "-")</td>
+                    <td class="small">@(p.VerifiedByName ?? "-")</td>
+                    <td class="text-nowrap">
+                        @if (p.Status == "Requested")
+                        {
+                            <form asp-controller="Isolation" asp-action="MarkIsolated" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@p.IsolationPointId" />
+                                <input type="hidden" name="permitId" value="@Model.PermitId" />
+                                <input type="text" name="lockNumber" class="form-control form-control-sm d-inline-block" placeholder="Lock #" style="width:90px;" />
+                                <input type="text" name="tagNumber" class="form-control form-control-sm d-inline-block" placeholder="Tag #" style="width:90px;" />
+                                <button type="submit" class="btn btn-sm btn-outline-warning"><i class="bi bi-lock-fill"></i> Isolate</button>
+                            </form>
+                            <form asp-controller="Isolation" asp-action="Cancel" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@p.IsolationPointId" />
+                                <input type="hidden" name="permitId" value="@Model.PermitId" />
+                                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این نقطه لغو شود؟');">Cancel</button>
+                            </form>
+                        }
+                        @if (p.Status == "Isolated")
+                        {
+                            <form asp-controller="Isolation" asp-action="Verify" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@p.IsolationPointId" />
+                                <input type="hidden" name="permitId" value="@Model.PermitId" />
+                                <button type="button" class="btn btn-sm btn-outline-success" @(lotoVerifyElig != null && lotoVerifyElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this)"><i class="bi bi-check-circle"></i> Verify</button>
+                            </form>
+                        }
+                        @if (p.Status == "Verified")
+                        {
+                            <form asp-controller="Isolation" asp-action="Deisolate" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@p.IsolationPointId" />
+                                <input type="hidden" name="permitId" value="@Model.PermitId" />
+                                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این ایزوله‌سازی برداشته شود (De-isolation)؟');">De-isolate</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!isolationPoints.Any()) { <p class="text-muted small mb-3">هنوز هیچ نقطه‌ی ایزوله‌سازی‌ای ثبت نشده.</p> }
+
+    @if (Model.Status is not ("Closed" or "Cancelled" or "Rejected" or "Revoked"))
+    {
+        <form asp-controller="Isolation" asp-action="Create" method="post" class="row g-2 align-items-end border-top pt-3">
+            <input type="hidden" name="permitId" value="@Model.PermitId" />
+            <div class="col-md-2">
+                <label class="form-label small">Energy Type</label>
+                <select name="energyType" class="form-select form-select-sm" required>
+                    @foreach (var t in isolationEnergyTypes) { <option value="@t">@t</option> }
+                </select>
+            </div>
+            <div class="col-md-3"><label class="form-label small">Location</label><input name="location" class="form-control form-control-sm" required /></div>
+            <div class="col-md-2"><label class="form-label small">Normal State</label><input name="normalState" class="form-control form-control-sm" /></div>
+            <div class="col-md-2"><label class="form-label small">Required Isolation State</label><input name="requiredIsolationState" class="form-control form-control-sm" /></div>
+            <div class="col-md-2"><label class="form-label small">Method</label><input name="isolationMethod" class="form-control form-control-sm" /></div>
+            <div class="col-md-1"><button type="submit" class="btn btn-sm btn-pems-solid w-100">Add</button></div>
+        </form>
+    }
+</div>
+
+@{
+    var passedGasTests = gasTests.Count(g => g.Status == "Passed" && !g.IsExpired);
+}
+<div class="content-card mb-3">
+    <h6 class="mb-3">
+        <i class="bi bi-clouds"></i> Gas Testing
+        @if (gasTests.Any())
+        {
+            <span class="badge @(passedGasTests > 0 ? "bg-success" : "bg-warning text-dark")">@passedGasTests / @gasTests.Count Valid</span>
+        }
+    </h6>
+
+    @foreach (var g in gasTests)
+    {
+        var gasBadge = g.Status switch
+        {
+            "Passed" => g.IsExpired ? "bg-secondary" : "bg-success",
+            "Failed" => "bg-danger",
+            "Invalidated" => "bg-dark",
+            _ => "bg-primary"
+        };
+        var calBadge = g.InstrumentCalibrationStatus switch
+        {
+            "Overdue" => "bg-danger",
+            "DueSoon" => "bg-warning text-dark",
+            "OK" => "bg-success",
+            _ => "bg-secondary"
+        };
+        <div class="border rounded p-2 mb-2">
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                <span class="badge @gasBadge">@g.Status</span>
+                @if (g.IsExpired && g.Status != "Invalidated") { <span class="badge bg-secondary">Expired</span> }
+                <span class="small">@g.Location</span>
+                <span class="small text-muted">Tested by @(g.TesterName ?? "-") @g.TestedAt.ToString("yyyy-MM-dd HH:mm")</span>
+                @if (g.ValidUntil.HasValue) { <span class="small text-muted">Valid Until @g.ValidUntil.Value.ToString("yyyy-MM-dd HH:mm")</span> }
+                @if (!string.IsNullOrWhiteSpace(g.InstrumentTag))
+                {
+                    <span class="small text-muted">Instrument: @g.InstrumentTag <span class="badge @calBadge">@g.InstrumentCalibrationStatus</span></span>
+                }
+            </div>
+            <table class="table table-enterprise table-sm mb-2">
+                <thead><tr><th>Parameter</th><th>Value</th><th>Unit</th><th>Result</th></tr></thead>
+                <tbody>
+                    @foreach (var r in g.Readings)
+                    {
+                        var resultBadge = r.Result switch { "Pass" => "bg-success", "Fail" => "bg-danger", _ => "bg-secondary" };
+                        <tr>
+                            <td class="small">@r.Parameter</td>
+                            <td class="small">@r.Value</td>
+                            <td class="small">@r.Unit</td>
+                            <td><span class="badge @resultBadge">@r.Result</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (g.Status != "Invalidated")
+            {
+                @if (!string.IsNullOrWhiteSpace(g.InvalidationReason)) { <p class="small text-muted mb-2">Invalidation reason: @g.InvalidationReason</p> }
+                <form asp-controller="GasTest" asp-action="Invalidate" method="post" class="d-flex gap-2 align-items-center">
+                    <input type="hidden" name="id" value="@g.GasTestId" />
+                    <input type="hidden" name="permitId" value="@Model.PermitId" />
+                    <input type="text" name="reason" class="form-control form-control-sm" placeholder="Invalidation reason" style="max-width:260px;" required />
+                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('این تست گاز باطل شود؟');">Invalidate</button>
+                </form>
+            }
+            else
+            {
+                <p class="small text-muted mb-0">Invalidated: @g.InvalidationReason</p>
+            }
+        </div>
+    }
+    @if (!gasTests.Any()) { <p class="text-muted small mb-3">هنوز هیچ تست گازی ثبت نشده.</p> }
+
+    @if (Model.Status is not ("Closed" or "Cancelled" or "Rejected" or "Revoked"))
+    {
+        <form asp-controller="GasTest" asp-action="Create" method="post" class="row g-2 align-items-end border-top pt-3">
+            <input type="hidden" name="permitId" value="@Model.PermitId" />
+            <div class="col-md-3"><label class="form-label small">Location</label><input name="location" class="form-control form-control-sm" required /></div>
+            <div class="col-md-2"><label class="form-label small">Tested At</label><input type="datetime-local" name="testedAt" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required /></div>
+            <div class="col-md-2"><label class="form-label small">Instrument Tag</label><input name="instrumentTag" class="form-control form-control-sm" /></div>
+            <div class="col-md-2"><label class="form-label small">Instrument Cal. Due</label><input type="date" name="instrumentCalibrationDueDate" class="form-control form-control-sm" /></div>
+            @foreach (var p in gasRequiredParameters)
+            {
+                <input type="hidden" name="parameter" value="@p" />
+                <div class="col-md-1">
+                    <label class="form-label small">@p</label>
+                    <input type="number" step="0.01" name="value" class="form-control form-control-sm" required />
+                </div>
+                <input type="hidden" name="unit" value="@(p == "O2" ? "%VOL" : p == "LEL" ? "%LEL" : "PPM")" />
+            }
+            <div class="col-md-1"><label class="form-label small">Other</label><input type="number" step="0.01" name="otherValue" class="form-control form-control-sm" /></div>
+            <div class="col-md-1"><label class="form-label small">Unit</label><input type="text" name="otherUnit" class="form-control form-control-sm" placeholder="e.g. PPM" /></div>
+            <div class="col-md-1"><button type="submit" class="btn btn-sm btn-pems-solid w-100">Record</button></div>
+        </form>
+    }
+</div>
+
+@{
+    var handoverBacklinks = (IEnumerable<dynamic>)ViewBag.HandoverBacklinks;
+    var unresolvedSimopsCount = simopsConflicts.Count(c => c.Status is "Potential" or "Confirmed");
+}
+<div class="content-card mb-3" id="simops">
+    <h6 class="mb-3">
+        <i class="bi bi-arrows-angle-contract"></i> SIMOPS
+        @if (simopsConflicts.Any())
+        {
+            <span class="badge @(unresolvedSimopsCount == 0 ? "bg-success" : "bg-warning text-dark")">@unresolvedSimopsCount unresolved</span>
+        }
+    </h6>
+    @if (errorArea == "Simops" && pageError != null && pageError.Contains(passkeyMissingMarker))
+    {
+        <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+    }
+    else if (errorArea == "Simops" && (pageMessage != null || pageError != null))
+    {
+        <div class="alert @(pageError != null ? "alert-danger" : "alert-success") py-2 px-3 small">@(pageError ?? pageMessage)</div>
+    }
+    @if ((simopsConfirmElig != null && simopsConfirmElig.Result != "Eligible") || (simopsResolveElig != null && simopsResolveElig.Result != "Eligible") || (simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible"))
+    {
+        <div class="mb-2">
+            @if (simopsConfirmElig != null && simopsConfirmElig.Result != "Eligible")
+            {
+                <div class="mb-1"><span class="badge bg-danger">Not Eligible to Confirm</span>
+                    <ul class="small text-muted mb-0 mt-1">@foreach (var c in simopsConfirmElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
+                </div>
+            }
+            @if (simopsResolveElig != null && simopsResolveElig.Result != "Eligible")
+            {
+                <div class="mb-1"><span class="badge bg-danger">Not Eligible to Resolve</span>
+                    <ul class="small text-muted mb-0 mt-1">@foreach (var c in simopsResolveElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
+                </div>
+            }
+            @if (simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible")
+            {
+                <div class="mb-1"><span class="badge bg-danger">Not Eligible to Accept Risk</span>
+                    <ul class="small text-muted mb-0 mt-1">@foreach (var c in simopsAcceptRiskElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
+                </div>
+            }
+        </div>
+    }
+
+    @if (simopsConflicts.Any())
+    {
+        <table class="table table-enterprise table-sm mb-3">
+            <thead><tr><th>Other Permit</th><th>Basis</th><th>Severity</th><th>Status</th><th>Detail</th><th></th></tr></thead>
+            <tbody>
+                @foreach (var c in simopsConflicts)
+                {
+                    var otherPermitId = c.PermitAId == Model.PermitId ? c.PermitBId : c.PermitAId;
+                    var otherPermitNumber = c.PermitAId == Model.PermitId ? c.PermitBNumber : c.PermitANumber;
+                    var simopsBadge = c.Status switch
+                    {
+                        "Resolved" => "bg-success",
+                        "AcceptedRisk" => "bg-secondary",
+                        "Confirmed" => "bg-warning text-dark",
+                        _ => "bg-danger"
+                    };
+                    var sevBadge = c.Severity switch { "High" => "bg-danger", "Medium" => "bg-warning text-dark", "Low" => "bg-info text-dark", _ => "bg-secondary" };
+                    <tr>
+                        <td class="small"><a asp-action="Details" asp-route-id="@otherPermitId">@otherPermitNumber</a></td>
+                        <td class="small">@c.ConflictBasis</td>
+                        <td><span class="badge @sevBadge">@c.Severity</span></td>
+                        <td><span class="badge @simopsBadge">@c.Status</span></td>
+                        <td class="small text-muted">
+                            @if (c.Status == "Resolved") { <text>@c.ResolutionNotes</text> }
+                            else if (c.Status == "AcceptedRisk") { <text>@c.AcceptanceJustification</text> }
+                            else { <text>Raised by @c.RaisedByName</text> }
+                        </td>
+                        <td class="text-nowrap">
+                            @if (c.Status == "Potential")
+                            {
+                                <form asp-controller="Simops" asp-action="Confirm" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@c.SimopsConflictId" />
+                                    <input type="hidden" name="permitId" value="@Model.PermitId" />
+                                    <button type="button" class="btn btn-sm btn-outline-warning" @(simopsConfirmElig != null && simopsConfirmElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this)">Confirm</button>
+                                </form>
+                            }
+                            @if (c.Status is "Potential" or "Confirmed")
+                            {
+                                <form asp-controller="Simops" asp-action="AcceptRisk" method="post" class="d-inline-flex flex-wrap gap-1 align-items-center">
+                                    <input type="hidden" name="id" value="@c.SimopsConflictId" />
+                                    <input type="hidden" name="permitId" value="@Model.PermitId" />
+                                    <input type="text" name="justification" class="form-control form-control-sm" style="min-width:110px;max-width:180px;" placeholder="Justification" required />
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" @(simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this)">Accept Risk</button>
+                                </form>
+                            }
+                            @if (c.Status == "Confirmed")
+                            {
+                                <form asp-controller="Simops" asp-action="Resolve" method="post" class="d-inline-flex flex-wrap gap-1 align-items-center">
+                                    <input type="hidden" name="id" value="@c.SimopsConflictId" />
+                                    <input type="hidden" name="permitId" value="@Model.PermitId" />
+                                    <input type="text" name="resolutionNotes" class="form-control form-control-sm" style="min-width:110px;max-width:180px;" placeholder="Resolution notes" required />
+                                    <button type="button" class="btn btn-sm btn-outline-success" @(simopsResolveElig != null && simopsResolveElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this)">Resolve</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (simopsCandidates.Any(x => x.ExistingConflictId == null))
+    {
+        <p class="small text-muted mb-1">Other active Permits sharing equipment/location:</p>
+        <table class="table table-enterprise table-sm mb-2">
+            <thead><tr><th>Permit</th><th>Type</th><th>Basis</th><th>Time Overlap</th><th></th></tr></thead>
+            <tbody>
+                @foreach (var cand in simopsCandidates.Where(x => x.ExistingConflictId == null))
+                {
+                    <tr>
+                        <td class="small"><a asp-action="Details" asp-route-id="@cand.PermitId">@cand.PermitNumber</a> - @cand.Title</td>
+                        <td class="small">@cand.PermitType</td>
+                        <td class="small">@cand.MatchBasis</td>
+                        <td class="small">@(!cand.TimeWindowKnown ? "Unknown" : cand.TimeOverlapConfirmed ? "Yes" : "No")</td>
+                        <td>
+                            <form asp-controller="Simops" asp-action="Create" method="post" class="d-inline">
+                                <input type="hidden" name="permitId" value="@Model.PermitId" />
+                                <input type="hidden" name="otherPermitId" value="@cand.PermitId" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Raise Conflict</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    @if (simopsCandidateWorkOrders.Any())
+    {
+        <p class="small text-muted mb-1">Work Orders on this Equipment with no linked Permit (verify manually):</p>
+        <ul class="small text-muted mb-0">
+            @foreach (var wo in simopsCandidateWorkOrders)
+            {
+                <li>@wo.WorkOrderNumber (@wo.EquipmentTagNumber) — @wo.StartDate?.ToString("yyyy-MM-dd") to @(wo.CompletionDate?.ToString("yyyy-MM-dd") ?? "ongoing")</li>
+            }
+        </ul>
+    }
+    @if (!simopsConflicts.Any() && !simopsCandidates.Any() && !simopsCandidateWorkOrders.Any())
+    {
+        <p class="text-muted small mb-0">هیچ تعارض یا هم‌پوشانی احتمالی شناسایی نشد.</p>
+    }
+
+    @if (handoverBacklinks.Any())
+    {
+        <p class="small text-muted mt-2 mb-0">
+            @foreach (var b in handoverBacklinks)
+            {
+                <span>Included in <a asp-controller="ShiftHandover" asp-action="Details" asp-route-id="@b.ShiftHandoverId">Handover #@b.ShiftHandoverId</a> (@b.Status)</span>
+                <br />
+            }
+        </p>
+    }
+</div>
+
+<div class="content-card">
+    <h6 class="mb-3">Status History</h6>
+    <table class="table table-enterprise table-sm mb-0">
+        <thead><tr><th>From</th><th>To</th><th>By</th><th>Date</th><th>Reason</th></tr></thead>
+        <tbody>
+            @foreach (var h in Model.StatusHistory)
+            {
+                <tr>
+                    <td class="small">@h.FromStatus</td>
+                    <td class="small">@h.ToStatus</td>
+                    <td class="small">@(h.ChangedByName ?? "-")</td>
+                    <td class="small">@h.ChangedDate.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td class="small text-muted">@h.Reason</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!Model.StatusHistory.Any()) { <p class="text-muted text-center py-3 mb-0">هنوز تغییر وضعیتی ثبت نشده.</p> }
+</div>
+
+<script src="~/js/webauthn.js"></script>

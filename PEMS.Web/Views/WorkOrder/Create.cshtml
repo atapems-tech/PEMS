@@ -1,0 +1,64 @@
+﻿<div class="content-card" style="max-width:700px;">
+    <form asp-action="Create" method="post">
+        <div class="row g-3">
+            <div class="col-12">
+                <label class="form-label">Equipment</label>
+                <input type="text" class="form-control" placeholder="جستجوی تگ، نام یا سازنده..."
+                       value="@ViewBag.PreselectedEquipmentLabel"
+                       data-pems-search data-search-type="Equipment" data-search-hidden="#woEquipmentIdHidden" autocomplete="off" />
+                <input type="hidden" name="equipmentId" id="woEquipmentIdHidden" value="@ViewBag.PreselectedEquipmentId" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Type</label>
+                <select name="workOrderType" class="form-select" required>
+                    <option value="Preventive">Preventive</option>
+                    <option value="Corrective" selected>Corrective</option>
+                    <option value="Emergency">Emergency</option>
+                    <option value="Predictive">Predictive</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Priority</label>
+                <select name="priority" class="form-select" required>
+                    <option value="Low">Low</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="High">High</option>
+                    <option value="Critical">Critical</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Maintenance Crew</label>
+                <select name="assignedTeamId" id="assignedTeamSelect" class="form-select" onchange="pemsLoadTeamMembers(this.value)">
+                    <option value="">-- انتخاب گروه کاری --</option>
+                    @foreach (var c in (IEnumerable<dynamic>)ViewBag.Teams) { <option value="@c.TeamId">@c.Name</option> }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Assigned Employee <span class="text-muted small">(بعد از انتخاب گروه)</span></label>
+                <select name="assignedEmployeeId" id="assignedEmployeeSelect" class="form-select">
+                    <option value="">-- ابتدا گروه کاری رو انتخاب کن --</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <label class="form-label small">یادداشت آزاد (اختیاری)</label>
+                <input name="assignedTo" class="form-control form-control-sm" placeholder="مثلاً جزئیات اضافه درباره‌ی تخصیص" />
+            </div>
+            <script>
+                async function pemsLoadTeamMembers(teamId) {
+                    var sel = document.getElementById('assignedEmployeeSelect');
+                    sel.innerHTML = '<option value="">در حال بارگذاری...</option>';
+                    if (!teamId) { sel.innerHTML = '<option value="">-- ابتدا گروه کاری رو انتخاب کن --</option>'; return; }
+                    var res = await fetch('/Team/GetTeamMembers?teamId=' + teamId);
+                    var members = await res.json();
+                    sel.innerHTML = '<option value="">-- بدون عضو مشخص --</option>' +
+                        members.map(m => `<option value="${m.employeeId}">${m.name} (${m.role})</option>`).join('');
+                }
+            </script>
+            <div class="col-12"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="3" required></textarea></div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-pems-solid">Create Work Order</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

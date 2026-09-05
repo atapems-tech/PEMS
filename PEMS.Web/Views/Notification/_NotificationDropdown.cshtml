@@ -1,0 +1,16 @@
+﻿@model List<PEMS.Application.DTOs.NotificationDto>
+
+@if (Model.Any())
+{
+    foreach (var n in Model)
+    {
+        <a href="@n.LinkUrl" class="dropdown-item small py-2 border-bottom">
+            <strong>@n.Title</strong>
+            <div class="text-muted">@n.Message</div>
+        </a>
+    }
+}
+else
+{
+    <span class="dropdown-item small text-muted">No new notifications</span>
+}

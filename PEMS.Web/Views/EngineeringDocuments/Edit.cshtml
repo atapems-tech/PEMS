@@ -1,0 +1,144 @@
+﻿@model PEMS.Domain.Entities.EngineeringDocument
+@{
+    ViewData["Title"] = "Edit Document";
+
+    string statusClass = Model.Status switch
+    {
+        "Approved" => "bg-success",
+        "Issued" => "bg-primary",
+        "Rejected" => "bg-danger",
+        "Submitted" => "bg-warning text-dark",
+        "Draft" => "bg-secondary",
+        _ => "bg-primary"
+    };
+}
+
+@* بازطراحی کامل صفحه‌ی Edit - قبلاً اسکلت خام Bootstrap بدون هماهنگی با بقیه‌ی برنامه بود و
+   فقط ۶ فیلد داشت. حالا هم‌راستا با Create/Details است، فیلدهای مهندسی و ردیابی کامل دارد،
+   و وضعیت/رویژن به‌صورت فقط‌خواندنی نشان داده می‌شوند (این‌ها از طریق گردش‌کار جدا مدیریت
+   می‌شوند - Submit/Approve/Reject/Create Revision - نه ویرایش مستقیم اینجا). *@
+
+<div class="content-card mb-3">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <h5 class="mb-1">Editing: @Model.DocumentNo</h5>
+            <span class="badge @statusClass">@Model.Status</span>
+            <span class="text-muted small ms-2">Rev @Model.RevisionNo</span>
+            @if (Model.IsFrozen) { <span class="badge bg-info text-dark ms-1"><i class="bi bi-snow"></i> Frozen</span> }
+        </div>
+        <a asp-action="Details" asp-route-id="@Model.DocumentId" class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-arrow-return-left"></i> Back to Details
+        </a>
+    </div>
+    <p class="text-muted small mb-0 mt-2">
+        Status, revision, and freeze are managed through the document workflow (Submit / Approve / Reject / Create Revision
+        on the Details page), not edited directly here.
+    </p>
+</div>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="DocumentId" />
+
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="content-card h-100">
+                <h6 class="mb-3">Basic Information</h6>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Document No</label>
+                        <input asp-for="DocumentNo" class="form-control" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Document Type</label>
+                        <input asp-for="DocumentType" class="form-control" required />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Title</label>
+                        <input asp-for="Title" class="form-control" required />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Description</label>
+                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Project</label>
+                        <select asp-for="ProjectId" asp-items="ViewBag.Projects" class="form-select"></select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Discipline</label>
+                        <select asp-for="DisciplineId" asp-items="ViewBag.Disciplines" class="form-select">
+                            <option value="">-- Unassigned --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Area</label>
+                        <input asp-for="Area" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="content-card h-100">
+                <h6 class="mb-3">Engineering Information</h6>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Issue Purpose</label>
+                        @* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۶.۱: کدهای رسمی IFA/IFR/IFI/FI
+                           به‌همراه مقادیر قدیمی این فیلد (برای سازگاری با داده‌ی موجود) - همین لیست دقیقاً در
+                           VDR/Details.cshtml (فرم SubmitForReview) هم تکرار شده؛ اگر این‌جا تغییر داد آن‌جا را هم به‌روزرسانی کنید. *@
+                        <select asp-for="IssuePurpose" class="form-select">
+                            <option value="">-- Select --</option>
+                            <option value="IFA">IFA - Issued for Approval</option>
+                            <option value="IFR">IFR - Issue for Review and Comments</option>
+                            <option value="IFI">IFI - Issue for Information</option>
+                            <option value="FI">FI - Final Issue (without comments)</option>
+                            <option value="For Approval">For Approval (legacy)</option>
+                            <option value="For Construction">For Construction (legacy)</option>
+                            <option value="For Information">For Information (legacy)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Prepared By</label>
+                        <input asp-for="PreparedBy" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Checked By</label>
+                        <input asp-for="CheckedBy" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Approved By</label>
+                        <input asp-for="ApprovedBy" class="form-control" />
+                    </div>
+                </div>
+
+                <h6 class="mb-3 mt-4">Traceability</h6>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Related Equipment <span class="text-muted small">(optional)</span></label>
+                        <select asp-for="EquipmentId" asp-items="ViewBag.Equipments" class="form-select">
+                            <option value="">-- None --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Related Contract <span class="text-muted small">(optional)</span></label>
+                        <select asp-for="ContractId" asp-items="ViewBag.Contracts" class="form-select">
+                            <option value="">-- None --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Related MR <span class="text-muted small">(optional)</span></label>
+                        <select asp-for="RelatedMRId" asp-items="ViewBag.MaterialRequisitions" class="form-select">
+                            <option value="">-- None --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-card mt-3">
+        <button type="submit" class="btn btn-pems-solid"><i class="bi bi-check-lg"></i> Save Changes</button>
+        <a asp-action="Details" asp-route-id="@Model.DocumentId" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>

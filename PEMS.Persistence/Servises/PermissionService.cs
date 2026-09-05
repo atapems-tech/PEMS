@@ -1,0 +1,300 @@
+﻿using Microsoft.EntityFrameworkCore;
+using PEMS.Application.DTOs;
+using PEMS.Application.Interfaces;
+using PEMS.Domain.Entities;
+using PEMS.Persistence.Context;
+using PEMS.Persistence.Identity;
+
+namespace PEMS.Persistence.Services;
+
+public class PermissionService : IPermissionService
+{
+    private readonly PEMSDbContext _context;
+    private readonly IAccessControlService _accessControlService;
+
+    // ماژول‌های اصلی که فعلاً در Permission Matrix پوشش داده می‌شوند؛
+    // ماژول‌های جدید بعداً به همین لیست اضافه می‌شوند
+    private static readonly string[] Modules =
+    {
+        "EngineeringDocuments", "VDR", "Contracts", "Vendors",
+        "MaterialRequisition", "Equipment", "DisciplineWorkspace", "Correspondence", "WorkOrder",
+        "StoreRequisition", "WorkRequest", "Inspection", "Transmittal"
+    };
+
+    public PermissionService(PEMSDbContext context, IAccessControlService accessControlService)
+    {
+        _context = context;
+        _accessControlService = accessControlService;
+    }
+
+    public async Task<List<RolePermissionDto>> GetMatrixAsync()
+    {
+        return await _context.RolePermissions
+            .OrderBy(x => x.RoleName).ThenBy(x => x.ModuleName)
+            .Select(x => new RolePermissionDto
+            {
+                RolePermissionId = x.RolePermissionId,
+                RoleName = x.RoleName,
+                ModuleName = x.ModuleName,
+                CanView = x.CanView,
+                CanCreate = x.CanCreate,
+                CanEdit = x.CanEdit,
+                CanDelete = x.CanDelete,
+                CanApprove = x.CanApprove,
+                CanManualNumber = x.CanManualNumber,
+                CanFreeze = x.CanFreeze,
+                CanUnfreeze = x.CanUnfreeze,
+                CanHold = x.CanHold,
+                CanReleaseHold = x.CanReleaseHold
+            })
+            .ToListAsync();
+    }
+
+    public async Task SetPermissionsAsync(string roleName, IEnumerable<ModulePermissionInput> permissions)
+    {
+        var inputs = permissions.ToList();
+        var moduleNames = inputs.Select(p => p.ModuleName).ToList();
+
+        var existingByModule = await _context.RolePermissions
+            .Where(x => x.RoleName == roleName && moduleNames.Contains(x.ModuleName))
+            .ToDictionaryAsync(x => x.ModuleName);
+
+        foreach (var input in inputs)
+        {
+            if (!existingByModule.TryGetValue(input.ModuleName, out var existing))
+            {
+                existing = new RolePermission { RoleName = roleName, ModuleName = input.ModuleName, CreatedDate = DateTime.Now };
+                _context.RolePermissions.Add(existing);
+            }
+
+            existing.CanView = input.CanView;
+            existing.CanCreate = input.CanCreate;
+            existing.CanEdit = input.CanEdit;
+            existing.CanDelete = input.CanDelete;
+            existing.CanApprove = input.CanApprove;
+            existing.CanManualNumber = input.CanManualNumber;
+            existing.CanFreeze = input.CanFreeze;
+            existing.CanUnfreeze = input.CanUnfreeze;
+            existing.CanHold = input.CanHold;
+            existing.CanReleaseHold = input.CanReleaseHold;
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<bool> HasPermissionAsync(IEnumerable<string> userRoles, string moduleName, string action)
+    {
+        // طبق سند RBAC-ABAC Authorization Architecture (فاز ۱): تصمیم واقعی اکنون از
+        // AccessControlService (که از RolePermissionGrant/Permission - Seed‌شده از همین
+        // RolePermission - می‌خواند) می‌آید، نه مستقیم از RolePermissions این‌جا. رفتار باید
+        // عیناً یکسان بماند - اثبات‌شده با AccessControlParityTests. GetMatrixAsync/
+        // SetPermissionsAsync/SeedDefaultsAsync دست‌نخورده روی RolePermissions کار می‌کنند؛
+        // AccessControlSeeder آن‌ها را به RolePermissionGrant همگام نگه می‌دارد.
+        var decision = await _accessControlService.AuthorizeForRolesAsync(userRoles, moduleName, action);
+        return decision.Allowed;
+    }
+
+    public async Task SeedDefaultsAsync()
+    {
+        // طبق ممیزی: WorkOrder به‌عنوان ماژول جدید حتی روی دیتابیس‌هایی که از قبل Seed شدن
+        // هم باید اضافه بشه - وگرنه با گارد «اگه هر ردیفی هست کلاً رد شو»، هیچ‌وقت اجرا نمی‌شه
+        // و همه‌ی کاربران غیر-SystemAdmin از WorkOrder قفل می‌مونن.
+        if (!await _context.RolePermissions.AnyAsync(x => x.ModuleName == "WorkOrder"))
+        {
+            var workOrderDefaults = new List<RolePermission>
+            {
+                new() { RoleName = SystemRoles.MaintenanceEngineer, ModuleName = "WorkOrder", CanView = true, CanCreate = true, CanEdit = true, CanApprove = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.EngineeringSupervisor, ModuleName = "WorkOrder", CanView = true, CanCreate = true, CanEdit = true, CanApprove = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.EngineeringManager, ModuleName = "WorkOrder", CanView = true, CanCreate = true, CanEdit = true, CanDelete = true, CanApprove = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.DisciplineEngineer, ModuleName = "WorkOrder", CanView = true, CanApprove = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.Viewer, ModuleName = "WorkOrder", CanView = true, CreatedDate = DateTime.Now }
+            };
+
+            await _context.RolePermissions.AddRangeAsync(workOrderDefaults);
+            await _context.SaveChangesAsync();
+        }
+
+        // طبق CMMS Production Baseline v1 بند P0-02: StoreRequisition تا امروز هیچ Permission
+        // نداشت (هر کاربر وارد شده می‌تونست Approve/Issue کنه). چون هنوز نقش اختصاصی
+        // "انباردار" در سیستم تعریف نشده، از همون نقش‌هایی که به WorkOrder دسترسی دارن استفاده
+        // می‌شه - می‌شه بعداً از پنل Admin/PermissionMatrix یک نقش اختصاصی ساخت و اینجا اصلاح کرد.
+        if (!await _context.RolePermissions.AnyAsync(x => x.ModuleName == "StoreRequisition"))
+        {
+            var storeRequisitionDefaults = new List<RolePermission>
+            {
+                new() { RoleName = SystemRoles.MaintenanceEngineer, ModuleName = "StoreRequisition", CanView = true, CanCreate = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.EngineeringSupervisor, ModuleName = "StoreRequisition", CanView = true, CanCreate = true, CanApprove = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.EngineeringManager, ModuleName = "StoreRequisition", CanView = true, CanCreate = true, CanDelete = true, CanApprove = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.Viewer, ModuleName = "StoreRequisition", CanView = true, CreatedDate = DateTime.Now }
+            };
+
+            await _context.RolePermissions.AddRangeAsync(storeRequisitionDefaults);
+            await _context.SaveChangesAsync();
+        }
+
+        // طبق CMMS Production Baseline v1 بند P0-05: WorkRequest دروازه‌ی رسمی قبل از ساخت
+        // WorkOrder اجرایی است - هر Role ای که به WorkOrder دسترسی داره باید بتونه درخواست
+        // بسازه/بررسی کنه هم.
+        if (!await _context.RolePermissions.AnyAsync(x => x.ModuleName == "WorkRequest"))
+        {
+            var workRequestDefaults = new List<RolePermission>
+            {
+                new() { RoleName = SystemRoles.MaintenanceEngineer, ModuleName = "WorkRequest", CanView = true, CanCreate = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.EngineeringSupervisor, ModuleName = "WorkRequest", CanView = true, CanCreate = true, CanApprove = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.EngineeringManager, ModuleName = "WorkRequest", CanView = true, CanCreate = true, CanDelete = true, CanApprove = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.DisciplineEngineer, ModuleName = "WorkRequest", CanView = true, CanCreate = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.Viewer, ModuleName = "WorkRequest", CanView = true, CreatedDate = DateTime.Now }
+            };
+
+            await _context.RolePermissions.AddRangeAsync(workRequestDefaults);
+            await _context.SaveChangesAsync();
+        }
+
+        if (!await _context.RolePermissions.AnyAsync(x => x.ModuleName == "Inspection"))
+        {
+            var inspectionDefaults = new List<RolePermission>
+            {
+                new() { RoleName = SystemRoles.MaintenanceEngineer, ModuleName = "Inspection", CanView = true, CanCreate = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.QAManager, ModuleName = "Inspection", CanView = true, CanCreate = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.EngineeringSupervisor, ModuleName = "Inspection", CanView = true, CanCreate = true, CanApprove = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.EngineeringManager, ModuleName = "Inspection", CanView = true, CanCreate = true, CanDelete = true, CanApprove = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.Viewer, ModuleName = "Inspection", CanView = true, CreatedDate = DateTime.Now }
+            };
+
+            await _context.RolePermissions.AddRangeAsync(inspectionDefaults);
+            await _context.SaveChangesAsync();
+        }
+
+        // طبق بخش G (Transmittal Governance) ممیزی: ماژول جدید - همان الگوی WorkOrder/Inspection
+        // بالا، حتی روی دیتابیس‌های از قبل Seed‌شده هم باید اضافه شود.
+        if (!await _context.RolePermissions.AnyAsync(x => x.ModuleName == "Transmittal"))
+        {
+            var transmittalDefaults = new List<RolePermission>
+            {
+                // View + Create (Draft) + Delete (Cancel)
+                new() { RoleName = SystemRoles.DocumentController, ModuleName = "Transmittal", CanView = true, CanCreate = true, CanEdit = true, CanDelete = true, CanApprove = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.EngineeringManager, ModuleName = "Transmittal", CanView = true, CanCreate = true, CanEdit = true, CanDelete = true, CanApprove = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.EngineeringSupervisor, ModuleName = "Transmittal", CanView = true, CanCreate = true, CanEdit = true, CanApprove = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.DisciplineEngineer, ModuleName = "Transmittal", CanView = true, CanCreate = true, CreatedDate = DateTime.Now },
+                new() { RoleName = SystemRoles.Viewer, ModuleName = "Transmittal", CanView = true, CreatedDate = DateTime.Now }
+            };
+
+            await _context.RolePermissions.AddRangeAsync(transmittalDefaults);
+            await _context.SaveChangesAsync();
+        }
+
+        // ==============================================================================
+        // طبق ممیزی فاز ۵ (Permission Seed Audit): این ۸ ماژول قبلاً پشت یک گارد سراسری
+        // «اگه هر ردیفی هست کلاً رد شو» بودند که همیشه بعد از بلوک‌های WorkOrder/
+        // StoreRequisition/WorkRequest/Inspection/Transmittal بالا اجرا می‌شد - یعنی چون آن
+        // بلوک‌ها همیشه اول رکورد اضافه می‌کنند، AnyAsync() همیشه true می‌شد و این ۸ ماژول
+        // هرگز Seed نمی‌شدند (نه فقط روی دیتابیس‌های قدیمی - حتی روی یک دیتابیس کاملاً خالی).
+        // با تأیید مستقیم روی PEMSDB واقعی: RolePermissions فقط WorkOrder/StoreRequisition/
+        // WorkRequest/Inspection/Transmittal را داشت، صفر ردیف برای این ۸ ماژول.
+        // مقادیر پیش‌فرض زیر عیناً همانی هستند که در کد قبلاً نوشته شده بودند - این تغییر
+        // Authorization جدیدی اختراع نمی‌کند، فقط همون گارد Idempotent هر-ماژول-جدا (دقیقاً
+        // همون الگوی WorkOrder/StoreRequisition/... بالا) را روی کدی که قبلاً غیرقابل‌اجرا بود
+        // اعمال می‌کند - Additive/Idempotent/Deterministic، بدون تغییر هیچ Grant موجود.
+        // ==============================================================================
+
+        static RolePermission New(string role, string module, bool view = true, bool create = false, bool edit = false, bool del = false, bool approve = false, bool manualNumber = false, bool freeze = false, bool unfreeze = false, bool hold = false, bool releaseHold = false) => new()
+        {
+            RoleName = role,
+            ModuleName = module,
+            CanView = view,
+            CanCreate = create,
+            CanEdit = edit,
+            CanDelete = del,
+            CanApprove = approve,
+            CanManualNumber = manualNumber,
+            CanFreeze = freeze,
+            CanUnfreeze = unfreeze,
+            CanHold = hold,
+            CanReleaseHold = releaseHold,
+            CreatedDate = DateTime.Now
+        };
+
+        // ==============================================================================
+        // طبق ممیزی فاز ۵C/۶B (Permission Seed Hardening): RolePermissions یک ردیف به‌ازای
+        // هر جفت (RoleName, ModuleName) است - همه‌ی Actionها (Create/Edit/Approve/Freeze/...)
+        // روی همون یک ردیف به‌صورت ستون Boolean هستند، نه ردیف‌های جدا. گارد قدیمی («اگه هر
+        // ردیفی برای این ماژول هست کلاً رد شو») در سطح کل ماژول Idempotent بود، اما اگر فقط یک
+        // نقش (مثلاً از طریق پنل Admin/SetPermissionsAsync) از قبل ردیف داشته باشد، این گارد
+        // بقیه‌ی نقش‌ها را هم برای همیشه Skip می‌کرد و هرگز ترمیم نمی‌شدند. SeedMissingRoles
+        // وجود هر (RoleName, ModuleName) را مستقل بررسی می‌کند: نقش‌های موجود دست‌نخورده
+        // می‌مانند (Overwrite نمی‌شوند - Grantهای دستی حفظ می‌شوند)، فقط نقش‌های غایب از
+        // همین تعریف‌های Authored اضافه می‌شوند. این متد ابتدا فقط برای EngineeringDocuments
+        // (فاز ۵C) نوشته شده بود؛ فاز ۶B همون الگو را روی ۷ ماژول باقی‌مانده هم اعمال می‌کند -
+        // مقادیر پیش‌فرض دقیقاً همان‌هایی هستند که قبلاً در این فایل نوشته شده بودند.
+        // ==============================================================================
+        async Task SeedMissingRolesAsync(string moduleName, List<RolePermission> authoredDefaults)
+        {
+            var existingRoles = await _context.RolePermissions
+                .Where(x => x.ModuleName == moduleName)
+                .Select(x => x.RoleName)
+                .ToListAsync();
+
+            var missing = authoredDefaults.Where(d => !existingRoles.Contains(d.RoleName)).ToList();
+
+            if (missing.Count > 0)
+            {
+                await _context.RolePermissions.AddRangeAsync(missing);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        await SeedMissingRolesAsync("EngineeringDocuments", new List<RolePermission>
+        {
+            New(SystemRoles.EngineeringManager, "EngineeringDocuments", create: true, edit: true, del: true, approve: true, manualNumber: true, freeze: true, unfreeze: true, hold: true, releaseHold: true),
+            New(SystemRoles.EngineeringSupervisor, "EngineeringDocuments", create: true, edit: true, approve: true, hold: true, releaseHold: true),
+            New(SystemRoles.DisciplineEngineer, "EngineeringDocuments", create: true, edit: true, hold: true),
+            New(SystemRoles.DocumentController, "EngineeringDocuments", create: true, edit: true, manualNumber: true, freeze: true, unfreeze: true, hold: true, releaseHold: true),
+            New(SystemRoles.Viewer, "EngineeringDocuments")
+        });
+
+        await SeedMissingRolesAsync("VDR", new List<RolePermission>
+        {
+            New(SystemRoles.EngineeringManager, "VDR", create: true, edit: true, del: true, approve: true),
+            New(SystemRoles.DocumentController, "VDR", create: true, edit: true),
+            New(SystemRoles.DisciplineEngineer, "VDR", edit: true, approve: true)
+        });
+
+        await SeedMissingRolesAsync("Contracts", new List<RolePermission>
+        {
+            New(SystemRoles.ContractManager, "Contracts", create: true, edit: true, approve: true),
+            New(SystemRoles.EngineeringManager, "Contracts", approve: true)
+        });
+
+        await SeedMissingRolesAsync("Vendors", new List<RolePermission>
+        {
+            New(SystemRoles.ContractManager, "Vendors", create: true, edit: true)
+        });
+
+        await SeedMissingRolesAsync("MaterialRequisition", new List<RolePermission>
+        {
+            New(SystemRoles.EngineeringManager, "MaterialRequisition", create: true, edit: true, approve: true),
+            New(SystemRoles.DisciplineEngineer, "MaterialRequisition", create: true, edit: true)
+        });
+
+        await SeedMissingRolesAsync("Equipment", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "Equipment", create: true, edit: true)
+        });
+
+        await SeedMissingRolesAsync("DisciplineWorkspace", new List<RolePermission>
+        {
+            New(SystemRoles.EngineeringSupervisor, "DisciplineWorkspace", create: true, edit: true),
+            New(SystemRoles.DisciplineEngineer, "DisciplineWorkspace", create: true, edit: true)
+        });
+
+        // Correspondence (مکاتبات رسمی)
+        await SeedMissingRolesAsync("Correspondence", new List<RolePermission>
+        {
+            New(SystemRoles.DocumentController, "Correspondence", create: true, edit: true, approve: true, manualNumber: true),
+            New(SystemRoles.EngineeringManager, "Correspondence", create: true, edit: true, approve: true, manualNumber: true),
+            New(SystemRoles.EngineeringSupervisor, "Correspondence", create: true, edit: true),
+            New(SystemRoles.DisciplineEngineer, "Correspondence", create: true),
+            New(SystemRoles.ContractManager, "Correspondence", create: true, edit: true)
+        });
+    }
+}

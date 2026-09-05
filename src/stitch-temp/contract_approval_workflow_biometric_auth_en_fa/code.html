@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contract Approval Workflow</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#081d2f",
+                    "tertiary": "#000815",
+                    "surface-container-highest": "#d0e4fe",
+                    "secondary": "#895200",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed-dim": "#9ecaff",
+                    "surface-container": "#e4efff",
+                    "on-primary-fixed": "#101c2f",
+                    "on-secondary-container": "#6e4100",
+                    "surface-container-high": "#daeaff",
+                    "on-secondary-fixed-variant": "#683d00",
+                    "on-surface": "#081d2f",
+                    "tertiary-container": "#00213d",
+                    "inverse-on-surface": "#e9f1ff",
+                    "outline": "#75777d",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#d1e4ff",
+                    "surface-container-low": "#eef4ff",
+                    "on-tertiary-fixed": "#001d36",
+                    "inverse-primary": "#bbc7e0",
+                    "primary": "#000819",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#3b475c",
+                    "surface-bright": "#f8f9ff",
+                    "background": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#7c889f",
+                    "on-surface-variant": "#44474c",
+                    "on-tertiary-fixed-variant": "#00497c",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed": "#2c1700",
+                    "primary-fixed-dim": "#bbc7e0",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#ffdcbc",
+                    "surface": "#f8f9ff",
+                    "inverse-surface": "#1f3245",
+                    "secondary-container": "#fdaa47",
+                    "outline-variant": "#c5c6cd",
+                    "primary-fixed": "#d7e3fd",
+                    "on-error-container": "#93000a",
+                    "surface-tint": "#535f75",
+                    "surface-dim": "#c8dcf5",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#d0e4fe",
+                    "on-tertiary-container": "#498bcd",
+                    "secondary-fixed-dim": "#ffb86a",
+                    "primary-container": "#142033"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "lg": "24px",
+                    "topbar-height": "60px",
+                    "gutter": "16px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "sidebar-width": "260px",
+                    "sm": "8px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Inter"],
+                    "badge-label": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-medium": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "table-cell": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "table-header": ["Inter"],
+                    "body-base": ["Inter"],
+                    "kpi-stat": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}],
+                    "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                    "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                    "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          }
+        },
+      }
+    </script>
+<style>
+        /* Custom styles for animations and specific UI tweaks not covered by config */
+        .btn-primary-gradient {
+            background: linear-gradient(135deg, #d98c2b 0%, #b8721e 100%);
+            color: #ffffff;
+            border: none;
+        }
+        .btn-primary-gradient:hover {
+            opacity: 0.9;
+        }
+        
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #d98c2b;
+            box-shadow: 0 0 10px #d98c2b;
+            animation: scan 2s infinite ease-in-out;
+            opacity: 0;
+        }
+
+        .scanning .scan-line {
+            opacity: 1;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+
+        /* Registry Monospace substitute using standard Tailwind font-mono if needed, though config implies using set fonts. We will stick to table-cell for now as per config, but simulate tabular nums. */
+        .tabular-data {
+            font-variant-numeric: tabular-nums;
+        }
+        
+        /* Subtle scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c5c6cd; 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #75777d; 
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base text-body-base h-screen w-full overflow-hidden flex">
+<!-- 
+      ========================================
+      Shared Component: SideNavBar
+      Authority: JSON + Conflict Resolution
+      ========================================
+    -->
+<aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-primary dark:bg-tertiary-container flex flex-col h-full py-lg z-50 transition-transform duration-300 md:translate-x-0 -translate-x-full">
+<!-- Header -->
+<div class="px-lg mb-xl">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-primary">Industrial Utility Admin</h1>
+</div>
+<p class="font-body-medium text-body-medium text-on-primary/70">System Operator</p>
+</div>
+<!-- Navigation Tabs -->
+<nav class="flex-1 overflow-y-auto px-xs space-y-xs">
+<!-- Inactive -->
+<a class="flex items-center gap-md text-on-primary/70 dark:text-on-primary-fixed-variant hover:text-on-primary hover:bg-primary-container dark:hover:bg-tertiary-container transition-all px-4 py-2 rounded-lg mx-2" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-medium text-body-medium">Dashboard</span>
+</a>
+<!-- ACTIVE: Contracts (closest match to "Contract Approval Workflow") -->
+<a class="flex items-center gap-md bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-lg mx-2 px-4 py-2 scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">description</span>
+<span class="font-body-medium text-body-medium font-bold">Contracts</span>
+</a>
+<!-- Inactive -->
+<a class="flex items-center gap-md text-on-primary/70 dark:text-on-primary-fixed-variant hover:text-on-primary hover:bg-primary-container dark:hover:bg-tertiary-container transition-all px-4 py-2 rounded-lg mx-2" href="#">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="font-body-medium text-body-medium">Compliance</span>
+</a>
+<a class="flex items-center gap-md text-on-primary/70 dark:text-on-primary-fixed-variant hover:text-on-primary hover:bg-primary-container dark:hover:bg-tertiary-container transition-all px-4 py-2 rounded-lg mx-2" href="#">
+<span class="material-symbols-outlined">factory</span>
+<span class="font-body-medium text-body-medium">Vendors</span>
+</a>
+<a class="flex items-center gap-md text-on-primary/70 dark:text-on-primary-fixed-variant hover:text-on-primary hover:bg-primary-container dark:hover:bg-tertiary-container transition-all px-4 py-2 rounded-lg mx-2" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-medium text-body-medium">Financials</span>
+</a>
+<a class="flex items-center gap-md text-on-primary/70 dark:text-on-primary-fixed-variant hover:text-on-primary hover:bg-primary-container dark:hover:bg-tertiary-container transition-all px-4 py-2 rounded-lg mx-2" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-medium text-body-medium">Settings</span>
+</a>
+</nav>
+<!-- CTA & Footer -->
+<div class="px-lg mt-auto pt-lg">
+<button class="w-full btn-primary-gradient rounded-lg py-2 px-4 font-body-medium text-body-medium flex items-center justify-center gap-sm shadow-md mb-lg">
+<span class="material-symbols-outlined" style="font-size: 18px;">add</span>
+                New Contract
+            </button>
+<div class="space-y-xs">
+<a class="flex items-center gap-md text-on-primary/70 hover:text-on-primary transition-colors py-1" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-medium text-body-medium">Help Center</span>
+</a>
+<a class="flex items-center gap-md text-on-primary/70 hover:text-on-primary transition-colors py-1" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-medium text-body-medium">Sign Out</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col min-w-0 md:ml-sidebar-width relative">
+<!-- 
+          ========================================
+          Shared Component: TopAppBar
+          Authority: JSON + Conflict Resolution
+          ========================================
+        -->
+<header class="bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline docked full-width top-0 sticky z-40 flex justify-between items-center h-topbar-height px-lg">
+<div class="flex items-center gap-md">
+<!-- Mobile menu toggle (hidden on desktop) -->
+<button class="md:hidden text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-headline-md text-headline-md font-bold text-on-surface dark:text-inverse-on-surface">Contract Management</div>
+</div>
+<div class="flex items-center gap-gutter">
+<!-- Search (on_left in JSON implies left of trailing icons) -->
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" style="font-size: 20px;">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface-container-low border border-outline-variant rounded-lg font-body-medium text-body-medium text-on-surface focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-all w-64" placeholder="Search contracts..." type="text"/>
+</div>
+<!-- Trailing Icons -->
+<div class="flex items-center gap-sm">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors focus:ring-2 focus:ring-secondary">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors relative focus:ring-2 focus:ring-secondary">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-secondary-container rounded-full border border-surface"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors focus:ring-2 focus:ring-secondary">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- 
+          ========================================
+          Page Canvas / Content
+          ========================================
+        -->
+<main class="flex-1 overflow-y-auto bg-background p-md md:p-lg">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md mb-lg">
+<div>
+<div class="flex items-center gap-sm text-on-surface-variant mb-xs">
+<span class="font-label-caps text-label-caps uppercase">Contracts</span>
+<span class="material-symbols-outlined" style="font-size: 14px;">chevron_right</span>
+<span class="font-label-caps text-label-caps uppercase">Pending Review</span>
+<span class="material-symbols-outlined" style="font-size: 14px;">chevron_right</span>
+<span class="font-label-caps text-label-caps text-secondary font-bold tabular-data">MSA-2023-884A</span>
+</div>
+<div class="flex items-center gap-md">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Heavy Equipment Servicing SLA</h2>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-badge-label text-badge-label flex items-center gap-xs">
+<span class="material-symbols-outlined" style="font-size: 14px;">pending_actions</span>
+                            Pending Final Approval
+                        </span>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<button class="px-4 py-2 border border-outline-variant text-on-surface-variant bg-surface hover:bg-surface-container-low transition-colors rounded-lg font-body-medium text-body-medium shadow-sm">
+                        Delegate
+                    </button>
+<button class="px-4 py-2 border border-outline-variant text-error bg-surface hover:bg-error-container transition-colors rounded-lg font-body-medium text-body-medium shadow-sm flex items-center gap-xs">
+<span class="material-symbols-outlined" style="font-size: 18px;">block</span>
+                        Reject
+                    </button>
+</div>
+</div>
+<!-- Grid Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-gutter">
+<!-- Left Column: Contract Summary (High Density) -->
+<div class="xl:col-span-8 flex flex-col space-y-gutter">
+<!-- Bento Box 1: Core Details -->
+<div class="bg-surface rounded-xl border border-outline-variant p-md md:p-lg shadow-sm hover:border-secondary-container transition-colors duration-300">
+<div class="flex items-center justify-between border-b border-outline-variant pb-sm mb-md">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-surface-tint">info</span>
+                                Contract Summary
+                            </h3>
+<button class="text-secondary font-body-medium text-body-medium hover:underline">View Original PDF</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-y-md gap-x-sm">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Vendor</span>
+<span class="font-body-medium text-body-medium text-on-surface">Apex Industrial Solutions</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Contract Type</span>
+<span class="font-body-medium text-body-medium text-on-surface">Master Service Agmt.</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Total Value (Est)</span>
+<span class="font-body-medium text-body-medium text-on-surface tabular-data">$1,250,000.00</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Cost Center</span>
+<span class="font-body-medium text-body-medium text-on-surface tabular-data">CC-992-MNT</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Effective Date</span>
+<span class="font-body-medium text-body-medium text-on-surface tabular-data">2023-11-01</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Expiration Date</span>
+<span class="font-body-medium text-body-medium text-on-surface tabular-data">2025-10-31</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Renewal Terms</span>
+<span class="font-body-medium text-body-medium text-on-surface">Auto-renew 1 Yr</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Jurisdiction</span>
+<span class="font-body-medium text-body-medium text-on-surface">Delaware, US</span>
+</div>
+</div>
+</div>
+<!-- Bento Box 2: Line Items Table -->
+<div class="bg-surface rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col flex-1 hover:border-secondary-container transition-colors duration-300">
+<div class="p-md md:p-lg border-b border-outline-variant bg-surface flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-surface-tint">list_alt</span>
+                                Scope of Services
+                            </h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-bright border-b border-outline-variant sticky top-0">
+<tr>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase">Asset Class</th>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase">SLA Requirement</th>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase text-right">Qty / Hours</th>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase text-right">Unit Rate</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">HVAC Systems (Tier 1)</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface-variant">4hr Response, Quarterly PM</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface tabular-data text-right">12 Units</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface tabular-data text-right">$450.00</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">Backup Generators</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface-variant">Monthly Load Test, 2hr Emergency</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface tabular-data text-right">4 Units</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface tabular-data text-right">$1,200.00</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">Conveyor Belts (Main Line)</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface-variant">Weekly visual, Bi-annual tensioning</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface tabular-data text-right">800 m</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface tabular-data text-right">$15.50/m</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">Emergency Callout Labor</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface-variant">As needed, 24/7 coverage</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface tabular-data text-right">~500 hrs</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface tabular-data text-right">$125.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Bento Box 3: Compliance & Deviations (Asymmetric Grid) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="bg-surface rounded-xl border border-outline-variant p-md shadow-sm hover:border-secondary-container transition-colors">
+<h4 class="font-body-medium text-body-medium text-on-surface mb-sm flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-size: 18px;">gavel</span>
+                                Legal Clauses Modified
+                            </h4>
+<ul class="space-y-2">
+<li class="flex items-start gap-xs">
+<span class="material-symbols-outlined text-secondary-container" style="font-size: 16px; margin-top: 2px;">warning</span>
+<div>
+<span class="font-body-base text-body-base text-on-surface block">Indemnification Cap</span>
+<span class="font-table-cell text-table-cell text-on-surface-variant">Modified from 2x to 1.5x contract value.</span>
+</div>
+</li>
+<li class="flex items-start gap-xs">
+<span class="material-symbols-outlined text-secondary-container" style="font-size: 16px; margin-top: 2px;">warning</span>
+<div>
+<span class="font-body-base text-body-base text-on-surface block">Termination for Convenience</span>
+<span class="font-table-cell text-table-cell text-on-surface-variant">Notice period extended to 90 days.</span>
+</div>
+</li>
+</ul>
+</div>
+<div class="bg-surface rounded-xl border border-outline-variant p-md shadow-sm hover:border-secondary-container transition-colors">
+<h4 class="font-body-medium text-body-medium text-on-surface mb-sm flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-size: 18px;">verified</span>
+                                Vendor Compliance
+                            </h4>
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-table-cell text-table-cell text-on-surface-variant">Cert. of Insurance (COI)</span>
+<span class="bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full font-badge-label text-badge-label">Valid (Exp 12/24)</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-table-cell text-table-cell text-on-surface-variant">W-9 / Tax Forms</span>
+<span class="bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full font-badge-label text-badge-label">On File</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-table-cell text-table-cell text-on-surface-variant">Safety Record (TRIR)</span>
+<span class="bg-surface-container-high text-on-surface px-2 py-0.5 rounded-full font-badge-label text-badge-label">0.8 (Acceptable)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Approval Timeline & Biometrics -->
+<div class="xl:col-span-4 flex flex-col space-y-gutter relative">
+<!-- Sticky Container for Right Rail -->
+<div class="sticky top-0 flex flex-col space-y-gutter pb-lg">
+<!-- Approval Workflow Status -->
+<div class="bg-surface rounded-xl border border-outline-variant p-md md:p-lg shadow-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md border-b border-outline-variant pb-sm">Approval Workflow</h3>
+<div class="relative pl-6 border-l-2 border-outline-variant space-y-xl py-xs">
+<!-- Step 1: Procurement -->
+<div class="relative">
+<div class="absolute -left-[35px] top-0 w-6 h-6 rounded-full bg-primary-fixed flex items-center justify-center border-2 border-surface">
+<span class="material-symbols-outlined text-on-primary-fixed" style="font-size: 14px; font-variation-settings: 'wght' 700;">check</span>
+</div>
+<div class="flex justify-between items-start mb-1">
+<div>
+<h4 class="font-body-medium text-body-medium text-on-surface">Procurement Review</h4>
+<p class="font-table-cell text-table-cell text-on-surface-variant">S. Mitchell • 2023-10-24 09:15</p>
+</div>
+<span class="bg-surface-variant text-on-surface font-label-caps text-label-caps px-1.5 py-0.5 rounded border border-outline-variant">EN</span>
+</div>
+<span class="inline-block mt-1 bg-surface-container-highest text-on-surface px-2 py-0.5 rounded text-[10px] font-bold tracking-wider">APPROVED</span>
+</div>
+<!-- Step 2: Legal -->
+<div class="relative">
+<div class="absolute -left-[35px] top-0 w-6 h-6 rounded-full bg-primary-fixed flex items-center justify-center border-2 border-surface">
+<span class="material-symbols-outlined text-on-primary-fixed" style="font-size: 14px; font-variation-settings: 'wght' 700;">check</span>
+</div>
+<div class="flex justify-between items-start mb-1">
+<div>
+<h4 class="font-body-medium text-body-medium text-on-surface">Legal Counsel</h4>
+<p class="font-table-cell text-table-cell text-on-surface-variant">A. Rahman • 2023-10-25 14:30</p>
+</div>
+<span class="bg-surface-variant text-on-surface font-label-caps text-label-caps px-1.5 py-0.5 rounded border border-outline-variant">EN</span>
+</div>
+<p class="font-table-cell text-table-cell text-on-surface-variant italic mt-1 border-l-2 border-primary-fixed-dim pl-2 bg-surface-bright py-1">"Clauses 4 and 7 modified. Proceed."</p>
+<span class="inline-block mt-2 bg-surface-container-highest text-on-surface px-2 py-0.5 rounded text-[10px] font-bold tracking-wider">APPROVED</span>
+</div>
+<!-- Step 3: Finance -->
+<div class="relative">
+<div class="absolute -left-[35px] top-0 w-6 h-6 rounded-full bg-primary-fixed flex items-center justify-center border-2 border-surface">
+<span class="material-symbols-outlined text-on-primary-fixed" style="font-size: 14px; font-variation-settings: 'wght' 700;">check</span>
+</div>
+<div class="flex justify-between items-start mb-1">
+<div>
+<h4 class="font-body-medium text-body-medium text-on-surface">Finance Control</h4>
+<p class="font-table-cell text-table-cell text-on-surface-variant">M. Chen • 2023-10-26 10:05</p>
+</div>
+<span class="bg-surface-variant text-on-surface font-label-caps text-label-caps px-1.5 py-0.5 rounded border border-outline-variant">FA</span>
+</div>
+<span class="inline-block mt-1 bg-surface-container-highest text-on-surface px-2 py-0.5 rounded text-[10px] font-bold tracking-wider">APPROVED</span>
+</div>
+<!-- Step 4: Final Executive (Current) -->
+<div class="relative">
+<div class="absolute -left-[36px] top-0 w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center border-4 border-background z-10 animate-pulse">
+<span class="w-2 h-2 rounded-full bg-on-secondary-container"></span>
+</div>
+<div class="flex justify-between items-start mb-1">
+<div>
+<h4 class="font-body-medium text-body-medium text-on-surface font-bold">Final Authorization</h4>
+<p class="font-table-cell text-table-cell text-secondary font-bold">Pending Your Action</p>
+</div>
+<span class="bg-surface-variant text-on-surface font-label-caps text-label-caps px-1.5 py-0.5 rounded border border-outline-variant">EN/FA</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Biometric Verification Card (Glassmorphism inspired, industrial execution) -->
+<div class="bg-surface rounded-xl border-2 border-secondary-container shadow-[0_8px_30px_rgb(137,82,0,0.12)] p-lg relative overflow-hidden group">
+<!-- Subtle animated background effect -->
+<div class="absolute inset-0 bg-gradient-to-br from-surface to-surface-container-low opacity-50 pointer-events-none"></div>
+<div class="relative z-10 flex flex-col items-center text-center">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Final Authorization</h3>
+<p class="font-body-base text-body-base text-on-surface-variant mb-lg max-w-[250px]">Identity verification required to execute binding contract MSA-2023-884A.</p>
+<!-- Scanner UI -->
+<div class="w-24 h-24 rounded-2xl bg-surface-bright border border-outline-variant flex items-center justify-center mb-lg relative overflow-hidden group-hover:border-secondary transition-colors cursor-pointer" onclick="this.classList.toggle('scanning')">
+<span class="material-symbols-outlined text-surface-tint group-hover:text-secondary transition-colors" style="font-size: 64px; font-variation-settings: 'wght' 200;">fingerprint</span>
+<div class="scan-line"></div>
+</div>
+<button class="w-full btn-primary-gradient rounded-lg py-3 px-4 font-body-medium text-body-medium flex items-center justify-center gap-sm shadow-md transition-transform active:scale-95">
+<span class="material-symbols-outlined" style="font-size: 20px;">lock_open</span>
+                                    Authorize &amp; Sign
+                                </button>
+<p class="font-table-cell text-table-cell text-on-surface-variant mt-sm flex items-center gap-xs">
+<span class="material-symbols-outlined" style="font-size: 14px;">encrypted</span>
+                                    End-to-End Encrypted Handshake
+                                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

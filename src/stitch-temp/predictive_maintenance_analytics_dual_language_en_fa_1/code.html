@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Predictive Maintenance Analytics - PEMS Industrial</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#535f75",
+                      "surface-container-low": "#eef4ff",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "surface-bright": "#f8f9ff",
+                      "on-surface-variant": "#44474c",
+                      "on-secondary": "#ffffff",
+                      "secondary-container": "#fdaa47",
+                      "on-tertiary-container": "#498bcd",
+                      "primary-fixed": "#d7e3fd",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-background": "#081d2f",
+                      "primary-container": "#142033",
+                      "surface-container-high": "#daeaff",
+                      "on-surface": "#081d2f",
+                      "surface-container-highest": "#d0e4fe",
+                      "inverse-primary": "#bbc7e0",
+                      "secondary": "#895200",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "background": "#f8f9ff",
+                      "secondary-fixed": "#ffdcbc",
+                      "on-error": "#ffffff",
+                      "surface-dim": "#c8dcf5",
+                      "on-primary-container": "#7c889f",
+                      "on-secondary-fixed": "#2c1700",
+                      "surface-container": "#e4efff",
+                      "error": "#ba1a1a",
+                      "outline-variant": "#c5c6cd",
+                      "tertiary": "#000815",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-surface": "#1f3245",
+                      "on-secondary-container": "#6e4100",
+                      "inverse-on-surface": "#e9f1ff",
+                      "on-primary-fixed": "#101c2f",
+                      "surface-variant": "#d0e4fe",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "tertiary-container": "#00213d",
+                      "primary": "#000819",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "on-tertiary-fixed": "#001d36",
+                      "on-tertiary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "error-container": "#ffdad6",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "tertiary-fixed": "#d1e4ff",
+                      "on-primary": "#ffffff",
+                      "outline": "#75777d",
+                      "surface": "#f8f9ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "topbar-height": "60px",
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "lg": "24px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "xl": "32px",
+                      "sidebar-width": "260px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Inter"],
+                      "body-medium": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "table-cell": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "kpi-stat": ["Inter"],
+                      "badge-label": ["Inter"],
+                      "body-base": ["Inter"],
+                      "table-header": ["Inter"],
+                      "headline-md": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                      "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                      "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                      "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                      "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f5f8; }
+        .glass-panel { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid #edf0f4; }
+        .kpi-gradient-blue { background: linear-gradient(135deg, #eef4ff 0%, #d7e3fd 100%); }
+        .kpi-gradient-amber { background: linear-gradient(135deg, #fff4e5 0%, #ffdcbc 100%); }
+        .kpi-gradient-red { background: linear-gradient(135deg, #ffedeb 0%, #ffdad6 100%); }
+        .amber-action-btn { background: linear-gradient(180deg, #d98c2b 0%, #b8721e 100%); color: white; }
+        .border-amber-hover:hover { border-color: #d98c2b; background-color: rgba(31, 78, 120, 0.04); }
+        .chart-placeholder { background: repeating-linear-gradient(45deg, #f8f9ff, #f8f9ff 10px, #f3f5f8 10px, #f3f5f8 20px); }
+        
+        /* Custom Scrollbar for Registry */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f3f5f8; }
+        ::-webkit-scrollbar-thumb { background: #c5c6cd; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #75777d; }
+    </style>
+</head>
+<body class="text-on-surface antialiased flex">
+<!-- SideNavBar -->
+<nav class="bg-primary dark:bg-tertiary-container text-secondary-fixed font-body-medium text-body-medium fixed left-0 top-0 h-full w-sidebar-width bg-primary dark:bg-tertiary-container border-r border-outline-variant flex flex-col w-[260px] h-screen fixed left-0 z-40 hidden md:flex">
+<!-- Header -->
+<div class="p-lg flex items-center gap-sm mb-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center shrink-0 overflow-hidden">
+<img alt="User avatar" class="w-full h-full object-cover" data-alt="A professional headshot of an industrial plant manager in a high-tech control room environment, sharp focus, technical lighting, wearing subtle safety gear." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOQ8P_KEfbM4zJoV1X1ns0SEgMDKLZbqpL3Iki28j7lCuUVHVhDhiChXRs5Vl_UP6rTOd6LBq4aqNX8CLYaELrjk_-WOs-Uoe0Eojc1ToAReQaWyZbyw2-ZWCs0ccQgGPCKL6O5K9-CGgcMOEVEO78Do6AIuxF4McJrI3yXGPFFU8_frg_MMpIM48Ti43Oa814_fGJ71viBqCtbgFcdkJBCXU12Ib9GJfcyHmXnpLvAcdPeLwDjmlg"/>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-primary">Industrial PEMS</h1>
+<p class="font-label-caps text-label-caps text-on-primary-fixed-variant opacity-80 mt-xs">Enterprise Management</p>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex-1 overflow-y-auto px-sm flex flex-col gap-xs">
+<a class="flex items-center gap-sm px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-[0.98] transition-transform duration-150">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-[0.98] transition-transform duration-150">badge</span>
+<span>Employees</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-[0.98] transition-transform duration-150">factory</span>
+<span>Assets</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-[0.98] transition-transform duration-150">engineering</span>
+<span>Work Orders</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-[0.98] transition-transform duration-150">health_and_safety</span>
+<span>Safety</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-[0.98] transition-transform duration-150">local_shipping</span>
+<span>Logistics</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm rounded-lg text-secondary-fixed bg-primary-container font-bold border-l-4 border-secondary-container scale-[0.98] transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+<span>Analytics</span>
+</a>
+</div>
+<!-- Footer -->
+<div class="p-sm border-t border-outline-variant/30 mt-auto flex flex-col gap-xs">
+<a class="flex items-center gap-sm px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-[0.98] transition-transform duration-150">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-[0.98] transition-transform duration-150">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col min-w-0 md:ml-sidebar-width w-full">
+<!-- TopNavBar -->
+<header class="bg-surface-bright dark:bg-surface-container-low text-primary dark:text-primary-fixed font-label-caps text-label-caps fixed top-0 right-0 w-[calc(100%-260px)] h-topbar-height bg-surface-bright dark:bg-surface-container-low border-b border-outline-variant shadow-sm flex justify-between items-center px-lg h-topbar-height w-full sticky top-0 z-30">
+<!-- Left Side: Brand/Search -->
+<div class="flex items-center gap-lg h-full">
+<span class="font-headline-md text-headline-md text-primary dark:text-primary-fixed-dim md:hidden">PEMS</span>
+<!-- Search Bar (on_left) -->
+<div class="relative hidden sm:block w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full pl-9 pr-3 py-1.5 bg-surface-container-low border border-outline-variant rounded-DEFAULT font-body-base text-body-base text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-colors h-8" placeholder="Search assets, tags, analytics..." type="text"/>
+</div>
+</div>
+<!-- Right Side: Actions -->
+<div class="flex items-center gap-sm h-full">
+<div class="flex items-center gap-xs mr-sm hidden sm:flex">
+<button aria-label="notifications" class="p-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors rounded-DEFAULT flex items-center justify-center opacity-80 duration-100">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button aria-label="translate" class="p-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors rounded-DEFAULT flex items-center justify-center opacity-80 duration-100">
+<span class="material-symbols-outlined text-[20px]">translate</span>
+</button>
+<button aria-label="help" class="p-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors rounded-DEFAULT flex items-center justify-center opacity-80 duration-100">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</button>
+</div>
+<div class="h-6 w-px bg-outline-variant mx-xs hidden sm:block"></div>
+<button class="font-body-medium text-body-medium text-secondary hover:text-secondary-fixed-dim transition-colors mr-md hidden sm:block">Support</button>
+<!-- Mobile Menu Trigger -->
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors rounded-DEFAULT flex items-center justify-center md:hidden">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="flex-1 p-md md:p-lg overflow-y-auto">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-md mb-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-background">Predictive Maintenance Analytics</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-xs">AI-Driven Health Scores &amp; Remaining Useful Life (RUL) · English / فارسی</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-sm border border-outline-variant rounded-lg font-body-medium text-body-medium text-surface-tint hover:border-secondary hover:bg-surface-container transition-colors flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Export Data
+                    </button>
+<button class="amber-action-btn px-md py-sm rounded-lg font-body-medium text-body-medium flex items-center gap-sm shadow-sm hover:shadow-md transition-shadow">
+<span class="material-symbols-outlined text-[18px]">add_chart</span>
+                        New Analysis
+                    </button>
+</div>
+</div>
+<!-- Top Row: High-Level KPIs -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md mb-lg">
+<!-- KPI 1 -->
+<div class="glass-panel p-md rounded-xl flex items-center gap-md border-amber-hover transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] kpi-gradient-blue flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[24px]">precision_manufacturing</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Monitored Assets <span class="text-xs font-normal text-surface-tint ml-1">(دارایی ها)</span></p>
+<p class="font-kpi-stat text-kpi-stat text-on-background">1,248</p>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="glass-panel p-md rounded-xl flex items-center gap-md border-amber-hover transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] kpi-gradient-amber flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-[24px]">warning</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Imminent Failures <span class="text-xs font-normal text-surface-tint ml-1">(خطر خرابی)</span></p>
+<p class="font-kpi-stat text-kpi-stat text-on-background">14</p>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="glass-panel p-md rounded-xl flex items-center gap-md border-amber-hover transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] kpi-gradient-red flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-error text-[24px]">timeline</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Avg Health Score <span class="text-xs font-normal text-surface-tint ml-1">(سلامت)</span></p>
+<p class="font-kpi-stat text-kpi-stat text-on-background">76.4%</p>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="glass-panel p-md rounded-xl flex items-center gap-md border-amber-hover transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-surface-container-high flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant text-[24px]">hourglass_bottom</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Avg RUL (Days) <span class="text-xs font-normal text-surface-tint ml-1">(عمر باقیمانده)</span></p>
+<p class="font-kpi-stat text-kpi-stat text-on-background">214</p>
+</div>
+</div>
+</div>
+<!-- Main Content Bento Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-md">
+<!-- Center/Left Column: Charts & Heatmaps (Spans 2 cols on lg) -->
+<div class="lg:col-span-2 flex flex-col gap-md">
+<!-- Vibration Analysis Chart -->
+<div class="glass-panel rounded-xl flex flex-col h-[340px]">
+<div class="p-md border-b border-outline-variant/50 flex justify-between items-center">
+<div>
+<h3 class="font-body-medium text-body-medium text-on-background flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px] text-surface-tint">monitoring</span>
+                                    Real-time Vibration Analysis <span class="text-xs font-normal text-surface-tint ml-1">| تحلیل ارتعاشات</span>
+</h3>
+</div>
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+<span class="font-badge-label text-badge-label text-error">Live</span>
+</div>
+</div>
+<div class="flex-1 p-md relative">
+<!-- Shader placeholder for dynamic chart background -->
+
+<!-- Mock Chart Lines -->
+<div class="w-full h-full chart-placeholder rounded-lg flex items-end px-2 pb-6 relative overflow-hidden">
+<!-- Horizontal Grid Lines -->
+<div class="absolute inset-x-0 bottom-6 border-t border-outline-variant/30"></div>
+<div class="absolute inset-x-0 bottom-1/3 border-t border-outline-variant/30"></div>
+<div class="absolute inset-x-0 bottom-2/3 border-t border-outline-variant/30"></div>
+<!-- Y Axis Labels -->
+<div class="absolute left-2 top-2 bottom-6 flex flex-col justify-between font-label-caps text-[9px] text-surface-tint">
+<span>2.0g</span>
+<span>1.0g</span>
+<span>0.0g</span>
+</div>
+<!-- X Axis Labels -->
+<div class="absolute bottom-1 inset-x-8 flex justify-between font-label-caps text-[9px] text-surface-tint">
+<span>T-60s</span>
+<span>T-30s</span>
+<span>Now</span>
+</div>
+<!-- SVG Line (Mocked) -->
+<svg class="w-full h-full absolute inset-0 pt-4 pb-6 px-8 preserve-aspect-ratio-none" preserveaspectratio="none" viewbox="0 0 100 100">
+<path d="M0,80 Q10,70 20,85 T40,60 T60,90 T80,40 T100,5" fill="none" stroke="#d98c2b" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+<!-- Threshold Line -->
+<line stroke="#ba1a1a" stroke-dasharray="2,2" stroke-width="1" vector-effect="non-scaling-stroke" x1="0" x2="100" y1="30" y2="30"></line>
+</svg>
+</div>
+</div>
+</div>
+<!-- Failure Probability Heatmap -->
+<div class="glass-panel rounded-xl flex flex-col h-[280px]">
+<div class="p-md border-b border-outline-variant/50 flex justify-between items-center">
+<h3 class="font-body-medium text-body-medium text-on-background flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px] text-surface-tint">grid_on</span>
+                                Probability of Failure Heatmap <span class="text-xs font-normal text-surface-tint ml-1">| نقشه حرارتی خرابی</span>
+</h3>
+<select class="text-xs bg-surface-container border border-outline-variant rounded px-2 py-1 focus:outline-none">
+<option>Next 30 Days</option>
+<option>Next 90 Days</option>
+</select>
+</div>
+<div class="flex-1 p-md flex flex-col justify-center">
+<!-- Heatmap Grid -->
+<div class="grid grid-cols-6 grid-rows-3 gap-1 h-full w-full">
+<!-- Row 1 -->
+<div class="bg-primary-fixed-dim rounded-sm relative group cursor-pointer">
+<div class="absolute inset-0 bg-primary opacity-0 group-hover:opacity-10 transition-opacity rounded-sm"></div>
+</div>
+<div class="bg-surface-dim rounded-sm relative group cursor-pointer"></div>
+<div class="bg-secondary-fixed rounded-sm relative group cursor-pointer"></div>
+<div class="bg-error-container rounded-sm relative group cursor-pointer flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-on-error-container">warning</span>
+</div>
+<div class="bg-surface-dim rounded-sm relative group cursor-pointer"></div>
+<div class="bg-primary-fixed rounded-sm relative group cursor-pointer"></div>
+<!-- Row 2 -->
+<div class="bg-surface-dim rounded-sm relative group cursor-pointer"></div>
+<div class="bg-secondary-fixed rounded-sm relative group cursor-pointer"></div>
+<div class="bg-secondary-fixed-dim rounded-sm relative group cursor-pointer"></div>
+<div class="bg-surface-dim rounded-sm relative group cursor-pointer"></div>
+<div class="bg-primary-fixed-dim rounded-sm relative group cursor-pointer"></div>
+<div class="bg-surface-dim rounded-sm relative group cursor-pointer"></div>
+<!-- Row 3 -->
+<div class="bg-error-container rounded-sm relative group cursor-pointer flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-on-error-container">warning</span>
+</div>
+<div class="bg-secondary-fixed-dim rounded-sm relative group cursor-pointer"></div>
+<div class="bg-surface-dim rounded-sm relative group cursor-pointer"></div>
+<div class="bg-primary-fixed rounded-sm relative group cursor-pointer"></div>
+<div class="bg-surface-dim rounded-sm relative group cursor-pointer"></div>
+<div class="bg-primary-fixed-dim rounded-sm relative group cursor-pointer"></div>
+</div>
+<div class="flex justify-between mt-sm px-1 font-label-caps text-[9px] text-surface-tint">
+<span>Low Risk (ریسک کم)</span>
+<span>High Risk (ریسک بالا)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Asset Registry & RUL (Spans 1 col on lg) -->
+<div class="glass-panel rounded-xl flex flex-col lg:h-auto h-[500px]">
+<div class="p-md border-b border-outline-variant/50 bg-[#f5f7fa] rounded-t-xl sticky top-0 z-10">
+<h3 class="font-body-medium text-body-medium text-on-background flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px] text-surface-tint">build</span>
+                            Critical Assets RUL Registry <span class="text-xs font-normal text-surface-tint ml-1">| دارایی‌های بحرانی</span>
+</h3>
+</div>
+<div class="flex-1 overflow-y-auto">
+<table class="w-full text-left">
+<thead class="sticky top-0 bg-[#f5f7fa] font-table-header text-table-header text-on-surface-variant uppercase border-b border-outline-variant">
+<tr>
+<th class="px-md py-sm">Tag ID</th>
+<th class="px-md py-sm">Health</th>
+<th class="px-md py-sm">RUL</th>
+<th class="px-md py-sm text-right">Action</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface">
+<!-- Row 1 -->
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-low transition-colors">
+<td class="px-md py-sm font-mono text-xs">PMP-104A</td>
+<td class="px-md py-sm">
+<div class="flex items-center gap-xs">
+<div class="w-10 bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-error h-full" style="width: 24%"></div>
+</div>
+<span class="text-[11px] font-semibold text-error">24%</span>
+</div>
+</td>
+<td class="px-md py-sm font-semibold text-error">12 d</td>
+<td class="px-md py-sm text-right">
+<button class="w-8 h-8 rounded border border-outline-variant text-surface-tint hover:bg-surface-container flex items-center justify-center transition-colors ml-auto">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-low transition-colors">
+<td class="px-md py-sm font-mono text-xs">CMP-201B</td>
+<td class="px-md py-sm">
+<div class="flex items-center gap-xs">
+<div class="w-10 bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 58%"></div>
+</div>
+<span class="text-[11px] font-semibold text-secondary">58%</span>
+</div>
+</td>
+<td class="px-md py-sm font-medium">45 d</td>
+<td class="px-md py-sm text-right">
+<button class="w-8 h-8 rounded border border-outline-variant text-surface-tint hover:bg-surface-container flex items-center justify-center transition-colors ml-auto">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-low transition-colors">
+<td class="px-md py-sm font-mono text-xs">GEN-050C</td>
+<td class="px-md py-sm">
+<div class="flex items-center gap-xs">
+<div class="w-10 bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-[#107c41] h-full" style="width: 89%"></div>
+</div>
+<span class="text-[11px] font-semibold text-[#107c41]">89%</span>
+</div>
+</td>
+<td class="px-md py-sm text-surface-tint">120+ d</td>
+<td class="px-md py-sm text-right">
+<button class="w-8 h-8 rounded border border-outline-variant text-surface-tint hover:bg-surface-container flex items-center justify-center transition-colors ml-auto">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-low transition-colors">
+<td class="px-md py-sm font-mono text-xs">VLV-882D</td>
+<td class="px-md py-sm">
+<div class="flex items-center gap-xs">
+<div class="w-10 bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-error h-full" style="width: 15%"></div>
+</div>
+<span class="text-[11px] font-semibold text-error">15%</span>
+</div>
+</td>
+<td class="px-md py-sm font-semibold text-error">4 d</td>
+<td class="px-md py-sm text-right">
+<button class="w-8 h-8 rounded border border-outline-variant text-surface-tint hover:bg-surface-container flex items-center justify-center transition-colors ml-auto bg-error-container/30 border-error-container">
+<span class="material-symbols-outlined text-[16px] text-error">warning</span>
+</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-low transition-colors">
+<td class="px-md py-sm font-mono text-xs">HTX-110A</td>
+<td class="px-md py-sm">
+<div class="flex items-center gap-xs">
+<div class="w-10 bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 42%"></div>
+</div>
+<span class="text-[11px] font-semibold text-secondary">42%</span>
+</div>
+</td>
+<td class="px-md py-sm font-medium">32 d</td>
+<td class="px-md py-sm text-right">
+<button class="w-8 h-8 rounded border border-outline-variant text-surface-tint hover:bg-surface-container flex items-center justify-center transition-colors ml-auto">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-sm border-t border-outline-variant/50 bg-surface-bright rounded-b-xl">
+<button class="w-full py-2 font-body-medium text-body-medium text-secondary hover:bg-surface-container transition-colors rounded">View Full Registry</button>
+</div>
+</div>
+</div>
+<!-- Recommended Actions Section -->
+<div class="mt-lg glass-panel rounded-xl p-md">
+<h3 class="font-body-medium text-body-medium text-on-background flex items-center gap-xs mb-md">
+<span class="material-symbols-outlined text-[18px] text-surface-tint">assignment_late</span>
+                    AI Recommended Actions <span class="text-xs font-normal text-surface-tint ml-1">| اقدامات پیشنهادی</span>
+</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-sm">
+<!-- Action Card 1 -->
+<div class="bg-surface-bright border border-outline-variant rounded-lg p-sm flex gap-sm items-start hover:border-secondary transition-colors cursor-pointer">
+<div class="w-8 h-8 rounded bg-error-container text-error flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">build</span>
+</div>
+<div>
+<div class="flex justify-between items-start">
+<span class="font-badge-label text-badge-label bg-surface-container px-2 py-0.5 rounded text-surface-tint mb-1 inline-block">PMP-104A</span>
+<span class="text-[10px] text-error font-bold">Urgent</span>
+</div>
+<p class="font-body-medium text-[12px] leading-tight text-on-background mb-1">Schedule bearing replacement</p>
+<p class="font-table-cell text-[11px] text-on-surface-variant line-clamp-2">High vibration detected in drive-end bearing. RUL drop accelerates.</p>
+</div>
+</div>
+<!-- Action Card 2 -->
+<div class="bg-surface-bright border border-outline-variant rounded-lg p-sm flex gap-sm items-start hover:border-secondary transition-colors cursor-pointer">
+<div class="w-8 h-8 rounded bg-secondary-fixed text-secondary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">water_drop</span>
+</div>
+<div>
+<div class="flex justify-between items-start">
+<span class="font-badge-label text-badge-label bg-surface-container px-2 py-0.5 rounded text-surface-tint mb-1 inline-block">VLV-882D</span>
+<span class="text-[10px] text-secondary font-bold">Soon</span>
+</div>
+<p class="font-body-medium text-[12px] leading-tight text-on-background mb-1">Inspect seal integrity</p>
+<p class="font-table-cell text-[11px] text-on-surface-variant line-clamp-2">Acoustic emission indicates potential micro-leakage in main seal.</p>
+</div>
+</div>
+<!-- Action Card 3 -->
+<div class="bg-surface-bright border border-outline-variant rounded-lg p-sm flex gap-sm items-start hover:border-secondary transition-colors cursor-pointer">
+<div class="w-8 h-8 rounded bg-surface-container-high text-surface-tint flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+</div>
+<div>
+<div class="flex justify-between items-start">
+<span class="font-badge-label text-badge-label bg-surface-container px-2 py-0.5 rounded text-surface-tint mb-1 inline-block">CMP-201B</span>
+<span class="text-[10px] text-surface-tint font-bold">Routine</span>
+</div>
+<p class="font-body-medium text-[12px] leading-tight text-on-background mb-1">Recalibrate sensors</p>
+<p class="font-table-cell text-[11px] text-on-surface-variant line-clamp-2">Temperature baseline shifting slightly. Recommend recalibration next cycle.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

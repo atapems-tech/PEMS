@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Master Help &amp; Onboarding Dashboard | PEMS Enterprise Utility</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config defined by Design System -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary": "#ffffff",
+              "surface-dim": "#c8dcf5",
+              "on-secondary-fixed-variant": "#683d00",
+              "inverse-on-surface": "#e9f1ff",
+              "surface": "#f8f9ff",
+              "on-tertiary-container": "#498bcd",
+              "inverse-primary": "#bbc7e0",
+              "surface-tint": "#535f75",
+              "tertiary-fixed-dim": "#9ecaff",
+              "surface-container-highest": "#d0e4fe",
+              "on-primary-fixed": "#101c2f",
+              "primary-fixed": "#d7e3fd",
+              "on-secondary-container": "#6e4100",
+              "on-primary-container": "#7c889f",
+              "secondary-container": "#fdaa47",
+              "outline-variant": "#c5c6cd",
+              "surface-container": "#e4efff",
+              "on-error": "#ffffff",
+              "primary-fixed-dim": "#bbc7e0",
+              "on-tertiary": "#ffffff",
+              "surface-container-high": "#daeaff",
+              "inverse-surface": "#1f3245",
+              "on-background": "#081d2f",
+              "secondary-fixed": "#ffdcbc",
+              "tertiary-container": "#00213d",
+              "on-tertiary-fixed": "#001d36",
+              "outline": "#75777d",
+              "on-surface": "#081d2f",
+              "primary-container": "#142033",
+              "surface-container-low": "#eef4ff",
+              "tertiary": "#000815",
+              "secondary": "#895200",
+              "on-primary": "#ffffff",
+              "surface-variant": "#d0e4fe",
+              "background": "#f8f9ff",
+              "error-container": "#ffdad6",
+              "error": "#ba1a1a",
+              "primary": "#000819",
+              "on-surface-variant": "#44474c",
+              "surface-bright": "#f8f9ff",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-fixed-variant": "#00497c",
+              "on-error-container": "#93000a",
+              "secondary-fixed-dim": "#ffb86a",
+              "on-secondary-fixed": "#2c1700",
+              "tertiary-fixed": "#d1e4ff",
+              "on-primary-fixed-variant": "#3b475c"
+            },
+            borderRadius: {
+              "DEFAULT": "0.125rem",
+              "lg": "0.25rem",
+              "xl": "0.5rem",
+              "full": "0.75rem"
+            },
+            spacing: {
+              "md": "16px",
+              "topbar-height": "60px",
+              "gutter": "16px",
+              "unit": "4px",
+              "xl": "32px",
+              "sm": "8px",
+              "xs": "4px",
+              "lg": "24px",
+              "sidebar-width": "260px"
+            },
+            fontFamily: {
+              "body-medium": ["Inter", "sans-serif"],
+              "body-base": ["Inter", "sans-serif"],
+              "table-header": ["Inter", "sans-serif"],
+              "table-cell": ["Inter", "sans-serif"],
+              "headline-md": ["Inter", "sans-serif"],
+              "headline-lg-mobile": ["Inter", "sans-serif"],
+              "kpi-stat": ["Inter", "sans-serif"],
+              "label-caps": ["Inter", "sans-serif"],
+              "badge-label": ["Inter", "sans-serif"],
+              "headline-lg": ["Inter", "sans-serif"]
+            },
+            fontSize: {
+              "body-medium": ["13.5px", { lineHeight: "20px", letterSpacing: "0", fontWeight: "600" }],
+              "body-base": ["13.5px", { lineHeight: "20px", letterSpacing: "0", fontWeight: "400" }],
+              "table-header": ["11.5px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "700" }],
+              "table-cell": ["13px", { lineHeight: "18px", letterSpacing: "0", fontWeight: "400" }],
+              "headline-md": ["18px", { lineHeight: "24px", letterSpacing: "0", fontWeight: "700" }],
+              "headline-lg-mobile": ["20px", { lineHeight: "28px", fontWeight: "700" }],
+              "kpi-stat": ["22px", { lineHeight: "24px", letterSpacing: "-0.02em", fontWeight: "700" }],
+              "label-caps": ["11px", { lineHeight: "14px", letterSpacing: "0.06em", fontWeight: "700" }],
+              "badge-label": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "600" }],
+              "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+      /* Base font loading */
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+      
+      /* Toggle switch custom styles */
+      .toggle-checkbox:checked {
+        right: 0;
+        border-color: #895200;
+      }
+      .toggle-checkbox:checked + .toggle-label {
+        background-color: #fdaa47;
+      }
+      
+      /* Card Hover Gradient Hint */
+      .module-card {
+        transition: all 0.2s ease-in-out;
+      }
+      .module-card:hover {
+        border-color: #fdaa47;
+        box-shadow: 0 4px 20px rgba(20,32,51,0.08);
+      }
+      .module-card:hover .action-btn {
+        background-color: #eef4ff;
+        border-color: #fdaa47;
+        color: #895200;
+      }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-base min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-primary-container fixed top-0 w-full z-50 h-[topbar-height] flex items-center justify-between px-md lg:px-lg border-b border-outline-variant dark:border-primary">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined lg:hidden cursor-pointer">menu</span>
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary">PEMS Training</span>
+</div>
+<div class="flex items-center gap-md">
+<!-- Search Bar on Right -->
+<div class="hidden md:flex items-center bg-surface-container-low rounded-lg px-sm py-xs border border-outline-variant focus-within:border-secondary transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-base font-body-base ml-xs w-48 text-on-surface placeholder:text-on-surface-variant" placeholder="Search guides..." type="text"/>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary dark:text-secondary-fixed hover:bg-surface-container-high dark:hover:bg-primary transition-colors cursor-pointer active:opacity-80 p-xs rounded-full">language</span>
+<span class="material-symbols-outlined text-secondary dark:text-secondary-fixed hover:bg-surface-container-high dark:hover:bg-primary transition-colors cursor-pointer active:opacity-80 p-xs rounded-full">notifications</span>
+<span class="material-symbols-outlined text-secondary dark:text-secondary-fixed hover:bg-surface-container-high dark:hover:bg-primary transition-colors cursor-pointer active:opacity-80 p-xs rounded-full">help_outline</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-dim overflow-hidden border border-outline-variant ml-sm">
+<!-- User Profile Placeholder -->
+<div class="w-full h-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold text-xs">U</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Desktop) -->
+<nav class="hidden lg:flex flex-col py-lg z-40 fixed left-0 top-[60px] h-[calc(100vh-60px)] w-[sidebar-width] bg-primary dark:bg-primary-container shadow-sm overflow-y-auto">
+<div class="px-md mb-xl flex items-center gap-sm">
+<div class="w-10 h-10 rounded bg-surface flex items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined">factory</span>
+</div>
+<div>
+<div class="font-headline-md text-headline-md text-on-primary text-[15px] leading-tight">Industrial Academy</div>
+<div class="text-on-primary-fixed-variant text-xs mt-xs opacity-80">Enterprise Training</div>
+</div>
+</div>
+<ul class="flex flex-col gap-sm px-xs">
+<li>
+<a class="flex items-center gap-sm py-sm text-on-primary/70 dark:text-on-primary-fixed-variant mx-2 hover:bg-primary-fixed-dim/10 transition-all font-body-medium text-body-medium rounded-lg px-sm scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm py-sm text-on-primary/70 dark:text-on-primary-fixed-variant mx-2 hover:bg-primary-fixed-dim/10 transition-all font-body-medium text-body-medium rounded-lg px-sm scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">precision_manufacturing</span>
+<span>Guided Tours</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm py-sm text-on-primary/70 dark:text-on-primary-fixed-variant mx-2 hover:bg-primary-fixed-dim/10 transition-all font-body-medium text-body-medium rounded-lg px-sm scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span>Knowledge Base</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm py-sm text-on-primary/70 dark:text-on-primary-fixed-variant mx-2 hover:bg-primary-fixed-dim/10 transition-all font-body-medium text-body-medium rounded-lg px-sm scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">verified</span>
+<span>Certifications</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm py-sm bg-secondary-container text-on-secondary-container rounded-lg mx-2 hover:bg-primary-fixed-dim/10 transition-all font-body-medium text-body-medium px-sm scale-95 duration-150 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">support_agent</span>
+<span class="group-hover:text-primary">Help Center</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto px-xs mb-md">
+<ul class="flex flex-col gap-sm border-t border-on-primary-fixed-variant pt-md">
+<li>
+<a class="flex items-center gap-sm py-sm text-on-primary/70 dark:text-on-primary-fixed-variant mx-2 hover:bg-primary-fixed-dim/10 transition-all font-body-medium text-body-medium rounded-lg px-sm scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm py-sm text-on-primary/70 dark:text-on-primary-fixed-variant mx-2 hover:bg-primary-fixed-dim/10 transition-all font-body-medium text-body-medium rounded-lg px-sm scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-[260px] pt-[60px] pb-[80px] lg:pb-lg px-md lg:px-[28px]">
+<!-- Page Header -->
+<div class="py-lg flex flex-col md:flex-row md:items-end justify-between gap-md border-b border-outline-variant mb-lg">
+<div>
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background mb-xs tracking-tight">Master Help &amp; Onboarding</h1>
+<p class="font-body-base text-body-base text-on-surface-variant max-w-2xl">Access interactive guides, standard operating procedures (SOPs), and module-specific tutorials for the PEMS Enterprise Utility.</p>
+</div>
+<!-- Global Help Toggle -->
+<div class="flex items-center gap-sm bg-surface-container-low border border-outline-variant rounded-lg p-sm">
+<span class="material-symbols-outlined text-secondary">info</span>
+<span class="font-body-medium text-body-medium text-on-surface">On-Screen Help Overlays</span>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in ml-sm">
+<input class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-outline-variant transition-all duration-300 z-10 top-0 left-0 checked:left-auto checked:right-0 checked:border-secondary-container" id="toggle" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-outline-variant cursor-pointer transition-colors duration-300" for="toggle"></label>
+</div>
+</div>
+</div>
+<!-- Modules Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-md">
+<!-- Card 1: Engineering -->
+<div class="module-card bg-surface border border-outline-variant rounded-xl p-md flex flex-col h-full cursor-pointer relative overflow-hidden">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary mb-md">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill">engineering</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-xs">Engineering</h3>
+<p class="font-body-base text-body-base text-on-surface-variant flex-1 mb-md text-sm line-clamp-2">Technical specs, drawing management, and design workflows.</p>
+<button class="action-btn w-full py-sm px-md border border-outline-variant rounded font-body-medium text-body-medium text-surface-tint flex items-center justify-center gap-xs transition-colors">
+<span>Start Interactive Guide</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- Card 2: Assets -->
+<div class="module-card bg-surface border border-outline-variant rounded-xl p-md flex flex-col h-full cursor-pointer relative overflow-hidden">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary mb-md">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill">inventory_2</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-xs">Assets</h3>
+<p class="font-body-base text-body-base text-on-surface-variant flex-1 mb-md text-sm line-clamp-2">Equipment registry, hierarchies, and lifecycle tracking.</p>
+<button class="action-btn w-full py-sm px-md border border-outline-variant rounded font-body-medium text-body-medium text-surface-tint flex items-center justify-center gap-xs transition-colors">
+<span>Start Interactive Guide</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- Card 3: Maintenance -->
+<div class="module-card bg-surface border border-outline-variant rounded-xl p-md flex flex-col h-full cursor-pointer relative overflow-hidden">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary mb-md">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill">build_circle</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-xs">Maintenance</h3>
+<p class="font-body-base text-body-base text-on-surface-variant flex-1 mb-md text-sm line-clamp-2">Work orders, preventive schedules, and failure reporting.</p>
+<button class="action-btn w-full py-sm px-md border border-outline-variant rounded font-body-medium text-body-medium text-surface-tint flex items-center justify-center gap-xs transition-colors">
+<span>Start Interactive Guide</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- Card 4: HSE -->
+<div class="module-card bg-surface border border-outline-variant rounded-xl p-md flex flex-col h-full cursor-pointer relative overflow-hidden">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary mb-md">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill">health_and_safety</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-xs">HSE</h3>
+<p class="font-body-base text-body-base text-on-surface-variant flex-1 mb-md text-sm line-clamp-2">Health, safety, environmental compliance, and incident logging.</p>
+<button class="action-btn w-full py-sm px-md border border-outline-variant rounded font-body-medium text-body-medium text-surface-tint flex items-center justify-center gap-xs transition-colors">
+<span>Start Interactive Guide</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- Card 5: Human Capital -->
+<div class="module-card bg-surface border border-outline-variant rounded-xl p-md flex flex-col h-full cursor-pointer relative overflow-hidden">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary mb-md">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill">groups</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-xs">Human Capital</h3>
+<p class="font-body-base text-body-base text-on-surface-variant flex-1 mb-md text-sm line-clamp-2">Crew assignments, shifts, qualifications, and personnel data.</p>
+<button class="action-btn w-full py-sm px-md border border-outline-variant rounded font-body-medium text-body-medium text-surface-tint flex items-center justify-center gap-xs transition-colors">
+<span>Start Interactive Guide</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- Card 6: Emergency -->
+<div class="module-card bg-surface border border-outline-variant rounded-xl p-md flex flex-col h-full cursor-pointer relative overflow-hidden">
+<div class="w-12 h-12 rounded-lg bg-error-container flex items-center justify-center text-on-error-container mb-md">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill">warning</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-xs">Emergency</h3>
+<p class="font-body-base text-body-base text-on-surface-variant flex-1 mb-md text-sm line-clamp-2">Critical response protocols, alarms, and evacuation plans.</p>
+<button class="action-btn w-full py-sm px-md border border-outline-variant rounded font-body-medium text-body-medium text-surface-tint flex items-center justify-center gap-xs transition-colors">
+<span>Start Interactive Guide</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- Card 7: Analytics -->
+<div class="module-card bg-surface border border-outline-variant rounded-xl p-md flex flex-col h-full cursor-pointer relative overflow-hidden">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary mb-md">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill">analytics</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-xs">Analytics</h3>
+<p class="font-body-base text-body-base text-on-surface-variant flex-1 mb-md text-sm line-clamp-2">KPI dashboards, operational reporting, and data exports.</p>
+<button class="action-btn w-full py-sm px-md border border-outline-variant rounded font-body-medium text-body-medium text-surface-tint flex items-center justify-center gap-xs transition-colors">
+<span>Start Interactive Guide</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- Card 8: Engineering Ops -->
+<div class="module-card bg-surface border border-outline-variant rounded-xl p-md flex flex-col h-full cursor-pointer relative overflow-hidden">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary mb-md">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill">settings_applications</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-xs">Engineering Ops</h3>
+<p class="font-body-base text-body-base text-on-surface-variant flex-1 mb-md text-sm line-clamp-2">Control room procedures, SCADA integrations, and telemetry.</p>
+<button class="action-btn w-full py-sm px-md border border-outline-variant rounded font-body-medium text-body-medium text-surface-tint flex items-center justify-center gap-xs transition-colors">
+<span>Start Interactive Guide</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- Card 9: Procurement -->
+<div class="module-card bg-surface border border-outline-variant rounded-xl p-md flex flex-col h-full cursor-pointer relative overflow-hidden">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary mb-md">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill">shopping_cart</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-xs">Procurement</h3>
+<p class="font-body-base text-body-base text-on-surface-variant flex-1 mb-md text-sm line-clamp-2">Spare parts ordering, vendor management, and PO approval.</p>
+<button class="action-btn w-full py-sm px-md border border-outline-variant rounded font-body-medium text-body-medium text-surface-tint flex items-center justify-center gap-xs transition-colors">
+<span>Start Interactive Guide</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- Card 10: Utilities -->
+<div class="module-card bg-surface border border-outline-variant rounded-xl p-md flex flex-col h-full cursor-pointer relative overflow-hidden">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary mb-md">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill">power</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-xs">Utilities</h3>
+<p class="font-body-base text-body-base text-on-surface-variant flex-1 mb-md text-sm line-clamp-2">Power, water, and gas network management and routing.</p>
+<button class="action-btn w-full py-sm px-md border border-outline-variant rounded font-body-medium text-body-medium text-surface-tint flex items-center justify-center gap-xs transition-colors">
+<span>Start Interactive Guide</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- Card 11: System Admin -->
+<div class="module-card bg-surface border border-outline-variant rounded-xl p-md flex flex-col h-full cursor-pointer relative overflow-hidden">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-primary mb-md">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill">admin_panel_settings</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-xs">System Admin</h3>
+<p class="font-body-base text-body-base text-on-surface-variant flex-1 mb-md text-sm line-clamp-2">User roles, permissions, audit logs, and global configuration.</p>
+<button class="action-btn w-full py-sm px-md border border-outline-variant rounded font-body-medium text-body-medium text-surface-tint flex items-center justify-center gap-xs transition-colors">
+<span>Start Interactive Guide</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- Card 12: Onboarding -->
+<div class="module-card bg-surface border border-outline-variant rounded-xl p-md flex flex-col h-full cursor-pointer relative overflow-hidden">
+<div class="w-12 h-12 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-container mb-md">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill">flag</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-xs">New User Onboarding</h3>
+<p class="font-body-base text-body-base text-on-surface-variant flex-1 mb-md text-sm line-clamp-2">Essential basics to get started with PEMS enterprise utility fast.</p>
+<button class="action-btn w-full py-sm px-md border border-outline-variant rounded font-body-medium text-body-medium text-surface-tint flex items-center justify-center gap-xs transition-colors">
+<span>Start Interactive Guide</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-2 lg:hidden bg-surface dark:bg-inverse-surface shadow-lg border-t border-outline-variant rounded-t-xl">
+<a class="flex flex-col items-center text-on-surface-variant hover:bg-surface-container-high transition-colors p-sm rounded-lg w-16" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-caps text-label-caps mt-xs">Home</span>
+</a>
+<a class="flex flex-col items-center text-secondary-container bg-primary-container rounded-full p-2 active:scale-90 transition-transform w-16" href="#">
+<span class="material-symbols-outlined" data-weight="fill">school</span>
+<span class="font-label-caps text-label-caps mt-xs">Learn</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant hover:bg-surface-container-high transition-colors p-sm rounded-lg w-16" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-label-caps text-label-caps mt-xs">Library</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant hover:bg-surface-container-high transition-colors p-sm rounded-lg w-16" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-caps text-label-caps mt-xs">Profile</span>
+</a>
+</nav>
+</body></html>

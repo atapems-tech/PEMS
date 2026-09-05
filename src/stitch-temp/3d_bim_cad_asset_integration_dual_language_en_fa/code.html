@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS Asset Viewer - Turbine Model XYZ</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#101c2f",
+                        "surface-dim": "#c8dcf5",
+                        "primary-fixed": "#d7e3fd",
+                        "on-tertiary-container": "#498bcd",
+                        "on-secondary-container": "#6e4100",
+                        "surface-container-high": "#daeaff",
+                        "tertiary": "#000815",
+                        "secondary": "#895200",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-bright": "#f8f9ff",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#e4efff",
+                        "inverse-primary": "#bbc7e0",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "secondary-container": "#fdaa47",
+                        "surface-container-highest": "#d0e4fe",
+                        "outline-variant": "#c5c6cd",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-secondary-fixed": "#2c1700",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#7c889f",
+                        "on-background": "#081d2f",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "primary-container": "#142033",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#1f3245",
+                        "primary": "#000819",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#75777d",
+                        "on-surface": "#081d2f",
+                        "surface-tint": "#535f75",
+                        "surface-container-low": "#eef4ff",
+                        "on-surface-variant": "#44474c",
+                        "background": "#f8f9ff",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#d0e4fe",
+                        "inverse-on-surface": "#e9f1ff",
+                        "tertiary-container": "#00213d",
+                        "industrial-amber-dark": "#b8721e",
+                        "industrial-amber-light": "#d98c2b",
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "topbar-height": "60px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "sidebar-width": "260px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "table-cell": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "table-header": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-base": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-medium": ["Inter"]
+                    },
+                    "fontSize": {
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .industrial-gradient { background: linear-gradient(135deg, #d98c2b, #b8721e); }
+        .amber-focus-ring:focus { outline: none; border-color: #d98c2b; box-shadow: 0 0 0 2px rgba(217, 140, 43, 0.3); }
+        .ambient-shadow { box-shadow: 0 4px 20px rgba(20,32,51,0.08); }
+        .registry-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+        
+        /* Language Toggling Utility */
+        .lang-fa { display: none; direction: rtl; }
+        [data-lang="fa"] .lang-en { display: none; }
+        [data-lang="fa"] .lang-fa { display: inline-block; }
+        [data-lang="fa"] { direction: rtl; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-base min-h-screen flex flex-col" data-lang="en">
+<!-- Top Navigation Bar -->
+<nav class="bg-surface dark:bg-surface-container-high font-body-medium text-body-medium docked full-width top-0 border-b border-outline-variant dark:border-outline flat no shadows flex justify-between items-center w-full px-lg h-topbar-height z-50 sticky top-0 scale-98 active:opacity-80 transition-all">
+<div class="flex items-center gap-6">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary">
+                PEMS Security
+            </div>
+<!-- Search Area (on_left configuration) -->
+<div class="hidden md:flex items-center bg-surface-container rounded-md px-3 py-1.5 border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none text-body-medium focus:ring-0 w-48 text-on-surface h-6 px-1" placeholder="Search assets..." type="text"/>
+</div>
+</div>
+<div class="hidden md:flex flex-1 justify-center">
+<ul class="flex gap-4">
+<li><a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors py-4 inline-block" href="#">Dashboard</a></li>
+<li><a class="text-primary dark:text-tertiary-fixed-dim border-b-2 border-secondary font-bold hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors py-4 inline-block" href="#">Assets</a></li>
+<li><a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors py-4 inline-block" href="#">Analytics</a></li>
+<li><a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors py-4 inline-block" href="#">Logs</a></li>
+</ul>
+</div>
+<div class="flex items-center gap-4">
+<!-- Language Toggle Button -->
+<button class="text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps bg-surface-container px-2 py-1 rounded border border-outline-variant" id="langToggle">EN/FA</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="language">language</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="settings">settings</button>
+<button class="border border-outline-variant text-on-surface-variant px-sm py-xs rounded hover:bg-surface-container transition-colors font-body-medium">Support</button>
+<button class="industrial-gradient text-on-primary px-md py-sm rounded hover:opacity-90 transition-opacity font-body-medium">Save Changes</button>
+<img alt="User Security Profile Avatar" class="w-8 h-8 rounded-full border border-outline-variant object-cover" data-alt="A clean, professional minimalist avatar image showing a generic user icon in a corporate slate and navy color scheme. The lighting is neutral and studio-quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-QBNnJef4R5vjSf9HnGQ90OXVU2_JFi-J8OToJ_Y7FRf--1mt0EQIqRYsUSn_zX9wBclaE_VdCdf8bI50ZPNdCmG-eZg-sVNyEUyuEjcSxHHum8dQnF7ggo5ZJEFnWMP-BotDaXZcCJzT7R9NQubQzwlGCXRixZgjW_xpjDF0uphPb5OGFI2h7vRv9kFrM4cMYyEnCjsuto4Cfk0w_4FC87_jJKQoHV2cwsUPxU5uL9yxG7XoWHv5"/>
+</div>
+</nav>
+<div class="flex flex-1 relative w-full overflow-hidden">
+<!-- Side Navigation Bar -->
+<aside class="hidden md:flex bg-inverse-surface dark:bg-primary-container text-on-primary dark:text-on-primary-container font-body-base docked h-screen w-sidebar-width left-0 shadow-sm fixed left-0 top-0 h-full w-sidebar-width flex flex-col z-40 transition-all duration-200 ease-in-out pt-topbar-height">
+<div class="p-lg border-b border-surface-tint/30 flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-surface-tint flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" data-icon="admin_panel_settings">admin_panel_settings</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md font-black text-on-primary">Admin Console</h2>
+<p class="text-xs text-on-primary-container opacity-80">Enterprise Utility Control</p>
+</div>
+</div>
+<ul class="flex-1 py-md px-sm space-y-1 overflow-y-auto">
+<li>
+<a class="flex items-center gap-3 px-md py-sm text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="shield">shield</span>
+<span>Security Overview</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-md py-sm text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="lock_person">lock_person</span>
+<span>Role &amp; Permissions</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-md py-sm bg-secondary dark:bg-secondary-container text-on-secondary dark:text-on-secondary-container font-bold rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="security" data-weight="fill" style="font-variation-settings: 'FILL' 1;">security</span>
+<span>Authentication</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-md py-sm text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="devices">devices</span>
+<span>Active Sessions</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-md py-sm text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span>Activity Audit</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-md py-sm text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+<span>System Preferences</span>
+</a>
+</li>
+</ul>
+<div class="p-sm border-t border-surface-tint/30">
+<a class="flex items-center gap-3 px-md py-sm text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-[260px] p-md md:p-lg lg:px-[28px] overflow-y-auto">
+<!-- Header Area -->
+<header class="mb-lg flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded font-badge-label text-badge-label uppercase registry-mono tracking-widest">ASSET-TRB-88902</span>
+<span class="bg-error-container text-on-error-container px-2 py-0.5 rounded-full font-badge-label text-badge-label flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error inline-block"></span>
+<span class="lang-en">CRITICAL MAINTENANCE</span>
+<span class="lang-fa">تعمیر و نگهداری حیاتی</span>
+</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary">
+<span class="lang-en">High-Pressure Gas Turbine</span>
+<span class="lang-fa">توربین گاز فشار قوی</span>
+</h1>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-1 border border-outline-variant bg-surface-container-lowest text-on-surface-variant px-sm py-1.5 rounded hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="font-body-medium text-table-cell">
+<span class="lang-en">View Drawings</span>
+<span class="lang-fa">مشاهده نقشه‌ها</span>
+</span>
+</button>
+<button class="flex items-center gap-1 border border-outline-variant bg-surface-container-lowest text-on-surface-variant px-sm py-1.5 rounded hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="share">share</span>
+</button>
+</div>
+</header>
+<!-- Viewer Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter min-h-[600px]">
+<!-- 3D Model Viewer Canvas (Left/Center) -->
+<div class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col relative overflow-hidden ambient-shadow">
+<!-- Toolbar Overlay -->
+<div class="absolute top-4 left-4 right-4 flex justify-between z-10 pointer-events-none">
+<div class="flex bg-surface/90 backdrop-blur border border-outline-variant rounded p-1 pointer-events-auto shadow-sm">
+<button class="p-1.5 rounded hover:bg-surface-container text-on-surface-variant transition" title="Rotate">
+<span class="material-symbols-outlined text-[20px]" data-icon="360">360</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-container text-on-surface-variant transition" title="Zoom In">
+<span class="material-symbols-outlined text-[20px]" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="p-1.5 rounded hover:bg-surface-container text-on-surface-variant transition" title="Zoom Out">
+<span class="material-symbols-outlined text-[20px]" data-icon="zoom_out">zoom_out</span>
+</button>
+<div class="w-px bg-outline-variant my-1 mx-1"></div>
+<button class="p-1.5 rounded hover:bg-surface-container text-on-surface-variant transition" title="Explode View">
+<span class="material-symbols-outlined text-[20px]" data-icon="layers">layers</span>
+</button>
+</div>
+<div class="pointer-events-auto">
+<label class="flex items-center cursor-pointer bg-surface/90 backdrop-blur border border-outline-variant rounded px-3 py-1.5 shadow-sm hover:bg-surface-container transition">
+<span class="material-symbols-outlined text-[18px] mr-2 text-industrial-amber-dark" data-icon="local_fire_department">local_fire_department</span>
+<span class="font-body-medium text-table-cell text-on-surface mr-3">
+<span class="lang-en">Heatmap</span>
+<span class="lang-fa">نقشه حرارتی</span>
+</span>
+<div class="relative">
+<input class="sr-only" type="checkbox"/>
+<div class="block bg-outline-variant w-8 h-4 rounded-full"></div>
+<div class="dot absolute left-1 top-1 bg-white w-2 h-2 rounded-full transition"></div>
+</div>
+</label>
+</div>
+</div>
+<!-- The 3D Model Placeholder -->
+<div class="flex-1 bg-[#1a2332] w-full flex items-center justify-center relative">
+<!-- Abstract representation of 3D canvas -->
+<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-60" data-alt="A high-fidelity rendering of a complex industrial gas turbine model on a dark, technical blueprint background. The turbine is detailed with metallic textures, copper coils, and steel casing, illuminated by stark, professional studio lighting. It looks like a CAD engineering model." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuARaHANLem4EJijYusWLu1gRI8js71f5FN4ILybK_1AFANrGtUeEYAAEz-3dgwKdmweBS872bJQjdsON4ffysGg0XaktkCXGMB562qjSjZy762-cgrOmhVB9538Gjxlf-SOKfc6B1Opp2bWD015ZA8pAIeargyPHCdN9CjLVRTcoYUx7EerW6u0qdQHKxdJ0Ked7d65NMiPNCe1UxhEuFIHx2zrMyBgbRUCOWSogax7Lj1tgskX6CZW')"></div>
+<!-- WebGL Shader placeholder for subtle background tech effect -->
+
+<div class="z-10 text-center">
+<span class="material-symbols-outlined text-[64px] text-surface-dim/50 block mb-2" data-icon="view_in_ar">view_in_ar</span>
+<p class="text-surface-dim font-body-medium">Interactive 3D Canvas</p>
+</div>
+</div>
+<!-- View Footer -->
+<div class="bg-surface-container-lowest border-t border-outline-variant p-sm flex justify-between items-center text-on-surface-variant font-badge-label text-badge-label">
+<span>LOD: High</span>
+<span>Format: IFC 4.0</span>
+</div>
+</div>
+<!-- Right Side Panels (Metadata & Breakdown) -->
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- Metadata Panel -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md ambient-shadow flex-shrink-0">
+<h3 class="font-headline-md text-headline-md text-primary mb-4 flex items-center gap-2 border-b border-surface-container pb-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="info">info</span>
+<span class="lang-en">Asset Metadata</span>
+<span class="lang-fa">فراداده دارایی</span>
+</h3>
+<div class="grid grid-cols-2 gap-4 font-body-base">
+<div>
+<div class="text-on-surface-variant text-xs mb-1 uppercase tracking-wider font-semibold">Location</div>
+<div class="text-on-surface registry-mono text-sm">Plant B, Sector 4</div>
+</div>
+<div>
+<div class="text-on-surface-variant text-xs mb-1 uppercase tracking-wider font-semibold">Install Date</div>
+<div class="text-on-surface registry-mono text-sm">2021-08-14</div>
+</div>
+<div>
+<div class="text-on-surface-variant text-xs mb-1 uppercase tracking-wider font-semibold">Criticality</div>
+<div class="text-on-surface font-semibold text-error">Tier 1 - High</div>
+</div>
+<div>
+<div class="text-on-surface-variant text-xs mb-1 uppercase tracking-wider font-semibold">Manufacturer</div>
+<div class="text-on-surface text-sm">AeroDyn Industrial</div>
+</div>
+</div>
+</div>
+<!-- Component Breakdown Panel -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl ambient-shadow flex-1 flex flex-col overflow-hidden">
+<div class="p-md border-b border-outline-variant bg-surface-container-low flex justify-between items-center sticky top-0">
+<h3 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="list_alt">list_alt</span>
+<span class="lang-en">Component Breakdown</span>
+<span class="lang-fa">تجزیه قطعات</span>
+</h3>
+<span class="bg-surface-dim text-on-surface px-2 py-0.5 rounded font-badge-label text-badge-label">12 Parts</span>
+</div>
+<div class="flex-1 overflow-y-auto p-sm">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container font-table-header text-table-header text-on-surface-variant uppercase">
+<tr>
+<th class="p-2 rounded-tl">Part ID</th>
+<th class="p-2">Name</th>
+<th class="p-2 rounded-tr text-right">Status</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface">
+<tr class="border-b border-surface-container hover:bg-surface-container-lowest transition cursor-pointer group">
+<td class="p-2 registry-mono text-on-surface-variant group-hover:text-primary transition">CMP-01</td>
+<td class="p-2 font-medium group-hover:text-industrial-amber-dark transition">Rotor Assembly</td>
+<td class="p-2 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1"></span>
+                                            OK
+                                        </td>
+</tr>
+<tr class="border-b border-surface-container hover:bg-surface-container-lowest transition cursor-pointer group bg-error-container/20">
+<td class="p-2 registry-mono text-on-surface-variant group-hover:text-primary transition">CMP-02</td>
+<td class="p-2 font-medium group-hover:text-industrial-amber-dark transition text-error">Bearing Box Front</td>
+<td class="p-2 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-error mr-1"></span>
+                                            VIB_WARN
+                                        </td>
+</tr>
+<tr class="border-b border-surface-container hover:bg-surface-container-lowest transition cursor-pointer group">
+<td class="p-2 registry-mono text-on-surface-variant group-hover:text-primary transition">CMP-03</td>
+<td class="p-2 font-medium group-hover:text-industrial-amber-dark transition">Stator Casing</td>
+<td class="p-2 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1"></span>
+                                            OK
+                                        </td>
+</tr>
+<tr class="border-b border-surface-container hover:bg-surface-container-lowest transition cursor-pointer group">
+<td class="p-2 registry-mono text-on-surface-variant group-hover:text-primary transition">CMP-04</td>
+<td class="p-2 font-medium group-hover:text-industrial-amber-dark transition">Exhaust Diffuser</td>
+<td class="p-2 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-surface-tint mr-1"></span>
+                                            MAINT_REQ
+                                        </td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition cursor-pointer group">
+<td class="p-2 registry-mono text-on-surface-variant group-hover:text-primary transition">CMP-05</td>
+<td class="p-2 font-medium group-hover:text-industrial-amber-dark transition">Fuel Injector Nozzle</td>
+<td class="p-2 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1"></span>
+                                            OK
+                                        </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+        // Simple Language Toggle Script
+        document.getElementById('langToggle').addEventListener('click', function() {
+            const body = document.body;
+            if(body.getAttribute('data-lang') === 'en') {
+                body.setAttribute('data-lang', 'fa');
+            } else {
+                body.setAttribute('data-lang', 'en');
+            }
+        });
+    </script>
+</body></html>

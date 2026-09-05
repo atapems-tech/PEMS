@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PEMS</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+</head>
+<body class="auth-body">
+
+    <div class="auth-wrapper">
+
+        <div class="auth-brand">
+            <div class="auth-brand-icon">
+                <i class="bi bi-diagram-3-fill"></i>
+            </div>
+            <div class="auth-brand-text">
+                <h1>PEMS</h1>
+                <span>Petrochemical Engineering Management System</span>
+            </div>
+        </div>
+
+        <div class="auth-card">
+            @RenderBody()
+        </div>
+
+        <div class="auth-footer">
+            &copy; @DateTime.Now.Year PEMS &mdash; Engineering Command Center
+        </div>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,92 @@
+﻿@model PEMS.Application.DTOs.EquipmentImportBatchDto
+
+<div class="alert alert-info py-2 px-3 small mb-3">
+    <i class="bi bi-info-circle"></i> ستون‌های MR No / PO No فقط به‌عنوان متن ذخیره می‌شوند - دیگر
+    خودکار Vendor/MR/VDR جدید ساخته نمی‌شود. برای اتصال به داده‌ی موجود، بعد از Commit به
+    <a asp-controller="Relationship" asp-action="Equipment" asp-route-id="0" onclick="return false;" class="text-decoration-underline">Relationship Explorer</a>
+    هر تجهیز مراجعه کن و پیشنهاد اتصال را تایید کن.
+</div>
+
+<div class="content-card mb-3">
+    <div class="row g-3">
+        <div class="col-md-3"><strong>File:</strong> @Model.FileName</div>
+        <div class="col-md-3"><strong>Project:</strong> @Model.ProjectName</div>
+        <div class="col-md-2"><strong>Total:</strong> @Model.Rows.Count</div>
+        <div class="col-md-2"><strong>Updates:</strong> @Model.Rows.Count(x => x.IsUpdate)</div>
+        <div class="col-md-2"><strong>Status:</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
+    </div>
+
+    @if (Model.Status == "Staging")
+    {
+        <div class="d-flex gap-2 mt-3">
+            <form asp-action="Commit" method="post">
+                <input type="hidden" name="batchId" value="@Model.EquipmentImportBatchId" />
+                <button type="submit" class="btn btn-pems-solid" onclick="return confirm('Commit the selected rows into the live Equipment register?')">
+                    <i class="bi bi-check-circle"></i> Commit Selected Rows
+                </button>
+            </form>
+            <form asp-action="Discard" method="post">
+                <input type="hidden" name="batchId" value="@Model.EquipmentImportBatchId" />
+                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Discard this entire import batch?')">
+                    <i class="bi bi-trash"></i> Discard Batch
+                </button>
+            </form>
+        </div>
+    }
+</div>
+
+<div class="content-card">
+    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise">
+            <thead>
+                <tr>
+                    <th>Include</th><th>#</th><th>Tag No</th><th>Name</th><th>Type</th>
+                    <th>Discipline</th><th>Area</th><th>P&amp;ID</th><th>MR No</th><th>PO No</th><th>Existing?</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model.Rows)
+                {
+                    <tr>
+                        <td>
+                            @if (Model.Status == "Staging")
+                            {
+                                <form asp-action="ToggleRow" method="post">
+                                    <input type="hidden" name="rowId" value="@r.EquipmentImportRowId" />
+                                    <input type="hidden" name="batchId" value="@Model.EquipmentImportBatchId" />
+                                    <input type="hidden" name="include" value="@(!r.IncludeInCommit)" />
+                                    <button type="submit" class="btn btn-sm @(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" style="width:36px;">
+                                        <i class="bi @(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")"></i>
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                @(r.IncludeInCommit ? "Yes" : "No")
+                            }
+                        </td>
+                        <td>@r.RowNumber</td>
+                        <td>
+                            <strong>@r.TagNumber</strong>
+                            @if (r.ValidationStatus == "Warning")
+                            {
+                                <div class="badge bg-warning text-dark d-block mt-1" style="white-space:normal; text-align:right;">
+                                    <i class="bi bi-exclamation-triangle"></i> @r.ValidationMessage
+                                </div>
+                            }
+                        </td>
+                        <td class="small">@r.Name</td>
+                        <td class="small">@r.Payload?.EquipmentTypeCode</td>
+                        <td class="small">@r.DisciplineCodeRaw</td>
+                        <td class="small">@r.Payload?.Area</td>
+                        <td class="small">@r.Payload?.PIDNumber</td>
+                        <td class="small">@r.Payload?.MRNumber</td>
+                        <td class="small">@r.Payload?.PONumber</td>
+                        <td>@(r.IsUpdate ? "Update existing" : "New")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (!Model.Rows.Any()) { <p class="text-muted text-center py-4">No equipment rows recognized in this file.</p> }
+</div>

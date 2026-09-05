@@ -1,0 +1,37 @@
+﻿@model PEMS.Application.DTOs.VendorDto
+
+
+<div class="content-card mb-3">
+    <div class="row g-3">
+        <div class="col-md-4"><strong>Name:</strong> @Model.Name</div>
+        <div class="col-md-4"><strong>Vendor Code:</strong> @(Model.VendorCode ?? "-")</div>
+        <div class="col-md-4"><strong>Country:</strong> @Model.Country</div>
+        <div class="col-md-4"><strong>Contact:</strong> @Model.ContactName (@Model.ContactEmail)</div>
+        <div class="col-md-4"><strong>Contracts:</strong> @Model.ContractsCount</div>
+        <div class="col-md-4"><strong>VDR Items:</strong> @Model.VDRItemsCount &nbsp; <strong>Overdue:</strong> @Model.OverdueVDRItemsCount</div>
+        <div class="col-md-4">
+            <strong>Risk:</strong>
+            @{
+                var riskBadge = Model.RiskLevel switch { "Low" => "bg-success", "Medium" => "bg-warning text-dark", "High" => "bg-danger", _ => "bg-secondary" };
+            }
+            <span class="badge @riskBadge">@Model.RiskLevel</span>
+            @(Model.RiskScore.HasValue ? $"({Model.RiskScore:P0})" : "")
+        </div>
+    </div>
+
+    <form asp-action="RecalculateRisk" asp-route-id="@Model.VendorId" method="post" class="mt-3">
+        <button class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-repeat"></i> Recalculate Risk Score</button>
+    </form>
+</div>
+
+<a asp-action="Edit" asp-route-id="@Model.VendorId" class="btn btn-outline-secondary">
+    <i class="bi bi-pencil"></i> Edit
+</a>
+
+<a asp-controller="VDR" asp-action="Index" asp-route-vendorId="@Model.VendorId" class="btn btn-outline-secondary">
+    <i class="bi bi-list"></i> View this vendor's VDR items
+</a>
+
+<a asp-controller="Relationship" asp-action="Vendor" asp-route-id="@Model.VendorId" class="btn btn-outline-primary">
+    <i class="bi bi-diagram-3"></i> Explore Relationships
+</a>

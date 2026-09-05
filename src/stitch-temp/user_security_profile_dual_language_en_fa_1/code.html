@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>User Security Profile - PEMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#1f3245",
+                        "surface-container-low": "#eef4ff",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#498bcd",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "tertiary-container": "#00213d",
+                        "on-primary-container": "#7c889f",
+                        "background": "#f8f9ff",
+                        "primary": "#000819",
+                        "tertiary": "#000815",
+                        "secondary-fixed": "#ffdcbc",
+                        "primary-fixed": "#d7e3fd",
+                        "surface-variant": "#d0e4fe",
+                        "surface-container-high": "#daeaff",
+                        "on-surface-variant": "#44474c",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "on-secondary-container": "#6e4100",
+                        "surface-dim": "#c8dcf5",
+                        "surface-container-highest": "#d0e4fe",
+                        "outline-variant": "#c5c6cd",
+                        "inverse-on-surface": "#e9f1ff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "surface": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#535f75",
+                        "inverse-primary": "#bbc7e0",
+                        "on-tertiary-fixed": "#001d36",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#895200",
+                        "primary-container": "#142033",
+                        "surface-container": "#e4efff",
+                        "on-primary-fixed": "#101c2f",
+                        "secondary-container": "#fdaa47",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#081d2f",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#d1e4ff",
+                        "outline": "#75777d",
+                        "on-background": "#081d2f",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#2c1700",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "sm": "8px",
+                        "topbar-height": "60px",
+                        "md": "16px",
+                        "unit": "4px",
+                        "sidebar-width": "260px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "badge-label": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "body-base": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "table-header": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .industrial-gradient { background: linear-gradient(135deg, #d98c2b, #b8721e); }
+        .hover-amber:hover { border-color: #d98c2b; background-color: rgba(31, 78, 120, 0.04); }
+        .focus-ring-amber:focus { outline: none; border-color: #d98c2b; box-shadow: 0 0 0 3px rgba(217, 140, 43, 0.2); }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base flex">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full w-sidebar-width flex flex-col z-40 bg-inverse-surface text-on-primary shadow-sm hidden lg:flex">
+<div class="p-lg flex items-center gap-md border-b border-surface-variant/20">
+<img alt="System Administrator Profile" class="w-8 h-8 rounded-full" data-alt="A small, professional 32x32 digital avatar for a system administrator in an industrial software platform. Clean blue and gray tones, minimalist geometric style. The image portrays authority and technical competence without being a direct photograph, using sharp modern vector aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbVVWBalWh1Q57HgIqmr_K5notnBGkWZwf2N_2eLAnp4QskwDyNUWGIvdW5e9STKg6dYa8LOpY9lzlWmHVQUQwZRmDN1jpAzWq_X6H56r96gLDYY2SS3HWV0zWVkRHSH0xsKhp_i-iYnw0EuOYN1wFK5ETqusaRh3drBjV28_ig5gcPb89v1JaeP3CjbOgk6DaYtpmE1_XZQpAuBo6qGjbjrrhr2rFbM9d93i5BijsctxPEF--NKWG"/>
+<div>
+<h1 class="font-headline-md text-headline-md font-black text-on-primary">Admin Console</h1>
+<p class="font-body-base text-body-base text-surface-variant opacity-80 text-[11px]">Enterprise Utility Control</p>
+</div>
+</div>
+<div class="flex-1 py-md overflow-y-auto">
+<ul class="flex flex-col gap-unit px-sm">
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-surface-variant opacity-80 hover:bg-surface-variant/10 hover:opacity-100 transition-all duration-200 ease-in-out rounded-lg font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined" data-icon="shield">shield</span>
+<span>Security Overview</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-md py-sm bg-secondary text-on-secondary font-bold rounded-lg transition-all duration-200 ease-in-out font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined" data-icon="lock_person">lock_person</span>
+<span>Role &amp; Permissions</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-surface-variant opacity-80 hover:bg-surface-variant/10 hover:opacity-100 transition-all duration-200 ease-in-out rounded-lg font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span>Authentication</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-surface-variant opacity-80 hover:bg-surface-variant/10 hover:opacity-100 transition-all duration-200 ease-in-out rounded-lg font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined" data-icon="devices">devices</span>
+<span>Active Sessions</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-surface-variant opacity-80 hover:bg-surface-variant/10 hover:opacity-100 transition-all duration-200 ease-in-out rounded-lg font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span>Activity Audit</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-surface-variant opacity-80 hover:bg-surface-variant/10 hover:opacity-100 transition-all duration-200 ease-in-out rounded-lg font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+<span>System Preferences</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="p-md border-t border-surface-variant/20">
+<a class="flex items-center gap-sm px-md py-sm text-surface-variant opacity-80 hover:bg-surface-variant/10 hover:opacity-100 transition-all duration-200 ease-in-out rounded-lg font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 lg:ml-[260px] flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-lg h-topbar-height z-50 sticky top-0 bg-surface text-primary border-b border-outline-variant flat no shadows font-body-medium text-body-medium">
+<div class="flex items-center gap-xl h-full">
+<div class="font-headline-md text-headline-md font-bold text-primary">PEMS Security</div>
+<nav class="hidden md:flex h-full items-center gap-lg">
+<a class="h-full flex items-center text-on-surface-variant hover:text-secondary transition-colors scale-98 active:opacity-80" href="#">Dashboard</a>
+<a class="h-full flex items-center text-primary border-b-2 border-secondary font-bold hover:text-secondary transition-colors scale-98 active:opacity-80" href="#">Assets</a>
+<a class="h-full flex items-center text-on-surface-variant hover:text-secondary transition-colors scale-98 active:opacity-80" href="#">Analytics</a>
+<a class="h-full flex items-center text-on-surface-variant hover:text-secondary transition-colors scale-98 active:opacity-80" href="#">Logs</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden sm:flex items-center gap-sm">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-secondary transition-colors scale-98 active:opacity-80" data-icon="language">language</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-secondary transition-colors scale-98 active:opacity-80" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-secondary transition-colors scale-98 active:opacity-80" data-icon="settings">settings</button>
+</div>
+<div class="flex items-center gap-sm ml-md border-l border-outline-variant pl-md">
+<button class="px-md py-sm border border-outline-variant rounded text-surface-tint font-body-medium text-body-medium hover:bg-surface-container-low transition-colors">Support</button>
+<button class="industrial-gradient text-on-primary px-md py-sm rounded font-body-medium text-body-medium hover:opacity-90 transition-opacity">Save Changes</button>
+<img alt="User Security Profile Avatar" class="w-8 h-8 rounded-full border border-outline-variant ml-sm" data-alt="A highly detailed 40x40 pixel digital avatar representing a user security profile in an industrial management dashboard. The image should feature a stylized, modern faceless figure or abstract geometric pattern emphasizing digital security and trust, rendered in cool blues, steel grays, and crisp white." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpLBsBKNxsql8J3yPRbPyEdliMZMVoUg1R5eUYnN9UjZhxo6dZzujyDfXPIpCCEtOmokS_UViZk4vWFWfUFMFtVuX7-sL43HKqb6utiiFHypkZBuvw53-6A5-jaa3ne9w8eLcdZ6K-CuWFH4bV2cpQkAfy15eDruUdjupiDQ9jTvEMwkPWArrFEzlr0sGSAANbggPtm8QUMVIKoPgv9NNu-zJb793ViqccdnQEo8TcyvTpL7NE50kx"/>
+</div>
+</div>
+</header>
+<!-- Page Content Workspace -->
+<main class="flex-1 p-md lg:p-lg lg:px-[24px] space-y-lg overflow-x-hidden">
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">User Security Profile <span class="text-on-surface-variant opacity-60 text-sm ml-2">/ نمایه امنیتی کاربر</span></h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-unit">Manage access, roles, and authentication for this identity.</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-sm border border-outline-variant rounded font-body-medium text-body-medium text-on-surface-variant hover:bg-surface-container-low">Language: EN/FA</button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- Security Header & Status (Span 8) -->
+<div class="md:col-span-8 flex flex-col gap-lg">
+<!-- Header Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-lg hover-amber transition-colors flex items-start gap-lg">
+<img alt="Marcus Thorne" class="w-24 h-24 rounded-lg object-cover border border-outline-variant" data-alt="A highly detailed, professional headshot portrait of an industrial plant engineer named Marcus Thorne. The portrait should show him wearing a subtle, modern corporate uniform or dark safety jacket, set against a clean, slightly blurred server room or industrial control center background. Lighting is crisp and cool, conveying technical expertise and authority." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFXU5Y1p_6sGcKzFbNNpHmejWDeZCkeNsh05v0Ah4oCAIDC07cS40KyO33Ww9Nb0_cQkO6DPrCf7d7eBfaZMmcMPFSm38mzI9KJEmAKJ9RQGfw2tKVasBqDk4L7RibkwxM9qKqEJfPL33VzKCfUxlkkK-cX0qmja-4FfWrtk4PSyoF-QlkA8Ab7oavIGSh92tYJSwUJ3ntomcxDt9QfNMODZ3LX42jJzw7VX9Ikai9c7xz4cdnldPn"/>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Marcus Thorne <span class="text-on-surface-variant text-sm ml-2">مارکوس تورن</span></h3>
+<p class="font-body-base text-body-base text-on-surface-variant mt-xs">ID: USR-8842-ENG • marcus.thorne@pems.corp</p>
+</div>
+<span class="bg-[#e9f5ec] text-[#1e6035] px-sm py-unit rounded-full font-badge-label text-badge-label flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-[#1e6035]"></span> L4 Clearance
+                                </span>
+</div>
+<div class="mt-md flex gap-lg text-sm">
+<div>
+<span class="text-on-surface-variant font-label-caps text-label-caps uppercase block">Last Login / آخرین ورود</span>
+<span class="font-body-medium text-body-medium">Oct 24, 2023 - 08:14 UTC</span>
+</div>
+<div>
+<span class="text-on-surface-variant font-label-caps text-label-caps uppercase block">Department / بخش</span>
+<span class="font-body-medium text-body-medium">Plant Engineering</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Roles & Permissions Table -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg flex flex-col">
+<div class="p-md border-b border-outline-variant bg-[#f5f7fa] flex justify-between items-center rounded-t-lg">
+<h4 class="font-body-medium text-body-medium text-on-surface uppercase tracking-wider">Access Permissions &amp; Roles <span class="text-on-surface-variant text-xs normal-case ml-2">مجوزها و نقش‌ها</span></h4>
+<button class="text-secondary font-body-medium text-body-medium text-sm flex items-center gap-xs hover:underline">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span> Modify
+                            </button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#f5f7fa] border-b border-outline-variant">
+<tr>
+<th class="p-sm px-md font-table-header text-table-header text-on-surface-variant uppercase">Module</th>
+<th class="p-sm px-md font-table-header text-table-header text-on-surface-variant uppercase">Role</th>
+<th class="p-sm px-md font-table-header text-table-header text-on-surface-variant uppercase text-center">Read</th>
+<th class="p-sm px-md font-table-header text-table-header text-on-surface-variant uppercase text-center">Write</th>
+<th class="p-sm px-md font-table-header text-table-header text-on-surface-variant uppercase text-center">Delete</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface divide-y divide-outline-variant/50">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-sm px-md py-[8px] font-mono">Asset Registry</td>
+<td class="p-sm px-md py-[8px]">Senior Plant Eng.</td>
+<td class="p-sm px-md py-[8px] text-center"><span class="material-symbols-outlined text-[#1e6035] text-[18px]" data-icon="check_circle">check_circle</span></td>
+<td class="p-sm px-md py-[8px] text-center"><span class="material-symbols-outlined text-[#1e6035] text-[18px]" data-icon="check_circle">check_circle</span></td>
+<td class="p-sm px-md py-[8px] text-center"><span class="material-symbols-outlined text-outline text-[18px]" data-icon="cancel">cancel</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-sm px-md py-[8px] font-mono">Maintenance Logs</td>
+<td class="p-sm px-md py-[8px]">System Admin</td>
+<td class="p-sm px-md py-[8px] text-center"><span class="material-symbols-outlined text-[#1e6035] text-[18px]" data-icon="check_circle">check_circle</span></td>
+<td class="p-sm px-md py-[8px] text-center"><span class="material-symbols-outlined text-[#1e6035] text-[18px]" data-icon="check_circle">check_circle</span></td>
+<td class="p-sm px-md py-[8px] text-center"><span class="material-symbols-outlined text-[#1e6035] text-[18px]" data-icon="check_circle">check_circle</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Auth & Status (Span 4) -->
+<div class="md:col-span-4 flex flex-col gap-lg">
+<!-- Account Security Status -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md">
+<h4 class="font-body-medium text-body-medium text-on-surface uppercase tracking-wider mb-md border-b border-outline-variant pb-sm">Account Status <span class="text-on-surface-variant text-xs normal-case ml-2">وضعیت حساب</span></h4>
+<div class="space-y-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-[10px] bg-gradient-to-br from-[#e9f5ec] to-[#c3e6cb] flex items-center justify-center text-[#1e6035]">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+</div>
+<div>
+<div class="font-body-medium text-body-medium">MFA Status</div>
+<div class="text-xs text-on-surface-variant">Active (App Authenticator)</div>
+</div>
+</div>
+<span class="bg-[#e9f5ec] text-[#1e6035] px-sm py-unit rounded-full font-badge-label text-badge-label">Enabled</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-[10px] bg-gradient-to-br from-[#f8f9ff] to-[#d0e4fe] flex items-center justify-center text-[#00497c]">
+<span class="material-symbols-outlined" data-icon="password">password</span>
+</div>
+<div>
+<div class="font-body-medium text-body-medium">Password Strength</div>
+<div class="text-xs text-on-surface-variant">Last changed: 45 days ago</div>
+</div>
+</div>
+<span class="bg-[#e9f5ec] text-[#1e6035] px-sm py-unit rounded-full font-badge-label text-badge-label">Excellent</span>
+</div>
+</div>
+<div class="mt-md pt-md border-t border-outline-variant">
+<button class="w-full border border-outline-variant rounded py-sm text-surface-tint font-body-medium text-body-medium hover:bg-surface-container-low transition-colors">Manage Authentication</button>
+</div>
+</div>
+<!-- Recent Activity -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md flex-1">
+<h4 class="font-body-medium text-body-medium text-on-surface uppercase tracking-wider mb-md border-b border-outline-variant pb-sm">Recent Activity <span class="text-on-surface-variant text-xs normal-case ml-2">فعالیت‌های اخیر</span></h4>
+<div class="relative pl-sm border-l-2 border-surface-variant/50 space-y-md">
+<div class="relative">
+<div class="absolute -left-[13px] top-1 w-2 h-2 rounded-full bg-[#1e6035]"></div>
+<p class="font-body-medium text-body-medium text-sm">Successful Login</p>
+<p class="text-xs text-on-surface-variant">IP: 192.168.1.45 • 2 hrs ago</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[13px] top-1 w-2 h-2 rounded-full bg-secondary-container"></div>
+<p class="font-body-medium text-body-medium text-sm">Role Updated</p>
+<p class="text-xs text-on-surface-variant">Added 'System Admin' • 1 day ago</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[13px] top-1 w-2 h-2 rounded-full bg-surface-tint"></div>
+<p class="font-body-medium text-body-medium text-sm">Password Changed</p>
+<p class="text-xs text-on-surface-variant">System prompt • 45 days ago</p>
+</div>
+</div>
+<button class="w-full text-center text-secondary text-sm mt-md hover:underline font-body-medium text-body-medium">View Full Audit Log</button>
+</div>
+</div>
+</div>
+<!-- Active Sessions Table (Full Width) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg flex flex-col mt-lg">
+<div class="p-md border-b border-outline-variant bg-[#f5f7fa] flex justify-between items-center rounded-t-lg">
+<h4 class="font-body-medium text-body-medium text-on-surface uppercase tracking-wider">Active Sessions <span class="text-on-surface-variant text-xs normal-case ml-2">نشست‌های فعال</span></h4>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#f5f7fa] border-b border-outline-variant">
+<tr>
+<th class="p-sm px-md font-table-header text-table-header text-on-surface-variant uppercase">Device</th>
+<th class="p-sm px-md font-table-header text-table-header text-on-surface-variant uppercase">Location (IP)</th>
+<th class="p-sm px-md font-table-header text-table-header text-on-surface-variant uppercase">Last Active</th>
+<th class="p-sm px-md font-table-header text-table-header text-on-surface-variant uppercase text-right">Action</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface divide-y divide-outline-variant/50">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-sm px-md py-[8px] flex items-center gap-sm">
+<span class="material-symbols-outlined text-surface-tint" data-icon="computer">computer</span>
+<span>Windows 11 - Chrome (Current)</span>
+</td>
+<td class="p-sm px-md py-[8px] font-mono text-xs">192.168.1.45 (London, UK)</td>
+<td class="p-sm px-md py-[8px]">Just now</td>
+<td class="p-sm px-md py-[8px] text-right">
+<button class="text-surface-tint opacity-50 cursor-not-allowed text-xs font-body-medium text-body-medium" disabled="">Revoke</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-sm px-md py-[8px] flex items-center gap-sm">
+<span class="material-symbols-outlined text-surface-tint" data-icon="smartphone">smartphone</span>
+<span>iOS 16 - PEMS Mobile App</span>
+</td>
+<td class="p-sm px-md py-[8px] font-mono text-xs">10.0.4.22 (Manchester, UK)</td>
+<td class="p-sm px-md py-[8px]">Yesterday, 14:30</td>
+<td class="p-sm px-md py-[8px] text-right">
+<button class="text-error hover:underline text-xs font-body-medium text-body-medium">Revoke Session</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+</body></html>

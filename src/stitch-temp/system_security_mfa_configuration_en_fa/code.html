@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS Admin Security Configuration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "surface-container-high": "#daeaff",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "primary-fixed": "#d7e3fd",
+                      "on-error": "#ffffff",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-tertiary-container": "#498bcd",
+                      "on-primary-container": "#7c889f",
+                      "secondary-container": "#fdaa47",
+                      "inverse-primary": "#bbc7e0",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "tertiary-fixed": "#d1e4ff",
+                      "on-surface-variant": "#44474c",
+                      "background": "#f8f9ff",
+                      "surface-container": "#e4efff",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "surface-container-low": "#eef4ff",
+                      "on-secondary-container": "#6e4100",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "outline-variant": "#c5c6cd",
+                      "on-background": "#081d2f",
+                      "on-tertiary": "#ffffff",
+                      "secondary": "#895200",
+                      "tertiary": "#000815",
+                      "surface-variant": "#d0e4fe",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-container": "#00213d",
+                      "on-primary-fixed": "#101c2f",
+                      "on-secondary-fixed": "#2c1700",
+                      "on-tertiary-fixed": "#001d36",
+                      "inverse-surface": "#1f3245",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed": "#ffdcbc",
+                      "on-primary": "#ffffff",
+                      "primary": "#000819",
+                      "primary-container": "#142033",
+                      "on-surface": "#081d2f",
+                      "surface-tint": "#535f75",
+                      "inverse-on-surface": "#e9f1ff",
+                      "error": "#ba1a1a",
+                      "surface": "#f8f9ff",
+                      "error-container": "#ffdad6",
+                      "surface-dim": "#c8dcf5",
+                      "surface-container-highest": "#d0e4fe",
+                      "outline": "#75777d",
+                      "surface-bright": "#f8f9ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "md": "16px",
+                      "lg": "24px",
+                      "gutter": "16px",
+                      "sidebar-width": "260px",
+                      "xs": "4px",
+                      "unit": "4px",
+                      "topbar-height": "60px",
+                      "xl": "32px",
+                      "sm": "8px"
+              },
+              "fontFamily": {
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "kpi-stat": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "body-medium": [
+                              "Inter"
+                      ],
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "table-cell": [
+                              "Inter"
+                      ],
+                      "badge-label": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-base": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "kpi-stat": [
+                              "22px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-medium": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "table-header": [
+                              "11.5px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-cell": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "badge-label": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .industrial-amber-gradient {
+            background: linear-gradient(135deg, #d98c2b 0%, #b8721e 100%);
+        }
+        .industrial-amber-text {
+            color: #d98c2b;
+        }
+        .industrial-amber-border {
+            border-color: #d98c2b;
+        }
+        .nav-active-item {
+            background-color: #d98c2b !important;
+            color: #ffffff !important;
+        }
+        .nav-active-item .material-symbols-outlined {
+             color: #ffffff !important;
+        }
+        .registry-mono {
+            font-family: 'Courier New', Courier, monospace;
+        }
+      </style>
+</head>
+<body class="bg-background text-on-background font-body-base min-h-screen flex">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full w-sidebar-width flex flex-col z-40 bg-inverse-surface dark:bg-primary-container shadow-sm transition-all duration-200 ease-in-out hidden lg:flex">
+<div class="p-lg border-b border-outline-variant/20 flex items-center gap-md">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant/30" data-alt="A highly detailed, professional headshot of a system administrator in a high-tech control room setting. They are wearing modern, clean corporate attire with a subtle security badge. The lighting is crisp and cool, emphasizing a secure and authoritative atmosphere. The background shows blurred screens displaying technical data. The overall aesthetic is modern, secure, and industrial." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLOAl-DnHBihgm7m3uSFo_SHJQ3B-o1xnUx3BjdbE9iX50znIJE0MzgDHbb1k34c1p9vXEpeAkaB7DyNvlLMbtbKSZSwgg2pLd_8aKButXcHkeXuU-7CLrehP5-YXrEfZjdUM_pxsfTpanNAY0S86-4G4kQRl5Qg7fKWJAXTEEwBTAztG0b_NIXqmqKyHEeLf0-uQCbzHG0-kUxuOsuRD-uHBVQIfLRONF73-io_vW5yq3EbGt1nOo"/>
+<div>
+<h1 class="font-headline-md text-headline-md font-black text-on-primary">Admin Console</h1>
+<p class="font-body-base text-body-base text-surface-variant opacity-80 text-xs">Enterprise Utility Control</p>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto py-md px-sm space-y-sm">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 transition-all duration-200 ease-in-out font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined">shield</span>
+                Security Overview
+            </a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg bg-secondary dark:bg-secondary-container text-on-secondary dark:text-on-secondary-container font-bold transition-all duration-200 ease-in-out font-body-base text-body-base nav-active-item" href="#">
+<span class="material-symbols-outlined">tune</span>
+                System Preferences
+            </a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 transition-all duration-200 ease-in-out font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined">lock_person</span>
+                Role &amp; Permissions
+            </a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 transition-all duration-200 ease-in-out font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined">security</span>
+                Authentication
+            </a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 transition-all duration-200 ease-in-out font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined">devices</span>
+                Active Sessions
+            </a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 transition-all duration-200 ease-in-out font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined">history</span>
+                Activity Audit
+            </a>
+</div>
+<div class="p-sm border-t border-outline-variant/20">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-surface-variant dark:text-on-primary-container opacity-80 hover:bg-surface-variant/10 dark:hover:bg-surface-variant/20 hover:opacity-100 transition-all duration-200 ease-in-out font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined">logout</span>
+                Logout
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 lg:ml-[260px] flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-lg h-topbar-height z-50 sticky top-0 bg-surface dark:bg-surface-container-high border-b border-outline-variant dark:border-outline flat no shadows">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary hidden md:block">PEMS Security</span>
+<div class="flex items-center bg-surface-container-low rounded-lg px-sm py-[4px] border border-outline-variant/50 focus-within:industrial-amber-border transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-medium font-body-medium text-on-surface w-[200px] lg:w-[300px] placeholder-on-surface-variant/70 py-[2px]" placeholder="Search Configurations..." type="text"/>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors font-body-medium text-body-medium scale-98 active:opacity-80" href="#">Dashboard</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors font-body-medium text-body-medium scale-98 active:opacity-80" href="#">Assets</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors font-body-medium text-body-medium scale-98 active:opacity-80" href="#">Analytics</a>
+<a class="text-primary dark:text-tertiary-fixed-dim border-b-2 border-secondary font-bold hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors font-body-medium text-body-medium scale-98 active:opacity-80" href="#">Logs</a>
+</nav>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm text-on-surface-variant">
+<button class="p-[4px] rounded hover:bg-surface-variant transition-colors"><span class="material-symbols-outlined text-[20px]">language</span></button>
+<button class="p-[4px] rounded hover:bg-surface-variant transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span></button>
+<button class="p-[4px] rounded hover:bg-surface-variant transition-colors"><span class="material-symbols-outlined text-[20px]">settings</span></button>
+</div>
+<div class="flex items-center gap-sm">
+<button class="px-md py-[6px] border border-outline-variant rounded text-surface-tint font-body-medium text-body-medium hover:bg-surface-variant/50 transition-colors">Support</button>
+<button class="px-md py-[6px] industrial-amber-gradient text-white rounded font-body-medium text-body-medium shadow-sm hover:opacity-90 transition-opacity">Save Changes</button>
+</div>
+<img class="w-8 h-8 rounded-full object-cover md:hidden border border-outline-variant/30" data-alt="A small, circular avatar image of a user profile. It shows a highly detailed, professional headshot of a system administrator in a high-tech control room setting. They are wearing modern, clean corporate attire with a subtle security badge. The lighting is crisp and cool." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxSu3FmoJRSPg0UZ2X9Fuad9ToR-GVWCC6xGIoUBmLgVSWh-9dvzznQWYwVffsNHBhf-JOno8D8i3VOEP4D8Cyl3B_0AcJLx_YH4bAq3EgaK12cXJujUcNmFWj0VkqxgzbbEBBNJBCLoVIf2zL4corOr80_eY3CK3-Z8Yg-njJolzxAFR_FFnMpFC9RpxljVqnOFhx1Gh3FJ5woTJ9jnNzJ4DdgG4Rc-M2Ak3ivGs1JKrRgEk2wE9Z"/>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 p-md lg:p-lg lg:pt-lg bg-surface-container-lowest">
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Security Configuration <span class="text-surface-tint text-body-medium font-body-medium font-normal ml-xs">/ تنظیمات امنیتی</span></h2>
+<p class="font-body-base text-body-base text-on-surface-variant">Manage global authentication policies and role-based access.</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-sm border border-outline-variant rounded flex items-center gap-sm text-surface-tint hover:bg-surface-variant/30 transition-colors font-body-medium text-body-medium">
+<span class="material-symbols-outlined text-[18px]">download</span> Export Policy
+                    </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- MFA Configuration -->
+<div class="col-span-1 lg:col-span-4 bg-surface-container-lowest border border-[#edf0f4] rounded-lg shadow-[0_4px_20px_rgba(20,32,51,0.04)] p-lg hover:border-[#d98c2b] transition-colors group">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-[40px] h-[40px] rounded-[10px] flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200">
+<span class="material-symbols-outlined text-blue-700">fingerprint</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Global MFA <span class="text-xs text-surface-tint font-normal block">تایید هویت چند مرحله ای</span></h3>
+<div class="ml-auto">
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+</div>
+<p class="text-body-base font-body-base text-on-surface-variant mb-md">Enforce multi-factor authentication across all operational zones.</p>
+<div class="space-y-sm">
+<div class="flex items-center justify-between p-sm bg-surface rounded border border-outline-variant/30">
+<span class="font-body-medium text-body-medium text-on-surface flex items-center gap-xs"><span class="material-symbols-outlined text-[16px] text-surface-tint">face</span> Biometric</span>
+<span class="px-sm py-[2px] rounded-full bg-green-100 text-green-800 font-badge-label text-badge-label">Priority 1</span>
+</div>
+<div class="flex items-center justify-between p-sm bg-surface rounded border border-outline-variant/30">
+<span class="font-body-medium text-body-medium text-on-surface flex items-center gap-xs"><span class="material-symbols-outlined text-[16px] text-surface-tint">key</span> Hardware Token</span>
+<span class="px-sm py-[2px] rounded-full bg-blue-100 text-blue-800 font-badge-label text-badge-label">Priority 2</span>
+</div>
+<div class="flex items-center justify-between p-sm bg-surface rounded border border-outline-variant/30">
+<span class="font-body-medium text-body-medium text-on-surface flex items-center gap-xs"><span class="material-symbols-outlined text-[16px] text-surface-tint">dialpad</span> PIN Code</span>
+<span class="px-sm py-[2px] rounded-full bg-slate-100 text-slate-800 font-badge-label text-badge-label">Fallback</span>
+</div>
+</div>
+</div>
+<!-- Device Management -->
+<div class="col-span-1 lg:col-span-8 bg-surface-container-lowest border border-[#edf0f4] rounded-lg shadow-[0_4px_20px_rgba(20,32,51,0.04)] p-lg hover:border-[#d98c2b] transition-colors">
+<div class="flex items-center justify-between mb-md">
+<div class="flex items-center gap-sm">
+<div class="w-[40px] h-[40px] rounded-[10px] flex items-center justify-center bg-gradient-to-br from-amber-100 to-amber-200">
+<span class="material-symbols-outlined text-amber-700">devices_other</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Authorized Devices <span class="text-xs text-surface-tint font-normal ml-xs">دستگاه های مجاز</span></h3>
+</div>
+<button class="text-secondary font-body-medium text-body-medium text-sm flex items-center gap-xs hover:underline"><span class="material-symbols-outlined text-[16px]">add</span> Add Device</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#f5f7fa] border-b border-outline-variant/30">
+<th class="py-sm px-md font-table-header text-table-header text-surface-tint uppercase">Device Name</th>
+<th class="py-sm px-md font-table-header text-table-header text-surface-tint uppercase">Type</th>
+<th class="py-sm px-md font-table-header text-table-header text-surface-tint uppercase">Hardware ID</th>
+<th class="py-sm px-md font-table-header text-table-header text-surface-tint uppercase">Sync Status</th>
+<th class="py-sm px-md font-table-header text-table-header text-surface-tint uppercase text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface">
+<tr class="border-b border-outline-variant/20 hover:bg-surface-variant/5 transition-colors">
+<td class="py-sm px-md font-body-medium">Field Tablet A-01</td>
+<td class="py-sm px-md flex items-center gap-xs"><span class="material-symbols-outlined text-[16px] text-surface-tint">tablet_mac</span> Industrial Tab</td>
+<td class="py-sm px-md registry-mono text-xs text-surface-tint">HW-992-B4</td>
+<td class="py-sm px-md"><span class="px-sm py-[2px] rounded-full bg-green-100 text-green-800 font-badge-label text-badge-label">Synced</span></td>
+<td class="py-sm px-md text-right">
+<button class="w-[32px] h-[32px] rounded bg-surface border border-outline-variant/50 hover:border-[#d98c2b] inline-flex items-center justify-center text-surface-tint transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/20 hover:bg-surface-variant/5 transition-colors">
+<td class="py-sm px-md font-body-medium">Engineer iPhone 14</td>
+<td class="py-sm px-md flex items-center gap-xs"><span class="material-symbols-outlined text-[16px] text-surface-tint">smartphone</span> iOS</td>
+<td class="py-sm px-md registry-mono text-xs text-surface-tint">ID-APP-812</td>
+<td class="py-sm px-md"><span class="px-sm py-[2px] rounded-full bg-green-100 text-green-800 font-badge-label text-badge-label">Synced</span></td>
+<td class="py-sm px-md text-right">
+<button class="w-[32px] h-[32px] rounded bg-surface border border-outline-variant/50 hover:border-[#d98c2b] inline-flex items-center justify-center text-surface-tint transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/20 hover:bg-surface-variant/5 transition-colors">
+<td class="py-sm px-md font-body-medium">Control Room Terminal</td>
+<td class="py-sm px-md flex items-center gap-xs"><span class="material-symbols-outlined text-[16px] text-surface-tint">desktop_windows</span> Workstation</td>
+<td class="py-sm px-md registry-mono text-xs text-surface-tint">WS-CRT-01</td>
+<td class="py-sm px-md"><span class="px-sm py-[2px] rounded-full bg-red-100 text-red-800 font-badge-label text-badge-label">Failed</span></td>
+<td class="py-sm px-md text-right">
+<button class="w-[32px] h-[32px] rounded bg-surface border border-outline-variant/50 hover:border-[#d98c2b] inline-flex items-center justify-center text-surface-tint transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Audit Log -->
+<div class="col-span-1 lg:col-span-12 bg-surface-container-lowest border border-[#edf0f4] rounded-lg shadow-[0_4px_20px_rgba(20,32,51,0.04)] p-lg hover:border-[#d98c2b] transition-colors mt-md">
+<div class="flex items-center justify-between mb-md">
+<div class="flex items-center gap-sm">
+<div class="w-[40px] h-[40px] rounded-[10px] flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
+<span class="material-symbols-outlined text-slate-700">manage_search</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Security Audit Log <span class="text-xs text-surface-tint font-normal ml-xs">لاگ رویدادهای امنیتی</span></h3>
+</div>
+<div class="flex items-center gap-sm">
+<input class="px-sm py-[6px] rounded border border-outline-variant/50 text-body-medium font-body-medium text-surface-tint focus:border-[#d98c2b] focus:ring-0 outline-none" type="date"/>
+<button class="px-md py-[6px] border border-outline-variant rounded text-surface-tint font-body-medium text-body-medium hover:bg-surface-variant/50 transition-colors">Filter</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#f5f7fa] border-b border-outline-variant/30">
+<th class="py-sm px-md font-table-header text-table-header text-surface-tint uppercase">Timestamp</th>
+<th class="py-sm px-md font-table-header text-table-header text-surface-tint uppercase">Event Type</th>
+<th class="py-sm px-md font-table-header text-table-header text-surface-tint uppercase">User/System</th>
+<th class="py-sm px-md font-table-header text-table-header text-surface-tint uppercase">IP/Location</th>
+<th class="py-sm px-md font-table-header text-table-header text-surface-tint uppercase">Status</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface">
+<tr class="border-b border-outline-variant/20 hover:bg-surface-variant/5 transition-colors">
+<td class="py-sm px-md text-surface-tint text-xs">2023-10-27 14:32:11</td>
+<td class="py-sm px-md font-body-medium">MFA Policy Updated</td>
+<td class="py-sm px-md">Admin (admin@pems.local)</td>
+<td class="py-sm px-md registry-mono text-xs">192.168.1.105</td>
+<td class="py-sm px-md"><span class="px-sm py-[2px] rounded-full bg-slate-100 text-slate-800 font-badge-label text-badge-label">Success</span></td>
+</tr>
+<tr class="border-b border-outline-variant/20 hover:bg-surface-variant/5 transition-colors bg-red-50/30">
+<td class="py-sm px-md text-surface-tint text-xs">2023-10-27 14:15:02</td>
+<td class="py-sm px-md font-body-medium text-red-700">Failed Login Attempt</td>
+<td class="py-sm px-md">j.doe (j.doe@pems.local)</td>
+<td class="py-sm px-md registry-mono text-xs">203.0.113.45</td>
+<td class="py-sm px-md"><span class="px-sm py-[2px] rounded-full bg-red-100 text-red-800 font-badge-label text-badge-label">Failed</span></td>
+</tr>
+<tr class="border-b border-outline-variant/20 hover:bg-surface-variant/5 transition-colors">
+<td class="py-sm px-md text-surface-tint text-xs">2023-10-27 12:05:55</td>
+<td class="py-sm px-md font-body-medium">Device Synced</td>
+<td class="py-sm px-md">System Auto</td>
+<td class="py-sm px-md registry-mono text-xs">Internal Network</td>
+<td class="py-sm px-md"><span class="px-sm py-[2px] rounded-full bg-green-100 text-green-800 font-badge-label text-badge-label">Success</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

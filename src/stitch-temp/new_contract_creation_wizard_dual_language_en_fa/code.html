@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html class="light" dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>New Contract Wizard - PEMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#081d2f",
+                        "tertiary": "#000815",
+                        "surface-container-highest": "#d0e4fe",
+                        "secondary": "#895200",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "surface-container": "#e4efff",
+                        "on-primary-fixed": "#101c2f",
+                        "on-secondary-container": "#6e4100",
+                        "surface-container-high": "#daeaff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "on-surface": "#081d2f",
+                        "tertiary-container": "#00213d",
+                        "inverse-on-surface": "#e9f1ff",
+                        "outline": "#75777d",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#d1e4ff",
+                        "surface-container-low": "#eef4ff",
+                        "on-tertiary-fixed": "#001d36",
+                        "inverse-primary": "#bbc7e0",
+                        "primary": "#000819",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "surface-bright": "#f8f9ff",
+                        "background": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#7c889f",
+                        "on-surface-variant": "#44474c",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#2c1700",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#ffdcbc",
+                        "surface": "#f8f9ff",
+                        "inverse-surface": "#1f3245",
+                        "secondary-container": "#fdaa47",
+                        "outline-variant": "#c5c6cd",
+                        "primary-fixed": "#d7e3fd",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#535f75",
+                        "surface-dim": "#c8dcf5",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#d0e4fe",
+                        "on-tertiary-container": "#498bcd",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "primary-container": "#142033"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "lg": "24px",
+                        "topbar-height": "60px",
+                        "gutter": "16px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "sidebar-width": "260px",
+                        "sm": "8px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "table-header": ["Inter"],
+                        "body-base": ["Inter"],
+                        "kpi-stat": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .form-input-ring:focus-within {
+            box-shadow: 0 0 0 2px rgba(253, 170, 71, 0.4);
+            border-color: #895200;
+        }
+        .btn-primary-gradient {
+            background: linear-gradient(135deg, #d98c2b, #b8721e);
+        }
+        .persian-text {
+            font-family: Tahoma, Arial, sans-serif;
+            direction: rtl;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base min-h-screen">
+<!-- Top App Bar -->
+<header class="bg-surface border-b border-outline-variant h-topbar-height flex justify-between items-center px-lg fixed full-width top-0 w-full z-40 transition-colors">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface">New Contract Wizard</h1>
+<span class="font-body-medium text-body-medium text-on-surface-variant persian-text">جادوگر قرارداد جدید</span>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-sm rounded-full cursor-pointer">language</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-sm rounded-full cursor-pointer">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-sm rounded-full cursor-pointer">account_circle</span>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="pt-topbar-height px-lg py-lg max-w-7xl mx-auto flex flex-col md:flex-row gap-lg">
+<!-- Wizard Navigation / Steps -->
+<aside class="w-full md:w-1/4 shrink-0">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md sticky top-[84px] shadow-[0_4px_20px_rgba(20,32,51,0.02)]">
+<nav class="flex flex-col gap-sm">
+<!-- Step 1 (Active) -->
+<div class="flex items-start gap-sm p-sm rounded-lg bg-surface-container border-l-4 border-secondary transition-all">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-bold font-body-medium shrink-0">1</div>
+<div class="flex flex-col">
+<span class="font-body-medium text-body-medium text-on-surface font-bold">General Info</span>
+<span class="font-body-base text-body-base text-on-surface-variant persian-text text-xs">اطلاعات عمومی</span>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex items-start gap-sm p-sm rounded-lg hover:bg-surface-container-low transition-all cursor-pointer opacity-70">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold font-body-medium shrink-0">2</div>
+<div class="flex flex-col">
+<span class="font-body-medium text-body-medium text-on-surface-variant">Commercial Terms</span>
+<span class="font-body-base text-body-base text-on-surface-variant persian-text text-xs">شرایط تجاری</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex items-start gap-sm p-sm rounded-lg hover:bg-surface-container-low transition-all cursor-pointer opacity-70">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold font-body-medium shrink-0">3</div>
+<div class="flex flex-col">
+<span class="font-body-medium text-body-medium text-on-surface-variant">Compliance &amp; Docs</span>
+<span class="font-body-base text-body-base text-on-surface-variant persian-text text-xs">انطباق و اسناد</span>
+</div>
+</div>
+</nav>
+</div>
+</aside>
+<!-- Wizard Content Area -->
+<div class="w-full md:w-3/4 flex flex-col gap-lg">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-xl shadow-[0_4px_20px_rgba(20,32,51,0.04)]">
+<div class="mb-lg border-b border-outline-variant pb-md">
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface mb-xs">Step 1: General Information</h2>
+<p class="font-body-base text-body-base text-on-surface-variant persian-text">مرحله ۱: اطلاعات عمومی</p>
+</div>
+<form class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Contract Title -->
+<div class="col-span-1 md:col-span-2 flex flex-col gap-xs">
+<div class="flex justify-between items-end">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Contract Title</label>
+<label class="font-body-base text-body-base text-on-surface-variant persian-text text-xs">عنوان قرارداد <span class="text-error">*</span></label>
+</div>
+<div class="form-input-ring border border-outline-variant rounded-lg bg-surface flex items-center overflow-hidden transition-all h-10">
+<input class="w-full h-full bg-transparent border-none focus:ring-0 px-md font-body-base text-body-base text-on-surface placeholder-on-surface-variant/50" placeholder="e.g., Q3 Maintenance Agreement" type="text"/>
+</div>
+</div>
+<!-- Vendor -->
+<div class="col-span-1 flex flex-col gap-xs">
+<div class="flex justify-between items-end">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Vendor</label>
+<label class="font-body-base text-body-base text-on-surface-variant persian-text text-xs">پیمانکار <span class="text-error">*</span></label>
+</div>
+<div class="form-input-ring border border-outline-variant rounded-lg bg-surface flex items-center overflow-hidden transition-all h-10 relative">
+<select class="w-full h-full bg-transparent border-none focus:ring-0 pl-md pr-xl font-body-base text-body-base text-on-surface appearance-none">
+<option disabled="" selected="" value="">Select Vendor...</option>
+<option value="v1">Acme Industrial Solutions</option>
+<option value="v2">Global Tech Fabricators</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm text-on-surface-variant pointer-events-none">arrow_drop_down</span>
+</div>
+</div>
+<!-- Contract Type -->
+<div class="col-span-1 flex flex-col gap-xs">
+<div class="flex justify-between items-end">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Contract Type</label>
+<label class="font-body-base text-body-base text-on-surface-variant persian-text text-xs">نوع قرارداد <span class="text-error">*</span></label>
+</div>
+<div class="form-input-ring border border-outline-variant rounded-lg bg-surface flex items-center overflow-hidden transition-all h-10 relative">
+<select class="w-full h-full bg-transparent border-none focus:ring-0 pl-md pr-xl font-body-base text-body-base text-on-surface appearance-none">
+<option disabled="" selected="" value="">Select Type...</option>
+<option value="t1">Service Level Agreement (SLA)</option>
+<option value="t2">Fixed Price</option>
+<option value="t3">Time &amp; Materials</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm text-on-surface-variant pointer-events-none">arrow_drop_down</span>
+</div>
+</div>
+<!-- Start Date -->
+<div class="col-span-1 flex flex-col gap-xs">
+<div class="flex justify-between items-end">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Start Date</label>
+<label class="font-body-base text-body-base text-on-surface-variant persian-text text-xs">تاریخ شروع <span class="text-error">*</span></label>
+</div>
+<div class="form-input-ring border border-outline-variant rounded-lg bg-surface flex items-center overflow-hidden transition-all h-10 relative">
+<input class="w-full h-full bg-transparent border-none focus:ring-0 px-md font-body-base text-body-base text-on-surface" type="date"/>
+</div>
+</div>
+<!-- End Date -->
+<div class="col-span-1 flex flex-col gap-xs">
+<div class="flex justify-between items-end">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">End Date</label>
+<label class="font-body-base text-body-base text-on-surface-variant persian-text text-xs">تاریخ پایان</label>
+</div>
+<div class="form-input-ring border border-outline-variant rounded-lg bg-surface flex items-center overflow-hidden transition-all h-10 relative">
+<input class="w-full h-full bg-transparent border-none focus:ring-0 px-md font-body-base text-body-base text-on-surface" type="date"/>
+</div>
+</div>
+</form>
+</div>
+<!-- Action Bar -->
+<div class="flex justify-between items-center bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-[0_4px_20px_rgba(20,32,51,0.02)]">
+<button class="border border-outline-variant text-on-surface-variant px-lg py-sm rounded-lg font-body-medium text-body-medium hover:bg-surface-container-low transition-colors flex items-center gap-xs">
+                    Cancel
+                </button>
+<div class="flex gap-sm">
+<button class="btn-primary-gradient text-on-primary px-lg py-sm rounded-lg font-body-medium text-body-medium hover:opacity-90 transition-opacity flex items-center gap-xs shadow-md">
+                        Save &amp; Continue
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

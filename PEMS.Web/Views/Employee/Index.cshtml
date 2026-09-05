@@ -1,0 +1,227 @@
+﻿@model List<PEMS.Domain.Entities.Employee>
+@{
+    var departments = (IEnumerable<dynamic>)ViewBag.Departments;
+    var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
+    var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
+    var personnelTypes = new[] { "Internal", "Contractor", "External", "Temporary" };
+}
+
+<div class="content-card mb-3">
+    <form method="get" class="row g-2">
+        <div class="col-md-3">
+            <select name="departmentId" class="form-select form-select-sm">
+                <option value="">All Departments</option>
+                @foreach (var d in departments) { <option value="@d.DepartmentId" selected="@(d.DepartmentId == (int?)ViewBag.SelectedDepartmentId)">@d.Name</option> }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="disciplineId" class="form-select form-select-sm">
+                <option value="">All Disciplines</option>
+                @foreach (var d in disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == (int?)ViewBag.SelectedDisciplineId)">@d.Name</option> }
+            </select>
+        </div>
+        <div class="col-md-3"><input name="q" value="@ViewBag.SearchTerm" class="form-control form-control-sm" placeholder="Search name, code, email..." /></div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-sm btn-pems-solid flex-fill"><i class="bi bi-funnel"></i> Filter</button>
+            <a asp-action="Index" class="btn btn-sm btn-outline-danger" title="Reset"><i class="bi bi-x-lg"></i></a>
+            <button type="button" class="btn btn-sm btn-outline-secondary flex-fill" data-bs-toggle="modal" data-bs-target="#createEmpModal">
+                <i class="bi bi-person-plus"></i> New
+            </button>
+        </div>
+    </form>
+    <div class="d-flex gap-2 mt-2">
+        <a asp-action="Export" class="btn btn-sm btn-outline-primary"><i class="bi bi-file-earmark-excel"></i> Export</a>
+        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#importEmpModal"><i class="bi bi-upload"></i> Import</button>
+    </div>
+</div>
+
+<div class="content-card">
+    <div class="table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+    <table class="table table-enterprise">
+        <thead><tr><th>Code</th><th>Name</th><th>Position</th><th>Department</th><th>Discipline</th><th>Personnel Type</th><th>Email</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+            @foreach (var e in Model)
+            {
+                <tr>
+                    <td>@e.PersonnelCode</td>
+                    <td><a asp-action="Details" asp-route-id="@e.EmployeeId">@e.FirstName @e.LastName</a></td>
+                    <td class="small text-muted">@e.Position</td>
+                    <td class="small">@e.Department?.Name</td>
+                    <td class="small">@e.Discipline?.Name</td>
+                    <td class="small">@e.PersonnelType@(e.PersonnelType != "Internal" && e.VendorId.HasValue ? $" ({vendors.FirstOrDefault(v => v.VendorId == e.VendorId)?.Name})" : "")</td>
+                    <td class="small">@e.Email</td>
+                    <td><span class="badge @(e.IsActive ? "bg-success" : "bg-secondary")">@(e.IsActive ? "Active" : "Inactive")</span></td>
+                    <td class="text-end">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editEmpModal_@e.EmployeeId">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <form asp-action="ToggleActive" method="post" class="d-inline">
+                            <input type="hidden" name="employeeId" value="@e.EmployeeId" />
+                            <button type="submit" class="btn btn-sm btn-outline-@(e.IsActive ? "danger" : "success")">
+                                <i class="bi @(e.IsActive ? "bi-slash-circle" : "bi-check-circle")"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    @if (!Model.Any()) { <p class="text-muted text-center py-4">No employees found.</p> }
+</div>
+
+<div class="modal fade" id="importEmpModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Import" method="post" enctype="multipart/form-data">
+                <div class="modal-header"><h6 class="modal-title">Import Employees</h6></div>
+                <div class="modal-body">
+                    <p class="text-muted small">فایل اکسل با همون ستون‌بندی خروجی Export - ردیف‌های با کد پرسنلی تکراری رد می‌شوند.</p>
+                    <input type="file" name="file" class="form-control" accept=".xlsx" required />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-pems-solid">Import</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createEmpModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form asp-action="Create" method="post">
+                <div class="modal-header"><h6 class="modal-title">New Employee</h6></div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-4"><label class="form-label">Personnel Code</label><input name="personnelCode" class="form-control" /></div>
+                        <div class="col-md-4"><label class="form-label">First Name</label><input name="firstName" class="form-control" required /></div>
+                        <div class="col-md-4"><label class="form-label">Last Name</label><input name="lastName" class="form-control" required /></div>
+                        <div class="col-md-6"><label class="form-label">Position / Title</label><input name="position" class="form-control" /></div>
+                        <div class="col-md-6"><label class="form-label">Email</label><input name="email" type="email" class="form-control" /></div>
+                        <div class="col-md-6"><label class="form-label">Phone</label><input name="phone" class="form-control" /></div>
+                        <div class="col-md-3">
+                            <label class="form-label">Department</label>
+                            <select name="departmentId" class="form-select" required>
+                                @foreach (var d in departments) { <option value="@d.DepartmentId">@d.Name</option> }
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Discipline</label>
+                            <select name="disciplineId" class="form-select" required>
+                                @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Personnel Type</label>
+                            <select name="personnelType" class="form-select" onchange="document.getElementById('createVendorField').style.display = this.value === 'Internal' ? 'none' : ''">
+                                @foreach (var t in personnelTypes) { <option value="@t">@t</option> }
+                            </select>
+                        </div>
+                        <div class="col-md-3" id="createVendorField" style="display:none;">
+                            <label class="form-label">Vendor</label>
+                            <select name="vendorId" class="form-select">
+                                <option value="">-- انتخاب --</option>
+                                @foreach (var v in vendors) { <option value="@v.VendorId">@v.Name</option> }
+                            </select>
+                        </div>
+
+                        <div class="col-12"><hr /></div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="createUser" value="true" id="createUserCheck"
+                                       onclick="document.getElementById('createUserFields').style.display = this.checked ? '' : 'none';">
+                                <label class="form-check-label fw-bold" for="createUserCheck">
+                                    <i class="bi bi-person-badge"></i> آیا نیاز است یوزر لاگین هم برای این کارمند ساخته بشه؟
+                                </label>
+                            </div>
+                        </div>
+                        <div id="createUserFields" style="display:none;" class="col-12">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small">Username</label>
+                                    <input name="userName" class="form-control form-control-sm" />
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="text-muted small mb-0 mt-4">رمز پیش‌فرض: <code>@PEMS.Web.Controllers.EmployeeController.DefaultNewUserPassword</code> - در اولین ورود باید عوض بشه.</p>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small">نقش‌ها</label>
+                                    <div class="row">
+                                        @foreach (var role in (IEnumerable<string>)ViewBag.AllRoles)
+                                        {
+                                            <div class="col-6 col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="selectedRoles" value="@role" id="empRole_@role">
+                                                    <label class="form-check-label small" for="empRole_@role">@role</label>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-pems-solid">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@foreach (var e in Model)
+{
+    <div class="modal fade" id="editEmpModal_@e.EmployeeId" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" name="employeeId" value="@e.EmployeeId" />
+                    <div class="modal-header"><h6 class="modal-title">Edit Employee</h6></div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-4"><label class="form-label">Personnel Code</label><input name="personnelCode" value="@e.PersonnelCode" class="form-control" /></div>
+                            <div class="col-md-4"><label class="form-label">First Name</label><input name="firstName" value="@e.FirstName" class="form-control" required /></div>
+                            <div class="col-md-4"><label class="form-label">Last Name</label><input name="lastName" value="@e.LastName" class="form-control" required /></div>
+                            <div class="col-md-6"><label class="form-label">Position / Title</label><input name="position" value="@e.Position" class="form-control" /></div>
+                            <div class="col-md-6"><label class="form-label">Email</label><input name="email" value="@e.Email" type="email" class="form-control" /></div>
+                            <div class="col-md-6"><label class="form-label">Phone</label><input name="phone" value="@e.Phone" class="form-control" /></div>
+                            <div class="col-md-3">
+                                <label class="form-label">Department</label>
+                                <select name="departmentId" class="form-select" required>
+                                    @foreach (var d in departments) { <option value="@d.DepartmentId" selected="@(d.DepartmentId == e.DepartmentId)">@d.Name</option> }
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Discipline</label>
+                                <select name="disciplineId" class="form-select" required>
+                                    @foreach (var d in disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == e.DisciplineId)">@d.Name</option> }
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Personnel Type</label>
+                                <select name="personnelType" class="form-select" onchange="document.getElementById('editVendorField_@e.EmployeeId').style.display = this.value === 'Internal' ? 'none' : ''">
+                                    @foreach (var t in personnelTypes) { <option value="@t" selected="@(t == e.PersonnelType)">@t</option> }
+                                </select>
+                            </div>
+                            <div class="col-md-3" id="editVendorField_@e.EmployeeId" style="display:@(e.PersonnelType == "Internal" ? "none" : "")">
+                                <label class="form-label">Vendor</label>
+                                <select name="vendorId" class="form-select">
+                                    <option value="">-- انتخاب --</option>
+                                    @foreach (var v in vendors) { <option value="@v.VendorId" selected="@(v.VendorId == e.VendorId)">@v.Name</option> }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-pems-solid">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}

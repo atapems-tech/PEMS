@@ -1,0 +1,70 @@
+@model List<PEMS.Application.DTOs.ManufacturerDataBookDto>
+@{
+    var projects = (IEnumerable<dynamic>)ViewBag.Projects;
+    var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
+}
+
+<div class="content-card mb-3">
+    <form method="get" class="row g-3">
+        <div class="col-md-4">
+            <label class="form-label">Project</label>
+            <select name="projectId" class="form-select" onchange="this.form.submit()">
+                <option value="">-- All Projects --</option>
+                @foreach (var p in projects)
+                {
+                    <option value="@p.ProjectId" selected="@(ViewBag.SelectedProjectId == p.ProjectId)">@p.ProjectName</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Vendor</label>
+            <select name="vendorId" class="form-select" onchange="this.form.submit()">
+                <option value="">-- All Vendors --</option>
+                @foreach (var v in vendors)
+                {
+                    <option value="@v.VendorId" selected="@(ViewBag.SelectedVendorId == v.VendorId)">@v.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+            <a asp-action="Create" class="btn btn-pems-solid"><i class="bi bi-plus-lg"></i> New MDB</a>
+        </div>
+    </form>
+</div>
+
+<div class="content-card">
+    <table class="table table-enterprise">
+        <thead>
+            <tr>
+                <th>Equipment</th><th>Vendor</th><th>PO</th><th>Project</th>
+                <th>Planned Final Issue</th><th>Index Due</th><th>Status</th><th>Hard Copy</th><th>Soft Copy</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td><a asp-action="Details" asp-route-id="@m.MDBId">@m.EquipmentTagNumber</a></td>
+                    <td>@m.VendorName</td>
+                    <td>@m.PoNumber</td>
+                    <td>@m.ProjectName</td>
+                    <td>@(m.PlannedFinalIssueDate?.ToString("yyyy-MM-dd"))</td>
+                    <td>
+                        @(m.IndexOfContentsDueDate?.ToString("yyyy-MM-dd"))
+                        @if (m.IsIndexOverdue)
+                        {
+                            <span class="badge bg-danger">overdue</span>
+                        }
+                    </td>
+                    <td><span class="badge bg-secondary">@m.Status</span></td>
+                    <td>@(m.HardCopyShippedDate.HasValue ? "Shipped" : "-")</td>
+                    <td>@(m.SoftCopyDeliveredDate.HasValue ? "Delivered" : "-")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!Model.Any())
+    {
+        <p class="text-muted small mb-0">No MDBs yet.</p>
+    }
+</div>

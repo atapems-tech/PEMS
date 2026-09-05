@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS Transmittal Management | مدیریت مراسلات</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+          font-family: 'Material Symbols Outlined';
+          font-weight: normal;
+          font-style: normal;
+          font-size: 24px;
+          line-height: 1;
+          letter-spacing: normal;
+          text-transform: none;
+          display: inline-block;
+          white-space: nowrap;
+          word-wrap: normal;
+          direction: ltr;
+          -webkit-font-feature-settings: 'liga';
+          -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Custom scrollbar for data tables */
+        .table-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .table-container::-webkit-scrollbar-track {
+            background: #f8f9ff;
+        }
+        .table-container::-webkit-scrollbar-thumb {
+            background-color: #c5c6cd;
+            border-radius: 4px;
+        }
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background-color: #75777d;
+        }
+
+        /* Registry Monospace for technical codes */
+        .font-registry {
+            font-family: 'Courier New', Courier, monospace;
+            letter-spacing: -0.5px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-container": "#498bcd",
+                      "background": "#f8f9ff",
+                      "surface-bright": "#f8f9ff",
+                      "outline-variant": "#c5c6cd",
+                      "surface-dim": "#c8dcf5",
+                      "outline": "#75777d",
+                      "on-tertiary": "#ffffff",
+                      "primary": "#000819",
+                      "secondary": "#895200",
+                      "primary-fixed": "#d7e3fd",
+                      "on-surface": "#081d2f",
+                      "tertiary-container": "#00213d",
+                      "tertiary": "#000815",
+                      "surface-tint": "#535f75",
+                      "tertiary-fixed": "#d1e4ff",
+                      "surface": "#f8f9ff",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-background": "#081d2f",
+                      "on-primary-container": "#7c889f",
+                      "on-primary-fixed": "#101c2f",
+                      "inverse-on-surface": "#e9f1ff",
+                      "on-tertiary-fixed": "#001d36",
+                      "on-secondary-fixed": "#2c1700",
+                      "surface-variant": "#d0e4fe",
+                      "on-secondary-container": "#6e4100",
+                      "on-surface-variant": "#44474c",
+                      "error-container": "#ffdad6",
+                      "error": "#ba1a1a",
+                      "primary-container": "#142033",
+                      "on-secondary": "#ffffff",
+                      "inverse-primary": "#bbc7e0",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "secondary-fixed": "#ffdcbc",
+                      "inverse-surface": "#1f3245",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "surface-container-highest": "#d0e4fe",
+                      "surface-container": "#e4efff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "on-error-container": "#93000a",
+                      "on-error": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "secondary-container": "#fdaa47",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "surface-container-high": "#daeaff",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "surface-container-low": "#eef4ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "sm": "8px",
+                      "sidebar-width": "260px",
+                      "topbar-height": "60px",
+                      "unit": "4px",
+                      "xs": "4px",
+                      "xl": "32px",
+                      "md": "16px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "kpi-stat": [
+                              "Inter"
+                      ],
+                      "badge-label": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "table-cell": [
+                              "Inter"
+                      ],
+                      "body-medium": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "kpi-stat": [
+                              "22px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "badge-label": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-cell": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-medium": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-base": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "table-header": [
+                              "11.5px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased flex h-screen overflow-hidden">
+<!-- JSON: SideNavBar -->
+<nav aria-label="Sidebar Navigation" class="hidden lg:flex flex-col bg-surface-container-low border-r border-outline-variant w-sidebar-width h-full p-md gap-xs shrink-0 relative z-40 transition-transform duration-300 ease-in-out">
+<!-- Header -->
+<div class="mb-xl flex items-center gap-sm">
+<img alt="User Profile" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A small, high-quality, professional corporate avatar icon representing an engineering operations user profile in a clean, light industrial theme. The avatar features abstract technical shapes and a subtle blue-grey gradient background, conveying authority and technical expertise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOSqDZT2RCsKKR8TtTSyvGuZj4wQEELp_0_mgkwzFZaHmiaptG8V1bZW9TbWr_7G1j3pa_LGQpgshuTM-4okXR6phDNB-2TY9AGYuKibHacARe-QDtcCsQocQUqHIMECWwYOIpLKU6nr6WxoSvx0WBAV2PeXIpL3asFhAc2XtIbM9xmcL424ulegljghJ7AtYikqFnnZAlmECAHrjpCdZAlo_tD1y7pB3CCYSDCK273xvTw_WH3_B3"/>
+<div>
+<h2 class="font-headline-md text-headline-md font-black tracking-tight text-primary">Engineering Dept.</h2>
+<p class="font-body-medium text-body-medium text-on-surface-variant">Technical Operations</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex flex-col gap-xs flex-grow overflow-y-auto pr-sm custom-scrollbar">
+<a class="flex items-center gap-md px-sm py-sm text-on-surface-variant hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="dashboard">dashboard</span>
+<span class="font-body-medium text-body-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-sm py-sm text-on-surface-variant hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="fact_check">fact_check</span>
+<span class="font-body-medium text-body-medium">Technical Inspection</span>
+</a>
+<a class="flex items-center gap-md px-sm py-sm text-on-surface-variant hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="history_edu">history_edu</span>
+<span class="font-body-medium text-body-medium">Audit Logs</span>
+</a>
+<a class="flex items-center gap-md px-sm py-sm text-on-surface-variant hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="mail">mail</span>
+<span class="font-body-medium text-body-medium">Correspondence</span>
+</a>
+<!-- ACTIVE TAB -->
+<a class="flex items-center gap-md px-sm py-sm bg-secondary-container text-on-secondary-container font-bold rounded-lg transition-transform scale-98 active:scale-95 shadow-sm ring-1 ring-secondary/20" href="#">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span class="font-body-medium text-body-medium">Transmittals</span>
+</a>
+<a class="flex items-center gap-md px-sm py-sm text-on-surface-variant hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-body-medium text-body-medium">Administration</span>
+</a>
+</div>
+<!-- CTA Button -->
+<div class="mt-auto mb-lg">
+<button class="w-full flex items-center justify-center gap-sm bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white font-body-medium text-body-medium py-sm px-md rounded-lg hover:shadow-md transition-all shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Document
+            </button>
+</div>
+<!-- Footer Links -->
+<div class="flex flex-col gap-xs border-t border-outline-variant pt-md">
+<a class="flex items-center gap-md px-sm py-[6px] text-on-surface-variant hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-outline text-[20px] group-hover:text-primary transition-colors" data-icon="help">help</span>
+<span class="font-body-medium text-body-medium text-[12px]">Help Center</span>
+</a>
+<a class="flex items-center gap-md px-sm py-[6px] text-on-surface-variant hover:bg-surface-container-highest transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-outline text-[20px] group-hover:text-primary transition-colors" data-icon="logout">logout</span>
+<span class="font-body-medium text-body-medium text-[12px]">Sign Out</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-background">
+<!-- JSON: TopNavBar -->
+<header class="bg-surface flex justify-between items-center w-full px-lg h-topbar-height z-50 shrink-0 border-b border-outline-variant transition-all duration-200 ease-in-out shadow-[0_1px_2px_rgba(20,32,51,0.02)]">
+<!-- Left Side: Brand & Search -->
+<div class="flex items-center gap-xl h-full">
+<!-- Mobile Menu Button (Visible only on small screens) -->
+<button aria-label="Open Menu" class="lg:hidden text-on-surface-variant hover:bg-surface-container-high p-1 rounded-md transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="text-headline-md font-headline-md font-bold text-primary tracking-tight truncate flex items-center">
+<span class="hidden md:inline mr-2 text-secondary-container">#</span>
+                    PEMS Enterprise Utility
+                </div>
+<!-- Search Bar (on_left) -->
+<div class="hidden md:flex items-center bg-surface-container border border-outline-variant rounded-full px-sm py-[4px] min-w-[280px] focus-within:ring-2 focus-within:ring-secondary/50 focus-within:border-secondary transition-all">
+<span class="material-symbols-outlined text-outline ml-1 text-[18px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-medium font-body-medium text-on-surface w-full placeholder-on-surface-variant/70 py-[2px]" placeholder="Search transmittals, tags, IDs..." type="text"/>
+<div class="bg-surface-container-highest text-on-surface-variant text-[10px] font-bold px-1.5 py-0.5 rounded ml-2">⌘K</div>
+</div>
+</div>
+<!-- Right Side: Actions -->
+<div class="flex items-center gap-sm h-full">
+<button aria-label="language" class="p-1.5 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors relative group">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+<!-- Tooltip -->
+<span class="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-inverse-surface text-inverse-on-surface text-[10px] font-medium py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">Language EN/FA</span>
+</button>
+<button aria-label="notifications" class="p-1.5 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors relative group">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full ring-2 ring-surface"></span>
+</button>
+<button aria-label="settings" class="p-1.5 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-px h-6 bg-outline-variant mx-1 hidden sm:block"></div>
+<button aria-label="account_circle" class="p-1.5 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors flex items-center gap-2">
+<img alt="Current User" class="w-7 h-7 rounded-full object-cover border border-outline-variant" data-alt="A very small, circular professional corporate avatar icon for the top navigation bar. Clean, crisp, high-resolution, light theme, conveying a modern engineering utility interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVeU4RZXNQ_qtHQ_KtXPkd0pRTX2D-iF27sQujDm4-276aKnODsZBL5XLe-N6Wa6GC9S-Tsv8M4-CgYxkwOiksFJdBWYP0gYaxeBvLEpGeVYvXvps4dp8olp58skupS7sFeGeily2cXexurIsFAUGKRzL-weoiXVXkYwhjiDOggNUZOwYOC-jQa2PTI-tMJkM6loZK0fLqPb9BHa1aD2739a8gP-GnetHAgEMpJhnM93RRlp6BPGjB"/>
+<span class="material-symbols-outlined hidden" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Page Canvas -->
+<main class="flex-1 overflow-y-auto p-md md:p-lg bg-surface-bright relative">
+<!-- Page Header Area -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-xl gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg md:font-headline-lg-mobile md:text-headline-lg-mobile text-primary tracking-tight">Transmittal Registry <span class="text-on-surface-variant text-lg font-normal ml-2">| ثبت مراسلات</span></h1>
+<p class="font-body-medium text-body-medium text-on-surface-variant mt-1">Manage and track inbound and outbound technical documentation.</p>
+</div>
+<!-- KPI Mini Cards Row -->
+<div class="flex gap-sm w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0 hide-scrollbar">
+<div class="bg-surface border border-outline-variant rounded-lg p-sm flex items-center gap-md min-w-[140px] shadow-sm">
+<div class="w-[36px] h-[36px] rounded-[8px] bg-gradient-to-br from-surface-variant to-surface-dim flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]" style="font-variation-settings: 'FILL' 1;">inbox</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Pending (FA)</div>
+<div class="font-kpi-stat text-kpi-stat text-primary mt-0.5">24</div>
+</div>
+</div>
+<div class="bg-surface border border-outline-variant rounded-lg p-sm flex items-center gap-md min-w-[140px] shadow-sm">
+<div class="w-[36px] h-[36px] rounded-[8px] bg-gradient-to-br from-error-container to-surface-dim flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-error text-[20px]" style="font-variation-settings: 'FILL' 1;">error</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Overdue (FA)</div>
+<div class="font-kpi-stat text-kpi-stat text-error mt-0.5">7</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Complex Filter Bar & Actions (Surface Level 1) -->
+<div class="bg-surface border border-outline-variant rounded-t-xl p-md flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 relative z-20">
+<!-- Filters -->
+<div class="flex flex-wrap items-center gap-sm w-full lg:w-auto">
+<!-- Date Range Filter -->
+<div class="relative flex-grow sm:flex-grow-0">
+<div class="flex items-center border border-outline-variant rounded-lg px-2 py-1.5 bg-surface-container-lowest focus-within:border-secondary focus-within:ring-1 focus-within:ring-secondary transition-all">
+<span class="material-symbols-outlined text-outline text-[18px] mr-2">calendar_today</span>
+<input class="bg-transparent border-none focus:ring-0 text-table-cell font-table-cell p-0 w-full sm:w-[180px] text-on-surface" placeholder="Date Range..." type="text" value="Oct 1 - Oct 31, 2023"/>
+</div>
+</div>
+<!-- Status Filter -->
+<div class="relative flex-grow sm:flex-grow-0">
+<select class="appearance-none border border-outline-variant rounded-lg px-3 py-1.5 bg-surface-container-lowest focus:border-secondary focus:ring-1 focus:ring-secondary transition-all text-table-cell font-table-cell pr-8 text-on-surface w-full sm:w-[140px]">
+<option>All Statuses</option>
+<option>Sent</option>
+<option>Received</option>
+<option>Pending Review</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">expand_more</span>
+</div>
+<!-- Discipline Filter (Optional Example) -->
+<div class="relative hidden md:block">
+<select class="appearance-none border border-outline-variant rounded-lg px-3 py-1.5 bg-surface-container-lowest focus:border-secondary focus:ring-1 focus:ring-secondary transition-all text-table-cell font-table-cell pr-8 text-on-surface w-[140px]">
+<option>Discipline: All</option>
+<option>Piping</option>
+<option>Civil</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">expand_more</span>
+</div>
+<button class="text-on-surface-variant hover:text-primary hover:bg-surface-container p-1.5 rounded-md transition-colors border border-transparent flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+</div>
+<!-- Bulk Actions / Export -->
+<div class="flex items-center gap-sm w-full lg:w-auto justify-end">
+<button class="border border-outline-variant bg-surface-container-lowest text-surface-tint font-body-medium text-body-medium px-sm py-1.5 rounded-lg hover:border-secondary hover:text-secondary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span class="hidden sm:inline">Export Excel</span>
+</button>
+</div>
+</div>
+<!-- Data Table Container -->
+<div class="bg-surface border-x border-b border-outline-variant rounded-b-xl overflow-hidden shadow-sm relative z-10 flex flex-col">
+<div class="overflow-x-auto table-container">
+<table class="w-full text-left border-collapse min-w-[900px]">
+<!-- Sticky Header -->
+<thead class="bg-[#f5f7fa] border-b border-outline-variant sticky top-0 z-20 shadow-[0_1px_0_0_#c5c6cd]">
+<tr>
+<th class="w-10 px-md py-2 text-center align-middle">
+<input class="rounded-[4px] border-outline-variant text-secondary focus:ring-secondary w-4 h-4 mt-0.5" type="checkbox"/>
+</th>
+<th class="px-md py-2.5 font-table-header text-table-header text-on-surface-variant uppercase tracking-wider whitespace-nowrap">
+                                    Transmittal No. <span class="block text-[9px] text-outline font-normal mt-0.5">شماره مراسله</span>
+</th>
+<th class="px-md py-2.5 font-table-header text-table-header text-on-surface-variant uppercase tracking-wider whitespace-nowrap w-[25%]">
+                                    Subject <span class="block text-[9px] text-outline font-normal mt-0.5">موضوع</span>
+</th>
+<th class="px-md py-2.5 font-table-header text-table-header text-on-surface-variant uppercase tracking-wider whitespace-nowrap">
+                                    Direction / Entities <span class="block text-[9px] text-outline font-normal mt-0.5">جهت / اشخاص</span>
+</th>
+<th class="px-md py-2.5 font-table-header text-table-header text-on-surface-variant uppercase tracking-wider whitespace-nowrap">
+                                    Issue Date <span class="block text-[9px] text-outline font-normal mt-0.5">تاریخ صدور</span>
+</th>
+<th class="px-md py-2.5 font-table-header text-table-header text-on-surface-variant uppercase tracking-wider whitespace-nowrap">
+                                    Status <span class="block text-[9px] text-outline font-normal mt-0.5">وضعیت</span>
+</th>
+<th class="px-md py-2.5 font-table-header text-table-header text-on-surface-variant uppercase tracking-wider text-right">
+                                    Actions
+                                </th>
+</tr>
+</thead>
+<!-- Data Rows -->
+<tbody class="divide-y divide-outline-variant/50 bg-surface">
+<!-- Row 1: Sent -->
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors group">
+<td class="px-md py-sm text-center align-middle">
+<input class="rounded-[4px] border-outline-variant text-secondary focus:ring-secondary w-4 h-4" type="checkbox"/>
+</td>
+<td class="px-md py-sm align-middle">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-6 bg-secondary-container rounded-sm"></div>
+<span class="font-registry text-table-cell font-bold text-primary">TRN-EPC-1042</span>
+</div>
+<div class="text-[11px] text-on-surface-variant mt-0.5 ml-3.5">Rev. 02 • 14 Docs</div>
+</td>
+<td class="px-md py-sm align-middle">
+<div class="font-body-medium text-table-cell text-on-surface line-clamp-1">Piping Isometric Drawings - Area 3</div>
+<div class="text-[11px] text-on-surface-variant mt-0.5 line-clamp-1 truncate">نقشه های ایزومتریک پایپینگ - منطقه 3</div>
+</td>
+<td class="px-md py-sm align-middle">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-[#498bcd] -rotate-45 font-bold">arrow_forward</span>
+<span class="font-table-cell text-table-cell text-on-surface">PEMS (Sender)</span>
+</div>
+<div class="text-[11px] text-on-surface-variant mt-0.5 pl-6">To: Khouzestan Steel Co.</div>
+</td>
+<td class="px-md py-sm align-middle">
+<div class="font-table-cell text-table-cell text-on-surface whitespace-nowrap">24 Oct 2023</div>
+<div class="text-[11px] text-on-surface-variant mt-0.5">1402/08/02</div>
+</td>
+<td class="px-md py-sm align-middle">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#eef4ff] text-[#00497c] font-badge-label text-badge-label border border-[#c8dcf5]">
+                                        Sent <span class="ml-1 opacity-70 border-l border-current pl-1">ارسال شده</span>
+</span>
+</td>
+<td class="px-md py-sm align-middle text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded-[8px] bg-surface-container-lowest border border-outline-variant flex items-center justify-center text-surface-tint hover:border-secondary hover:text-secondary transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="w-8 h-8 rounded-[8px] bg-surface-container-lowest border border-outline-variant flex items-center justify-center text-surface-tint hover:border-secondary hover:text-secondary transition-colors" title="Download ZIP">
+<span class="material-symbols-outlined text-[18px]">folder_zip</span>
+</button>
+<button class="w-8 h-8 rounded-[8px] bg-surface-container-lowest border border-outline-variant flex items-center justify-center text-surface-tint hover:border-secondary hover:text-secondary transition-colors" title="More Actions">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Received -->
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors group">
+<td class="px-md py-sm text-center align-middle">
+<input class="rounded-[4px] border-outline-variant text-secondary focus:ring-secondary w-4 h-4" type="checkbox"/>
+</td>
+<td class="px-md py-sm align-middle">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-6 bg-surface-tint opacity-50 rounded-sm"></div>
+<span class="font-registry text-table-cell font-bold text-primary">TRN-VND-8831</span>
+</div>
+<div class="text-[11px] text-on-surface-variant mt-0.5 ml-3.5">Rev. 00 • 3 Docs</div>
+</td>
+<td class="px-md py-sm align-middle">
+<div class="font-body-medium text-table-cell text-on-surface line-clamp-1">Pump Specifications &amp; Data Sheets</div>
+<div class="text-[11px] text-on-surface-variant mt-0.5 line-clamp-1 truncate">مشخصات پمپ و دیتاشیت ها</div>
+</td>
+<td class="px-md py-sm align-middle">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-outline rotate-135 font-bold">arrow_forward</span>
+<span class="font-table-cell text-table-cell text-on-surface">KSB Pumps (Sender)</span>
+</div>
+<div class="text-[11px] text-on-surface-variant mt-0.5 pl-6">To: PEMS</div>
+</td>
+<td class="px-md py-sm align-middle">
+<div class="font-table-cell text-table-cell text-on-surface whitespace-nowrap">22 Oct 2023</div>
+<div class="text-[11px] text-on-surface-variant mt-0.5">1402/07/30</div>
+</td>
+<td class="px-md py-sm align-middle">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#f8f9ff] text-[#535f75] font-badge-label text-badge-label border border-[#c5c6cd]">
+                                        Received <span class="ml-1 opacity-70 border-l border-current pl-1">دریافت شده</span>
+</span>
+</td>
+<td class="px-md py-sm align-middle text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded-[8px] bg-surface-container-lowest border border-outline-variant flex items-center justify-center text-surface-tint hover:border-secondary hover:text-secondary transition-colors" title="View Details">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="w-8 h-8 rounded-[8px] bg-surface-container-lowest border border-outline-variant flex items-center justify-center text-surface-tint hover:border-secondary hover:text-secondary transition-colors" title="Download ZIP">
+<span class="material-symbols-outlined text-[18px]">folder_zip</span>
+</button>
+<button class="w-8 h-8 rounded-[8px] bg-surface-container-lowest border border-outline-variant flex items-center justify-center text-surface-tint hover:border-secondary hover:text-secondary transition-colors" title="More Actions">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Pending Review (Amber/Critical warning style) -->
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors group bg-secondary-fixed/10">
+<td class="px-md py-sm text-center align-middle">
+<input class="rounded-[4px] border-outline-variant text-secondary focus:ring-secondary w-4 h-4" type="checkbox"/>
+</td>
+<td class="px-md py-sm align-middle">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-6 bg-[#d98c2b] rounded-sm shadow-[0_0_8px_rgba(217,140,43,0.4)]"></div>
+<span class="font-registry text-table-cell font-bold text-primary">TRN-CLI-0992</span>
+</div>
+<div class="text-[11px] text-on-surface-variant mt-0.5 ml-3.5">Rev. 01 • 1 Doc</div>
+</td>
+<td class="px-md py-sm align-middle">
+<div class="font-body-medium text-table-cell text-on-surface line-clamp-1">Structural Steel Calculations</div>
+<div class="text-[11px] text-on-surface-variant mt-0.5 line-clamp-1 truncate">محاسبات سازه فولادی</div>
+</td>
+<td class="px-md py-sm align-middle">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-outline rotate-135 font-bold">arrow_forward</span>
+<span class="font-table-cell text-table-cell text-on-surface">Client (Sender)</span>
+</div>
+<div class="text-[11px] text-on-surface-variant mt-0.5 pl-6">To: PEMS Engineering</div>
+</td>
+<td class="px-md py-sm align-middle">
+<div class="font-table-cell text-table-cell text-error font-bold whitespace-nowrap">15 Oct 2023</div>
+<div class="text-[11px] text-error/80 mt-0.5">1402/07/23</div>
+</td>
+<td class="px-md py-sm align-middle">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#ffdcbc] text-[#6e4100] font-badge-label text-badge-label border border-[#ffb86a]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#6e4100] mr-1.5 animate-pulse"></span>
+                                        Pending Review <span class="ml-1 opacity-70 border-l border-current pl-1">در انتظار بررسی</span>
+</span>
+</td>
+<td class="px-md py-sm align-middle text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-1">
+<button class="bg-[#fdaa47]/20 text-[#6e4100] hover:bg-[#fdaa47]/40 border border-[#fdaa47]/50 font-body-medium text-[11px] px-2 py-1 rounded-[6px] transition-colors flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[14px]">edit_document</span>
+                                            Review Now
+                                        </button>
+<button class="w-8 h-8 rounded-[8px] bg-surface-container-lowest border border-outline-variant flex items-center justify-center text-surface-tint hover:border-secondary hover:text-secondary transition-colors ml-1" title="More Actions">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Draft (Slate style) -->
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors group">
+<td class="px-md py-sm text-center align-middle">
+<input class="rounded-[4px] border-outline-variant text-secondary focus:ring-secondary w-4 h-4" type="checkbox"/>
+</td>
+<td class="px-md py-sm align-middle">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-6 bg-outline-variant rounded-sm border border-outline border-dashed"></div>
+<span class="font-registry text-table-cell font-bold text-on-surface-variant italic">TRN-EPC-1043</span>
+</div>
+<div class="text-[11px] text-on-surface-variant mt-0.5 ml-3.5">Rev. 0A • 0 Docs</div>
+</td>
+<td class="px-md py-sm align-middle">
+<div class="font-body-medium text-table-cell text-on-surface-variant line-clamp-1 italic">Electrical Layouts - Substation</div>
+<div class="text-[11px] text-on-surface-variant/70 mt-0.5 line-clamp-1 truncate">جانمایی برق - پست</div>
+</td>
+<td class="px-md py-sm align-middle opacity-70">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-outline -rotate-45 font-bold">arrow_forward</span>
+<span class="font-table-cell text-table-cell text-on-surface">PEMS (Sender)</span>
+</div>
+<div class="text-[11px] text-on-surface-variant mt-0.5 pl-6">To: Pending Assignment</div>
+</td>
+<td class="px-md py-sm align-middle opacity-70">
+<div class="font-table-cell text-table-cell text-on-surface whitespace-nowrap">-</div>
+</td>
+<td class="px-md py-sm align-middle">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant font-badge-label text-badge-label border border-outline-variant border-dashed">
+                                        Draft <span class="ml-1 opacity-70 border-l border-current pl-1">پیشنویس</span>
+</span>
+</td>
+<td class="px-md py-sm align-middle text-right whitespace-nowrap">
+<div class="flex items-center justify-end gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded-[8px] bg-surface-container-lowest border border-outline-variant flex items-center justify-center text-surface-tint hover:border-secondary hover:text-secondary transition-colors" title="Edit Draft">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="w-8 h-8 rounded-[8px] bg-surface-container-lowest border border-outline-variant flex items-center justify-center text-error hover:border-error hover:bg-error-container transition-colors" title="Delete">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="bg-surface-container-lowest border-t border-outline-variant px-md py-sm flex flex-col sm:flex-row items-center justify-between gap-3 text-table-cell text-on-surface-variant">
+<div>
+                        Showing <span class="font-bold text-on-surface">1</span> to <span class="font-bold text-on-surface">4</span> of <span class="font-bold text-on-surface">128</span> entries
+                    </div>
+<div class="flex items-center gap-1">
+<button class="p-1 rounded hover:bg-surface-container transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<button class="w-7 h-7 rounded bg-secondary-container text-on-secondary-container font-bold flex items-center justify-center">1</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container transition-colors flex items-center justify-center">2</button>
+<button class="w-7 h-7 rounded hover:bg-surface-container transition-colors flex items-center justify-center">3</button>
+<span class="px-1">...</span>
+<button class="w-7 h-7 rounded hover:bg-surface-container transition-colors flex items-center justify-center">12</button>
+<button class="p-1 rounded hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Optional spacing at bottom -->
+<div class="h-xl"></div>
+</main>
+</div>
+</body></html>

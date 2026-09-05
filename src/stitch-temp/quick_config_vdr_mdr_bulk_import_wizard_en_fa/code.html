@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS - Bulk VDR/MDR Import</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#ffdcbc",
+                      "surface-container-low": "#eef4ff",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "inverse-on-surface": "#e9f1ff",
+                      "outline-variant": "#c5c6cd",
+                      "on-background": "#081d2f",
+                      "secondary": "#895200",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-surface": "#1f3245",
+                      "primary": "#000819",
+                      "inverse-primary": "#bbc7e0",
+                      "tertiary-container": "#00213d",
+                      "primary-container": "#142033",
+                      "on-tertiary-fixed": "#001d36",
+                      "tertiary-fixed": "#d1e4ff",
+                      "on-secondary": "#ffffff",
+                      "surface-container-highest": "#d0e4fe",
+                      "on-surface": "#081d2f",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "surface-container": "#e4efff",
+                      "surface-dim": "#c8dcf5",
+                      "on-error": "#ffffff",
+                      "surface-tint": "#535f75",
+                      "surface-bright": "#f8f9ff",
+                      "primary-fixed": "#d7e3fd",
+                      "on-primary-container": "#7c889f",
+                      "on-tertiary-container": "#498bcd",
+                      "on-secondary-container": "#6e4100",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "secondary-container": "#fdaa47",
+                      "surface-container-high": "#daeaff",
+                      "surface": "#f8f9ff",
+                      "error": "#ba1a1a",
+                      "background": "#f8f9ff",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "tertiary": "#000815",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "surface-variant": "#d0e4fe",
+                      "error-container": "#ffdad6",
+                      "on-secondary-fixed": "#2c1700",
+                      "on-surface-variant": "#44474c",
+                      "on-primary-fixed": "#101c2f",
+                      "outline": "#75777d"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "sidebar-width": "260px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "xl": "32px",
+                      "gutter": "16px",
+                      "md": "16px",
+                      "unit": "4px",
+                      "topbar-height": "60px",
+                      "lg": "24px"
+              },
+              "fontFamily": {
+                      "body-medium": ["Inter"],
+                      "table-cell": ["Inter"],
+                      "table-header": ["Inter"],
+                      "body-base": ["Inter"],
+                      "kpi-stat": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "badge-label": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
+              },
+              "fontSize": {
+                      "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                      "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                      "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                      "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                      "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}],
+                      "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .fill-icon { font-variation-settings: 'FILL' 1; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #c5c6cd; border-radius: 20px; }
+        .wizard-step.hidden { display: none; }
+    </style>
+</head>
+<body class="bg-background font-body-base text-body-base text-on-background h-screen w-screen overflow-hidden flex items-center justify-center relative">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-10" data-alt="A sprawling, high-density industrial control room interface viewed in pristine light mode. The background features a highly subtle, abstract geometric pattern resembling technical blueprints and grid lines, rendered in ultra-low opacity slate and pale blue tones. The lighting is diffused, clean, and clinical, establishing a professional engineering aesthetic without distracting from the foreground UI components. The mood is analytical and precise." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBi62YoVkXZ9ao6c5d4D2AqIeB2YiIHNLIWQaQ3EU-MIEDBLIftTI8TpnJwBV5jU5souem6SQuzN4Tlz64rAA2G6TJCM3pTstdf847IRBrjmCm7bTpPa2DrKRedDe-YLP9TK06zxO6p3_sxI-8IphIanucwSHzA7MmUADYWhoHhNO-H5FQIQmlLIgIPjb0nvKSXSF2EYbg8b0z790K0oBpAmBOTzeYsU7G4jG03vVXOYrfYveuUmVbV')"></div>
+<div class="fixed inset-0 bg-primary/40 backdrop-blur-md z-40 flex items-center justify-center p-lg">
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(20,32,51,0.12)] w-full max-w-[1200px] h-full max-h-[85vh] flex flex-col relative z-50 border border-outline-variant/30 overflow-hidden">
+<header class="flex justify-between items-center px-lg py-md border-b border-outline-variant bg-surface-bright shrink-0">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="topic">topic</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface">Bulk VDR/MDR Import Wizard</h1>
+<p class="font-body-base text-body-base text-on-surface-variant text-[12px]">PEMS Engineering Data Management module</p>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex items-center bg-surface-container-low rounded-DEFAULT p-xs border border-outline-variant">
+<button class="px-sm py-xs text-[11px] font-bold tracking-wider rounded bg-surface-container-lowest shadow-sm text-primary">EN</button>
+<button class="px-sm py-xs text-[11px] font-bold tracking-wider rounded text-on-surface-variant hover:text-primary transition-colors">FA</button>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+</header>
+<div class="flex border-b border-outline-variant bg-surface-bright shrink-0 px-lg py-sm overflow-x-auto custom-scrollbar">
+<div class="flex items-center w-full max-w-4xl mx-auto">
+<div class="flex flex-col items-center flex-1 relative group cursor-pointer" onclick="goToStep(1)">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-sm z-10 step-indicator active">1</div>
+<span class="font-label-caps text-label-caps text-primary mt-xs">Source Files</span>
+<div class="absolute top-4 left-1/2 w-full h-[2px] bg-outline-variant/30 group-[.completed]:bg-primary"></div>
+</div>
+<div class="flex flex-col items-center flex-1 relative group cursor-pointer" onclick="goToStep(2)">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold text-sm z-10 step-indicator border border-outline-variant">2</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant mt-xs">Extraction</span>
+<div class="absolute top-4 left-1/2 w-full h-[2px] bg-outline-variant/30 group-[.completed]:bg-primary"></div>
+</div>
+<div class="flex flex-col items-center flex-1 relative group cursor-pointer" onclick="goToStep(3)">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold text-sm z-10 step-indicator border border-outline-variant">3</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant mt-xs">Smart Mapping</span>
+<div class="absolute top-4 left-1/2 w-full h-[2px] bg-outline-variant/30"></div>
+</div>
+<div class="flex flex-col items-center flex-1 relative cursor-pointer" onclick="goToStep(4)">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold text-sm z-10 step-indicator border border-outline-variant">4</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant mt-xs">Validation</span>
+</div>
+</div>
+</div>
+<main class="flex-1 overflow-y-auto custom-scrollbar bg-background p-lg relative">
+<div class="wizard-step h-full flex flex-col items-center justify-center max-w-2xl mx-auto" id="step-1">
+<div class="w-full border-2 border-dashed border-outline hover:border-secondary-container transition-colors bg-surface-container-lowest rounded-xl p-xl flex flex-col items-center justify-center text-center cursor-pointer group">
+<div class="w-16 h-16 rounded-full bg-surface-container-low group-hover:bg-secondary-fixed flex items-center justify-center mb-md transition-colors">
+<span class="material-symbols-outlined text-3xl text-primary group-hover:text-secondary" data-icon="upload_file">upload_file</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Drop Master Document Register Here</h3>
+<p class="font-body-base text-body-base text-on-surface-variant mb-md max-w-md">Upload standard Excel (.xlsx, .csv) or ZIP archives containing both metadata and corresponding PDF assets.</p>
+<button class="px-md py-sm bg-surface-container-low text-primary border border-outline-variant rounded-DEFAULT font-body-medium text-body-medium hover:bg-surface-variant transition-colors">
+                            Browse Local Files
+                        </button>
+</div>
+</div>
+<div class="wizard-step hidden h-full flex flex-col" id="step-2">
+<div class="flex justify-between items-end mb-md">
+<div>
+<h3 class="font-body-medium text-body-medium text-on-surface text-lg">Parsed Entries</h3>
+<p class="text-[12px] text-on-surface-variant">Scanning 'Vendor_MDR_Phase2.xlsx' - 4,209 rows detected.</p>
+</div>
+<div class="flex items-center gap-xs text-[12px] font-bold text-primary">
+<span class="material-symbols-outlined text-[16px] animate-spin" data-icon="sync">sync</span> Processing...
+                        </div>
+</div>
+<div class="border border-outline-variant rounded-lg overflow-hidden bg-surface-container-lowest flex-1 flex flex-col">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-bright border-b border-outline-variant sticky top-0">
+<tr>
+<th class="px-sm py-sm font-table-header text-table-header text-on-surface-variant">ROW</th>
+<th class="px-sm py-sm font-table-header text-table-header text-on-surface-variant">RAW DOC ID</th>
+<th class="px-sm py-sm font-table-header text-table-header text-on-surface-variant">TITLE EXTRACT</th>
+<th class="px-sm py-sm font-table-header text-table-header text-on-surface-variant">REV</th>
+<th class="px-sm py-sm font-table-header text-table-header text-on-surface-variant">STATUS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/50 overflow-y-auto">
+<tr class="hover:bg-surface-container-low/50">
+<td class="px-sm py-xs font-table-cell text-table-cell text-on-surface-variant w-12">1</td>
+<td class="px-sm py-xs font-table-cell text-table-cell text-on-surface font-mono text-[12px]">PEMS-MEC-DWG-001</td>
+<td class="px-sm py-xs font-table-cell text-table-cell text-on-surface truncate max-w-[200px]">General Arrangement Pump Station</td>
+<td class="px-sm py-xs font-table-cell text-table-cell text-on-surface">A</td>
+<td class="px-sm py-xs"><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#e6f4ea] text-[#137333] font-badge-label text-badge-label">Parsed</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low/50">
+<td class="px-sm py-xs font-table-cell text-table-cell text-on-surface-variant">2</td>
+<td class="px-sm py-xs font-table-cell text-table-cell text-on-surface font-mono text-[12px]">PEMS-MEC-ISO-045</td>
+<td class="px-sm py-xs font-table-cell text-table-cell text-on-surface truncate max-w-[200px]">Isometric Piping Tie-in</td>
+<td class="px-sm py-xs font-table-cell text-table-cell text-on-surface">0</td>
+<td class="px-sm py-xs"><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#e6f4ea] text-[#137333] font-badge-label text-badge-label">Parsed</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low/50">
+<td class="px-sm py-xs font-table-cell text-table-cell text-on-surface-variant">3</td>
+<td class="px-sm py-xs font-table-cell text-table-cell text-on-surface font-mono text-[12px]">PEMS-ELE-SLD-102</td>
+<td class="px-sm py-xs font-table-cell text-table-cell text-on-surface truncate max-w-[200px]">Single Line Diagram Substation B</td>
+<td class="px-sm py-xs font-table-cell text-table-cell text-on-surface">B</td>
+<td class="px-sm py-xs"><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#fce8e6] text-[#c5221f] font-badge-label text-badge-label">Missing File</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="wizard-step hidden h-full flex flex-col" id="step-3">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-body-medium text-body-medium text-on-surface text-lg flex items-center gap-xs">
+<span class="material-symbols-outlined text-secondary-container fill-icon" data-icon="auto_awesome">auto_awesome</span>
+                            AI Field Mapping
+                        </h3>
+<button class="text-[12px] font-bold text-primary hover:underline">Reset Mapping</button>
+</div>
+<div class="grid grid-cols-2 gap-lg flex-1">
+<div class="border border-outline-variant rounded-lg bg-surface-container-lowest p-md flex flex-col gap-sm overflow-y-auto custom-scrollbar">
+<div class="font-table-header text-table-header text-on-surface-variant mb-xs">SOURCE COLUMN (EXCEL)</div>
+<div class="flex items-center justify-between p-xs bg-surface border border-outline-variant rounded">
+<span class="font-mono text-table-cell text-on-surface text-[12px]">Document_No</span>
+<span class="material-symbols-outlined text-outline-variant text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<div class="flex items-center justify-between p-xs bg-surface border border-outline-variant rounded">
+<span class="font-mono text-table-cell text-on-surface text-[12px]">Doc_Title_Desc</span>
+<span class="material-symbols-outlined text-outline-variant text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<div class="flex items-center justify-between p-xs bg-surface border border-outline-variant rounded">
+<span class="font-mono text-table-cell text-on-surface text-[12px]">Rev_Code</span>
+<span class="material-symbols-outlined text-outline-variant text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+<div class="border border-outline-variant rounded-lg bg-surface-container-lowest p-md flex flex-col gap-sm overflow-y-auto custom-scrollbar">
+<div class="font-table-header text-table-header text-on-surface-variant mb-xs">TARGET FIELD (PEMS REGISTRY)</div>
+<div class="relative">
+<select class="w-full p-xs pl-sm pr-lg bg-surface border border-secondary-fixed-dim rounded font-body-base text-table-cell text-on-surface appearance-none focus:ring-1 focus:ring-secondary-container outline-none transition-shadow shadow-[0_0_8px_rgba(253,170,71,0.2)]">
+<option selected="">Document Number (Primary Key)</option>
+<option>Alternate ID</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-outline-variant pointer-events-none text-[18px]" data-icon="expand_more">expand_more</span>
+<div class="absolute -left-3 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-secondary-container"></div>
+</div>
+<div class="relative">
+<select class="w-full p-xs pl-sm pr-lg bg-surface border border-secondary-fixed-dim rounded font-body-base text-table-cell text-on-surface appearance-none focus:ring-1 focus:ring-secondary-container outline-none transition-shadow shadow-[0_0_8px_rgba(253,170,71,0.2)]">
+<option selected="">Document Title</option>
+<option>Description</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-outline-variant pointer-events-none text-[18px]" data-icon="expand_more">expand_more</span>
+<div class="absolute -left-3 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-secondary-container"></div>
+</div>
+<div class="relative">
+<select class="w-full p-xs pl-sm pr-lg bg-surface border border-outline-variant rounded font-body-base text-table-cell text-on-surface appearance-none focus:ring-1 focus:ring-primary outline-none transition-shadow">
+<option selected="">Revision</option>
+<option>Version</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-outline-variant pointer-events-none text-[18px]" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<div class="wizard-step hidden h-full flex flex-col" id="step-4">
+<div class="flex justify-between items-end mb-md">
+<div>
+<h3 class="font-body-medium text-body-medium text-error flex items-center gap-xs text-lg">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+                                23 Conflicts Detected
+                            </h3>
+<p class="text-[12px] text-on-surface-variant">Resolve duplicate entries or mismatched revisions before finalizing import.</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-sm py-xs text-[12px] font-bold border border-outline-variant rounded bg-surface-container-lowest hover:bg-surface-variant transition-colors text-on-surface">Auto-Merge Safe</button>
+<button class="px-sm py-xs text-[12px] font-bold border border-outline-variant rounded bg-surface-container-lowest hover:bg-surface-variant transition-colors text-on-surface">Skip All Conflicts</button>
+</div>
+</div>
+<div class="border border-error/30 rounded-lg overflow-hidden bg-surface-container-lowest flex-1 flex flex-col">
+<table class="w-full text-left border-collapse">
+<thead class="bg-error-container/20 border-b border-error/30 sticky top-0">
+<tr>
+<th class="px-sm py-sm font-table-header text-table-header text-on-surface-variant">DOC NUMBER</th>
+<th class="px-sm py-sm font-table-header text-table-header text-on-surface-variant">CONFLICT TYPE</th>
+<th class="px-sm py-sm font-table-header text-table-header text-on-surface-variant">CURRENT (PEMS)</th>
+<th class="px-sm py-sm font-table-header text-table-header text-on-surface-variant">INCOMING (IMPORT)</th>
+<th class="px-sm py-sm font-table-header text-table-header text-on-surface-variant text-right">ACTION</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30 overflow-y-auto">
+<tr class="bg-error-container/5 hover:bg-error-container/10">
+<td class="px-sm py-sm font-table-cell text-table-cell text-on-surface font-mono text-[12px]">PEMS-MEC-DWG-001</td>
+<td class="px-sm py-sm"><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-badge-label text-badge-label">Revision Mismatch</span></td>
+<td class="px-sm py-sm font-table-cell text-table-cell text-on-surface">Rev 0 <span class="text-[10px] text-on-surface-variant block">Approved</span></td>
+<td class="px-sm py-sm font-table-cell text-table-cell font-bold text-error">Rev A <span class="text-[10px] text-on-surface-variant block font-normal">Draft</span></td>
+<td class="px-sm py-sm text-right">
+<select class="p-1 text-[11px] font-bold bg-surface border border-outline-variant rounded text-on-surface cursor-pointer focus:ring-1 focus:ring-primary outline-none">
+<option>Select Action</option>
+<option>Overwrite PEMS</option>
+<option>Skip Import</option>
+<option>Save as New Alt</option>
+</select>
+</td>
+</tr>
+<tr class="bg-error-container/5 hover:bg-error-container/10">
+<td class="px-sm py-sm font-table-cell text-table-cell text-on-surface font-mono text-[12px]">PEMS-STR-CAL-993</td>
+<td class="px-sm py-sm"><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-badge-label text-badge-label">Duplicate ID</span></td>
+<td class="px-sm py-sm font-table-cell text-table-cell text-on-surface">Steel Framework...</td>
+<td class="px-sm py-sm font-table-cell text-table-cell text-on-surface">Concrete Pad Base...</td>
+<td class="px-sm py-sm text-right">
+<select class="p-1 text-[11px] font-bold bg-surface border border-outline-variant rounded text-on-surface cursor-pointer focus:ring-1 focus:ring-primary outline-none">
+<option>Select Action</option>
+<option>Skip Import</option>
+<option>Assign New ID</option>
+</select>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+<footer class="flex justify-between items-center px-lg py-md border-t border-outline-variant bg-surface-bright shrink-0">
+<button class="px-md py-sm font-body-medium text-body-medium text-surface-tint border border-transparent hover:bg-surface-variant hover:text-on-surface transition-colors rounded-DEFAULT">Cancel</button>
+<div class="flex gap-md">
+<button class="px-md py-sm font-body-medium text-body-medium text-surface-tint border border-outline-variant bg-surface-container-lowest hover:bg-surface-variant hover:text-on-surface transition-colors rounded-DEFAULT">Save Draft</button>
+<button class="px-md py-sm font-body-medium text-body-medium text-white bg-gradient-to-r from-[#d98c2b] to-[#b8721e] hover:opacity-90 transition-opacity rounded-DEFAULT shadow-sm shadow-[#895200]/20 flex items-center gap-xs" id="next-btn" onclick="advanceStep()">
+                        Next Step
+                        <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</footer>
+</div>
+</div>
+<script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function goToStep(step) {
+            document.querySelectorAll('.wizard-step').forEach(el => el.classList.add('hidden'));
+            
+            document.getElementById(`step-${step}`).classList.remove('hidden');
+            
+            document.querySelectorAll('.step-indicator').forEach((el, index) => {
+                const stepNum = index + 1;
+                const parent = el.parentElement;
+                
+                if (stepNum < step) {
+                    el.className = 'w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold text-sm z-10 step-indicator border border-outline-variant completed';
+                    el.innerHTML = '<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>';
+                    parent.classList.add('completed');
+                    parent.querySelector('span').classList.replace('text-primary', 'text-on-surface-variant');
+                } else if (stepNum === step) {
+                    el.className = 'w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-sm z-10 step-indicator active';
+                    el.innerHTML = stepNum;
+                    parent.classList.remove('completed');
+                    parent.querySelector('span').classList.replace('text-on-surface-variant', 'text-primary');
+                } else {
+                    el.className = 'w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold text-sm z-10 step-indicator border border-outline-variant';
+                    el.innerHTML = stepNum;
+                    parent.classList.remove('completed');
+                    parent.querySelector('span').classList.replace('text-primary', 'text-on-surface-variant');
+                }
+            });
+
+            const nextBtn = document.getElementById('next-btn');
+            if (step === totalSteps) {
+                nextBtn.innerHTML = 'Execute Import <span class="material-symbols-outlined text-[18px]" data-icon="publish">publish</span>';
+                nextBtn.classList.remove('from-[#d98c2b]', 'to-[#b8721e]');
+                nextBtn.classList.add('bg-primary', 'hover:bg-primary/90'); 
+                nextBtn.style.background = '#000819';
+            } else {
+                nextBtn.innerHTML = 'Next Step <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>';
+                nextBtn.style.background = '';
+                nextBtn.classList.add('from-[#d98c2b]', 'to-[#b8721e]');
+                nextBtn.classList.remove('bg-primary', 'hover:bg-primary/90');
+            }
+            currentStep = step;
+        }
+
+        function advanceStep() {
+            if (currentStep < totalSteps) {
+                goToStep(currentStep + 1);
+            }
+        }
+    </script>
+</body></html>

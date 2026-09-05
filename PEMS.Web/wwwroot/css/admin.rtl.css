@@ -1,0 +1,44 @@
+/* =========================================================================
+   PEMS RTL Overrides (Bilingual Platform - طبق بازبینی معماری، بند ۹)
+   فقط رگه‌های واقعاً جهت‌دار admin.css این‌جا برعکس می‌شوند - بقیه‌ی چیدمان
+   (Flexbox row) به‌صورت خودکار با dir="rtl" جهتش برمی‌گردد.
+   ========================================================================= */
+
+[dir="rtl"] .pems-sidebar .nav-link {
+    border-right: none;
+    border-left: 3px solid transparent;
+}
+
+[dir="rtl"] .pems-sidebar .nav-link.active {
+    border-left-color: var(--pems-accent);
+}
+
+[dir="rtl"] .pems-sidebar .nav-subitem {
+    padding-right: 20px;
+    padding-left: 46px;
+}
+
+[dir="rtl"] .pems-sidebar .nav-group-toggle .chevron {
+    margin-right: 0;
+    margin-left: auto;
+}
+
+/* آیکون‌های Bootstrap Icons جهت ندارند، ولی فلش‌های Chevron/Caret باید آینه شوند */
+[dir="rtl"] .bi-chevron-right::before { content: "\f284"; }
+[dir="rtl"] .bi-chevron-left::before { content: "\f285"; }
+[dir="rtl"] .bi-arrow-right::before { content: "\f12f"; }
+[dir="rtl"] .bi-arrow-left::before { content: "\f130"; }
+
+/* جدول‌ها و کارت‌های KPI در RTL نیازی به تغییر ساختاری ندارند (Flexbox/Grid خودکار برمی‌گردد)،
+   فقط تراز متن اعداد/تاریخ انگلیسی داخل جدول LTR بماند تا خوانا باشد */
+[dir="rtl"] .table-enterprise td.ltr-numeric,
+[dir="rtl"] .kpi-value {
+    direction: ltr;
+    text-align: right;
+    unicode-bidi: isolate;
+}
+
+[dir="rtl"] .pems-search input,
+[dir="rtl"] .form-control[type="search"] {
+    text-align: right;
+}

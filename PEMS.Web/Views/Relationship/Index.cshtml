@@ -1,0 +1,195 @@
+﻿@model PEMS.Application.DTOs.RelationshipExplorationDto
+
+<div class="content-card mb-3">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+        <p class="text-muted mb-0">
+            از یک شماره تگ تجهیز (مثل P-101 یا 80-P-6005)، شماره مدرک، یا نام Vendor شروع کنید تا کل زنجیره‌ی
+            روابط مهندسی مرتبط (مدارک، P&amp;ID، Vendor، قرارداد، PO، MR/MRQ، نگهداری و تعمیرات) نمایش داده شود.
+        </p>
+        <div class="d-flex gap-2">
+            <a asp-action="BulkSuggestions" class="btn btn-outline-warning btn-sm text-nowrap">
+                <i class="bi bi-check2-all"></i> تایید دسته‌جمعی اتصال‌ها
+            </a>
+            <a asp-action="GapReport" class="btn btn-outline-secondary btn-sm text-nowrap">
+                <i class="bi bi-clipboard-x"></i> گزارش تجهیزات ناقص
+            </a>
+        </div>
+    </div>
+    <form asp-action="Search" method="get" class="d-flex gap-2 mt-2">
+        <input type="text" name="q" value="@ViewBag.Query" class="form-control" placeholder="e.g. P-101, or a vendor name, or a document number" />
+        <button class="btn btn-pems-solid"><i class="bi bi-diagram-3"></i> Explore</button>
+    </form>
+</div>
+
+@if (TempData["Error"] != null)
+{
+    <div class="content-card mb-3 border-danger">
+        <p class="text-danger mb-2"><i class="bi bi-exclamation-triangle"></i> @TempData["Error"]</p>
+        @if (TempData["ConflictEquipmentId"] != null)
+        {
+            <form asp-action="ConfirmSuggestedLink" method="post" class="d-inline">
+                <input type="hidden" name="equipmentId" value="@TempData["ConflictEquipmentId"]" />
+                <input type="hidden" name="targetType" value="@TempData["ConflictTargetType"]" />
+                <input type="hidden" name="targetId" value="@TempData["ConflictTargetId"]" />
+                <input type="hidden" name="force" value="true" />
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('مطمئنی؟ رابطه‌ی قبلی جایگزین می‌شه.')">
+                    <i class="bi bi-exclamation-octagon"></i> بله، جایگزین کن (Force)
+                </button>
+            </form>
+        }
+    </div>
+}
+
+@if (Model == null)
+{
+    @if (!string.IsNullOrEmpty((string?)ViewBag.Query))
+    {
+        <div class="content-card"><p class="text-muted text-center py-4">No equipment, document, or vendor matched "@ViewBag.Query".</p></div>
+    }
+}
+else
+{
+    <div class="content-card mb-3">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h5 class="mb-0"><i class="bi bi-bullseye"></i> @Model.RootType: @Model.RootLabel</h5>
+            <div class="d-flex align-items-center gap-2">
+                @if (!string.IsNullOrWhiteSpace(Model.RootArea))
+                {
+                    <span class="badge bg-secondary"><i class="bi bi-geo-alt"></i> @Model.RootArea</span>
+                }
+                @if (Model.RootType == "Equipment")
+                {
+                    <span class="badge @(Model.RootIsActive ? "bg-success" : "bg-secondary")">@(Model.RootIsActive ? "Active" : "Inactive")</span>
+                }
+            </div>
+        </div>
+
+        @if (Model.PIDDocument != null)
+        {
+            <div class="mt-2">
+                <span class="text-muted small">P&amp;ID:</span>
+                <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.PIDDocument.NodeId" class="fw-bold">
+                    @Model.PIDDocument.Label <i class="bi bi-box-arrow-up-right small"></i>
+                </a>
+                <span class="text-muted small">@Model.PIDDocument.SubLabel</span>
+            </div>
+        }
+    </div>
+
+    @if (Model.RootType == "Equipment" && Model.SuggestedLinks.Any())
+    {
+        <div class="content-card mb-3 border-warning">
+            <h6 class="mb-3"><i class="bi bi-lightbulb"></i> پیشنهادهای اتصال (تاییدنشده)</h6>
+            <p class="text-muted small">
+                این‌ها از روی شماره‌ی MRQ/PO خام ثبت‌شده روی تجهیز، با داده‌ی <strong>موجود</strong>
+                (نه ساخته‌شده) منطبق شده‌اند. تا تایید نکنی، هیچ رابطه‌ی رسمی برقرار نمی‌شه.
+            </p>
+            <ul class="list-unstyled mb-0">
+                @foreach (var suggestion in Model.SuggestedLinks)
+                {
+                    <li class="d-flex justify-content-between align-items-center border-bottom py-2">
+                        <span>
+                            <span class="badge bg-warning text-dark"><i class="bi bi-robot"></i> پیشنهاد</span>
+                            @suggestion.Label
+                            <span class="text-muted small">@suggestion.SubLabel</span>
+                        </span>
+                        <form asp-action="ConfirmSuggestedLink" method="post" class="d-inline">
+                            <input type="hidden" name="equipmentId" value="@Model.RootId" />
+                            <input type="hidden" name="targetType" value="@suggestion.NodeType" />
+                            <input type="hidden" name="targetId" value="@suggestion.NodeId" />
+                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> تایید اتصال</button>
+                        </form>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    <div class="row g-3">
+        @{
+            var sections = new (string Title, string Icon, List<PEMS.Application.DTOs.RelationshipNodeDto> Items, string? Controller, string? Action)[]
+            {
+                ("Engineering Documents", "bi-file-earmark-text", Model.Documents, "EngineeringDocuments", "Details"),
+                ("Vendor Documents (VDR)", "bi-journal-check", Model.VendorDocuments, "VDR", "Details"),
+                ("Related Equipment", "bi-gear", Model.Equipment, "Equipment", "Details"),
+                ("Vendors", "bi-building", Model.Vendors, "Vendor", "Details"),
+                ("Contracts", "bi-file-earmark-ruled", Model.Contracts, "Contract", "Details"),
+                ("Purchase Orders", "bi-receipt", Model.PurchaseOrders, null, null),
+                ("Material Requisitions", "bi-cart-check", Model.MaterialRequisitions, "MaterialRequisition", "Details"),
+                ("Quotations (MRQ)", "bi-file-earmark-spreadsheet", Model.Quotations, null, null),
+                ("Maintenance / Work Orders", "bi-tools", Model.WorkOrders, null, null),
+                ("NCR", "bi-exclamation-triangle", Model.NonConformanceReports, "QC", "NcrDetails"),
+                ("MOC", "bi-arrow-repeat", Model.MOCs, "MOC", "Details"),
+                ("TQ / TSR / RFI", "bi-question-circle", Model.TechnicalQueries, "TechnicalQuery", "Details"),
+            };
+        }
+
+        @foreach (var s in sections)
+        {
+            <div class="col-md-6">
+                <div class="content-card h-100">
+                    <h6 class="mb-3"><i class="bi @s.Icon"></i> @s.Title <span class="badge bg-secondary">@s.Items.Count</span></h6>
+                    @if (s.Items.Any())
+                    {
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var item in s.Items)
+                            {
+                                <li class="mb-1 d-flex justify-content-between align-items-start border-bottom pb-1">
+                                    <span>
+                                        @if (s.Controller != null)
+                                        {
+                                            <a asp-controller="@s.Controller" asp-action="@s.Action" asp-route-id="@item.NodeId">@item.Label</a>
+                                        }
+                                        else
+                                        {
+                                            @item.Label
+                                        }
+
+                                        @if (item.Priority == "High" || item.Priority == "Urgent")
+                                        {
+                                            <span class="badge bg-danger ms-1">@item.Priority</span>
+                                        }
+                                        else if (!string.IsNullOrWhiteSpace(item.Priority))
+                                        {
+                                            <span class="badge bg-light text-dark ms-1">@item.Priority</span>
+                                        }
+
+                                        @if (item.DelayDays.HasValue && item.DelayDays > 0)
+                                        {
+                                            <span class="badge bg-danger ms-1" title="روزهای تاخیر"><i class="bi bi-clock-history"></i> @item.DelayDays روز تاخیر</span>
+                                        }
+                                        else if (item.PlannedOrDueDate.HasValue)
+                                        {
+                                            <span class="text-muted small ms-1">(@item.PlannedOrDueDate.Value.ToString("yyyy-MM-dd"))</span>
+                                        }
+                                    </span>
+                                    <span class="text-end">
+                                        <span class="text-muted small d-block">@item.SubLabel</span>
+                                        <span class="d-flex justify-content-end gap-1">
+                                            @if (!item.IsConfirmed)
+                                            {
+                                                <span class="badge bg-warning text-dark" title="فقط طبق تطبیق متنی - رابطه‌ی رسمی/تاییدشده نیست">
+                                                    <i class="bi bi-question-circle"></i> احتمالی
+                                                </span>
+                                            }
+                                            @if (item.IsAIProposed)
+                                            {
+                                                <span class="badge bg-info text-dark" title="AI-detected, not from a direct database link">
+                                                    <i class="bi bi-robot"></i> AI
+                                                </span>
+                                            }
+                                        </span>
+                                    </span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted small mb-0">None found.</p>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}

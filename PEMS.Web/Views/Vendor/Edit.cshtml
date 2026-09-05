@@ -1,0 +1,27 @@
+@model PEMS.Domain.Entities.Vendor
+
+<div class="content-card" style="max-width:600px;">
+    <div asp-validation-summary="All" class="alert alert-danger py-2 px-3 small" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></div>
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="VendorId" />
+        <input type="hidden" asp-for="RiskLevel" />
+        <input type="hidden" asp-for="RiskScore" />
+        <input type="hidden" asp-for="RiskAssessedDate" />
+        <input type="hidden" asp-for="IsActive" />
+        <input type="hidden" asp-for="CreatedDate" />
+
+        <div class="row g-3">
+            <div class="col-12"><label class="form-label">Name</label><input asp-for="Name" class="form-control" required /></div>
+            <div class="col-md-6"><label class="form-label">Vendor Code <span class="text-muted small">(official document numbering)</span></label><input asp-for="VendorCode" class="form-control" /></div>
+            <div class="col-md-6"><label class="form-label">Country</label><input asp-for="Country" class="form-control" /></div>
+            <div class="col-md-6"><label class="form-label">Contact Name</label><input asp-for="ContactName" class="form-control" /></div>
+            <div class="col-md-6"><label class="form-label">Contact Email</label><input asp-for="ContactEmail" class="form-control" /></div>
+            <div class="col-md-6"><label class="form-label">Contact Phone</label><input asp-for="ContactPhone" class="form-control" /></div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-pems-solid">Save</button>
+            <a asp-action="Details" asp-route-id="@Model.VendorId" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,283 @@
+{
+    "metrics": {
+        "pems_transmittal_duration": {
+            "p(90)": 24.399999999999988,
+            "p(95)": 39.69999999999996,
+            "avg": 11.1,
+            "min": 3,
+            "med": 3.5,
+            "max": 55
+        },
+        "pems_document_detail_duration": {
+            "avg": 28.6,
+            "min": 3,
+            "med": 3,
+            "max": 176,
+            "p(90)": 93.19999999999996,
+            "p(95)": 134.5999999999999
+        },
+        "http_req_failed": {
+            "passes": 0,
+            "fails": 205,
+            "thresholds": {
+                "rate<0.01": false
+            },
+            "value": 0
+        },
+        "http_reqs": {
+            "count": 205,
+            "rate": 2.508819040465003
+        },
+        "pems_audit_log_duration": {
+            "p(95)": 5.199999999999974,
+            "avg": 6.756756756756757,
+            "min": 2,
+            "med": 3,
+            "max": 137,
+            "p(90)": 4
+        },
+        "http_req_connecting": {
+            "avg": 0.010951219512195123,
+            "min": 0,
+            "med": 0,
+            "max": 1.173,
+            "p(90)": 0,
+            "p(95)": 0
+        },
+        "http_req_duration{expected_response:true}": {
+            "p(90)": 4.805279999999994,
+            "p(95)": 129.89151999999999,
+            "avg": 12.931580000000004,
+            "min": 0,
+            "med": 1.5928,
+            "max": 251.1746
+        },
+        "http_req_receiving": {
+            "avg": 0.5280000000000001,
+            "min": 0,
+            "med": 0.4812,
+            "max": 5.3227,
+            "p(90)": 0.97706,
+            "p(95)": 1.0166
+        },
+        "iterations": {
+            "count": 47,
+            "rate": 0.5751926580578299
+        },
+        "pems_error_rate": {
+            "passes": 0,
+            "fails": 110,
+            "thresholds": {
+                "rate<0.01": false
+            },
+            "value": 0
+        },
+        "checks": {
+            "passes": 110,
+            "fails": 0,
+            "value": 1
+        },
+        "data_received": {
+            "count": 1843147,
+            "rate": 22556.694087687556
+        },
+        "vus": {
+            "value": 1,
+            "min": 0,
+            "max": 3
+        },
+        "pems_document_register_duration": {
+            "avg": 40.7,
+            "min": 3,
+            "med": 3,
+            "max": 251,
+            "p(90)": 142.09999999999997,
+            "p(95)": 196.54999999999987
+        },
+        "iteration_duration": {
+            "med": 2171.9203,
+            "max": 16733.0396,
+            "p(90)": 14612.152199999999,
+            "p(95)": 15613.3475,
+            "avg": 4595.713908510638,
+            "min": 1031.8474
+        },
+        "pems_equipment_duration": {
+            "p(90)": 76.29999999999995,
+            "p(95)": 127.14999999999988,
+            "avg": 26.7,
+            "min": 2,
+            "med": 3,
+            "max": 178
+        },
+        "http_req_duration": {
+            "min": 0,
+            "med": 1.5928,
+            "max": 251.1746,
+            "p(90)": 4.805279999999994,
+            "p(95)": 129.89151999999999,
+            "avg": 12.931580000000004,
+            "thresholds": {
+                "p(95)<3000": false
+            }
+        },
+        "vus_max": {
+            "min": 3,
+            "max": 3,
+            "value": 3
+        },
+        "http_req_tls_handshaking": {
+            "max": 0,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0,
+            "min": 0,
+            "med": 0
+        },
+        "pems_login_duration": {
+            "p(95)": 145.6,
+            "avg": 136.66666666666666,
+            "min": 130,
+            "med": 133,
+            "max": 147,
+            "p(90)": 144.2
+        },
+        "pems_document_workflow_duration": {
+            "avg": 25.6,
+            "min": 3,
+            "med": 3,
+            "max": 146,
+            "p(90)": 91.09999999999998,
+            "p(95)": 118.54999999999993
+        },
+        "http_req_sending": {
+            "med": 0,
+            "max": 0.1649,
+            "p(90)": 0,
+            "p(95)": 0.015219999999999966,
+            "avg": 0.0033697560975609756,
+            "min": 0
+        },
+        "pems_dashboard_duration": {
+            "max": 134,
+            "p(90)": 78.19999999999997,
+            "p(95)": 106.09999999999994,
+            "avg": 23.4,
+            "min": 3,
+            "med": 3
+        },
+        "pems_global_search_duration": {
+            "avg": 43,
+            "min": 3,
+            "med": 3.5,
+            "max": 213,
+            "p(90)": 192.29999999999998,
+            "p(95)": 202.64999999999998
+        },
+        "http_req_blocked": {
+            "avg": 0.0823521951219512,
+            "min": 0,
+            "med": 0,
+            "max": 13.3345,
+            "p(90)": 0,
+            "p(95)": 0.007839999999999833
+        },
+        "http_req_waiting": {
+            "med": 1.0313,
+            "max": 250.8432,
+            "p(90)": 4.059639999999997,
+            "p(95)": 129.57909999999998,
+            "avg": 12.400210243902436,
+            "min": 0
+        },
+        "data_sent": {
+            "count": 66220,
+            "rate": 810.4097407785
+        }
+    },
+    "root_group": {
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {},
+        "checks": {
+                "login succeeded (302)": {
+                    "fails": 0,
+                    "name": "login succeeded (302)",
+                    "path": "::login succeeded (302)",
+                    "id": "177cbabd294a268b7f4dc315d7db0a11",
+                    "passes": 3
+                },
+                "Scenario02_Dashboard => 200": {
+                    "id": "633ad0be1aea0c5620b497390089482c",
+                    "passes": 10,
+                    "fails": 0,
+                    "name": "Scenario02_Dashboard => 200",
+                    "path": "::Scenario02_Dashboard => 200"
+                },
+                "Scenario03_DocumentRegister => 200": {
+                    "path": "::Scenario03_DocumentRegister => 200",
+                    "id": "331f4d784f089f709674152a4afa6cab",
+                    "passes": 10,
+                    "fails": 0,
+                    "name": "Scenario03_DocumentRegister => 200"
+                },
+                "Scenario09_AuditLog => 200": {
+                    "path": "::Scenario09_AuditLog => 200",
+                    "id": "75998887df4cd19a1987e7d6cc94c862",
+                    "passes": 37,
+                    "fails": 0,
+                    "name": "Scenario09_AuditLog => 200"
+                },
+                "Scenario04_GlobalSearch => 200": {
+                    "fails": 0,
+                    "name": "Scenario04_GlobalSearch => 200",
+                    "path": "::Scenario04_GlobalSearch => 200",
+                    "id": "7fe47b1b91827b56c4b4dc974317adae",
+                    "passes": 10
+                },
+                "Scenario05_DocumentDetail => 200": {
+                    "passes": 10,
+                    "fails": 0,
+                    "name": "Scenario05_DocumentDetail => 200",
+                    "path": "::Scenario05_DocumentDetail => 200",
+                    "id": "abad677fbc8cde7e401fe61457306e1d"
+                },
+                "Scenario06_WorkflowReadOnly => 200": {
+                    "name": "Scenario06_WorkflowReadOnly => 200",
+                    "path": "::Scenario06_WorkflowReadOnly => 200",
+                    "id": "509b789b25b15f81b929e1f862cb7553",
+                    "passes": 10,
+                    "fails": 0
+                },
+                "Scenario07_TransmittalDetail => 200": {
+                    "name": "Scenario07_TransmittalDetail => 200",
+                    "path": "::Scenario07_TransmittalDetail => 200",
+                    "id": "3b4bedc91a26ad794609b8d742c6511b",
+                    "passes": 5,
+                    "fails": 0
+                },
+                "Scenario08_EquipmentDetail => 200": {
+                    "name": "Scenario08_EquipmentDetail => 200",
+                    "path": "::Scenario08_EquipmentDetail => 200",
+                    "id": "38978629722b7bc1a54b5fe972bc2145",
+                    "passes": 5,
+                    "fails": 0
+                },
+                "Scenario07_TransmittalList => 200": {
+                    "name": "Scenario07_TransmittalList => 200",
+                    "path": "::Scenario07_TransmittalList => 200",
+                    "id": "f6d0e808b32d9c9e9b825bd6e4941723",
+                    "passes": 5,
+                    "fails": 0
+                },
+                "Scenario08_EquipmentList => 200": {
+                    "path": "::Scenario08_EquipmentList => 200",
+                    "id": "a43c6f91c61e8bc850fa5626c9685d42",
+                    "passes": 5,
+                    "fails": 0,
+                    "name": "Scenario08_EquipmentList => 200"
+                }
+            },
+        "name": ""
+    }
+}

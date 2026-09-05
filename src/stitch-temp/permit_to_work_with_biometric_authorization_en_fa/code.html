@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html class="light" dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AssetOps CMMS - Permit to Work Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#eef4ff",
+                        "surface": "#f8f9ff",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "tertiary-container": "#00213d",
+                        "inverse-surface": "#1f3245",
+                        "surface-bright": "#f8f9ff",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "secondary-container": "#fdaa47",
+                        "on-tertiary-container": "#498bcd",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-container": "#e4efff",
+                        "primary-container": "#142033",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#d7e3fd",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "primary": "#000819",
+                        "surface-variant": "#d0e4fe",
+                        "surface-tint": "#535f75",
+                        "inverse-on-surface": "#e9f1ff",
+                        "tertiary": "#000815",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#081d2f",
+                        "on-surface-variant": "#44474c",
+                        "outline-variant": "#c5c6cd",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#75777d",
+                        "background": "#f8f9ff",
+                        "inverse-primary": "#bbc7e0",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#c8dcf5",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "surface-container-high": "#daeaff",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#d0e4fe",
+                        "on-secondary-fixed": "#2c1700",
+                        "on-primary-fixed": "#101c2f",
+                        "secondary": "#895200",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-background": "#081d2f",
+                        "on-secondary-container": "#6e4100",
+                        "on-primary-container": "#7c889f",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "xs": "4px",
+                        "sidebar-width": "260px",
+                        "sm": "8px",
+                        "topbar-height": "60px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "unit": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "badge-label": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "table-header": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "body-base": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .industrial-gradient-btn {
+            background: linear-gradient(135deg, #d98c2b 0%, #b8721e 100%);
+        }
+        .industrial-focus-ring:focus-within {
+            border-color: #fdaa47;
+            box-shadow: 0 0 0 2px rgba(253, 170, 71, 0.2);
+        }
+        .shadow-diffused {
+            box-shadow: 0 4px 20px rgba(20, 32, 51, 0.08);
+        }
+        
+        /* Language Toggle Styles */
+        html[dir="rtl"] {
+            font-family: 'Vazirmatn', sans-serif; /* Example Persian Font */
+        }
+        
+        [data-lang="fa"] { display: none; }
+        html[dir="rtl"] [data-lang="en"] { display: none; }
+        html[dir="rtl"] [data-lang="fa"] { display: inline-block; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-base min-h-screen flex flex-col md:flex-row">
+<!-- TopNavBar (Mobile Only) -->
+<nav class="md:hidden bg-surface-container-low border-b border-outline-variant fixed top-0 w-full z-50 flex justify-between items-center h-topbar-height px-md shadow-sm">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary font-bold">menu</span>
+<span class="font-headline-md text-headline-md font-bold text-primary" data-lang="en">AssetOps CMMS</span>
+<span class="font-headline-md text-headline-md font-bold text-primary" data-lang="fa">AssetOps CMMS</span>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+<span class="material-symbols-outlined">help</span>
+<span class="material-symbols-outlined">settings</span>
+</div>
+</nav>
+<!-- SideNavBar (Desktop Only) -->
+<aside class="hidden md:flex flex-col py-lg bg-primary-container text-on-primary-fixed fixed left-0 top-0 h-full w-sidebar-width z-40">
+<div class="px-md mb-lg flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-headline-md text-headline-md">
+                IH
+            </div>
+<div>
+<div class="font-headline-md text-headline-md text-secondary-container" data-lang="en">Industrial Hub</div>
+<div class="font-headline-md text-headline-md text-secondary-container" data-lang="fa">هاب صنعتی</div>
+<div class="font-badge-label text-badge-label text-primary-fixed-dim" data-lang="en">Operational Suite</div>
+<div class="font-badge-label text-badge-label text-primary-fixed-dim" data-lang="fa">مجموعه عملیاتی</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto">
+<ul class="space-y-xs px-sm">
+<li>
+<a class="flex items-center gap-sm text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant/30 rounded-lg px-md py-sm transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-medium text-body-medium" data-lang="en">Dashboard</span>
+<span class="font-body-medium text-body-medium" data-lang="fa">داشبورد</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm bg-secondary-container text-on-secondary-container rounded-lg px-md py-sm transition-all duration-200 ease-in-out shadow-sm" href="#">
+<span class="material-symbols-outlined">health_and_safety</span>
+<span class="font-body-medium text-body-medium" data-lang="en">Safety</span>
+<span class="font-body-medium text-body-medium" data-lang="fa">ایمنی</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant/30 rounded-lg px-md py-sm transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">engineering</span>
+<span class="font-body-medium text-body-medium" data-lang="en">Assets</span>
+<span class="font-body-medium text-body-medium" data-lang="fa">دارایی ها</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-on-primary-fixed-variant/30 rounded-lg px-md py-sm transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">construction</span>
+<span class="font-body-medium text-body-medium" data-lang="en">Work Orders</span>
+<span class="font-body-medium text-body-medium" data-lang="fa">سفارشات کار</span>
+</a>
+</li>
+</ul>
+</nav>
+<div class="px-md mt-auto">
+<button class="w-full flex items-center justify-center gap-sm bg-secondary-container text-on-secondary-container rounded-lg py-sm font-body-medium text-body-medium hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">add</span>
+<span data-lang="en">New Entry</span>
+<span data-lang="fa">ورودی جدید</span>
+</button>
+<a class="mt-sm flex items-center gap-sm text-primary-fixed-dim hover:text-on-primary-fixed rounded-lg px-md py-sm transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-medium text-body-medium" data-lang="en">Logout</span>
+<span class="font-body-medium text-body-medium" data-lang="fa">خروج</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-sidebar-width mt-topbar-height md:mt-0 p-md md:p-lg">
+<!-- Header & Lang Toggle -->
+<header class="flex justify-between items-center mb-lg">
+<div>
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface" data-lang="en">Permit Details: PTW-2023-882</h1>
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface" data-lang="fa">جزئیات مجوز: PTW-2023-882</h1>
+<div class="flex items-center gap-sm mt-xs">
+<span class="bg-error-container text-on-error-container font-badge-label text-badge-label px-2 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">local_fire_department</span>
+<span data-lang="en">Hot Work</span>
+<span data-lang="fa">کار گرم</span>
+</span>
+<span class="text-on-surface-variant font-body-medium text-body-medium">Unit 4, Main Refinery</span>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<button class="px-3 py-1 border border-outline-variant rounded-lg text-on-surface-variant font-body-medium text-body-medium hover:bg-surface-variant transition-colors" onclick="toggleLanguage()">
+                    EN / FA
+                </button>
+<button class="industrial-gradient-btn text-on-primary px-md py-2 rounded-lg font-body-medium text-body-medium flex items-center gap-2 shadow-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">check_circle</span>
+<span data-lang="en">Approve Permit</span>
+<span data-lang="fa">تایید مجوز</span>
+</button>
+</div>
+</header>
+<!-- Progress Stepper -->
+<section class="mb-lg bg-surface-container-lowest rounded-xl border border-outline-variant p-md shadow-sm overflow-x-auto">
+<div class="min-w-[600px] flex justify-between items-center relative">
+<!-- Line -->
+<div class="absolute top-1/2 left-4 right-4 h-[2px] bg-outline-variant -z-10 -translate-y-1/2"></div>
+<!-- Steps -->
+<div class="flex flex-col items-center gap-xs z-10 bg-surface-container-lowest px-2">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-bold text-sm">
+<span class="material-symbols-outlined text-base">check</span>
+</div>
+<span class="font-badge-label text-badge-label text-secondary" data-lang="en">Initiation</span>
+<span class="font-badge-label text-badge-label text-secondary" data-lang="fa">شروع</span>
+</div>
+<div class="flex flex-col items-center gap-xs z-10 bg-surface-container-lowest px-2">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-bold text-sm">
+<span class="material-symbols-outlined text-base">check</span>
+</div>
+<span class="font-badge-label text-badge-label text-secondary" data-lang="en">Risk Assessment</span>
+<span class="font-badge-label text-badge-label text-secondary" data-lang="fa">ارزیابی ریسک</span>
+</div>
+<div class="flex flex-col items-center gap-xs z-10 bg-surface-container-lowest px-2">
+<div class="w-8 h-8 rounded-full border-2 border-secondary bg-surface-container-lowest text-secondary flex items-center justify-center font-bold text-sm shadow-[0_0_0_4px_rgba(253,170,71,0.2)]">
+                        3
+                    </div>
+<span class="font-badge-label text-badge-label text-secondary font-bold" data-lang="en">Isolation (LOTO)</span>
+<span class="font-badge-label text-badge-label text-secondary font-bold" data-lang="fa">جداسازی (LOTO)</span>
+</div>
+<div class="flex flex-col items-center gap-xs z-10 bg-surface-container-lowest px-2">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold text-sm">
+                        4
+                    </div>
+<span class="font-badge-label text-badge-label text-on-surface-variant" data-lang="en">Authorization</span>
+<span class="font-badge-label text-badge-label text-on-surface-variant" data-lang="fa">مجوز</span>
+</div>
+<div class="flex flex-col items-center gap-xs z-10 bg-surface-container-lowest px-2">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold text-sm">
+                        5
+                    </div>
+<span class="font-badge-label text-badge-label text-on-surface-variant" data-lang="en">Execution</span>
+<span class="font-badge-label text-badge-label text-on-surface-variant" data-lang="fa">اجرا</span>
+</div>
+<div class="flex flex-col items-center gap-xs z-10 bg-surface-container-lowest px-2">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold text-sm">
+                        6
+                    </div>
+<span class="font-badge-label text-badge-label text-on-surface-variant" data-lang="en">Closure</span>
+<span class="font-badge-label text-badge-label text-on-surface-variant" data-lang="fa">بستن</span>
+</div>
+</div>
+</section>
+<!-- Main Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Left Column: JSA & Details -->
+<div class="lg:col-span-8 flex flex-col gap-lg">
+<!-- Permit Overview Card -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md shadow-sm">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">description</span>
+<span data-lang="en">Permit Overview</span>
+<span data-lang="fa">نمای کلی مجوز</span>
+</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="p-sm bg-surface rounded-lg border border-outline-variant">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1" data-lang="en">REQUESTOR</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1" data-lang="fa">درخواست کننده</div>
+<div class="font-body-medium text-body-medium text-on-surface">James Holden (Maint. Lead)</div>
+</div>
+<div class="p-sm bg-surface rounded-lg border border-outline-variant">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1" data-lang="en">VALIDITY</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1" data-lang="fa">اعتبار</div>
+<div class="font-body-medium text-body-medium text-on-surface">Oct 24, 08:00 - Oct 25, 18:00</div>
+</div>
+<div class="p-sm bg-surface rounded-lg border border-outline-variant md:col-span-2">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1" data-lang="en">DESCRIPTION OF WORK</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1" data-lang="fa">شرح کار</div>
+<div class="font-body-base text-body-base text-on-surface">Welding repair on main high-pressure steam line flange. Requires full isolation and atmospheric testing prior to spark generation.</div>
+</div>
+</div>
+</div>
+<!-- JSA Table -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden flex-1">
+<div class="p-md bg-surface-container-low border-b border-outline-variant flex justify-between items-center sticky top-0">
+<h2 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-error">warning</span>
+<span data-lang="en">Job Safety Analysis (JSA)</span>
+<span data-lang="fa">تحلیل ایمنی شغلی (JSA)</span>
+</h2>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-bright border-b border-outline-variant">
+<th class="p-3 font-table-header text-table-header text-on-surface-variant" data-lang="en">HAZARD</th>
+<th class="p-3 font-table-header text-table-header text-on-surface-variant" data-lang="fa">خطر</th>
+<th class="p-3 font-table-header text-table-header text-on-surface-variant" data-lang="en">CONSEQUENCE</th>
+<th class="p-3 font-table-header text-table-header text-on-surface-variant" data-lang="fa">پیامد</th>
+<th class="p-3 font-table-header text-table-header text-on-surface-variant" data-lang="en">CONTROL MEASURES</th>
+<th class="p-3 font-table-header text-table-header text-on-surface-variant" data-lang="fa">اقدامات کنترلی</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface divide-y divide-outline-variant">
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="p-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-[18px]">local_fire_department</span>
+                                        Flammable Gas
+                                    </td>
+<td class="p-3 text-on-surface-variant">Fire / Explosion</td>
+<td class="p-3">Continuous gas monitoring, Fire watch present, LEL &lt; 1%</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="p-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">bolt</span>
+                                        High Pressure Steam
+                                    </td>
+<td class="p-3 text-on-surface-variant">Severe burns, blunt trauma</td>
+<td class="p-3">Double block &amp; bleed isolation verified, system depressurized</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="p-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[18px]">visibility_off</span>
+                                        Poor Ventilation
+                                    </td>
+<td class="p-3 text-on-surface-variant">Asphyxiation</td>
+<td class="p-3">Forced air ventilation installed, personal H2S monitors required</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Right Column: LOTO Isolation Plan -->
+<div class="lg:col-span-4 flex flex-col gap-lg">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm flex flex-col h-full">
+<div class="p-md bg-surface-container-low border-b border-outline-variant flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">lock</span>
+<span data-lang="en">LOTO Isolation Plan</span>
+<span data-lang="fa">طرح جداسازی LOTO</span>
+</h2>
+</div>
+<div class="p-md flex-1 overflow-y-auto">
+<p class="font-body-base text-body-base text-on-surface-variant mb-md" data-lang="en">Ensure all isolation points are secured before authorization.</p>
+<p class="font-body-base text-body-base text-on-surface-variant mb-md" data-lang="fa">اطمینان حاصل کنید که تمام نقاط جداسازی قبل از صدور مجوز ایمن شده اند.</p>
+<ul class="space-y-sm">
+<!-- Isolation Point 1 -->
+<li class="bg-surface rounded-lg border border-outline-variant p-sm flex items-start gap-sm hover:border-secondary transition-colors cursor-pointer">
+<div class="mt-1 text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lock</span>
+</div>
+<div class="flex-1">
+<div class="font-table-cell text-table-cell font-bold font-mono">VLV-102-HP</div>
+<div class="font-badge-label text-badge-label text-on-surface-variant">Main Inlet Valve</div>
+</div>
+<div class="bg-surface-container-highest text-on-surface-variant font-badge-label text-badge-label px-2 py-1 rounded-full">
+                                    Locked &amp; Tagged
+                                </div>
+</li>
+<!-- Isolation Point 2 -->
+<li class="bg-surface rounded-lg border border-outline-variant p-sm flex items-start gap-sm hover:border-secondary transition-colors cursor-pointer">
+<div class="mt-1 text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lock</span>
+</div>
+<div class="flex-1">
+<div class="font-table-cell text-table-cell font-bold font-mono">VLV-103-BLD</div>
+<div class="font-badge-label text-badge-label text-on-surface-variant">Bleed Valve (Open)</div>
+</div>
+<div class="bg-surface-container-highest text-on-surface-variant font-badge-label text-badge-label px-2 py-1 rounded-full">
+                                    Locked &amp; Tagged
+                                </div>
+</li>
+<!-- Isolation Point 3 -->
+<li class="bg-surface rounded-lg border border-outline-variant p-sm flex items-start gap-sm hover:border-secondary transition-colors cursor-pointer border-l-4 border-l-error">
+<div class="mt-1 text-outline">
+<span class="material-symbols-outlined">lock_open</span>
+</div>
+<div class="flex-1">
+<div class="font-table-cell text-table-cell font-bold font-mono">BRK-PMP-05</div>
+<div class="font-badge-label text-badge-label text-on-surface-variant">Feed Pump Breaker</div>
+</div>
+<div class="bg-error-container text-on-error-container font-badge-label text-badge-label px-2 py-1 rounded-full">
+                                    Pending
+                                </div>
+</li>
+</ul>
+</div>
+<div class="p-md border-t border-outline-variant bg-surface-bright mt-auto"><div class="mb-md p-md bg-surface-container-low rounded-lg border border-outline-variant">
+<div class="flex items-center justify-between mb-sm">
+<h3 class="font-body-medium text-body-medium text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">fingerprint</span>
+<span data-lang="en">Biometric Authorization</span>
+<span data-lang="fa">تایید هویت بیومتریک</span>
+</h3>
+<a class="text-primary hover:underline font-badge-label text-badge-label flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[14px]">account_circle</span>
+<span data-lang="en">Security Profile</span>
+<span data-lang="fa">پروفایل امنیتی</span>
+</a>
+</div>
+<div class="flex flex-col items-center justify-center py-md border-2 border-dashed border-outline-variant rounded-xl bg-surface-container-lowest hover:bg-surface-variant/20 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[48px] text-outline group-hover:text-primary transition-colors">fingerprint</span>
+<p class="mt-sm font-label-caps text-label-caps text-on-surface-variant">
+<span data-lang="en">Place Finger on Scanner</span>
+<span data-lang="fa">انگشت را روی اسکنر قرار دهید</span>
+</p>
+</div>
+</div>
+<button class="w-full flex justify-center items-center gap-2 px-md py-2 border border-outline-variant rounded-lg font-body-medium text-body-medium text-on-surface-variant hover:bg-surface-variant/50 transition-colors mb-sm">
+<span class="material-symbols-outlined">fact_check</span>
+<span data-lang="en">Verify Isolation</span>
+<span data-lang="fa">تایید جداسازی</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        let currentLang = 'en';
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'fa' : 'en';
+            document.documentElement.setAttribute('dir', currentLang === 'fa' ? 'rtl' : 'ltr');
+        }
+    </script>
+</body></html>

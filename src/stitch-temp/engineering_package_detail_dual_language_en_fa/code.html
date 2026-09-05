@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS - Engineering Package Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "on-tertiary-container": "#498bcd",
+                            "background": "#f8f9ff",
+                            "surface-bright": "#f8f9ff",
+                            "outline-variant": "#c5c6cd",
+                            "surface-dim": "#c8dcf5",
+                            "outline": "#75777d",
+                            "on-tertiary": "#ffffff",
+                            "primary": "#000819",
+                            "secondary": "#895200",
+                            "primary-fixed": "#d7e3fd",
+                            "on-surface": "#081d2f",
+                            "tertiary-container": "#00213d",
+                            "tertiary": "#000815",
+                            "surface-tint": "#535f75",
+                            "tertiary-fixed": "#d1e4ff",
+                            "surface": "#f8f9ff",
+                            "on-tertiary-fixed-variant": "#00497c",
+                            "on-background": "#081d2f",
+                            "on-primary-container": "#7c889f",
+                            "on-primary-fixed": "#101c2f",
+                            "inverse-on-surface": "#e9f1ff",
+                            "on-tertiary-fixed": "#001d36",
+                            "on-secondary-fixed": "#2c1700",
+                            "surface-variant": "#d0e4fe",
+                            "on-secondary-container": "#6e4100",
+                            "on-surface-variant": "#44474c",
+                            "error-container": "#ffdad6",
+                            "error": "#ba1a1a",
+                            "primary-container": "#142033",
+                            "on-secondary": "#ffffff",
+                            "inverse-primary": "#bbc7e0",
+                            "on-secondary-fixed-variant": "#683d00",
+                            "secondary-fixed": "#ffdcbc",
+                            "inverse-surface": "#1f3245",
+                            "tertiary-fixed-dim": "#9ecaff",
+                            "surface-container-highest": "#d0e4fe",
+                            "surface-container": "#e4efff",
+                            "surface-container-lowest": "#ffffff",
+                            "on-primary-fixed-variant": "#3b475c",
+                            "on-error-container": "#93000a",
+                            "on-error": "#ffffff",
+                            "on-primary": "#ffffff",
+                            "secondary-container": "#fdaa47",
+                            "primary-fixed-dim": "#bbc7e0",
+                            "surface-container-high": "#daeaff",
+                            "secondary-fixed-dim": "#ffb86a",
+                            "surface-container-low": "#eef4ff"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.125rem",
+                            "lg": "0.25rem",
+                            "xl": "0.5rem",
+                            "full": "0.75rem"
+                    },
+                    "spacing": {
+                            "lg": "24px",
+                            "sm": "8px",
+                            "sidebar-width": "260px",
+                            "topbar-height": "60px",
+                            "unit": "4px",
+                            "xs": "4px",
+                            "xl": "32px",
+                            "md": "16px",
+                            "gutter": "16px"
+                    },
+                    "fontFamily": {
+                            "headline-lg": ["Inter"],
+                            "kpi-stat": ["Inter"],
+                            "badge-label": ["Inter"],
+                            "headline-lg-mobile": ["Inter"],
+                            "table-cell": ["Inter"],
+                            "body-medium": ["Inter"],
+                            "label-caps": ["Inter"],
+                            "body-base": ["Inter"],
+                            "table-header": ["Inter"],
+                            "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                            "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                            "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                            "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                            "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                            "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                            "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                            "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                            "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                            "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                            "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Custom scrollbar for high-density tables */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8f9ff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c5c6cd;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #75777d;
+        }
+        .monospaced {
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface flex flex-col md:flex-row h-screen overflow-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface text-primary font-headline-md text-headline-md border-b border-outline-variant transition-all duration-200 ease-in-out flex justify-between items-center w-full px-lg h-topbar-height z-50 fixed top-0 left-0 md:pl-[284px] md:hidden">
+<div class="flex items-center gap-md">
+<span class="text-headline-md font-headline-md font-bold text-primary">PEMS Enterprise Utility</span>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="bg-surface-container-low text-primary font-body-medium text-body-medium border-r border-outline-variant fixed left-0 top-0 h-full w-sidebar-width flex flex-col p-md gap-xs z-40 hidden md:flex">
+<div class="mb-lg">
+<h1 class="font-headline-md text-headline-md font-black tracking-tight mb-sm">Engineering Dept.</h1>
+<p class="text-on-surface-variant text-body-base font-body-base">Technical Operations</p>
+</div>
+<button class="w-full bg-[#d98c2b] text-on-primary font-body-medium text-body-medium py-sm px-md rounded-DEFAULT mb-md hover:opacity-90 transition-opacity">
+            New Document
+        </button>
+<div class="flex flex-col gap-unit flex-grow">
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-highest transition-transform scale-98 active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-highest transition-transform scale-98 active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
+<span>Technical Inspection</span>
+</a>
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-highest transition-transform scale-98 active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span>Audit Logs</span>
+</a>
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-highest transition-transform scale-98 active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+<span>Correspondence</span>
+</a>
+<a class="flex items-center gap-sm p-sm bg-secondary-container text-on-secondary-container font-bold rounded-lg transition-transform scale-98 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span>Transmittals</span>
+</a>
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-highest transition-transform scale-98 active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span>Administration</span>
+</a>
+</div>
+<div class="mt-auto flex flex-col gap-unit pt-md border-t border-outline-variant">
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-highest transition-transform scale-98 active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Help Center</span>
+</a>
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-highest transition-transform scale-98 active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 ml-0 md:ml-sidebar-width mt-[60px] md:mt-0 p-md md:p-lg overflow-y-auto bg-background">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-lg gap-md">
+<div>
+<div class="flex items-center gap-sm mb-unit">
+<span class="bg-[#d0e4fe] text-[#00497c] font-badge-label text-badge-label px-sm py-unit rounded-full">TRN-2023-0891</span>
+<span class="bg-[#fdaa47] bg-opacity-20 text-[#895200] font-badge-label text-badge-label px-sm py-unit rounded-full">In Review</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary">Piping Isometrics Package - Unit 4</h2>
+<p class="font-body-base text-body-base text-on-surface-variant">بسته ایزومتریک لوله کشی - واحد ۴</p>
+</div>
+<div class="flex gap-sm">
+<button class="border border-[#dde3ea] text-[#5c6f85] font-body-medium text-body-medium py-sm px-md rounded-DEFAULT hover:bg-surface-container-low transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
+                    Download All
+                </button>
+<button class="bg-[#d98c2b] text-on-primary font-body-medium text-body-medium py-sm px-md rounded-DEFAULT hover:opacity-90 transition-opacity flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="done_all">done_all</span>
+                    Approve Package
+                </button>
+</div>
+</div>
+<!-- Workflow Tracker -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md mb-lg">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-md uppercase tracking-wider">Approval Workflow</h3>
+<div class="flex items-center justify-between w-full">
+<!-- Step 1 -->
+<div class="flex flex-col items-center flex-1">
+<div class="w-8 h-8 rounded-full bg-[#d7e3fd] text-[#00497c] flex items-center justify-center mb-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>
+</div>
+<span class="font-body-medium text-body-medium text-primary text-center">Drafted</span>
+<span class="font-body-base text-[11px] text-on-surface-variant">12 Oct 2023</span>
+</div>
+<div class="h-px bg-[#d7e3fd] flex-1"></div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center flex-1">
+<div class="w-8 h-8 rounded-full bg-[#d7e3fd] text-[#00497c] flex items-center justify-center mb-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>
+</div>
+<span class="font-body-medium text-body-medium text-primary text-center">Checked</span>
+<span class="font-body-base text-[11px] text-on-surface-variant">14 Oct 2023</span>
+</div>
+<div class="h-px bg-[#d98c2b] flex-1"></div>
+<!-- Step 3 (Current) -->
+<div class="flex flex-col items-center flex-1">
+<div class="w-8 h-8 rounded-full bg-[#fdaa47] text-[#895200] flex items-center justify-center mb-sm shadow-[0_0_0_4px_rgba(253,170,71,0.2)]">
+<span class="material-symbols-outlined text-[16px]" data-icon="pending_actions">pending_actions</span>
+</div>
+<span class="font-body-medium text-body-medium text-primary text-center">Client Review</span>
+<span class="font-body-base text-[11px] text-on-surface-variant">In Progress</span>
+</div>
+<div class="h-px bg-outline-variant flex-1"></div>
+<!-- Step 4 -->
+<div class="flex flex-col items-center flex-1">
+<div class="w-8 h-8 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center mb-sm border border-outline-variant">
+<span class="material-symbols-outlined text-[16px]" data-icon="verified">verified</span>
+</div>
+<span class="font-body-medium text-body-medium text-on-surface-variant text-center">Approved</span>
+<span class="font-body-base text-[11px] text-on-surface-variant">Pending</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row gap-lg">
+<!-- Main Documents Table Area -->
+<div class="flex-grow bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col">
+<div class="p-md border-b border-outline-variant bg-[#f5f7fa] flex justify-between items-center">
+<h3 class="font-body-medium text-body-medium text-primary">Package Documents (12)</h3>
+<div class="flex gap-sm">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[16px]" data-icon="search">search</span>
+<input class="pl-[28px] pr-sm py-unit border border-[#dde3ea] rounded-DEFAULT font-body-base text-[13px] w-[200px] focus:outline-none focus:border-[#d98c2b] focus:ring-1 focus:ring-[#d98c2b] transition-colors bg-white" placeholder="Filter documents..." type="text"/>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#f5f7fa] border-b border-outline-variant sticky top-0">
+<tr>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Doc Number</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Title / عنوان</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider w-[60px]">Rev</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Remarks</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider w-[80px]">Actions</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface">
+<tr class="border-b border-outline-variant hover:bg-[rgba(31,78,120,0.04)] transition-colors group">
+<td class="py-sm px-md monospaced font-semibold text-primary">PIP-U4-ISO-001</td>
+<td class="py-sm px-md">
+<div class="font-medium text-primary">Main Cooling Water Supply</div>
+<div class="text-[11px] text-on-surface-variant mt-[2px]">تامین آب خنک کننده اصلی</div>
+</td>
+<td class="py-sm px-md text-center">C01</td>
+<td class="py-sm px-md">
+<span class="bg-[#fdaa47] bg-opacity-20 text-[#895200] font-badge-label text-[10px] px-sm py-[2px] rounded-full">In Review</span>
+</td>
+<td class="py-sm px-md text-on-surface-variant truncate max-w-[150px]">-</td>
+<td class="py-sm px-md">
+<div class="flex gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-[32px] h-[32px] rounded-DEFAULT bg-surface-container-low border border-outline-variant flex items-center justify-center text-on-surface hover:text-[#d98c2b] hover:border-[#d98c2b]">
+<span class="material-symbols-outlined text-[16px]" data-icon="visibility">visibility</span>
+</button>
+<button class="w-[32px] h-[32px] rounded-DEFAULT bg-surface-container-low border border-outline-variant flex items-center justify-center text-on-surface hover:text-[#d98c2b] hover:border-[#d98c2b]">
+<span class="material-symbols-outlined text-[16px]" data-icon="download">download</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-[rgba(31,78,120,0.04)] transition-colors group">
+<td class="py-sm px-md monospaced font-semibold text-primary">PIP-U4-ISO-002</td>
+<td class="py-sm px-md">
+<div class="font-medium text-primary">Main Cooling Water Return</div>
+<div class="text-[11px] text-on-surface-variant mt-[2px]">برگشت آب خنک کننده اصلی</div>
+</td>
+<td class="py-sm px-md text-center">C01</td>
+<td class="py-sm px-md">
+<span class="bg-[#d7e3fd] text-[#00497c] font-badge-label text-[10px] px-sm py-[2px] rounded-full">Approved w/ Comments</span>
+</td>
+<td class="py-sm px-md text-on-surface-variant truncate max-w-[150px]">Update valve tags as per markup</td>
+<td class="py-sm px-md">
+<div class="flex gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-[32px] h-[32px] rounded-DEFAULT bg-surface-container-low border border-outline-variant flex items-center justify-center text-on-surface hover:text-[#d98c2b] hover:border-[#d98c2b]">
+<span class="material-symbols-outlined text-[16px]" data-icon="visibility">visibility</span>
+</button>
+<button class="w-[32px] h-[32px] rounded-DEFAULT bg-surface-container-low border border-outline-variant flex items-center justify-center text-on-surface hover:text-[#d98c2b] hover:border-[#d98c2b]">
+<span class="material-symbols-outlined text-[16px]" data-icon="download">download</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-[rgba(31,78,120,0.04)] transition-colors group">
+<td class="py-sm px-md monospaced font-semibold text-primary">PIP-U4-ISO-003</td>
+<td class="py-sm px-md">
+<div class="font-medium text-primary">Fire Water Ring Main</div>
+<div class="text-[11px] text-on-surface-variant mt-[2px]">رینگ اصلی آب آتش نشانی</div>
+</td>
+<td class="py-sm px-md text-center">C02</td>
+<td class="py-sm px-md">
+<span class="bg-[#ffdad6] text-[#ba1a1a] font-badge-label text-[10px] px-sm py-[2px] rounded-full">Rejected</span>
+</td>
+<td class="py-sm px-md text-error truncate max-w-[150px]">Clash detected at grid A4</td>
+<td class="py-sm px-md">
+<div class="flex gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-[32px] h-[32px] rounded-DEFAULT bg-surface-container-low border border-outline-variant flex items-center justify-center text-on-surface hover:text-[#d98c2b] hover:border-[#d98c2b]">
+<span class="material-symbols-outlined text-[16px]" data-icon="visibility">visibility</span>
+</button>
+<button class="w-[32px] h-[32px] rounded-DEFAULT bg-surface-container-low border border-outline-variant flex items-center justify-center text-on-surface hover:text-[#d98c2b] hover:border-[#d98c2b]">
+<span class="material-symbols-outlined text-[16px]" data-icon="download">download</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Metadata Sidebar -->
+<aside class="w-full lg:w-[320px] shrink-0 flex flex-col gap-md">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-md uppercase tracking-wider border-b border-outline-variant pb-sm">Package Details</h3>
+<div class="flex flex-col gap-sm">
+<div>
+<span class="block font-label-caps text-[10px] text-on-surface-variant uppercase">Discipline</span>
+<span class="font-body-medium text-body-medium text-primary">Piping (PIP)</span>
+</div>
+<div>
+<span class="block font-label-caps text-[10px] text-on-surface-variant uppercase">Responsible Engineer</span>
+<div class="flex items-center gap-sm mt-unit">
+<div class="w-6 h-6 rounded-full bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-primary">AH</div>
+<span class="font-body-medium text-body-medium text-primary">Ali Hosseini</span>
+</div>
+</div>
+<div>
+<span class="block font-label-caps text-[10px] text-on-surface-variant uppercase">Contractor</span>
+<span class="font-body-medium text-body-medium text-primary">TechBuild EPC</span>
+</div>
+<div>
+<span class="block font-label-caps text-[10px] text-on-surface-variant uppercase">Priority</span>
+<span class="inline-block mt-unit bg-[#d7e3fd] text-[#00497c] font-badge-label text-[10px] px-sm py-unit rounded-full">Normal</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-md uppercase tracking-wider border-b border-outline-variant pb-sm">Schedule</h3>
+<div class="flex flex-col gap-sm">
+<div class="flex justify-between items-center">
+<span class="font-body-base text-[12px] text-on-surface-variant">Planned Submission:</span>
+<span class="font-body-medium text-[12px] text-primary">10 Oct 2023</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-base text-[12px] text-on-surface-variant">Actual Submission:</span>
+<span class="font-body-medium text-[12px] text-primary">12 Oct 2023</span>
+</div>
+<div class="flex justify-between items-center pt-xs border-t border-outline-variant border-dashed">
+<span class="font-body-base text-[12px] text-on-surface-variant">Required Approval:</span>
+<span class="font-body-medium text-[12px] text-primary">26 Oct 2023</span>
+</div>
+<div class="mt-sm">
+<div class="flex justify-between items-center mb-unit">
+<span class="font-label-caps text-[10px] text-on-surface-variant">Time Elapsed</span>
+<span class="font-label-caps text-[10px] text-[#895200]">60%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-[#fdaa47] h-full w-[60%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,107 @@
+﻿@model List<PEMS.Domain.Entities.Team>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-people"></i> تیم‌های تعمیرونگهداری</h5>
+    <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createTeamModal">
+        <i class="bi bi-plus-lg"></i> تیم جدید
+    </button>
+</div>
+
+<div class="row g-3">
+    @foreach (var team in Model)
+    {
+        <div class="col-md-6">
+            <div class="content-card h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="mb-0">@team.Code — @team.Name</h6>
+                        <span class="text-muted small">@team.MaintenanceGroup?.Name (@team.MaintenanceGroup?.Discipline?.Name) @(string.IsNullOrEmpty(team.Shift) ? "" : $"— {team.Shift}")</span>
+                    </div>
+                    @if (team.SupervisorEmployee != null)
+                    {
+                        <span class="badge bg-primary"><i class="bi bi-star"></i> سرپرست: @team.SupervisorEmployee.FirstName @team.SupervisorEmployee.LastName</span>
+                    }
+                </div>
+
+                <hr class="my-2" />
+
+                <h6 class="small fw-bold mb-2">اعضا (@team.Members.Count(m => m.IsActive))</h6>
+                <ul class="list-unstyled mb-2">
+                    @foreach (var m in team.Members.Where(m => m.IsActive))
+                    {
+                        <li class="d-flex justify-content-between align-items-center border-bottom py-1">
+                            <span class="small">@m.Employee?.FirstName @m.Employee?.LastName</span>
+                            <span class="d-flex align-items-center gap-2">
+                                <span class="badge bg-secondary">@m.Role?.Name</span>
+                                <form asp-action="RemoveMember" method="post" class="d-inline">
+                                    <input type="hidden" name="teamMemberId" value="@m.TeamMemberId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-1" onclick="return confirm('این عضو از تیم خارج بشه؟')"><i class="bi bi-x"></i></button>
+                                </form>
+                            </span>
+                        </li>
+                    }
+                </ul>
+
+                <form asp-action="AddMember" method="post" class="d-flex gap-1">
+                    <input type="hidden" name="teamId" value="@team.TeamId" />
+                    <select name="employeeId" class="form-select form-select-sm" required>
+                        <option value="">کارمند...</option>
+                        @foreach (var e in (IEnumerable<dynamic>)ViewBag.Employees) { <option value="@e.EmployeeId">@e.FullName</option> }
+                    </select>
+                    <select name="roleId" class="form-select form-select-sm" required>
+                        <option value="">نقش...</option>
+                        @foreach (var r in ((IEnumerable<dynamic>)ViewBag.MaintenanceRoles).Where(r => r.DisciplineName == team.MaintenanceGroup?.Discipline?.Name))
+                        {
+                            <option value="@r.MaintenanceRoleId">@r.Name</option>
+                        }
+                    </select>
+                    <button type="submit" class="btn btn-outline-primary btn-sm text-nowrap"><i class="bi bi-plus-lg"></i></button>
+                </form>
+            </div>
+        </div>
+    }
+</div>
+@if (!Model.Any())
+{
+    <div class="content-card"><p class="text-muted text-center py-4 mb-0">هنوز تیمی ساخته نشده.</p></div>
+}
+
+<div class="modal fade" id="createTeamModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="CreateTeam" method="post">
+            <div class="modal-header"><h6 class="modal-title">تیم جدید</h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">کد تیم</label>
+                    <input name="code" class="form-control form-control-sm" required placeholder="مثلاً MECH-A" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">نام تیم</label>
+                    <input name="name" class="form-control form-control-sm" required placeholder="مثلاً Mechanical Maintenance - Shift A" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">گروه تعمیراتی (Maintenance Group)</label>
+                    <select name="maintenanceGroupId" class="form-select form-select-sm" required>
+                        @foreach (var g in (IEnumerable<dynamic>)ViewBag.MaintenanceGroups) { <option value="@g.MaintenanceGroupId">@g.Name (@g.DisciplineName)</option> }
+                    </select>
+                    <div class="form-text">گروه‌های تعمیراتی از <a asp-controller="MaintenanceMasterData" asp-action="Index">Maintenance Master Data</a> مدیریت می‌شوند.</div>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">شیفت (اختیاری)</label>
+                    <input name="shift" class="form-control form-control-sm" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">سرپرست (اختیاری)</label>
+                    <select name="supervisorEmployeeId" class="form-select form-select-sm">
+                        <option value="">-- ندارد --</option>
+                        @foreach (var e in (IEnumerable<dynamic>)ViewBag.Employees) { <option value="@e.EmployeeId">@e.FullName</option> }
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+            </div>
+        </form>
+    </div></div>
+</div>

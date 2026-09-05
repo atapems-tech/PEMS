@@ -1,0 +1,204 @@
+﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.LetterDto>
+@{
+    var dash = (PEMS.Application.DTOs.LetterDashboardDto)ViewBag.Dashboard;
+    var projects = (IEnumerable<dynamic>)ViewBag.Projects;
+    var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
+    var f = (dynamic)ViewBag.Filters;
+    string currentType = f.letterType ?? "";
+}
+
+@* جستجوی سریع هوشمند - طبق مثال اصلی: شماره نامه، موضوع، فرستنده، گیرنده، پروژه، یا کلمات داخل متن (Semantic) *@
+<div class="content-card mb-3">
+    <label class="form-label small fw-bold"><i class="bi bi-search"></i> جستجوی سریع نامه (شماره، موضوع، فرستنده/گیرنده، یا مفهوم متن)</label>
+    <input type="text" class="form-control" id="letterQuickSearch" placeholder="مثلاً شماره نامه، بخشی از موضوع یا حتی توصیف مفهومی محتوا..."
+           data-pems-search data-search-type="Letter" autocomplete="off" />
+</div>
+<script>
+    document.getElementById('letterQuickSearch').addEventListener('pems:search-select', function (e) {
+        if (e.detail && e.detail.url) window.location.href = e.detail.url;
+    });
+</script>
+
+@* طراحی جدید الهام‌گرفته از کارتابل‌های سازمانی ایرانی (Fonix/PARGAR): برچسب‌های رنگی چندگانه
+   داخل هر ردیف، چیدمان فشرده، ستاره‌گذاری شخصی، و میانبرهای دیسیپلین. *@
+
+
+<div class="row g-3 mb-3">
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-hourglass-split"></i></div><div><div class="kpi-value">@dash.PendingLetters</div><div class="kpi-label">Pending</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-exclamation-triangle"></i></div><div><div class="kpi-value">@dash.OverdueReferrals</div><div class="kpi-label">Overdue Referrals</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-blue"><i class="bi bi-person-check"></i></div><div><div class="kpi-value">@dash.MyOpenReferrals</div><div class="kpi-label">My Open Referrals</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-inbox-fill"></i></div><div><div class="kpi-value">@dash.RecentlyReceived</div><div class="kpi-label">Received (7d)</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-send-fill"></i></div><div><div class="kpi-value">@dash.RecentlySent</div><div class="kpi-label">Sent (7d)</div></div></div></div>
+    <div class="col-md-2 col-sm-6 d-flex align-items-stretch">
+        <a asp-action="MyReferrals" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center"><i class="bi bi-arrow-right-circle me-1"></i> My Referrals</a>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-9">
+
+        @* ---- کارپوشه: میانبرهای نوع پیام (شبیه Inbox/Sent/Draft کارتابل مرجع) ---- *@
+        <div class="d-flex flex-wrap gap-2 mb-2">
+            <a asp-action="Index" class="btn btn-sm @(currentType == "" ? "btn-pems-solid" : "btn-outline-secondary")">
+                <i class="bi bi-inboxes"></i> All
+            </a>
+            <a asp-action="Index" asp-route-letterType="Incoming" class="btn btn-sm @(currentType == "Incoming" ? "btn-pems-solid" : "btn-outline-secondary")">
+                <i class="bi bi-envelope-arrow-down"></i> Incoming
+            </a>
+            <a asp-action="Index" asp-route-letterType="Outgoing" class="btn btn-sm @(currentType == "Outgoing" ? "btn-pems-solid" : "btn-outline-secondary")">
+                <i class="bi bi-envelope-arrow-up"></i> Outgoing
+            </a>
+            <a asp-action="Index" asp-route-letterType="Internal" class="btn btn-sm @(currentType == "Internal" ? "btn-pems-solid" : "btn-outline-secondary")">
+                <i class="bi bi-envelope"></i> Internal
+            </a>
+            <a asp-action="Index" asp-route-status="Draft" class="btn btn-sm @((string)f.status == "Draft" ? "btn-pems-solid" : "btn-outline-secondary")">
+                <i class="bi bi-file-earmark"></i> Draft
+            </a>
+        </div>
+
+        <div class="content-card mb-3">
+            <form method="get" class="row g-2">
+                <input type="hidden" name="letterType" value="@currentType" />
+                <div class="col-md-3"><input name="letterNumber" value="@f.letterNumber" class="form-control form-control-sm" placeholder="Letter No" /></div>
+                <div class="col-md-3"><input name="subject" value="@f.subject" class="form-control form-control-sm" placeholder="Subject" /></div>
+                <div class="col-md-3">
+                    <select name="projectId" class="form-select form-select-sm">
+                        <option value="">All Projects</option>
+                        @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == f.projectId)">@p.ProjectName</option> }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="status" class="form-select form-select-sm">
+                        <option value="">All Status</option>
+                        @foreach (var s in new[] { "Registered", "Under Review", "Referred", "Draft", "PendingApproval", "Approved", "Issued", "Sent", "Closed" })
+                        { <option value="@s" selected="@(s == (string?)f.status)">@s</option> }
+                    </select>
+                </div>
+                <div class="col-md-1 d-flex gap-2">
+                    <button type="submit" class="btn btn-sm btn-pems-solid flex-fill"><i class="bi bi-funnel"></i></button>
+                </div>
+                <div class="col-md-12 d-flex gap-2 justify-content-end">
+                    <a asp-action="Index" class="btn btn-sm btn-outline-danger" title="Reset"><i class="bi bi-x-lg"></i> Reset</a>
+                </div>
+                <div class="col-12 d-flex gap-2 mt-1">
+                    <a asp-action="Create" asp-route-letterType="Incoming" class="btn btn-sm btn-outline-success"><i class="bi bi-plus-lg"></i> New Incoming</a>
+                    <a asp-action="Create" asp-route-letterType="Outgoing" class="btn btn-sm btn-outline-primary"><i class="bi bi-plus-lg"></i> New Outgoing</a>
+                    <a asp-action="Create" asp-route-letterType="Internal" class="btn btn-sm btn-outline-secondary"><i class="bi bi-plus-lg"></i> New Internal Memo</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="content-card">
+            <div class="d-flex justify-content-end mb-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Letter')">
+                    <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+                </button>
+            </div>
+            <div class="table-responsive pems-grid-scroll table-scroll-area">
+                <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="Letter">
+                    <thead>
+                        <tr>
+                            <th data-col-key="select" data-resizable="false" style="width:30px;"><input type="checkbox" id="selectAllLetters" /></th>
+                            <th data-col-key="star" data-resizable="false" style="width:30px;"></th>
+                            <th data-col-key="subject" data-resizable="true" data-min-width="200" data-max-width="600">Subject</th>
+                            <th data-col-key="letterNo" data-resizable="true" data-min-width="90" data-max-width="200" style="width:110px;">Letter No</th>
+                            <th data-col-key="senderReceiver" data-resizable="true" data-min-width="120" data-max-width="260" style="width:160px;">Sender / Receiver</th>
+                            <th data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160" style="width:100px;">Date</th>
+                            <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px;">Status</th>
+                            <th data-col-key="actions" data-resizable="false" style="width:60px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var l in Model.Items)
+                        {
+                            <tr class="@(l.HasOverdueReferral ? "table-danger" : "")">
+                                <td><input type="checkbox" class="letter-select" value="@l.LetterId" /></td>
+                                <td>
+                                    <form asp-action="ToggleStar" method="post" class="d-inline">
+                                        <input type="hidden" name="letterId" value="@l.LetterId" />
+                                        <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                                        <button type="submit" class="btn btn-sm p-0 border-0 bg-transparent" title="Star">
+                                            <i class="bi @(l.IsStarred ? "bi-star-fill text-warning" : "bi-star text-muted")"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@l.LetterId" class="fw-semibold text-decoration-none">
+                                        @if (!string.IsNullOrEmpty(l.MyRecipientType))
+                                        {
+                                            <span class="badge @(l.MyRecipientType == "To" ? "bg-primary" : "bg-secondary") me-1">
+                                                @(l.MyRecipientType == "To" ? "To" : "Cc")
+                                            </span>
+                                        }
+                                        @l.Subject
+                                    </a>
+                                    <div class="d-flex flex-wrap gap-1 mt-1">
+                                        <span class="badge bg-secondary">@l.LetterType</span>
+                                        @if (!string.IsNullOrEmpty(l.DisciplineName)) { <span class="badge bg-primary">@l.DisciplineName</span> }
+                                        @if (l.Priority is "High" or "Urgent") { <span class="badge @(l.Priority == "Urgent" ? "bg-danger" : "bg-warning text-dark")">@l.Priority</span> }
+                                        @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal") { <span class="badge bg-dark"><i class="bi bi-lock-fill"></i> @l.ConfidentialityLevel</span> }
+                                        @if (!string.IsNullOrEmpty(l.RelatedDocumentNo)) { <span class="badge bg-info text-dark"><i class="bi bi-file-earmark-text"></i> @l.RelatedDocumentNo</span> }
+                                        @if (!string.IsNullOrEmpty(l.RelatedMRNumber)) { <span class="badge bg-info text-dark"><i class="bi bi-cart-check"></i> @l.RelatedMRNumber</span> }
+                                        @if (l.OpenReferralsCount > 0) { <span class="badge @(l.HasOverdueReferral ? "bg-danger" : "bg-warning text-dark")"><i class="bi bi-signpost-split"></i> @l.OpenReferralsCount</span> }
+                                        @foreach (var tag in l.Tags) { <span class="badge bg-@tag.Color">@tag.Name</span> }
+                                    </div>
+                                </td>
+                                <td class="small">@l.LetterNumber</td>
+                                <td class="small">@(l.LetterType == "Incoming" ? l.Sender : l.Receiver)</td>
+                                <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
+                                <td><span class="badge bg-info text-dark">@l.Status</span></td>
+                                <td><a asp-action="Details" asp-route-id="@l.LetterId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No letters found.</p> }
+
+                @{
+                    var qsParts = new List<string>();
+                    if (!string.IsNullOrEmpty((string?)f.letterType)) qsParts.Add($"letterType={f.letterType}");
+                    if (!string.IsNullOrEmpty((string?)f.letterNumber)) qsParts.Add($"letterNumber={f.letterNumber}");
+                    if (!string.IsNullOrEmpty((string?)f.subject)) qsParts.Add($"subject={f.subject}");
+                    if (f.projectId != null) qsParts.Add($"projectId={f.projectId}");
+                    if (!string.IsNullOrEmpty((string?)f.status)) qsParts.Add($"status={f.status}");
+                }
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page, TotalPages = Model.TotalPages, TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize, GridKey = "Letter",
+                    BaseUrl = Url.Action("Index"), ExistingQueryString = string.Join("&", qsParts)
+                })
+            </div>
+        </div>
+    </div>
+
+    @* ---- میانبر دیسیپلین‌ها (شبیه سایدبار کارتابل مرجع) ---- *@
+    <div class="col-lg-3">
+        <div class="content-card">
+            <h6 class="mb-3 text-muted small text-uppercase">Discipline Shortcuts</h6>
+            <div class="d-flex flex-column gap-1">
+                @foreach (var d in disciplines)
+                {
+                    <a asp-action="Index" asp-route-disciplineId="@d.DisciplineId"
+                       class="btn btn-sm btn-outline-secondary text-start d-flex justify-content-between align-items-center">
+                        @d.Name
+                        <i class="bi bi-arrow-repeat"></i>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var selectAllLetters = document.getElementById('selectAllLetters');
+    var letterChecks = document.querySelectorAll('.letter-select');
+    if (selectAllLetters) {
+        selectAllLetters.addEventListener('change', function () {
+            letterChecks.forEach(function (c) { c.checked = selectAllLetters.checked; });
+        });
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        PemsDataGrid.initColumnResize('Letter');
+    });
+</script>

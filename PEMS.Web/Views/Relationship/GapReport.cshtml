@@ -1,0 +1,71 @@
+﻿@model PEMS.Application.DTOs.RelationshipGapReportDto
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-clipboard-x"></i> گزارش تحلیل شکاف - رابطه‌های ناقص تجهیزات</h5>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">بازگشت به Explorer</a>
+</div>
+
+<p class="text-muted small">
+    این گزارش برعکس Explorer عمل می‌کنه: به‌جای کاوش از یک تجهیز مشخص، همه‌ی تجهیزات رو بررسی
+    می‌کنه و نشون می‌ده کدوم‌ها هنوز به مدرک مهندسی، VDR، MR یا WorkOrder وصل نشدن - برای
+    برنامه‌ریزی و پیگیری شکاف‌های داده.
+</p>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-3">
+        <div class="content-card text-center">
+            <div class="fs-3 fw-bold">@Model.TotalEquipmentCount</div>
+            <div class="text-muted small">کل تجهیزات</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="content-card text-center">
+            <div class="fs-3 fw-bold text-success">@Model.FullyLinkedCount</div>
+            <div class="text-muted small">کاملاً وصل (هر ۴ نوع رابطه)</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="content-card text-center">
+            <div class="fs-3 fw-bold text-warning">@Model.PartiallyLinkedCount</div>
+            <div class="text-muted small">ناقص (بعضی روابط)</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="content-card text-center">
+            <div class="fs-3 fw-bold text-danger">@Model.UnlinkedCount</div>
+            <div class="text-muted small">کاملاً بدون رابطه</div>
+        </div>
+    </div>
+</div>
+
+<div class="content-card">
+    <table class="table table-enterprise mb-0">
+        <thead>
+            <tr>
+                <th>Tag</th><th>Name</th><th>Area</th><th>Discipline</th>
+                <th class="text-center">مدارک</th><th class="text-center">VDR</th>
+                <th class="text-center">MR</th><th class="text-center">WorkOrder</th><th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td><strong>@item.TagNumber</strong></td>
+                    <td class="small">@item.Name</td>
+                    <td class="small">@item.Area</td>
+                    <td class="small">@item.DisciplineName</td>
+                    <td class="text-center">@(item.HasDocuments ? "✅" : "❌")</td>
+                    <td class="text-center">@(item.HasVdrItems ? "✅" : "❌")</td>
+                    <td class="text-center">@(item.HasMR ? "✅" : "❌")</td>
+                    <td class="text-center">@(item.HasWorkOrders ? "✅" : "❌")</td>
+                    <td><a asp-action="Equipment" asp-route-id="@item.EquipmentId" class="btn btn-sm btn-outline-primary"><i class="bi bi-diagram-3"></i></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!Model.Items.Any())
+    {
+        <p class="text-muted text-center py-4 mb-0">همه‌ی تجهیزات کاملاً وصل هستن - عالیه!</p>
+    }
+</div>

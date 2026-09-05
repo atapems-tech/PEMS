@@ -1,0 +1,90 @@
+﻿<div class="content-card" style="max-width:900px;">
+    <h6 class="mb-3"><i class="bi bi-envelope-plus"></i> ثبت مکاتبه‌ی وارده (DCC)</h6>
+    <p class="text-muted small">
+        این فرم برای هر نوع مکاتبه‌ی وارده است - ایمیل، نامه‌ی رسمی، یا مکاتبه‌ی وندور. برخلاف
+        فرم عمومی نامه‌نگاری، پیوست فایل و اتصال به MR/VDR در همین یک مرحله انجام می‌شود.
+    </p>
+
+    <form asp-action="RegisterIncoming" method="post" enctype="multipart/form-data">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">نوع منبع</label>
+                <select name="sourceType" class="form-select">
+                    <option value="Email">ایمیل</option>
+                    <option value="OfficialLetter">نامه‌ی رسمی</option>
+                    <option value="VendorCommunication">مکاتبه‌ی وندور</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">فرستنده</label>
+                <input name="sender" class="form-control" required placeholder="مثلاً DCC کارفرما / نام وندور" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">اولویت</label>
+                <select name="priority" class="form-select">
+                    <option>Normal</option><option>Low</option><option>High</option><option>Urgent</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">پروژه <span class="text-muted small">(اختیاری)</span></label>
+                <select name="projectId" class="form-select">
+                    <option value="">-- ندارد --</option>
+                    @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">دیسیپلین <span class="text-muted small">(اختیاری)</span></label>
+                <select name="disciplineId" class="form-select">
+                    <option value="">-- ندارد --</option>
+                    @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
+                </select>
+            </div>
+
+            <div class="col-12"><label class="form-label">موضوع</label><input name="subject" class="form-control" required /></div>
+            <div class="col-12"><label class="form-label">خلاصه / متن</label><textarea name="body" class="form-control" rows="4"></textarea></div>
+
+            <div class="col-12">
+                <label class="form-label"><i class="bi bi-paperclip"></i> پیوست فایل <span class="text-muted small">(اختیاری - PDF/تصویر/ایمیل ذخیره‌شده)</span></label>
+                <input type="file" name="attachment" class="form-control" />
+            </div>
+
+            <div class="col-12"><hr /></div>
+
+            <div class="col-md-4">
+                <label class="form-label"><i class="bi bi-file-earmark-text"></i> مدرک مهندسی مرتبط</label>
+                <input type="text" class="form-control" placeholder="جستجو با شماره مدرک، عنوان یا توضیح..."
+                       data-pems-search data-search-type="EngineeringDocument" data-search-hidden="#relatedDocumentIdHidden" autocomplete="off" />
+                <input type="hidden" name="relatedDocumentId" id="relatedDocumentIdHidden" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label"><i class="bi bi-journal-check"></i> مدرک وندور (VDR) مرتبط</label>
+                <input type="text" class="form-control" placeholder="جستجو با نام وندور، شماره مدرک یا وضعیت..."
+                       data-pems-search data-search-type="VDRItem" data-search-hidden="#relatedVdrItemIdHidden" autocomplete="off" />
+                <input type="hidden" name="relatedVdrItemId" id="relatedVdrItemIdHidden" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label"><i class="bi bi-cart-check"></i> MR مرتبط</label>
+                <select name="relatedMRId" class="form-select">
+                    <option value="">-- ندارد --</option>
+                    @foreach (var m in (IEnumerable<dynamic>)ViewBag.RelatedMRs)
+                    {
+                        <option value="@m.MRId">@m.MRNumber</option>
+                    }
+                </select>
+                <span class="text-muted small">(موتور جستجوی MR در فاز بعدی اضافه می‌شود)</span>
+            </div>
+            <div class="col-12">
+                <p class="text-muted small mb-0">
+                    اگه هم مدرک مهندسی و هم VDR انتخاب بشه، VDR اولویت داره (چون معمولاً نامه‌ی
+                    وندور به مدرک وندور مرتبطه، نه مدرک مهندسی).
+                </p>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-pems-solid"><i class="bi bi-check-circle"></i> ثبت مکاتبه</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">انصراف</a>
+        </div>
+    </form>
+</div>

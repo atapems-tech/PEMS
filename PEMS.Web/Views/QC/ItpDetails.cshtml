@@ -1,0 +1,151 @@
+﻿@model PEMS.Domain.Entities.InspectionTestPlan
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h5 class="mb-0">@Model.ITPNumber &mdash; @Model.Title</h5>
+        <span class="text-muted small">@Model.QCDiscipline?.Name @(Model.Equipment != null ? " | " + Model.Equipment.TagNumber : "")</span>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+        <span class="badge @(Model.Status == "Active" ? "bg-success" : Model.Status == "Draft" ? "bg-secondary" : "bg-info") fs-6">@Model.Status</span>
+        @if (Model.Status == "Draft")
+        {
+            <form asp-action="ItpApprove" method="post">
+                <input type="hidden" name="id" value="@Model.InspectionTestPlanId" />
+                <button class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> Approve &amp; Activate</button>
+            </form>
+        }
+    </div>
+</div>
+
+<div class="content-card mb-3">
+    <div class="row">
+        <div class="col-md-4"><strong>Reference:</strong> @Model.ReferenceCodeStandard</div>
+        <div class="col-md-4"><strong>Revision:</strong> @Model.Revision</div>
+        <div class="col-md-4"><strong>Approved:</strong> @(Model.ApprovedDate?.ToString("yyyy-MM-dd") ?? "-")</div>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Model.Description))
+    {
+        <p class="mt-2 mb-0 text-muted small">@Model.Description</p>
+    }
+</div>
+
+<div class="content-card mb-3">
+    <h6 class="mb-3">Line Items</h6>
+    <table class="table table-enterprise mb-0">
+        <thead>
+            <tr><th>#</th><th>Activity</th><th>Discipline</th><th>Category</th><th>Acceptance Criteria</th><th>Responsible</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var li in Model.LineItems.OrderBy(x => x.SequenceNo))
+            {
+                <tr>
+                    <td>@li.SequenceNo</td>
+                    <td class="small">@li.Activity</td>
+                    <td class="small">@li.QCDiscipline?.Name</td>
+                    <td>
+                        <span class="badge bg-secondary" title="H=Hold, W=Witness, R=Review, S=Surveillance, M=Monitor">@li.InspectionCategory</span>
+                    </td>
+                    <td class="small">@li.AcceptanceCriteria</td>
+                    <td class="small">@li.ResponsibleParty</td>
+                    <td>
+                        <span class="badge @(li.Status == "Passed" ? "bg-success" : li.Status == "Failed" ? "bg-danger" : li.Status == "Notified" ? "bg-info" : "bg-light text-dark")">@li.Status</span>
+                        @if (li.NotifiedDate.HasValue)
+                        {
+                            <div class="text-muted small">اعلان: @li.NotifiedDate.Value.ToString("yyyy-MM-dd HH:mm")</div>
+                        }
+                    </td>
+                    <td class="d-flex flex-column gap-1">
+                        @if (li.InspectionCategory == "H" && li.Status == "Pending")
+                        {
+                            <form asp-action="ItpNotifyHoldPoint" method="post">
+                                <input type="hidden" name="lineItemId" value="@li.ITPLineItemId" />
+                                <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
+                                <button class="btn btn-warning btn-sm w-100"><i class="bi bi-bell"></i> Notify Hold Point</button>
+                            </form>
+                        }
+                        @if (li.Status != "Passed" && li.Status != "Failed")
+                        {
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#inspectModal_@li.ITPLineItemId">
+                                <i class="bi bi-clipboard-check"></i> Perform Inspection
+                            </button>
+                        }
+                    </td>
+                </tr>
+
+                <div class="modal fade" id="inspectModal_@li.ITPLineItemId" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form asp-action="ItpPerformInspection" method="post">
+                                <input type="hidden" name="lineItemId" value="@li.ITPLineItemId" />
+                                <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
+                                <div class="modal-header"><h6 class="modal-title">Perform Inspection - @li.Activity</h6></div>
+                                <div class="modal-body">
+                                    <div class="mb-2">
+                                        <label class="form-label small">Result</label>
+                                        <select name="result" class="form-select form-select-sm" required>
+                                            <option value="Acceptable">Acceptable</option>
+                                            <option value="Reject">Reject</option>
+                                            <option value="Warning">Warning</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label small">Inspector</label>
+                                        <input name="inspector" class="form-control form-control-sm" />
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label small">Notes</label>
+                                        <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-pems-solid btn-sm">Save Result</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="content-card">
+    <h6 class="mb-3"><i class="bi bi-plus-lg"></i> Add Line Item</h6>
+    <form asp-action="ItpAddLineItem" method="post">
+        <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
+        <div class="row g-3">
+            <div class="col-md-6"><label class="form-label small">Activity</label><input name="activity" class="form-control form-control-sm" required /></div>
+            <div class="col-md-3">
+                <label class="form-label small">Discipline</label>
+                <select name="qcDisciplineId" class="form-select form-select-sm" required>
+                    @foreach (var d in (IEnumerable<PEMS.Domain.Entities.QCDiscipline>)ViewBag.QCDisciplines)
+                    {
+                        <option value="@d.QCDisciplineId">@d.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small">Category</label>
+                <select name="inspectionCategory" class="form-select form-select-sm">
+                    <option value="H">H - Hold Point</option>
+                    <option value="W">W - Witness Point</option>
+                    <option value="R">R - Review Only</option>
+                    <option value="S">S - Surveillance/Random</option>
+                    <option value="M">M - Monitor</option>
+                </select>
+            </div>
+            <div class="col-md-6"><label class="form-label small">Acceptance Criteria</label><input name="acceptanceCriteria" class="form-control form-control-sm" /></div>
+            <div class="col-md-3"><label class="form-label small">Reference Code</label><input name="referenceCodeStandard" class="form-control form-control-sm" /></div>
+            <div class="col-md-3">
+                <label class="form-label small">Responsible Party</label>
+                <select name="responsibleParty" class="form-select form-select-sm">
+                    <option>Contractor</option><option>Client</option><option>ThirdParty</option>
+                </select>
+            </div>
+        </div>
+        <div class="mt-3">
+            <button type="submit" class="btn btn-pems-solid btn-sm">Add</button>
+        </div>
+    </form>
+</div>

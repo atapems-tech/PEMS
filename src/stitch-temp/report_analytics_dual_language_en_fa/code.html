@@ -1,0 +1,198 @@
+<!DOCTYPE html><html dir="ltr" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Report Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#683d00",
+                        "on-surface-variant": "#44474c",
+                        "tertiary-container": "#00213d",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "surface": "#f8f9ff",
+                        "surface-bright": "#f8f9ff",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#c8dcf5",
+                        "surface-container": "#e4efff",
+                        "primary": "#000819",
+                        "surface-tint": "#535f75",
+                        "secondary-container": "#fdaa47",
+                        "on-tertiary-fixed": "#001d36",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#e9f1ff",
+                        "on-secondary-fixed": "#2c1700",
+                        "tertiary-fixed": "#d1e4ff",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-surface": "#081d2f",
+                        "surface-container-low": "#eef4ff",
+                        "on-primary-fixed": "#101c2f",
+                        "surface-variant": "#d0e4fe",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#1f3245",
+                        "outline-variant": "#c5c6cd",
+                        "on-primary-container": "#7c889f",
+                        "surface-container-high": "#daeaff",
+                        "on-background": "#081d2f",
+                        "secondary": "#895200",
+                        "on-tertiary-container": "#498bcd",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-secondary-container": "#6e4100",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#bbc7e0",
+                        "outline": "#75777d",
+                        "primary-fixed": "#d7e3fd",
+                        "background": "#f8f9ff",
+                        "primary-container": "#142033",
+                        "tertiary": "#000815",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#d0e4fe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "topbar-height": "60px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "sidebar-width": "260px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "body-medium": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "table-header": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-base": ["Inter"],
+                        "badge-label": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen pb-24 font-body-base text-body-base">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-surface-container border-b border-outline-variant dark:border-outline flat no shadows flex items-center px-md h-topbar-height w-full">
+<button class="active:scale-95 transition-transform duration-150 mr-4 text-on-surface dark:text-inverse-on-surface hover:bg-surface-variant transition-colors p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md-mobile font-bold text-primary dark:text-primary-fixed truncate">Report Analytics / آمار گزارش‌ها</h1>
+</header>
+<main class="pt-topbar-height px-md py-lg space-y-lg max-w-lg mx-auto md:max-w-3xl"><section class="flex items-center justify-center gap-sm p-sm bg-surface-container rounded-lg mb-md"><button id="filter-daily" class="filter-btn flex-1 py-1 px-4 rounded-full bg-secondary-container text-on-secondary-container font-label-caps text-label-caps transition-all active:scale-95">Daily / روزانه</button><button id="filter-weekly" class="filter-btn flex-1 py-1 px-4 rounded-full hover:bg-on-surface-variant/10 text-on-surface-variant font-label-caps text-label-caps transition-all active:scale-95">Weekly / هفتگی</button><button id="filter-monthly" class="filter-btn flex-1 py-1 px-4 rounded-full hover:bg-on-surface-variant/10 text-on-surface-variant font-label-caps text-label-caps transition-all active:scale-95">Monthly / ماهانه</button></section>
+<!-- KPI Cards -->
+<section class="grid grid-cols-1 sm:grid-cols-3 gap-md">
+<!-- Total Reports -->
+<div class="bg-surface-lowest border border-outline-variant rounded-lg p-md flex items-center justify-between hover:border-secondary-container transition-colors shadow-sm">
+<div>
+<p class="font-table-header text-table-header text-on-surface-variant uppercase mb-xs">Total Reports / کل گزارش‌ها</p>
+<p class="font-kpi-stat text-kpi-stat text-primary">124</p>
+</div>
+<div class="w-12 h-12 rounded-[10px] bg-gradient-to-br from-tertiary-fixed to-primary flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">insert_chart</span>
+</div>
+</div>
+<!-- Resolution Rate -->
+<div class="bg-surface-lowest border border-outline-variant rounded-lg p-md flex items-center justify-between hover:border-secondary-container transition-colors shadow-sm">
+<div>
+<p class="font-table-header text-table-header text-on-surface-variant uppercase mb-xs">Resolution Rate / نرخ رسیدگی</p>
+<p class="font-kpi-stat text-kpi-stat text-primary">85%</p>
+</div>
+<div class="w-12 h-12 rounded-[10px] bg-gradient-to-br from-[#d98c2b] to-[#b8721e] flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Avg Response -->
+<div class="bg-surface-lowest border border-outline-variant rounded-lg p-md flex items-center justify-between hover:border-secondary-container transition-colors shadow-sm">
+<div>
+<p class="font-table-header text-table-header text-on-surface-variant uppercase mb-xs">Avg Response / میانگین پاسخ</p>
+<p class="font-kpi-stat text-kpi-stat text-primary">4.2h</p>
+</div>
+<div class="w-12 h-12 rounded-[10px] bg-gradient-to-br from-surface-dim to-primary-container flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">schedule</span>
+</div>
+</div>
+</section>
+<!-- Charts Section -->
+<section class="space-y-lg">
+<!-- Report Status Donut -->
+<div class="bg-surface-lowest border border-outline-variant rounded-lg p-lg shadow-sm"><h2 class="font-body-medium text-body-medium text-primary mb-md">Report Status / وضعیت گزارش‌ها</h2><div class="flex flex-col sm:flex-row items-center gap-lg transition-opacity duration-300" id="donut-chart-container"><div class="relative w-48 h-48 flex-shrink-0"><svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36"><circle id="path-rejected" cx="18" cy="18" fill="none" r="15.915" stroke="#ba1a1a" stroke-dasharray="16 84" stroke-width="3"></circle><circle id="path-pending" cx="18" cy="18" fill="none" r="15.915" stroke="#fdaa47" stroke-dasharray="27 73" stroke-dashoffset="-16" stroke-width="3"></circle><circle id="path-approved" cx="18" cy="18" fill="none" r="15.915" stroke="#101c2f" stroke-dasharray="57 43" stroke-dashoffset="-43" stroke-width="3"></circle></svg><div class="absolute inset-0 flex flex-col items-center justify-center"><span id="total-count" class="font-kpi-stat text-kpi-stat text-primary">124</span><span class="font-label-caps text-label-caps text-on-surface-variant">TOTAL</span></div></div><div class="w-full flex flex-col gap-sm"><div class="flex items-center justify-between p-sm rounded-lg hover:bg-surface-variant transition-colors"><div class="flex items-center gap-sm"><div class="w-3 h-3 rounded-full bg-primary-fixed-dim"></div><span class="font-body-base text-body-base">Approved</span></div><span id="val-approved" class="font-body-medium text-body-medium">70</span></div><div class="flex items-center justify-between p-sm rounded-lg hover:bg-surface-variant transition-colors"><div class="flex items-center gap-sm"><div class="w-3 h-3 rounded-full bg-secondary-container"></div><span class="font-body-base text-body-base">Pending</span></div><span id="val-pending" class="font-body-medium text-body-medium">34</span></div><div class="flex items-center justify-between p-sm rounded-lg hover:bg-surface-variant transition-colors"><div class="flex items-center gap-sm"><div class="w-3 h-3 rounded-full bg-error"></div><span class="font-body-base text-body-base">Rejected</span></div><span id="val-rejected" class="font-body-medium text-body-medium">20</span></div></div></div></div>
+<!-- Incident Trend Bar Chart -->
+<div class="bg-surface-lowest border border-outline-variant rounded-lg p-lg shadow-sm">
+<h2 class="font-body-medium text-body-medium text-primary mb-md">Incident Trend (7 Days) / روند حوادث (۷ روز)</h2>
+<div class="h-48 w-full flex items-end justify-between gap-xs mt-lg px-sm" id="bar-chart-container">
+<!-- Simple CSS Bar Chart -->
+<div class="w-full bg-primary-fixed-dim hover:bg-primary transition-colors rounded-t-md" style="height: 30%;"></div>
+<div class="w-full bg-primary-fixed-dim hover:bg-primary transition-colors rounded-t-md" style="height: 45%;"></div>
+<div class="w-full bg-primary-fixed-dim hover:bg-primary transition-colors rounded-t-md" style="height: 20%;"></div>
+<div class="w-full bg-primary-fixed-dim hover:bg-primary transition-colors rounded-t-md" style="height: 80%;"></div>
+<div class="w-full bg-primary-fixed-dim hover:bg-primary transition-colors rounded-t-md" style="height: 60%;"></div>
+<div class="w-full bg-primary-fixed-dim hover:bg-primary transition-colors rounded-t-md" style="height: 35%;"></div>
+<div class="w-full bg-primary-fixed-dim hover:bg-primary transition-colors rounded-t-md" style="height: 50%;"></div>
+</div>
+<div class="flex justify-between mt-sm px-sm font-label-caps text-label-caps text-on-surface-variant">
+<span class="">M</span><span class="">T</span><span class="">W</span><span class="">T</span><span class="">F</span><span class="">S</span><span class="">S</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl border-t border-outline-variant dark:border-outline shadow-lg bg-surface-container dark:bg-primary-container flex justify-around items-center h-16 w-full px-sm">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-on-surface-variant/10 active:scale-90 transition-all duration-200 p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined mb-1">assignment</span>
+<span class="font-label-caps text-label-caps">Tasks</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-on-surface-variant/10 active:scale-90 transition-all duration-200 p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined mb-1">qr_code_scanner</span>
+<span class="font-label-caps text-label-caps">Scan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-on-surface-variant/10 active:scale-90 transition-all duration-200 p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined mb-1">report_problem</span>
+<span class="font-label-caps text-label-caps">Incidents</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 hover:bg-on-surface-variant/10 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-label-caps text-label-caps">Analytics</span>
+</a>
+</nav>
+
+
+<script>const data = { daily: { total: 124, approved: 70, pending: 34, rejected: 20, bars: [30, 45, 20, 80, 60, 35, 50] }, weekly: { total: 850, approved: 520, pending: 210, rejected: 120, bars: [60, 70, 55, 90, 85, 40, 65] }, monthly: { total: 3420, approved: 2100, pending: 840, rejected: 480, bars: [40, 50, 75, 60, 95, 80, 70] } }; function updateCharts(period) { const d = data[period]; const container = document.getElementById('donut-chart-container'); const barContainer = document.getElementById('bar-chart-container'); container.style.opacity = '0.5'; barContainer.style.opacity = '0.5'; setTimeout(() => { document.getElementById('total-count').textContent = d.total; document.getElementById('val-approved').textContent = d.approved; document.getElementById('val-pending').textContent = d.pending; document.getElementById('val-rejected').textContent = d.rejected; const rejPct = Math.round((d.rejected / d.total) * 100); const penPct = Math.round((d.pending / d.total) * 100); const appPct = 100 - rejPct - penPct; document.getElementById('path-rejected').setAttribute('stroke-dasharray', `${rejPct} ${100 - rejPct}`); document.getElementById('path-pending').setAttribute('stroke-dasharray', `${penPct} ${100 - penPct}`); document.getElementById('path-pending').setAttribute('stroke-dashoffset', `-${rejPct}`); document.getElementById('path-approved').setAttribute('stroke-dasharray', `${appPct} ${100 - appPct}`); document.getElementById('path-approved').setAttribute('stroke-dashoffset', `-${rejPct + penPct}`); const bars = barContainer.children; d.bars.forEach((h, i) => { if (bars[i]) bars[i].style.height = h + '%'; }); container.style.opacity = '1'; barContainer.style.opacity = '1'; }, 200); } document.querySelectorAll('.filter-btn').forEach(btn => { btn.addEventListener('click', (e) => { document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('bg-secondary-container', 'text-on-secondary-container'); b.classList.add('hover:bg-on-surface-variant/10', 'text-on-surface-variant'); }); btn.classList.add('bg-secondary-container', 'text-on-secondary-container'); btn.classList.remove('hover:bg-on-surface-variant/10', 'text-on-surface-variant'); updateCharts(btn.id.replace('filter-', '')); }); });</script></body></html>

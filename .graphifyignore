@@ -1,0 +1,4 @@
+# graphify's own skill/reference docs are tooling, not part of the PEMS
+# architecture — indexing them pollutes the knowledge graph with nodes
+# unrelated to the CMMS domain.
+.claude/skills/graphify/

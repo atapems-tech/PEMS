@@ -1,0 +1,68 @@
+using PEMS.Domain.Common;
+
+namespace PEMS.Domain.Entities;
+
+/// <summary>
+/// طبق CMMS Production Baseline v1 بند P0-05 و بند ۸: قبل از این Entity، هیچ دروازه‌ی رسمی‌ای
+/// جلوی ساخت مستقیم WorkOrder اجرایی نبود. گردش‌کار: Draft → Submitted → UnderReview →
+/// Approved → {Rejected | Planned → Converted}. تبدیل واقعی به WorkOrder فقط از وضعیت Planned
+/// و فقط یک‌بار مجاز است (LinkedWorkOrderId بعد از تبدیل پر می‌شود).
+/// </summary>
+public class WorkRequest : BaseEntity
+{
+    public int WorkRequestId { get; set; }
+
+    public string RequestNumber { get; set; } = string.Empty;
+
+    public string Title { get; set; } = string.Empty;
+
+    public string? Description { get; set; }
+
+    public int RequestedById { get; set; }
+    public Employee? RequestedBy { get; set; }
+
+    public DateTime RequestedDate { get; set; } = DateTime.Now;
+
+    // هرکدام اختیاری - یک درخواست می‌تواند فقط به تجهیز، فقط به Asset، یا فقط به یک
+    // Functional Location اشاره کند (مثلاً نشتی در یک منطقه، نه یک تجهیز مشخص)
+    public int? EquipmentId { get; set; }
+    public Equipment? Equipment { get; set; }
+
+    public int? AssetId { get; set; }
+    public Asset? Asset { get; set; }
+
+    public int? FunctionalLocationId { get; set; }
+    public FunctionalLocation? FunctionalLocation { get; set; }
+
+    // شرح وضعیت/خرابی گزارش‌شده - متن آزاد گزارش‌دهنده، جدا از Description رسمی
+    public string? ReportedCondition { get; set; }
+
+    // Low, Medium, High, Critical
+    public string Priority { get; set; } = "Medium";
+
+    public int? SuggestedDisciplineId { get; set; }
+    public Discipline? SuggestedDiscipline { get; set; }
+
+    // Draft, Submitted, UnderReview, Approved, Rejected, Planned, Converted, Cancelled
+    public string Status { get; set; } = "Draft";
+
+    public int? ReviewedById { get; set; }
+    public Employee? ReviewedBy { get; set; }
+
+    public DateTime? ReviewedDate { get; set; }
+
+    public string? RejectionReason { get; set; }
+
+    public int? ApprovedById { get; set; }
+    public Employee? ApprovedBy { get; set; }
+
+    public DateTime? ApprovedDate { get; set; }
+
+    // فقط بعد از تبدیل موفق به WorkOrder پر می‌شود - جلوگیری از تبدیل دوباره
+    public int? LinkedWorkOrderId { get; set; }
+    public WorkOrder? LinkedWorkOrder { get; set; }
+
+    public bool IsActive { get; set; } = true;
+
+    public DateTime CreatedDate { get; set; } = DateTime.Now;
+}

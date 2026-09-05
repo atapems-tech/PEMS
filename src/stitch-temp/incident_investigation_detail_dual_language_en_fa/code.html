@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html class="light" dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Incident Reporting &amp; Investigation Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#f8f9ff",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#44474c",
+                        "on-tertiary-container": "#498bcd",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#1f3245",
+                        "primary": "#000819",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#081d2f",
+                        "tertiary-container": "#00213d",
+                        "primary-fixed": "#d7e3fd",
+                        "surface-container-high": "#daeaff",
+                        "background": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "surface-container": "#e4efff",
+                        "secondary": "#895200",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "surface-variant": "#d0e4fe",
+                        "surface-container-low": "#eef4ff",
+                        "on-primary-container": "#7c889f",
+                        "on-secondary-container": "#6e4100",
+                        "outline-variant": "#c5c6cd",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#fdaa47",
+                        "on-secondary-fixed": "#2c1700",
+                        "tertiary-fixed": "#d1e4ff",
+                        "secondary-fixed": "#ffdcbc",
+                        "tertiary": "#000815",
+                        "surface": "#f8f9ff",
+                        "primary-container": "#142033",
+                        "surface-tint": "#535f75",
+                        "surface-dim": "#c8dcf5",
+                        "surface-container-highest": "#d0e4fe",
+                        "outline": "#75777d",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#101c2f",
+                        "inverse-on-surface": "#e9f1ff",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#081d2f",
+                        "inverse-primary": "#bbc7e0",
+                        "secondary-fixed-dim": "#ffb86a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "xl": "32px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "topbar-height": "60px",
+                        "sidebar-width": "260px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-medium": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "body-base": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "table-header": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        [dir="rtl"] .ml-sidebar-width { margin-left: 0; margin-right: 260px; }
+        [dir="rtl"] .left-0 { left: auto; right: 0; }
+        [dir="rtl"] .border-l-4 { border-left-width: 0; border-right-width: 4px; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base min-h-screen flex">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col bg-primary h-screen w-sidebar-width fixed left-0 top-0 z-50 text-on-primary">
+<div class="px-lg py-lg">
+<h1 class="font-headline-md text-headline-md font-bold">PEMS</h1>
+<p class="font-badge-label text-badge-label text-on-primary/70 mt-xs uppercase">Utility Management</p>
+</div>
+<nav class="flex-1 overflow-y-auto py-sm space-y-xs mt-md">
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:bg-primary-fixed-dim/10 hover:text-on-primary transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">badge</span>
+<span class="font-body-medium text-body-medium">Employee Management</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:bg-primary-fixed-dim/10 hover:text-on-primary transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-medium text-body-medium">Asset Inventory</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:bg-primary-fixed-dim/10 hover:text-on-primary transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">build_circle</span>
+<span class="font-body-medium text-body-medium">Work Orders</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-surface-variant/10 text-secondary-container font-bold border-l-4 border-secondary-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined icon-fill">security</span>
+<span class="font-body-medium text-body-medium">Safety</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:bg-primary-fixed-dim/10 hover:text-on-primary transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-medium text-body-medium">Analytics &amp; Reports</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-on-primary/10 p-md space-y-xs">
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:bg-primary-fixed-dim/10 hover:text-on-primary transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-medium text-body-medium">Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:bg-primary-fixed-dim/10 hover:text-on-primary transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-medium text-body-medium">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-sidebar-width min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface border-b border-outline-variant h-topbar-height flex items-center justify-between px-lg sticky top-0 z-40 w-full">
+<div class="flex items-center gap-md">
+<button class="md:hidden text-primary p-xs hover:bg-surface-container-low rounded-DEFAULT transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="flex items-center bg-surface-container-low rounded-DEFAULT px-sm py-xs border border-outline-variant w-64 focus-within:border-secondary transition-colors">
+<span class="material-symbols-outlined text-outline text-[20px] mr-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 p-0 text-body-base font-body-base text-primary w-full placeholder:text-outline" placeholder="Search incidents..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<button class="text-primary hover:bg-surface-container-low p-sm rounded-DEFAULT transition-colors cursor-pointer active:scale-95 flex items-center gap-xs" onclick="toggleLang()">
+<span class="material-symbols-outlined">language</span>
+<span class="font-label-caps text-label-caps uppercase" id="lang-text">EN</span>
+</button>
+<button class="text-primary hover:bg-surface-container-low p-sm rounded-DEFAULT transition-colors cursor-pointer active:scale-95 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="text-primary hover:bg-surface-container-low p-sm rounded-DEFAULT transition-colors cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 p-md md:p-lg lg:p-xl overflow-y-auto">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-lg gap-md">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="font-label-caps text-label-caps text-outline uppercase tracking-wider" data-i18n="incidents">INCIDENTS</span>
+<span class="material-symbols-outlined text-[16px] text-outline">chevron_right</span>
+<span class="font-label-caps text-label-caps text-primary uppercase font-bold" data-i18n="inc-2023-089">INC-2023-089</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface" data-i18n="incident_detail">Incident Detail: Chemical Spill - Zone C</h2>
+</div>
+<div class="flex items-center gap-md">
+<span class="bg-error-container text-on-error-container font-badge-label text-badge-label px-md py-xs rounded-full uppercase" data-i18n="high_severity">HIGH SEVERITY</span>
+<span class="bg-surface-variant text-on-surface-variant font-badge-label text-badge-label px-md py-xs rounded-full uppercase border border-outline-variant" data-i18n="under_investigation">UNDER INVESTIGATION</span>
+<button class="bg-secondary text-on-secondary font-body-medium text-body-medium px-md py-sm rounded-DEFAULT hover:opacity-90 transition-opacity flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">edit_document</span>
+<span data-i18n="edit_report">Edit Report</span>
+</button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-md md:gap-lg">
+<!-- Left Column: Core Details (8 cols) -->
+<div class="lg:col-span-8 flex flex-col gap-md md:gap-lg">
+<!-- Incident Summary Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-lg shadow-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-sm border-b border-outline-variant pb-sm">
+<span class="material-symbols-outlined text-outline">info</span>
+<span data-i18n="incident_summary">Incident Summary</span>
+</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md mb-lg">
+<div>
+<label class="font-label-caps text-label-caps text-outline uppercase block mb-xs" data-i18n="date_time">Date &amp; Time</label>
+<p class="font-body-base text-body-base text-on-surface">Oct 24, 2023 - 14:30 HRS</p>
+</div>
+<div>
+<label class="font-label-caps text-label-caps text-outline uppercase block mb-xs" data-i18n="location">Location</label>
+<p class="font-body-base text-body-base text-on-surface">Zone C - Main Processing Floor</p>
+</div>
+<div>
+<label class="font-label-caps text-label-caps text-outline uppercase block mb-xs" data-i18n="reported_by">Reported By</label>
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant font-bold text-xs">JD</div>
+<p class="font-body-base text-body-base text-on-surface">John Doe (Supervisor)</p>
+</div>
+</div>
+<div>
+<label class="font-label-caps text-label-caps text-outline uppercase block mb-xs" data-i18n="incident_type">Incident Type</label>
+<p class="font-body-base text-body-base text-on-surface">Environmental / Chemical Spill</p>
+</div>
+</div>
+<div>
+<label class="font-label-caps text-label-caps text-outline uppercase block mb-xs" data-i18n="description">Detailed Description</label>
+<p class="font-body-base text-body-base text-on-surface-variant bg-surface p-md rounded-DEFAULT border border-outline-variant/50 leading-relaxed">
+                                During routine transfer operations from Storage Tank B to Processing Line 3, a valve failure resulted in an estimated 50 liters of Sodium Hydroxide solution spilling onto the secondary containment floor. The spill alarms activated immediately. No personnel were directly exposed, but fumes caused minor eye irritation to one operator in the vicinity.
+                            </p>
+</div>
+</div>
+<!-- Immediate Actions -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-lg shadow-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-sm border-b border-outline-variant pb-sm">
+<span class="material-symbols-outlined text-outline">healing</span>
+<span data-i18n="immediate_actions">Immediate Actions Taken</span>
+</h3>
+<ul class="space-y-sm">
+<li class="flex items-start gap-md p-sm bg-surface rounded-DEFAULT border border-outline-variant/50">
+<span class="material-symbols-outlined text-secondary mt-[2px]">check_circle</span>
+<div>
+<p class="font-body-medium text-body-medium text-on-surface">Area Evacuated and Secured</p>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm">Zone C locked down immediately. Ventilation systems switched to exhaust mode.</p>
+</div>
+</li>
+<li class="flex items-start gap-md p-sm bg-surface rounded-DEFAULT border border-outline-variant/50">
+<span class="material-symbols-outlined text-secondary mt-[2px]">check_circle</span>
+<div>
+<p class="font-body-medium text-body-medium text-on-surface">Hazmat Team Deployed</p>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm">Internal spill response team arrived on site within 5 minutes equipped with Level B PPE.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<!-- Right Column: Status & Analysis (4 cols) -->
+<div class="lg:col-span-4 flex flex-col gap-md md:gap-lg">
+<!-- Media & Evidence -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-lg shadow-sm">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant pb-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-outline">photo_camera</span>
+<span data-i18n="evidence">Evidence &amp; Photos</span>
+</h3>
+<button class="text-secondary hover:bg-surface-container-low p-xs rounded-DEFAULT transition-colors">
+<span class="material-symbols-outlined">add_a_photo</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="aspect-square rounded-DEFAULT overflow-hidden border border-outline-variant relative group cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A high-resolution industrial photograph showing a chemical spill on a grey concrete factory floor. A yellow warning sign is visible in the foreground. The lighting is harsh, fluorescent overhead factory lighting, creating sharp reflections on the spilled liquid. The mood is serious and indicative of an industrial accident." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCheARL_sOYfbsJsvKVat4yJpFyXOPjUsSgEEHn6TNIhH0rDkXVhQFHvkrxNORFNrcZMzj83VWqpgw0JiwHQTg91QwVZhwj5QwS9bbpd_f7sjGIc2OFhM4B6CxwRZYgUG2ZRx_vRVZTZjPtIw7IalbZ7vw1REmSS_lWcYb3fpSFEbUB1T_R8w-wF5UO7ZQaS9WccQotuAQKF891qoAvFYZ8vUIlRA0xr2UQIOMfdpW89rVpBx7dAr34"/>
+<div class="absolute inset-0 bg-primary/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-primary">zoom_in</span>
+</div>
+</div>
+<div class="aspect-square rounded-DEFAULT overflow-hidden border border-outline-variant relative group cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A close-up photograph of a faulty industrial valve made of stainless steel. The valve shows signs of wear and a slight crack near a seal. The lighting is focused and technical, highlighting the metallic texture and the damage. The aesthetic is documentary and forensic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0IytvyIQkaMYsdx0zxzgU_xkstoBhsWwPmMBffNFSSa7_QDVVE6nvpOvMhOv99oVHInKzELcWhZTOpp46at4kEZyBgK5ldhaqZtEugsAyMLQWMNvQyhRzjwOect2-FdprQkGqOCubD7K2zJmshFP85qyPtnSdRcJ3BIJRGhP0xNqqXv7yp2LS_d4ezDMXzNAdTzJTLXyqg92JPJJ8C0qLJsiCCrGOXcPb6ZQ6nEBtx97c7d4XAcpc"/>
+<div class="absolute inset-0 bg-primary/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-primary">zoom_in</span>
+</div>
+</div>
+</div>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm mt-sm text-center">2 files attached</p>
+</div>
+<!-- Corrective Actions Tracking -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-lg shadow-sm flex-1">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant pb-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-outline">task_alt</span>
+<span data-i18n="corrective_actions">Corrective Actions</span>
+</h3>
+<button class="text-secondary hover:bg-surface-container-low p-xs rounded-DEFAULT transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+<div class="space-y-sm">
+<div class="border border-outline-variant rounded-DEFAULT p-sm hover:border-secondary transition-colors group">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-body-medium text-body-medium text-on-surface">Replace Valve Assembly on Line 3</span>
+<span class="bg-surface-variant text-on-surface-variant font-badge-label text-badge-label px-sm py-unit rounded-full uppercase text-[10px]">IN PROGRESS</span>
+</div>
+<div class="flex justify-between items-center mt-sm">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-outline">person</span>
+<span class="font-body-base text-body-base text-on-surface-variant text-xs">M. Smith</span>
+</div>
+<span class="font-body-base text-body-base text-error text-xs font-bold">Due: Oct 26</span>
+</div>
+</div>
+<div class="border border-outline-variant rounded-DEFAULT p-sm hover:border-secondary transition-colors group">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-body-medium text-body-medium text-on-surface line-through text-outline">Update Spill Response SOP</span>
+<span class="bg-surface-container-high text-on-surface font-badge-label text-badge-label px-sm py-unit rounded-full uppercase text-[10px]">COMPLETED</span>
+</div>
+<div class="flex justify-between items-center mt-sm">
+<div class="flex items-center gap-xs text-outline">
+<span class="material-symbols-outlined text-[16px]">person</span>
+<span class="font-body-base text-body-base text-xs">H. Safety</span>
+</div>
+<span class="font-body-base text-body-base text-outline text-xs">Done: Oct 25</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+        // Simple I18n implementation for demonstration
+        const translations = {
+            en: {
+                incidents: "INCIDENTS",
+                "inc-2023-089": "INC-2023-089",
+                incident_detail: "Incident Detail: Chemical Spill - Zone C",
+                high_severity: "HIGH SEVERITY",
+                under_investigation: "UNDER INVESTIGATION",
+                edit_report: "Edit Report",
+                incident_summary: "Incident Summary",
+                date_time: "Date & Time",
+                location: "Location",
+                reported_by: "Reported By",
+                incident_type: "Incident Type",
+                description: "Detailed Description",
+                immediate_actions: "Immediate Actions Taken",
+                evidence: "Evidence & Photos",
+                corrective_actions: "Corrective Actions"
+            },
+            fa: {
+                incidents: "حوادث",
+                "inc-2023-089": "INC-2023-089",
+                incident_detail: "جزئیات حادثه: نشت مواد شیمیایی - منطقه C",
+                high_severity: "شدت بالا",
+                under_investigation: "در حال بررسی",
+                edit_report: "ویرایش گزارش",
+                incident_summary: "خلاصه حادثه",
+                date_time: "تاریخ و زمان",
+                location: "محل",
+                reported_by: "گزارش شده توسط",
+                incident_type: "نوع حادثه",
+                description: "توضیحات دقیق",
+                immediate_actions: "اقدامات فوری انجام شده",
+                evidence: "شواهد و عکس‌ها",
+                corrective_actions: "اقدامات اصلاحی"
+            }
+        };
+
+        let currentLang = 'en';
+
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'fa' : 'en';
+            document.documentElement.setAttribute('dir', currentLang === 'fa' ? 'rtl' : 'ltr');
+            document.getElementById('lang-text').innerText = currentLang.toUpperCase();
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.innerText = translations[currentLang][key];
+                }
+            });
+        }
+    </script>
+</body></html>

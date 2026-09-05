@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Evacuation Protocol &amp; Incident Command</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#e4efff",
+                        "on-surface-variant": "#44474c",
+                        "on-surface": "#081d2f",
+                        "tertiary-fixed": "#d1e4ff",
+                        "primary": "#000819",
+                        "secondary-container": "#fdaa47",
+                        "on-background": "#081d2f",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#498bcd",
+                        "inverse-on-surface": "#e9f1ff",
+                        "secondary": "#895200",
+                        "primary-container": "#142033",
+                        "inverse-surface": "#1f3245",
+                        "surface-container-low": "#eef4ff",
+                        "outline-variant": "#c5c6cd",
+                        "on-primary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "inverse-primary": "#bbc7e0",
+                        "primary-fixed": "#d7e3fd",
+                        "secondary-fixed": "#ffdcbc",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f8f9ff",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "on-primary-fixed": "#101c2f",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-secondary-container": "#6e4100",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-container-highest": "#d0e4fe",
+                        "tertiary": "#000815",
+                        "surface-container-high": "#daeaff",
+                        "tertiary-container": "#00213d",
+                        "surface-bright": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#d0e4fe",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-secondary-fixed": "#2c1700",
+                        "outline": "#75777d",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "surface-dim": "#c8dcf5",
+                        "on-primary-container": "#7c889f",
+                        "surface-tint": "#535f75"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "sidebar-width": "260px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "topbar-height": "60px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "table-header": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "body-base": ["Inter"]
+                    },
+                    "fontSize": {
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #f3f5f8; } /* Canvas Level 0 */
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid #edf0f4; }
+        .gradient-btn { background: linear-gradient(135deg, #d98c2b, #b8721e); color: white; }
+        .amber-hover:hover { border-color: #d98c2b; box-shadow: 0 0 0 1px #d98c2b; }
+        .timeline-line::before { content: ''; position: absolute; left: 15px; top: 24px; bottom: -24px; width: 2px; background: #dde3ea; z-index: 0; }
+        .timeline-item:last-child .timeline-line::before { display: none; }
+    </style>
+</head>
+<body class="text-on-surface flex h-screen overflow-hidden">
+<!-- Sidebar Component (Injected from JSON) -->
+<nav class="bg-primary dark:bg-primary-container text-on-primary fixed left-0 top-0 h-full w-sidebar-width shadow-xl flex flex-col py-md z-40">
+<!-- Header -->
+<div class="px-md mb-lg">
+<h1 class="font-headline-md text-secondary-fixed">Emergency Ops</h1>
+<p class="font-body-medium text-body-medium text-primary-fixed-dim">Sector A-12</p>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex-1 overflow-y-auto">
+<ul class="space-y-sm">
+<!-- Active Item -->
+<li>
+<a class="bg-secondary-container text-on-secondary-container rounded-lg mx-2 flex items-center p-sm translate-x-1" href="#">
+<span class="material-symbols-outlined mr-sm">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+</li>
+<!-- Inactive Items -->
+<li>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-primary-fixed-variant mx-2 flex items-center p-sm rounded-lg hover:bg-primary-fixed-variant duration-200" href="#">
+<span class="material-symbols-outlined mr-sm">groups</span>
+<span class="font-label-caps text-label-caps">Personnel Registry</span>
+</a>
+</li>
+<li>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-primary-fixed-variant mx-2 flex items-center p-sm rounded-lg hover:bg-primary-fixed-variant duration-200" href="#">
+<span class="material-symbols-outlined mr-sm">location_on</span>
+<span class="font-label-caps text-label-caps">Muster Points</span>
+</a>
+</li>
+<li>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-primary-fixed-variant mx-2 flex items-center p-sm rounded-lg hover:bg-primary-fixed-variant duration-200" href="#">
+<span class="material-symbols-outlined mr-sm">emergency_share</span>
+<span class="font-label-caps text-label-caps">Communications</span>
+</a>
+</li>
+<li>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-primary-fixed-variant mx-2 flex items-center p-sm rounded-lg hover:bg-primary-fixed-variant duration-200" href="#">
+<span class="material-symbols-outlined mr-sm">description</span>
+<span class="font-label-caps text-label-caps">Incident Reports</span>
+</a>
+</li>
+<li>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-primary-fixed-variant mx-2 flex items-center p-sm rounded-lg hover:bg-primary-fixed-variant duration-200" href="#">
+<span class="material-symbols-outlined mr-sm">settings</span>
+<span class="font-label-caps text-label-caps">System Settings</span>
+</a>
+</li>
+</ul>
+</div>
+<!-- CTA & Footer -->
+<div class="px-md mt-auto pt-md border-t border-primary-container">
+<button class="w-full gradient-btn rounded-lg p-sm font-label-caps text-label-caps mb-md hover:opacity-90 transition-opacity flex justify-center items-center">
+<span class="material-symbols-outlined mr-xs text-[16px]">campaign</span>
+                Broadcast Alert
+            </button>
+<ul class="space-y-sm">
+<li>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-primary-fixed-variant mx-2 flex items-center p-sm rounded-lg hover:bg-primary-fixed-variant duration-200" href="#">
+<span class="material-symbols-outlined mr-sm">help</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+</li>
+<li>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-primary-fixed-variant mx-2 flex items-center p-sm rounded-lg hover:bg-primary-fixed-variant duration-200" href="#">
+<span class="material-symbols-outlined mr-sm">logout</span>
+<span class="font-label-caps text-label-caps">Logout</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Workspace -->
+<main class="ml-sidebar-width flex-1 flex flex-col min-h-screen">
+<!-- TopAppBar (Injected from JSON) -->
+<header class="bg-primary dark:bg-primary-container w-full z-30 shadow-md flex justify-between items-center h-topbar-height px-lg">
+<!-- Brand -->
+<div class="flex items-center">
+<span class="text-headline-md font-headline-md font-bold text-secondary-container">PEMS Enterprise</span>
+<span class="ml-sm font-body-base text-body-base text-on-primary opacity-60">| Protocol Center</span>
+</div>
+<!-- Navigation Links (Hidden on mobile) -->
+<nav class="hidden md:flex space-x-lg h-full">
+<a class="flex items-center h-full text-secondary-container border-b-2 border-secondary-container pb-1 font-body-medium text-body-medium" href="#">Emergency Console</a>
+<a class="flex items-center h-full text-on-primary-container opacity-80 hover:opacity-100 font-body-medium text-body-medium hover:bg-on-primary-fixed-variant transition-colors px-xs" href="#">Muster Tracking</a>
+<a class="flex items-center h-full text-on-primary-container opacity-80 hover:opacity-100 font-body-medium text-body-medium hover:bg-on-primary-fixed-variant transition-colors px-xs" href="#">Resource Map</a>
+<a class="flex items-center h-full text-on-primary-container opacity-80 hover:opacity-100 font-body-medium text-body-medium hover:bg-on-primary-fixed-variant transition-colors px-xs" href="#">Logs</a>
+</nav>
+<!-- Actions -->
+<div class="flex items-center space-x-md">
+<button class="gradient-btn rounded p-sm font-label-caps text-label-caps hover:opacity-90 transition-opacity">
+                    INITIATE EVACUATION
+                </button>
+<div class="flex space-x-sm text-on-primary dark:text-on-primary-fixed">
+<button class="p-xs hover:bg-on-primary-fixed-variant rounded transition-colors"><span class="material-symbols-outlined">notifications_active</span></button>
+<button class="p-xs hover:bg-on-primary-fixed-variant rounded transition-colors flex items-center"><span class="material-symbols-outlined mr-xs">language</span><span class="font-label-caps">EN/FA</span></button>
+<button class="p-xs hover:bg-on-primary-fixed-variant rounded transition-colors"><span class="material-symbols-outlined">account_circle</span></button>
+</div>
+</div>
+</header>
+<!-- Content Area - 12 Column Grid -->
+<div class="flex-1 overflow-y-auto p-gutter md:p-lg grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Left Column: Checklists (3 Cols) -->
+<div class="md:col-span-3 space-y-gutter flex flex-col">
+<div class="glass-card rounded-lg p-md flex-1">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-sm flex justify-between">
+<span>Protocols</span>
+<span class="text-sm font-normal text-on-surface-variant font-arabic" dir="rtl">پروتکل ها</span>
+</h2>
+<div class="space-y-sm">
+<!-- Protocol 1 -->
+<div class="border border-outline-variant rounded-md p-sm amber-hover cursor-pointer transition-colors bg-surface-container-lowest">
+<div class="flex items-center justify-between mb-xs">
+<span class="font-body-medium text-body-medium flex items-center text-error"><span class="material-symbols-outlined mr-xs text-[18px]">local_fire_department</span> Fire / آتش سوزی</span>
+<span class="bg-error-container text-on-error-container font-badge-label text-badge-label px-2 py-0.5 rounded-full">ACTIVE</span>
+</div>
+<ul class="space-y-xs ml-lg mt-sm">
+<li class="flex items-start">
+<input checked="" class="mt-1 mr-xs rounded text-secondary-container focus:ring-secondary-container border-outline-variant" type="checkbox"/>
+<span class="font-table-cell text-table-cell text-on-surface-variant">Sound alarms in Sector A <br/><span class="text-xs opacity-70" dir="rtl">به صدا درآوردن آژیرها در بخش A</span></span>
+</li>
+<li class="flex items-start">
+<input checked="" class="mt-1 mr-xs rounded text-secondary-container focus:ring-secondary-container border-outline-variant" type="checkbox"/>
+<span class="font-table-cell text-table-cell text-on-surface-variant">Isolate ventilation <br/><span class="text-xs opacity-70" dir="rtl">جداسازی تهویه</span></span>
+</li>
+<li class="flex items-start">
+<input class="mt-1 mr-xs rounded text-secondary-container focus:ring-secondary-container border-outline-variant" type="checkbox"/>
+<span class="font-table-cell text-table-cell text-on-surface-variant">Dispatch fire team <br/><span class="text-xs opacity-70" dir="rtl">اعزام تیم آتش نشانی</span></span>
+</li>
+</ul>
+</div>
+<!-- Protocol 2 -->
+<div class="border border-outline-variant rounded-md p-sm amber-hover cursor-pointer transition-colors bg-surface-container-lowest opacity-70">
+<div class="flex items-center justify-between">
+<span class="font-body-medium text-body-medium flex items-center text-on-surface"><span class="material-symbols-outlined mr-xs text-[18px]">gas_meter</span> Gas Leak / نشت گاز</span>
+<span class="bg-surface-variant text-on-surface-variant font-badge-label text-badge-label px-2 py-0.5 rounded-full">STANDBY</span>
+</div>
+</div>
+<!-- Protocol 3 -->
+<div class="border border-outline-variant rounded-md p-sm amber-hover cursor-pointer transition-colors bg-surface-container-lowest opacity-70">
+<div class="flex items-center justify-between">
+<span class="font-body-medium text-body-medium flex items-center text-on-surface"><span class="material-symbols-outlined mr-xs text-[18px]">power_off</span> Power Failure / قطعی برق</span>
+<span class="bg-surface-variant text-on-surface-variant font-badge-label text-badge-label px-2 py-0.5 rounded-full">STANDBY</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Center Column: Command & Control (6 Cols) -->
+<div class="md:col-span-6 space-y-gutter flex flex-col">
+<!-- KPI Row -->
+<div class="grid grid-cols-2 gap-sm">
+<div class="glass-card rounded-lg p-sm flex items-center">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-surface-container-high flex items-center justify-center mr-sm">
+<span class="material-symbols-outlined text-[24px] text-tertiary-container" style="font-variation-settings: 'FILL' 1;">groups</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-xs">EVACUATED / تخلیه شده</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">342 <span class="text-sm font-normal text-outline">/ 450</span></div>
+</div>
+</div>
+<div class="glass-card rounded-lg p-sm flex items-center border-error-container">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-error-container flex items-center justify-center mr-sm">
+<span class="material-symbols-outlined text-[24px] text-on-error-container" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-error-container mb-xs">MISSING / مفقود</div>
+<div class="font-kpi-stat text-kpi-stat text-error">12</div>
+</div>
+</div>
+</div>
+<!-- Main Video Feed / Map -->
+<div class="glass-card rounded-lg flex-1 flex flex-col overflow-hidden relative">
+<div class="bg-surface-container-lowest p-sm border-b border-outline-variant flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-on-surface flex items-center">
+<span class="material-symbols-outlined mr-xs text-error animate-pulse">videocam</span>
+                            Muster Point Alpha
+                        </h2>
+<span class="bg-surface-variant text-on-surface-variant font-badge-label text-badge-label px-2 py-0.5 rounded-full">LIVE FEED</span>
+</div>
+<div class="flex-1 bg-surface-container-highest relative min-h-[300px]">
+<!-- Simulated Live Feed Map -->
+<div class="bg-cover bg-center w-full h-full absolute inset-0 opacity-80" data-alt="A top-down, high-tech satellite view map of an industrial complex, displayed on a control room screen. The style is modern, technical, and slightly desaturated, using dark slates and deep blues. Glowing amber and bright green markers indicate personnel muster points. The lighting implies a glowing digital display in a darkened operations center." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDS1WAeRz4N_W8K--qb6b2QZsoFWlY0LKQMg_t9vJWNZMY0b9ujxBtazpGL5Rgx7HXvvT0BMCrFuj2K-Rvl4k2zufbMD_fpV3lVQEbDOqgMmbkjpvRDAAu9eBoo726oMdOGCe3mpybHhaE0tP-zVaGUVMEyl0nLGU9VkT8n923aq-1eBsBGzwsLkWNw_2I2sf7ZHgpAUAE2FN7gRAvgmNGVlQDhORovMcfDSFN_UqwJ1HiX9hCyQ2KJ')"></div>
+<!-- Overlay UI on Map -->
+<div class="absolute bottom-sm left-sm right-sm flex gap-sm">
+<div class="bg-surface/90 backdrop-blur rounded p-xs flex items-center border border-outline-variant">
+<span class="w-3 h-3 rounded-full bg-green-500 mr-xs"></span>
+<span class="font-table-cell text-table-cell">Cleared</span>
+</div>
+<div class="bg-surface/90 backdrop-blur rounded p-xs flex items-center border border-outline-variant">
+<span class="w-3 h-3 rounded-full bg-error mr-xs animate-pulse"></span>
+<span class="font-table-cell text-table-cell">Danger Zone</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Contacts & Timeline (3 Cols) -->
+<div class="md:col-span-3 space-y-gutter flex flex-col">
+<!-- Contacts -->
+<div class="glass-card rounded-lg p-md">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-sm flex justify-between">
+<span>Contacts</span>
+<span class="text-sm font-normal text-on-surface-variant font-arabic" dir="rtl">مخاطبین</span>
+</h2>
+<div class="space-y-xs">
+<div class="flex items-center justify-between p-xs hover:bg-surface-container-low rounded border border-transparent hover:border-outline-variant transition-colors group">
+<div>
+<div class="font-body-medium text-body-medium text-on-surface">Ambulance <span class="text-xs text-on-surface-variant font-normal">/ آمبولانس</span></div>
+<div class="font-table-cell text-table-cell text-on-surface-variant">Dispatch</div>
+</div>
+<button class="w-[32px] h-[32px] rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover:bg-secondary-container group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</button>
+</div>
+<div class="flex items-center justify-between p-xs hover:bg-surface-container-low rounded border border-transparent hover:border-outline-variant transition-colors group">
+<div>
+<div class="font-body-medium text-body-medium text-on-surface">Fire Dept <span class="text-xs text-on-surface-variant font-normal">/ آتش نشانی</span></div>
+<div class="font-table-cell text-table-cell text-on-surface-variant">Station 4</div>
+</div>
+<button class="w-[32px] h-[32px] rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover:bg-secondary-container group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</button>
+</div>
+<div class="flex items-center justify-between p-xs hover:bg-surface-container-low rounded border border-transparent hover:border-outline-variant transition-colors group">
+<div>
+<div class="font-body-medium text-body-medium text-on-surface">Site Security <span class="text-xs text-on-surface-variant font-normal">/ امنیت سایت</span></div>
+<div class="font-table-cell text-table-cell text-on-surface-variant">Main Gate</div>
+</div>
+<button class="w-[32px] h-[32px] rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover:bg-secondary-container group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Timeline -->
+<div class="glass-card rounded-lg p-md flex-1 overflow-hidden flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-sm flex justify-between">
+<span>Event Log</span>
+<span class="text-sm font-normal text-on-surface-variant font-arabic" dir="rtl">ثبت وقایع</span>
+</h2>
+<div class="flex-1 overflow-y-auto pr-xs space-y-sm">
+<!-- Timeline Items -->
+<div class="relative timeline-item timeline-line flex items-start">
+<div class="w-[30px] flex-shrink-0 flex justify-center z-10 bg-white">
+<div class="w-2 h-2 rounded-full bg-secondary-container mt-1.5"></div>
+</div>
+<div class="pb-sm w-full">
+<div class="flex justify-between items-baseline mb-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant">14:08</span>
+</div>
+<p class="font-table-cell text-table-cell text-on-surface">Dispatch notified<br/><span class="text-xs opacity-70" dir="rtl">اطلاع رسانی به اعزام</span></p>
+</div>
+</div>
+<div class="relative timeline-item timeline-line flex items-start">
+<div class="w-[30px] flex-shrink-0 flex justify-center z-10 bg-white">
+<div class="w-2 h-2 rounded-full bg-outline mt-1.5"></div>
+</div>
+<div class="pb-sm w-full">
+<div class="flex justify-between items-baseline mb-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant">14:05</span>
+</div>
+<p class="font-table-cell text-table-cell text-on-surface">Sector A Cleared<br/><span class="text-xs opacity-70" dir="rtl">بخش A تخلیه شد</span></p>
+</div>
+</div>
+<div class="relative timeline-item timeline-line flex items-start">
+<div class="w-[30px] flex-shrink-0 flex justify-center z-10 bg-white">
+<div class="w-2 h-2 rounded-full bg-error mt-1.5"></div>
+</div>
+<div class="pb-sm w-full">
+<div class="flex justify-between items-baseline mb-xs">
+<span class="font-label-caps text-label-caps text-error font-bold">14:02</span>
+</div>
+<p class="font-table-cell text-table-cell text-on-surface font-semibold">Alarm Triggered<br/><span class="text-xs opacity-70 font-normal" dir="rtl">آژیر فعال شد</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

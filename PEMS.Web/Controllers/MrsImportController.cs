@@ -1,0 +1,149 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Interfaces;
+using PEMS.Persistence.Context;
+using PEMS.Web.Security;
+
+namespace PEMS.Web.Controllers;
+
+/// <summary>
+/// طبق سند Inventory بخش ۲۰-۲۱: Upload → Stage → Review → Commit برای فایل‌های واقعی MRS -
+/// دقیقاً همون گردش‌کار TableExtractionController، فقط منبع Excel است نه PDF.
+/// </summary>
+public class MrsImportController : Controller
+{
+    private readonly IMrsImportService _service;
+    private readonly PEMSDbContext _context;
+    private readonly ICurrentUserService _currentUser;
+    private readonly IFileStorageService _fileStorage;
+
+    public MrsImportController(IMrsImportService service, PEMSDbContext context, ICurrentUserService currentUser, IFileStorageService fileStorage)
+    {
+        _service = service;
+        _context = context;
+        _currentUser = currentUser;
+        _fileStorage = fileStorage;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        ViewData["Title"] = "MRS Import";
+        ViewData["Section"] = "Inventory & Materials";
+
+        var batches = await _service.GetBatchesAsync();
+        return View(batches);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Upload(IFormFile file, string? sheetName)
+    {
+        if (file == null || file.Length == 0)
+        {
+            TempData["Error"] = "فایلی انتخاب نشده.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+        if (ext != ".xlsx" && ext != ".xlsm")
+        {
+            TempData["Error"] = "فقط فایل Excel (.xlsx) پشتیبانی می‌شود.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        // طبق سند Metadata Extraction بخش ۶ (Do Not Lose Document Context): خودِ فایل باید یک
+        // DocumentAttachment واقعی شود، نه فقط SourceFileName متنی. Stream فایل آپلودی فقط یک‌بار
+        // قابل‌خواندن است، پس ابتدا در حافظه بافر می‌شود تا هم روی دیسک ذخیره شود هم ClosedXML آن
+        // را Parse کند - بدون این‌که استریم اصلی دو بار مصرف شود.
+        await using var buffer = new MemoryStream();
+        await file.CopyToAsync(buffer);
+
+        var attachmentId = await SaveMrsSourceFileAsync(file, buffer.ToArray());
+
+        buffer.Position = 0;
+        var (success, error, batchId) = await _service.StageFromExcelAsync(
+            buffer, file.FileName, sheetName, await GetCurrentEmployeeIdAsync(), attachmentId);
+
+        if (!success) { TempData["Error"] = error; return RedirectToAction(nameof(Index)); }
+
+        return RedirectToAction(nameof(Review), new { batchId });
+    }
+
+    private async Task<int> SaveMrsSourceFileAsync(IFormFile file, byte[] bytes)
+    {
+        string storageKey;
+        await using (var uploadStream = new MemoryStream(bytes))
+        {
+            storageKey = await _fileStorage.SaveAsync("mrs-import", file.FileName, uploadStream);
+        }
+
+        var attachment = new PEMS.Domain.Entities.DocumentAttachment
+        {
+            FileName = file.FileName,
+            FileExtension = Path.GetExtension(file.FileName),
+            FilePath = storageKey,
+            FileSize = file.Length,
+            MimeType = file.ContentType,
+            UploadedById = await GetCurrentEmployeeIdAsync(),
+            UploadDate = DateTime.Now,
+            IsActive = true,
+            AIStatus = "NotApplicable"
+        };
+
+        await _context.DocumentAttachments.AddAsync(attachment);
+        await _context.SaveChangesAsync();
+
+        return attachment.AttachmentId;
+    }
+
+    public async Task<IActionResult> Review(int batchId, string? matchStatusFilter)
+    {
+        ViewData["Title"] = "MRS Import Review";
+        ViewData["Section"] = "Inventory & Materials";
+
+        var detail = await _service.GetBatchDetailAsync(batchId, matchStatusFilter);
+        if (detail == null) return NotFound();
+
+        ViewBag.MatchStatusFilter = matchStatusFilter;
+        return View(detail);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> BulkCommit(int batchId, List<int>? selectedRowIds)
+    {
+        if (selectedRowIds == null || selectedRowIds.Count == 0)
+        {
+            TempData["Error"] = "هیچ ردیفی انتخاب نشده.";
+            return RedirectToAction(nameof(Review), new { batchId });
+        }
+
+        var (success, error, committed, skipped) = await _service.CommitAsync(batchId, selectedRowIds, await GetCurrentEmployeeIdAsync());
+
+        if (!success) { TempData["Error"] = error; return RedirectToAction(nameof(Review), new { batchId }); }
+
+        TempData["Message"] = $"{committed} ردیف تایید و به MaterialItem/InventoryTransaction تبدیل شد." + (skipped > 0 ? $" ({skipped} ردیف نامعتبر رد شد)" : "");
+        return RedirectToAction(nameof(Review), new { batchId });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> BulkReject(int batchId, List<int>? selectedRowIds)
+    {
+        if (selectedRowIds == null || selectedRowIds.Count == 0)
+        {
+            TempData["Error"] = "هیچ ردیفی انتخاب نشده.";
+            return RedirectToAction(nameof(Review), new { batchId });
+        }
+
+        await _service.RejectRowsAsync(batchId, selectedRowIds, await GetCurrentEmployeeIdAsync());
+        TempData["Message"] = $"{selectedRowIds.Count} ردیف رد شد.";
+        return RedirectToAction(nameof(Review), new { batchId });
+    }
+
+    private async Task<int?> GetCurrentEmployeeIdAsync()
+    {
+        if (!_currentUser.UserId.HasValue) return null;
+        return await _context.Users.Where(u => u.Id == _currentUser.UserId.Value).Select(u => u.EmployeeId).FirstOrDefaultAsync();
+    }
+}

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS Admin - Quick Configuration &amp; Data Import</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#ffdcbc",
+                        "surface-container-low": "#eef4ff",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "inverse-on-surface": "#e9f1ff",
+                        "outline-variant": "#c5c6cd",
+                        "on-background": "#081d2f",
+                        "secondary": "#895200",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#1f3245",
+                        "primary": "#000819",
+                        "inverse-primary": "#bbc7e0",
+                        "tertiary-container": "#00213d",
+                        "primary-container": "#142033",
+                        "on-tertiary-fixed": "#001d36",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#d0e4fe",
+                        "on-surface": "#081d2f",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "surface-container": "#e4efff",
+                        "surface-dim": "#c8dcf5",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#535f75",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed": "#d7e3fd",
+                        "on-primary-container": "#7c889f",
+                        "on-tertiary-container": "#498bcd",
+                        "on-secondary-container": "#6e4100",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "secondary-container": "#fdaa47",
+                        "surface-container-high": "#daeaff",
+                        "surface": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "background": "#f8f9ff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "tertiary": "#000815",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#d0e4fe",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#2c1700",
+                        "on-surface-variant": "#44474c",
+                        "on-primary-fixed": "#101c2f",
+                        "outline": "#75777d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sidebar-width": "260px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "unit": "4px",
+                        "topbar-height": "60px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "body-medium": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "table-header": ["Inter"],
+                        "body-base": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.fill { font-variation-settings: 'FILL' 1; }
+        .gradient-btn { background: linear-gradient(to right, #d98c2b, #b8721e); }
+        .card-border { border: 1px solid #edf0f4; }
+        .focus-ring:focus-within { border-color: #d98c2b; box-shadow: 0 0 0 2px rgba(217, 140, 43, 0.2); }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-base h-screen flex overflow-hidden">
+<!-- SideNavBar (Shared Component) -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width bg-primary dark:bg-primary-container flex flex-col py-md border-r border-outline/20 z-40 hidden lg:flex shadow-md transition-transform duration-200 ease-in-out">
+<div class="px-md mb-xl flex items-center gap-sm">
+<span class="material-symbols-outlined fill text-secondary-container text-4xl">factory</span>
+<div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-primary">PEMS Utility</h1>
+<p class="font-label-caps text-label-caps text-on-primary-container">Management v2.4</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto">
+<ul class="space-y-unit">
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-primary-fixed-dim hover:text-white mx-sm hover:bg-white/10 dark:hover:bg-white/5 transition-all rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">badge</span>
+                        Employee Management
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-primary-fixed-dim hover:text-white mx-sm hover:bg-white/10 dark:hover:bg-white/5 transition-all rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                        Asset Inventory
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-primary-fixed-dim hover:text-white mx-sm hover:bg-white/10 dark:hover:bg-white/5 transition-all rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">assignment</span>
+                        Work Orders
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-primary-fixed-dim hover:text-white mx-sm hover:bg-white/10 dark:hover:bg-white/5 transition-all rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">security</span>
+                        Safety
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-bold mx-sm transition-all font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                        Analytics
+                    </a>
+</li>
+</ul>
+</nav>
+<div class="mt-auto border-t border-outline/20 pt-md">
+<ul class="space-y-unit">
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-primary-fixed-dim hover:text-white mx-sm hover:bg-white/10 dark:hover:bg-white/5 transition-all rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">settings</span>
+                        System Settings
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-sm px-md py-sm text-primary-fixed-dim hover:text-white mx-sm hover:bg-white/10 dark:hover:bg-white/5 transition-all rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">help</span>
+                        Support
+                    </a>
+</li>
+</ul>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full lg:ml-[260px] overflow-hidden bg-background">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-surface-container dark:bg-surface-container-high docked full-width top-0 h-topbar-height border-b border-outline-variant dark:border-outline flat no shadows flex justify-between items-center w-full px-lg sticky top-0 z-50">
+<div class="flex items-center gap-md">
+<button class="lg:hidden text-primary dark:text-primary-fixed hover:bg-surface-variant/40 p-unit rounded-lg transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed hidden md:block">PEMS Industrial Utility</div>
+</div>
+<div class="flex-1 max-w-xl mx-md hidden sm:block focus-ring rounded-lg overflow-hidden bg-surface-bright card-border flex items-center">
+<span class="material-symbols-outlined text-outline ml-sm mr-xs">search</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-body-base py-sm" placeholder="Search resources..." type="text"/>
+</div>
+<div class="flex items-center gap-sm text-primary dark:text-primary-fixed">
+<button class="p-unit rounded-lg hover:bg-surface-variant/40 dark:hover:bg-primary-container/20 transition-colors active:scale-95 duration-150"><span class="material-symbols-outlined">language</span></button>
+<button class="p-unit rounded-lg hover:bg-surface-variant/40 dark:hover:bg-primary-container/20 transition-colors active:scale-95 duration-150"><span class="material-symbols-outlined">notifications</span></button>
+<button class="p-unit rounded-lg hover:bg-surface-variant/40 dark:hover:bg-primary-container/20 transition-colors active:scale-95 duration-150"><span class="material-symbols-outlined">account_circle</span></button>
+</div>
+</header>
+<!-- Scrollable Workspace -->
+<div class="flex-1 overflow-y-auto p-gutter lg:p-lg">
+<div class="max-w-[1400px] mx-auto space-y-gutter lg:space-y-lg">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-background">Admin Quick Configuration &amp; Data Import</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-unit">System Readiness: Staging Environment (تنظیمات سریع و واردات داده)</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-sm bg-surface-bright card-border text-surface-tint rounded-lg font-body-medium text-body-medium flex items-center gap-xs hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+                            Download Templates
+                        </button>
+<button class="px-md py-sm gradient-btn text-white rounded-lg font-body-medium text-body-medium flex items-center gap-xs shadow-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">database</span>
+                            Commit to Database
+                        </button>
+</div>
+</div>
+<!-- Status Banner -->
+<div class="bg-surface-container-high rounded-xl p-md border-l-4 border-secondary flex flex-col md:flex-row items-center justify-between gap-md shadow-sm">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 bg-secondary-container/20 text-secondary-container rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined fill text-2xl">published_with_changes</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md font-bold text-on-background">Bulk Import Session Active</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">4 Modules pending configuration mapping.</p>
+</div>
+</div>
+<div class="w-full md:w-64">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant mb-unit">
+<span>Overall Progress</span>
+<span>45%</span>
+</div>
+<div class="w-full bg-surface-dim rounded-full h-2">
+<div class="bg-secondary h-2 rounded-full" style="width: 45%"></div>
+</div>
+</div>
+</div>
+<!-- Bento Grid for Import Modules -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-md">
+<!-- VDR Card -->
+<div class="bg-surface-container-lowest card-border rounded-xl p-md hover:border-secondary transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-md">
+<div class="w-10 h-10 bg-primary-fixed text-on-primary-fixed rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">folder_zip</span>
+</div>
+<span class="px-2 py-1 bg-surface-container text-surface-tint rounded-full font-badge-label text-badge-label">Pending</span>
+</div>
+<h4 class="font-body-medium text-body-medium text-on-background mb-xs">VDR (Vendor Doc Register)</h4>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm mb-md">Bulk Excel/Zip upload for vendor packages.</p>
+<button class="w-full py-unit border border-outline-variant text-on-surface-variant rounded-lg text-sm font-body-medium hover:bg-surface-container transition-colors">Select Files</button>
+</div>
+<!-- MDR Card -->
+<div class="bg-surface-container-lowest card-border rounded-xl p-md hover:border-secondary transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-md">
+<div class="w-10 h-10 bg-tertiary-fixed text-on-tertiary-fixed rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">library_books</span>
+</div>
+<span class="px-2 py-1 bg-error-container text-on-error-container rounded-full font-badge-label text-badge-label flex items-center gap-xs"><span class="material-symbols-outlined text-[14px]">warning</span> 2 Errors</span>
+</div>
+<h4 class="font-body-medium text-body-medium text-on-background mb-xs">MDR (Master Doc Register)</h4>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm mb-md">Engineering document control bulk sync.</p>
+<button class="w-full py-unit border border-outline-variant text-on-surface-variant rounded-lg text-sm font-body-medium hover:bg-surface-container transition-colors">Review Errors</button>
+</div>
+<!-- Database Sync Card -->
+<div class="bg-surface-container-lowest card-border rounded-xl p-md hover:border-secondary transition-colors cursor-pointer group border-secondary">
+<div class="flex justify-between items-start mb-md">
+<div class="w-10 h-10 bg-secondary-fixed text-on-secondary-fixed rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">storage</span>
+</div>
+<span class="px-2 py-1 bg-surface-container-high text-on-surface rounded-full font-badge-label text-badge-label flex items-center gap-xs"><span class="material-symbols-outlined text-[14px] text-secondary">sync</span> Mapping...</span>
+</div>
+<h4 class="font-body-medium text-body-medium text-on-background mb-xs">Database Sync</h4>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm mb-md">SQL/Excel migration (Assets, Staff).</p>
+<button class="w-full py-unit bg-secondary-container text-on-secondary-container rounded-lg text-sm font-body-medium hover:bg-secondary-fixed transition-colors">Continue Mapping</button>
+</div>
+<!-- Telemetry Card -->
+<div class="bg-surface-container-lowest card-border rounded-xl p-md hover:border-secondary transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-md">
+<div class="w-10 h-10 bg-surface-container text-on-surface-variant rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">sensors</span>
+</div>
+<span class="px-2 py-1 bg-[#dcedc8] text-[#33691e] rounded-full font-badge-label text-badge-label flex items-center gap-xs"><span class="material-symbols-outlined text-[14px]">check_circle</span> Ready</span>
+</div>
+<h4 class="font-body-medium text-body-medium text-on-background mb-xs">Telemetry Setup</h4>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm mb-md">Batch sensor configuration.</p>
+<button class="w-full py-unit border border-outline-variant text-on-surface-variant rounded-lg text-sm font-body-medium hover:bg-surface-container transition-colors" disabled="">Validated</button>
+</div>
+</div>
+<!-- Complex Data Mapping Section -->
+<div class="bg-surface-container-lowest card-border rounded-xl shadow-sm overflow-hidden flex flex-col h-[500px]">
+<div class="bg-surface-container-low p-md border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md font-bold text-on-background flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">schema</span>
+                            Data Mapping Preview (Database Sync)
+                        </h3>
+<div class="flex gap-sm">
+<select class="form-select bg-surface-bright border-outline-variant rounded-lg text-sm font-body-base py-unit pl-sm pr-xl focus-ring">
+<option>Asset Registry (assets_v2.xlsx)</option>
+<option>Employee Roster</option>
+</select>
+</div>
+</div>
+<div class="flex-1 overflow-auto bg-surface-bright">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#f5f7fa] sticky top-0 z-10 border-b border-outline-variant shadow-sm">
+<tr>
+<th class="font-table-header text-table-header text-on-surface-variant py-sm px-md uppercase tracking-wider w-12 text-center">Status</th>
+<th class="font-table-header text-table-header text-on-surface-variant py-sm px-md uppercase tracking-wider">Source Column (Excel)</th>
+<th class="font-table-header text-table-header text-on-surface-variant py-sm px-md uppercase tracking-wider w-16 text-center">Map</th>
+<th class="font-table-header text-table-header text-on-surface-variant py-sm px-md uppercase tracking-wider">Target Field (PEMS DB)</th>
+<th class="font-table-header text-table-header text-on-surface-variant py-sm px-md uppercase tracking-wider">Preview (Row 1)</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface divide-y divide-outline-variant/50">
+<tr class="hover:bg-surface-container/30 transition-colors group">
+<td class="py-sm px-md text-center"><span class="material-symbols-outlined text-[#33691e] text-[18px]">check_circle</span></td>
+<td class="py-sm px-md font-mono text-xs text-on-surface-variant">Equip_ID_Number</td>
+<td class="py-sm px-md text-center"><span class="material-symbols-outlined text-outline text-[16px]">arrow_forward</span></td>
+<td class="py-sm px-md">
+<select class="w-full border-outline-variant rounded bg-white text-xs py-1 px-2 focus-ring">
+<option selected="">asset_tag_no</option>
+<option>serial_number</option>
+</select>
+</td>
+<td class="py-sm px-md font-mono text-xs text-on-surface-variant truncate max-w-[200px]">PMP-1024-A</td>
+</tr>
+<tr class="hover:bg-surface-container/30 transition-colors group">
+<td class="py-sm px-md text-center"><span class="material-symbols-outlined text-[#33691e] text-[18px]">check_circle</span></td>
+<td class="py-sm px-md font-mono text-xs text-on-surface-variant">Description_Eng</td>
+<td class="py-sm px-md text-center"><span class="material-symbols-outlined text-outline text-[16px]">arrow_forward</span></td>
+<td class="py-sm px-md">
+<select class="w-full border-outline-variant rounded bg-white text-xs py-1 px-2 focus-ring">
+<option selected="">asset_desc</option>
+<option>long_desc</option>
+</select>
+</td>
+<td class="py-sm px-md text-xs text-on-surface-variant truncate max-w-[200px]">Centrifugal Pump Heavy Duty</td>
+</tr>
+<tr class="hover:bg-error-container/20 transition-colors group bg-error-container/10">
+<td class="py-sm px-md text-center"><span class="material-symbols-outlined text-error text-[18px]">error</span></td>
+<td class="py-sm px-md font-mono text-xs text-on-surface-variant">Install_Date</td>
+<td class="py-sm px-md text-center"><span class="material-symbols-outlined text-error text-[16px]">arrow_forward</span></td>
+<td class="py-sm px-md">
+<select class="w-full border-error rounded bg-white text-xs py-1 px-2 focus:ring-error focus:border-error text-error">
+<option>-- Select Target --</option>
+<option>commissioning_date</option>
+<option>installation_date</option>
+</select>
+</td>
+<td class="py-sm px-md text-xs text-error font-medium truncate max-w-[200px]">Type Mismatch (Expected Date)</td>
+</tr>
+<tr class="hover:bg-surface-container/30 transition-colors group">
+<td class="py-sm px-md text-center"><span class="material-symbols-outlined text-[#33691e] text-[18px]">check_circle</span></td>
+<td class="py-sm px-md font-mono text-xs text-on-surface-variant">Manufacturer</td>
+<td class="py-sm px-md text-center"><span class="material-symbols-outlined text-outline text-[16px]">arrow_forward</span></td>
+<td class="py-sm px-md">
+<select class="w-full border-outline-variant rounded bg-white text-xs py-1 px-2 focus-ring">
+<option selected="">vendor_id (FK)</option>
+</select>
+</td>
+<td class="py-sm px-md text-xs text-on-surface-variant truncate max-w-[200px]">Flowserve Corp.</td>
+</tr>
+<tr class="hover:bg-surface-container/30 transition-colors group">
+<td class="py-sm px-md text-center"><span class="material-symbols-outlined text-outline text-[18px]">help</span></td>
+<td class="py-sm px-md font-mono text-xs text-on-surface-variant">Notes_Optional</td>
+<td class="py-sm px-md text-center"><span class="material-symbols-outlined text-outline text-[16px]">arrow_forward</span></td>
+<td class="py-sm px-md">
+<select class="w-full border-outline-variant rounded bg-white text-xs py-1 px-2 focus-ring text-on-surface-variant italic">
+<option selected="">-- Ignore Column --</option>
+<option>remarks</option>
+</select>
+</td>
+<td class="py-sm px-md text-xs text-on-surface-variant truncate max-w-[200px]">Replaced seal in 2022</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="bg-surface-container-low p-sm border-t border-outline-variant flex justify-end gap-sm">
+<button class="px-md py-unit bg-surface-bright card-border text-surface-tint rounded text-sm font-body-medium hover:bg-surface-variant transition-colors">Auto-Map Columns</button>
+<button class="px-md py-unit bg-primary text-white rounded text-sm font-body-medium hover:opacity-90 transition-opacity">Validate Mapping</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,88 @@
+@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.TableExtractionAttachmentListDto>
+
+<div class="content-card mb-3">
+    <p class="text-muted mb-0">
+        ابزار آزمایش پرامپت استخراج جدولی (Wiring Connection Diagram, Instrument Index, Marshalling List,
+        I/O List, Loop Drawing) روی فایل‌های آپلودشده. این صفحه مستقل از خط پردازش خودکار AI Intake است و
+        هیچ نتیجه‌ای را در پایگاه‌داده ذخیره نمی‌کند - فقط خروجی مدل را برای بررسی نمایش می‌دهد.
+    </p>
+</div>
+
+<div class="content-card">
+    <div class="d-flex justify-content-end mb-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('TableExtraction')">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+        </button>
+    </div>
+    <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:70vh; overflow-y:auto;">
+        <table class="table table-enterprise pems-grid-table" data-grid-key="TableExtraction">
+            <thead>
+                <tr>
+                    <th data-col-key="file" data-resizable="true" data-min-width="140" data-max-width="320">File</th>
+                    <th data-col-key="ext" data-resizable="true" data-min-width="80" data-max-width="140">Extension</th>
+                    <th data-col-key="uploaded" data-resizable="true" data-min-width="120" data-max-width="200">Uploaded</th>
+                    <th data-col-key="aiStatus" data-resizable="true" data-min-width="90" data-max-width="180">AI Status</th>
+                    <th data-col-key="hint" data-resizable="true" data-min-width="200" data-max-width="400" style="min-width:260px;">Document hint (optional)</th>
+                    <th data-col-key="action" data-resizable="false" style="min-width:220px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var attachment in Model.Items)
+                {
+                    <tr>
+                        <td>@attachment.FileName</td>
+                        <td>@attachment.FileExtension</td>
+                        <td class="small text-muted">@attachment.UploadDate.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            <span class="badge bg-secondary">@attachment.AIStatus</span>
+                        </td>
+                        <td>
+                            <form asp-action="Analyze" method="post" id="aiForm_@attachment.AttachmentId">
+                                <input type="hidden" name="attachmentId" value="@attachment.AttachmentId" />
+                                <input type="text" name="documentHint" class="form-control form-control-sm"
+                                       placeholder="e.g. Wiring Connection Diagram for JB-12" />
+                            </form>
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <button type="submit" form="aiForm_@attachment.AttachmentId" class="btn btn-sm btn-pems-solid text-nowrap">
+                                    <i class="bi bi-stars"></i> With AI
+                                </button>
+                                <form asp-action="AnalyzeDeterministic" method="post" class="d-inline">
+                                    <input type="hidden" name="attachmentId" value="@attachment.AttachmentId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary text-nowrap" title="PDF native text only, no LLM call - faster and more precise for real tables">
+                                        <i class="bi bi-grid-3x3"></i> No AI (PDF)
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (!Model.Items.Any())
+        {
+            <p class="text-muted text-center py-4">No uploaded attachments yet. Try Document Upload first.</p>
+        }
+    </div>
+
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "TableExtraction",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = ""
+    })
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('TableExtraction');
+        });
+    </script>
+}

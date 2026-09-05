@@ -1,0 +1,473 @@
+﻿@using PEMS.Web.Security
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var currentArea = ViewContext.RouteData.Values["area"]?.ToString() ?? "";
+
+    bool IsActive(string controller, string area = "") =>
+        currentController.Equals(controller, StringComparison.OrdinalIgnoreCase) &&
+        currentArea.Equals(area, StringComparison.OrdinalIgnoreCase);
+
+    bool InArea(string area) =>
+        currentArea.Equals(area, StringComparison.OrdinalIgnoreCase);
+
+    string ComingSoon(string title, string section) =>
+        Url.Action("Index", "ComingSoon", new { title, section }) ?? "#";
+
+    // بخش‌های سایدبار حالا کشویی (Accordion) هستند تا اسکرول طولانی نداشته باشیم -
+    // فقط بخشی که صفحه‌ی جاری در آن است باز باز می‌شود، بقیه بسته‌اند.
+    string SectionClass(bool containsActive) => "collapse" + (containsActive ? " show" : "");
+    string ChevronClass(bool containsActive) => "bi bi-chevron-down nav-section-chevron" + (containsActive ? " rotated" : "");
+
+    var engineeringControllers = new[] { "EngineeringDashboard", "Projects", "EngineeringDocuments", "DocumentRegister", "MDRImport", "DocumentRevisions", "DocumentWorkflow", "VDR", "VDRImport", "Transmittal", "MDB", "ProcurementPackage", "MaterialRequisition", "Discipline" };
+    var aiControllers = new[] { "DocumentUpload", "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "EngineeringDocumentIntelligence", "Relationship", "KnowledgeBase", "AISearch", "ChatAssistant", "AIInsights" };
+    var correspondenceControllers = new[] { "Letter", "DCC", "TechnicalQuery" };
+    var qualityControllers = new[] { "QC", "MOC" };
+    var contractControllers = new[] { "Contract", "Vendor" };
+    var projectControlControllers = new[] { "Task", "Tag", "Report", "Meeting" };
+    var cmmsControllers = new[] { "Equipment", "EquipmentImport", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "MaintenanceMasterData", "EquipmentCriticality", "FunctionalLocation", "Reliability", "Inspection", "Kpi", "Permit" };
+    var inventoryControllers = new[] { "Inventory", "MaterialItem", "InventoryMasterData", "InventoryTransaction", "StoreRequisition", "MrsImport" };
+    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "Department", "Employee" };
+
+    bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
+}
+
+<nav class="pems-sidebar" id="pemsSidebar">
+
+    <a class="nav-link @(IsActive("Home") ? "active" : "")" asp-controller="Home" asp-action="Index">
+        <i class="bi bi-speedometer2"></i> @Localizer["Dashboard"]
+    </a>
+
+
+    @if (MenuAccess.CanSee(User, MenuAccess.EngineeringManagement))
+    {
+        var active = ContainsActive(engineeringControllers);
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-eng" role="button" aria-expanded="@active.ToString().ToLower()">
+            <span>@Localizer["EngineeringManagement"]</span>
+            <i class="@ChevronClass(active)"></i>
+        </div>
+        <div class="@SectionClass(active)" id="sec-eng">
+
+            <a class="nav-link @(IsActive("EngineeringDashboard") ? "active" : "")" asp-controller="EngineeringDashboard" asp-action="Index">
+                <i class="bi bi-speedometer2"></i> @Localizer["EngineeringDashboard"]
+            </a>
+
+            <a class="nav-link @(IsActive("Projects") ? "active" : "")" asp-controller="Projects" asp-action="Index">
+                <i class="bi bi-kanban"></i> Projects
+            </a>
+
+            <a class="nav-link @(IsActive("EngineeringDocuments") ? "active" : "")"
+               asp-controller="EngineeringDocuments" asp-action="Index">
+                <i class="bi bi-file-earmark-text"></i> @Localizer["EngineeringDocuments"]
+            </a>
+
+            <a class="nav-link @(IsActive("DocumentRegister") ? "active" : "")" asp-controller="DocumentRegister" asp-action="Index">
+                <i class="bi bi-journal-bookmark"></i> @Localizer["DocumentRegister"]
+            </a>
+
+            <a class="nav-link @(IsActive("MDRImport") ? "active" : "")" asp-controller="MDRImport" asp-action="Index">
+                <i class="bi bi-file-earmark-arrow-up"></i> MDR Import
+            </a>
+
+            <a class="nav-link @(IsActive("DocumentRevisions") ? "active" : "")" asp-controller="DocumentRevisions" asp-action="Index">
+                <i class="bi bi-clock-history"></i> Document Revision
+            </a>
+
+            <a class="nav-link @(IsActive("DocumentWorkflow") ? "active" : "")" asp-controller="DocumentWorkflow" asp-action="Index">
+                <i class="bi bi-diagram-2"></i> Document Workflow
+            </a>
+
+            <a class="nav-link @(IsActive("VDR") ? "active" : "")" asp-controller="VDR" asp-action="Index">
+                <i class="bi bi-journal-check"></i> @Localizer["VDR"]
+            </a>
+
+            <a class="nav-link @(IsActive("VDRImport") ? "active" : "")" asp-controller="VDRImport" asp-action="Index">
+                <i class="bi bi-file-earmark-arrow-up"></i> VDR Import
+            </a>
+
+            <a class="nav-link @(IsActive("Transmittal") ? "active" : "")" asp-controller="Transmittal" asp-action="Index">
+                <i class="bi bi-send"></i> Transmittal
+            </a>
+
+            <a class="nav-link @(IsActive("MDB") ? "active" : "")" asp-controller="MDB" asp-action="Index">
+                <i class="bi bi-collection"></i> MDB
+            </a>
+
+            <a class="nav-link @(IsActive("ProcurementPackage") ? "active" : "")" asp-controller="ProcurementPackage" asp-action="Index">
+                <i class="bi bi-folder2-open"></i> @Localizer["ProcurementPackage"]
+            </a>
+
+            <a class="nav-link @(IsActive("MaterialRequisition") ? "active" : "")" asp-controller="MaterialRequisition" asp-action="Index">
+                <i class="bi bi-cart-check"></i> Material Requisition
+            </a>
+
+            <a class="nav-link @(IsActive("Discipline") ? "active" : "")" asp-controller="Discipline" asp-action="Index">
+                <i class="bi bi-diagram-3"></i> Disciplines
+            </a>
+        </div>
+    }
+
+
+    @if (MenuAccess.CanSee(User, MenuAccess.AIIntelligence))
+    {
+        var active = ContainsActive(aiControllers);
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-ai" role="button" aria-expanded="@active.ToString().ToLower()">
+            <span>@Localizer["AIEngineeringIntelligence"]</span>
+            <i class="@ChevronClass(active)"></i>
+        </div>
+        <div class="@SectionClass(active)" id="sec-ai">
+
+            <a class="nav-link @(IsActive("DocumentUpload") ? "active" : "")" asp-controller="DocumentUpload" asp-action="Index">
+                <i class="bi bi-cloud-upload"></i> Document Upload
+            </a>
+
+            <a class="nav-link @(IsActive("Intake") ? "active" : "")" asp-controller="Intake" asp-action="Index">
+                <i class="bi bi-inboxes"></i> @Localizer["AIIntakeQueue"]
+            </a>
+
+            <a class="nav-link @(IsActive("OCRProcessing") ? "active" : "")" asp-controller="OCRProcessing" asp-action="Index">
+                <i class="bi bi-badge-ad"></i> OCR Processing
+            </a>
+
+            <a class="nav-link @(IsActive("AIExtraction") ? "active" : "")" asp-controller="AIExtraction" asp-action="Index">
+                <i class="bi bi-cpu"></i> AI Extraction
+            </a>
+
+            <a class="nav-link @(IsActive("TableExtraction") ? "active" : "")" asp-controller="TableExtraction" asp-action="Index">
+                <i class="bi bi-table"></i> Table Extraction
+            </a>
+
+            <a class="nav-link @(IsActive("EngineeringDocumentIntelligence") ? "active" : "")" asp-controller="EngineeringDocumentIntelligence" asp-action="Index">
+                <i class="bi bi-diagram-3-fill"></i> @Localizer["DocumentIntelligence"]
+            </a>
+
+            <a class="nav-link @(IsActive("Relationship") ? "active" : "")" asp-controller="Relationship" asp-action="Index">
+                <i class="bi bi-diagram-3"></i> @Localizer["RelationshipExplorer"]
+            </a>
+
+            <a class="nav-link @(IsActive("KnowledgeBase") ? "active" : "")" asp-controller="KnowledgeBase" asp-action="Index">
+                <i class="bi bi-stars"></i> @Localizer["KnowledgeBaseSearch"]
+            </a>
+
+            <a class="nav-link @(IsActive("AISearch") ? "active" : "")" asp-controller="AISearch" asp-action="Index">
+                <i class="bi bi-search-heart"></i> AI Search
+            </a>
+
+            <a class="nav-link @(IsActive("ChatAssistant") ? "active" : "")" asp-controller="ChatAssistant" asp-action="Index">
+                <i class="bi bi-chat-dots"></i> Engineering Chat Assistant
+            </a>
+
+            <a class="nav-link @(IsActive("AIInsights") ? "active" : "")" asp-controller="AIInsights" asp-action="Index">
+                <i class="bi bi-stars"></i> Engineering Copilot
+            </a>
+        </div>
+    }
+
+
+    @if (MenuAccess.CanSee(User, MenuAccess.CorrespondenceDocControl))
+    {
+        var active = ContainsActive(correspondenceControllers);
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-correspondence" role="button" aria-expanded="@active.ToString().ToLower()">
+            <span>@Localizer["CorrespondenceDocControl"]</span>
+            <i class="@ChevronClass(active)"></i>
+        </div>
+        <div class="@SectionClass(active)" id="sec-correspondence">
+
+            <a class="nav-link @(IsActive("Letter") && ViewContext.RouteData.Values["action"]!.ToString() != "MyReferrals" ? "active" : "")"
+               asp-controller="Letter" asp-action="Index">
+                <i class="bi bi-envelope-paper"></i> @Localizer["Correspondence"]
+            </a>
+
+            <a class="nav-link @(IsActive("Letter") && ViewContext.RouteData.Values["action"]!.ToString() == "MyReferrals" ? "active" : "")"
+               asp-controller="Letter" asp-action="MyReferrals">
+                <i class="bi bi-person-check"></i> @Localizer["MyReferrals"]
+            </a>
+
+            <a class="nav-link @(IsActive("DCC") ? "active" : "")" asp-controller="DCC" asp-action="Index">
+                <i class="bi bi-building-gear"></i> DCC
+            </a>
+
+            <a class="nav-link @(IsActive("TechnicalQuery") ? "active" : "")" asp-controller="TechnicalQuery" asp-action="Index">
+                <i class="bi bi-question-circle"></i> TQ / TSR / RFI
+            </a>
+        </div>
+    }
+
+
+    @if (MenuAccess.CanSee(User, MenuAccess.QualityControl))
+    {
+        var active = ContainsActive(qualityControllers);
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-quality" role="button" aria-expanded="@active.ToString().ToLower()">
+            <span>@Localizer["QualityControl"]</span>
+            <i class="@ChevronClass(active)"></i>
+        </div>
+        <div class="@SectionClass(active)" id="sec-quality">
+
+            <a class="nav-link @(IsActive("QC") ? "active" : "")" asp-controller="QC" asp-action="Index">
+                <i class="bi bi-patch-check"></i> QC / QA
+            </a>
+
+            <a class="nav-link @(IsActive("MOC") ? "active" : "")" asp-controller="MOC" asp-action="Index">
+                <i class="bi bi-arrow-repeat"></i> MOC
+            </a>
+        </div>
+    }
+
+
+    @if (MenuAccess.CanSee(User, MenuAccess.ContractManagement))
+    {
+        var active = ContainsActive(contractControllers);
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-contract" role="button" aria-expanded="@active.ToString().ToLower()">
+            <span>@Localizer["ContractManagement"]</span>
+            <i class="@ChevronClass(active)"></i>
+        </div>
+        <div class="@SectionClass(active)" id="sec-contract">
+
+            <a class="nav-link @(IsActive("Contract") ? "active" : "")" asp-controller="Contract" asp-action="Index">
+                <i class="bi bi-file-earmark-ruled"></i> @Localizer["Contracts"]
+            </a>
+
+            <a class="nav-link @(IsActive("Vendor") ? "active" : "")" asp-controller="Vendor" asp-action="Index">
+                <i class="bi bi-folder2-open"></i> @Localizer["Vendors"]
+            </a>
+
+            <a class="nav-link" href="@ComingSoon("Contract Milestones", "Contract Management")">
+                <i class="bi bi-flag"></i> Contract Milestones
+            </a>
+
+            <a class="nav-link" href="@ComingSoon("Claims", "Contract Management")">
+                <i class="bi bi-exclamation-diamond"></i> Claims
+            </a>
+        </div>
+    }
+
+
+    @if (MenuAccess.CanSee(User, MenuAccess.ProjectControls))
+    {
+        var active = ContainsActive(projectControlControllers);
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-projctrl" role="button" aria-expanded="@active.ToString().ToLower()">
+            <span>@Localizer["ProjectControls"]</span>
+            <i class="@ChevronClass(active)"></i>
+        </div>
+        <div class="@SectionClass(active)" id="sec-projctrl">
+
+            <a class="nav-link @(IsActive("Task") ? "active" : "")" asp-controller="Task" asp-action="Index">
+                <i class="bi bi-check2-square"></i> Tasks
+            </a>
+
+            <a class="nav-link @(IsActive("Meeting") ? "active" : "")" asp-controller="Meeting" asp-action="Index">
+                <i class="bi bi-people"></i> Meetings
+            </a>
+
+            <a class="nav-link @(IsActive("Report") ? "active" : "")" asp-controller="Report" asp-action="Index">
+                <i class="bi bi-graph-up"></i> Reports
+            </a>
+
+            <a class="nav-link @(IsActive("Tag") ? "active" : "")" asp-controller="Tag" asp-action="Index">
+                <i class="bi bi-tags"></i> Tags
+            </a>
+        </div>
+    }
+
+
+    @if (MenuAccess.CanSee(User, MenuAccess.CmmsIntegration))
+    {
+        var active = ContainsActive(cmmsControllers);
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-cmms" role="button" aria-expanded="@active.ToString().ToLower()">
+            <span>@Localizer["CmmsIntegration"]</span>
+            <i class="@ChevronClass(active)"></i>
+        </div>
+        <div class="@SectionClass(active)" id="sec-cmms">
+
+            <a class="nav-link @(IsActive("Equipment") ? "active" : "")" asp-controller="Equipment" asp-action="Index">
+                <i class="bi bi-gear"></i> @Localizer["Equipment"]
+            </a>
+
+            <a class="nav-link @(IsActive("EquipmentImport") ? "active" : "")" asp-controller="EquipmentImport" asp-action="Index">
+                <i class="bi bi-file-earmark-arrow-up"></i> Equipment Import
+            </a>
+
+            <a class="nav-link @(IsActive("Instrument") ? "active" : "")" asp-controller="Instrument" asp-action="Index">
+                <i class="bi bi-cpu"></i> Instrument Passport
+            </a>
+
+            <a class="nav-link @(IsActive("Asset") ? "active" : "")" asp-controller="Asset" asp-action="Index">
+                <i class="bi bi-diagram-2"></i> Assets
+            </a>
+
+            <a class="nav-link @(IsActive("MaintenanceStrategy") ? "active" : "")" asp-controller="MaintenanceStrategy" asp-action="Index">
+                <i class="bi bi-diagram-2"></i> Maintenance Strategy
+            </a>
+
+            <a class="nav-link @(IsActive("MaintenancePlan") ? "active" : "")" asp-controller="MaintenancePlan" asp-action="Index">
+                <i class="bi bi-calendar-check"></i> Maintenance Plan
+            </a>
+
+            <a class="nav-link @(IsActive("JobPlan") ? "active" : "")" asp-controller="JobPlan" asp-action="Index">
+                <i class="bi bi-list-check"></i> Job Plans
+            </a>
+
+            <a class="nav-link @(IsActive("WorkRequest") ? "active" : "")" asp-controller="WorkRequest" asp-action="Index">
+                <i class="bi bi-clipboard-plus"></i> Work Requests
+            </a>
+
+            <a class="nav-link @(IsActive("WorkOrder") ? "active" : "")" asp-controller="WorkOrder" asp-action="Index">
+                <i class="bi bi-clipboard-check"></i> Work Order
+            </a>
+
+            <a class="nav-link @(IsActive("SparePart") ? "active" : "")" asp-controller="SparePart" asp-action="Index">
+                <i class="bi bi-tools"></i> Spare Parts
+            </a>
+
+            <a class="nav-link @(IsActive("Team") ? "active" : "")" asp-controller="Team" asp-action="Index">
+                <i class="bi bi-people"></i> Teams
+            </a>
+
+            <a class="nav-link @(IsActive("Crew") ? "active" : "")" asp-controller="Crew" asp-action="Index">
+                <i class="bi bi-people-fill"></i> Crews
+            </a>
+
+            <a class="nav-link @(IsActive("MaintenanceMasterData") ? "active" : "")" asp-controller="MaintenanceMasterData" asp-action="Index">
+                <i class="bi bi-collection"></i> Maintenance Master Data
+            </a>
+
+            <a class="nav-link @(IsActive("EquipmentCriticality") ? "active" : "")" asp-controller="EquipmentCriticality" asp-action="Index">
+                <i class="bi bi-shield-exclamation"></i> Criticality Analysis
+            </a>
+
+            <a class="nav-link @(IsActive("Reliability") ? "active" : "")" asp-controller="Reliability" asp-action="Index">
+                <i class="bi bi-graph-up-arrow"></i> Reliability
+            </a>
+
+            <a class="nav-link @(IsActive("Inspection") ? "active" : "")" asp-controller="Inspection" asp-action="Index">
+                <i class="bi bi-clipboard-pulse"></i> Inspections
+            </a>
+
+            <a class="nav-link @(IsActive("Kpi") ? "active" : "")" asp-controller="Kpi" asp-action="Index">
+                <i class="bi bi-speedometer2"></i> KPI Dashboard
+            </a>
+
+            <a class="nav-link @(IsActive("Permit") ? "active" : "")" asp-controller="Permit" asp-action="Index">
+                <i class="bi bi-shield-check"></i> Permits
+            </a>
+
+            <a class="nav-link @(IsActive("FunctionalLocation") ? "active" : "")" asp-controller="FunctionalLocation" asp-action="Index">
+                <i class="bi bi-diagram-3"></i> Functional Locations
+            </a>
+        </div>
+    }
+
+
+    @if (MenuAccess.CanSee(User, MenuAccess.CmmsIntegration))
+    {
+        var active = ContainsActive(inventoryControllers);
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-inventory" role="button" aria-expanded="@active.ToString().ToLower()">
+            <span>Inventory &amp; Materials</span>
+            <i class="@ChevronClass(active)"></i>
+        </div>
+        <div class="@SectionClass(active)" id="sec-inventory">
+
+            <a class="nav-link @(IsActive("Inventory") ? "active" : "")" asp-controller="Inventory" asp-action="Index">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+
+            <a class="nav-link @(IsActive("MaterialItem") ? "active" : "")" asp-controller="MaterialItem" asp-action="Index">
+                <i class="bi bi-box-seam"></i> Material Master
+            </a>
+
+            <a class="nav-link @(IsActive("InventoryTransaction") ? "active" : "")" asp-controller="InventoryTransaction" asp-action="Index">
+                <i class="bi bi-list-ul"></i> Transaction Ledger
+            </a>
+
+            <a class="nav-link @(IsActive("StoreRequisition") ? "active" : "")" asp-controller="StoreRequisition" asp-action="Index">
+                <i class="bi bi-clipboard-check"></i> Store Requisitions
+            </a>
+
+            <a class="nav-link @(IsActive("InventoryMasterData") ? "active" : "")" asp-controller="InventoryMasterData" asp-action="Index">
+                <i class="bi bi-collection"></i> Master Data
+            </a>
+
+            <a class="nav-link @(IsActive("MrsImport") ? "active" : "")" asp-controller="MrsImport" asp-action="Index">
+                <i class="bi bi-file-earmark-excel"></i> MRS Import
+            </a>
+        </div>
+    }
+
+
+    @if (MenuAccess.CanSee(User, MenuAccess.Administration))
+    {
+        var active = ContainsActive(adminControllers) || InArea("Admin");
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-admin" role="button" aria-expanded="@active.ToString().ToLower()">
+            <span>@Localizer["Administration"]</span>
+            <i class="@ChevronClass(active)"></i>
+        </div>
+        <div class="@SectionClass(active)" id="sec-admin">
+
+            <a class="nav-link @(IsActive("Settings") ? "active" : "")" asp-controller="Settings" asp-action="Index">
+                <i class="bi bi-gear"></i> Settings
+            </a>
+
+            <a class="nav-link @(InArea("Admin") && IsActive("Users", "Admin") ? "active" : "")"
+               asp-area="Admin" asp-controller="Users" asp-action="Index">
+                <i class="bi bi-people"></i> @Localizer["Users"]
+            </a>
+
+            <a class="nav-link @(InArea("Admin") && IsActive("Roles", "Admin") ? "active" : "")"
+               asp-area="Admin" asp-controller="Roles" asp-action="Index">
+                <i class="bi bi-shield-check"></i> @Localizer["Roles"]
+            </a>
+
+            <a class="nav-link @(IsActive("Department") ? "active" : "")" asp-controller="Department" asp-action="Index">
+                <i class="bi bi-building"></i> Departments
+            </a>
+
+            <a class="nav-link @(IsActive("Employee") ? "active" : "")" asp-controller="Employee" asp-action="Index">
+                <i class="bi bi-people"></i> Employees
+            </a>
+
+            <a class="nav-link @(InArea("Admin") && IsActive("PermissionMatrix") ? "active" : "")"
+               asp-area="Admin" asp-controller="PermissionMatrix" asp-action="Index">
+                <i class="bi bi-sliders"></i> @Localizer["PermissionMatrix"]
+            </a>
+
+            <a class="nav-link @(InArea("Admin") && IsActive("AuditLog") ? "active" : "")"
+               asp-area="Admin" asp-controller="AuditLog" asp-action="Index">
+                <i class="bi bi-clock-history"></i> @Localizer["AuditLog"]
+            </a>
+
+            <a class="nav-link @(InArea("Admin") && IsActive("RoutingRules") ? "active" : "")"
+               asp-area="Admin" asp-controller="RoutingRules" asp-action="Index">
+                <i class="bi bi-signpost-split"></i> AI Routing Rules
+            </a>
+
+            <a class="nav-link @(IsActive("Performance") ? "active" : "")"
+               asp-controller="Performance" asp-action="Index">
+               <i class="bi bi-speedometer2"></i> Performance Testing
+            </a>
+
+            <a class="nav-link @(InArea("Admin") && IsActive("ProjectIntelligence") ? "active" : "")"
+               asp-area="Admin" asp-controller="ProjectIntelligence" asp-action="Index">
+               <i class="bi bi-graph-up-arrow"></i> Project Intelligence
+            </a>
+
+            <a class="nav-link" href="/hangfire" target="_blank">
+               <i class="bi bi-hdd-stack"></i> Background Jobs Dashboard
+            </a>
+        </div>
+    }
+
+</nav>
+
+<script>
+    // چرخش آیکون Chevron هنگام باز/بسته شدن هر بخش
+    document.querySelectorAll('.nav-section-title').forEach(function (title) {
+        var targetId = title.getAttribute('data-bs-target');
+        var target = document.querySelector(targetId);
+        var chevron = title.querySelector('.nav-section-chevron');
+
+        target.addEventListener('show.bs.collapse', function () { chevron.classList.add('rotated'); });
+        target.addEventListener('hide.bs.collapse', function () { chevron.classList.remove('rotated'); });
+    });
+</script>

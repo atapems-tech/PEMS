@@ -1,0 +1,132 @@
+﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.OCRProcessingAttachmentListDto>
+@{
+    var counts = (Dictionary<string, int>)ViewBag.Counts;
+    string GetCount(string key) => counts.TryGetValue(key, out var c) ? c.ToString() : "0";
+}
+
+
+<div class="row g-3 mb-3">
+    <div class="col-md-3 col-sm-6">
+        <div class="kpi-card">
+            <div class="kpi-icon bg-icon-slate"><i class="bi bi-hourglass"></i></div>
+            <div><div class="kpi-value">@GetCount("Pending")</div><div class="kpi-label">Pending</div></div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="kpi-card">
+            <div class="kpi-icon bg-icon-blue"><i class="bi bi-arrow-repeat"></i></div>
+            <div><div class="kpi-value">@GetCount("Processing")</div><div class="kpi-label">Processing</div></div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="kpi-card">
+            <div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div>
+            <div><div class="kpi-value">@GetCount("Completed")</div><div class="kpi-label">Completed</div></div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="kpi-card">
+            <div class="kpi-icon bg-icon-red"><i class="bi bi-x-circle"></i></div>
+            <div><div class="kpi-value">@GetCount("Failed")</div><div class="kpi-label">Failed</div></div>
+        </div>
+    </div>
+</div>
+
+<div class="content-card">
+    <form method="get" class="mb-3">
+        <select name="status" class="form-select form-select-sm" style="max-width:220px;" onchange="this.form.submit()">
+            <option value="">All Statuses</option>
+            @foreach (var s in new[] { "Pending", "Processing", "Completed", "Failed" })
+            {
+                <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option>
+            }
+        </select>
+    </form>
+
+    <div class="d-flex justify-content-end mb-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('OCRProcessing')">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+        </button>
+    </div>
+    <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise pems-grid-table" data-grid-key="OCRProcessing">
+            <thead>
+                <tr>
+                    <th data-col-key="file" data-resizable="true" data-min-width="140" data-max-width="320">File</th>
+                    <th data-col-key="document" data-resizable="true" data-min-width="100" data-max-width="220">Document</th>
+                    <th data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="140">Type</th>
+                    <th data-col-key="size" data-resizable="true" data-min-width="70" data-max-width="120">Size</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">Status</th>
+                    <th data-col-key="summary" data-resizable="true" data-min-width="180" data-max-width="400">Summary / Error</th>
+                    <th data-col-key="uploaded" data-resizable="true" data-min-width="120" data-max-width="200">Uploaded</th>
+                    <th data-col-key="actions" data-resizable="false" style="width:90px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model.Items)
+                {
+                    <tr>
+                        <td>@a.FileName</td>
+                        <td>@a.DocumentNo</td>
+                        <td>@a.FileExtension</td>
+                        <td>@(a.FileSize / 1024) KB</td>
+                        <td>
+                            @{
+                                var badge = a.AIStatus switch
+                                {
+                                    "Completed" => "bg-success",
+                                    "Processing" => "bg-info text-dark",
+                                    "Failed" => "bg-danger",
+                                    _ => "bg-secondary"
+                                };
+                            }
+                            <span class="badge @badge">@a.AIStatus</span>
+                        </td>
+                        <td class="small text-muted" style="max-width:260px;">
+                            @(a.AIStatus == "Failed" ? a.AIError : a.AISummary)
+                        </td>
+                        <td>@a.UploadDate.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            <form asp-action="Retry" asp-route-id="@a.AttachmentId" method="post" class="d-inline">
+                                <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-repeat"></i></button>
+                            </form>
+                            @if (a.AIStatus == "Completed")
+                            {
+                                <a asp-controller="AIExtraction" asp-action="Review" asp-route-attachmentId="@a.AttachmentId"
+                                   class="btn btn-sm btn-outline-warning"><i class="bi bi-eye"></i></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (!Model.Items.Any())
+        {
+            <p class="text-muted text-center py-4">No files uploaded yet.</p>
+        }
+    </div>
+
+    @{
+        var qsParts = new List<string>();
+        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus)) qsParts.Add($"status={Uri.EscapeDataString((string)ViewBag.SelectedStatus)}");
+    }
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "OCRProcessing",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = string.Join("&", qsParts)
+    })
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('OCRProcessing');
+        });
+    </script>
+}

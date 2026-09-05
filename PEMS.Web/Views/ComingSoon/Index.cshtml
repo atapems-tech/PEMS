@@ -1,0 +1,25 @@
+﻿@{
+    string title = ViewData["Title"]?.ToString() ?? "Module";
+    string? sectionName = ViewBag.Section as string;
+}
+
+<div class="content-card text-center py-5">
+    <div style="font-size:46px; color:#d98c2b;">
+        <i class="bi bi-cone-striped"></i>
+    </div>
+
+    <h4 class="mt-3">@title</h4>
+
+    <p class="text-muted">
+        این ماژول در فاز بعدی توسعه (تکمیل ماژول‌های Engineering) پیاده‌سازی می‌شود.
+        @if (!string.IsNullOrEmpty(sectionName))
+        {
+            <br />
+            <span>بخش: @sectionName</span>
+        }
+    </p>
+
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm mt-2">
+        <i class="bi bi-arrow-right"></i> بازگشت به داشبورد
+    </a>
+</div>

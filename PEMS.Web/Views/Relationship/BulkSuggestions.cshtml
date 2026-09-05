@@ -1,0 +1,53 @@
+﻿@model List<PEMS.Application.DTOs.BulkSuggestedLinkItemDto>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h5 class="mb-0"><i class="bi bi-check2-all"></i> تایید دسته‌جمعی اتصال‌ها</h5>
+        <p class="text-muted small mb-0">
+            فقط تطبیق‌های کامل (Exact Match روی شماره‌ی خام ثبت‌شده) این‌جا نشون داده می‌شن -
+            همون سطح اطمینانی که برای P&amp;ID استفاده کردیم. با این حال چون تایید هرکدوم یک
+            رابطه‌ی دائمی می‌سازه، هنوز یک تایید صریح (هرچند دسته‌جمعی) لازمه.
+        </p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">بازگشت به Explorer</a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="content-card"><p class="text-muted text-center py-4 mb-0">هیچ پیشنهاد تاییدنشده‌ای یافت نشد.</p></div>
+}
+else
+{
+    <form asp-action="BulkConfirm" method="post">
+        <div class="content-card mb-3 d-flex justify-content-between align-items-center">
+            <div>
+                <input type="checkbox" id="selectAll" onclick="document.querySelectorAll('.item-check').forEach(c => c.checked = this.checked);" />
+                <label for="selectAll" class="ms-1">انتخاب همه (@Model.Count مورد)</label>
+            </div>
+            <button type="submit" class="btn btn-pems-solid btn-sm" onclick="return confirm('موارد انتخاب‌شده رسماً وصل می‌شن. مطمئنی؟')">
+                <i class="bi bi-check2-all"></i> تایید موارد انتخاب‌شده
+            </button>
+        </div>
+
+        <div class="content-card">
+            <table class="table table-enterprise mb-0">
+                <thead>
+                    <tr><th></th><th>Equipment Tag</th><th>نوع</th><th>مقصد</th><th>طبق شماره‌ی خام</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}";
+                        <tr>
+                            <td><input type="checkbox" class="item-check" name="selectedItems" value="@value" /></td>
+                            <td><a asp-action="Equipment" asp-route-id="@item.EquipmentId">@item.EquipmentTagNumber</a></td>
+                            <td><span class="badge bg-secondary">@item.TargetType</span></td>
+                            <td>@item.TargetLabel</td>
+                            <td class="text-muted small">@item.MatchedOnRawValue</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </form>
+}

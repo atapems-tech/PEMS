@@ -1,0 +1,129 @@
+@model PEMS.Application.AI.Models.AIAnalysisResult
+@using PEMS.Domain.Entities
+@{
+    var attachment = (DocumentAttachment)ViewBag.Attachment;
+    var table = Model.ExtractedTableData;
+}
+
+<div class="content-card mb-3">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <h5 class="mb-0">@attachment.FileName</h5>
+            <span class="text-muted small">Table extraction test result - nothing was saved to the database.</span>
+        </div>
+        <div class="d-flex gap-2">
+            @if (Model.Success && table != null && table.Rows.Any())
+            {
+                <form asp-action="StageForReview" method="post" class="d-inline">
+                    <input type="hidden" name="attachmentId" value="@attachment.AttachmentId" />
+                    <button type="submit" class="btn btn-sm btn-pems-solid">
+                        <i class="bi bi-link-45deg"></i> Stage for Review (link to Equipment)
+                    </button>
+                </form>
+            }
+            <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+        </div>
+    </div>
+</div>
+
+@if (!Model.Success)
+{
+    <div class="content-card">
+        <div class="alert alert-danger mb-0">@Model.ErrorMessage</div>
+    </div>
+    return;
+}
+
+<div class="content-card mb-3">
+    <div class="admin-kpi-grid">
+        <div class="admin-kpi"><div class="admin-kpi-label">Rows extracted</div><div class="admin-kpi-value">@(table?.RowCount ?? 0)</div></div>
+        <div class="admin-kpi"><div class="admin-kpi-label">Confidence</div><div class="admin-kpi-value">@Model.Confidence.ToString("P0")</div></div>
+        <div class="admin-kpi"><div class="admin-kpi-label">Used OCR</div><div class="admin-kpi-value">@(Model.UsedOcr ? "Yes" : "No")</div></div>
+        <div class="admin-kpi"><div class="admin-kpi-label">Warnings</div><div class="admin-kpi-value">@Model.Warnings.Count</div></div>
+    </div>
+    <p class="text-muted small mt-2 mb-0">@Model.Summary</p>
+</div>
+
+@if (Model.Warnings.Any())
+{
+    <div class="content-card mb-3">
+        <div class="alert alert-warning mb-0">
+            <strong>Warnings reported by the model:</strong>
+            <ul class="mb-0">
+                @foreach (var w in Model.Warnings)
+                {
+                    <li>@w</li>
+                }
+            </ul>
+        </div>
+    </div>
+}
+
+@if (table?.DocumentInfo != null)
+{
+    var info = table.DocumentInfo;
+    <div class="content-card mb-3">
+        <h6 class="mb-2">Document Info</h6>
+        <div class="row g-2 small">
+            <div class="col-md-3"><strong>Document No.</strong><div>@(info.DocumentNo ?? "N/A")</div></div>
+            <div class="col-md-3"><strong>Title</strong><div>@(info.Title ?? "N/A")</div></div>
+            <div class="col-md-3"><strong>Type</strong><div>@(info.DocumentType ?? "N/A")</div></div>
+            <div class="col-md-3"><strong>Discipline</strong><div>@(info.Discipline ?? "N/A")</div></div>
+            <div class="col-md-3"><strong>Revision</strong><div>@(info.RevisionNo ?? "N/A")</div></div>
+            <div class="col-md-3"><strong>Vendor</strong><div>@(info.VendorName ?? "N/A")</div></div>
+            <div class="col-md-3"><strong>Area / Unit</strong><div>@(info.Area ?? "N/A") / @(info.Unit ?? "N/A")</div></div>
+            <div class="col-md-3"><strong>System</strong><div>@(info.System ?? "N/A")</div></div>
+        </div>
+    </div>
+}
+
+<div class="content-card">
+    <h6 class="mb-2">Rows (@(table?.Rows.Count ?? 0))</h6>
+    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise table-sm">
+            <thead>
+                <tr>
+                    <th>Tag No.</th><th>Description</th><th>Signal</th><th>JB / Terminal</th>
+                    <th>Cable</th><th>Marshalling</th><th>I/O Card / Ch</th><th>Loop</th>
+                    <th>System</th><th>Spare</th><th>Remarks</th><th>Raw Extra</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (table != null)
+                {
+                    @foreach (var row in table.Rows)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@(row.TagNumber ?? "-")</td>
+                            <td class="small">@(row.Description ?? row.Service ?? "-")</td>
+                            <td class="small">@(row.SignalType ?? "-") @(row.SignalClass != null ? $"({row.SignalClass})" : "")</td>
+                            <td class="small">@(row.JunctionBox ?? "-") / @(row.Terminal ?? "-")</td>
+                            <td class="small">@(row.CableNo ?? "-")</td>
+                            <td class="small">@(row.MarshallingCabinet ?? "-") / @(row.MarshallingTerminal ?? "-")</td>
+                            <td class="small">@(row.IoCard ?? "-") / @(row.IoChannel ?? "-")</td>
+                            <td class="small">@(row.LoopNo ?? "-")</td>
+                            <td class="small">@(row.System ?? "-")</td>
+                            <td class="small">@(row.SpareOrHotSpare == true ? "Yes" : "-")</td>
+                            <td class="small" style="max-width:220px;">@(row.Remarks ?? "-")</td>
+                            <td class="small text-muted">
+                                @if (row.RawExtra != null && row.RawExtra.Any())
+                                {
+                                    @string.Join("; ", row.RawExtra.Select(kv => $"{kv.Key}={kv.Value}"))
+                                }
+                                else
+                                {
+                                    @:-
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+        @if (table == null || !table.Rows.Any())
+        {
+            <p class="text-muted text-center py-4">No rows extracted.</p>
+        }
+    </div>
+</div>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Technical Inspection Management | PEMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#d7e3fd",
+                        "background": "#f8f9ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-container-low": "#eef4ff",
+                        "primary": "#000819",
+                        "on-secondary-fixed": "#2c1700",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-surface-variant": "#44474c",
+                        "secondary": "#895200",
+                        "primary-container": "#142033",
+                        "on-error-container": "#93000a",
+                        "surface": "#f8f9ff",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-tertiary-container": "#498bcd",
+                        "surface-container-highest": "#d0e4fe",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "on-secondary-container": "#6e4100",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#bbc7e0",
+                        "secondary-container": "#fdaa47",
+                        "surface-container-high": "#daeaff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#7c889f",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#ffdcbc",
+                        "outline-variant": "#c5c6cd",
+                        "on-surface": "#081d2f",
+                        "inverse-surface": "#1f3245",
+                        "tertiary": "#000815",
+                        "on-background": "#081d2f",
+                        "tertiary-container": "#00213d",
+                        "surface-dim": "#c8dcf5",
+                        "surface-tint": "#535f75",
+                        "surface-variant": "#d0e4fe",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#e4efff",
+                        "inverse-on-surface": "#e9f1ff",
+                        "on-primary-fixed": "#101c2f",
+                        "outline": "#75777d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "sidebar-width": "260px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "unit": "4px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "topbar-height": "60px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "body-base": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "table-header": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Custom scrollbar for data density */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c5c6cd; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #75777d; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased flex h-screen overflow-hidden selection:bg-surface-container-highest">
+<!-- SideNavBar (Shared Component) -->
+<nav class="fixed left-0 top-0 h-full w-sidebar-width bg-surface-container-low border-r border-outline-variant flex flex-col p-md gap-xs z-40 hidden md:flex">
+<!-- Header Info -->
+<div class="mb-lg px-sm">
+<h2 class="font-headline-md text-headline-md font-black tracking-tight text-primary uppercase">Engineering Dept.</h2>
+<p class="font-body-medium text-body-medium text-on-surface-variant">Technical Operations</p>
+<p class="font-body-base text-body-base text-on-surface-variant/70 text-xs mt-1" dir="rtl">عملیات فنی</p>
+</div>
+<!-- CTA -->
+<button class="w-full bg-primary text-on-primary font-body-medium text-body-medium py-sm px-md rounded-lg flex items-center justify-center gap-sm hover:bg-primary/90 transition-colors mb-md group shadow-sm border border-transparent">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">add</span>
+<span>New Document</span>
+</button>
+<!-- Navigation Links -->
+<div class="flex-1 flex flex-col gap-unit overflow-y-auto">
+<!-- Inactive -->
+<a class="flex items-center gap-md px-md py-[10px] rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors font-body-medium text-body-medium group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">dashboard</span>
+<span>Dashboard</span>
+</a>
+<!-- Active: Technical Inspection -->
+<a class="flex items-center justify-between px-md py-[10px] rounded-lg bg-secondary-container text-on-secondary-container font-bold font-body-medium text-body-medium scale-98 active:scale-95 transition-transform shadow-sm" href="#">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-[20px] filled">fact_check</span>
+<div class="flex flex-col">
+<span>Technical Inspection</span>
+<span class="text-[10px] opacity-80 font-normal leading-none mt-1" dir="rtl">بازرسی فنی</span>
+</div>
+</div>
+</a>
+<!-- Inactive -->
+<a class="flex items-center gap-md px-md py-[10px] rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors font-body-medium text-body-medium group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">history_edu</span>
+<span>Audit Logs</span>
+</a>
+<a class="flex items-center gap-md px-md py-[10px] rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors font-body-medium text-body-medium group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">mail</span>
+<span>Correspondence</span>
+</a>
+<a class="flex items-center gap-md px-md py-[10px] rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors font-body-medium text-body-medium group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">swap_horiz</span>
+<span>Transmittals</span>
+</a>
+<a class="flex items-center gap-md px-md py-[10px] rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors font-body-medium text-body-medium group mt-auto" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">admin_panel_settings</span>
+<span>Administration</span>
+</a>
+</div>
+<div class="h-px bg-outline-variant my-xs"></div>
+<!-- Footer Links -->
+<div class="flex flex-col gap-unit">
+<a class="flex items-center gap-md px-md py-[10px] rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors font-body-medium text-body-medium group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">help</span>
+<span>Help Center</span>
+</a>
+<a class="flex items-center gap-md px-md py-[10px] rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors font-body-medium text-body-medium group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col md:ml-sidebar-width h-screen bg-background relative">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-surface border-b border-outline-variant flex justify-between items-center w-full px-lg h-topbar-height z-30 sticky top-0">
+<div class="flex items-center gap-md">
+<!-- Mobile Menu Trigger -->
+<button class="md:hidden text-on-surface-variant hover:bg-surface-container-high p-sm rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-headline-md text-headline-md font-bold text-primary tracking-tight">PEMS Enterprise Utility</span>
+</div>
+<div class="flex items-center gap-sm">
+<button class="text-on-surface-variant hover:bg-surface-container-high p-sm rounded-full transition-colors flex items-center justify-center relative group" title="Language">
+<span class="material-symbols-outlined">language</span>
+<span class="absolute -bottom-8 bg-inverse-surface text-inverse-on-surface text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">EN / FA</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-high p-sm rounded-full transition-colors flex items-center justify-center relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full border border-surface"></span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-high p-sm rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-6 w-px bg-outline-variant mx-xs"></div>
+<button class="text-primary hover:bg-surface-container-high p-sm rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined filled text-[28px]">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Canvas / Page Content -->
+<main class="flex-1 overflow-y-auto p-md md:p-lg flex flex-col gap-lg pb-xl">
+<!-- Page Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Technical Inspection Management</h1>
+<p class="font-body-medium text-body-medium text-on-surface-variant mt-1" dir="rtl">مدیریت بازرسی فنی</p>
+</div>
+<div class="flex gap-sm">
+<button class="bg-surface-container-highest border border-outline-variant text-on-surface font-body-medium text-body-medium py-sm px-md rounded-lg flex items-center gap-xs hover:border-outline transition-colors h-10">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span>Export</span>
+</button>
+<!-- CTA: Solid gradient conceptual mapped to theme secondary container for high contrast industrial action -->
+<button class="bg-secondary-container text-on-secondary-container font-body-medium text-body-medium font-bold py-sm px-md rounded-lg flex items-center gap-xs hover:brightness-105 shadow-sm transition-all h-10">
+<span class="material-symbols-outlined text-[18px]">add_box</span>
+<div class="flex flex-col items-start leading-none">
+<span>New Inspection</span>
+</div>
+</button>
+</div>
+</div>
+<!-- Filter & Search Bar (Glassmorphism inspired compact row) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-sm shadow-sm flex flex-col xl:flex-row gap-sm items-center z-10 relative">
+<!-- Search -->
+<div class="relative w-full xl:w-64 flex-shrink-0">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full bg-surface-bright border border-outline-variant rounded-lg pl-[32px] pr-sm py-[6px] font-body-base text-body-base text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all placeholder:text-on-surface-variant/50" placeholder="Search ID or Asset..." type="text"/>
+</div>
+<div class="w-full xl:w-px h-px xl:h-6 bg-outline-variant hidden xl:block"></div>
+<!-- Filters -->
+<div class="flex flex-col sm:flex-row w-full gap-sm">
+<!-- Status Filter -->
+<div class="relative flex-1 sm:w-48">
+<span class="absolute -top-2 left-2 bg-surface-container-lowest px-1 text-[10px] font-label-caps text-on-surface-variant uppercase tracking-wider">Status / وضعیت</span>
+<select class="w-full appearance-none bg-surface-bright border border-outline-variant rounded-lg px-sm py-[6px] font-body-base text-body-base text-on-surface focus:border-secondary outline-none cursor-pointer">
+<option value="">All Statuses</option>
+<option value="pending">Pending</option>
+<option value="completed">Completed</option>
+<option value="ncf">Non-Conformance Found</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-[18px]">arrow_drop_down</span>
+</div>
+<!-- Date Range Filter -->
+<div class="relative flex-1 sm:w-64 flex items-center gap-xs">
+<span class="absolute -top-2 left-2 bg-surface-container-lowest px-1 text-[10px] font-label-caps text-on-surface-variant uppercase tracking-wider">Date Range / بازه زمانی</span>
+<input class="w-full bg-surface-bright border border-outline-variant rounded-lg px-sm py-[6px] font-body-base text-body-base text-on-surface focus:border-secondary outline-none text-sm" type="date"/>
+<span class="text-on-surface-variant">-</span>
+<input class="w-full bg-surface-bright border border-outline-variant rounded-lg px-sm py-[6px] font-body-base text-body-base text-on-surface focus:border-secondary outline-none text-sm" type="date"/>
+</div>
+</div>
+<!-- Filter Actions -->
+<button class="w-full xl:w-auto bg-surface border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low p-[6px] rounded-lg transition-colors flex items-center justify-center whitespace-nowrap px-md ml-auto">
+<span class="material-symbols-outlined text-[18px] mr-xs">filter_list_off</span>
+<span class="font-body-medium text-body-medium">Clear</span>
+</button>
+</div>
+<!-- Data Table Container (High Density) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex-1 flex flex-col shadow-sm relative">
+<div class="overflow-x-auto flex-1">
+<table class="w-full text-left border-collapse whitespace-nowrap">
+<thead class="bg-[#f5f7fa] sticky top-0 z-10 border-b border-outline-variant shadow-sm shadow-surface-container-lowest">
+<tr>
+<th class="font-table-header text-table-header uppercase text-on-surface px-md py-sm w-[120px]">
+                                    Inspection ID
+                                    <div class="text-[9px] text-on-surface-variant font-normal tracking-normal normal-case mt-[2px]" dir="rtl">شناسه بازرسی</div>
+</th>
+<th class="font-table-header text-table-header uppercase text-on-surface px-md py-sm">
+                                    Asset ID
+                                    <div class="text-[9px] text-on-surface-variant font-normal tracking-normal normal-case mt-[2px]" dir="rtl">شناسه دارایی</div>
+</th>
+<th class="font-table-header text-table-header uppercase text-on-surface px-md py-sm">
+                                    Inspector
+                                    <div class="text-[9px] text-on-surface-variant font-normal tracking-normal normal-case mt-[2px]" dir="rtl">بازرس</div>
+</th>
+<th class="font-table-header text-table-header uppercase text-on-surface px-md py-sm w-[140px]">
+                                    Date
+                                    <div class="text-[9px] text-on-surface-variant font-normal tracking-normal normal-case mt-[2px]" dir="rtl">تاریخ</div>
+</th>
+<th class="font-table-header text-table-header uppercase text-on-surface px-md py-sm w-[180px]">
+                                    Status
+                                    <div class="text-[9px] text-on-surface-variant font-normal tracking-normal normal-case mt-[2px]" dir="rtl">وضعیت</div>
+</th>
+<th class="font-table-header text-table-header uppercase text-on-surface px-md py-sm w-[120px]">
+                                    Criticality
+                                    <div class="text-[9px] text-on-surface-variant font-normal tracking-normal normal-case mt-[2px]" dir="rtl">حساسیت</div>
+</th>
+<th class="font-table-header text-table-header uppercase text-on-surface px-md py-sm w-[80px] text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/40 bg-surface-container-lowest">
+<!-- Row 1: Non-Conformance -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-md py-[10px] font-mono text-[12px] text-primary font-bold">INS-2023-8812</td>
+<td class="px-md py-[10px] font-table-cell text-table-cell text-on-surface">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">precision_manufacturing</span>
+<span>PMP-A-001</span>
+</div>
+</td>
+<td class="px-md py-[10px]">
+<div class="flex items-center gap-xs">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-[10px] font-bold">JD</div>
+<span class="font-table-cell text-table-cell text-on-surface">J. Doe</span>
+</div>
+</td>
+<td class="px-md py-[10px] font-table-cell text-table-cell text-on-surface-variant">2023-10-24</td>
+<td class="px-md py-[10px]">
+<span class="inline-flex items-center gap-1 px-2 py-[2px] rounded-full bg-error-container text-on-error-container font-badge-label text-badge-label border border-error/20">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                                        Non-Conformance
+                                    </span>
+</td>
+<td class="px-md py-[10px]">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-error filled">warning</span>
+<span class="font-table-cell text-table-cell text-on-surface font-semibold">High</span>
+</div>
+</td>
+<td class="px-md py-[10px] text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 rounded hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Pending -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-md py-[10px] font-mono text-[12px] text-primary font-bold">INS-2023-8813</td>
+<td class="px-md py-[10px] font-table-cell text-table-cell text-on-surface">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">settings_input_component</span>
+<span>VLV-B-402</span>
+</div>
+</td>
+<td class="px-md py-[10px]">
+<div class="flex items-center gap-xs">
+<div class="w-6 h-6 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center text-[10px] font-bold">AS</div>
+<span class="font-table-cell text-table-cell text-on-surface">A. Smith</span>
+</div>
+</td>
+<td class="px-md py-[10px] font-table-cell text-table-cell text-on-surface-variant">2023-10-25</td>
+<td class="px-md py-[10px]">
+<span class="inline-flex items-center gap-1 px-2 py-[2px] rounded-full bg-surface-variant text-on-surface font-badge-label text-badge-label border border-outline-variant/50">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                                        Pending
+                                    </span>
+</td>
+<td class="px-md py-[10px]">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary-container filled">circle</span>
+<span class="font-table-cell text-table-cell text-on-surface">Medium</span>
+</div>
+</td>
+<td class="px-md py-[10px] text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 rounded hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Completed -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-md py-[10px] font-mono text-[12px] text-primary font-bold">INS-2023-8809</td>
+<td class="px-md py-[10px] font-table-cell text-table-cell text-on-surface">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">heat_pump</span>
+<span>HTX-C-105</span>
+</div>
+</td>
+<td class="px-md py-[10px]">
+<div class="flex items-center gap-xs">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-[10px] font-bold">MR</div>
+<span class="font-table-cell text-table-cell text-on-surface">M. Reza</span>
+</div>
+</td>
+<td class="px-md py-[10px] font-table-cell text-table-cell text-on-surface-variant">2023-10-22</td>
+<td class="px-md py-[10px]">
+<span class="inline-flex items-center gap-1 px-2 py-[2px] rounded-full bg-surface-container-highest text-on-tertiary-container font-badge-label text-badge-label border border-on-tertiary-container/20">
+<span class="material-symbols-outlined text-[10px] font-bold">check</span>
+                                        Completed
+                                    </span>
+</td>
+<td class="px-md py-[10px]">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-surface-tint filled">circle</span>
+<span class="font-table-cell text-table-cell text-on-surface">Low</span>
+</div>
+</td>
+<td class="px-md py-[10px] text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 rounded hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Pending -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-md py-[10px] font-mono text-[12px] text-primary font-bold">INS-2023-8815</td>
+<td class="px-md py-[10px] font-table-cell text-table-cell text-on-surface">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">electric_meter</span>
+<span>PNL-E-099</span>
+</div>
+</td>
+<td class="px-md py-[10px]">
+<div class="flex items-center gap-xs">
+<div class="w-6 h-6 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center text-[10px] font-bold">JD</div>
+<span class="font-table-cell text-table-cell text-on-surface">J. Doe</span>
+</div>
+</td>
+<td class="px-md py-[10px] font-table-cell text-table-cell text-on-surface-variant">2023-10-26</td>
+<td class="px-md py-[10px]">
+<span class="inline-flex items-center gap-1 px-2 py-[2px] rounded-full bg-surface-variant text-on-surface font-badge-label text-badge-label border border-outline-variant/50">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                                        Pending
+                                    </span>
+</td>
+<td class="px-md py-[10px]">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-error filled">warning</span>
+<span class="font-table-cell text-table-cell text-on-surface font-semibold">High</span>
+</div>
+</td>
+<td class="px-md py-[10px] text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 rounded hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination Footer -->
+<div class="bg-surface border-t border-outline-variant px-md py-sm flex items-center justify-between text-on-surface-variant font-body-base text-body-base text-xs">
+<div>Showing 1 to 4 of 128 entries</div>
+<div class="flex items-center gap-unit">
+<button class="p-1 rounded hover:bg-surface-container-high transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-6 h-6 rounded bg-primary-container text-on-primary-container font-bold text-xs flex items-center justify-center">1</button>
+<button class="w-6 h-6 rounded hover:bg-surface-container-high transition-colors flex items-center justify-center text-xs">2</button>
+<button class="w-6 h-6 rounded hover:bg-surface-container-high transition-colors flex items-center justify-center text-xs">3</button>
+<span class="px-1">...</span>
+<button class="p-1 rounded hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS - Operational Analytics Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error": "#ffffff",
+                      "surface-container-high": "#daeaff",
+                      "on-secondary": "#ffffff",
+                      "outline-variant": "#c5c6cd",
+                      "secondary": "#895200",
+                      "background": "#f8f9ff",
+                      "on-primary": "#ffffff",
+                      "on-secondary-container": "#6e4100",
+                      "surface-container-low": "#eef4ff",
+                      "secondary-fixed": "#ffdcbc",
+                      "on-background": "#081d2f",
+                      "surface-bright": "#f8f9ff",
+                      "outline": "#75777d",
+                      "inverse-primary": "#bbc7e0",
+                      "tertiary": "#000815",
+                      "error": "#ba1a1a",
+                      "primary-fixed": "#d7e3fd",
+                      "on-primary-fixed": "#101c2f",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "inverse-on-surface": "#e9f1ff",
+                      "on-tertiary-container": "#498bcd",
+                      "primary": "#000819",
+                      "error-container": "#ffdad6",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "surface-container-lowest": "#ffffff",
+                      "surface": "#f8f9ff",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "on-error-container": "#93000a",
+                      "surface-container-highest": "#d0e4fe",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-surface-variant": "#44474c",
+                      "surface-tint": "#535f75",
+                      "on-secondary-fixed": "#2c1700",
+                      "secondary-container": "#fdaa47",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "tertiary-fixed": "#d1e4ff",
+                      "surface-variant": "#d0e4fe",
+                      "on-primary-container": "#7c889f",
+                      "on-surface": "#081d2f",
+                      "tertiary-container": "#00213d",
+                      "surface-dim": "#c8dcf5",
+                      "surface-container": "#e4efff",
+                      "inverse-surface": "#1f3245",
+                      "on-tertiary": "#ffffff",
+                      "primary-container": "#142033",
+                      "on-tertiary-fixed": "#001d36"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "sidebar-width": "260px",
+                      "gutter": "16px",
+                      "xs": "4px",
+                      "md": "16px",
+                      "sm": "8px",
+                      "topbar-height": "60px",
+                      "unit": "4px",
+                      "xl": "32px"
+              },
+              "fontFamily": {
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "kpi-stat": [
+                              "Inter"
+                      ],
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "body-medium": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "badge-label": [
+                              "Inter"
+                      ],
+                      "table-cell": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "body-base": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "kpi-stat": [
+                              "22px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-header": [
+                              "11.5px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-medium": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "badge-label": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "table-cell": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .bilingual-label {
+            display: flex;
+            flex-direction: column;
+        }
+        .bilingual-label .fa-text {
+            font-size: 0.85em;
+            color: #7c889f; /* text-on-primary-container */
+        }
+        
+        /* High density chart placeholders */
+        .chart-placeholder {
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(208, 228, 254, 0.1),
+                rgba(208, 228, 254, 0.1) 10px,
+                rgba(208, 228, 254, 0.2) 10px,
+                rgba(208, 228, 254, 0.2) 20px
+            );
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-base min-h-screen flex">
+<!-- SideNavBar -->
+<nav class="bg-primary dark:bg-primary-container text-secondary-container dark:text-secondary-fixed font-body-medium text-body-medium docked fixed left-0 top-0 h-full w-sidebar-width shadow-sm hidden md:flex flex-col h-full py-lg transition-all duration-200 ease-in-out z-50">
+<div class="px-lg mb-lg">
+<h1 class="text-headline-md font-headline-md text-on-primary dark:text-primary-fixed">PEMS</h1>
+<p class="text-xs text-on-primary-container mt-xs">Utility Management</p>
+</div>
+<div class="flex-1 overflow-y-auto mt-md">
+<ul class="space-y-sm">
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary transition-colors hover:bg-primary-fixed-dim/10" href="#">
+<span aria-hidden="true" class="material-symbols-outlined" data-icon="badge">badge</span>
+<span>Employee Management</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary transition-colors hover:bg-primary-fixed-dim/10" href="#">
+<span aria-hidden="true" class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span>Asset Inventory</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary transition-colors hover:bg-primary-fixed-dim/10" href="#">
+<span aria-hidden="true" class="material-symbols-outlined" data-icon="build_circle">build_circle</span>
+<span>Work Orders</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary transition-colors hover:bg-primary-fixed-dim/10" href="#">
+<span aria-hidden="true" class="material-symbols-outlined" data-icon="security">security</span>
+<span>Safety</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm bg-surface-variant/10 text-secondary-container font-bold border-l-4 border-secondary-container" href="#">
+<span aria-hidden="true" class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>Analytics &amp; Reports</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="mt-auto px-md">
+<ul class="space-y-sm pt-md border-t border-primary-fixed-dim/20">
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary transition-colors hover:bg-primary-fixed-dim/10" href="#">
+<span aria-hidden="true" class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary transition-colors hover:bg-primary-fixed-dim/10" href="#">
+<span aria-hidden="true" class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-sidebar-width min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim text-primary dark:text-primary-fixed-dim font-body-base text-body-base docked sticky top-0 right-0 w-full z-40 border-b border-outline-variant dark:border-outline flex justify-between items-center h-topbar-height px-lg">
+<!-- Mobile Menu Button (Visible only on mobile) -->
+<button class="md:hidden mr-md text-on-surface-variant cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<!-- Search Bar Area -->
+<div class="flex-1 flex items-center max-w-md">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">search</span>
+<input class="w-full pl-xl pr-sm py-sm rounded-lg border border-outline-variant bg-surface focus:border-secondary focus:ring-1 focus:ring-secondary text-body-base font-body-base outline-none transition-colors" placeholder="Search..." type="text"/>
+</div>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-md ml-auto">
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-sm cursor-pointer active:scale-95 flex items-center gap-xs">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+<span class="text-xs font-bold uppercase hidden md:inline">EN/FA</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-sm cursor-pointer active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-sm cursor-pointer active:scale-95">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<main class="flex-1 p-gutter md:p-lg overflow-y-auto">
+<!-- Dashboard Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md mb-lg">
+<div class="bilingual-label">
+<h2 class="font-headline-lg text-headline-lg md:text-headline-lg text-on-background">Operational Analytics</h2>
+<span class="fa-text font-body-medium mt-xs" dir="rtl">تحلیل‌های عملیاتی</span>
+</div>
+<div class="flex items-center gap-sm">
+<div class="flex items-center gap-xs border border-outline-variant rounded-lg px-sm py-sm bg-surface">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">calendar_today</span>
+<span class="text-body-base font-body-base text-on-surface">Last 30 Days</span>
+</div>
+<button class="flex items-center gap-xs bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white px-md py-sm rounded-lg font-body-medium shadow-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">download</span>
+<span>Export Report</span>
+</button>
+</div>
+</div>
+<!-- Executive Summary Metrics (Bento Grid Style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md mb-lg">
+<!-- Metric 1 -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex items-center gap-md hover:border-secondary transition-colors relative overflow-hidden">
+<div class="absolute -right-4 -top-4 w-16 h-16 bg-surface-container-highest rounded-full opacity-50 blur-xl"></div>
+<div class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-blue-800">bolt</span>
+</div>
+<div class="flex-1">
+<div class="bilingual-label mb-xs">
+<span class="text-xs text-on-surface-variant uppercase tracking-wider font-bold">Total Energy Output (MW/h)</span>
+<span class="fa-text text-[10px]" dir="rtl">مجموع تولید انرژی</span>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-on-background">1,245.8</div>
+<div class="text-xs text-green-700 flex items-center gap-xs mt-xs">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +5.2%
+                        </div>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex items-center gap-md hover:border-secondary transition-colors">
+<div class="w-12 h-12 rounded-lg bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-green-800">settings_suggest</span>
+</div>
+<div class="flex-1">
+<div class="bilingual-label mb-xs">
+<span class="text-xs text-on-surface-variant uppercase tracking-wider font-bold">Fleet Availability (%)</span>
+<span class="fa-text text-[10px]" dir="rtl">در دسترس بودن ناوگان</span>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-on-background">98.4%</div>
+<div class="text-xs text-green-700 flex items-center gap-xs mt-xs">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Target Met
+                        </div>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex items-center gap-md hover:border-secondary transition-colors">
+<div class="w-12 h-12 rounded-lg bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-amber-800">build</span>
+</div>
+<div class="flex-1">
+<div class="bilingual-label mb-xs">
+<span class="text-xs text-on-surface-variant uppercase tracking-wider font-bold">Avg Repair Time (MTTR)</span>
+<span class="fa-text text-[10px]" dir="rtl">میانگین زمان تعمیر</span>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-on-background">4h 12m</div>
+<div class="text-xs text-red-700 flex items-center gap-xs mt-xs">
+<span class="material-symbols-outlined text-[14px]">trending_down</span> -12m vs Prev
+                        </div>
+</div>
+</div>
+<!-- Metric 4 -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex items-center gap-md hover:border-secondary transition-colors">
+<div class="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-purple-800">health_and_safety</span>
+</div>
+<div class="flex-1">
+<div class="bilingual-label mb-xs">
+<span class="text-xs text-on-surface-variant uppercase tracking-wider font-bold">Safety Compliance Rate</span>
+<span class="fa-text text-[10px]" dir="rtl">نرخ رعایت ایمنی</span>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-on-background">99.9%</div>
+<div class="text-xs text-on-surface-variant flex items-center gap-xs mt-xs">
+<span class="material-symbols-outlined text-[14px]">info</span> 1 Minor Incident
+                        </div>
+</div>
+</div>
+</div>
+<!-- Main Charts Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-md mb-lg">
+<!-- Performance Trends (Spans 2 columns) -->
+<div class="lg:col-span-2 bg-surface border border-outline-variant rounded-lg p-md flex flex-col hover:border-secondary transition-colors">
+<div class="flex justify-between items-start mb-md">
+<div class="bilingual-label">
+<h3 class="font-headline-md text-headline-md text-on-background">Energy Production vs. Consumption</h3>
+<span class="fa-text" dir="rtl">تولید در برابر مصرف انرژی</span>
+</div>
+<button class="text-on-surface-variant hover:text-on-background">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="flex-1 w-full h-64 chart-placeholder rounded-md flex items-center justify-center text-on-surface-variant">
+<!-- Chart Area Placeholder -->
+<span class="material-symbols-outlined text-[48px] opacity-20">show_chart</span>
+</div>
+</div>
+<!-- Safety Performance Breakdown -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex flex-col hover:border-secondary transition-colors">
+<div class="flex justify-between items-start mb-md">
+<div class="bilingual-label">
+<h3 class="font-headline-md text-headline-md text-on-background">Safety Breakdown</h3>
+<span class="fa-text" dir="rtl">تفکیک ایمنی</span>
+</div>
+<button class="text-on-surface-variant hover:text-on-background">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="flex-1 w-full h-48 chart-placeholder rounded-md flex items-center justify-center text-on-surface-variant mb-md">
+<span class="material-symbols-outlined text-[48px] opacity-20">pie_chart</span>
+</div>
+<!-- Legend -->
+<div class="space-y-xs text-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs"><div class="w-3 h-3 rounded-full bg-blue-500"></div> Equipment</div>
+<span class="font-bold">60%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs"><div class="w-3 h-3 rounded-full bg-amber-500"></div> Personnel</div>
+<span class="font-bold">30%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs"><div class="w-3 h-3 rounded-full bg-green-500"></div> Environmental</div>
+<span class="font-bold">10%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Lower Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-md">
+<!-- Asset Utilization Heatmap -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex flex-col hover:border-secondary transition-colors">
+<div class="flex justify-between items-start mb-md">
+<div class="bilingual-label">
+<h3 class="font-headline-md text-headline-md text-on-background">Asset Utilization Density</h3>
+<span class="fa-text" dir="rtl">تراکم استفاده از دارایی‌ها</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-xs h-48">
+<div class="bg-orange-100 rounded flex items-center justify-center text-xs font-bold text-orange-900 border border-orange-200">Sector A (High)</div>
+<div class="bg-blue-50 rounded flex items-center justify-center text-xs font-bold text-blue-900 border border-blue-100">Sector B (Low)</div>
+<div class="bg-orange-50 rounded flex items-center justify-center text-xs font-bold text-orange-800 border border-orange-100">Sector C (Med)</div>
+<div class="bg-red-100 rounded flex items-center justify-center text-xs font-bold text-red-900 border border-red-200">Sector D (Crit)</div>
+</div>
+</div>
+<!-- Localized Data Table -->
+<div class="bg-surface border border-outline-variant rounded-lg flex flex-col hover:border-secondary transition-colors overflow-hidden">
+<div class="p-md border-b border-outline-variant bg-surface-bright flex justify-between items-start">
+<div class="bilingual-label">
+<h3 class="font-headline-md text-headline-md text-on-background">Top Performing Assets</h3>
+<span class="fa-text" dir="rtl">دارایی‌های با بهترین عملکرد</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#f5f7fa] border-b border-outline-variant font-table-header text-table-header text-on-surface-variant uppercase">
+<th class="p-sm font-bold">
+<div class="bilingual-label"><span>Asset ID</span><span class="fa-text" dir="rtl">شناسه دارایی</span></div>
+</th>
+<th class="p-sm font-bold">
+<div class="bilingual-label"><span>Efficiency</span><span class="fa-text" dir="rtl">راندمان</span></div>
+</th>
+<th class="p-sm font-bold">
+<div class="bilingual-label"><span>Last Service</span><span class="fa-text" dir="rtl">آخرین سرویس</span></div>
+</th>
+<th class="p-sm font-bold text-right">Action</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell">
+<tr class="border-b border-outline-variant/50 hover:bg-surface-container-low transition-colors">
+<td class="p-sm font-mono text-xs">PMP-0912-A</td>
+<td class="p-sm"><span class="px-2 py-1 rounded-full bg-green-100 text-green-800 text-[10px] font-bold">99.2%</span></td>
+<td class="p-sm">2023-10-01</td>
+<td class="p-sm text-right">
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors ml-auto">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/50 hover:bg-surface-container-low transition-colors">
+<td class="p-sm font-mono text-xs">TRB-4410-X</td>
+<td class="p-sm"><span class="px-2 py-1 rounded-full bg-green-100 text-green-800 text-[10px] font-bold">98.5%</span></td>
+<td class="p-sm">2023-09-15</td>
+<td class="p-sm text-right">
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors ml-auto">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-sm font-mono text-xs">VLV-1004-C</td>
+<td class="p-sm"><span class="px-2 py-1 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">94.1%</span></td>
+<td class="p-sm">2023-10-12</td>
+<td class="p-sm text-right">
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors ml-auto">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

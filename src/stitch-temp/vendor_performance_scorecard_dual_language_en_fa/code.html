@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vendor Performance Scorecard - Industrial Utility Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-background": "#081d2f",
+                      "tertiary": "#000815",
+                      "surface-container-highest": "#d0e4fe",
+                      "secondary": "#895200",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "surface-container": "#e4efff",
+                      "on-primary-fixed": "#101c2f",
+                      "on-secondary-container": "#6e4100",
+                      "surface-container-high": "#daeaff",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "on-surface": "#081d2f",
+                      "tertiary-container": "#00213d",
+                      "inverse-on-surface": "#e9f1ff",
+                      "outline": "#75777d",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed": "#d1e4ff",
+                      "surface-container-low": "#eef4ff",
+                      "on-tertiary-fixed": "#001d36",
+                      "inverse-primary": "#bbc7e0",
+                      "primary": "#000819",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "surface-bright": "#f8f9ff",
+                      "background": "#f8f9ff",
+                      "error": "#ba1a1a",
+                      "on-primary-container": "#7c889f",
+                      "on-surface-variant": "#44474c",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-fixed": "#2c1700",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "on-error": "#ffffff",
+                      "secondary-fixed": "#ffdcbc",
+                      "surface": "#f8f9ff",
+                      "inverse-surface": "#1f3245",
+                      "secondary-container": "#fdaa47",
+                      "outline-variant": "#c5c6cd",
+                      "primary-fixed": "#d7e3fd",
+                      "on-error-container": "#93000a",
+                      "surface-tint": "#535f75",
+                      "surface-dim": "#c8dcf5",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-variant": "#d0e4fe",
+                      "on-tertiary-container": "#498bcd",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "primary-container": "#142033"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "lg": "24px",
+                      "topbar-height": "60px",
+                      "gutter": "16px",
+                      "xl": "32px",
+                      "md": "16px",
+                      "sidebar-width": "260px",
+                      "sm": "8px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "badge-label": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "body-medium": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "table-cell": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "kpi-stat": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "badge-label": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-medium": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-cell": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-header": [
+                              "11.5px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-base": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "kpi-stat": [
+                              "22px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+          .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+          }
+          .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+          }
+          
+          /* Industrial gradient for progress bars */
+          .bg-industrial-gradient {
+              background: linear-gradient(90deg, #d98c2b, #b8721e);
+          }
+          .text-industrial-amber {
+              color: #d98c2b;
+          }
+          .border-industrial-amber {
+              border-color: #d98c2b;
+          }
+      </style>
+</head>
+<body class="bg-background text-on-background antialiased flex h-screen overflow-hidden">
+<!-- SideNavBar (from JSON) -->
+<nav class="hidden md:flex bg-primary dark:bg-tertiary-container fixed left-0 top-0 h-screen w-sidebar-width flex-col py-lg z-50">
+<!-- Brand/Header -->
+<div class="px-lg mb-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary fill">engineering</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-primary">Industrial Utility Admin</h1>
+<p class="font-label-caps text-label-caps text-on-primary/70">System Operator</p>
+</div>
+</div>
+<!-- CTA -->
+<div class="px-lg mb-6">
+<button class="w-full bg-industrial-gradient text-on-primary font-body-medium text-body-medium py-2 px-4 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Contract
+            </button>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 overflow-y-auto">
+<ul class="space-y-1 px-2">
+<li>
+<a class="flex items-center gap-3 text-on-primary/70 dark:text-on-primary-fixed-variant hover:text-on-primary hover:bg-primary-container dark:hover:bg-tertiary-container transition-all px-4 py-2 rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                        Dashboard
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-primary/70 dark:text-on-primary-fixed-variant hover:text-on-primary hover:bg-primary-container dark:hover:bg-tertiary-container transition-all px-4 py-2 rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+                        Contracts
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-primary/70 dark:text-on-primary-fixed-variant hover:text-on-primary hover:bg-primary-container dark:hover:bg-tertiary-container transition-all px-4 py-2 rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+                        Compliance
+                    </a>
+</li>
+<li>
+<!-- Active State for Vendors -->
+<a class="flex items-center gap-3 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-lg mx-2 px-4 py-2 font-body-medium text-body-medium hover:bg-primary-container dark:hover:bg-tertiary-container transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="factory">factory</span>
+                        Vendors
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-primary/70 dark:text-on-primary-fixed-variant hover:text-on-primary hover:bg-primary-container dark:hover:bg-tertiary-container transition-all px-4 py-2 rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                        Financials
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-primary/70 dark:text-on-primary-fixed-variant hover:text-on-primary hover:bg-primary-container dark:hover:bg-tertiary-container transition-all px-4 py-2 rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                        Settings
+                    </a>
+</li>
+</ul>
+</div>
+<!-- Footer Links -->
+<div class="mt-auto px-2 pt-4 border-t border-white/10">
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 text-on-primary/70 hover:text-on-primary px-4 py-2 rounded-lg font-body-medium text-body-medium transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+                         Help Center
+                     </a>
+</li>
+<li>
+<a class="flex items-center gap-3 text-on-primary/70 hover:text-on-primary px-4 py-2 rounded-lg font-body-medium text-body-medium transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                         Sign Out
+                     </a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col md:ml-sidebar-width h-screen bg-background">
+<!-- TopAppBar (from JSON) -->
+<header class="bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline docked full-width top-0 sticky z-40 flex justify-between items-center h-topbar-height px-lg">
+<div class="flex items-center gap-4">
+<!-- Mobile menu button (hidden on desktop) -->
+<button class="md:hidden text-on-surface p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-headline-md text-headline-md font-bold text-on-surface dark:text-inverse-on-surface">Contract Management</div>
+</div>
+<div class="flex items-center gap-4">
+<!-- Search on Left (visually represented here as part of right cluster for standard web layout, but could be pushed left) -->
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface-container-low border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-all w-64" placeholder="Search vendors..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-full transition-colors focus:ring-2 focus:ring-secondary">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-full transition-colors relative focus:ring-2 focus:ring-secondary">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded-full transition-colors focus:ring-2 focus:ring-secondary">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Scrollable Canvas -->
+<div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+<div class="max-w-7xl mx-auto space-y-6">
+<!-- Page Header (Dual Language) -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Vendor Profile</span>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">chevron_right</span>
+<span class="font-label-caps text-label-caps text-industrial-amber uppercase tracking-wider">Scorecard</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface flex items-center gap-3">
+                            PetroTech Solutions LLC 
+                            <span class="px-2 py-0.5 bg-[#e8f5e9] text-[#2e7d32] font-badge-label text-badge-label rounded-full border border-[#c8e6c9]">ACTIVE</span>
+</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-1 flex gap-4">
+<span><strong class="font-semibold">Contract:</strong> CT-2023-8942</span>
+<span class="font-arabic opacity-80 border-r border-outline-variant pr-4 ml-4" dir="rtl">پروفایل تامین‌کننده</span>
+</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 border border-outline-variant text-on-surface-variant font-body-medium text-body-medium rounded-lg hover:bg-surface-container-low transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                            Export PDF
+                        </button>
+<button class="px-4 py-2 bg-industrial-gradient text-white font-body-medium text-body-medium rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                            Evaluate
+                        </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Overall Score Card -->
+<div class="md:col-span-4 bg-white border border-[#edf0f4] rounded-xl p-6 shadow-sm hover:border-industrial-amber transition-colors flex flex-col justify-center items-center text-center">
+<div class="relative w-32 h-32 mb-4">
+<!-- SVG Circle Progress -->
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="#edf0f4" stroke-width="8"></circle>
+<circle cx="50" cy="50" fill="none" r="45" stroke="#d98c2b" stroke-dasharray="282.7" stroke-dashoffset="33.9" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface">88<span class="text-lg text-on-surface-variant font-normal">%</span></span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Overall Score</h3>
+<p class="font-body-base text-body-base text-on-surface-variant" dir="rtl">امتیاز کلی</p>
+<div class="mt-6 w-full flex justify-between text-sm border-t border-[#edf0f4] pt-4">
+<div class="text-left">
+<div class="text-on-surface-variant text-xs uppercase tracking-wider">Previous</div>
+<div class="font-semibold text-on-surface">85%</div>
+</div>
+<div class="text-right">
+<div class="text-on-surface-variant text-xs uppercase tracking-wider">Trend</div>
+<div class="font-semibold text-[#2e7d32] flex items-center gap-1 justify-end">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +3%
+                                </div>
+</div>
+</div>
+</div>
+<!-- Metrics Breakdown (Glassmorphism inspired light card) -->
+<div class="md:col-span-8 bg-white/80 backdrop-blur-sm border border-[#edf0f4] rounded-xl p-6 shadow-sm">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Performance Metrics</h3>
+<span class="text-on-surface-variant text-sm" dir="rtl">شاخص‌های عملکرد</span>
+</div>
+<div class="space-y-6">
+<!-- Metric 1: HSE -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<div>
+<div class="font-body-medium text-body-medium text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-industrial-amber">health_and_safety</span>
+                                            HSE Compliance
+                                        </div>
+<div class="font-label-caps text-label-caps text-on-surface-variant opacity-70" dir="rtl">انطباق ایمنی و بهداشت</div>
+</div>
+<span class="font-semibold text-on-surface">94%</span>
+</div>
+<div class="w-full h-2 bg-[#edf0f4] rounded-full overflow-hidden">
+<div class="h-full bg-industrial-gradient rounded-full w-[94%]"></div>
+</div>
+</div>
+<!-- Metric 2: Delivery -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<div>
+<div class="font-body-medium text-body-medium text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-industrial-amber">local_shipping</span>
+                                            Delivery Speed
+                                        </div>
+<div class="font-label-caps text-label-caps text-on-surface-variant opacity-70" dir="rtl">سرعت تحویل</div>
+</div>
+<span class="font-semibold text-on-surface">82%</span>
+</div>
+<div class="w-full h-2 bg-[#edf0f4] rounded-full overflow-hidden">
+<div class="h-full bg-industrial-gradient rounded-full w-[82%]"></div>
+</div>
+</div>
+<!-- Metric 3: Quality -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<div>
+<div class="font-body-medium text-body-medium text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-industrial-amber">verified</span>
+                                            Quality
+                                        </div>
+<div class="font-label-caps text-label-caps text-on-surface-variant opacity-70" dir="rtl">کیفیت</div>
+</div>
+<span class="font-semibold text-on-surface">90%</span>
+</div>
+<div class="w-full h-2 bg-[#edf0f4] rounded-full overflow-hidden">
+<div class="h-full bg-industrial-gradient rounded-full w-[90%]"></div>
+</div>
+</div>
+<!-- Metric 4: Financial -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<div>
+<div class="font-body-medium text-body-medium text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-industrial-amber">account_balance</span>
+                                            Financial Reliability
+                                        </div>
+<div class="font-label-caps text-label-caps text-on-surface-variant opacity-70" dir="rtl">پایداری مالی</div>
+</div>
+<span class="font-semibold text-on-surface">86%</span>
+</div>
+<div class="w-full h-2 bg-[#edf0f4] rounded-full overflow-hidden">
+<div class="h-full bg-industrial-gradient rounded-full w-[86%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Incidents Table -->
+<div class="md:col-span-12 bg-white border border-[#edf0f4] rounded-xl overflow-hidden shadow-sm mt-4">
+<div class="px-6 py-4 border-b border-[#edf0f4] bg-[#f8f9ff] flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Recent Evaluations &amp; Incidents</h3>
+<span class="text-on-surface-variant text-sm" dir="rtl">ارزیابی‌ها و حوادث اخیر</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#f5f7fa] font-table-header text-table-header text-on-surface-variant uppercase tracking-wider border-b border-[#edf0f4]">
+<th class="px-6 py-3 font-semibold">Date / تاریخ</th>
+<th class="px-6 py-3 font-semibold">Event Type</th>
+<th class="px-6 py-3 font-semibold">Reference (Monospace)</th>
+<th class="px-6 py-3 font-semibold">Impact Score</th>
+<th class="px-6 py-3 font-semibold text-right">Status</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface divide-y divide-[#edf0f4]">
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-3">2023-10-15</td>
+<td class="px-6 py-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-industrial-amber">warning</span>
+                                            Minor Delivery Delay
+                                        </td>
+<td class="px-6 py-3 font-mono text-xs text-on-surface-variant">DLV-892-A</td>
+<td class="px-6 py-3 text-[#ba1a1a]">-2 pts</td>
+<td class="px-6 py-3 text-right">
+<span class="inline-block px-2 py-1 bg-[#fff8e1] text-[#f57f17] font-badge-label text-badge-label rounded-full">RESOLVED</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-3">2023-09-28</td>
+<td class="px-6 py-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-[#2e7d32]">verified</span>
+                                            Quarterly HSE Audit
+                                        </td>
+<td class="px-6 py-3 font-mono text-xs text-on-surface-variant">AUD-Q3-991</td>
+<td class="px-6 py-3 text-[#2e7d32]">+5 pts</td>
+<td class="px-6 py-3 text-right">
+<span class="inline-block px-2 py-1 bg-[#e8f5e9] text-[#2e7d32] font-badge-label text-badge-label rounded-full">PASSED</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-3">2023-08-10</td>
+<td class="px-6 py-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-[#5c6f85]">fact_check</span>
+                                            Quality Control Check
+                                        </td>
+<td class="px-6 py-3 font-mono text-xs text-on-surface-variant">QC-MTR-004</td>
+<td class="px-6 py-3 text-on-surface-variant">0 pts</td>
+<td class="px-6 py-3 text-right">
+<span class="inline-block px-2 py-1 bg-[#e4efff] text-[#00497c] font-badge-label text-badge-label rounded-full">STANDARD</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

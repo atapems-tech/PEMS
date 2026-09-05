@@ -1,0 +1,295 @@
+@model PEMS.Domain.Entities.Instrument
+@using PEMS.Domain.Entities
+@{
+    ViewData["Title"] = "Passport - " + Model.Equipment?.TagNumber;
+    var status = (string)ViewBag.CalibrationStatus;
+    var badgeClass = status switch { "Overdue" => "bg-danger", "DueSoon" => "bg-warning text-dark", "OK" => "bg-success", _ => "bg-secondary" };
+    var latestCal = (CalibrationHistory?)ViewBag.LatestCalibration;
+    var latestMaint = (MaintenanceHistory?)ViewBag.LatestMaintenance;
+    string NA(string? v) => string.IsNullOrWhiteSpace(v) ? "N/A" : v;
+}
+
+<div class="content-card mb-3 d-print-none">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <h4 class="mb-0">@Model.Equipment?.TagNumber <span class="badge @badgeClass ms-1">@status</span></h4>
+            <span class="text-muted small">@Model.InstrumentType - @Model.Equipment?.Name (@NA(Model.Equipment?.Manufacturer) / @NA(Model.Equipment?.Model))</span>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-action="Edit" asp-route-id="@Model.InstrumentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i> Edit</a>
+            <button onclick="window.print()" class="btn btn-sm btn-outline-secondary"><i class="bi bi-printer"></i> Print</button>
+            <form asp-action="GenerateCalibrationWorkOrder" method="post" class="d-inline">
+                <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
+                <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-clipboard-plus"></i> Generate WO</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="content-card mb-3">
+    <h6 class="mb-3">Passport</h6>
+    <div class="row g-2 small">
+        <div class="col-md-3"><strong>Loop No.</strong><div>@NA(Model.LoopNumber)</div></div>
+        <div class="col-md-3"><strong>System</strong><div>@NA(Model.System)</div></div>
+        <div class="col-md-3"><strong>Signal Class</strong><div>@NA(Model.SignalClass)</div></div>
+        <div class="col-md-3"><strong>Manufacturer / Model</strong><div>@NA(Model.Equipment?.Manufacturer) / @NA(Model.Equipment?.Model)</div></div>
+
+        <div class="col-md-3"><strong>Process Variable</strong><div>@NA(Model.ProcessVariable)</div></div>
+        <div class="col-md-3"><strong>Range</strong><div>@(Model.RangeMin?.ToString() ?? "N/A") - @(Model.RangeMax?.ToString() ?? "N/A") @Model.Unit</div></div>
+        <div class="col-md-3"><strong>Accuracy</strong><div>@NA(Model.Accuracy)</div></div>
+        <div class="col-md-3"><strong>Output Signal</strong><div>@NA(Model.OutputSignal)</div></div>
+
+        <div class="col-md-3"><strong>Power Supply</strong><div>@NA(Model.PowerSupply)</div></div>
+        <div class="col-md-3"><strong>Communication</strong><div>@NA(Model.Communication)</div></div>
+        <div class="col-md-3"><strong>IP Rating</strong><div>@NA(Model.IPRating)</div></div>
+        <div class="col-md-3"><strong>Process / Electrical Connection</strong><div>@NA(Model.ProcessConnection) / @NA(Model.ElectricalConnection)</div></div>
+
+        <div class="col-md-3"><strong>Hazardous Area</strong><div>@NA(Model.HazardousArea)</div></div>
+        <div class="col-md-3"><strong>Ex Protection</strong><div>@NA(Model.ExProtection)</div></div>
+        <div class="col-md-2"><strong>Zone</strong><div>@NA(Model.Zone)</div></div>
+        <div class="col-md-2"><strong>Gas Group</strong><div>@NA(Model.GasGroup)</div></div>
+        <div class="col-md-2"><strong>Temp Class</strong><div>@NA(Model.TempClass)</div></div>
+
+        <div class="col-md-3"><strong>Fail Action</strong><div>@NA(Model.FailAction)</div></div>
+        <div class="col-md-3"><strong>Alarm / Trip Setpoint</strong><div>@(Model.AlarmSetpoint?.ToString() ?? "N/A") / @(Model.TripSetpoint?.ToString() ?? "N/A")</div></div>
+        <div class="col-md-3"><strong>SIL</strong><div>@NA(Model.SIL)</div></div>
+        <div class="col-md-3"><strong>Current Status</strong><div>@Model.CurrentStatus</div></div>
+
+        <div class="col-md-3"><strong>Junction Box</strong><div>@NA(Model.JunctionBox)</div></div>
+        <div class="col-md-3"><strong>Marshalling Cabinet</strong><div>@NA(Model.MarshallingCabinet)</div></div>
+        <div class="col-md-3"><strong>Cable No.</strong><div>@NA(Model.CableNumber)</div></div>
+        <div class="col-md-3"><strong>Barrier / Relay</strong><div>@NA(Model.BarrierRelay)</div></div>
+
+        <div class="col-md-3"><strong>I/O Card / Channel</strong><div>@NA(Model.IOCardChannel)</div></div>
+        <div class="col-md-3"><strong>System Cabinet</strong><div>@NA(Model.SystemCabinet)</div></div>
+        <div class="col-md-3"><strong>Calibration Interval</strong><div>@(Model.CalibrationInterval.HasValue ? Model.CalibrationInterval + " days" : "N/A")</div></div>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Model.Equipment?.Description))
+    {
+        <div class="mt-2 small"><strong>Description</strong><div>@Model.Equipment.Description</div></div>
+    }
+</div>
+
+<div class="content-card mb-3">
+    <div class="row g-3">
+        <div class="col-md-6">
+            <h6>Latest Calibration</h6>
+            @if (latestCal != null)
+            {
+                <div class="small">
+                    <div>Date: @latestCal.CalibrationDate.ToString("yyyy-MM-dd") - @latestCal.CalibrationType - Result: @latestCal.Result</div>
+                    <div>As Found / As Left: @NA(latestCal.AsFound) / @NA(latestCal.AsLeft)</div>
+                    <div>Technician: @(latestCal.Technician != null ? latestCal.Technician.FirstName + " " + latestCal.Technician.LastName : "N/A") - Certificate: @NA(latestCal.CertificateNo)</div>
+                    <div>Next Due: @(latestCal.NextDue?.ToString("yyyy-MM-dd") ?? "N/A")</div>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted small">No calibration recorded yet.</p>
+            }
+        </div>
+        <div class="col-md-6">
+            <h6>Latest Maintenance</h6>
+            @if (latestMaint != null)
+            {
+                <div class="small">
+                    <div>Date: @latestMaint.ExecutionDate.ToString("yyyy-MM-dd")</div>
+                    <div>Finding: @NA(latestMaint.Finding)</div>
+                    <div>Action: @NA(latestMaint.ActionTaken)</div>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted small">No maintenance history for this equipment yet.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="content-card d-print-none">
+    <h6>Record New Calibration</h6>
+    <form asp-action="AddCalibration" method="post" class="row g-2 align-items-end mb-4">
+        <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
+        <div class="col-md-2"><label class="form-label small">Date</label><input type="date" name="calibrationDate" class="form-control form-control-sm" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
+        <div class="col-md-2"><label class="form-label small">Type</label>
+            <select name="calibrationType" class="form-select form-select-sm">
+                <option>Routine</option><option>PostRepair</option><option>PreCommissioning</option>
+            </select>
+        </div>
+        <div class="col-md-2"><label class="form-label small">As Found</label><input name="asFound" class="form-control form-control-sm" /></div>
+        <div class="col-md-2"><label class="form-label small">As Left</label><input name="asLeft" class="form-control form-control-sm" /></div>
+        <div class="col-md-2"><label class="form-label small">Result</label>
+            <select name="result" class="form-select form-select-sm">
+                <option>Pass</option><option>Fail</option><option>Adjusted</option>
+            </select>
+        </div>
+        <div class="col-md-2"><label class="form-label small">Certificate No.</label><input name="certificateNo" class="form-control form-control-sm" /></div>
+        <div class="col-md-4"><label class="form-label small">Standard Reference</label><input name="standardReference" class="form-control form-control-sm" /></div>
+        <div class="col-md-4"><label class="form-label small">Remarks</label><input name="remarks" class="form-control form-control-sm" /></div>
+        <div class="col-md-4"><button type="submit" class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> Record Calibration</button></div>
+    </form>
+
+    <h6>Calibration History</h6>
+    <div class="table-scroll-area" style="max-height:40vh; overflow-y:auto;">
+        <table class="table table-enterprise table-sm">
+            <thead><tr><th>Date</th><th>Type</th><th>As Found / As Left</th><th>Result</th><th>Technician</th><th>Certificate</th><th>Next Due</th></tr></thead>
+            <tbody>
+                @foreach (var c in (List<CalibrationHistory>)ViewBag.CalibrationHistoryList)
+                {
+                    <tr>
+                        <td>@c.CalibrationDate.ToString("yyyy-MM-dd")</td>
+                        <td>@c.CalibrationType</td>
+                        <td>@NA(c.AsFound) / @NA(c.AsLeft)</td>
+                        <td>@c.Result</td>
+                        <td>@(c.Technician != null ? c.Technician.FirstName + " " + c.Technician.LastName : "N/A")</td>
+                        <td>@NA(c.CertificateNo)</td>
+                        <td>@(c.NextDue?.ToString("yyyy-MM-dd") ?? "N/A")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@{
+    var alarms = (List<Alarm>)ViewBag.Alarms;
+    var causeEffectsByAlarm = (Dictionary<int, List<CauseEffect>>)ViewBag.CauseEffectsByAlarm;
+    var controlLoop = (ControlLoop?)ViewBag.ControlLoop;
+    var ioPoints = (List<IOPoint>)ViewBag.IOPoints;
+}
+
+@* ===================== I&C Integration (CMMS-09) ===================== *@
+<div class="content-card mb-3 d-print-none">
+    <h6>Record New Alarm</h6>
+    <form asp-action="AddAlarm" method="post" class="row g-2 align-items-end mb-3">
+        <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
+        <div class="col-md-2"><label class="form-label small">Alarm Tag</label><input name="alarmTag" class="form-control form-control-sm" required /></div>
+        <div class="col-md-2"><label class="form-label small">Type</label>
+            <select name="alarmType" class="form-select form-select-sm">
+                <option>High</option><option>Low</option><option>HighHigh</option><option>LowLow</option>
+            </select>
+        </div>
+        <div class="col-md-2"><label class="form-label small">Priority</label>
+            <select name="priority" class="form-select form-select-sm">
+                <option>Low</option><option>Medium</option><option>High</option><option>Critical</option>
+            </select>
+        </div>
+        <div class="col-md-2"><label class="form-label small">Set Point</label><input name="setPoint" type="number" step="0.001" class="form-control form-control-sm" /></div>
+        <div class="col-md-1"><label class="form-label small">Unit</label><input name="unit" class="form-control form-control-sm" /></div>
+        <div class="col-md-3"><label class="form-label small">Action</label><input name="action" class="form-control form-control-sm" /></div>
+        <div class="col-md-6"><label class="form-label small">Description</label><input name="description" class="form-control form-control-sm" /></div>
+        <div class="col-md-3"><button type="submit" class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> Add Alarm</button></div>
+    </form>
+
+    <h6>Alarms &amp; Cause / Effect</h6>
+    @if (!alarms.Any())
+    {
+        <p class="text-muted small">هنوز هیچ آلارمی برای این Instrument ثبت نشده.</p>
+    }
+    @foreach (var alarm in alarms)
+    {
+        var alarmBadge = alarm.Priority switch { "Critical" => "bg-danger", "High" => "bg-warning text-dark", _ => "bg-secondary" };
+        var ces = causeEffectsByAlarm.TryGetValue(alarm.AlarmId, out var list) ? list : new List<CauseEffect>();
+
+        <div class="border rounded p-2 mb-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="small">
+                    <strong>@alarm.AlarmTag</strong> - @alarm.AlarmType
+                    <span class="badge @alarmBadge">@alarm.Priority</span>
+                    - SP: @(alarm.SetPoint?.ToString() ?? "N/A") @alarm.Unit
+                </div>
+            </div>
+            @if (!string.IsNullOrWhiteSpace(alarm.Description)) { <div class="small text-muted">@alarm.Description</div> }
+
+            <table class="table table-enterprise table-sm mt-2 mb-2">
+                <thead><tr><th>Cause</th><th>Effect</th><th>Action</th><th>Trip Signal</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var ce in ces)
+                    {
+                        <tr>
+                            <td class="small">@ce.Cause</td>
+                            <td class="small">@ce.Effect</td>
+                            <td class="small">@(ce.ActionType ?? "-")</td>
+                            <td class="small">@(ce.TripSignal ?? "-")</td>
+                            <td>
+                                <form asp-action="RaiseWorkRequestFromCauseEffect" method="post" class="d-inline">
+                                    <input type="hidden" name="causeEffectId" value="@ce.CauseEffectId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-exclamation-triangle"></i> Raise Work Request</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <form asp-action="AddCauseEffect" method="post" class="row g-2 align-items-end d-print-none">
+                <input type="hidden" name="alarmId" value="@alarm.AlarmId" />
+                <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
+                <div class="col-md-2"><input name="cause" class="form-control form-control-sm" placeholder="Cause" required /></div>
+                <div class="col-md-2"><input name="effect" class="form-control form-control-sm" placeholder="Effect" required /></div>
+                <div class="col-md-2">
+                    <select name="actionType" class="form-select form-select-sm">
+                        <option value="">Action --</option>
+                        <option>Trip</option><option>Shutdown</option><option>Alarm</option><option>Start</option><option>Stop</option>
+                    </select>
+                </div>
+                <div class="col-md-2"><input name="tripSignal" class="form-control form-control-sm" placeholder="Trip Signal" /></div>
+                <div class="col-md-2"><input name="description" class="form-control form-control-sm" placeholder="Description" /></div>
+                <div class="col-md-2"><button type="submit" class="btn btn-sm btn-outline-primary w-100">+ C&amp;E</button></div>
+            </form>
+        </div>
+    }
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-6">
+        <div class="content-card h-100">
+            <h6>Control Loop</h6>
+            @if (controlLoop != null)
+            {
+                <div class="small">
+                    <div><strong>@controlLoop.LoopNumber</strong> - @NA(controlLoop.ControllerType)</div>
+                    <div>System: @NA(controlLoop.ControllerSystem) - Area: @NA(controlLoop.ProcessArea)</div>
+                    @if (!string.IsNullOrWhiteSpace(controlLoop.Description)) { <div class="text-muted">@controlLoop.Description</div> }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted small">این Instrument به هیچ Control Loop ای وصل نیست.</p>
+                <form asp-action="AssignControlLoop" method="post" class="row g-2 align-items-end d-print-none">
+                    <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
+                    <div class="col-md-6"><input name="loopNumber" class="form-control form-control-sm" placeholder="Loop Number" required /></div>
+                    <div class="col-md-6">
+                        <select name="controllerType" class="form-select form-select-sm">
+                            <option value="">Controller Type --</option>
+                            <option>PID</option><option>ON/OFF</option><option>Cascade</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6"><input name="controllerSystem" class="form-control form-control-sm" placeholder="DCS/PLC Name" /></div>
+                    <div class="col-md-6"><input name="processArea" class="form-control form-control-sm" placeholder="Process Area" /></div>
+                    <div class="col-md-12"><input name="description" class="form-control form-control-sm" placeholder="Description" /></div>
+                    <div class="col-md-12"><button type="submit" class="btn btn-sm btn-pems-solid w-100">Assign Loop</button></div>
+                </form>
+            }
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="content-card h-100">
+            <h6>I/O Points</h6>
+            <table class="table table-enterprise table-sm mb-0">
+                <thead><tr><th>Tag</th><th>Type</th><th>PLC / Rack / Slot / Channel</th></tr></thead>
+                <tbody>
+                    @foreach (var io in ioPoints)
+                    {
+                        <tr>
+                            <td class="small">@io.TagNumber</td>
+                            <td class="small">@io.IOType</td>
+                            <td class="small">@NA(io.PLCName) / @NA(io.Rack) / @NA(io.Slot) / @NA(io.Channel)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!ioPoints.Any()) { <p class="text-muted small mb-0">هیچ I/O Point ای ثبت نشده (معمولاً از طریق AI Import پر می‌شود).</p> }
+        </div>
+    </div>
+</div>

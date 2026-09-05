@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Process Automation Hub | PEMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .symbol-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Subtle scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #dde3ea;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c5c6cd;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#6e4100",
+                        "tertiary-container": "#00213d",
+                        "surface-tint": "#535f75",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container-high": "#daeaff",
+                        "tertiary": "#000815",
+                        "primary-container": "#142033",
+                        "primary": "#000819",
+                        "on-primary-container": "#7c889f",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "primary-fixed": "#d7e3fd",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#081d2f",
+                        "surface": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#ffdcbc",
+                        "surface-container-low": "#eef4ff",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-background": "#081d2f",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "surface-variant": "#d0e4fe",
+                        "on-tertiary-container": "#498bcd",
+                        "surface-container": "#e4efff",
+                        "on-secondary-fixed": "#2c1700",
+                        "secondary": "#895200",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "on-primary-fixed": "#101c2f",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#bbc7e0",
+                        "secondary-container": "#fdaa47",
+                        "surface-dim": "#c8dcf5",
+                        "tertiary-fixed": "#d1e4ff",
+                        "inverse-surface": "#1f3245",
+                        "background": "#f8f9ff",
+                        "outline-variant": "#c5c6cd",
+                        "on-surface-variant": "#44474c",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#001d36",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "outline": "#75777d",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#d0e4fe",
+                        "inverse-on-surface": "#e9f1ff",
+                        "industrial-amber": "#d98c2b",
+                        "industrial-amber-dark": "#b8721e",
+                        "status-active-bg": "#e6f4ea",
+                        "status-active-text": "#137333",
+                        "status-draft-bg": "#f1f3f4",
+                        "status-draft-text": "#5f6368",
+                        "status-critical-bg": "#fce8e6",
+                        "status-critical-text": "#c5221f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem",
+                        "kpi": "10px",
+                        "input": "8px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "sidebar-width": "260px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "topbar-height": "60px",
+                        "compact": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "kpi-stat": ["Inter", "sans-serif"],
+                        "headline-lg-mobile": ["Inter", "sans-serif"],
+                        "table-cell": ["Inter", "sans-serif"],
+                        "label-caps": ["Inter", "sans-serif"],
+                        "table-header": ["Inter", "sans-serif"],
+                        "body-base": ["Inter", "sans-serif"],
+                        "badge-label": ["Inter", "sans-serif"],
+                        "body-medium": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "registry-mono": ["Menlo", "Monaco", "Courier New", "monospace"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-base h-screen overflow-hidden flex">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-screen w-sidebar-width bg-primary-container border-r border-outline-variant shadow-sm flex flex-col py-lg z-20 hidden md:flex">
+<div class="px-lg mb-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-primary flex items-center justify-center text-on-primary font-bold">P</div>
+<div>
+<div class="font-headline-md text-headline-md text-on-primary font-bold tracking-tight">PEMS</div>
+<div class="text-xs text-on-primary-container">Utility Operations</div>
+</div>
+</div>
+<ul class="flex-1 space-y-2">
+<li>
+<a class="flex items-center gap-3 px-lg py-3 text-on-primary-container/70 hover:text-on-primary-container hover:bg-primary/50 transition-colors duration-200 active:scale-95 transition-transform font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-lg py-3 text-on-primary-container/70 hover:text-on-primary-container hover:bg-primary/50 transition-colors duration-200 active:scale-95 transition-transform font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined">factory</span>
+<span>Assets</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-lg py-3 text-on-primary-container/70 hover:text-on-primary-container hover:bg-primary/50 transition-colors duration-200 active:scale-95 transition-transform font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined">engineering</span>
+<span>Maintenance</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-lg py-3 text-on-primary-container/70 hover:text-on-primary-container hover:bg-primary/50 transition-colors duration-200 active:scale-95 transition-transform font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined">construction</span>
+<span>Engineering</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-lg py-3 text-on-primary-container/70 hover:text-on-primary-container hover:bg-primary/50 transition-colors duration-200 active:scale-95 transition-transform font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined">security</span>
+<span>Safety</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-lg py-3 text-secondary-container font-bold border-l-4 border-secondary-container bg-surface-variant/10 active:scale-95 transition-transform font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>System Admin</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto pt-4 border-t border-outline-variant/30 px-lg">
+<ul class="space-y-2">
+<li>
+<a class="flex items-center gap-3 py-2 text-on-primary-container/70 hover:text-on-primary-container hover:bg-primary/50 transition-colors duration-200 font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Help</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-2 text-on-primary-container/70 hover:text-on-primary-container hover:bg-primary/50 transition-colors duration-200 font-body-base text-body-base" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col md:ml-[260px] w-full min-h-screen overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-full md:w-[calc(100%-260px)] h-topbar-height bg-surface border-b border-outline-variant flex justify-between items-center px-lg z-10">
+<div class="flex items-center gap-4">
+<!-- Mobile Menu Button -->
+<button class="md:hidden p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-headline-md text-headline-md text-primary hidden md:block">Process Automation Hub <span class="text-sm font-normal text-on-surface-variant ml-2 border-l border-outline-variant pl-2">مرکز اتوماسیون فرآیند</span></div>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="pl-9 pr-4 py-1.5 bg-surface-container-low border border-outline-variant rounded-input text-sm focus:border-industrial-amber focus:ring-1 focus:ring-industrial-amber focus:outline-none transition-all w-64" placeholder="Search Workflows..." type="text"/>
+</div>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors focus-within:ring-2 focus-within:ring-secondary">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors focus-within:ring-2 focus-within:ring-secondary relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors focus-within:ring-2 focus-within:ring-secondary">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Scrollable Canvas -->
+<main class="flex-1 overflow-y-auto mt-topbar-height p-md md:p-lg bg-surface pb-24 md:pb-lg">
+<div class="max-w-7xl mx-auto space-y-6">
+<!-- Page Header & Actions -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Overview <span class="text-sm font-normal text-on-surface-variant ml-2">نمای کلی</span></h1>
+<p class="font-body-base text-body-base text-on-surface-variant mt-1">Manage cross-module triggers and monitor integration health.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-surface border border-outline-variant rounded-input font-body-medium text-body-medium text-on-surface-variant hover:bg-surface-container-low transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">history</span>
+<span>Audit Log</span>
+</button>
+<button class="px-4 py-2 bg-gradient-to-r from-industrial-amber to-industrial-amber-dark text-on-primary rounded-input font-body-medium text-body-medium hover:opacity-90 transition-opacity flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>New Rule</span>
+</button>
+</div>
+</div>
+<!-- Bento Grid: KPIs & Integration Health -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- KPI Cluster (Spans 8 cols on desktop) -->
+<div class="md:col-span-8 grid grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Active Workflows -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-4 shadow-[0_2px_10px_rgba(20,32,51,0.02)] hover:border-industrial-amber/50 transition-colors group">
+<div class="flex items-start justify-between mb-3">
+<div class="w-[46px] h-[46px] rounded-kpi bg-gradient-to-br from-blue-500/10 to-blue-600/20 flex items-center justify-center text-blue-600 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined symbol-fill">account_tree</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-status-active-bg text-status-active-text font-badge-label text-badge-label">+12%</span>
+</div>
+<div class="font-body-base text-body-base text-on-surface-variant mb-1">Active Rules <span class="text-[10px] ml-1 opacity-70">قوانین فعال</span></div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">142</div>
+</div>
+<!-- Pending Executions -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-4 shadow-[0_2px_10px_rgba(20,32,51,0.02)] hover:border-industrial-amber/50 transition-colors group">
+<div class="flex items-start justify-between mb-3">
+<div class="w-[46px] h-[46px] rounded-kpi bg-gradient-to-br from-industrial-amber/10 to-industrial-amber-dark/20 flex items-center justify-center text-industrial-amber-dark group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined symbol-fill">pending_actions</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-badge-label text-badge-label">-3%</span>
+</div>
+<div class="font-body-base text-body-base text-on-surface-variant mb-1">Pending <span class="text-[10px] ml-1 opacity-70">در انتظار</span></div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">28</div>
+</div>
+<!-- Failed Triggers -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-4 shadow-[0_2px_10px_rgba(20,32,51,0.02)] hover:border-error/50 transition-colors group">
+<div class="flex items-start justify-between mb-3">
+<div class="w-[46px] h-[46px] rounded-kpi bg-gradient-to-br from-error/10 to-error/20 flex items-center justify-center text-error group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined symbol-fill">error</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-status-critical-bg text-status-critical-text font-badge-label text-badge-label">+2</span>
+</div>
+<div class="font-body-base text-body-base text-on-surface-variant mb-1">Failed <span class="text-[10px] ml-1 opacity-70">ناموفق</span></div>
+<div class="font-kpi-stat text-kpi-stat text-error">4</div>
+</div>
+<!-- Throughput -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-4 shadow-[0_2px_10px_rgba(20,32,51,0.02)] hover:border-industrial-amber/50 transition-colors group">
+<div class="flex items-start justify-between mb-3">
+<div class="w-[46px] h-[46px] rounded-kpi bg-gradient-to-br from-purple-500/10 to-purple-600/20 flex items-center justify-center text-purple-600 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined symbol-fill">speed</span>
+</div>
+</div>
+<div class="font-body-base text-body-base text-on-surface-variant mb-1">Actions/Hr <span class="text-[10px] ml-1 opacity-70">عملیات/ساعت</span></div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">1.2k</div>
+</div>
+</div>
+<!-- Integration Health (Spans 4 cols on desktop) -->
+<div class="md:col-span-4 bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-5 shadow-[0_2px_10px_rgba(20,32,51,0.02)] flex flex-col">
+<div class="flex justify-between items-center mb-4">
+<h2 class="font-body-medium text-body-medium text-on-surface uppercase tracking-wide">Integration Health</h2>
+<span class="material-symbols-outlined text-status-active-text text-[18px]">check_circle</span>
+</div>
+<div class="space-y-4 flex-1">
+<!-- Node 1 -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">factory</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-body-medium text-[12px] text-on-surface">Asset Registry (SAP)</span>
+<span class="font-badge-label text-[10px] text-status-active-text">99.9% Uptime</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-status-active-text w-[99%]"></div>
+</div>
+</div>
+</div>
+<!-- Node 2 -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">engineering</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-body-medium text-[12px] text-on-surface">Maintenance CMMS</span>
+<span class="font-badge-label text-[10px] text-industrial-amber-dark">Sync Lag: 42ms</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-industrial-amber w-[85%]"></div>
+</div>
+</div>
+</div>
+<!-- Node 3 -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">security</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-body-medium text-[12px] text-on-surface">Safety HSSE Module</span>
+<span class="font-badge-label text-[10px] text-status-active-text">Connected</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-status-active-text w-[100%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Split: Trigger Log & Rule Builder -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Trigger Log (Takes 2/3 width) -->
+<div class="lg:col-span-2 bg-surface-container-lowest border border-outline-variant/50 rounded-xl shadow-[0_2px_10px_rgba(20,32,51,0.02)] overflow-hidden flex flex-col">
+<div class="p-4 border-b border-outline-variant/50 bg-[#f5f7fa] flex justify-between items-center sticky top-0">
+<div>
+<h2 class="font-table-header text-table-header text-on-surface uppercase">Recent Automations</h2>
+<p class="text-[10px] text-on-surface-variant font-body-base mt-0.5">Live trigger event stream</p>
+</div>
+<button class="p-1.5 text-on-surface-variant hover:text-industrial-amber transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+</button>
+</div>
+<div class="overflow-x-auto flex-1 max-h-[400px] overflow-y-auto">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-[#f5f7fa] z-10 shadow-[0_1px_0_#dde3ea]">
+<tr>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase w-32">Time</th>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase">Source Event</th>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase">Triggered Action</th>
+<th class="py-2 px-4 font-table-header text-table-header text-on-surface-variant uppercase text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<!-- Row 1 -->
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors">
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface-variant whitespace-nowrap">
+                                            10:42:05 AM
+                                        </td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-registry-mono text-[11px] bg-surface-container-low px-1.5 py-0.5 rounded text-on-surface-variant mr-1">RCA-104</span>
+                                                Failure Logged
+                                            </div>
+</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                                                Create Strategy Review Task
+                                            </div>
+</td>
+<td class="py-2 px-4 text-right">
+<span class="px-2 py-0.5 rounded-full bg-status-active-bg text-status-active-text font-badge-label text-badge-label border border-status-active-text/20">Success</span>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors">
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface-variant whitespace-nowrap">
+                                            10:38:12 AM
+                                        </td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-industrial-amber"></span>
+<span class="font-registry-mono text-[11px] bg-surface-container-low px-1.5 py-0.5 rounded text-on-surface-variant mr-1">WO-8921</span>
+                                                Status: On Hold
+                                            </div>
+</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                                                Notify Lead Engineer
+                                            </div>
+</td>
+<td class="py-2 px-4 text-right">
+<span class="px-2 py-0.5 rounded-full bg-status-active-bg text-status-active-text font-badge-label text-badge-label border border-status-active-text/20">Success</span>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors bg-error/5">
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface-variant whitespace-nowrap">
+                                            10:15:00 AM
+                                        </td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-blue-500"></span>
+<span class="font-registry-mono text-[11px] bg-surface-container-low px-1.5 py-0.5 rounded text-on-surface-variant mr-1">AST-PMP-01</span>
+                                                Vibration &gt; Threshold
+                                            </div>
+</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                                                Auto-Generate WO
+                                            </div>
+</td>
+<td class="py-2 px-4 text-right">
+<span class="px-2 py-0.5 rounded-full bg-status-critical-bg text-status-critical-text font-badge-label text-badge-label border border-status-critical-text/20">Failed (API)</span>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors">
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface-variant whitespace-nowrap">
+                                            09:55:30 AM
+                                        </td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-status-draft-text"></span>
+<span class="font-registry-mono text-[11px] bg-surface-container-low px-1.5 py-0.5 rounded text-on-surface-variant mr-1">SCH-Daily</span>
+                                                Cron Trigger
+                                            </div>
+</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                                                Sync Spare Parts Inventory
+                                            </div>
+</td>
+<td class="py-2 px-4 text-right">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-badge-label text-badge-label border border-outline-variant/50">Processing</span>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors">
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface-variant whitespace-nowrap">
+                                            09:12:45 AM
+                                        </td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-registry-mono text-[11px] bg-surface-container-low px-1.5 py-0.5 rounded text-on-surface-variant mr-1">HSSE-INC-22</span>
+                                                Incident Reported
+                                            </div>
+</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                                                Lock Asset Tag
+                                            </div>
+</td>
+<td class="py-2 px-4 text-right">
+<span class="px-2 py-0.5 rounded-full bg-status-active-bg text-status-active-text font-badge-label text-badge-label border border-status-active-text/20">Success</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Rule Builder / Quick Config (Takes 1/3 width) -->
+<div class="lg:col-span-1 bg-surface-container-lowest border border-outline-variant/50 rounded-xl shadow-[0_2px_10px_rgba(20,32,51,0.02)] flex flex-col overflow-hidden">
+<div class="p-4 border-b border-outline-variant/50 bg-[#f5f7fa]">
+<h2 class="font-table-header text-table-header text-on-surface uppercase">Active Rules</h2>
+<p class="text-[10px] text-on-surface-variant font-body-base mt-0.5">Top triggered workflows</p>
+</div>
+<div class="p-4 space-y-4 overflow-y-auto flex-1 max-h-[400px]">
+<!-- Rule Card 1 -->
+<div class="border border-outline-variant/40 rounded-lg p-3 hover:border-industrial-amber/40 transition-colors bg-surface-container-low/30 relative group">
+<div class="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-6 h-6 rounded flex items-center justify-center hover:bg-surface-container-high text-on-surface-variant"><span class="material-symbols-outlined text-[14px]">edit</span></button>
+<button class="w-6 h-6 rounded flex items-center justify-center hover:bg-surface-container-high text-on-surface-variant"><span class="material-symbols-outlined text-[14px]">pause</span></button>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-status-active-text"></span>
+<span class="font-body-medium text-[13px] text-on-surface">Critical Failure Response</span>
+</div>
+<div class="font-body-base text-[11px] text-on-surface-variant flex items-center gap-1.5 mb-1.5">
+<span class="font-registry-mono bg-surface px-1 py-0.5 rounded border border-outline-variant/30">IF</span> RCA Logged
+                                </div>
+<div class="font-body-base text-[11px] text-on-surface-variant flex items-center gap-1.5">
+<span class="font-registry-mono bg-surface px-1 py-0.5 rounded border border-outline-variant/30">THEN</span> Create Strategy Review
+                                </div>
+</div>
+<!-- Rule Card 2 -->
+<div class="border border-outline-variant/40 rounded-lg p-3 hover:border-industrial-amber/40 transition-colors bg-surface-container-low/30 relative group">
+<div class="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-6 h-6 rounded flex items-center justify-center hover:bg-surface-container-high text-on-surface-variant"><span class="material-symbols-outlined text-[14px]">edit</span></button>
+<button class="w-6 h-6 rounded flex items-center justify-center hover:bg-surface-container-high text-on-surface-variant"><span class="material-symbols-outlined text-[14px]">pause</span></button>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-status-active-text"></span>
+<span class="font-body-medium text-[13px] text-on-surface">Condition Based Maint.</span>
+</div>
+<div class="font-body-base text-[11px] text-on-surface-variant flex items-center gap-1.5 mb-1.5">
+<span class="font-registry-mono bg-surface px-1 py-0.5 rounded border border-outline-variant/30">IF</span> Sensor Alert &gt; Limit
+                                </div>
+<div class="font-body-base text-[11px] text-on-surface-variant flex items-center gap-1.5">
+<span class="font-registry-mono bg-surface px-1 py-0.5 rounded border border-outline-variant/30">THEN</span> Generate WO (Priority 1)
+                                </div>
+</div>
+<!-- Rule Card 3 (Paused) -->
+<div class="border border-outline-variant/40 rounded-lg p-3 opacity-60 hover:opacity-100 transition-opacity bg-surface-container-low/10 relative group">
+<div class="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-6 h-6 rounded flex items-center justify-center hover:bg-surface-container-high text-on-surface-variant"><span class="material-symbols-outlined text-[14px]">edit</span></button>
+<button class="w-6 h-6 rounded flex items-center justify-center hover:bg-surface-container-high text-on-surface-variant"><span class="material-symbols-outlined text-[14px]">play_arrow</span></button>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-status-draft-text"></span>
+<span class="font-body-medium text-[13px] text-on-surface">Auto-Close Aged WO</span>
+</div>
+<div class="font-body-base text-[11px] text-on-surface-variant flex items-center gap-1.5 mb-1.5">
+<span class="font-registry-mono bg-surface px-1 py-0.5 rounded border border-outline-variant/30">IF</span> Status=Draft AND Age&gt;30d
+                                </div>
+<div class="font-body-base text-[11px] text-on-surface-variant flex items-center gap-1.5">
+<span class="font-registry-mono bg-surface px-1 py-0.5 rounded border border-outline-variant/30">THEN</span> Update Status=Closed
+                                </div>
+</div>
+</div>
+<div class="p-3 border-t border-outline-variant/50 bg-[#f5f7fa]">
+<button class="w-full py-2 border border-outline-variant border-dashed rounded-input text-on-surface-variant font-body-medium text-[12px] hover:bg-surface-container-low hover:text-industrial-amber hover:border-industrial-amber transition-colors flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[16px]">add</span>
+                                Create Rule
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

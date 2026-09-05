@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+
+<html class="light" dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Asset Inventory - PEMS Enterprise / مدیریت دارایی - PEMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-container": "#7c889f",
+                        "on-surface-variant": "#44474c",
+                        "primary": "#000819",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "tertiary-container": "#00213d",
+                        "tertiary": "#000815",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "surface-container": "#e4efff",
+                        "on-primary-fixed": "#101c2f",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "secondary-container": "#fdaa47",
+                        "surface-variant": "#d0e4fe",
+                        "on-tertiary-container": "#498bcd",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "surface-bright": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#001d36",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#daeaff",
+                        "outline-variant": "#c5c6cd",
+                        "surface-container-highest": "#d0e4fe",
+                        "on-secondary-fixed": "#2c1700",
+                        "secondary": "#895200",
+                        "surface-dim": "#c8dcf5",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "secondary-fixed": "#ffdcbc",
+                        "inverse-surface": "#1f3245",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#bbc7e0",
+                        "background": "#f8f9ff",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "primary-fixed": "#d7e3fd",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#d1e4ff",
+                        "inverse-on-surface": "#e9f1ff",
+                        "primary-container": "#142033",
+                        "on-surface": "#081d2f",
+                        "outline": "#75777d",
+                        "on-background": "#081d2f",
+                        "surface-container-low": "#eef4ff",
+                        "on-secondary-container": "#6e4100",
+                        "surface-tint": "#535f75"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "unit": "4px",
+                        "sm": "8px",
+                        "topbar-height": "60px",
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "sidebar-width": "260px"
+                    },
+                    fontFamily: {
+                        "headline-lg-mobile": ["Inter", "Vazirmatn", "sans-serif"],
+                        "headline-md": ["Inter", "Vazirmatn", "sans-serif"],
+                        "headline-lg": ["Inter", "Vazirmatn", "sans-serif"],
+                        "label-caps": ["Inter", "Vazirmatn", "sans-serif"],
+                        "table-header": ["Inter", "Vazirmatn", "sans-serif"],
+                        "body-medium": ["Inter", "Vazirmatn", "sans-serif"],
+                        "kpi-stat": ["Inter", "Vazirmatn", "sans-serif"],
+                        "body-base": ["Inter", "Vazirmatn", "sans-serif"],
+                        "table-cell": ["Inter", "Vazirmatn", "sans-serif"],
+                        "badge-label": ["Inter", "Vazirmatn", "sans-serif"]
+                    },
+                    fontSize: {
+                        "headline-lg-mobile": ["20px", { lineHeight: "28px", fontWeight: "700" }],
+                        "headline-md": ["18px", { lineHeight: "24px", letterSpacing: "0", fontWeight: "700" }],
+                        "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }],
+                        "label-caps": ["11px", { lineHeight: "14px", letterSpacing: "0.06em", fontWeight: "700" }],
+                        "table-header": ["11.5px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "700" }],
+                        "body-medium": ["13.5px", { lineHeight: "20px", letterSpacing: "0", fontWeight: "600" }],
+                        "kpi-stat": ["22px", { lineHeight: "24px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "body-base": ["13.5px", { lineHeight: "20px", letterSpacing: "0", fontWeight: "400" }],
+                        "table-cell": ["13px", { lineHeight: "18px", letterSpacing: "0", fontWeight: "400" }],
+                        "badge-label": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', 'Vazirmatn', sans-serif; background-color: #f3f5f8; } /* Canvas level 0 */
+        .surface-level-1 { background-color: #ffffff; border: 1px solid #edf0f4; }
+        .gradient-primary { background: linear-gradient(to right, #d98c2b, #b8721e); }
+        .amber-focus:focus { outline: none; border-color: #d98c2b; box-shadow: 0 0 0 2px rgba(217, 140, 43, 0.2); }
+        .kpi-gradient-blue { background: linear-gradient(135deg, rgba(73,139,205,0.1), rgba(73,139,205,0.05)); border: 1px solid rgba(73,139,205,0.2); }
+        .kpi-gradient-green { background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(34,197,94,0.05)); border: 1px solid rgba(34,197,94,0.2); }
+        .kpi-gradient-orange { background: linear-gradient(135deg, rgba(249,115,22,0.1), rgba(249,115,22,0.05)); border: 1px solid rgba(249,115,22,0.2); }
+        .kpi-gradient-red { background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.05)); border: 1px solid rgba(239,68,68,0.2); }
+        
+        .badge-active { background-color: #dcfce7; color: #166534; }
+        .badge-maintenance { background-color: #ffedd5; color: #9a3412; }
+        .badge-offline { background-color: #f1f5f9; color: #475569; }
+        
+        .row-hover:hover { background-color: rgba(31, 78, 120, 0.04); }
+        
+        /* Monospace font for IDs */
+        .tech-id { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; letter-spacing: -0.02em; }
+        
+        [dir="rtl"] .md\:ml-\[260px\] {
+            margin-left: 0;
+            margin-right: 260px;
+        }
+        [dir="rtl"] .left-0 {
+            left: auto;
+            right: 0;
+        }
+        [dir="rtl"] .border-l-4 {
+            border-left-width: 0;
+            border-right-width: 4px;
+        }
+        [dir="rtl"] .pl-3, [dir="rtl"] .pl-4, [dir="rtl"] .pl-xl, [dir="rtl"] .pl-sm {
+            padding-left: 0;
+            padding-right: var(--tw-space, 1rem); /* Simplification */
+        }
+        [dir="rtl"] .pr-sm, [dir="rtl"] .pr-lg {
+            padding-right: 0;
+            padding-left: var(--tw-space, 1rem);
+        }
+        [dir="rtl"] .mr-1, [dir="rtl"] .mr-1\.5, [dir="rtl"] .mr-sm {
+            margin-right: 0;
+            margin-left: 0.25rem; /* Approximation */
+        }
+        [dir="rtl"] .ml-sm, [dir="rtl"] .ml-auto {
+            margin-left: 0;
+            margin-right: auto;
+        }
+        [dir="rtl"] select {
+            background-position: left 8px center;
+        }
+        
+    </style>
+<script>
+        function toggleDirection() {
+            const html = document.documentElement;
+            const currentDir = html.getAttribute('dir');
+            const currentLang = html.getAttribute('lang');
+            if (currentDir === 'ltr') {
+                html.setAttribute('dir', 'rtl');
+                html.setAttribute('lang', 'fa');
+                document.querySelectorAll('.en-only').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('.fa-only').forEach(el => el.classList.remove('hidden'));
+                document.getElementById('lang-toggle').textContent = 'EN';
+            } else {
+                html.setAttribute('dir', 'ltr');
+                html.setAttribute('lang', 'en');
+                document.querySelectorAll('.en-only').forEach(el => el.classList.remove('hidden'));
+                document.querySelectorAll('.fa-only').forEach(el => el.classList.add('hidden'));
+                document.getElementById('lang-toggle').textContent = 'FA';
+            }
+        }
+    </script>
+</head>
+<body class="text-on-surface min-h-screen flex antialiased">
+<!-- SideNavBar -->
+<nav aria-label="Main Navigation" class="hidden md:flex bg-primary dark:bg-primary fixed left-0 top-0 h-full w-[260px] shadow-sm z-50 flex-col py-lg rtl:right-0 rtl:left-auto">
+<div class="px-md mb-xl flex items-center gap-sm">
+<div class="w-8 h-8 rounded bg-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-primary">
+<span class="en-only">Industrial Ops</span>
+<span class="fa-only hidden">عملیات صنعتی</span>
+</h1>
+<p class="font-badge-label text-badge-label text-on-primary-container">
+<span class="en-only">Utility Management v2.4</span>
+<span class="fa-only hidden">مدیریت تاسیسات v2.4</span>
+</p>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-sm py-sm text-on-primary-container px-4 hover:bg-on-primary-fixed-variant transition-colors active:scale-95 duration-150 font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="en-only">Dashboard</span>
+<span class="fa-only hidden">داشبورد</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm py-sm text-secondary-container font-bold border-l-4 rtl:border-l-0 rtl:border-r-4 border-secondary-container px-3 hover:bg-on-primary-fixed-variant transition-colors active:scale-95 duration-150 font-body-medium text-body-medium bg-primary-container" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="en-only">Asset Inventory</span>
+<span class="fa-only hidden">موجودی دارایی</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm py-sm text-on-primary-container px-4 hover:bg-on-primary-fixed-variant transition-colors active:scale-95 duration-150 font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">build</span>
+<span class="en-only">Work Orders</span>
+<span class="fa-only hidden">سفارشات کار</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm py-sm text-on-primary-container px-4 hover:bg-on-primary-fixed-variant transition-colors active:scale-95 duration-150 font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">engineering</span>
+<span class="en-only">Personnel</span>
+<span class="fa-only hidden">پرسنل</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-sm py-sm text-on-primary-container px-4 hover:bg-on-primary-fixed-variant transition-colors active:scale-95 duration-150 font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="en-only">Analytics</span>
+<span class="fa-only hidden">تحلیل و بررسی</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="mt-auto px-md">
+<button class="w-full flex items-center justify-center gap-sm py-sm bg-surface-tint text-on-primary rounded font-body-medium text-body-medium hover:bg-on-primary-fixed-variant transition-colors">
+<span class="material-symbols-outlined">report</span>
+<span class="en-only">Report Incident</span>
+<span class="fa-only hidden">گزارش حادثه</span>
+</button>
+<div class="mt-lg pt-md border-t border-on-primary-fixed-variant flex justify-around">
+<a class="text-on-primary-container hover:text-secondary-container transition-colors p-sm rounded hover:bg-on-primary-fixed-variant" href="#" title="Settings">
+<span class="material-symbols-outlined">settings</span>
+</a>
+<a class="text-on-primary-container hover:text-secondary-container transition-colors p-sm rounded hover:bg-on-primary-fixed-variant" href="#" title="Support">
+<span class="material-symbols-outlined">help</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 md:ml-[260px] rtl:md:mr-[260px] rtl:md:ml-0 flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface sticky top-0 w-full h-[60px] border-b border-outline-variant z-40 flex justify-between items-center px-lg">
+<div class="flex items-center gap-lg">
+<h2 class="font-headline-lg text-headline-lg text-primary dark:text-primary-fixed-dim">
+<span class="en-only">AssetCentral</span>
+<span class="fa-only hidden">اسِت‌سنترال</span>
+</h2>
+<nav class="hidden lg:flex gap-md">
+<a class="text-on-surface-variant hover:text-secondary transition-all font-body-medium text-body-medium py-1" href="#">
+<span class="en-only">Overview</span>
+<span class="fa-only hidden">بررسی اجمالی</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary transition-all font-body-medium text-body-medium py-1" href="#">
+<span class="en-only">Map View</span>
+<span class="fa-only hidden">نمای نقشه</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary transition-all font-body-medium text-body-medium py-1" href="#">
+<span class="en-only">Reports</span>
+<span class="fa-only hidden">گزارش‌ها</span>
+</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="px-2 py-1 text-xs font-bold bg-surface-variant text-on-surface rounded hover:bg-surface-dim transition-colors" id="lang-toggle" onclick="toggleDirection()">FA</button>
+<div class="relative hidden md:block">
+<span class="material-symbols-outlined absolute left-2 rtl:right-2 rtl:left-auto top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="px-xl py-[6px] text-[13px] bg-background border border-outline-variant rounded amber-focus w-64" placeholder="Search..." type="text"/>
+</div>
+<button class="text-on-surface-variant hover:text-secondary transition-all p-1 active:opacity-80">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-secondary transition-all p-1 active:opacity-80">
+<span class="material-symbols-outlined">history</span>
+</button>
+<button class="hidden md:block px-md py-[6px] border border-[#dde3ea] text-[#5c6f85] rounded font-body-medium text-body-medium hover:bg-surface-variant transition-colors">
+<span class="en-only">Export</span>
+<span class="fa-only hidden">خروجی گرفتن</span>
+</button>
+<button class="px-md py-[6px] gradient-primary text-white rounded font-body-medium text-body-medium hover:opacity-90 transition-opacity flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span class="en-only">New Asset</span>
+<span class="fa-only hidden">دارایی جدید</span>
+</button>
+<img alt="Operator Avatar" class="w-8 h-8 rounded-full ml-sm rtl:mr-sm rtl:ml-0 border border-outline-variant object-cover" data-alt="A small circular avatar of an industrial operator wearing safety gear, light clean aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvqEQFFPnrI2TNjVqMBnZI-R6-H_kzZj_EcsHKcbUZdrss_m5qkxjLgw3SkXlhoAKtrX4JBdoLbd0FkiWDPi9aVfu8klfmy0X2TQsBtUs44PtpJSe-XhoEgd1LObT5I0E3FJMa4YE0I9Z5nZHa_lQsJZhM1GRO6y5ckx4BIe-oJIHqIjneXm0pmyyk_K8cNHd3lx0R2YXQXAtjn5cRKrAcRU5fcttmhgLufLdq4WtLBPmjYWm2uytb"/>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 p-md md:p-lg lg:px-[28px] max-w-[1600px] w-full mx-auto">
+<!-- Page Header -->
+<div class="mb-lg">
+<h1 class="font-headline-lg text-headline-lg text-primary">
+<span class="en-only">Asset Inventory</span>
+<span class="fa-only hidden">موجودی دارایی</span>
+</h1>
+<p class="font-body-base text-body-base text-on-surface-variant mt-1">
+<span class="en-only">Monitor and manage industrial equipment across all facilities.</span>
+<span class="fa-only hidden">نظارت و مدیریت تجهیزات صنعتی در تمامی تاسیسات.</span>
+</p>
+</div>
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md mb-lg">
+<div class="surface-level-1 rounded-xl p-md flex items-center gap-md hover:border-secondary-container transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] kpi-gradient-blue flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">category</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">
+<span class="en-only">Total Assets</span>
+<span class="fa-only hidden">کل دارایی‌ها</span>
+</p>
+<p class="font-kpi-stat text-kpi-stat text-primary">4,820</p>
+</div>
+</div>
+<div class="surface-level-1 rounded-xl p-md flex items-center gap-md hover:border-secondary-container transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] kpi-gradient-green flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-green-700" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">
+<span class="en-only">Operational</span>
+<span class="fa-only hidden">عملیاتی</span>
+</p>
+<p class="font-kpi-stat text-kpi-stat text-primary">4,512</p>
+</div>
+</div>
+<div class="surface-level-1 rounded-xl p-md flex items-center gap-md hover:border-secondary-container transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] kpi-gradient-orange flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-orange-600" style="font-variation-settings: 'FILL' 1;">build_circle</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">
+<span class="en-only">In Maintenance</span>
+<span class="fa-only hidden">در حال تعمیر</span>
+</p>
+<p class="font-kpi-stat text-kpi-stat text-primary">215</p>
+</div>
+</div>
+<div class="surface-level-1 rounded-xl p-md flex items-center gap-md hover:border-secondary-container transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] kpi-gradient-red flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-red-700" style="font-variation-settings: 'FILL' 1;">error</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">
+<span class="en-only">Critical Alerts</span>
+<span class="fa-only hidden">هشدارهای حیاتی</span>
+</p>
+<p class="font-kpi-stat text-kpi-stat text-primary">93</p>
+</div>
+</div>
+</div>
+<!-- Main Data Area -->
+<div class="surface-level-1 rounded-xl flex flex-col h-[calc(100vh-280px)] min-h-[500px]">
+<!-- Filter Bar -->
+<div class="p-md border-b border-[#edf0f4] flex flex-wrap items-center gap-sm bg-[#fafbfc] rounded-t-xl">
+<div class="relative flex-grow max-w-md">
+<span class="material-symbols-outlined absolute left-2 rtl:right-2 rtl:left-auto top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full px-xl py-[6px] text-[13px] bg-white border border-[#dde3ea] rounded amber-focus en-only" placeholder="Search by Asset ID or Name..." type="text"/>
+<input class="w-full px-xl py-[6px] text-[13px] bg-white border border-[#dde3ea] rounded amber-focus fa-only hidden" placeholder="جستجو بر اساس شناسه یا نام دارایی..." type="text"/>
+</div>
+<div class="flex gap-sm overflow-x-auto pb-1 sm:pb-0">
+<select class="py-[6px] px-lg text-[13px] bg-white border border-[#dde3ea] rounded amber-focus text-on-surface-variant appearance-none bg-no-repeat bg-[right_8px_center] rtl:bg-[left_8px_center] bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%2344474c%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')]">
+<option class="en-only" value="">Category</option>
+<option class="fa-only hidden" value="">دسته‌بندی</option>
+<option value="power">Power Generation</option>
+<option value="water">Water Treatment</option>
+<option value="fleet">Fleet</option>
+<option value="it">IT</option>
+</select>
+<select class="py-[6px] px-lg text-[13px] bg-white border border-[#dde3ea] rounded amber-focus text-on-surface-variant appearance-none bg-no-repeat bg-[right_8px_center] rtl:bg-[left_8px_center] bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%2344474c%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')]">
+<option class="en-only" value="">Location</option>
+<option class="fa-only hidden" value="">مکان</option>
+<option value="n-facility">North Facility</option>
+<option value="s-plant">South Plant</option>
+</select>
+<select class="py-[6px] px-lg text-[13px] bg-white border border-[#dde3ea] rounded amber-focus text-on-surface-variant appearance-none bg-no-repeat bg-[right_8px_center] rtl:bg-[left_8px_center] bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%2344474c%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')]">
+<option class="en-only" value="">Criticality</option>
+<option class="fa-only hidden" value="">حساسیت</option>
+<option value="high">High</option>
+<option value="medium">Medium</option>
+<option value="low">Low</option>
+</select>
+</div>
+<div class="ml-auto rtl:mr-auto rtl:ml-0 flex gap-sm">
+<button class="px-md py-[6px] border border-[#dde3ea] text-[#5c6f85] rounded font-body-medium text-[13px] hover:bg-surface-variant transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">calendar_month</span>
+<span class="en-only">Maintenance Scheduler</span>
+<span class="fa-only hidden">برنامه‌ریز تعمیرات</span>
+</button>
+</div>
+</div>
+<!-- Table -->
+<div class="overflow-auto flex-1">
+<table class="w-full text-left rtl:text-right border-collapse min-w-[900px]">
+<thead class="sticky top-0 bg-[#f5f7fa] z-10 border-b border-[#edf0f4]">
+<tr>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider whitespace-nowrap">
+<span class="en-only">Asset ID</span>
+<span class="fa-only hidden">شناسه دارایی</span>
+</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">
+<span class="en-only">Asset Name</span>
+<span class="fa-only hidden">نام دارایی</span>
+</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">
+<span class="en-only">Category</span>
+<span class="fa-only hidden">دسته‌بندی</span>
+</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">
+<span class="en-only">Status</span>
+<span class="fa-only hidden">وضعیت</span>
+</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">
+<span class="en-only">Location</span>
+<span class="fa-only hidden">مکان</span>
+</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider whitespace-nowrap">
+<span class="en-only">Next Service</span>
+<span class="fa-only hidden">سرویس بعدی</span>
+</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">
+<span class="en-only">Criticality</span>
+<span class="fa-only hidden">حساسیت</span>
+</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider text-right rtl:text-left">
+<span class="en-only">Actions</span>
+<span class="fa-only hidden">عملیات</span>
+</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#edf0f4]">
+<tr class="row-hover cursor-pointer group">
+<td class="py-2 px-md font-table-cell text-table-cell tech-id text-on-surface-variant">AST-10293</td>
+<td class="py-2 px-md font-table-cell text-table-cell font-semibold text-primary">
+<span class="en-only">Turbine Unit 4</span>
+<span class="fa-only hidden">واحد توربین ۴</span>
+</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface-variant">
+<span class="en-only">Power Generation</span>
+<span class="fa-only hidden">تولید برق</span>
+</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full font-badge-label text-badge-label badge-active">
+<span class="w-1.5 h-1.5 rounded-full bg-green-600 mr-1.5 rtl:mr-0 rtl:ml-1.5"></span>
+<span class="en-only">Active</span>
+<span class="fa-only hidden">فعال</span>
+</span>
+</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface-variant">
+<span class="en-only">North Facility, Block B</span>
+<span class="fa-only hidden">تاسیسات شمالی، بلوک ب</span>
+</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface-variant">Oct 12, 2023</td>
+<td class="py-2 px-md">
+<span class="flex items-center text-red-600 font-badge-label text-[11px] font-bold">
+<span class="material-symbols-outlined text-[14px] mr-1 rtl:mr-0 rtl:ml-1">keyboard_double_arrow_up</span>
+<span class="en-only">HIGH</span>
+<span class="fa-only hidden">بالا</span>
+</span>
+</td>
+<td class="py-2 px-md text-right rtl:text-left">
+<button class="w-8 h-8 rounded border border-[#dde3ea] text-on-surface-variant hover:border-secondary-container hover:text-secondary-container transition-colors inline-flex items-center justify-center bg-white opacity-0 group-hover:opacity-100 focus:opacity-100">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="row-hover cursor-pointer group">
+<td class="py-2 px-md font-table-cell text-table-cell tech-id text-on-surface-variant">AST-09411</td>
+<td class="py-2 px-md font-table-cell text-table-cell font-semibold text-primary">
+<span class="en-only">Main Pump Station A</span>
+<span class="fa-only hidden">ایستگاه پمپ اصلی الف</span>
+</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface-variant">
+<span class="en-only">Water Treatment</span>
+<span class="fa-only hidden">تصفیه آب</span>
+</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full font-badge-label text-badge-label badge-maintenance">
+<span class="w-1.5 h-1.5 rounded-full bg-orange-500 mr-1.5 rtl:mr-0 rtl:ml-1.5"></span>
+<span class="en-only">Maintenance</span>
+<span class="fa-only hidden">در حال تعمیر</span>
+</span>
+</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface-variant">
+<span class="en-only">South Plant, Zone 1</span>
+<span class="fa-only hidden">کارخانه جنوبی، منطقه ۱</span>
+</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface-variant">
+<span class="en-only">In Progress</span>
+<span class="fa-only hidden">در جریان</span>
+</td>
+<td class="py-2 px-md">
+<span class="flex items-center text-yellow-600 font-badge-label text-[11px] font-bold">
+<span class="material-symbols-outlined text-[14px] mr-1 rtl:mr-0 rtl:ml-1">remove</span>
+<span class="en-only">MED</span>
+<span class="fa-only hidden">متوسط</span>
+</span>
+</td>
+<td class="py-2 px-md text-right rtl:text-left">
+<button class="w-8 h-8 rounded border border-[#dde3ea] text-on-surface-variant hover:border-secondary-container hover:text-secondary-container transition-colors inline-flex items-center justify-center bg-white opacity-0 group-hover:opacity-100 focus:opacity-100">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="row-hover cursor-pointer group">
+<td class="py-2 px-md font-table-cell text-table-cell tech-id text-on-surface-variant">AST-11005</td>
+<td class="py-2 px-md font-table-cell text-table-cell font-semibold text-primary">
+<span class="en-only">Backup Generator G2</span>
+<span class="fa-only hidden">ژنراتور پشتیبان G2</span>
+</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface-variant">
+<span class="en-only">Power Generation</span>
+<span class="fa-only hidden">تولید برق</span>
+</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full font-badge-label text-badge-label badge-offline">
+<span class="w-1.5 h-1.5 rounded-full bg-gray-400 mr-1.5 rtl:mr-0 rtl:ml-1.5"></span>
+<span class="en-only">Offline</span>
+<span class="fa-only hidden">آفلاین</span>
+</span>
+</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface-variant">
+<span class="en-only">East Yard</span>
+<span class="fa-only hidden">حیاط شرقی</span>
+</td>
+<td class="py-2 px-md font-table-cell text-table-cell text-on-surface-variant">Nov 05, 2023</td>
+<td class="py-2 px-md">
+<span class="flex items-center text-green-600 font-badge-label text-[11px] font-bold">
+<span class="material-symbols-outlined text-[14px] mr-1 rtl:mr-0 rtl:ml-1">keyboard_double_arrow_down</span>
+<span class="en-only">LOW</span>
+<span class="fa-only hidden">پایین</span>
+</span>
+</td>
+<td class="py-2 px-md text-right rtl:text-left">
+<button class="w-8 h-8 rounded border border-[#dde3ea] text-on-surface-variant hover:border-secondary-container hover:text-secondary-container transition-colors inline-flex items-center justify-center bg-white opacity-0 group-hover:opacity-100 focus:opacity-100">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-sm border-t border-[#edf0f4] flex items-center justify-between bg-[#fafbfc] rounded-b-xl">
+<span class="text-[12px] text-on-surface-variant ml-sm rtl:mr-sm rtl:ml-0">
+<span class="en-only">Showing 1-15 of 4,820</span>
+<span class="fa-only hidden">نمایش ۱-۱۵ از ۴,۸۲۰</span>
+</span>
+<div class="flex gap-1 mr-sm rtl:ml-sm rtl:mr-0">
+<button class="w-8 h-8 rounded border border-[#dde3ea] flex items-center justify-center text-on-surface-variant hover:bg-surface-variant disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[18px] rtl:rotate-180">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded border border-[#dde3ea] flex items-center justify-center text-on-surface-variant hover:bg-surface-variant">
+<span class="material-symbols-outlined text-[18px] rtl:rotate-180">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

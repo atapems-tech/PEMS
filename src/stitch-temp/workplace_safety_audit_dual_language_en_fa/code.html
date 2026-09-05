@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+
+<html class="light" dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Workplace Safety Audit - PEMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#101c2f",
+                        "surface": "#f8f9ff",
+                        "surface-tint": "#535f75",
+                        "tertiary-fixed": "#d1e4ff",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#081d2f",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#2c1700",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#498bcd",
+                        "inverse-primary": "#bbc7e0",
+                        "primary": "#000819",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "secondary": "#895200",
+                        "surface-container-low": "#eef4ff",
+                        "tertiary": "#000815",
+                        "primary-fixed": "#d7e3fd",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "surface-dim": "#c8dcf5",
+                        "on-surface-variant": "#44474c",
+                        "outline": "#75777d",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "surface-variant": "#d0e4fe",
+                        "outline-variant": "#c5c6cd",
+                        "surface-container-highest": "#d0e4fe",
+                        "on-error": "#ffffff",
+                        "on-background": "#081d2f",
+                        "inverse-on-surface": "#e9f1ff",
+                        "surface-bright": "#f8f9ff",
+                        "background": "#f8f9ff",
+                        "on-secondary-container": "#6e4100",
+                        "inverse-surface": "#1f3245",
+                        "secondary-container": "#fdaa47",
+                        "on-primary-container": "#7c889f",
+                        "secondary-fixed": "#ffdcbc",
+                        "tertiary-container": "#00213d",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "surface-container": "#e4efff",
+                        "primary-container": "#142033",
+                        "surface-container-high": "#daeaff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#001d36",
+                        "primary-fixed-dim": "#bbc7e0"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "topbar-height": "60px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "sidebar-width": "260px"
+                    },
+                    fontFamily: {
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "table-header": ["Inter"],
+                        "body-base": ["Inter"],
+                        "badge-label": ["Inter"]
+                    },
+                    fontSize: {
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .icon-fill { font-variation-settings: 'FILL' 1; }
+        
+        /* Language Toggle Switch */
+        .lang-switch { position: relative; width: 60px; height: 30px; background: theme('colors.surface-variant'); border-radius: 15px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; }
+        .lang-switch::after { content: ''; position: absolute; left: 2px; top: 2px; width: 26px; height: 26px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .lang-switch.fa::after { transform: translateX(30px); }
+        .lang-text { font-size: 10px; font-weight: 700; z-index: 1; color: theme('colors.on-surface-variant'); }
+        
+        /* FA Layout overrides */
+        html[dir="rtl"] .lang-switch::after { left: auto; right: 2px; }
+        html[dir="rtl"] .lang-switch.fa::after { transform: translateX(-30px); }
+        
+        [data-lang="fa"] { display: none; }
+        html[dir="rtl"] [data-lang="en"] { display: none; }
+        html[dir="rtl"] [data-lang="fa"] { display: inline-block; }
+        html[dir="rtl"] .inline-block-fa { display: inline-block; }
+        html[dir="rtl"] .block-fa { display: block; }
+        html[dir="rtl"] .flex-fa { display: flex; }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased min-h-screen flex flex-col md:flex-row">
+<!-- TopAppBar -->
+<header class="bg-surface-bright border-b border-outline-variant/30 fixed top-0 right-0 w-full md:w-[calc(100%-260px)] h-topbar-height flex justify-between items-center px-lg z-20">
+<div class="flex items-center gap-md">
+<!-- Mobile Menu Trigger -->
+<button class="md:hidden text-primary focus-within:ring-2 focus-within:ring-secondary rounded p-1">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-headline-md text-headline-md text-primary">PEMS</div>
+</div>
+<div class="flex items-center gap-lg">
+<!-- Search -->
+<div class="hidden sm:flex relative items-center text-on-surface-variant focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined absolute left-3 text-[20px]">search</span>
+<input class="bg-surface-container-low border border-outline-variant/30 rounded-lg pl-10 pr-4 py-1.5 font-body-base text-body-base focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all w-64 placeholder:text-on-surface-variant/50" placeholder="Search audits..." type="text"/>
+</div>
+<!-- Language Toggle -->
+<div class="lang-switch" id="langToggle">
+<span class="lang-text">EN</span>
+<span class="lang-text">FA</span>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-sm">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-surface-container-high transition-all focus-within:ring-2 focus-within:ring-secondary">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-surface-container-high transition-all focus-within:ring-2 focus-within:ring-secondary">
+<span class="material-symbols-outlined">apps</span>
+</button>
+<img alt="Employee Profile" class="w-8 h-8 rounded-full border border-outline-variant/30 ml-2 object-cover" data-alt="A professional corporate headshot of a diverse utility operations manager in a high-tech control room environment, sharp focus, clean lighting, 8k resolution, photorealistic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDCEdbGaD6X1tnOC-CYtxb-roskZSiRkD_f78JBO59WKBZBuqZk0QoNrO8s_-fZW3VXQuSXmKpDvTGudBUCbZ6Q8jsVoVdDby-jPoGygGFkQC25jUmhyTUkY5PP6__Z--tfbPVLJSiCweW4J6PFmxJfKrF43eQ6YlX81tlBjcCr7iBxv2bcFSPnZWOchGuGDICbzp_X_10o5jGWb1Q_2v3Gop3_yfIayL4dkCizo2z9iv9AQcKYhXs"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="bg-primary fixed left-0 top-0 h-full w-[260px] shadow-sm flex flex-col py-md z-30 hidden md:flex overflow-y-auto">
+<div class="px-4 mb-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-secondary rounded flex items-center justify-center text-on-primary font-bold">P</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-surface-container-lowest leading-tight" data-lang="en">PEMS Enterprise</h1>
+<h1 class="font-headline-md text-headline-md text-surface-container-lowest leading-tight" data-lang="fa">سیستم مدیریت شرکت</h1>
+<p class="font-body-medium text-[12px] text-primary-fixed-dim" data-lang="en">Utility Operations</p>
+<p class="font-body-medium text-[12px] text-primary-fixed-dim" data-lang="fa">عملیات تأسیسات</p>
+</div>
+</div>
+</div>
+<div class="flex-1 px-2 space-y-1">
+<a class="flex items-center gap-3 text-on-primary-fixed-variant hover:text-surface-container-lowest hover:bg-surface-variant/5 px-4 py-3 rounded-lg transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="font-body-medium text-body-medium" data-lang="en">Dashboard</span>
+<span class="font-body-medium text-body-medium" data-lang="fa">داشبورد</span>
+</a>
+<a class="flex items-center gap-3 text-on-primary-fixed-variant hover:text-surface-container-lowest hover:bg-surface-variant/5 px-4 py-3 rounded-lg transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">badge</span>
+<span class="font-body-medium text-body-medium" data-lang="en">Employees</span>
+<span class="font-body-medium text-body-medium" data-lang="fa">کارکنان</span>
+</a>
+<a class="flex items-center gap-3 text-on-primary-fixed-variant hover:text-surface-container-lowest hover:bg-surface-variant/5 px-4 py-3 rounded-lg transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">factory</span>
+<span class="font-body-medium text-body-medium" data-lang="en">Assets</span>
+<span class="font-body-medium text-body-medium" data-lang="fa">دارایی‌ها</span>
+</a>
+<a class="flex items-center gap-3 text-on-primary-fixed-variant hover:text-surface-container-lowest hover:bg-surface-variant/5 px-4 py-3 rounded-lg transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">engineering</span>
+<span class="font-body-medium text-body-medium" data-lang="en">Work Orders</span>
+<span class="font-body-medium text-body-medium" data-lang="fa">سفارش کار</span>
+</a>
+<a class="flex items-center gap-3 bg-surface-variant/10 text-secondary-fixed border-l-4 border-secondary-fixed px-4 py-3 rounded-r-lg transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px] icon-fill">safety_check</span>
+<span class="font-body-medium text-body-medium" data-lang="en">Safety</span>
+<span class="font-body-medium text-body-medium" data-lang="fa">ایمنی</span>
+</a>
+<a class="flex items-center gap-3 text-on-primary-fixed-variant hover:text-surface-container-lowest hover:bg-surface-variant/5 px-4 py-3 rounded-lg transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+<span class="font-body-medium text-body-medium" data-lang="en">Reports</span>
+<span class="font-body-medium text-body-medium" data-lang="fa">گزارش‌ها</span>
+</a>
+</div>
+<div class="px-4 mt-auto mb-4">
+<button class="w-full bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white font-body-medium text-body-medium py-2 rounded-lg shadow-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span data-lang="en">Log Work</span>
+<span data-lang="fa">ثبت کار</span>
+</button>
+</div>
+<div class="px-2 border-t border-outline-variant/10 pt-4 space-y-1">
+<a class="flex items-center gap-3 text-on-primary-fixed-variant hover:text-surface-container-lowest hover:bg-surface-variant/5 px-4 py-2 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+<span class="font-body-medium text-body-medium" data-lang="en">Settings</span>
+<span class="font-body-medium text-body-medium" data-lang="fa">تنظیمات</span>
+</a>
+<a class="flex items-center gap-3 text-on-primary-fixed-variant hover:text-surface-container-lowest hover:bg-surface-variant/5 px-4 py-2 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">help</span>
+<span class="font-body-medium text-body-medium" data-lang="en">Support</span>
+<span class="font-body-medium text-body-medium" data-lang="fa">پشتیبانی</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-[260px] pt-topbar-height p-md md:p-lg lg:p-[28px] overflow-x-hidden">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-lg gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-1">
+<span data-lang="en">Workplace Safety Audit</span>
+<span data-lang="fa">ممیزی ایمنی محیط کار</span>
+</h2>
+<p class="font-body-base text-body-base text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">domain</span>
+<span>Facility: Sector 7G</span>
+<span class="text-outline-variant px-1">•</span>
+<span data-lang="en">Last Audit: 2 days ago</span>
+<span data-lang="fa">آخرین ممیزی: ۲ روز پیش</span>
+</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface-container-lowest border border-[#dde3ea] text-[#5c6f85] font-body-medium text-body-medium px-4 py-2 rounded-lg hover:bg-surface-container-low transition-colors shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span data-lang="en">Export PDF</span>
+<span data-lang="fa">خروجی PDF</span>
+</button>
+<button class="bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white font-body-medium text-body-medium px-4 py-2 rounded-lg hover:opacity-90 transition-opacity shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+<span data-lang="en">Start New Audit</span>
+<span data-lang="fa">شروع ممیزی جدید</span>
+</button>
+</div>
+</div>
+<!-- KPI Bento Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-lg">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-xl p-4 flex items-center gap-4 hover:border-secondary/30 transition-colors shadow-sm">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-tertiary-fixed to-tertiary-fixed-dim flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-tertiary-fixed icon-fill text-[24px]">assignment_turned_in</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">
+<span data-lang="en">Audit Score</span>
+<span data-lang="fa">امتیاز ممیزی</span>
+</p>
+<div class="flex items-baseline gap-2">
+<h3 class="font-kpi-stat text-kpi-stat text-on-surface">92%</h3>
+<span class="font-badge-label text-badge-label text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full">+4%</span>
+</div>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-xl p-4 flex items-center gap-4 hover:border-secondary/30 transition-colors shadow-sm">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-error-container to-[#ffb4ab] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-error-container icon-fill text-[24px]">warning</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">
+<span data-lang="en">Critical Findings</span>
+<span data-lang="fa">یافته‌های بحرانی</span>
+</p>
+<div class="flex items-baseline gap-2">
+<h3 class="font-kpi-stat text-kpi-stat text-error">3</h3>
+<span class="font-badge-label text-badge-label text-[#93000a] bg-[#ffdad6] px-2 py-0.5 rounded-full">Requires Action</span>
+</div>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-xl p-4 flex items-center gap-4 hover:border-secondary/30 transition-colors shadow-sm">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-[#e2e2e2] to-[#c6c6c6] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant icon-fill text-[24px]">pending_actions</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">
+<span data-lang="en">Pending CAPA</span>
+<span data-lang="fa">اقدامات اصلاحی معوق</span>
+</p>
+<div class="flex items-baseline gap-2">
+<h3 class="font-kpi-stat text-kpi-stat text-on-surface">12</h3>
+</div>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-xl p-4 flex items-center gap-4 hover:border-secondary/30 transition-colors shadow-sm">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-[#c4ecd0] to-[#80cfa9] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[#00522a] icon-fill text-[24px]">verified</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">
+<span data-lang="en">Compliance Rate</span>
+<span data-lang="fa">نرخ انطباق</span>
+</p>
+<div class="flex items-baseline gap-2">
+<h3 class="font-kpi-stat text-kpi-stat text-on-surface">98.5%</h3>
+</div>
+</div>
+</div>
+</div>
+<!-- Complex Layout Area -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Left Column: Active Checklist -->
+<div class="lg:col-span-2 flex flex-col gap-lg">
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-xl shadow-sm overflow-hidden flex flex-col">
+<!-- Header -->
+<div class="bg-[#f5f7fa] border-b border-[#edf0f4] p-4 flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">checklist</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">
+<span data-lang="en">Active Inspection: Area B</span>
+<span data-lang="fa">بازرسی فعال: منطقه B</span>
+</h3>
+</div>
+<span class="font-badge-label text-badge-label px-3 py-1 rounded-full bg-[#eef4ff] text-[#00497c]">In Progress</span>
+</div>
+<!-- Checklist Content -->
+<div class="p-0">
+<!-- Category: Fire Safety -->
+<div class="border-b border-outline-variant/20 last:border-0">
+<div class="bg-surface px-4 py-2 font-label-caps text-label-caps text-on-surface-variant uppercase flex items-center justify-between cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-[#ba1a1a]">local_fire_department</span>
+<span data-lang="en">Fire Safety</span>
+<span data-lang="fa">ایمنی حریق</span>
+</div>
+<span class="material-symbols-outlined text-[16px]">expand_less</span>
+</div>
+<div class="p-4 space-y-3 bg-surface-container-lowest">
+<!-- Item 1 -->
+<label class="flex items-start gap-3 p-2 rounded hover:bg-[#f3f5f8] transition-colors cursor-pointer group">
+<input checked="" class="mt-1 w-4 h-4 rounded border-[#dde3ea] text-secondary focus:ring-secondary" type="checkbox"/>
+<div class="flex-1">
+<p class="font-table-cell text-table-cell text-on-surface group-hover:text-primary transition-colors">Extinguishers are unobstructed and clearly marked.</p>
+<p class="font-body-base text-[12px] text-on-surface-variant mt-0.5">Last checked: 30 days ago</p>
+</div>
+</label>
+<!-- Item 2 -->
+<label class="flex items-start gap-3 p-2 rounded hover:bg-[#f3f5f8] transition-colors cursor-pointer group">
+<input class="mt-1 w-4 h-4 rounded border-[#dde3ea] text-secondary focus:ring-secondary" type="checkbox"/>
+<div class="flex-1">
+<p class="font-table-cell text-table-cell text-on-surface group-hover:text-primary transition-colors">Fire doors are closed and not wedged open.</p>
+</div>
+<button class="w-8 h-8 rounded border border-[#dde3ea] flex items-center justify-center text-on-surface-variant hover:bg-surface-variant/20">
+<span class="material-symbols-outlined text-[16px]">add_photo_alternate</span>
+</button>
+</label>
+</div>
+</div>
+<!-- Category: PPE -->
+<div class="border-b border-outline-variant/20 last:border-0">
+<div class="bg-surface px-4 py-2 font-label-caps text-label-caps text-on-surface-variant uppercase flex items-center justify-between cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">construction</span>
+<span data-lang="en">Personal Protective Equipment (PPE)</span>
+<span data-lang="fa">تجهیزات حفاظت فردی (PPE)</span>
+</div>
+<span class="material-symbols-outlined text-[16px]">expand_less</span>
+</div>
+<div class="p-4 space-y-3 bg-surface-container-lowest">
+<!-- Item 1 -->
+<label class="flex items-start gap-3 p-2 rounded bg-error-container/20 border border-error-container/50 cursor-pointer group">
+<input class="mt-1 w-4 h-4 rounded border-error text-error focus:ring-error" type="checkbox"/>
+<div class="flex-1">
+<p class="font-table-cell text-table-cell text-error font-semibold">Hard hats worn in designated zones.</p>
+<p class="font-body-base text-[12px] text-error mt-0.5">Violation noted: 2 personnel lacking hard hats in Sector 7G.</p>
+</div>
+<button class="w-8 h-8 rounded bg-error/10 flex items-center justify-center text-error hover:bg-error/20">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+</label>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="p-4 border-t border-[#edf0f4] bg-surface-container-lowest flex justify-end gap-3 mt-auto">
+<button class="border border-[#dde3ea] text-[#5c6f85] font-body-medium text-body-medium px-4 py-2 rounded-lg hover:bg-surface-container-low transition-colors">Save Draft</button>
+<button class="bg-primary text-on-primary font-body-medium text-body-medium px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">Submit Audit</button>
+</div>
+</div>
+</div>
+<!-- Right Column: Sidebar info -->
+<div class="flex flex-col gap-lg">
+<!-- Upcoming Audits -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-xl shadow-sm p-4">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">calendar_month</span>
+<span data-lang="en">Upcoming</span>
+<span data-lang="fa">آینده</span>
+</h3>
+<div class="space-y-3">
+<div class="flex gap-3 items-start">
+<div class="flex flex-col items-center justify-center w-12 h-12 rounded bg-surface-container-low border border-outline-variant/30 shrink-0">
+<span class="font-label-caps text-[10px] text-on-surface-variant">OCT</span>
+<span class="font-headline-md text-[16px] text-primary">12</span>
+</div>
+<div>
+<h4 class="font-body-medium text-body-medium text-on-surface">Electrical Systems</h4>
+<p class="font-body-base text-[12px] text-on-surface-variant">Assigned: John Doe</p>
+</div>
+</div>
+<div class="flex gap-3 items-start">
+<div class="flex flex-col items-center justify-center w-12 h-12 rounded bg-surface-container-low border border-outline-variant/30 shrink-0">
+<span class="font-label-caps text-[10px] text-on-surface-variant">OCT</span>
+<span class="font-headline-md text-[16px] text-primary">15</span>
+</div>
+<div>
+<h4 class="font-body-medium text-body-medium text-on-surface">Chemical Storage</h4>
+<p class="font-body-base text-[12px] text-on-surface-variant">Assigned: Jane Smith</p>
+</div>
+</div>
+</div>
+<button class="mt-4 w-full text-center text-secondary font-body-medium text-[13px] hover:underline">View Calendar</button>
+</div>
+<!-- Recent Corrective Actions (CAPA) -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-xl shadow-sm p-4 flex-1">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">task_alt</span>
+<span data-lang="en">Action Items</span>
+<span data-lang="fa">اقدامات لازم</span>
+</h3>
+<div class="space-y-4">
+<!-- CAPA Item -->
+<div class="border-l-2 border-error pl-3 py-1">
+<div class="flex justify-between items-start mb-1">
+<span class="font-table-cell text-[13px] font-bold text-on-surface">Repair Frayed Cable</span>
+<span class="font-badge-label text-[10px] bg-[#ffdad6] text-[#93000a] px-2 py-0.5 rounded">High</span>
+</div>
+<p class="font-body-base text-[12px] text-on-surface-variant font-mono">TAG: ELEC-092</p>
+<div class="flex items-center gap-2 mt-2">
+<img class="w-5 h-5 rounded-full object-cover" data-alt="A small circular avatar of an industrial worker wearing a hardhat." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMPV_ztp0zoJQmSaowCrVcN9js6Y02TPrsoa1YxDeK_0qiDTmXXto_tVvgywiMCBh0Pv3W_0EZLHG_CURSSV7q445o-N9MCnK86m_MUgWO7hfpcRibWwdq1G6YJl-Fk5-iiHybdKGUm5AxbwEL2GA3D_MEE4S4Jx7XPwGHdzfoccW06EOUKD-inLErtOrPpRZGS8gOOp8bn0H9bYid-vsYIO6KByPNV4Cj1zcHwID2HYpSISznvH_r"/>
+<span class="font-body-base text-[11px] text-on-surface-variant">Due in 2 days</span>
+</div>
+</div>
+<!-- CAPA Item -->
+<div class="border-l-2 border-secondary-container pl-3 py-1">
+<div class="flex justify-between items-start mb-1">
+<span class="font-table-cell text-[13px] font-bold text-on-surface">Update MSDS Binder</span>
+<span class="font-badge-label text-[10px] bg-surface-container-high text-on-surface px-2 py-0.5 rounded">Med</span>
+</div>
+<p class="font-body-base text-[12px] text-on-surface-variant font-mono">LOC: CHEM-LAB</p>
+<div class="flex items-center gap-2 mt-2">
+<div class="w-5 h-5 rounded-full bg-surface-variant flex items-center justify-center text-[9px] font-bold">JS</div>
+<span class="font-body-base text-[11px] text-on-surface-variant">Due next week</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // RTL / LTR Language Toggle Logic
+        const langToggle = document.getElementById('langToggle');
+        const html = document.documentElement;
+        let isRTL = false;
+
+        langToggle.addEventListener('click', () => {
+            isRTL = !isRTL;
+            if (isRTL) {
+                html.setAttribute('dir', 'rtl');
+                langToggle.classList.add('fa');
+            } else {
+                html.setAttribute('dir', 'ltr');
+                langToggle.classList.remove('fa');
+            }
+        });
+    </script>
+</body></html>

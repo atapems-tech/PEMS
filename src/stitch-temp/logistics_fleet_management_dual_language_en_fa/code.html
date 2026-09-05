@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Logistics &amp; Fleet Management | PEMS Industrial</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#535f75",
+                      "surface-container-low": "#eef4ff",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "surface-bright": "#f8f9ff",
+                      "on-surface-variant": "#44474c",
+                      "on-secondary": "#ffffff",
+                      "secondary-container": "#fdaa47",
+                      "on-tertiary-container": "#498bcd",
+                      "primary-fixed": "#d7e3fd",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-background": "#081d2f",
+                      "primary-container": "#142033",
+                      "surface-container-high": "#daeaff",
+                      "on-surface": "#081d2f",
+                      "surface-container-highest": "#d0e4fe",
+                      "inverse-primary": "#bbc7e0",
+                      "secondary": "#895200",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "background": "#f8f9ff",
+                      "secondary-fixed": "#ffdcbc",
+                      "on-error": "#ffffff",
+                      "surface-dim": "#c8dcf5",
+                      "on-primary-container": "#7c889f",
+                      "on-secondary-fixed": "#2c1700",
+                      "surface-container": "#e4efff",
+                      "error": "#ba1a1a",
+                      "outline-variant": "#c5c6cd",
+                      "tertiary": "#000815",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-surface": "#1f3245",
+                      "on-secondary-container": "#6e4100",
+                      "inverse-on-surface": "#e9f1ff",
+                      "on-primary-fixed": "#101c2f",
+                      "surface-variant": "#d0e4fe",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "tertiary-container": "#00213d",
+                      "primary": "#000819",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "on-tertiary-fixed": "#001d36",
+                      "on-tertiary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "error-container": "#ffdad6",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "tertiary-fixed": "#d1e4ff",
+                      "on-primary": "#ffffff",
+                      "outline": "#75777d",
+                      "surface": "#f8f9ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "topbar-height": "60px",
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "lg": "24px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "xl": "32px",
+                      "sidebar-width": "260px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "body-medium": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "table-cell": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "kpi-stat": [
+                              "Inter"
+                      ],
+                      "badge-label": [
+                              "Inter"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-medium": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-cell": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "kpi-stat": [
+                              "22px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "badge-label": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-base": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "table-header": [
+                              "11.5px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f5f8; }
+        .gradient-amber { background: linear-gradient(135deg, #d98c2b, #b8721e); }
+        .gradient-blue { background: linear-gradient(135deg, #142033, #3b475c); }
+        .gradient-red { background: linear-gradient(135deg, #ba1a1a, #93000a); }
+        .gradient-green { background: linear-gradient(135deg, #2e7d32, #1b5e20); }
+        
+        .shadow-diffused { box-shadow: 0 4px 20px rgba(20,32,51,0.08); }
+        .table-row-hover:hover { background-color: rgba(31, 78, 120, 0.04); }
+        .card-hover:hover { border-color: #fdaa47; transition: border-color 0.2s ease; }
+        
+        /* Dual language utility */
+        .fa-text { direction: rtl; text-align: right; font-family: Tahoma, Arial, sans-serif; }
+        .en-text { direction: ltr; text-align: left; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- SideNav (JSON Configured) -->
+<nav class="hidden md:flex flex-col w-[260px] h-screen fixed left-0 z-40 bg-primary border-r border-outline-variant">
+<div class="p-lg border-b border-outline-variant/20 flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary-fixed text-3xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-primary">Industrial PEMS</h1>
+<p class="font-label-caps text-label-caps text-on-primary/60">Enterprise Management</p>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto py-md flex flex-col gap-xs px-sm">
+<!-- Tabs -->
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-medium text-body-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined">badge</span>
+<span class="font-body-medium text-body-medium">Employees</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined">factory</span>
+<span class="font-body-medium text-body-medium">Assets</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined">engineering</span>
+<span class="font-body-medium text-body-medium">Work Orders</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined">health_and_safety</span>
+<span class="font-body-medium text-body-medium">Safety</span>
+</a>
+<!-- Active Tab -->
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-secondary-fixed bg-primary-container font-bold border-l-4 border-secondary-container transition-transform duration-150 scale-[0.98]" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-body-medium text-body-medium">Logistics</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-medium text-body-medium">Analytics</span>
+</a>
+</div>
+<div class="border-t border-outline-variant/20 p-md flex flex-col gap-xs">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-medium text-body-medium">Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container hover:text-secondary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-medium text-body-medium">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<div class="flex-1 md:ml-[260px] min-w-0 flex flex-col">
+<!-- TopNavBar (JSON Configured) -->
+<header class="flex justify-between items-center px-lg h-topbar-height w-full sticky top-0 z-30 bg-surface-bright border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md text-primary">PEMS Industrial</span>
+<!-- Search Bar (on_left) -->
+<div class="hidden lg:flex items-center bg-surface border border-outline-variant rounded px-sm py-[6px] ml-md focus-within:border-secondary-container focus-within:ring-1 focus-within:ring-secondary-container transition-colors">
+<span class="material-symbols-outlined text-outline text-[18px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-base font-body-base text-on-surface w-[300px] py-0 px-sm placeholder-outline" placeholder="Search logistics data... (جستجو در داده‌های لجستیک)" type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm">
+<button class="p-xs text-on-surface-variant hover:bg-surface-container-highest rounded transition-colors" title="Notifications">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:bg-surface-container-highest rounded transition-colors" title="Translate">
+<span class="material-symbols-outlined">translate</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:bg-surface-container-highest rounded transition-colors" title="Help">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+<div class="h-[24px] w-[1px] bg-outline-variant mx-xs"></div>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors">
+                    SUPPORT
+                </button>
+<div class="w-8 h-8 rounded-full bg-primary-container overflow-hidden ml-sm border border-outline-variant">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of an industrial operations manager in a well-lit control room. Clean corporate modern photography, high resolution, crisp lighting, deep navy background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnx4YDx8Z9vlkdZnSYmG1vlVRGr4vbmV0nlIADxfyjdg3qt26FW1hcd5_VVRW_84T6am63CsKg0E24xXWP_8Uz6z6wfEFgK94J3Ai-qwanbIs8l7T1c5zRill86bWi_0k_yGrKgix8Pl1QZUVjPEJ1kSfroGTqrJz56xW8n67sndmXqx17JuYzCKYylvZVz7MJOWlRpRRnzxQS1mulIRGHZKkBMRwQAJ8-yrVHEEAFnCGczmr8qAI4"/>
+</div>
+</div>
+</header>
+<!-- Workspace Padding -->
+<main class="p-md lg:p-lg lg:px-[28px] flex-1 overflow-y-auto overflow-x-hidden">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md mb-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg md:text-[24px] text-on-background m-0 flex items-center gap-sm">
+                        Logistics &amp; Fleet Command
+                        <span class="text-secondary-container text-sm">/</span>
+<span class="fa-text font-body-medium text-lg text-on-surface-variant">فرماندهی لجستیک و ناوگان</span>
+</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-xs">Real-time tracking and operational status of industrial fleet assets.</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-sm bg-surface border border-outline-variant rounded flex items-center gap-xs font-label-caps text-label-caps text-on-surface-variant hover:border-secondary-container transition-colors">
+<span class="material-symbols-outlined text-[16px]">download</span>
+                        EXPORT REPORT (گزارش)
+                    </button>
+<button class="px-md py-sm gradient-amber text-on-secondary border border-transparent rounded flex items-center gap-xs font-label-caps text-label-caps hover:brightness-110 transition-all shadow-sm">
+<span class="material-symbols-outlined text-[16px]">add</span>
+                        DISPATCH VEHICLE (اعزام)
+                    </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-md lg:gap-lg">
+<!-- Left Column: KPIs & List (8 cols) -->
+<div class="lg:col-span-8 flex flex-col gap-md lg:gap-lg">
+<!-- KPI Cards (2x2 on small, 4-across on wide) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-sm">
+<div class="bg-surface border border-outline-variant rounded-lg p-md card-hover relative overflow-hidden flex flex-col justify-between h-[110px]">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">TOTAL FLEET</p>
+<p class="fa-text text-[10px] text-outline mt-[2px]">کل ناوگان</p>
+</div>
+<div class="w-[36px] h-[36px] rounded-[8px] gradient-blue flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-white text-[18px]">local_shipping</span>
+</div>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-on-background mt-sm">248</div>
+</div>
+<div class="bg-surface border border-outline-variant rounded-lg p-md card-hover relative overflow-hidden flex flex-col justify-between h-[110px]">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">ON ROAD</p>
+<p class="fa-text text-[10px] text-outline mt-[2px]">در جاده</p>
+</div>
+<div class="w-[36px] h-[36px] rounded-[8px] gradient-green flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-white text-[18px]">route</span>
+</div>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-on-background mt-sm">186</div>
+</div>
+<div class="bg-surface border border-outline-variant rounded-lg p-md card-hover relative overflow-hidden flex flex-col justify-between h-[110px]">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">MAINTENANCE</p>
+<p class="fa-text text-[10px] text-outline mt-[2px]">در حال تعمیر</p>
+</div>
+<div class="w-[36px] h-[36px] rounded-[8px] gradient-amber flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-white text-[18px]">build</span>
+</div>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-on-background mt-sm">24</div>
+</div>
+<div class="bg-surface border border-outline-variant rounded-lg p-md card-hover relative overflow-hidden flex flex-col justify-between h-[110px]">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">CRITICAL ALERTS</p>
+<p class="fa-text text-[10px] text-outline mt-[2px]">هشدارهای بحرانی</p>
+</div>
+<div class="w-[36px] h-[36px] rounded-[8px] gradient-red flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-white text-[18px]">warning</span>
+</div>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-on-background mt-sm">3</div>
+</div>
+</div>
+<!-- Fleet Data Table -->
+<div class="bg-surface border border-outline-variant rounded-lg shadow-diffused flex flex-col flex-1 min-h-[400px]">
+<div class="p-md border-b border-outline-variant/50 flex justify-between items-center bg-[#f5f7fa] rounded-t-lg">
+<h3 class="font-body-medium text-body-medium text-on-background flex items-center gap-sm">
+                                Active Fleet Registry
+                                <span class="fa-text text-sm text-on-surface-variant">| ثبت ناوگان فعال</span>
+</h3>
+<!-- Table Actions -->
+<div class="flex items-center gap-sm">
+<div class="relative">
+<select class="appearance-none bg-white border border-outline-variant rounded px-sm py-[4px] pr-lg font-body-base text-[12px] text-on-surface-variant focus:border-secondary-container focus:ring-1 focus:ring-secondary-container">
+<option>All Statuses (همه)</option>
+<option>On Road (در جاده)</option>
+<option>Maintenance (تعمیر)</option>
+</select>
+<span class="material-symbols-outlined absolute right-[4px] top-[4px] text-[16px] text-outline pointer-events-none">arrow_drop_down</span>
+</div>
+<button class="w-[28px] h-[28px] border border-outline-variant rounded bg-white flex items-center justify-center hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">filter_list</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#f5f7fa] border-b border-outline-variant/50">
+<tr>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant">VEHICLE ID <br/><span class="fa-text text-[9px] font-normal">شناسه خودرو</span></th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant">STATUS <br/><span class="fa-text text-[9px] font-normal">وضعیت</span></th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant">FUEL LEVEL <br/><span class="fa-text text-[9px] font-normal">سطح سوخت</span></th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant">ASSIGNED DRIVER <br/><span class="fa-text text-[9px] font-normal">راننده اختصاص یافته</span></th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant text-right">ACTIONS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant/30 table-row-hover transition-colors">
+<td class="py-sm px-md">
+<span class="font-mono text-[12px] font-bold text-on-background">TRK-9024A</span>
+<div class="text-[10px] text-outline">Volvo FH16 Heavy</div>
+</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center px-[8px] py-[2px] rounded-full bg-[#e8f5e9] text-[#1b5e20] font-badge-label text-badge-label gap-[4px] border border-[#c8e6c9]">
+<span class="w-[6px] h-[6px] rounded-full bg-[#2e7d32]"></span>
+                                                On Road / در جاده
+                                            </span>
+</td>
+<td class="py-sm px-md">
+<div class="flex items-center gap-xs">
+<div class="w-[60px] h-[6px] bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container" style="width: 78%;"></div>
+</div>
+<span class="font-table-cell text-[11px] text-on-surface-variant">78%</span>
+</div>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-background flex items-center gap-sm">
+<div class="w-[24px] h-[24px] rounded-full bg-primary-container text-white flex items-center justify-center text-[10px] font-bold">AK</div>
+                                            Amir Karimi
+                                        </td>
+<td class="py-sm px-md text-right">
+<button class="w-[28px] h-[28px] rounded border border-outline-variant text-on-surface-variant hover:border-secondary-container hover:text-secondary-container transition-colors inline-flex justify-center items-center">
+<span class="material-symbols-outlined text-[16px]">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/30 table-row-hover transition-colors">
+<td class="py-sm px-md">
+<span class="font-mono text-[12px] font-bold text-on-background">EXC-441B</span>
+<div class="text-[10px] text-outline">CAT 320 Excavator</div>
+</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center px-[8px] py-[2px] rounded-full bg-[#fff3e0] text-[#e65100] font-badge-label text-badge-label gap-[4px] border border-[#ffe0b2]">
+<span class="w-[6px] h-[6px] rounded-full bg-[#f57c00]"></span>
+                                                Idle / بیکار
+                                            </span>
+</td>
+<td class="py-sm px-md">
+<div class="flex items-center gap-xs">
+<div class="w-[60px] h-[6px] bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-error" style="width: 15%;"></div>
+</div>
+<span class="font-table-cell text-[11px] text-error font-bold">15%</span>
+</div>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-background flex items-center gap-sm">
+<div class="w-[24px] h-[24px] rounded-full bg-outline-variant text-white flex items-center justify-center text-[10px] font-bold">-</div>
+                                            Unassigned
+                                        </td>
+<td class="py-sm px-md text-right">
+<button class="w-[28px] h-[28px] rounded border border-outline-variant text-on-surface-variant hover:border-secondary-container hover:text-secondary-container transition-colors inline-flex justify-center items-center">
+<span class="material-symbols-outlined text-[16px]">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/30 table-row-hover transition-colors">
+<td class="py-sm px-md">
+<span class="font-mono text-[12px] font-bold text-on-background">VAN-109C</span>
+<div class="text-[10px] text-outline">Mercedes Sprinter</div>
+</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center px-[8px] py-[2px] rounded-full bg-[#eceff1] text-[#455a64] font-badge-label text-badge-label gap-[4px] border border-[#cfd8dc]">
+<span class="w-[6px] h-[6px] rounded-full bg-[#607d8b]"></span>
+                                                Maintenance / تعمیر
+                                            </span>
+</td>
+<td class="py-sm px-md">
+<div class="flex items-center gap-xs">
+<div class="w-[60px] h-[6px] bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-outline" style="width: 45%;"></div>
+</div>
+<span class="font-table-cell text-[11px] text-on-surface-variant">45%</span>
+</div>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-background flex items-center gap-sm">
+<div class="w-[24px] h-[24px] rounded-full bg-primary-container text-white flex items-center justify-center text-[10px] font-bold">MR</div>
+                                            Mina Rezaei
+                                        </td>
+<td class="py-sm px-md text-right">
+<button class="w-[28px] h-[28px] rounded border border-outline-variant text-on-surface-variant hover:border-secondary-container hover:text-secondary-container transition-colors inline-flex justify-center items-center">
+<span class="material-symbols-outlined text-[16px]">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/30 table-row-hover transition-colors">
+<td class="py-sm px-md">
+<span class="font-mono text-[12px] font-bold text-on-background">TRK-8812D</span>
+<div class="text-[10px] text-outline">Scania R500</div>
+</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center px-[8px] py-[2px] rounded-full bg-[#e8f5e9] text-[#1b5e20] font-badge-label text-badge-label gap-[4px] border border-[#c8e6c9]">
+<span class="w-[6px] h-[6px] rounded-full bg-[#2e7d32]"></span>
+                                                On Road / در جاده
+                                            </span>
+</td>
+<td class="py-sm px-md">
+<div class="flex items-center gap-xs">
+<div class="w-[60px] h-[6px] bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container" style="width: 92%;"></div>
+</div>
+<span class="font-table-cell text-[11px] text-on-surface-variant">92%</span>
+</div>
+</td>
+<td class="py-sm px-md font-table-cell text-table-cell text-on-background flex items-center gap-sm">
+<div class="w-[24px] h-[24px] rounded-full bg-primary-container text-white flex items-center justify-center text-[10px] font-bold">HN</div>
+                                            Hassan Nouri
+                                        </td>
+<td class="py-sm px-md text-right">
+<button class="w-[28px] h-[28px] rounded border border-outline-variant text-on-surface-variant hover:border-secondary-container hover:text-secondary-container transition-colors inline-flex justify-center items-center">
+<span class="material-symbols-outlined text-[16px]">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer Pagination -->
+<div class="p-sm px-md border-t border-outline-variant/50 mt-auto flex justify-between items-center bg-[#f5f7fa] rounded-b-lg">
+<span class="font-table-cell text-[12px] text-on-surface-variant">Showing 1-4 of 248 records</span>
+<div class="flex gap-xs">
+<button class="w-[24px] h-[24px] border border-outline-variant rounded flex items-center justify-center text-outline disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[14px]">chevron_left</span>
+</button>
+<button class="w-[24px] h-[24px] border border-outline-variant rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-variant">
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Map & Context Details (4 cols) -->
+<div class="lg:col-span-4 flex flex-col gap-md lg:gap-lg">
+<!-- Route Optimization Map Module -->
+<div class="bg-surface border border-outline-variant rounded-lg shadow-diffused flex flex-col h-[300px] overflow-hidden relative">
+<div class="absolute top-0 left-0 w-full p-sm bg-gradient-to-b from-[rgba(255,255,255,0.9)] to-transparent z-10 flex justify-between items-start">
+<div>
+<h3 class="font-body-medium text-[13px] font-bold text-on-background flex items-center gap-[4px]">
+<span class="material-symbols-outlined text-[16px] text-secondary-container">explore</span>
+                                    Live Route Map
+                                </h3>
+<p class="fa-text text-[10px] text-on-surface-variant mt-[2px] pr-sm">نقشه زنده مسیرها</p>
+</div>
+<span class="bg-surface border border-outline-variant text-[10px] font-bold px-[6px] py-[2px] rounded text-on-surface-variant flex items-center gap-[4px] shadow-sm">
+<span class="w-[6px] h-[6px] rounded-full bg-error animate-pulse"></span>
+                                LIVE
+                            </span>
+</div>
+<!-- Map Placeholder Image -->
+<div class="w-full h-full bg-surface-variant relative" data-alt="A detailed aerial view map UI showing industrial routes. Top-down cartography style, dark muted slate roads, subtle topographical lines, glowing amber and green pins indicating truck locations. Professional enterprise UI aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB_KN98x7KiyK_YnZHswef5q9E8nR59bEAFbZuPmJTlC7cIewN1FsGhtplGKk22gZKi9lMQAvHq9zRZ2aF8PZH1SqFF7_mt51yGoHscV604JBATxef1Igu3mVIqIwF6NhFBYZ7d903QM8CAqclBAPlsDEhIEieeVcV1pFqe2ZE9qXU5podRJJ8ms-aoeGcHmU1bhJYCQ1Ux9wZ7uUgo53EO7t1-xeBpDU295LNCQ5bl79uI3nsPsOyo')">
+<!-- Overlay UI elements to make it look like an active component -->
+<div class="absolute bottom-sm right-sm flex flex-col gap-[4px]">
+<button class="w-[28px] h-[28px] bg-white border border-outline-variant rounded shadow-sm flex items-center justify-center text-on-surface hover:text-secondary-container">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+<button class="w-[28px] h-[28px] bg-white border border-outline-variant rounded shadow-sm flex items-center justify-center text-on-surface hover:text-secondary-container">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Fuel Consumption Tracking -->
+<div class="bg-surface border border-outline-variant rounded-lg shadow-diffused p-md flex flex-col flex-1">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant/30 pb-sm">
+<h3 class="font-body-medium text-[13px] font-bold text-on-background flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">local_gas_station</span>
+                                Fuel Consumption Trend
+                                <span class="fa-text text-[11px] font-normal text-on-surface-variant ml-sm">(روند مصرف سوخت)</span>
+</h3>
+<span class="material-symbols-outlined text-[16px] text-outline cursor-pointer hover:text-secondary-container">open_in_new</span>
+</div>
+<!-- Mini Chart Visualization Placeholder -->
+<div class="flex-1 min-h-[120px] flex items-end gap-[4px] py-sm px-xs bg-[#f8f9ff] rounded border border-[#edf0f4] mb-md relative">
+<!-- Grid lines -->
+<div class="absolute w-full border-t border-outline-variant/20 top-1/4 left-0"></div>
+<div class="absolute w-full border-t border-outline-variant/20 top-2/4 left-0"></div>
+<div class="absolute w-full border-t border-outline-variant/20 top-3/4 left-0"></div>
+<!-- Bars -->
+<div class="w-full bg-[#d0e4fe] rounded-t opacity-80 hover:opacity-100 transition-opacity" style="height: 40%"></div>
+<div class="w-full bg-[#d0e4fe] rounded-t opacity-80 hover:opacity-100 transition-opacity" style="height: 55%"></div>
+<div class="w-full bg-[#d0e4fe] rounded-t opacity-80 hover:opacity-100 transition-opacity" style="height: 45%"></div>
+<div class="w-full bg-[#d0e4fe] rounded-t opacity-80 hover:opacity-100 transition-opacity" style="height: 70%"></div>
+<div class="w-full bg-[#bbc7e0] rounded-t opacity-80 hover:opacity-100 transition-opacity" style="height: 85%"></div>
+<div class="w-full bg-secondary-container rounded-t shadow-[0_0_8px_rgba(253,170,71,0.4)]" style="height: 60%"></div> <!-- Current -->
+<div class="w-full bg-[#eef4ff] border border-dashed border-outline-variant rounded-t" style="height: 50%"></div>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="bg-[#f5f7fa] p-sm rounded border border-outline-variant/50">
+<p class="text-[10px] font-label-caps text-on-surface-variant mb-[2px]">AVG BURN RATE</p>
+<p class="font-mono font-bold text-[14px] text-on-background">32.4 <span class="text-[10px] font-sans font-normal text-outline">L/100km</span></p>
+</div>
+<div class="bg-[#f5f7fa] p-sm rounded border border-outline-variant/50">
+<p class="text-[10px] font-label-caps text-on-surface-variant mb-[2px]">WEEKLY EST.</p>
+<p class="font-mono font-bold text-[14px] text-on-background">14,200 <span class="text-[10px] font-sans font-normal text-outline">L</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

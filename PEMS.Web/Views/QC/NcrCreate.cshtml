@@ -1,0 +1,48 @@
+﻿<div class="content-card" style="max-width:800px;">
+    <h6 class="mb-3"><i class="bi bi-exclamation-triangle"></i> Raise New NCR</h6>
+
+    <form asp-action="NcrCreate" method="post">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">NCR Number</label>
+                <input name="ncrNumber" class="form-control" required placeholder="e.g. NCR-2026-001" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Project</label>
+                <select name="projectId" class="form-select" required>
+                    @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">QC Discipline</label>
+                <select name="qcDisciplineId" class="form-select" required>
+                    @foreach (var d in (IEnumerable<PEMS.Domain.Entities.QCDiscipline>)ViewBag.QCDisciplines)
+                    {
+                        <option value="@d.QCDisciplineId">@d.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Severity</label>
+                <select name="severity" class="form-select">
+                    <option>Minor</option><option>Major</option><option>Critical</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Equipment <span class="text-muted small">(optional)</span></label>
+                <input type="text" class="form-control" placeholder="جستجوی تگ، نام یا سازنده..."
+                       data-pems-search data-search-type="Equipment" data-search-hidden="#equipmentIdHidden" autocomplete="off" />
+                <input type="hidden" name="equipmentId" id="equipmentIdHidden" />
+            </div>
+
+            <div class="col-12"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="4" required></textarea></div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-danger">Raise NCR</button>
+            <a asp-action="NcrIndex" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

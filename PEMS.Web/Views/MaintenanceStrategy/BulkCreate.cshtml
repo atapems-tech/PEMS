@@ -1,0 +1,182 @@
+﻿@{
+    var equipments = (List<PEMS.Domain.Entities.Equipment>)ViewBag.Equipments;
+    var criticalityByEquipment = (Dictionary<int, string>)ViewBag.CriticalityByEquipment;
+
+    // طبق درخواست: دسته‌بندی دوسطحی - اول بر اساس واحد (Area/Unit)، بعد داخل هر واحد بر
+    // اساس نوع تجهیز - چون در عمل RCM دقیقاً همین‌طور فکر می‌کنه («همه‌ی پمپ‌های واحد ۱۰۰»)
+    var byArea = equipments
+        .GroupBy(x => string.IsNullOrWhiteSpace(x.Area) ? "نامشخص" : x.Area)
+        .OrderBy(g => g.Key)
+        .ToList();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-collection"></i> تعریف دسته‌جمعی استراتژی نگهداری</h5>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">بازگشت</a>
+</div>
+<p class="text-muted small">
+    طبق رویه‌ی واقعی RCM، معمولاً یک استراتژی برای خانواده‌ای از تجهیزات مشابه (مثلاً همه‌ی
+    پمپ‌های سانتریفیوژ یک واحد) تعریف می‌شه، نه یکی‌یکی. تجهیزات اول بر اساس <strong>واحد
+    (Area)</strong> و داخل هر واحد بر اساس <strong>نوع تجهیز</strong> دسته‌بندی شدن. کلاس
+    بحرانی‌بودن هر تجهیز (اگه از قبل تحلیل شده) کنارش نشون داده می‌شه.
+</p>
+
+<div class="content-card mb-3">
+    <form method="get" class="row g-2">
+        <div class="col-md-4">
+            <select name="disciplineId" class="form-select form-select-sm">
+                <option value="">All Disciplines</option>
+                @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == (int?)ViewBag.SelectedDisciplineId)">@d.Name</option> }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select name="equipmentType" class="form-select form-select-sm">
+                <option value="">All Types</option>
+                @foreach (var t in (IEnumerable<string>)ViewBag.EquipmentTypes) { <option value="@t" selected="@(t == (string?)ViewBag.SelectedEquipmentType)">@t</option> }
+            </select>
+        </div>
+        <div class="col-md-4"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-funnel"></i> فیلتر تجهیزات</button></div>
+    </form>
+</div>
+
+<form asp-action="BulkCreate" method="post">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="content-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0 small fw-bold">انتخاب تجهیزات (@equipments.Count)</h6>
+                    <div>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.querySelectorAll('.eq-check').forEach(c => c.checked = true)">همه</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.querySelectorAll('.eq-check').forEach(c => c.checked = false)">هیچ‌کدام</button>
+                    </div>
+                </div>
+
+                <div style="max-height:500px; overflow-y:auto;" class="accordion" id="areaAccordion">
+                    @foreach (var areaGroup in byArea)
+                    {
+                        var areaSafeId = "area_" + Math.Abs(areaGroup.Key.GetHashCode());
+                        var byType = areaGroup.GroupBy(x => string.IsNullOrWhiteSpace(x.EquipmentType) ? "نامشخص" : x.EquipmentType).OrderBy(g => g.Key).ToList();
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed small" type="button" data-bs-toggle="collapse" data-bs-target="#@areaSafeId">
+                                    <i class="bi bi-geo-alt me-2"></i> @areaGroup.Key
+                                    <span class="badge bg-secondary ms-2">@areaGroup.Count()</span>
+                                </button>
+                            </h2>
+                            <div id="@areaSafeId" class="accordion-collapse collapse" data-bs-parent="#areaAccordion">
+                                <div class="accordion-body p-2">
+                                    <button type="button" class="btn btn-sm btn-outline-primary mb-2"
+                                            onclick="document.querySelectorAll('.area-@areaSafeId').forEach(c => c.checked = true)">
+                                        <i class="bi bi-check2-square"></i> انتخاب کل این واحد
+                                    </button>
+
+                                    @foreach (var typeGroup in byType)
+                                    {
+                                        var typeSafeId = areaSafeId + "_" + Math.Abs(typeGroup.Key.GetHashCode());
+
+                                        <div class="border rounded p-2 mb-2">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <span class="small fw-bold"><i class="bi bi-gear"></i> @typeGroup.Key <span class="badge bg-light text-dark">@typeGroup.Count()</span></span>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary py-0"
+                                                        onclick="document.querySelectorAll('.type-@typeSafeId').forEach(c => c.checked = true)">
+                                                    انتخاب این نوع
+                                                </button>
+                                            </div>
+                                            <table class="table table-sm mb-0">
+                                                <tbody>
+                                                    @foreach (var eq in typeGroup)
+                                                    {
+                                                        var cls = criticalityByEquipment.GetValueOrDefault(eq.EquipmentId);
+                                                        <tr>
+                                                            <td style="width:30px;">
+                                                                <input type="checkbox" class="eq-check area-@areaSafeId type-@typeSafeId" name="equipmentIds" value="@eq.EquipmentId" />
+                                                            </td>
+                                                            <td class="small">@eq.TagNumber — @eq.Name</td>
+                                                            <td>
+                                                                @if (!string.IsNullOrEmpty(cls))
+                                                                {
+                                                                    <span class="badge @(cls == "A" ? "bg-danger" : cls == "B" ? "bg-warning text-dark" : "bg-secondary")">@cls</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="text-muted small">-</span>
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (!equipments.Any()) { <p class="text-muted small text-center py-3">تجهیزی با این فیلتر پیدا نشد.</p> }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="content-card">
+                <h6 class="small fw-bold mb-3">تعریف استراتژی (روی همه‌ی تجهیزات انتخاب‌شده اعمال می‌شه)</h6>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Strategy Type</label>
+                        <select name="strategyType" class="form-select" required>
+                            <option>Preventive</option>
+                            <option>Predictive</option>
+                            <option>CBM</option>
+                            <option>Corrective</option>
+                            <option value="RunToFailure">Run-to-Failure</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Failure Mode (ISO 14224)</label>
+                        <select name="failureModeCode" class="form-select">
+                            <option value="">-- انتخاب --</option>
+                            <option>Leakage</option><option>Fracture</option><option>Vibration</option>
+                            <option>Overheating</option><option>Blockage</option><option>ElectricalFault</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Consequence Category (RCM)</label>
+                        <select name="consequenceCategory" class="form-select" required>
+                            <option value="Safety">Safety</option>
+                            <option value="Environmental">Environmental</option>
+                            <option value="Operational" selected>Operational</option>
+                            <option value="Economic">Economic</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Recommended Trigger Type</label>
+                        <select name="recommendedTriggerType" class="form-select">
+                            <option value="Calendar">Calendar</option>
+                            <option value="Meter">Meter</option>
+                            <option value="Both">Both</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Frequency (راهنما)</label>
+                        <select name="frequency" class="form-select">
+                            <option>Daily</option><option>Weekly</option><option>Monthly</option>
+                            <option>Quarterly</option><option>Yearly</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6"><label class="form-label">Start Date</label><input name="startDate" type="date" class="form-control" /></div>
+                    <div class="col-12">
+                        <label class="form-label">Justification (چرا این استراتژی برای این خانواده‌ی تجهیزات؟)</label>
+                        <textarea name="justification" class="form-control" rows="2" required></textarea>
+                    </div>
+                    <div class="col-12"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-pems-solid"><i class="bi bi-check2-all"></i> اعمال روی تجهیزات انتخاب‌شده</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

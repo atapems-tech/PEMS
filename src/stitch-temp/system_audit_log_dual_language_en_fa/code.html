@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html class="light" dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Audit Log - UtilityCorp PEMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#3b475c",
+                        "inverse-on-surface": "#e9f1ff",
+                        "inverse-primary": "#bbc7e0",
+                        "tertiary": "#000815",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#c5c6cd",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#081d2f",
+                        "inverse-surface": "#1f3245",
+                        "on-tertiary-fixed": "#001d36",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "surface-bright": "#f8f9ff",
+                        "on-surface-variant": "#44474c",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "primary-fixed": "#d7e3fd",
+                        "surface-tint": "#535f75",
+                        "surface-container-highest": "#d0e4fe",
+                        "secondary": "#895200",
+                        "outline": "#75777d",
+                        "background": "#f8f9ff",
+                        "surface-dim": "#c8dcf5",
+                        "on-tertiary-container": "#498bcd",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#2c1700",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#fdaa47",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "surface-container": "#e4efff",
+                        "surface-container-low": "#eef4ff",
+                        "primary": "#000819",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#d0e4fe",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#142033",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#6e4100",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "surface": "#f8f9ff",
+                        "on-primary-container": "#7c889f",
+                        "surface-container-high": "#daeaff",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-surface": "#081d2f",
+                        "tertiary-container": "#00213d",
+                        "on-primary-fixed": "#101c2f",
+                        "secondary-fixed": "#ffdcbc"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "xl": "32px",
+                        "topbar-height": "60px",
+                        "md": "16px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "sidebar-width": "260px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "table-header": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "body-base": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "badge-label": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .registry-mono { font-family: 'Courier New', Courier, monospace; }
+        .gradient-primary { background: linear-gradient(180deg, #d98c2b 0%, #b8721e 100%); }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased flex">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-screen w-sidebar-width bg-primary dark:bg-primary-container border-r border-outline-variant hidden md:flex flex-col py-lg z-50">
+<div class="px-md mb-lg">
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-primary dark:text-primary-fixed flex items-center gap-2">
+<img class="w-8 h-8 object-contain" data-alt="A minimalist logo for a corporate procurement system named UtilityCorp, featuring clean lines and a geometric structure. The color palette is industrial, predominantly slate gray and navy blue, with a small accent of industrial amber. The aesthetic is modern, authoritative, and suitable for high-density enterprise software." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkRHkW8UeLXTAhQ-xuhRjiWb8JUQE3wr-ZBk9UaOaQpzOPc0UESk_OV0NzKkS5wP89GMcJSO-rvba4cWbrN209CIluaAjwj6ayKhn11D4Xquga7ZMEtYULuJaLpxshjhGLeobD0mCTTDEQYpRuSi1Y0jam19spYSg4-pawdxzg9gqF2jvDsR0hIgKbjEZFL1nSMQLLBFNIQeMPqRE4FB1cs1HMEQ10ZbIyLAFolvPBwh7TNF8hLc1a"/>
+                PEMS Enterprise
+            </h1>
+<p class="font-body-medium text-body-medium text-on-primary-container mt-1">Procurement Module</p>
+</div>
+<div class="px-md mb-lg">
+<button class="w-full gradient-primary text-on-primary font-body-medium text-body-medium py-sm px-md rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                Create New Order
+            </button>
+</div>
+<ul class="flex-1 flex flex-col gap-1 px-md overflow-y-auto">
+<li><a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 transition-all rounded-lg" href="#"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span> Dashboard</a></li>
+<li><a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 transition-all rounded-lg" href="#"><span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span> Purchase Orders</a></li>
+<li><a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 transition-all rounded-lg" href="#"><span class="material-symbols-outlined" data-icon="business">business</span> Supplier Directory</a></li>
+<li><a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 transition-all rounded-lg" href="#"><span class="material-symbols-outlined" data-icon="request_quote">request_quote</span> Procurement Requests</a></li>
+<li><a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 transition-all rounded-lg" href="#"><span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span> Inventory Assets</a></li>
+<li><a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-body-medium hover:bg-on-primary/10 transition-all scale-[0.98] duration-150" href="#"><span class="material-symbols-outlined" data-icon="analytics">analytics</span> Reports</a></li>
+</ul>
+<div class="mt-auto px-md border-t border-on-primary/10 pt-4">
+<ul class="flex flex-col gap-1">
+<li><a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 transition-all rounded-lg" href="#"><span class="material-symbols-outlined" data-icon="settings">settings</span> Settings</a></li>
+<li><a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary font-body-medium transition-colors hover:bg-on-primary/10 transition-all rounded-lg" href="#"><span class="material-symbols-outlined" data-icon="help">help</span> Support</a></li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 ml-0 md:ml-sidebar-width flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 left-0 md:left-sidebar-width h-topbar-height bg-surface-container-low dark:bg-surface-dim border-b border-outline-variant flex justify-between items-center px-lg z-40 transition duration-100 ease-in-out">
+<div class="flex items-center gap-md">
+<button class="md:hidden text-on-surface p-2"><span class="material-symbols-outlined" data-icon="menu">menu</span></button>
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-sm bg-surface-container-lowest border border-outline-variant rounded-lg text-body-base text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary w-64" placeholder="Search logs..." type="text"/>
+</div>
+</div>
+<nav class="hidden lg:flex gap-lg h-full">
+<a class="flex items-center h-full text-on-surface-variant dark:text-outline font-medium hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">Global View</a>
+<a class="flex items-center h-full text-on-surface-variant dark:text-outline font-medium hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">Metrics</a>
+<a class="flex items-center h-full text-primary dark:text-primary-fixed-dim border-b-2 border-secondary font-bold hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">Logs</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-secondary transition-colors"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
+<button class="text-on-surface-variant hover:text-secondary transition-colors"><span class="material-symbols-outlined" data-icon="language">language</span></button>
+<img class="w-8 h-8 rounded-full border border-outline-variant object-cover" data-alt="A professional headshot of a corporate user, neutral expression, wearing business casual attire. The background is a muted, out-of-focus office environment. The lighting is soft and even, typical of a professional profile picture in an enterprise application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyijp80flXyhlvgqNqAG9VnCpBrbuikzN4AUctw8IJuHk3xfpvbpBn7hgUFheDDKRRqsa0WWqqS3jc59NCs5yZAeYkCa1VCWc_7Kf32y9U1ekk_TXKRS-JWWJ64qmVS0xtgJAc45434Xm5BQR6JLP-In1lNkVwe0q6olhsOq_PSBHzs3BSMH7J5YGkeW2t9tPHf62JcabOtaYZ5x4E3_aDt8jNhkYCJpEUY616oKxeipRBHPVWZ7fm"/>
+<button class="hidden sm:block border border-outline-variant text-surface-tint font-body-medium text-body-medium py-[6px] px-sm rounded-lg hover:bg-surface-container transition-colors">New Request</button>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 mt-topbar-height p-md md:p-lg lg:p-lg bg-background">
+<div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-lg gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg md:font-headline-lg md:text-headline-lg font-bold text-on-background">System Audit Log</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-1">Review system-wide activities and security events. <span class="font-sans" dir="rtl">بررسی فعالیت‌های سیستمی و رویدادهای امنیتی.</span></p>
+</div>
+<div class="flex gap-2">
+<button class="border border-outline-variant bg-surface-container-lowest text-surface-tint font-body-medium text-body-medium py-sm px-md rounded-lg hover:border-secondary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span> Filter
+                    </button>
+<button class="border border-outline-variant bg-surface-container-lowest text-surface-tint font-body-medium text-body-medium py-sm px-md rounded-lg hover:border-secondary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span> Export CSV
+                    </button>
+</div>
+</div>
+<!-- Table Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col hover:border-secondary/50 transition-colors shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#f5f7fa] border-b border-outline-variant sticky top-0">
+<tr>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Timestamp / زمان</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">User / کاربر</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Action / اقدام</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Description / شرح</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">IP Address</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-table-cell text-table-cell text-on-surface">
+<tr class="hover:bg-[#1f4e780a] transition-colors">
+<td class="py-sm px-md whitespace-nowrap registry-mono text-on-surface-variant">2023-10-27 14:32:01</td>
+<td class="py-sm px-md">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-bold text-[10px]">JD</div>
+<span>John Doe</span>
+</div>
+</td>
+<td class="py-sm px-md"><span class="bg-[#e6f4ea] text-[#137333] px-2 py-0.5 rounded-full font-badge-label text-badge-label">Login</span></td>
+<td class="py-sm px-md">Successful authentication via SSO. <span class="text-on-surface-variant/80 ml-2 text-xs" dir="rtl">ورود موفقیت‌آمیز.</span></td>
+<td class="py-sm px-md registry-mono text-on-surface-variant">192.168.1.105</td>
+</tr>
+<tr class="hover:bg-[#1f4e780a] transition-colors">
+<td class="py-sm px-md whitespace-nowrap registry-mono text-on-surface-variant">2023-10-27 14:45:12</td>
+<td class="py-sm px-md">
+<div class="flex items-center gap-2">
+<img class="w-6 h-6 rounded-full object-cover" data-alt="A small, generic avatar icon for a female user in a corporate setting. The avatar has a solid, muted blue background with a white silhouette of a person. It is simple, clear, and designed to look like a standard enterprise software default avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIb-gmKghdxyjewz3wTtBAfj6BQu-psskKw67f8k-0AYdJGNmiE2xn0D9vkSRrzbP1ZxvhsB8IwDccFsFMrWa4kEKJEL4AUHA9pOx2wi082Ba4dGF0PoUhui-ladp1Dd6JQDt3WejCuNjAU2z0pJfpA0tMk-WQI9D8EaR2SWOx0KBFSrNNbqb7LqKJxa47VAIPIVgpcIykPWvjrhTnc8_AIFYCjHjM8PUeD-fFW4Zjjb7P50gbmlKI"/>
+<span>Sarah Smith</span>
+</div>
+</td>
+<td class="py-sm px-md"><span class="bg-[#fce8e6] text-[#c5221f] px-2 py-0.5 rounded-full font-badge-label text-badge-label">Edit Asset</span></td>
+<td class="py-sm px-md">Updated specifications for Asset ID: <span class="registry-mono bg-surface-container px-1 rounded">PMP-092</span>.</td>
+<td class="py-sm px-md registry-mono text-on-surface-variant">10.0.4.22</td>
+</tr>
+<tr class="hover:bg-[#1f4e780a] transition-colors">
+<td class="py-sm px-md whitespace-nowrap registry-mono text-on-surface-variant">2023-10-27 15:10:05</td>
+<td class="py-sm px-md">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-tint text-on-primary flex items-center justify-center font-bold text-[10px]">SYS</div>
+<span>System Admin</span>
+</div>
+</td>
+<td class="py-sm px-md"><span class="bg-[#e8f0fe] text-[#1967d2] px-2 py-0.5 rounded-full font-badge-label text-badge-label">Approve Order</span></td>
+<td class="py-sm px-md">Approved PO-2023-4412. <span class="text-on-surface-variant/80 ml-2 text-xs" dir="rtl">تایید سفارش خرید.</span></td>
+<td class="py-sm px-md registry-mono text-on-surface-variant">127.0.0.1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-sm border-t border-outline-variant bg-surface flex justify-between items-center text-body-base text-on-surface-variant">
+<span>Showing 1 to 3 of 1,024 entries</span>
+<div class="flex gap-1">
+<button class="p-1 rounded hover:bg-surface-container-highest disabled:opacity-50" disabled=""><span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span></button>
+<button class="p-1 rounded hover:bg-surface-container-highest"><span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span></button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

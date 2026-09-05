@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS Enterprise Utility - Administrative Correspondence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#d7e3fd",
+                        "background": "#f8f9ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-container-low": "#eef4ff",
+                        "primary": "#000819",
+                        "on-secondary-fixed": "#2c1700",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-surface-variant": "#44474c",
+                        "secondary": "#895200",
+                        "primary-container": "#142033",
+                        "on-error-container": "#93000a",
+                        "surface": "#f8f9ff",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-tertiary-container": "#498bcd",
+                        "surface-container-highest": "#d0e4fe",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "on-secondary-container": "#6e4100",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#bbc7e0",
+                        "secondary-container": "#fdaa47",
+                        "surface-container-high": "#daeaff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#7c889f",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#ffdcbc",
+                        "outline-variant": "#c5c6cd",
+                        "on-surface": "#081d2f",
+                        "inverse-surface": "#1f3245",
+                        "tertiary": "#000815",
+                        "on-background": "#081d2f",
+                        "tertiary-container": "#00213d",
+                        "surface-dim": "#c8dcf5",
+                        "surface-tint": "#535f75",
+                        "surface-variant": "#d0e4fe",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#e4efff",
+                        "inverse-on-surface": "#e9f1ff",
+                        "on-primary-fixed": "#101c2f",
+                        "outline": "#75777d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "sidebar-width": "260px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "unit": "4px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "topbar-height": "60px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "body-base": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "table-header": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .registry-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+        .gradient-btn { background: linear-gradient(135deg, #d98c2b, #b8721e); }
+        .gradient-kpi-blue { background: linear-gradient(135deg, #d0e4fe, #9ecaff); }
+        .gradient-kpi-red { background: linear-gradient(135deg, #ffdad6, #ffb4ab); }
+        .gradient-kpi-amber { background: linear-gradient(135deg, #fdaa47, #ffb86a); }
+        .focus-ring-amber:focus-within { border-color: #d98c2b; box-shadow: 0 0 0 2px rgba(217, 140, 43, 0.2); }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased h-screen overflow-hidden flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-primary-container text-primary dark:text-primary-fixed border-b border-outline-variant dark:border-outline docked full-width top-0 flex justify-between items-center w-full px-lg h-topbar-height z-50 transition-all duration-200 ease-in-out flex-shrink-0">
+<div class="flex items-center gap-md">
+<span class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed-dim">PEMS Enterprise Utility</span>
+<span class="text-on-surface-variant text-sm font-body-base ml-2">سیستم مدیریت مکاتبات</span>
+</div>
+<div class="flex-1 flex justify-start pl-xl">
+<!-- Search Bar -->
+<div class="relative w-96 bg-surface-container-lowest border border-outline-variant rounded-lg focus-ring-amber flex items-center h-[36px] overflow-hidden">
+<span class="material-symbols-outlined text-on-surface-variant ml-2 text-[20px]" data-icon="search">search</span>
+<input class="w-full border-none bg-transparent focus:ring-0 text-body-base text-on-background placeholder:text-on-surface-variant/70 h-full py-0" placeholder="Search correspondence... / جستجو..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-xs">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors" title="Language / زبان">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors ml-sm">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</nav>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col h-full w-sidebar-width bg-surface-container-low dark:bg-tertiary-container border-r border-outline-variant p-md gap-xs flex-shrink-0">
+<div class="flex items-center gap-sm mb-lg px-2">
+<img alt="User Profile" class="w-10 h-10 rounded-full border border-outline-variant bg-surface-container-lowest object-cover" data-alt="A modern, high-contrast, minimalist avatar icon in deep slate and crisp white, representing an engineering professional in a highly technical UI environment, simple geometric shapes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBg0xkVTWwQ1FKwI7Uas21R8SO3SbL6vHN0w4beK8OrH3VstKdF0YrhECelXC15TEa4WWbve8nB-OQlBLlsu9Az1-2B7PWgxJtYzdostsufhvjNNvHQq2gSIXsd-pN81pFVbCBtf6SGsN2ty0Ya-_Xuo1IHihWpnXvEVVK_45ABzLgvgvpiHqq0f0T3-pIFPwor-gnZ_7vBZd2dKj8umnF7Z5Ucf1kzqxUBglM_UlWJHnOCIek7eSAc"/>
+<div>
+<h2 class="font-body-medium text-body-medium text-primary dark:text-primary-fixed">Engineering Dept.</h2>
+<p class="font-body-base text-body-base text-on-surface-variant text-[12px]">Technical Operations</p>
+</div>
+</div>
+<button class="w-full gradient-btn text-on-primary font-body-medium text-body-medium h-[40px] rounded-lg mb-md flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Document
+            </button>
+<nav class="flex-1 flex flex-col gap-xs overflow-y-auto">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+                    Dashboard
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="fact_check">fact_check</span>
+                    Technical Inspection
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="history_edu">history_edu</span>
+                    Audit Logs
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-secondary-container text-on-secondary-container font-bold transition-colors font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="mail">mail</span>
+                    Correspondence
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="swap_horiz">swap_horiz</span>
+                    Transmittals
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="admin_panel_settings">admin_panel_settings</span>
+                    Administration
+                </a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-xs flex flex-col gap-xs">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors font-body-medium text-body-medium text-[13px]" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="help">help</span>
+                    Help Center
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors font-body-medium text-body-medium text-[13px]" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="logout">logout</span>
+                    Sign Out
+                </a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-hidden bg-background">
+<div class="flex-1 overflow-y-auto p-md lg:p-lg">
+<!-- Page Header -->
+<header class="flex justify-between items-end mb-lg">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Administrative Correspondence</h1>
+<p class="font-body-base text-body-base text-on-surface-variant mt-1">Manage formal letters and technical transmittals | مدیریت مکاتبات رسمی و ارجاعات فنی</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-4 py-2 border border-outline-variant rounded-lg text-on-surface-variant font-body-medium text-body-medium bg-surface-container-lowest hover:bg-surface-container-low transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                            Export Log
+                        </button>
+</div>
+</header>
+<!-- KPI Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md mb-lg">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-4 hover:border-secondary transition-colors group">
+<div class="w-[46px] h-[46px] rounded-[10px] gradient-kpi-blue flex items-center justify-center text-on-tertiary-fixed shadow-sm">
+<span class="material-symbols-outlined">inbox</span>
+</div>
+<div>
+<p class="font-body-base text-body-base text-on-surface-variant text-[12px] uppercase tracking-wider">Total Received</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface mt-1">1,248</p>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-4 hover:border-secondary transition-colors group">
+<div class="w-[46px] h-[46px] rounded-[10px] gradient-kpi-amber flex items-center justify-center text-on-secondary-fixed shadow-sm">
+<span class="material-symbols-outlined">pending_actions</span>
+</div>
+<div>
+<p class="font-body-base text-body-base text-on-surface-variant text-[12px] uppercase tracking-wider">Awaiting Reply</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface mt-1">42 <span class="text-secondary text-[14px] font-normal ml-1">urgent</span></p>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-4 hover:border-secondary transition-colors group">
+<div class="w-[46px] h-[46px] rounded-[10px] gradient-kpi-red flex items-center justify-center text-on-error-container shadow-sm">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div>
+<p class="font-body-base text-body-base text-on-surface-variant text-[12px] uppercase tracking-wider">Overdue Items</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface mt-1">7</p>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex items-center gap-4 hover:border-secondary transition-colors group">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-surface-variant flex items-center justify-center text-on-surface shadow-sm">
+<span class="material-symbols-outlined">drafts</span>
+</div>
+<div>
+<p class="font-body-base text-body-base text-on-surface-variant text-[12px] uppercase tracking-wider">Drafts</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface mt-1">18</p>
+</div>
+</div>
+</div>
+<!-- Main Data Surface -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col overflow-hidden shadow-sm h-[600px]">
+<!-- Table Toolbar -->
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest">
+<div class="flex gap-sm">
+<div class="relative focus-ring-amber border border-outline-variant rounded-lg flex items-center h-[32px] px-2 bg-surface">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">filter_list</span>
+<select class="border-none bg-transparent focus:ring-0 text-body-base text-on-surface-variant h-full py-0 pl-2 pr-6 text-[13px] font-body-medium">
+<option>All Types</option>
+<option>Internal</option>
+<option>External</option>
+<option>Transmittal</option>
+</select>
+</div>
+<div class="relative focus-ring-amber border border-outline-variant rounded-lg flex items-center h-[32px] px-2 bg-surface">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">calendar_today</span>
+<select class="border-none bg-transparent focus:ring-0 text-body-base text-on-surface-variant h-full py-0 pl-2 pr-6 text-[13px] font-body-medium">
+<option>Last 30 Days</option>
+<option>Last 90 Days</option>
+<option>This Year</option>
+</select>
+</div>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-base text-[13px]">
+<span>1-10 of 1,248</span>
+<div class="flex gap-1 ml-2">
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+</div>
+</div>
+</div>
+<!-- Data Table -->
+<div class="overflow-auto flex-1">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#f5f7fa] sticky top-0 z-10 border-b border-outline-variant">
+<tr>
+<th class="py-3 px-4 font-table-header text-table-header text-on-surface uppercase tracking-wider whitespace-nowrap">Document Ref</th>
+<th class="py-3 px-4 font-table-header text-table-header text-on-surface uppercase tracking-wider">Subject / موضوع</th>
+<th class="py-3 px-4 font-table-header text-table-header text-on-surface uppercase tracking-wider">Sender</th>
+<th class="py-3 px-4 font-table-header text-table-header text-on-surface uppercase tracking-wider">Recipient</th>
+<th class="py-3 px-4 font-table-header text-table-header text-on-surface uppercase tracking-wider">Type</th>
+<th class="py-3 px-4 font-table-header text-table-header text-on-surface uppercase tracking-wider">Priority</th>
+<th class="py-3 px-4 font-table-header text-table-header text-on-surface uppercase tracking-wider">Status</th>
+<th class="py-3 px-4 font-table-header text-table-header text-on-surface uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant bg-surface-container-lowest">
+<!-- Row 1 -->
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors group">
+<td class="py-2 px-4 registry-mono text-[13px] text-on-surface font-medium whitespace-nowrap">ENG-TR-2023-089</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">
+<div class="line-clamp-1">Pump Station B Technical Specs</div>
+<div class="text-[11px] text-on-surface-variant font-sans" dir="rtl">مشخصات فنی ایستگاه پمپاژ B</div>
+</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface-variant whitespace-nowrap">Tech Dept.</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface-variant whitespace-nowrap">Contractor Group LLC</td>
+<td class="py-2 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-surface-variant text-on-surface">Transmittal</span>
+</td>
+<td class="py-2 px-4">
+<span class="material-symbols-outlined text-[16px] text-error">keyboard_double_arrow_up</span>
+</td>
+<td class="py-2 px-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full font-badge-label text-badge-label bg-[#e6f4ea] text-[#137333]">Sent</span>
+</td>
+<td class="py-2 px-4 text-right whitespace-nowrap">
+<button class="w-8 h-8 rounded-lg bg-surface hover:bg-surface-container-high border border-outline-variant text-on-surface-variant inline-flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors group">
+<td class="py-2 px-4 registry-mono text-[13px] text-on-surface font-medium whitespace-nowrap">ADM-IN-2023-142</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">
+<div class="line-clamp-1">Q3 Safety Audit Notification</div>
+<div class="text-[11px] text-on-surface-variant font-sans" dir="rtl">اطلاعیه ممیزی ایمنی سه ماهه سوم</div>
+</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface-variant whitespace-nowrap">HSE Manager</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface-variant whitespace-nowrap">All Departments</td>
+<td class="py-2 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-primary-fixed text-on-primary-fixed">Internal</span>
+</td>
+<td class="py-2 px-4">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">remove</span>
+</td>
+<td class="py-2 px-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full font-badge-label text-badge-label bg-[#fef7e0] text-[#b06000]">Awaiting Reply</span>
+</td>
+<td class="py-2 px-4 text-right whitespace-nowrap">
+<button class="w-8 h-8 rounded-lg bg-surface hover:bg-surface-container-high border border-outline-variant text-on-surface-variant inline-flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors group">
+<td class="py-2 px-4 registry-mono text-[13px] text-on-surface font-medium whitespace-nowrap">GOV-EX-2023-011</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface">
+<div class="line-clamp-1">Environmental Compliance Report</div>
+<div class="text-[11px] text-on-surface-variant font-sans" dir="rtl">گزارش انطباق زیست محیطی</div>
+</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface-variant whitespace-nowrap">Plant Director</td>
+<td class="py-2 px-4 font-table-cell text-table-cell text-on-surface-variant whitespace-nowrap">Ministry of Env.</td>
+<td class="py-2 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[#e8eaed] text-[#3c4043]">External</span>
+</td>
+<td class="py-2 px-4">
+<span class="material-symbols-outlined text-[16px] text-secondary">keyboard_arrow_up</span>
+</td>
+<td class="py-2 px-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full font-badge-label text-badge-label bg-[#f1f3f4] text-[#5f6368]">Draft</span>
+</td>
+<td class="py-2 px-4 text-right whitespace-nowrap">
+<button class="w-8 h-8 rounded-lg bg-surface hover:bg-surface-container-high border border-outline-variant text-on-surface-variant inline-flex items-center justify-center transition-colors mr-1">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-surface hover:bg-surface-container-high border border-outline-variant text-on-surface-variant inline-flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

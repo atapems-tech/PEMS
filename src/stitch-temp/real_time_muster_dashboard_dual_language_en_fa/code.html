@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html class="light" dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Emergency Muster Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#e4efff",
+                        "on-surface-variant": "#44474c",
+                        "on-surface": "#081d2f",
+                        "tertiary-fixed": "#d1e4ff",
+                        "primary": "#000819",
+                        "secondary-container": "#fdaa47",
+                        "on-background": "#081d2f",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#498bcd",
+                        "inverse-on-surface": "#e9f1ff",
+                        "secondary": "#895200",
+                        "primary-container": "#142033",
+                        "inverse-surface": "#1f3245",
+                        "surface-container-low": "#eef4ff",
+                        "outline-variant": "#c5c6cd",
+                        "on-primary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "inverse-primary": "#bbc7e0",
+                        "primary-fixed": "#d7e3fd",
+                        "secondary-fixed": "#ffdcbc",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f8f9ff",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "on-primary-fixed": "#101c2f",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-secondary-container": "#6e4100",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-container-highest": "#d0e4fe",
+                        "tertiary": "#000815",
+                        "surface-container-high": "#daeaff",
+                        "tertiary-container": "#00213d",
+                        "surface-bright": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#d0e4fe",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-secondary-fixed": "#2c1700",
+                        "outline": "#75777d",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "surface-dim": "#c8dcf5",
+                        "on-primary-container": "#7c889f",
+                        "surface-tint": "#535f75"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "sidebar-width": "260px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "topbar-height": "60px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "table-header": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "body-base": ["Inter"]
+                    },
+                    "fontSize": {
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .industrial-gradient-amber { background: linear-gradient(135deg, #d98c2b, #b8721e); }
+        .industrial-gradient-blue { background: linear-gradient(135deg, #142033, #000819); }
+        .industrial-gradient-red { background: linear-gradient(135deg, #ba1a1a, #93000a); }
+        .industrial-gradient-green { background: linear-gradient(135deg, #2e7d32, #1b5e20); }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<nav class="bg-primary text-on-primary fixed left-0 top-0 h-full w-sidebar-width shadow-xl flex flex-col py-md z-40 hidden md:flex">
+<div class="px-lg mb-8">
+<h1 class="font-headline-md text-secondary-fixed">Emergency Ops</h1>
+<p class="font-body-medium text-primary-fixed-dim">Sector A-12</p>
+</div>
+<div class="flex-1 flex flex-col gap-2">
+<a class="bg-secondary-container text-on-secondary-container rounded-lg mx-2 px-md py-sm flex items-center gap-sm" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-primary-fixed-variant mx-2 px-md py-sm rounded-lg flex items-center gap-sm hover:bg-primary-fixed-variant duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-label-caps text-label-caps">Personnel Registry</span>
+</a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-primary-fixed-variant mx-2 px-md py-sm rounded-lg flex items-center gap-sm hover:bg-primary-fixed-variant duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span class="font-label-caps text-label-caps">Muster Points</span>
+</a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-primary-fixed-variant mx-2 px-md py-sm rounded-lg flex items-center gap-sm hover:bg-primary-fixed-variant duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="emergency_share">emergency_share</span>
+<span class="font-label-caps text-label-caps">Communications</span>
+</a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-primary-fixed-variant mx-2 px-md py-sm rounded-lg flex items-center gap-sm hover:bg-primary-fixed-variant duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-label-caps text-label-caps">Incident Reports</span>
+</a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-primary-fixed-variant mx-2 px-md py-sm rounded-lg flex items-center gap-sm hover:bg-primary-fixed-variant duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps">System Settings</span>
+</a>
+</div>
+<div class="px-md mt-auto mb-4">
+<button class="w-full industrial-gradient-amber text-white font-body-medium py-sm rounded-lg flex justify-center items-center gap-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">campaign</span>
+                Broadcast Alert
+            </button>
+</div>
+<div class="flex flex-col gap-2 mt-4 border-t border-primary-container pt-4">
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-primary-fixed-variant mx-2 px-md py-sm rounded-lg flex items-center gap-sm duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+<a class="text-primary-fixed-dim hover:text-on-primary-fixed hover:bg-primary-fixed-variant mx-2 px-md py-sm rounded-lg flex items-center gap-sm duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-caps text-label-caps">Logout</span>
+</a>
+</div>
+<div class="px-lg mt-4 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small circular avatar placeholder image featuring a generic silhouette or professional headshot for a duty officer profile picture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzCF6iUSNDt_Alf5qpDSrT7VzSgISvRR4EhIQc1kbyD7lQsuMWQHVETS4EilTvi5b2hXj1nX2tQEQui0aYlg2yuBs-C1T1YxiOhL0HDmy5Tf_dwAymWd1rGcW6r6mewEQ-xEerDbXGPrdcMOze3mqIqSfKmSrSDtlJD09EJnF6cKLllxmgCOqPYTTAastVTdYv-a2NZVtw5zY0Y7uWBQJwEctB--ME9x6ERNrjs0OnfKVo_W-Yu5jQ"/>
+</div>
+<span class="font-label-caps text-label-caps text-primary-fixed-dim">Duty Officer</span>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-[260px] flex flex-col h-screen overflow-y-auto">
+<!-- TopAppBar -->
+<header class="bg-primary text-on-primary fixed top-0 w-full z-50 shadow-md md:w-[calc(100%-260px)] md:left-[260px] flex justify-between items-center h-topbar-height px-lg">
+<div class="flex items-center gap-lg">
+<span class="text-headline-md font-headline-md font-bold text-secondary-container">PEMS Enterprise</span>
+<nav class="hidden lg:flex gap-md">
+<a class="font-body-base text-secondary-container border-b-2 border-secondary-container pb-1" href="#">Emergency Console</a>
+<a class="font-body-base text-on-primary-container opacity-80 hover:opacity-100 hover:bg-on-primary-fixed-variant transition-colors px-2 py-1 rounded" href="#">Muster Tracking</a>
+<a class="font-body-base text-on-primary-container opacity-80 hover:opacity-100 hover:bg-on-primary-fixed-variant transition-colors px-2 py-1 rounded" href="#">Resource Map</a>
+<a class="font-body-base text-on-primary-container opacity-80 hover:opacity-100 hover:bg-on-primary-fixed-variant transition-colors px-2 py-1 rounded" href="#">Logs</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden sm:flex gap-sm">
+<button class="p-2 text-on-primary-container hover:bg-on-primary-fixed-variant rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+</button>
+<button class="p-2 text-on-primary-container hover:bg-on-primary-fixed-variant rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+</button>
+<button class="p-2 text-on-primary-container hover:bg-on-primary-fixed-variant rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+<button class="industrial-gradient-amber text-white font-label-caps text-label-caps px-md py-sm rounded-lg hover:opacity-90 transition-opacity whitespace-nowrap hidden sm:block">
+                     INITIATE EVACUATION
+                 </button>
+</div>
+</header>
+<div class="p-gutter md:p-lg mt-[60px] space-y-gutter">
+<!-- Active Emergency Banner -->
+<div class="bg-error-container border border-error rounded-xl p-md flex items-center justify-between">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full industrial-gradient-red flex items-center justify-center text-white animate-pulse">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div>
+<h2 class="font-headline-md text-on-error-container">ACTIVE EMERGENCY: EVACUATION IN PROGRESS</h2>
+<p class="font-body-medium text-error flex items-center gap-2">
+<span>وضعیت اضطراری فعال: تخلیه در حال انجام است</span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-error"></span>
+<span>T+ 14:22 MIN</span>
+</p>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Left Column (KPIs & Roster) -->
+<div class="col-span-1 md:col-span-4 lg:col-span-3 space-y-gutter flex flex-col">
+<!-- KPIs -->
+<div class="grid grid-cols-2 md:grid-cols-1 gap-gutter">
+<div class="bg-surface border border-outline-variant rounded-xl p-md flex items-center gap-md hover:border-secondary-container transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] industrial-gradient-blue flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined">engineering</span>
+</div>
+<div>
+<p class="font-label-caps text-on-surface-variant">TOTAL ON-SITE <span class="block text-[9px] font-normal text-on-surface-variant opacity-70">کل پرسنل</span></p>
+<p class="font-kpi-stat text-on-surface">432</p>
+</div>
+</div>
+<div class="bg-surface border border-outline-variant rounded-xl p-md flex items-center gap-md hover:border-secondary-container transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] industrial-gradient-green flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<div>
+<p class="font-label-caps text-on-surface-variant">ACCOUNTED FOR <span class="block text-[9px] font-normal text-on-surface-variant opacity-70">حاضر</span></p>
+<p class="font-kpi-stat text-on-surface">398 <span class="text-sm text-green-700 ml-1">92%</span></p>
+</div>
+</div>
+<div class="bg-surface border border-outline-variant rounded-xl p-md flex items-center gap-md hover:border-secondary-container transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] industrial-gradient-red flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined">person_search</span>
+</div>
+<div>
+<p class="font-label-caps text-on-surface-variant">MISSING/IN-TRANSIT <span class="block text-[9px] font-normal text-on-surface-variant opacity-70">غایب/در راه</span></p>
+<p class="font-kpi-stat text-on-surface text-error">34</p>
+</div>
+</div>
+</div>
+<!-- Missing Personnel Roster -->
+<div class="bg-surface border border-outline-variant rounded-xl flex-1 flex flex-col overflow-hidden min-h-[300px]">
+<div class="p-sm bg-surface-container-low border-b border-outline-variant sticky top-0 z-10 flex justify-between items-center">
+<h3 class="font-table-header text-on-surface uppercase">Not Accounted For</h3>
+<span class="bg-error-container text-on-error-container font-badge-label px-2 py-0.5 rounded-full">34</span>
+</div>
+<div class="overflow-y-auto p-sm space-y-sm flex-1">
+<!-- Roster Item -->
+<div class="bg-white border border-outline-variant rounded-lg p-sm flex items-center justify-between hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+<div>
+<p class="font-body-medium text-on-surface leading-tight">J. Smith</p>
+<p class="font-table-cell text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Sec C, Lvl 2
+                                        </p>
+</div>
+</div>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-white transition-colors border border-outline-variant">
+<span class="material-symbols-outlined text-sm">call</span>
+</button>
+</div>
+</div>
+<!-- Roster Item -->
+<div class="bg-white border border-outline-variant rounded-lg p-sm flex items-center justify-between hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+<div>
+<p class="font-body-medium text-on-surface leading-tight">A. Rezaei</p>
+<p class="font-table-cell text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Pump Station 4
+                                        </p>
+</div>
+</div>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-white transition-colors border border-outline-variant">
+<span class="material-symbols-outlined text-sm">call</span>
+</button>
+</div>
+</div>
+<!-- Roster Item -->
+<div class="bg-white border border-outline-variant rounded-lg p-sm flex items-center justify-between hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+<div>
+<p class="font-body-medium text-on-surface leading-tight">M. Lee</p>
+<p class="font-table-cell text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Unknown
+                                        </p>
+</div>
+</div>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-white transition-colors border border-outline-variant">
+<span class="material-symbols-outlined text-sm">call</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column (Map) -->
+<div class="col-span-1 md:col-span-8 lg:col-span-9 bg-surface border border-outline-variant rounded-xl flex flex-col relative min-h-[400px] overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-60" data-alt="A dark-themed, high-tech industrial site map showing building layouts, evacuation routes, and muster points with a clean, low-contrast UI aesthetic suitable for a dashboard background." data-location="Industrial Site Map" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJe2vM9Rw8Ub8EnXYnNojvoIISPOT0F13LmrQkiU3MmiHADSi7Xehj6MnxT9ESWui9aSHQizsVIatR_fMKUmHo31IRnBazapzv2LqGI_P9CDLVBFK4jqvrwtWs3lK4T-7ZWmeeyGs_Tnb186dOT0sW0F7xjWlPt7fCuqnYTMosA8fkk35Z05_pAK-X6zAFrG_O4FiPPfvt9zHVe7p-oswHoGPHrfJ1vi6rRahGVJUwv1qo_N84HvFj"/>
+<!-- Map Overlay Gradients for Heatmap Effect -->
+<div class="absolute top-[30%] left-[40%] w-32 h-32 bg-error rounded-full blur-[60px] opacity-40 mix-blend-multiply"></div>
+<div class="absolute bottom-[20%] right-[30%] w-48 h-48 bg-secondary-container rounded-full blur-[80px] opacity-30 mix-blend-multiply"></div>
+</div>
+<div class="relative z-10 p-sm bg-surface/80 backdrop-blur border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-table-header text-on-surface uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">map</span> Real-time Live Map
+                        </h3>
+<div class="flex gap-sm">
+<span class="font-badge-label bg-surface-container-high px-2 py-1 rounded text-on-surface-variant border border-outline-variant">Muster Points</span>
+<span class="font-badge-label bg-error-container text-on-error-container px-2 py-1 rounded border border-error">Heatmap Active</span>
+</div>
+</div>
+<!-- Map Controls -->
+<div class="absolute bottom-4 right-4 z-10 flex flex-col gap-2">
+<button class="w-10 h-10 bg-white border border-outline-variant rounded-lg shadow-sm flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-10 h-10 bg-white border border-outline-variant rounded-lg shadow-sm flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Actions Bar (Mobile Sticky) -->
+<div class="mt-auto md:hidden grid grid-cols-2 gap-sm pt-4 border-t border-outline-variant">
+<button class="border border-outline-variant bg-surface text-on-surface font-body-medium py-sm rounded-lg flex justify-center items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">contact_support</span> Duty Officer
+                </button>
+<button class="industrial-gradient-amber text-white font-body-medium py-sm rounded-lg flex justify-center items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">warning</span> Evacuate
+                </button>
+</div>
+</div>
+</main>
+</body></html>

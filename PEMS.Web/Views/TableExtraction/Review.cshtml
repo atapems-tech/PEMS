@@ -1,0 +1,201 @@
+@model PEMS.Domain.Entities.TableExtractionBatch
+@{
+    var rows = Model.Rows.OrderBy(r => r.MatchStatus == "Confirmed" || r.MatchStatus == "Rejected" ? 1 : 0)
+        .ThenBy(r => r.TagNumber)
+        .ToList();
+    var counts = Model.Rows.GroupBy(r => r.MatchStatus).ToDictionary(g => g.Key, g => g.Count());
+    int Count(string status) => counts.TryGetValue(status, out var c) ? c : 0;
+}
+
+<div class="content-card mb-3">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <h5 class="mb-0">@Model.SourceFileName</h5>
+            <span class="text-muted small">Batch #@Model.TableExtractionBatchId - @Model.ExtractionMethod - @Model.TotalRows rows - @Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")</span>
+        </div>
+        <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+    </div>
+</div>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+}
+
+<div class="content-card mb-3">
+    <div class="admin-kpi-grid">
+        <div class="admin-kpi"><div class="admin-kpi-label">Unmatched</div><div class="admin-kpi-value">@Count("Unmatched")</div></div>
+        <div class="admin-kpi"><div class="admin-kpi-label">Matched - no Instrument yet</div><div class="admin-kpi-value">@Count("MatchedNoInstrument")</div></div>
+        <div class="admin-kpi"><div class="admin-kpi-label">Matched - has Instrument</div><div class="admin-kpi-value">@Count("MatchedHasInstrument")</div></div>
+        <div class="admin-kpi"><div class="admin-kpi-label">Confirmed</div><div class="admin-kpi-value">@Count("Confirmed")</div></div>
+        <div class="admin-kpi"><div class="admin-kpi-label">Rejected</div><div class="admin-kpi-value">@Count("Rejected")</div></div>
+    </div>
+</div>
+
+<form id="bulkConfirmForm" asp-action="BulkConfirm" method="post">
+    <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
+</form>
+
+<div class="content-card mb-3">
+    <div class="d-flex gap-2 flex-wrap align-items-center">
+        <div class="input-group admin-search" style="max-width:280px;">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="search" id="rowSearch" class="form-control" placeholder="Filter by tag..." autocomplete="off" />
+        </div>
+        <div class="btn-group btn-group-sm" role="group">
+            <button type="button" class="btn btn-outline-secondary status-filter active" data-status="all">All</button>
+            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Unmatched">Unmatched</button>
+            <button type="button" class="btn btn-outline-secondary status-filter" data-status="MatchedNoInstrument">Needs Instrument</button>
+            <button type="button" class="btn btn-outline-secondary status-filter" data-status="MatchedHasInstrument">Has Instrument</button>
+            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Confirmed">Confirmed</button>
+            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Rejected">Rejected</button>
+        </div>
+        <button type="submit" form="bulkConfirmForm" id="bulkConfirmBtn" class="btn btn-sm btn-pems-solid ms-auto" disabled
+                onclick="return confirm('تعداد ' + document.getElementById('selectedCount').textContent + ' ردیف انتخاب‌شده به Instrument متصل شود؟');">
+            <i class="bi bi-link-45deg"></i> Confirm Selected (<span id="selectedCount">0</span>)
+        </button>
+    </div>
+</div>
+
+<div class="content-card">
+    <div class="table-responsive table-scroll-area" style="max-height:70vh; overflow-y:auto;">
+        <table class="table table-enterprise table-sm">
+            <thead>
+                <tr>
+                    <th style="width:30px;"><input type="checkbox" id="selectAllMatched" title="Select all matched rows" /></th>
+                    <th>Tag</th><th>Description</th><th>Junction Box</th><th>Cable No.</th>
+                    <th>DCS Tag</th><th>Status</th><th style="min-width:280px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in rows)
+                {
+                    var badgeClass = row.MatchStatus switch
+                    {
+                        "Confirmed" => "bg-success",
+                        "Rejected" => "bg-secondary",
+                        "MatchedHasInstrument" => "bg-info text-dark",
+                        "MatchedNoInstrument" => "bg-primary",
+                        _ => "bg-warning text-dark"
+                    };
+                    var isSelectable = row.MatchStatus is "MatchedNoInstrument" or "MatchedHasInstrument";
+
+                    <tr class="row-item" data-status="@row.MatchStatus" data-tag="@(row.TagNumber ?? "").ToLower()">
+                        <td>
+                            @if (isSelectable)
+                            {
+                                <input type="checkbox" class="row-select" form="bulkConfirmForm" name="selectedRowIds" value="@row.TableExtractionRowId" />
+                            }
+                        </td>
+                        <td class="fw-semibold">@(row.TagNumber ?? "-")</td>
+                        <td class="small" style="max-width:220px;">@(row.Description ?? "-")</td>
+                        <td class="small">@(row.JunctionBox ?? "-")</td>
+                        <td class="small">@(row.CableNo ?? "-")</td>
+                        <td class="small">@(row.DcsTagNo ?? "-")</td>
+                        <td><span class="badge @badgeClass">@row.MatchStatus</span></td>
+                        <td>
+                            @if (row.MatchStatus is "MatchedNoInstrument" or "MatchedHasInstrument")
+                            {
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="small text-muted">→ @row.MatchedEquipment?.TagNumber</span>
+                                    <form asp-action="ConfirmRow" method="post" class="d-inline">
+                                        <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
+                                        <input type="hidden" name="equipmentId" value="@row.MatchedEquipmentId" />
+                                        <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
+                                        <button type="submit" class="btn btn-xs btn-pems-solid btn-sm">Confirm</button>
+                                    </form>
+                                    <form asp-action="RejectRow" method="post" class="d-inline">
+                                        <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
+                                        <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary">Reject</button>
+                                    </form>
+                                </div>
+                            }
+                            else if (row.MatchStatus == "Unmatched")
+                            {
+                                <form asp-action="ConfirmRowManual" method="post" class="d-flex gap-2">
+                                    <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
+                                    <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
+                                    <input type="text" name="equipmentTagNumber" class="form-control form-control-sm" placeholder="Equipment tag..." style="max-width:160px;" />
+                                    <button type="submit" class="btn btn-sm btn-pems-solid">Link</button>
+                                </form>
+                            }
+                            else if (row.MatchStatus == "Confirmed")
+                            {
+                                <span class="small text-success"><i class="bi bi-check-circle"></i> Instrument #@row.ResultInstrumentId</span>
+                            }
+                            else
+                            {
+                                <span class="small text-muted">-</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (!rows.Any())
+        {
+            <p class="text-muted text-center py-4">No rows in this batch.</p>
+        }
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var searchInput = document.getElementById('rowSearch');
+    var statusButtons = [].slice.call(document.querySelectorAll('.status-filter'));
+    var rows = [].slice.call(document.querySelectorAll('.row-item'));
+    var activeStatus = 'all';
+
+    function applyFilters() {
+        var q = (searchInput.value || '').trim().toLowerCase();
+        rows.forEach(function (r) {
+            var statusOk = activeStatus === 'all' || r.getAttribute('data-status') === activeStatus;
+            var tagOk = !q || r.getAttribute('data-tag').indexOf(q) !== -1;
+            r.style.display = (statusOk && tagOk) ? '' : 'none';
+        });
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+    statusButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            statusButtons.forEach(function (b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            activeStatus = btn.getAttribute('data-status');
+            applyFilters();
+        });
+    });
+})();
+
+(function () {
+    var selectAll = document.getElementById('selectAllMatched');
+    var checkboxes = [].slice.call(document.querySelectorAll('.row-select'));
+    var confirmBtn = document.getElementById('bulkConfirmBtn');
+    var countSpan = document.getElementById('selectedCount');
+
+    function updateCount() {
+        var checked = checkboxes.filter(function (c) { return c.checked; }).length;
+        countSpan.textContent = checked;
+        confirmBtn.disabled = checked === 0;
+    }
+
+    selectAll.addEventListener('change', function () {
+        // فقط ردیف‌های در حال حاضر قابل‌مشاهده (بعد از فیلتر) انتخاب/لغو می‌شوند
+        checkboxes.forEach(function (c) {
+            var row = c.closest('tr');
+            if (row.style.display !== 'none') c.checked = selectAll.checked;
+        });
+        updateCount();
+    });
+
+    checkboxes.forEach(function (c) { c.addEventListener('change', updateCount); });
+    updateCount();
+})();
+</script>
+}

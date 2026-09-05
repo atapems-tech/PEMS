@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS Utility - Inspections</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed-dim": "#ffb86a",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "primary": "#000819",
+                      "error": "#ba1a1a",
+                      "tertiary": "#000815",
+                      "secondary-container": "#fdaa47",
+                      "surface-container": "#e4efff",
+                      "on-tertiary": "#ffffff",
+                      "on-background": "#081d2f",
+                      "surface-container-low": "#eef4ff",
+                      "on-surface-variant": "#44474c",
+                      "surface-tint": "#535f75",
+                      "on-surface": "#081d2f",
+                      "on-tertiary-container": "#498bcd",
+                      "on-secondary-fixed": "#2c1700",
+                      "surface-container-highest": "#d0e4fe",
+                      "tertiary-fixed": "#d1e4ff",
+                      "on-error-container": "#93000a",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "surface": "#f8f9ff",
+                      "on-primary": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "surface-bright": "#f8f9ff",
+                      "surface-dim": "#c8dcf5",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-secondary-container": "#6e4100",
+                      "background": "#f8f9ff",
+                      "primary-container": "#142033",
+                      "on-primary-container": "#7c889f",
+                      "inverse-primary": "#bbc7e0",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "secondary": "#895200",
+                      "surface-container-high": "#daeaff",
+                      "error-container": "#ffdad6",
+                      "outline": "#75777d",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "surface-variant": "#d0e4fe",
+                      "primary-fixed": "#d7e3fd",
+                      "outline-variant": "#c5c6cd",
+                      "inverse-surface": "#1f3245",
+                      "tertiary-container": "#00213d",
+                      "on-primary-fixed": "#101c2f",
+                      "secondary-fixed": "#ffdcbc",
+                      "inverse-on-surface": "#e9f1ff",
+                      "on-error": "#ffffff",
+                      "on-tertiary-fixed": "#001d36"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "md": "16px",
+                      "gutter": "16px",
+                      "sm": "8px",
+                      "unit": "4px",
+                      "topbar-height": "60px",
+                      "lg": "24px",
+                      "sidebar-width": "260px",
+                      "xs": "4px",
+                      "xl": "32px"
+              },
+              "fontFamily": {
+                      "table-cell": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "badge-label": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "body-medium": [
+                              "Inter"
+                      ],
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "kpi-stat": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "table-cell": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-base": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "badge-label": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-medium": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "table-header": [
+                              "11.5px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "kpi-stat": [
+                              "22px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        /* Custom styles for gradients and specific UI elements */
+        .btn-primary-gradient {
+            background: linear-gradient(135deg, #d98c2b, #b8721e);
+            color: #ffffff;
+        }
+        .btn-secondary-outline {
+            border: 1px solid #dde3ea;
+            color: #5c6f85;
+            background-color: transparent;
+        }
+        .kpi-tile-blue {
+            background: linear-gradient(135deg, #e4efff, #d0e4fe);
+        }
+        .kpi-tile-red {
+            background: linear-gradient(135deg, #ffdad6, #ffb4ab);
+        }
+        .kpi-tile-amber {
+            background: linear-gradient(135deg, #fdaa47, #ffb86a);
+        }
+        .table-row-hover:hover {
+            background-color: rgba(31, 78, 120, 0.04);
+        }
+        .input-focus-ring:focus-within {
+            border-color: #d98c2b;
+            box-shadow: 0 0 0 2px rgba(217, 140, 43, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-base h-screen flex overflow-hidden">
+<!-- SideNavBar -->
+<nav class="hidden lg:flex flex-col py-lg gap-sm docked fixed left-0 top-0 h-full w-sidebar-width bg-primary-container dark:bg-primary-container shadow-sm z-20">
+<div class="px-lg mb-lg flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="engineering">engineering</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-primary dark:text-on-primary-fixed">PEMS Utility</h1>
+<p class="font-body-medium text-body-medium text-on-primary-container">Technical Inspection</p>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-xs mt-sm">
+<a class="flex items-center gap-md px-md py-sm text-on-primary-container hover:bg-on-primary-container/10 rounded-lg mx-md hover:bg-on-primary-container/5 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-medium text-body-medium">Overview</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg mx-md scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
+<span class="font-body-medium text-body-medium">Inspections</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary-container hover:bg-on-primary-container/10 rounded-lg mx-md hover:bg-on-primary-container/5 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="engineering">engineering</span>
+<span class="font-body-medium text-body-medium">Assets</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary-container hover:bg-on-primary-container/10 rounded-lg mx-md hover:bg-on-primary-container/5 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-body-medium text-body-medium">Team</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary-container hover:bg-on-primary-container/10 rounded-lg mx-md hover:bg-on-primary-container/5 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-body-medium text-body-medium">Reports</span>
+</a>
+</div>
+<div class="mt-auto flex flex-col gap-xs pt-lg border-t border-on-primary-container/10 px-md">
+<button class="flex items-center gap-md px-md py-sm text-on-primary-container hover:bg-on-primary-container/10 rounded-lg hover:bg-on-primary-container/5 transition-all scale-95 duration-150 text-left">
+<span class="material-symbols-outlined" data-icon="translate">translate</span>
+<span class="font-body-medium text-body-medium">Switch Language (EN/FA)</span>
+</button>
+<button class="flex items-center gap-md px-md py-sm text-on-primary-container hover:bg-on-primary-container/10 rounded-lg hover:bg-on-primary-container/5 transition-all scale-95 duration-150 text-left">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-body-medium text-body-medium">Logout</span>
+</button>
+</div>
+</nav>
+<!-- Main Workspace -->
+<main class="flex-1 lg:ml-sidebar-width flex flex-col h-full relative">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center h-topbar-height px-lg w-full bg-surface dark:bg-surface-container-lowest border-b border-outline-variant dark:border-outline flat no shadows z-10 shrink-0">
+<div class="flex items-center gap-lg">
+<h2 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed md:hidden">PEMS Enterprise Utility</h2>
+<nav class="hidden md:flex gap-lg h-full">
+<a class="flex flex-col justify-center h-full text-on-surface-variant dark:text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors active:opacity-80 transition-all" href="#">
+<span class="font-headline-md text-headline-md">Dashboard</span>
+</a>
+<a class="flex flex-col justify-center h-full text-secondary dark:text-secondary-fixed-dim border-b-2 border-secondary dark:border-secondary-fixed-dim pb-1 active:opacity-80 transition-all" href="#">
+<span class="font-headline-md text-headline-md">Mechanical</span>
+</a>
+<a class="flex flex-col justify-center h-full text-on-surface-variant dark:text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors active:opacity-80 transition-all" href="#">
+<span class="font-headline-md text-headline-md">Electrical</span>
+</a>
+<a class="flex flex-col justify-center h-full text-on-surface-variant dark:text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors active:opacity-80 transition-all" href="#">
+<span class="font-headline-md text-headline-md">Civil</span>
+</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden sm:flex items-center input-focus-ring bg-surface-container-lowest border border-[#dde3ea] rounded-lg px-sm py-unit">
+<span class="material-symbols-outlined text-outline mr-sm text-[18px]" data-icon="search">search</span>
+<input class="bg-transparent border-none outline-none font-body-base text-body-base w-48 text-on-surface placeholder:text-outline p-0" placeholder="Search inspections..." type="text"/>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-highest text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-highest text-on-surface-variant transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-error"></span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-highest text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container overflow-hidden ml-sm cursor-pointer shrink-0">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A professional headshot of a female engineer in a well-lit control room setting. She is wearing a hard hat and safety glasses, looking slightly off-camera with a confident expression. The lighting is crisp, cool, and technical, reflecting a modern industrial environment. Deep blues and slate greys dominate the background, conveying authority and precision. The overall aesthetic is clean, corporate, and high-fidelity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7WBENygq_GsWUsjlghfwK_QoWyqGV4ox4aEV3AT4vBG4I9cv77Li-TzHMqWDYKOPDP6PXCggjaV8vOzLB_ww-aDBxZPi_7ZOOSUwcNUEk3OCB71Bd-8oflgpKBC-i_yc5XfFHpxuouL0CFTVny_DDeawiH-eqGostONYt73s9sR970JqMhEnYASdGGf3o1WqjoYfIDdInnC8g2cDaqNN5Kt446wfR25ueZlEIopFxKPHOGd-0lNpg"/>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="flex-1 overflow-y-auto p-gutter md:p-lg bg-background">
+<!-- Page Header & Actions -->
+<div class="flex flex-col sm:flex-row sm:items-end justify-between mb-lg gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-background mb-xs">Inspection Management</h2>
+<p class="font-body-base text-body-base text-on-surface-variant">Manage and track technical inspections across all utility disciplines.</p>
+</div>
+<button class="btn-primary-gradient px-md py-sm rounded-lg font-body-medium text-body-medium flex items-center justify-center gap-sm shadow-sm transition-transform active:scale-95 shrink-0">
+<span class="material-symbols-outlined text-[18px]" data-icon="add" data-weight="fill">add</span>
+                    Start New Inspection
+                </button>
+</div>
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md mb-lg">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-lg p-md flex items-center gap-md hover:border-secondary transition-colors cursor-pointer group">
+<div class="w-[46px] h-[46px] rounded-[10px] kpi-tile-blue flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary-container" data-icon="assignment">assignment</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-unit">Total Inspections</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface group-hover:text-primary-container transition-colors">1,248</p>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-lg p-md flex items-center gap-md hover:border-secondary transition-colors cursor-pointer group">
+<div class="w-[46px] h-[46px] rounded-[10px] kpi-tile-amber flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-secondary-fixed-variant" data-icon="pending_actions">pending_actions</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-unit">Pending Review</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface group-hover:text-secondary-container transition-colors">34</p>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-lg p-md flex items-center gap-md hover:border-secondary transition-colors cursor-pointer group">
+<div class="w-[46px] h-[46px] rounded-[10px] kpi-tile-red flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-error-container" data-icon="warning">warning</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-unit">Critical Findings</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface group-hover:text-error transition-colors">12</p>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-lg p-md flex items-center gap-md hover:border-secondary transition-colors cursor-pointer group">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-surface-container-high flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface" data-icon="check_circle">check_circle</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-unit">Completed (30d)</p>
+<p class="font-kpi-stat text-kpi-stat text-on-surface group-hover:text-primary transition-colors">185</p>
+</div>
+</div>
+</div>
+<!-- Filters & Table Section -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-lg flex flex-col h-[calc(100%-140px)]">
+<!-- Filter Bar -->
+<div class="p-sm border-b border-[#edf0f4] flex flex-wrap gap-sm items-center bg-[#f9fafb] rounded-t-lg">
+<div class="relative flex items-center input-focus-ring bg-surface-container-lowest border border-[#dde3ea] rounded-lg px-sm py-[6px] shrink-0">
+<span class="material-symbols-outlined text-outline mr-sm text-[16px]" data-icon="filter_list">filter_list</span>
+<select class="bg-transparent border-none outline-none font-body-base text-body-base text-on-surface p-0 pr-lg appearance-none cursor-pointer">
+<option value="">All Disciplines</option>
+<option value="mech">Mechanical</option>
+<option value="elec">Electrical</option>
+<option value="civil">Civil</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm text-outline pointer-events-none text-[18px]" data-icon="expand_more">expand_more</span>
+</div>
+<div class="relative flex items-center input-focus-ring bg-surface-container-lowest border border-[#dde3ea] rounded-lg px-sm py-[6px] shrink-0">
+<select class="bg-transparent border-none outline-none font-body-base text-body-base text-on-surface p-0 pr-lg appearance-none cursor-pointer">
+<option value="">All Statuses</option>
+<option value="pending">Pending</option>
+<option value="progress">In Progress</option>
+<option value="completed">Completed</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm text-outline pointer-events-none text-[18px]" data-icon="expand_more">expand_more</span>
+</div>
+<div class="relative flex items-center input-focus-ring bg-surface-container-lowest border border-[#dde3ea] rounded-lg px-sm py-[6px] shrink-0">
+<span class="material-symbols-outlined text-outline mr-sm text-[16px]" data-icon="person">person</span>
+<input class="bg-transparent border-none outline-none font-body-base text-body-base w-32 text-on-surface placeholder:text-outline p-0" placeholder="Inspector Name..." type="text"/>
+</div>
+<div class="ml-auto flex gap-sm">
+<button class="btn-secondary-outline px-sm py-[6px] rounded-lg font-body-medium text-body-medium flex items-center justify-center gap-xs hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="refresh">refresh</span>
+                            Clear
+                        </button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="overflow-auto flex-1">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-[#f5f7fa] z-10 border-b border-[#edf0f4]">
+<tr>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider whitespace-nowrap">ID / Tag</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider whitespace-nowrap">Discipline</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider whitespace-nowrap min-w-[200px]">Description</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider whitespace-nowrap">Inspector</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider whitespace-nowrap">Date</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider whitespace-nowrap">Status</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider whitespace-nowrap text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#edf0f4]">
+<!-- Row 1 -->
+<tr class="table-row-hover transition-colors group">
+<td class="py-sm px-md whitespace-nowrap">
+<span class="font-mono text-[13px] text-on-surface font-semibold">INSP-M-204</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="font-table-cell text-table-cell text-on-surface">Mechanical</span>
+</div>
+</td>
+<td class="py-sm px-md">
+<span class="font-table-cell text-table-cell text-on-surface truncate block max-w-[250px]">Turbine Generator Bearing Check</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<span class="font-table-cell text-table-cell text-on-surface-variant">A. Rezaei</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<span class="font-table-cell text-table-cell text-on-surface-variant">Oct 24, 2023</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-[#fdaa47]/20 text-[#895200] font-badge-label text-badge-label">
+                                        Pending
+                                    </span>
+</td>
+<td class="py-sm px-md whitespace-nowrap text-right">
+<button class="w-8 h-8 rounded-lg border border-transparent group-hover:border-[#dde3ea] flex items-center justify-center text-outline hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="table-row-hover transition-colors group">
+<td class="py-sm px-md whitespace-nowrap">
+<span class="font-mono text-[13px] text-on-surface font-semibold">INSP-E-112</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-[#498bcd]"></span>
+<span class="font-table-cell text-table-cell text-on-surface">Electrical</span>
+</div>
+</td>
+<td class="py-sm px-md">
+<span class="font-table-cell text-table-cell text-on-surface truncate block max-w-[250px]">Substation Switchgear Calibration</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<span class="font-table-cell text-table-cell text-on-surface-variant">M. Kazemi</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<span class="font-table-cell text-table-cell text-on-surface-variant">Oct 23, 2023</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-[#eef4ff] text-[#00497c] font-badge-label text-badge-label">
+                                        In Progress
+                                    </span>
+</td>
+<td class="py-sm px-md whitespace-nowrap text-right">
+<button class="w-8 h-8 rounded-lg border border-transparent group-hover:border-[#dde3ea] flex items-center justify-center text-outline hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="table-row-hover transition-colors group">
+<td class="py-sm px-md whitespace-nowrap">
+<span class="font-mono text-[13px] text-on-surface font-semibold">INSP-C-088</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-[#75777d]"></span>
+<span class="font-table-cell text-table-cell text-on-surface">Civil</span>
+</div>
+</td>
+<td class="py-sm px-md">
+<span class="font-table-cell text-table-cell text-on-surface truncate block max-w-[250px]">Foundation Structural Integrity</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<span class="font-table-cell text-table-cell text-on-surface-variant">S. Ahmadi</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<span class="font-table-cell text-table-cell text-on-surface-variant">Oct 20, 2023</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-[#e4efff] text-[#142033] font-badge-label text-badge-label">
+                                        Completed
+                                    </span>
+</td>
+<td class="py-sm px-md whitespace-nowrap text-right">
+<button class="w-8 h-8 rounded-lg border border-transparent group-hover:border-[#dde3ea] flex items-center justify-center text-outline hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="table-row-hover transition-colors group">
+<td class="py-sm px-md whitespace-nowrap">
+<span class="font-mono text-[13px] text-on-surface font-semibold">INSP-M-205</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="font-table-cell text-table-cell text-on-surface">Mechanical</span>
+</div>
+</td>
+<td class="py-sm px-md">
+<span class="font-table-cell text-table-cell text-on-surface truncate block max-w-[250px]">High Pressure Valve Seal Test</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<span class="font-table-cell text-table-cell text-on-surface-variant">A. Rezaei</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<span class="font-table-cell text-table-cell text-on-surface-variant">Oct 25, 2023</span>
+</td>
+<td class="py-sm px-md whitespace-nowrap">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-[#ffdad6] text-[#93000a] font-badge-label text-badge-label">
+                                        Critical
+                                    </span>
+</td>
+<td class="py-sm px-md whitespace-nowrap text-right">
+<button class="w-8 h-8 rounded-lg border border-transparent group-hover:border-[#dde3ea] flex items-center justify-center text-outline hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</body></html>

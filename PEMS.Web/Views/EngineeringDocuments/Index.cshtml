@@ -1,0 +1,185 @@
+@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.EngineeringDocumentDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = "Engineering Documents";
+
+    var filter = (PEMS.Application.DTOs.EngineeringDocumentListFilter)ViewBag.Filter;
+    var summary = (PEMS.Application.DTOs.EngineeringDocumentSummaryCountsDto)ViewBag.Summary;
+    var disciplines = (List<PEMS.Domain.Entities.Discipline>)ViewBag.Disciplines;
+
+    // طبق Phase E-03: مجموعه‌ی بسته‌ی وضعیت‌های واقعی که DocumentWorkflowService/
+    // RecordClientResponseAsync تنظیم می‌کنند - همان الگوی Views/Permit/Index.cshtml (فهرست
+    // ثابت به‌جای Query جدا برای SELECT DISTINCT Status).
+    var statusOptions = new[] { "Draft", "Submitted", "IDC Review", "Checked", "Approved", "Issued", "Rejected", "Client Approved" };
+}
+
+@* جستجوی سریع هوشمند - طبق مثال اصلی: Vendor Name، Document Number، عنوان، Description *@
+<div class="content-card mb-3">
+    <label class="form-label small fw-bold"><i class="bi bi-search"></i> جستجوی سریع مدرک مهندسی</label>
+    <input type="text" class="form-control" id="engDocQuickSearch" placeholder="شماره مدرک، عنوان یا توضیح..."
+           data-pems-search data-search-type="EngineeringDocument" autocomplete="off" />
+</div>
+<script>
+    document.getElementById('engDocQuickSearch').addEventListener('pems:search-select', function (e) {
+        if (e.detail && e.detail.url) window.location.href = e.detail.url;
+    });
+</script>
+
+@* طبق بازبینی معماری: MDR/VDR/Transmittal از نظر داده‌ای زیرمجموعه‌ی همین هسته‌ی مشترک Document
+   هستند؛ این نوار دسترسی سریع همان حس یک ماژول واحد را از نظر ناوبری هم می‌دهد. *@
+<div class="d-flex flex-wrap gap-2 mb-3">
+    <a asp-controller="EngineeringDocuments" asp-action="Index" class="btn btn-sm btn-pems-solid"><i class="bi bi-file-earmark-text"></i> Documents</a>
+    <a asp-controller="DocumentRegister" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-journal-bookmark"></i> Register</a>
+    <a asp-controller="MDRImport" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-arrow-up"></i> Import (MDR)</a>
+    <a asp-controller="VDR" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-journal-check"></i> Vendor Documents (VDR)</a>
+    <a asp-controller="Transmittal" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-send"></i> Transmittals</a>
+</div>
+
+@* طبق Phase E-03: این شمارش‌ها حالا از دیتابیس می‌آیند (GetSummaryCountsAsync) - با همان
+   محدودیت دیسیپلین فهرست، اما مستقل از فیلترهای زیر (دقیقاً مثل رفتار قبلی). *@
+<div class="row g-3 mb-3">
+    <div class="col-6 col-md-2">
+        <div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-file-earmark-text"></i></div><div><div class="kpi-value">@summary.Total</div><div class="kpi-label">@Localizer["Total"]</div></div></div>
+    </div>
+    <div class="col-6 col-md-2">
+        <div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div><div><div class="kpi-value">@summary.Approved</div><div class="kpi-label">@Localizer["Approved"]</div></div></div>
+    </div>
+    <div class="col-6 col-md-2">
+        <div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-hourglass-split"></i></div><div><div class="kpi-value">@summary.Pending</div><div class="kpi-label">@Localizer["PendingReview"]</div></div></div>
+    </div>
+    <div class="col-6 col-md-2">
+        <div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-x-circle"></i></div><div><div class="kpi-value">@summary.Rejected</div><div class="kpi-label">@Localizer["Rejected"]</div></div></div>
+    </div>
+    <div class="col-6 col-md-2">
+        <div class="kpi-card"><div class="kpi-icon bg-icon-blue"><i class="bi bi-snow"></i></div><div><div class="kpi-value">@summary.Frozen</div><div class="kpi-label">@Localizer["Frozen"]</div></div></div>
+    </div>
+    <div class="col-6 col-md-2">
+        <div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-exclamation-triangle"></i></div><div><div class="kpi-value">@summary.Overdue</div><div class="kpi-label">@Localizer["Delayed"]</div></div></div>
+    </div>
+</div>
+
+@* طبق Phase E-03: فیلترها حالا سمت سرور (SQL) اعمال می‌شوند - فرم GET با QueryString، همان
+   الگوی ساده‌ی موجود در Views/Permit/Index.cshtml، نه یک الگوی AJAX جدید. *@
+<div class="content-card mb-3">
+    <form method="get" asp-action="Index" class="row g-2 align-items-end">
+        <div class="col-md-4">
+            <label class="form-label small">@Localizer["QuickSearch"]</label>
+            <input name="Search" value="@filter.Search" type="search" class="form-control form-control-sm" placeholder="Document No, Title..." />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small">@Localizer["Discipline"]</label>
+            <select name="DisciplineId" class="form-select form-select-sm">
+                <option value="">All</option>
+                @foreach (var d in disciplines)
+                { <option value="@d.DisciplineId" selected="@(filter.DisciplineId == d.DisciplineId)">@d.Name</option> }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small">@Localizer["Status"]</label>
+            <select name="Status" class="form-select form-select-sm">
+                <option value="">All</option>
+                @foreach (var s in statusOptions)
+                { <option value="@s" selected="@(filter.Status == s)">@s</option> }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small">@Localizer["Area"]</label>
+            <input name="Area" value="@filter.Area" type="text" class="form-control form-control-sm" placeholder="Area..." />
+        </div>
+        <div class="col-md-2 d-flex gap-2">
+            <button type="submit" class="btn btn-sm btn-pems-solid flex-fill"><i class="bi bi-funnel"></i> @Localizer["Filter"]</button>
+            <a asp-action="Index" class="btn btn-sm btn-outline-danger flex-fill"><i class="bi bi-x-lg"></i> @Localizer["Reset"]</a>
+        </div>
+        <div class="col-12 text-end">
+            <a asp-action="Create" class="btn btn-sm btn-pems-solid"><i class="bi bi-plus-lg"></i> @Localizer["New"]</a>
+        </div>
+    </form>
+</div>
+
+<div class="content-card">
+    <div class="d-flex justify-content-end mb-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('EngineeringDocuments')">
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["ResetColumns"]
+        </button>
+    </div>
+    <div class="pems-grid-scroll table-scroll-area">
+        <table class="table table-enterprise pems-grid-table" data-grid-key="EngineeringDocuments">
+            <thead>
+                <tr>
+                    <th data-col-key="docNo" data-resizable="true" data-min-width="120" data-max-width="260" style="width:160px">@Localizer["Document"] No</th>
+                    <th data-col-key="title" data-resizable="true" data-min-width="180" data-max-width="500" style="width:300px">@Localizer["Title"]</th>
+                    <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px">@Localizer["Type"]</th>
+                    <th data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["Discipline"]</th>
+                    <th data-col-key="area" data-resizable="true" data-min-width="80" data-max-width="200" style="width:110px">@Localizer["Area"]</th>
+                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="240" style="width:160px">@Localizer["Project"]</th>
+                    <th data-col-key="rev" data-resizable="true" data-min-width="60" data-max-width="120" style="width:80px">Rev</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="180" style="width:130px">@Localizer["Status"]</th>
+                    <th data-col-key="delay" data-resizable="true" data-min-width="80" data-max-width="140" style="width:90px">Delay</th>
+                    <th data-col-key="created" data-resizable="true" data-min-width="90" data-max-width="160" style="width:120px">@Localizer["Created"]</th>
+                    <th data-col-key="actions" data-resizable="false" class="text-end" style="width:130px">@Localizer["Actions"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td title="@item.DocumentNo"><a asp-action="Details" asp-route-id="@item.DocumentId" class="fw-semibold text-decoration-none">@item.DocumentNo</a></td>
+                        <td title="@item.Title">@item.Title</td>
+                        <td><span class="badge bg-secondary">@item.DocumentType</span></td>
+                        <td title="@item.DisciplineName">@item.DisciplineName</td>
+                        <td title="@item.Area">@item.Area</td>
+                        <td title="@item.ProjectName">@item.ProjectName</td>
+                        <td>@item.RevisionNo</td>
+                        <td>
+                            <span class="badge badge-status-@item.Status">@item.Status</span>
+                            @if (item.IsFrozen) { <i class="bi bi-snow text-info ms-1" title="Frozen"></i> }
+                        </td>
+                        <td>
+                            @if (item.DelayDays.HasValue && item.DelayDays > 0)
+                            { <span class="badge bg-danger">@item.DelayDays d</span> }
+                            else
+                            { <span class="text-muted">&mdash;</span> }
+                        </td>
+                        <td class="text-muted small">@item.CreatedDate.ToString("yyyy-MM-dd")</td>
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@item.DocumentId" class="btn btn-sm btn-outline-secondary" title="View"><i class="bi bi-eye"></i></a>
+                            <a asp-action="Edit" asp-route-id="@item.DocumentId" class="btn btn-sm btn-outline-secondary" title="Edit"><i class="bi bi-pencil"></i></a>
+                            <form asp-action="Delete" asp-route-id="@item.DocumentId" method="post" class="d-inline" onsubmit="return confirm('Delete this document?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No engineering documents match the current filters.</p> }
+
+    @{
+        var edQsParts = new List<string>();
+        if (!string.IsNullOrEmpty(filter.Search)) edQsParts.Add($"Search={Uri.EscapeDataString(filter.Search)}");
+        if (filter.DisciplineId.HasValue) edQsParts.Add($"DisciplineId={filter.DisciplineId}");
+        if (!string.IsNullOrEmpty(filter.Status)) edQsParts.Add($"Status={Uri.EscapeDataString(filter.Status)}");
+        if (!string.IsNullOrEmpty(filter.Area)) edQsParts.Add($"Area={Uri.EscapeDataString(filter.Area)}");
+    }
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "EngineeringDocuments",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = string.Join("&", edQsParts)
+    })
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('EngineeringDocuments');
+        });
+    </script>
+}

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Field Inspection Checklist</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-container": "#6e4100",
+                      "on-primary": "#ffffff",
+                      "surface-container-highest": "#d0e4fe",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "primary-container": "#142033",
+                      "on-primary-fixed": "#101c2f",
+                      "on-surface": "#081d2f",
+                      "inverse-primary": "#bbc7e0",
+                      "on-secondary-fixed": "#2c1700",
+                      "surface-container": "#e4efff",
+                      "primary": "#000819",
+                      "secondary": "#895200",
+                      "error-container": "#ffdad6",
+                      "on-secondary": "#ffffff",
+                      "secondary-fixed": "#ffdcbc",
+                      "on-tertiary-container": "#498bcd",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-tertiary": "#ffffff",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "tertiary-fixed": "#d1e4ff",
+                      "surface-variant": "#d0e4fe",
+                      "inverse-on-surface": "#e9f1ff",
+                      "surface-dim": "#c8dcf5",
+                      "outline-variant": "#c5c6cd",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "surface-tint": "#535f75",
+                      "on-surface-variant": "#44474c",
+                      "background": "#f8f9ff",
+                      "error": "#ba1a1a",
+                      "outline": "#75777d",
+                      "inverse-surface": "#1f3245",
+                      "on-error-container": "#93000a",
+                      "on-primary-container": "#7c889f",
+                      "secondary-container": "#fdaa47",
+                      "surface": "#f8f9ff",
+                      "surface-bright": "#f8f9ff",
+                      "surface-container-low": "#eef4ff",
+                      "tertiary": "#000815",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "tertiary-container": "#00213d",
+                      "surface-container-high": "#daeaff",
+                      "primary-fixed": "#d7e3fd",
+                      "on-tertiary-fixed": "#001d36",
+                      "surface-container-lowest": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "on-background": "#081d2f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "sidebar-width": "260px",
+                      "sm": "8px",
+                      "topbar-height": "60px",
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "xs": "4px",
+                      "xl": "32px",
+                      "lg": "24px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "kpi-stat": [
+                              "Inter"
+                      ],
+                      "table-cell": [
+                              "Inter"
+                      ],
+                      "body-medium": [
+                              "Inter"
+                      ],
+                      "badge-label": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "table-header": [
+                              "11.5px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-base": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "kpi-stat": [
+                              "22px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-cell": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-medium": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "badge-label": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+      </style>
+</head>
+<body class="bg-surface text-on-surface font-body-base antialiased pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-primary-container w-full top-0 sticky border-b border-outline-variant dark:border-primary flex items-center justify-between px-md h-topbar-height z-50">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary cursor-pointer" data-icon="arrow_back">arrow_back</span>
+<h1 class="font-headline-md text-headline-md text-primary font-bold">FieldOps Utility</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ASSET ID</span>
+<span class="font-body-medium text-body-medium text-primary">PMP-102</span>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="wifi">wifi</span>
+</div>
+</header>
+<!-- Progress Bar -->
+<div class="bg-surface-container w-full h-2">
+<div class="bg-secondary-container h-full w-[40%] transition-all duration-300"></div>
+</div>
+<div class="px-md py-sm flex justify-between items-center text-on-surface-variant font-label-caps text-label-caps bg-surface border-b border-outline-variant">
+<span>PROGRESS (EN/FA)</span>
+<span>40% (2/5)</span>
+</div>
+<!-- Main Content -->
+<main class="p-md max-w-3xl mx-auto space-y-md">
+<!-- Item 1: Passed -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-body-medium text-body-medium text-primary mb-xs">01. Visual Inspection - Casing</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">Check for visible cracks, leaks, or severe corrosion.</p>
+</div>
+<button class="bg-surface-container hover:bg-surface-container-high text-primary p-2 rounded-full transition-colors shrink-0">
+<span class="material-symbols-outlined" data-icon="add_a_photo">add_a_photo</span>
+</button>
+</div>
+<div class="flex gap-sm mt-md">
+<button class="flex-1 py-sm rounded-lg border border-outline-variant font-body-medium text-body-medium bg-[#e8f5e9] text-[#2e7d32] border-[#2e7d32] flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                    Pass / عبور
+                </button>
+<button class="flex-1 py-sm rounded-lg border border-outline-variant font-body-medium text-body-medium text-on-surface-variant bg-surface-container-lowest hover:bg-surface-container flex items-center justify-center gap-xs transition-colors">
+<span class="material-symbols-outlined" data-icon="cancel">cancel</span>
+                    Fail / مردود
+                </button>
+</div>
+</div>
+<!-- Item 2: Failed with Notes & Photo -->
+<div class="bg-surface-container-lowest border border-[#ba1a1a] rounded-xl p-md shadow-sm">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-body-medium text-body-medium text-primary mb-xs">02. Seal Integrity</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">Verify primary mechanical seal for fluid weeping.</p>
+</div>
+<div class="relative">
+<img class="w-12 h-12 rounded-lg object-cover border border-outline-variant" data-alt="Close up shot of an industrial mechanical seal on a pump showing signs of minor fluid leakage and weeping. The lighting is harsh industrial work lights, casting sharp shadows. The setting is a factory floor. The mood is technical and objective. High detail, sharp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuJQp2NO48p-4KLstFXnfM7SCRJnD9zk0jXLg5vdfP0aZtOXBUoYpCD2fyuQN9SPJcxoEzdiN9bpe1mNisXDJ8ht081CsRuAQqeSmmCvuWJ9VEmAP8JQsrLitnE1jFxA8Uzs28A-PTXWV94f1nBMzGeaL_hp_eV74s8MI9klDlc0D_Cv5YDa4GWG6ngq2kBqJy92u6o0cgsmdPZkSrJHywZ2Qu39RWD3_7jVnudodNQA0lNAc31ytI"/>
+<button class="absolute -top-2 -right-2 bg-error text-on-error rounded-full p-1 shadow-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="close">close</span>
+</button>
+</div>
+</div>
+<div class="flex gap-sm mt-md mb-sm">
+<button class="flex-1 py-sm rounded-lg border border-outline-variant font-body-medium text-body-medium text-on-surface-variant bg-surface-container-lowest hover:bg-surface-container flex items-center justify-center gap-xs transition-colors">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                    Pass / عبور
+                </button>
+<button class="flex-1 py-sm rounded-lg border border-[#ba1a1a] font-body-medium text-body-medium bg-[#ffdad6] text-[#ba1a1a] flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined" data-icon="cancel">cancel</span>
+                    Fail / مردود
+                </button>
+</div>
+<div class="mt-sm">
+<label class="block font-label-caps text-label-caps text-[#ba1a1a] mb-xs">MANDATORY NOTES / یادداشت ها</label>
+<textarea class="w-full bg-surface border border-[#ba1a1a] rounded-lg p-sm font-body-base text-body-base text-on-surface focus:outline-none focus:ring-2 focus:ring-[#ba1a1a] focus:border-transparent" placeholder="Describe the failure..." rows="3">Minor weeping observed at primary seal interface.</textarea>
+</div>
+</div>
+<!-- Item 3: Pending -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-body-medium text-body-medium text-primary mb-xs">03. Vibration Analysis (Spot)</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">Perform handheld vibration check at bearing housings.</p>
+</div>
+<button class="bg-surface-container hover:bg-surface-container-high text-primary p-2 rounded-full transition-colors shrink-0">
+<span class="material-symbols-outlined" data-icon="add_a_photo">add_a_photo</span>
+</button>
+</div>
+<div class="flex gap-sm mt-md">
+<button class="flex-1 py-sm rounded-lg border border-outline-variant font-body-medium text-body-medium text-on-surface-variant bg-surface-container-lowest hover:bg-surface-container flex items-center justify-center gap-xs transition-colors">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                    Pass / عبور
+                </button>
+<button class="flex-1 py-sm rounded-lg border border-outline-variant font-body-medium text-body-medium text-on-surface-variant bg-surface-container-lowest hover:bg-surface-container flex items-center justify-center gap-xs transition-colors">
+<span class="material-symbols-outlined" data-icon="cancel">cancel</span>
+                    Fail / مردود
+                </button>
+</div>
+</div>
+<!-- Submit Button -->
+<div class="pt-md pb-xl">
+<button class="w-full bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white font-body-medium text-body-medium py-md rounded-lg shadow-md opacity-50 cursor-not-allowed flex justify-center items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="upload">upload</span>
+                SUBMIT REPORT / ارسال گزارش
+             </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center py-sm bg-surface-container-high dark:bg-primary-container border-t border-outline-variant shadow-lg z-50">
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full px-4 py-1 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined font-headline-lg text-headline-lg text-primary" data-icon="assignment">assignment</span>
+<span class="font-label-caps text-label-caps text-secondary dark:text-secondary-fixed mt-xs">Tasks</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-primary-fixed-dim px-4 py-1 hover:bg-surface-container-highest active:scale-95 transition-transform duration-150 rounded-full" href="#">
+<span class="material-symbols-outlined font-headline-lg text-headline-lg" data-icon="qr_code_scanner">qr_code_scanner</span>
+<span class="font-label-caps text-label-caps mt-xs">Scan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-primary-fixed-dim px-4 py-1 hover:bg-surface-container-highest active:scale-95 transition-transform duration-150 rounded-full" href="#">
+<span class="material-symbols-outlined font-headline-lg text-headline-lg" data-icon="report_problem">report_problem</span>
+<span class="font-label-caps text-label-caps mt-xs">Incidents</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-primary-fixed-dim px-4 py-1 hover:bg-surface-container-highest active:scale-95 transition-transform duration-150 rounded-full" href="#">
+<span class="material-symbols-outlined font-headline-lg text-headline-lg" data-icon="description">description</span>
+<span class="font-label-caps text-label-caps mt-xs">Docs</span>
+</a>
+</nav>
+</body></html>

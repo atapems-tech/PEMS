@@ -1,0 +1,35 @@
+﻿@model List<PEMS.Web.Areas.Admin.Models.RoleListItemViewModel>
+
+<div class="admin-page-shell">
+    <div class="admin-hero">
+        <div class="d-flex align-items-center gap-3">
+            <div class="admin-hero-icon"><i class="bi bi-shield-lock-fill"></i></div>
+            <div><h2>Roles & Access</h2><p>Define role boundaries and review how many users are assigned to each role.</p></div>
+        </div>
+        <a asp-action="Create" class="btn btn-pems-solid"><i class="bi bi-plus-lg me-1"></i> New Role</a>
+    </div>
+    <div class="content-card">
+        <div class="admin-toolbar"><div class="admin-toolbar-main"><span class="text-body-secondary small"><strong>@Model.Count</strong> roles configured</span></div></div>
+        <div class="table-responsive">
+            <table class="table table-enterprise">
+                <thead><tr><th>Role</th><th>Description</th><th>Users</th><th>Type</th><th class="text-end">Actions</th></tr></thead>
+                <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td><div class="row-primary">@r.DisplayName</div><div class="row-secondary">@r.Name</div></td>
+                        <td>@r.Description</td>
+                        <td><span class="admin-role-badge"><i class="bi bi-people me-1"></i>@r.UserCount</span></td>
+                        <td>@if(r.IsSystemRole){<span class="admin-status active"><i class="bi bi-shield-check"></i> System</span>}else{<span class="admin-status inactive">Custom</span>}</td>
+                        <td><div class="admin-actions">
+                            @if (!r.IsSystemRole){<form asp-action="Delete" asp-route-id="@r.Id" method="post" class="d-inline" onsubmit="return confirm('Delete this role?')"><button class="btn btn-sm btn-outline-danger" title="Delete"><i class="bi bi-trash"></i></button></form>}
+                        </div></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            @if (Model.Count == 0){<div class="admin-empty"><i class="bi bi-shield"></i><strong>No roles configured</strong></div>}
+        </div>
+        <div class="admin-footer"><span>Administration / Roles</span><span>System roles are protected</span></div>
+    </div>
+</div>

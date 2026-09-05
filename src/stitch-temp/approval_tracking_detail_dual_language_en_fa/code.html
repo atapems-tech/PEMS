@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Approval Tracking - PEMS Enterprise Utility</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary": "#895200",
+                      "on-surface-variant": "#44474c",
+                      "surface-dim": "#c8dcf5",
+                      "surface-container-highest": "#d0e4fe",
+                      "on-secondary": "#ffffff",
+                      "tertiary-container": "#00213d",
+                      "surface-container-high": "#daeaff",
+                      "on-error-container": "#93000a",
+                      "on-surface": "#081d2f",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-container": "#142033",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "outline-variant": "#c5c6cd",
+                      "background": "#f8f9ff",
+                      "surface-bright": "#f8f9ff",
+                      "primary": "#000819",
+                      "on-primary-fixed": "#101c2f",
+                      "surface-tint": "#535f75",
+                      "surface-container-low": "#eef4ff",
+                      "on-secondary-fixed": "#2c1700",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "surface-variant": "#d0e4fe",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "primary-fixed": "#d7e3fd",
+                      "outline": "#75777d",
+                      "secondary-container": "#fdaa47",
+                      "secondary-fixed": "#ffdcbc",
+                      "on-primary": "#ffffff",
+                      "on-secondary-container": "#6e4100",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "inverse-surface": "#1f3245",
+                      "inverse-primary": "#bbc7e0",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "on-tertiary-container": "#498bcd",
+                      "on-tertiary-fixed": "#001d36",
+                      "on-background": "#081d2f",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "inverse-on-surface": "#e9f1ff",
+                      "surface-container": "#e4efff",
+                      "tertiary-fixed": "#d1e4ff",
+                      "on-error": "#ffffff",
+                      "surface": "#f8f9ff",
+                      "on-primary-container": "#7c889f",
+                      "tertiary": "#000815",
+                      "error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "topbar-height": "60px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "unit": "4px",
+                      "gutter": "16px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "xl": "32px",
+                      "sidebar-width": "260px"
+              },
+              "fontFamily": {
+                      "kpi-stat": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "table-cell": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "body-medium": [
+                              "Inter"
+                      ],
+                      "badge-label": [
+                              "Inter"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "kpi-stat": [
+                              "22px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-header": [
+                              "11.5px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-cell": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-medium": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "badge-label": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-base": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+          .timeline-line::before {
+              content: '';
+              position: absolute;
+              left: 15px; /* Adjust based on icon size */
+              top: 32px;
+              bottom: -32px;
+              width: 2px;
+              background-color: #dde3ea;
+              z-index: 0;
+          }
+          .timeline-item:last-child .timeline-line::before {
+              display: none;
+          }
+          .gradient-primary {
+              background: linear-gradient(135deg, #d98c2b, #b8721e);
+          }
+      </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex font-body-base">
+<!-- SideNavBar (Suppressed due to "Detail View" nature / Focus on content canvas, but keeping structural layout if needed. Using standard layout structure for consistency, but hiding nav per rules for detailed/transactional views if strict, but this is a tracking view. Let's keep it as a typical dashboard sub-view, so nav is present). Wait, the prompt says "Top-level destination... exclude if Task-Focused... sub-page featuring a Close or Back action". An Approval Tracking detail view implies a Back action to the list. I will SUPPRESS the SideNavBar and TopNavBar and use a focused header. -->
+<div class="flex-1 flex flex-col max-w-7xl mx-auto w-full p-4 md:p-8">
+<!-- Header Section -->
+<header class="mb-lg flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 group">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span class="font-body-medium text-body-medium group-hover:underline">Back to Transmittals</span>
+</button>
+<span class="text-outline mx-2">|</span>
+<span class="font-badge-label text-badge-label text-on-surface-variant uppercase tracking-wider bg-surface-container-high px-2 py-1 rounded-DEFAULT">Approval Tracking</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg md:text-[28px] md:leading-[36px] font-bold text-primary mb-1">TRANS-2023-089: Pump Station B Specifications</h1>
+<p class="font-body-base text-body-base text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">translate</span>
+                    EN / FA (English / فارسی)
+                </p>
+</div>
+<div class="flex flex-wrap gap-sm">
+<button class="px-md py-sm rounded-lg border border-outline-variant text-[#5c6f85] font-body-medium text-body-medium hover:bg-surface-container transition-colors flex items-center gap-2 shadow-sm bg-surface">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+                    View Document
+                </button>
+<button class="px-md py-sm rounded-lg border border-outline-variant text-[#5c6f85] font-body-medium text-body-medium hover:bg-surface-container transition-colors flex items-center gap-2 shadow-sm bg-surface">
+<span class="material-symbols-outlined text-[18px]">print</span>
+                    Print Audit Trail
+                </button>
+<button class="gradient-primary text-white px-md py-sm rounded-lg font-body-medium text-body-medium hover:opacity-90 transition-opacity flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">notifications_active</span>
+                    Remind Current Approver
+                </button>
+</div>
+</header>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Left Column: Details & Metadata (1 col) -->
+<div class="lg:col-span-1 flex flex-col gap-6">
+<!-- Metadata Card -->
+<div class="bg-surface rounded-xl border border-outline-variant p-6 shadow-sm">
+<h2 class="font-headline-md text-headline-md text-primary mb-4 pb-2 border-b border-surface-container-high flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">info</span>
+                        Document Details
+                    </h2>
+<dl class="grid grid-cols-1 gap-y-4">
+<div>
+<dt class="font-label-caps text-label-caps text-on-surface-variant mb-1">Document ID</dt>
+<dd class="font-body-medium text-body-medium text-primary font-mono bg-surface-container-low px-2 py-1 rounded inline-block">TRANS-2023-089</dd>
+</div>
+<div>
+<dt class="font-label-caps text-label-caps text-on-surface-variant mb-1">Project Phase</dt>
+<dd class="font-body-medium text-body-medium text-primary">Detailed Engineering</dd>
+</div>
+<div>
+<dt class="font-label-caps text-label-caps text-on-surface-variant mb-1">Discipline</dt>
+<dd class="font-body-medium text-body-medium text-primary flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#10b981]"></span>
+                                Mechanical
+                            </dd>
+</div>
+<div>
+<dt class="font-label-caps text-label-caps text-on-surface-variant mb-1">Tags</dt>
+<dd class="flex flex-wrap gap-2 mt-1">
+<span class="bg-surface-container-high text-on-surface-variant font-badge-label text-badge-label px-2 py-1 rounded-full">PUMP-STATION</span>
+<span class="bg-surface-container-high text-on-surface-variant font-badge-label text-badge-label px-2 py-1 rounded-full">SPEC</span>
+<span class="bg-surface-container-high text-on-surface-variant font-badge-label text-badge-label px-2 py-1 rounded-full">ISO-9001</span>
+</dd>
+</div>
+</dl>
+</div>
+<!-- Attachments Card -->
+<div class="bg-surface rounded-xl border border-outline-variant p-6 shadow-sm">
+<h2 class="font-headline-md text-headline-md text-primary mb-4 pb-2 border-b border-surface-container-high flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">attachment</span>
+                        Attachments
+                    </h2>
+<ul class="flex flex-col gap-3">
+<li class="flex items-center justify-between p-3 rounded-lg border border-outline-variant hover:border-secondary transition-colors group cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">picture_as_pdf</span>
+<div>
+<p class="font-body-medium text-body-medium text-primary line-clamp-1">Pump_Station_B_Specs_v2.pdf</p>
+<p class="font-body-base text-[12px] text-on-surface-variant">4.2 MB • Oct 24, 2023</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">download</span>
+</li>
+<li class="flex items-center justify-between p-3 rounded-lg border border-outline-variant hover:border-secondary transition-colors group cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">description</span>
+<div>
+<p class="font-body-medium text-body-medium text-primary line-clamp-1">Review_Comments_Log.xlsx</p>
+<p class="font-body-base text-[12px] text-on-surface-variant">156 KB • Oct 24, 2023</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">download</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Right Column: Approval Timeline (2 cols) -->
+<div class="lg:col-span-2 bg-surface rounded-xl border border-outline-variant p-6 md:p-8 shadow-sm h-full">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">history</span>
+                        Approval Workflow History
+                    </h2>
+<span class="bg-[#fef3c7] text-[#92400e] px-3 py-1 rounded-full font-badge-label text-badge-label border border-[#fde68a]">
+                        Status: In Progress
+                    </span>
+</div>
+<div class="relative pl-2">
+<!-- Stage 1 -->
+<div class="timeline-item timeline-line relative pb-10">
+<div class="flex items-start gap-4">
+<div class="relative z-10 w-8 h-8 rounded-full bg-[#dcfce7] border-2 border-[#22c55e] flex items-center justify-center shrink-0 mt-1">
+<span class="material-symbols-outlined text-[16px] text-[#16a34a] font-bold">check</span>
+</div>
+<div class="flex-1 bg-surface-container-low border border-surface-container-high p-4 rounded-lg">
+<div class="flex justify-between items-start mb-1">
+<div>
+<h3 class="font-body-medium text-body-medium text-primary">Stage 1: Submission</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">Submitted by A. Rezaei</p>
+</div>
+<span class="font-body-base text-[12px] text-on-surface-variant bg-surface px-2 py-1 rounded">Oct 24, 09:00</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Stage 2 -->
+<div class="timeline-item timeline-line relative pb-10">
+<div class="flex items-start gap-4">
+<div class="relative z-10 w-8 h-8 rounded-full bg-[#dcfce7] border-2 border-[#22c55e] flex items-center justify-center shrink-0 mt-1">
+<span class="material-symbols-outlined text-[16px] text-[#16a34a] font-bold">check</span>
+</div>
+<div class="flex-1 bg-surface-container-low border border-surface-container-high p-4 rounded-lg">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-body-medium text-body-medium text-primary">Stage 2: Technical Review</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">Engineering Dept</p>
+</div>
+<span class="font-body-base text-[12px] text-on-surface-variant bg-surface px-2 py-1 rounded">Oct 24, 14:00</span>
+</div>
+<div class="bg-surface border border-outline-variant rounded p-3 mt-2 flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant mt-0.5">chat</span>
+<p class="font-body-base text-[13px] text-primary italic">"Specifications verified against ISO 9001."</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Stage 3 -->
+<div class="timeline-item timeline-line relative pb-10">
+<div class="flex items-start gap-4">
+<div class="relative z-10 w-8 h-8 rounded-full bg-[#fef3c7] border-2 border-[#f59e0b] flex items-center justify-center shrink-0 mt-1 shadow-[0_0_10px_rgba(245,158,11,0.3)]">
+<span class="material-symbols-outlined text-[16px] text-[#d97706]">schedule</span>
+</div>
+<div class="flex-1 bg-surface border-2 border-[#fcd34d] p-4 rounded-lg shadow-sm">
+<div class="flex justify-between items-start mb-1">
+<div>
+<h3 class="font-body-medium text-body-medium text-primary flex items-center gap-2">
+                                            Stage 3: Manager Approval
+                                            <span class="bg-[#fef3c7] text-[#92400e] px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider">Current</span>
+</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">M. Al-Fayed</p>
+</div>
+<span class="font-body-base text-[12px] text-on-surface-variant bg-surface-container-low px-2 py-1 rounded">In Progress</span>
+</div>
+<div class="mt-4 pt-4 border-t border-surface-container-high flex gap-2">
+<button class="bg-secondary text-on-secondary px-3 py-1.5 rounded text-[12px] font-bold hover:bg-[#6e4100] transition-colors">Approve (Admin Override)</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Stage 4 -->
+<div class="timeline-item relative">
+<div class="flex items-start gap-4 opacity-60">
+<div class="relative z-10 w-8 h-8 rounded-full bg-surface-container-highest border-2 border-outline-variant flex items-center justify-center shrink-0 mt-1">
+<span class="material-symbols-outlined text-[16px] text-outline">more_horiz</span>
+</div>
+<div class="flex-1 border border-dashed border-outline-variant p-4 rounded-lg bg-surface-bright">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-body-medium text-body-medium text-on-surface-variant">Stage 4: Final Sign-off</h3>
+<p class="font-body-base text-body-base text-outline">Pending previous approvals</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

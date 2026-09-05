@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS - Shift Management Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed-dim": "#ffb86a",
+                      "on-primary": "#ffffff",
+                      "primary-fixed": "#d7e3fd",
+                      "outline-variant": "#c5c6cd",
+                      "surface-variant": "#d0e4fe",
+                      "inverse-surface": "#1f3245",
+                      "on-error": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "primary": "#000819",
+                      "inverse-on-surface": "#e9f1ff",
+                      "on-secondary-container": "#6e4100",
+                      "surface-container-low": "#eef4ff",
+                      "error-container": "#ffdad6",
+                      "primary-container": "#142033",
+                      "surface-dim": "#c8dcf5",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "tertiary-container": "#00213d",
+                      "surface-container-highest": "#d0e4fe",
+                      "secondary": "#895200",
+                      "background": "#f8f9ff",
+                      "secondary-container": "#fdaa47",
+                      "on-surface-variant": "#44474c",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "on-tertiary-container": "#498bcd",
+                      "outline": "#75777d",
+                      "surface-bright": "#f8f9ff",
+                      "surface-container": "#e4efff",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary": "#000815",
+                      "secondary-fixed": "#ffdcbc",
+                      "on-error-container": "#93000a",
+                      "on-secondary-fixed": "#2c1700",
+                      "error": "#ba1a1a",
+                      "on-surface": "#081d2f",
+                      "surface": "#f8f9ff",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-high": "#daeaff",
+                      "on-primary-container": "#7c889f",
+                      "inverse-primary": "#bbc7e0",
+                      "surface-tint": "#535f75",
+                      "on-background": "#081d2f",
+                      "on-primary-fixed": "#101c2f",
+                      "tertiary-fixed": "#d1e4ff",
+                      "on-tertiary-fixed": "#001d36"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "md": "16px",
+                      "lg": "24px",
+                      "unit": "4px",
+                      "xl": "32px",
+                      "sm": "8px",
+                      "sidebar-width": "260px",
+                      "gutter": "16px",
+                      "topbar-height": "60px",
+                      "xs": "4px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "table-cell": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "kpi-stat": ["Inter"],
+                      "body-base": ["Inter"],
+                      "table-header": ["Inter"],
+                      "body-medium": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "badge-label": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}],
+                      "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                      "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                      "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                      "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                      "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Gradients & Utilities based on Style Guidance */
+        .btn-primary {
+            background: linear-gradient(180deg, #d98c2b 0%, #b8721e 100%);
+            color: white;
+            border-radius: 8px;
+            padding: 8px 16px;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 2px 8px rgba(184, 114, 30, 0.4);
+            filter: brightness(1.1);
+        }
+        .btn-secondary {
+            border: 1px solid #dde3ea;
+            color: #5c6f85;
+            border-radius: 8px;
+            padding: 8px 16px;
+            transition: all 0.2s ease-in-out;
+            background: white;
+        }
+        .btn-secondary:hover {
+            background-color: rgba(31, 78, 120, 0.04);
+            border-color: #fdaa47; /* Industrial Amber */
+        }
+        
+        .kpi-tile {
+            width: 46px;
+            height: 46px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .kpi-blue { background: linear-gradient(135deg, #1f3245 0%, #081d2f 100%); }
+        .kpi-amber { background: linear-gradient(135deg, #fdaa47 0%, #d98c2b 100%); }
+        .kpi-red { background: linear-gradient(135deg, #ba1a1a 0%, #93000a 100%); }
+        .kpi-slate { background: linear-gradient(135deg, #7c889f 0%, #535f75 100%); }
+
+        .registry-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+        
+        .gantt-bar-shift-a { background-color: #d7e3fd; color: #101c2f; border-left: 4px solid #498bcd; }
+        .gantt-bar-shift-b { background-color: #e4efff; color: #101c2f; border-left: 4px solid #fdaa47; }
+        .gantt-bar-shift-c { background-color: #f8f9ff; border: 1px solid #c5c6cd; color: #44474c; border-left: 4px solid #535f75; }
+        
+        /* Card Hover */
+        .ui-card {
+            background-color: #ffffff;
+            border: 1px solid #edf0f4;
+            border-radius: 8px;
+            transition: all 0.2s ease-in-out;
+        }
+        .ui-card:hover {
+            border-color: #fdaa47;
+            background-color: rgba(31, 78, 120, 0.01);
+        }
+        
+        /* Layout Structure */
+        body { background-color: #f3f5f8; } /* Level 0 canvas */
+        .main-layout { display: flex; height: 100vh; overflow: hidden; }
+        .content-area { flex: 1; overflow-y: auto; padding: 24px; }
+        
+        @media (max-width: 991px) {
+            .content-area { padding: 16px; }
+        }
+    </style>
+</head>
+<body class="font-body-base text-on-surface bg-[#f3f5f8] antialiased">
+<!-- TopNavBar JSON Render -->
+<header class="bg-surface dark:bg-primary font-body-base text-body-base docked full-width top-0 border-b border-outline-variant dark:border-outline flat no shadows flex justify-between items-center w-full h-topbar-height px-lg z-50 fixed">
+<div class="flex items-center gap-md">
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden text-primary dark:text-inverse-primary hover:bg-surface-container-low transition-colors rounded p-sm">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">
+                PEMS
+            </div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex ml-lg gap-md">
+<a class="text-secondary font-bold hover:bg-surface-container-low transition-colors active:scale-95 duration-100 px-sm py-xs rounded" href="#">EN/FA</a>
+</nav>
+</div>
+<!-- Search Bar (on_left configuration relative to trailing actions) -->
+<div class="flex-1 max-w-md mx-lg hidden md:block">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg text-body-base focus:outline-none focus:border-secondary-container focus:ring-1 focus:ring-secondary-container transition-all" placeholder="Search system..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<!-- Trailing Icons -->
+<button class="text-primary dark:text-inverse-primary hover:bg-surface-container-low transition-colors active:scale-95 duration-100 p-sm rounded-full relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="text-primary dark:text-inverse-primary hover:bg-surface-container-low transition-colors active:scale-95 duration-100 p-sm rounded-full hidden md:block">
+<span class="material-symbols-outlined" data-icon="translate">translate</span>
+</button>
+<button class="text-primary dark:text-inverse-primary hover:bg-surface-container-low transition-colors active:scale-95 duration-100 p-sm rounded-full hidden md:block">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<!-- Profile Action -->
+<button class="ml-sm w-8 h-8 rounded-full overflow-hidden border border-outline-variant hover:border-secondary-container transition-colors focus:outline-none focus:ring-2 focus:ring-secondary-container">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Professional corporate headshot of a female industrial engineer in a modern control room, high key lighting, crisp corporate aesthetic, slate and navy background tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARcLkj7T5Zi9W7xU6L1-aG3U_gOWBfs_1RQxbEzetsDekugolZqfea2lXqIIjF6B43NC9uVfaNDDEb7sgKSibjrWI1bU0tlVxChUU_PWtf-MCWGwr9hJhFHz4CT4GEUYWK2xrEtX3CGlkjX6d3ETnwW08nFiZSTUnJRCRUOd8i3aHir70sME5t91enBq6C3gaMVXdLd4PJcV08QpXs4FrXniqI7FzwM0jMnj7X5NqeZGoM-cFPr8-j"/>
+</button>
+</div>
+</header>
+<div class="main-layout pt-topbar-height">
+<!-- SideNavBar JSON Render -->
+<aside class="hidden md:flex flex-col h-full w-sidebar-width fixed left-0 top-topbar-height py-md bg-primary dark:bg-primary-container shadow-md z-40 border-r border-primary-container/10">
+<!-- Header Identity -->
+<div class="px-md mb-xl flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="admin_panel_settings">admin_panel_settings</span>
+</div>
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-primary">Industrial Ops</h2>
+<p class="font-body-base text-primary-fixed-dim text-xs">Enterprise Management</p>
+</div>
+</div>
+<!-- Tabs -->
+<nav class="flex-1 overflow-y-auto font-body-medium text-body-medium flex flex-col gap-sm">
+<!-- Dashboard -->
+<a class="text-primary-fixed-dim mx-2 flex items-center gap-md px-sm py-2 hover:bg-on-primary-fixed-variant hover:text-primary-fixed transition-all active:translate-x-1 duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<!-- Employees (Active for Shift Management) -->
+<a class="bg-secondary-container text-on-secondary-container rounded-lg mx-2 flex items-center gap-md px-sm py-2 hover:bg-on-primary-fixed-variant hover:text-primary-fixed transition-all active:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="badge">badge</span>
+<span>Employees</span>
+</a>
+<!-- Assets -->
+<a class="text-primary-fixed-dim mx-2 flex items-center gap-md px-sm py-2 hover:bg-on-primary-fixed-variant hover:text-primary-fixed transition-all active:translate-x-1 duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="factory">factory</span>
+<span>Assets</span>
+</a>
+<!-- Work Orders -->
+<a class="text-primary-fixed-dim mx-2 flex items-center gap-md px-sm py-2 hover:bg-on-primary-fixed-variant hover:text-primary-fixed transition-all active:translate-x-1 duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="engineering">engineering</span>
+<span>Work Orders</span>
+</a>
+<!-- Safety -->
+<a class="text-primary-fixed-dim mx-2 flex items-center gap-md px-sm py-2 hover:bg-on-primary-fixed-variant hover:text-primary-fixed transition-all active:translate-x-1 duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="health_and_safety">health_and_safety</span>
+<span>Safety</span>
+</a>
+<!-- Logistics -->
+<a class="text-primary-fixed-dim mx-2 flex items-center gap-md px-sm py-2 hover:bg-on-primary-fixed-variant hover:text-primary-fixed transition-all active:translate-x-1 duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+<span>Logistics</span>
+</a>
+<!-- Analytics -->
+<a class="text-primary-fixed-dim mx-2 flex items-center gap-md px-sm py-2 hover:bg-on-primary-fixed-variant hover:text-primary-fixed transition-all active:translate-x-1 duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>Analytics</span>
+</a>
+<!-- Settings -->
+<a class="text-primary-fixed-dim mx-2 flex items-center gap-md px-sm py-2 hover:bg-on-primary-fixed-variant hover:text-primary-fixed transition-all active:translate-x-1 duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<!-- Footer Tabs -->
+<div class="mt-auto border-t border-on-primary-fixed-variant/30 pt-sm font-body-medium text-body-medium">
+<a class="text-primary-fixed-dim mx-2 flex items-center gap-md px-sm py-2 hover:bg-on-primary-fixed-variant hover:text-primary-fixed transition-all active:translate-x-1 duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+<span>Support</span>
+</a>
+<a class="text-primary-fixed-dim mx-2 flex items-center gap-md px-sm py-2 hover:bg-on-primary-fixed-variant hover:text-primary-fixed transition-all active:translate-x-1 duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="content-area md:ml-sidebar-width">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-lg gap-md border-b border-outline-variant/30 pb-md">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">Shift Management &amp; Workforce Assignment</h1>
+<p class="font-body-base text-on-surface-variant mt-1 text-sm rtl" dir="rtl">مدیریت شیفت‌ها و تخصیص نیرو</p>
+</div>
+<div class="flex gap-sm">
+<button class="btn-secondary flex items-center gap-2 font-body-medium">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+                        Export
+                    </button>
+<button class="btn-primary flex items-center gap-2 font-body-medium shadow-sm">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                        Create New Shift
+                    </button>
+</div>
+</div>
+<!-- KPI Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md mb-xl">
+<!-- Active Shift -->
+<div class="ui-card p-md flex items-center gap-md">
+<div class="kpi-tile kpi-blue">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+</div>
+<div>
+<div class="font-body-base text-on-surface-variant text-sm mb-1">Active Shift Personnel</div>
+<div class="font-kpi-stat text-kpi-stat text-primary">142</div>
+</div>
+</div>
+<!-- Pending Assignments -->
+<div class="ui-card p-md flex items-center gap-md">
+<div class="kpi-tile kpi-amber">
+<span class="material-symbols-outlined" data-icon="pending_actions">pending_actions</span>
+</div>
+<div>
+<div class="font-body-base text-on-surface-variant text-sm mb-1">Pending Assignments</div>
+<div class="font-kpi-stat text-kpi-stat text-primary">18</div>
+</div>
+</div>
+<!-- Shift Overlaps / Conflicts -->
+<div class="ui-card p-md flex items-center gap-md">
+<div class="kpi-tile kpi-red">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+</div>
+<div>
+<div class="font-body-base text-on-surface-variant text-sm mb-1">Schedule Conflicts</div>
+<div class="font-kpi-stat text-kpi-stat text-primary">3</div>
+</div>
+</div>
+<!-- Availability -->
+<div class="ui-card p-md flex items-center gap-md">
+<div class="kpi-tile kpi-slate">
+<span class="material-symbols-outlined" data-icon="event_available">event_available</span>
+</div>
+<div>
+<div class="font-body-base text-on-surface-variant text-sm mb-1">Personnel Availability</div>
+<div class="font-kpi-stat text-kpi-stat text-primary">88%</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-lg">
+<!-- Left Column: Gantt & Table -->
+<div class="xl:col-span-2 space-y-lg">
+<!-- Interactive Shift Calendar / Timeline (Gantt) -->
+<section class="ui-card flex flex-col">
+<div class="p-md border-b border-outline-variant/30 flex justify-between items-center bg-[#f5f7fa] rounded-t-lg">
+<h3 class="font-headline-md text-headline-md text-primary">Shift Timeline (Current Week)</h3>
+<div class="flex gap-2 text-xs font-body-base">
+<span class="flex items-center gap-1"><span class="w-3 h-3 bg-[#d7e3fd] border-l-2 border-[#498bcd] inline-block"></span> Shift A</span>
+<span class="flex items-center gap-1"><span class="w-3 h-3 bg-[#e4efff] border-l-2 border-[#fdaa47] inline-block"></span> Shift B</span>
+<span class="flex items-center gap-1"><span class="w-3 h-3 bg-[#f8f9ff] border border-outline-variant border-l-2 border-[#535f75] inline-block"></span> Shift C</span>
+</div>
+</div>
+<div class="p-md overflow-x-auto">
+<div class="min-w-[700px]">
+<!-- Timeline Header -->
+<div class="flex border-b border-outline-variant/30 pb-2 mb-2 font-table-header text-table-header text-on-surface-variant uppercase">
+<div class="w-1/4">Department</div>
+<div class="w-3/4 grid grid-cols-7 text-center">
+<div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+</div>
+</div>
+<!-- Dept Rows -->
+<!-- Mechanical -->
+<div class="flex items-center border-b border-outline-variant/10 py-3">
+<div class="w-1/4 font-body-medium text-table-cell text-primary">Mechanical</div>
+<div class="w-3/4 grid grid-cols-7 gap-1 relative h-8">
+<!-- Bars -->
+<div class="col-start-1 col-span-3 gantt-bar-shift-a rounded px-2 py-1 text-[10px] flex items-center justify-between font-body-medium">
+<span>Team Alpha</span> <span class="opacity-70">8h</span>
+</div>
+<div class="col-start-4 col-span-2 gantt-bar-shift-b rounded px-2 py-1 text-[10px] flex items-center justify-between font-body-medium">
+<span>Team Bravo</span> <span class="opacity-70">8h</span>
+</div>
+</div>
+</div>
+<!-- Electrical -->
+<div class="flex items-center border-b border-outline-variant/10 py-3">
+<div class="w-1/4 font-body-medium text-table-cell text-primary">Electrical</div>
+<div class="w-3/4 grid grid-cols-7 gap-1 relative h-8">
+<div class="col-start-2 col-span-4 gantt-bar-shift-c rounded px-2 py-1 text-[10px] flex items-center justify-between font-body-medium">
+<span>Team Charlie</span> <span class="opacity-70">12h</span>
+</div>
+</div>
+</div>
+<!-- Operations -->
+<div class="flex items-center py-3">
+<div class="w-1/4 font-body-medium text-table-cell text-primary">Operations</div>
+<div class="w-3/4 grid grid-cols-7 gap-1 relative h-8">
+<div class="col-start-1 col-span-2 gantt-bar-shift-b rounded px-2 py-1 text-[10px] flex items-center justify-between font-body-medium">
+<span>Ops Unit 1</span>
+</div>
+<div class="col-start-5 col-span-3 gantt-bar-shift-a rounded px-2 py-1 text-[10px] flex items-center justify-between font-body-medium">
+<span>Ops Unit 2</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Assignments Table -->
+<section class="ui-card overflow-hidden flex flex-col">
+<div class="p-md border-b border-outline-variant/30 flex justify-between items-center bg-[#f5f7fa]">
+<h3 class="font-headline-md text-headline-md text-primary">Recent Assignments</h3>
+<div class="flex gap-2">
+<input class="px-3 py-1.5 text-sm bg-white border border-outline-variant rounded-md focus:border-secondary-container focus:ring-1 focus:ring-secondary-container outline-none w-48" placeholder="Filter..." type="text"/>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#f5f7fa] font-table-header text-table-header text-on-surface-variant uppercase border-b border-outline-variant/30 sticky top-0">
+<tr>
+<th class="py-2 px-md font-bold">Employee</th>
+<th class="py-2 px-md font-bold">Role</th>
+<th class="py-2 px-md font-bold">Asset/Zone</th>
+<th class="py-2 px-md font-bold">Duration</th>
+<th class="py-2 px-md font-bold text-center">Status</th>
+<th class="py-2 px-md"></th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell">
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container-low transition-colors group">
+<td class="py-3 px-md font-body-medium">James Harrison</td>
+<td class="py-3 px-md text-on-surface-variant">Senior Tech</td>
+<td class="py-3 px-md registry-mono text-xs">ZN-A-442</td>
+<td class="py-3 px-md">08:00 - 16:00</td>
+<td class="py-3 px-md text-center">
+<span class="inline-block px-2 py-1 bg-[#e4efff] text-[#00497c] rounded-full font-badge-label text-badge-label">Confirmed</span>
+</td>
+<td class="py-3 px-md text-right">
+<button class="text-outline hover:text-secondary opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container-low transition-colors group">
+<td class="py-3 px-md font-body-medium">Sarah Jenkins</td>
+<td class="py-3 px-md text-on-surface-variant">Safety Officer</td>
+<td class="py-3 px-md registry-mono text-xs">ZN-B-109</td>
+<td class="py-3 px-md">16:00 - 00:00</td>
+<td class="py-3 px-md text-center">
+<span class="inline-block px-2 py-1 bg-[#eef4ff] text-[#44474c] rounded-full font-badge-label text-badge-label border border-outline-variant/30">Pending</span>
+</td>
+<td class="py-3 px-md text-right">
+<button class="text-outline hover:text-secondary opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container-low transition-colors group bg-error-container/20">
+<td class="py-3 px-md font-body-medium">Michael Chang</td>
+<td class="py-3 px-md text-on-surface-variant">Operator</td>
+<td class="py-3 px-md registry-mono text-xs">MULTIPLE</td>
+<td class="py-3 px-md">00:00 - 08:00</td>
+<td class="py-3 px-md text-center">
+<span class="inline-block px-2 py-1 bg-[#ffdad6] text-[#93000a] rounded-full font-badge-label text-badge-label">Conflict</span>
+</td>
+<td class="py-3 px-md text-right">
+<button class="text-error hover:text-on-error-container transition-opacity">
+<span class="material-symbols-outlined text-sm" data-icon="warning">warning</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-3 px-md font-body-medium">Elena Rostova</td>
+<td class="py-3 px-md text-on-surface-variant">Elec Engineer</td>
+<td class="py-3 px-md registry-mono text-xs">ZN-C-990</td>
+<td class="py-3 px-md">08:00 - 20:00</td>
+<td class="py-3 px-md text-center">
+<span class="inline-block px-2 py-1 bg-[#e4efff] text-[#00497c] rounded-full font-badge-label text-badge-label">Confirmed</span>
+</td>
+<td class="py-3 px-md text-right">
+<button class="text-outline hover:text-secondary opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<!-- Right Column: Conflicts & Context -->
+<div class="space-y-lg">
+<!-- Conflict Management Panel -->
+<section class="ui-card border-error/30 overflow-hidden">
+<div class="p-md bg-error-container/20 border-b border-error/20 flex items-center gap-sm text-on-error-container">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+<h3 class="font-headline-md text-headline-md">Schedule Conflicts</h3>
+<span class="ml-auto bg-error text-white font-badge-label text-xs px-2 py-0.5 rounded-full">3</span>
+</div>
+<div class="p-sm flex flex-col gap-sm max-h-[400px] overflow-y-auto">
+<!-- Conflict Item 1 -->
+<div class="p-3 bg-white border border-error/20 rounded-md hover:border-error/50 transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<div class="font-body-medium text-sm text-primary">Michael Chang</div>
+<div class="text-xs text-on-surface-variant">00:00 - 08:00</div>
+</div>
+<p class="text-xs text-on-surface-variant mb-2">Double-booked in Zone A and Zone C simultaneously.</p>
+<div class="flex gap-2">
+<button class="flex-1 bg-surface-container-low text-primary text-xs py-1 rounded border border-outline-variant hover:bg-surface-variant transition-colors">Reassign</button>
+<button class="flex-1 bg-surface-container-low text-primary text-xs py-1 rounded border border-outline-variant hover:bg-surface-variant transition-colors">Ignore</button>
+</div>
+</div>
+<!-- Conflict Item 2 -->
+<div class="p-3 bg-white border border-error/20 rounded-md hover:border-error/50 transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<div class="font-body-medium text-sm text-primary">David Smith</div>
+<div class="text-xs text-on-surface-variant">16:00 - 00:00</div>
+</div>
+<p class="text-xs text-on-surface-variant mb-2">Exceeds max consecutive hours (14h scheduled).</p>
+<div class="flex gap-2">
+<button class="flex-1 bg-surface-container-low text-primary text-xs py-1 rounded border border-outline-variant hover:bg-surface-variant transition-colors">Adjust Shift</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Action: Shift Notes -->
+<section class="ui-card p-md">
+<h3 class="font-headline-md text-headline-md text-primary mb-3">Shift Notes (Shift A)</h3>
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 text-sm focus:border-secondary-container focus:ring-1 focus:ring-secondary-container outline-none resize-none h-32" placeholder="Enter notes for current shift supervisor..."></textarea>
+<div class="mt-3 flex justify-end">
+<button class="btn-primary text-sm py-1.5 px-4">Save Note</button>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+</body></html>

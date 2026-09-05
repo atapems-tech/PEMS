@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Competency &amp; Skill Matrix | PEMS Enterprise</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#535f75",
+                        "on-secondary-fixed": "#2c1700",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#c8dcf5",
+                        "surface-container-high": "#daeaff",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#6e4100",
+                        "surface-container-highest": "#d0e4fe",
+                        "outline": "#75777d",
+                        "on-tertiary-fixed": "#001d36",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "on-surface": "#081d2f",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#eef4ff",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "secondary-fixed": "#ffdcbc",
+                        "surface-variant": "#d0e4fe",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-tertiary-container": "#498bcd",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#fdaa47",
+                        "tertiary-container": "#00213d",
+                        "secondary": "#895200",
+                        "on-primary-fixed": "#101c2f",
+                        "primary-fixed": "#d7e3fd",
+                        "primary": "#000819",
+                        "inverse-on-surface": "#e9f1ff",
+                        "inverse-primary": "#bbc7e0",
+                        "on-primary-container": "#7c889f",
+                        "primary-container": "#142033",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#c5c6cd",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "inverse-surface": "#1f3245",
+                        "surface-bright": "#f8f9ff",
+                        "background": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#44474c",
+                        "on-background": "#081d2f",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "surface": "#f8f9ff",
+                        "surface-container": "#e4efff",
+                        "tertiary": "#000815",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#683d00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "unit": "4px",
+                        "lg": "24px",
+                        "sidebar-width": "260px",
+                        "sm": "8px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "topbar-height": "60px"
+                    },
+                    "fontFamily": {
+                        "table-cell": ["Inter"],
+                        "body-base": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "table-header": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .registry-mono { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; }
+        /* Scrollbar styling for data density */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c5c6cd; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #75777d; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-base antialiased flex">
+<!-- SideNavBar Component -->
+<aside class="hidden md:flex flex-col h-full py-lg bg-primary dark:bg-primary-container fixed left-0 top-0 h-full w-sidebar-width border-r border-outline-variant dark:border-outline shadow-sm z-20">
+<div class="px-lg mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-on-secondary shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">domain</span>
+</div>
+<div>
+<h1 class="text-headline-md font-headline-md text-on-primary dark:text-primary-fixed">PEMS Enterprise</h1>
+<p class="text-body-base text-primary-fixed-dim">Utility Management</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1 font-body-medium text-body-medium">
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-fixed-variant hover:bg-on-primary-fixed-variant hover:text-on-primary hover:bg-primary-container transition-colors duration-200 active:scale-95 transition-transform rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary text-on-secondary rounded-lg active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">engineering</span>
+<span>Technical Inspection</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-fixed-variant hover:bg-on-primary-fixed-variant hover:text-on-primary hover:bg-primary-container transition-colors duration-200 active:scale-95 transition-transform rounded-lg" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span>Audit Logs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-fixed-variant hover:bg-on-primary-fixed-variant hover:text-on-primary hover:bg-primary-container transition-colors duration-200 active:scale-95 transition-transform rounded-lg" href="#">
+<span class="material-symbols-outlined">mail</span>
+<span>Correspondence</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-fixed-variant hover:bg-on-primary-fixed-variant hover:text-on-primary hover:bg-primary-container transition-colors duration-200 active:scale-95 transition-transform rounded-lg" href="#">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span>Transmittals</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-fixed-variant hover:bg-on-primary-fixed-variant hover:text-on-primary hover:bg-primary-container transition-colors duration-200 active:scale-95 transition-transform rounded-lg" href="#">
+<span class="material-symbols-outlined">settings_applications</span>
+<span>Administration</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col min-h-screen md:ml-[260px]">
+<!-- TopNavBar Component -->
+<header class="fixed top-0 right-0 w-full md:w-[calc(100%-260px)] h-topbar-height bg-surface-bright dark:bg-surface-dim bg-surface-container-low border-b border-outline-variant flex items-center justify-between px-lg h-full z-10 font-label-caps text-label-caps text-primary dark:text-primary-fixed">
+<div class="flex items-center gap-4">
+<!-- Mobile menu button (hidden on desktop) -->
+<button class="md:hidden text-on-surface-variant p-2 rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="relative hidden sm:block w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-1.5 bg-surface rounded-DEFAULT border border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary text-table-cell placeholder:text-on-surface-variant/70 transition-colors" placeholder="Search matrix..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex items-center border-r border-outline-variant pr-4 mr-2">
+<button class="px-3 py-1 font-bold text-secondary border-b-2 border-secondary cursor-pointer active:opacity-80">EN</button>
+<button class="px-3 py-1 font-medium text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors cursor-pointer active:opacity-80">FA</button>
+</div>
+<button class="p-2 text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors rounded-full hover:bg-surface-container cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors rounded-full hover:bg-surface-container cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors rounded-full hover:bg-surface-container cursor-pointer active:opacity-80">
+<img alt="User Profile" class="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of an industrial manager wearing a hard hat, neutral background, high resolution, soft corporate lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9InExOiAK8CiaB9bQ-Z1yEgJtpEE9Kfy9gwZ9KtVCksYA_uLeVcme_-_p7-476ZLimLR9XwrKdCU8UAAlW65u_oI66qTt8fPn-6vO4__7RXWmE2UASLSiaUy8qWeoVBqBKC5sYzizYYOL43qNTEx-rAKq4TGhi8VdQF_nqv3q1-CT9xzGauMZEiV2-soo1dnLrTZ_TjtDlQ2SnJjuMLvmlRH25MF93RMh2gtg0E9V3ZK8KGBhxNHS"/>
+</button>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="flex-1 mt-[60px] p-4 md:p-lg flex flex-col overflow-hidden">
+<!-- Page Header -->
+<div class="mb-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="text-headline-lg font-headline-lg text-on-surface mb-1">Competency &amp; Skill Matrix <span class="text-on-surface-variant text-headline-md font-normal ml-2">| ماتریس شایستگی و مهارت</span></h2>
+<p class="text-body-base text-on-surface-variant">Manage and track personnel technical qualifications, proficiency levels, and certification statuses.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-lg text-body-medium font-body-medium text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Export Matrix
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-on-primary rounded-lg text-body-medium font-body-medium hover:opacity-90 transition-opacity shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                        Assign Competency
+                    </button>
+</div>
+</div>
+<!-- KPI Cards Row -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-lg">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-lg p-4 shadow-sm flex items-center gap-4 hover:border-secondary transition-colors group">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined">groups</span>
+</div>
+<div>
+<p class="text-label-caps font-label-caps text-on-surface-variant mb-1 uppercase">Total Personnel</p>
+<p class="text-kpi-stat font-kpi-stat text-on-surface group-hover:text-secondary transition-colors">248</p>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-lg p-4 shadow-sm flex items-center gap-4 hover:border-secondary transition-colors group">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined">workspace_premium</span>
+</div>
+<div>
+<p class="text-label-caps font-label-caps text-on-surface-variant mb-1 uppercase">Active Certifications</p>
+<p class="text-kpi-stat font-kpi-stat text-on-surface group-hover:text-secondary transition-colors">1,102</p>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-lg p-4 shadow-sm flex items-center gap-4 hover:border-secondary transition-colors group">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div>
+<p class="text-label-caps font-label-caps text-on-surface-variant mb-1 uppercase">Expiring &lt; 30 Days</p>
+<p class="text-kpi-stat font-kpi-stat text-on-surface group-hover:text-secondary transition-colors">45</p>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest border border-[#edf0f4] rounded-lg p-4 shadow-sm flex items-center gap-4 hover:border-secondary transition-colors group">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined">error</span>
+</div>
+<div>
+<p class="text-label-caps font-label-caps text-on-surface-variant mb-1 uppercase">Expired</p>
+<p class="text-kpi-stat font-kpi-stat text-error group-hover:text-error transition-colors">12</p>
+</div>
+</div>
+</div>
+<!-- Content Area: Filter Sidebar + Matrix Table -->
+<div class="flex-1 flex flex-col lg:flex-row gap-lg overflow-hidden h-[600px]">
+<!-- Filter Sidebar -->
+<div class="w-full lg:w-64 flex-shrink-0 bg-surface-container-lowest border border-[#edf0f4] rounded-lg shadow-sm flex flex-col h-full overflow-y-auto">
+<div class="p-4 border-b border-outline-variant bg-[#f5f7fa] sticky top-0 z-10 flex justify-between items-center">
+<h3 class="text-table-header font-table-header text-on-surface uppercase">Filters / فیلترها</h3>
+<button class="text-label-caps font-label-caps text-secondary hover:underline">Clear All</button>
+</div>
+<div class="p-4 space-y-6">
+<!-- Department Filter -->
+<div>
+<label class="block text-badge-label font-badge-label text-on-surface-variant mb-2 uppercase">Department</label>
+<div class="space-y-2">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input checked="" class="rounded text-secondary focus:ring-secondary border-outline-variant text-body-base" type="checkbox"/>
+<span class="text-table-cell font-table-cell text-on-surface group-hover:text-secondary transition-colors">Operations (OPR)</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="rounded text-secondary focus:ring-secondary border-outline-variant text-body-base" type="checkbox"/>
+<span class="text-table-cell font-table-cell text-on-surface group-hover:text-secondary transition-colors">Maintenance (MNT)</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="rounded text-secondary focus:ring-secondary border-outline-variant text-body-base" type="checkbox"/>
+<span class="text-table-cell font-table-cell text-on-surface group-hover:text-secondary transition-colors">HSE (HSE)</span>
+</label>
+</div>
+</div>
+<!-- Skill Category -->
+<div>
+<label class="block text-badge-label font-badge-label text-on-surface-variant mb-2 uppercase">Skill Category</label>
+<select class="w-full text-table-cell font-table-cell rounded-[8px] border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary py-[6px] px-2 bg-surface">
+<option>All Categories</option>
+<option>Mechanical</option>
+<option>Electrical</option>
+<option>Process Operations</option>
+<option>Safety &amp; Compliance</option>
+</select>
+</div>
+<!-- Certification Status -->
+<div>
+<label class="block text-badge-label font-badge-label text-on-surface-variant mb-2 uppercase">Status</label>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-green-500"></div>
+<span class="text-table-cell font-table-cell text-on-surface">Active</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-amber-500"></div>
+<span class="text-table-cell font-table-cell text-on-surface">Expiring Soon</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-red-500"></div>
+<span class="text-table-cell font-table-cell text-on-surface">Expired</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Matrix Table -->
+<div class="flex-1 bg-surface-container-lowest border border-[#edf0f4] rounded-lg shadow-sm flex flex-col h-full overflow-hidden">
+<div class="overflow-x-auto overflow-y-auto flex-1 relative">
+<table class="w-full text-left border-collapse min-w-[1000px]">
+<thead class="sticky top-0 z-10 bg-[#f5f7fa] shadow-sm">
+<tr>
+<th class="px-4 py-3 border-b border-r border-outline-variant text-table-header font-table-header text-on-surface-variant uppercase bg-[#f5f7fa] sticky left-0 z-20 min-w-[250px]">
+                                        Personnel Details
+                                    </th>
+<th class="px-4 py-3 border-b border-r border-outline-variant text-center bg-[#f5f7fa]">
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">local_fire_department</span>
+<span class="text-table-header font-table-header text-on-surface-variant uppercase">Boiler Op</span>
+</div>
+</th>
+<th class="px-4 py-3 border-b border-r border-outline-variant text-center bg-[#f5f7fa]">
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">bolt</span>
+<span class="text-table-header font-table-header text-on-surface-variant uppercase">HV Elec</span>
+</div>
+</th>
+<th class="px-4 py-3 border-b border-r border-outline-variant text-center bg-[#f5f7fa]">
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">construction</span>
+<span class="text-table-header font-table-header text-on-surface-variant uppercase">Welding L3</span>
+</div>
+</th>
+<th class="px-4 py-3 border-b border-outline-variant text-center bg-[#f5f7fa]">
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">health_and_safety</span>
+<span class="text-table-header font-table-header text-on-surface-variant uppercase">Safety Sup</span>
+</div>
+</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-[rgba(31,78,120,0.04)] transition-colors group">
+<td class="px-4 py-2 border-r border-outline-variant bg-surface-container-lowest group-hover:bg-[rgba(31,78,120,0.04)] sticky left-0 z-10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-table-cell font-table-cell font-bold text-on-surface">JD</div>
+<div>
+<p class="text-body-medium font-body-medium text-on-surface">John Doe</p>
+<p class="text-badge-label font-badge-label text-on-surface-variant registry-mono">EMP-8402</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-2 border-r border-outline-variant text-center">
+<div class="inline-flex flex-col items-center gap-1">
+<span class="px-2 py-0.5 rounded-full bg-green-100 text-green-800 text-badge-label font-badge-label">Expert</span>
+<span class="w-2 h-2 rounded-full bg-green-500" title="Active"></span>
+</div>
+</td>
+<td class="px-4 py-2 border-r border-outline-variant text-center">
+<div class="inline-flex flex-col items-center gap-1">
+<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-800 text-badge-label font-badge-label">Trainee</span>
+<span class="w-2 h-2 rounded-full bg-amber-500" title="Expiring Soon"></span>
+</div>
+</td>
+<td class="px-4 py-2 border-r border-outline-variant text-center bg-surface-container-low">
+<span class="text-table-cell text-outline-variant">-</span>
+</td>
+<td class="px-4 py-2 text-center">
+<div class="inline-flex flex-col items-center gap-1">
+<span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-badge-label font-badge-label">Proficient</span>
+<span class="w-2 h-2 rounded-full bg-green-500" title="Active"></span>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-[rgba(31,78,120,0.04)] transition-colors group">
+<td class="px-4 py-2 border-r border-outline-variant bg-surface-container-lowest group-hover:bg-[rgba(31,78,120,0.04)] sticky left-0 z-10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-table-cell font-table-cell font-bold text-on-surface">AS</div>
+<div>
+<p class="text-body-medium font-body-medium text-on-surface">Ali Safavi</p>
+<p class="text-badge-label font-badge-label text-on-surface-variant registry-mono">EMP-9125</p>
+</div>
+</div>
+</td>
+<td class="px-4 py-2 border-r border-outline-variant text-center bg-surface-container-low">
+<span class="text-table-cell text-outline-variant">-</span>
+</td>
+<td class="px-4 py-2 border-r border-outline-variant text-center">
+<div class="inline-flex flex-col items-center gap-1">
+<span class="px-2 py-0.5 rounded-full bg-green-100 text-green-800 text-badge-label font-badge-label">Expert</span>
+<span class="w-2 h-2 rounded-full bg-green-500" title="Active"></span>
+</div>
+</td>
+<td class="px-4 py-2 border-r border-outline-variant text-center">
+<div class="inline-flex flex-col items-center gap-1">
+<span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-badge-label font-badge-label">Proficient</span>
+<span class="w-2 h-2 rounded-full bg-red-500" title="Expired"></span>
+</div>
+</td>
+<td class="px-4 py-2 text-center bg-surface-container-low">
+<span class="text-table-cell text-outline-variant">-</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

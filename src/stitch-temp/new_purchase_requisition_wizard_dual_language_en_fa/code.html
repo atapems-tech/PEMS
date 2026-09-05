@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>New Purchase Requisition Wizard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-tertiary-container": "#498bcd",
+                "inverse-on-surface": "#e9f1ff",
+                "secondary-fixed": "#ffdcbc",
+                "surface-container": "#e4efff",
+                "on-background": "#081d2f",
+                "tertiary-fixed": "#d1e4ff",
+                "on-error": "#ffffff",
+                "surface-variant": "#d0e4fe",
+                "on-primary-container": "#7c889f",
+                "surface-dim": "#c8dcf5",
+                "on-primary": "#ffffff",
+                "primary-fixed-dim": "#bbc7e0",
+                "surface-container-lowest": "#ffffff",
+                "inverse-surface": "#1f3245",
+                "on-secondary-fixed-variant": "#683d00",
+                "error-container": "#ffdad6",
+                "surface-container-low": "#eef4ff",
+                "tertiary-container": "#00213d",
+                "on-secondary-fixed": "#2c1700",
+                "on-surface": "#081d2f",
+                "on-error-container": "#93000a",
+                "surface-container-highest": "#d0e4fe",
+                "primary-fixed": "#d7e3fd",
+                "surface-tint": "#535f75",
+                "secondary": "#895200",
+                "secondary-fixed-dim": "#ffb86a",
+                "on-tertiary-fixed-variant": "#00497c",
+                "on-secondary-container": "#6e4100",
+                "on-surface-variant": "#44474c",
+                "surface": "#f8f9ff",
+                "inverse-primary": "#bbc7e0",
+                "on-primary-fixed-variant": "#3b475c",
+                "surface-bright": "#f8f9ff",
+                "tertiary": "#000815",
+                "error": "#ba1a1a",
+                "outline": "#75777d",
+                "on-tertiary": "#ffffff",
+                "on-secondary": "#ffffff",
+                "on-primary-fixed": "#101c2f",
+                "secondary-container": "#fdaa47",
+                "background": "#f8f9ff",
+                "on-tertiary-fixed": "#001d36",
+                "outline-variant": "#c5c6cd",
+                "surface-container-high": "#daeaff",
+                "primary": "#000819",
+                "tertiary-fixed-dim": "#9ecaff",
+                "primary-container": "#142033"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "xs": "4px",
+                "topbar-height": "60px",
+                "xl": "32px",
+                "sidebar-width": "260px",
+                "sm": "8px",
+                "lg": "24px",
+                "gutter": "16px",
+                "md": "16px",
+                "unit": "4px"
+        },
+        "fontFamily": {
+                "headline-lg": [
+                        "Inter"
+                ],
+                "badge-label": [
+                        "Inter"
+                ],
+                "label-caps": [
+                        "Inter"
+                ],
+                "table-header": [
+                        "Inter"
+                ],
+                "body-medium": [
+                        "Inter"
+                ],
+                "table-cell": [
+                        "Inter"
+                ],
+                "body-base": [
+                        "Inter"
+                ],
+                "headline-lg-mobile": [
+                        "Inter"
+                ],
+                "headline-md": [
+                        "Inter"
+                ],
+                "kpi-stat": [
+                        "Inter"
+                ]
+        },
+        "fontSize": {
+                "headline-lg": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "badge-label": [
+                        "11px",
+                        {
+                                "lineHeight": "14px",
+                                "letterSpacing": "0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-caps": [
+                        "11px",
+                        {
+                                "lineHeight": "14px",
+                                "letterSpacing": "0.06em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "table-header": [
+                        "11.5px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.04em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-medium": [
+                        "13.5px",
+                        {
+                                "lineHeight": "20px",
+                                "letterSpacing": "0",
+                                "fontWeight": "600"
+                        }
+                ],
+                "table-cell": [
+                        "13px",
+                        {
+                                "lineHeight": "18px",
+                                "letterSpacing": "0",
+                                "fontWeight": "400"
+                        }
+                ],
+                "body-base": [
+                        "13.5px",
+                        {
+                                "lineHeight": "20px",
+                                "letterSpacing": "0",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "20px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "700"
+                        }
+                ],
+                "headline-md": [
+                        "18px",
+                        {
+                                "lineHeight": "24px",
+                                "letterSpacing": "0",
+                                "fontWeight": "700"
+                        }
+                ],
+                "kpi-stat": [
+                        "22px",
+                        {
+                                "lineHeight": "24px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-base antialiased flex">
+<!-- Sidebar suppressed as this is a transactional flow -->
+<!-- Top App Bar for Transactional Screen -->
+<header class="fixed top-0 left-0 w-full h-topbar-height bg-surface border-b border-outline-variant flex items-center justify-between px-lg z-50">
+<div class="flex items-center gap-md">
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<div>
+<h1 class="font-headline-md text-headline-md text-primary m-0">New Purchase Requisition</h1>
+<span class="font-badge-label text-badge-label text-on-surface-variant opacity-70 block -mt-1">درخواست خرید جدید</span>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant mr-md">PR-2024-089</span>
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">close</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="w-full pt-topbar-height h-screen flex flex-col md:flex-row bg-background">
+<!-- Wizard Navigation / Progress (Left pane on desktop, top on mobile) -->
+<aside class="w-full md:w-80 bg-surface md:border-r border-outline-variant flex flex-col p-lg shrink-0 overflow-y-auto">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-md tracking-wider">REQUISITION PROGRESS</div>
+<div class="flex flex-col gap-0 relative">
+<!-- Progress Line -->
+<div class="absolute left-4 top-4 bottom-4 w-px bg-outline-variant/30 md:block hidden"></div>
+<!-- Step 1 (Active) -->
+<div class="flex items-start gap-md py-md relative z-10">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-[0_0_0_4px_#f8f9ff] shrink-0 font-body-medium">1</div>
+<div class="flex flex-col pt-1">
+<span class="font-body-medium text-body-medium text-primary">Select Parts</span>
+<span class="font-badge-label text-badge-label text-on-surface-variant opacity-70">انتخاب قطعات</span>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex items-start gap-md py-md relative z-10">
+<div class="w-8 h-8 rounded-full border border-outline-variant bg-surface text-on-surface-variant flex items-center justify-center shadow-[0_0_0_4px_#f8f9ff] shrink-0 font-body-medium">2</div>
+<div class="flex flex-col pt-1">
+<span class="font-body-base text-body-base text-on-surface-variant">Quantities &amp; Dates</span>
+<span class="font-badge-label text-badge-label text-on-surface-variant opacity-70">تعداد و تاریخ‌ها</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex items-start gap-md py-md relative z-10">
+<div class="w-8 h-8 rounded-full border border-outline-variant bg-surface text-on-surface-variant flex items-center justify-center shadow-[0_0_0_4px_#f8f9ff] shrink-0 font-body-medium">3</div>
+<div class="flex flex-col pt-1">
+<span class="font-body-base text-body-base text-on-surface-variant">Technical Documents</span>
+<span class="font-badge-label text-badge-label text-on-surface-variant opacity-70">اسناد فنی</span>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="flex items-start gap-md py-md relative z-10">
+<div class="w-8 h-8 rounded-full border border-outline-variant bg-surface text-on-surface-variant flex items-center justify-center shadow-[0_0_0_4px_#f8f9ff] shrink-0 font-body-medium">4</div>
+<div class="flex flex-col pt-1">
+<span class="font-body-base text-body-base text-on-surface-variant">Review &amp; Submit</span>
+<span class="font-badge-label text-badge-label text-on-surface-variant opacity-70">بررسی و ارسال</span>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-lg border-t border-outline-variant mt-xl">
+<div class="bg-surface-container-low p-md rounded-lg">
+<div class="flex items-center gap-sm mb-sm text-primary">
+<span class="material-symbols-outlined text-[20px]">info</span>
+<span class="font-body-medium text-body-medium">Draft Saved</span>
+</div>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm">Last auto-saved 2 mins ago.</p>
+</div>
+</div>
+</aside>
+<!-- Main Wizard Content Canvas -->
+<section class="flex-1 overflow-y-auto p-md md:p-xl flex flex-col bg-surface-container-lowest shadow-[0_4px_20px_rgba(20,32,51,0.08)] m-0 md:m-lg rounded-xl border border-outline-variant">
+<div class="mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-primary">Select Parts from Inventory</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-xs">Search and add items to your requisition list.</p>
+</div>
+<!-- Search and Filter Bar -->
+<div class="flex flex-col md:flex-row gap-sm mb-lg">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-xl pr-sm py-[10px] bg-surface border border-outline-variant rounded-lg font-body-base text-body-base text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/50 transition-all placeholder:text-on-surface-variant/50" placeholder="Search by Part Name, Tag Number, or Description..." type="text"/>
+</div>
+<button class="px-md py-[10px] bg-surface border border-outline-variant rounded-lg flex items-center justify-center gap-sm text-on-surface-variant hover:bg-surface-variant/20 transition-colors font-body-medium text-body-medium shrink-0">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+                    Filters
+                </button>
+</div>
+<!-- Content Area - Bento Grid style layout for parts -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-md flex-1 content-start mb-xl">
+<!-- Part Card 1 -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md hover:border-secondary hover:bg-[#1f4e78]/[0.02] transition-colors flex gap-md group cursor-pointer">
+<div class="w-16 h-16 rounded bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary-container text-[32px]">precision_manufacturing</span>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-center">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-table-cell text-table-cell font-mono bg-surface-container-low px-2 py-0.5 rounded text-on-surface-variant text-xs">VLV-304-GT</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-low text-on-primary-container font-badge-label text-badge-label">In Stock: 12</span>
+</div>
+<h3 class="font-body-medium text-body-medium text-primary truncate">Gate Valve 4" Flanged</h3>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm truncate">Stainless Steel 316, Class 150</p>
+</div>
+<button class="self-center w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover:bg-secondary group-hover:text-on-primary group-hover:border-secondary transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<!-- Part Card 2 -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md hover:border-secondary hover:bg-[#1f4e78]/[0.02] transition-colors flex gap-md group cursor-pointer">
+<div class="w-16 h-16 rounded bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary-container text-[32px]">cable</span>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-center">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-table-cell text-table-cell font-mono bg-surface-container-low px-2 py-0.5 rounded text-on-surface-variant text-xs">CBL-PWR-50</span>
+<span class="px-2 py-0.5 rounded-full bg-[#fdf0f0] text-error font-badge-label text-badge-label border border-[#f5c6c6]">Low Stock: 2</span>
+</div>
+<h3 class="font-body-medium text-body-medium text-primary truncate">Power Cable 3x50mm2</h3>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm truncate">XLPE Insulated, Copper</p>
+</div>
+<button class="self-center w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant group-hover:bg-secondary group-hover:text-on-primary group-hover:border-secondary transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+<!-- Part Card 3 -->
+<div class="bg-surface border border-secondary bg-[#1f4e78]/[0.02] rounded-lg p-md transition-colors flex gap-md relative">
+<div class="absolute -top-2 -right-2 w-6 h-6 bg-secondary text-on-primary rounded-full flex items-center justify-center font-badge-label shadow-sm">1</div>
+<div class="w-16 h-16 rounded bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary-container text-[32px]">settings</span>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-center">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-table-cell text-table-cell font-mono bg-surface-container-low px-2 py-0.5 rounded text-on-surface-variant text-xs">BRG-SKF-6204</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-low text-on-primary-container font-badge-label text-badge-label">In Stock: 45</span>
+</div>
+<h3 class="font-body-medium text-body-medium text-primary truncate">Deep Groove Ball Bearing</h3>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm truncate">SKF 6204-2Z</p>
+</div>
+<button class="self-center w-8 h-8 rounded-full flex items-center justify-center text-secondary hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</button>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="mt-auto pt-lg border-t border-outline-variant flex justify-between items-center bg-surface-container-lowest sticky bottom-0">
+<button class="px-lg py-2 border border-outline-variant rounded text-on-surface-variant font-body-medium text-body-medium hover:bg-surface-variant/20 transition-colors">
+                    Cancel
+                </button>
+<div class="flex gap-md">
+<button class="px-lg py-2 border border-outline-variant rounded text-on-surface-variant font-body-medium text-body-medium hover:bg-surface-variant/20 transition-colors opacity-50 cursor-not-allowed">
+                        Back
+                    </button>
+<button class="px-lg py-2 bg-gradient-to-b from-[#d98c2b] to-[#b8721e] text-on-primary rounded font-body-medium text-body-medium hover:opacity-90 transition-opacity shadow-sm flex items-center gap-sm">
+                        Next Step
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+</body></html>

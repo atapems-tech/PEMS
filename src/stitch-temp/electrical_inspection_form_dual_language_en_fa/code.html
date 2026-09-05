@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS Electrical Inspection - Transformer/Switchgear</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#ffb86a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "primary": "#000819",
+                        "error": "#ba1a1a",
+                        "tertiary": "#000815",
+                        "secondary-container": "#fdaa47",
+                        "surface-container": "#e4efff",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#081d2f",
+                        "surface-container-low": "#eef4ff",
+                        "on-surface-variant": "#44474c",
+                        "surface-tint": "#535f75",
+                        "on-surface": "#081d2f",
+                        "on-tertiary-container": "#498bcd",
+                        "on-secondary-fixed": "#2c1700",
+                        "surface-container-highest": "#d0e4fe",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "surface": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f8f9ff",
+                        "surface-dim": "#c8dcf5",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "on-secondary-container": "#6e4100",
+                        "background": "#f8f9ff",
+                        "primary-container": "#142033",
+                        "on-primary-container": "#7c889f",
+                        "inverse-primary": "#bbc7e0",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "secondary": "#895200",
+                        "surface-container-high": "#daeaff",
+                        "error-container": "#ffdad6",
+                        "outline": "#75777d",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "surface-variant": "#d0e4fe",
+                        "primary-fixed": "#d7e3fd",
+                        "outline-variant": "#c5c6cd",
+                        "inverse-surface": "#1f3245",
+                        "tertiary-container": "#00213d",
+                        "on-primary-fixed": "#101c2f",
+                        "secondary-fixed": "#ffdcbc",
+                        "inverse-on-surface": "#e9f1ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#001d36"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "gutter": "16px",
+                        "sm": "8px",
+                        "unit": "4px",
+                        "topbar-height": "60px",
+                        "lg": "24px",
+                        "sidebar-width": "260px",
+                        "xs": "4px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "table-cell": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-base": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "table-header": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .pems-input {
+            @apply w-full rounded border border-[#dde3ea] bg-surface-container-lowest focus:border-secondary focus:ring-1 focus:ring-secondary/50 px-sm py-[6px] font-body-base text-on-surface outline-none transition-colors;
+        }
+        .pems-input.pems-error {
+            @apply border-error focus:border-error focus:ring-error/50;
+        }
+        .pems-label {
+            @apply block font-label-caps text-on-surface-variant mb-unit uppercase;
+        }
+        .pems-card {
+            @apply bg-surface-container-lowest border border-[#edf0f4] rounded-lg shadow-sm;
+        }
+        .pems-btn-primary {
+            @apply inline-flex items-center justify-center bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white font-body-medium rounded px-md py-[6px] hover:opacity-90 transition-opacity;
+        }
+        .pems-btn-secondary {
+            @apply inline-flex items-center justify-center bg-surface-container-lowest border border-[#dde3ea] text-[#5c6f85] font-body-medium rounded px-md py-[6px] hover:bg-surface-container-low transition-colors;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background h-full font-body-base flex overflow-hidden">
+<!-- SideNavBar (JSON) -->
+<nav class="hidden lg:flex flex-col py-lg gap-sm docked fixed left-0 top-0 h-full w-sidebar-width bg-primary-container shadow-sm z-20">
+<div class="px-md mb-lg">
+<div class="flex items-center gap-sm mb-unit">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1; font-size: 28px;">bolt</span>
+<div class="font-headline-md text-headline-md text-on-primary">PEMS Utility</div>
+</div>
+<div class="font-label-caps text-label-caps text-on-primary-container">Technical Inspection</div>
+</div>
+<div class="flex-1 overflow-y-auto px-unit">
+<a class="flex items-center gap-sm px-sm py-sm text-on-primary-container hover:bg-on-primary-container/10 rounded-lg mx-md hover:bg-on-primary-container/5 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-medium text-body-medium">Overview</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm bg-secondary-container text-on-secondary-container rounded-lg mx-md active:opacity-80 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-body-medium text-body-medium">Inspections</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-primary-container hover:bg-on-primary-container/10 rounded-lg mx-md hover:bg-on-primary-container/5 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">engineering</span>
+<span class="font-body-medium text-body-medium">Assets</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-primary-container hover:bg-on-primary-container/10 rounded-lg mx-md hover:bg-on-primary-container/5 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-medium text-body-medium">Team</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-primary-container hover:bg-on-primary-container/10 rounded-lg mx-md hover:bg-on-primary-container/5 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-medium text-body-medium">Reports</span>
+</a>
+</div>
+<div class="px-unit mt-auto border-t border-on-primary-container/20 pt-md">
+<button class="w-full flex items-center gap-sm px-sm py-sm text-on-primary-container hover:bg-on-primary-container/10 rounded-lg mx-md hover:bg-on-primary-container/5 transition-all scale-95 duration-150 text-left">
+<span class="material-symbols-outlined">translate</span>
+<span class="font-body-medium text-body-medium">Switch Language (EN/FA)</span>
+</button>
+<button class="w-full flex items-center gap-sm px-sm py-sm text-on-primary-container hover:bg-on-primary-container/10 rounded-lg mx-md hover:bg-on-primary-container/5 transition-all scale-95 duration-150 text-left">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-medium text-body-medium">Logout</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col ml-0 lg:ml-sidebar-width h-full bg-background overflow-hidden relative z-10">
+<!-- TopNavBar (JSON) -->
+<header class="flex justify-between items-center h-topbar-height px-lg w-full bg-surface border-b border-outline-variant flat no shadows z-10 flex-shrink-0">
+<div class="flex items-center gap-md">
+<button class="lg:hidden p-unit text-on-surface hover:bg-surface-container-low rounded"><span class="material-symbols-outlined">menu</span></button>
+<div class="font-headline-lg text-headline-lg font-bold text-primary lg:hidden">PEMS Enterprise Utility</div>
+</div>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="font-body-medium text-body-medium text-on-surface-variant hover:text-secondary transition-colors active:opacity-80 transition-all" href="#">Dashboard</a>
+<a class="font-body-medium text-body-medium text-on-surface-variant hover:text-secondary transition-colors active:opacity-80 transition-all" href="#">Mechanical</a>
+<a class="font-body-medium text-body-medium text-secondary border-b-2 border-secondary pb-1 hover:text-secondary transition-colors active:opacity-80 transition-all" href="#">Electrical</a>
+<a class="font-body-medium text-body-medium text-on-surface-variant hover:text-secondary transition-colors active:opacity-80 transition-all" href="#">Civil</a>
+</nav>
+<div class="flex items-center gap-sm">
+<button class="p-unit text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="p-unit text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-[4px] right-[4px] w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-unit text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container ml-sm overflow-hidden border border-outline-variant">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A small, professional portrait photograph of an industrial engineer wearing a hardhat and safety glasses, smiling confidently against a neutral slate background. The lighting is bright and corporate." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKooD1U1g444CnCS_RX17ostFuHflAMGNAtNLi3ihxauiTdRgPy8iyfLXgsIaTUKUr2v2m2Nv0q_DVeyKMR7x3zcYGbPB3Aj1I3wH3Xwue3UG7qn0w_y6Cl0z0kLV0THgJ_XmefCUdDYdjLZYzufVCaC4C73_EmOPu2FQo0OssYL3q7WRAANRHoTdQpCv1gs8YS38lSiC6tH2HOhmiOK9n33N4VYFwzX0oO51b4YgwlNyoUciYT6Dc"/>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="flex-1 overflow-y-auto p-gutter lg:p-lg">
+<div class="max-w-[1200px] mx-auto">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-md mb-lg">
+<div>
+<div class="flex items-center gap-sm mb-unit">
+<span class="px-2 py-1 bg-surface-variant text-on-surface-variant rounded-full font-badge-label text-badge-label">INS-E-2023-049</span>
+<span class="px-2 py-1 bg-secondary-container/20 text-secondary-container border border-secondary-container/30 rounded-full font-badge-label text-badge-label">IN PROGRESS</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary" style="font-size: 28px;">electric_meter</span>
+                            Transformer &amp; Switchgear Inspection
+                        </h1>
+<p class="font-body-base text-body-base text-on-surface-variant mt-unit">Asset: TRF-SUB-04 (11kV/415V Cast Resin)</p>
+</div>
+<div class="flex gap-sm">
+<button class="pems-btn-secondary"><span class="material-symbols-outlined mr-unit" style="font-size: 18px;">save</span> Save Draft</button>
+<button class="pems-btn-primary"><span class="material-symbols-outlined mr-unit" style="font-size: 18px;">check_circle</span> Submit</button>
+</div>
+</div>
+<!-- Form Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-md lg:gap-lg">
+<!-- Left Column (Primary Data) -->
+<div class="lg:col-span-2 space-y-md lg:space-y-lg">
+<!-- Electrical Parameters -->
+<section class="pems-card p-md">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-md border-b border-[#edf0f4] pb-unit flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">flash_on</span>
+                                Parameters / پارامترها
+                            </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div>
+<label class="pems-label">Primary Voltage (kV) / ولتاژ اولیه</label>
+<div class="relative">
+<input class="pems-input pr-8" step="0.01" type="number" value="11.02"/>
+<span class="absolute right-sm top-1/2 -translate-y-1/2 text-on-surface-variant font-label-caps text-label-caps">kV</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-1">Nominal: 11kV ± 5%</p>
+</div>
+<div>
+<label class="pems-label">Secondary Voltage (V) / ولتاژ ثانویه</label>
+<div class="relative">
+<input class="pems-input pems-error pr-8" step="1" type="number" value="395"/>
+<span class="absolute right-sm top-1/2 -translate-y-1/2 text-error font-label-caps text-label-caps material-symbols-outlined" style="font-size: 16px;">warning</span>
+</div>
+<p class="text-[10px] text-error mt-1 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">arrow_downward</span> Below nominal (415V)</p>
+</div>
+<div class="md:col-span-2 grid grid-cols-3 gap-sm mt-sm">
+<div>
+<label class="pems-label">Phase L1 (A) / فاز ۱</label>
+<input class="pems-input" type="number" value="412"/>
+</div>
+<div>
+<label class="pems-label">Phase L2 (A) / فاز ۲</label>
+<input class="pems-input" type="number" value="408"/>
+</div>
+<div>
+<label class="pems-label">Phase L3 (A) / فاز ۳</label>
+<input class="pems-input" type="number" value="420"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Insulation Resistance (Megger) -->
+<section class="pems-card p-md">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-md border-b border-[#edf0f4] pb-unit flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">speed</span>
+                                Insulation Resistance (Megger) / مقاومت عایقی
+                            </h2>
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#f5f7fa] border-b border-[#edf0f4]">
+<th class="font-table-header text-table-header text-on-surface-variant py-sm px-sm uppercase">Connection</th>
+<th class="font-table-header text-table-header text-on-surface-variant py-sm px-sm uppercase">15 sec (MΩ)</th>
+<th class="font-table-header text-table-header text-on-surface-variant py-sm px-sm uppercase">60 sec (MΩ)</th>
+<th class="font-table-header text-table-header text-on-surface-variant py-sm px-sm uppercase">DAR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-[#edf0f4] hover:bg-surface-container-low transition-colors">
+<td class="font-table-cell text-table-cell text-on-surface py-sm px-sm">HV to LV</td>
+<td class="py-sm px-sm"><input class="pems-input !py-1 w-20" type="number" value="1500"/></td>
+<td class="py-sm px-sm"><input class="pems-input !py-1 w-20" type="number" value="2100"/></td>
+<td class="font-table-cell text-table-cell text-on-surface py-sm px-sm font-semibold text-green-700">1.4</td>
+</tr>
+<tr class="border-b border-[#edf0f4] hover:bg-surface-container-low transition-colors">
+<td class="font-table-cell text-table-cell text-on-surface py-sm px-sm">HV to Earth</td>
+<td class="py-sm px-sm"><input class="pems-input !py-1 w-20" type="number" value="1200"/></td>
+<td class="py-sm px-sm"><input class="pems-input !py-1 w-20" type="number" value="1680"/></td>
+<td class="font-table-cell text-table-cell text-on-surface py-sm px-sm font-semibold text-green-700">1.4</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="font-table-cell text-table-cell text-on-surface py-sm px-sm">LV to Earth</td>
+<td class="py-sm px-sm"><input class="pems-input !py-1 w-20" type="number" value="500"/></td>
+<td class="py-sm px-sm"><input class="pems-input !py-1 w-20" type="number" value="580"/></td>
+<td class="font-table-cell text-table-cell py-sm px-sm font-semibold text-error">1.16</td>
+</tr>
+</tbody>
+</table>
+<div class="mt-sm p-sm bg-[#ffdad6]/20 border border-[#ffdad6] rounded flex gap-sm items-start">
+<span class="material-symbols-outlined text-error" style="font-size: 18px;">info</span>
+<p class="font-body-base text-[12px] text-on-surface-variant">LV to Earth DAR is below acceptable threshold (1.25). Recommended action: Cleaning and re-test.</p>
+</div>
+</section>
+</div>
+<!-- Right Column (Secondary Data / Meta) -->
+<div class="space-y-md lg:space-y-lg">
+<!-- Thermal Imaging -->
+<section class="pems-card p-md">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-md border-b border-[#edf0f4] pb-unit flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">thermostat</span>
+                                Thermal / حرارتی
+                            </h2>
+<div class="space-y-md">
+<div class="w-full h-32 bg-surface-container-low rounded border border-[#edf0f4] flex items-center justify-center relative overflow-hidden group cursor-pointer">
+<img alt="Thermal Scan" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A pseudo-color thermal imaging photograph of an electrical switchgear panel. Bright yellow and white spots indicate high heat at the connection points, contrasting against a cool deep blue and purple background. The image is technical and diagnostic in nature." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAL5RRkrMe2-1mg41Xc12bcJGpN87w9Kd3ARosCT__Dg-L_p5Jxr-MKbkSLDnCy5Ek5KZy-ibyDcz492nQ0t_b76XMd5gMJIjkvqWtFib_-HwULYHRnpllf7QUjXhPTT5C91rQudZZevP_VWqiIJ4fmYGX2zwXgHYJ8mBl0oT_o4rtP_ZwLovxVS_xCeMwt8wxUdvo1Ussr_Pzaya95o0U2sDqdx9TZBDOJJE8bpoHiXtplnHLU-RF"/>
+<div class="absolute inset-0 bg-primary/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white" style="font-size: 32px;">upload_file</span>
+</div>
+</div>
+<div>
+<label class="pems-label">Max Temp Recorded (°C)</label>
+<input class="pems-input" type="number" value="68.5"/>
+</div>
+<div>
+<label class="pems-label">Findings / یافته‌ها</label>
+<textarea class="pems-input h-24 resize-none">Hotspot detected on L2 incoming lug. ΔT is 15°C above ambient. Requires re-torquing during next shutdown.</textarea>
+</div>
+</div>
+</section>
+<!-- Protective Relays -->
+<section class="pems-card p-md">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-md border-b border-[#edf0f4] pb-unit flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">shield</span>
+                                Protection / حفاظت
+                            </h2>
+<div class="space-y-sm">
+<label class="flex items-center gap-sm p-sm border border-[#edf0f4] rounded hover:border-secondary transition-colors cursor-pointer">
+<input checked="" class="rounded text-secondary focus:ring-secondary/50" type="checkbox"/>
+<span class="font-body-base text-body-base text-on-surface">Overcurrent (50/51) Tested</span>
+</label>
+<label class="flex items-center gap-sm p-sm border border-[#edf0f4] rounded hover:border-secondary transition-colors cursor-pointer">
+<input checked="" class="rounded text-secondary focus:ring-secondary/50" type="checkbox"/>
+<span class="font-body-base text-body-base text-on-surface">Earth Fault (50N/51N) Tested</span>
+</label>
+<label class="flex items-center gap-sm p-sm border border-[#edf0f4] rounded hover:border-secondary transition-colors cursor-pointer">
+<input class="rounded text-secondary focus:ring-secondary/50" type="checkbox"/>
+<span class="font-body-base text-body-base text-on-surface">Buchholz Relay Trip Tested</span>
+</label>
+</div>
+</section>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

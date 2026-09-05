@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Access Denied";
+    Layout = "_AuthLayout";
+}
+
+<div class="text-center">
+    <div style="font-size:52px; color:#d98c2b;">
+        <i class="bi bi-shield-lock-fill"></i>
+    </div>
+    <h2 class="mt-2">Access Denied</h2>
+    <p class="subtitle">
+        You don't have permission to view this page.
+        If you believe this is a mistake, contact your System Administrator.
+    </p>
+
+    <a asp-controller="Home" asp-action="Index" class="btn btn-pems">Back to Dashboard</a>
+</div>

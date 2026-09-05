@@ -1,0 +1,287 @@
+﻿@model PEMS.Domain.Entities.Employee
+@{
+    var laborRates = (List<PEMS.Domain.Entities.EmployeeLaborRate>)ViewBag.LaborRates;
+    var teamHistory = (List<PEMS.Domain.Entities.TeamMember>)ViewBag.TeamHistory;
+    var employeeSkills = (List<PEMS.Domain.Entities.EmployeeSkill>)ViewBag.EmployeeSkills;
+    var allSkills = (IEnumerable<dynamic>)ViewBag.AllSkills;
+    var employeeQualifications = (List<PEMS.Domain.Entities.EmployeeQualification>)ViewBag.EmployeeQualifications;
+    var allQualifications = (IEnumerable<dynamic>)ViewBag.AllQualifications;
+    var employeeCertifications = (List<PEMS.Domain.Entities.EmployeeCertification>)ViewBag.EmployeeCertifications;
+    var allCertifications = (IEnumerable<dynamic>)ViewBag.AllCertifications;
+
+    // طبق بخش ۱۹ سند: «انقضای گواهینامه باید قابل‌تشخیص باشد» - همون منطق سررسید کالیبراسیون ابزاردقیق
+    string ExpiryStatus(DateTime? expiry)
+    {
+        if (!expiry.HasValue) return "Unknown";
+        if (expiry.Value.Date < DateTime.Today) return "Overdue";
+        if (expiry.Value.Date <= DateTime.Today.AddDays(30)) return "DueSoon";
+        return "OK";
+    }
+    string ExpiryBadgeClass(string status) => status switch
+    {
+        "Overdue" => "bg-danger", "DueSoon" => "bg-warning text-dark", "OK" => "bg-success", _ => "bg-secondary"
+    };
+}
+
+<div class="content-card mb-3">
+    <div class="d-flex align-items-center gap-3">
+        @if (!string.IsNullOrEmpty(Model.PhotoPath))
+        {
+            <img src="@Model.PhotoPath" class="rounded-circle" style="width:64px;height:64px;object-fit:cover;" />
+        }
+        <div>
+            <h5 class="mb-0">@Model.FirstName @Model.LastName</h5>
+            <span class="text-muted small">@Model.PersonnelCode &middot; @Model.Position &middot; @Model.Department?.Name &middot; @Model.Discipline?.Name</span>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0"><i class="bi bi-cash-coin"></i> نرخ دستمزد</h6>
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#setRateModal">
+                    <i class="bi bi-plus-lg"></i> ثبت نرخ جدید
+                </button>
+            </div>
+            <table class="table table-sm">
+                <thead><tr><th>نوع</th><th>نرخ</th><th>از تاریخ</th><th>تا تاریخ</th></tr></thead>
+                <tbody>
+                    @foreach (var r in laborRates)
+                    {
+                        <tr class="@(r.EffectiveTo == null ? "table-success" : "")">
+                            <td>@r.RateType</td>
+                            <td>@r.Rate.ToString("N0") @r.Currency</td>
+                            <td class="small">@r.EffectiveFrom.ToString("yyyy-MM-dd")</td>
+                            <td class="small">@(r.EffectiveTo?.ToString("yyyy-MM-dd") ?? "فعلی")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!laborRates.Any()) { <p class="text-muted small text-center py-2">نرخی ثبت نشده.</p> }
+            <p class="text-muted small mb-0">
+                <i class="bi bi-info-circle"></i> نرخ جدید، نرخ قبلی رو Overwrite نمی‌کنه - فقط می‌بندتش (EffectiveTo) و تاریخچه حفظ می‌شه.
+                هزینه‌ی WorkOrderهای قدیمی هم تغییر نمی‌کنه چون نرخ موقع ثبت Snapshot می‌شه.
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="content-card">
+            <h6 class="mb-3"><i class="bi bi-people"></i> تاریخچه‌ی عضویت تیم</h6>
+            <table class="table table-sm">
+                <thead><tr><th>تیم</th><th>نقش</th><th>از</th><th>تا</th></tr></thead>
+                <tbody>
+                    @foreach (var m in teamHistory)
+                    {
+                        <tr class="@(m.IsActive ? "table-success" : "")">
+                            <td>@m.Team?.Name</td>
+                            <td class="small">@m.Role?.Name</td>
+                            <td class="small">@m.JoinedDate.ToString("yyyy-MM-dd")</td>
+                            <td class="small">@(m.LeftDate?.ToString("yyyy-MM-dd") ?? (m.IsActive ? "فعلی" : "-"))</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!teamHistory.Any()) { <p class="text-muted small text-center py-2">عضویتی ثبت نشده.</p> }
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0"><i class="bi bi-mortarboard"></i> مهارت‌ها</h6>
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addSkillModal">
+                    <i class="bi bi-plus-lg"></i> افزودن
+                </button>
+            </div>
+            <ul class="list-unstyled mb-0">
+                @foreach (var es in employeeSkills)
+                {
+                    <li class="d-flex justify-content-between align-items-center border-bottom py-2">
+                        <span>
+                            <span class="small">@es.Skill?.Name</span>
+                            <span class="badge bg-secondary">@es.ProficiencyLevel</span>
+                            @if (es.CertifiedDate.HasValue) { <span class="text-muted small">— @es.CertifiedDate.Value.ToString("yyyy-MM-dd")</span> }
+                        </span>
+                        <form asp-action="RemoveSkill" method="post" class="d-inline">
+                            <input type="hidden" name="employeeSkillId" value="@es.EmployeeSkillId" />
+                            <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
+                            <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-1" onclick="return confirm('این مهارت حذف بشه؟')"><i class="bi bi-x"></i></button>
+                        </form>
+                    </li>
+                }
+            </ul>
+            @if (!employeeSkills.Any()) { <p class="text-muted small text-center py-2 mb-0">مهارتی ثبت نشده.</p> }
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0"><i class="bi bi-patch-check"></i> صلاحیت‌ها</h6>
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addQualificationModal">
+                    <i class="bi bi-plus-lg"></i> افزودن
+                </button>
+            </div>
+            <ul class="list-unstyled mb-0">
+                @foreach (var eq in employeeQualifications)
+                {
+                    var status = ExpiryStatus(eq.ExpiryDate);
+                    <li class="d-flex justify-content-between align-items-center border-bottom py-2">
+                        <span>
+                            <span class="small">@eq.Qualification?.Name</span>
+                            @if (eq.ExpiryDate.HasValue) { <span class="badge @ExpiryBadgeClass(status)">@status — @eq.ExpiryDate.Value.ToString("yyyy-MM-dd")</span> }
+                            @if (!string.IsNullOrWhiteSpace(eq.Issuer)) { <span class="text-muted small">— @eq.Issuer</span> }
+                        </span>
+                        <form asp-action="RemoveQualification" method="post" class="d-inline">
+                            <input type="hidden" name="employeeQualificationId" value="@eq.EmployeeQualificationId" />
+                            <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
+                            <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-1" onclick="return confirm('این صلاحیت حذف بشه؟')"><i class="bi bi-x"></i></button>
+                        </form>
+                    </li>
+                }
+            </ul>
+            @if (!employeeQualifications.Any()) { <p class="text-muted small text-center py-2 mb-0">صلاحیتی ثبت نشده.</p> }
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0"><i class="bi bi-award"></i> گواهینامه‌ها</h6>
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addCertificationModal">
+                    <i class="bi bi-plus-lg"></i> افزودن
+                </button>
+            </div>
+            <ul class="list-unstyled mb-0">
+                @foreach (var ec in employeeCertifications)
+                {
+                    var status = ExpiryStatus(ec.ExpiryDate);
+                    <li class="d-flex justify-content-between align-items-center border-bottom py-2">
+                        <span>
+                            <span class="small">@ec.Certification?.Name</span>
+                            @if (!string.IsNullOrWhiteSpace(ec.CertificateNumber)) { <span class="text-muted small">#@ec.CertificateNumber</span> }
+                            @if (ec.ExpiryDate.HasValue) { <span class="badge @ExpiryBadgeClass(status)">@status — @ec.ExpiryDate.Value.ToString("yyyy-MM-dd")</span> }
+                        </span>
+                        <form asp-action="RemoveCertification" method="post" class="d-inline">
+                            <input type="hidden" name="employeeCertificationId" value="@ec.EmployeeCertificationId" />
+                            <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
+                            <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-1" onclick="return confirm('این گواهینامه حذف بشه؟')"><i class="bi bi-x"></i></button>
+                        </form>
+                    </li>
+                }
+            </ul>
+            @if (!employeeCertifications.Any()) { <p class="text-muted small text-center py-2 mb-0">گواهینامه‌ای ثبت نشده.</p> }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addSkillModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="AddSkill" method="post">
+            <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
+            <div class="modal-header"><h6 class="modal-title">افزودن مهارت</h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">مهارت</label>
+                    <select name="skillId" class="form-select form-select-sm" required>
+                        @foreach (var s in allSkills) { <option value="@s.SkillId">@s.Name</option> }
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">سطح مهارت</label>
+                    <select name="proficiencyLevel" class="form-select form-select-sm" required>
+                        <option value="Basic">Basic</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                        <option value="Expert">Expert</option>
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">تاریخ گواهی (اختیاری)</label>
+                    <input name="certifiedDate" type="date" class="form-control form-control-sm" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">افزودن</button>
+            </div>
+        </form>
+    </div></div>
+</div>
+
+<div class="modal fade" id="addQualificationModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="AddQualification" method="post">
+            <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
+            <div class="modal-header"><h6 class="modal-title">افزودن صلاحیت</h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">صلاحیت</label>
+                    <select name="qualificationId" class="form-select form-select-sm" required>
+                        @foreach (var q in allQualifications) { <option value="@q.QualificationId">@q.Name</option> }
+                    </select>
+                </div>
+                <div class="mb-2"><label class="form-label small">صادرکننده (اختیاری)</label><input name="issuer" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><label class="form-label small">تاریخ صدور</label><input name="issueDate" type="date" class="form-control form-control-sm" required value="@DateTime.Today.ToString("yyyy-MM-dd")" /></div>
+                <div class="mb-2"><label class="form-label small">تاریخ انقضا (اختیاری)</label><input name="expiryDate" type="date" class="form-control form-control-sm" /></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">افزودن</button>
+            </div>
+        </form>
+    </div></div>
+</div>
+
+<div class="modal fade" id="addCertificationModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="AddCertification" method="post">
+            <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
+            <div class="modal-header"><h6 class="modal-title">افزودن گواهینامه</h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">گواهینامه</label>
+                    <select name="certificationId" class="form-select form-select-sm" required>
+                        @foreach (var c in allCertifications) { <option value="@c.CertificationId">@c.Name</option> }
+                    </select>
+                </div>
+                <div class="mb-2"><label class="form-label small">شماره گواهی (اختیاری)</label><input name="certificateNumber" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><label class="form-label small">صادرکننده (اختیاری)</label><input name="issuer" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><label class="form-label small">تاریخ صدور</label><input name="issueDate" type="date" class="form-control form-control-sm" required value="@DateTime.Today.ToString("yyyy-MM-dd")" /></div>
+                <div class="mb-2"><label class="form-label small">تاریخ انقضا (اختیاری)</label><input name="expiryDate" type="date" class="form-control form-control-sm" /></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">افزودن</button>
+            </div>
+        </form>
+    </div></div>
+</div>
+
+<div class="modal fade" id="setRateModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="SetLaborRate" method="post">
+            <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
+            <div class="modal-header"><h6 class="modal-title">ثبت نرخ دستمزد جدید</h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">نوع</label>
+                    <select name="rateType" class="form-select form-select-sm" required>
+                        <option value="Normal">عادی</option>
+                        <option value="Overtime">اضافه‌کاری</option>
+                    </select>
+                </div>
+                <div class="mb-2"><label class="form-label small">نرخ</label><input name="rate" type="number" step="0.01" class="form-control form-control-sm" required /></div>
+                <div class="mb-2"><label class="form-label small">واحد پول</label><input name="currency" value="IRR" class="form-control form-control-sm" required /></div>
+                <div class="mb-2"><label class="form-label small">از تاریخ</label><input name="effectiveFrom" type="date" class="form-control form-control-sm" required /></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">ثبت</button>
+            </div>
+        </form>
+    </div></div>
+</div>

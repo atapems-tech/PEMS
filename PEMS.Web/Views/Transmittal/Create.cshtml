@@ -1,0 +1,172 @@
+@{
+    var projects = (IEnumerable<dynamic>)ViewBag.Projects;
+    var documents = (IEnumerable<dynamic>)ViewBag.Documents;
+}
+
+<div class="content-card" style="max-width:900px;">
+    <div asp-validation-summary="All" class="alert alert-danger py-2 px-3 small" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></div>
+
+    <form asp-action="Create" method="post">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Transmittal No</label>
+                <input name="transmittalNo" class="form-control" placeholder="e.g. TR-2026-001" required />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Project</label>
+                <select name="projectId" class="form-select" required>
+                    @foreach (var p in projects)
+                    {
+                        <option value="@p.ProjectId">@p.ProjectName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">From</label>
+                <input name="from" class="form-control" placeholder="e.g. Engineering Department" required />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">To <span class="text-muted small">(free-text summary - optional if recipients added below)</span></label>
+                <input name="to" class="form-control" placeholder="e.g. Contractor XYZ" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Purpose</label>
+                <select name="purpose" class="form-select">
+                    <option value="IFA">IFA - Issued for Approval</option>
+                    <option value="IFR">IFR - Issue for Review and Comments</option>
+                    <option value="IFI">IFI - Issue for Information</option>
+                    <option value="FI">FI - Final Issue (without comments)</option>
+                    <option value="For Approval">For Approval (legacy)</option>
+                    <option value="For Construction">For Construction (legacy)</option>
+                    <option value="For Information" selected>For Information (legacy)</option>
+                    <option value="For Review">For Review (legacy)</option>
+                </select>
+            </div>
+            <div class="col-md-6 d-flex align-items-end">
+                <div class="form-check">
+                    <input type="checkbox" name="responseRequired" value="true" class="form-check-input" id="responseRequired" />
+                    <label class="form-check-label" for="responseRequired">Response Required</label>
+                    <input type="hidden" name="responseRequired" value="false" />
+                </div>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Description</label>
+                <textarea name="description" class="form-control" rows="2"></textarea>
+            </div>
+
+            <div class="col-12">
+                <label class="form-label d-block">Recipients <span class="text-muted small">(structured - required)</span></label>
+                <div id="recipientRows"></div>
+                <button type="button" id="addRecipientBtn" class="btn btn-sm btn-outline-secondary mt-1"><i class="bi bi-plus-lg"></i> Add Recipient</button>
+            </div>
+
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <label class="form-label d-block mb-0">Documents to include</label>
+                    <span class="small text-muted" id="docPickerCounter"></span>
+                </div>
+                <p class="text-muted small mb-1">
+                    Only showing documents from the selected project. Documents on Hold cannot be transmitted. Type to search by number or title.
+                </p>
+                <input type="text" id="docPickerSearch" class="form-control form-control-sm mb-2" placeholder="Search by document number or title..." />
+                <div class="border rounded p-2" id="docPickerList" style="max-height:320px; overflow-y:auto;">
+                    @foreach (var d in documents)
+                    {
+                        <div class="form-check doc-picker-row" data-project-id="@d.ProjectId" data-search="@($"{d.DocumentNo} {d.Title}".ToLower())">
+                            <input class="form-check-input doc-picker-checkbox" type="checkbox" name="documentIds" value="@d.DocumentId" id="doc_@d.DocumentId" disabled="@((bool)d.IsOnHold)" />
+                            <label class="form-check-label" for="doc_@d.DocumentId">
+                                @d.DocumentNo - @d.Title
+                                <span class="text-muted small">(Rev @d.RevisionNo &middot; @d.DisciplineName &middot; @d.Status)</span>
+                                @if ((bool)d.IsOnHold)
+                                {
+                                    <span class="badge bg-warning text-dark">On Hold</span>
+                                }
+                            </label>
+                        </div>
+                    }
+                </div>
+                @if (!documents.Any())
+                {
+                    <p class="text-muted small mb-0">No documents available.</p>
+                }
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-pems-solid">Create Transmittal</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<template id="recipientRowTemplate">
+    <div class="row g-2 mb-2 recipient-row align-items-center">
+        <div class="col-md-3"><input name="recipientName" class="form-control form-control-sm" placeholder="Name" /></div>
+        <div class="col-md-3">
+            <select name="recipientType" class="form-select form-select-sm">
+                <option value="External">External</option>
+                <option value="Internal">Internal</option>
+                <option value="Vendor">Vendor</option>
+                <option value="Client">Client</option>
+            </select>
+        </div>
+        <div class="col-md-3"><input name="recipientOrganization" class="form-control form-control-sm" placeholder="Organization" /></div>
+        <div class="col-md-2 form-check">
+            <input type="checkbox" class="form-check-input" name="recipientResponseRequired" value="true" />
+            <label class="form-check-label small">Response req.</label>
+        </div>
+        <div class="col-md-1"><button type="button" class="btn btn-sm btn-outline-danger remove-recipient-btn"><i class="bi bi-x-lg"></i></button></div>
+    </div>
+</template>
+
+@section Scripts {
+    <script>
+        (function () {
+            var projectSelect = document.querySelector('select[name="projectId"]');
+            var searchBox = document.getElementById('docPickerSearch');
+            var rows = document.querySelectorAll('.doc-picker-row');
+            var counter = document.getElementById('docPickerCounter');
+            var recipientRows = document.getElementById('recipientRows');
+            var template = document.getElementById('recipientRowTemplate');
+            var addBtn = document.getElementById('addRecipientBtn');
+
+            function addRecipientRow() {
+                var clone = template.content.cloneNode(true);
+                clone.querySelector('.remove-recipient-btn').addEventListener('click', function (e) {
+                    e.target.closest('.recipient-row').remove();
+                });
+                recipientRows.appendChild(clone);
+            }
+
+            addBtn.addEventListener('click', addRecipientRow);
+            addRecipientRow();
+
+            function applyFilter() {
+                var projectId = projectSelect.value;
+                var term = searchBox.value.trim().toLowerCase();
+                var visibleCount = 0, selectedCount = 0;
+
+                rows.forEach(function (row) {
+                    var matchesProject = !projectId || row.getAttribute('data-project-id') === projectId;
+                    var matchesSearch = !term || row.getAttribute('data-search').indexOf(term) !== -1;
+                    var show = matchesProject && matchesSearch;
+
+                    row.style.display = show ? '' : 'none';
+                    if (show) visibleCount++;
+
+                    if (row.querySelector('.doc-picker-checkbox').checked) selectedCount++;
+                });
+
+                counter.textContent = visibleCount + ' shown, ' + selectedCount + ' selected';
+            }
+
+            projectSelect.addEventListener('change', applyFilter);
+            searchBox.addEventListener('input', applyFilter);
+            rows.forEach(function (row) {
+                row.querySelector('.doc-picker-checkbox').addEventListener('change', applyFilter);
+            });
+
+            applyFilter();
+        })();
+    </script>
+}

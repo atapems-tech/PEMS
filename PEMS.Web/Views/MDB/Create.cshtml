@@ -1,0 +1,61 @@
+@{
+    var projects = (IEnumerable<dynamic>)ViewBag.Projects;
+    var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
+    var equipments = (IEnumerable<dynamic>)ViewBag.Equipments;
+    var pos = (IEnumerable<dynamic>)ViewBag.PurchaseOrders;
+}
+
+<div class="content-card" style="max-width:700px;">
+    <div asp-validation-summary="All" class="alert alert-danger py-2 px-3 small" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></div>
+
+    <form asp-action="Create" method="post">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Project</label>
+                <select name="projectId" class="form-select" required>
+                    @foreach (var p in projects)
+                    {
+                        <option value="@p.ProjectId">@p.ProjectName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Equipment</label>
+                <select name="equipmentId" class="form-select" required>
+                    @foreach (var eq in equipments)
+                    {
+                        <option value="@eq.EquipmentId">@eq.TagNumber</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Vendor</label>
+                <select name="vendorId" class="form-select" required>
+                    @foreach (var v in vendors)
+                    {
+                        <option value="@v.VendorId">@v.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Purchase Order <span class="text-muted small">(optional)</span></label>
+                <select name="poId" class="form-select">
+                    <option value="">-- None --</option>
+                    @foreach (var po in pos)
+                    {
+                        <option value="@po.PoId">@po.PoNumber</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Planned Final Issue Date <span class="text-muted small">(index due 4 weeks before)</span></label>
+                <input name="plannedFinalIssueDate" type="date" class="form-control" />
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-pems-solid">Create MDB</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

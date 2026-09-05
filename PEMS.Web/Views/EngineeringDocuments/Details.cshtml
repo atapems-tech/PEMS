@@ -1,0 +1,1144 @@
+﻿@model PEMS.Application.DTOs.EngineeringDocumentDto
+@{
+    ViewData["Title"] = "Engineering Document Details";
+
+    string statusClass = Model.Status switch
+    {
+        "Approved" => "bg-success",
+        "Checked" => "bg-info text-dark",
+        "IDC Review" => "bg-warning text-dark",
+        "Issued" => "bg-primary",
+        "Client Approved" => "bg-success",
+        "Rejected" => "bg-danger",
+        "Submitted" => "bg-warning text-dark",
+        "Draft" => "bg-secondary",
+        _ => "bg-primary"
+    };
+
+    var relatedLetters = (List<PEMS.Application.DTOs.RelatedLetterDto>)(ViewBag.RelatedLetters ?? new List<PEMS.Application.DTOs.RelatedLetterDto>());
+}
+
+
+@* طراحی جدید: به‌جای یک صفحه‌ی بسیار طولانی با اسکرول پیوسته، محتوا در تب‌ها سازمان‌دهی شده -
+   الهام‌گرفته از EDMS های رقیب که هر مدرک را به‌صورت Overview / Attachments / Revisions /
+   Workflow / Correspondence نشان می‌دهند. اقدامات اصلی گردش‌کار همیشه بالای صفحه و قابل مشاهده‌اند. *@
+
+<div class="content-card mb-3">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+        <div>
+            <h5 class="mb-1">@Model.DocumentNo &mdash; @Model.Title</h5>
+            <span class="badge @statusClass">@Model.Status</span>
+            @if (Model.IsFrozen) { <span class="badge bg-info text-dark"><i class="bi bi-snow"></i> Frozen</span> }
+            <span class="text-muted small ms-2">Rev @Model.RevisionNo &middot; @Model.ProjectName</span>
+        </div>
+
+        <div class="d-flex gap-2">
+            @if (Model.Status == "Draft")
+            {
+                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
+                    <i class="bi bi-send"></i> Submit For Review
+                </button>
+            }
+            else if (Model.Status == "Submitted")
+            {
+                <form asp-action="Check" method="post" class="d-inline">
+                    <input type="hidden" name="id" value="@Model.DocumentId" />
+                    <button class="btn btn-info btn-sm"><i class="bi bi-clipboard-check"></i> Check</button>
+                </form>
+                <form asp-action="Reject" method="post" class="d-inline">
+                    <input type="hidden" name="id" value="@Model.DocumentId" />
+                    <button class="btn btn-danger btn-sm">Reject</button>
+                </form>
+                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#reviseModal">
+                    <i class="bi bi-arrow-repeat"></i> Revise &amp; Resubmit
+                </button>
+            }
+            else if (Model.Status == "IDC Review")
+            {
+                var idcStatusList = (IReadOnlyList<PEMS.Application.Interfaces.IdcStatusItemDto>)
+                    (ViewBag.IdcStatus ?? new List<PEMS.Application.Interfaces.IdcStatusItemDto>());
+                var myDisciplineIdForIdc = ViewBag.MyDisciplineId as int?;
+                var myPendingIdc = idcStatusList.FirstOrDefault(x => x.DisciplineId == myDisciplineIdForIdc && x.Status == "Pending");
+
+                if (myPendingIdc != null)
+                {
+                    <form asp-action="IdcRespond" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@Model.DocumentId" />
+                        <input type="hidden" name="decision" value="Approve" />
+                        <button class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> Approve</button>
+                    </form>
+                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#idcCommentModal">Comment</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#idcRejectModal">Reject</button>
+                }
+                else
+                {
+                    <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> منتظر بازبینی دیسیپلین‌های دیگر (IDC)</span>
+                }
+            }
+            else if (Model.Status == "Checked")
+            {
+                <form asp-action="Approve" method="post" class="d-inline">
+                    <input type="hidden" name="id" value="@Model.DocumentId" />
+                    <button class="btn btn-success btn-sm">Approve</button>
+                </form>
+                <form asp-action="Reject" method="post" class="d-inline">
+                    <input type="hidden" name="id" value="@Model.DocumentId" />
+                    <button class="btn btn-danger btn-sm">Reject</button>
+                </form>
+                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#reviseModal">
+                    <i class="bi bi-arrow-repeat"></i> Revise &amp; Resubmit
+                </button>
+            }
+            else if (Model.Status == "Approved")
+            {
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#issueModal">
+                    <i class="bi bi-send-check"></i> Issue
+                </button>
+                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#newRevisionModal">Create New Revision</button>
+            }
+            else if (Model.Status == "Issued")
+            {
+                <span class="badge bg-primary"><i class="bi bi-check2-circle"></i> Issued</span>
+                @if (string.IsNullOrEmpty(Model.ClientApprovalStatus))
+                {
+                    <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#clientResponseModal">
+                        <i class="bi bi-building"></i> Record Client Response
+                    </button>
+                }
+                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#newRevisionModal">Create New Revision</button>
+            }
+            else if (Model.Status == "Rejected" || Model.Status == "Revise & Resubmit")
+            {
+                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
+                    <i class="bi bi-arrow-repeat"></i> Resubmit
+                </button>
+            }
+            <a asp-action="Edit" asp-route-id="@Model.DocumentId" class="btn btn-outline-secondary btn-sm"><i class="bi bi-pencil"></i> Edit</a>
+            <form asp-action="AnalyzeRelationships" asp-route-id="@Model.DocumentId" method="post" class="d-inline">
+                <button type="submit" class="btn btn-outline-info btn-sm"><i class="bi bi-stars"></i> تحلیل روابط (AI)</button>
+            </form>
+        </div>
+    </div>
+
+    @* طبق Phase E-01: Freeze/Unfreeze واقعاً سمت سرور اجرا می‌شود (نه فقط این دکمه) - این‌جا
+       فقط نمایش/ورودی دلیل است. *@
+    @if (!Model.IsFrozen && (bool)(ViewBag.CanFreeze ?? false))
+    {
+        <form asp-action="Freeze" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center mt-2 border-top pt-2">
+            <input type="text" name="reason" class="form-control form-control-sm" style="max-width:320px;" placeholder="Freeze reason (required)" required />
+            <button type="submit" class="btn btn-outline-dark btn-sm" onclick="return confirm('این مدرک منجمد (Frozen) شود؟ پس از آن دیگر قابل ویرایش یا رویژن جدید نخواهد بود.');">
+                <i class="bi bi-snow"></i> Freeze
+            </button>
+        </form>
+    }
+    @if (Model.IsFrozen)
+    {
+        <div class="mt-2 border-top pt-2 small text-muted">
+            <i class="bi bi-snow"></i> Frozen by @(Model.FrozenByName ?? "-") on @(Model.FrozenDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")
+            @if (!string.IsNullOrWhiteSpace(Model.FreezeReason)) { <text> &mdash; @Model.FreezeReason</text> }
+        </div>
+        @if ((bool)(ViewBag.CanUnfreeze ?? false))
+        {
+            <form asp-action="Unfreeze" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center mt-2">
+                <input type="text" name="reason" class="form-control form-control-sm" style="max-width:320px;" placeholder="Unfreeze reason (required)" required />
+                <button type="submit" class="btn btn-outline-warning btn-sm" onclick="return confirm('انجماد این مدرک برداشته شود؟');">
+                    <i class="bi bi-sun"></i> Unfreeze
+                </button>
+            </form>
+        }
+    }
+
+    @* طبق بخش M ممیزی: Hold مستقل از Freeze - سرور واقعاً Approve/Issue را روی مدرک Hold مسدود
+       می‌کند (نه فقط این دکمه)، و مثل Freeze، تاریخچه‌ی چندچرخه‌ای در DocumentHold ثبت می‌شود. *@
+    @if (!Model.IsOnHold && !Model.IsFrozen && Model.Status != "Issued" && (bool)(ViewBag.CanHold ?? false))
+    {
+        <form asp-action="Hold" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center mt-2 border-top pt-2">
+            <input type="text" name="reason" class="form-control form-control-sm" style="max-width:320px;" placeholder="Hold reason (required)" required />
+            <button type="submit" class="btn btn-outline-dark btn-sm" onclick="return confirm('این مدرک در وضعیت Hold قرار بگیرد؟ تا رفع Hold، قابل تأیید (Approve) یا صدور (Issue) نخواهد بود.');">
+                <i class="bi bi-pause-circle"></i> Hold
+            </button>
+        </form>
+    }
+    @if (Model.IsOnHold)
+    {
+        <div class="mt-2 border-top pt-2 small text-muted">
+            <span class="badge bg-warning text-dark"><i class="bi bi-pause-circle"></i> On Hold</span>
+            این مدرک قابل تأیید (Approve) یا صدور (Issue) نیست تا زمانی که Hold رفع شود.
+        </div>
+        @if ((bool)(ViewBag.CanReleaseHold ?? false))
+        {
+            <form asp-action="ReleaseHold" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center mt-2">
+                <input type="text" name="reason" class="form-control form-control-sm" style="max-width:320px;" placeholder="Release reason (required)" required />
+                <button type="submit" class="btn btn-outline-success btn-sm" onclick="return confirm('Hold این مدرک رفع شود؟');">
+                    <i class="bi bi-play-circle"></i> Release Hold
+                </button>
+            </form>
+        }
+    }
+
+    @{
+        var holdHistory = (List<PEMS.Application.DTOs.DocumentHoldDto>)(ViewBag.HoldHistory ?? new List<PEMS.Application.DTOs.DocumentHoldDto>());
+    }
+    @if (holdHistory.Any())
+    {
+        <details class="mt-2 small">
+            <summary class="text-muted">Hold History (@holdHistory.Count)</summary>
+            <table class="table table-sm table-enterprise mt-1">
+                <thead><tr><th>Reason</th><th>Held</th><th>By</th><th>Released</th><th>By</th><th>Release Reason</th></tr></thead>
+                <tbody>
+                    @foreach (var h in holdHistory)
+                    {
+                        <tr>
+                            <td>@h.Reason</td>
+                            <td>@h.HoldDate.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>@h.HoldByName</td>
+                            <td>@(h.ReleaseDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")</td>
+                            <td>@h.ReleaseByName</td>
+                            <td>@h.ReleaseReason</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </details>
+    }
+
+    @{
+        var equipmentUsingThisAsPID = (IEnumerable<dynamic>)(ViewBag.EquipmentUsingThisAsPID ?? new List<dynamic>());
+    }
+    @if (equipmentUsingThisAsPID.Any())
+    {
+        <div class="mt-2">
+            <span class="text-muted small">این مدرک P&amp;ID تجهیزات زیر است:</span>
+            @foreach (var e in equipmentUsingThisAsPID)
+            {
+                <a asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId" class="badge bg-info text-dark text-decoration-none">
+                    <i class="bi bi-gear"></i> @e.TagNumber
+                </a>
+            }
+        </div>
+    }
+
+    @{
+        var idcStatusForHeader = (IReadOnlyList<PEMS.Application.Interfaces.IdcStatusItemDto>)
+            (ViewBag.IdcStatus ?? new List<PEMS.Application.Interfaces.IdcStatusItemDto>());
+    }
+
+    @* نمودار گرافیکی همیشه‌مرئی چرخه - همون چیزی که قبلاً فقط توی پاپ‌آپ Submit بود، حالا اینجا
+       هم هست تا همیشه معلوم باشه مدرک دقیقاً کجای چرخه‌ست، بدون نیاز به باز کردن مدال *@
+    @if (Model.Status != "Draft")
+    {
+        <hr class="my-2" />
+        <partial name="_WorkflowStagesDiagram" model="@Model.Status" />
+
+        @if (idcStatusForHeader.Any())
+        {
+            <div class="d-flex flex-wrap gap-2 justify-content-center mb-1">
+                @foreach (var idc in idcStatusForHeader)
+                {
+                    var idcBadgeClass = idc.Status switch
+                    {
+                        "Approve" => "bg-success",
+                        "Comment" => "bg-warning text-dark",
+                        "Reject" => "bg-danger",
+                        _ => "bg-secondary"
+                    };
+                    <span class="badge @idcBadgeClass">
+                        <i class="bi bi-diagram-3"></i> @idc.DisciplineName: @idc.Status
+                    </span>
+                }
+            </div>
+        }
+    }
+</div>
+
+<ul class="nav nav-tabs mb-3" id="docTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
+            <i class="bi bi-info-circle"></i> Overview
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-attachments" type="button">
+            <i class="bi bi-paperclip"></i> Attachments &amp; AI <span class="badge bg-secondary">@(Model.Attachments?.Count ?? 0)</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-revisions" type="button">
+            <i class="bi bi-clock-history"></i> Revisions <span class="badge bg-secondary">@(Model.Revisions?.Count ?? 0)</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
+            <i class="bi bi-diagram-2"></i> Workflow History
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
+            <i class="bi bi-envelope-paper"></i> Correspondence
+            @if (relatedLetters.Any()) { <span class="badge bg-secondary">@relatedLetters.Count</span> }
+        </button>
+    </li>
+</ul>
+
+<div class="tab-content">
+
+    @* ===================== Overview ===================== *@
+    <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
+        <div class="row g-3">
+            <div class="col-lg-6">
+                <div class="content-card h-100">
+                    <h6 class="mb-3">Basic Information</h6>
+                    <table class="table table-borderless mb-0">
+                        <tr><th class="text-muted" style="width:40%;">Document No</th><td>@Model.DocumentNo</td></tr>
+                        <tr><th class="text-muted">Title</th><td>@Model.Title</td></tr>
+                        <tr><th class="text-muted">Description</th><td>@Model.Description</td></tr>
+                        <tr><th class="text-muted">Document Type</th><td>@Model.DocumentType</td></tr>
+                        <tr><th class="text-muted">Project</th><td>@Model.ProjectName</td></tr>
+                        <tr><th class="text-muted">Discipline</th><td>@Model.DisciplineName</td></tr>
+                        <tr><th class="text-muted">Area</th><td>@Model.Area</td></tr>
+                        <tr><th class="text-muted">Revision</th><td>@Model.RevisionNo</td></tr>
+                        <tr><th class="text-muted">Created Date</th><td>@Model.CreatedDate.ToString("yyyy-MM-dd")</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="content-card h-100">
+                    <h6 class="mb-3">Engineering Information</h6>
+                    <table class="table table-borderless mb-0">
+                        <tr><th class="text-muted" style="width:40%;">Issue Purpose</th><td>@Model.IssuePurpose</td></tr>
+                        <tr><th class="text-muted">Prepared By</th><td>@Model.PreparedBy</td></tr>
+                        <tr><th class="text-muted">Checked By</th><td>
+                            @Model.CheckedBy @(Model.CheckedDate.HasValue ? $"({Model.CheckedDate:yyyy-MM-dd})" : "")
+                            @if (!string.IsNullOrEmpty(Model.CheckedBySignaturePath))
+                            {
+                                <img src="@Model.CheckedBySignaturePath" alt="Signature" style="height:32px; vertical-align:middle; margin-right:8px; background:#fff; border:1px solid #eee; border-radius:3px;" />
+                            }
+                        </td></tr>
+                        <tr><th class="text-muted">Approved By</th><td>
+                            @Model.ApprovedBy @(Model.ApprovedDate.HasValue ? $"({Model.ApprovedDate:yyyy-MM-dd})" : "")
+                            @if (!string.IsNullOrEmpty(Model.ApprovedBySignaturePath))
+                            {
+                                <img src="@Model.ApprovedBySignaturePath" alt="Signature" style="height:32px; vertical-align:middle; margin-right:8px; background:#fff; border:1px solid #eee; border-radius:3px;" />
+                            }
+                        </td></tr>
+                        <tr><th class="text-muted">Comment Status</th><td>@Model.CommentStatus</td></tr>
+                        @if (!string.IsNullOrEmpty(Model.ClientApprovalStatus))
+                        {
+                            <tr>
+                                <th class="text-muted">Client Response</th>
+                                <td>
+                                    <span class="badge @(Model.ClientApprovalStatus == "Approved" ? "bg-success" : Model.ClientApprovalStatus == "Rejected" ? "bg-danger" : "bg-warning text-dark")">@Model.ClientApprovalStatus</span>
+                                    @if (!string.IsNullOrEmpty(Model.ClientComment)) { <div class="small text-muted">@Model.ClientComment</div> }
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <th class="text-muted">Related Equipment</th>
+                            <td>
+                                @if (Model.EquipmentId.HasValue)
+                                { <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</a> }
+                                else { <span class="text-muted">-</span> }
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-muted">Related Contract</th>
+                            <td>
+                                @if (Model.ContractId.HasValue)
+                                { <a asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Model.ContractNo</a> }
+                                else { <span class="text-muted">-</span> }
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* ===================== Attachments & AI ===================== *@
+    <div class="tab-pane fade" id="tab-attachments" role="tabpanel">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0">Attachments</h6>
+                <a asp-action="UploadAttachment" asp-route-id="@Model.DocumentId" class="btn btn-sm btn-pems-solid">
+                    <i class="bi bi-upload"></i> Upload Attachment
+                </a>
+            </div>
+
+            @if (Model.Attachments != null && Model.Attachments.Any())
+            {
+                <table class="table table-enterprise">
+                    <thead>
+                        <tr><th>File Name</th><th>Ext</th><th>Size</th><th>AI Status</th><th>Date</th><th class="text-end">Actions</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var file in Model.Attachments)
+                        {
+                            var badgeClass = file.AIStatus switch
+                            {
+                                "Completed" => "bg-success",
+                                "Processing" => "bg-info text-dark",
+                                "Pending" => "bg-secondary",
+                                "Failed" => "bg-danger",
+                                _ => "bg-secondary"
+                            };
+                            <tr>
+                                <td>@file.FileName</td>
+                                <td>@file.FileExtension</td>
+                                <td>@(file.FileSize / 1024) KB</td>
+                                <td><span class="badge @badgeClass">@file.AIStatus</span></td>
+                                <td class="small text-muted">@file.UploadDate.ToString("yyyy-MM-dd")</td>
+                                <td class="text-end">
+                                    <div class="d-flex gap-1 justify-content-end flex-wrap">
+                                        <a asp-action="DownloadAttachment" asp-route-id="@file.AttachmentId" class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i></a>
+                                        @if (file.AIStatus == "Completed")
+                                        {
+                                            <a asp-controller="AIExtraction" asp-action="Review" asp-route-attachmentId="@file.AttachmentId" class="btn btn-sm btn-outline-warning">AI Data</a>
+                                            <a asp-controller="EngineeringDocumentIntelligence" asp-action="Review" asp-route-id="@Model.DocumentId" class="btn btn-sm btn-outline-secondary">Intelligence</a>
+                                        }
+                                        <form asp-controller="OCRProcessing" asp-action="Retry" asp-route-id="@file.AttachmentId" method="post" class="d-inline">
+                                            <button class="btn btn-sm btn-outline-secondary" title="Re-analyze"><i class="bi bi-arrow-repeat"></i></button>
+                                        </form>
+                                        <form asp-action="DeleteAttachment" asp-route-id="@file.AttachmentId" method="post" class="d-inline" onsubmit="return confirm('Delete file?')">
+                                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-muted text-center py-4">No attachment available.</p>
+            }
+        </div>
+    </div>
+
+    @* ===================== Revisions ===================== *@
+    <div class="tab-pane fade" id="tab-revisions" role="tabpanel">
+        <div class="content-card">
+            <h6 class="mb-3">Revision History</h6>
+            @if (Model.Revisions != null && Model.Revisions.Any())
+            {
+                <table class="table table-enterprise">
+                    <thead><tr><th>Revision</th><th>Status</th><th>Reason</th><th>Created By</th><th>Reviewer</th><th>Approved</th>
+                        <th>Created</th><th>Issued</th><th>Effective</th><th>Supersedes</th></tr></thead>
+                    <tbody>
+                        @foreach (var rev in Model.Revisions)
+                        {
+                            <tr>
+                                <td>@rev.RevisionNo</td>
+                                <td><span class="badge bg-secondary">@rev.Status</span></td>
+                                <td class="small">@rev.Reason</td>
+                                <td class="small">@(rev.CreatedByName ?? "—")</td>
+                                <td>@rev.ReviewerName</td>
+                                <td>@rev.ApprovedBy</td>
+                                <td class="small text-muted">@rev.CreatedDate.ToString("yyyy-MM-dd")</td>
+                                <td class="small text-muted">@(rev.IssuedDate?.ToString("yyyy-MM-dd"))</td>
+                                <td class="small text-muted">@(rev.EffectiveDate?.ToString("yyyy-MM-dd"))</td>
+                                <td class="small">@rev.SupersededRevisionNo</td>
+                            </tr>
+                            @if (!string.IsNullOrEmpty(rev.ChangeDescription) || !string.IsNullOrEmpty(rev.AIRevisionSummary) || !string.IsNullOrEmpty(rev.VendorComment))
+                            {
+                                <tr class="table-light">
+                                    <td colspan="10" class="small">
+                                        @if (!string.IsNullOrEmpty(rev.ChangeDescription)) { <div><strong>Change:</strong> @rev.ChangeDescription</div> }
+                                        @if (!string.IsNullOrEmpty(rev.VendorComment)) { <div><i class="bi bi-building"></i> <strong>Vendor Comment:</strong> @rev.VendorComment</div> }
+                                        @if (!string.IsNullOrEmpty(rev.AIRevisionSummary)) { <div><i class="bi bi-robot"></i> <strong>AI Summary:</strong> @rev.AIRevisionSummary</div> }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-muted text-center py-4">No revision history.</p>
+            }
+        </div>
+    </div>
+
+    @* ===================== Workflow History ===================== *@
+    <div class="tab-pane fade" id="tab-workflow" role="tabpanel">
+        <div class="content-card">
+            <h6 class="mb-3">Workflow History</h6>
+            @if (Model.Workflows != null && Model.Workflows.Any())
+            {
+                <table class="table table-enterprise">
+                    <thead><tr><th>From</th><th>To</th><th>Action</th><th>Comment</th><th>Date</th><th>User</th></tr></thead>
+                    <tbody>
+                        @foreach (var item in Model.Workflows.OrderByDescending(x => x.ActionDate))
+                        {
+                            <tr>
+                                <td>@item.FromStatus</td>
+                                <td>@item.ToStatus</td>
+                                <td><span class="badge bg-secondary">@item.ActionType</span></td>
+                                <td>@item.Comment</td>
+                                <td class="small text-muted">@item.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                <td>@item.ActionBy</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-muted text-center py-4">No workflow history.</p>
+            }
+        </div>
+    </div>
+
+    @* ===================== Correspondence ===================== *@
+    <div class="tab-pane fade" id="tab-correspondence" role="tabpanel">
+        <div class="content-card">
+            <h6 class="mb-3"><i class="bi bi-envelope-paper"></i> Related Correspondence</h6>
+            @if (relatedLetters.Any())
+            {
+                <table class="table table-enterprise">
+                    <thead><tr><th>Type</th><th>Letter No</th><th>Subject</th><th>Date</th><th>Status</th><th></th></tr></thead>
+                    <tbody>
+                        @foreach (var l in relatedLetters)
+                        {
+                            <tr>
+                                <td><span class="badge bg-secondary">@l.LetterType</span></td>
+                                <td>@l.LetterNumber</td>
+                                <td>@l.Subject</td>
+                                <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
+                                <td><span class="badge bg-info text-dark">@l.Status</span></td>
+                                <td><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-muted text-center py-4">No correspondence linked to this document yet.</p>
+            }
+        </div>
+    </div>
+
+</div>
+
+@* ==============================================================================
+   پاپ‌آپ Submit/Resubmit با نمایش گرافیکی کل چرخه‌ی گردش‌کار - به‌جای یک دکمه‌ی تکی که
+   مستقیم POST می‌کرد، حالا کاربر قبل از تایید نهایی، کل مسیر و اینکه هر مرحله دست کیه
+   رو می‌بینه.
+   ============================================================================== *@
+<div class="modal fade" id="submitWorkflowModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form asp-action="Submit" method="post">
+                <input type="hidden" name="id" value="@Model.DocumentId" />
+                <div class="modal-header">
+                    <h6 class="modal-title"><i class="bi bi-signpost-split"></i> Engineering Document Approval Workflow</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <partial name="_WorkflowStagesDiagram" model="@Model.Status" />
+
+                    <hr />
+
+                    <div class="mb-2">
+                        <label class="form-label small fw-bold">
+                            <i class="bi bi-diagram-3"></i> این مدرک نیاز به بازبینی سایر دیسیپلین‌ها (IDC) داره؟
+                        </label>
+                        <div class="text-muted small mb-2">
+                            اگه دیسیپلینی رو انتخاب نکنی، مدرک بعد از Check مستقیم می‌ره مرحله‌ی تایید نهایی (بدون IDC).
+                        </div>
+                        <div class="row">
+                            @{
+                                var allDisciplinesForSubmit = (IEnumerable<PEMS.Domain.Entities.Discipline>)(ViewBag.AllDisciplines ?? new List<PEMS.Domain.Entities.Discipline>());
+                            }
+                            @foreach (var d in allDisciplinesForSubmit.Where(x => x.DisciplineId != Model.DisciplineId))
+                            {
+                                <div class="col-6 col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="idcDisciplineIds" value="@d.DisciplineId" id="idcDisc_@d.DisciplineId">
+                                        <label class="form-check-label small" for="idcDisc_@d.DisciplineId">@d.Name</label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                    <button type="submit" class="btn btn-warning btn-sm"><i class="bi bi-send"></i> تایید و ارسال</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* ==============================================================================
+   پاسخ IDC با کامنت (Comment) یا رد (Reject) - هر دو نیاز به توضیح دارن، برخلاف Approve
+   که یک دکمه‌ی ساده‌ست
+   ============================================================================== *@
+<div class="modal fade" id="idcCommentModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="IdcRespond" method="post">
+                <input type="hidden" name="id" value="@Model.DocumentId" />
+                <input type="hidden" name="decision" value="Comment" />
+                <div class="modal-header"><h6 class="modal-title">ثبت کامنت بازبینی IDC</h6></div>
+                <div class="modal-body">
+                    <p class="text-muted small">با ثبت کامنت، مدرک برمی‌گرده پیش سازنده برای اصلاح و ارسال دوباره.</p>
+                    <textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                    <button type="submit" class="btn btn-warning btn-sm">ثبت کامنت</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="idcRejectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="IdcRespond" method="post">
+                <input type="hidden" name="id" value="@Model.DocumentId" />
+                <input type="hidden" name="decision" value="Reject" />
+                <div class="modal-header"><h6 class="modal-title">رد بازبینی IDC</h6></div>
+                <div class="modal-body">
+                    <p class="text-muted small">با رد کردن، مدرک برمی‌گرده پیش سازنده و باید اصلاح و دوباره Submit بشه.</p>
+                    <textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                    <button type="submit" class="btn btn-danger btn-sm">رد کن</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* طبق Phase E-04: برخلاف Reject (رد قطعی)، این یعنی "برگردان برای اصلاح - دوباره Submit
+   می‌شود" - سند به وضعیت "Revise & Resubmit" می‌رود که خودش Submit دوباره را مجاز می‌کند. *@
+<div class="modal fade" id="reviseModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="ReviseAndResubmit" method="post">
+                <input type="hidden" name="id" value="@Model.DocumentId" />
+                <div class="modal-header"><h6 class="modal-title">برگرداندن برای اصلاح</h6></div>
+                <div class="modal-body">
+                    <p class="text-muted small">برخلاف رد قطعی، این یعنی سازنده باید اصلاح کند و دوباره Submit کند - نه رد نهایی.</p>
+                    <textarea name="comment" class="form-control form-control-sm" rows="3" placeholder="توضیح اصلاحات لازم" required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                    <button type="submit" class="btn btn-warning btn-sm">برگردان برای اصلاح</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@* ==============================================================================
+   پاپ‌آپ Issue: انتخاب واحد تحویل. اگر بیرونی (DCC کارفرما/پیمانکار) باشد، نامه‌ی رسمی
+   خروجی اجباری می‌شود؛ برای دو حالت داخلی (DCC خودمان یا واحد دیگر)، ثبت نامه اختیاری است.
+   ============================================================================== *@
+<div class="modal fade" id="issueModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form asp-action="Issue" method="post" id="issueForm">
+                <input type="hidden" name="id" value="@Model.DocumentId" />
+                <div class="modal-header"><h6 class="modal-title"><i class="bi bi-send-check"></i> صدور مدرک - انتخاب واحد تحویل</h6></div>
+                <div class="modal-body">
+                    @* طبق Phase E-04: هدف واقعی همین صدور (IFC/IFA/IFI/...) - در لحظه‌ی صدور
+                       ثبت می‌شود، نه مقدار قدیمی فرم Create/Edit *@
+                    <div class="mb-3">
+                        <label class="form-label small">Issue Purpose (IFC / IFA / IFI / ...)</label>
+                        <input type="text" name="issuePurpose" class="form-control form-control-sm" value="@Model.IssuePurpose" placeholder="e.g. Issued For Construction" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">این مدرک به کدوم واحد تحویل داده می‌شه؟</label>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="deliveryUnitType" id="dcc_internal" value="InternalDCC" checked
+                                   onclick="pemsToggleIssueFields()">
+                            <label class="form-check-label small" for="dcc_internal">DCC داخلی (واحد کنترل مدارک خودمون)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="deliveryUnitType" id="dept_internal" value="InternalDepartment"
+                                   onclick="pemsToggleIssueFields()">
+                            <label class="form-check-label small" for="dept_internal">یک واحد دیگه داخل شرکت</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="deliveryUnitType" id="ext_unit" value="External"
+                                   onclick="pemsToggleIssueFields()">
+                            <label class="form-check-label small" for="ext_unit">نهاد بیرونی (DCC کارفرما / پیمانکار)</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-2" id="issueDeptField" style="display:none;">
+                        <label class="form-label small">واحد داخلی</label>
+                        <select name="deliveryDepartmentId" class="form-select form-select-sm">
+                            @{
+                                var allDepartmentsForIssue = (IEnumerable<PEMS.Domain.Entities.Department>)(ViewBag.AllDepartments ?? new List<PEMS.Domain.Entities.Department>());
+                            }
+                            @foreach (var dept in allDepartmentsForIssue)
+                            {
+                                <option value="@dept.DepartmentId">@dept.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div id="issueExternalFields" style="display:none;">
+                        <div class="alert alert-warning py-2 px-3 small">
+                            برای تحویل بیرونی، ثبت نامه‌ی رسمی خروجی الزامی است.
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small">نام گیرنده (مثلاً DCC کارفرما)</label>
+                            <input type="text" name="externalReceiverName" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+
+                    <div class="mb-2" id="issueLetterNumberField" style="display:none;">
+                        <label class="form-label small">شماره‌ی نامه (اختیاری - خالی بمونه خودکار ساخته می‌شه)</label>
+                        <input type="text" name="letterNumber" class="form-control form-control-sm" />
+                    </div>
+                    <div class="mb-2" id="issueSubjectField" style="display:none;">
+                        <label class="form-label small">موضوع نامه</label>
+                        <input type="text" name="letterSubject" class="form-control form-control-sm" value="صدور مدرک @Model.DocumentNo" />
+                    </div>
+                    <div class="mb-2" id="issueBodyField" style="display:none;">
+                        <label class="form-label small">متن نامه (اختیاری)</label>
+                        <textarea name="letterBody" class="form-control form-control-sm" rows="2"></textarea>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label small">توضیح / کامنت صدور (اختیاری)</label>
+                        <textarea name="comment" class="form-control form-control-sm" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                    <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-send-check"></i> تایید و صدور</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function pemsToggleIssueFields() {
+        var isExternal = document.getElementById('ext_unit').checked;
+        var isDept = document.getElementById('dept_internal').checked;
+
+        document.getElementById('issueDeptField').style.display = isDept ? '' : 'none';
+        document.getElementById('issueExternalFields').style.display = isExternal ? '' : 'none';
+
+        // فیلدهای نامه: برای بیرونی همیشه نشون داده بشه (اجباریه)، برای داخلی هم نشون داده
+        // بشه ولی اختیاریه (سرویس خودش تشخیص می‌ده اگه موضوع خالی بود نامه نسازه)
+        var showLetterFields = isExternal || isDept || document.getElementById('dcc_internal').checked;
+        document.getElementById('issueLetterNumberField').style.display = showLetterFields ? '' : 'none';
+        document.getElementById('issueSubjectField').style.display = showLetterFields ? '' : 'none';
+        document.getElementById('issueBodyField').style.display = showLetterFields ? '' : 'none';
+
+        // اگه بیرونیه، موضوع و گیرنده اجباری بشن
+        var subjectInput = document.querySelector('#issueSubjectField input');
+        var receiverInput = document.querySelector('#issueExternalFields input');
+        if (subjectInput) subjectInput.required = isExternal;
+        if (receiverInput) receiverInput.required = isExternal;
+    }
+
+    pemsToggleIssueFields();
+</script>
+
+
+<div class="modal fade" id="newRevisionModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="CreateRevision" method="post">
+                <input type="hidden" name="id" value="@Model.DocumentId" />
+                <div class="modal-header"><h6 class="modal-title">Create New Revision</h6></div>
+                <div class="modal-body">
+                    <div class="mb-2">
+                        <label class="form-label small">Reason</label>
+                        <select name="reason" class="form-select form-select-sm">
+                            <option>Design Change</option>
+                            <option>Client Comment</option>
+                            <option>Vendor Update</option>
+                            <option>Internal Review</option>
+                            <option>Regulatory Requirement</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">Change Description</label>
+                        <textarea name="changeDescription" class="form-control form-control-sm" rows="3" placeholder="What changed in this revision?"></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small"><i class="bi bi-building"></i> Vendor Comment</label>
+                        <textarea name="vendorComment" class="form-control form-control-sm" rows="3" placeholder="Paste or summarize the vendor's comment that led to this revision (if applicable)"></textarea>
+                    </div>
+                    @{
+                        var openClouded = ((List<PEMS.Application.DTOs.VDRCommentDto>)ViewBag.Comments)
+                            .Where(x => x.MarksRevisionRequired && !x.TriggeredRevisionId.HasValue).ToList();
+                    }
+                    @if (openClouded.Any())
+                    {
+                        <div class="mb-2">
+                            <label class="form-label small"><i class="bi bi-cloud-fill"></i> Closes Marked-for-Revision comment <span class="text-muted">(optional)</span></label>
+                            <select name="triggeringCommentId" class="form-select form-select-sm">
+                                <option value="">-- none --</option>
+                                @foreach (var oc in openClouded)
+                                {
+                                    <option value="@oc.VDRCommentId">@oc.CommentNo - @oc.CommentText</option>
+                                }
+                            </select>
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-pems-solid btn-sm">Create Revision</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="clientResponseModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="RecordClientResponse" method="post">
+                <input type="hidden" name="id" value="@Model.DocumentId" />
+                <div class="modal-header"><h6 class="modal-title">Record Client Response</h6></div>
+                <div class="modal-body">
+                    <p class="text-muted small">
+                        This is the client's (owner's) response to the issued document, separate from the
+                        internal EPC review that already happened.
+                    </p>
+
+                    @{
+                        var availableIncomingLetters = (IEnumerable<PEMS.Domain.Entities.Letter>)(ViewBag.AvailableIncomingLetters ?? new List<PEMS.Domain.Entities.Letter>());
+                    }
+                    <div class="mb-2">
+                        <label class="form-label small"><i class="bi bi-envelope-open"></i> نامه‌ی وارده (الزامی)</label>
+                        @if (availableIncomingLetters.Any())
+                        {
+                            <select name="incomingLetterId" class="form-select form-select-sm" required>
+                                <option value="">-- انتخاب کنید --</option>
+                                @foreach (var l in availableIncomingLetters)
+                                {
+                                    <option value="@l.LetterId">@l.LetterNumber &mdash; @l.Subject (@l.LetterDate.ToString("yyyy-MM-dd"))</option>
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning py-2 px-3 small mb-0">
+                                هیچ نامه‌ی وارده‌ای ثبت نشده. اول باید نامه‌ی رسیده از کارفرما رو توی
+                                ماژول «نامه‌نگاری» به‌عنوان Incoming ثبت کنی، بعد این‌جا انتخابش کن.
+                            </div>
+                        }
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label small">Client Decision</label>
+                        <select name="clientStatus" class="form-select form-select-sm">
+                            <option value="A">A - Approved</option>
+                            <option value="B">B - Approved with Comments</option>
+                            <option value="C">C - Revise &amp; Resubmit</option>
+                            <option value="D">D - Rejected</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">Client Comment (اختیاری - علاوه بر متن نامه)</label>
+                        <textarea name="clientComment" class="form-control form-control-sm" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-pems-solid btn-sm" @(availableIncomingLetters.Any() ? "" : "disabled")>Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* طبق درخواست: چرخه‌ی کامنت/ریپلای دقیقاً مثل بخش VDR - همان سرویس مشترک، همان تجربه *@
+@{
+    var engComments = (List<PEMS.Application.DTOs.VDRCommentDto>)ViewBag.Comments;
+    var latestPdfAttachment = Model.Attachments
+        .Where(a => a.FileExtension.Equals(".pdf", StringComparison.OrdinalIgnoreCase))
+        .OrderByDescending(a => a.UploadDate)
+        .FirstOrDefault();
+}
+
+@if (latestPdfAttachment != null)
+{
+    <div class="content-card mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></h6>
+            <div class="d-flex align-items-center gap-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfPrevPage"><i class="bi bi-chevron-left"></i></button>
+                <span class="small" id="pdfPageLabel">Page - / -</span>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfNextPage"><i class="bi bi-chevron-right"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomOut"><i class="bi bi-zoom-out"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomIn"><i class="bi bi-zoom-in"></i></button>
+            </div>
+        </div>
+        <div id="pdfCanvasWrapper" style="position:relative; border:1px solid var(--pems-surface-border,#dee2e6); overflow:auto; max-height:75vh; text-align:center; cursor:crosshair;">
+            <canvas id="pdfCanvas"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.js"></script>
+    <script>
+        (function () {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js';
+
+            var pdfUrl = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Url.Action("Download", "Files", new { id = latestPdfAttachment.AttachmentId })));
+            var wrapper = document.getElementById('pdfCanvasWrapper');
+            var canvas = document.getElementById('pdfCanvas');
+            var ctx = canvas.getContext('2d');
+            var pdfDoc = null, currentPage = 1, scale = 1.2;
+
+            var pins = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(engComments
+                .Where(c => c.PageNumber.HasValue)
+                .Select(c => new { c.CommentNo, c.PageNumber, c.PinX, c.PinY, c.CommentText }),
+                new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase }));
+
+            function renderPage(num) {
+                pdfDoc.getPage(num).then(function (page) {
+                    var viewport = page.getViewport({ scale: scale });
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function () {
+                        document.getElementById('pdfPageLabel').textContent = 'Page ' + num + ' / ' + pdfDoc.numPages;
+                        renderPins(num, viewport.width, viewport.height);
+                    });
+                });
+            }
+
+            function renderPins(pageNum, width, height) {
+                wrapper.querySelectorAll('.pdf-pin').forEach(function (el) { el.remove(); });
+
+                pins.filter(function (p) { return p.pageNumber === pageNum; }).forEach(function (p) {
+                    var pin = document.createElement('div');
+                    pin.className = 'pdf-pin';
+                    pin.title = p.commentNo + ': ' + p.commentText;
+                    pin.style.cssText = 'position:absolute;width:22px;height:22px;border-radius:50% 50% 50% 0;' +
+                        'background:#ef4444;border:2px solid #fff;transform:translate(-50%,-100%) rotate(-45deg);' +
+                        'left:' + (p.pinX / 100 * width) + 'px;top:' + (p.pinY / 100 * height) + 'px;cursor:pointer;';
+                    wrapper.appendChild(pin);
+                });
+            }
+
+            pdfjsLib.getDocument(pdfUrl).promise.then(function (doc) {
+                pdfDoc = doc;
+                renderPage(currentPage);
+            }).catch(function () {
+                wrapper.innerHTML = '<p class="text-muted py-4">Could not load the PDF preview.</p>';
+            });
+
+            document.getElementById('pdfPrevPage').addEventListener('click', function () {
+                if (currentPage > 1) { currentPage--; renderPage(currentPage); }
+            });
+            document.getElementById('pdfNextPage').addEventListener('click', function () {
+                if (pdfDoc && currentPage < pdfDoc.numPages) { currentPage++; renderPage(currentPage); }
+            });
+            document.getElementById('pdfZoomIn').addEventListener('click', function () { scale += 0.2; renderPage(currentPage); });
+            document.getElementById('pdfZoomOut').addEventListener('click', function () { if (scale > 0.4) { scale -= 0.2; renderPage(currentPage); } });
+
+            canvas.addEventListener('click', function (e) {
+                var rect = canvas.getBoundingClientRect();
+                var xPct = ((e.clientX - rect.left) / rect.width) * 100;
+                var yPct = ((e.clientY - rect.top) / rect.height) * 100;
+
+                document.getElementById('engPinPageNumber').value = currentPage;
+                document.getElementById('engPinX').value = xPct.toFixed(2);
+                document.getElementById('engPinY').value = yPct.toFixed(2);
+                document.getElementById('engPinLocationLabel').textContent = 'Pinned on page ' + currentPage;
+
+                var modal = new bootstrap.Modal(document.getElementById('addEngCommentModal'));
+                modal.show();
+            });
+
+            document.getElementById('addEngCommentModal').addEventListener('hidden.bs.modal', function () {
+                document.getElementById('engPinPageNumber').value = '';
+                document.getElementById('engPinX').value = '';
+                document.getElementById('engPinY').value = '';
+                document.getElementById('engPinLocationLabel').textContent = '';
+            });
+        })();
+    </script>
+}
+
+<div class="content-card mb-3">
+    <h6 class="mb-3">Comment Management <span class="text-muted small">(Action Status is tracked independently from Review Status)</span></h6>
+
+    <table class="table table-enterprise">
+        <thead><tr><th>No</th><th>Category</th><th>Sheet/Zone</th><th>Comment</th><th>Raised By</th><th>Raised</th><th>Action Status</th><th>Response</th></tr></thead>
+        <tbody>
+            @foreach (var c in engComments)
+            {
+                <tr>
+                    <td><strong>@c.CommentNo</strong></td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(c.Category)) { <span class="badge bg-secondary">@c.Category</span> }
+                        @if (!string.IsNullOrEmpty(c.Severity)) { <span class="badge bg-dark">@c.Severity</span> }
+                    </td>
+                    <td class="small">@c.Sheet @c.Zone</td>
+                    <td class="small">
+                        @c.CommentText
+                        @if (!string.IsNullOrEmpty(c.AttachmentFilePath))
+                        {
+                            <div><a href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.AttachmentFileName</a></div>
+                        }
+                        @if (!string.IsNullOrEmpty(c.RequiredAction))
+                        {
+                            <div class="text-muted">Required: @c.RequiredAction</div>
+                        }
+                        @if (c.MarksRevisionRequired)
+                        {
+                            <div>
+                                <span class="badge bg-warning text-dark"><i class="bi bi-cloud-fill"></i> Marked for Revision</span>
+                                @if (c.TriggeredRevisionId.HasValue)
+                                {
+                                    <span class="badge bg-success">Rev @c.TriggeredRevisionNo created</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">no revision yet</span>
+                                }
+                            </div>
+                        }
+                    </td>
+                    <td>@c.RaisedByName</td>
+                    <td>@c.RaisedDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @{
+                            var eab = c.ActionStatus switch
+                            {
+                                "Closed" => "bg-success",
+                                "Verified" => "bg-info text-dark",
+                                "VendorResponsePending" => "bg-warning text-dark",
+                                "NoActionRequired" => "bg-secondary",
+                                _ => "bg-danger"
+                            };
+                        }
+                        <span class="badge @eab">@c.ActionStatus</span>
+                        <form asp-action="SetCommentAction" method="post" class="d-inline">
+                            <input type="hidden" name="documentId" value="@Model.DocumentId" />
+                            <input type="hidden" name="commentId" value="@c.VDRCommentId" />
+                            <select name="actionStatus" class="form-select form-select-sm mt-1" style="width:170px;" onchange="this.form.submit()">
+                                @foreach (var s in new[] { "OpenComment", "VendorResponsePending", "Verified", "Closed", "NoActionRequired" })
+                                { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
+                            </select>
+                        </form>
+                    </td>
+                    <td class="small">
+                        @c.ResponseText
+                        @if (!string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
+                        {
+                            <div><a href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.ReplyAttachmentFileName</a></div>
+                        }
+                        @if (string.IsNullOrEmpty(c.ResponseText) && string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
+                        {
+                            <button type="button" class="btn btn-sm btn-outline-primary mt-1" data-bs-toggle="modal" data-bs-target="#engReplyModal_@c.VDRCommentId">
+                                <i class="bi bi-reply"></i> Reply
+                            </button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!engComments.Any()) { <p class="text-muted">No comments recorded yet.</p> }
+
+    <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#addEngCommentModal">
+        <i class="bi bi-plus-lg"></i> Add Comment
+    </button>
+</div>
+
+<div class="modal fade" id="addEngCommentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form asp-action="AddComment" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="documentId" value="@Model.DocumentId" />
+                <input type="hidden" name="pageNumber" id="engPinPageNumber" value="" />
+                <input type="hidden" name="pinX" id="engPinX" value="" />
+                <input type="hidden" name="pinY" id="engPinY" value="" />
+                <div class="modal-header"><h6 class="modal-title">Add Comment</h6></div>
+                <div class="modal-body">
+                    <div id="engPinLocationLabel" class="small text-primary mb-2"></div>
+                    <div class="row g-3">
+                        <div class="col-md-4"><label class="form-label small">Raised By</label><input name="raisedByName" class="form-control form-control-sm" /></div>
+                        <div class="col-md-4">
+                            <label class="form-label small">Category</label>
+                            <select name="category" class="form-select form-select-sm">
+                                <option value="">-- select --</option>
+                                @foreach (var cat in new[] { "Technical", "Safety", "Constructability", "Documentation", "Specification", "Calculation", "Typographical", "Clarification" })
+                                { <option value="@cat">@cat</option> }
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small">Severity</label>
+                            <select name="severity" class="form-select form-select-sm">
+                                <option value="">-- select --</option>
+                                @foreach (var sev in new[] { "Low", "Medium", "High", "Critical" })
+                                { <option value="@sev">@sev</option> }
+                            </select>
+                        </div>
+                        <div class="col-md-4"><label class="form-label small">Sheet</label><input name="sheet" class="form-control form-control-sm" /></div>
+                        <div class="col-md-4"><label class="form-label small">Zone</label><input name="zone" class="form-control form-control-sm" /></div>
+                        <div class="col-md-4"><label class="form-label small">Reference</label><input name="reference" class="form-control form-control-sm" /></div>
+                        <div class="col-12"><label class="form-label small">Comment</label><textarea name="commentText" class="form-control form-control-sm" rows="3" required></textarea></div>
+                        <div class="col-md-6"><label class="form-label small">Required Action</label><input name="requiredAction" class="form-control form-control-sm" /></div>
+                        <div class="col-md-6"><label class="form-label small">Due Date</label><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
+                        <div class="col-12"><label class="form-label small">Attachment <span class="text-muted">(optional)</span></label><input type="file" name="attachment" class="form-control form-control-sm" /></div>
+                        <div class="col-12 form-check">
+                            <input type="checkbox" class="form-check-input" name="marksRevisionRequired" value="true" id="marksRevisionRequired" />
+                            <label class="form-check-label" for="marksRevisionRequired">
+                                Marks this document as needing a new revision (Clouded / Marked-for-Revision)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-pems-solid">Save Comment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@foreach (var c in engComments)
+{
+    <div class="modal fade" id="engReplyModal_@c.VDRCommentId" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form asp-action="RecordCommentResponse" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="documentId" value="@Model.DocumentId" />
+                    <input type="hidden" name="commentId" value="@c.VDRCommentId" />
+                    <div class="modal-header"><h6 class="modal-title">Reply to @c.CommentNo</h6></div>
+                    <div class="modal-body">
+                        <p class="small text-muted">@c.CommentText</p>
+                        <div class="mb-2">
+                            <label class="form-label small">Reply <span class="text-muted">(optional if attaching a file)</span></label>
+                            <textarea name="responseText" class="form-control form-control-sm" rows="3"></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small">Or attach the Reply Sheet file</label>
+                            <input type="file" name="replyAttachment" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-pems-solid btn-sm">Save Reply</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}

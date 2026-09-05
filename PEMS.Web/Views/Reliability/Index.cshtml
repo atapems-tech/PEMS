@@ -1,0 +1,46 @@
+@model List<PEMS.Application.DTOs.EquipmentReliabilityDto>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-graph-up-arrow"></i> Reliability Analysis</h5>
+</div>
+<p class="text-muted small">
+    طبق CMMS Production Baseline v1 - CMMS-06: MTBF/MTTR/Availability محاسبه‌شده از روی
+    FailureRecord های واقعی (خرابی‌های ثبت‌شده هنگام تکمیل WorkOrder های اصلاحی/اضطراری).
+    تجهیزاتی که هیچ خرابی ثبت‌شده‌ای ندارند در این لیست نمی‌آیند. بدترین‌ها (کمترین Availability) بالای لیست‌اند.
+</p>
+
+<div class="content-card">
+    <table class="table table-enterprise mb-0">
+        <thead>
+            <tr>
+                <th>Tag Number</th><th>Type</th><th>Failures</th><th>MTBF</th><th>MTTR</th>
+                <th>Availability</th><th>Total Downtime</th><th>Last Failure</th><th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in Model)
+            {
+                <tr>
+                    <td class="small fw-bold">@r.TagNumber</td>
+                    <td class="small">@r.EquipmentType</td>
+                    <td class="small">@r.FailureCount</td>
+                    <td class="small">@(r.MTBFHours.HasValue ? $"{r.MTBFHours.Value:N1} h" : "N/A")</td>
+                    <td class="small">@(r.MTTRHours.HasValue ? $"{r.MTTRHours.Value:N1} h" : "N/A")</td>
+                    <td class="small">
+                        @if (r.AvailabilityPercent.HasValue)
+                        {
+                            <span class="badge @(r.AvailabilityPercent >= 95 ? "bg-success" : r.AvailabilityPercent >= 85 ? "bg-warning text-dark" : "bg-danger")">
+                                @r.AvailabilityPercent.Value.ToString("N1")%
+                            </span>
+                        }
+                        else { <span class="text-muted">N/A</span> }
+                    </td>
+                    <td class="small">@r.TotalDowntimeHours.ToString("N1") h</td>
+                    <td class="small">@(r.LastFailureDate?.ToString("yyyy-MM-dd") ?? "-")</td>
+                    <td><a asp-action="Details" asp-route-id="@r.EquipmentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هنوز هیچ خرابی‌ای ثبت نشده - این لیست از روی WorkOrder های اصلاحی/اضطراری تکمیل‌شده ساخته می‌شود.</p> }
+</div>

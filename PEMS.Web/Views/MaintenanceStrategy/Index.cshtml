@@ -1,0 +1,179 @@
+﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MaintenanceStrategyListDto>
+
+<div class="content-card mb-3">
+    <div class="row g-2 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label small">فیلتر بر اساس تجهیز</label>
+            <div class="d-flex gap-2">
+                <input type="text" class="form-control form-control-sm" id="strategyFilterSearch"
+                       placeholder="جستجوی تگ، نام یا سازنده..." value="@ViewBag.SelectedEquipmentLabel"
+                       data-pems-search data-search-type="Equipment" autocomplete="off" />
+                @if (ViewBag.SelectedEquipmentId != null)
+                {
+                    <a asp-action="Index" class="btn btn-outline-danger btn-sm" title="حذف فیلتر"><i class="bi bi-x-lg"></i></a>
+                }
+            </div>
+            <script>
+                document.getElementById('strategyFilterSearch').addEventListener('pems:search-select', function (e) {
+                    if (e.detail) window.location.href = '@Url.Action("Index")?equipmentId=' + e.detail.id;
+                });
+            </script>
+        </div>
+        <div class="col-md-7 text-end">
+            <a asp-action="BulkCreate" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-collection"></i> تعریف دسته‌جمعی برای چند تجهیز
+            </a>
+            <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#createStrategyModal">
+                <i class="bi bi-plus-lg"></i> New Strategy
+            </button>
+        </div>
+    </div>
+</div>
+
+<p class="text-muted small">
+    طبق RCM (SAE JA1011): هر استراتژی باید به یک حالت خرابی مشخص وصل باشه و طبقه‌بندی پیامدش
+    (ایمنی/زیست‌محیطی/تولیدی/اقتصادی) مشخص باشه - نه فقط یک برچسب کلی.
+</p>
+
+<div class="content-card">
+    <div class="d-flex justify-content-end mb-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('MaintenanceStrategy')">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+        </button>
+    </div>
+    <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+    <table class="table table-enterprise pems-grid-table" data-grid-key="MaintenanceStrategy">
+        <thead>
+            <tr>
+                <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Equipment</th>
+                <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">Type</th>
+                <th data-col-key="failureMode" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Failure Mode</th>
+                <th data-col-key="consequence" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">پیامد</th>
+                <th data-col-key="justification" data-resizable="true" data-min-width="160" data-max-width="400" style="width:260px">توجیه</th>
+                <th data-col-key="actions" data-resizable="false" style="width:190px"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var s in Model.Items)
+            {
+                <tr>
+                    <td><a asp-controller="Equipment" asp-action="Details" asp-route-id="@s.EquipmentId">@s.EquipmentTagNumber</a></td>
+                    <td><span class="badge bg-secondary">@s.StrategyType</span></td>
+                    <td class="small">@s.FailureModeCode</td>
+                    <td>
+                        <span class="badge @(s.ConsequenceCategory == "Safety" ? "bg-danger" : s.ConsequenceCategory == "Environmental" ? "bg-warning text-dark" : "bg-info text-dark")">
+                            @s.ConsequenceCategory
+                        </span>
+                    </td>
+                    <td class="small text-muted">@s.Justification</td>
+                    <td class="text-end">
+                        <a asp-controller="MaintenancePlan" asp-action="Create" asp-route-strategyId="@s.MaintenanceStrategyId" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-calendar-plus"></i> Create Plan
+                        </a>
+                        <form asp-action="Deactivate" method="post" class="d-inline">
+                            <input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
+                            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-slash-circle"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No maintenance strategies defined yet.</p> }
+
+    @{
+        var qsParts = new List<string>();
+        if (ViewBag.SelectedEquipmentId != null) qsParts.Add($"equipmentId={ViewBag.SelectedEquipmentId}");
+    }
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "MaintenanceStrategy",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = string.Join("&", qsParts)
+    })
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('MaintenanceStrategy');
+        });
+    </script>
+}
+
+<div class="modal fade" id="createStrategyModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form asp-action="Create" method="post">
+                <div class="modal-header"><h6 class="modal-title">New Maintenance Strategy (RCM)</h6></div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">Equipment</label>
+                            <input type="text" class="form-control" placeholder="جستجوی تگ، نام یا سازنده..."
+                                   data-pems-search data-search-type="Equipment" data-search-hidden="#strategyEquipmentIdHidden" autocomplete="off" required />
+                            <input type="hidden" name="equipmentId" id="strategyEquipmentIdHidden" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Strategy Type</label>
+                            <select name="strategyType" class="form-select" required>
+                                <option>Preventive</option>
+                                <option>Predictive</option>
+                                <option>CBM</option>
+                                <option>Corrective</option>
+                                <option value="RunToFailure">Run-to-Failure</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Failure Mode (ISO 14224)</label>
+                            <select name="failureModeCode" class="form-select">
+                                <option value="">-- انتخاب --</option>
+                                <option>Leakage</option><option>Fracture</option><option>Vibration</option>
+                                <option>Overheating</option><option>Blockage</option><option>ElectricalFault</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Consequence Category (RCM)</label>
+                            <select name="consequenceCategory" class="form-select" required>
+                                <option value="Safety">Safety</option>
+                                <option value="Environmental">Environmental</option>
+                                <option value="Operational" selected>Operational</option>
+                                <option value="Economic">Economic</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Recommended Trigger Type</label>
+                            <select name="recommendedTriggerType" class="form-select">
+                                <option value="Calendar">Calendar</option>
+                                <option value="Meter">Meter</option>
+                                <option value="Both">Both</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6"><label class="form-label">Frequency (راهنما)</label>
+                            <select name="frequency" class="form-select">
+                                <option>Daily</option><option>Weekly</option><option>Monthly</option>
+                                <option>Quarterly</option><option>Yearly</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6"><label class="form-label">Start Date</label><input name="startDate" type="date" class="form-control" /></div>
+                        <div class="col-12">
+                            <label class="form-label">Justification (چرا این استراتژی؟)</label>
+                            <textarea name="justification" class="form-control" rows="2" placeholder="طبق RCM: چرا این استراتژی برای این حالت خرابی مناسبه"></textarea>
+                        </div>
+                        <div class="col-12"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-pems-solid">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

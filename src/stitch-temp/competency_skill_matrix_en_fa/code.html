@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html class="light" dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Competency &amp; Skill Matrix | Employee Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#f8f9ff",
+                      "on-surface": "#081d2f",
+                      "on-tertiary-container": "#498bcd",
+                      "on-error-container": "#93000a",
+                      "secondary": "#895200",
+                      "error": "#ba1a1a",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "tertiary-fixed": "#d1e4ff",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-high": "#daeaff",
+                      "on-secondary": "#ffffff",
+                      "on-primary-container": "#7c889f",
+                      "primary-fixed": "#d7e3fd",
+                      "on-secondary-container": "#6e4100",
+                      "secondary-container": "#fdaa47",
+                      "surface-variant": "#d0e4fe",
+                      "primary-container": "#142033",
+                      "tertiary": "#000815",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "error-container": "#ffdad6",
+                      "surface-container-highest": "#d0e4fe",
+                      "secondary-fixed": "#ffdcbc",
+                      "inverse-surface": "#1f3245",
+                      "on-primary": "#ffffff",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "surface-container": "#e4efff",
+                      "on-surface-variant": "#44474c",
+                      "on-background": "#081d2f",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "on-tertiary-fixed": "#001d36",
+                      "surface-dim": "#c8dcf5",
+                      "surface-tint": "#535f75",
+                      "outline-variant": "#c5c6cd",
+                      "inverse-on-surface": "#e9f1ff",
+                      "tertiary-container": "#00213d",
+                      "outline": "#75777d",
+                      "surface-container-lowest": "#ffffff",
+                      "primary": "#000819",
+                      "surface": "#f8f9ff",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-primary-fixed": "#101c2f",
+                      "inverse-primary": "#bbc7e0",
+                      "on-error": "#ffffff",
+                      "on-secondary-fixed": "#2c1700",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "surface-container-low": "#eef4ff",
+                      "surface-bright": "#f8f9ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "lg": "24px",
+                      "xl": "32px",
+                      "md": "16px",
+                      "sm": "8px",
+                      "xs": "4px",
+                      "topbar-height": "60px",
+                      "sidebar-width": "260px"
+              },
+              "fontFamily": {
+                      "kpi-stat": ["Inter"],
+                      "badge-label": ["Inter"],
+                      "body-base": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "table-header": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "body-medium": ["Inter"],
+                      "table-cell": ["Inter"]
+              },
+              "fontSize": {
+                      "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                      "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}],
+                      "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                      "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .gradient-primary { background: linear-gradient(135deg, #d98c2b 0%, #b8721e 100%); }
+        .gradient-info { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
+        .gradient-danger { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); }
+        .gradient-success { background: linear-gradient(135deg, #22c55e 0%, #15803d 100%); }
+        
+        .matrix-cell { transition: all 0.2s ease; }
+        .matrix-cell:hover { transform: scale(1.05); z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        
+        /* Language toggle styles */
+        [lang="fa"] { direction: rtl; font-family: Tahoma, Arial, sans-serif; }
+        [lang="fa"] .ml-auto { margin-left: 0; margin-right: auto; }
+        [lang="fa"] .mr-2 { margin-right: 0; margin-left: 0.5rem; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-base antialiased overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-full md:w-[calc(100%-260px)] h-topbar-height bg-surface-container-lowest border-b border-outline-variant flex justify-between items-center px-lg z-30">
+<div class="flex items-center gap-md">
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface" data-en="Competency &amp; Skill Matrix" data-fa="ماتریس شایستگی و مهارت">Competency &amp; Skill Matrix</h1>
+<span class="px-2 py-1 bg-surface-variant text-on-surface-variant font-badge-label text-badge-label rounded-full">EN / FA</span>
+</div>
+<div class="flex items-center gap-lg">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="pl-9 pr-4 py-1.5 bg-surface rounded text-sm border border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none w-64 transition-all" placeholder="Search certifications..." type="text"/>
+</div>
+<div class="flex items-center gap-md text-on-surface-variant">
+<button class="hover:text-primary transition-colors cursor-pointer active:opacity-80"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
+<button class="hover:text-primary transition-colors cursor-pointer active:opacity-80"><span class="material-symbols-outlined" data-icon="help_outline">help_outline</span></button>
+</div>
+<div class="h-8 w-px bg-outline-variant hidden sm:block"></div>
+<div class="flex items-center gap-sm">
+<button class="px-sm py-1 border border-outline-variant rounded font-body-medium text-body-medium text-on-surface-variant hover:bg-surface-container-low transition-colors hidden sm:block">Feedback</button>
+<button class="px-md py-1.5 gradient-primary text-white rounded font-body-medium text-body-medium shadow-sm hover:opacity-90 transition-opacity">Quick Action</button>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional corporate headshot of a female engineering manager in a modern industrial office setting, soft natural lighting, light mode aesthetic, crisp focus, wearing a dark navy blazer over a light blue collared shirt. High-end corporate photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZk_2Zl_rC9IAFw5jo2bLPt1_M5pvoQA9DeC7fqZ84hUf_cjJa_gzjK0eNzYwazI_SggFVvpJ7tVRgqaXYHSMgGhGIU02BB8nqXGIUWO1Yj2j_Kk7EI7bl0gmt_9h9MXms80YONogcVmmj-PtYRWGAdctU9FD7qpe2HI73w-LTMfedMgUAAvxVUbz52lOANZIi3yGp7TqWWcUiSQorX-BqshSQRB8saO7NZSEo9EulDYP7z7paeQjS"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full w-sidebar-width bg-primary hidden md:flex flex-col py-xl z-40 border-r border-outline-variant shadow-none">
+<div class="px-lg mb-xl">
+<div class="flex items-center gap-md">
+<div class="w-8 h-8 rounded bg-surface/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-inverse-on-surface text-lg">domain</span>
+</div>
+<div>
+<div class="font-headline-md text-headline-md text-inverse-on-surface">UtilityCorp</div>
+<div class="text-xs text-primary-fixed-dim">Enterprise Admin</div>
+</div>
+</div>
+</div>
+<button class="mx-md mb-lg px-md py-2 bg-surface/10 text-inverse-on-surface border border-surface/20 rounded font-body-medium text-body-medium hover:bg-surface/20 transition-colors flex justify-center items-center gap-sm">
+<span class="material-symbols-outlined text-sm">add</span>
+            Onboard Employee
+        </button>
+<div class="flex-1 overflow-y-auto">
+<ul class="space-y-1">
+<li><a class="flex items-center gap-md px-md py-sm text-primary-fixed-dim hover:text-inverse-on-surface hover:bg-primary-container/50 transition-colors duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-lg" data-icon="dashboard">dashboard</span> <span class="font-body-medium text-body-medium">Dashboard</span></a></li>
+<li><a class="flex items-center gap-md px-md py-sm text-primary-fixed-dim hover:text-inverse-on-surface hover:bg-primary-container/50 transition-colors duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-lg" data-icon="groups">groups</span> <span class="font-body-medium text-body-medium">Directory</span></a></li>
+<li><a class="flex items-center gap-md px-md py-sm bg-primary-container text-secondary-container border-r-4 border-secondary-container" href="#"><span class="material-symbols-outlined text-lg" data-icon="school">school</span> <span class="font-body-medium text-body-medium">Competency Matrix</span></a></li>
+<li><a class="flex items-center gap-md px-md py-sm text-primary-fixed-dim hover:text-inverse-on-surface hover:bg-primary-container/50 transition-colors duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-lg" data-icon="calendar_today">calendar_today</span> <span class="font-body-medium text-body-medium">Attendance</span></a></li>
+<li><a class="flex items-center gap-md px-md py-sm text-primary-fixed-dim hover:text-inverse-on-surface hover:bg-primary-container/50 transition-colors duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-lg" data-icon="payments">payments</span> <span class="font-body-medium text-body-medium">Payroll</span></a></li>
+<li><a class="flex items-center gap-md px-md py-sm text-primary-fixed-dim hover:text-inverse-on-surface hover:bg-primary-container/50 transition-colors duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-lg" data-icon="trending_up">trending_up</span> <span class="font-body-medium text-body-medium">Performance</span></a></li>
+<li><a class="flex items-center gap-md px-md py-sm text-primary-fixed-dim hover:text-inverse-on-surface hover:bg-primary-container/50 transition-colors duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-lg" data-icon="settings">settings</span> <span class="font-body-medium text-body-medium">Settings</span></a></li>
+</ul>
+</div>
+<div class="mt-auto pt-lg border-t border-surface/10">
+<ul class="space-y-1">
+<li><a class="flex items-center gap-md px-md py-sm text-primary-fixed-dim hover:text-inverse-on-surface hover:bg-primary-container/50 transition-colors duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-lg" data-icon="help">help</span> <span class="font-body-medium text-body-medium">Support</span></a></li>
+<li><a class="flex items-center gap-md px-md py-sm text-primary-fixed-dim hover:text-inverse-on-surface hover:bg-primary-container/50 transition-colors duration-200 ease-in-out" href="#"><span class="material-symbols-outlined text-lg" data-icon="logout">logout</span> <span class="font-body-medium text-body-medium">Sign Out</span></a></li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="md:ml-sidebar-width mt-topbar-height p-lg h-[calc(100vh-60px)] overflow-y-auto bg-background">
+<!-- Alerts & KPI Row -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-md mb-lg">
+<!-- Alert Card -->
+<div class="bg-error-container/30 border border-error/20 rounded-lg p-md flex items-start gap-md col-span-1 md:col-span-4">
+<span class="material-symbols-outlined text-error mt-0.5">warning</span>
+<div>
+<h3 class="font-body-medium text-body-medium text-on-error-container">Expiring Certifications Alert (3)</h3>
+<p class="text-sm text-on-surface-variant mt-1">3 personnel have critical high-voltage certifications expiring in the next 30 days. <a class="text-secondary underline font-medium" href="#">Review &amp; Renew</a></p>
+</div>
+</div>
+<!-- KPIs -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md flex items-center gap-md hover:border-secondary/50 transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] gradient-info flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined">group</span>
+</div>
+<div>
+<div class="text-xs text-on-surface-variant mb-0.5">Total Personnel</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">1,248</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md flex items-center gap-md hover:border-secondary/50 transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] gradient-success flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<div>
+<div class="text-xs text-on-surface-variant mb-0.5">Compliant Rate</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">94.2%</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md flex items-center gap-md hover:border-secondary/50 transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] gradient-danger flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined">assignment_late</span>
+</div>
+<div>
+<div class="text-xs text-on-surface-variant mb-0.5">Lapsed Certs</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">12</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md flex items-center gap-md hover:border-secondary/50 transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] gradient-primary flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined">pending_actions</span>
+</div>
+<div>
+<div class="text-xs text-on-surface-variant mb-0.5">Pending Approvals</div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface">8</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

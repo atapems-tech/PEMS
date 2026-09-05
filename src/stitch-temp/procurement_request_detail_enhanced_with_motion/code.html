@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS Enterprise - Procurement Request Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#daeaff",
+                        "inverse-primary": "#bbc7e0",
+                        "on-secondary-fixed": "#2c1700",
+                        "outline-variant": "#c5c6cd",
+                        "inverse-surface": "#1f3245",
+                        "on-secondary-container": "#6e4100",
+                        "secondary-container": "#fdaa47",
+                        "error": "#ba1a1a",
+                        "on-background": "#081d2f",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "primary": "#000819",
+                        "on-tertiary-fixed": "#001d36",
+                        "on-surface": "#081d2f",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#d7e3fd",
+                        "tertiary-container": "#00213d",
+                        "inverse-on-surface": "#e9f1ff",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary-container": "#498bcd",
+                        "surface-container": "#e4efff",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "surface-dim": "#c8dcf5",
+                        "surface-tint": "#535f75",
+                        "on-primary-container": "#7c889f",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#eef4ff",
+                        "background": "#f8f9ff",
+                        "tertiary": "#000815",
+                        "primary-container": "#142033",
+                        "on-surface-variant": "#44474c",
+                        "surface-variant": "#d0e4fe",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "secondary": "#895200",
+                        "outline": "#75777d",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#d0e4fe",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-primary-fixed": "#101c2f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "topbar-height": "60px",
+                        "lg": "24px",
+                        "sidebar-width": "260px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "unit": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "table-header": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "body-base": ["Inter"],
+                        "kpi-stat": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .gradient-primary { background: linear-gradient(135deg, #d98c2b, #b8721e); }
+        .gradient-status-blue { background: linear-gradient(135deg, #1f3245, #535f75); }
+        .gradient-status-red { background: linear-gradient(135deg, #ba1a1a, #93000a); }
+        .bg-level-0 { background-color: #f3f5f8; }
+        .bg-level-1 { background-color: #ffffff; border: 1px solid #edf0f4; }
+        .card-hover:hover { border-color: #fdaa47; transition: border-color 0.2s ease; }
+        .input-focus:focus { border-color: #fdaa47; box-shadow: 0 0 0 2px rgba(253, 170, 71, 0.2); outline: none; }
+        .badge-active { background-color: #e6f4ea; color: #1e8e3e; }
+        .badge-draft { background-color: #f1f3f4; color: #5f6368; }
+        .badge-critical { background-color: #fce8e6; color: #d93025; }
+    </style>
+</head>
+<body class="bg-level-0 font-body-base text-on-background flex min-h-screen antialiased">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-primary border-r border-outline-variant flex flex-col py-lg z-50 hidden md:flex">
+<div class="px-lg mb-lg">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">business</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-primary">PEMS Enterprise</h1>
+<p class="font-label-caps text-label-caps text-on-primary/70">Procurement Module</p>
+</div>
+</div>
+</div>
+<div class="px-md mb-lg">
+<button class="w-full gradient-primary text-on-primary font-body-medium rounded-DEFAULT py-sm px-md flex items-center justify-center gap-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                Create New Order
+            </button>
+</div>
+<nav class="flex-1 px-md flex flex-col gap-xs overflow-y-auto">
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 font-body-medium transition-all rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 font-body-medium transition-all rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+                Purchase Orders
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 font-body-medium transition-all rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined">business</span>
+                Supplier Directory
+            </a>
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg font-body-medium scale-[0.98] duration-150" href="#">
+<span class="material-symbols-outlined">request_quote</span>
+                Procurement Requests
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 font-body-medium transition-all rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                Inventory Assets
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 font-body-medium transition-all rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                Reports
+            </a>
+</nav>
+<div class="px-md mt-auto pt-md border-t border-outline-variant/30">
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 font-body-medium transition-all rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 font-body-medium transition-all rounded-DEFAULT" href="#">
+<span class="material-symbols-outlined">help</span>
+                Support
+            </a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-sidebar-width min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 left-0 md:left-sidebar-width h-topbar-height bg-surface-container-low border-b border-outline-variant flex justify-between items-center px-lg z-40">
+<div class="flex items-center gap-lg">
+<button class="md:hidden text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-headline-md text-headline-md font-bold text-primary hidden sm:block">UtilityCorp PEMS</div>
+<div class="hidden md:flex gap-lg h-full items-center">
+<a class="text-on-surface-variant font-medium hover:text-secondary transition-colors text-sm" href="#">Global View</a>
+<a class="text-on-surface-variant font-medium hover:text-secondary transition-colors text-sm" href="#">Metrics</a>
+<a class="text-on-surface-variant font-medium hover:text-secondary transition-colors text-sm" href="#">Logs</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-on-surface-variant/70 text-[20px]">search</span>
+<input class="pl-8 pr-3 py-1.5 bg-surface rounded-DEFAULT border border-outline-variant text-sm input-focus w-48" placeholder="Search..." type="text"/>
+</div>
+<button class="text-on-surface-variant hover:text-secondary transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+<button class="gradient-primary text-on-primary text-sm font-medium rounded-DEFAULT py-1.5 px-3 hover:opacity-90 transition-opacity whitespace-nowrap ml-2">
+                    New Request
+                </button>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 mt-topbar-height p-md md:p-lg lg:px-[24px] lg:py-[28px] overflow-y-auto">
+<!-- Breadcrumb & Actions -->
+<div class="flex flex-wrap items-center justify-between gap-4 mb-lg">
+<div class="flex items-center gap-2 text-sm text-on-surface-variant">
+<a class="hover:text-primary transition-colors flex items-center" href="#"><span class="material-symbols-outlined text-[18px]">arrow_back</span></a>
+<span>/</span>
+<a class="hover:text-primary transition-colors" href="#">Procurement Requests (درخواست های خرید)</a>
+<span>/</span>
+<span class="font-medium text-primary">REQ-9942-HV</span>
+</div>
+<div class="flex gap-sm">
+<button class="border border-outline-variant text-on-surface-variant bg-level-1 hover:bg-surface-container rounded-DEFAULT px-3 py-1.5 text-sm font-medium transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">print</span> Print
+                    </button>
+<button class="border border-outline-variant text-on-surface-variant bg-level-1 hover:bg-surface-container rounded-DEFAULT px-3 py-1.5 text-sm font-medium transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">edit</span> Edit
+                    </button>
+</div>
+</div>
+<!-- Header Section -->
+<div class="bg-level-1 rounded-lg p-lg mb-lg card-hover">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-outline-variant/30 pb-lg mb-lg">
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h2 class="font-headline-lg text-headline-lg font-bold text-primary">High-Voltage Transformer 150MVA</h2>
+<span class="px-2 py-0.5 rounded-full badge-active font-badge-label text-badge-label">Manager Review</span>
+</div>
+<p class="text-on-surface-variant text-sm font-medium font-body-base" dir="rtl">ترانسفورماتور فشار قوی ۱۵۰ مگاولت آمپر</p>
+</div>
+<div class="text-right">
+<div class="text-sm text-on-surface-variant mb-1">Request Date (تاریخ درخواست): <span class="text-primary font-medium">Oct 24, 2023</span></div>
+<div class="text-sm text-on-surface-variant">Requested By (درخواست کننده): <span class="text-primary font-medium">Eng. Sarah Jenkins</span></div>
+</div>
+</div>
+<!-- Approval Workflow Timeline -->
+<div class="relative py-4">
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-surface-variant rounded-full z-0"></div>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-1/3 h-1 bg-secondary-container rounded-full z-0 transition-all duration-1000 ease-in-out"></div>
+<div class="relative z-10 flex justify-between w-full">
+<!-- Step 1 -->
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold mb-2 shadow-sm border-2 border-level-1">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="text-xs font-bold text-primary text-center">Requested<br/><span class="font-normal text-on-surface-variant" dir="rtl">درخواست شده</span></span>
+</div>
+<!-- Step 2 (Active) -->
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-bold mb-2 shadow-sm border-2 border-level-1 animate-pulse">
+                                2
+                            </div>
+<span class="text-xs font-bold text-primary text-center">Manager Review<br/><span class="font-normal text-on-surface-variant" dir="rtl">بررسی مدیر</span></span>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold mb-2 border-2 border-level-1">
+                                3
+                            </div>
+<span class="text-xs font-medium text-on-surface-variant text-center opacity-70">Procurement<br/><span class="font-normal" dir="rtl">خرید</span></span>
+</div>
+<!-- Step 4 -->
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold mb-2 border-2 border-level-1">
+                                4
+                            </div>
+<span class="text-xs font-medium text-on-surface-variant text-center opacity-70">Final Approval<br/><span class="font-normal" dir="rtl">تایید نهایی</span></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Two Column Layout for Details -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg mb-lg">
+<!-- Left Column (Wider) -->
+<div class="lg:col-span-2 space-y-lg">
+<!-- Specifications -->
+<section class="bg-level-1 rounded-lg p-lg card-hover transition-all duration-500 translate-y-0 opacity-100">
+<h3 class="font-headline-md text-headline-md font-bold mb-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">list_alt</span>
+                            Technical Specifications (مشخصات فنی)
+                        </h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="border border-outline-variant/50 rounded-DEFAULT p-3 bg-surface-bright">
+<div class="text-xs font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase tracking-wider">Part Number (شماره قطعه)</div>
+<div class="font-table-cell text-table-cell font-mono text-primary font-medium">TR-150-HVA-882</div>
+</div>
+<div class="border border-outline-variant/50 rounded-DEFAULT p-3 bg-surface-bright">
+<div class="text-xs font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase tracking-wider">Quantity (تعداد)</div>
+<div class="font-table-cell text-table-cell text-primary font-medium">2 Units (دستگاه)</div>
+</div>
+<div class="border border-outline-variant/50 rounded-DEFAULT p-3 bg-surface-bright">
+<div class="text-xs font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase tracking-wider">Voltage Rating (ولتاژ)</div>
+<div class="font-table-cell text-table-cell text-primary font-medium">230kV / 66kV</div>
+</div>
+<div class="border border-outline-variant/50 rounded-DEFAULT p-3 bg-surface-bright">
+<div class="text-xs font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase tracking-wider">Cooling Type (نوع خنک کننده)</div>
+<div class="font-table-cell text-table-cell text-primary font-medium">ONAN / ONAF</div>
+</div>
+</div>
+<div class="mt-4 border border-outline-variant/50 rounded-DEFAULT p-3 bg-surface-bright">
+<div class="text-xs font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase tracking-wider">Additional Requirements (الزامات اضافی)</div>
+<p class="text-sm text-primary font-body-base mb-2">Must comply with IEC 60076 standards. Seismic rating zone 4 required. Includes standard factory acceptance testing (FAT).</p>
+<p class="text-sm text-primary font-body-base" dir="rtl">باید با استانداردهای IEC 60076 مطابقت داشته باشد. رتبه لرزه‌ای منطقه ۴ الزامی است. شامل تست پذیرش کارخانه (FAT) استاندارد.</p>
+</div>
+</section>
+<!-- Cost Breakdown Table -->
+<section class="bg-level-1 rounded-lg card-hover overflow-hidden transition-all duration-700 translate-y-0 opacity-100 hover:shadow-md transition-shadow duration-300">
+<div class="p-md border-b border-outline-variant bg-[#f5f7fa] flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">payments</span>
+                                Cost Breakdown (جزئیات هزینه)
+                            </h3>
+<span class="text-xs font-medium text-on-surface-variant bg-surface border border-outline-variant rounded px-2 py-1">Currency: USD / IRR</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#f5f7fa]">
+<tr>
+<th class="p-sm font-table-header text-table-header text-on-surface-variant uppercase border-b border-outline-variant whitespace-nowrap">Item (آیتم)</th>
+<th class="p-sm font-table-header text-table-header text-on-surface-variant uppercase border-b border-outline-variant text-right whitespace-nowrap">Qty (تعداد)</th>
+<th class="p-sm font-table-header text-table-header text-on-surface-variant uppercase border-b border-outline-variant text-right whitespace-nowrap">Unit Price (قیمت واحد)</th>
+<th class="p-sm font-table-header text-table-header text-on-surface-variant uppercase border-b border-outline-variant text-right whitespace-nowrap">Total (کل)</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-primary">
+<tr class="hover:bg-surface-container-low transition-colors border-b border-outline-variant/30">
+<td class="p-sm py-3 align-middle">
+<div class="font-medium">Main Unit TR-150-HVA</div>
+<div class="text-xs text-on-surface-variant" dir="rtl">واحد اصلی ترانسفورماتور</div>
+</td>
+<td class="p-sm py-3 align-middle text-right">2</td>
+<td class="p-sm py-3 align-middle text-right font-mono">$450,000</td>
+<td class="p-sm py-3 align-middle text-right font-mono">$900,000</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors border-b border-outline-variant/30">
+<td class="p-sm py-3 align-middle">
+<div class="font-medium">Shipping &amp; Handling (CIF)</div>
+<div class="text-xs text-on-surface-variant" dir="rtl">حمل و نقل و جابجایی</div>
+</td>
+<td class="p-sm py-3 align-middle text-right">1</td>
+<td class="p-sm py-3 align-middle text-right font-mono">$45,000</td>
+<td class="p-sm py-3 align-middle text-right font-mono">$45,000</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-sm py-3 align-middle">
+<div class="font-medium">Estimated Tax / Duties (9%)</div>
+<div class="text-xs text-on-surface-variant" dir="rtl">مالیات / عوارض تخمینی</div>
+</td>
+<td class="p-sm py-3 align-middle text-right">-</td>
+<td class="p-sm py-3 align-middle text-right font-mono">-</td>
+<td class="p-sm py-3 align-middle text-right font-mono">$85,050</td>
+</tr>
+</tbody>
+<tfoot class="bg-surface-container-low border-t-2 border-outline-variant">
+<tr>
+<td class="p-sm py-3 text-right font-bold text-primary" colspan="3">Grand Total (مبلغ کل):</td>
+<td class="p-sm py-3 text-right font-bold text-primary font-mono text-base">$1,030,050</td>
+</tr>
+</tfoot>
+</table>
+</div>
+</section>
+</div>
+<!-- Right Column (Sidebar) -->
+<div class="space-y-lg">
+<!-- Documents -->
+<section class="bg-level-1 rounded-lg p-md card-hover">
+<h3 class="font-headline-md text-headline-md font-bold mb-md text-primary flex items-center gap-2 border-b border-outline-variant/50 pb-2">
+<span class="material-symbols-outlined text-secondary">folder_open</span>
+                            Documents (مستندات)
+                        </h3>
+<div class="space-y-3">
+<a class="flex items-start gap-3 p-2 rounded-DEFAULT hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined text-error mt-0.5 group-hover:translate-x-1 transition-transform duration-200">picture_as_pdf</span>
+<div class="flex-1 min-w-0">
+<div class="text-sm font-medium text-primary truncate group-hover:text-secondary transition-colors">TR-150_Datasheet.pdf</div>
+<div class="text-xs text-on-surface-variant">2.4 MB • Tech Manual (دفترچه فنی)</div>
+</div>
+</a>
+<a class="flex items-start gap-3 p-2 rounded-DEFAULT hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined text-error mt-0.5 group-hover:translate-x-1 transition-transform duration-200">picture_as_pdf</span>
+<div class="flex-1 min-w-0">
+<div class="text-sm font-medium text-primary truncate group-hover:text-secondary transition-colors">Vendor_Quote_RevB.pdf</div>
+<div class="text-xs text-on-surface-variant">1.1 MB • Quote (پیش فاکتور)</div>
+</div>
+</a>
+<button class="w-full mt-2 border border-dashed border-outline-variant text-on-surface-variant bg-surface hover:bg-surface-container-low hover:text-primary rounded-DEFAULT py-2 text-sm font-medium transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">upload</span> Upload Document
+                            </button>
+</div>
+</section>
+<!-- Vendor Info -->
+<section class="bg-level-1 rounded-lg p-md card-hover hover:shadow-md transition-shadow duration-300">
+<h3 class="font-headline-md text-headline-md font-bold mb-md text-primary flex items-center gap-2 border-b border-outline-variant/50 pb-2">
+<span class="material-symbols-outlined text-secondary">storefront</span>
+                            Suggested Vendor (تامین کننده)
+                        </h3>
+<div class="flex items-center gap-3 mb-3">
+<div class="w-10 h-10 rounded bg-surface-dim flex items-center justify-center text-primary font-bold">EP</div>
+<div>
+<div class="font-medium text-primary text-sm">ElectroPower Systems Inc.</div>
+<div class="text-xs text-on-surface-variant">ID: VEN-10492</div>
+</div>
+</div>
+<div class="text-xs text-on-surface-variant space-y-1">
+<div class="flex justify-between"><span class="font-medium">Rating:</span> <span class="text-secondary font-bold">A-Grade (Approved)</span></div>
+<div class="flex justify-between"><span class="font-medium">Lead Time:</span> <span>24-26 Weeks</span></div>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+</body></html>

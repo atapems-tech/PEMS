@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Inspection Report Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        @theme {
+            /* Tailwind config injected from the prompt */
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#d7e3fd",
+                        "background": "#f8f9ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#001d36",
+                        "surface-container-low": "#eef4ff",
+                        "primary": "#000819",
+                        "on-secondary-fixed": "#2c1700",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-surface-variant": "#44474c",
+                        "secondary": "#895200",
+                        "primary-container": "#142033",
+                        "on-error-container": "#93000a",
+                        "surface": "#f8f9ff",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-tertiary-container": "#498bcd",
+                        "surface-container-highest": "#d0e4fe",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "on-secondary-container": "#6e4100",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#bbc7e0",
+                        "secondary-container": "#fdaa47",
+                        "surface-container-high": "#daeaff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#7c889f",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#ffdcbc",
+                        "outline-variant": "#c5c6cd",
+                        "on-surface": "#081d2f",
+                        "inverse-surface": "#1f3245",
+                        "tertiary": "#000815",
+                        "on-background": "#081d2f",
+                        "tertiary-container": "#00213d",
+                        "surface-dim": "#c8dcf5",
+                        "surface-tint": "#535f75",
+                        "surface-variant": "#d0e4fe",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#e4efff",
+                        "inverse-on-surface": "#e9f1ff",
+                        "on-primary-fixed": "#101c2f",
+                        "outline": "#75777d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "sidebar-width": "260px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "unit": "4px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "topbar-height": "60px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "body-base": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "table-header": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased min-h-screen flex">
+<!-- SideNavBar -->
+<nav class="hidden lg:flex flex-col fixed left-0 top-0 h-full w-sidebar-width bg-surface-container-low border-r border-outline-variant p-md gap-xs z-40">
+<div class="mb-lg px-sm pt-sm">
+<h1 class="font-headline-md text-headline-md font-black tracking-tight text-primary">Engineering Dept.</h1>
+<p class="font-body-base text-body-base text-on-surface-variant mt-xs">Technical Operations</p>
+</div>
+<button class="bg-[linear-gradient(135deg,#d98c2b,#b8721e)] hover:opacity-90 text-on-primary font-body-medium text-body-medium py-sm px-md rounded-lg mb-md flex items-center justify-center gap-sm transition-opacity shadow-sm">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">add</span>
+            New Document
+        </button>
+<div class="flex flex-col gap-xs flex-1">
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-medium text-body-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg bg-secondary-container text-on-secondary-container font-bold scale-98 transition-transform" href="#">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">fact_check</span>
+<span class="font-body-medium text-body-medium">Technical Inspection</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-body-medium text-body-medium">Audit Logs</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">mail</span>
+<span class="font-body-medium text-body-medium">Correspondence</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span class="font-body-medium text-body-medium">Transmittals</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<span class="font-body-medium text-body-medium">Administration</span>
+</a>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant flex flex-col gap-xs">
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-medium text-body-medium">Help Center</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-medium text-body-medium">Sign Out</span>
+</a>
+<div class="flex items-center gap-sm px-sm py-sm mt-sm">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center border border-outline-variant overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A small circular avatar showing a professional engineer wearing a hardhat and safety glasses, well-lit in an industrial setting, shot with a shallow depth of field. The corporate modern style features crisp details and high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATeyI3p8Kse6oFM7-QH48-HpGjlkaiHAvGII861zJqxAi-j-gpVmwAMaAmZV5rMj1iq579n_VZz4cuhrkfOInLLlpA6TwEsBa5ZoEpCBI8HFmilv9CZSQdmZiHLedjgms2krP8z_xkOCfBkgwQVdZo0iOl8MdPo8I3MK5IDQW8KyZHwxu--12M95tywJ0XcQ0Svh4DE8up9y7nrt3Betv6owjbEhJNBX2Mt9dDnq-Zbn0h5W3_LMMy"/>
+</div>
+<div class="flex flex-col">
+<span class="font-body-medium text-body-medium text-primary">A. Smith</span>
+<span class="font-body-base text-body-base text-on-surface-variant text-[11px]">Chief Inspector</span>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-sidebar-width min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface border-b border-outline-variant flex justify-between items-center w-full px-lg h-topbar-height sticky top-0 z-30 shadow-[0_4px_20px_rgba(20,32,51,0.02)]">
+<div class="flex items-center gap-sm lg:hidden">
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-headline-md text-headline-md font-bold text-primary">PEMS Enterprise Utility</span>
+</div>
+<div class="hidden lg:flex items-center gap-sm flex-1">
+<div class="relative max-w-md w-full">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full pl-xl pr-sm py-sm bg-surface-container-lowest border border-outline-variant rounded-lg font-body-base text-body-base focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/30 transition-all text-on-surface placeholder:text-on-surface-variant" placeholder="Search records, IDs, or tags..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-xs">
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors relative group">
+<span class="material-symbols-outlined">language</span>
+<div class="absolute right-0 top-full mt-xs bg-surface-container-lowest border border-outline-variant rounded-lg shadow-[0_4px_20px_rgba(20,32,51,0.08)] py-xs hidden group-hover:block min-w-[120px]">
+<a class="block px-md py-sm text-sm text-on-surface hover:bg-surface-container-low font-body-medium" href="#">English</a>
+<a class="block px-md py-sm text-sm text-on-surface hover:bg-surface-container-low font-body-medium" dir="rtl" href="#">فارسی</a>
+</div>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-[6px] right-[6px] w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="p-md lg:p-lg flex-1 overflow-y-auto">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-start justify-between gap-md mb-lg">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="px-sm py-[2px] rounded-full bg-[#f8f9ff] border border-outline-variant text-on-surface-variant font-badge-label text-badge-label uppercase">Inspection</span>
+<span class="px-sm py-[2px] rounded-full bg-[#fdf2e8] text-[#935900] font-badge-label text-badge-label uppercase flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#d98c2b]"></span> Needs Review
+                        </span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary flex items-baseline gap-sm">
+                        INSP-2023-0891
+                        <span class="text-on-surface-variant font-body-medium text-[16px] font-normal" dir="rtl">گزارش بازرسی فنی</span>
+</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-xs">Completed on: 24 Oct 2023, 14:30 | Inspector: R. Jenkins</p>
+</div>
+<div class="flex items-center gap-sm">
+<button class="px-md py-sm border border-outline-variant bg-surface-container-lowest text-on-surface-variant font-body-medium text-body-medium rounded-lg hover:bg-surface-container-low transition-colors flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">print</span>
+                        Print
+                    </button>
+<button class="px-md py-sm border border-outline-variant bg-surface-container-lowest text-on-surface-variant font-body-medium text-body-medium rounded-lg hover:bg-surface-container-low transition-colors flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Export PDF
+                    </button>
+<button class="px-md py-sm bg-[linear-gradient(135deg,#d98c2b,#b8721e)] text-on-primary font-body-medium text-body-medium rounded-lg hover:opacity-90 transition-opacity flex items-center gap-sm shadow-sm">
+<span class="material-symbols-outlined text-[18px]">draw</span>
+                        Sign &amp; Approve
+                    </button>
+</div>
+</div>
+<!-- Bento Layout Container -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-md lg:gap-lg">
+<!-- Left Column (Main Content) -->
+<div class="xl:col-span-2 flex flex-col gap-md lg:gap-lg">
+<!-- Asset Info Card -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md lg:p-lg shadow-[0_4px_20px_rgba(20,32,51,0.02)] relative overflow-hidden group hover:border-[#dde3ea] transition-colors">
+<div class="absolute top-0 right-0 w-32 h-32 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-surface-container-highest/50 to-transparent rounded-bl-full pointer-events-none"></div>
+<h3 class="font-headline-md text-headline-md text-primary mb-md border-b border-outline-variant pb-xs flex justify-between items-center">
+                            Asset Details
+                            <span class="font-body-base text-body-base text-on-surface-variant" dir="rtl">جزئیات تجهیز</span>
+</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-sm gap-x-lg">
+<div class="flex flex-col border-b border-outline-variant border-dashed pb-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-xs">Tag Number</span>
+<span class="font-table-cell text-table-cell text-primary font-mono bg-surface-container p-xs rounded self-start">PMP-104A</span>
+</div>
+<div class="flex flex-col border-b border-outline-variant border-dashed pb-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-xs">Asset Description</span>
+<span class="font-body-medium text-body-medium text-primary">Centrifugal Cooling Water Pump</span>
+<span class="font-body-base text-body-base text-on-surface-variant text-[12px]" dir="rtl">پمپ آب خنک کننده گریز از مرکز</span>
+</div>
+<div class="flex flex-col border-b border-outline-variant border-dashed md:border-none pb-xs md:pb-0">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-xs">Location</span>
+<span class="font-body-medium text-body-medium text-primary flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">location_on</span>
+                                    Unit 12 - Utilities Area
+                                </span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-xs">System / subsystem</span>
+<span class="font-body-medium text-body-medium text-primary">Cooling Water / Circulation</span>
+</div>
+</div>
+</section>
+<!-- Inspection Checklist -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_4px_20px_rgba(20,32,51,0.02)] overflow-hidden">
+<div class="p-md lg:p-lg border-b border-outline-variant bg-surface flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-primary m-0 flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant">checklist</span>
+                                Technical Checklist
+                            </h3>
+<span class="px-sm py-xs bg-surface-container-high rounded text-on-surface font-label-caps text-label-caps">12 ITEMS CHECKED</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#f5f7fa] border-b border-outline-variant sticky top-0">
+<tr>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant w-[50px]">#</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant min-w-[300px]">Item Description / شرح مورد</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant w-[120px] text-center">Result / نتیجه</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant min-w-[150px]">Remarks</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-primary">
+<tr class="border-b border-outline-variant/50 hover:bg-[rgba(31,78,120,0.02)] transition-colors">
+<td class="py-sm px-md text-on-surface-variant">1.1</td>
+<td class="py-sm px-md">
+<div class="flex flex-col">
+<span>Check foundation bolts for tightness and corrosion.</span>
+<span class="text-on-surface-variant text-[12px] mt-xs" dir="rtl">بررسی پیچ‌های فونداسیون از نظر سفتی و خوردگی.</span>
+</div>
+</td>
+<td class="py-sm px-md text-center">
+<span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#e6f4ea] text-[#137333]">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</span>
+</td>
+<td class="py-sm px-md text-on-surface-variant text-[12px]">All secure. No visible rust.</td>
+</tr>
+<tr class="border-b border-outline-variant/50 hover:bg-[rgba(31,78,120,0.02)] transition-colors">
+<td class="py-sm px-md text-on-surface-variant">1.2</td>
+<td class="py-sm px-md">
+<div class="flex flex-col">
+<span>Verify mechanical seal integrity; check for leaks.</span>
+<span class="text-on-surface-variant text-[12px] mt-xs" dir="rtl">تأیید یکپارچگی آب‌بند مکانیکی؛ بررسی نشتی.</span>
+</div>
+</td>
+<td class="py-sm px-md text-center">
+<span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fce8e6] text-[#c5221f]">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</span>
+</td>
+<td class="py-sm px-md text-error font-body-medium">Minor weeping observed on IB seal. See NCR.</td>
+</tr>
+<tr class="border-b border-outline-variant/50 hover:bg-[rgba(31,78,120,0.02)] transition-colors">
+<td class="py-sm px-md text-on-surface-variant">1.3</td>
+<td class="py-sm px-md">
+<div class="flex flex-col">
+<span>Measure vibration levels at DE and NDE bearings.</span>
+<span class="text-on-surface-variant text-[12px] mt-xs" dir="rtl">اندازه‌گیری سطح ارتعاش در یاتاقان‌های DE و NDE.</span>
+</div>
+</td>
+<td class="py-sm px-md text-center">
+<span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fef7e0] text-[#ea8600]">
+<span class="material-symbols-outlined text-[18px]">horizontal_rule</span>
+</span>
+</td>
+<td class="py-sm px-md text-on-surface-variant text-[12px]">Marginal high on DE (4.2 mm/s). Requires monitoring.</td>
+</tr>
+<tr class="border-b border-outline-variant/50 hover:bg-[rgba(31,78,120,0.02)] transition-colors">
+<td class="py-sm px-md text-on-surface-variant">2.1</td>
+<td class="py-sm px-md">
+<div class="flex flex-col">
+<span>Inspect coupling guard and alignment condition.</span>
+<span class="text-on-surface-variant text-[12px] mt-xs" dir="rtl">بازرسی محافظ کوپلینگ و وضعیت هم‌راستایی.</span>
+</div>
+</td>
+<td class="py-sm px-md text-center">
+<span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#e6f4ea] text-[#137333]">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</span>
+</td>
+<td class="py-sm px-md text-on-surface-variant text-[12px]">Satisfactory.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Non-Conformance Notes -->
+<section class="bg-[#fff9f2] border border-[#fdaa47] rounded-xl p-md lg:p-lg shadow-[0_4px_20px_rgba(20,32,51,0.02)]">
+<div class="flex items-start gap-sm mb-md">
+<span class="material-symbols-outlined text-[#895200] mt-[2px]">warning</span>
+<div class="flex-1">
+<h3 class="font-headline-md text-headline-md text-[#2c1700] mb-xs flex justify-between items-center">
+                                    Non-Conformance Report (NCR)
+                                    <span class="font-body-base text-body-base text-[#683d00]" dir="rtl">گزارش عدم انطباق</span>
+</h3>
+<p class="font-body-base text-body-base text-[#683d00]">Details regarding failed items requiring immediate or scheduled action.</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-lg border border-[#ffdcbc] p-md">
+<div class="flex justify-between items-center mb-sm">
+<span class="font-label-caps text-label-caps text-[#683d00] uppercase tracking-wider">Ref Item 1.2: Mechanical Seal</span>
+<span class="px-sm py-[2px] rounded-full bg-[#fce8e6] text-[#c5221f] font-badge-label text-badge-label uppercase">Priority: High</span>
+</div>
+<p class="font-body-base text-body-base text-primary mb-md">
+                                Minor fluid weeping observed on the inboard (IB) mechanical seal during operational test run. Leakage rate is approximately 2 drops per minute. Recommended replacing seal faces during next short shutdown window to prevent catastrophic failure.
+                            </p>
+<p class="font-body-base text-body-base text-on-surface-variant text-right border-t border-[#ffdcbc] pt-sm" dir="rtl">
+                                در طول آزمایش عملیاتی، نشت جزئی سیال در آب‌بند مکانیکی داخلی (IB) مشاهده شد. نرخ نشتی تقریباً ۲ قطره در دقیقه است. توصیه می‌شود برای جلوگیری از خرابی فاجعه‌بار، در پنجره خاموشی کوتاه بعدی، سطوح آب‌بند تعویض شوند.
+                            </p>
+</div>
+</section>
+</div>
+<!-- Right Column (Attachments & Signatures) -->
+<div class="flex flex-col gap-md lg:gap-lg">
+<!-- Attachments -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-[0_4px_20px_rgba(20,32,51,0.02)]">
+<h3 class="font-headline-md text-headline-md text-primary mb-md flex justify-between items-center">
+                            Attachments
+                            <span class="material-symbols-outlined text-on-surface-variant">attach_file</span>
+</h3>
+<div class="grid grid-cols-2 gap-sm mb-md">
+<div class="relative group cursor-pointer border border-outline-variant rounded-lg overflow-hidden h-24">
+<img alt="Seal Leak" class="w-full h-full object-cover transition-transform group-hover:scale-105" data-alt="A close up industrial photograph showing a slight liquid leak around a metallic mechanical seal on a large industrial pump, slightly greasy, shot with a macro lens under bright industrial lighting, corporate modern style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBc5ObapirnvITuCuoc4cfWQN2C3ogP4cSfNnDrIBUJ9I95c6unuA50dgz4DX9x8KVGqqjJ1vgb81n7R2v7PhXkevNzadrkdmrG5AGD5y1J9DuEXFP6TOowrNE6FrW_XyL8R_uZVs0G-3QXxAMVT5C2oUdseJM2khEEoAK7bGmWfbYc1gKqjqn5ki-8ZoOD82fTy7TW3WFrF9l-5XCb6VkjQ-6N8zkOrogqJEmzaKCxjCy6ePmT0FQA"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-surface-container-lowest">zoom_in</span>
+</div>
+</div>
+<div class="relative group cursor-pointer border border-outline-variant rounded-lg overflow-hidden h-24 bg-surface-container flex items-center justify-center flex-col">
+<span class="material-symbols-outlined text-on-surface-variant text-[32px] mb-xs">picture_as_pdf</span>
+<span class="font-badge-label text-badge-label text-on-surface-variant text-center px-xs truncate w-full">Vib_Data_Oct24.pdf</span>
+</div>
+</div>
+<button class="w-full py-sm border border-dashed border-outline-variant text-on-surface-variant font-body-medium text-body-medium rounded-lg hover:bg-surface-container-low transition-colors flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">upload</span>
+                            Add Media
+                        </button>
+</section>
+<!-- Approval Workflow -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-[0_4px_20px_rgba(20,32,51,0.02)]">
+<h3 class="font-headline-md text-headline-md text-primary mb-md flex justify-between items-center">
+                            Signatures
+                            <span class="material-symbols-outlined text-on-surface-variant">verified</span>
+</h3>
+<div class="flex flex-col gap-md relative">
+<!-- Vertical timeline line -->
+<div class="absolute left-[15px] top-[24px] bottom-[24px] w-[2px] bg-outline-variant"></div>
+<!-- Step 1 -->
+<div class="flex items-start gap-md relative z-10">
+<div class="w-8 h-8 rounded-full bg-[#e6f4ea] border border-[#137333] flex items-center justify-center mt-xs flex-shrink-0">
+<span class="material-symbols-outlined text-[#137333] text-[16px]">check</span>
+</div>
+<div class="flex-1 bg-surface rounded-lg p-sm border border-outline-variant">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Inspector / بازرس</span>
+<span class="font-badge-label text-badge-label text-on-surface-variant">24 Oct, 14:30</span>
+</div>
+<p class="font-body-medium text-body-medium text-primary">R. Jenkins</p>
+<div class="mt-xs text-[#137333] font-signature" style="font-family: 'Brush Script MT', cursive; font-size: 20px;">R. Jenkins</div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex items-start gap-md relative z-10">
+<div class="w-8 h-8 rounded-full bg-[#fff9f2] border border-[#d98c2b] flex items-center justify-center mt-xs flex-shrink-0">
+<span class="material-symbols-outlined text-[#d98c2b] text-[16px]">schedule</span>
+</div>
+<div class="flex-1 bg-surface-container-highest rounded-lg p-sm border border-[#d98c2b]/30">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Supervisor / سرپرست</span>
+<span class="font-badge-label text-badge-label text-[#895200]">Pending</span>
+</div>
+<p class="font-body-medium text-body-medium text-primary">M. Al-Fayed</p>
+<button class="mt-sm w-full py-xs border border-[#dde3ea] bg-surface-container-lowest text-[#5c6f85] font-body-medium text-body-medium rounded-lg hover:bg-surface-container-low transition-colors text-[12px]">
+                                        Remind
+                                    </button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<footer class="mt-xl pt-md border-t border-outline-variant text-center">
+<p class="font-body-base text-body-base text-on-surface-variant text-[12px]">PEMS Enterprise Utility - Document ID: DOC-2023-891-V1 - Generated on 24 Oct 2023</p>
+</footer>
+</div>
+</main>
+</body></html>

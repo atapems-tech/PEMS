@@ -1,0 +1,25 @@
+﻿@{
+    string? sectionName = ViewData["Section"] as string;
+    string title = ViewData["Title"]?.ToString() ?? "";
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    bool isDashboard = currentController.Equals("Home", StringComparison.OrdinalIgnoreCase);
+}
+
+<div class="pems-breadcrumb">
+    <a asp-controller="Home" asp-action="Index"><i class="bi bi-house"></i> Dashboard</a>
+
+    @if (!isDashboard)
+    {
+        @if (!string.IsNullOrEmpty(sectionName))
+        {
+            <span class="mx-1">/</span>
+            <span>@sectionName</span>
+        }
+
+        @if (!string.IsNullOrEmpty(title))
+        {
+            <span class="mx-1">/</span>
+            <span class="text-dark fw-semibold">@title</span>
+        }
+    }
+</div>

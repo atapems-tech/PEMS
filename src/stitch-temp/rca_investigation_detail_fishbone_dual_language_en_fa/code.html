@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEMS - RCA Investigation Detail</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<!-- Tailwind CSS Config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#7c889f",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#2c1700",
+                    "tertiary-container": "#00213d",
+                    "secondary-container": "#fdaa47",
+                    "primary-fixed": "#d7e3fd",
+                    "outline-variant": "#c5c6cd",
+                    "surface-variant": "#d0e4fe",
+                    "on-tertiary-fixed-variant": "#00497c",
+                    "inverse-primary": "#bbc7e0",
+                    "on-background": "#081d2f",
+                    "on-primary-fixed-variant": "#3b475c",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed": "#d1e4ff",
+                    "on-error": "#ffffff",
+                    "background": "#f8f9ff",
+                    "surface-bright": "#f8f9ff",
+                    "on-secondary-container": "#6e4100",
+                    "on-tertiary-container": "#498bcd",
+                    "surface-tint": "#535f75",
+                    "primary": "#000819",
+                    "surface-container-highest": "#d0e4fe",
+                    "surface-container": "#e4efff",
+                    "on-surface-variant": "#44474c",
+                    "outline": "#75777d",
+                    "primary-fixed-dim": "#bbc7e0",
+                    "tertiary": "#000815",
+                    "surface-dim": "#c8dcf5",
+                    "inverse-surface": "#1f3245",
+                    "on-secondary-fixed-variant": "#683d00",
+                    "on-primary-fixed": "#101c2f",
+                    "tertiary-fixed-dim": "#9ecaff",
+                    "surface-container-high": "#daeaff",
+                    "secondary-fixed-dim": "#ffb86a",
+                    "inverse-on-surface": "#e9f1ff",
+                    "surface-container-low": "#eef4ff",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed": "#ffdcbc",
+                    "on-tertiary-fixed": "#001d36",
+                    "primary-container": "#142033",
+                    "on-error-container": "#93000a",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#081d2f",
+                    "error-container": "#ffdad6",
+                    "secondary": "#895200",
+                    "surface": "#f8f9ff",
+                    "on-secondary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "topbar-height": "60px",
+                    "lg": "24px",
+                    "xl": "32px",
+                    "sm": "8px",
+                    "sidebar-width": "260px",
+                    "gutter": "16px",
+                    "unit": "4px",
+                    "xs": "4px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "table-cell": ["Inter", "sans-serif"],
+                    "table-header": ["Inter", "sans-serif"],
+                    "headline-lg-mobile": ["Inter", "sans-serif"],
+                    "headline-md": ["Inter", "sans-serif"],
+                    "badge-label": ["Inter", "sans-serif"],
+                    "label-caps": ["Inter", "sans-serif"],
+                    "body-base": ["Inter", "sans-serif"],
+                    "kpi-stat": ["Inter", "sans-serif"],
+                    "body-medium": ["Inter", "sans-serif"],
+                    "headline-lg": ["Inter", "sans-serif"]
+            },
+            "fontSize": {
+                    "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}],
+                    "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                    "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
+        /* Custom stylings for Fishbone diagram representation */
+        .fishbone-spine {
+            position: relative;
+            height: 4px;
+            background: theme('colors.primary');
+            width: 100%;
+            margin: 120px 0;
+        }
+        .fishbone-spine::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: -8px;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 15px solid theme('colors.primary');
+        }
+        .fishbone-branch-top, .fishbone-branch-bottom {
+            position: absolute;
+            width: 2px;
+            background: theme('colors.outline-variant');
+        }
+        .fishbone-branch-top {
+            bottom: 100%;
+            height: 100px;
+            transform-origin: bottom center;
+            transform: rotate(45deg);
+        }
+        .fishbone-branch-bottom {
+            top: 100%;
+            height: 100px;
+            transform-origin: top center;
+            transform: rotate(-45deg);
+        }
+        .branch-content-top {
+            position: absolute;
+            bottom: 110px;
+            left: -80px;
+            width: 200px;
+            transform: rotate(-45deg); /* Counter rotation for text */
+        }
+        .branch-content-bottom {
+            position: absolute;
+            top: 110px;
+            left: -80px;
+            width: 200px;
+            transform: rotate(45deg); /* Counter rotation for text */
+        }
+        
+        /* Grid setup for stylized diagram approach to avoid complex CSS transforms breaking */
+        .diagram-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr) auto;
+            grid-template-rows: 1fr auto 1fr;
+            gap: 16px;
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-full md:w-[calc(100%-260px)] h-topbar-height bg-surface border-b border-outline-variant flex items-center justify-between px-lg z-20">
+<div class="flex items-center gap-4">
+<!-- Mobile Menu Trigger -->
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-headline-md text-headline-md font-bold text-primary">PEMS v2.4</div>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden lg:flex items-center gap-6">
+<a class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:text-primary transition-colors" href="#">English</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:text-primary transition-colors" href="#">فارسی</a>
+</nav>
+<div class="h-6 w-px bg-outline-variant hidden sm:block"></div>
+<button class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white px-4 py-2 rounded-DEFAULT font-label-caps text-label-caps hover:opacity-90 transition-opacity shadow-sm">
+<span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+                Create Report
+            </button>
+<div class="flex items-center gap-3 text-primary">
+<button class="hover:bg-surface-variant p-1 rounded-full transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="hover:bg-surface-variant p-1 rounded-full transition-colors"><span class="material-symbols-outlined">apps</span></button>
+<div class="w-8 h-8 rounded-full bg-surface-variant border border-outline-variant overflow-hidden ml-2">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A small circular profile picture of an industrial technician wearing safety gear, clean lighting, high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvwxYXf3uiTzN-EctTsI4_uceMaOQkobBoFuOYdmMzg8CYBYx7KmPBr7oGxa0k0xc7oTwQetP8nmsGXE73dBn1ukbDEZA6F4vHLqCjj4WrsqlH4TOU6jHXi_nyW4p22Rk9Wn-gs9vvFNU8kfPLKC8qlUFH2Ex6ljJv4jTdjl3aezrndBf3tTF_yv9xdE9zLZeohZ6Q5ovz4FzGqGwEPCckvm_sBDw5Nxa0PAW8s2_zFGc4Tu0LHb4R"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-sidebar-width bg-primary-container border-r border-outline-variant shadow-sm flex-col hidden md:flex z-30">
+<div class="p-lg flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-white flex items-center justify-center font-bold text-primary text-xl">P</div>
+<div>
+<div class="font-headline-md text-headline-md font-bold text-on-primary">PEMS Enterprise</div>
+<div class="text-[11px] text-on-primary-container">Industrial Utility Mgmt</div>
+</div>
+</div>
+<div class="px-sm py-4">
+<button class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white py-2.5 rounded-lg font-body-medium text-body-medium mb-6 shadow-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" style="font-size: 18px;">add</span>
+                New Work Order
+            </button>
+</div>
+<nav class="flex-1 px-sm space-y-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container/80 hover:bg-surface-variant/5 hover:text-on-primary-container transition-colors rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container/80 hover:bg-surface-variant/5 hover:text-on-primary-container transition-colors rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">factory</span> Assets
+            </a>
+<!-- Active State Navigation -->
+<a class="flex items-center gap-3 px-4 py-3 text-secondary-container bg-surface-variant/10 rounded-lg font-body-medium text-body-medium opacity-90 scale-[0.99] duration-150 border-l-2 border-secondary-container" href="#">
+<span class="material-symbols-outlined">engineering</span> Work Orders
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container/80 hover:bg-surface-variant/5 hover:text-on-primary-container transition-colors rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">inventory_2</span> Inventory
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container/80 hover:bg-surface-variant/5 hover:text-on-primary-container transition-colors rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">analytics</span> Analytics
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container/80 hover:bg-surface-variant/5 hover:text-on-primary-container transition-colors rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+            </a>
+</nav>
+<div class="p-sm mt-auto border-t border-outline-variant/20">
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container/80 hover:bg-surface-variant/5 hover:text-on-primary-container transition-colors rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">help</span> Help Center
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container/80 hover:bg-surface-variant/5 hover:text-on-primary-container transition-colors rounded-lg font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">logout</span> Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<main class="md:ml-[260px] pt-[60px] min-h-screen p-lg">
+<!-- Page Header -->
+<div class="mb-xl flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<div class="flex items-center gap-2 text-on-surface-variant mb-2">
+<span class="font-body-base text-body-base hover:underline cursor-pointer">Work Orders</span>
+<span class="material-symbols-outlined" style="font-size: 14px;">chevron_right</span>
+<span class="font-body-base text-body-base">WO-2024-892</span>
+<span class="material-symbols-outlined" style="font-size: 14px;">chevron_right</span>
+<span class="font-body-base text-body-base font-semibold text-primary">RCA Investigation</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary flex items-center gap-3">
+                    RCA: Main Cooling Pump Failure
+                    <span class="px-2.5 py-1 bg-[#ffdad6] text-[#93000a] rounded-full font-badge-label text-badge-label uppercase">Critical</span>
+</h1>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-surface text-surface-tint border border-outline-variant rounded font-label-caps text-label-caps hover:bg-surface-variant transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 16px;">print</span> Export
+                </button>
+<button class="px-4 py-2 bg-primary text-white rounded font-label-caps text-label-caps hover:bg-primary/90 transition-colors">
+                    Finalize RCA
+                </button>
+</div>
+</div>
+<!-- Main Layout Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-lg items-start">
+<!-- Left Column: Primary Content (Fishbone, Summary, Solutions) -->
+<div class="xl:col-span-8 flex flex-col gap-lg">
+<!-- Fishbone Diagram Card -->
+<section class="bg-surface border border-[#edf0f4] rounded-xl shadow-sm p-lg overflow-hidden">
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-headline-md text-headline-md text-primary">Ishikawa Analysis</h2>
+<button class="text-secondary font-label-caps text-label-caps flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined" style="font-size: 16px;">edit</span> Edit Nodes
+                        </button>
+</div>
+<!-- Stylized Diagram Container -->
+<div class="bg-surface-bright rounded-lg p-md overflow-x-auto border border-outline-variant/30 min-h-[400px] flex items-center justify-center relative">
+<!-- Alternative visually stable representation using grid/flex for UI robustness -->
+<div class="w-full max-w-4xl relative py-12">
+<!-- Main Effect Box (The Head) -->
+<div class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-[#ba1a1a] text-white p-4 rounded-lg shadow-md z-10 w-48 border-2 border-[#93000a]">
+<div class="font-label-caps text-label-caps opacity-80 mb-1">EFFECT (نقص)</div>
+<div class="font-body-medium text-body-medium">Bearing Seizure causing catastrophic shutdown.</div>
+</div>
+<!-- Central Spine -->
+<div class="h-2 w-[calc(100%-180px)] bg-primary relative my-xl">
+<!-- Top Branches -->
+<div class="absolute w-full top-0 flex justify-between px-12 -mt-32">
+<!-- Equipment Node -->
+<div class="relative w-1 h-32 bg-outline-variant -rotate-[30deg] origin-bottom-left">
+<div class="absolute top-0 -left-24 rotate-[30deg] w-48">
+<div class="bg-surface-variant border border-outline-variant rounded px-3 py-1 mb-2 font-label-caps text-label-caps text-primary inline-block">Equipment / تجهیزات</div>
+<ul class="space-y-2">
+<li class="bg-white border border-outline-variant rounded p-2 text-[12px] shadow-sm flex items-start gap-2">
+<span class="w-2 h-2 rounded-full bg-error mt-1 shrink-0"></span>
+<span>Worn seals allowed contaminant entry. (خرابی سیل)</span>
+</li>
+<li class="bg-white border border-outline-variant rounded p-2 text-[12px] shadow-sm flex items-start gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-container mt-1 shrink-0"></span>
+<span>Vibration sensors misaligned.</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Process Node -->
+<div class="relative w-1 h-32 bg-outline-variant -rotate-[30deg] origin-bottom-left">
+<div class="absolute top-0 -left-24 rotate-[30deg] w-48">
+<div class="bg-surface-variant border border-outline-variant rounded px-3 py-1 mb-2 font-label-caps text-label-caps text-primary inline-block">Process / فرآیند</div>
+<ul class="space-y-2">
+<li class="bg-white border border-outline-variant rounded p-2 text-[12px] shadow-sm flex items-start gap-2">
+<span class="w-2 h-2 rounded-full bg-error mt-1 shrink-0"></span>
+<span>Lubrication schedule skipped in Q2.</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Environment Node -->
+<div class="relative w-1 h-32 bg-outline-variant -rotate-[30deg] origin-bottom-left">
+<div class="absolute top-0 -left-24 rotate-[30deg] w-48">
+<div class="bg-surface-variant border border-outline-variant rounded px-3 py-1 mb-2 font-label-caps text-label-caps text-primary inline-block">Environment / محیط</div>
+<ul class="space-y-2">
+<li class="bg-white border border-outline-variant rounded p-2 text-[12px] shadow-sm border-dashed text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-size: 14px;">add</span> Add Cause
+                                                </li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Bottom Branches -->
+<div class="absolute w-full bottom-0 flex justify-between px-20 translate-y-2">
+<!-- Materials Node -->
+<div class="relative w-1 h-32 bg-outline-variant rotate-[30deg] origin-top-left">
+<div class="absolute bottom-0 -left-24 -rotate-[30deg] w-48">
+<ul class="space-y-2 mb-2">
+<li class="bg-white border border-outline-variant rounded p-2 text-[12px] shadow-sm flex items-start gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-container mt-1 shrink-0"></span>
+<span>Sub-standard grease batch #44A. (کیفیت پایین گریس)</span>
+</li>
+</ul>
+<div class="bg-surface-variant border border-outline-variant rounded px-3 py-1 font-label-caps text-label-caps text-primary inline-block">Materials / مواد</div>
+</div>
+</div>
+<!-- People Node -->
+<div class="relative w-1 h-32 bg-outline-variant rotate-[30deg] origin-top-left">
+<div class="absolute bottom-0 -left-24 -rotate-[30deg] w-48">
+<ul class="space-y-2 mb-2">
+<li class="bg-white border border-outline-variant rounded p-2 text-[12px] shadow-sm flex items-start gap-2">
+<span class="w-2 h-2 rounded-full bg-outline-variant mt-1 shrink-0"></span>
+<span>New operator unfamiliar with alarm thresholds.</span>
+</li>
+</ul>
+<div class="bg-surface-variant border border-outline-variant rounded px-3 py-1 font-label-caps text-label-caps text-primary inline-block">People / نیروی انسانی</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Findings Summary -->
+<section class="bg-surface border border-[#edf0f4] rounded-xl shadow-sm p-lg">
+<h2 class="font-headline-md text-headline-md text-primary mb-4">Findings Summary</h2>
+<div class="bg-surface-bright rounded border border-outline-variant/50 p-4 font-body-base text-body-base text-on-surface leading-relaxed">
+                        The primary cause of the main pump failure was determined to be a catastrophic bearing seizure. The Ishikawa analysis highlights a combination of <strong>Equipment</strong> failure (worn seals allowing particulate ingress) compounded by a <strong>Process</strong> failure, specifically the omission of the scheduled Q2 lubrication cycle. Furthermore, analysis of the lubricant used (Batch #44A) indicates sub-optimal viscosity under high-load conditions, contributing to the rapid degradation of the bearing surfaces.
+                        <div class="mt-4 pt-4 border-t border-outline-variant/30 text-sm text-on-surface-variant" dir="rtl">
+<strong>خلاصه یافته‌ها:</strong> علت اصلی خرابی پمپ، قفل شدن یاتاقان تشخیص داده شد. تحلیل نشان می‌دهد که ترکیبی از خرابی تجهیزات (نشت سیل) و نقص در فرآیند (عدم انجام روانکاری دوره‌ای) عامل این حادثه بوده است.
+                        </div>
+</div>
+</section>
+<!-- Recommended Solutions Table -->
+<section class="bg-surface border border-[#edf0f4] rounded-xl shadow-sm overflow-hidden">
+<div class="p-lg border-b border-[#edf0f4] flex justify-between items-center bg-[#fcfcfd]">
+<h2 class="font-headline-md text-headline-md text-primary">Recommended Solutions &amp; CAPA</h2>
+<button class="bg-surface text-primary border border-outline-variant px-3 py-1.5 rounded font-label-caps text-label-caps hover:bg-surface-variant transition-colors">
+                            Add Action
+                        </button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#f5f7fa] border-b border-[#edf0f4]">
+<th class="p-sm px-4 font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">ID</th>
+<th class="p-sm px-4 font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Solution / Action</th>
+<th class="p-sm px-4 font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Category</th>
+<th class="p-sm px-4 font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Priority</th>
+<th class="p-sm px-4 font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Owner</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface divide-y divide-[#edf0f4]">
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors">
+<td class="p-sm px-4 font-mono text-xs">CAPA-101</td>
+<td class="p-sm px-4 font-medium">Revise PM schedule to mandate monthly vibration checks.</td>
+<td class="p-sm px-4">Process</td>
+<td class="p-sm px-4"><span class="px-2 py-0.5 rounded-full bg-[#ffdad6] text-[#93000a] font-badge-label text-badge-label">High</span></td>
+<td class="p-sm px-4 flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs">JS</div>
+                                        J. Smith
+                                    </td>
+</tr>
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors">
+<td class="p-sm px-4 font-mono text-xs">CAPA-102</td>
+<td class="p-sm px-4 font-medium">Upgrade mechanical seals to dual-cartridge system. (ارتقاء سیل مکانیکی)</td>
+<td class="p-sm px-4">Equipment</td>
+<td class="p-sm px-4"><span class="px-2 py-0.5 rounded-full bg-[#ffdad6] text-[#93000a] font-badge-label text-badge-label">High</span></td>
+<td class="p-sm px-4 flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs">AT</div>
+                                        A. Tehrani
+                                    </td>
+</tr>
+<tr class="hover:bg-[rgba(31,78,120,0.02)] transition-colors">
+<td class="p-sm px-4 font-mono text-xs">CAPA-103</td>
+<td class="p-sm px-4 font-medium">Audit current lubricant supplier contracts.</td>
+<td class="p-sm px-4">Materials</td>
+<td class="p-sm px-4"><span class="px-2 py-0.5 rounded-full bg-[#eef4ff] text-[#00497c] font-badge-label text-badge-label">Medium</span></td>
+<td class="p-sm px-4 flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-outline-variant text-primary flex items-center justify-center text-xs">PR</div>
+                                        Procurement
+                                    </td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Sign-off Workflow -->
+<section class="bg-surface border border-[#edf0f4] rounded-xl shadow-sm p-lg">
+<h2 class="font-headline-md text-headline-md text-primary mb-6">Approval Workflow</h2>
+<div class="flex flex-col md:flex-row gap-6 items-start md:items-center relative">
+<!-- Connector Line -->
+<div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-outline-variant/30 -z-10 -translate-y-1/2"></div>
+<!-- Step 1 -->
+<div class="flex-1 bg-white border border-[#edf0f4] rounded-lg p-4 shadow-sm relative w-full">
+<div class="absolute -top-3 -right-3 bg-[#eef4ff] text-[#00497c] p-1 rounded-full shadow border border-white">
+<span class="material-symbols-outlined" style="font-size: 16px;">check_circle</span>
+</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">Lead Investigator</div>
+<div class="font-body-medium text-body-medium text-primary mb-2">Sarah Jenkins</div>
+<div class="text-xs text-on-surface-variant">Signed: 2024-10-24 14:30</div>
+</div>
+<!-- Step 2 -->
+<div class="flex-1 bg-white border-2 border-secondary-container rounded-lg p-4 shadow-sm relative w-full">
+<div class="absolute -top-3 -right-3 bg-secondary-container text-white p-1 rounded-full shadow border border-white">
+<span class="material-symbols-outlined" style="font-size: 16px;">pending</span>
+</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">Reliability Manager</div>
+<div class="font-body-medium text-body-medium text-primary mb-2">David O'Connor</div>
+<button class="w-full mt-2 py-1.5 bg-secondary-container text-white rounded font-label-caps text-label-caps text-xs hover:bg-secondary transition-colors">Review &amp; Approve</button>
+</div>
+<!-- Step 3 -->
+<div class="flex-1 bg-surface-bright border border-outline-variant/50 rounded-lg p-4 relative w-full opacity-60">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">Plant Director</div>
+<div class="font-body-medium text-body-medium text-primary mb-2">Pending Workflow</div>
+<div class="text-xs text-on-surface-variant">Awaiting previous steps</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Sidebar Stats & Asset Info -->
+<div class="xl:col-span-4 flex flex-col gap-lg">
+<!-- Asset Info Card -->
+<div class="bg-surface border border-[#edf0f4] rounded-xl shadow-sm overflow-hidden">
+<div class="h-32 bg-surface-variant relative">
+<img alt="Asset Image" class="w-full h-full object-cover mix-blend-multiply opacity-80" data-alt="Close up photograph of an industrial multi-stage centrifugal pump in a factory setting, painted industrial blue, clean lighting, high detail." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0anuTif-Y5_Xmb4YotiG0W_83AOxQBXGK-SRatg3vbeiVFlv5ImpfnN3fdFceoxUs-gXC33J_I7pOySuOj8C-09Z8GWNqNTfnNWzp1zU_WA3ZDD7gIoa73RhqZqDXYv9S7WMlR7pEMbPkNNsuDfkQaDIoLF-f7gO3VMnYZvablWdcrWOd_uy9z138OT7mp0XYkaV8U3Vtn87wA_UX4VqMBd5Dv0GJ1LKqgOZwS4nH09RZEr98Gwwv"/>
+<div class="absolute bottom-3 left-3 bg-primary text-white px-2 py-1 rounded text-xs font-mono">TAG: PMP-7892</div>
+</div>
+<div class="p-md">
+<h3 class="font-headline-md text-headline-md text-primary mb-1">Main Cooling Water Pump</h3>
+<div class="text-sm text-on-surface-variant mb-4">Manufacturer: Flowserve Corp.</div>
+<div class="grid grid-cols-2 gap-3 mb-4">
+<div class="bg-[#f5f7fa] p-2 rounded">
+<div class="font-label-caps text-label-caps text-on-surface-variant">Install Date</div>
+<div class="font-body-medium text-body-medium">2018-04-12</div>
+</div>
+<div class="bg-[#f5f7fa] p-2 rounded">
+<div class="font-label-caps text-label-caps text-on-surface-variant">Criticality</div>
+<div class="font-body-medium text-body-medium text-[#ba1a1a]">Tier 1</div>
+</div>
+</div>
+<div class="border-t border-outline-variant/30 pt-4">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-3">Recent Work Orders</h4>
+<ul class="space-y-2">
+<li class="flex justify-between items-center text-sm">
+<a class="text-primary hover:underline font-mono" href="#">WO-2024-810</a>
+<span class="text-on-surface-variant">PM - Vibration Check</span>
+</li>
+<li class="flex justify-between items-center text-sm">
+<a class="text-primary hover:underline font-mono" href="#">WO-2024-655</a>
+<span class="text-[#ba1a1a]">CM - Seal Leak</span>
+</li>
+<li class="flex justify-between items-center text-sm">
+<a class="text-primary hover:underline font-mono" href="#">WO-2024-402</a>
+<span class="text-on-surface-variant">PM - Lubrication</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Failure Statistics KPI -->
+<div class="bg-surface border border-[#edf0f4] rounded-xl shadow-sm p-md">
+<h3 class="font-headline-md text-headline-md text-primary mb-4">Failure Statistics (YTD)</h3>
+<div class="flex gap-4 mb-6">
+<!-- KPI Tile 1 -->
+<div class="flex-1">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-[#ffdad6] to-[#ba1a1a] flex items-center justify-center text-white mb-2 shadow-sm">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-primary">3</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mt-1">Breakdowns</div>
+</div>
+<!-- KPI Tile 2 -->
+<div class="flex-1">
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-[#d7e3fd] to-[#498bcd] flex items-center justify-center text-white mb-2 shadow-sm">
+<span class="material-symbols-outlined">timer</span>
+</div>
+<div class="font-kpi-stat text-kpi-stat text-primary">48h</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mt-1">MTTR</div>
+</div>
+</div>
+<div class="border-t border-outline-variant/30 pt-4">
+<div class="flex justify-between text-sm mb-1">
+<span class="text-on-surface-variant">MTBF Current</span>
+<span class="font-semibold text-[#ba1a1a]">1,240 hrs <span class="material-symbols-outlined text-[14px] align-middle">trending_down</span></span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-1.5 mb-2">
+<div class="bg-[#ba1a1a] h-1.5 rounded-full" style="width: 35%"></div>
+</div>
+<div class="text-xs text-on-surface-variant text-right">Target: 4,000 hrs</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,23 @@
+﻿@model PEMS.Application.DTOs.ContractDto
+
+
+<div class="content-card">
+    <div class="row g-3">
+        <div class="col-md-4"><strong>Contract No:</strong> @Model.ContractNo</div>
+        <div class="col-md-4"><strong>Project:</strong> @Model.ProjectName</div>
+        <div class="col-md-4"><strong>Vendor:</strong> @Model.VendorName</div>
+        <div class="col-md-4"><strong>Value:</strong> @(Model.ContractValue.HasValue ? $"{Model.ContractValue:N0} {Model.Currency}" : "-")</div>
+        <div class="col-md-4"><strong>Start / End:</strong> @Model.StartDate?.ToString("yyyy-MM-dd") &rarr; @Model.EndDate?.ToString("yyyy-MM-dd")</div>
+        <div class="col-md-4">
+            <strong>Status:</strong>
+            <form asp-action="ChangeStatus" method="post" class="d-inline">
+                <input type="hidden" name="contractId" value="@Model.ContractId" />
+                <select name="status" class="form-select form-select-sm d-inline w-auto" onchange="this.form.submit()">
+                    @foreach (var s in new[] { "Draft", "Active", "Completed", "Terminated" })
+                    { <option value="@s" selected="@(s == Model.Status)">@s</option> }
+                </select>
+            </form>
+        </div>
+        <div class="col-12"><strong>Scope:</strong> @Model.ScopeOfWork</div>
+    </div>
+</div>

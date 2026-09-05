@@ -1,0 +1,80 @@
+@model PEMS.Domain.Entities.Instrument
+@{ ViewData["Title"] = "Edit Instrument - " + Model.Equipment?.TagNumber; }
+
+<div class="content-card mb-3">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h5 class="mb-0">@Model.Equipment?.TagNumber <span class="text-muted small">(@Model.Equipment?.Manufacturer / @Model.Equipment?.Model)</span></h5>
+            <span class="text-muted small">Tag, manufacturer, model and description are edited on the Equipment record - <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">open Equipment</a>.</span>
+        </div>
+        <a asp-action="Passport" asp-route-id="@Model.InstrumentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-card-text"></i> Passport</a>
+    </div>
+</div>
+
+<div class="content-card">
+    <form asp-action="Edit" method="post">
+        <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
+
+        <h6 class="mb-2">General</h6>
+        <div class="row g-3 mb-3">
+            <div class="col-md-3"><label class="form-label">Instrument Type</label><input name="InstrumentType" value="@Model.InstrumentType" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Loop Number</label><input name="LoopNumber" value="@Model.LoopNumber" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">System</label><input name="System" value="@Model.System" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Signal Class</label><input name="SignalClass" value="@Model.SignalClass" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Current Status</label>
+                <select name="CurrentStatus" class="form-select">
+                    @foreach (var s in new[] { "InService", "OutOfService", "UnderCalibration", "UnderMaintenance", "Decommissioned" })
+                    {
+                        <option value="@s" selected="@(s == Model.CurrentStatus)">@s</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <h6 class="mb-2">Process / Signal</h6>
+        <div class="row g-3 mb-3">
+            <div class="col-md-3"><label class="form-label">Process Variable</label><input name="ProcessVariable" value="@Model.ProcessVariable" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Accuracy</label><input name="Accuracy" value="@Model.Accuracy" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Range Min</label><input name="RangeMin" type="number" step="0.01" value="@Model.RangeMin" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Range Max</label><input name="RangeMax" type="number" step="0.01" value="@Model.RangeMax" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Unit</label><input name="Unit" value="@Model.Unit" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Output Signal</label><input name="OutputSignal" value="@Model.OutputSignal" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Power Supply</label><input name="PowerSupply" value="@Model.PowerSupply" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Communication</label><input name="Communication" value="@Model.Communication" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">IP Rating</label><input name="IPRating" value="@Model.IPRating" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Process Connection</label><input name="ProcessConnection" value="@Model.ProcessConnection" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Electrical Connection</label><input name="ElectricalConnection" value="@Model.ElectricalConnection" class="form-control" /></div>
+        </div>
+
+        <h6 class="mb-2">Hazardous Area / Safety</h6>
+        <div class="row g-3 mb-3">
+            <div class="col-md-3"><label class="form-label">Hazardous Area</label><input name="HazardousArea" value="@Model.HazardousArea" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Ex Protection</label><input name="ExProtection" value="@Model.ExProtection" class="form-control" /></div>
+            <div class="col-md-2"><label class="form-label">Zone</label><input name="Zone" value="@Model.Zone" class="form-control" /></div>
+            <div class="col-md-2"><label class="form-label">Gas Group</label><input name="GasGroup" value="@Model.GasGroup" class="form-control" /></div>
+            <div class="col-md-2"><label class="form-label">Temp Class</label><input name="TempClass" value="@Model.TempClass" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Fail Action</label><input name="FailAction" value="@Model.FailAction" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Alarm Setpoint</label><input name="AlarmSetpoint" type="number" step="0.01" value="@Model.AlarmSetpoint" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Trip Setpoint</label><input name="TripSetpoint" type="number" step="0.01" value="@Model.TripSetpoint" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">SIL</label><input name="SIL" value="@Model.SIL" class="form-control" /></div>
+        </div>
+
+        <h6 class="mb-2">Wiring / Location</h6>
+        <div class="row g-3 mb-3">
+            <div class="col-md-3"><label class="form-label">Junction Box</label><input name="JunctionBox" value="@Model.JunctionBox" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Marshalling Cabinet</label><input name="MarshallingCabinet" value="@Model.MarshallingCabinet" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Cable Number</label><input name="CableNumber" value="@Model.CableNumber" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">Barrier / Relay</label><input name="BarrierRelay" value="@Model.BarrierRelay" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">I/O Card / Channel</label><input name="IOCardChannel" value="@Model.IOCardChannel" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">System Cabinet</label><input name="SystemCabinet" value="@Model.SystemCabinet" class="form-control" /></div>
+        </div>
+
+        <h6 class="mb-2">Calibration</h6>
+        <div class="row g-3 mb-3">
+            <div class="col-md-4"><label class="form-label">Calibration Interval (days)</label><input name="CalibrationInterval" type="number" value="@Model.CalibrationInterval" class="form-control" /></div>
+        </div>
+
+        <button type="submit" class="btn btn-pems-solid">Save</button>
+        <a asp-action="Passport" asp-route-id="@Model.InstrumentId" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>

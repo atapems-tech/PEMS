@@ -1,0 +1,94 @@
+﻿<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-graph-up"></i> QC/QA KPI Report</h5>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Back to Dashboard</a>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-4">
+        <div class="content-card text-center">
+            <div class="fs-3 fw-bold">@ViewBag.TotalNCRs</div>
+            <div class="text-muted small">کل NCR های ثبت‌شده</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="content-card text-center">
+            <div class="fs-3 fw-bold text-success">@ViewBag.ClosedOnTimeRate%</div>
+            <div class="text-muted small">درصد بسته‌شده در ۱۴ روز</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="content-card text-center">
+            @{
+                var bySeverity = (IEnumerable<dynamic>)ViewBag.BySeverity;
+                var criticalCount = bySeverity.FirstOrDefault(x => x.Severity == "Critical")?.Count ?? 0;
+            }
+            <div class="fs-3 fw-bold text-danger">@criticalCount</div>
+            <div class="text-muted small">NCR بحرانی (کل تاریخچه)</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-7">
+        <div class="content-card h-100">
+            <h6 class="mb-3">نرخ NCR به تفکیک دیسیپلین</h6>
+            <table class="table table-enterprise mb-0">
+                <thead><tr><th>دیسیپلین</th><th>کل</th><th>باز</th><th>بحرانی</th><th>میانگین روز تا بستن</th></tr></thead>
+                <tbody>
+                    @foreach (var d in (IEnumerable<dynamic>)ViewBag.ByDiscipline)
+                    {
+                        <tr>
+                            <td>@d.Discipline</td>
+                            <td>@d.Total</td>
+                            <td>@(d.Open > 0 ? (object)@d.Open : "0")</td>
+                            <td>@(d.Critical > 0 ? (object)@d.Critical : "0")</td>
+                            <td>@(Math.Round((double)d.AvgDaysToClose, 1))</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="content-card h-100">
+            <h6 class="mb-3">نرخ NCR به تفکیک شدت</h6>
+            <ul class="list-unstyled mb-0">
+                @foreach (var s in (IEnumerable<dynamic>)ViewBag.BySeverity)
+                {
+                    var badgeClass = s.Severity == "Critical" ? "bg-danger" : s.Severity == "Major" ? "bg-warning text-dark" : "bg-secondary";
+                    <li class="d-flex justify-content-between border-bottom py-1">
+                        <span class="badge @badgeClass">@s.Severity</span>
+                        <strong>@s.Count</strong>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="content-card mt-3">
+    <h6 class="mb-3">روند ماهانه NCR (۱۲ ماه اخیر)</h6>
+    @{
+        var byMonth = (IEnumerable<dynamic>)ViewBag.ByMonth;
+        var maxCount = byMonth.Any() ? (int)byMonth.Max(x => (int)x.Count) : 1;
+        if (maxCount == 0) maxCount = 1;
+    }
+    @if (byMonth.Any())
+    {
+        <div class="d-flex align-items-end gap-2" style="height:150px;">
+            @foreach (var m in byMonth)
+            {
+                var heightPct = (int)((double)((int)m.Count) / maxCount * 100);
+                <div class="d-flex flex-column align-items-center" style="flex:1;">
+                    <div class="bg-primary" style="width:100%; height:@(heightPct)%; min-height:4px;" title="@m.Count"></div>
+                    <div class="text-muted small mt-1" style="writing-mode:vertical-rl;">@m.Month</div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-muted small mb-0">داده‌ای برای ۱۲ ماه اخیر نیست.</p>
+    }
+</div>

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MOC Enterprise - Dashboard</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#f8f9ff",
+                      "background": "#f8f9ff",
+                      "on-error": "#ffffff",
+                      "secondary-fixed-dim": "#ffb86a",
+                      "on-tertiary-fixed-variant": "#00497c",
+                      "on-tertiary": "#ffffff",
+                      "on-surface": "#081d2f",
+                      "on-error-container": "#93000a",
+                      "secondary": "#895200",
+                      "primary-fixed-dim": "#bbc7e0",
+                      "primary-container": "#142033",
+                      "on-secondary": "#ffffff",
+                      "surface-container-high": "#daeaff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-container": "#6e4100",
+                      "surface-container-low": "#eef4ff",
+                      "primary-fixed": "#d7e3fd",
+                      "outline-variant": "#c5c6cd",
+                      "inverse-primary": "#bbc7e0",
+                      "on-primary-container": "#7c889f",
+                      "on-primary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "on-primary-fixed": "#101c2f",
+                      "secondary-fixed": "#ffdcbc",
+                      "tertiary": "#000815",
+                      "on-primary-fixed-variant": "#3b475c",
+                      "inverse-on-surface": "#e9f1ff",
+                      "tertiary-container": "#00213d",
+                      "surface-dim": "#c8dcf5",
+                      "secondary-container": "#fdaa47",
+                      "on-tertiary-container": "#498bcd",
+                      "inverse-surface": "#1f3245",
+                      "on-surface-variant": "#44474c",
+                      "on-secondary-fixed-variant": "#683d00",
+                      "tertiary-fixed": "#d1e4ff",
+                      "surface": "#f8f9ff",
+                      "error": "#ba1a1a",
+                      "primary": "#000819",
+                      "outline": "#75777d",
+                      "on-background": "#081d2f",
+                      "on-secondary-fixed": "#2c1700",
+                      "tertiary-fixed-dim": "#9ecaff",
+                      "surface-tint": "#535f75",
+                      "on-tertiary-fixed": "#001d36",
+                      "surface-container-highest": "#d0e4fe",
+                      "surface-variant": "#d0e4fe",
+                      "surface-container": "#e4efff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "md": "16px",
+                      "xl": "32px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "topbar-height": "60px",
+                      "unit": "4px",
+                      "sidebar-width": "260px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "kpi-stat": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "body-medium": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "table-header": [
+                              "Inter"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "table-cell": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "badge-label": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "kpi-stat": [
+                              "22px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.06em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-medium": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "table-header": [
+                              "11.5px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-base": [
+                              "13.5px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "table-cell": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "badge-label": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .btn-primary-gradient {
+            background: linear-gradient(135deg, #d98c2b, #b8721e);
+            color: #ffffff;
+        }
+        .btn-primary-gradient:hover {
+            opacity: 0.9;
+        }
+        .btn-secondary-outline {
+            border: 1px solid #dde3ea;
+            color: #5c6f85;
+        }
+        .kpi-gradient-blue {
+            background: linear-gradient(135deg, #1f4e78, #0f273c);
+        }
+        .kpi-gradient-red {
+            background: linear-gradient(135deg, #93000a, #4a0005);
+        }
+        .kpi-gradient-amber {
+            background: linear-gradient(135deg, #d98c2b, #b8721e);
+        }
+        .kpi-gradient-slate {
+            background: linear-gradient(135deg, #535f75, #2c3340);
+        }
+        .table-row-hover:hover {
+            background-color: rgba(31, 78, 120, 0.04);
+        }
+        .font-mono-tech {
+            font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+        }
+      </style>
+</head>
+<body class="bg-surface text-on-surface font-body-base min-h-screen flex">
+<!-- SideNavBar (JSON Configured) -->
+<aside class="w-sidebar-width h-full fixed left-0 top-0 bg-primary dark:bg-primary-container text-secondary-container dark:text-secondary-fixed border-r border-outline-variant dark:border-outline flex flex-col h-screen py-lg px-md z-50 hidden md:flex transition-all duration-200 ease-in-out">
+<div class="mb-xl flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined font-bold">engineering</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-primary dark:text-on-primary-container tracking-tight">Asset Integrity</h1>
+<p class="font-label-caps text-label-caps text-on-primary/70">MOC Management System</p>
+</div>
+</div>
+<nav class="flex-1 space-y-sm">
+<a class="flex items-center gap-md py-sm px-md bg-secondary text-on-secondary rounded-lg font-bold transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-body-medium text-body-medium">Dashboard <span class="text-[10px] opacity-70 ml-1">(داشبورد)</span></span>
+</a>
+<a class="flex items-center gap-md py-sm px-md text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 transition-colors rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">inventory</span>
+<span class="font-body-medium text-body-medium">MOC Registry</span>
+</a>
+<a class="flex items-center gap-md py-sm px-md text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 transition-colors rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">alt_route</span>
+<span class="font-body-medium text-body-medium">Workflows</span>
+</a>
+<a class="flex items-center gap-md py-sm px-md text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 transition-colors rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-body-medium text-body-medium">PSSR Checklist</span>
+</a>
+<a class="flex items-center gap-md py-sm px-md text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 transition-colors rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-medium text-body-medium">Impact Analysis</span>
+</a>
+<a class="flex items-center gap-md py-sm px-md text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 transition-colors rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-body-medium text-body-medium">Reports</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-on-primary/20 pt-md space-y-sm">
+<a class="flex items-center gap-md py-sm px-md text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 transition-colors rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-medium text-body-medium">Settings</span>
+</a>
+<a class="flex items-center gap-md py-sm px-md text-on-primary/70 hover:text-on-primary hover:bg-on-primary/10 transition-colors rounded-lg transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-medium text-body-medium">Help</span>
+</a>
+<div class="flex items-center gap-md py-sm px-md mt-sm bg-primary-fixed/10 rounded-lg">
+<img alt="User Profile" class="w-8 h-8 rounded-full object-cover" data-alt="A professional headshot of an industrial plant manager in a high-tech control room environment, wearing safety gear, cinematic cool lighting, highly detailed corporate portrait." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrG1DgEPKLy66EuabL_1fWVpEf-87PqedscmqMDdEyRTZHUze63tBsqs0_5LL3PP3GMeVawSm97uPORF8aeY336JaEESEZdQvATn6Foa9V4mGbWkzYXtgkTnRidO2lULKZI-6BZiO6s0z_kuR7pQLIPRaDAMKnUUDXz8e0Dvyy4sOquuIkvzW6Zc3AZQjZw-g-QyVDetgJ5eQ9Qk703FVQYlsvoKST0VFyI-jR1FyZL8lk8vEsHnHP"/>
+<div>
+<p class="font-body-medium text-body-medium text-on-primary">Admin User</p>
+<p class="font-label-caps text-[10px] text-on-primary/70">PEMS Enterprise Utility</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-sidebar-width flex flex-col min-h-screen relative">
+<!-- TopAppBar (JSON Configured) -->
+<header class="flex justify-between items-center h-topbar-height px-xl bg-surface dark:bg-inverse-surface border-b border-outline-variant bg-surface-container-low dark:bg-surface-container docked full-width top-0 sticky z-40 shadow-sm active:scale-95 duration-150">
+<div class="flex items-center gap-xl h-full">
+<div class="font-headline-md text-headline-md font-extrabold text-primary dark:text-tertiary-fixed tracking-tight">MOC Enterprise</div>
+<!-- Search Bar (on_left) -->
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="pl-xl pr-sm py-1.5 bg-surface-bright border border-outline-variant rounded text-table-cell font-table-cell focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary w-64 transition-all" placeholder="Search Tag #, Document ID..." type="text"/>
+</div>
+<nav class="hidden md:flex items-center gap-lg h-full font-label-caps text-label-caps">
+<a class="h-full flex items-center text-on-surface-variant dark:text-on-surface hover:text-secondary hover:text-secondary-container transition-colors uppercase" href="#">My Tasks</a>
+<a class="h-full flex items-center text-on-surface-variant dark:text-on-surface hover:text-secondary hover:text-secondary-container transition-colors uppercase" href="#">Pending Approvals</a>
+<a class="h-full flex items-center text-on-surface-variant dark:text-on-surface hover:text-secondary hover:text-secondary-container transition-colors uppercase" href="#">Archive</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="btn-primary-gradient px-md py-sm rounded-lg font-body-medium text-body-medium shadow-sm flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    Create Change Request
+                </button>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<button class="p-xs hover:bg-surface-dim rounded-full transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="p-xs hover:bg-surface-dim rounded-full transition-colors flex items-center gap-xs text-xs font-bold uppercase"><span class="material-symbols-outlined text-[18px]">language</span> EN/FA</button>
+<button class="p-xs hover:bg-surface-dim rounded-full transition-colors"><span class="material-symbols-outlined">account_circle</span></button>
+</div>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="p-md lg:p-lg space-y-lg flex-1 bg-background">
+<!-- Page Header & Quick Filters -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight">Overview <span class="text-on-surface-variant font-normal opacity-70 ml-2">مرور کلی</span></h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-1">Management of Change operational metrics.</p>
+</div>
+<div class="flex items-center gap-sm font-label-caps text-label-caps uppercase">
+<button class="px-sm py-1.5 bg-surface border border-outline-variant rounded hover:border-secondary hover:text-secondary transition-colors font-bold text-on-surface">All Active</button>
+<button class="px-sm py-1.5 bg-surface border border-outline-variant rounded hover:border-secondary hover:text-secondary transition-colors text-on-surface-variant">My Tasks</button>
+<button class="px-sm py-1.5 bg-surface border border-outline-variant rounded hover:border-secondary hover:text-secondary transition-colors text-on-surface-variant flex items-center gap-xs"><span class="material-symbols-outlined text-[14px] text-error">priority_high</span> High Priority</button>
+<button class="px-sm py-1.5 bg-surface border border-outline-variant rounded hover:border-secondary hover:text-secondary transition-colors text-on-surface-variant">Pending Review</button>
+</div>
+</div>
+<!-- KPI Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md">
+<div class="bg-surface p-md rounded-xl border border-outline-variant/50 shadow-sm flex items-center gap-md hover:border-secondary/50 transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] kpi-gradient-blue flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined">assignment</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Active MOCs / فعال</p>
+<div class="flex items-baseline gap-2">
+<p class="font-kpi-stat text-kpi-stat text-on-surface">142</p>
+<span class="text-xs font-bold text-emerald-600 flex items-center"><span class="material-symbols-outlined text-[14px]">trending_up</span> 12%</span>
+</div>
+</div>
+</div>
+<div class="bg-surface p-md rounded-xl border border-outline-variant/50 shadow-sm flex items-center gap-md hover:border-secondary/50 transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] kpi-gradient-amber flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined">pending_actions</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Pending Approvals / در انتظار</p>
+<div class="flex items-baseline gap-2">
+<p class="font-kpi-stat text-kpi-stat text-on-surface">38</p>
+<span class="text-xs font-bold text-amber-600 flex items-center"><span class="material-symbols-outlined text-[14px]">schedule</span> 8 critical</span>
+</div>
+</div>
+</div>
+<div class="bg-surface p-md rounded-xl border border-outline-variant/50 shadow-sm flex items-center gap-md hover:border-secondary/50 transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] kpi-gradient-red flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Overdue Actions / معوق</p>
+<div class="flex items-baseline gap-2">
+<p class="font-kpi-stat text-kpi-stat text-error">12</p>
+<span class="text-xs font-bold text-on-surface-variant">require immediate action</span>
+</div>
+</div>
+</div>
+<div class="bg-surface p-md rounded-xl border border-outline-variant/50 shadow-sm flex items-center gap-md hover:border-secondary/50 transition-colors">
+<div class="w-[46px] h-[46px] rounded-[10px] kpi-gradient-slate flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined">category</span>
+</div>
+<div class="w-full">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-1">Changes by Type / نوع</p>
+<div class="flex gap-2 w-full h-2 rounded-full overflow-hidden bg-surface-variant">
+<div class="bg-primary-container w-[60%]" title="Permanent: 60%"></div>
+<div class="bg-secondary w-[30%]" title="Temporary: 30%"></div>
+<div class="bg-error w-[10%]" title="Emergency: 10%"></div>
+</div>
+<div class="flex justify-between text-[10px] font-bold text-on-surface-variant mt-1 uppercase">
+<span>Perm: 60%</span>
+<span>Temp: 30%</span>
+<span>Emg: 10%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Data Table Section -->
+<div class="bg-surface border border-outline-variant/50 rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="p-md border-b border-outline-variant/50 flex justify-between items-center bg-[#fcfdff]">
+<h3 class="font-body-medium text-body-medium font-bold text-primary flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px] text-secondary">view_list</span>
+                        Recent MOC Requests <span class="font-normal text-on-surface-variant text-xs ml-1">/ درخواست‌های اخیر</span>
+</h3>
+<div class="flex gap-sm">
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">filter_list</span></button>
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#f5f7fa] border-b border-outline-variant/50 sticky top-0">
+<tr>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider w-[120px]">MOC ID/Tag</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider">Title / عنوان</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider w-[140px]">Type</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider w-[160px]">Status</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider w-[140px]">Originator</th>
+<th class="py-sm px-md font-table-header text-table-header text-on-surface-variant uppercase tracking-wider w-[100px]">Priority</th>
+<th class="py-sm px-md w-[80px]"></th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell divide-y divide-outline-variant/30">
+<!-- Row 1 -->
+<tr class="table-row-hover py-2">
+<td class="py-2 px-md font-mono-tech text-xs text-primary-container font-bold">MOC-24-1042</td>
+<td class="py-2 px-md">
+<div class="font-bold text-on-surface">Replace Valve V-102B in Train 2</div>
+<div class="text-[11px] text-on-surface-variant truncate w-48 lg:w-auto">Piping modification required for high pressure service.</div>
+</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center gap-1 bg-surface-dim px-2 py-0.5 rounded text-xs font-bold text-on-surface"><span class="material-symbols-outlined text-[12px]">build</span> Permanent</span>
+</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-badge-label font-bold bg-[#e3f2fd] text-[#0d47a1] border border-[#bbdefb]">Technical Review</span>
+</td>
+<td class="py-2 px-md">
+<div class="flex items-center gap-2">
+<div class="w-5 h-5 rounded-full bg-primary-container text-white flex items-center justify-center text-[10px] font-bold">AS</div>
+<span class="text-xs">A. Smith</span>
+</div>
+</td>
+<td class="py-2 px-md">
+<span class="text-error font-bold text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">arrow_upward</span> High</span>
+</td>
+<td class="py-2 px-md text-right">
+<button class="w-8 h-8 rounded-lg border border-outline-variant/50 flex items-center justify-center text-on-surface-variant hover:text-secondary hover:border-secondary transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="table-row-hover py-2">
+<td class="py-2 px-md font-mono-tech text-xs text-primary-container font-bold">MOC-24-1045</td>
+<td class="py-2 px-md">
+<div class="font-bold text-on-surface">Bypass Compressor C-400 Interlock</div>
+<div class="text-[11px] text-on-surface-variant truncate w-48 lg:w-auto">Temporary bypass during sensor calibration (48 hrs).</div>
+</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center gap-1 bg-secondary-fixed/50 px-2 py-0.5 rounded text-xs font-bold text-secondary-container"><span class="material-symbols-outlined text-[12px]">timer</span> Temporary</span>
+</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-badge-label font-bold bg-[#fff3e0] text-[#e65100] border border-[#ffe0b2]">Final Approval</span>
+</td>
+<td class="py-2 px-md">
+<div class="flex items-center gap-2">
+<div class="w-5 h-5 rounded-full bg-surface-tint text-white flex items-center justify-center text-[10px] font-bold">MJ</div>
+<span class="text-xs">M. Jones</span>
+</div>
+</td>
+<td class="py-2 px-md">
+<span class="text-error font-bold text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">emergency</span> Critical</span>
+</td>
+<td class="py-2 px-md text-right">
+<button class="w-8 h-8 rounded-lg border border-outline-variant/50 flex items-center justify-center text-on-surface-variant hover:text-secondary hover:border-secondary transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="table-row-hover py-2">
+<td class="py-2 px-md font-mono-tech text-xs text-primary-container font-bold">MOC-24-1038</td>
+<td class="py-2 px-md">
+<div class="font-bold text-on-surface">Update DCS Graphics for Flare System</div>
+<div class="text-[11px] text-on-surface-variant truncate w-48 lg:w-auto">Software update to reflect new P&amp;ID revisions.</div>
+</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center gap-1 bg-surface-dim px-2 py-0.5 rounded text-xs font-bold text-on-surface"><span class="material-symbols-outlined text-[12px]">build</span> Permanent</span>
+</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-badge-label font-bold bg-[#f3e5f5] text-[#4a148c] border border-[#e1bee7]">PSSR</span>
+</td>
+<td class="py-2 px-md">
+<div class="flex items-center gap-2">
+<div class="w-5 h-5 rounded-full bg-on-surface-variant text-white flex items-center justify-center text-[10px] font-bold">KL</div>
+<span class="text-xs">K. Lee</span>
+</div>
+</td>
+<td class="py-2 px-md">
+<span class="text-on-surface-variant font-bold text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">remove</span> Normal</span>
+</td>
+<td class="py-2 px-md text-right">
+<button class="w-8 h-8 rounded-lg border border-outline-variant/50 flex items-center justify-center text-on-surface-variant hover:text-secondary hover:border-secondary transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="table-row-hover py-2">
+<td class="py-2 px-md font-mono-tech text-xs text-primary-container font-bold">MOC-24-1050</td>
+<td class="py-2 px-md">
+<div class="font-bold text-on-surface">Emergency Leak Repair Line L-201</div>
+<div class="text-[11px] text-on-surface-variant truncate w-48 lg:w-auto">Clamp installation per standard API procedure.</div>
+</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center gap-1 bg-error-container/50 px-2 py-0.5 rounded text-xs font-bold text-error"><span class="material-symbols-outlined text-[12px]">warning</span> Emergency</span>
+</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-badge-label font-bold bg-[#e8f5e9] text-[#1b5e20] border border-[#c8e6c9]">Completed</span>
+</td>
+<td class="py-2 px-md">
+<div class="flex items-center gap-2">
+<div class="w-5 h-5 rounded-full bg-primary-container text-white flex items-center justify-center text-[10px] font-bold">RS</div>
+<span class="text-xs">R. Singh</span>
+</div>
+</td>
+<td class="py-2 px-md">
+<span class="text-error font-bold text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">emergency</span> Critical</span>
+</td>
+<td class="py-2 px-md text-right">
+<button class="w-8 h-8 rounded-lg border border-outline-variant/50 flex items-center justify-center text-on-surface-variant hover:text-secondary hover:border-secondary transition-colors"><span class="material-symbols-outlined text-[16px]">visibility</span></button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="table-row-hover py-2">
+<td class="py-2 px-md font-mono-tech text-xs text-primary-container font-bold">MOC-24-1062</td>
+<td class="py-2 px-md">
+<div class="font-bold text-on-surface">Chemical Injection Skid Tie-in</div>
+<div class="text-[11px] text-on-surface-variant truncate w-48 lg:w-auto">New tie-in points for corrosion inhibitor skid.</div>
+</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center gap-1 bg-surface-dim px-2 py-0.5 rounded text-xs font-bold text-on-surface"><span class="material-symbols-outlined text-[12px]">build</span> Permanent</span>
+</td>
+<td class="py-2 px-md">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-badge-label font-bold bg-surface-variant text-on-surface-variant border border-outline-variant">Draft</span>
+</td>
+<td class="py-2 px-md">
+<div class="flex items-center gap-2">
+<div class="w-5 h-5 rounded-full bg-primary-container text-white flex items-center justify-center text-[10px] font-bold">AS</div>
+<span class="text-xs">A. Smith</span>
+</div>
+</td>
+<td class="py-2 px-md">
+<span class="text-on-surface-variant font-bold text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">remove</span> Normal</span>
+</td>
+<td class="py-2 px-md text-right">
+<button class="w-8 h-8 rounded-lg border border-outline-variant/50 flex items-center justify-center text-on-surface-variant hover:text-secondary hover:border-secondary transition-colors"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-sm border-t border-outline-variant/50 bg-[#fcfdff] flex justify-between items-center text-xs text-on-surface-variant">
+<span>Showing 1-5 of 142 records</span>
+<div class="flex gap-1">
+<button class="px-2 py-1 border border-outline-variant rounded hover:bg-surface-dim disabled:opacity-50" disabled="">Prev</button>
+<button class="px-2 py-1 border border-secondary bg-secondary/10 text-secondary rounded font-bold">1</button>
+<button class="px-2 py-1 border border-outline-variant rounded hover:bg-surface-dim">2</button>
+<button class="px-2 py-1 border border-outline-variant rounded hover:bg-surface-dim">3</button>
+<span class="px-2 py-1">...</span>
+<button class="px-2 py-1 border border-outline-variant rounded hover:bg-surface-dim">Next</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

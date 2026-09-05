@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html class="light" dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GenAI Knowledge Copilot - AssetCentral</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#081d2f",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#bbc7e0",
+                        "primary-fixed": "#d7e3fd",
+                        "tertiary-fixed": "#d1e4ff",
+                        "primary-container": "#142033",
+                        "secondary-container": "#fdaa47",
+                        "on-primary": "#ffffff",
+                        "outline": "#75777d",
+                        "inverse-on-surface": "#e9f1ff",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#498bcd",
+                        "on-surface-variant": "#44474c",
+                        "inverse-surface": "#1f3245",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "surface-bright": "#f8f9ff",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-tertiary-fixed": "#001d36",
+                        "on-secondary-container": "#6e4100",
+                        "primary": "#000819",
+                        "on-primary-container": "#7c889f",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#2c1700",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "secondary": "#895200",
+                        "surface-container-highest": "#d0e4fe",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-low": "#eef4ff",
+                        "surface-variant": "#d0e4fe",
+                        "surface": "#f8f9ff",
+                        "on-error": "#ffffff",
+                        "surface-container": "#e4efff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "surface-container-high": "#daeaff",
+                        "tertiary-container": "#00213d",
+                        "tertiary": "#000815",
+                        "on-background": "#081d2f",
+                        "on-primary-fixed": "#101c2f",
+                        "outline-variant": "#c5c6cd",
+                        "surface-dim": "#c8dcf5",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "background": "#f8f9ff",
+                        "surface-tint": "#535f75"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "topbar-height": "60px",
+                        "sm": "8px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "unit": "4px",
+                        "sidebar-width": "260px",
+                        "lg": "24px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "table-header": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "body-base": ["Inter"]
+                    },
+                    "fontSize": {
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-btn { background: linear-gradient(135deg, #d98c2b, #b8721e); }
+        .amber-glow:focus-within { border-color: #fdaa47; box-shadow: 0 0 0 2px rgba(253, 170, 71, 0.2); }
+    </style>
+</head>
+<body class="bg-background text-on-surface flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<nav class="fixed left-0 top-0 h-full w-[260px] bg-primary dark:bg-primary shadow-sm flex flex-col py-lg z-20">
+<div class="px-md mb-xl flex flex-col gap-sm">
+<h1 class="font-headline-md text-headline-md text-on-primary">Industrial Ops</h1>
+<p class="font-body-medium text-body-medium text-on-primary-container">Utility Management v2.4</p>
+</div>
+<div class="px-md mb-md">
+<button class="w-full gradient-btn text-on-primary font-body-medium text-body-medium py-sm px-md rounded flex items-center justify-center gap-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+                Report Incident
+            </button>
+</div>
+<ul class="flex-1 flex flex-col gap-xs px-sm mt-md font-body-medium text-body-medium">
+<li>
+<a class="flex items-center gap-md py-sm px-sm rounded text-on-primary-container hover:bg-on-primary-fixed-variant transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md py-sm px-sm rounded text-on-primary-container hover:bg-on-primary-fixed-variant transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                    Asset Inventory
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md py-sm px-sm rounded text-on-primary-container hover:bg-on-primary-fixed-variant transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">build</span>
+                    Work Orders
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md py-sm px-sm rounded text-secondary-container font-bold bg-primary-container border-l-4 border-secondary-container pl-3 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+                    Copilot
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md py-sm px-sm rounded text-on-primary-container hover:bg-on-primary-fixed-variant transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                    Analytics
+                </a>
+</li>
+</ul>
+<div class="mt-auto px-sm flex flex-col gap-xs font-body-medium text-body-medium">
+<a class="flex items-center gap-md py-sm pl-4 rounded text-on-primary-container hover:bg-on-primary-fixed-variant transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-md py-sm pl-4 rounded text-on-primary-container hover:bg-on-primary-fixed-variant transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">help</span>
+                Support
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="ml-[260px] flex-1 flex flex-col h-full bg-surface">
+<!-- Top App Bar -->
+<header class="sticky top-0 w-full h-[60px] bg-surface border-b border-outline-variant flex justify-between items-center px-lg z-10">
+<div class="flex items-center gap-xl">
+<span class="font-headline-lg text-headline-lg text-primary">AssetCentral</span>
+<nav class="hidden md:flex gap-lg font-headline-md text-headline-md">
+<a class="text-on-surface-variant hover:text-secondary transition-all active:opacity-80" href="#">Overview</a>
+<a class="text-on-surface-variant hover:text-secondary transition-all active:opacity-80" href="#">Map View</a>
+<a class="text-on-surface-variant hover:text-secondary transition-all active:opacity-80" href="#">Reports</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden lg:block amber-glow">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-[36px] pr-sm py-[6px] border border-outline-variant rounded bg-surface-container-lowest text-body-base font-body-base text-on-surface focus:outline-none w-[200px]" placeholder="Search..." type="text"/>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">history</span>
+</button>
+<button class="px-md py-sm border border-outline-variant rounded text-on-surface-variant font-body-medium text-body-medium hover:bg-surface-container-low transition-colors">Export</button>
+<button class="gradient-btn text-on-primary px-md py-sm rounded font-body-medium text-body-medium hover:opacity-90 transition-opacity">New Asset</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden border border-outline-variant ml-sm">
+<img alt="Operator Avatar" class="w-full h-full object-cover" data-alt="A professional headshot of an industrial operator in a well-lit control room setting, wearing a modern uniform, neutral background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9w63bGbEj6yAcYckl2kn_lGIBO6Vk_wxVNoMiSgyk9CMWFvD4ELHFNwhLizZkYoIcH7tDAOCmQCQX9wOMGQ13AA3MQM3Sdv3n76L7psyN33acqozYdBQarjDLEDjkQJXMrzrtlX6_uY9TWMNdtyVUricj10YI_woMDZoXki-JlUY_9ZcV5IeD_JssWRnz99uDpmDnHVDMnSQujBXzoLdgh1ZLvFwAsqVfE0TBFQJdfhJBtLliGMRy"/>
+</div>
+</div>
+</header>
+<!-- Copilot Workspace -->
+<main class="flex-1 flex overflow-hidden p-gutter gap-gutter bg-background">
+<!-- Left Panel: Reference Library -->
+<aside class="w-[280px] flex flex-col bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden hidden xl:flex">
+<div class="p-sm bg-surface-container-low border-b border-outline-variant">
+<h2 class="font-headline-md text-headline-md text-primary flex items-center justify-between">
+                        Reference Library
+                        <span class="text-[12px] text-on-surface-variant block font-normal">کتابخانه مرجع</span>
+</h2>
+</div>
+<div class="flex-1 overflow-y-auto p-sm flex flex-col gap-xs">
+<div class="amber-glow relative mb-sm">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline text-[18px]">filter_alt</span>
+<input class="w-full pl-[32px] pr-sm py-[4px] border border-outline-variant rounded bg-surface text-body-base font-body-base" placeholder="Filter datasets..." type="text"/>
+</div>
+<div class="flex flex-col gap-unit">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase mt-sm mb-unit px-xs">Manuals</span>
+<a class="flex items-center gap-sm p-sm rounded hover:bg-surface-container-low text-body-base font-body-base text-on-surface border border-transparent hover:border-outline-variant transition-all" href="#">
+<span class="material-symbols-outlined text-tertiary-container">menu_book</span>
+<span class="truncate">Turbine TR-900 Ops</span>
+</a>
+<a class="flex items-center gap-sm p-sm rounded hover:bg-surface-container-low text-body-base font-body-base text-on-surface border border-transparent hover:border-outline-variant transition-all" href="#">
+<span class="material-symbols-outlined text-tertiary-container">menu_book</span>
+<span class="truncate">Bearing Maint. Specs</span>
+</a>
+</div>
+<div class="flex flex-col gap-unit">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase mt-sm mb-unit px-xs">SOPs</span>
+<a class="flex items-center gap-sm p-sm rounded bg-surface-container border border-outline-variant text-body-base font-body-base text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined text-secondary-container">assignment_turned_in</span>
+<span class="truncate font-semibold">Vibration Protocol</span>
+</a>
+<a class="flex items-center gap-sm p-sm rounded hover:bg-surface-container-low text-body-base font-body-base text-on-surface border border-transparent hover:border-outline-variant transition-all" href="#">
+<span class="material-symbols-outlined text-tertiary-container">assignment_turned_in</span>
+<span class="truncate">Emergency Shutdown</span>
+</a>
+</div>
+<div class="flex flex-col gap-unit">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase mt-sm mb-unit px-xs">Legacy Data</span>
+<a class="flex items-center gap-sm p-sm rounded hover:bg-surface-container-low text-body-base font-body-base text-on-surface border border-transparent hover:border-outline-variant transition-all" href="#">
+<span class="material-symbols-outlined text-outline">history_edu</span>
+<span class="truncate">Q2 2023 Redlines</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Center: Interactive Chat -->
+<section class="flex-1 flex flex-col bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden shadow-sm relative">
+<!-- Chat Header -->
+<div class="px-md py-sm border-b border-outline-variant flex justify-between items-center bg-surface-container-highest sticky top-0 z-10">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-primary flex items-center justify-center text-secondary-container shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-primary">Knowledge Copilot</h2>
+<span class="font-label-caps text-label-caps text-on-surface-variant">SESSION: TR-900 DIAGNOSTICS</span>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-primary p-unit rounded hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- Chat History -->
+<div class="flex-1 overflow-y-auto p-md flex flex-col gap-lg bg-surface">
+<!-- User Message -->
+<div class="flex justify-end max-w-[85%] self-end">
+<div class="bg-surface-container-high border border-outline-variant rounded-lg rounded-tr-none p-md">
+<p class="font-body-base text-body-base text-on-surface">
+                                I'm seeing abnormal vibration levels (peak 8.5 mm/s) on the TR-900 forward bearing during start-up sequence. It stabilizes after reaching 3000 RPM. What could be the root cause based on our historical data?
+                                <br/><span class="text-[12px] text-on-surface-variant mt-sm block border-t border-outline-variant pt-unit">در حین راه‌اندازی TR-900، لرزش غیرعادی روی یاتاقان جلویی (پیک 8.5 mm/s) مشاهده می‌کنم. پس از رسیدن به 3000 دور در دقیقه تثبیت می‌شود. علت ریشه‌ای بر اساس داده‌های تاریخی ما چیست؟</span>
+</p>
+</div>
+</div>
+<!-- AI Response -->
+<div class="flex justify-start max-w-[90%] self-start">
+<div class="flex gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary flex-shrink-0 flex items-center justify-center mt-unit">
+<span class="material-symbols-outlined text-secondary-container text-[18px]" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg rounded-tl-none p-md shadow-sm">
+<p class="font-body-base text-body-base text-on-surface mb-md">
+                                    Based on the TR-900 technical manuals and historical work orders, a transient high vibration peak during run-up that stabilizes at operating speed often indicates a temporary thermal bow or a slight rub condition before thermal equilibrium is reached.
+                                </p>
+<div class="bg-surface-container p-sm rounded border border-outline-variant mb-md">
+<h4 class="font-body-medium text-body-medium text-primary mb-xs flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">menu_book</span>
+                                        Excerpt: TR-900 Maintenance Manual (Section 4.2)
+                                    </h4>
+<p class="font-table-cell text-table-cell text-on-surface-variant italic">
+                                        "Vibration excursions exceeding 7.0 mm/s during the critical speed transition (2200-2600 RPM) that resolve upon reaching nominal speed (3000 RPM) are typically indicative of rotor thermal bowing. Verify adequate barring gear operation duration prior to start."
+                                    </p>
+</div>
+<h4 class="font-headline-md text-headline-md text-primary mb-sm">5 Whys Analysis Starter</h4>
+<ul class="list-decimal pl-md font-body-base text-body-base text-on-surface flex flex-col gap-xs mb-sm">
+<li><strong>Why is the vibration high at start-up?</strong> Rotor may have a temporary thermal bow.</li>
+<li><strong>Why is there a thermal bow?</strong> Uneven cooling during the last shutdown.</li>
+<li><strong>Why was cooling uneven?</strong> The barring gear might not have operated for the specified duration.</li>
+</ul>
+<div class="flex gap-sm mt-md pt-sm border-t border-outline-variant">
+<button class="px-sm py-unit border border-outline-variant rounded font-badge-label text-badge-label text-on-surface-variant hover:bg-surface-container transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">thumb_up</span> Helpful
+                                    </button>
+<button class="px-sm py-unit border border-outline-variant rounded font-badge-label text-badge-label text-on-surface-variant hover:bg-surface-container transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-sm bg-surface-container-highest border-t border-outline-variant">
+<div class="relative amber-glow flex items-end bg-surface-container-lowest border border-outline-variant rounded-lg p-unit">
+<button class="p-sm text-on-surface-variant hover:text-primary transition-colors flex-shrink-0">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-body-base font-body-base text-on-surface resize-none p-sm" placeholder="Ask follow-up or provide more sensor data..." rows="2"></textarea>
+<button class="p-sm text-secondary-container hover:text-primary transition-colors flex-shrink-0 bg-primary rounded m-unit self-end">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Right Panel: Contextual Intelligence -->
+<aside class="w-[320px] flex flex-col gap-sm hidden lg:flex overflow-y-auto">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md shadow-sm">
+<h3 class="font-headline-md text-headline-md text-primary mb-md flex items-center gap-sm border-b border-outline-variant pb-sm">
+<span class="material-symbols-outlined text-tertiary-container">lightbulb</span>
+                        Contextual Intelligence
+                        <span class="text-[11px] text-on-surface-variant ml-auto font-normal">هوش زمینه‌ای</span>
+</h3>
+<!-- Drawings -->
+<div class="mb-lg">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-sm">Related Drawings</h4>
+<div class="grid grid-cols-2 gap-sm">
+<div class="border border-outline-variant rounded bg-surface overflow-hidden group cursor-pointer hover:border-secondary-container transition-colors">
+<div class="h-20 bg-surface-variant relative">
+<img alt="Bearing Blueprint" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A detailed technical blueprint thumbnail showing the cross-section of an industrial turbine bearing assembly, white lines on deep blue background, engineering style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRBSY1EjovJqHFew6u1-MjW1GuDGrlLxgjNw_uHo9xFO3yserkLngpjYtlcQU-CYcgssgkIp5xwcEF4LdJ_TNKHZYZpjPLzWlQutTeFCM5OfpKZFdpSmXsyiHYpqkI-5uKgjUJoOfi6LQOaowYZAihHxOSmJQlbniT1R_hDan60Zjz9-srmBzl6BoV13PEvh9SlewN5TmrObU9cR3lgikfGh1i8zkcOgpp2kG4hxVnZ4GnONOz_jAx"/>
+<span class="absolute bottom-unit right-unit bg-primary text-on-primary font-badge-label text-[9px] px-unit rounded">DWG-82A</span>
+</div>
+</div>
+<div class="border border-outline-variant rounded bg-surface overflow-hidden group cursor-pointer hover:border-secondary-container transition-colors">
+<div class="h-20 bg-surface-variant relative">
+<img alt="Lube System Schematic" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A schematic diagram thumbnail illustrating a lubrication oil system for heavy machinery, featuring flow lines and pump symbols, clean monochrome technical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAyn74WKXsCa5erIvuVtqlZ6VcyI9yV4GfSqOpIiM-NgAchablEzCewSZ2N-uWKRy_U9WhzAl0m58Q9Hybg0VW8__W-lzl1exKuWOHJtKmohB7PMgiK4zjunhQo5lGHJ9K7t8jYuyNH1bdk08YWHgwXYWaoK42Busf7DTkdWcEi9JsEJ3O0GHihOuVQRkNQg2TkFbzOq0eYuUp4U6eSeuQGa9OgH1uuMPIrGT0ir9YM-G7_KQ4p_68"/>
+<span class="absolute bottom-unit right-unit bg-primary text-on-primary font-badge-label text-[9px] px-unit rounded">SCH-04B</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Work Orders -->
+<div class="mb-lg">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-sm">Historical Work Orders</h4>
+<div class="flex flex-col gap-xs">
+<div class="p-sm border border-outline-variant rounded hover:bg-surface-container transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-unit">
+<span class="font-body-medium text-body-medium text-primary">WO-2023-892</span>
+<span class="bg-surface-variant text-on-surface-variant px-2 py-0.5 rounded-full font-badge-label text-badge-label">Closed</span>
+</div>
+<p class="font-table-cell text-table-cell text-on-surface-variant truncate">Bearing replacement due to scored journal.</p>
+<span class="font-badge-label text-badge-label text-outline mt-unit block">Oct 12, 2023</span>
+</div>
+<div class="p-sm border border-outline-variant rounded hover:bg-surface-container transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-unit">
+<span class="font-body-medium text-body-medium text-primary">WO-2022-411</span>
+<span class="bg-surface-variant text-on-surface-variant px-2 py-0.5 rounded-full font-badge-label text-badge-label">Closed</span>
+</div>
+<p class="font-table-cell text-table-cell text-on-surface-variant truncate">Rotor balancing post-overhaul.</p>
+<span class="font-badge-label text-badge-label text-outline mt-unit block">Mar 05, 2022</span>
+</div>
+</div>
+</div>
+<!-- Standards -->
+<div>
+<h4 class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-sm">Engineering Standards</h4>
+<div class="flex flex-col gap-unit">
+<a class="flex items-center gap-sm p-sm rounded bg-surface hover:bg-surface-container border border-outline-variant text-body-base font-body-base text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined text-outline">policy</span>
+<span class="truncate text-sm">ISO 10816-3 (Vibration)</span>
+</a>
+<a class="flex items-center gap-sm p-sm rounded bg-surface hover:bg-surface-container border border-outline-variant text-body-base font-body-base text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined text-outline">policy</span>
+<span class="truncate text-sm">API 612 (Steam Turbines)</span>
+</a>
+</div>
+</div>
+</div>
+</aside>
+</main>
+</div>
+</body></html>

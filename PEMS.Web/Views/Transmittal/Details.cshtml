@@ -1,0 +1,160 @@
+@model PEMS.Application.DTOs.TransmittalDto
+@{
+    var statusBadge = Model.Status switch { "Sent" => "bg-success", "Acknowledged" => "bg-info text-dark", "Cancelled" => "bg-danger", _ => "bg-secondary" };
+}
+
+<div class="content-card mb-3">
+    <div class="row g-3">
+        <div class="col-md-3"><strong>Transmittal No:</strong> @Model.TransmittalNo</div>
+        <div class="col-md-3"><strong>Project:</strong> @Model.ProjectName</div>
+        <div class="col-md-3"><strong>From:</strong> @Model.From</div>
+        <div class="col-md-3"><strong>To:</strong> @Model.To</div>
+        <div class="col-md-3"><strong>Purpose:</strong> @Model.Purpose</div>
+        <div class="col-md-3"><strong>Status:</strong> <span class="badge @statusBadge">@Model.Status</span></div>
+        <div class="col-md-3"><strong>Created:</strong> @Model.TransmittalDate.ToString("yyyy-MM-dd")</div>
+        <div class="col-md-3"><strong>Sent:</strong> @(Model.SentDate?.ToString("yyyy-MM-dd") ?? "-")</div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.Description))
+    {
+        <p class="mt-3 text-muted">@Model.Description</p>
+    }
+
+    @if (Model.SupersedesTransmittalId.HasValue)
+    {
+        <p class="small text-muted">
+            <i class="bi bi-arrow-return-right"></i> Reissued from
+            <a asp-action="Details" asp-route-id="@Model.SupersedesTransmittalId">@Model.SupersedesTransmittalNo</a>
+        </p>
+    }
+    @if (Model.SupersededByTransmittalId.HasValue)
+    {
+        <p class="small text-muted">
+            <i class="bi bi-arrow-return-right"></i> Superseded by
+            <a asp-action="Details" asp-route-id="@Model.SupersededByTransmittalId">@Model.SupersededByTransmittalNo</a>
+        </p>
+    }
+
+    @if (Model.Status == "Cancelled")
+    {
+        <div class="alert alert-danger py-2 px-3 small mb-2">
+            Cancelled @Model.CancelledDate?.ToString("yyyy-MM-dd") - @Model.CancelledReason
+        </div>
+    }
+
+    @if (Model.Status == "Draft")
+    {
+        <form asp-action="MarkSent" asp-route-id="@Model.TransmittalId" method="post" class="mt-2 d-flex gap-2 align-items-end">
+            @if (Model.ResponseRequired)
+            {
+                <div>
+                    <label class="form-label small mb-0">Response due (working days)</label>
+                    <input name="responseDueWorkingDays" type="number" value="10" min="1" class="form-control form-control-sm" style="width:100px;" />
+                </div>
+            }
+            @if ((bool)(ViewBag.CanIssue ?? false))
+            {
+                <button class="btn btn-sm btn-pems-solid"><i class="bi bi-send"></i> Mark as Sent (Issue)</button>
+            }
+            else
+            {
+                <span class="text-muted small">You do not have permission to issue transmittals.</span>
+            }
+        </form>
+    }
+
+    @if (Model.Status == "Sent" || Model.Status == "Acknowledged")
+    {
+        <div class="alert alert-secondary py-2 px-3 small mt-2 mb-2">
+            <i class="bi bi-lock"></i> This transmittal has been issued - number, documents, recipients and issue purpose are locked.
+            To correct it, cancel and reissue.
+        </div>
+
+        @if ((bool)(ViewBag.CanCancel ?? false))
+        {
+            <form asp-action="Cancel" asp-route-id="@Model.TransmittalId" method="post" class="d-flex gap-2 align-items-end mt-2">
+                <div class="flex-grow-1">
+                    <label class="form-label small mb-0">Cancel Reason</label>
+                    <input name="reason" class="form-control form-control-sm" required />
+                </div>
+                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle"></i> Cancel</button>
+            </form>
+        }
+
+        @if (Model.ResponseRequired)
+        {
+            <div class="mt-3">
+                <strong>Response Due:</strong> @(Model.ResponseDueDate?.ToString("yyyy-MM-dd") ?? "-")
+                @if (Model.IsResponseOverdue)
+                {
+                    <span class="badge bg-danger">overdue</span>
+                }
+                @if (Model.ResponseReceivedDate.HasValue)
+                {
+                    <span class="badge bg-success">received @Model.ResponseReceivedDate.Value.ToString("yyyy-MM-dd")</span>
+                    <div class="small text-muted">@Model.ResponseNote</div>
+                }
+                else if ((bool)(ViewBag.CanRecordResponse ?? false))
+                {
+                    <form asp-action="RecordResponse" asp-route-id="@Model.TransmittalId" method="post" class="d-flex gap-2 align-items-end mt-1">
+                        <div class="flex-grow-1">
+                            <input name="responseNote" class="form-control form-control-sm" placeholder="Response note (optional)" />
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary">Record Response Received</button>
+                    </form>
+                }
+            </div>
+        }
+    }
+
+    @if (Model.Status == "Cancelled" && (bool)(ViewBag.CanReissue ?? false))
+    {
+        <form asp-action="Reissue" asp-route-id="@Model.TransmittalId" method="post" class="mt-2">
+            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-repeat"></i> Reissue as new Draft</button>
+        </form>
+    }
+</div>
+
+<div class="content-card mb-3">
+    <h6 class="mb-3">Recipients</h6>
+    <table class="table table-enterprise">
+        <thead><tr><th>Name</th><th>Type</th><th>Organization</th><th>Response Required</th></tr></thead>
+        <tbody>
+            @foreach (var r in Model.Recipients)
+            {
+                <tr>
+                    <td>@r.Name</td>
+                    <td>@r.RecipientType</td>
+                    <td>@r.Organization</td>
+                    <td>@(r.ResponseRequired ? "Yes" : "")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!Model.Recipients.Any())
+    {
+        <p class="text-muted small mb-0">No structured recipients (legacy free-text "To" field only).</p>
+    }
+</div>
+
+<div class="content-card">
+    <h6 class="mb-3">Included Documents</h6>
+    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+    <table class="table table-enterprise">
+        <thead>
+            <tr><th>Document No</th><th>Title</th><th>Revision at time of sending</th><th>Remarks</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.DocumentNo</td>
+                    <td>@item.DocumentTitle</td>
+                    <td><span class="badge bg-secondary">@item.RevisionNo</span></td>
+                    <td>@item.Remarks</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+</div>

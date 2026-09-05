@@ -1,0 +1,24 @@
+﻿@model List<PEMS.Application.DTOs.LetterDto>
+
+<div class="content-card">
+    <h6 class="mb-3">Letters Referred to Me</h6>
+    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+    <table class="table table-enterprise">
+        <thead><tr><th>Type</th><th>Letter No</th><th>Subject</th><th>Date</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+            @foreach (var l in Model)
+            {
+                <tr>
+                    <td><span class="badge bg-secondary">@l.LetterType</span></td>
+                    <td>@l.LetterNumber</td>
+                    <td>@l.Subject</td>
+                    <td>@l.LetterDate.ToString("yyyy-MM-dd")</td>
+                    <td><span class="badge bg-info text-dark">@l.Status</span></td>
+                    <td><a asp-action="Details" asp-route-id="@l.LetterId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    @if (!Model.Any()) { <p class="text-muted text-center py-4">No letters referred to you.</p> }
+</div>

@@ -1,0 +1,186 @@
+@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.AssetListDto>
+@{
+    var equipmentOptions = (IEnumerable<dynamic>)ViewBag.Equipments;
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+}
+
+<div class="content-card mb-3">
+    <div class="row g-3 text-center">
+        <div class="col-md-4"><div class="border rounded p-3"><div class="text-muted small">Total Assets</div><div class="fs-4 fw-bold">@ViewBag.TotalCount</div></div></div>
+        <div class="col-md-4"><div class="border rounded p-3"><div class="text-muted small">Active</div><div class="fs-4 fw-bold text-success">@ViewBag.ActiveCount</div></div></div>
+        <div class="col-md-4">
+            <div class="border rounded p-3 d-flex align-items-center justify-content-center h-100">
+                <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createAssetModal">
+                    <i class="bi bi-plus-lg"></i> New Asset
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-card">
+    <form method="get" class="d-flex flex-wrap gap-2 mb-3">
+        <input type="search" name="q" value="@ViewBag.SearchTerm" class="form-control form-control-sm" style="max-width:260px;" placeholder="Search asset no. / tag..." />
+        <select name="status" class="form-select form-select-sm" style="max-width:180px;">
+            <option value="">All statuses</option>
+            @foreach (var s in new[] { "Active", "Standby", "Retired" })
+            {
+                <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option>
+            }
+        </select>
+        <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-funnel"></i> Filter</button>
+        <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Reset</a>
+    </form>
+
+    <div class="d-flex justify-content-end mb-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Asset')">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+        </button>
+    </div>
+    <div class="table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise pems-grid-table" data-grid-key="Asset">
+            <thead>
+                <tr>
+                    <th data-col-key="assetNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Asset No.</th>
+                    <th data-col-key="equipment" data-resizable="true" data-min-width="140" data-max-width="320" style="width:220px">Equipment</th>
+                    <th data-col-key="maintClass" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">Maintenance Class</th>
+                    <th data-col-key="criticality" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">Criticality</th>
+                    <th data-col-key="commissioning" data-resizable="true" data-min-width="100" data-max-width="180" style="width:130px">Commissioning</th>
+                    <th data-col-key="openWos" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">Open WOs</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">Status</th>
+                    <th data-col-key="actions" data-resizable="false" style="width:70px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model.Items)
+                {
+                    var badgeClass = a.Status switch { "Active" => "bg-success", "Standby" => "bg-warning text-dark", "Retired" => "bg-secondary", _ => "bg-secondary" };
+                    <tr>
+                        <td><a asp-action="Details" asp-route-id="@a.AssetId">@a.AssetNumber</a></td>
+                        <td class="small">@a.EquipmentTagNumber - @a.EquipmentName</td>
+                        <td>@(a.MaintenanceClass ?? "-")</td>
+                        <td>@(a.CriticalityClass ?? "-")</td>
+                        <td class="small">@(a.CommissioningDate?.ToString("yyyy-MM-dd") ?? "-")</td>
+                        <td>@a.OpenWorkOrderCount</td>
+                        <td><span class="badge @badgeClass">@a.Status</span></td>
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@a.AssetId" class="btn btn-sm btn-outline-secondary" title="Details"><i class="bi bi-card-text"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No assets found.</p> }
+
+    @{
+        var qsParts = new List<string>();
+        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus)) qsParts.Add($"status={Uri.EscapeDataString((string)ViewBag.SelectedStatus)}");
+        if (!string.IsNullOrEmpty((string?)ViewBag.SearchTerm)) qsParts.Add($"q={Uri.EscapeDataString((string)ViewBag.SearchTerm)}");
+    }
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "Asset",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = string.Join("&", qsParts)
+    })
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('Asset');
+        });
+    </script>
+}
+
+<div class="modal fade" id="createAssetModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Create" method="post">
+                <div class="modal-header"><h6 class="modal-title">New Asset</h6></div>
+                <div class="modal-body">
+                    <p class="text-muted small">
+                        Tag number, manufacturer and model come from the Equipment record itself - pick the
+                        equipment this Asset represents the CMMS lifecycle for.
+                    </p>
+                    <div class="mb-3">
+                        <label class="form-label">Equipment</label>
+                        <select name="equipmentId" class="form-select" required>
+                            <option value="">-- select equipment --</option>
+                            @foreach (var e in equipmentOptions)
+                            {
+                                <option value="@e.EquipmentId">@e.Label</option>
+                            }
+                        </select>
+                        <div class="form-text">Equipment not listed here already has an Asset, or doesn't exist yet.</div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Asset Number</label>
+                            <input name="assetNumber" class="form-control" placeholder="AST-P101" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Maintenance Class</label>
+                            <input name="maintenanceClass" class="form-control" placeholder="Rotating, Static, Electrical ..." />
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Functional Location</label>
+                            <select name="functionalLocationId" class="form-select">
+                                <option value="">-- not linked --</option>
+                                @foreach (var fl in (List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations)
+                                {
+                                    <option value="@fl.FunctionalLocationId">@fl.PathBreadcrumb</option>
+                                }
+                            </select>
+                            <div class="form-text">Real link to Functional Location. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">Manage list</a></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Commissioning Date</label>
+                            <input name="commissioningDate" type="date" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Functional Location (raw text, legacy)</label>
+                        <input name="functionalLocation" class="form-control" placeholder="Unit-100 / Area-A" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select name="status" class="form-select">
+                            <option value="Active" selected>Active</option>
+                            <option value="Standby">Standby</option>
+                            <option value="Retired">Retired</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-pems-solid">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

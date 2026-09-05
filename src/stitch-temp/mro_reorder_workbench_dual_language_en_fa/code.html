@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Warehouse Reorder Workbench | میز کار سفارش مجدد انبار</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#000815",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "inverse-primary": "#bbc7e0",
+                        "surface-container-high": "#daeaff",
+                        "on-surface-variant": "#44474c",
+                        "tertiary-container": "#00213d",
+                        "surface-container-highest": "#d0e4fe",
+                        "surface-bright": "#f8f9ff",
+                        "inverse-on-surface": "#e9f1ff",
+                        "on-tertiary-container": "#498bcd",
+                        "on-surface": "#081d2f",
+                        "tertiary-fixed": "#d1e4ff",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "primary-container": "#142033",
+                        "primary": "#000819",
+                        "on-background": "#081d2f",
+                        "secondary-fixed": "#ffdcbc",
+                        "surface-tint": "#535f75",
+                        "on-primary-fixed": "#101c2f",
+                        "surface-dim": "#c8dcf5",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#d7e3fd",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#fdaa47",
+                        "on-secondary-fixed": "#2c1700",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#e4efff",
+                        "secondary": "#895200",
+                        "surface-variant": "#d0e4fe",
+                        "inverse-surface": "#1f3245",
+                        "outline": "#75777d",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "outline-variant": "#c5c6cd",
+                        "on-tertiary-fixed": "#001d36",
+                        "on-primary-container": "#7c889f",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#6e4100",
+                        "surface-container-low": "#eef4ff",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "background": "#f8f9ff",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "md": "16px",
+                        "topbar-height": "60px",
+                        "sidebar-width": "260px",
+                        "xl": "32px",
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "sm": "8px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "kpi-stat": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "table-header": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "body-base": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+        
+        .bento-item-full { grid-column: span 12; }
+        .bento-item-half { grid-column: span 6; }
+        .bento-item-third { grid-column: span 4; }
+        .bento-item-two-thirds { grid-column: span 8; }
+        .bento-item-quarter { grid-column: span 3; }
+
+        @media (max-width: 992px) {
+            .bento-item-half, .bento-item-third, .bento-item-two-thirds, .bento-item-quarter {
+                grid-column: span 12;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base min-h-screen flex flex-col md:flex-row">
+<!-- TopNavBar (Mobile) / TopAppBar -->
+<header class="md:hidden fixed top-0 w-full z-50 bg-surface dark:bg-tertiary text-primary dark:text-primary-fixed-dim font-body-medium text-body-medium border-b border-outline-variant dark:border-outline flex justify-between items-center h-topbar-height px-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="menu">menu</span>
+<span class="text-headline-md font-headline-md text-primary dark:text-primary-fixed-dim">PEMS Enterprise Utility</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<!-- SideNavBar (Desktop) -->
+<nav class="hidden md:flex flex-col h-full py-md fixed left-0 top-0 w-sidebar-width bg-tertiary dark:bg-primary text-on-tertiary dark:text-on-primary font-label-caps text-label-caps transition-all duration-200 ease-in-out z-40 shadow-lg">
+<div class="px-lg pb-xl border-b border-on-tertiary-fixed-variant/20 mb-md">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="factory">factory</span>
+</div>
+<div>
+<div class="text-headline-md font-headline-md text-on-tertiary">PEMS Enterprise</div>
+<div class="text-on-tertiary-fixed-variant font-body-base text-body-base">Utility Optimization</div>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<a class="flex items-center gap-3 text-on-tertiary-fixed-variant hover:text-on-tertiary mx-sm my-xs px-md py-sm hover:bg-on-tertiary-fixed-variant/10 transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 bg-secondary-container text-on-secondary-container rounded-lg mx-sm my-xs px-md py-sm transition-colors duration-200 shadow-sm" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span>Inventory / Reorder</span>
+</a>
+<a class="flex items-center gap-3 text-on-tertiary-fixed-variant hover:text-on-tertiary mx-sm my-xs px-md py-sm hover:bg-on-tertiary-fixed-variant/10 transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="engineering">engineering</span>
+<span>Maintenance</span>
+</a>
+<a class="flex items-center gap-3 text-on-tertiary-fixed-variant hover:text-on-tertiary mx-sm my-xs px-md py-sm hover:bg-on-tertiary-fixed-variant/10 transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+<span>Suppliers</span>
+</a>
+<a class="flex items-center gap-3 text-on-tertiary-fixed-variant hover:text-on-tertiary mx-sm my-xs px-md py-sm hover:bg-on-tertiary-fixed-variant/10 transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span>AI Predictions</span>
+</a>
+<a class="flex items-center gap-3 text-on-tertiary-fixed-variant hover:text-on-tertiary mx-sm my-xs px-md py-sm hover:bg-on-tertiary-fixed-variant/10 transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</div>
+<div class="mt-auto px-sm border-t border-on-tertiary-fixed-variant/20 pt-md">
+<a class="flex items-center gap-3 text-on-tertiary-fixed-variant hover:text-on-tertiary mx-sm my-xs px-md py-sm hover:bg-on-tertiary-fixed-variant/10 transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 text-on-tertiary-fixed-variant hover:text-on-tertiary mx-sm my-xs px-md py-sm hover:bg-on-tertiary-fixed-variant/10 transition-colors duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-[260px] pt-[60px] md:pt-0 p-4 md:p-6 lg:p-8 overflow-x-hidden">
+<!-- Desktop Header / Page Title -->
+<div class="hidden md:flex justify-between items-center mb-8 bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/30">
+<div>
+<h1 class="text-headline-lg font-headline-lg text-on-surface">Warehouse Reorder Workbench</h1>
+<h2 class="text-headline-md font-headline-md text-on-surface-variant text-opacity-70 mt-1" dir="rtl">میز کار سفارش مجدد انبار</h2>
+</div>
+<div class="flex gap-4">
+<button class="bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white px-6 py-2.5 rounded-lg font-body-medium flex items-center gap-2 shadow-md hover:shadow-lg transition-all border border-[#b8721e]/50">
+<span class="material-symbols-outlined text-[18px]">shopping_cart_checkout</span>
+<span>Process Batch</span>
+</button>
+</div>
+</div>
+<div class="bento-grid">
+<!-- Cost Impact Panel (Bento Quarter) -->
+<div class="bento-item-quarter bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm flex flex-col justify-between hover:border-[#d98c2b] transition-colors relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-surface-container-low to-surface-container-lowest opacity-50"></div>
+<div class="relative z-10 flex justify-between items-start mb-4">
+<div>
+<div class="font-table-header text-table-header text-on-surface-variant uppercase tracking-wider mb-1">Batch Value <span class="mx-2 text-outline-variant">|</span> <span class="font-normal text-[10px]" dir="rtl">ارزش دسته</span></div>
+<div class="font-kpi-stat text-kpi-stat text-on-surface mt-2">$248,500<span class="text-sm font-normal text-on-surface-variant ml-1">.00</span></div>
+</div>
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-surface-container-highest to-surface-container flex items-center justify-center text-on-surface shadow-inner group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined fill text-[24px]">payments</span>
+</div>
+</div>
+<div class="relative z-10 flex items-center gap-2 text-body-medium font-body-medium text-[#1a7f37]">
+<span class="material-symbols-outlined text-[16px]">trending_down</span>
+<span>4.2% vs avg</span>
+</div>
+</div>
+<!-- Items to Reorder KPI (Bento Quarter) -->
+<div class="bento-item-quarter bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm flex flex-col justify-between hover:border-[#d98c2b] transition-colors relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-surface-container-low to-surface-container-lowest opacity-50"></div>
+<div class="relative z-10 flex justify-between items-start mb-4">
+<div>
+<div class="font-table-header text-table-header text-on-surface-variant uppercase tracking-wider mb-1">Critical Reorders <span class="mx-2 text-outline-variant">|</span> <span class="font-normal text-[10px]" dir="rtl">سفارشات بحرانی</span></div>
+<div class="font-kpi-stat text-kpi-stat text-error mt-2">12</div>
+</div>
+<div class="w-[46px] h-[46px] rounded-[10px] bg-gradient-to-br from-error-container to-[#ffb4ab] flex items-center justify-center text-error shadow-inner group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined fill text-[24px]">warning</span>
+</div>
+</div>
+<div class="relative z-10">
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-error h-full rounded-full" style="width: 15%"></div>
+</div>
+<div class="text-xs text-on-surface-variant mt-2">15% of total inventory alerts</div>
+</div>
+</div>
+<!-- Optimization Tools (Bento Half) -->
+<div class="bento-item-half bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm flex flex-col hover:border-[#d98c2b] transition-colors">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">AI Optimization Params</h3>
+<p class="font-body-medium text-body-medium text-on-surface-variant text-sm mt-1" dir="rtl">پارامترهای بهینه سازی هوش مصنوعی</p>
+</div>
+<div class="bg-surface-container px-3 py-1.5 rounded-lg flex items-center gap-2 border border-outline-variant/50">
+<span class="material-symbols-outlined text-secondary text-[16px]">psychology</span>
+<span class="font-label-caps text-label-caps text-on-surface">Auto-Tuning Active</span>
+</div>
+</div>
+<div class="flex flex-col gap-5 mt-auto">
+<div>
+<div class="flex justify-between font-table-header text-table-header text-on-surface-variant mb-2">
+<span>Safety Stock Sensitivity</span>
+<span class="text-on-surface">High (85%)</span>
+</div>
+<input class="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-[#d98c2b]" max="100" min="0" type="range" value="85"/>
+</div>
+<div>
+<div class="flex justify-between font-table-header text-table-header text-on-surface-variant mb-2">
+<span>Lead-Time Buffer</span>
+<span class="text-on-surface">+14 Days</span>
+</div>
+<input class="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-[#d98c2b]" max="30" min="0" type="range" value="14"/>
+</div>
+</div>
+</div>
+<!-- Pending Reorders List (Bento Full) -->
+<div class="bento-item-full bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="p-4 bg-surface-container-lowest border-b border-outline-variant/50 flex justify-between items-center sticky top-0 z-20">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Pending Reorders Batch</h3>
+<p class="font-body-medium text-body-medium text-on-surface-variant text-sm" dir="rtl">دسته سفارشات مجدد در انتظار</p>
+</div>
+<div class="flex gap-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="pl-9 pr-4 py-1.5 bg-surface border border-outline-variant rounded-lg font-body-base text-body-base focus:border-[#d98c2b] focus:ring-1 focus:ring-[#d98c2b] outline-none text-sm w-48 transition-all" placeholder="Search Tag No..." type="text"/>
+</div>
+<button class="p-1.5 border border-outline-variant rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#f5f7fa] sticky top-0 z-10 border-b border-outline-variant/50">
+<tr>
+<th class="p-3 font-table-header text-table-header text-on-surface-variant">Tag No. / شناسه</th>
+<th class="p-3 font-table-header text-table-header text-on-surface-variant">Description / شرح</th>
+<th class="p-3 font-table-header text-table-header text-on-surface-variant">Qty / تعداد</th>
+<th class="p-3 font-table-header text-table-header text-on-surface-variant">Est. Cost / هزینه</th>
+<th class="p-3 font-table-header text-table-header text-on-surface-variant">Status / وضعیت</th>
+<th class="p-3 font-table-header text-table-header text-on-surface-variant text-right">Suggested Vendor / تامین کننده</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface divide-y divide-outline-variant/30">
+<!-- Row 1 -->
+<tr class="hover:bg-[rgba(31,78,120,0.04)] transition-colors group">
+<td class="p-3 align-middle">
+<span class="font-mono bg-surface-container-high px-2 py-1 rounded text-xs text-on-primary-fixed-variant border border-outline-variant/50">VLV-0942-A</span>
+</td>
+<td class="p-3 align-middle">
+<div class="font-medium text-on-surface">Butterfly Valve, 6" Flanged</div>
+<div class="text-xs text-on-surface-variant truncate w-48" dir="rtl" title="شیر پروانه ای، 6 اینچ فلنج دار">شیر پروانه ای، 6 اینچ فلنج دار</div>
+</td>
+<td class="p-3 align-middle font-mono">15 ea</td>
+<td class="p-3 align-middle font-mono">$12,450</td>
+<td class="p-3 align-middle">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold tracking-wide bg-[#ffebee] text-[#b71c1c] border border-[#ffcdd2]">
+                                        CRITICAL
+                                    </span>
+</td>
+<td class="p-3 align-middle text-right">
+<div class="flex items-center justify-end gap-2">
+<div class="text-right">
+<div class="font-medium text-sm">FlowServe Inc.</div>
+<div class="text-[10px] text-on-surface-variant flex justify-end items-center gap-1"><span class="material-symbols-outlined text-[12px] text-[#1a7f37]">timer</span> 14d Lead (Fastest)</div>
+</div>
+<button class="w-8 h-8 rounded-lg border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-[#d98c2b] hover:text-[#d98c2b] transition-colors">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-[rgba(31,78,120,0.04)] transition-colors group">
+<td class="p-3 align-middle">
+<span class="font-mono bg-surface-container-high px-2 py-1 rounded text-xs text-on-primary-fixed-variant border border-outline-variant/50">BRG-7712-X</span>
+</td>
+<td class="p-3 align-middle">
+<div class="font-medium text-on-surface">Thrust Bearing, Centrifugal Pump</div>
+<div class="text-xs text-on-surface-variant truncate w-48" dir="rtl" title="یاتاقان کف گرد، پمپ سانتریفیوژ">یاتاقان کف گرد، پمپ سانتریفیوژ</div>
+</td>
+<td class="p-3 align-middle font-mono">40 ea</td>
+<td class="p-3 align-middle font-mono">$8,200</td>
+<td class="p-3 align-middle">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold tracking-wide bg-[#e8f5e9] text-[#1b5e20] border border-[#c8e6c9]">
+                                        STANDARD
+                                    </span>
+</td>
+<td class="p-3 align-middle text-right">
+<div class="flex items-center justify-end gap-2">
+<div class="text-right">
+<div class="font-medium text-sm">SKF Global</div>
+<div class="text-[10px] text-on-surface-variant flex justify-end items-center gap-1"><span class="material-symbols-outlined text-[12px] text-secondary">savings</span> Best Price</div>
+</div>
+<button class="w-8 h-8 rounded-lg border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-[#d98c2b] hover:text-[#d98c2b] transition-colors">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-[rgba(31,78,120,0.04)] transition-colors group">
+<td class="p-3 align-middle">
+<span class="font-mono bg-surface-container-high px-2 py-1 rounded text-xs text-on-primary-fixed-variant border border-outline-variant/50">MTR-005-AC</span>
+</td>
+<td class="p-3 align-middle">
+<div class="font-medium text-on-surface">AC Motor, 50HP, 480V 3Ph</div>
+<div class="text-xs text-on-surface-variant truncate w-48" dir="rtl" title="موتور AC، 50 اسب بخار، 480 ولت 3 فاز">موتور AC، 50 اسب بخار، 480 ولت 3 فاز</div>
+</td>
+<td class="p-3 align-middle font-mono">2 ea</td>
+<td class="p-3 align-middle font-mono">$18,600</td>
+<td class="p-3 align-middle">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold tracking-wide bg-[#fff8e1] text-[#f57f17] border border-[#ffecb3]">
+                                        WATCHLIST
+                                    </span>
+</td>
+<td class="p-3 align-middle text-right">
+<div class="flex items-center justify-end gap-2">
+<div class="text-right">
+<div class="font-medium text-sm">ABB Industrial</div>
+<div class="text-[10px] text-on-surface-variant flex justify-end items-center gap-1"><span class="material-symbols-outlined text-[12px] text-surface-tint">verified</span> Primary Vendor</div>
+</div>
+<button class="w-8 h-8 rounded-lg border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-[#d98c2b] hover:text-[#d98c2b] transition-colors">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-3 bg-surface-bright border-t border-outline-variant/50 flex justify-between items-center text-xs text-on-surface-variant">
+<span>Showing 1-3 of 42 items</span>
+<div class="flex gap-1">
+<button class="w-7 h-7 rounded border border-outline-variant flex items-center justify-center hover:bg-surface-container disabled:opacity-50"><span class="material-symbols-outlined text-[16px]">chevron_left</span></button>
+<button class="w-7 h-7 rounded border border-outline-variant flex items-center justify-center hover:bg-surface-container"><span class="material-symbols-outlined text-[16px]">chevron_right</span></button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

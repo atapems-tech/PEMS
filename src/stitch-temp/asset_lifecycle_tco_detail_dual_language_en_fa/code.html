@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Asset Lifecycle Cost Detail - Turbine Unit 4</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#498bcd",
+                        "surface-container-high": "#daeaff",
+                        "surface-tint": "#535f75",
+                        "on-surface": "#081d2f",
+                        "secondary-container": "#fdaa47",
+                        "background": "#f8f9ff",
+                        "secondary-fixed-dim": "#ffb86a",
+                        "primary-container": "#142033",
+                        "inverse-surface": "#1f3245",
+                        "surface-container": "#e4efff",
+                        "inverse-on-surface": "#e9f1ff",
+                        "secondary-fixed": "#ffdcbc",
+                        "inverse-primary": "#bbc7e0",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#000815",
+                        "on-secondary-fixed": "#2c1700",
+                        "on-primary-container": "#7c889f",
+                        "surface-container-highest": "#d0e4fe",
+                        "primary-fixed-dim": "#bbc7e0",
+                        "tertiary-container": "#00213d",
+                        "on-secondary-container": "#6e4100",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#44474c",
+                        "surface-variant": "#d0e4fe",
+                        "surface-dim": "#c8dcf5",
+                        "secondary": "#895200",
+                        "surface": "#f8f9ff",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-background": "#081d2f",
+                        "on-primary-fixed": "#101c2f",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#d7e3fd",
+                        "on-error": "#ffffff",
+                        "primary": "#000819",
+                        "surface-container-low": "#eef4ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#3b475c",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "on-secondary-fixed-variant": "#683d00",
+                        "on-tertiary-fixed": "#001d36",
+                        "outline-variant": "#c5c6cd",
+                        "outline": "#75777d",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "surface-bright": "#f8f9ff",
+                        "on-error-container": "#93000a",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "topbar-height": "60px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "sidebar-width": "260px",
+                        "lg": "24px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "table-cell": ["Inter"],
+                        "table-header": ["Inter"],
+                        "kpi-stat": ["Inter"],
+                        "body-medium": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-base": ["Inter"],
+                        "badge-label": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-caps": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700" }],
+                        "table-cell": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "table-header": ["11.5px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+                        "kpi-stat": ["22px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-medium": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "body-base": ["13.5px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "badge-label": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c5c6cd; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #75777d; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base antialiased flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-full w-sidebar-width fixed left-0 top-0 z-40 py-md bg-primary-container dark:bg-tertiary-container shadow-sm border-r border-outline-variant/30 transition-transform duration-150">
+<div class="px-md mb-xl flex items-center space-x-3">
+<div class="w-10 h-10 rounded-lg bg-surface flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-xl">factory</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-secondary-fixed">PEMS Enterprise</h1>
+<p class="font-body-base text-body-base text-on-primary-container opacity-80">Utility Management</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto custom-scrollbar">
+<ul class="space-y-xs">
+<li>
+<a class="flex items-center space-x-3 px-md py-sm mx-sm mb-xs rounded-lg text-on-primary-container dark:text-on-tertiary-container opacity-80 hover:opacity-100 hover:bg-primary dark:hover:bg-tertiary transition-all font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Executive Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center space-x-3 px-md py-sm mx-sm mb-xs rounded-lg bg-secondary text-on-secondary hover:bg-secondary/90 transition-all font-body-medium text-body-medium shadow-sm" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Asset Lifecycle</span>
+</a>
+</li>
+<li>
+<a class="flex items-center space-x-3 px-md py-sm mx-sm mb-xs rounded-lg text-on-primary-container dark:text-on-tertiary-container opacity-80 hover:opacity-100 hover:bg-primary dark:hover:bg-tertiary transition-all font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span>Financial Modeling</span>
+</a>
+</li>
+<li>
+<a class="flex items-center space-x-3 px-md py-sm mx-sm mb-xs rounded-lg text-on-primary-container dark:text-on-tertiary-container opacity-80 hover:opacity-100 hover:bg-primary dark:hover:bg-tertiary transition-all font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">compare_arrows</span>
+<span>Cost Comparison</span>
+</a>
+</li>
+<li>
+<a class="flex items-center space-x-3 px-md py-sm mx-sm mb-xs rounded-lg text-on-primary-container dark:text-on-tertiary-container opacity-80 hover:opacity-100 hover:bg-primary dark:hover:bg-tertiary transition-all font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Reports</span>
+</a>
+</li>
+</ul>
+</nav>
+<div class="px-md mt-auto space-y-sm">
+<button class="w-full flex items-center justify-center space-x-2 py-sm rounded-lg bg-gradient-to-r from-[#d98c2b] to-[#b8721e] text-white font-body-medium text-body-medium shadow-sm hover:opacity-90 transition-opacity active:scale-95">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>New Projection</span>
+</button>
+<div class="border-t border-outline-variant/20 pt-sm mt-sm">
+<a class="flex items-center space-x-3 px-sm py-sm rounded-lg text-on-primary-container opacity-80 hover:opacity-100 hover:bg-primary transition-all font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Support</span>
+</a>
+<a class="flex items-center space-x-3 px-sm py-sm rounded-lg text-on-primary-container opacity-80 hover:opacity-100 hover:bg-primary transition-all font-body-medium text-body-medium" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-[260px] min-w-0 bg-background">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center h-topbar-height px-lg w-full sticky top-0 z-50 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline flat no shadows">
+<div class="flex items-center gap-md">
+<button class="md:hidden p-1 text-on-surface hover:bg-surface-container-high rounded-md transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="flex items-center gap-sm">
+<span class="font-headline-md text-headline-md font-bold text-on-surface dark:text-inverse-on-surface">TCO Tracker</span>
+<span class="text-outline mx-xs">/</span>
+<span class="font-body-medium text-body-medium text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">precision_manufacturing</span>
+                        Turbine Unit 4 Detail
+                    </span>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="pl-8 pr-3 py-1.5 bg-surface-container-low border border-outline-variant rounded-lg text-body-base focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/50 w-64 transition-all" placeholder="Search assets..." type="text"/>
+</div>
+<div class="flex items-center gap-1 border-l border-outline-variant pl-sm ml-xs">
+<button class="p-1.5 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors cursor-pointer active:opacity-80 group relative" title="Language (EN/FA)">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors cursor-pointer active:opacity-80 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-[#ba1a1a] rounded-full"></span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant ml-2 border border-outline-variant overflow-hidden cursor-pointer hover:ring-2 ring-secondary/50 transition-all">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiHj8wL_oIy2gXgBBK4MDZZeyZQ7kEU0oYk1eJjLWXugalO35M0qrfDqWp9UvpVVfUpZNr-xJS1cdIJgBNl2R5eQyLSkSEMErjHFsnn_hLLGwppHPUvMIWE6gO2AIXAL3hnXLFWol6hdrprk-A5gWV9iNlbKEdu55lEB74LnJ_FY1nz7iYp4GeVTix94341kO5n-vd4rTJ68hSy61Qti2wxhmayyFYxWgqRaGx7tbSCP_JN-3VB5o3"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="flex-1 overflow-y-auto custom-scrollbar p-md lg:p-lg">
+<!-- Header Section -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-md gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Turbine Unit 4 <span class="text-on-surface-variant text-lg font-normal ml-2 tracking-wide font-mono">TAG: TRB-04-A</span></h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-1">Asset Lifecycle Cost Detail <span class="mx-2 text-outline">|</span> جزئیات هزینه چرخه عمر دارایی</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 rounded border border-outline-variant text-surface-tint hover:bg-surface-container-high hover:border-secondary transition-all font-body-medium text-body-medium flex items-center gap-1 shadow-sm bg-surface">
+<span class="material-symbols-outlined text-sm">download</span> Export
+                    </button>
+<button class="px-3 py-1.5 rounded border border-outline-variant text-surface-tint hover:bg-surface-container-high hover:border-secondary transition-all font-body-medium text-body-medium flex items-center gap-1 shadow-sm bg-surface">
+<span class="material-symbols-outlined text-sm">edit</span> Edit Asset
+                    </button>
+</div>
+</div>
+<!-- Asset Context Panel -->
+<div class="bg-surface rounded-xl border border-outline-variant shadow-sm mb-lg p-md grid grid-cols-2 md:grid-cols-4 gap-md">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">Status</span>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-badge-label text-badge-label border border-outline-variant/50">Operational</span>
+<span class="w-2 h-2 rounded-full bg-[#10b981]"></span>
+</div>
+</div>
+<div class="flex flex-col border-l border-outline-variant/30 pl-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">Commissioned</span>
+<span class="font-body-medium text-body-medium text-on-surface">12 Oct 2018</span>
+</div>
+<div class="flex flex-col border-l border-outline-variant/30 pl-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">Expected Life</span>
+<span class="font-body-medium text-body-medium text-on-surface">15 Years</span>
+</div>
+<div class="flex flex-col border-l border-outline-variant/30 pl-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">Current TCO</span>
+<span class="font-kpi-stat text-kpi-stat text-secondary-container tracking-tight">$1,245,800</span>
+</div>
+</div>
+<!-- Main Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg mb-lg">
+<!-- Cost Breakdown Chart -->
+<div class="bg-surface rounded-xl border border-outline-variant shadow-sm p-md flex flex-col hover:border-secondary/30 transition-colors">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Cost Breakdown</h3>
+<p class="font-body-base text-body-base text-on-surface-variant mb-md text-sm">تفکیک هزینه ها</p>
+<div class="relative flex-1 min-h-[250px] flex items-center justify-center">
+<canvas class="max-h-[220px]" id="costBreakdownChart"></canvas>
+<!-- Center text for donut -->
+<div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-2">
+<span class="font-body-medium text-body-medium text-on-surface-variant text-xs">Total Cost</span>
+<span class="font-kpi-stat text-kpi-stat text-on-surface text-lg">1.24M</span>
+</div>
+</div>
+<div class="mt-4 grid grid-cols-2 gap-2 text-sm">
+<div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-[#142033]"></span><span class="text-on-surface-variant truncate">Energy</span></div>
+<div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-[#498bcd]"></span><span class="text-on-surface-variant truncate">Preventive</span></div>
+<div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-[#fdaa47]"></span><span class="text-on-surface-variant truncate">Corrective</span></div>
+<div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-[#ba1a1a]"></span><span class="text-on-surface-variant truncate">Spares</span></div>
+</div>
+</div>
+<!-- Cumulative Cost vs Value Chart (Takes 2 cols) -->
+<div class="bg-surface rounded-xl border border-outline-variant shadow-sm p-md flex flex-col lg:col-span-2 hover:border-secondary/30 transition-colors">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Cumulative Cost vs. Value</h3>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm">هزینه تجمعی در مقابل ارزش (Economic Limit Analysis)</p>
+</div>
+<div class="flex gap-2">
+<span class="flex items-center gap-1 text-xs text-on-surface-variant"><span class="w-3 h-0.5 bg-[#ba1a1a]"></span> Cumulative Cost</span>
+<span class="flex items-center gap-1 text-xs text-on-surface-variant"><span class="w-3 h-0.5 bg-[#498bcd]"></span> Asset Value</span>
+</div>
+</div>
+<div class="relative flex-1 min-h-[250px] w-full">
+<canvas id="cumulativeCostChart"></canvas>
+</div>
+<div class="mt-2 text-right">
+<span class="inline-flex items-center gap-1 px-2 py-1 rounded bg-surface-container text-xs font-medium text-surface-tint border border-outline-variant/30">
+<span class="material-symbols-outlined text-[14px] text-secondary">warning</span> Projected Economic Limit: Q3 2026
+                        </span>
+</div>
+</div>
+</div>
+<!-- Financial Transactions Table -->
+<div class="bg-surface rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col">
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Financial Transactions &amp; Work Orders</h3>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm mt-0.5">تراکنش های مالی و دستور کارها</p>
+</div>
+<div class="flex gap-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-outline text-sm">filter_list</span>
+<select class="pl-7 pr-8 py-1.5 bg-surface border border-outline-variant rounded text-sm text-on-surface focus:ring-1 focus:ring-secondary/50 focus:border-secondary outline-none appearance-none">
+<option>All Types</option>
+<option>Preventive</option>
+<option>Corrective</option>
+</select>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#f5f7fa] border-b border-outline-variant sticky top-0">
+<tr>
+<th class="font-table-header text-table-header text-surface-tint py-2 px-md uppercase tracking-wider">Date / تاریخ</th>
+<th class="font-table-header text-table-header text-surface-tint py-2 px-md uppercase tracking-wider">Ref ID</th>
+<th class="font-table-header text-table-header text-surface-tint py-2 px-md uppercase tracking-wider">Type / نوع</th>
+<th class="font-table-header text-table-header text-surface-tint py-2 px-md uppercase tracking-wider">Description</th>
+<th class="font-table-header text-table-header text-surface-tint py-2 px-md uppercase tracking-wider text-right">Cost (USD)</th>
+<th class="font-table-header text-table-header text-surface-tint py-2 px-md uppercase tracking-wider text-center">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/50 font-table-cell text-table-cell text-on-surface">
+<tr class="hover:bg-surface-container-high/50 transition-colors group">
+<td class="py-2 px-md whitespace-nowrap">2023-11-15</td>
+<td class="py-2 px-md font-mono text-xs text-on-surface-variant">WO-88234</td>
+<td class="py-2 px-md">
+<span class="inline-flex px-2 py-0.5 rounded-full bg-surface-variant text-surface-tint text-[10px] font-semibold border border-outline-variant/30">Preventive</span>
+</td>
+<td class="py-2 px-md max-w-[200px] truncate" title="Annual Bearing Inspection and Lubrication">Annual Bearing Inspection and Lub...</td>
+<td class="py-2 px-md text-right font-mono">$4,250.00</td>
+<td class="py-2 px-md text-center">
+<button class="p-1 rounded text-outline hover:text-primary hover:bg-surface-variant transition-colors opacity-0 group-hover:opacity-100"><span class="material-symbols-outlined text-sm">visibility</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/50 transition-colors group">
+<td class="py-2 px-md whitespace-nowrap">2023-09-02</td>
+<td class="py-2 px-md font-mono text-xs text-on-surface-variant">WO-87112</td>
+<td class="py-2 px-md">
+<span class="inline-flex px-2 py-0.5 rounded-full bg-error-container/50 text-[#93000a] text-[10px] font-semibold border border-[#ffdad6]">Corrective</span>
+</td>
+<td class="py-2 px-md max-w-[200px] truncate" title="Emergency Seal Replacement (Vibration Alert)">Emergency Seal Replacement (Vib...</td>
+<td class="py-2 px-md text-right font-mono">$12,800.00</td>
+<td class="py-2 px-md text-center">
+<button class="p-1 rounded text-outline hover:text-primary hover:bg-surface-variant transition-colors opacity-0 group-hover:opacity-100"><span class="material-symbols-outlined text-sm">visibility</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/50 transition-colors group">
+<td class="py-2 px-md whitespace-nowrap">2023-08-30</td>
+<td class="py-2 px-md font-mono text-xs text-on-surface-variant">PO-44519</td>
+<td class="py-2 px-md">
+<span class="inline-flex px-2 py-0.5 rounded-full bg-[#ffdcbc]/30 text-[#683d00] text-[10px] font-semibold border border-[#ffdcbc]">Spare Parts</span>
+</td>
+<td class="py-2 px-md max-w-[200px] truncate" title="Procurement: High-Temp Seals Kit">Procurement: High-Temp Seals Kit</td>
+<td class="py-2 px-md text-right font-mono">$3,100.00</td>
+<td class="py-2 px-md text-center">
+<button class="p-1 rounded text-outline hover:text-primary hover:bg-surface-variant transition-colors opacity-0 group-hover:opacity-100"><span class="material-symbols-outlined text-sm">visibility</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/50 transition-colors group">
+<td class="py-2 px-md whitespace-nowrap">2023-07-01</td>
+<td class="py-2 px-md font-mono text-xs text-on-surface-variant">ENG-Q3-23</td>
+<td class="py-2 px-md">
+<span class="inline-flex px-2 py-0.5 rounded-full bg-[#142033]/10 text-[#142033] text-[10px] font-semibold border border-[#142033]/20">Energy</span>
+</td>
+<td class="py-2 px-md max-w-[200px] truncate" title="Q3 Energy Consumption Allocation">Q3 Energy Consumption Allocation</td>
+<td class="py-2 px-md text-right font-mono">$45,600.00</td>
+<td class="py-2 px-md text-center">
+<button class="p-1 rounded text-outline hover:text-primary hover:bg-surface-variant transition-colors opacity-0 group-hover:opacity-100"><span class="material-symbols-outlined text-sm">visibility</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/50 transition-colors group">
+<td class="py-2 px-md whitespace-nowrap">2023-05-12</td>
+<td class="py-2 px-md font-mono text-xs text-on-surface-variant">WO-84221</td>
+<td class="py-2 px-md">
+<span class="inline-flex px-2 py-0.5 rounded-full bg-surface-variant text-surface-tint text-[10px] font-semibold border border-outline-variant/30">Preventive</span>
+</td>
+<td class="py-2 px-md max-w-[200px] truncate" title="Bi-Annual Calibration and Alignment">Bi-Annual Calibration and Alignme...</td>
+<td class="py-2 px-md text-right font-mono">$2,850.00</td>
+<td class="py-2 px-md text-center">
+<button class="p-1 rounded text-outline hover:text-primary hover:bg-surface-variant transition-colors opacity-0 group-hover:opacity-100"><span class="material-symbols-outlined text-sm">visibility</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-2 border-t border-outline-variant/50 bg-surface-container-lowest flex justify-end">
+<button class="text-xs font-medium text-surface-tint hover:text-primary px-3 py-1 rounded transition-colors flex items-center gap-1">View All Records <span class="material-symbols-outlined text-[14px]">arrow_forward</span></button>
+</div>
+</div>
+</main>
+</div>
+<!-- Chart.js Initialization -->
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Chart Defaults
+            Chart.defaults.font.family = 'Inter, sans-serif';
+            Chart.defaults.color = '#535f75';
+            
+            // Cost Breakdown Donut Chart
+            const ctxDonut = document.getElementById('costBreakdownChart').getContext('2d');
+            new Chart(ctxDonut, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Energy', 'Preventive Maint.', 'Corrective Maint.', 'Spare Parts'],
+                    datasets: [{
+                        data: [65, 15, 12, 8],
+                        backgroundColor: [
+                            '#142033', // primary-container
+                            '#498bcd', // on-tertiary-container
+                            '#fdaa47', // secondary-container
+                            '#ba1a1a'  // error
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1f3245',
+                            titleFont: { size: 12 },
+                            bodyFont: { size: 13, weight: 'bold' },
+                            padding: 10,
+                            cornerRadius: 4,
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Cumulative Cost vs Value Line Chart
+            const ctxLine = document.getElementById('cumulativeCostChart').getContext('2d');
+            new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: ['Y1', 'Y2', 'Y3', 'Y4', 'Y5', 'Y6', 'Y7', 'Y8 (Now)', 'Y9', 'Y10'],
+                    datasets: [
+                        {
+                            label: 'Cumulative Cost',
+                            data: [100, 220, 350, 490, 650, 840, 1060, 1245, 1500, 1800],
+                            borderColor: '#ba1a1a', // error red
+                            backgroundColor: 'rgba(186, 26, 26, 0.05)',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#ba1a1a',
+                            pointRadius: 3,
+                            pointHoverRadius: 5,
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Asset Value (Depreciation)',
+                            data: [2000, 1800, 1620, 1450, 1300, 1170, 1050, 945, 850, 760],
+                            borderColor: '#498bcd', // on-tertiary-container blue
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointBackgroundColor: '#498bcd',
+                            pointRadius: 0,
+                            pointHoverRadius: 4,
+                            fill: false,
+                            tension: 0.1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1f3245',
+                            padding: 10,
+                            cornerRadius: 4,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': $' + context.parsed.y + 'k';
+                                }
+                            }
+                        },
+                        annotation: {
+                            annotations: {
+                                line1: {
+                                    type: 'line',
+                                    xMin: 'Y8 (Now)',
+                                    xMax: 'Y8 (Now)',
+                                    borderColor: '#fdaa47',
+                                    borderWidth: 1,
+                                    borderDash: [2, 2],
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false, drawBorder: false },
+                            ticks: { font: { size: 11 } }
+                        },
+                        y: {
+                            grid: { color: '#e4efff', drawBorder: false },
+                            ticks: { 
+                                font: { size: 11 },
+                                callback: function(value) { return '$' + value + 'k'; }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body></html>

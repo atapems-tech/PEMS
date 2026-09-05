@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Document Revision Control - PEMS Engineering</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config from Design System -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#9ecaff",
+                    "inverse-on-surface": "#e9f1ff",
+                    "surface-container": "#e4efff",
+                    "outline-variant": "#c5c6cd",
+                    "surface-dim": "#c8dcf5",
+                    "on-error": "#ffffff",
+                    "surface-container-low": "#eef4ff",
+                    "primary-container": "#142033",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#bbc7e0",
+                    "secondary-container": "#fdaa47",
+                    "secondary-fixed": "#ffdcbc",
+                    "tertiary-container": "#00213d",
+                    "primary-fixed": "#d7e3fd",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-high": "#daeaff",
+                    "background": "#f8f9ff",
+                    "on-surface-variant": "#44474c",
+                    "on-tertiary-container": "#498bcd",
+                    "on-tertiary-fixed-variant": "#00497c",
+                    "secondary": "#895200",
+                    "on-primary-fixed-variant": "#3b475c",
+                    "surface-bright": "#f8f9ff",
+                    "error-container": "#ffdad6",
+                    "surface": "#f8f9ff",
+                    "inverse-surface": "#1f3245",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed": "#d1e4ff",
+                    "on-surface": "#081d2f",
+                    "on-background": "#081d2f",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#d0e4fe",
+                    "surface-tint": "#535f75",
+                    "on-secondary-container": "#6e4100",
+                    "error": "#ba1a1a",
+                    "surface-variant": "#d0e4fe",
+                    "secondary-fixed-dim": "#ffb86a",
+                    "on-secondary-fixed": "#2c1700",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#683d00",
+                    "tertiary": "#000815",
+                    "primary-fixed-dim": "#bbc7e0",
+                    "primary": "#000819",
+                    "on-primary-fixed": "#101c2f",
+                    "on-tertiary-fixed": "#001d36",
+                    "outline": "#75777d",
+                    "on-primary-container": "#7c889f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "topbar-height": "60px",
+                    "md": "16px",
+                    "sidebar-width": "260px",
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "xs": "4px",
+                    "sm": "8px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "table-header": ["Inter", "sans-serif"],
+                    "label-caps": ["Inter", "sans-serif"],
+                    "body-medium": ["Inter", "sans-serif"],
+                    "kpi-stat": ["Inter", "sans-serif"],
+                    "body-base": ["Inter", "sans-serif"],
+                    "headline-lg-mobile": ["Inter", "sans-serif"],
+                    "badge-label": ["Inter", "sans-serif"],
+                    "headline-lg": ["Inter", "sans-serif"],
+                    "table-cell": ["Inter", "sans-serif"],
+                    "headline-md": ["Inter", "sans-serif"]
+            },
+            "fontSize": {
+                    "table-header": ["11.5px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                    "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+                    "body-medium": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "600"}],
+                    "kpi-stat": ["22px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-base": ["13.5px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "badge-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "table-cell": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .amber-gradient { background: linear-gradient(135deg, #d98c2b 0%, #b8721e 100%); }
+        .blue-gradient { background: linear-gradient(135deg, #1f4e78 0%, #143350 100%); }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            bottom: 0;
+            left: 23px;
+            width: 2px;
+            background-color: #c5c6cd;
+            z-index: 0;
+        }
+        .timeline-item:last-child .timeline-line::before { display: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen overflow-x-hidden font-body-base">
+<!-- TopAppBar -->
+<header class="bg-surface fixed top-0 w-full z-40 border-b border-outline-variant flex justify-between items-center h-topbar-height px-lg" style="padding-left: calc(260px + 24px);">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-medium font-body-medium text-on-surface-variant w-64 placeholder:text-outline" placeholder="Search document registry..." type="text"/>
+</div>
+<div class="flex items-center gap-md text-primary font-body-medium text-body-medium">
+<span class="material-symbols-outlined cursor-pointer active:opacity-80 hover:bg-surface-container-high transition-colors p-sm rounded-full">notifications</span>
+<span class="material-symbols-outlined cursor-pointer active:opacity-80 hover:bg-surface-container-high transition-colors p-sm rounded-full">translate</span>
+<span class="material-symbols-outlined cursor-pointer active:opacity-80 hover:bg-surface-container-high transition-colors p-sm rounded-full">settings</span>
+<span class="material-symbols-outlined cursor-pointer active:opacity-80 hover:bg-surface-container-high transition-colors p-sm rounded-full">help</span>
+<div class="ml-sm w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A professional headshot of a corporate engineer in a well-lit modern office environment. High resolution, neutral background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCs83s_GF-mGQguSNsvourwHNHLC3ZHLRDF8m3zO0Q233AwD6yT-_Tzk7SRTk6ikra6cnwBFdNzTwiCmlmFuAvD6xFlkhxNt76z17peq1ufj_Yrb2JdQw3xgkJQFHdcdh1Fe8lTHPrPGkPIYagd-wkaQr9Ua-G1hVfcDqY3rkevdrvRMY40z4x0jaoOfipIbwW0l1g3xKuiedejswLGVX-gf8KCO_DNVob0xnHz0D76x0f46pzIgiMx"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="bg-primary text-on-primary fixed left-0 top-0 h-full w-sidebar-width shadow-sm flex flex-col py-md z-50">
+<div class="px-lg pb-xl border-b border-surface-tint border-opacity-30 mb-md">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-secondary-container tracking-tight">PEMS</h1>
+<div class="text-[10px] text-inverse-primary tracking-widest uppercase opacity-80 mt-1">Management System</div>
+</div>
+</div>
+<button class="mt-xl w-full flex items-center justify-center gap-sm amber-gradient text-white py-2 px-4 rounded-lg font-body-medium text-body-medium shadow-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Document
+            </button>
+</div>
+<div class="flex-1 overflow-y-auto px-sm font-label-caps text-label-caps space-y-1">
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+                Asset Registry
+            </a>
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">description</span>
+                Document Control
+            </a>
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">forward_to_inbox</span>
+                Transmittals
+            </a>
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">history</span>
+                Version History
+            </a>
+<a class="flex items-center gap-md px-md py-3 rounded-lg bg-secondary text-on-secondary font-bold border-r-4 border-secondary-fixed hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">account_tree</span>
+                Workflow
+            </a>
+</div>
+<div class="mt-auto px-sm pt-md border-t border-surface-tint border-opacity-30 font-label-caps text-label-caps space-y-1">
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">contact_support</span>
+                Support
+            </a>
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-primary-fixed-variant opacity-80 hover:bg-primary-container transition-all scale-98 active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+                Sign Out
+            </a>
+</div>
+</nav>
+<!-- Main Workspace -->
+<main class="ml-[260px] mt-[60px] p-lg flex flex-col gap-lg">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md">
+<div>
+<div class="flex items-center gap-sm mb-1">
+<span class="bg-surface-variant text-on-surface px-2 py-0.5 rounded text-badge-label font-badge-label">DOC-PEMS-7892-REV.B</span>
+<span class="bg-[#f0f4f8] text-[#1f4e78] px-2 py-0.5 rounded-full text-badge-label font-badge-label flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#1f4e78]"></span> Peer Review
+                    </span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Piping and Instrumentation Diagram - Area 42</h2>
+</div>
+<div class="flex items-center gap-md">
+<!-- Dual Language Toggle -->
+<div class="flex bg-surface-container p-1 rounded-lg border border-outline-variant">
+<button class="px-3 py-1 rounded bg-surface-container-lowest shadow-sm text-body-medium font-body-medium text-primary">EN</button>
+<button class="px-3 py-1 rounded text-body-medium font-body-medium text-on-surface-variant hover:text-primary transition-colors">FA</button>
+</div>
+<button class="amber-gradient text-white px-4 py-2 rounded-lg font-body-medium text-body-medium shadow-sm hover:opacity-90 transition-opacity flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">gavel</span>
+                    Approve / Reject
+                </button>
+</div>
+</div>
+<!-- High-Density Grid Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-lg">
+<!-- Left Column: Document & Comments (Spans 2 cols) -->
+<div class="xl:col-span-2 flex flex-col gap-lg">
+<!-- Document Preview / Meta Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md shadow-sm">
+<div class="flex justify-between items-center mb-md border-b border-outline-variant pb-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface">Document Details</h3>
+<div class="flex gap-sm">
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-secondary-container hover:text-secondary-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-secondary-container hover:text-secondary-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md mb-md">
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">Discipline</div>
+<div class="font-body-medium text-body-medium text-on-surface">Mechanical (ME)</div>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">Originator</div>
+<div class="font-body-medium text-body-medium text-on-surface">S. Jenkins</div>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">Date Created</div>
+<div class="font-body-medium text-body-medium text-on-surface">2023-10-24</div>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">File Size</div>
+<div class="font-body-medium text-body-medium text-on-surface">4.2 MB (PDF)</div>
+</div>
+</div>
+<!-- Minimalist Preview Placeholder -->
+<div class="w-full h-64 bg-surface-container-low rounded border border-outline-variant border-dashed flex items-center justify-center overflow-hidden relative group cursor-pointer">
+<div class="absolute inset-0 bg-cover bg-center opacity-40 group-hover:opacity-60 transition-opacity" data-alt="A highly detailed blueprint or engineering diagram showing piping and instrumentation. The image is rendered in crisp lines with a technical, industrial aesthetic, predominantly white and light grey background with intricate dark grey and subtle blue technical lines." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDJpnGKq8H-rpXMovXJTdDUJSWtlSIMpuAoH2bke7XFnpyziPSgjYdM8dWBtMdOWXA5xsMZYMCpoHdAlPzgpsp0NQJ_0jyPLXX2spc7KIGZRjAQhWga44Izs32MZ2Fucpf8vm-k4pBZoVJoG_lKdyCFZ2_Zuh8AzsHbJarmP-wc-mzYvnkWPfOBaqUx_AJKIkTtxKq4Pw5djUmjBxvA3iSASimBZcRHDkqMLSLfB5unoZ8p35B3wPfY')"></div>
+<div class="z-10 flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[48px] mb-2 opacity-70">picture_as_pdf</span>
+<span class="font-body-medium text-body-medium">Click to view full P&amp;ID</span>
+</div>
+</div>
+</div>
+<!-- Engineering Notes & Redlines -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md shadow-sm flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md">Engineering Redlines &amp; Comments</h3>
+<div class="flex-1 overflow-y-auto pr-sm space-y-md mb-md">
+<!-- Comment 1 -->
+<div class="flex gap-md bg-surface-bright p-sm rounded border border-outline-variant">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed-dim text-on-tertiary-container flex items-center justify-center font-bold text-sm shrink-0">SJ</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<span class="font-body-medium text-body-medium text-on-surface">Sarah Jenkins <span class="text-on-surface-variant font-normal text-xs ml-2">Originator</span></span>
+<span class="text-xs text-on-surface-variant">Oct 25, 09:14</span>
+</div>
+<p class="font-body-base text-body-base text-on-surface-variant">Initial draft uploaded for review. Please check valve configuration on line L-1024.</p>
+<p class="font-body-base text-body-base text-outline mt-1 font-arabic" dir="rtl">نسخه اولیه برای بررسی آپلود شد. لطفا پیکربندی شیر روی خط L-1024 را بررسی کنید.</p>
+</div>
+</div>
+<!-- Comment 2 -->
+<div class="flex gap-md bg-surface-bright p-sm rounded border border-outline-variant border-l-4 border-l-secondary-container">
+<div class="w-8 h-8 rounded-full bg-primary-fixed-dim text-on-primary-fixed flex items-center justify-center font-bold text-sm shrink-0">MK</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<span class="font-body-medium text-body-medium text-on-surface">Marcus Kane <span class="text-on-surface-variant font-normal text-xs ml-2">Reviewer</span></span>
+<span class="text-xs text-on-surface-variant">Oct 26, 14:30</span>
+</div>
+<p class="font-body-base text-body-base text-on-surface-variant">The bypass valve V-045 needs to be upgraded to a motorized variant due to safety spec ISO-144. I have added a redline marker on coordinate G4.</p>
+<div class="mt-2 flex gap-2">
+<span class="inline-flex items-center gap-1 bg-error-container text-on-error-container text-[10px] px-2 py-1 rounded-sm font-bold"><span class="material-symbols-outlined text-[12px]">draw</span> Redline Attached</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="mt-auto pt-md border-t border-outline-variant flex gap-sm">
+<input class="flex-1 bg-surface-container rounded-lg border border-outline-variant px-md py-2 focus:ring-1 focus:ring-secondary-container focus:border-secondary-container outline-none font-body-base text-body-base" placeholder="Add a comment or observation..." type="text"/>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-body-medium text-body-medium hover:bg-inverse-surface transition-colors">Post</button>
+</div>
+</div>
+</div>
+<!-- Right Column: Timeline & Tracking (Spans 1 col) -->
+<div class="xl:col-span-1 flex flex-col gap-lg">
+<!-- Approval Workflow Timeline -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md shadow-sm relative">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-lg">Approval Workflow</h3>
+<div class="relative timeline-line">
+<!-- Step 1: Done -->
+<div class="flex gap-md relative z-10 timeline-item mb-xl">
+<div class="w-12 h-12 rounded-full bg-[#e8f5e9] border border-[#a5d6a7] flex items-center justify-center text-[#2e7d32] shrink-0 mt-[-4px] bg-white">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div>
+<div class="font-body-medium text-body-medium text-on-surface">Draft Submitted</div>
+<div class="font-body-base text-body-base text-on-surface-variant text-sm mt-1">Originator: S. Jenkins</div>
+<div class="text-xs text-outline mt-0.5">Oct 24, 2023 - 10:00 AM</div>
+</div>
+</div>
+<!-- Step 2: Current -->
+<div class="flex gap-md relative z-10 timeline-item mb-xl">
+<div class="w-12 h-12 rounded-full border-2 border-secondary-container bg-surface-container-lowest flex items-center justify-center text-secondary-container shrink-0 mt-[-4px] shadow-[0_0_10px_rgba(253,170,71,0.2)]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">rate_review</span>
+</div>
+<div>
+<div class="font-body-medium text-body-medium text-on-surface">Peer Review</div>
+<div class="font-body-base text-body-base text-on-surface-variant text-sm mt-1">Pending: M. Kane, J. Doe</div>
+<div class="text-xs text-secondary-container mt-0.5 font-bold">In Progress</div>
+</div>
+</div>
+<!-- Step 3: Pending -->
+<div class="flex gap-md relative z-10 timeline-item mb-xl">
+<div class="w-12 h-12 rounded-full border border-outline-variant bg-surface-container-lowest flex items-center justify-center text-outline shrink-0 mt-[-4px]">
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+<div class="opacity-60">
+<div class="font-body-medium text-body-medium text-on-surface">Lead Engineer Approval</div>
+<div class="font-body-base text-body-base text-on-surface-variant text-sm mt-1">A. Sterling</div>
+</div>
+</div>
+<!-- Step 4: Pending -->
+<div class="flex gap-md relative z-10 timeline-item">
+<div class="w-12 h-12 rounded-full border border-outline-variant bg-surface-container-lowest flex items-center justify-center text-outline shrink-0 mt-[-4px]">
+<span class="material-symbols-outlined">publish</span>
+</div>
+<div class="opacity-60">
+<div class="font-body-medium text-body-medium text-on-surface">Published (AFC)</div>
+<div class="font-body-base text-body-base text-on-surface-variant text-sm mt-1">System Action</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Transmittal Tracking -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-0 shadow-sm flex flex-col flex-1 overflow-hidden">
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+<h3 class="font-headline-md text-headline-md text-on-surface">Transmittal Log</h3>
+<span class="material-symbols-outlined text-outline text-[20px]">history_edu</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#f5f7fa] border-b border-outline-variant">
+<th class="py-2 px-md font-table-header text-table-header text-on-surface-variant">TRN ID</th>
+<th class="py-2 px-md font-table-header text-table-header text-on-surface-variant">RECIPIENT</th>
+<th class="py-2 px-md font-table-header text-table-header text-on-surface-variant text-right">STATUS</th>
+</tr>
+</thead>
+<tbody class="font-table-cell text-table-cell text-on-surface divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-md font-mono text-xs text-on-surface-variant">TRN-8821</td>
+<td class="py-3 px-md">EPC Contractor A</td>
+<td class="py-3 px-md text-right">
+<span class="inline-block bg-[#e8f5e9] text-[#2e7d32] px-2 py-0.5 rounded font-badge-label text-badge-label">Ack</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-md font-mono text-xs text-on-surface-variant">TRN-8822</td>
+<td class="py-3 px-md">QA/QC Dept</td>
+<td class="py-3 px-md text-right">
+<span class="inline-block bg-surface-variant text-on-surface px-2 py-0.5 rounded font-badge-label text-badge-label">Sent</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-md font-mono text-xs text-on-surface-variant">TRN-8805</td>
+<td class="py-3 px-md">Client Rep (Rev A)</td>
+<td class="py-3 px-md text-right">
+<span class="inline-block bg-[#e8f5e9] text-[#2e7d32] px-2 py-0.5 rounded font-badge-label text-badge-label">Ack</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-sm text-center border-t border-outline-variant bg-surface-bright mt-auto">
+<button class="text-on-tertiary-container font-body-medium text-xs hover:underline">View All Transmittals</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
