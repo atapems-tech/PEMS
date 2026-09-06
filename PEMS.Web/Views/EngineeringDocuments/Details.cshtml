@@ -17,6 +17,8 @@
    جدید/تحلیل AI/رویژن جدید) به منوی «More» منتقل شدند تا فقط اکشن مرحله‌ی فعلی گردش‌کار برجسته
    بماند - هیچ Route/Field/مجوز سرور تغییر نکرده، فقط محل نمایش دکمه‌ها. *@
 
+<div class="pems-doc-page">
+
 <nav aria-label="breadcrumb" class="mb-2">
     <ol class="breadcrumb mb-0 small">
         <li class="breadcrumb-item"><a asp-action="Index">Engineering Documents</a></li>
@@ -24,18 +26,18 @@
     </ol>
 </nav>
 
-<div class="content-card mb-3 pems-doc-header">
+<div class="content-card mb-2 pems-doc-header">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
         <div class="pems-doc-identity">
             <div class="d-flex align-items-center gap-2 flex-wrap">
-                <h4 class="mb-0">@Model.DocumentNo</h4>
+                <h4 class="mb-0 pems-doc-number">@Model.DocumentNo</h4>
                 <span class="badge @DocumentStatusBadge.CssClass(Model.Status)">@Model.Status</span>
                 <span class="badge bg-light text-dark border">REV @Model.RevisionNo</span>
                 @if (Model.IsFrozen) { <span class="badge bg-info text-dark"><i class="bi bi-snow"></i> Frozen</span> }
                 @if (Model.IsOnHold) { <span class="badge bg-warning text-dark"><i class="bi bi-pause-circle"></i> On Hold</span> }
             </div>
-            <div class="text-muted">@Model.Title</div>
-            <div class="small text-muted mt-1">
+            <div class="text-muted pems-doc-title-clamp" title="@Model.Title">@Model.Title</div>
+            <div class="pems-doc-meta text-muted mt-1">
                 @Model.ProjectName &middot; @Model.DisciplineName@(!string.IsNullOrEmpty(Model.Area) ? " · " + Model.Area : "")
             </div>
         </div>
@@ -398,17 +400,17 @@
                                 <td class="small text-muted">@file.UploadDate.ToString("yyyy-MM-dd")</td>
                                 <td class="text-end">
                                     <div class="d-flex gap-1 justify-content-end flex-wrap">
-                                        <a asp-action="DownloadAttachment" asp-route-id="@file.AttachmentId" class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i></a>
+                                        <a asp-action="DownloadAttachment" asp-route-id="@file.AttachmentId" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Download attachment" aria-label="Download @file.FileName"><i class="bi bi-download"></i></a>
                                         @if (file.AIStatus == "Completed")
                                         {
                                             <a asp-controller="AIExtraction" asp-action="Review" asp-route-attachmentId="@file.AttachmentId" class="btn btn-sm btn-outline-warning">AI Data</a>
                                             <a asp-controller="EngineeringDocumentIntelligence" asp-action="Review" asp-route-id="@Model.DocumentId" class="btn btn-sm btn-outline-secondary">Intelligence</a>
                                         }
                                         <form asp-controller="OCRProcessing" asp-action="Retry" asp-route-id="@file.AttachmentId" method="post" class="d-inline">
-                                            <button class="btn btn-sm btn-outline-secondary" title="Re-analyze"><i class="bi bi-arrow-repeat"></i></button>
+                                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Re-analyze" aria-label="Re-analyze @file.FileName"><i class="bi bi-arrow-repeat"></i></button>
                                         </form>
                                         <form asp-action="DeleteAttachment" asp-route-id="@file.AttachmentId" method="post" class="d-inline" onsubmit="return confirm('Delete file?')">
-                                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Delete attachment" aria-label="Delete @file.FileName"><i class="bi bi-trash"></i></button>
                                         </form>
                                     </div>
                                 </td>
@@ -610,7 +612,7 @@
                                 <td>@l.Subject</td>
                                 <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
                                 <td><span class="badge bg-info text-dark">@l.Status</span></td>
-                                <td><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+                                <td><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="View letter" aria-label="View letter @l.LetterNumber"><i class="bi bi-eye"></i></a></td>
                             </tr>
                         }
                     </tbody>
@@ -1027,11 +1029,11 @@
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h6 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></h6>
             <div class="d-flex align-items-center gap-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfPrevPage"><i class="bi bi-chevron-left"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfPrevPage" data-bs-toggle="tooltip" title="Previous page" aria-label="Previous page"><i class="bi bi-chevron-left"></i></button>
                 <span class="small" id="pdfPageLabel">Page - / -</span>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfNextPage"><i class="bi bi-chevron-right"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomOut"><i class="bi bi-zoom-out"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomIn"><i class="bi bi-zoom-in"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfNextPage" data-bs-toggle="tooltip" title="Next page" aria-label="Next page"><i class="bi bi-chevron-right"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomOut" data-bs-toggle="tooltip" title="Zoom out" aria-label="Zoom out"><i class="bi bi-zoom-out"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomIn" data-bs-toggle="tooltip" title="Zoom in" aria-label="Zoom in"><i class="bi bi-zoom-in"></i></button>
             </div>
         </div>
         <div id="pdfCanvasWrapper" style="position:relative; border:1px solid var(--pems-surface-border,#dee2e6); overflow:auto; max-height:75vh; text-align:center; cursor:crosshair;">
@@ -1290,4 +1292,14 @@
             </div>
         </div>
     </div>
+}
+
+</div> @* end .pems-doc-page *@
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            window.PemsTooltips.init();
+        });
+    </script>
 }

@@ -15,21 +15,15 @@
     var statusOptions = new[] { "Draft", "Submitted", "IDC Review", "Checked", "Approved", "Issued", "Rejected", "Client Approved" };
 }
 
-@* جستجوی سریع هوشمند - طبق مثال اصلی: Vendor Name، Document Number، عنوان، Description *@
-<div class="content-card mb-3">
-    <label class="form-label small fw-bold"><i class="bi bi-search"></i> جستجوی سریع مدرک مهندسی</label>
-    <input type="text" class="form-control" id="engDocQuickSearch" placeholder="شماره مدرک، عنوان یا توضیح..."
-           data-pems-search data-search-type="EngineeringDocument" autocomplete="off" />
-</div>
-<script>
-    document.getElementById('engDocQuickSearch').addEventListener('pems:search-select', function (e) {
-        if (e.detail && e.detail.url) window.location.href = e.detail.url;
-    });
-</script>
+@{
+    var hasActiveAdvancedFilters = filter.DisciplineId.HasValue || !string.IsNullOrEmpty(filter.Status) || !string.IsNullOrEmpty(filter.Area);
+    var selectedDisciplineName = filter.DisciplineId.HasValue ? disciplines.FirstOrDefault(d => d.DisciplineId == filter.DisciplineId)?.Name : null;
+}
+<div class="pems-doc-page">
 
 @* طبق بازبینی معماری: MDR/VDR/Transmittal از نظر داده‌ای زیرمجموعه‌ی همین هسته‌ی مشترک Document
    هستند؛ این نوار دسترسی سریع همان حس یک ماژول واحد را از نظر ناوبری هم می‌دهد. *@
-<div class="d-flex flex-wrap gap-2 mb-3">
+<div class="d-flex flex-wrap gap-2 mb-2">
     <a asp-controller="EngineeringDocuments" asp-action="Index" class="btn btn-sm btn-pems-solid"><i class="bi bi-file-earmark-text"></i> Documents</a>
     <a asp-controller="DocumentRegister" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-journal-bookmark"></i> Register</a>
     <a asp-controller="MDRImport" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-arrow-up"></i> Import (MDR)</a>
@@ -44,7 +38,7 @@
    (Total/Approved/Rejected). Pending شامل دو وضعیت (Submitted+Checked) و Frozen/Overdue اصلاً
    فیلد فیلتر جدا ندارند - طبق دستور صریح ممیزی ("do not create fake frontend logic")، این سه
    KPI عمداً غیرکلیک‌پذیر ماندند تا نتیجه‌ی کلیک هیچ‌وقت با عدد KPI ناهم‌خوان نباشد. *@
-<div class="row g-3 mb-3">
+<div class="row g-3 mb-2">
     <div class="col-6 col-md-2">
         <partial name="_KpiCard" model="@(new PEMS.Web.Models.KpiCardViewModel { Title = Localizer["Total"], Count = summary.Total, IconClass = "bi-file-earmark-text", ColorClass = "bg-icon-slate", Url = Url.Action("Index") })" />
     </div>
@@ -65,43 +59,110 @@
     </div>
 </div>
 
-@* طبق Phase E-03: فیلترها حالا سمت سرور (SQL) اعمال می‌شوند - فرم GET با QueryString، همان
-   الگوی ساده‌ی موجود در Views/Permit/Index.cshtml، نه یک الگوی AJAX جدید. *@
-<div class="content-card mb-3">
-    <form method="get" asp-action="Index" class="row g-2 align-items-end">
-        <div class="col-md-4">
-            <label class="form-label small">@Localizer["QuickSearch"]</label>
-            <input name="Search" value="@filter.Search" type="search" class="form-control form-control-sm" placeholder="Document No, Title..." />
+@* طبق «PEMS — Engineering Documents Density/Search Consolidation» بند ۷-۱۶: قبلاً این صفحه دو
+   جعبه‌ی جستجوی هم‌پوشان داشت - یک Autocomplete جدا (بدون اتصال به فیلتر Grid) و یک فیلد متنی
+   "Search" جدا داخل فرم فیلتر. حالا فقط یک ورودی جستجوی قابل‌مشاهده وجود دارد که همون
+   Autocomplete مشترک است؛ Enter بدون انتخاب یک نتیجه (رویداد pems:search-enter تازه‌اضافه‌شده
+   به خودِ کامپوننت مشترک) همین فرم را Submit می‌کند - یعنی هر دو رفتار (پرش مستقیم به یک مدرک /
+   فیلترکردن Grid) از یک Query/یک فرم تغذیه می‌شوند. Discipline/Status/Area (که فیلد فیلتر
+   جداگانه‌ای در کوئری هستند، نه جستجوی متنی) به Offcanvas «Advanced Search» منتقل شدند. *@
+<div class="content-card mb-2">
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+        <form method="get" asp-action="Index" id="engDocSearchForm" class="pems-search-bar flex-grow-1">
+            <i class="bi bi-search pems-search-icon"></i>
+            <input type="text" class="form-control" id="engDocQuickSearch" name="Search" value="@filter.Search"
+                   placeholder="Search documents..." data-pems-search data-search-type="EngineeringDocument" autocomplete="off"
+                   aria-label="Search engineering documents" />
+            <span class="pems-search-kbd d-none d-md-inline">Ctrl K</span>
+            @* فیلترهای Advanced فعلی به‌صورت Hidden حفظ می‌شوند تا با Submit جستجوی متنی از بین نروند *@
+            @if (filter.DisciplineId.HasValue) { <input type="hidden" name="DisciplineId" value="@filter.DisciplineId" /> }
+            @if (!string.IsNullOrEmpty(filter.Status)) { <input type="hidden" name="Status" value="@filter.Status" /> }
+            @if (!string.IsNullOrEmpty(filter.Area)) { <input type="hidden" name="Area" value="@filter.Area" /> }
+        </form>
+        <button type="button" class="btn btn-sm btn-outline-secondary flex-shrink-0" data-bs-toggle="offcanvas" data-bs-target="#engDocAdvancedSearch"
+                aria-controls="engDocAdvancedSearch" title="Advanced Search" aria-label="Advanced Search">
+            <i class="bi bi-sliders"></i> <span class="d-none d-sm-inline">@Localizer["Filter"]</span>
+        </button>
+        <a asp-action="Create" class="btn btn-sm btn-pems-solid flex-shrink-0"><i class="bi bi-plus-lg"></i> <span class="d-none d-sm-inline">@Localizer["New"]</span></a>
+    </div>
+
+    @if (hasActiveAdvancedFilters)
+    {
+        <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
+            @if (filter.DisciplineId.HasValue)
+            {
+                <span class="pems-filter-chip">@Localizer["Discipline"]: @selectedDisciplineName
+                    <a class="pems-chip-remove" href="@Url.Action("Index", new { Search = filter.Search, Status = filter.Status, Area = filter.Area })" title="Remove filter" aria-label="Remove discipline filter">&times;</a>
+                </span>
+            }
+            @if (!string.IsNullOrEmpty(filter.Status))
+            {
+                <span class="pems-filter-chip">@Localizer["Status"]: @filter.Status
+                    <a class="pems-chip-remove" href="@Url.Action("Index", new { Search = filter.Search, DisciplineId = filter.DisciplineId, Area = filter.Area })" title="Remove filter" aria-label="Remove status filter">&times;</a>
+                </span>
+            }
+            @if (!string.IsNullOrEmpty(filter.Area))
+            {
+                <span class="pems-filter-chip">@Localizer["Area"]: @filter.Area
+                    <a class="pems-chip-remove" href="@Url.Action("Index", new { Search = filter.Search, DisciplineId = filter.DisciplineId, Status = filter.Status })" title="Remove filter" aria-label="Remove area filter">&times;</a>
+                </span>
+            }
+            <a asp-action="Index" asp-route-Search="@filter.Search" class="small text-danger text-decoration-none">@Localizer["Reset"] all</a>
         </div>
-        <div class="col-md-2">
-            <label class="form-label small">@Localizer["Discipline"]</label>
-            <select name="DisciplineId" class="form-select form-select-sm">
-                <option value="">All</option>
-                @foreach (var d in disciplines)
-                { <option value="@d.DisciplineId" selected="@(filter.DisciplineId == d.DisciplineId)">@d.Name</option> }
-            </select>
-        </div>
-        <div class="col-md-2">
-            <label class="form-label small">@Localizer["Status"]</label>
-            <select name="Status" class="form-select form-select-sm">
-                <option value="">All</option>
-                @foreach (var s in statusOptions)
-                { <option value="@s" selected="@(filter.Status == s)">@s</option> }
-            </select>
-        </div>
-        <div class="col-md-2">
-            <label class="form-label small">@Localizer["Area"]</label>
-            <input name="Area" value="@filter.Area" type="text" class="form-control form-control-sm" placeholder="Area..." />
-        </div>
-        <div class="col-md-2 d-flex gap-2">
-            <button type="submit" class="btn btn-sm btn-pems-solid flex-fill"><i class="bi bi-funnel"></i> @Localizer["Filter"]</button>
-            <a asp-action="Index" class="btn btn-sm btn-outline-danger flex-fill"><i class="bi bi-x-lg"></i> @Localizer["Reset"]</a>
-        </div>
-        <div class="col-12 text-end">
-            <a asp-action="Create" class="btn btn-sm btn-pems-solid"><i class="bi bi-plus-lg"></i> @Localizer["New"]</a>
-        </div>
-    </form>
+    }
 </div>
+
+@* طبق بند ۹/۴۹ ممیزی UX: فیلترهای پیشرفته فقط با درخواست کاربر نمایش داده می‌شوند (Offcanvas) -
+   Register همچنان در پس‌زمینه قابل مشاهده می‌ماند. هیچ فیلد جدیدی اضافه نشده - همون سه فیلد
+   موجود (Discipline/Status/Area) فقط جابه‌جا شدند. *@
+<div class="offcanvas offcanvas-end" tabindex="-1" id="engDocAdvancedSearch" aria-labelledby="engDocAdvancedSearchLabel">
+    <div class="offcanvas-header">
+        <h6 class="offcanvas-title" id="engDocAdvancedSearchLabel"><i class="bi bi-sliders"></i> Advanced Search</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column">
+        <form method="get" asp-action="Index" class="flex-grow-1 d-flex flex-column">
+            <input type="hidden" name="Search" value="@filter.Search" />
+            <div class="mb-3">
+                <label class="form-label small">@Localizer["Discipline"]</label>
+                <select name="DisciplineId" class="form-select form-select-sm">
+                    <option value="">All</option>
+                    @foreach (var d in disciplines)
+                    { <option value="@d.DisciplineId" selected="@(filter.DisciplineId == d.DisciplineId)">@d.Name</option> }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label small">@Localizer["Status"]</label>
+                <select name="Status" class="form-select form-select-sm">
+                    <option value="">All</option>
+                    @foreach (var s in statusOptions)
+                    { <option value="@s" selected="@(filter.Status == s)">@s</option> }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label small">@Localizer["Area"]</label>
+                <input name="Area" value="@filter.Area" type="text" class="form-control form-control-sm" placeholder="Area..." />
+            </div>
+            <div class="mt-auto d-flex gap-2 border-top pt-3">
+                <button type="submit" class="btn btn-pems-solid btn-sm flex-fill"><i class="bi bi-funnel"></i> Apply Filters</button>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm flex-fill">@Localizer["Reset"]</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    (function () {
+        var input = document.getElementById('engDocQuickSearch');
+        var form = document.getElementById('engDocSearchForm');
+        input.addEventListener('pems:search-select', function (e) {
+            if (e.detail && e.detail.url) window.location.href = e.detail.url;
+        });
+        input.addEventListener('pems:search-enter', function () {
+            form.submit();
+        });
+    })();
+</script>
 
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
@@ -149,10 +210,10 @@
                         </td>
                         <td class="text-muted small">@item.CreatedDate.ToString("yyyy-MM-dd")</td>
                         <td class="text-end">
-                            <a asp-action="Details" asp-route-id="@item.DocumentId" class="btn btn-sm btn-outline-secondary" title="View"><i class="bi bi-eye"></i></a>
-                            <a asp-action="Edit" asp-route-id="@item.DocumentId" class="btn btn-sm btn-outline-secondary" title="Edit"><i class="bi bi-pencil"></i></a>
+                            <a asp-action="Details" asp-route-id="@item.DocumentId" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="View" aria-label="View @item.DocumentNo"><i class="bi bi-eye"></i></a>
+                            <a asp-action="Edit" asp-route-id="@item.DocumentId" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Edit" aria-label="Edit @item.DocumentNo"><i class="bi bi-pencil"></i></a>
                             <form asp-action="Delete" asp-route-id="@item.DocumentId" method="post" class="d-inline" onsubmit="return confirm('Delete this document?');">
-                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete"><i class="bi bi-trash"></i></button>
+                                <button type="submit" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Delete" aria-label="Delete @item.DocumentNo"><i class="bi bi-trash"></i></button>
                             </form>
                         </td>
                     </tr>
@@ -181,10 +242,13 @@
     })
 </div>
 
+</div> @* end .pems-doc-page *@
+
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             PemsDataGrid.initColumnResize('EngineeringDocuments');
+            window.PemsTooltips.init();
         });
     </script>
 }

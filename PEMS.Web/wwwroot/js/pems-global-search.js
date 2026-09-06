@@ -107,6 +107,17 @@
                 if (this.activeIndex >= 0 && this.items[this.activeIndex]) {
                     e.preventDefault();
                     this._selectItem(this.items[this.activeIndex]);
+                } else if (this.query.length >= MIN_CHARS) {
+                    // طبق «PEMS — Engineering Documents Density/Search Consolidation»: وقتی کاربر
+                    // بدون انتخاب یک نتیجه‌ی مشخص Enter می‌زند، این‌جا فقط یک رویداد عمومی ساطع
+                    // می‌شود - خودِ این کامپوننت مشترک هیچ اکشنی پیش‌فرض ندارد (نه Submit، نه
+                    // Navigate). مصرف‌کننده‌ی هر صفحه تصمیم می‌گیرد با آن چه کند (مثلاً فیلتر
+                    // کردن یک Grid). برای مصرف‌کننده‌های فعلی که این رویداد را گوش نمی‌دهند
+                    // (اکثر Picker ها)، این تغییر کاملاً بی‌اثر است. e.preventDefault() این‌جا
+                    // لازم است تا اگر Input داخل یک <form> باشد، Submit خودکار مرورگر با
+                    // Submit دستیِ مصرف‌کننده تداخل/تکرار نکند.
+                    e.preventDefault();
+                    this.input.dispatchEvent(new CustomEvent('pems:search-enter', { detail: { query: this.query }, bubbles: true }));
                 }
             } else if (e.key === 'Escape') {
                 this._closePanel();

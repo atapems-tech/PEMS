@@ -33,7 +33,7 @@
                 </a>
                 <form asp-action="DeleteFilter" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@sf.SavedFilterId" />
-                    <button class="btn btn-sm btn-outline-danger" title="Delete this saved filter" onclick="return confirm('Delete this saved filter?')"><i class="bi bi-x"></i></button>
+                    <button class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Delete this saved filter" aria-label="Delete saved filter @sf.Name" onclick="return confirm('Delete this saved filter?')"><i class="bi bi-x"></i></button>
                 </form>
             }
         }
@@ -86,8 +86,8 @@
             <input type="text" name="q" value="@ViewBag.SearchTerm" class="form-control form-control-sm" placeholder="Doc No / Title" />
         </div>
         <div class="col-md-2 d-flex gap-1">
-            <button type="submit" class="btn btn-sm btn-pems-solid flex-fill"><i class="bi bi-funnel"></i></button>
-            <a asp-action="Index" class="btn btn-sm btn-outline-danger" title="Reset"><i class="bi bi-x-lg"></i></a>
+            <button type="submit" class="btn btn-sm btn-pems-solid flex-fill" data-bs-toggle="tooltip" title="Apply filters" aria-label="Apply filters"><i class="bi bi-funnel"></i></button>
+            <a asp-action="Index" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Reset filters" aria-label="Reset filters"><i class="bi bi-x-lg"></i></a>
         </div>
 
         <div class="col-12 d-flex gap-2 mt-2">
@@ -205,6 +205,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             PemsDataGrid.initColumnResize('DocumentRegister');
+            window.PemsTooltips.init();
         });
     </script>
 }
