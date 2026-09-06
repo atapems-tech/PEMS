@@ -4,6 +4,7 @@ using PEMS.Application.Common;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
+using PEMS.Web.Security;
 
 namespace PEMS.Web.Controllers;
 
@@ -16,20 +17,30 @@ public class MaintenancePlanController : Controller
     private readonly PEMSDbContext _context;
     private readonly INumberingService _numberingService;
     private readonly IMaintenancePlanService _maintenancePlanService;
+    private readonly ICurrentUserService _currentUser;
+    private readonly IPermissionService _permissionService;
 
     public MaintenancePlanController(PEMSDbContext context, INumberingService numberingService,
-        IMaintenancePlanService maintenancePlanService)
+        IMaintenancePlanService maintenancePlanService, ICurrentUserService currentUser, IPermissionService permissionService)
     {
         _context = context;
         _numberingService = numberingService;
         _maintenancePlanService = maintenancePlanService;
+        _currentUser = currentUser;
+        _permissionService = permissionService;
     }
 
     // طبق سند «PEMS — Global Data Grid Standard»: قبلاً کل جدول MaintenancePlans با
     // Include(Equipment)+Include(MaintenanceStrategy)+ToListAsync (بدون Skip/Take) بارگذاری
     // می‌شد. این Grid فیلتری نداشت؛ فقط صفحه‌بندی اضافه شد.
+    // طبق ممیزی مستقل فاز ۶B Wave B1 (نهایی) بند P0: این کنترلر هیچ بررسی مجوزی نداشت - هر
+    // کاربر احرازهویت‌شده‌ای می‌توانست Plan بسازد، غیرفعال کند، از آن WorkOrder بسازد، یا
+    // قرائت Meter ثبت کند.
     public async Task<IActionResult> Index(int page = 1, int? pageSize = null)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Maintenance Plans";
         ViewData["Section"] = "CMMS Integration";
 
@@ -42,6 +53,9 @@ public class MaintenancePlanController : Controller
     [HttpGet]
     public async Task<IActionResult> Create(int? strategyId, int? equipmentId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "Create"))
+            return Forbid();
+
         ViewData["Title"] = "New Maintenance Plan";
         ViewData["Section"] = "CMMS Integration";
 
@@ -80,6 +94,9 @@ public class MaintenancePlanController : Controller
         string triggerType, int? intervalDays, string? meterType, decimal? meterInterval,
         DateTime? nextDueDate, string? description, int? jobPlanId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "Create"))
+            return Forbid();
+
         var equipment = await _context.Equipments.FirstOrDefaultAsync(x => x.EquipmentId == equipmentId);
         var planNumber = await _numberingService.GetNextNumberAsync("MaintenancePlan", equipment?.TagNumber ?? equipmentId.ToString());
 
@@ -114,6 +131,9 @@ public class MaintenancePlanController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> RecordMeterReading(int planId, decimal currentReading)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "Edit"))
+            return Forbid();
+
         var plan = await _context.MaintenancePlans.FirstOrDefaultAsync(x => x.MaintenancePlanId == planId);
         if (plan == null) return NotFound();
 
@@ -134,6 +154,9 @@ public class MaintenancePlanController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> GenerateWorkOrder(int planId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "Edit"))
+            return Forbid();
+
         var plan = await _context.MaintenancePlans
             .Include(x => x.Equipment)
             .FirstOrDefaultAsync(x => x.MaintenancePlanId == planId);
@@ -230,6 +253,9 @@ public class MaintenancePlanController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Deactivate(int planId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "Edit"))
+            return Forbid();
+
         var plan = await _context.MaintenancePlans.FirstOrDefaultAsync(x => x.MaintenancePlanId == planId);
         if (plan == null) return NotFound();
 

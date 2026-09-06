@@ -16,18 +16,27 @@ public class JobPlanController : Controller
     private readonly IJobPlanService _service;
     private readonly PEMSDbContext _context;
     private readonly ICurrentUserService _currentUser;
+    private readonly IPermissionService _permissionService;
 
-    public JobPlanController(IJobPlanService service, PEMSDbContext context, ICurrentUserService currentUser)
+    public JobPlanController(IJobPlanService service, PEMSDbContext context, ICurrentUserService currentUser,
+        IPermissionService permissionService)
     {
         _service = service;
         _context = context;
         _currentUser = currentUser;
+        _permissionService = permissionService;
     }
 
     // طبق ممیزی مستقل فاز ۶B Wave B1 (P1-01): قبلاً کل جدول فعال با ToListAsync (بدون Skip/Take)
     // بارگذاری می‌شد.
+    // طبق ممیزی مستقل فاز ۶B Wave B1 (نهایی) بند P0: این کنترلر هیچ بررسی مجوزی نداشت - هر
+    // کاربر احرازهویت‌شده‌ای (بدون توجه به نقش) می‌توانست Job Plan بسازد/ویرایش کند/Task و
+    // Skill و Material اضافه/حذف کند.
     public async Task<IActionResult> Index(int page = 1, int? pageSize = null)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "JobPlan", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Job Plans";
         ViewData["Section"] = "CMMS Integration";
 
@@ -39,6 +48,9 @@ public class JobPlanController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "JobPlan", "Create"))
+            return Forbid();
+
         var (success, error, id) = await _service.CreateAsync(title, scope, estimatedDurationHours, safetyRequirements, _currentUser.UserName);
 
         if (!success)
@@ -53,6 +65,9 @@ public class JobPlanController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "JobPlan", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Job Plan Details";
         ViewData["Section"] = "CMMS Integration";
 
@@ -72,6 +87,9 @@ public class JobPlanController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int jobPlanId, string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "JobPlan", "Edit"))
+            return Forbid();
+
         var (success, error) = await _service.UpdateAsync(jobPlanId, title, scope, estimatedDurationHours, safetyRequirements, _currentUser.UserName);
         TempData[success ? "Message" : "Error"] = success ? "Job Plan updated" : error;
         return RedirectToAction(nameof(Details), new { id = jobPlanId });
@@ -81,6 +99,9 @@ public class JobPlanController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddTask(int jobPlanId, int taskNumber, string title, string? description, int? estimatedDurationMinutes)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "JobPlan", "Edit"))
+            return Forbid();
+
         var (success, error) = await _service.AddTaskAsync(jobPlanId, taskNumber, title, description, estimatedDurationMinutes);
         TempData[success ? "Message" : "Error"] = success ? "Task added" : error;
         return RedirectToAction(nameof(Details), new { id = jobPlanId });
@@ -90,6 +111,9 @@ public class JobPlanController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> RemoveTask(int maintenanceTaskId, int jobPlanId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "JobPlan", "Edit"))
+            return Forbid();
+
         await _service.RemoveTaskAsync(maintenanceTaskId);
         return RedirectToAction(nameof(Details), new { id = jobPlanId });
     }
@@ -98,6 +122,9 @@ public class JobPlanController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddRequiredSkill(int jobPlanId, int skillId, string? minimumProficiencyLevel, decimal? plannedHours)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "JobPlan", "Edit"))
+            return Forbid();
+
         var (success, error) = await _service.AddRequiredSkillAsync(jobPlanId, skillId, minimumProficiencyLevel, plannedHours);
         TempData[success ? "Message" : "Error"] = success ? "Skill added" : error;
         return RedirectToAction(nameof(Details), new { id = jobPlanId });
@@ -107,6 +134,9 @@ public class JobPlanController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> RemoveRequiredSkill(int jobPlanRequiredSkillId, int jobPlanId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "JobPlan", "Edit"))
+            return Forbid();
+
         await _service.RemoveRequiredSkillAsync(jobPlanRequiredSkillId);
         return RedirectToAction(nameof(Details), new { id = jobPlanId });
     }
@@ -115,6 +145,9 @@ public class JobPlanController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddRequiredMaterial(int jobPlanId, int materialItemId, decimal requiredQuantity)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "JobPlan", "Edit"))
+            return Forbid();
+
         var (success, error) = await _service.AddRequiredMaterialAsync(jobPlanId, materialItemId, requiredQuantity);
         TempData[success ? "Message" : "Error"] = success ? "Material added" : error;
         return RedirectToAction(nameof(Details), new { id = jobPlanId });
@@ -124,6 +157,9 @@ public class JobPlanController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> RemoveRequiredMaterial(int jobPlanRequiredMaterialId, int jobPlanId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "JobPlan", "Edit"))
+            return Forbid();
+
         await _service.RemoveRequiredMaterialAsync(jobPlanRequiredMaterialId);
         return RedirectToAction(nameof(Details), new { id = jobPlanId });
     }

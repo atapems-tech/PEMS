@@ -19,7 +19,7 @@ public class PermissionService : IPermissionService
         "EngineeringDocuments", "VDR", "Contracts", "Vendors",
         "MaterialRequisition", "Equipment", "DisciplineWorkspace", "Correspondence", "WorkOrder",
         "StoreRequisition", "WorkRequest", "Inspection", "Transmittal",
-        "Task", "FunctionalLocation", "EquipmentCriticality"
+        "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan"
     };
 
     public PermissionService(PEMSDbContext context, IAccessControlService accessControlService)
@@ -342,6 +342,28 @@ public class PermissionService : IPermissionService
             New(SystemRoles.EngineeringSupervisor, "EquipmentCriticality", create: true),
             New(SystemRoles.EngineeringManager, "EquipmentCriticality", create: true),
             New(SystemRoles.Viewer, "EquipmentCriticality")
+        });
+
+        // ==============================================================================
+        // طبق ممیزی مستقل فاز ۶B Wave B1 (نهایی) بند P0: JobPlan/MaintenancePlan قبلاً هیچ
+        // بررسی مجوزی نداشتند - همون کلاس نقصی که Task/FunctionalLocation/EquipmentCriticality
+        // در Wave A داشتند. نقش‌ها دقیقاً همون‌هایی هستند که برای EquipmentCriticality/
+        // Inspection انتخاب شدند - هر سه ماژول از نظر دامنه (اجرای نگهداری/RCM) یکسان‌اند.
+        // ==============================================================================
+        await SeedMissingRolesAsync("JobPlan", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "JobPlan", create: true, edit: true),
+            New(SystemRoles.EngineeringSupervisor, "JobPlan", create: true, edit: true),
+            New(SystemRoles.EngineeringManager, "JobPlan", create: true, edit: true),
+            New(SystemRoles.Viewer, "JobPlan")
+        });
+
+        await SeedMissingRolesAsync("MaintenancePlan", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "MaintenancePlan", create: true, edit: true),
+            New(SystemRoles.EngineeringSupervisor, "MaintenancePlan", create: true, edit: true),
+            New(SystemRoles.EngineeringManager, "MaintenancePlan", create: true, edit: true),
+            New(SystemRoles.Viewer, "MaintenancePlan")
         });
     }
 }
