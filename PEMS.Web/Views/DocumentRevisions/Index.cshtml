@@ -57,7 +57,7 @@
                         <td>@r.DocumentNo</td>
                         <td><span class="badge bg-secondary">@r.RevisionNo</span></td>
                         <td>@r.PreviousRevisionNo</td>
-                        <td><span class="badge badge-status-@r.Status">@r.Status</span></td>
+                        <td><span class="badge @PEMS.Web.Helpers.DocumentStatusBadge.CssClass(r.Status)">@r.Status</span></td>
                         <td>@r.IssuePurpose</td>
                         <td>@(string.IsNullOrWhiteSpace(r.PreparedBy) ? "-" : r.PreparedBy)</td>
                         <td>@(string.IsNullOrWhiteSpace(r.CheckedBy) ? "-" : r.CheckedBy)</td>

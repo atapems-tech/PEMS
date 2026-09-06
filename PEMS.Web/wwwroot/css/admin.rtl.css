@@ -42,3 +42,20 @@
 [dir="rtl"] .form-control[type="search"] {
     text-align: right;
 }
+
+/* طبق «PEMS — Engineering Documents UX Transformation»: تایم‌لاین گردش‌کار جهت‌دار است
+   (خط عمودی + نشانگر گِرد در سمت چپ) - در RTL باید به سمت راست منتقل شود */
+[dir="rtl"] .pems-workflow-timeline {
+    padding-left: 0;
+    padding-right: 2.25rem;
+}
+
+[dir="rtl"] .pems-workflow-timeline::before {
+    left: auto;
+    right: 0.9rem;
+}
+
+[dir="rtl"] .pems-timeline-marker {
+    left: auto;
+    right: -2.25rem;
+}

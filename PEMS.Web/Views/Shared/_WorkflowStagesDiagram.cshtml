@@ -46,10 +46,14 @@
         ["ClientReview"] = "Document Controller"
     };
 
-    var isRejected = currentStatus == "Rejected";
+    // طبق کشف این بازبینی UX: "Revise & Resubmit" هم مثل "Rejected" یک انشعاب برگشتی است
+    // (DocumentWorkflowService.ReviseAndResubmitAsync آن را جدا از "Rejected" نگه می‌دارد)،
+    // نه یک مرحله‌ی مستقل در stageOrder - قبلاً چون در آرایه پیدا نمی‌شد، currentIndex به
+    // آخرین مرحله (Issued) سقوط می‌کرد و نمودار اشتباهاً نشون می‌داد سند تمام‌شده است.
+    var isRejected = currentStatus == "Rejected" || currentStatus == "Revise & Resubmit";
 
-    // اندیس مرحله‌ی جاری در توالی بالا (برای Rejected، آخرین مرحله‌ی طی‌شده رو نشون می‌دیم،
-    // چون خودِ Reject یک "مرحله" مستقل نیست، یک انشعاب برگشتی از Check یا Approval است)
+    // اندیس مرحله‌ی جاری در توالی بالا (برای حالت برگشتی، آخرین مرحله‌ی طی‌شده رو نشون می‌دیم،
+    // چون خودِ Reject/Revise یک "مرحله" مستقل نیست، یک انشعاب برگشتی از Check یا Approval است)
     var currentIndex = Array.IndexOf(stageOrder, currentStatus);
     if (currentIndex < 0) currentIndex = isRejected ? 0 : stageOrder.Length - 1;
 }
@@ -70,10 +74,16 @@
     @@keyframes pems-wf-pulse { 0% { box-shadow: 0 0 0 4px rgba(13,110,253,.2); } 50% { box-shadow: 0 0 0 8px rgba(13,110,253,.08); } 100% { box-shadow: 0 0 0 4px rgba(13,110,253,.2); } }
 </style>
 
-@if (isRejected)
+@if (currentStatus == "Rejected")
 {
     <div class="alert alert-danger py-2 px-3 mb-3 small">
         <i class="bi bi-x-circle"></i> این مدرک <strong>رد شده</strong> و باید دوباره Submit بشه تا یک چرخه‌ی جدید گردش‌کار شروع بشه.
+    </div>
+}
+else if (currentStatus == "Revise & Resubmit")
+{
+    <div class="alert alert-warning py-2 px-3 mb-3 small">
+        <i class="bi bi-arrow-repeat"></i> این مدرک برای <strong>اصلاح</strong> برگشته - رد نهایی نشده. بعد از اصلاح، دوباره Submit کن.
     </div>
 }
 

@@ -2916,10 +2916,10 @@
     "semantic_hash": "2b15921e036b65ff1f12db08bb842948"
   },
   "PEMS.Web/Views/DocumentRegister/Index.cshtml": {
-    "mtime": 1788350906.169351,
-    "seen": 1788613735.670535,
-    "ast_hash": "e60f8fbd7ebef0b3493f34f25340b8c8",
-    "semantic_hash": "e60f8fbd7ebef0b3493f34f25340b8c8"
+    "mtime": 1788723453.3014412,
+    "seen": 1788724564.0492759,
+    "ast_hash": "e78094372de01ddf7841e4e884792e70",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/DocumentRevisions/Create.cshtml": {
     "mtime": 1788350906.1838584,
@@ -2928,9 +2928,9 @@
     "semantic_hash": "97a6c54ff1ae97711873b71fd6eeed78"
   },
   "PEMS.Web/Views/DocumentRevisions/Index.cshtml": {
-    "mtime": 1788705364.0073037,
-    "seen": 1788706892.4167418,
-    "ast_hash": "b9c519888c5000417a90ebc14e18c40a",
+    "mtime": 1788723465.8286123,
+    "seen": 1788724564.0492759,
+    "ast_hash": "2a36575ce9a62d92f513cc0bf429aa59",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/DocumentUpload/Index.cshtml": {
@@ -2940,9 +2940,9 @@
     "semantic_hash": "40e04debe7f0d5b585b2c42b917e56b7"
   },
   "PEMS.Web/Views/DocumentWorkflow/Index.cshtml": {
-    "mtime": 1788705712.5818558,
-    "seen": 1788706892.4167418,
-    "ast_hash": "caa8ca3e4966300bafe34679b81a140e",
+    "mtime": 1788723460.1671753,
+    "seen": 1788724564.0492759,
+    "ast_hash": "b19c0c31f3645d2630cb8648346c526f",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Employee/Details.cshtml": {
@@ -2976,10 +2976,10 @@
     "semantic_hash": "474dfccaf129bbfa133a7c710b7dd0c5"
   },
   "PEMS.Web/Views/EngineeringDocuments/Details.cshtml": {
-    "mtime": 1788350906.2687056,
-    "seen": 1788613735.670535,
-    "ast_hash": "05c0984196e3fc235121689973af8034",
-    "semantic_hash": "05c0984196e3fc235121689973af8034"
+    "mtime": 1788723862.9429486,
+    "seen": 1788724564.0512784,
+    "ast_hash": "091b0c51e06ad6e890cdfef802818a2e",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/EngineeringDocuments/Edit.cshtml": {
     "mtime": 1788350906.273528,
@@ -2988,10 +2988,10 @@
     "semantic_hash": "0e349d75198792940a6a5216872d909e"
   },
   "PEMS.Web/Views/EngineeringDocuments/Index.cshtml": {
-    "mtime": 1788350906.276646,
-    "seen": 1788613735.670535,
-    "ast_hash": "1ecfe167d1037eaf480684ee63a29a2f",
-    "semantic_hash": "1ecfe167d1037eaf480684ee63a29a2f"
+    "mtime": 1788723921.6249716,
+    "seen": 1788724564.0512784,
+    "ast_hash": "e076b15e843d3ba43102710a2ed85849",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/EngineeringDocuments/UploadAttachment.cshtml": {
     "mtime": 1788350906.2796493,
@@ -3432,10 +3432,10 @@
     "semantic_hash": "c30ed69da4842bc1d71efcfd13294b97"
   },
   "PEMS.Web/Views/Shared/_WorkflowStagesDiagram.cshtml": {
-    "mtime": 1788350907.0194495,
-    "seen": 1788613735.670535,
-    "ast_hash": "c49668f3d7dac2a0c50f07f04708b6d5",
-    "semantic_hash": "c49668f3d7dac2a0c50f07f04708b6d5"
+    "mtime": 1788723562.5063841,
+    "seen": 1788724564.072281,
+    "ast_hash": "249c3ba8a8f63f04dfddc0bfbeff18a1",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/SparePart/Index.cshtml": {
     "mtime": 1788507681.440282,
@@ -9381,6 +9381,12 @@
     "mtime": 1788721565.4195,
     "seen": 1788721869.2720242,
     "ast_hash": "2b246cd047b31937fcab53136cdfb9f6",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Helpers/DocumentStatusBadge.cs": {
+    "mtime": 1788723423.9446836,
+    "seen": 1788724564.041276,
+    "ast_hash": "037b4aaa08057af134dbb79cf1e21e53",
     "semantic_hash": ""
   }
 }

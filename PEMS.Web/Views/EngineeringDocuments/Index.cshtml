@@ -38,25 +38,30 @@
 </div>
 
 @* طبق Phase E-03: این شمارش‌ها حالا از دیتابیس می‌آیند (GetSummaryCountsAsync) - با همان
-   محدودیت دیسیپلین فهرست، اما مستقل از فیلترهای زیر (دقیقاً مثل رفتار قبلی). *@
+   محدودیت دیسیپلین فهرست، اما مستقل از فیلترهای زیر (دقیقاً مثل رفتار قبلی).
+   طبق بخش ۱۱ ممیزی UX: از کامپوننت مشترک _KpiCard (که پیش‌تر برای Dashboard ساخته شده)
+   استفاده شد - فقط KPI هایی که دقیقاً به یک مقدار فیلتر Status موجود نگاشت می‌شوند کلیک‌پذیرند
+   (Total/Approved/Rejected). Pending شامل دو وضعیت (Submitted+Checked) و Frozen/Overdue اصلاً
+   فیلد فیلتر جدا ندارند - طبق دستور صریح ممیزی ("do not create fake frontend logic")، این سه
+   KPI عمداً غیرکلیک‌پذیر ماندند تا نتیجه‌ی کلیک هیچ‌وقت با عدد KPI ناهم‌خوان نباشد. *@
 <div class="row g-3 mb-3">
     <div class="col-6 col-md-2">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-file-earmark-text"></i></div><div><div class="kpi-value">@summary.Total</div><div class="kpi-label">@Localizer["Total"]</div></div></div>
+        <partial name="_KpiCard" model="@(new PEMS.Web.Models.KpiCardViewModel { Title = Localizer["Total"], Count = summary.Total, IconClass = "bi-file-earmark-text", ColorClass = "bg-icon-slate", Url = Url.Action("Index") })" />
     </div>
     <div class="col-6 col-md-2">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div><div><div class="kpi-value">@summary.Approved</div><div class="kpi-label">@Localizer["Approved"]</div></div></div>
+        <partial name="_KpiCard" model="@(new PEMS.Web.Models.KpiCardViewModel { Title = Localizer["Approved"], Count = summary.Approved, IconClass = "bi-check-circle", ColorClass = "bg-icon-green", Url = Url.Action("Index", new { Status = "Approved" }) })" />
     </div>
     <div class="col-6 col-md-2">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-hourglass-split"></i></div><div><div class="kpi-value">@summary.Pending</div><div class="kpi-label">@Localizer["PendingReview"]</div></div></div>
+        <partial name="_KpiCard" model="@(new PEMS.Web.Models.KpiCardViewModel { Title = Localizer["PendingReview"], Count = summary.Pending, IconClass = "bi-hourglass-split", ColorClass = "bg-icon-amber" })" />
     </div>
     <div class="col-6 col-md-2">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-x-circle"></i></div><div><div class="kpi-value">@summary.Rejected</div><div class="kpi-label">@Localizer["Rejected"]</div></div></div>
+        <partial name="_KpiCard" model="@(new PEMS.Web.Models.KpiCardViewModel { Title = Localizer["Rejected"], Count = summary.Rejected, IconClass = "bi-x-circle", ColorClass = "bg-icon-red", Url = Url.Action("Index", new { Status = "Rejected" }) })" />
     </div>
     <div class="col-6 col-md-2">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-blue"><i class="bi bi-snow"></i></div><div><div class="kpi-value">@summary.Frozen</div><div class="kpi-label">@Localizer["Frozen"]</div></div></div>
+        <partial name="_KpiCard" model="@(new PEMS.Web.Models.KpiCardViewModel { Title = Localizer["Frozen"], Count = summary.Frozen, IconClass = "bi-snow", ColorClass = "bg-icon-blue" })" />
     </div>
     <div class="col-6 col-md-2">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-exclamation-triangle"></i></div><div><div class="kpi-value">@summary.Overdue</div><div class="kpi-label">@Localizer["Delayed"]</div></div></div>
+        <partial name="_KpiCard" model="@(new PEMS.Web.Models.KpiCardViewModel { Title = Localizer["Delayed"], Count = summary.Overdue, IconClass = "bi-exclamation-triangle", ColorClass = "bg-icon-purple" })" />
     </div>
 </div>
 
@@ -133,7 +138,7 @@
                         <td title="@item.ProjectName">@item.ProjectName</td>
                         <td>@item.RevisionNo</td>
                         <td>
-                            <span class="badge badge-status-@item.Status">@item.Status</span>
+                            <span class="badge @PEMS.Web.Helpers.DocumentStatusBadge.CssClass(item.Status)">@item.Status</span>
                             @if (item.IsFrozen) { <i class="bi bi-snow text-info ms-1" title="Frozen"></i> }
                         </td>
                         <td>

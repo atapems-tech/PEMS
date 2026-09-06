@@ -504,6 +504,20 @@ body {
     background: #8b95a1;
 }
 
+.badge-status-IDCReview {
+    background: #f59e0b;
+    color: #1b2733;
+}
+
+.badge-status-ReviseResubmit {
+    background: #fb923c;
+    color: #1b2733;
+}
+
+.badge-status-ClientApproved {
+    background: #16a34a;
+}
+
 /* =========================
    Table
 ========================= */
@@ -580,3 +594,52 @@ body {
     .kpi-link:hover .kpi-value {
         color: var(--pems-accent);
     }
+
+/* طبق «PEMS — Engineering Documents UX Transformation» بند ۳۳/۷۱: تایم‌لاین تاریخچه‌ی
+   گردش‌کار - جایگزین جدول خام با یک خط چشمی که هر اکشن را به‌صورت یک نقطه/کارت نشان می‌دهد.
+   نام‌گذاری با پیشوند pems- طبق قرارداد پروژه؛ فقط توسط EngineeringDocuments/Details.cshtml
+   استفاده می‌شود، اما به‌صورت کلی‌منظوره نوشته شده تا در صفحات دیگر هم قابل استفاده باشد. */
+.pems-workflow-timeline {
+    position: relative;
+    padding-left: 2.25rem;
+}
+
+    .pems-workflow-timeline::before {
+        content: "";
+        position: absolute;
+        left: 0.9rem;
+        top: 0.4rem;
+        bottom: 0.4rem;
+        width: 2px;
+        background: var(--pems-surface-border, #dee2e6);
+    }
+
+.pems-timeline-item {
+    position: relative;
+    padding-bottom: 1.1rem;
+}
+
+    .pems-timeline-item:last-child {
+        padding-bottom: 0;
+    }
+
+.pems-timeline-marker {
+    position: absolute;
+    left: -2.25rem;
+    top: 0.05rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--pems-surface-border, #dee2e6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+}
+
+.pems-timeline-content {
+    background: var(--pems-bg, #f8f9fa);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+}

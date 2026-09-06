@@ -157,7 +157,7 @@
                         </td>
                         <td title="@d.ProjectName">@d.ProjectName</td>
                         <td>@d.RevisionNo</td>
-                        <td><span class="badge badge-status-@d.Status">@d.Status</span></td>
+                        <td><span class="badge @PEMS.Web.Helpers.DocumentStatusBadge.CssClass(d.Status)">@d.Status</span></td>
                         <td title="@d.CommentStatus">@d.CommentStatus</td>
                         <td>@(d.IsFrozen ? "❄ Frozen" : "")</td>
                         <td>
