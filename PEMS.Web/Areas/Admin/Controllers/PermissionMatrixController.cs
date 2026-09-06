@@ -30,7 +30,8 @@ public class PermissionMatrixController : Controller
             "EngineeringDocuments", "VDR", "Contracts", "Vendors",
             "MaterialRequisition", "Equipment", "DisciplineWorkspace", "Correspondence",
             "WorkOrder", "StoreRequisition", "WorkRequest",
-            "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan"
+            "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan",
+            "ProcurementPackage"
         };
 
         return View(matrix);

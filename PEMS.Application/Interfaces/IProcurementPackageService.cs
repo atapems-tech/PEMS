@@ -29,9 +29,13 @@ public interface IProcurementPackageService
     Task<int> AddCommunicationAsync(int packageId, string type, string subject, string body,
         int? vendorId, string? raisedByName, int? attachmentId);
 
-    Task RespondToCommunicationAsync(int communicationId, string responseText, string? respondedByName);
+    // طبق «PEMS — Final Global Repository Audit» بند ۲۴/۳۸ (IDOR): قبلاً فقط با communicationId
+    // پیدا می‌شد - هیچ بررسی نمی‌شد که این Communication واقعاً متعلق به packageId درخواستی است
+    // یا نه (دقیقاً همون کلاس نقصی که WorkOrderTask.CompleteTask/ReopenTask داشت). حالا هر دو
+    // Id با هم فیلتر می‌شوند.
+    Task RespondToCommunicationAsync(int packageId, int communicationId, string responseText, string? respondedByName);
 
-    Task SetCommunicationStatusAsync(int communicationId, string actionStatus);
+    Task SetCommunicationStatusAsync(int packageId, int communicationId, string actionStatus);
 
     Task AddApprovalAsync(int packageId, string approverName, string decision, string? comment);
 }

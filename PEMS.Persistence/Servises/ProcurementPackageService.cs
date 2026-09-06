@@ -288,10 +288,10 @@ public class ProcurementPackageService : IProcurementPackageService
         return communication.ProcurementCommunicationId;
     }
 
-    public async Task RespondToCommunicationAsync(int communicationId, string responseText, string? respondedByName)
+    public async Task RespondToCommunicationAsync(int packageId, int communicationId, string responseText, string? respondedByName)
     {
         var communication = await _context.ProcurementCommunications
-            .FirstOrDefaultAsync(x => x.ProcurementCommunicationId == communicationId);
+            .FirstOrDefaultAsync(x => x.ProcurementCommunicationId == communicationId && x.ProcurementPackageId == packageId);
 
         if (communication == null) return;
 
@@ -303,10 +303,10 @@ public class ProcurementPackageService : IProcurementPackageService
         await _context.SaveChangesAsync();
     }
 
-    public async Task SetCommunicationStatusAsync(int communicationId, string actionStatus)
+    public async Task SetCommunicationStatusAsync(int packageId, int communicationId, string actionStatus)
     {
         var communication = await _context.ProcurementCommunications
-            .FirstOrDefaultAsync(x => x.ProcurementCommunicationId == communicationId);
+            .FirstOrDefaultAsync(x => x.ProcurementCommunicationId == communicationId && x.ProcurementPackageId == packageId);
 
         if (communication == null) return;
 

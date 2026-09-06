@@ -19,7 +19,8 @@ public class PermissionService : IPermissionService
         "EngineeringDocuments", "VDR", "Contracts", "Vendors",
         "MaterialRequisition", "Equipment", "DisciplineWorkspace", "Correspondence", "WorkOrder",
         "StoreRequisition", "WorkRequest", "Inspection", "Transmittal",
-        "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan"
+        "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan",
+        "ProcurementPackage"
     };
 
     public PermissionService(PEMSDbContext context, IAccessControlService accessControlService)
@@ -364,6 +365,20 @@ public class PermissionService : IPermissionService
             New(SystemRoles.EngineeringSupervisor, "MaintenancePlan", create: true, edit: true),
             New(SystemRoles.EngineeringManager, "MaintenancePlan", create: true, edit: true),
             New(SystemRoles.Viewer, "MaintenancePlan")
+        });
+
+        // طبق «PEMS — Final Global Repository Audit» بند ۱۹: ProcurementPackageController
+        // (شامل AddApproval - ثبت تصمیم Approve/Reject روی زنجیره‌ی MR/MRQ/Vendor Inquiry)
+        // هیچ بررسی مجوزی نداشت - هر کاربر احرازهویت‌شده‌ای (صرف‌نظر از نقش) می‌توانست Package
+        // بسازد، مرحله را جلو ببرد، و از همه مهم‌تر، تاییدیه‌ی خرید ثبت کند. نقش‌ها دقیقاً همون
+        // نقش‌های زنجیره‌ی MaterialRequisition/Contracts هستند (نزدیک‌ترین ماژول‌های موجود از
+        // نظر دامنه: خرید/تایید مالی).
+        await SeedMissingRolesAsync("ProcurementPackage", new List<RolePermission>
+        {
+            New(SystemRoles.DisciplineEngineer, "ProcurementPackage", create: true, edit: true),
+            New(SystemRoles.ContractManager, "ProcurementPackage", create: true, edit: true, approve: true),
+            New(SystemRoles.EngineeringManager, "ProcurementPackage", approve: true),
+            New(SystemRoles.Viewer, "ProcurementPackage")
         });
     }
 }
