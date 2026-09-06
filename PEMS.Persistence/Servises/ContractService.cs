@@ -46,6 +46,46 @@ public class ContractService : IContractService
         return list.FirstOrDefault(x => x.ContractId == id);
     }
 
+    // طبق «PEMS — Global Grid Hardening» P1: جایگزین GetAllAsync برای Index - شمارش/مرتب‌سازی/
+    // صفحه‌بندی روی IQueryable قبل از Select. GetAllAsync/GetByIdAsync بالا دست‌نخورده ماندند.
+    public async Task<PagedResult<ContractDto>> GetPagedAsync(int page, int pageSize)
+    {
+        var query = _context.Contracts.AsNoTracking().AsQueryable();
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(x => x.CreatedDate)
+            .ThenByDescending(x => x.ContractId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(x => new ContractDto
+            {
+                ContractId = x.ContractId,
+                ContractNo = x.ContractNo,
+                ProjectId = x.ProjectId,
+                ProjectName = x.Project!.ProjectName,
+                VendorId = x.VendorId,
+                VendorName = x.Vendor!.Name,
+                ScopeOfWork = x.ScopeOfWork,
+                ContractValue = x.ContractValue,
+                Currency = x.Currency,
+                StartDate = x.StartDate,
+                EndDate = x.EndDate,
+                Status = x.Status,
+                PurchaseOrdersCount = x.PurchaseOrders.Count
+            })
+            .ToListAsync();
+
+        return new PagedResult<ContractDto>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+    }
+
     public async Task<int> CreateAsync(string contractNo, int projectId, int vendorId, string? scope,
         decimal? value, DateTime? startDate, DateTime? endDate)
     {

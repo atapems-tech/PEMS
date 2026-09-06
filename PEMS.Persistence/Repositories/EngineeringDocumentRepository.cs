@@ -43,6 +43,34 @@ public class EngineeringDocumentRepository
             .ToListAsync();
     }
 
+    // طبق «PEMS — Global Grid Hardening» P1: پیوستگی با GetAllAsync بالا - فقط فیلترهای
+    // Discipline.Name/DocumentType/Status (که AISearchController امروز فقط بعد از بارگذاری کل
+    // جدول در حافظه اعمال می‌کرد) قبل از Include(Attachments) در SQL اعمال می‌شوند.
+    public async Task<List<EngineeringDocument>> GetActiveForSearchAsync(string? disciplineName, string? documentType, string? status)
+    {
+        var query = _context.EngineeringDocuments
+            .AsNoTracking()
+            .Where(x => x.IsActive)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(disciplineName))
+            query = query.Where(x => x.Discipline != null && x.Discipline.Name.Contains(disciplineName));
+
+        if (!string.IsNullOrWhiteSpace(documentType))
+            query = query.Where(x => x.DocumentType.Contains(documentType));
+
+        if (!string.IsNullOrWhiteSpace(status))
+            query = query.Where(x => x.Status == status);
+
+        return await query
+            .Include(x => x.Discipline)
+            .Include(x => x.Project)
+            .Include(x => x.Attachments)
+            .Include(x => x.Equipment)
+            .Include(x => x.Contract)
+            .ToListAsync();
+    }
+
 
 
     // طبق Phase E-03 (رفع P1 ممیزی Performance): فقط Include هایی که Index.cshtml واقعاً

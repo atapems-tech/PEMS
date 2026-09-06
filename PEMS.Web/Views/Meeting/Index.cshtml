@@ -1,17 +1,32 @@
-﻿@model List<PEMS.Application.DTOs.MeetingDto>
+﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MeetingDto>
 
 
 <div class="content-card">
-    <div class="d-flex justify-content-end mb-3">
+    <div class="d-flex justify-content-between mb-3">
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Meeting')">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+        </button>
         <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createMeetingModal">
             <i class="bi bi-plus-lg"></i> Schedule Meeting
         </button>
     </div>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
-        <thead><tr><th>Title</th><th>Date</th><th>Location</th><th>Organizer</th><th>Project</th><th>Attendees</th><th>Action Items</th><th>Status</th><th></th></tr></thead>
+    <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
+    <table class="table table-enterprise pems-grid-table" data-grid-key="Meeting">
+        <thead>
+            <tr>
+                <th data-col-key="title" data-resizable="true" data-min-width="120" data-max-width="320" style="width:200px">Title</th>
+                <th data-col-key="date" data-resizable="true" data-min-width="100" data-max-width="180" style="width:150px">Date</th>
+                <th data-col-key="location" data-resizable="true" data-min-width="80" data-max-width="200" style="width:130px">Location</th>
+                <th data-col-key="organizer" data-resizable="true" data-min-width="80" data-max-width="200" style="width:130px">Organizer</th>
+                <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Project</th>
+                <th data-col-key="attendees" data-resizable="true" data-min-width="70" data-max-width="120" style="width:90px">Attendees</th>
+                <th data-col-key="actionItems" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">Action Items</th>
+                <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">Status</th>
+                <th data-col-key="actions" data-resizable="false" style="width:60px"></th>
+            </tr>
+        </thead>
         <tbody>
-            @foreach (var m in Model)
+            @foreach (var m in Model.Items)
             {
                 <tr>
                     <td>@m.Title</td>
@@ -28,8 +43,27 @@
         </tbody>
     </table>
     </div>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4">No meetings scheduled yet.</p> }
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No meetings scheduled yet.</p> }
+
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "Meeting",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = ""
+    })
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('Meeting');
+        });
+    </script>
+}
 
 <div class="modal fade" id="createMeetingModal" tabindex="-1">
     <div class="modal-dialog modal-lg">

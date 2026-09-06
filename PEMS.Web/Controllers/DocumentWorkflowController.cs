@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Common;
+using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
 using PEMS.Web.Security;
@@ -37,14 +39,18 @@ public class DocumentWorkflowController : Controller
 
     private string? GetUserAgent() => Request.Headers["User-Agent"].ToString();
 
-    public async Task<IActionResult> Index(string? status)
+    // طبق «PEMS — Global Grid Hardening» P1: قبلاً صف تایید (Submitted/Checked) بدون Skip/Take
+    // با ۲ Include بارگذاری می‌شد - در سازمانی با انباشت مدارک منتظر تایید، این صف نامحدود
+    // رشد می‌کند. فیلتر status موجود حفظ شد؛ فقط شمارش/مرتب‌سازی/صفحه‌بندی/Projection در SQL
+    // اضافه شدند. "Recent Workflow History" (Take(30) ثابت) یک ویجت فعالیت اخیر است، نه یک
+    // Grid کامل - دست‌نخورده ماند.
+    public async Task<IActionResult> Index(string? status, int page = 1, int? pageSize = null)
     {
         ViewData["Title"] = "Document Workflow";
         ViewData["Section"] = "Engineering Management";
 
         var query = _context.EngineeringDocuments
-            .Include(x => x.Project)
-            .Include(x => x.Discipline)
+            .AsNoTracking()
             .Where(x => x.IsActive)
             .AsQueryable();
 
@@ -55,7 +61,34 @@ public class DocumentWorkflowController : Controller
             // دو مرحله‌ی جداگانه‌ای هستند که باید در صف نشان داده شوند
             query = query.Where(x => x.Status == "Submitted" || x.Status == "Checked");
 
-        var pending = await query.OrderBy(x => x.ModifiedDate ?? x.CreatedDate).ToListAsync();
+        var totalCount = await query.CountAsync();
+        var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
+        var normalizedPage = page < 1 ? 1 : page;
+
+        var pendingItems = await query
+            .OrderBy(x => x.ModifiedDate ?? x.CreatedDate)
+            .ThenBy(x => x.DocumentId)
+            .Skip((normalizedPage - 1) * normalizedPageSize)
+            .Take(normalizedPageSize)
+            .Select(x => new DocumentWorkflowPendingItemDto
+            {
+                DocumentId = x.DocumentId,
+                DocumentNo = x.DocumentNo,
+                Title = x.Title,
+                ProjectName = x.Project != null ? x.Project.ProjectName : null,
+                DisciplineName = x.Discipline != null ? x.Discipline.Name : null,
+                Status = x.Status,
+                RevisionNo = x.RevisionNo
+            })
+            .ToListAsync();
+
+        var pending = new PagedResult<DocumentWorkflowPendingItemDto>
+        {
+            Items = pendingItems,
+            Page = normalizedPage,
+            PageSize = normalizedPageSize,
+            TotalCount = totalCount
+        };
 
         var history = await _context.DocumentWorkflows
             .Include(x => x.Document)

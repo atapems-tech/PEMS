@@ -1,17 +1,31 @@
-﻿@model List<PEMS.Application.DTOs.ContractDto>
+﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.ContractDto>
 
 
 <div class="content-card">
-    <div class="d-flex justify-content-end mb-3">
+    <div class="d-flex justify-content-between mb-3">
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Contract')">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+        </button>
         <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createContractModal">
             <i class="bi bi-plus-lg"></i> New Contract
         </button>
     </div>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
-            <thead><tr><th>Contract No</th><th>Project</th><th>Vendor</th><th>Value</th><th>Start</th><th>End</th><th>Status</th><th></th></tr></thead>
+    <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise pems-grid-table" data-grid-key="Contract">
+            <thead>
+                <tr>
+                    <th data-col-key="contractNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Contract No</th>
+                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Project</th>
+                    <th data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Vendor</th>
+                    <th data-col-key="value" data-resizable="true" data-min-width="90" data-max-width="180" style="width:130px">Value</th>
+                    <th data-col-key="start" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">Start</th>
+                    <th data-col-key="end" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">End</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">Status</th>
+                    <th data-col-key="actions" data-resizable="false" style="width:60px"></th>
+                </tr>
+            </thead>
             <tbody>
-                @foreach (var c in Model)
+                @foreach (var c in Model.Items)
                 {
                     <tr>
                         <td>@c.ContractNo</td>
@@ -26,9 +40,28 @@
                 }
             </tbody>
         </table>
-        @if (!Model.Any()) { <p class="text-muted text-center py-4">No contracts yet.</p> }
+        @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No contracts yet.</p> }
     </div>
+
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "Contract",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = ""
+    })
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('Contract');
+        });
+    </script>
+}
 
 <div class="modal fade" id="createContractModal" tabindex="-1">
     <div class="modal-dialog modal-lg">

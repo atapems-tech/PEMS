@@ -4,14 +4,21 @@ public class DocumentRevisionDto
 {
     public int RevisionId { get; set; }
 
+    // طبق «PEMS — Global Grid Hardening»: برای DocumentRevisionsController.Index (فهرست
+    // چند-سندی) لازم است - در DocumentDetails (تک-سندی) خالی می‌ماند، بی‌ضرر است.
+    public int DocumentId { get; set; }
+    public string? DocumentNo { get; set; }
 
     public string RevisionNo { get; set; } = "00";
+
+    public string? PreviousRevisionNo { get; set; }
 
 
     public string Status { get; set; } = "Draft";
 
 
     public string? Comment { get; set; }
+    public string? IssuePurpose { get; set; }
 
 
     public DateTime RevisionDate { get; set; }

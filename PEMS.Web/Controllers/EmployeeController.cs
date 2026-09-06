@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Common;
+using PEMS.Application.DTOs;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
 using PEMS.Persistence.Identity;
@@ -220,15 +222,17 @@ public class EmployeeController : Controller
         return RedirectToAction(nameof(Details), new { id = employeeId });
     }
 
-    public async Task<IActionResult> Index(int? departmentId, int? disciplineId, string? q)
+    // طبق «PEMS — Global Grid Hardening» P1: قبلاً کل جدول Employees (فیلترشده اما بدون
+    // Skip/Take) با ۲ Include بارگذاری می‌شد و هر ردیف Modal ویرایش خودش را رندر می‌کرد -
+    // در سازمانی با صدها/هزاران کارمند، این هم Query و هم HTML/DOM را نامحدود رشد می‌داد.
+    // فیلترهای موجود (department/discipline/q) حفظ شدند؛ HasUser با Subquery همبسته محاسبه
+    // می‌شود (نه پیش‌بارگذاری کل جدول Users). Export زیر عمداً دست‌نخورده ماند - جدا بررسی شد.
+    public async Task<IActionResult> Index(int? departmentId, int? disciplineId, string? q, int page = 1, int? pageSize = null)
     {
         ViewData["Title"] = "Employees";
         ViewData["Section"] = "Administration";
 
-        var query = _context.Employees
-            .Include(x => x.Department)
-            .Include(x => x.Discipline)
-            .AsQueryable();
+        var query = _context.Employees.AsNoTracking().AsQueryable();
 
         if (departmentId.HasValue) query = query.Where(x => x.DepartmentId == departmentId.Value);
         if (disciplineId.HasValue) query = query.Where(x => x.DisciplineId == disciplineId.Value);
@@ -240,15 +244,45 @@ public class EmployeeController : Controller
                 || x.PersonnelCode.ToLower().Contains(term) || (x.Email != null && x.Email.ToLower().Contains(term)));
         }
 
-        var employees = await query.OrderBy(x => x.FirstName).ThenBy(x => x.LastName).ToListAsync();
+        var totalCount = await query.CountAsync();
+        var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
+        var normalizedPage = page < 1 ? 1 : page;
 
-        // برای نمایش اینکه هرکدام از کارمندها از قبل یوزر لاگین دارند یا نه (تصمیم UI که
-        // آیا دکمه‌ی «ساخت یوزر» نشون داده بشه یا نه)
-        var employeeIdsWithUser = await _userManager.Users
-            .Where(u => u.EmployeeId != null)
-            .Select(u => u.EmployeeId!.Value)
+        var items = await query
+            .OrderBy(x => x.FirstName)
+            .ThenBy(x => x.LastName)
+            .ThenBy(x => x.EmployeeId)
+            .Skip((normalizedPage - 1) * normalizedPageSize)
+            .Take(normalizedPageSize)
+            .Select(x => new EmployeeListItemDto
+            {
+                EmployeeId = x.EmployeeId,
+                PersonnelCode = x.PersonnelCode,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                Position = x.Position,
+                Email = x.Email,
+                Phone = x.Phone,
+                DepartmentId = x.DepartmentId,
+                DepartmentName = x.Department != null ? x.Department.Name : null,
+                DisciplineId = x.DisciplineId,
+                DisciplineName = x.Discipline != null ? x.Discipline.Name : null,
+                PersonnelType = x.PersonnelType,
+                VendorId = x.VendorId,
+                VendorName = x.VendorId != null
+                    ? _context.Vendors.Where(v => v.VendorId == x.VendorId).Select(v => v.Name).FirstOrDefault()
+                    : null,
+                IsActive = x.IsActive
+            })
             .ToListAsync();
-        ViewBag.EmployeeIdsWithUser = new HashSet<int>(employeeIdsWithUser);
+
+        var result = new PagedResult<EmployeeListItemDto>
+        {
+            Items = items,
+            Page = normalizedPage,
+            PageSize = normalizedPageSize,
+            TotalCount = totalCount
+        };
 
         await LoadDropdownsAsync();
 
@@ -256,7 +290,7 @@ public class EmployeeController : Controller
         ViewBag.SelectedDisciplineId = disciplineId;
         ViewBag.SearchTerm = q;
 
-        return View(employees);
+        return View(result);
     }
 
     [HttpPost]

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PEMS.Application.Common;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
 
@@ -15,13 +16,15 @@ public class VendorController : Controller
         _riskService = riskService;
     }
 
-    public async Task<IActionResult> Index()
+    // طبق «PEMS — Global Grid Hardening» P1: این Grid فیلتری نداشت؛ فقط صفحه‌بندی واقعی اضافه شد.
+    public async Task<IActionResult> Index(int page = 1, int? pageSize = null)
     {
         ViewData["Title"] = "Vendors";
         ViewData["Section"] = "Contract Management";
 
-        var vendors = await _service.GetAllAsync();
-        return View(vendors);
+        var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
+        var result = await _service.GetPagedAsync(page, normalizedPageSize);
+        return View(result);
     }
 
     public async Task<IActionResult> Details(int id)

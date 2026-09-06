@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Common;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
@@ -23,13 +24,17 @@ public class TransmittalController : Controller
         _currentUser = currentUser;
     }
 
-    public async Task<IActionResult> Index()
+    // طبق «PEMS — Global Grid Hardening» P1: قبلاً کل جدول Transmittals دوبار (یک‌بار برای
+    // فهرست، یک‌بار برای دیکشنری SupersededBy) بدون Skip/Take بارگذاری می‌شد. این Grid فیلتری
+    // نداشت؛ فقط صفحه‌بندی واقعی اضافه شد.
+    public async Task<IActionResult> Index(int page = 1, int? pageSize = null)
     {
         ViewData["Title"] = "Transmittal";
         ViewData["Section"] = "Engineering Management";
 
-        var list = await _service.GetAllAsync();
-        return View(list);
+        var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
+        var result = await _service.GetPagedAsync(page, normalizedPageSize);
+        return View(result);
     }
 
     public async Task<IActionResult> Details(int id)

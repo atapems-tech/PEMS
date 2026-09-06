@@ -48,6 +48,44 @@ public class MeetingService : IMeetingService
         }).ToList();
     }
 
+    // طبق «PEMS — Global Grid Hardening» P1: جایگزین GetAllAsync برای Index - شمارش/مرتب‌سازی/
+    // صفحه‌بندی روی IQueryable قبل از Select. ActionItemCount با Subquery همبسته محاسبه
+    // می‌شود (نه GroupBy روی کل TaskItems)، AttendeeCount هم Subquery همبسته‌ی خودکار EF Core
+    // روی Collection Navigation است.
+    public async Task<PagedResult<MeetingDto>> GetPagedAsync(int page, int pageSize)
+    {
+        var query = _context.Meetings.AsNoTracking().Where(x => x.IsActive).AsQueryable();
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(x => x.MeetingDate)
+            .ThenByDescending(x => x.MeetingId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(x => new MeetingDto
+            {
+                MeetingId = x.MeetingId,
+                Title = x.Title,
+                MeetingDate = x.MeetingDate,
+                Location = x.Location,
+                OrganizerName = x.OrganizerName,
+                ProjectName = x.Project != null ? x.Project.ProjectName : null,
+                Status = x.Status,
+                AttendeeCount = x.Attendees.Count,
+                ActionItemCount = _context.TaskItems.Count(t => t.RelatedType == "Meeting" && t.RelatedId == x.MeetingId)
+            })
+            .ToListAsync();
+
+        return new PagedResult<MeetingDto>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+    }
+
     public async Task<MeetingDetailDto?> GetDetailAsync(int meetingId)
     {
         var meeting = await _context.Meetings

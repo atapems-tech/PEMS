@@ -1,4 +1,4 @@
-﻿@model List<PEMS.Application.DTOs.ProcurementPackageDto>
+﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.ProcurementPackageDto>
 
 
 <div class="content-card">
@@ -20,12 +20,29 @@
             <i class="bi bi-plus-lg"></i> New Package
         </button>
     </div>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
-            <thead><tr><th>Package No</th><th>Title</th><th>Project</th><th>Discipline</th>
-                <th>Stage</th><th>Status</th><th>MRs</th><th>MRQs</th><th>Open Comms</th><th></th></tr></thead>
+    <div class="d-flex justify-content-end mb-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('ProcurementPackage')">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+        </button>
+    </div>
+    <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise pems-grid-table" data-grid-key="ProcurementPackage">
+            <thead>
+                <tr>
+                    <th data-col-key="packageNo" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">Package No</th>
+                    <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">Title</th>
+                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Project</th>
+                    <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px">Discipline</th>
+                    <th data-col-key="stage" data-resizable="true" data-min-width="80" data-max-width="160" style="width:110px">Stage</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="80" data-max-width="160" style="width:110px">Status</th>
+                    <th data-col-key="mrs" data-resizable="true" data-min-width="60" data-max-width="100" style="width:70px">MRs</th>
+                    <th data-col-key="mrqs" data-resizable="true" data-min-width="60" data-max-width="100" style="width:70px">MRQs</th>
+                    <th data-col-key="openComms" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">Open Comms</th>
+                    <th data-col-key="actions" data-resizable="false" style="width:60px"></th>
+                </tr>
+            </thead>
             <tbody>
-                @foreach (var p in Model)
+                @foreach (var p in Model.Items)
                 {
                     <tr>
                         <td>@p.PackageNumber</td>
@@ -47,9 +64,28 @@
                 }
             </tbody>
         </table>
-        @if (!Model.Any()) { <p class="text-muted text-center py-4">No procurement packages yet.</p> }
+        @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No procurement packages yet.</p> }
     </div>
+
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "ProcurementPackage",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = ""
+    })
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('ProcurementPackage');
+        });
+    </script>
+}
 
 <div class="modal fade" id="createPackageModal" tabindex="-1">
     <div class="modal-dialog">

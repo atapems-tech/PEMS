@@ -1,7 +1,12 @@
-@model List<PEMS.Application.DTOs.ManufacturerDataBookDto>
+@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.ManufacturerDataBookDto>
 @{
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
     var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
+
+    var qsParts = new List<string>();
+    if (ViewBag.SelectedProjectId != null) qsParts.Add($"projectId={ViewBag.SelectedProjectId}");
+    if (ViewBag.SelectedVendorId != null) qsParts.Add($"vendorId={ViewBag.SelectedVendorId}");
+    var existingQueryString = string.Join("&", qsParts);
 }
 
 <div class="content-card mb-3">
@@ -33,38 +38,71 @@
 </div>
 
 <div class="content-card">
-    <table class="table table-enterprise">
-        <thead>
-            <tr>
-                <th>Equipment</th><th>Vendor</th><th>PO</th><th>Project</th>
-                <th>Planned Final Issue</th><th>Index Due</th><th>Status</th><th>Hard Copy</th><th>Soft Copy</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var m in Model)
-            {
+    <div class="d-flex justify-content-end mb-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('MDB')">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+        </button>
+    </div>
+    <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise pems-grid-table" data-grid-key="MDB">
+            <thead>
                 <tr>
-                    <td><a asp-action="Details" asp-route-id="@m.MDBId">@m.EquipmentTagNumber</a></td>
-                    <td>@m.VendorName</td>
-                    <td>@m.PoNumber</td>
-                    <td>@m.ProjectName</td>
-                    <td>@(m.PlannedFinalIssueDate?.ToString("yyyy-MM-dd"))</td>
-                    <td>
-                        @(m.IndexOfContentsDueDate?.ToString("yyyy-MM-dd"))
-                        @if (m.IsIndexOverdue)
-                        {
-                            <span class="badge bg-danger">overdue</span>
-                        }
-                    </td>
-                    <td><span class="badge bg-secondary">@m.Status</span></td>
-                    <td>@(m.HardCopyShippedDate.HasValue ? "Shipped" : "-")</td>
-                    <td>@(m.SoftCopyDeliveredDate.HasValue ? "Delivered" : "-")</td>
+                    <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Equipment</th>
+                    <th data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Vendor</th>
+                    <th data-col-key="po" data-resizable="true" data-min-width="80" data-max-width="160" style="width:110px">PO</th>
+                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Project</th>
+                    <th data-col-key="plannedIssue" data-resizable="true" data-min-width="100" data-max-width="180" style="width:140px">Planned Final Issue</th>
+                    <th data-col-key="indexDue" data-resizable="true" data-min-width="100" data-max-width="200" style="width:150px">Index Due</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">Status</th>
+                    <th data-col-key="hardCopy" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">Hard Copy</th>
+                    <th data-col-key="softCopy" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">Soft Copy</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-    @if (!Model.Any())
+            </thead>
+            <tbody>
+                @foreach (var m in Model.Items)
+                {
+                    <tr>
+                        <td><a asp-action="Details" asp-route-id="@m.MDBId">@m.EquipmentTagNumber</a></td>
+                        <td>@m.VendorName</td>
+                        <td>@m.PoNumber</td>
+                        <td>@m.ProjectName</td>
+                        <td>@(m.PlannedFinalIssueDate?.ToString("yyyy-MM-dd"))</td>
+                        <td>
+                            @(m.IndexOfContentsDueDate?.ToString("yyyy-MM-dd"))
+                            @if (m.IsIndexOverdue)
+                            {
+                                <span class="badge bg-danger">overdue</span>
+                            }
+                        </td>
+                        <td><span class="badge bg-secondary">@m.Status</span></td>
+                        <td>@(m.HardCopyShippedDate.HasValue ? "Shipped" : "-")</td>
+                        <td>@(m.SoftCopyDeliveredDate.HasValue ? "Delivered" : "-")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (!Model.Items.Any())
+        {
+            <p class="text-muted small mb-0">No MDBs yet.</p>
+        }
+    </div>
+
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
     {
-        <p class="text-muted small mb-0">No MDBs yet.</p>
-    }
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "MDB",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = existingQueryString
+    })
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('MDB');
+        });
+    </script>
+}

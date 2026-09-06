@@ -33,6 +33,60 @@ public class ManufacturerDataBookService : IManufacturerDataBookService
         return list.Select(MapHeader).ToList();
     }
 
+    // طبق «PEMS — Global Grid Hardening» P1: جایگزین بارگذاری کامل GetAllAsync برای Index -
+    // شمارش/مرتب‌سازی/صفحه‌بندی روی IQueryable قبل از Select انجام می‌شود، نه Include+ToListAsync
+    // کامل. IndexOfContentsDueDate/IsIndexOverdue همان دو خاصیت [NotMapped] موجودند - EF Core
+    // بدنه‌ی این Expression-bodied Property ها را داخل Select() به SQL ترجمه می‌کند (دقیقاً
+    // همان الگوی اثبات‌شده در Inspection/MaintenancePlan این نشست).
+    public async Task<PagedResult<ManufacturerDataBookDto>> GetPagedAsync(int page, int pageSize, int? projectId = null, int? vendorId = null)
+    {
+        var query = _context.ManufacturerDataBooks
+            .AsNoTracking()
+            .Where(x => x.IsActive)
+            .AsQueryable();
+
+        if (projectId.HasValue) query = query.Where(x => x.ProjectId == projectId.Value);
+        if (vendorId.HasValue) query = query.Where(x => x.VendorId == vendorId.Value);
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(x => x.CreatedDate)
+            .ThenByDescending(x => x.MDBId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(x => new ManufacturerDataBookDto
+            {
+                MDBId = x.MDBId,
+                EquipmentId = x.EquipmentId,
+                EquipmentTagNumber = x.Equipment != null ? x.Equipment.TagNumber : "",
+                VendorId = x.VendorId,
+                VendorName = x.Vendor != null ? x.Vendor.Name : "",
+                PoId = x.PoId,
+                PoNumber = x.Po != null ? x.Po.PoNumber : null,
+                ProjectId = x.ProjectId,
+                ProjectName = x.Project != null ? x.Project.ProjectName : "",
+                PlannedFinalIssueDate = x.PlannedFinalIssueDate,
+                IndexOfContentsDueDate = x.IndexOfContentsDueDate,
+                IndexOfContentsSubmittedDate = x.IndexOfContentsSubmittedDate,
+                IsIndexOverdue = x.IsIndexOverdue,
+                Status = x.Status,
+                HardCopyCount = x.HardCopyCount,
+                HardCopyShippedDate = x.HardCopyShippedDate,
+                SoftCopyDeliveredDate = x.SoftCopyDeliveredDate,
+                Notes = x.Notes
+            })
+            .ToListAsync();
+
+        return new PagedResult<ManufacturerDataBookDto>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+    }
+
     public async Task<ManufacturerDataBookDto?> GetByIdAsync(int id)
     {
         var mdb = await _context.ManufacturerDataBooks

@@ -31,6 +31,94 @@ public class TransmittalService : ITransmittalService
         return transmittals.Select(x => MapHeader(x, supersededByLookup)).ToList();
     }
 
+    // طبق «PEMS — Global Grid Hardening» P1: جایگزین بارگذاری کامل GetAllAsync برای Index -
+    // شمارش/مرتب‌سازی/صفحه‌بندی/Projection همه در SQL. ItemsCount و SupersededBy* با Subquery
+    // همبسته (نه GroupBy/ToDictionary روی کل جدول) محاسبه می‌شوند. طبق رفتار فعلی GetAllAsync،
+    // عمداً فیلتر IsActive اعمال نشده - این جدول امروز هم بدون آن فیلتر خوانده می‌شود.
+    public async Task<PagedResult<TransmittalDto>> GetPagedAsync(int page, int pageSize)
+    {
+        var query = _context.Transmittals.AsNoTracking().AsQueryable();
+
+        var totalCount = await query.CountAsync();
+
+        var rows = await query
+            .OrderByDescending(x => x.TransmittalDate)
+            .ThenByDescending(x => x.TransmittalId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(x => new
+            {
+                x.TransmittalId,
+                x.TransmittalNo,
+                x.ProjectId,
+                ProjectName = x.Project != null ? x.Project.ProjectName : "",
+                x.From,
+                x.To,
+                x.Purpose,
+                x.Description,
+                x.Status,
+                x.TransmittalDate,
+                x.SentDate,
+                ItemsCount = x.Items.Count,
+                x.ResponseRequired,
+                x.ResponseDueDate,
+                x.ResponseReceivedDate,
+                x.ResponseNote,
+                x.IsResponseOverdue,
+                x.IsIssued,
+                x.CancelledDate,
+                x.CancelledReason,
+                x.SupersedesTransmittalId,
+                SupersedesTransmittalNo = x.SupersedesTransmittal != null ? x.SupersedesTransmittal.TransmittalNo : null,
+                // طبق بررسی EF InMemory (تست‌های Wave C1): دو Subquery همبسته‌ی جدا روی همون
+                // جدول (یکی برای Id، یکی برای No) زیر EF InMemory هر دو ردیف را خالی برمی‌گرداند
+                // (به‌احتمال زیاد یک محدودیت شناخته‌شده‌ی خودِ Provider، نه SQL Server واقعی) -
+                // یک Subquery ترکیبی که هر دو ستون را با هم برمی‌گرداند این مشکل را کاملاً حل
+                // می‌کند و تعداد Round-trip را هم کم می‌کند.
+                SupersededBy = _context.Transmittals
+                    .Where(y => y.SupersedesTransmittalId == x.TransmittalId)
+                    .Select(y => new { y.TransmittalId, y.TransmittalNo })
+                    .FirstOrDefault()
+            })
+            .ToListAsync();
+
+        var items = rows.Select(x => new TransmittalDto
+        {
+            TransmittalId = x.TransmittalId,
+            TransmittalNo = x.TransmittalNo,
+            ProjectId = x.ProjectId,
+            ProjectName = x.ProjectName,
+            From = x.From,
+            To = x.To,
+            Purpose = x.Purpose,
+            Description = x.Description,
+            Status = x.Status,
+            TransmittalDate = x.TransmittalDate,
+            SentDate = x.SentDate,
+            ItemsCount = x.ItemsCount,
+            ResponseRequired = x.ResponseRequired,
+            ResponseDueDate = x.ResponseDueDate,
+            ResponseReceivedDate = x.ResponseReceivedDate,
+            ResponseNote = x.ResponseNote,
+            IsResponseOverdue = x.IsResponseOverdue,
+            IsIssued = x.IsIssued,
+            CancelledDate = x.CancelledDate,
+            CancelledReason = x.CancelledReason,
+            SupersedesTransmittalId = x.SupersedesTransmittalId,
+            SupersedesTransmittalNo = x.SupersedesTransmittalNo,
+            SupersededByTransmittalId = x.SupersededBy?.TransmittalId,
+            SupersededByTransmittalNo = x.SupersededBy?.TransmittalNo
+        }).ToList();
+
+        return new PagedResult<TransmittalDto>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+    }
+
     public async Task<TransmittalDto?> GetByIdAsync(int id)
     {
         var t = await _context.Transmittals

@@ -47,6 +47,44 @@ public class ProcurementPackageService : IProcurementPackageService
             .ToListAsync();
     }
 
+    // طبق «PEMS — Global Grid Hardening» P1: جایگزین GetAllAsync برای Index - شمارش/مرتب‌سازی/
+    // صفحه‌بندی روی IQueryable قبل از Select.
+    public async Task<PagedResult<ProcurementPackageDto>> GetPagedAsync(int page, int pageSize)
+    {
+        var query = _context.ProcurementPackages.AsNoTracking().Where(x => x.IsActive).AsQueryable();
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(x => x.CreatedDate)
+            .ThenByDescending(x => x.ProcurementPackageId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(x => new ProcurementPackageDto
+            {
+                ProcurementPackageId = x.ProcurementPackageId,
+                PackageNumber = x.PackageNumber,
+                ProjectName = x.Project!.ProjectName,
+                DisciplineName = x.Discipline != null ? x.Discipline.Name : null,
+                Title = x.Title,
+                Stage = x.Stage,
+                Status = x.Status,
+                MRCount = x.MaterialRequisitions.Count,
+                MRQCount = x.Quotations.Count,
+                OpenCommunicationsCount = x.Communications.Count(c => c.ActionStatus != "Closed"),
+                CreatedDate = x.CreatedDate
+            })
+            .ToListAsync();
+
+        return new PagedResult<ProcurementPackageDto>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+    }
+
     public async Task<ProcurementPackageDetailDto?> GetDetailAsync(int packageId)
     {
         var package = await _context.ProcurementPackages

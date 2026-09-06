@@ -21,19 +21,13 @@ public class DocumentSearchAIService : IDocumentSearchAIService
 
     public async Task<List<DocumentSearchResult>> SearchAsync(DocumentSearchRequest request)
     {
-        var documents = await _repository.GetAllAsync();
+        // طبق «PEMS — Global Grid Hardening» P1: قبلاً همیشه کل جدول فعال EngineeringDocuments
+        // (با ۵ Include) بارگذاری می‌شد، حتی وقتی Discipline/DocumentType/Status انتخاب شده
+        // بود. حالا این سه فیلتر در SQL اعمال می‌شوند - فقط EquipmentTag/عبارت آزاد (که روی
+        // Title/Description/Attachments وزن‌دار امتیازدهی می‌شوند) در حافظه باقی می‌مانند.
+        var documents = await _repository.GetActiveForSearchAsync(request.Discipline, request.DocumentType, request.Status);
 
         var query = documents.AsEnumerable();
-
-        if (!string.IsNullOrWhiteSpace(request.Discipline))
-            query = query.Where(x => x.Discipline != null &&
-                x.Discipline.Name.Contains(request.Discipline, StringComparison.OrdinalIgnoreCase));
-
-        if (!string.IsNullOrWhiteSpace(request.DocumentType))
-            query = query.Where(x => x.DocumentType.Contains(request.DocumentType, StringComparison.OrdinalIgnoreCase));
-
-        if (!string.IsNullOrWhiteSpace(request.Status))
-            query = query.Where(x => x.Status.Equals(request.Status, StringComparison.OrdinalIgnoreCase));
 
         if (!string.IsNullOrWhiteSpace(request.EquipmentTag))
             query = query.Where(x =>

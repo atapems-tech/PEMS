@@ -49,6 +49,53 @@ public class VendorService : IVendorService
         return list.FirstOrDefault(x => x.VendorId == id);
     }
 
+    // طبق «PEMS — Global Grid Hardening» P1: جایگزین GetAllAsync برای Index - شمارش/مرتب‌سازی/
+    // صفحه‌بندی روی IQueryable قبل از Select. GetAllAsync/GetByIdAsync بالا دست‌نخورده ماندند
+    // (عمداً فیلتر IsActive اعمال نشده - همان رفتار فعلی GetAllAsync که Vendor غیرفعال را هم
+    // نشان می‌دهد، حفظ شد).
+    public async Task<PagedResult<VendorDto>> GetPagedAsync(int page, int pageSize)
+    {
+        var query = _context.Vendors.AsNoTracking().AsQueryable();
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderBy(x => x.Name)
+            .ThenBy(x => x.VendorId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(x => new VendorDto
+            {
+                VendorId = x.VendorId,
+                Name = x.Name,
+                VendorCode = x.VendorCode,
+                Country = x.Country,
+                ContactName = x.ContactName,
+                ContactEmail = x.ContactEmail,
+                ContactPhone = x.ContactPhone,
+                RiskLevel = x.RiskLevel,
+                RiskScore = x.RiskScore,
+                RiskAssessedDate = x.RiskAssessedDate,
+                IsActive = x.IsActive,
+                ContractsCount = x.Contracts.Count,
+                VDRItemsCount = x.VDRItems.Count,
+                OverdueVDRItemsCount = x.VDRItems.Count(v =>
+                    v.WorkflowStatus != "Closed" &&
+                    v.PlannedFirstIssueDate != null &&
+                    v.PlannedFirstIssueDate < DateTime.Now &&
+                    !v.Submissions.Any())
+            })
+            .ToListAsync();
+
+        return new PagedResult<VendorDto>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+    }
+
     public async Task<Vendor?> GetEntityByIdAsync(int id)
     {
         return await _context.Vendors.FirstOrDefaultAsync(x => x.VendorId == id);

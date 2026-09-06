@@ -1,7 +1,8 @@
-﻿@model List<PEMS.Domain.Entities.DocumentRevision>
+﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.DocumentRevisionDto>
 @{
     var documents = (IEnumerable<dynamic>)ViewBag.Documents;
     int? selectedDoc = ViewBag.DocumentId;
+    var existingQueryString = selectedDoc.HasValue ? $"documentId={selectedDoc}" : "";
 }
 
 
@@ -29,42 +30,66 @@
 </div>
 
 <div class="content-card">
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
+    <div class="d-flex justify-content-end mb-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('DocumentRevisions')">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+        </button>
+    </div>
+    <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise pems-grid-table" data-grid-key="DocumentRevisions">
             <thead>
                 <tr>
-                    <th>Document No</th>
-                    <th>Revision</th>
-                    <th>Previous Rev</th>
-                    <th>Status</th>
-                    <th>Issue Purpose</th>
-                    <th>Prepared By</th>
-                    <th>Checked By</th>
-                    <th>Approved By</th>
-                    <th>Date</th>
+                    <th data-col-key="docNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">Document No</th>
+                    <th data-col-key="revision" data-resizable="true" data-min-width="70" data-max-width="120" style="width:90px">Revision</th>
+                    <th data-col-key="prevRev" data-resizable="true" data-min-width="70" data-max-width="120" style="width:100px">Previous Rev</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">Status</th>
+                    <th data-col-key="issuePurpose" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Issue Purpose</th>
+                    <th data-col-key="preparedBy" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">Prepared By</th>
+                    <th data-col-key="checkedBy" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">Checked By</th>
+                    <th data-col-key="approvedBy" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">Approved By</th>
+                    <th data-col-key="date" data-resizable="true" data-min-width="100" data-max-width="160" style="width:120px">Date</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var r in Model)
+                @foreach (var r in Model.Items)
                 {
                     <tr>
-                        <td>@r.Document?.DocumentNo</td>
+                        <td>@r.DocumentNo</td>
                         <td><span class="badge bg-secondary">@r.RevisionNo</span></td>
                         <td>@r.PreviousRevisionNo</td>
                         <td><span class="badge badge-status-@r.Status">@r.Status</span></td>
                         <td>@r.IssuePurpose</td>
-                        <td>@(r.PreparedBy != null ? r.PreparedBy.FirstName + " " + r.PreparedBy.LastName : "-")</td>
-                        <td>@(r.CheckedBy != null ? r.CheckedBy.FirstName + " " + r.CheckedBy.LastName : "-")</td>
-                        <td>@(r.ApprovedBy != null ? r.ApprovedBy.FirstName + " " + r.ApprovedBy.LastName : "-")</td>
+                        <td>@(string.IsNullOrWhiteSpace(r.PreparedBy) ? "-" : r.PreparedBy)</td>
+                        <td>@(string.IsNullOrWhiteSpace(r.CheckedBy) ? "-" : r.CheckedBy)</td>
+                        <td>@(string.IsNullOrWhiteSpace(r.ApprovedBy) ? "-" : r.ApprovedBy)</td>
                         <td>@r.RevisionDate.ToString("yyyy-MM-dd")</td>
                     </tr>
                 }
             </tbody>
         </table>
 
-        @if (!Model.Any())
+        @if (!Model.Items.Any())
         {
             <p class="text-muted text-center py-4">No revisions recorded yet. Select a document above and create one.</p>
         }
     </div>
+
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "DocumentRevisions",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = existingQueryString
+    })
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('DocumentRevisions');
+        });
+    </script>
+}

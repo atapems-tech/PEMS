@@ -1,9 +1,15 @@
-﻿@model List<PEMS.Domain.Entities.Employee>
+﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.EmployeeListItemDto>
 @{
     var departments = (IEnumerable<dynamic>)ViewBag.Departments;
     var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
     var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
     var personnelTypes = new[] { "Internal", "Contractor", "External", "Temporary" };
+
+    var qsParts = new List<string>();
+    if (ViewBag.SelectedDepartmentId != null) qsParts.Add($"departmentId={ViewBag.SelectedDepartmentId}");
+    if (ViewBag.SelectedDisciplineId != null) qsParts.Add($"disciplineId={ViewBag.SelectedDisciplineId}");
+    if (!string.IsNullOrWhiteSpace((string?)ViewBag.SearchTerm)) qsParts.Add($"q={Uri.EscapeDataString((string)ViewBag.SearchTerm)}");
+    var existingQueryString = string.Join("&", qsParts);
 }
 
 <div class="content-card mb-3">
@@ -36,19 +42,36 @@
 </div>
 
 <div class="content-card">
-    <div class="table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
-        <thead><tr><th>Code</th><th>Name</th><th>Position</th><th>Department</th><th>Discipline</th><th>Personnel Type</th><th>Email</th><th>Status</th><th></th></tr></thead>
+    <div class="d-flex justify-content-end mb-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Employee')">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+        </button>
+    </div>
+    <div class="table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
+    <table class="table table-enterprise pems-grid-table" data-grid-key="Employee">
+        <thead>
+            <tr>
+                <th data-col-key="code" data-resizable="true" data-min-width="80" data-max-width="160" style="width:110px">Code</th>
+                <th data-col-key="name" data-resizable="true" data-min-width="120" data-max-width="260" style="width:170px">Name</th>
+                <th data-col-key="position" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">Position</th>
+                <th data-col-key="department" data-resizable="true" data-min-width="90" data-max-width="200" style="width:130px">Department</th>
+                <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" style="width:130px">Discipline</th>
+                <th data-col-key="personnelType" data-resizable="true" data-min-width="100" data-max-width="240" style="width:160px">Personnel Type</th>
+                <th data-col-key="email" data-resizable="true" data-min-width="120" data-max-width="260" style="width:170px">Email</th>
+                <th data-col-key="status" data-resizable="true" data-min-width="80" data-max-width="160" style="width:100px">Status</th>
+                <th data-col-key="actions" data-resizable="false" style="width:90px"></th>
+            </tr>
+        </thead>
         <tbody>
-            @foreach (var e in Model)
+            @foreach (var e in Model.Items)
             {
                 <tr>
                     <td>@e.PersonnelCode</td>
                     <td><a asp-action="Details" asp-route-id="@e.EmployeeId">@e.FirstName @e.LastName</a></td>
                     <td class="small text-muted">@e.Position</td>
-                    <td class="small">@e.Department?.Name</td>
-                    <td class="small">@e.Discipline?.Name</td>
-                    <td class="small">@e.PersonnelType@(e.PersonnelType != "Internal" && e.VendorId.HasValue ? $" ({vendors.FirstOrDefault(v => v.VendorId == e.VendorId)?.Name})" : "")</td>
+                    <td class="small">@e.DepartmentName</td>
+                    <td class="small">@e.DisciplineName</td>
+                    <td class="small">@e.PersonnelType@(e.PersonnelType != "Internal" && e.VendorId.HasValue ? $" ({e.VendorName})" : "")</td>
                     <td class="small">@e.Email</td>
                     <td><span class="badge @(e.IsActive ? "bg-success" : "bg-secondary")">@(e.IsActive ? "Active" : "Inactive")</span></td>
                     <td class="text-end">
@@ -67,8 +90,27 @@
         </tbody>
     </table>
     </div>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4">No employees found.</p> }
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No employees found.</p> }
+
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "Employee",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = existingQueryString
+    })
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('Employee');
+        });
+    </script>
+}
 
 <div class="modal fade" id="importEmpModal" tabindex="-1">
     <div class="modal-dialog">
@@ -173,7 +215,7 @@
     </div>
 </div>
 
-@foreach (var e in Model)
+@foreach (var e in Model.Items)
 {
     <div class="modal fade" id="editEmpModal_@e.EmployeeId" tabindex="-1">
         <div class="modal-dialog modal-lg">

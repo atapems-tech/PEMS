@@ -11,6 +11,10 @@ public interface IProcurementPackageService
 {
     Task<List<ProcurementPackageDto>> GetAllAsync();
 
+    // طبق «PEMS — Global Grid Hardening» P1: GetAllAsync بالا کل جدول فعال Packages را بدون
+    // Skip/Take بارگذاری می‌کند. این متد جدید و جدا صفحه‌بندی واقعی سمت SQL برای Index دارد.
+    Task<PagedResult<ProcurementPackageDto>> GetPagedAsync(int page, int pageSize);
+
     Task<ProcurementPackageDetailDto?> GetDetailAsync(int packageId);
 
     Task<int> CreateAsync(string packageNumber, int projectId, int? disciplineId, string title, string? description);

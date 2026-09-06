@@ -1,33 +1,40 @@
-﻿@model List<PEMS.Domain.Entities.EngineeringDocument>
+﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.DocumentWorkflowPendingItemDto>
 @{
     var history = (List<PEMS.Domain.Entities.DocumentWorkflow>)ViewBag.History;
+    string? selectedStatus = ViewBag.SelectedStatus;
+    var existingQueryString = string.IsNullOrWhiteSpace(selectedStatus) ? "" : $"status={selectedStatus}";
 }
 
 
 <div class="content-card mb-3">
-    <h6 class="mb-3">Pending Approval Queue</h6>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="mb-0">Pending Approval Queue</h6>
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('DocumentWorkflow')">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+        </button>
+    </div>
 
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
+    <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise pems-grid-table" data-grid-key="DocumentWorkflow">
             <thead>
                 <tr>
-                    <th>Document No</th>
-                    <th>Title</th>
-                    <th>Project</th>
-                    <th>Discipline</th>
-                    <th>Status</th>
-                    <th>Rev</th>
-                    <th></th>
+                    <th data-col-key="docNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">Document No</th>
+                    <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">Title</th>
+                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Project</th>
+                    <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px">Discipline</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">Status</th>
+                    <th data-col-key="rev" data-resizable="true" data-min-width="60" data-max-width="100" style="width:70px">Rev</th>
+                    <th data-col-key="actions" data-resizable="false" style="width:170px"></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var d in Model)
+                @foreach (var d in Model.Items)
                 {
                     <tr>
                         <td>@d.DocumentNo</td>
                         <td>@d.Title</td>
-                        <td>@d.Project?.ProjectName</td>
-                        <td>@d.Discipline?.Name</td>
+                        <td>@d.ProjectName</td>
+                        <td>@d.DisciplineName</td>
                         <td><span class="badge badge-status-@d.Status">@d.Status</span></td>
                         <td>@d.RevisionNo</td>
                         <td class="text-end">
@@ -61,12 +68,31 @@
             </tbody>
         </table>
 
-        @if (!Model.Any())
+        @if (!Model.Items.Any())
         {
             <p class="text-muted text-center py-4">No documents are currently waiting for approval.</p>
         }
     </div>
+
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "DocumentWorkflow",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = existingQueryString
+    })
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('DocumentWorkflow');
+        });
+    </script>
+}
 
 <div class="content-card">
     <h6 class="mb-3">Recent Workflow History</h6>

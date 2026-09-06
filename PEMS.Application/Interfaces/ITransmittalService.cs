@@ -5,6 +5,12 @@ namespace PEMS.Application.Interfaces;
 public interface ITransmittalService
 {
     Task<List<TransmittalDto>> GetAllAsync();
+
+    // طبق «PEMS — Global Grid Hardening» P1: قبلاً GetAllAsync کل جدول Transmittals را
+    // بارگذاری می‌کرد و برای محاسبه‌ی SupersededBy یک بار دیگر کل جدول را می‌خواند (دو بار
+    // Full-Table Scan روی هر درخواست Index). این متد صفحه‌بندی واقعی سمت SQL دارد.
+    Task<PEMS.Application.DTOs.PagedResult<TransmittalDto>> GetPagedAsync(int page, int pageSize);
+
     Task<TransmittalDto?> GetByIdAsync(int id);
 
     Task<int> CreateAsync(string transmittalNo, int projectId, string from, string to,

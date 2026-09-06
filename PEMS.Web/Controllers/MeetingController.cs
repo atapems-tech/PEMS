@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Common;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
 using PEMS.Web.Security;
@@ -24,17 +25,19 @@ public class MeetingController : Controller
         _currentUser = currentUser;
     }
 
-    public async Task<IActionResult> Index()
+    // طبق «PEMS — Global Grid Hardening» P1: این Grid فیلتری نداشت؛ فقط صفحه‌بندی واقعی اضافه شد.
+    public async Task<IActionResult> Index(int page = 1, int? pageSize = null)
     {
         ViewData["Title"] = "Meetings";
         ViewData["Section"] = "Correspondence Management";
 
-        var meetings = await _service.GetAllAsync();
+        var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
+        var result = await _service.GetPagedAsync(page, normalizedPageSize);
 
         ViewBag.Projects = await _context.Projects.Where(x => x.IsActive)
             .Select(x => new { x.ProjectId, x.ProjectName }).ToListAsync();
 
-        return View(meetings);
+        return View(result);
     }
 
     public async Task<IActionResult> Details(int id)

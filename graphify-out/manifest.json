@@ -150,10 +150,10 @@
     "semantic_hash": "33939f5ec3938852d05ddc9f8eb764da"
   },
   "PEMS.AI/Services/DocumentSearchAIService.cs": {
-    "mtime": 1788350901.7067347,
-    "seen": 1788613735.6693618,
-    "ast_hash": "dc24043bcfb93228d031fdd621e56f90",
-    "semantic_hash": "dc24043bcfb93228d031fdd621e56f90"
+    "mtime": 1788704773.8053858,
+    "seen": 1788706892.2903728,
+    "ast_hash": "cc59943336d7e0e87d8fac15bb091b2a",
+    "semantic_hash": ""
   },
   "PEMS.AI/Services/OllamaService.cs": {
     "mtime": 1788350901.7067347,
@@ -198,16 +198,16 @@
     "semantic_hash": "7b708d46805cf62e489d998ff9a9daca"
   },
   "PEMS.Application/DTOs/DocumentRevisionDto.cs": {
-    "mtime": 1788350901.8021986,
-    "seen": 1788613735.6693618,
-    "ast_hash": "92fa9c0306f2440dc609895f04f7e404",
-    "semantic_hash": "92fa9c0306f2440dc609895f04f7e404"
+    "mtime": 1788705336.6377344,
+    "seen": 1788706892.2923713,
+    "ast_hash": "a0c0a625fbde938f484b31dafb75325f",
+    "semantic_hash": ""
   },
   "PEMS.Application/DTOs/DocumentWorkflowDto.cs": {
-    "mtime": 1788350901.8021986,
-    "seen": 1788613735.6693618,
-    "ast_hash": "60fb00634832323294e303b79d56d0ba",
-    "semantic_hash": "60fb00634832323294e303b79d56d0ba"
+    "mtime": 1788705667.251393,
+    "seen": 1788706892.2923713,
+    "ast_hash": "318f36f4e3eac6a22fb8cea179c8d108",
+    "semantic_hash": ""
   },
   "PEMS.Application/DTOs/EngineeringCopilotDtos.cs": {
     "mtime": 1788350901.8021986,
@@ -420,10 +420,10 @@
     "semantic_hash": "0acbef5b15ebc5b1fa3031261cf6c760"
   },
   "PEMS.Application/Interfaces/IContractService.cs": {
-    "mtime": 1788350902.1160357,
-    "seen": 1788613735.6693618,
-    "ast_hash": "b9042942deba930b3cd9ba9f3b1160c3",
-    "semantic_hash": "b9042942deba930b3cd9ba9f3b1160c3"
+    "mtime": 1788705412.564581,
+    "seen": 1788706892.302371,
+    "ast_hash": "b823dee9777b2f2f506ea176ad2d6b40",
+    "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/ICorrespondenceReportService.cs": {
     "mtime": 1788350902.1160357,
@@ -486,10 +486,10 @@
     "semantic_hash": "d4c859cf76bf8c26db9883ef9deabe69"
   },
   "PEMS.Application/Interfaces/IEngineeringDocumentRepository.cs": {
-    "mtime": 1788350902.1629086,
-    "seen": 1788613735.6693618,
-    "ast_hash": "c8036b9e2ef320bf76cc5fca2d2a1e97",
-    "semantic_hash": "c8036b9e2ef320bf76cc5fca2d2a1e97"
+    "mtime": 1788704751.292039,
+    "seen": 1788706892.3045084,
+    "ast_hash": "b964613b056539d6645f8f0c78418d93",
+    "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/IEngineeringDocumentService.cs": {
     "mtime": 1788350902.1800666,
@@ -582,10 +582,10 @@
     "semantic_hash": "1e505888fabeac1a31cc1567d537ac74"
   },
   "PEMS.Application/Interfaces/IMeetingService.cs": {
-    "mtime": 1788350902.3046794,
-    "seen": 1788613735.6693618,
-    "ast_hash": "5f322fb54631051ce502b1660fd476fc",
-    "semantic_hash": "5f322fb54631051ce502b1660fd476fc"
+    "mtime": 1788705161.1904316,
+    "seen": 1788706892.3085172,
+    "ast_hash": "5b0cb664876539da18470e80e61c7d82",
+    "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/INotificationBroadcaster.cs": {
     "mtime": 1788350902.3046794,
@@ -606,10 +606,10 @@
     "semantic_hash": "343b1913d364cf37b25368c939250d25"
   },
   "PEMS.Application/Interfaces/IProcurementPackageService.cs": {
-    "mtime": 1788350902.337493,
-    "seen": 1788613735.6693618,
-    "ast_hash": "66d97218866214ec1ca54b557600c2d7",
-    "semantic_hash": "66d97218866214ec1ca54b557600c2d7"
+    "mtime": 1788705549.9018083,
+    "seen": 1788706892.3095171,
+    "ast_hash": "fc6e601ada2b3bb65fe0409414730771",
+    "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/IProcurementReportService.cs": {
     "mtime": 1788350902.337493,
@@ -684,10 +684,10 @@
     "semantic_hash": "a8d24f820115f169d2dcb133a7a3861c"
   },
   "PEMS.Application/Interfaces/ITransmittalService.cs": {
-    "mtime": 1788350902.4407494,
-    "seen": 1788613735.6693618,
-    "ast_hash": "bf6d86be3bde043487473d83911b9741",
-    "semantic_hash": "bf6d86be3bde043487473d83911b9741"
+    "mtime": 1788704855.0801575,
+    "seen": 1788706892.311517,
+    "ast_hash": "f39dabeaf35c49153934eb1ed75d5627",
+    "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/IUserDashboardService.cs": {
     "mtime": 1788350902.4454923,
@@ -726,10 +726,10 @@
     "semantic_hash": "f0c6a2600b404d048927e6f192f375ba"
   },
   "PEMS.Application/Interfaces/IVendorService.cs": {
-    "mtime": 1788350902.4615064,
-    "seen": 1788613735.6693618,
-    "ast_hash": "81fae6902d13fa91610d225b01b9ce78",
-    "semantic_hash": "81fae6902d13fa91610d225b01b9ce78"
+    "mtime": 1788705477.54442,
+    "seen": 1788706892.3125176,
+    "ast_hash": "8ab76b62a63918290743ef2ecf950334",
+    "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/IWorkOrderLaborService.cs": {
     "mtime": 1788350902.4771533,
@@ -1464,10 +1464,10 @@
     "semantic_hash": "8d4beb45b13e6fa277b2d6733451576f"
   },
   "PEMS.Persistence/Configurations/ProcurementConfigurations.cs": {
-    "mtime": 1788350903.4821756,
-    "seen": 1788613735.670535,
-    "ast_hash": "953019ef9bd9f4c19f8ee4d2d7064e13",
-    "semantic_hash": "953019ef9bd9f4c19f8ee4d2d7064e13"
+    "mtime": 1788641095.8554456,
+    "seen": 1788706892.345196,
+    "ast_hash": "986dd861199ade125e4683a24b89b488",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Configurations/PurchaseOrderConfiguration.cs": {
     "mtime": 1788350903.4978075,
@@ -1578,10 +1578,10 @@
     "semantic_hash": "5809af8d8afaa80014e62788179b6dd4"
   },
   "PEMS.Persistence/Migrations/PEMSDbContextModelSnapshot.cs": {
-    "mtime": 1788350904.1337068,
-    "seen": 1788613735.670535,
-    "ast_hash": "84b49a833f080febee8e318242ddd510",
-    "semantic_hash": "84b49a833f080febee8e318242ddd510"
+    "mtime": 1788641429.8609834,
+    "seen": 1788706892.3611965,
+    "ast_hash": "6b95613aa4edfd766892e91a0cfab925",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/PEMS.Persistence.csproj": {
     "mtime": 1788350903.3884242,
@@ -1590,10 +1590,10 @@
     "semantic_hash": "72e15f61fd70c6402f16cbdeba7983c8"
   },
   "PEMS.Persistence/Repositories/EngineeringDocumentRepository.cs": {
-    "mtime": 1788543497.3532805,
-    "seen": 1788613735.670535,
-    "ast_hash": "04c9787c8d68582346706929b062bbc0",
-    "semantic_hash": "04c9787c8d68582346706929b062bbc0"
+    "mtime": 1788704759.309141,
+    "seen": 1788706892.3611965,
+    "ast_hash": "1bf1f3d05eb6b269587c7ff22ad26250",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Seed/DepartmentSeeder.cs": {
     "mtime": 1788350904.1735284,
@@ -1668,10 +1668,10 @@
     "semantic_hash": "65a44a42dd9109f6aaaec7caf4c9a192"
   },
   "PEMS.Persistence/Servises/ContractService.cs": {
-    "mtime": 1788350904.2973382,
-    "seen": 1788613735.670535,
-    "ast_hash": "736f5641102c4168da96f32c873e64a4",
-    "semantic_hash": "736f5641102c4168da96f32c873e64a4"
+    "mtime": 1788705427.3726716,
+    "seen": 1788706892.3651955,
+    "ast_hash": "33087888a5e14702b4654e48e13ecbdc",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/CorrespondenceReportService.cs": {
     "mtime": 1788350904.2973382,
@@ -1818,16 +1818,16 @@
     "semantic_hash": "de8c0328d3387c816c8f37ff29eed172"
   },
   "PEMS.Persistence/Servises/MaterialRequisitionService.cs": {
-    "mtime": 1788637245.1323185,
-    "seen": 1788638406.3457901,
-    "ast_hash": "63e8cdbe7a8d544fe25edec677d21798",
-    "semantic_hash": "63e8cdbe7a8d544fe25edec677d21798"
+    "mtime": 1788641302.4651372,
+    "seen": 1788706892.3701954,
+    "ast_hash": "01bc6d02860fd42a6fd21dbcd95f3601",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/MeetingService.cs": {
-    "mtime": 1788350904.485525,
-    "seen": 1788613735.670535,
-    "ast_hash": "7576e07b0653411d0fde590f1f3fb9be",
-    "semantic_hash": "7576e07b0653411d0fde590f1f3fb9be"
+    "mtime": 1788705186.7363975,
+    "seen": 1788706892.3701954,
+    "ast_hash": "8ad422d3054d897a378b467cf34fe920",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/NotificationService.cs": {
     "mtime": 1788350904.5011587,
@@ -1836,16 +1836,16 @@
     "semantic_hash": "c44e3a6583e46ef0cb4def2c6c08e4e4"
   },
   "PEMS.Persistence/Servises/PermissionService.cs": {
-    "mtime": 1788637046.2660725,
-    "seen": 1788638406.3457901,
-    "ast_hash": "c5c24f3812e8f04f8b4966fa1af63b68",
-    "semantic_hash": "c5c24f3812e8f04f8b4966fa1af63b68"
+    "mtime": 1788702090.7564313,
+    "seen": 1788706892.3711956,
+    "ast_hash": "80302ffd31e57d409ef687eed3ceb908",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/ProcurementPackageService.cs": {
-    "mtime": 1788350904.5167828,
-    "seen": 1788613735.670535,
-    "ast_hash": "1693f4c61c5eaa20eb75ae70aac68655",
-    "semantic_hash": "1693f4c61c5eaa20eb75ae70aac68655"
+    "mtime": 1788705558.8814914,
+    "seen": 1788706892.3711956,
+    "ast_hash": "585a3c9c9084c5d4607931cf42436452",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/ProcurementReportService.cs": {
     "mtime": 1788350904.5167828,
@@ -2034,10 +2034,10 @@
     "semantic_hash": "653043f17c907feb9a377088e49d6b7b"
   },
   "PEMS.Persistence/Servises/TransmittalService.cs": {
-    "mtime": 1788350904.6119647,
-    "seen": 1788613735.670535,
-    "ast_hash": "348d365c3e54fa9ceda4d394cc28ea22",
-    "semantic_hash": "348d365c3e54fa9ceda4d394cc28ea22"
+    "mtime": 1788706379.013703,
+    "seen": 1788706892.3761957,
+    "ast_hash": "0f234a7ac1dc66f7e41bfd5fedb32ae7",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/UserDashboardService.cs": {
     "mtime": 1788350904.6119647,
@@ -2076,10 +2076,10 @@
     "semantic_hash": "7ac60e784799fc00cc3bf1297eadbaff"
   },
   "PEMS.Persistence/Servises/VendorService.cs": {
-    "mtime": 1788350904.6425066,
-    "seen": 1788613735.670535,
-    "ast_hash": "ee11a84a56d5e2b89ea44c63ed8a676a",
-    "semantic_hash": "ee11a84a56d5e2b89ea44c63ed8a676a"
+    "mtime": 1788705488.7385912,
+    "seen": 1788706892.3771958,
+    "ast_hash": "3f64f3e3f2b0676b1160b3651a7a66a1",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/WorkOrderLaborService.cs": {
     "mtime": 1788350904.664282,
@@ -2142,10 +2142,10 @@
     "semantic_hash": "50a75b7a2d14d723b10406572fa62291"
   },
   "PEMS.Web/Areas/Admin/Controllers/PermissionMatrixController.cs": {
-    "mtime": 1788637054.7760541,
-    "seen": 1788638406.3854182,
-    "ast_hash": "3fa86335a1e5f72d6be434ccd783b88c",
-    "semantic_hash": "3fa86335a1e5f72d6be434ccd783b88c"
+    "mtime": 1788702098.3866923,
+    "seen": 1788706892.389196,
+    "ast_hash": "8e882c091e6aecf64b4f5c47af4fb2fd",
+    "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Controllers/RolesController.cs": {
     "mtime": 1788350905.0880692,
@@ -2286,10 +2286,10 @@
     "semantic_hash": "77b75c9b03f5e1de40cb370500390121"
   },
   "PEMS.Web/Controllers/ContractController.cs": {
-    "mtime": 1788350905.286709,
-    "seen": 1788613735.670535,
-    "ast_hash": "c733a2595fcaa881379df3e8cce5b074",
-    "semantic_hash": "c733a2595fcaa881379df3e8cce5b074"
+    "mtime": 1788705441.703812,
+    "seen": 1788706892.3942015,
+    "ast_hash": "e709b948108d598e57aea9f5cf93d102",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/CultureController.cs": {
     "mtime": 1788350905.286709,
@@ -2328,10 +2328,10 @@
     "semantic_hash": "965ac267fa2f53c53631783bd3afa101"
   },
   "PEMS.Web/Controllers/DocumentRevisionsController.cs": {
-    "mtime": 1788350905.3277628,
-    "seen": 1788613735.670535,
-    "ast_hash": "b53c8a612d9922ed5df4586104c01e84",
-    "semantic_hash": "b53c8a612d9922ed5df4586104c01e84"
+    "mtime": 1788705341.4551888,
+    "seen": 1788706892.3951972,
+    "ast_hash": "9487174bc25564ca7758701d754050b8",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/DocumentUploadController.cs": {
     "mtime": 1788350905.3337681,
@@ -2340,16 +2340,16 @@
     "semantic_hash": "62557e621f635a7c6e5daf983c52e211"
   },
   "PEMS.Web/Controllers/DocumentWorkflowController.cs": {
-    "mtime": 1788350905.3337681,
-    "seen": 1788613735.670535,
-    "ast_hash": "8ac315bb79928664f0421ca28ed6a2c1",
-    "semantic_hash": "8ac315bb79928664f0421ca28ed6a2c1"
+    "mtime": 1788705690.4823153,
+    "seen": 1788706892.3951972,
+    "ast_hash": "a3c1ea654a2ab667d13ac4adb6b26fe2",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/EmployeeController.cs": {
-    "mtime": 1788350905.3337681,
-    "seen": 1788613735.670535,
-    "ast_hash": "7f6df6ea42fa7a0698f4d5d00670e20f",
-    "semantic_hash": "7f6df6ea42fa7a0698f4d5d00670e20f"
+    "mtime": 1788705847.1438694,
+    "seen": 1788706892.3951972,
+    "ast_hash": "31bdd3b45fbca62b68439dca92dcb033",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/EngineeringDocumentIntelligenceController.cs": {
     "mtime": 1788350905.3507776,
@@ -2370,10 +2370,10 @@
     "semantic_hash": "40ee60e9d65b2b399dda0648048e4067"
   },
   "PEMS.Web/Controllers/EquipmentCriticalityController.cs": {
-    "mtime": 1788636954.2090886,
-    "seen": 1788638406.3989785,
-    "ast_hash": "152314bbd9a7a35f975a5158110b4419",
-    "semantic_hash": "152314bbd9a7a35f975a5158110b4419"
+    "mtime": 1788641277.914975,
+    "seen": 1788706892.3961961,
+    "ast_hash": "e510732a0fcc18b78e33abccd91b2b0d",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/EquipmentImportController.cs": {
     "mtime": 1788350905.3652847,
@@ -2424,10 +2424,10 @@
     "semantic_hash": "bee6a05ff49da044e1c24813d40fdddc"
   },
   "PEMS.Web/Controllers/MaintenancePlanController.cs": {
-    "mtime": 1788507899.8414428,
-    "seen": 1788613735.670535,
-    "ast_hash": "b604f21d0f3a26aa6984df336a101df6",
-    "semantic_hash": "b604f21d0f3a26aa6984df336a101df6"
+    "mtime": 1788702046.9933903,
+    "seen": 1788706892.3991997,
+    "ast_hash": "be5d7c9cb618e48b3757f562492ec813",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/MaintenanceStrategyController.cs": {
     "mtime": 1788508192.0148425,
@@ -2442,10 +2442,10 @@
     "semantic_hash": "8c904d3ad6580b2fb3419015fb188d52"
   },
   "PEMS.Web/Controllers/MeetingController.cs": {
-    "mtime": 1788350905.4909415,
-    "seen": 1788613735.670535,
-    "ast_hash": "a87b72ccca11b73aabc3c406f4521ba0",
-    "semantic_hash": "a87b72ccca11b73aabc3c406f4521ba0"
+    "mtime": 1788705204.032238,
+    "seen": 1788706892.400197,
+    "ast_hash": "a043ac18b6b829d6198e5f92d42eece6",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/MyProfileController.cs": {
     "mtime": 1788350905.4994693,
@@ -2466,10 +2466,10 @@
     "semantic_hash": "21c9fe75f2593a9c0b7c3cc760603a3b"
   },
   "PEMS.Web/Controllers/ProcurementPackageController.cs": {
-    "mtime": 1788350905.5236151,
-    "seen": 1788613735.670535,
-    "ast_hash": "5dbeca99f1f6c540789f837e197b26c4",
-    "semantic_hash": "5dbeca99f1f6c540789f837e197b26c4"
+    "mtime": 1788705572.7505739,
+    "seen": 1788706892.4012022,
+    "ast_hash": "5e6e17d8740d0eb5affe67d348406708",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/ProjectsController.cs": {
     "mtime": 1788350905.5236151,
@@ -2544,10 +2544,10 @@
     "semantic_hash": "2919ae31cca6ae970a19c935b5eeb099"
   },
   "PEMS.Web/Controllers/TransmittalController.cs": {
-    "mtime": 1788350905.6191225,
-    "seen": 1788613735.670535,
-    "ast_hash": "a3b2501053375c6bb8f735a3f8e4a93f",
-    "semantic_hash": "a3b2501053375c6bb8f735a3f8e4a93f"
+    "mtime": 1788704883.5383124,
+    "seen": 1788706892.404212,
+    "ast_hash": "b851556843924888897e8fe03f007579",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/VDRController.cs": {
     "mtime": 1788350905.6191225,
@@ -2562,16 +2562,16 @@
     "semantic_hash": "d9c84a65fe02d92109aa39952cdbbec7"
   },
   "PEMS.Web/Controllers/VendorController.cs": {
-    "mtime": 1788350905.6321297,
-    "seen": 1788613735.670535,
-    "ast_hash": "5b1d9fcd760fb9066e9b368b97e639b5",
-    "semantic_hash": "5b1d9fcd760fb9066e9b368b97e639b5"
+    "mtime": 1788705513.049641,
+    "seen": 1788706892.404212,
+    "ast_hash": "8e174a50f9265bf67e8fbe5ab118fab4",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/WorkOrderController.cs": {
-    "mtime": 1788636993.4403822,
-    "seen": 1788638406.4146338,
-    "ast_hash": "61ba68539c3de8bc34b1091157e5a903",
-    "semantic_hash": "61ba68539c3de8bc34b1091157e5a903"
+    "mtime": 1788641143.080728,
+    "seen": 1788706892.4052098,
+    "ast_hash": "2b288208d4c4ba75be3e344adfdedf45",
+    "semantic_hash": ""
   },
   "PEMS.Web/DATA/ApplicationDbContext.cs": {
     "mtime": 1788350905.6638935,
@@ -2874,10 +2874,10 @@
     "semantic_hash": "cf04c6713ed6f8ba58afa8155cea676e"
   },
   "PEMS.Web/Views/Contract/Index.cshtml": {
-    "mtime": 1788350906.0781944,
-    "seen": 1788613735.670535,
-    "ast_hash": "dfee18ddca7ae100143f35d182bb1245",
-    "semantic_hash": "dfee18ddca7ae100143f35d182bb1245"
+    "mtime": 1788705459.0140133,
+    "seen": 1788706892.4152284,
+    "ast_hash": "00e3e1455d75bdd802bfb1a34a9ae885",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/DCC/Index.cshtml": {
     "mtime": 1788350906.1107438,
@@ -2928,10 +2928,10 @@
     "semantic_hash": "97a6c54ff1ae97711873b71fd6eeed78"
   },
   "PEMS.Web/Views/DocumentRevisions/Index.cshtml": {
-    "mtime": 1788350906.1878119,
-    "seen": 1788613735.670535,
-    "ast_hash": "c364df6840c65f11e883ee50da1c91ba",
-    "semantic_hash": "c364df6840c65f11e883ee50da1c91ba"
+    "mtime": 1788705364.0073037,
+    "seen": 1788706892.4167418,
+    "ast_hash": "b9c519888c5000417a90ebc14e18c40a",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/DocumentUpload/Index.cshtml": {
     "mtime": 1788350906.1998298,
@@ -2940,10 +2940,10 @@
     "semantic_hash": "40e04debe7f0d5b585b2c42b917e56b7"
   },
   "PEMS.Web/Views/DocumentWorkflow/Index.cshtml": {
-    "mtime": 1788350906.1998298,
-    "seen": 1788613735.670535,
-    "ast_hash": "144fc6ed27c809519d27f56ad7b8fc23",
-    "semantic_hash": "144fc6ed27c809519d27f56ad7b8fc23"
+    "mtime": 1788705712.5818558,
+    "seen": 1788706892.4167418,
+    "ast_hash": "caa8ca3e4966300bafe34679b81a140e",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Employee/Details.cshtml": {
     "mtime": 1788350906.2163157,
@@ -2952,10 +2952,10 @@
     "semantic_hash": "619ca32cd2959a61baa2ba1b636e79ee"
   },
   "PEMS.Web/Views/Employee/Index.cshtml": {
-    "mtime": 1788350906.2163157,
-    "seen": 1788613735.670535,
-    "ast_hash": "2089004bc5046c69cfd20513c9ae0d36",
-    "semantic_hash": "2089004bc5046c69cfd20513c9ae0d36"
+    "mtime": 1788705890.7166271,
+    "seen": 1788706892.4167418,
+    "ast_hash": "e28749b5b7c4695fc3324d09aab77242",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/EngineeringDocumentIntelligence/Index.cshtml": {
     "mtime": 1788350906.2331738,
@@ -3198,10 +3198,10 @@
     "semantic_hash": "ec11e850f018038c5cbea58acce869cc"
   },
   "PEMS.Web/Views/Meeting/Index.cshtml": {
-    "mtime": 1788350906.7041028,
-    "seen": 1788613735.670535,
-    "ast_hash": "0efa3d28b645c99cb448a58b1f7c4548",
-    "semantic_hash": "0efa3d28b645c99cb448a58b1f7c4548"
+    "mtime": 1788705225.6771493,
+    "seen": 1788706892.4242651,
+    "ast_hash": "b94bf3acac721f8e49d6db3c95200e14",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MyProfile/Index.cshtml": {
     "mtime": 1788350906.7381346,
@@ -3240,10 +3240,10 @@
     "semantic_hash": "0db34301ede53fbbf3b8f8c47fe6903b"
   },
   "PEMS.Web/Views/ProcurementPackage/Index.cshtml": {
-    "mtime": 1788350906.8040369,
-    "seen": 1788613735.670535,
-    "ast_hash": "faaf80ce50a966b0c2faad15475569a8",
-    "semantic_hash": "faaf80ce50a966b0c2faad15475569a8"
+    "mtime": 1788705595.6304865,
+    "seen": 1788706892.4274118,
+    "ast_hash": "552c864ccb76600af18e4136b229c194",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Projects/Create.cshtml": {
     "mtime": 1788350906.8140428,
@@ -3492,10 +3492,10 @@
     "semantic_hash": "2ccc1b28975d4aa1ebdbdf81d2d2a32c"
   },
   "PEMS.Web/Views/Transmittal/Index.cshtml": {
-    "mtime": 1788350907.1596496,
-    "seen": 1788613735.670535,
-    "ast_hash": "c003af7919e87c4b5b6de9ac5e12e86a",
-    "semantic_hash": "c003af7919e87c4b5b6de9ac5e12e86a"
+    "mtime": 1788704909.8258748,
+    "seen": 1788706892.434408,
+    "ast_hash": "90cb9c213be20aa3acf91466e4cb1b5f",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/VDRImport/Index.cshtml": {
     "mtime": 1788350907.1909091,
@@ -3540,10 +3540,10 @@
     "semantic_hash": "afd3f158bac809940d34e5ca50c47f0c"
   },
   "PEMS.Web/Views/Vendor/Index.cshtml": {
-    "mtime": 1788350907.2225268,
-    "seen": 1788613735.670535,
-    "ast_hash": "10181534a643e5080d16795f610eab0f",
-    "semantic_hash": "10181534a643e5080d16795f610eab0f"
+    "mtime": 1788705531.4781814,
+    "seen": 1788706892.4354079,
+    "ast_hash": "a8678db5147443b1b9991ea11e43e4d6",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/WorkOrder/Create.cshtml": {
     "mtime": 1788350907.2225268,
@@ -3774,7 +3774,8 @@
     "semantic_hash": "875d346eef23f677029c1007a24812d0"
   },
   ".github/workflows/build.yml": {
-    "mtime": 1785699129.0,
+    "mtime": 1788350901.3898075,
+    "seen": 1788706892.4574087,
     "ast_hash": "edc421c952ff8c6bf45086ad3bec2e1c",
     "semantic_hash": ""
   },
@@ -3785,7 +3786,8 @@
     "semantic_hash": "82efb97a359f5c7290bf2513d14686be"
   },
   "PEMS.Web/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt": {
-    "mtime": 1785699129.0,
+    "mtime": 1788350908.3243518,
+    "seen": 1788706892.458408,
     "ast_hash": "9fc642ff452b28d62ab19b7eea50dfb9",
     "semantic_hash": ""
   },
@@ -3796,12 +3798,14 @@
     "semantic_hash": "f683602956cb1dbd6269076b875f7aba"
   },
   "PEMS.Web/wwwroot/lib/jquery/LICENSE.txt": {
-    "mtime": 1785699129.0,
+    "mtime": 1788350908.387144,
+    "seen": 1788706892.458408,
     "ast_hash": "3ec4e08bb12e3a080de34154d7e1d78e",
     "semantic_hash": ""
   },
   "WebApplication1/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt": {
-    "mtime": 1785699129.0,
+    "mtime": 1788350909.7472596,
+    "seen": 1788706892.458408,
     "ast_hash": "9fc642ff452b28d62ab19b7eea50dfb9",
     "semantic_hash": ""
   },
@@ -3812,32 +3816,38 @@
     "semantic_hash": "f683602956cb1dbd6269076b875f7aba"
   },
   "WebApplication1/wwwroot/lib/jquery/LICENSE.txt": {
-    "mtime": 1785699129.0,
+    "mtime": 1788350909.8189888,
+    "seen": 1788706892.458408,
     "ast_hash": "3ec4e08bb12e3a080de34154d7e1d78e",
     "semantic_hash": ""
   },
   "docker-compose.yml": {
-    "mtime": 1785699129.0,
+    "mtime": 1788350900.7612214,
+    "seen": 1788706892.458408,
     "ast_hash": "36cd2a7001c3ade3f80bc9220118b05d",
     "semantic_hash": ""
   },
   "PEMS.Web/wwwroot/uploads/technical-queries/2f54eb04-9029-403f-9a0a-003c2b7e9261.pdf": {
-    "mtime": 1786531558.3820863,
+    "mtime": 1788350908.9205222,
+    "seen": 1788706892.458408,
     "ast_hash": "dc39f6ece492201fb2433edbd0660c5a",
     "semantic_hash": ""
   },
   "PEMS.Web/wwwroot/uploads/documents/7cc4357f-5a76-400e-9bdc-fae57c57f21d.PNG": {
-    "mtime": 1785699129.0,
+    "mtime": 1788350908.4657068,
+    "seen": 1788706892.458408,
     "ast_hash": "c5eb88afa4a1112fdbfc1d270708a21b",
     "semantic_hash": ""
   },
   "PEMS.Web/wwwroot/uploads/documents/876ca6c3-092b-4479-8134-72eb6b886438.PNG": {
-    "mtime": 1785699129.0,
+    "mtime": 1788350908.4813306,
+    "seen": 1788706892.458408,
     "ast_hash": "2103ef1e325f9f6ae3d4acc684faf100",
     "semantic_hash": ""
   },
   "PEMS.Web/wwwroot/uploads/documents/bf86c48c-6549-4999-a355-333e136351a1.PNG": {
-    "mtime": 1785699129.0,
+    "mtime": 1788350908.4813306,
+    "seen": 1788706892.458408,
     "ast_hash": "c5eb88afa4a1112fdbfc1d270708a21b",
     "semantic_hash": ""
   },
@@ -3866,9 +3876,9 @@
     "semantic_hash": "3aeeffd547cad5808d1730e0fb508d7b"
   },
   "PEMS_PROJECT_INTELLIGENCE_REPORT.md": {
-    "mtime": 1788350900.7571223,
-    "seen": 1788613735.670535,
-    "ast_hash": "90acf9b39c21b79224eb1ac0701926b4",
+    "mtime": 1788636922.3151793,
+    "seen": 1788706892.458408,
+    "ast_hash": "6eb7de550fe4892b23c90229f456e017",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Users/_RoleCheckboxes.cshtml": {
@@ -3932,12 +3942,14 @@
     "semantic_hash": "d83a027d4e99dedea1db9cbd9df91815"
   },
   ".claude/New Text Document.txt": {
-    "mtime": 1786614923.940132,
-    "ast_hash": "5b2e013f162ce05716c5522f74704e14",
+    "mtime": 1788350900.79221,
+    "seen": 1788706892.4454105,
+    "ast_hash": "d1f6fb23e089af8889e5a906cdb6ee5e",
     "semantic_hash": ""
   },
   "PEMS.Web/wwwroot/uploads/intake/7c5cbada-9d7f-4baf-92d7-134eb57bb244.pdf": {
-    "mtime": 1786617432.755973,
+    "mtime": 1788350908.7944858,
+    "seen": 1788706892.458408,
     "ast_hash": "6c0fd3ae1abb5ab7222d2241b0cf2856",
     "semantic_hash": ""
   },
@@ -3978,12 +3990,14 @@
     "semantic_hash": "5d01755c3fdd48d3faeab54b5d69b344"
   },
   "PEMS.Web/wwwroot/uploads/intake/4016aa5d-5471-40f5-b9b1-7427a2279946.pdf": {
-    "mtime": 1786628058.271636,
+    "mtime": 1788350908.6072347,
+    "seen": 1788706892.458408,
     "ast_hash": "6c0fd3ae1abb5ab7222d2241b0cf2856",
     "semantic_hash": ""
   },
   "PEMS.Web/wwwroot/uploads/intake/4f3650c0-6e8c-44f2-967d-6e64d3ce3ebd.pdf": {
-    "mtime": 1786629356.0664558,
+    "mtime": 1788350908.6697817,
+    "seen": 1788706892.458408,
     "ast_hash": "6c0fd3ae1abb5ab7222d2241b0cf2856",
     "semantic_hash": ""
   },
@@ -4858,10 +4872,10 @@
     "semantic_hash": "e47d4b28e24a3118d34ab0f0e13f6a12"
   },
   "PEMS.Application/Interfaces/IJobPlanService.cs": {
-    "mtime": 1788350902.2485597,
-    "seen": 1788613735.6693618,
-    "ast_hash": "f6cfcba785bac5f1ab4fd70bd878b0c4",
-    "semantic_hash": "f6cfcba785bac5f1ab4fd70bd878b0c4"
+    "mtime": 1788700361.9061868,
+    "seen": 1788706892.3065176,
+    "ast_hash": "c0f7c18b4b19cfae7e84c99fe88ff101",
+    "semantic_hash": ""
   },
   "PEMS.Domain/Entities/JobPlan.cs": {
     "mtime": 1788350902.8237047,
@@ -4912,16 +4926,16 @@
     "semantic_hash": "ea82a1f0ad82972a7f50afef3e8b8365"
   },
   "PEMS.Persistence/Servises/JobPlanService.cs": {
-    "mtime": 1788350904.422904,
-    "seen": 1788613735.670535,
-    "ast_hash": "ead8a0b698a6eeeecd313a7938f645d9",
-    "semantic_hash": "ead8a0b698a6eeeecd313a7938f645d9"
+    "mtime": 1788700388.1972768,
+    "seen": 1788706892.3681955,
+    "ast_hash": "634ee09e3707df609cf64105ce4f92b4",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/JobPlanController.cs": {
-    "mtime": 1788350905.43952,
-    "seen": 1788613735.670535,
-    "ast_hash": "3c5ebd36b34cc0218b7374e53dc6b321",
-    "semantic_hash": "3c5ebd36b34cc0218b7374e53dc6b321"
+    "mtime": 1788701975.9198709,
+    "seen": 1788706892.3981993,
+    "ast_hash": "600773e834822692c6c2a81d9deae4f2",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/JobPlan/Details.cshtml": {
     "mtime": 1788350906.4683735,
@@ -4930,10 +4944,10 @@
     "semantic_hash": "42b3817710bbf606793318fa37b0245b"
   },
   "PEMS.Web/Views/JobPlan/Index.cshtml": {
-    "mtime": 1788350906.4683735,
-    "seen": 1788613735.670535,
-    "ast_hash": "590f0f5a2e0316f4e77db0f6aaa6b4f1",
-    "semantic_hash": "590f0f5a2e0316f4e77db0f6aaa6b4f1"
+    "mtime": 1788700432.1823404,
+    "seen": 1788706892.4212532,
+    "ast_hash": "4a789e74ccf14b9c1a67f4c72852880a",
+    "semantic_hash": ""
   },
   "PEMS.Application/DTOs/WorkRequestDto.cs": {
     "mtime": 1788350902.0691507,
@@ -5068,10 +5082,10 @@
     "semantic_hash": "4d96384b542d2b048da44d6ac0f357e1"
   },
   "PEMS.Application/Interfaces/IInspectionService.cs": {
-    "mtime": 1788585647.5568056,
-    "seen": 1788613735.6693618,
-    "ast_hash": "581471dc9483811bc95338115adf9b8c",
-    "semantic_hash": "581471dc9483811bc95338115adf9b8c"
+    "mtime": 1788700714.446806,
+    "seen": 1788706892.305518,
+    "ast_hash": "ec22c88caca1ffa6750d53e66d402d07",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Migrations/20260815055031_AddInspectionMeasurementFields.Designer.cs": {
     "mtime": 1788350903.8590012,
@@ -5086,10 +5100,10 @@
     "semantic_hash": "50b9bfe85f105dbf7eb412391ae3c980"
   },
   "PEMS.Persistence/Servises/InspectionService.cs": {
-    "mtime": 1788585669.156518,
-    "seen": 1788613735.670535,
-    "ast_hash": "ef072dd33bd8af1fc39b6232f0ced294",
-    "semantic_hash": "ef072dd33bd8af1fc39b6232f0ced294"
+    "mtime": 1788700734.6697028,
+    "seen": 1788706892.3681955,
+    "ast_hash": "718da61cc63d5a991de7a74f5b4fa412",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/InspectionController.cs": {
     "mtime": 1788585684.3532948,
@@ -5664,14 +5678,14 @@
   "InitialCreate.sql": {
     "mtime": 1788350900.7141554,
     "seen": 1788613735.6693618,
-    "ast_hash": "b1ac7973d56b538d0f22327270fd8bd6",
-    "semantic_hash": "b1ac7973d56b538d0f22327270fd8bd6"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Scripts/EnableFullTextSearch.sql": {
     "mtime": 1788350904.1563535,
     "seen": 1788613735.670535,
-    "ast_hash": "5d0ad7348ee64f9cdedd2b2b01b11679",
-    "semantic_hash": "5d0ad7348ee64f9cdedd2b2b01b11679"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   ".claude/Role/UIUX/PEMS Contract Management \u2014 Enterprise Petrochemical Dashboard Specification & Claude Implementation Brief.md": {
     "mtime": 1788350901.0767858,
@@ -5680,7 +5694,8 @@
     "semantic_hash": "f385252cf3cfa035bf5e92eea8ae8e9d"
   },
   "PEMS.Web/wwwroot/uploads/signatures/emp35_acacf559-0777-4af9-92a5-c9a0ca42da5a.png": {
-    "mtime": 1786853570.241505,
+    "mtime": 1788350908.889266,
+    "seen": 1788706892.458408,
     "ast_hash": "bfc2665a270ee4270e65ebe18da4783c",
     "semantic_hash": ""
   },
@@ -6021,10 +6036,10 @@
     "semantic_hash": "c9b0b6c4a39d9b7e97bf80d6dcbc2bd3"
   },
   "PEMS.Application/Interfaces/IManufacturerDataBookService.cs": {
-    "mtime": 1788350902.2733562,
-    "seen": 1788613735.6693618,
-    "ast_hash": "94a2d01d0cf5d1ac546f1581e8ca3d76",
-    "semantic_hash": "94a2d01d0cf5d1ac546f1581e8ca3d76"
+    "mtime": 1788705082.662779,
+    "seen": 1788706892.3075168,
+    "ast_hash": "001f9ad70a0a7774f0650d31fb3809b2",
+    "semantic_hash": ""
   },
   "PEMS.Domain/Entities/MDBDocument.cs": {
     "mtime": 1788350902.886488,
@@ -6045,16 +6060,16 @@
     "semantic_hash": "3bf7e811de0728e2cb41c4d3de01e766"
   },
   "PEMS.Persistence/Servises/ManufacturerDataBookService.cs": {
-    "mtime": 1788350904.4709935,
-    "seen": 1788613735.670535,
-    "ast_hash": "7f2731f6a516a7f3f1a3340cb49c7612",
-    "semantic_hash": "7f2731f6a516a7f3f1a3340cb49c7612"
+    "mtime": 1788705101.038799,
+    "seen": 1788706892.3701954,
+    "ast_hash": "e8bbd5a41e16c171006b124007dcbf62",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/MDBController.cs": {
-    "mtime": 1788350905.44356,
-    "seen": 1788613735.670535,
-    "ast_hash": "0da7fc85e46f9033a18f3d473831d254",
-    "semantic_hash": "0da7fc85e46f9033a18f3d473831d254"
+    "mtime": 1788705116.4818747,
+    "seen": 1788706892.3991997,
+    "ast_hash": "7189112fd98cdd06c3ed76f890389745",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MDB/Create.cshtml": {
     "mtime": 1788350906.5316246,
@@ -6069,10 +6084,10 @@
     "semantic_hash": "65c0de4616cdac283b022529e1fcac64"
   },
   "PEMS.Web/Views/MDB/Index.cshtml": {
-    "mtime": 1788350906.5472527,
-    "seen": 1788613735.670535,
-    "ast_hash": "1d8f9837fdb3991ee384c561e9de3e1e",
-    "semantic_hash": "1d8f9837fdb3991ee384c561e9de3e1e"
+    "mtime": 1788705140.3186393,
+    "seen": 1788706892.422275,
+    "ast_hash": "8ad6a452c6e8aaf66d0e929ac6fe90bb",
+    "semantic_hash": ""
   },
   "PEMS.Application/DTOs/DocumentHoldDto.cs": {
     "mtime": 1788350901.7846975,
@@ -6617,8 +6632,8 @@
   ".vscode/mcp.json": {
     "mtime": 1788350901.4069304,
     "seen": 1788613735.6693618,
-    "ast_hash": "388cc76507556cff4974a47eb996fca2",
-    "semantic_hash": "388cc76507556cff4974a47eb996fca2"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "PEMS.Application/Common/DataGridPageSize.cs": {
     "mtime": 1788350901.737211,
@@ -6867,10 +6882,10 @@
     "semantic_hash": "60873e8c15dd55067cdd42393b4e0967"
   },
   "PEMS.Tests/Cmms/InspectionGridPaginationTests.cs": {
-    "mtime": 1788585776.6209338,
-    "seen": 1788613735.670535,
-    "ast_hash": "929619b2688e4bbce5aa23804fc1c7ce",
-    "semantic_hash": "929619b2688e4bbce5aa23804fc1c7ce"
+    "mtime": 1788700978.234478,
+    "seen": 1788706892.381196,
+    "ast_hash": "b9fd3da488dc449eddfee05a4e7537c1",
+    "semantic_hash": ""
   },
   "PEMS.Tests/Cmms/InstrumentServiceLiveDbTests.cs": {
     "mtime": 1788507489.1000345,
@@ -7173,10 +7188,10 @@
     "semantic_hash": "30d304364a29efbcca17f8d2a5b965f8"
   },
   "PEMS.Tests/Authorization/WorkOrderTaskActionsAuthorizationTests.cs": {
-    "mtime": 1788637721.6083355,
-    "seen": 1788638406.3674212,
-    "ast_hash": "9df1d8a6046fc171d6151f66120c9851",
-    "semantic_hash": "9df1d8a6046fc171d6151f66120c9851"
+    "mtime": 1788641770.142076,
+    "seen": 1788706892.3801975,
+    "ast_hash": "52b705ed473dec56f2017cb469d71959",
+    "semantic_hash": ""
   },
   "PEMS.Tests/Cmms/MaterialRequisitionServiceTests.cs": {
     "mtime": 1788637928.3595595,
@@ -7189,5 +7204,2177 @@
     "seen": 1788638406.3854182,
     "ast_hash": "6f1604d2d6a98edcdb6b22c21917a880",
     "semantic_hash": "6f1604d2d6a98edcdb6b22c21917a880"
+  },
+  "PEMS.Application/DTOs/EmployeeListItemDto.cs": {
+    "mtime": 1788705842.153143,
+    "seen": 1788706892.2923713,
+    "ast_hash": "2d2baf87faa6ff5bd960339a551a79e1",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Configurations/EquipmentCriticalityConfiguration.cs": {
+    "mtime": 1788641081.110236,
+    "seen": 1788706892.3441956,
+    "ast_hash": "b8dbb9e5e479e6a451a1dc052d6091ed",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260905205029_Wave6BP1UniqueConstraints.Designer.cs": {
+    "mtime": 1788641429.857954,
+    "seen": 1788706892.3611965,
+    "ast_hash": "1a7b69dd991dc552f762b018b7ed3c63",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260905205029_Wave6BP1UniqueConstraints.cs": {
+    "mtime": 1788641429.8559332,
+    "seen": 1788706892.3611965,
+    "ast_hash": "2f2d3a2d8eaf3679c775ab6e970df5a8",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Authorization/JobPlanControllerAuthorizationTests.cs": {
+    "mtime": 1788702285.302869,
+    "seen": 1788706892.3791964,
+    "ast_hash": "1d55c6ffdacdf896d7a74160f426b4a2",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Authorization/MaintenancePlanControllerAuthorizationTests.cs": {
+    "mtime": 1788702211.1138837,
+    "seen": 1788706892.3791964,
+    "ast_hash": "45961f58704d8314131e77cb003a667c",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/EquipmentCriticalityConcurrencyTests.cs": {
+    "mtime": 1788641990.8851044,
+    "seen": 1788706892.3801975,
+    "ast_hash": "10f267401cb2f19c2cd9eecd9f855622",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/GlobalGridHardeningWaveC1LiveDbTests.cs": {
+    "mtime": 1788706596.0344245,
+    "seen": 1788706892.381196,
+    "ast_hash": "6b89d91b5a249c658819059272819e23",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/GlobalGridHardeningWaveC1Tests.cs": {
+    "mtime": 1788706533.8286533,
+    "seen": 1788706892.381196,
+    "ast_hash": "6d525d81bb5e884fed4f33fdd52d0a25",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/InspectionGridLiveDbTests.cs": {
+    "mtime": 1788701161.1405442,
+    "seen": 1788706892.381196,
+    "ast_hash": "156d7a29dcaa053c5134896c1b04eff5",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/JobPlanGridLiveDbTests.cs": {
+    "mtime": 1788701203.9568613,
+    "seen": 1788706892.381196,
+    "ast_hash": "977c087a29f802dce02c302b745f470d",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/JobPlanGridPaginationTests.cs": {
+    "mtime": 1788700908.6815271,
+    "seen": 1788706892.381196,
+    "ast_hash": "c6e22b615a92bfa051e430d4fe11f282",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/MaterialRequisitionMrNumberConcurrencyTests.cs": {
+    "mtime": 1788642425.9878912,
+    "seen": 1788706892.3821962,
+    "ast_hash": "5bd1311eceaedbe8ec3c94db98efed36",
+    "semantic_hash": ""
+  },
+  ".claude/Role/00PEMS_Architecture_Recommendations_v1.0.md": {
+    "mtime": 1788350900.8252237,
+    "seen": 1788706892.4454105,
+    "ast_hash": "e45a0c27bf28d15d50f7247687c9a990",
+    "semantic_hash": ""
+  },
+  ".claude/Role/01- PEMS Engineering Document Approval Workflow.md": {
+    "mtime": 1788350900.8397858,
+    "seen": 1788706892.4454105,
+    "ast_hash": "5a8c6e8849d16327fa305830d625b497",
+    "semantic_hash": ""
+  },
+  ".claude/Role/01-PEMS Enterprise Workflow Platform (Baseline V1).MD": {
+    "mtime": 1788350900.8397858,
+    "seen": 1788706892.4454105,
+    "ast_hash": "7b40a4d6644b03c93214a5ad00cde21f",
+    "semantic_hash": ""
+  },
+  ".claude/Role/02-PEMS Enterprise Workflow Rule Library.MD": {
+    "mtime": 1788350900.85571,
+    "seen": 1788706892.4454105,
+    "ast_hash": "4a4a5c1d791aa60acb7a2aec9d6b85e5",
+    "semantic_hash": ""
+  },
+  ".claude/Role/FileStorageAbstraction_Design.md": {
+    "mtime": 1788350900.9342785,
+    "seen": 1788706892.4474092,
+    "ast_hash": "405dde8f0e52662cb53a59349c1db73d",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/3d_bim_cad_asset_integration_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.2091136,
+    "seen": 1788706892.458408,
+    "ast_hash": "ef3e95944d2159fff72050dbe597cac3",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/3d_exploded_spare_parts_catalog_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.2400002,
+    "seen": 1788706892.458408,
+    "ast_hash": "9c33cef24519734ae7340eca1d21a615",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/admin_quick_configuration_bulk_import_center_en_fa/code.html": {
+    "mtime": 1788350920.2673264,
+    "seen": 1788706892.458408,
+    "ast_hash": "85193d4dd411742e37a571a7c9ab65ea",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/administrative_correspondence_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.2713616,
+    "seen": 1788706892.458408,
+    "ast_hash": "feedd997fd4a8222d176d7c94e2baf97",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/ai_knowledge_copilot_en_fa/code.html": {
+    "mtime": 1788350920.3026178,
+    "seen": 1788706892.458408,
+    "ast_hash": "e386bd9b71ea95f6562e88f79d92aeed",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/ai_predictive_insights_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.3320458,
+    "seen": 1788706892.458408,
+    "ast_hash": "0638fa64ffac52d59d1b1634595029b8",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/approval_tracking_detail_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.3493106,
+    "seen": 1788706892.458408,
+    "ast_hash": "a3b90418102ad7b7bd5db3442221a7a9",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/approved_report_detail_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.3664057,
+    "seen": 1788706892.458408,
+    "ast_hash": "f27450a6dc921bad6324eb7849483561",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/asset_inventory_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.382118,
+    "seen": 1788706892.458408,
+    "ast_hash": "cf03c3179b78022c810a20081ab7cf9f",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/asset_inventory_dashboard_en/code.html": {
+    "mtime": 1788350920.4118004,
+    "seen": 1788706892.458408,
+    "ast_hash": "3e3a67cdae9ca4b7095b8d0594338d1c",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/asset_inventory_dashboard_interactive_filtering_en_fa/code.html": {
+    "mtime": 1788350920.4273975,
+    "seen": 1788706892.458408,
+    "ast_hash": "06d72963448fc085cb4107e76ec1fc36",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/asset_inventory_high_density_stress_test/code.html": {
+    "mtime": 1788350920.4591362,
+    "seen": 1788706892.458408,
+    "ast_hash": "af0489ecbc0ae86b676e99aa0645a6fa",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/asset_lifecycle_history_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.4791572,
+    "seen": 1788706892.458408,
+    "ast_hash": "97fd89ca3e7f1c64dbe8fbeda2364438",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/asset_lifecycle_tco_detail_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.506306,
+    "seen": 1788706892.458408,
+    "ast_hash": "0bde4c2943c208a67716d67ca9f1a97e",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/asset_specification_turbine_unit_4_en/code.html": {
+    "mtime": 1788350920.5234132,
+    "seen": 1788706892.458408,
+    "ast_hash": "2f78f75ae750b678e333e35bbde41b6a",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/civil_inspection_form_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.53967,
+    "seen": 1788706892.458408,
+    "ast_hash": "2cc59c395c5516b5415f7d762e28cd0a",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/code.html": {
+    "mtime": 1788350920.1638079,
+    "seen": 1788706892.458408,
+    "ast_hash": "79946c717ab456011fb2b74bc4e144a9",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/competency_skill_matrix_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.5692449,
+    "seen": 1788706892.458408,
+    "ast_hash": "677b63bb017cb4b367390a1d89fb42bc",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/competency_skill_matrix_en_fa/code.html": {
+    "mtime": 1788350920.584877,
+    "seen": 1788706892.458408,
+    "ast_hash": "712658cc285b2968bab75ec4d15c29c5",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/contract_approval_workflow_biometric_auth_en_fa/code.html": {
+    "mtime": 1788350920.6164942,
+    "seen": 1788706892.458408,
+    "ast_hash": "1b527e235d10bc05960ab023ce502787",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/contract_detail_compliance_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.6477532,
+    "seen": 1788706892.458408,
+    "ast_hash": "a14649e431e11d0f80ff176f68c55b59",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/contract_management_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.664879,
+    "seen": 1788706892.458408,
+    "ast_hash": "5ab256d2c9a18382eb991f98c1ce2fd0",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/digital_signature_site_verification_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.6793957,
+    "seen": 1788706892.458408,
+    "ast_hash": "bf4f7c6ab43863f238ee0e3cf975b570",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/digital_signature_with_fingerprint_verification_en_fa/code.html": {
+    "mtime": 1788350920.7114391,
+    "seen": 1788706892.458408,
+    "ast_hash": "bd96177530867401f84705bca86541b1",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/document_revision_workflow_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.725949,
+    "seen": 1788706892.458408,
+    "ast_hash": "2f8bb3e64c13837445fea520f7bba766",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/drawing_redline_comparison_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.7415867,
+    "seen": 1788706892.458408,
+    "ast_hash": "8e2712326cc55e4570735469ef65417b",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/edit_employee_modal_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.7889318,
+    "seen": 1788706892.458408,
+    "ast_hash": "d0c86da0d8793b38cd788051eb25a3e9",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/edit_employee_modal_en/code.html": {
+    "mtime": 1788350920.821635,
+    "seen": 1788706892.458408,
+    "ast_hash": "98b7334cc2074ab4065dff361821e2af",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/edit_employee_modal_overlay/code.html": {
+    "mtime": 1788350920.8407621,
+    "seen": 1788706892.458408,
+    "ast_hash": "adb0b5047f1547f56063244a3b011814",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/electrical_inspection_form_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.8518739,
+    "seen": 1788706892.458408,
+    "ast_hash": "e36a1db13c6de1b6e5a0d2eb89682381",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/emergency_command_evacuation_protocol_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.8675075,
+    "seen": 1788706892.458408,
+    "ast_hash": "7f0123a99830c06e706e8edcea5bf02f",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/emission_source_detail_success_state_en_fa/code.html": {
+    "mtime": 1788350920.8831384,
+    "seen": 1788706892.458408,
+    "ast_hash": "2014d73303495428a2c0f230c5788c92",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_management_dashboard/code.html": {
+    "mtime": 1788350920.9158638,
+    "seen": 1788706892.458408,
+    "ast_hash": "9859c7d6e617760b267752afeee49979",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_management_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350920.9303741,
+    "seen": 1788706892.458408,
+    "ast_hash": "2d96426fd3b5b7719db81f0caabf66c9",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_management_dashboard_dual_language_en_fa_1/code.html": {
+    "mtime": 1788350920.9770513,
+    "seen": 1788706892.458408,
+    "ast_hash": "b2437d0ac790c966a3b7b3e186b821f2",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_management_dashboard_dual_language_en_fa_2/code.html": {
+    "mtime": 1788350921.0071378,
+    "seen": 1788706892.458408,
+    "ast_hash": "2d96426fd3b5b7719db81f0caabf66c9",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_management_dashboard_en/code.html": {
+    "mtime": 1788350921.0248363,
+    "seen": 1788706892.458408,
+    "ast_hash": "ac07c49ae64f56d6c49749a09b3c462a",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_management_high_concurrency_stress_test/code.html": {
+    "mtime": 1788350921.0504544,
+    "seen": 1788706892.458408,
+    "ast_hash": "033222360c3798d4a40e6b1b3fc2852b",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_profile_marcus_thorne_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.073115,
+    "seen": 1788706892.458408,
+    "ast_hash": "9de8d62c8c516965841312de9f00948e",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_profile_marcus_thorne_en/code.html": {
+    "mtime": 1788350921.1036284,
+    "seen": 1788706892.458408,
+    "ast_hash": "d8831c191cfcdb54d036d3549520cfcd",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_skill_profile_detail_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.1344664,
+    "seen": 1788706892.458408,
+    "ast_hash": "35908214977871df47a95689fb053fdc",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/energy_monitoring_management_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.1508708,
+    "seen": 1788706892.458408,
+    "ast_hash": "faf8bb071946f0d8329a946512fdc647",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/engineering_document_control_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.1963322,
+    "seen": 1788706892.458408,
+    "ast_hash": "08b2b067012a72a3658fa262d334ce44",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/engineering_management_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.2431936,
+    "seen": 1788706892.458408,
+    "ast_hash": "3ff5a4431a6e0076774a92ab16741bbf",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/engineering_management_dashboard_interactive_filtering_en_fa/code.html": {
+    "mtime": 1788350921.2602756,
+    "seen": 1788706892.458408,
+    "ast_hash": "6f1f7e5d24f0a20300f9ba5c350f1f4d",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/engineering_package_detail_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.2932775,
+    "seen": 1788706892.458408,
+    "ast_hash": "2d978e8c20d0c3c57f01be1e5d463323",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/engineering_standards_library_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.3058364,
+    "seen": 1788706892.458408,
+    "ast_hash": "61ca15af78898fe30b1f217b13efa7bd",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/engineering_work_request_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.3370955,
+    "seen": 1788706892.458408,
+    "ast_hash": "cf910414c9088ef5235db3892057e9d9",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/enterprise_reporting_bi_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.3683414,
+    "seen": 1788706892.458408,
+    "ast_hash": "b758e29af6b9df481bd3977e631fd4c1",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/enterprise_reporting_bi_dual_language_en_fa_1/code.html": {
+    "mtime": 1788350921.4047737,
+    "seen": 1788706892.458408,
+    "ast_hash": "2ecffb103ad583ecf0d4d582155c7183",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/enterprise_reporting_bi_dual_language_en_fa_2/code.html": {
+    "mtime": 1788350921.4314568,
+    "seen": 1788706892.458408,
+    "ast_hash": "b758e29af6b9df481bd3977e631fd4c1",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/environmental_carbon_compliance_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.4626727,
+    "seen": 1788706892.458408,
+    "ast_hash": "cc327f924514393ad9a924e3dd8a021f",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/environmental_compliance_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.502074,
+    "seen": 1788706892.458408,
+    "ast_hash": "9dd2ca770e467f6115eee31dcabde774",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/evidence_collection_form_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.5284886,
+    "seen": 1788706892.458408,
+    "ast_hash": "50974ac9875ee8e3e06f08ee9b34aba0",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/ewr_detail_technical_review_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.5575683,
+    "seen": 1788706892.458408,
+    "ast_hash": "f482509ea7db748de6c439f624262f22",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/field_asset_details_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.5731907,
+    "seen": 1788706892.458408,
+    "ast_hash": "9ea8223ab8c685effdf0229544b91053",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/field_inspection_checklist_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.6059868,
+    "seen": 1788706892.458408,
+    "ast_hash": "0e5631addaf0d5cb29715fb05b43016d",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/field_ops_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.6364398,
+    "seen": 1788706892.458408,
+    "ast_hash": "4d3d213fc2e0d842b11e4dda2348f6d8",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/fmea_workbench_asset_strategy_detail_en_fa/code.html": {
+    "mtime": 1788350921.6700265,
+    "seen": 1788706892.458408,
+    "ast_hash": "d5edbe9ab1c82cf7ab0e618837e6904f",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/genai_knowledge_copilot_engineering_assistant_en_fa/code.html": {
+    "mtime": 1788350921.6992052,
+    "seen": 1788706892.458408,
+    "ast_hash": "f561de02676880d5a552c8c48362be22",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/global_onboarding_strategy_map.md": {
+    "mtime": 1788350920.177842,
+    "seen": 1788706892.458408,
+    "ast_hash": "ecbb3cf21892fd3b36eacbff764df318",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/hse_risk_management_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.7368226,
+    "seen": 1788706892.458408,
+    "ast_hash": "f13d44e41d84de244554db841699c876",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/in_context_feature_guide_minimalist_en_fa/code.html": {
+    "mtime": 1788350921.76199,
+    "seen": 1788706892.458408,
+    "ast_hash": "8b1c787089d7677b7bebced749e8d0b0",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/incident_investigation_detail_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.793218,
+    "seen": 1788706892.458408,
+    "ast_hash": "ef5f3dc8ccbab8ed017f1801c8f4ac9c",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/inspection_report_detail_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.8261092,
+    "seen": 1788706892.458408,
+    "ast_hash": "cfec15a866cf2873f0a0dc87c144f47c",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/interactive_system_walkthrough_guided_training_en_fa/code.html": {
+    "mtime": 1788350921.8401198,
+    "seen": 1788706892.458408,
+    "ast_hash": "ec0d9c669e6e5124346d38f2a102c5a2",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/inventory_management_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.8714662,
+    "seen": 1788706892.458408,
+    "ast_hash": "0f929e28905fe7121c501fecbdc3e668",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/investigation_to_action_workflow_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.9027336,
+    "seen": 1788706892.458408,
+    "ast_hash": "7c65fbd25e0eda3bdbf36214034d9d4f",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/lightweight_interactive_onboarding_guide_en_fa/code.html": {
+    "mtime": 1788350921.93945,
+    "seen": 1788706892.458408,
+    "ast_hash": "37945f694a2f61b1074c5ab59db87f1a",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/logistics_fleet_management_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.965243,
+    "seen": 1788706892.458408,
+    "ast_hash": "32caa0608cb4d180bbd833b91fe966d6",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/loto_isolation_management_dual_language_en_fa/code.html": {
+    "mtime": 1788350921.9968672,
+    "seen": 1788706892.458408,
+    "ast_hash": "eb9252fff6b49f10fcf3ffa4b813351b",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/maintenance_scheduling_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.0125098,
+    "seen": 1788706892.458408,
+    "ast_hash": "7923ab4eb1582700cd43e95e598a1fde",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/master_help_onboarding_registry_global_en_fa/code.html": {
+    "mtime": 1788350922.0447607,
+    "seen": 1788706892.458408,
+    "ast_hash": "8f61eb1d2fc3f31947425dc8912dae18",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/mechanical_inspection_form_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.0769367,
+    "seen": 1788706892.458408,
+    "ast_hash": "e5c966a427fb28b460195a6bc735b6a0",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/moc_management_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.1097765,
+    "seen": 1788706892.458408,
+    "ast_hash": "261e132bbaf13cde547e8a9ca6f0b7a8",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/moc_workflow_detail_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.1393588,
+    "seen": 1788706892.458408,
+    "ast_hash": "c0b32fa235bf297c7aa2bf015c78cd52",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/mro_inventory_optimization_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.1700075,
+    "seen": 1788706892.458408,
+    "ast_hash": "5ce98f29757f3d84d903173e87a650ec",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/mro_part_detail_ai_analysis_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.2139843,
+    "seen": 1788706892.458408,
+    "ast_hash": "33aba05b27c5a32b9140ac3862ab4ee8",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/mro_reorder_workbench_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.2644062,
+    "seen": 1788706892.458408,
+    "ast_hash": "57aba0f0533e9da9d38ec93b7d246b5b",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/multi_method_identity_verification_en_fa_mobile/code.html": {
+    "mtime": 1788350922.2956293,
+    "seen": 1788706892.458408,
+    "ast_hash": "b045372ab88c11492fc404732d053821",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/my_approvals_inbox_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.328108,
+    "seen": 1788706892.458408,
+    "ast_hash": "b43fa036936ba5231085cbbddf622886",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/new_contract_creation_wizard_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.3582242,
+    "seen": 1788706892.458408,
+    "ast_hash": "32c8d0014d3163d12c98d08f5f105286",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/new_purchase_requisition_wizard_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.373847,
+    "seen": 1788706892.458408,
+    "ast_hash": "bfeaa0a2c546c4f4ea923530b0050e72",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/notification_settings_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.405099,
+    "seen": 1788706892.458408,
+    "ast_hash": "5d4fa534388536a604c3e5db50bb2bef",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/offline_document_library_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.4381442,
+    "seen": 1788706892.458408,
+    "ast_hash": "8d669be1245a2e19d41c597b4f1b2073",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/offline_site_maps_asset_tracking_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.4528525,
+    "seen": 1788706892.458408,
+    "ast_hash": "c2b2485a7feb248df7af690e13ed1fbb",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/onboarding_learning_hub_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.484479,
+    "seen": 1788706892.458408,
+    "ast_hash": "eb57a5db547b2792a8a70829a74d2095",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/operational_analytics_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.516126,
+    "seen": 1788706892.458408,
+    "ast_hash": "94a4f4ac7e9e3fd30aa3dddfa7e0a973",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/operational_analytics_dashboard_enhanced_with_motion/code.html": {
+    "mtime": 1788350922.5317733,
+    "seen": 1788706892.458408,
+    "ast_hash": "349bda99117ff6cebce43a169dd665ea",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/operational_analytics_dashboard_interactive_filtering_en_fa/code.html": {
+    "mtime": 1788350922.5635343,
+    "seen": 1788706892.458408,
+    "ast_hash": "ecb809b7bb4000101f2b30696b7c47f6",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/operational_budgeting_finance_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.583368,
+    "seen": 1788706892.458408,
+    "ast_hash": "5f43e97c30a81afb5e73944d54fcd06c",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/pems_academy_training_onboarding_hub_en_fa/code.html": {
+    "mtime": 1788350922.610526,
+    "seen": 1788706892.458408,
+    "ast_hash": "09e417da4da7c14e6377604a63d66496",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/pems_enterprise_full_navigation_audit_dashboard_en_fa/code.html": {
+    "mtime": 1788350922.641757,
+    "seen": 1788706892.458408,
+    "ast_hash": "f98b8e48e087b9989affb9fbcbd6fdf5",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/pems_enterprise_utility/DESIGN.md": {
+    "mtime": 1788350922.6735425,
+    "seen": 1788706892.458408,
+    "ast_hash": "1a6d79976c8cad542a05266b00711758",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/pems_global_design_directive.md": {
+    "mtime": 1788350920.177842,
+    "seen": 1788706892.458408,
+    "ast_hash": "c24298e5a98524bb37e9cce2549fd079",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/pems_project_completion_hand_off_document.md": {
+    "mtime": 1788350920.193477,
+    "seen": 1788706892.458408,
+    "ast_hash": "995264ac38ec49a2aa7bd80df699aa92",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/pems_system_completion_roadmap.txt": {
+    "mtime": 1788350920.193477,
+    "seen": 1788706892.458408,
+    "ast_hash": "8d232b830cd2173b8b8c82d5c77f4b4f",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/permission_matrix_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.6890602,
+    "seen": 1788706892.458408,
+    "ast_hash": "9abf0dc74979ad94ad85f89e3bf014e0",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/permit_details_with_multi_factor_auth_en_fa_desktop/code.html": {
+    "mtime": 1788350922.7047288,
+    "seen": 1788706892.458408,
+    "ast_hash": "bfbc58c186b07a8fc88a70a0ebd39244",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/permit_to_work_jsa_detail_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.7373137,
+    "seen": 1788706892.458408,
+    "ast_hash": "32645b051ac9c3731b686e21e34217d7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/permit_to_work_with_biometric_authorization_en_fa/code.html": {
+    "mtime": 1788350922.7689202,
+    "seen": 1788706892.458408,
+    "ast_hash": "299f862d0db99e4517b66851e96cfd3f",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/predictive_maintenance_analytics_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.7992024,
+    "seen": 1788706892.458408,
+    "ast_hash": "0308a27293ae96d90921151761e9b88a",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/predictive_maintenance_analytics_dual_language_en_fa_1/code.html": {
+    "mtime": 1788350922.832891,
+    "seen": 1788706892.458408,
+    "ast_hash": "e6e6e2cf0036a44c76bc49fd4fc8b0c2",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/predictive_maintenance_analytics_dual_language_en_fa_2/code.html": {
+    "mtime": 1788350922.877522,
+    "seen": 1788706892.458408,
+    "ast_hash": "0308a27293ae96d90921151761e9b88a",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/process_automation_hub_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.9045985,
+    "seen": 1788706892.458408,
+    "ast_hash": "a54042cbaf6fa272aeea0399e086f07f",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_approval_with_biometric_mfa_en_fa/code.html": {
+    "mtime": 1788350922.9247553,
+    "seen": 1788706892.458408,
+    "ast_hash": "066ebb17a5e8b599d981ff9c40c4f26d",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350922.9592516,
+    "seen": 1788706892.458408,
+    "ast_hash": "96bf4428601bda7cba07fe6189928966",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_dashboard_interactive_filtering_en_fa/code.html": {
+    "mtime": 1788350922.9889913,
+    "seen": 1788706892.458408,
+    "ast_hash": "a881f488e56a29ac49e7abaf00f3729c",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_dashboard_stress_test_en_fa/code.html": {
+    "mtime": 1788350923.0194118,
+    "seen": 1788706892.458408,
+    "ast_hash": "201d7686aee06566fc76fc0bfc4dff37",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_request_detail_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.0427387,
+    "seen": 1788706892.458408,
+    "ast_hash": "a3ad5306eae71970029e743732763571",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_request_detail_dual_language_en_fa_1/code.html": {
+    "mtime": 1788350923.0819836,
+    "seen": 1788706892.458408,
+    "ast_hash": "bff227196bdff874c6cdd78d913a9041",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_request_detail_dual_language_en_fa_2/code.html": {
+    "mtime": 1788350923.0992773,
+    "seen": 1788706892.458408,
+    "ast_hash": "a3ad5306eae71970029e743732763571",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_request_detail_enhanced_with_motion/code.html": {
+    "mtime": 1788350923.13075,
+    "seen": 1788706892.458408,
+    "ast_hash": "df2ac5738fcb5187ed8c688ec1577f1d",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_request_detail_stress_test_en_fa/code.html": {
+    "mtime": 1788350923.1624427,
+    "seen": 1788706892.458408,
+    "ast_hash": "fd9f99b58abce70dea9f30e5c13caabe",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/quality_control_lab_analysis_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.1890216,
+    "seen": 1788706892.458408,
+    "ast_hash": "87beeeb1ac7dbfc87ba914173ca6eb88",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/quick_config_vdr_mdr_bulk_import_wizard_en_fa/code.html": {
+    "mtime": 1788350923.2240658,
+    "seen": 1788706892.458408,
+    "ast_hash": "d5105d6aff86f893242f9484e8aedb04",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/rca_investigation_detail_5_whys_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.2411687,
+    "seen": 1788706892.458408,
+    "ast_hash": "fc970463807980ea094e26c95af8cf20",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/rca_investigation_detail_fishbone_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.303613,
+    "seen": 1788706892.458408,
+    "ast_hash": "ad1080a2f66259b3965a80807c60139d",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/rca_management_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.335088,
+    "seen": 1788706892.458408,
+    "ast_hash": "3f63e2427090a74a689d51e427b8e64e",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/rcm_strategy_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.3671932,
+    "seen": 1788706892.458408,
+    "ast_hash": "9212cb9bf3fff81994629382f1f91ab9",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/real_time_muster_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.3995914,
+    "seen": 1788706892.458408,
+    "ast_hash": "3b9a8d06ac700a9e357cebd79f16c632",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/report_analytics_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.4141004,
+    "seen": 1788706892.458408,
+    "ast_hash": "04dcaef5878e70a3e4595b6e87c911fa",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/report_incident_form_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.4538255,
+    "seen": 1788706892.458408,
+    "ast_hash": "f8caa2e319c69a2a38c2fa600ce7f28a",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/reports_documents_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.478608,
+    "seen": 1788706892.458408,
+    "ast_hash": "b2e21afccb5c055eafefa333bd9a5007",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/review_submit_report_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.493119,
+    "seen": 1788706892.458408,
+    "ast_hash": "d414820603697ade9c7d6c0e303b7601",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/safety_incident_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.5533602,
+    "seen": 1788706892.458408,
+    "ast_hash": "5cc00cbfa05766f23b4a4216d953bc8f",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/security_configuration_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.5883126,
+    "seen": 1788706892.458408,
+    "ast_hash": "4cafc65619c8e64834a89da9b2874cfb",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/sensor_detail_calibration_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.6195853,
+    "seen": 1788706892.458408,
+    "ast_hash": "4371ae1806127a96aa49b4fbfbd43d58",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/sensor_monitoring_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.650833,
+    "seen": 1788706892.458408,
+    "ast_hash": "e511676b22b30b6bb3bd0fd42eee7458",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/shift_handover_operations_log_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.6977022,
+    "seen": 1788706892.458408,
+    "ast_hash": "38a54d943143bd366b31c13d3970b745",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/shift_management_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.71494,
+    "seen": 1788706892.458408,
+    "ast_hash": "165a20243dc02bcdf0525598b994a8ee",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/spare_parts_inventory_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.749158,
+    "seen": 1788706892.458408,
+    "ast_hash": "d841a96886070d366f3d353637c71813",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/spare_parts_procurement_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.7784069,
+    "seen": 1788706892.458408,
+    "ast_hash": "1656f7ad05325140dee57b986704fb27",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/stock_movement_transaction_log_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.8106701,
+    "seen": 1788706892.458408,
+    "ast_hash": "bf77bbfcd1ccc513a3475e973d353dd2",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/submitted_reports_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.8251927,
+    "seen": 1788706892.458408,
+    "ast_hash": "ad8351fa084d6283dd9e0eb83ef4da3e",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/supplier_directory_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.840844,
+    "seen": 1788706892.458408,
+    "ast_hash": "4b5cc6343292e0a1d00b99b9c68f7928",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/supplier_directory_stress_test_en_fa/code.html": {
+    "mtime": 1788350923.8730536,
+    "seen": 1788706892.458408,
+    "ast_hash": "283063ec5c8943cd5cadf9a2633c1677",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/system_audit_log_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.903701,
+    "seen": 1788706892.458408,
+    "ast_hash": "c570969fb2f82f073e5cf0ba7f9fd56b",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/system_security_mfa_configuration_en_fa/code.html": {
+    "mtime": 1788350923.9205272,
+    "seen": 1788706892.458408,
+    "ast_hash": "a247c639fd136194c222fcdbda12c0dd",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/system_settings_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.935034,
+    "seen": 1788706892.458408,
+    "ast_hash": "ded8d5d3c5c2e36ba9827b287721911f",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/tco_executive_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.950667,
+    "seen": 1788706892.458408,
+    "ast_hash": "821fcddb6cd00222e314edcd705bcff7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/technical_documentation_library_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.9765909,
+    "seen": 1788706892.458408,
+    "ast_hash": "fec157900663d3d8a2e8cfef671fc2a7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/technical_drawing_detail_dual_language_en_fa/code.html": {
+    "mtime": 1788350923.9977994,
+    "seen": 1788706892.458408,
+    "ast_hash": "fd5fdbe6de8714e046eac2e94955d3a8",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/technical_help_center_documentation_pems_en_fa/code.html": {
+    "mtime": 1788350924.0294476,
+    "seen": 1788706892.458408,
+    "ast_hash": "b9310a34e6ed519d46c587ded6fa2d4b",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/technical_inspection_management_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.0450819,
+    "seen": 1788706892.458408,
+    "ast_hash": "b5beadfe0a52066843bc0bdeb1ec014d",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/technical_inspection_management_dual_language_en_fa_1/code.html": {
+    "mtime": 1788350924.075653,
+    "seen": 1788706892.458408,
+    "ast_hash": "bcaf600b5c632852d87eb97c3f4747e3",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/technical_inspection_management_dual_language_en_fa_2/code.html": {
+    "mtime": 1788350924.0926006,
+    "seen": 1788706892.458408,
+    "ast_hash": "b5beadfe0a52066843bc0bdeb1ec014d",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/training_certification_management_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.10832,
+    "seen": 1788706892.458408,
+    "ast_hash": "00c60ef51745693b6abd667fdade29e4",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/transmittal_management_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.1239517,
+    "seen": 1788706892.458408,
+    "ast_hash": "5cecc7c40f99a4cf6c585a30983e880c",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/user_security_profile_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.1555867,
+    "seen": 1788706892.458408,
+    "ast_hash": "a1ffbeb2bc5303f00909bdc86b62a856",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/user_security_profile_dual_language_en_fa_1/code.html": {
+    "mtime": 1788350924.2036774,
+    "seen": 1788706892.458408,
+    "ast_hash": "a03bac401fd06970b6606ee350eed394",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/user_security_profile_dual_language_en_fa_2/code.html": {
+    "mtime": 1788350924.2594564,
+    "seen": 1788706892.458408,
+    "ast_hash": "a1ffbeb2bc5303f00909bdc86b62a856",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/users_permissions_management_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.3013895,
+    "seen": 1788706892.458408,
+    "ast_hash": "a3e47c347ce0f3167b3cdb9a02b4f30b",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/utility_load_balancing_energy_flow_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.3219495,
+    "seen": 1788706892.458408,
+    "ast_hash": "59edc9c40c7c162cf97631022cfa06d6",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/vdr_management_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.3669212,
+    "seen": 1788706892.458408,
+    "ast_hash": "2d4fd8f8f1064d0747db729a5d60ea8b",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/vdr_package_detail_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.3918703,
+    "seen": 1788706892.458408,
+    "ast_hash": "62aba2edb53c821c5f5d42bfc81eaf0e",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/vendor_performance_scorecard_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.4073405,
+    "seen": 1788706892.458408,
+    "ast_hash": "5b99e0ed048bcdd5728ce6021c964263",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/visitor_access_control_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.4234188,
+    "seen": 1788706892.458408,
+    "ast_hash": "083b6095e206c6febb00b9710fe49bb8",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/warehouse_layout_bin_tracking_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.4708183,
+    "seen": 1788706892.458408,
+    "ast_hash": "81328041d15ac13bd206d40668ca95f0",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/white_label_system_branding_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.4871094,
+    "seen": 1788706892.458408,
+    "ast_hash": "52379e3d34a07e7b7249fb7b7c65407f",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/work_order_detail_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.4881346,
+    "seen": 1788706892.458408,
+    "ast_hash": "a491705bba9653570845137a8a64bc2b",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/work_order_detail_stress_test_en_fa/code.html": {
+    "mtime": 1788350924.5401595,
+    "seen": 1788706892.458408,
+    "ast_hash": "5b90e81c4b816fa7173e0a5a9dd3f69c",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/work_order_management_operational_stress_test/code.html": {
+    "mtime": 1788350924.5673113,
+    "seen": 1788706892.458408,
+    "ast_hash": "c409732e2b50b8564843be23e7d5c448",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/work_orders_dashboard_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.5913634,
+    "seen": 1788706892.458408,
+    "ast_hash": "59c877c2d6f6824b55ecc2aa001cc18c",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/work_orders_dashboard_stress_test_en_fa/code.html": {
+    "mtime": 1788350924.6148026,
+    "seen": 1788706892.458408,
+    "ast_hash": "57cf01ddc182430f6d57f167708c8b56",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/workflow_designer_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.6331086,
+    "seen": 1788706892.458408,
+    "ast_hash": "04f4dcf645bc37268abab70c7f55db31",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/workforce_assignment_detail_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.6502786,
+    "seen": 1788706892.458408,
+    "ast_hash": "b41a209b65526db18b08397677281538",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/workplace_safety_audit_dual_language_en_fa/code.html": {
+    "mtime": 1788350924.69277,
+    "seen": 1788706892.458408,
+    "ast_hash": "81a32afb90717bf4e0c323e373ced7be",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/filestore/engineering-comments/comments/b0622cbb-a419-41e5-85b3-198c64c2b293.pdf": {
+    "mtime": 1788350907.3182847,
+    "seen": 1788706892.458408,
+    "ast_hash": "7d7ec1657db8888ce4d70297c386eeec",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/filestore/engineering-comments/replies/5032c73d-1a4b-45a8-a148-af8f212651d2.pdf": {
+    "mtime": 1788350907.332801,
+    "seen": 1788706892.458408,
+    "ast_hash": "7d7ec1657db8888ce4d70297c386eeec",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/filestore/intake/4016aa5d-5471-40f5-b9b1-7427a2279946.pdf": {
+    "mtime": 1788350907.3954773,
+    "seen": 1788706892.458408,
+    "ast_hash": "6c0fd3ae1abb5ab7222d2241b0cf2856",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/filestore/intake/4f3650c0-6e8c-44f2-967d-6e64d3ce3ebd.pdf": {
+    "mtime": 1788350907.4579773,
+    "seen": 1788706892.458408,
+    "ast_hash": "6c0fd3ae1abb5ab7222d2241b0cf2856",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/filestore/intake/6f5de4e8-1af0-4d08-9c8c-cea06b3fd1a8.pdf": {
+    "mtime": 1788350907.5204704,
+    "seen": 1788706892.458408,
+    "ast_hash": "6c0fd3ae1abb5ab7222d2241b0cf2856",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/filestore/intake/7c5cbada-9d7f-4baf-92d7-134eb57bb244.pdf": {
+    "mtime": 1788350907.5987966,
+    "seen": 1788706892.458408,
+    "ast_hash": "6c0fd3ae1abb5ab7222d2241b0cf2856",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/filestore/technical-queries/2f54eb04-9029-403f-9a0a-003c2b7e9261.pdf": {
+    "mtime": 1788350907.7102327,
+    "seen": 1788706892.458408,
+    "ast_hash": "dc39f6ece492201fb2433edbd0660c5a",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/wwwroot/uploads/engineering-comments/comments/b0622cbb-a419-41e5-85b3-198c64c2b293.pdf": {
+    "mtime": 1788350908.5165002,
+    "seen": 1788706892.458408,
+    "ast_hash": "7d7ec1657db8888ce4d70297c386eeec",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/wwwroot/uploads/engineering-comments/replies/5032c73d-1a4b-45a8-a148-af8f212651d2.pdf": {
+    "mtime": 1788350908.5298967,
+    "seen": 1788706892.458408,
+    "ast_hash": "7d7ec1657db8888ce4d70297c386eeec",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/wwwroot/uploads/intake/6f5de4e8-1af0-4d08-9c8c-cea06b3fd1a8.pdf": {
+    "mtime": 1788350908.7166572,
+    "seen": 1788706892.458408,
+    "ast_hash": "6c0fd3ae1abb5ab7222d2241b0cf2856",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/filestore/documents/7cc4357f-5a76-400e-9bdc-fae57c57f21d.PNG": {
+    "mtime": 1788350907.2854795,
+    "seen": 1788706892.458408,
+    "ast_hash": "c5eb88afa4a1112fdbfc1d270708a21b",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/filestore/documents/876ca6c3-092b-4479-8134-72eb6b886438.PNG": {
+    "mtime": 1788350907.2854795,
+    "seen": 1788706892.458408,
+    "ast_hash": "2103ef1e325f9f6ae3d4acc684faf100",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/filestore/documents/bf86c48c-6549-4999-a355-333e136351a1.PNG": {
+    "mtime": 1788350907.3011043,
+    "seen": 1788706892.458408,
+    "ast_hash": "c5eb88afa4a1112fdbfc1d270708a21b",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/3d_bim_cad_asset_integration_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.226312,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/3d_exploded_spare_parts_catalog_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.2400002,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/admin_quick_configuration_bulk_import_center_en_fa/screen.png": {
+    "mtime": 1788350920.2713616,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/administrative_correspondence_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.287003,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/ai_knowledge_copilot_en_fa/screen.png": {
+    "mtime": 1788350920.3026178,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/ai_predictive_insights_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.3377726,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/approval_tracking_detail_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.3493106,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/approved_report_detail_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.3811655,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/asset_inventory_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.3961394,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/asset_inventory_dashboard_en/screen.png": {
+    "mtime": 1788350920.4118004,
+    "seen": 1788706892.458408,
+    "ast_hash": "227a018448a9baf8c46ed6ca4178e641",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/asset_inventory_dashboard_interactive_filtering_en_fa/screen.png": {
+    "mtime": 1788350920.4436026,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/asset_inventory_high_density_stress_test/screen.png": {
+    "mtime": 1788350920.4591362,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/asset_lifecycle_history_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.4906642,
+    "seen": 1788706892.458408,
+    "ast_hash": "723103e3551386c4144b4605bff55342",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/asset_lifecycle_tco_detail_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.506306,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/asset_specification_turbine_unit_4_en/screen.png": {
+    "mtime": 1788350920.5234132,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/civil_inspection_form_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.55408,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/competency_skill_matrix_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.5692449,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/competency_skill_matrix_en_fa/screen.png": {
+    "mtime": 1788350920.584877,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/contract_approval_workflow_biometric_auth_en_fa/screen.png": {
+    "mtime": 1788350920.6321285,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/contract_detail_compliance_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.6477532,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/contract_management_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.664879,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/digital_signature_site_verification_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.6963103,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/digital_signature_with_fingerprint_verification_en_fa/screen.png": {
+    "mtime": 1788350920.7114391,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/document_revision_workflow_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.725949,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/drawing_redline_comparison_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.7732997,
+    "seen": 1788706892.458408,
+    "ast_hash": "dc6c29ccd1b8b34f8eaff7c975fd1f93",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/edit_employee_modal_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.8045943,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/edit_employee_modal_en/screen.png": {
+    "mtime": 1788350920.821635,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/edit_employee_modal_overlay/screen.png": {
+    "mtime": 1788350920.8462973,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/electrical_inspection_form_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.8518739,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/emergency_command_evacuation_protocol_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.8831384,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/emission_source_detail_success_state_en_fa/screen.png": {
+    "mtime": 1788350920.8987553,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_management_dashboard/screen.png": {
+    "mtime": 1788350920.9158638,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_management_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350920.9625301,
+    "seen": 1788706892.458408,
+    "ast_hash": "4f90337a9dd892f0fec70673031bc83c",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_management_dashboard_dual_language_en_fa_1/screen.png": {
+    "mtime": 1788350920.9929912,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_management_dashboard_dual_language_en_fa_2/screen.png": {
+    "mtime": 1788350921.0096362,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_management_dashboard_en/screen.png": {
+    "mtime": 1788350921.0248363,
+    "seen": 1788706892.458408,
+    "ast_hash": "a6dc9fe44f508b1139e26f569769fa12",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_management_high_concurrency_stress_test/screen.png": {
+    "mtime": 1788350921.0569303,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_profile_marcus_thorne_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.0872526,
+    "seen": 1788706892.458408,
+    "ast_hash": "0ffaff14eb695952bae5d47f47d677ad",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_profile_marcus_thorne_en/screen.png": {
+    "mtime": 1788350921.1196516,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/employee_skill_profile_detail_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.1448884,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/energy_monitoring_management_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.1716783,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/engineering_document_control_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.1963322,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/engineering_management_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.2441995,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/engineering_management_dashboard_interactive_filtering_en_fa/screen.png": {
+    "mtime": 1788350921.2750359,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/engineering_package_detail_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.2943256,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/engineering_standards_library_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.3214781,
+    "seen": 1788706892.458408,
+    "ast_hash": "e0fda6d99c2950f4ec664695b27cc1a5",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/engineering_work_request_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.3527274,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/enterprise_reporting_bi_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.3855991,
+    "seen": 1788706892.458408,
+    "ast_hash": "165fb6ebbe0ebde3afedd4e22047646c",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/enterprise_reporting_bi_dual_language_en_fa_1/screen.png": {
+    "mtime": 1788350921.4157841,
+    "seen": 1788706892.458408,
+    "ast_hash": "859b316ff7b397394db660d75f3e8f74",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/enterprise_reporting_bi_dual_language_en_fa_2/screen.png": {
+    "mtime": 1788350921.447042,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/environmental_carbon_compliance_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.4798052,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/environmental_compliance_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.5103476,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/evidence_collection_form_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.5356455,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/ewr_detail_technical_review_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.5575683,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/field_asset_details_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.5888128,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/field_inspection_checklist_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.6234925,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/field_ops_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.6520731,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/fmea_workbench_asset_strategy_detail_en_fa/screen.png": {
+    "mtime": 1788350921.683566,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/genai_knowledge_copilot_engineering_assistant_en_fa/screen.png": {
+    "mtime": 1788350921.7164028,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/hse_risk_management_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.7463384,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/in_context_feature_guide_minimalist_en_fa/screen.png": {
+    "mtime": 1788350921.7776086,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/incident_investigation_detail_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.808843,
+    "seen": 1788706892.458408,
+    "ast_hash": "eb9baafb6316e6102a94ad96a46a2e41",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/inspection_report_detail_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.8261092,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/interactive_system_walkthrough_guided_training_en_fa/screen.png": {
+    "mtime": 1788350921.8622594,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/inventory_management_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.8871171,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/investigation_to_action_workflow_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.9183714,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/lightweight_interactive_onboarding_guide_en_fa/screen.png": {
+    "mtime": 1788350921.949586,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/logistics_fleet_management_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.9845076,
+    "seen": 1788706892.458408,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/loto_isolation_management_dual_language_en_fa/screen.png": {
+    "mtime": 1788350921.9968672,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/maintenance_scheduling_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.0297976,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/master_help_onboarding_registry_global_en_fa/screen.png": {
+    "mtime": 1788350922.0597844,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/mechanical_inspection_form_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.091447,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/moc_management_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.1114924,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/moc_workflow_detail_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.15437,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/mro_inventory_optimization_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.1934547,
+    "seen": 1788706892.4594107,
+    "ast_hash": "4193c24ab5af5e32b855573865135957",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/mro_part_detail_ai_analysis_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.23314,
+    "seen": 1788706892.4594107,
+    "ast_hash": "95bbcf07ec944b62b39bcbb30336b83b",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/mro_reorder_workbench_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.2800057,
+    "seen": 1788706892.4594107,
+    "ast_hash": "2eb3a2173e0e1be00d6cb1aaeaeace7b",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/multi_method_identity_verification_en_fa_mobile/screen.png": {
+    "mtime": 1788350922.3127956,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/my_approvals_inbox_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.3325276,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/new_contract_creation_wizard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.3582242,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/new_purchase_requisition_wizard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.3894691,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/notification_settings_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.422349,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/offline_document_library_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.4408398,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/offline_site_maps_asset_tracking_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.4699678,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/onboarding_learning_hub_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.484479,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/operational_analytics_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.516126,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/operational_analytics_dashboard_enhanced_with_motion/screen.png": {
+    "mtime": 1788350922.5479672,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/operational_analytics_dashboard_interactive_filtering_en_fa/screen.png": {
+    "mtime": 1788350922.5635343,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/operational_budgeting_finance_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.5948763,
+    "seen": 1788706892.4594107,
+    "ast_hash": "fdf596cfb9c9e7993979e0b11cf9a741",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/pems_academy_training_onboarding_hub_en_fa/screen.png": {
+    "mtime": 1788350922.6261337,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/pems_enterprise_full_navigation_audit_dashboard_en_fa/screen.png": {
+    "mtime": 1788350922.6573777,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/permission_matrix_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.6890602,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/permit_details_with_multi_factor_auth_en_fa_desktop/screen.png": {
+    "mtime": 1788350922.7264993,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/permit_to_work_jsa_detail_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.751825,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/permit_to_work_with_biometric_authorization_en_fa/screen.png": {
+    "mtime": 1788350922.78441,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/predictive_maintenance_analytics_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.7992024,
+    "seen": 1788706892.4594107,
+    "ast_hash": "a2b64825377bf6cfb3ea40392145e903",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/predictive_maintenance_analytics_dual_language_en_fa_1/screen.png": {
+    "mtime": 1788350922.8462486,
+    "seen": 1788706892.4594107,
+    "ast_hash": "347295ae9f2e1544340719f4d81a1938",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/predictive_maintenance_analytics_dual_language_en_fa_2/screen.png": {
+    "mtime": 1788350922.877522,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/process_automation_hub_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.9091187,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_approval_with_biometric_mfa_en_fa/screen.png": {
+    "mtime": 1788350922.9419413,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350922.9725556,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_dashboard_interactive_filtering_en_fa/screen.png": {
+    "mtime": 1788350923.0035017,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_dashboard_stress_test_en_fa/screen.png": {
+    "mtime": 1788350923.0194118,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_request_detail_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.0507617,
+    "seen": 1788706892.4594107,
+    "ast_hash": "429b0945d48022b73120b4c32f8a4ef1",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_request_detail_dual_language_en_fa_1/screen.png": {
+    "mtime": 1788350923.0841606,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_request_detail_dual_language_en_fa_2/screen.png": {
+    "mtime": 1788350923.116314,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_request_detail_enhanced_with_motion/screen.png": {
+    "mtime": 1788350923.1452594,
+    "seen": 1788706892.4594107,
+    "ast_hash": "0d73a8bd60b77123b4639b3f846ca731",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/procurement_request_detail_stress_test_en_fa/screen.png": {
+    "mtime": 1788350923.1730092,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/quality_control_lab_analysis_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.2084248,
+    "seen": 1788706892.4594107,
+    "ast_hash": "6a1a322647a7f1687124092ca749d74b",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/quick_config_vdr_mdr_bulk_import_wizard_en_fa/screen.png": {
+    "mtime": 1788350923.2240658,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/rca_investigation_detail_5_whys_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.2560618,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/rca_investigation_detail_fishbone_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.3163874,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/rca_management_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.3360977,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/rcm_strategy_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.3738163,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/real_time_muster_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.3995914,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/report_analytics_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.4297345,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/report_incident_form_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.461363,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/reports_documents_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.478608,
+    "seen": 1788706892.4594107,
+    "ast_hash": "2808d353d8c344f77be4aff3e084e5a3",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/review_submit_report_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.5248866,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/safety_incident_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.5563684,
+    "seen": 1788706892.4594107,
+    "ast_hash": "75707cff09baf7ef20e9c0301f451a58",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/screen.png": {
+    "mtime": 1788350920.2091136,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/security_configuration_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.6039505,
+    "seen": 1788706892.4594107,
+    "ast_hash": "f34441a91f2e27272e42d89bc93009da",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/sensor_detail_calibration_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.635209,
+    "seen": 1788706892.4594107,
+    "ast_hash": "396f8c512aaa78eee6c1cdc9567b3683",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/sensor_monitoring_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.666456,
+    "seen": 1788706892.4594107,
+    "ast_hash": "3289d173dcfc5262f636e211ed36509d",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/shift_handover_operations_log_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.6977022,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/shift_management_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.7294564,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/spare_parts_inventory_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.761169,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/spare_parts_procurement_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.7957373,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/stock_movement_transaction_log_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.8106701,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/submitted_reports_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.840844,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/supplier_directory_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.8564558,
+    "seen": 1788706892.4594107,
+    "ast_hash": "81db056324d8cd33121c8178e84b99eb",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/supplier_directory_stress_test_en_fa/screen.png": {
+    "mtime": 1788350923.8880675,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/system_audit_log_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.910044,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/system_security_mfa_configuration_en_fa/screen.png": {
+    "mtime": 1788350923.9205272,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/system_settings_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.935034,
+    "seen": 1788706892.4594107,
+    "ast_hash": "e7aec7e0765bb1b5823397ae8f538af5",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/tco_executive_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.950667,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/technical_documentation_library_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.9821627,
+    "seen": 1788706892.4594107,
+    "ast_hash": "5bafeb90ddc1bc5de6a3ee3a14752257",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/technical_drawing_detail_dual_language_en_fa/screen.png": {
+    "mtime": 1788350923.9977994,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/technical_help_center_documentation_pems_en_fa/screen.png": {
+    "mtime": 1788350924.0294476,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/technical_inspection_management_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.0622108,
+    "seen": 1788706892.4594107,
+    "ast_hash": "98354dd27c94fee35d9e792cd7cd454d",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/technical_inspection_management_dual_language_en_fa_1/screen.png": {
+    "mtime": 1788350924.0767004,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/technical_inspection_management_dual_language_en_fa_2/screen.png": {
+    "mtime": 1788350924.0926006,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/training_certification_management_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.10832,
+    "seen": 1788706892.4594107,
+    "ast_hash": "d23a67aebfb05d0aacc6e89304f04dfc",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/transmittal_management_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.1410806,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/user_security_profile_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.1896706,
+    "seen": 1788706892.4594107,
+    "ast_hash": "cd78e551b78a95375bbb5147945cff9f",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/user_security_profile_dual_language_en_fa_1/screen.png": {
+    "mtime": 1788350924.234485,
+    "seen": 1788706892.4594107,
+    "ast_hash": "3ae8102e77c8b2d356a9f10734e37fe6",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/user_security_profile_dual_language_en_fa_2/screen.png": {
+    "mtime": 1788350924.2713118,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/users_permissions_management_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.309695,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/utility_load_balancing_energy_flow_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.3514433,
+    "seen": 1788706892.4594107,
+    "ast_hash": "aae38bd9e498a9fc816703cfaf57a550",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/vdr_management_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.3759232,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/vdr_package_detail_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.3928742,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/vendor_performance_scorecard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.4234188,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/visitor_access_control_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.4569178,
+    "seen": 1788706892.4594107,
+    "ast_hash": "a954105180f4d6f7ef29393729fa1425",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/warehouse_layout_bin_tracking_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.4779167,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/white_label_system_branding_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.4881346,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/work_order_detail_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.5179172,
+    "seen": 1788706892.4594107,
+    "ast_hash": "e22927d31e00257aa5133bd2dfb1871e",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/work_order_detail_stress_test_en_fa/screen.png": {
+    "mtime": 1788350924.548282,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/work_order_management_operational_stress_test/screen.png": {
+    "mtime": 1788350924.5758436,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/work_orders_dashboard_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.6009927,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/work_orders_dashboard_stress_test_en_fa/screen.png": {
+    "mtime": 1788350924.6233702,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/workflow_designer_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.6390584,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/workforce_assignment_detail_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.6774678,
+    "seen": 1788706892.4594107,
+    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
+    "semantic_hash": ""
+  },
+  "src/stitch-temp/workplace_safety_audit_dual_language_en_fa/screen.png": {
+    "mtime": 1788350924.7048504,
+    "seen": 1788706892.4594107,
+    "ast_hash": "b77ab33897d7f0995c07c090224b1bd9",
+    "semantic_hash": ""
   }
 }

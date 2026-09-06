@@ -7,6 +7,16 @@ public interface IEngineeringDocumentRepository
 {
     Task<List<EngineeringDocument>> GetAllAsync();
 
+    // طبق «PEMS — Global Grid Hardening» P1: قبلاً AISearchController/DocumentSearchAIService
+    // برای هر جستجو (حتی وقتی Discipline/DocumentType/Status انتخاب شده بود) کل جدول فعال
+    // EngineeringDocuments را با ۵ Include بارگذاری می‌کرد و فیلتر را بعداً در حافظه اعمال
+    // می‌کرد. این متد فیلترهای قابل‌ترجمه به SQL را قبل از Include(Attachments) اعمال می‌کند تا
+    // وقتی کاربر فیلتر انتخاب کرده، فقط ردیف‌های منطبق بارگذاری شوند. امتیازدهی متنی روی
+    // Title/Description/Attachments (چند فیلد وزن‌دار روی والد+فرزند) در این نسخه هنوز در
+    // حافظه انجام می‌شود - تبدیل کامل آن به SQL نیازمند Full-Text Search است (به‌عنوان راه‌حل
+    // معماری آینده مستند شده، نه اضافه‌شده در این تغییر).
+    Task<List<EngineeringDocument>> GetActiveForSearchAsync(string? disciplineName, string? documentType, string? status);
+
     // طبق Phase E-03 (رفع P1 ممیزی Performance): فیلتر/صفحه‌بندی/محدودیت دیسیپلین همه در SQL
     // اعمال می‌شوند - نه بارگذاری کل جدول در حافظه. restrictToDiscipline/disciplineId دقیقاً
     // همان دو سیگنال جدایی هستند که EngineeringDocumentsController.ScopeToOwnDisciplineIfRestrictedAsync

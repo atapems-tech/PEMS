@@ -6,6 +6,11 @@ namespace PEMS.Application.Interfaces;
 public interface IVendorService
 {
     Task<List<VendorDto>> GetAllAsync();
+
+    // طبق «PEMS — Global Grid Hardening» P1: GetAllAsync بالا کل جدول Vendors را بدون Skip/Take
+    // بارگذاری می‌کند (GetByIdAsync هم از همین متد استفاده می‌کند - دست‌نخورده ماند). این متد
+    // جدید و جدا صفحه‌بندی واقعی سمت SQL برای Index دارد.
+    Task<PagedResult<VendorDto>> GetPagedAsync(int page, int pageSize);
     Task<VendorDto?> GetByIdAsync(int id);
     Task<Vendor?> GetEntityByIdAsync(int id);
     Task<int> CreateAsync(Vendor vendor);

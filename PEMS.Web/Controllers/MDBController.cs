@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Common;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
 
@@ -19,12 +20,16 @@ public class MDBController : Controller
         _context = context;
     }
 
-    public async Task<IActionResult> Index(int? projectId, int? vendorId)
+    // طبق «PEMS — Global Grid Hardening» P1: قبلاً کل جدول فعال MDB (با ۴ Include) بدون
+    // Skip/Take بارگذاری می‌شد. فیلترهای Project/Vendor موجود دست‌نخورده ماندند؛ فقط صفحه‌بندی
+    // واقعی اضافه شد.
+    public async Task<IActionResult> Index(int? projectId, int? vendorId, int page = 1, int? pageSize = null)
     {
         ViewData["Title"] = "Manufacturer Data Books (MDB)";
         ViewData["Section"] = "Engineering Management";
 
-        var list = await _service.GetAllAsync(projectId, vendorId);
+        var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
+        var result = await _service.GetPagedAsync(page, normalizedPageSize, projectId, vendorId);
 
         ViewBag.Projects = await _context.Projects.Where(x => x.IsActive)
             .Select(x => new { x.ProjectId, x.ProjectName }).ToListAsync();
@@ -33,7 +38,7 @@ public class MDBController : Controller
         ViewBag.SelectedProjectId = projectId;
         ViewBag.SelectedVendorId = vendorId;
 
-        return View(list);
+        return View(result);
     }
 
     public async Task<IActionResult> Details(int id)
