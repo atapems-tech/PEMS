@@ -21,34 +21,72 @@ public class InspectionService : IInspectionService
         _context = context;
     }
 
-    public async Task<List<InspectionListItemDto>> GetFleetAsync()
-    {
-        var records = await _context.InspectionRecords
-            .Where(x => x.IsActive)
-            .Include(x => x.Equipment)
-            .OrderByDescending(x => x.InspectionDate)
-            .ToListAsync();
-
-        return SortByPriority(records.Select(ToDto));
-    }
-
+    // طبق ممیزی مستقل فاز ۶B Wave B1 (P1-02): قبلاً کل InspectionRecordهای فعال با
+    // Include(Equipment) بارگذاری می‌شدند، در حافظه به DTO map و طبق اولویت مرتب می‌شدند، و
+    // فقط بعد از آن Skip/Take روی همون List اجرا می‌شد - یعنی صفحه‌بندی واقعی نبود. حالا
+    // اولویت (Alert=0/Overdue=1/DueSoon=2/سایر=3) مستقیماً از روی فیلدهای خام Measurement/
+    // Limit/NextInspectionDate به یک عبارت قابل ترجمه‌ی SQL (CASE WHEN) تبدیل شده - دقیقاً
+    // همون منطق GetConditionStatus/GetDueStatus قبلی، بدون فراخوانی متد C# روی هر رکورد.
     public async Task<PagedResult<InspectionListItemDto>> GetPagedFleetAsync(int page, int pageSize)
     {
-        var all = await GetFleetAsync();
+        var query = _context.InspectionRecords.Where(x => x.IsActive);
+
+        var totalCount = await query.CountAsync();
 
         page = page < 1 ? 1 : page;
         pageSize = DataGridPageSize.Normalize(pageSize);
 
-        var items = all.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        var items = await query
+            .OrderBy(x =>
+                (x.MeasurementValue.HasValue &&
+                    ((x.LowerLimit.HasValue && x.MeasurementValue.Value < x.LowerLimit.Value) ||
+                     (x.UpperLimit.HasValue && x.MeasurementValue.Value > x.UpperLimit.Value)))
+                    ? 0 // Alert
+                : (x.NextInspectionDate.HasValue && x.NextInspectionDate.Value.Date < DateTime.Today)
+                    ? 1 // Overdue
+                : (x.NextInspectionDate.HasValue && x.NextInspectionDate.Value.Date <= DateTime.Today.AddDays(30))
+                    ? 2 // DueSoon
+                    : 3) // OK/Unknown
+            .ThenByDescending(x => x.InspectionDate)
+            .ThenByDescending(x => x.InspectionRecordId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(x => new InspectionListItemDto
+            {
+                InspectionRecordId = x.InspectionRecordId,
+                EquipmentId = x.EquipmentId,
+                TagNumber = x.Equipment != null ? x.Equipment.TagNumber : string.Empty,
+                InspectionType = x.InspectionType,
+                InspectionDate = x.InspectionDate,
+                Inspector = x.Inspector,
+                MeasurementValue = x.MeasurementValue,
+                MeasurementUnit = x.MeasurementUnit,
+                LowerLimit = x.LowerLimit,
+                UpperLimit = x.UpperLimit,
+                ConditionStatus =
+                    (!x.MeasurementValue.HasValue || (!x.LowerLimit.HasValue && !x.UpperLimit.HasValue))
+                        ? "Unknown"
+                    : (x.LowerLimit.HasValue && x.MeasurementValue.Value < x.LowerLimit.Value)
+                        ? "Alert"
+                    : (x.UpperLimit.HasValue && x.MeasurementValue.Value > x.UpperLimit.Value)
+                        ? "Alert"
+                        : "Normal",
+                NextInspectionDate = x.NextInspectionDate,
+                DueStatus =
+                    !x.NextInspectionDate.HasValue
+                        ? "Unknown"
+                    : x.NextInspectionDate.Value.Date < DateTime.Today
+                        ? "Overdue"
+                    : x.NextInspectionDate.Value.Date <= DateTime.Today.AddDays(30)
+                        ? "DueSoon"
+                        : "OK",
+                Recommendation = x.Recommendation,
+                Description = x.Description
+            })
+            .ToListAsync();
 
-        return new PagedResult<InspectionListItemDto> { Items = items, Page = page, PageSize = pageSize, TotalCount = all.Count };
+        return new PagedResult<InspectionListItemDto> { Items = items, Page = page, PageSize = pageSize, TotalCount = totalCount };
     }
-
-    private static List<InspectionListItemDto> SortByPriority(IEnumerable<InspectionListItemDto> items) => items
-        .OrderBy(x => x.ConditionStatus == "Alert" ? 0 : x.DueStatus == "Overdue" ? 1 : x.DueStatus == "DueSoon" ? 2 : 3)
-        .ThenByDescending(x => x.InspectionDate)
-        .ThenByDescending(x => x.InspectionRecordId)
-        .ToList();
 
     public async Task<List<InspectionListItemDto>> GetForEquipmentAsync(int equipmentId)
     {

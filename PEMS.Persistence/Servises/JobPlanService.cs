@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Common;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
@@ -17,38 +18,37 @@ public class JobPlanService : IJobPlanService
         _numberingService = numberingService;
     }
 
-    public async Task<List<JobPlanListDto>> GetListAsync()
+    // طبق ممیزی مستقل فاز ۶B Wave B1 (P1-01): قبلاً کل JobPlanهای فعال + کل MaintenanceTasks +
+    // کل MaintenancePlans به‌صورت جداگانه در حافظه بارگذاری می‌شدند (GroupBy→Dictionary→
+    // lookup در حلقه‌ی foreach) - بدون Skip/Take. حالا TaskCount/PlanUsageCount با Correlated
+    // Subquery داخل همون Select محاسبه می‌شوند - در SQL اجرا می‌شوند، نه در حافظه.
+    public async Task<PagedResult<JobPlanListDto>> GetListAsync(int page = 1, int pageSize = 50)
     {
-        var taskCounts = await _context.MaintenanceTasks.Where(x => x.IsActive)
-            .GroupBy(x => x.JobPlanId)
-            .Select(g => new { JobPlanId = g.Key, Count = g.Count() })
-            .ToDictionaryAsync(x => x.JobPlanId, x => x.Count);
+        var query = _context.JobPlans.Where(x => x.IsActive);
 
-        var usageCounts = await _context.MaintenancePlans.Where(x => x.IsActive && x.JobPlanId != null)
-            .GroupBy(x => x.JobPlanId!.Value)
-            .Select(g => new { JobPlanId = g.Key, Count = g.Count() })
-            .ToDictionaryAsync(x => x.JobPlanId, x => x.Count);
+        var totalCount = await query.CountAsync();
 
-        var jobPlans = await _context.JobPlans
-            .Where(x => x.IsActive)
+        page = page < 1 ? 1 : page;
+        pageSize = DataGridPageSize.Normalize(pageSize);
+
+        var items = await query
             .OrderBy(x => x.JobPlanNumber)
+            .ThenBy(x => x.JobPlanId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .Select(x => new JobPlanListDto
             {
                 JobPlanId = x.JobPlanId,
                 JobPlanNumber = x.JobPlanNumber,
                 Title = x.Title,
                 EstimatedDurationHours = x.EstimatedDurationHours,
-                IsActive = x.IsActive
+                IsActive = x.IsActive,
+                TaskCount = _context.MaintenanceTasks.Count(t => t.JobPlanId == x.JobPlanId && t.IsActive),
+                PlanUsageCount = _context.MaintenancePlans.Count(p => p.JobPlanId == x.JobPlanId && p.IsActive)
             })
             .ToListAsync();
 
-        foreach (var dto in jobPlans)
-        {
-            dto.TaskCount = taskCounts.GetValueOrDefault(dto.JobPlanId);
-            dto.PlanUsageCount = usageCounts.GetValueOrDefault(dto.JobPlanId);
-        }
-
-        return jobPlans;
+        return new PagedResult<JobPlanListDto> { Items = items, Page = page, PageSize = pageSize, TotalCount = totalCount };
     }
 
     public async Task<List<(int JobPlanId, string JobPlanNumber, string Title)>> GetPickerListAsync()

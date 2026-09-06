@@ -9,12 +9,11 @@ namespace PEMS.Application.Interfaces;
 /// </summary>
 public interface IInspectionService
 {
-    Task<List<InspectionListItemDto>> GetFleetAsync();
-
-    // طبق سند «PEMS — Global Data Grid Standard» (فاز ۶B - Wave A): اولویت‌بندی این Grid
-    // (Alert/Overdue/DueSoon اول) از روی مقادیر محاسبه‌شده‌ی ConditionStatus/DueStatus است، نه
-    // ستونی از DB - پس باید ابتدا کل مجموعه‌ی فعال مرتب شود و بعد صفحه‌بندی روی نتیجه انجام
-    // شود (همون اصلی که در Permit.pendingMyApproval و FunctionalLocation.Breadcrumb رعایت شد).
+    // طبق ممیزی مستقل فاز ۶B Wave B1 (P1-02): GetPagedFleetAsync دیگر با یک GetFleetAsync
+    // کامل (بدون Skip/Take) کار نمی‌کند - اولویت‌بندی Alert/Overdue/DueSoon مستقیماً به یک
+    // Expression قابل ترجمه به SQL (CASE WHEN روی همون فیلدهای خام Measurement/Limit/
+    // NextInspectionDate) تبدیل شده، پس Skip/Take واقعاً روی IQueryable اجرا می‌شود. طبق grep
+    // در کل ریپو، GetFleetAsync() هیچ مصرف‌کننده‌ای جز همین متد نداشت - حذف شد.
     Task<PagedResult<InspectionListItemDto>> GetPagedFleetAsync(int page, int pageSize);
 
     Task<List<InspectionListItemDto>> GetForEquipmentAsync(int equipmentId);

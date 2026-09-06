@@ -140,6 +140,35 @@ public class InspectionGridPaginationTests
     }
 
     [Fact]
+    public async Task GetPagedFleetAsync_InvalidPageSize_FallsBackTo50()
+    {
+        var service = CreateService(nameof(GetPagedFleetAsync_InvalidPageSize_FallsBackTo50), out var ctx);
+        var eq = NewEquipment("TAG-001");
+        ctx.Equipments.Add(eq);
+        ctx.InspectionRecords.Add(NewRecord(eq.EquipmentId, DateTime.Today));
+        await ctx.SaveChangesAsync();
+
+        var result = await service.GetPagedFleetAsync(1, 13);
+
+        Assert.Equal(50, result.PageSize);
+    }
+
+    [Fact]
+    public async Task GetPagedFleetAsync_InvalidPage_FallsBackToPage1()
+    {
+        var service = CreateService(nameof(GetPagedFleetAsync_InvalidPage_FallsBackToPage1), out var ctx);
+        var eq = NewEquipment("TAG-001");
+        ctx.Equipments.Add(eq);
+        ctx.InspectionRecords.Add(NewRecord(eq.EquipmentId, DateTime.Today));
+        await ctx.SaveChangesAsync();
+
+        var result = await service.GetPagedFleetAsync(0, 20);
+
+        Assert.Equal(1, result.Page);
+        Assert.Single(result.Items);
+    }
+
+    [Fact]
     public async Task GetPagedFleetAsync_EmptyDataset_ReturnsEmptyPagedResult()
     {
         var service = CreateService(nameof(GetPagedFleetAsync_EmptyDataset_ReturnsEmptyPagedResult), out _);
@@ -178,5 +207,83 @@ public class InspectionGridPaginationTests
         Assert.Equal(26, page1.TotalCount);
         Assert.Equal("Alert", page1.Items[0].ConditionStatus);
         Assert.Equal(alertRecord.InspectionRecordId, page1.Items[0].InspectionRecordId);
+    }
+
+    // طبق ممیزی مستقل فاز ۶B Wave B1 (P1-02): ترتیب اولویت Alert→Overdue→DueSoon→سایر باید
+    // دقیقاً حفظ شود - این تست هر چهار سطح را با یک رکورد مشخص می‌سازد و ترتیب نهایی را
+    // به‌صورت end-to-end (از طریق CASE WHEN قابل ترجمه به SQL، نه C# در حافظه) اثبات می‌کند.
+    [Fact]
+    public async Task GetPagedFleetAsync_FullPriorityOrder_AlertThenOverdueThenDueSoonThenOther()
+    {
+        var service = CreateService(nameof(GetPagedFleetAsync_FullPriorityOrder_AlertThenOverdueThenDueSoonThenOther), out var ctx);
+
+        var eqOther = NewEquipment("TAG-OTHER");
+        var eqDueSoon = NewEquipment("TAG-DUESOON");
+        var eqOverdue = NewEquipment("TAG-OVERDUE");
+        var eqAlert = NewEquipment("TAG-ALERT");
+        ctx.Equipments.AddRange(eqOther, eqDueSoon, eqOverdue, eqAlert);
+
+        // "Other" - بدون Measurement خارج از بازه و بدون NextInspectionDate نزدیک (یا اصلاً OK)
+        var other = NewRecord(eqOther.EquipmentId, DateTime.Today);
+        other.NextInspectionDate = DateTime.Today.AddDays(60); // OK - نه Overdue، نه DueSoon
+
+        // "DueSoon" - NextInspectionDate ظرف ۳۰ روز آینده
+        var dueSoon = NewRecord(eqDueSoon.EquipmentId, DateTime.Today);
+        dueSoon.NextInspectionDate = DateTime.Today.AddDays(10);
+
+        // "Overdue" - NextInspectionDate گذشته
+        var overdue = NewRecord(eqOverdue.EquipmentId, DateTime.Today);
+        overdue.NextInspectionDate = DateTime.Today.AddDays(-5);
+
+        // "Alert" - Measurement خارج از آستانه (باید حتی از Overdue هم اولویت بالاتری داشته باشد)
+        var alert = NewRecord(eqAlert.EquipmentId, DateTime.Today);
+        alert.MeasurementValue = 5;
+        alert.LowerLimit = 10;
+        alert.NextInspectionDate = DateTime.Today.AddDays(60); // OK از نظر Due، اما Alert باید اول باشد
+
+        // عمداً به ترتیب معکوس درج می‌شوند تا اثبات شود ترتیب نهایی از Query می‌آید، نه از ترتیب درج
+        ctx.InspectionRecords.Add(other);
+        ctx.InspectionRecords.Add(dueSoon);
+        ctx.InspectionRecords.Add(overdue);
+        ctx.InspectionRecords.Add(alert);
+        await ctx.SaveChangesAsync();
+
+        var result = await service.GetPagedFleetAsync(1, 20);
+
+        Assert.Equal(4, result.TotalCount);
+        Assert.Equal(
+            new[] { alert.InspectionRecordId, overdue.InspectionRecordId, dueSoon.InspectionRecordId, other.InspectionRecordId },
+            result.Items.Select(x => x.InspectionRecordId));
+        Assert.Equal("Alert", result.Items[0].ConditionStatus);
+        Assert.Equal("Overdue", result.Items[1].DueStatus);
+        Assert.Equal("DueSoon", result.Items[2].DueStatus);
+        Assert.Equal("OK", result.Items[3].DueStatus);
+    }
+
+    [Fact]
+    public async Task GetPagedFleetAsync_TieBreaker_SamePriorityAndDate_OrderedByInspectionRecordIdDescending()
+    {
+        var service = CreateService(nameof(GetPagedFleetAsync_TieBreaker_SamePriorityAndDate_OrderedByInspectionRecordIdDescending), out var ctx);
+        var sameDate = DateTime.Today;
+
+        var eq1 = NewEquipment("TAG-001");
+        var eq2 = NewEquipment("TAG-002");
+        var eq3 = NewEquipment("TAG-003");
+        ctx.Equipments.AddRange(eq1, eq2, eq3);
+
+        var first = NewRecord(eq1.EquipmentId, sameDate);
+        var second = NewRecord(eq2.EquipmentId, sameDate);
+        var third = NewRecord(eq3.EquipmentId, sameDate);
+        ctx.InspectionRecords.Add(first);
+        ctx.InspectionRecords.Add(second);
+        ctx.InspectionRecords.Add(third);
+        await ctx.SaveChangesAsync();
+
+        var result = await service.GetPagedFleetAsync(1, 20);
+
+        // همه‌ی سه رکورد اولویت یکسان (Other/OK) و InspectionDate یکسان دارند - tie-breaker
+        // باید InspectionRecordId نزولی باشد (بزرگ‌ترین Id اول).
+        var expectedOrder = new[] { third.InspectionRecordId, second.InspectionRecordId, first.InspectionRecordId };
+        Assert.Equal(expectedOrder, result.Items.Select(x => x.InspectionRecordId));
     }
 }

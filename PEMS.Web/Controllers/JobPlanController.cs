@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Common;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
 using PEMS.Web.Security;
@@ -23,12 +24,14 @@ public class JobPlanController : Controller
         _currentUser = currentUser;
     }
 
-    public async Task<IActionResult> Index()
+    // طبق ممیزی مستقل فاز ۶B Wave B1 (P1-01): قبلاً کل جدول فعال با ToListAsync (بدون Skip/Take)
+    // بارگذاری می‌شد.
+    public async Task<IActionResult> Index(int page = 1, int? pageSize = null)
     {
         ViewData["Title"] = "Job Plans";
         ViewData["Section"] = "CMMS Integration";
 
-        var items = await _service.GetListAsync();
+        var items = await _service.GetListAsync(page, DataGridPageSize.Normalize(pageSize));
         return View(items);
     }
 

@@ -1,4 +1,4 @@
-@model List<PEMS.Application.DTOs.JobPlanListDto>
+@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.JobPlanListDto>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0"><i class="bi bi-list-check"></i> Job Plans</h5>
@@ -21,10 +21,25 @@
 }
 
 <div class="content-card">
-    <table class="table table-enterprise mb-0">
-        <thead><tr><th>Number</th><th>Title</th><th>Est. Duration</th><th>Tasks</th><th>Used by Plans</th><th></th></tr></thead>
+    <div class="d-flex justify-content-end mb-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('JobPlan')">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+        </button>
+    </div>
+    <div class="pems-grid-scroll">
+    <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="JobPlan">
+        <thead>
+            <tr>
+                <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">Number</th>
+                <th data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400">Title</th>
+                <th data-col-key="duration" data-resizable="true" data-min-width="100" data-max-width="160">Est. Duration</th>
+                <th data-col-key="tasks" data-resizable="true" data-min-width="70" data-max-width="120">Tasks</th>
+                <th data-col-key="usage" data-resizable="true" data-min-width="90" data-max-width="150">Used by Plans</th>
+                <th></th>
+            </tr>
+        </thead>
         <tbody>
-            @foreach (var jp in Model)
+            @foreach (var jp in Model.Items)
             {
                 <tr>
                     <td class="small fw-bold">@jp.JobPlanNumber</td>
@@ -37,7 +52,19 @@
             }
         </tbody>
     </table>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هنوز Job Plan ای ثبت نشده.</p> }
+    </div>
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">هنوز Job Plan ای ثبت نشده.</p> }
+
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "JobPlan",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = ""
+    })
 </div>
 
 <div class="modal fade" id="createJobPlanModal" tabindex="-1">
@@ -57,3 +84,11 @@
         </form>
     </div></div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('JobPlan');
+        });
+    </script>
+}
