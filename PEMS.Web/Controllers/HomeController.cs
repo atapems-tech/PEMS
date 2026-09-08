@@ -15,6 +15,7 @@ namespace PEMS.Web.Controllers
         private readonly PEMS.Web.Security.ICurrentUserService _currentUser;
         private readonly PEMS.Application.Interfaces.IRoleModuleActionService _roleModuleActionService;
         private readonly PEMS.Application.Interfaces.IPermissionService _permissionService;
+        private readonly PEMS.Application.Interfaces.ISetupService _setupService;
         private readonly IWorkflowRuntime _runtime;
 
 
@@ -23,6 +24,7 @@ namespace PEMS.Web.Controllers
             PEMS.Web.Security.ICurrentUserService currentUser,
             PEMS.Application.Interfaces.IRoleModuleActionService roleModuleActionService,
             PEMS.Application.Interfaces.IPermissionService permissionService,
+            PEMS.Application.Interfaces.ISetupService setupService,
             IWorkflowRuntime runtime)
         {
             _context = context;
@@ -31,6 +33,7 @@ namespace PEMS.Web.Controllers
             _currentUser = currentUser;
             _roleModuleActionService = roleModuleActionService;
             _permissionService = permissionService;
+            _setupService = setupService;
             _runtime = runtime;
         }
 
@@ -181,6 +184,24 @@ namespace PEMS.Web.Controllers
             {
                 _logger.LogWarning(ex, "محاسبه‌ی بخش My Work برای Dashboard ناموفق بود");
                 ViewBag.MyWork = null;
+            }
+
+
+            // ===== Setup Status Card (طبق «PEMS — Quick Setup & Domain Import Architecture
+            // Refactoring» بند ۱۴): افزودنی محض، به منطق بالای همین متد کاری ندارد. فقط برای
+            // کاربرانی نشان داده می‌شود که مجوز Setup/View دارند - نه هر کاربر احرازهویت‌شده‌ای،
+            // چون این اطلاعات (وضعیت آمادگی کل سیستم) برای نقش‌های عملیاتی معنادار نیست. =====
+            try
+            {
+                if (await _permissionService.HasPermissionAsync(_currentUser.Roles, "Setup", "View"))
+                {
+                    ViewBag.SetupStatus = await _setupService.GetStatusAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "محاسبه‌ی وضعیت Setup برای Dashboard ناموفق بود");
+                ViewBag.SetupStatus = null;
             }
 
 

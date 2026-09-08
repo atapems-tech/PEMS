@@ -43,7 +43,8 @@ public class PermissionMatrixController : Controller
             "ProcurementPackage",
             "MDRImport", "EquipmentImport", "MrsImport",
             "AIExtraction", "TableExtraction", "Relationship", "OCRProcessing",
-            "Team", "Crew", "InventoryMasterData", "MaintenanceMasterData"
+            "Team", "Crew", "InventoryMasterData", "MaintenanceMasterData",
+            "Setup"
         };
 
         return View(matrix);

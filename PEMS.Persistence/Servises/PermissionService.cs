@@ -23,7 +23,8 @@ public class PermissionService : IPermissionService
         "ProcurementPackage",
         "MDRImport", "EquipmentImport", "MrsImport",
         "AIExtraction", "TableExtraction", "Relationship", "OCRProcessing",
-        "Team", "Crew", "InventoryMasterData", "MaintenanceMasterData"
+        "Team", "Crew", "InventoryMasterData", "MaintenanceMasterData",
+        "Setup"
     };
 
     public PermissionService(PEMSDbContext context, IAccessControlService accessControlService)
@@ -531,6 +532,20 @@ public class PermissionService : IPermissionService
             New(SystemRoles.EngineeringSupervisor, "MaintenanceMasterData", create: true, edit: true),
             New(SystemRoles.EngineeringManager, "MaintenanceMasterData", create: true, edit: true),
             New(SystemRoles.Viewer, "MaintenanceMasterData")
+        });
+
+        // ==============================================================================
+        // طبق «PEMS — Quick Setup & Domain Import Architecture Refactoring» بند ۱۰: Quick Setup
+        // یک قابلیت سیستمی/سرتاسری است (شامل وضعیت Permissions/AI Administration که هر دو
+        // منحصر به SystemAdmin هستند) - نه یک ابزار عملیاتی تک‌دامنه. فقط "View" تعریف شد چون
+        // Quick Setup خودش هیچ Mutation ای انجام نمی‌دهد (فقط وضعیت را می‌خواند و به Workflow
+        // های دامنه‌ای موجود لینک می‌دهد که هرکدام مجوز خودشان را مستقل بررسی می‌کنند - طبق
+        // اصل صریح سند: "QuickSetup.View + Equipment.Import هر دو لازم‌اند، نه فقط یکی").
+        // EngineeringManager چون در تمام ماژول‌های دیگر PEMS اختیار نظارتی سرتاسری دارد.
+        // ==============================================================================
+        await SeedMissingRolesAsync("Setup", new List<RolePermission>
+        {
+            New(SystemRoles.EngineeringManager, "Setup")
         });
     }
 }

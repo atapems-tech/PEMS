@@ -37,7 +37,7 @@ public class VDRImportController : Controller
             return Forbid();
 
         ViewData["Title"] = "VDR Import";
-        ViewData["Section"] = "Administration";
+        ViewData["Section"] = "Engineering Management";
 
         ViewBag.Projects = await _context.Projects.Where(x => x.IsActive)
             .Select(x => new { x.ProjectId, x.ProjectName }).ToListAsync();
@@ -79,7 +79,7 @@ public class VDRImportController : Controller
             return Forbid();
 
         ViewData["Title"] = "Review VDR Import";
-        ViewData["Section"] = "Administration";
+        ViewData["Section"] = "Engineering Management";
 
         var batch = await _importService.GetBatchAsync(batchId);
         if (batch == null) return NotFound();

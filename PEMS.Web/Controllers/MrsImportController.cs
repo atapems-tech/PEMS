@@ -37,7 +37,7 @@ public class MrsImportController : Controller
             return Forbid();
 
         ViewData["Title"] = "MRS Import";
-        ViewData["Section"] = "Administration";
+        ViewData["Section"] = "Inventory & Materials";
 
         var batches = await _service.GetBatchesAsync();
         return View(batches);
@@ -114,7 +114,7 @@ public class MrsImportController : Controller
             return Forbid();
 
         ViewData["Title"] = "MRS Import Review";
-        ViewData["Section"] = "Administration";
+        ViewData["Section"] = "Inventory & Materials";
 
         var detail = await _service.GetBatchDetailAsync(batchId, matchStatusFilter);
         if (detail == null) return NotFound();

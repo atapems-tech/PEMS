@@ -271,6 +271,9 @@ builder.Services.AddScoped<IEmployeeSkillService, EmployeeSkillService>();
 builder.Services.AddScoped<ICrewService, CrewService>();
 builder.Services.AddScoped<IEmployeeLaborRateService, EmployeeLaborRateService>();
 
+// طبق «PEMS — Quick Setup & Domain Import Architecture Refactoring»
+builder.Services.AddScoped<ISetupService, SetupService>();
+
 builder.Services.AddScoped<IMaterialItemService, MaterialItemService>();
 builder.Services.AddScoped<IMaterialStockService, MaterialStockService>();
 builder.Services.AddScoped<IInventoryTransactionService, InventoryTransactionService>();

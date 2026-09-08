@@ -75,13 +75,15 @@ public static class MenuAccess
         SystemRoles.SystemAdmin
     };
 
-    // طبق «PEMS — Global Engineering Management UI/UX, Navigation & RBAC Hardening» بند ۹-۱۲:
-    // MDR/VDR/Equipment/MRS Import اقدامات ریسک‌بالای «تایید نهایی داده» هستند و باید از منوهای
-    // روزمره‌ی Engineering/CMMS/Inventory جدا و زیر «Administration > Import Center» دیده شوند؛
-    // اما همان نقش‌هایی که در PermissionService.SeedDefaultsAsync برای Commit/Approve این سه
-    // Pipeline مجوز گرفتند (DocumentController، EngineeringManager، MaintenanceEngineer) باید
-    // همچنان لینک این صفحات را در سایدبار ببینند - در غیر این صورت مجوز Backend دارند اما هیچ
-    // راهی برای رسیدن به صفحه از منو ندارند (نقض بند ۴۴: «سایدبار را بیش‌از‌حد ساده نکن»).
+    // طبق «PEMS — Quick Setup & Domain Import Architecture Refactoring» بند ۷/۲۸: Import ها
+    // قابلیت دامنه‌ای هستند (Import is a domain capability, not an Administration capability) -
+    // MDR/VDR/Equipment/MRS Import هرکدام حالا داخل بخش دامنه‌ی خودشان دیده می‌شوند (Engineering/
+    // CMMS/Inventory)، نه زیر Administration. این آرایه فقط تعیین می‌کند چه نقش‌هایی اجازه دارند
+    // همان لینک را - در هرکجا که رندر شود - ببینند؛ باید دقیقاً با نقش‌هایی که در
+    // PermissionService.SeedDefaultsAsync برای Commit/Approve این چهار Pipeline مجوز گرفتند
+    // (DocumentController، EngineeringManager، MaintenanceEngineer، Viewer) یکی بماند - وگرنه
+    // یا لینک مرده می‌سازد (نقش می‌بیند ولی 403 می‌گیرد) یا مجوز Backend را بی‌راه می‌کند
+    // (نقش می‌تواند از URL مستقیم برود ولی لینک را نمی‌بیند).
     public static readonly string[] ImportCenter =
     {
         SystemRoles.SystemAdmin,

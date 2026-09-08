@@ -38,7 +38,7 @@ public class EquipmentImportController : Controller
             return Forbid();
 
         ViewData["Title"] = "Equipment Import";
-        ViewData["Section"] = "Administration";
+        ViewData["Section"] = "CMMS Integration";
 
         ViewBag.Projects = await _context.Projects.Where(x => x.IsActive)
             .Select(x => new { x.ProjectId, x.ProjectName }).ToListAsync();
@@ -80,7 +80,7 @@ public class EquipmentImportController : Controller
             return Forbid();
 
         ViewData["Title"] = "Review Equipment Import";
-        ViewData["Section"] = "Administration";
+        ViewData["Section"] = "CMMS Integration";
 
         var batch = await _importService.GetBatchAsync(batchId);
         if (batch == null) return NotFound();

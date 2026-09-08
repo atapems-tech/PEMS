@@ -312,9 +312,9 @@ body {
         font-size: 13px;
     }
 
-    /* برچسب استاتیک زیربخش (User & Access / Import Center / AI Administration و...) داخل
-       آکاردئون Administration - طبق سند RBAC Hardening بند ۶، برای جداسازی بصری زیرگروه‌ها
-       بدون نیاز به یک سطح دیگر از collapse تعریف شد. */
+    /* برچسب استاتیک زیربخش (User & Access / Organization / AI Administration / System
+       Monitoring) داخل آکاردئون Administration - طبق سند RBAC Hardening بند ۶، برای جداسازی
+       بصری زیرگروه‌ها بدون نیاز به یک سطح دیگر از collapse تعریف شد. */
     .pems-sidebar .nav-subheading {
         padding: 10px 20px 4px 20px;
         font-size: 11px;
