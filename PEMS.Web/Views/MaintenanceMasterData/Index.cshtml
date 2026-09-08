@@ -11,6 +11,10 @@
     var equipmentClasses = (List<PEMS.Domain.Entities.EquipmentClass>)ViewBag.EquipmentClasses;
     var standardReferences = (List<PEMS.Domain.Entities.StandardReference>)ViewBag.StandardReferences;
     var maintenanceActivities = (List<PEMS.Domain.Entities.MaintenanceActivity>)ViewBag.MaintenanceActivities;
+
+    // طبق «PEMS Phase 2 — Equipment Classification + ISO 14224 Failure Taxonomy + PM/Job Plan Intelligence»
+    var failureModes = (List<PEMS.Domain.Entities.FailureMode>)ViewBag.FailureModes;
+    var pmTemplates = (List<PEMS.Domain.Entities.PMTemplate>)ViewBag.PMTemplates;
 }
 
 @if (TempData["Message"] != null)
@@ -66,6 +70,16 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-activities" type="button">
             <i class="bi bi-list-task"></i> Activities <span class="badge bg-secondary">@maintenanceActivities.Count</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-failure-modes" type="button">
+            <i class="bi bi-exclamation-triangle"></i> Failure Modes <span class="badge bg-secondary">@failureModes.Count</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-pm-templates" type="button">
+            <i class="bi bi-calendar-check"></i> PM Templates <span class="badge bg-secondary">@pmTemplates.Count</span>
         </button>
     </li>
 </ul>
@@ -391,6 +405,72 @@
                 </tbody>
             </table>
             @if (!maintenanceActivities.Any()) { <p class="text-muted text-center py-4">هنوز Activity ای ساخته نشده.</p> }
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-failure-modes" role="tabpanel">
+        <div class="content-card">
+            <p class="text-muted small mb-3">
+                طبق ISO 14224 - خط‌مبنای Failure Mode به‌ازای خانواده‌ی تجهیز (Equipment Class)؛
+                این تب فقط از طریق Seed سیستمی ساخته می‌شود (نه فرم دستی) چون هر Mode به چند
+                Cause/Effect/Consequence مرتبط است.
+            </p>
+            <table class="table table-enterprise">
+                <thead><tr><th>Code</th><th>Name</th><th>Equipment Class</th><th>Effect</th><th>Consequence</th><th>System Default</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var fm in failureModes)
+                    {
+                        <tr>
+                            <td><code>@fm.Code</code></td>
+                            <td>@fm.Name</td>
+                            <td class="small">@(fm.EquipmentClass?.Name ?? "-")</td>
+                            <td class="small text-muted">@(fm.FailureEffect?.Name ?? "-")</td>
+                            <td class="small text-muted">@(fm.FailureConsequence?.Name ?? "-")</td>
+                            <td>@if (fm.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
+                            <td class="text-end">
+                                <form asp-action="ToggleFailureModeActive" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@fm.FailureModeId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این Failure Mode غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!failureModes.Any()) { <p class="text-muted text-center py-4">هنوز Failure Mode ای Seed نشده.</p> }
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-pm-templates" role="tabpanel">
+        <div class="content-card">
+            <p class="text-muted small mb-3">
+                قالب‌های نگهداری پیشگیرانه‌ی قابل‌استفاده‌ی مجدد، مقیاس‌بندی‌شده روی Equipment
+                Class (نه یک تجهیز خاص) - تبدیل به یک MaintenancePlan واقعی هنوز نیازمند تأیید
+                انسانی/تخصیص JobPlan است.
+            </p>
+            <table class="table table-enterprise">
+                <thead><tr><th>Code</th><th>Name</th><th>Equipment Class</th><th>Trigger</th><th>Interval</th><th>System Default</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var pt in pmTemplates)
+                    {
+                        <tr>
+                            <td><code>@pt.Code</code></td>
+                            <td>@pt.Name</td>
+                            <td class="small">@(pt.EquipmentClass?.Name ?? "-")</td>
+                            <td class="small text-muted">@pt.TriggerType</td>
+                            <td class="small text-muted">@(pt.IntervalDays.HasValue ? $"{pt.IntervalDays} روز" : (pt.MeterInterval.HasValue ? $"{pt.MeterInterval} {pt.MeterType}" : "-"))</td>
+                            <td>@if (pt.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
+                            <td class="text-end">
+                                <form asp-action="TogglePMTemplateActive" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@pt.PMTemplateId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این PM Template غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!pmTemplates.Any()) { <p class="text-muted text-center py-4">هنوز PM Template ای Seed نشده.</p> }
         </div>
     </div>
 </div>

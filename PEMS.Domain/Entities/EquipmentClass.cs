@@ -23,6 +23,15 @@ public class EquipmentClass : BaseEntity
 
     public string? Description { get; set; }
 
+    // ==============================================================================
+    // طبق «PEMS Phase 2» بند ۶: طبقه‌بندی سلسله‌مراتبی (مثلاً Rotating Equipment → Pump →
+    // Centrifugal Pump) - دقیقاً هم‌الگوی Equipment.ParentEquipmentId موجود (Self-Reference
+    // اختیاری، بدون شکستن رکوردهای تخت فاز ۱ که ParentEquipmentClassId=null می‌مانند).
+    // ==============================================================================
+    public int? ParentEquipmentClassId { get; set; }
+    public EquipmentClass? ParentEquipmentClass { get; set; }
+    public ICollection<EquipmentClass> ChildEquipmentClasses { get; set; } = new List<EquipmentClass>();
+
     public bool IsSystemDefault { get; set; }
 
     public bool IsActive { get; set; } = true;

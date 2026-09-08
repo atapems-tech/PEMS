@@ -1,0 +1,75 @@
+@model PEMS.Application.DTOs.EquipmentClassificationReportDto
+
+<div class="content-card mb-3">
+    <div class="row g-3 text-center">
+        <div class="col-md-4">
+            <div class="fs-3 fw-bold">@Model.TotalUnclassifiedEquipment</div>
+            <div class="text-muted small">Total Unclassified Equipment</div>
+        </div>
+        <div class="col-md-4">
+            <div class="fs-3 fw-bold text-success">@Model.MatchedByRule</div>
+            <div class="text-muted small">Auto-Classified by Rule (Applied)</div>
+        </div>
+        <div class="col-md-4">
+            <div class="fs-3 fw-bold text-warning">@Model.UnmatchedNeedsReview</div>
+            <div class="text-muted small">Needs Human Review</div>
+        </div>
+    </div>
+</div>
+
+<div class="content-card">
+    <p class="text-muted small mb-3">
+        طبق بند ۹/۳۳: طبقه‌بندی خودکار فقط وقتی اعمال می‌شود که EquipmentType به‌صورت قطعی
+        (بدون‌ابهام) با یک Equipment Class شناخته‌شده مطابقت داشته باشد - ردیف‌های بدون قاعده
+        هرگز حدس زده نمی‌شوند و برای بازبینی انسانی این‌جا فهرست شده‌اند.
+    </p>
+    <div class="table-responsive">
+        <table class="table table-enterprise">
+            <thead>
+                <tr>
+                    <th>Equipment</th>
+                    <th>Current Type</th>
+                    <th>Proposed Class</th>
+                    <th>Confidence</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model.Suggestions.OrderByDescending(x => x.ProposedEquipmentClassCode != null))
+                {
+                    <tr>
+                        <td><code>@s.TagNumber</code></td>
+                        <td class="small">@s.CurrentEquipmentType</td>
+                        <td class="small">
+                            @if (s.ProposedEquipmentClassCode != null)
+                            {
+                                <span class="badge text-bg-light border">@s.ProposedEquipmentClassName</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </td>
+                        <td class="small">@(s.Confidence ?? "-")</td>
+                        <td class="small text-muted">@s.Reason</td>
+                        <td>
+                            @if (s.ProposedEquipmentClassCode != null)
+                            {
+                                <span class="badge text-bg-success">Classified</span>
+                            }
+                            else
+                            {
+                                <span class="badge text-bg-secondary">Needs Review</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (!Model.Suggestions.Any())
+        {
+            <p class="text-muted text-center py-4">همه‌ی Equipment های فعال از قبل طبقه‌بندی شده‌اند.</p>
+        }
+    </div>
+</div>

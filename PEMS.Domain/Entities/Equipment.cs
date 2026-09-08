@@ -28,6 +28,15 @@ public class Equipment : BaseEntity
     public int? EquipmentClassId { get; set; }
     public EquipmentClass? EquipmentClassRef { get; set; }
 
+    // ==============================================================================
+    // طبق «PEMS Phase 2» بند ۸: هرگز طبقه‌بندی حدسی ثبت نمی‌شود - این دو فیلد فقط وقتی پر
+    // می‌شوند که EquipmentClassId واقعاً تعیین شده باشد (توسط Backfill قاعده‌محور یا کاربر).
+    // EXACT/HIGH/MEDIUM/LOW/UNCLASSIFIED و MANUAL/RULE/IMPORT/AI/OEM/LEGACY - طبق قرارداد
+    // همین پروژه (رشته‌ی ساده + اعتبارسنجی سمت سرور، نه Enum جدید - مثل PersonnelType بالاتر).
+    // ==============================================================================
+    public string? ClassificationConfidence { get; set; }
+    public string? ClassificationSource { get; set; }
+
     // ارتباط با پروژه
     public int ProjectId { get; set; }
 

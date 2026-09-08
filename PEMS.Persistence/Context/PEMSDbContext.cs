@@ -231,6 +231,17 @@ public class PEMSDbContext
     public DbSet<MaintenanceActivityEquipmentClass> MaintenanceActivityEquipmentClasses { get; set; }
     public DbSet<MaintenanceActivityStrategyType> MaintenanceActivityStrategyTypes { get; set; }
     public DbSet<MaintenanceActivityStandardReference> MaintenanceActivityStandardReferences { get; set; }
+
+    // طبق «PEMS Phase 2 — Equipment Classification + ISO 14224 Failure Taxonomy + PM/Job Plan
+    // Intelligence»: تاکسونومی مرجع خرابی + قالب نگهداری پیشگیرانه
+    public DbSet<FailureMode> FailureModes { get; set; }
+    public DbSet<FailureCause> FailureCauses { get; set; }
+    public DbSet<FailureMechanism> FailureMechanisms { get; set; }
+    public DbSet<FailureEffect> FailureEffects { get; set; }
+    public DbSet<FailureConsequence> FailureConsequences { get; set; }
+    public DbSet<FailureModeCause> FailureModeCauses { get; set; }
+    public DbSet<FailureCauseMechanism> FailureCauseMechanisms { get; set; }
+    public DbSet<PMTemplate> PMTemplates { get; set; }
     public DbSet<Team> Teams { get; set; }
     public DbSet<TeamMember> TeamMembers { get; set; }
     public DbSet<Crew> Crews { get; set; }

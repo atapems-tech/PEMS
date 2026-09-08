@@ -70,6 +70,17 @@ public class WorkOrder : BaseEntity
     // Corrosion, Fatigue, Wear, OperatorError, DesignDeficiency, MaterialDefect, ...
     public string? FailureCauseCode { get; set; }
 
+    // ==============================================================================
+    // طبق «PEMS Phase 2» بند ۱۹: ارتباط افزودنی/اختیاری به تاکسونومی مرجع جدید - رشته‌های بالا
+    // (FailureModeCode/FailureCauseCode) برای Backward Compatibility با رکوردهای تاریخی و کد
+    // موجود دست‌نخورده می‌مانند؛ این دو فیلد فقط زیرساخت AI-Ready هستند.
+    // ==============================================================================
+    public int? FailureModeId { get; set; }
+    public FailureMode? FailureModeRef { get; set; }
+
+    public int? FailureCauseId { get; set; }
+    public FailureCause? FailureCauseRef { get; set; }
+
     public string? RootCause { get; set; }
 
     // ساعت واقعی توقف تولید/عملکرد ناشی از این خرابی - برای محاسبه‌ی OEE/Availability، جدا

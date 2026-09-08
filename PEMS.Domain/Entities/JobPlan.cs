@@ -22,6 +22,26 @@ public class JobPlan : BaseEntity
 
     public string? SafetyRequirements { get; set; }
 
+    // ==============================================================================
+    // طبق «PEMS Phase 2» بند ۲۳: JobPlan از قبل تقریباً کامل بود (RequiredMaterial/
+    // RequiredSkill/Tasks/SafetyRequirements همه موجود بودند) - فقط این پیوندهای افزودنی/
+    // اختیاری برای اتصال به Master Data جدید کم بودند. RequiredTools جدا اضافه نشد چون
+    // JobPlanRequiredMaterial موجود همون نقش را پوشش می‌دهد (طبق بند ۲۳: «Do not create
+    // duplicate Tool/Material master entities if PEMS already has them»).
+    // ==============================================================================
+    public int? EquipmentClassId { get; set; }
+    public EquipmentClass? EquipmentClass { get; set; }
+
+    public int? MaintenanceActivityId { get; set; }
+    public MaintenanceActivity? MaintenanceActivity { get; set; }
+
+    public int? StandardReferenceId { get; set; }
+    public StandardReference? StandardReference { get; set; }
+
+    public bool PermitRequired { get; set; }
+
+    public bool LOTORequired { get; set; }
+
     public bool IsActive { get; set; } = true;
 
     public DateTime CreatedDate { get; set; } = DateTime.Now;

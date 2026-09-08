@@ -103,6 +103,26 @@ public class MaintenanceMasterDataController : Controller
             .OrderBy(x => x.MaintenanceGroup!.Name).ThenBy(x => x.DisplayOrder).ThenBy(x => x.Name)
             .ToListAsync();
 
+        // ==============================================================================
+        // طبق «PEMS Phase 2 — Equipment Classification + ISO 14224 Failure Taxonomy + PM/Job Plan
+        // Intelligence» بند ۳۵/۴۱: دو تب جدید (Failure Modes/PM Templates) - همان ماژول مجوز
+        // "MaintenanceMasterData" استفاده می‌شود (طبق بند ۴۲ - بدون ماژول مجوز جدید).
+        // ==============================================================================
+        ViewBag.FailureModes = await _context.FailureModes.AsNoTracking()
+            .Include(x => x.EquipmentClass)
+            .Include(x => x.FailureEffect)
+            .Include(x => x.FailureConsequence)
+            .Where(x => x.IsActive)
+            .OrderBy(x => x.EquipmentClass!.Name).ThenBy(x => x.DisplayOrder).ThenBy(x => x.Name)
+            .ToListAsync();
+
+        ViewBag.PMTemplates = await _context.PMTemplates.AsNoTracking()
+            .Include(x => x.EquipmentClass)
+            .Include(x => x.MaintenanceStrategyType)
+            .Where(x => x.IsActive)
+            .OrderBy(x => x.EquipmentClass!.Name).ThenBy(x => x.DisplayOrder).ThenBy(x => x.Name)
+            .ToListAsync();
+
         return View(groups);
     }
 
@@ -594,6 +614,47 @@ public class MaintenanceMasterDataController : Controller
         await _context.SaveChangesAsync();
 
         TempData["Message"] = "وضعیت Maintenance Activity به‌روزرسانی شد.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    // ==============================================================================
+    // طبق «PEMS Phase 2 — Equipment Classification + ISO 14224 Failure Taxonomy + PM/Job Plan
+    // Intelligence» بند ۴۲: خط‌مبنای Failure Mode/PM Template فقط از طریق Seeder ساخته می‌شود
+    // (نه فرم Create دستی - چون هر دو به روابط چندگانه/داده‌محور نیاز دارند که فرم ساده نمی‌تواند
+    // درست مدل کند)؛ فقط Toggle Active همان الگوی محافظت از Master Data (بند ۳۰) را دنبال می‌کند.
+    // ==============================================================================
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ToggleFailureModeActive(int id)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Edit"))
+            return Forbid();
+
+        var item = await _context.FailureModes.FirstOrDefaultAsync(x => x.FailureModeId == id);
+        if (item == null) return NotFound();
+
+        item.IsActive = !item.IsActive;
+        await _context.SaveChangesAsync();
+
+        TempData["Message"] = "وضعیت Failure Mode به‌روزرسانی شد.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> TogglePMTemplateActive(int id)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Edit"))
+            return Forbid();
+
+        var item = await _context.PMTemplates.FirstOrDefaultAsync(x => x.PMTemplateId == id);
+        if (item == null) return NotFound();
+
+        item.IsActive = !item.IsActive;
+        await _context.SaveChangesAsync();
+
+        TempData["Message"] = "وضعیت PM Template به‌روزرسانی شد.";
         return RedirectToAction(nameof(Index));
     }
 }

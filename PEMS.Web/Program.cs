@@ -428,6 +428,10 @@ builder.Services.AddScoped<IMaintenanceStrategyService, MaintenanceStrategyServi
 
 builder.Services.AddScoped<IDisciplineWorkspaceService, DisciplineWorkspaceService>();
 
+builder.Services.AddScoped<IEquipmentClassificationService, EquipmentClassificationService>();
+
+builder.Services.AddScoped<IMaintenanceIntelligenceService, MaintenanceIntelligenceService>();
+
 // طبق ممیزی امنیتی (P0 - Engineering File Security Containment): ریشه‌ی ذخیره‌سازی عمداً بیرون
 // از wwwroot (خواهر آن، نه زیرشاخه‌اش) - این همان چیزی است که آسیب‌پذیری اصلی را می‌بندد؛
 // UseStaticFiles فقط داخل wwwroot سرویس می‌دهد.
@@ -561,6 +565,25 @@ using (var scope = app.Services.CreateScope())
     await PEMS.Persistence.Seed.EquipmentClassSeeder.SeedAsync(scope.ServiceProvider);
     await PEMS.Persistence.Seed.StandardReferenceSeeder.SeedAsync(scope.ServiceProvider);
     await PEMS.Persistence.Seed.MaintenanceActivitySeeder.SeedAsync(scope.ServiceProvider);
+
+    // طبق «PEMS Phase 2 — Equipment Classification + ISO 14224 Failure Taxonomy + PM/Job Plan
+    // Intelligence»: تاکسونومی خرابی (Cause/Mechanism قبل از پیوند Cause↔Mechanism؛ Mode آخر از
+    // همه چون هم به EquipmentClass هم به Effect/Consequence/Cause ارجاع می‌دهد)، سپس PMTemplate
+    // (به EquipmentClass/StrategyType/MaintenanceType/StandardReference نیاز دارد - همه قبلاً
+    // Seed شده‌اند) و در نهایت Backfill غیرمخرب طبقه‌بندی Equipment های موجود.
+    await PEMS.Persistence.Seed.FailureCauseSeeder.SeedAsync(scope.ServiceProvider);
+    await PEMS.Persistence.Seed.FailureMechanismSeeder.SeedAsync(scope.ServiceProvider);
+    await PEMS.Persistence.Seed.FailureEffectSeeder.SeedAsync(scope.ServiceProvider);
+    await PEMS.Persistence.Seed.FailureConsequenceSeeder.SeedAsync(scope.ServiceProvider);
+    await PEMS.Persistence.Seed.FailureCauseMechanismSeeder.SeedAsync(scope.ServiceProvider);
+    await PEMS.Persistence.Seed.FailureModeSeeder.SeedAsync(scope.ServiceProvider);
+    await PEMS.Persistence.Seed.PMTemplateSeeder.SeedAsync(scope.ServiceProvider);
+
+    // طبق بند ۹: Backfill قطعی/غیرمخرب - فقط Equipment هایی که هنوز EquipmentClassId=Null دارند
+    {
+        var classificationService = scope.ServiceProvider.GetRequiredService<PEMS.Application.Interfaces.IEquipmentClassificationService>();
+        await classificationService.BackfillAsync();
+    }
 
     // طبق درخواست: گردش‌کار بازبینی چند-دیسیپلینه WorkOrder
     await PEMS.Persistence.Seed.WorkOrderReviewWorkflowSeeder.SeedAsync(scope.ServiceProvider);

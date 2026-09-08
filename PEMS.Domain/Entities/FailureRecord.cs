@@ -30,6 +30,17 @@ public class FailureRecord
     // اثر خرابی
     public string? FailureEffect { get; set; }
 
+    // ==============================================================================
+    // طبق «PEMS Phase 2» بند ۱۹: ارتباط افزودنی/اختیاری به تاکسونومی مرجع جدید - رشته‌های بالا
+    // (FailureMode/FailureCause) برای Backward Compatibility با رکوردهای تاریخی دست‌نخورده
+    // می‌مانند؛ این دو فیلد فقط زیرساخت AI-Ready هستند.
+    // ==============================================================================
+    public int? FailureModeId { get; set; }
+    public FailureMode? FailureModeRef { get; set; }
+
+    public int? FailureCauseId { get; set; }
+    public FailureCause? FailureCauseRef { get; set; }
+
     // علت ریشه‌ای
     public string? RootCause { get; set; }
 
