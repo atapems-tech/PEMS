@@ -20,6 +20,13 @@ public class MaintenanceGroup : BaseEntity
 
     public string? Description { get; set; }
 
+    // طبق «PEMS — Enterprise Maintenance Master Data & Standards Implementation» بند ۱۲:
+    // مشخص می‌کند این رکورد بخشی از خط‌مبنای پیش‌فرض سیستم است (Seed شده)، نه یک گروه دلخواه
+    // کاربر - فقط برای جلوگیری از Hard-Delete تصادفی خط‌مبنا استفاده می‌شود؛ رکوردهای قدیمی
+    // (قبل از این فیلد) به‌طور پیش‌فرض false می‌مانند، یعنی «کاربر ساخته» تلقی می‌شوند - رفتار
+    // درستی چون واقعاً همه‌شان تا امروز دستی ساخته شده بودند.
+    public bool IsSystemDefault { get; set; }
+
     public bool IsActive { get; set; } = true;
 
     public DateTime CreatedDate { get; set; } = DateTime.Now;

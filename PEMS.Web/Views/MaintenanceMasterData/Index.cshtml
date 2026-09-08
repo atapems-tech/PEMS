@@ -4,6 +4,13 @@
     var skills = (List<PEMS.Domain.Entities.Skill>)ViewBag.Skills;
     var qualifications = (List<PEMS.Domain.Entities.Qualification>)ViewBag.Qualifications;
     var certifications = (List<PEMS.Domain.Entities.Certification>)ViewBag.Certifications;
+
+    // طبق «PEMS — Enterprise Maintenance Master Data & Standards Implementation» بند ۱۶
+    var maintenanceTypes = (List<PEMS.Domain.Entities.MaintenanceType>)ViewBag.MaintenanceTypes;
+    var strategyTypes = (List<PEMS.Domain.Entities.MaintenanceStrategyType>)ViewBag.MaintenanceStrategyTypes;
+    var equipmentClasses = (List<PEMS.Domain.Entities.EquipmentClass>)ViewBag.EquipmentClasses;
+    var standardReferences = (List<PEMS.Domain.Entities.StandardReference>)ViewBag.StandardReferences;
+    var maintenanceActivities = (List<PEMS.Domain.Entities.MaintenanceActivity>)ViewBag.MaintenanceActivities;
 }
 
 @if (TempData["Message"] != null)
@@ -36,6 +43,31 @@
             <i class="bi bi-award"></i> Certifications <span class="badge bg-secondary">@certifications.Count</span>
         </button>
     </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance-types" type="button">
+            <i class="bi bi-tags"></i> Maintenance Types <span class="badge bg-secondary">@maintenanceTypes.Count</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-strategy-types" type="button">
+            <i class="bi bi-diagram-2"></i> Strategy Types <span class="badge bg-secondary">@strategyTypes.Count</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-equipment-classes" type="button">
+            <i class="bi bi-gear"></i> Equipment Classes <span class="badge bg-secondary">@equipmentClasses.Count</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-standards" type="button">
+            <i class="bi bi-journal-check"></i> Standard References <span class="badge bg-secondary">@standardReferences.Count</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-activities" type="button">
+            <i class="bi bi-list-task"></i> Activities <span class="badge bg-secondary">@maintenanceActivities.Count</span>
+        </button>
+    </li>
 </ul>
 
 <div class="tab-content">
@@ -52,15 +84,16 @@
             </div>
 
             <table class="table table-enterprise">
-                <thead><tr><th>کد</th><th>نام</th><th>دیسیپلین</th><th>توضیحات</th><th></th></tr></thead>
+                <thead><tr><th>کد</th><th>نام</th><th>دیسیپلین</th><th>توضیحات</th><th>System Default</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var g in Model)
                     {
                         <tr>
-                            <td>@g.Code</td>
+                            <td><code>@g.Code</code></td>
                             <td>@g.Name</td>
                             <td>@g.Discipline?.Name</td>
                             <td class="small text-muted">@(g.Description ?? "-")</td>
+                            <td>@if (g.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleGroupActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@g.MaintenanceGroupId" />
@@ -177,6 +210,189 @@
             @if (!certifications.Any()) { <p class="text-muted text-center py-4">هنوز گواهینامه‌ای ساخته نشده.</p> }
         </div>
     </div>
+
+    <div class="tab-pane fade" id="tab-maintenance-types" role="tabpanel">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="text-muted small mb-0">
+                    طبقه‌بندی استاندارد «نوع کار» (Corrective/Preventive/Predictive/...) - مرجع
+                    داده‌محور برای Work Order و کاتالوگ Activity، طبق ISO 14224/SMRP.
+                </p>
+                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createMaintenanceTypeModal">
+                    <i class="bi bi-plus-lg"></i> Maintenance Type جدید
+                </button>
+            </div>
+
+            <table class="table table-enterprise">
+                <thead><tr><th>Code</th><th>Name</th><th>نام فارسی</th><th>System Default</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var t in maintenanceTypes)
+                    {
+                        <tr>
+                            <td><code>@t.Code</code></td>
+                            <td>@t.Name</td>
+                            <td>@(t.NameFa ?? "-")</td>
+                            <td>@if (t.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
+                            <td class="text-end">
+                                <form asp-action="ToggleMaintenanceTypeActive" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@t.MaintenanceTypeId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این Maintenance Type غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!maintenanceTypes.Any()) { <p class="text-muted text-center py-4">هنوز Maintenance Type ای ساخته نشده.</p> }
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-strategy-types" role="tabpanel">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="text-muted small mb-0">
+                    سیاست RCM («چرا این استراتژی انتخاب شد» - PM/PDM/CBM/CM/EM/RTF/RCM/...) - جدا از
+                    Maintenance Type بالا (که «نوع کار» را طبقه‌بندی می‌کند).
+                </p>
+                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createStrategyTypeModal">
+                    <i class="bi bi-plus-lg"></i> Strategy Type جدید
+                </button>
+            </div>
+
+            <table class="table table-enterprise">
+                <thead><tr><th>Code</th><th>Name</th><th>نام فارسی</th><th>System Default</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var t in strategyTypes)
+                    {
+                        <tr>
+                            <td><code>@t.Code</code></td>
+                            <td>@t.Name</td>
+                            <td>@(t.NameFa ?? "-")</td>
+                            <td>@if (t.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
+                            <td class="text-end">
+                                <form asp-action="ToggleMaintenanceStrategyTypeActive" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@t.MaintenanceStrategyTypeId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این Strategy Type غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!strategyTypes.Any()) { <p class="text-muted text-center py-4">هنوز Strategy Type ای ساخته نشده.</p> }
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-equipment-classes" role="tabpanel">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="text-muted small mb-0">
+                    طبقه‌بندی تجهیزات (مثلاً «Centrifugal Pump») - جدا از EquipmentType متنی روی
+                    خودِ Equipment؛ برای پیوند Activity ↔ تجهیز به‌صورت داده‌محور استفاده می‌شود.
+                </p>
+                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createEquipmentClassModal">
+                    <i class="bi bi-plus-lg"></i> Equipment Class جدید
+                </button>
+            </div>
+
+            <table class="table table-enterprise">
+                <thead><tr><th>Code</th><th>Name</th><th>نام فارسی</th><th>System Default</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var t in equipmentClasses)
+                    {
+                        <tr>
+                            <td><code>@t.Code</code></td>
+                            <td>@t.Name</td>
+                            <td>@(t.NameFa ?? "-")</td>
+                            <td>@if (t.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
+                            <td class="text-end">
+                                <form asp-action="ToggleEquipmentClassActive" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@t.EquipmentClassId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این Equipment Class غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!equipmentClasses.Any()) { <p class="text-muted text-center py-4">هنوز Equipment Class ای ساخته نشده.</p> }
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-standards" role="tabpanel">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="text-muted small mb-0">
+                    فقط ابرداده‌ی استانداردهای صنعتی (سازمان/شماره/عنوان/دسته) - هیچ متن دارای
+                    Copyright خودِ استاندارد این‌جا ذخیره نمی‌شود.
+                </p>
+                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createStandardModal">
+                    <i class="bi bi-plus-lg"></i> Standard Reference جدید
+                </button>
+            </div>
+
+            <table class="table table-enterprise">
+                <thead><tr><th>Code</th><th>Organization</th><th>Number</th><th>Title</th><th>Category</th><th>System Default</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var s in standardReferences)
+                    {
+                        <tr>
+                            <td><code>@s.Code</code></td>
+                            <td>@s.Organization</td>
+                            <td>@s.StandardNumber</td>
+                            <td class="small">@s.Title</td>
+                            <td class="small text-muted">@(s.Category ?? "-")</td>
+                            <td>@if (s.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
+                            <td class="text-end">
+                                <form asp-action="ToggleStandardReferenceActive" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@s.StandardReferenceId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این Standard Reference غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!standardReferences.Any()) { <p class="text-muted text-center py-4">هنوز Standard Reference ای ساخته نشده.</p> }
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-activities" role="tabpanel">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="text-muted small mb-0">
+                    کاتالوگ فعالیت‌های استاندارد تعمیراتی (مثلاً «Vibration Measurement») - زیر یک
+                    Maintenance Group و Maintenance Type دسته‌بندی می‌شود.
+                </p>
+                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createActivityModal">
+                    <i class="bi bi-plus-lg"></i> Activity جدید
+                </button>
+            </div>
+
+            <table class="table table-enterprise">
+                <thead><tr><th>Code</th><th>Name</th><th>Group</th><th>Type</th><th>System Default</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var a in maintenanceActivities)
+                    {
+                        <tr>
+                            <td><code>@a.Code</code></td>
+                            <td>@a.Name</td>
+                            <td class="small">@a.MaintenanceGroup?.Name</td>
+                            <td class="small text-muted">@(a.MaintenanceType?.Name ?? "-")</td>
+                            <td>@if (a.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
+                            <td class="text-end">
+                                <form asp-action="ToggleMaintenanceActivityActive" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@a.MaintenanceActivityId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این Activity غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!maintenanceActivities.Any()) { <p class="text-muted text-center py-4">هنوز Activity ای ساخته نشده.</p> }
+        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="createSkillModal" tabindex="-1">
@@ -254,6 +470,178 @@
                     <select name="disciplineId" class="form-select form-select-sm">
                         <option value="">-- ندارد --</option>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+            </div>
+        </form>
+    </div></div>
+</div>
+
+<div class="modal fade" id="createMaintenanceTypeModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="CreateMaintenanceType" method="post">
+            <div class="modal-header"><h6 class="modal-title">Maintenance Type جدید</h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">Code</label>
+                    <input name="code" class="form-control form-control-sm" required placeholder="مثلاً CUSTOM_TYPE" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Name</label>
+                    <input name="name" class="form-control form-control-sm" required />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">نام فارسی (اختیاری)</label>
+                    <input name="nameFa" class="form-control form-control-sm" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+            </div>
+        </form>
+    </div></div>
+</div>
+
+<div class="modal fade" id="createStrategyTypeModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="CreateMaintenanceStrategyType" method="post">
+            <div class="modal-header"><h6 class="modal-title">Maintenance Strategy Type جدید</h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">Code</label>
+                    <input name="code" class="form-control form-control-sm" required placeholder="مثلاً CUSTOM_STRATEGY" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Name</label>
+                    <input name="name" class="form-control form-control-sm" required />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">نام فارسی (اختیاری)</label>
+                    <input name="nameFa" class="form-control form-control-sm" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+            </div>
+        </form>
+    </div></div>
+</div>
+
+<div class="modal fade" id="createEquipmentClassModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="CreateEquipmentClass" method="post">
+            <div class="modal-header"><h6 class="modal-title">Equipment Class جدید</h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">Code</label>
+                    <input name="code" class="form-control form-control-sm" required placeholder="مثلاً CUSTOM_CLASS" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Name</label>
+                    <input name="name" class="form-control form-control-sm" required placeholder="مثلاً Screw Compressor" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">نام فارسی (اختیاری)</label>
+                    <input name="nameFa" class="form-control form-control-sm" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+            </div>
+        </form>
+    </div></div>
+</div>
+
+<div class="modal fade" id="createStandardModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="CreateStandardReference" method="post">
+            <div class="modal-header"><h6 class="modal-title">Standard Reference جدید</h6></div>
+            <div class="modal-body">
+                <p class="small text-muted">فقط ابرداده - هرگز متن دارای Copyright خودِ استاندارد را این‌جا وارد نکنید.</p>
+                <div class="mb-2">
+                    <label class="form-label small">Code</label>
+                    <input name="code" class="form-control form-control-sm" required placeholder="مثلاً API-579" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Organization</label>
+                    <input name="organization" class="form-control form-control-sm" required placeholder="مثلاً API" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Standard Number</label>
+                    <input name="standardNumber" class="form-control form-control-sm" required placeholder="مثلاً 579" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Title</label>
+                    <input name="title" class="form-control form-control-sm" required />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Category (اختیاری)</label>
+                    <input name="category" class="form-control form-control-sm" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">توضیح کاربردی (اختیاری - نه متن استاندارد)</label>
+                    <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+            </div>
+        </form>
+    </div></div>
+</div>
+
+<div class="modal fade" id="createActivityModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="CreateMaintenanceActivity" method="post">
+            <div class="modal-header"><h6 class="modal-title">Maintenance Activity جدید</h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">Code</label>
+                    <input name="code" class="form-control form-control-sm" required placeholder="مثلاً ACT_CUSTOM" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Name</label>
+                    <input name="name" class="form-control form-control-sm" required />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">نام فارسی (اختیاری)</label>
+                    <input name="nameFa" class="form-control form-control-sm" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Maintenance Group</label>
+                    <select name="maintenanceGroupId" class="form-select form-select-sm" required>
+                        @foreach (var g in Model) { <option value="@g.MaintenanceGroupId">@g.Name</option> }
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Maintenance Type (اختیاری)</label>
+                    <select name="maintenanceTypeId" class="form-select form-select-sm">
+                        <option value="">-- ندارد --</option>
+                        @foreach (var t in maintenanceTypes) { <option value="@t.MaintenanceTypeId">@t.Name</option> }
                     </select>
                 </div>
                 <div class="mb-2">

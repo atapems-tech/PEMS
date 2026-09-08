@@ -553,6 +553,15 @@ using (var scope = app.Services.CreateScope())
     await PEMS.Persistence.Seed.QualificationSeeder.SeedAsync(scope.ServiceProvider);
     await PEMS.Persistence.Seed.CertificationSeeder.SeedAsync(scope.ServiceProvider);
 
+    // طبق «PEMS — Enterprise Maintenance Master Data & Standards Implementation»: تاکسونومی
+    // مرجع نگهداری - ترتیب مهم است (Type/StrategyType/EquipmentClass/StandardReference همه
+    // قبل از Activity، چون Activity به کدهای آن‌ها ارجاع می‌دهد)
+    await PEMS.Persistence.Seed.MaintenanceTypeSeeder.SeedAsync(scope.ServiceProvider);
+    await PEMS.Persistence.Seed.MaintenanceStrategyTypeSeeder.SeedAsync(scope.ServiceProvider);
+    await PEMS.Persistence.Seed.EquipmentClassSeeder.SeedAsync(scope.ServiceProvider);
+    await PEMS.Persistence.Seed.StandardReferenceSeeder.SeedAsync(scope.ServiceProvider);
+    await PEMS.Persistence.Seed.MaintenanceActivitySeeder.SeedAsync(scope.ServiceProvider);
+
     // طبق درخواست: گردش‌کار بازبینی چند-دیسیپلینه WorkOrder
     await PEMS.Persistence.Seed.WorkOrderReviewWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 

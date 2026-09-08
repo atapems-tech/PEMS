@@ -936,10 +936,10 @@
     "semantic_hash": "ee2d0e3735f9771d805c3fc3df976e90"
   },
   "PEMS.Domain/Entities/Equipment.cs": {
-    "mtime": 1788350902.71272,
-    "seen": 1788613735.6703675,
-    "ast_hash": "b4734d3f470b175f50e51880204947ec",
-    "semantic_hash": "b4734d3f470b175f50e51880204947ec"
+    "mtime": 1788872304.5917265,
+    "seen": 1788874972.691842,
+    "ast_hash": "e2757ec79577f9cd993baf97b5a1ee1e",
+    "semantic_hash": ""
   },
   "PEMS.Domain/Entities/EquipmentCriticality.cs": {
     "mtime": 1788350902.71272,
@@ -1110,10 +1110,10 @@
     "semantic_hash": "8905d040c59001d3e5653419ca0fee6c"
   },
   "PEMS.Domain/Entities/MaintenanceStrategy.cs": {
-    "mtime": 1788350902.9177642,
-    "seen": 1788613735.6703675,
-    "ast_hash": "fd0416b31425a632cdb9d36063b8c942",
-    "semantic_hash": "fd0416b31425a632cdb9d36063b8c942"
+    "mtime": 1788872293.4064796,
+    "seen": 1788874972.7070944,
+    "ast_hash": "c39ef92554ef26dbcc152ca03d1d0075",
+    "semantic_hash": ""
   },
   "PEMS.Domain/Entities/MaterialRequisition.cs": {
     "mtime": 1788350902.9490209,
@@ -1524,10 +1524,10 @@
     "semantic_hash": "dacbb68ad3f3363731257b252a96ac1b"
   },
   "PEMS.Persistence/Context/PEMSDbContext.cs": {
-    "mtime": 1788350903.5602894,
-    "seen": 1788613735.670535,
-    "ast_hash": "8543867617982f4deae1f1901431976f",
-    "semantic_hash": "8543867617982f4deae1f1901431976f"
+    "mtime": 1788872625.321926,
+    "seen": 1788874972.755454,
+    "ast_hash": "31d52c0fc3843fe0f90f4ee8945e01ff",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Context/PEMSDbContextFactory.cs": {
     "mtime": 1788350903.5602894,
@@ -1578,9 +1578,9 @@
     "semantic_hash": "5809af8d8afaa80014e62788179b6dd4"
   },
   "PEMS.Persistence/Migrations/PEMSDbContextModelSnapshot.cs": {
-    "mtime": 1788641429.8609834,
-    "seen": 1788706892.3611965,
-    "ast_hash": "6b95613aa4edfd766892e91a0cfab925",
+    "mtime": 1788874227.2699928,
+    "seen": 1788874972.787046,
+    "ast_hash": "12bca86f47cf925933df56794b8aeee0",
     "semantic_hash": ""
   },
   "PEMS.Persistence/PEMS.Persistence.csproj": {
@@ -1836,9 +1836,9 @@
     "semantic_hash": "c44e3a6583e46ef0cb4def2c6c08e4e4"
   },
   "PEMS.Persistence/Servises/PermissionService.cs": {
-    "mtime": 1788855826.7935023,
-    "seen": 1788857049.8412106,
-    "ast_hash": "584559878ba833faf0dd473dac39f99a",
+    "mtime": 1788864909.152042,
+    "seen": 1788874972.8197465,
+    "ast_hash": "5fdeb390b71cafc4f18915abcb6d0164",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/ProcurementPackageService.cs": {
@@ -2142,9 +2142,9 @@
     "semantic_hash": "50a75b7a2d14d723b10406572fa62291"
   },
   "PEMS.Web/Areas/Admin/Controllers/PermissionMatrixController.cs": {
-    "mtime": 1788855838.2839155,
-    "seen": 1788857049.8843596,
-    "ast_hash": "c7d029e6086f63af17c0dbad8f2514da",
+    "mtime": 1788864916.7701707,
+    "seen": 1788874972.9007022,
+    "ast_hash": "276ea76834c0f3c6e1db2bb4263e2352",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Controllers/RolesController.cs": {
@@ -2376,9 +2376,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/EquipmentImportController.cs": {
-    "mtime": 1788852387.341961,
-    "seen": 1788853174.9903784,
-    "ast_hash": "aef8172cb711a9dab3e781e664e666d2",
+    "mtime": 1788865104.6684458,
+    "seen": 1788874972.9290538,
+    "ast_hash": "4a88d631f1ab28f1a7b466ca0b42142b",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/GlobalSearchController.cs": {
@@ -2388,10 +2388,10 @@
     "semantic_hash": "d96320742a22adfde36930c1ac6f357e"
   },
   "PEMS.Web/Controllers/HomeController.cs": {
-    "mtime": 1788350905.3966146,
-    "seen": 1788613735.670535,
-    "ast_hash": "3289a27b124ac26bb9b4f2b82f344686",
-    "semantic_hash": "3289a27b124ac26bb9b4f2b82f344686"
+    "mtime": 1788865196.1258192,
+    "seen": 1788874972.9312983,
+    "ast_hash": "463f0678756c7fadbc01421c8960a861",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/IntakeController.cs": {
     "mtime": 1788542940.8862472,
@@ -2412,9 +2412,9 @@
     "semantic_hash": "fc41ed542d12d11c6820e2ac2fd7f720"
   },
   "PEMS.Web/Controllers/MDRImportController.cs": {
-    "mtime": 1788852381.53524,
-    "seen": 1788853174.9944067,
-    "ast_hash": "c2c769eac538b7d791f85daa6411570a",
+    "mtime": 1788865094.0760825,
+    "seen": 1788874972.9331582,
+    "ast_hash": "0944509ed9ceea52b117f7c2fb4dcf71",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/MOCController.cs": {
@@ -2526,9 +2526,9 @@
     "semantic_hash": "1e0d66da2f7cf7bf7261d4b44f1a4ba7"
   },
   "PEMS.Web/Controllers/TeamController.cs": {
-    "mtime": 1788855596.9829104,
-    "seen": 1788857049.9097774,
-    "ast_hash": "510d7f1c603af04bdafaf667e82e429d",
+    "mtime": 1788857483.4030871,
+    "seen": 1788874972.9465425,
+    "ast_hash": "ade83c045e2cc8c28a3ed4a094f571fb",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/TechnicalQueryController.cs": {
@@ -2556,9 +2556,9 @@
     "semantic_hash": "2f604f75b2cb148c0925f108865225fd"
   },
   "PEMS.Web/Controllers/VDRImportController.cs": {
-    "mtime": 1788852374.5101392,
-    "seen": 1788853175.0024137,
-    "ast_hash": "5cac14aa042cd836045c91ef61c84a1c",
+    "mtime": 1788865099.4992647,
+    "seen": 1788874972.9465425,
+    "ast_hash": "2c70b5da63d40c47550d802bf4acf240",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/VendorController.cs": {
@@ -2682,10 +2682,10 @@
     "semantic_hash": "ab7e34a2113cfa2a4d952bac4edc6cb4"
   },
   "PEMS.Web/Program.cs": {
-    "mtime": 1788508196.4346402,
-    "seen": 1788613735.670535,
-    "ast_hash": "a5061d094820a34f897e4c6844e87d7b",
-    "semantic_hash": "a5061d094820a34f897e4c6844e87d7b"
+    "mtime": 1788872644.6535826,
+    "seen": 1788874972.9668279,
+    "ast_hash": "6e61ebb03757fd7e0246f7443285eb28",
+    "semantic_hash": ""
   },
   "PEMS.Web/Properties/launchSettings.json": {
     "mtime": 1788350905.7830195,
@@ -2760,9 +2760,9 @@
     "semantic_hash": "72f522e46bb7656156208d1d25e9f916"
   },
   "PEMS.Web/Security/MenuAccess.cs": {
-    "mtime": 1788852157.7004004,
-    "seen": 1788853175.0174103,
-    "ast_hash": "e31ff84a3b477855c0c18bff1e628841",
+    "mtime": 1788865675.0363255,
+    "seen": 1788874972.9668279,
+    "ast_hash": "8c234f2a6c1239beabbdf1ce908204a9",
     "semantic_hash": ""
   },
   "PEMS.Web/Security/RequirePermissionAttribute.cs": {
@@ -3048,10 +3048,10 @@
     "semantic_hash": "c232b39e8beb9db9ee5f9a9a67c8844e"
   },
   "PEMS.Web/Views/Home/Index.cshtml": {
-    "mtime": 1788350906.3586748,
-    "seen": 1788613735.670535,
-    "ast_hash": "147895ba4d67923406238352390f264e",
-    "semantic_hash": "147895ba4d67923406238352390f264e"
+    "mtime": 1788865205.5565946,
+    "seen": 1788874972.9947605,
+    "ast_hash": "732961f883bee75a298b8cc50b7b0dbc",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Home/Privacy.cshtml": {
     "mtime": 1788350906.3586748,
@@ -3408,9 +3408,9 @@
     "semantic_hash": "329af3e630e2ba19fd81d23f832f6a96"
   },
   "PEMS.Web/Views/Shared/_SidebarMenu.cshtml": {
-    "mtime": 1788852300.3927305,
-    "seen": 1788853175.0563464,
-    "ast_hash": "b03c1feb096007c072ae26a4d6205fbd",
+    "mtime": 1788865081.9621358,
+    "seen": 1788874973.0270746,
+    "ast_hash": "81e5ccc099d890d2ac250a9691d0d9a0",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Shared/_ValidationScriptsPartial.cshtml": {
@@ -3876,9 +3876,9 @@
     "semantic_hash": "3aeeffd547cad5808d1730e0fb508d7b"
   },
   "PEMS_PROJECT_INTELLIGENCE_REPORT.md": {
-    "mtime": 1788853871.7770753,
-    "seen": 1788857050.0273044,
-    "ast_hash": "b2e326bf2edc5bd67ee561f2ff3343a8",
+    "mtime": 1788871634.7171848,
+    "seen": 1788874973.1062646,
+    "ast_hash": "4ee24c607dede1bb321405f72cba5ae2",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Users/_RoleCheckboxes.cshtml": {
@@ -4242,10 +4242,10 @@
     "semantic_hash": "3c33cd6440717e8f8f49aa791051d9f7"
   },
   "PEMS.Domain/Entities/MaintenanceGroup.cs": {
-    "mtime": 1788350902.9039176,
-    "seen": 1788613735.6703675,
-    "ast_hash": "a06312d61c9e809f1371dade833e5b73",
-    "semantic_hash": "a06312d61c9e809f1371dade833e5b73"
+    "mtime": 1788872280.1063433,
+    "seen": 1788874972.7070944,
+    "ast_hash": "41a2d0fd59e1834fd469c3152c22c361",
+    "semantic_hash": ""
   },
   "PEMS.Domain/Entities/Qualification.cs": {
     "mtime": 1788350903.0976393,
@@ -4356,15 +4356,15 @@
     "semantic_hash": "1415f3792979856641e85d1219ca63d1"
   },
   "PEMS.Web/Controllers/CrewController.cs": {
-    "mtime": 1788855628.7292907,
-    "seen": 1788857049.8947494,
-    "ast_hash": "1ec3ffe07164389d5837c5dca96e39fe",
+    "mtime": 1788859498.8232856,
+    "seen": 1788874972.91668,
+    "ast_hash": "383bfdf5185fa21196f45ac86e88a15f",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/MaintenanceMasterDataController.cs": {
-    "mtime": 1788855787.3355606,
-    "seen": 1788857049.9057806,
-    "ast_hash": "28076d4b83a400c77fd7f9945a28d30c",
+    "mtime": 1788873072.502429,
+    "seen": 1788874972.9331582,
+    "ast_hash": "bd2c03b0f1c826448f6647dcbdcc3dc4",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Crew/Index.cshtml": {
@@ -4374,10 +4374,10 @@
     "semantic_hash": "ba170302893ace577f38ef195884552d"
   },
   "PEMS.Web/Views/MaintenanceMasterData/Index.cshtml": {
-    "mtime": 1788350906.594448,
-    "seen": 1788613735.670535,
-    "ast_hash": "5af7875c69950f51415a57ddfcc71ce6",
-    "semantic_hash": "5af7875c69950f51415a57ddfcc71ce6"
+    "mtime": 1788873208.9404767,
+    "seen": 1788874973.010342,
+    "ast_hash": "3b79d2f7a57798ef8d61fb6194f565de",
+    "semantic_hash": ""
   },
   ".claude/Role/PEMS_CMMS_MAINTENANCE_ORGANIZATION_BLUEPRINT.md": {
     "mtime": 1788350900.996424,
@@ -4398,10 +4398,10 @@
     "semantic_hash": "040eaf8d9a360846c4d292144d34cecb"
   },
   "PEMS.Persistence/Seed/MaintenanceGroupSeeder.cs": {
-    "mtime": 1788350904.2033758,
-    "seen": 1788613735.670535,
-    "ast_hash": "2295b545a63b5f444914b777dc578f2d",
-    "semantic_hash": "2295b545a63b5f444914b777dc578f2d"
+    "mtime": 1788872412.2161412,
+    "seen": 1788874972.787046,
+    "ast_hash": "2626d8dc7725622dcb3be7d3adb4b75b",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Seed/QualificationCertificationSeeder.cs": {
     "mtime": 1788350904.2348154,
@@ -4698,9 +4698,9 @@
     "semantic_hash": "9f96341aca958ac14ca8bfbbc93e0d96"
   },
   "PEMS.Web/Controllers/MrsImportController.cs": {
-    "mtime": 1788852394.1185617,
-    "seen": 1788853174.9954076,
-    "ast_hash": "9ce2fd7722aa0beac2b17a73160bb4ac",
+    "mtime": 1788865111.3132129,
+    "seen": 1788874972.9331582,
+    "ast_hash": "967696b81ad938d4aec6b765686b7056",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/StoreRequisitionController.cs": {
@@ -6786,10 +6786,10 @@
     "semantic_hash": "a43c06215279da4ef2e1701c29c78805"
   },
   "PEMS.Persistence/Seed/DisciplineSeeder.cs": {
-    "mtime": 1788350904.1735284,
-    "seen": 1788613735.670535,
-    "ast_hash": "de741fada68dbc32374146940c573ca5",
-    "semantic_hash": "de741fada68dbc32374146940c573ca5"
+    "mtime": 1788872371.75599,
+    "seen": 1788874972.787046,
+    "ast_hash": "7872f9031c90d745162ff5b6b1bc5a97",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/InstrumentService.cs": {
     "mtime": 1788506959.391227,
@@ -9414,9 +9414,153 @@
     "semantic_hash": ""
   },
   "PEMS.Tests/Authorization/OrganizationMasterDataAuthorizationTests.cs": {
-    "mtime": 1788855979.2499917,
-    "seen": 1788857049.864209,
-    "ast_hash": "c1e77e3e7f741200205d50f4eeeb22ff",
+    "mtime": 1788858178.3731954,
+    "seen": 1788874972.850639,
+    "ast_hash": "d8ab0af690ca442275c758f4c211b843",
+    "semantic_hash": ""
+  },
+  "PEMS.Application/DTOs/SetupDtos.cs": {
+    "mtime": 1788861920.45771,
+    "seen": 1788874972.6442099,
+    "ast_hash": "1caf89bda9dd9acb54035dfc50ba15d5",
+    "semantic_hash": ""
+  },
+  "PEMS.Application/Interfaces/ISetupService.cs": {
+    "mtime": 1788861931.7788155,
+    "seen": 1788874972.6758807,
+    "ast_hash": "14ef4df47f9d347075ea0dfcfd6663f1",
+    "semantic_hash": ""
+  },
+  "PEMS.Domain/Entities/EquipmentClass.cs": {
+    "mtime": 1788872224.817908,
+    "seen": 1788874972.691842,
+    "ast_hash": "fe2bed8ab88d53f866e50a970ba40f1e",
+    "semantic_hash": ""
+  },
+  "PEMS.Domain/Entities/MaintenanceActivity.cs": {
+    "mtime": 1788872262.358117,
+    "seen": 1788874972.7070944,
+    "ast_hash": "6ce868a4cf138c09d0d5de389ef14e16",
+    "semantic_hash": ""
+  },
+  "PEMS.Domain/Entities/MaintenanceStrategyType.cs": {
+    "mtime": 1788872212.8312762,
+    "seen": 1788874972.7070944,
+    "ast_hash": "e5c7dc0beabc42caa7b0dab436dbc464",
+    "semantic_hash": ""
+  },
+  "PEMS.Domain/Entities/MaintenanceType.cs": {
+    "mtime": 1788872196.6050656,
+    "seen": 1788874972.7070944,
+    "ast_hash": "dd9ffd50f7d11003c73d5d352d666f5a",
+    "semantic_hash": ""
+  },
+  "PEMS.Domain/Entities/StandardReference.cs": {
+    "mtime": 1788872239.0624144,
+    "seen": 1788874972.7227385,
+    "ast_hash": "8af13d95290b03ac78cbc20b6f56b41e",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Configurations/MaintenanceMasterDataConfigurations.cs": {
+    "mtime": 1788874163.3978274,
+    "seen": 1788874972.7520878,
+    "ast_hash": "03dbeb351ac650aa4fa14a7be2630ced",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260908130852_AddEnterpriseMaintenanceMasterData.Designer.cs": {
+    "mtime": 1788872933.1520255,
+    "seen": 1788874972.787046,
+    "ast_hash": "8ef71dc7148a67d46ee0044cf6e10b9a",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260908130852_AddEnterpriseMaintenanceMasterData.cs": {
+    "mtime": 1788872933.1520255,
+    "seen": 1788874972.787046,
+    "ast_hash": "e89b25408284013ff68bc26a716a1c9a",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260908133027_WidenMaintenanceActivityCode.Designer.cs": {
+    "mtime": 1788874227.2699928,
+    "seen": 1788874972.787046,
+    "ast_hash": "c21178eef1f65478ea9ca030a2e51ce9",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260908133027_WidenMaintenanceActivityCode.cs": {
+    "mtime": 1788874227.2699928,
+    "seen": 1788874972.787046,
+    "ast_hash": "c4ee088b88688e29f696fe355c82257f",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Seed/EquipmentClassSeeder.cs": {
+    "mtime": 1788872465.5699534,
+    "seen": 1788874972.787046,
+    "ast_hash": "0a3b8a204a962d4ce87069405f6270ac",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Seed/MaintenanceActivitySeeder.cs": {
+    "mtime": 1788872612.329755,
+    "seen": 1788874972.787046,
+    "ast_hash": "5c51712f869fa5e02c3df9150c75fedc",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Seed/MaintenanceStrategyTypeSeeder.cs": {
+    "mtime": 1788872446.9528215,
+    "seen": 1788874972.787046,
+    "ast_hash": "dce94142b039ec9f4874d21aa720ef39",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Seed/MaintenanceTypeSeeder.cs": {
+    "mtime": 1788872431.132266,
+    "seen": 1788874972.787046,
+    "ast_hash": "249fdd1dae6cce7a0048c10454e7b9fc",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Seed/StandardReferenceSeeder.cs": {
+    "mtime": 1788872501.729283,
+    "seen": 1788874972.7974613,
+    "ast_hash": "82b81f2982f8b7fa4cd4af27db4c1cf6",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Servises/SetupService.cs": {
+    "mtime": 1788864857.3942308,
+    "seen": 1788874972.834543,
+    "ast_hash": "f9f081491a35210e34a7368482751aed",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Authorization/QuickSetupAuthorizationTests.cs": {
+    "mtime": 1788865472.5562685,
+    "seen": 1788874972.850639,
+    "ast_hash": "83984ae2429f96d0986f9d3fbc58e1c8",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Authorization/TeamObjectScopeAuthorizationTests.cs": {
+    "mtime": 1788857688.8419032,
+    "seen": 1788874972.850639,
+    "ast_hash": "c4c3b37a438a4989874a3f02f8cdd20f",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/EnterpriseMaintenanceMasterDataTests.cs": {
+    "mtime": 1788873371.3288162,
+    "seen": 1788874972.850639,
+    "ast_hash": "67268e4ad2b7316485c109c07c3da610",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Setup/SetupServiceTests.cs": {
+    "mtime": 1788865548.2338407,
+    "seen": 1788874972.8956456,
+    "ast_hash": "55de70841c07bb0347b0f4e2a80b98b6",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Controllers/QuickSetupController.cs": {
+    "mtime": 1788865765.3578284,
+    "seen": 1788874972.9331582,
+    "ast_hash": "5f534cef0da2ff7b9bba479374f0971f",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Views/QuickSetup/Index.cshtml": {
+    "mtime": 1788865778.638898,
+    "seen": 1788874973.0270746,
+    "ast_hash": "6205a08958f0b85e5e47e5b0f6d69bc9",
     "semantic_hash": ""
   }
 }

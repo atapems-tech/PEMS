@@ -11,6 +11,13 @@ namespace PEMS.Persistence.Seed;
 /// PEMS_CMMS_MAINTENANCE_ORGANIZATION_BLUEPRINT.md بخش‌های ۵ تا ۸ (Rotating/Static Equipment،
 /// MCC/Switchgear، PLC/DCS/SIS، Pipeline/Flange...). فقط برای دیسیپلین‌هایی seed می‌شود که
 /// واقعاً در سیستم موجودند - طبق بخش ۴ سند: «این‌ها کاندید معماری‌اند، نه اجازه‌ی seed کورکورانه».
+///
+/// طبق ممیزی «PEMS — Enterprise Maintenance Master Data»: کدهای دیسیپلین "PIPE"/"CIVL" پایین‌تر
+/// قبلاً با کدهای واقعی DisciplineSeeder ("PIP"/"CIV") یکی نبودند - یعنی FirstOrDefault همیشه
+/// null برمی‌گشت و ۷ گروه (PIPE-*/CIVL-*) هرگز Seed نمی‌شدند، نه فقط یک‌بار، برای همیشه. رفع شد.
+/// بند ۵ سند «Enterprise Maintenance Master Data» هم اینجا اضافه شد (LUBE/WELD/NDT/HVAC/UTIL/
+/// FIRE/CORR/REL/MARINE/ENV/SAFETY/FAC) - زیر دیسیپلین‌های موجود یا ۵ دیسیپلین جدیدی که
+/// DisciplineSeeder اضافه کرد.
 /// </summary>
 public static class MaintenanceGroupSeeder
 {
@@ -21,6 +28,8 @@ public static class MaintenanceGroupSeeder
         ("MECH", "MECH-VLV", "Mechanical Valves"),
         ("MECH", "MECH-WKS", "Workshop & Machining"),
         ("MECH", "MECH-FAB", "Fabrication"),
+        ("MECH", "MECH-WELD", "Welding & Fabrication"),
+        ("MECH", "MECH-LUBE", "Lubrication"),
 
         ("ELEC", "ELEC-MOT", "Motors"),
         ("ELEC", "ELEC-MCC", "MCC"),
@@ -30,6 +39,7 @@ public static class MaintenanceGroupSeeder
         ("ELEC", "ELEC-CAB", "Cables"),
         ("ELEC", "ELEC-PRO", "Protection"),
         ("ELEC", "ELEC-UPS", "UPS & Battery"),
+        ("ELEC", "ELEC-INST", "Electrical & Instrumentation"),
 
         ("INST", "INST-FLD", "Field Instruments"),
         ("INST", "INST-CV", "Control Valves"),
@@ -38,16 +48,37 @@ public static class MaintenanceGroupSeeder
         ("INST", "INST-SIS", "SIS"),
         ("INST", "INST-ANL", "Analyzers"),
         ("INST", "INST-CAL", "Calibration"),
-        ("INST", "INST-FG", "Fire & Gas"),
+        ("INST", "INST-FG", "Fire & Gas Instruments"),
 
-        ("PIPE", "PIPE-LIN", "Pipeline"),
-        ("PIPE", "PIPE-FLG", "Flange Management"),
-        ("PIPE", "PIPE-SUP", "Piping Supports"),
-        ("PIPE", "PIPE-RPR", "Piping Repair"),
-        ("PIPE", "PIPE-HW", "Hot Work"),
+        ("PIP", "PIPE-LIN", "Pipeline"),
+        ("PIP", "PIPE-FLG", "Flange Management"),
+        ("PIP", "PIPE-SUP", "Piping Supports"),
+        ("PIP", "PIPE-RPR", "Piping Repair"),
+        ("PIP", "PIPE-HW", "Hot Work"),
 
-        ("CIVL", "CIVL-STR", "Civil Structures & Buildings"),
-        ("CIVL", "CIVL-RD", "Roads & Drainage"),
+        ("CIV", "CIVL-STR", "Civil Structures & Buildings"),
+        ("CIV", "CIVL-RD", "Roads & Drainage"),
+        ("CIV", "CIVL-FAC", "Facility Maintenance"),
+        ("CIV", "CIVL-MAR", "Marine / Jetty"),
+
+        ("HSE", "HSE-ENV", "Environmental Systems"),
+        ("HSE", "HSE-SAF", "Safety Systems"),
+
+        // ==============================================================================
+        // طبق «PEMS — Enterprise Maintenance Master Data & Standards Implementation» بند ۵:
+        // زیر ۵ دیسیپلین جدیدی که DisciplineSeeder برای پوشش کامل Maintenance Domain اضافه کرد.
+        // ==============================================================================
+        ("UTIL", "UTIL-HVAC", "HVAC & Refrigeration"),
+        ("UTIL", "UTIL-GEN", "Utilities (Steam/Air/Water)"),
+
+        ("FIRE", "FIRE-PROT", "Fire Protection"),
+
+        ("INSP", "INSP-NDT", "Non-Destructive Testing"),
+        ("INSP", "INSP-MI", "Mechanical Integrity"),
+
+        ("CORR", "CORR-MGT", "Corrosion Management"),
+
+        ("REL", "REL-ENG", "Reliability Engineering"),
     };
 
     public static async Task SeedAsync(IServiceProvider services)
@@ -74,6 +105,7 @@ public static class MaintenanceGroupSeeder
                 Code = code,
                 Name = name,
                 DisciplineId = discipline.DisciplineId,
+                IsSystemDefault = true,
                 IsActive = true,
                 CreatedDate = DateTime.Now
             });

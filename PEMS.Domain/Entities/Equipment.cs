@@ -18,6 +18,16 @@ public class Equipment : BaseEntity
     // Pump, Motor, Valve, Instrument, Tank ...
     public string EquipmentType { get; set; } = string.Empty;
 
+    // ==============================================================================
+    // طبق «PEMS — Enterprise Maintenance Master Data & Standards Implementation» بند ۸/۱۷:
+    // ارتباط افزودنی/اختیاری به تاکسونومی مرجع EquipmentClass (مثلاً "Centrifugal Pump") -
+    // EquipmentType (رشته‌ی بالا) برای Backward Compatibility با Equipment Import/کدهای موجود
+    // دست‌نخورده می‌ماند؛ این فیلد فقط زیرساخت AI-Ready («Equipment → Equipment Class →
+    // Maintenance Group → Maintenance Activity») است.
+    // ==============================================================================
+    public int? EquipmentClassId { get; set; }
+    public EquipmentClass? EquipmentClassRef { get; set; }
+
     // ارتباط با پروژه
     public int ProjectId { get; set; }
 

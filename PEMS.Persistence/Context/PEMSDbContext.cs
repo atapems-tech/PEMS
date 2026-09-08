@@ -219,6 +219,18 @@ public class PEMSDbContext
     // بازنگری CMMS: نقش‌ها و گروه‌های کاری تعمیرونگهداری
     public DbSet<MaintenanceRole> MaintenanceRoles { get; set; }
     public DbSet<MaintenanceGroup> MaintenanceGroups { get; set; }
+
+    // طبق «PEMS — Enterprise Maintenance Master Data & Standards Implementation»: تاکسونومی
+    // مرجع نگهداری (Master Data) - جدا از MaintenanceStrategy/MaintenanceTask که رکوردهای
+    // تراکنشی‌اند
+    public DbSet<MaintenanceType> MaintenanceTypes { get; set; }
+    public DbSet<MaintenanceStrategyType> MaintenanceStrategyTypes { get; set; }
+    public DbSet<EquipmentClass> EquipmentClasses { get; set; }
+    public DbSet<StandardReference> StandardReferences { get; set; }
+    public DbSet<MaintenanceActivity> MaintenanceActivities { get; set; }
+    public DbSet<MaintenanceActivityEquipmentClass> MaintenanceActivityEquipmentClasses { get; set; }
+    public DbSet<MaintenanceActivityStrategyType> MaintenanceActivityStrategyTypes { get; set; }
+    public DbSet<MaintenanceActivityStandardReference> MaintenanceActivityStandardReferences { get; set; }
     public DbSet<Team> Teams { get; set; }
     public DbSet<TeamMember> TeamMembers { get; set; }
     public DbSet<Crew> Crews { get; set; }

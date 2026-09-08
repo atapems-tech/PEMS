@@ -1,0 +1,78 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using PEMS.Domain.Entities;
+using PEMS.Persistence.Context;
+
+namespace PEMS.Persistence.Seed;
+
+/// <summary>
+/// طبق «PEMS — Enterprise Maintenance Master Data &amp; Standards Implementation» بند ۲/۱۰: فقط
+/// ابرداده‌ی استانداردها (سازمان/شماره/عنوان/دسته/توضیح کاربردی کوتاه) - هیچ متن دارای Copyright
+/// خودِ استاندارد این‌جا ذخیره نشده است؛ Description ها صرفاً توضیح می‌دهند این استاندارد برای
+/// چه کاربردی در PEMS مرجع قرار گرفته، نه محتوای استاندارد.
+/// </summary>
+public static class StandardReferenceSeeder
+{
+    private static readonly (string Code, string Org, string Number, string Title, string Category, string Description)[] Defaults =
+    {
+        ("ISO-14224", "ISO", "14224", "Collection and exchange of reliability and maintenance data for equipment",
+            "Reliability Data", "مرجع طبقه‌بندی Failure Mode/Cause و ساختار جمع‌آوری داده‌ی نگهداری - همون واژگانی که WorkOrder.FailureModeCode/FailureCauseCode در PEMS استفاده می‌کنند."),
+        ("IEC-60300", "IEC", "60300", "Dependability management",
+            "Dependability Management", "چارچوب مدیریت Dependability (قابلیت اطمینان/نت‌پذیری/پشتیبان‌پذیری) - مرجع مفهومی برای طراحی استراتژی نگهداری."),
+        ("API-580", "API", "RP 580", "Risk-Based Inspection",
+            "Inspection / RBI", "چارچوب کلی برنامه‌ریزی بازرسی مبتنی بر ریسک (RBI) برای تجهیزات ثابت."),
+        ("API-581", "API", "RP 581", "Risk-Based Inspection Methodology",
+            "Inspection / RBI", "روش‌شناسی محاسباتی RBI (احتمال و پیامد خرابی) - مکمل API RP 580."),
+        ("API-510", "API", "510", "Pressure Vessel Inspection Code",
+            "Inspection / Static Equipment", "مرجع بازرسی، تعمیر، تغییر و ارزیابی مجدد مخازن تحت فشار."),
+        ("API-570", "API", "570", "Piping Inspection Code",
+            "Inspection / Piping", "مرجع بازرسی، تعمیر، تغییر و ارزیابی مجدد سیستم‌های لوله‌کشی در سرویس."),
+        ("API-653", "API", "653", "Tank Inspection, Repair, Alteration, and Reconstruction",
+            "Inspection / Storage Tanks", "مرجع بازرسی و تعمیر تانک‌های ذخیره‌ی اتمسفریک فولادی."),
+        ("API-576", "API", "576", "Inspection of Pressure-Relieving Devices",
+            "Inspection / Relief Devices", "مرجع بازرسی و تست دوره‌ای شیرهای اطمینان فشار (PSV/PRV)."),
+        ("API-571", "API", "571", "Damage Mechanisms Affecting Fixed Equipment in the Refining Industry",
+            "Damage Mechanisms", "مرجع طبقه‌بندی مکانیزم‌های آسیب (خوردگی، ترک، خزش و ...) برای تجهیزات ثابت - ورودی مهم برای RBI."),
+        ("ASME", "ASME", "General", "American Society of Mechanical Engineers codes and standards",
+            "Mechanical / Pressure Equipment", "خانواده‌ی استانداردهای مکانیکی/تجهیزات تحت فشار (مثلاً ASME Section VIII برای مخازن، B31.3 برای Piping) - به‌عنوان دسته‌ی کلی مرجع، نه یک سند واحد."),
+        ("IEC", "IEC", "General", "International Electrotechnical Commission standards",
+            "Electrical / Instrumentation", "خانواده‌ی استانداردهای الکتریکی/کنترل (مثلاً IEC 61508 برای SIS) - به‌عنوان دسته‌ی کلی مرجع."),
+        ("ISA", "ISA", "General", "International Society of Automation standards",
+            "Instrumentation & Control", "خانواده‌ی استانداردهای ابزاردقیق/اتوماسیون (مثلاً ISA-5.1 نمادگذاری) - به‌عنوان دسته‌ی کلی مرجع."),
+        ("NFPA", "NFPA", "General", "National Fire Protection Association standards",
+            "Fire Protection", "خانواده‌ی استانداردهای حفاظت حریق (مثلاً NFPA 25 برای سیستم‌های آب‌آتش‌نشانی) - به‌عنوان دسته‌ی کلی مرجع."),
+        ("SMRP", "SMRP", "Best Practices", "Society for Maintenance & Reliability Professionals best practices",
+            "Reliability / Best Practice", "بهترین‌روش‌های صنعتی نگهداری و قابلیت‌اطمینان (KPI ها و طبقه‌بندی نگهداری) - مرجع مفهومی، نه یک کد اجباری."),
+        ("AMPP", "AMPP", "Best Practices", "Association for Materials Protection and Performance practices",
+            "Corrosion", "بهترین‌روش‌های مدیریت خوردگی و حفاظت مواد (ادغام NACE/SSPC سابق) - مرجع مفهومی برای گروه Corrosion Management."),
+    };
+
+    public static async Task SeedAsync(IServiceProvider services)
+    {
+        var db = services.GetRequiredService<PEMSDbContext>();
+
+        var existingCodes = (await db.StandardReferences.Select(x => x.Code).ToListAsync())
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        var missing = Defaults.Where(d => !existingCodes.Contains(d.Code)).ToList();
+        if (missing.Count == 0) return;
+
+        foreach (var (code, org, number, title, category, description) in missing)
+        {
+            db.StandardReferences.Add(new StandardReference
+            {
+                Code = code,
+                Organization = org,
+                StandardNumber = number,
+                Title = title,
+                Category = category,
+                Description = description,
+                IsSystemDefault = true,
+                IsActive = true,
+                CreatedDate = DateTime.Now
+            });
+        }
+
+        await db.SaveChangesAsync();
+    }
+}

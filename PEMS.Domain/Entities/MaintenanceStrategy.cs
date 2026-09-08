@@ -30,6 +30,15 @@ public class MaintenanceStrategy : BaseEntity
     public string StrategyType { get; set; } = string.Empty;
 
     // ==============================================================================
+    // طبق «PEMS — Enterprise Maintenance Master Data & Standards Implementation» بند ۹/۱۷:
+    // ارتباط افزودنی/اختیاری به جدول مرجع MaintenanceStrategyType - StrategyType (رشته‌ی بالا)
+    // برای Backward Compatibility دست‌نخورده می‌ماند؛ این فیلد فقط زیرساخت AI-Ready/کد پایدار
+    // است، نه جایگزین فوری آن.
+    // ==============================================================================
+    public int? MaintenanceStrategyTypeId { get; set; }
+    public MaintenanceStrategyType? MaintenanceStrategyTypeRef { get; set; }
+
+    // ==============================================================================
     // طبق RCM: این استراتژی برای کدام حالت خرابی مشخص تعریف شده - همون واژگان ISO 14224
     // که روی WorkOrder.FailureModeCode هم داریم (Leakage, Fracture, Vibration, ...)
     // ==============================================================================
