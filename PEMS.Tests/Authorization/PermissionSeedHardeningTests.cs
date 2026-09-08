@@ -18,7 +18,10 @@ public class PermissionSeedHardeningTests
     // ماژول -> نقش‌های Authored (دقیقاً همانی که در PermissionService.SeedDefaultsAsync نوشته شده)
     public static readonly TheoryData<string, string[]> HardenedModules = new()
     {
-        { "VDR", new[] { SystemRoles.EngineeringManager, SystemRoles.DocumentController, SystemRoles.DisciplineEngineer } },
+        // طبق «PEMS — Global Engineering Management UI/UX, Navigation & RBAC Hardening» بند ۱۰:
+        // Viewer به VDR اضافه شد تا لینک VDR Import زیر Administration > Import Center برای این
+        // نقش (که روی MDR/EquipmentImport/MrsImport از قبل دید فقط‌خواندنی دارد) به 403 ختم نشود.
+        { "VDR", new[] { SystemRoles.EngineeringManager, SystemRoles.DocumentController, SystemRoles.DisciplineEngineer, SystemRoles.Viewer } },
         { "Contracts", new[] { SystemRoles.ContractManager, SystemRoles.EngineeringManager } },
         { "Vendors", new[] { SystemRoles.ContractManager } },
         { "MaterialRequisition", new[] { SystemRoles.EngineeringManager, SystemRoles.DisciplineEngineer } },

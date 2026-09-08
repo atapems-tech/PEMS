@@ -21,14 +21,19 @@
     string SectionClass(bool containsActive) => "collapse" + (containsActive ? " show" : "");
     string ChevronClass(bool containsActive) => "bi bi-chevron-down nav-section-chevron" + (containsActive ? " rotated" : "");
 
-    var engineeringControllers = new[] { "EngineeringDashboard", "Projects", "EngineeringDocuments", "DocumentRegister", "MDRImport", "DocumentRevisions", "DocumentWorkflow", "VDR", "VDRImport", "Transmittal", "MDB", "ProcurementPackage", "MaterialRequisition", "Discipline" };
-    var aiControllers = new[] { "DocumentUpload", "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "EngineeringDocumentIntelligence", "Relationship", "KnowledgeBase", "AISearch", "ChatAssistant", "AIInsights" };
+    var engineeringControllers = new[] { "EngineeringDashboard", "Projects", "EngineeringDocuments", "DocumentRegister", "DocumentRevisions", "DocumentWorkflow", "VDR", "Transmittal", "MDB", "ProcurementPackage", "MaterialRequisition", "Discipline" };
+    var aiControllers = new[] { "DocumentUpload", "EngineeringDocumentIntelligence", "KnowledgeBase", "AISearch", "ChatAssistant", "AIInsights" };
     var correspondenceControllers = new[] { "Letter", "DCC", "TechnicalQuery" };
     var qualityControllers = new[] { "QC", "MOC" };
     var contractControllers = new[] { "Contract", "Vendor" };
     var projectControlControllers = new[] { "Task", "Tag", "Report", "Meeting" };
-    var cmmsControllers = new[] { "Equipment", "EquipmentImport", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "MaintenanceMasterData", "EquipmentCriticality", "FunctionalLocation", "Reliability", "Inspection", "Kpi", "Permit" };
-    var inventoryControllers = new[] { "Inventory", "MaterialItem", "InventoryMasterData", "InventoryTransaction", "StoreRequisition", "MrsImport" };
+    var cmmsControllers = new[] { "Equipment", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "MaintenanceMasterData", "EquipmentCriticality", "FunctionalLocation", "Reliability", "Inspection", "Kpi", "Permit" };
+    var inventoryControllers = new[] { "Inventory", "MaterialItem", "InventoryMasterData", "InventoryTransaction", "StoreRequisition" };
+    // طبق «PEMS — Global Engineering Management UI/UX, Navigation & RBAC Hardening» بند ۹-۱۴:
+    // این دو گروه از منوهای روزمره‌ی Engineering/AI/CMMS/Inventory جدا شدند و حالا زیر
+    // Administration دیده می‌شوند (هرکدام با محدوده‌ی دسترسی مستقل خودشان - نه صرفاً SystemAdmin).
+    var importCenterControllers = new[] { "MDRImport", "VDRImport", "EquipmentImport", "MrsImport" };
+    var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
     var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "Department", "Employee" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
@@ -67,10 +72,6 @@
                 <i class="bi bi-journal-bookmark"></i> @Localizer["DocumentRegister"]
             </a>
 
-            <a class="nav-link @(IsActive("MDRImport") ? "active" : "")" asp-controller="MDRImport" asp-action="Index">
-                <i class="bi bi-file-earmark-arrow-up"></i> MDR Import
-            </a>
-
             <a class="nav-link @(IsActive("DocumentRevisions") ? "active" : "")" asp-controller="DocumentRevisions" asp-action="Index">
                 <i class="bi bi-clock-history"></i> Document Revision
             </a>
@@ -81,10 +82,6 @@
 
             <a class="nav-link @(IsActive("VDR") ? "active" : "")" asp-controller="VDR" asp-action="Index">
                 <i class="bi bi-journal-check"></i> @Localizer["VDR"]
-            </a>
-
-            <a class="nav-link @(IsActive("VDRImport") ? "active" : "")" asp-controller="VDRImport" asp-action="Index">
-                <i class="bi bi-file-earmark-arrow-up"></i> VDR Import
             </a>
 
             <a class="nav-link @(IsActive("Transmittal") ? "active" : "")" asp-controller="Transmittal" asp-action="Index">
@@ -114,7 +111,7 @@
     {
         var active = ContainsActive(aiControllers);
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-ai" role="button" aria-expanded="@active.ToString().ToLower()">
-            <span>@Localizer["AIEngineeringIntelligence"]</span>
+            <span>AI &amp; Knowledge</span>
             <i class="@ChevronClass(active)"></i>
         </div>
         <div class="@SectionClass(active)" id="sec-ai">
@@ -123,28 +120,8 @@
                 <i class="bi bi-cloud-upload"></i> Document Upload
             </a>
 
-            <a class="nav-link @(IsActive("Intake") ? "active" : "")" asp-controller="Intake" asp-action="Index">
-                <i class="bi bi-inboxes"></i> @Localizer["AIIntakeQueue"]
-            </a>
-
-            <a class="nav-link @(IsActive("OCRProcessing") ? "active" : "")" asp-controller="OCRProcessing" asp-action="Index">
-                <i class="bi bi-badge-ad"></i> OCR Processing
-            </a>
-
-            <a class="nav-link @(IsActive("AIExtraction") ? "active" : "")" asp-controller="AIExtraction" asp-action="Index">
-                <i class="bi bi-cpu"></i> AI Extraction
-            </a>
-
-            <a class="nav-link @(IsActive("TableExtraction") ? "active" : "")" asp-controller="TableExtraction" asp-action="Index">
-                <i class="bi bi-table"></i> Table Extraction
-            </a>
-
             <a class="nav-link @(IsActive("EngineeringDocumentIntelligence") ? "active" : "")" asp-controller="EngineeringDocumentIntelligence" asp-action="Index">
                 <i class="bi bi-diagram-3-fill"></i> @Localizer["DocumentIntelligence"]
-            </a>
-
-            <a class="nav-link @(IsActive("Relationship") ? "active" : "")" asp-controller="Relationship" asp-action="Index">
-                <i class="bi bi-diagram-3"></i> @Localizer["RelationshipExplorer"]
             </a>
 
             <a class="nav-link @(IsActive("KnowledgeBase") ? "active" : "")" asp-controller="KnowledgeBase" asp-action="Index">
@@ -285,10 +262,6 @@
                 <i class="bi bi-gear"></i> @Localizer["Equipment"]
             </a>
 
-            <a class="nav-link @(IsActive("EquipmentImport") ? "active" : "")" asp-controller="EquipmentImport" asp-action="Index">
-                <i class="bi bi-file-earmark-arrow-up"></i> Equipment Import
-            </a>
-
             <a class="nav-link @(IsActive("Instrument") ? "active" : "")" asp-controller="Instrument" asp-action="Index">
                 <i class="bi bi-cpu"></i> Instrument Passport
             </a>
@@ -388,17 +361,22 @@
             <a class="nav-link @(IsActive("InventoryMasterData") ? "active" : "")" asp-controller="InventoryMasterData" asp-action="Index">
                 <i class="bi bi-collection"></i> Master Data
             </a>
-
-            <a class="nav-link @(IsActive("MrsImport") ? "active" : "")" asp-controller="MrsImport" asp-action="Index">
-                <i class="bi bi-file-earmark-excel"></i> MRS Import
-            </a>
         </div>
     }
 
 
-    @if (MenuAccess.CanSee(User, MenuAccess.Administration))
+    @{
+        // طبق «PEMS — Global Engineering Management UI/UX, Navigation & RBAC Hardening» بند ۶:
+        // Administration حالا یک آکاردئون واحد با زیربخش‌های مجزاست. هر زیربخش دسترسی خودش را
+        // کنترل می‌کند (User & Access/Organization/AI Administration فقط SystemAdmin؛ Import
+        // Center نقش‌های عملیاتی‌ای هم دارد که در PermissionService برای Commit مجوز گرفتند) -
+        // بیرونی‌ترین شرط فقط تصمیم می‌گیرد که آیا کاربر حداقل یک زیربخش را می‌بیند یا نه.
+        var canSeeAdminCore = MenuAccess.CanSee(User, MenuAccess.Administration);
+        var canSeeImportCenter = MenuAccess.CanSee(User, MenuAccess.ImportCenter);
+    }
+    @if (canSeeAdminCore || canSeeImportCenter)
     {
-        var active = ContainsActive(adminControllers) || InArea("Admin");
+        var active = ContainsActive(adminControllers) || ContainsActive(importCenterControllers) || ContainsActive(aiAdminControllers) || InArea("Admin");
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-admin" role="button" aria-expanded="@active.ToString().ToLower()">
             <span>@Localizer["Administration"]</span>
             <i class="@ChevronClass(active)"></i>
@@ -409,52 +387,107 @@
                 <i class="bi bi-gear"></i> Settings
             </a>
 
-            <a class="nav-link @(InArea("Admin") && IsActive("Users", "Admin") ? "active" : "")"
-               asp-area="Admin" asp-controller="Users" asp-action="Index">
-                <i class="bi bi-people"></i> @Localizer["Users"]
-            </a>
+            @if (canSeeAdminCore)
+            {
+                <div class="nav-subheading">User &amp; Access</div>
 
-            <a class="nav-link @(InArea("Admin") && IsActive("Roles", "Admin") ? "active" : "")"
-               asp-area="Admin" asp-controller="Roles" asp-action="Index">
-                <i class="bi bi-shield-check"></i> @Localizer["Roles"]
-            </a>
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Users", "Admin") ? "active" : "")"
+                   asp-area="Admin" asp-controller="Users" asp-action="Index">
+                    <i class="bi bi-people"></i> @Localizer["Users"]
+                </a>
 
-            <a class="nav-link @(IsActive("Department") ? "active" : "")" asp-controller="Department" asp-action="Index">
-                <i class="bi bi-building"></i> Departments
-            </a>
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Roles", "Admin") ? "active" : "")"
+                   asp-area="Admin" asp-controller="Roles" asp-action="Index">
+                    <i class="bi bi-shield-check"></i> @Localizer["Roles"]
+                </a>
 
-            <a class="nav-link @(IsActive("Employee") ? "active" : "")" asp-controller="Employee" asp-action="Index">
-                <i class="bi bi-people"></i> Employees
-            </a>
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("PermissionMatrix") ? "active" : "")"
+                   asp-area="Admin" asp-controller="PermissionMatrix" asp-action="Index">
+                    <i class="bi bi-sliders"></i> @Localizer["PermissionMatrix"]
+                </a>
 
-            <a class="nav-link @(InArea("Admin") && IsActive("PermissionMatrix") ? "active" : "")"
-               asp-area="Admin" asp-controller="PermissionMatrix" asp-action="Index">
-                <i class="bi bi-sliders"></i> @Localizer["PermissionMatrix"]
-            </a>
+                <div class="nav-subheading">Organization</div>
 
-            <a class="nav-link @(InArea("Admin") && IsActive("AuditLog") ? "active" : "")"
-               asp-area="Admin" asp-controller="AuditLog" asp-action="Index">
-                <i class="bi bi-clock-history"></i> @Localizer["AuditLog"]
-            </a>
+                <a class="nav-link nav-subitem @(IsActive("Department") ? "active" : "")" asp-controller="Department" asp-action="Index">
+                    <i class="bi bi-building"></i> Departments
+                </a>
 
-            <a class="nav-link @(InArea("Admin") && IsActive("RoutingRules") ? "active" : "")"
-               asp-area="Admin" asp-controller="RoutingRules" asp-action="Index">
-                <i class="bi bi-signpost-split"></i> AI Routing Rules
-            </a>
+                <a class="nav-link nav-subitem @(IsActive("Employee") ? "active" : "")" asp-controller="Employee" asp-action="Index">
+                    <i class="bi bi-people"></i> Employees
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("Performance") ? "active" : "")"
-               asp-controller="Performance" asp-action="Index">
-               <i class="bi bi-speedometer2"></i> Performance Testing
-            </a>
+            @if (canSeeImportCenter)
+            {
+                <div class="nav-subheading">Import Center</div>
 
-            <a class="nav-link @(InArea("Admin") && IsActive("ProjectIntelligence") ? "active" : "")"
-               asp-area="Admin" asp-controller="ProjectIntelligence" asp-action="Index">
-               <i class="bi bi-graph-up-arrow"></i> Project Intelligence
-            </a>
+                <a class="nav-link nav-subitem @(IsActive("MDRImport") ? "active" : "")" asp-controller="MDRImport" asp-action="Index">
+                    <i class="bi bi-file-earmark-arrow-up"></i> MDR Import
+                </a>
 
-            <a class="nav-link" href="/hangfire" target="_blank">
-               <i class="bi bi-hdd-stack"></i> Background Jobs Dashboard
-            </a>
+                <a class="nav-link nav-subitem @(IsActive("VDRImport") ? "active" : "")" asp-controller="VDRImport" asp-action="Index">
+                    <i class="bi bi-file-earmark-arrow-up"></i> VDR Import
+                </a>
+
+                <a class="nav-link nav-subitem @(IsActive("EquipmentImport") ? "active" : "")" asp-controller="EquipmentImport" asp-action="Index">
+                    <i class="bi bi-file-earmark-arrow-up"></i> Equipment Import
+                </a>
+
+                <a class="nav-link nav-subitem @(IsActive("MrsImport") ? "active" : "")" asp-controller="MrsImport" asp-action="Index">
+                    <i class="bi bi-file-earmark-excel"></i> MRS Import
+                </a>
+            }
+
+            @if (canSeeAdminCore)
+            {
+                <div class="nav-subheading">AI Administration</div>
+
+                <a class="nav-link nav-subitem @(IsActive("Intake") ? "active" : "")" asp-controller="Intake" asp-action="Index">
+                    <i class="bi bi-inboxes"></i> @Localizer["AIIntakeQueue"]
+                </a>
+
+                <a class="nav-link nav-subitem @(IsActive("OCRProcessing") ? "active" : "")" asp-controller="OCRProcessing" asp-action="Index">
+                    <i class="bi bi-badge-ad"></i> OCR Processing
+                </a>
+
+                <a class="nav-link nav-subitem @(IsActive("AIExtraction") ? "active" : "")" asp-controller="AIExtraction" asp-action="Index">
+                    <i class="bi bi-cpu"></i> AI Extraction
+                </a>
+
+                <a class="nav-link nav-subitem @(IsActive("TableExtraction") ? "active" : "")" asp-controller="TableExtraction" asp-action="Index">
+                    <i class="bi bi-table"></i> Table Extraction
+                </a>
+
+                <a class="nav-link nav-subitem @(IsActive("Relationship") ? "active" : "")" asp-controller="Relationship" asp-action="Index">
+                    <i class="bi bi-diagram-3"></i> @Localizer["RelationshipExplorer"]
+                </a>
+
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("RoutingRules") ? "active" : "")"
+                   asp-area="Admin" asp-controller="RoutingRules" asp-action="Index">
+                    <i class="bi bi-signpost-split"></i> AI Routing Rules
+                </a>
+
+                <div class="nav-subheading">System Monitoring</div>
+
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("AuditLog") ? "active" : "")"
+                   asp-area="Admin" asp-controller="AuditLog" asp-action="Index">
+                    <i class="bi bi-clock-history"></i> @Localizer["AuditLog"]
+                </a>
+
+                <a class="nav-link nav-subitem @(IsActive("Performance") ? "active" : "")"
+                   asp-controller="Performance" asp-action="Index">
+                   <i class="bi bi-speedometer2"></i> Performance Testing
+                </a>
+
+                <a class="nav-link nav-subitem" href="/hangfire" target="_blank">
+                   <i class="bi bi-hdd-stack"></i> Background Jobs Dashboard
+                </a>
+
+                <a class="nav-link @(InArea("Admin") && IsActive("ProjectIntelligence") ? "active" : "")"
+                   asp-area="Admin" asp-controller="ProjectIntelligence" asp-action="Index">
+                   <i class="bi bi-graph-up-arrow"></i> Project Intelligence
+                </a>
+            }
         </div>
     }
 

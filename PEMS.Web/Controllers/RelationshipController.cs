@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PEMS.Application.Interfaces;
+using PEMS.Web.Security;
 
 namespace PEMS.Web.Controllers;
 
@@ -7,18 +8,32 @@ namespace PEMS.Web.Controllers;
 /// AI Relationship Engine UI: کاوش زنجیره‌ی روابط مهندسی از یک تجهیز، مدرک یا Vendor -
 /// طبق مثال سند: Pump P-101 → Datasheet → Vendor → P&ID → ... → CMMS Asset.
 /// </summary>
+/// <remarks>
+/// طبق «PEMS — P0 AI Pipeline Endpoint Hardening»: این Controller قبلاً هیچ بررسی مجوزی نداشت -
+/// ConfirmSuggestedLink/BulkConfirm (که رابطه‌ی واقعی/FK بین Equipment و MR/VDR برقرار می‌کنند)
+/// برای هر کاربر احرازهویت‌شده‌ای باز بودند. ماژول جدید "Relationship" چون هیچ ماژول موجودی این
+/// قابلیت (تایید رابطه‌ی پیشنهادی بین چند نوع موجودیت مهندسی) را پوشش نمی‌دهد.
+/// </remarks>
 public class RelationshipController : Controller
 {
     private readonly IRelationshipService _service;
+    private readonly ICurrentUserService _currentUser;
+    private readonly IPermissionService _permissionService;
 
-    public RelationshipController(IRelationshipService service)
+    public RelationshipController(IRelationshipService service, ICurrentUserService currentUser,
+        IPermissionService permissionService)
     {
         _service = service;
+        _currentUser = currentUser;
+        _permissionService = permissionService;
     }
 
     [HttpGet]
-    public IActionResult Index(string? q)
+    public async Task<IActionResult> Index(string? q)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Relationship", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Engineering Relationship Explorer";
         ViewData["Section"] = "AI Engineering Intelligence";
 
@@ -30,6 +45,9 @@ public class RelationshipController : Controller
     [HttpGet]
     public async Task<IActionResult> Search(string q)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Relationship", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Engineering Relationship Explorer";
         ViewData["Section"] = "AI Engineering Intelligence";
 
@@ -42,6 +60,9 @@ public class RelationshipController : Controller
 
     public async Task<IActionResult> Equipment(int id)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Relationship", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Engineering Relationship Explorer";
         ViewData["Section"] = "AI Engineering Intelligence";
 
@@ -53,6 +74,9 @@ public class RelationshipController : Controller
 
     public async Task<IActionResult> Document(int id)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Relationship", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Engineering Relationship Explorer";
         ViewData["Section"] = "AI Engineering Intelligence";
 
@@ -64,6 +88,9 @@ public class RelationshipController : Controller
 
     public async Task<IActionResult> Vendor(int id)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Relationship", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Engineering Relationship Explorer";
         ViewData["Section"] = "AI Engineering Intelligence";
 
@@ -74,10 +101,15 @@ public class RelationshipController : Controller
     }
 
 
+    // طبق ممیزی: پرریسک‌ترین اکشن این Controller - رابطه‌ی واقعی/FK بین Equipment و MR/VDR
+    // برقرار می‌کند. نیازمند "Approve".
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ConfirmSuggestedLink(int equipmentId, string targetType, int targetId, bool force = false)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Relationship", "Approve"))
+            return Forbid();
+
         try
         {
             await _service.ConfirmSuggestedLinkAsync(equipmentId, targetType, targetId, force);
@@ -98,6 +130,9 @@ public class RelationshipController : Controller
     // طبق ممیزی بند ۲.۱: گزارش تحلیل شکاف برای برنامه‌ریزی
     public async Task<IActionResult> GapReport(int? projectId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Relationship", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Relationship Gap Report";
         ViewData["Section"] = "AI Engineering Intelligence";
 
@@ -108,6 +143,9 @@ public class RelationshipController : Controller
     // طبق درخواست: تایید دسته‌جمعی پیشنهادهای اتصال - چون تعداد تجهیزات زیاد است
     public async Task<IActionResult> BulkSuggestions(int? projectId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Relationship", "View"))
+            return Forbid();
+
         ViewData["Title"] = "تایید دسته‌جمعی اتصال‌ها";
         ViewData["Section"] = "AI Engineering Intelligence";
 
@@ -115,10 +153,14 @@ public class RelationshipController : Controller
         return View(items);
     }
 
+    // طبق ممیزی بند ۱۲/۱۹: بررسی مجوز باید پیش از هر پردازش/نوشتنی رخ دهد - حتی برای Bulk.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> BulkConfirm(List<string> selectedItems)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Relationship", "Approve"))
+            return Forbid();
+
         if (selectedItems == null || selectedItems.Count == 0)
         {
             TempData["Error"] = "هیچ موردی انتخاب نشده.";

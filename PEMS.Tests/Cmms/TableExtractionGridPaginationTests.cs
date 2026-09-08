@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.DTOs;
 using PEMS.Domain.Entities;
+using PEMS.Persistence.Identity;
+using PEMS.Persistence.Seed;
+using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
 using PEMS.Web.Controllers;
 
@@ -11,13 +15,30 @@ namespace PEMS.Tests.Cmms;
 /// CountAsync/pageSize) - Attachmentهای قدیمی‌تر از ۵۰تای اخیر اصلاً قابل‌دیدن نبودند. Index
 /// فقط به PEMSDbContext وابسته است - بقیه‌ی وابستگی‌های Controller (AI/Import/CurrentUser) در
 /// این Action استفاده نمی‌شوند.
+/// طبق «PEMS — P0 AI Pipeline Endpoint Hardening»: Index حالا نیازمند مجوز "TableExtraction"/
+/// "View" است - این تست‌ها با نقش Viewer (که این مجوز را دارد) اجرا می‌شوند.
 /// </summary>
 public class TableExtractionGridPaginationTests
 {
     private static TableExtractionController CreateController(string dbName, out PEMS.Persistence.Context.PEMSDbContext ctx)
     {
         ctx = PemsDbContextFactory.CreateInMemory($"TableExtractionGrid_{dbName}");
-        return new TableExtractionController(ctx, null!, null!, null!);
+
+        foreach (var roleName in SystemRoles.All)
+            ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
+        ctx.SaveChanges();
+
+        var accessControl = new AccessControlService(ctx);
+        var permissionService = new PermissionService(ctx, accessControl);
+        permissionService.SeedDefaultsAsync().GetAwaiter().GetResult();
+
+        var services = new ServiceCollection();
+        services.AddSingleton(ctx);
+        AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider()).GetAwaiter().GetResult();
+
+        var currentUser = new FakeCurrentUserService { Roles = new List<string> { SystemRoles.Viewer } };
+
+        return new TableExtractionController(ctx, null!, null!, currentUser, permissionService);
     }
 
     private static int _nextId = 1;

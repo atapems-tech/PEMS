@@ -16,19 +16,28 @@ public class MrsImportController : Controller
     private readonly PEMSDbContext _context;
     private readonly ICurrentUserService _currentUser;
     private readonly IFileStorageService _fileStorage;
+    private readonly IPermissionService _permissionService;
 
-    public MrsImportController(IMrsImportService service, PEMSDbContext context, ICurrentUserService currentUser, IFileStorageService fileStorage)
+    public MrsImportController(IMrsImportService service, PEMSDbContext context, ICurrentUserService currentUser,
+        IFileStorageService fileStorage, IPermissionService permissionService)
     {
         _service = service;
         _context = context;
         _currentUser = currentUser;
         _fileStorage = fileStorage;
+        _permissionService = permissionService;
     }
 
+    // طبق «PEMS — Global Engineering Management UI/UX, Navigation & RBAC Hardening» بند ۱۲:
+    // این Pipeline قبلاً هیچ بررسی مجوزی نداشت - BulkCommit (که MaterialItem/MaterialStock/
+    // InventoryTransaction معتبر می‌ساخت) برای هر کاربر احرازهویت‌شده‌ای باز بود.
     public async Task<IActionResult> Index()
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MrsImport", "View"))
+            return Forbid();
+
         ViewData["Title"] = "MRS Import";
-        ViewData["Section"] = "Inventory & Materials";
+        ViewData["Section"] = "Administration";
 
         var batches = await _service.GetBatchesAsync();
         return View(batches);
@@ -38,6 +47,9 @@ public class MrsImportController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Upload(IFormFile file, string? sheetName)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MrsImport", "Create"))
+            return Forbid();
+
         if (file == null || file.Length == 0)
         {
             TempData["Error"] = "فایلی انتخاب نشده.";
@@ -98,8 +110,11 @@ public class MrsImportController : Controller
 
     public async Task<IActionResult> Review(int batchId, string? matchStatusFilter)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MrsImport", "View"))
+            return Forbid();
+
         ViewData["Title"] = "MRS Import Review";
-        ViewData["Section"] = "Inventory & Materials";
+        ViewData["Section"] = "Administration";
 
         var detail = await _service.GetBatchDetailAsync(batchId, matchStatusFilter);
         if (detail == null) return NotFound();
@@ -108,10 +123,15 @@ public class MrsImportController : Controller
         return View(detail);
     }
 
+    // طبق بند ۱۲ ممیزی: پرریسک‌ترین اکشن این Pipeline - MaterialItem/MaterialStock/
+    // InventoryTransaction معتبر می‌سازد/تغییر می‌دهد.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> BulkCommit(int batchId, List<int>? selectedRowIds)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MrsImport", "Approve"))
+            return Forbid();
+
         if (selectedRowIds == null || selectedRowIds.Count == 0)
         {
             TempData["Error"] = "هیچ ردیفی انتخاب نشده.";
@@ -130,6 +150,9 @@ public class MrsImportController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> BulkReject(int batchId, List<int>? selectedRowIds)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MrsImport", "Create"))
+            return Forbid();
+
         if (selectedRowIds == null || selectedRowIds.Count == 0)
         {
             TempData["Error"] = "هیچ ردیفی انتخاب نشده.";

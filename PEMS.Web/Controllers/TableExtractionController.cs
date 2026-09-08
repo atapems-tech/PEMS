@@ -25,17 +25,20 @@ public class TableExtractionController : Controller
     private readonly IDocumentAIService _documentAIService;
     private readonly ITableExtractionImportService _importService;
     private readonly ICurrentUserService _currentUser;
+    private readonly IPermissionService _permissionService;
 
     public TableExtractionController(
         PEMSDbContext context,
         IDocumentAIService documentAIService,
         ITableExtractionImportService importService,
-        ICurrentUserService currentUser)
+        ICurrentUserService currentUser,
+        IPermissionService permissionService)
     {
         _context = context;
         _documentAIService = documentAIService;
         _importService = importService;
         _currentUser = currentUser;
+        _permissionService = permissionService;
     }
 
     // طبق سند «PEMS — Global Data Grid Standard» (فاز ۶B - P2): قبلاً Take(50) ثابت بدون
@@ -43,6 +46,9 @@ public class TableExtractionController : Controller
     // اخیر نبود. حالا صفحه‌بندی واقعی SQL با Skip/Take/CountAsync است.
     public async Task<IActionResult> Index(int page = 1, int? pageSize = null)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "TableExtraction", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Table Extraction";
         ViewData["Section"] = "AI Engineering Intelligence";
 
@@ -81,6 +87,9 @@ public class TableExtractionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Analyze(int attachmentId, string? documentHint)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "TableExtraction", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Table Extraction Result";
         ViewData["Section"] = "AI Engineering Intelligence";
 
@@ -107,6 +116,9 @@ public class TableExtractionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AnalyzeDeterministic(int attachmentId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "TableExtraction", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Table Extraction Result (No AI)";
         ViewData["Section"] = "AI Engineering Intelligence";
 
@@ -156,6 +168,9 @@ public class TableExtractionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> StageForReview(int attachmentId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "TableExtraction", "Create"))
+            return Forbid();
+
         var attachment = await _context.DocumentAttachments.FirstOrDefaultAsync(x => x.AttachmentId == attachmentId);
         if (attachment == null) return NotFound();
 
@@ -191,6 +206,9 @@ public class TableExtractionController : Controller
 
     public async Task<IActionResult> Review(int batchId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "TableExtraction", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Table Extraction Review";
         ViewData["Section"] = "AI Engineering Intelligence";
 
@@ -211,6 +229,9 @@ public class TableExtractionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ConfirmRow(int rowId, int equipmentId, int batchId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "TableExtraction", "Approve"))
+            return Forbid();
+
         try
         {
             await _importService.ConfirmRowAsync(rowId, equipmentId, await GetCurrentEmployeeIdAsync());
@@ -231,6 +252,9 @@ public class TableExtractionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> BulkConfirm(int batchId, List<int>? selectedRowIds)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "TableExtraction", "Approve"))
+            return Forbid();
+
         if (selectedRowIds == null || selectedRowIds.Count == 0)
         {
             TempData["Error"] = "هیچ ردیفی انتخاب نشده.";
@@ -252,6 +276,9 @@ public class TableExtractionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ConfirmRowManual(int rowId, int batchId, string equipmentTagNumber)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "TableExtraction", "Approve"))
+            return Forbid();
+
         var equipment = await _context.Equipments.FirstOrDefaultAsync(e => e.TagNumber == equipmentTagNumber);
         if (equipment == null)
         {
@@ -276,6 +303,9 @@ public class TableExtractionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> RejectRow(int rowId, int batchId, string? comment)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "TableExtraction", "Create"))
+            return Forbid();
+
         await _importService.RejectRowAsync(rowId, await GetCurrentEmployeeIdAsync(), comment);
         return RedirectToAction(nameof(Review), new { batchId });
     }

@@ -20,7 +20,9 @@ public class PermissionService : IPermissionService
         "MaterialRequisition", "Equipment", "DisciplineWorkspace", "Correspondence", "WorkOrder",
         "StoreRequisition", "WorkRequest", "Inspection", "Transmittal",
         "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan",
-        "ProcurementPackage"
+        "ProcurementPackage",
+        "MDRImport", "EquipmentImport", "MrsImport",
+        "AIExtraction", "TableExtraction", "Relationship", "OCRProcessing"
     };
 
     public PermissionService(PEMSDbContext context, IAccessControlService accessControlService)
@@ -258,7 +260,11 @@ public class PermissionService : IPermissionService
         {
             New(SystemRoles.EngineeringManager, "VDR", create: true, edit: true, del: true, approve: true),
             New(SystemRoles.DocumentController, "VDR", create: true, edit: true),
-            New(SystemRoles.DisciplineEngineer, "VDR", edit: true, approve: true)
+            New(SystemRoles.DisciplineEngineer, "VDR", edit: true, approve: true),
+            // طبق بند ۱۰ ممیزی: Viewer روی MDR/EquipmentImport/MrsImport از قبل دید فقط‌خواندنی
+            // دارد؛ برای این‌که لینک VDR Import هم زیر Administration > Import Center برای همون
+            // نقش به یک صفحه‌ی 403 ختم نشود، همون سطح فقط‌خواندنی این‌جا هم اضافه شد.
+            New(SystemRoles.Viewer, "VDR")
         });
 
         await SeedMissingRolesAsync("Contracts", new List<RolePermission>
@@ -379,6 +385,92 @@ public class PermissionService : IPermissionService
             New(SystemRoles.ContractManager, "ProcurementPackage", create: true, edit: true, approve: true),
             New(SystemRoles.EngineeringManager, "ProcurementPackage", approve: true),
             New(SystemRoles.Viewer, "ProcurementPackage")
+        });
+
+        // ==============================================================================
+        // طبق «PEMS — Global Engineering Management UI/UX, Navigation &amp; RBAC Hardening»
+        // بند ۹-۱۲/۴۳: MDRImportController/EquipmentImportController/MrsImportController
+        // هیچ بررسی مجوزی نداشتند - Commit (که داده‌ی معتبر پروژه‌وار می‌سازد/تغییر می‌دهد) در
+        // هر سه برای هر کاربر احرازهویت‌شده‌ای باز بود. الگو دقیقاً همون چیزی است که از قبل
+        // روی VDRImportController.Commit پیاده‌سازی شده (RequirePermission("VDR","Approve")) -
+        // Upload/Review با "Create"/"View"، Commit با "Approve" (بالاترین ریسک، معادل تصمیم
+        // نهایی)، Discard با "Delete" گیت می‌شوند.
+        // ==============================================================================
+        await SeedMissingRolesAsync("MDRImport", new List<RolePermission>
+        {
+            New(SystemRoles.DocumentController, "MDRImport", create: true, del: true, approve: true),
+            New(SystemRoles.EngineeringManager, "MDRImport", create: true, del: true, approve: true),
+            New(SystemRoles.Viewer, "MDRImport")
+        });
+
+        await SeedMissingRolesAsync("EquipmentImport", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "EquipmentImport", create: true, del: true, approve: true),
+            New(SystemRoles.EngineeringManager, "EquipmentImport", create: true, del: true, approve: true),
+            New(SystemRoles.Viewer, "EquipmentImport")
+        });
+
+        await SeedMissingRolesAsync("MrsImport", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "MrsImport", create: true, del: true, approve: true),
+            New(SystemRoles.EngineeringManager, "MrsImport", create: true, del: true, approve: true),
+            New(SystemRoles.Viewer, "MrsImport")
+        });
+
+        // ==============================================================================
+        // طبق «PEMS — P0 AI Pipeline Endpoint Hardening»: AIExtractionController/
+        // TableExtractionController/RelationshipController/OCRProcessingController هیچ‌کدام
+        // بررسی مجوزی نداشتند - Approve/ConfirmRow/BulkConfirm/ConfirmSuggestedLink (که
+        // پیشنهاد AI را به داده‌ی معتبر Equipment/Instrument/رابطه‌ی واقعی تبدیل می‌کنند) برای
+        // هر کاربر احرازهویت‌شده‌ای باز بودند. EngineeringDocumentIntelligenceController به‌جای
+        // ماژول جدید از ماژول موجود "EngineeringDocuments" استفاده می‌کند (همون موجودیت را در
+        // مرحله‌ی بعدتر چرخه‌ی عمرش تغییر می‌دهد) - نیازی به Seed جدید ندارد.
+        //
+        // نقش‌ها بر اساس دامنه‌ی واقعی هر ماژول انتخاب شدند، نه یکسان‌سازی خودکار:
+        // - AIExtraction: تگ/مشخصات تجهیز از مدارک - DisciplineEngineer فقط بازبینی می‌کند
+        //   (Create)، تایید نهایی (Approve) با مالکان داده‌ی Equipment (MaintenanceEngineer) و
+        //   مدیریت (EngineeringManager/EngineeringSupervisor) است - دقیقاً همون قاعده‌ی ماژول
+        //   "Equipment" موجود.
+        // - TableExtraction: تطبیق جدول I/O با Instrument - کار روزمره‌ی DisciplineEngineer
+        //   (رشته‌ی ابزاردقیق) است، پس برخلاف AIExtraction این‌جا Approve هم می‌گیرد.
+        // - Relationship: زنجیره‌ی روابط چند-موجودیتی (Equipment/Document/Vendor) - DocumentController
+        //   سمت مدرک را Create می‌کند اما Approve نهایی نمی‌دهد (همون قاعده‌ی EngineeringDocuments).
+        // - OCRProcessing: صرفاً کنترل صف Background Job (نه تصمیم مهندسی) - محدود به
+        //   DocumentController/EngineeringManager، بدون Viewer (طبق ممیزی: این یک ابزار داخلی
+        //   سیستمی است، نه یک قابلیت کسب‌وکاری قابل‌مشاهده برای نقش‌های فقط‌خواندنی).
+        // ==============================================================================
+        await SeedMissingRolesAsync("AIExtraction", new List<RolePermission>
+        {
+            New(SystemRoles.EngineeringManager, "AIExtraction", create: true, approve: true),
+            New(SystemRoles.EngineeringSupervisor, "AIExtraction", create: true, approve: true),
+            New(SystemRoles.DisciplineEngineer, "AIExtraction", create: true),
+            New(SystemRoles.MaintenanceEngineer, "AIExtraction", create: true, approve: true),
+            New(SystemRoles.Viewer, "AIExtraction")
+        });
+
+        await SeedMissingRolesAsync("TableExtraction", new List<RolePermission>
+        {
+            New(SystemRoles.EngineeringManager, "TableExtraction", create: true, approve: true),
+            New(SystemRoles.EngineeringSupervisor, "TableExtraction", create: true, approve: true),
+            New(SystemRoles.DisciplineEngineer, "TableExtraction", create: true, approve: true),
+            New(SystemRoles.MaintenanceEngineer, "TableExtraction", create: true, approve: true),
+            New(SystemRoles.Viewer, "TableExtraction")
+        });
+
+        await SeedMissingRolesAsync("Relationship", new List<RolePermission>
+        {
+            New(SystemRoles.EngineeringManager, "Relationship", create: true, approve: true),
+            New(SystemRoles.EngineeringSupervisor, "Relationship", create: true, approve: true),
+            New(SystemRoles.DisciplineEngineer, "Relationship", create: true, approve: true),
+            New(SystemRoles.MaintenanceEngineer, "Relationship", create: true, approve: true),
+            New(SystemRoles.DocumentController, "Relationship", create: true),
+            New(SystemRoles.Viewer, "Relationship")
+        });
+
+        await SeedMissingRolesAsync("OCRProcessing", new List<RolePermission>
+        {
+            New(SystemRoles.DocumentController, "OCRProcessing", create: true),
+            New(SystemRoles.EngineeringManager, "OCRProcessing", create: true)
         });
     }
 }

@@ -1,14 +1,14 @@
 ﻿{
-    "generatedAtUtc":  "2026-09-05T19:35:22.0661342Z",
+    "generatedAtUtc":  "2026-09-08T07:51:11.5528783Z",
     "repoRoot":  "D:\\PEMS\\03-SOURCE\\PEMS-cmms-edit-empoleeys-master\\PEMS-cmms-edit-empoleeys-master",
     "branch":  "main",
-    "lastCommit":  "2f5181d 2026-09-05 Initial import: PEMS engineering + CMMS platform",
-    "totalCommits":  1,
+    "lastCommit":  "3fe58de 2026-09-07 Engineering Documents: consolidate search, compact density, tooltip coverage",
+    "totalCommits":  9,
     "moduleCount":  92,
     "stubShimCount":  11,
     "noUiCount":  8,
     "notInNavCount":  15,
-    "noTestCount":  36,
+    "noTestCount":  35,
     "modules":  [
                     {
                         "module":  "Account",
@@ -300,8 +300,8 @@
                         "inSidebarNav":  true,
                         "inTests":  false,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitLastTouched":  "2026-09-06",
+                        "gitCommitCount":  2,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -580,8 +580,8 @@
                         "inSidebarNav":  true,
                         "inTests":  false,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitLastTouched":  "2026-09-06",
+                        "gitCommitCount":  2,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -650,8 +650,8 @@
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitLastTouched":  "2026-09-06",
+                        "gitCommitCount":  2,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -684,8 +684,8 @@
                         "inSidebarNav":  true,
                         "inTests":  false,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitLastTouched":  "2026-09-06",
+                        "gitCommitCount":  2,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -854,19 +854,20 @@
                         "postActionCount":  1,
                         "isRedirectShim":  true,
                         "injectedServices":  [
-
+                                                 "IPermissionService",
+                                                 "ICurrentUserService"
                                              ],
                         "viewsPath":  "PEMS.Web/Views/EquipmentCriticality",
                         "viewCount":  1,
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitLastTouched":  "2026-09-06",
+                        "gitCommitCount":  3,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
-                                         "ServiceLayer":  "Missing",
+                                         "ServiceLayer":  "Present",
                                          "EntityOrDbSet":  "Present",
                                          "MigrationBacked":  "Yes",
                                          "RazorViews":  "Present",
@@ -875,10 +876,10 @@
                                          "TestCoverage":  "Present",
                                          "Documented":  "Missing"
                                      },
-                        "evidencePresent":  5,
+                        "evidencePresent":  6,
                         "evidenceUnknown":  0,
                         "evidenceTotal":  9,
-                        "evidenceCoveragePct":  56
+                        "evidenceCoveragePct":  67
                     },
                     {
                         "module":  "EquipmentImport",
@@ -890,7 +891,8 @@
                         "injectedServices":  [
                                                  "IEquipmentImportService",
                                                  "IEquipmentPdfScanService",
-                                                 "ICurrentUserService"
+                                                 "ICurrentUserService",
+                                                 "IPermissionService"
                                              ],
                         "viewsPath":  "PEMS.Web/Views/EquipmentImport",
                         "viewCount":  3,
@@ -998,7 +1000,8 @@
                         "isRedirectShim":  false,
                         "injectedServices":  [
                                                  "IFunctionalLocationService",
-                                                 "ICurrentUserService"
+                                                 "ICurrentUserService",
+                                                 "IPermissionService"
                                              ],
                         "viewsPath":  "PEMS.Web/Views/FunctionalLocation",
                         "viewCount":  1,
@@ -1006,7 +1009,7 @@
                         "inTests":  true,
                         "inDocs":  false,
                         "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitCommitCount":  2,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -1385,15 +1388,16 @@
                         "isRedirectShim":  false,
                         "injectedServices":  [
                                                  "IJobPlanService",
-                                                 "ICurrentUserService"
+                                                 "ICurrentUserService",
+                                                 "IPermissionService"
                                              ],
                         "viewsPath":  "PEMS.Web/Views/JobPlan",
                         "viewCount":  2,
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitLastTouched":  "2026-09-06",
+                        "gitCommitCount":  3,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -1565,15 +1569,17 @@
                         "isRedirectShim":  false,
                         "injectedServices":  [
                                                  "INumberingService",
-                                                 "IMaintenancePlanService"
+                                                 "IMaintenancePlanService",
+                                                 "ICurrentUserService",
+                                                 "IPermissionService"
                                              ],
                         "viewsPath":  "PEMS.Web/Views/MaintenancePlan",
                         "viewCount":  2,
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitLastTouched":  "2026-09-06",
+                        "gitCommitCount":  2,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -1679,7 +1685,7 @@
                         "inTests":  true,
                         "inDocs":  false,
                         "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitCommitCount":  2,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -1712,8 +1718,8 @@
                         "inSidebarNav":  true,
                         "inTests":  false,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitLastTouched":  "2026-09-06",
+                        "gitCommitCount":  2,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -1740,7 +1746,8 @@
                         "isRedirectShim":  false,
                         "injectedServices":  [
                                                  "IMDRImportService",
-                                                 "ICurrentUserService"
+                                                 "ICurrentUserService",
+                                                 "IPermissionService"
                                              ],
                         "viewsPath":  "PEMS.Web/Views/MDRImport",
                         "viewCount":  2,
@@ -1783,8 +1790,8 @@
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitLastTouched":  "2026-09-06",
+                        "gitCommitCount":  2,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -1848,7 +1855,8 @@
                         "injectedServices":  [
                                                  "IMrsImportService",
                                                  "ICurrentUserService",
-                                                 "IFileStorageService"
+                                                 "IFileStorageService",
+                                                 "IPermissionService"
                                              ],
                         "viewsPath":  "PEMS.Web/Views/MrsImport",
                         "viewCount":  2,
@@ -2035,7 +2043,7 @@
                         "inTests":  true,
                         "inDocs":  false,
                         "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitCommitCount":  2,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -2062,15 +2070,16 @@
                         "isRedirectShim":  false,
                         "injectedServices":  [
                                                  "IProcurementPackageService",
-                                                 "ICurrentUserService"
+                                                 "ICurrentUserService",
+                                                 "IPermissionService"
                                              ],
                         "viewsPath":  "PEMS.Web/Views/ProcurementPackage",
                         "viewCount":  3,
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitLastTouched":  "2026-09-06",
+                        "gitCommitCount":  3,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -2563,7 +2572,7 @@
                         "inTests":  true,
                         "inDocs":  false,
                         "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitCommitCount":  2,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -2702,8 +2711,8 @@
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitLastTouched":  "2026-09-06",
+                        "gitCommitCount":  2,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -2771,7 +2780,8 @@
                         "isRedirectShim":  false,
                         "injectedServices":  [
                                                  "IVDRImportService",
-                                                 "ICurrentUserService"
+                                                 "ICurrentUserService",
+                                                 "IPermissionService"
                                              ],
                         "viewsPath":  "PEMS.Web/Views/VDRImport",
                         "viewCount":  2,
@@ -2813,8 +2823,8 @@
                         "inSidebarNav":  true,
                         "inTests":  false,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitLastTouched":  "2026-09-06",
+                        "gitCommitCount":  2,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -2889,8 +2899,8 @@
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitLastTouched":  "2026-09-06",
+                        "gitCommitCount":  3,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -3060,10 +3070,10 @@
                         "viewsPath":  "PEMS.Web/Areas/Admin/Views/PermissionMatrix",
                         "viewCount":  1,
                         "inSidebarNav":  true,
-                        "inTests":  false,
+                        "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-05",
-                        "gitCommitCount":  1,
+                        "gitLastTouched":  "2026-09-06",
+                        "gitCommitCount":  4,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -3073,13 +3083,13 @@
                                          "RazorViews":  "Present",
                                          "SidebarReachable":  "Present",
                                          "ExplicitAuthZ":  "Present",
-                                         "TestCoverage":  "Missing",
+                                         "TestCoverage":  "Present",
                                          "Documented":  "Missing"
                                      },
-                        "evidencePresent":  5,
+                        "evidencePresent":  6,
                         "evidenceUnknown":  1,
                         "evidenceTotal":  9,
-                        "evidenceCoveragePct":  56
+                        "evidenceCoveragePct":  67
                     },
                     {
                         "module":  "ProjectIntelligence",

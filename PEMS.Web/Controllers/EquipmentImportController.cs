@@ -16,21 +16,29 @@ public class EquipmentImportController : Controller
     private readonly IEquipmentPdfScanService _pdfScanService;
     private readonly PEMSDbContext _context;
     private readonly ICurrentUserService _currentUser;
+    private readonly IPermissionService _permissionService;
 
     public EquipmentImportController(IEquipmentImportService importService, IEquipmentPdfScanService pdfScanService,
-        PEMSDbContext context, ICurrentUserService currentUser)
+        PEMSDbContext context, ICurrentUserService currentUser, IPermissionService permissionService)
     {
         _importService = importService;
         _pdfScanService = pdfScanService;
         _context = context;
         _currentUser = currentUser;
+        _permissionService = permissionService;
     }
 
+    // طبق «PEMS — Global Engineering Management UI/UX, Navigation & RBAC Hardening» بند ۱۱:
+    // این Pipeline قبلاً هیچ بررسی مجوزی نداشت - Commit و CreateFromTags (که مستقیم و بدون
+    // مرحله‌ی بازبینی به جدول Equipments می‌نویسد) هر دو برای هر کاربر احرازهویت‌شده‌ای باز بودند.
     [HttpGet]
     public async Task<IActionResult> Index()
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Equipment Import";
-        ViewData["Section"] = "CMMS Integration";
+        ViewData["Section"] = "Administration";
 
         ViewBag.Projects = await _context.Projects.Where(x => x.IsActive)
             .Select(x => new { x.ProjectId, x.ProjectName }).ToListAsync();
@@ -44,6 +52,9 @@ public class EquipmentImportController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Upload(IFormFile file, int projectId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "Create"))
+            return Forbid();
+
         if (file == null || file.Length == 0)
         {
             TempData["Error"] = "Please select an Equipment Excel file.";
@@ -65,8 +76,11 @@ public class EquipmentImportController : Controller
     [HttpGet]
     public async Task<IActionResult> Review(int batchId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Review Equipment Import";
-        ViewData["Section"] = "CMMS Integration";
+        ViewData["Section"] = "Administration";
 
         var batch = await _importService.GetBatchAsync(batchId);
         if (batch == null) return NotFound();
@@ -78,14 +92,22 @@ public class EquipmentImportController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleRow(int rowId, bool include, int batchId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "Create"))
+            return Forbid();
+
         await _importService.SetRowIncludeAsync(rowId, include);
         return RedirectToAction(nameof(Review), new { batchId });
     }
 
+    // طبق بند ۱۱ ممیزی: پرریسک‌ترین اکشن این Pipeline - رجیستر معتبر Equipment را می‌سازد/تغییر
+    // می‌دهد.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Commit(int batchId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "Approve"))
+            return Forbid();
+
         var (created, updated, skipped) = await _importService.CommitBatchAsync(batchId);
 
         TempData["Message"] = $"Equipment Import committed: {created} created, {updated} updated, {skipped} skipped.";
@@ -97,6 +119,9 @@ public class EquipmentImportController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Discard(int batchId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "Delete"))
+            return Forbid();
+
         await _importService.DiscardBatchAsync(batchId);
         TempData["Message"] = "Equipment import batch discarded.";
         return RedirectToAction(nameof(Index));
@@ -108,6 +133,9 @@ public class EquipmentImportController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ScanPdf(IFormFile file, int projectId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "Create"))
+            return Forbid();
+
         if (file == null || file.Length == 0)
         {
             TempData["Error"] = "Please select a PDF file.";
@@ -144,10 +172,15 @@ public class EquipmentImportController : Controller
         }
     }
 
+    // طبق بند ۱۱ ممیزی: این اکشن حتی از Commit پرریسک‌تر است - مستقیم و بدون هیچ مرحله‌ی
+    // Staging/بازبینی به جدول Equipments می‌نویسد. همون سطح مجوز Commit (Approve) لازم است.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateFromTags(int projectId, int disciplineId, List<string> tags)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "Approve"))
+            return Forbid();
+
         if (tags == null || !tags.Any())
         {
             TempData["Error"] = "No tags were selected.";

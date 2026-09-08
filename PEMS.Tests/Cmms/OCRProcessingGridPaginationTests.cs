@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.DTOs;
 using PEMS.Domain.Entities;
+using PEMS.Persistence.Identity;
+using PEMS.Persistence.Seed;
+using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
 using PEMS.Web.Controllers;
 
@@ -11,13 +15,31 @@ namespace PEMS.Tests.Cmms;
 /// pageSize واقعی) و Include(Document) غیرضروری بود (فقط DocumentNo استفاده می‌شد). شمارنده‌های
 /// Dashboard (GetCount) از قبل SQL-side بودند (GroupBy واقعی) و عمداً دست‌نخورده ماندند چون
 /// Scope شان (کل جدول) با Grid فیلترشده فرق دارد - این تست‌ها هم آن رفتار Global بودن را تأیید می‌کنند.
+/// طبق «PEMS — P0 AI Pipeline Endpoint Hardening»: Index حالا نیازمند مجوز "OCRProcessing"/"View"
+/// است - این تست‌ها با نقش EngineeringManager (که این مجوز را دارد) اجرا می‌شوند، نه با
+/// وابستگی‌های null قبلی.
 /// </summary>
 public class OCRProcessingGridPaginationTests
 {
     private static OCRProcessingController CreateController(string dbName, out PEMS.Persistence.Context.PEMSDbContext ctx)
     {
         ctx = PemsDbContextFactory.CreateInMemory($"OCRProcessingGrid_{dbName}");
-        return new OCRProcessingController(ctx, null!, null!);
+
+        foreach (var roleName in SystemRoles.All)
+            ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
+        ctx.SaveChanges();
+
+        var accessControl = new AccessControlService(ctx);
+        var permissionService = new PermissionService(ctx, accessControl);
+        permissionService.SeedDefaultsAsync().GetAwaiter().GetResult();
+
+        var services = new ServiceCollection();
+        services.AddSingleton(ctx);
+        AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider()).GetAwaiter().GetResult();
+
+        var currentUser = new FakeCurrentUserService { Roles = new List<string> { SystemRoles.EngineeringManager } };
+
+        return new OCRProcessingController(ctx, null!, null!, currentUser, permissionService);
     }
 
     private static int _nextId = 1;

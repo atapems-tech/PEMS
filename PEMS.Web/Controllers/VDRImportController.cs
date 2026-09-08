@@ -15,19 +15,29 @@ public class VDRImportController : Controller
     private readonly IVDRImportService _importService;
     private readonly PEMSDbContext _context;
     private readonly ICurrentUserService _currentUser;
+    private readonly IPermissionService _permissionService;
 
-    public VDRImportController(IVDRImportService importService, PEMSDbContext context, ICurrentUserService currentUser)
+    public VDRImportController(IVDRImportService importService, PEMSDbContext context, ICurrentUserService currentUser,
+        IPermissionService permissionService)
     {
         _importService = importService;
         _context = context;
         _currentUser = currentUser;
+        _permissionService = permissionService;
     }
 
+    // طبق «PEMS — Global Engineering Management UI/UX, Navigation & RBAC Hardening» بند ۱۰:
+    // فقط Commit این Pipeline گیت داشت (RequirePermission("VDR","Approve")) - Index/Upload/
+    // Review/ToggleRow/Discard برای هر کاربر احرازهویت‌شده‌ای باز بودند. با همون ماژول "VDR"
+    // (نه ماژول جدید) و همون الگوی سایر Pipeline های Import هم‌راستا شد.
     [HttpGet]
     public async Task<IActionResult> Index()
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", "View"))
+            return Forbid();
+
         ViewData["Title"] = "VDR Import";
-        ViewData["Section"] = "Engineering Management";
+        ViewData["Section"] = "Administration";
 
         ViewBag.Projects = await _context.Projects.Where(x => x.IsActive)
             .Select(x => new { x.ProjectId, x.ProjectName }).ToListAsync();
@@ -41,6 +51,9 @@ public class VDRImportController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Upload(IFormFile file, int projectId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", "Create"))
+            return Forbid();
+
         if (file == null || file.Length == 0)
         {
             TempData["Error"] = "Please select a VDR Excel file.";
@@ -62,8 +75,11 @@ public class VDRImportController : Controller
     [HttpGet]
     public async Task<IActionResult> Review(int batchId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Review VDR Import";
-        ViewData["Section"] = "Engineering Management";
+        ViewData["Section"] = "Administration";
 
         var batch = await _importService.GetBatchAsync(batchId);
         if (batch == null) return NotFound();
@@ -75,6 +91,9 @@ public class VDRImportController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleRow(int rowId, bool include, int batchId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", "Create"))
+            return Forbid();
+
         await _importService.SetRowIncludeAsync(rowId, include);
         return RedirectToAction(nameof(Review), new { batchId });
     }
@@ -95,6 +114,9 @@ public class VDRImportController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Discard(int batchId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", "Delete"))
+            return Forbid();
+
         await _importService.DiscardBatchAsync(batchId);
         TempData["Message"] = "Import batch discarded.";
         return RedirectToAction(nameof(Index));

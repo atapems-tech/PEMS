@@ -4,6 +4,7 @@ using PEMS.Application.Common;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
+using PEMS.Web.Security;
 
 namespace PEMS.Web.Controllers;
 
@@ -11,20 +12,33 @@ namespace PEMS.Web.Controllers;
 /// داشبورد صف پردازش OCR/AI: وضعیت تمام پیوست‌ها (Pending/Processing/Completed/Failed)
 /// و امکان Retry برای موارد ناموفق.
 /// </summary>
+/// <remarks>
+/// طبق «PEMS — P0 AI Pipeline Endpoint Hardening»: این Controller قبلاً هیچ بررسی مجوزی نداشت -
+/// Retry (که یک Background Job جدید در Hangfire صف می‌کند و منابع سرور/Ollama مصرف می‌کند) برای
+/// هر کاربر احرازهویت‌شده‌ای باز بود - خطر مصرف منابع/DoS با صف‌کردن بی‌رویه‌ی Retry. ماژول جدید
+/// "OCRProcessing" چون هیچ ماژول موجودی این قابلیت (کنترل صف پردازش OCR/AI سراسری، مستقل از
+/// نوع مدرک) را پوشش نمی‌دهد.
+/// </remarks>
 public class OCRProcessingController : Controller
 {
     private readonly PEMSDbContext _context;
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly ILogger<OCRProcessingController> _logger;
+    private readonly ICurrentUserService _currentUser;
+    private readonly IPermissionService _permissionService;
 
     public OCRProcessingController(
         PEMSDbContext context,
         IServiceScopeFactory scopeFactory,
-        ILogger<OCRProcessingController> logger)
+        ILogger<OCRProcessingController> logger,
+        ICurrentUserService currentUser,
+        IPermissionService permissionService)
     {
         _context = context;
         _scopeFactory = scopeFactory;
         _logger = logger;
+        _currentUser = currentUser;
+        _permissionService = permissionService;
     }
 
     // طبق سند «PEMS — Global Data Grid Standard» (فاز ۶B - P2): قبلاً Take(200) ثابت بود
@@ -35,6 +49,9 @@ public class OCRProcessingController : Controller
     // "اگر Counter عمداً Global است در حالی که Grid فیلترشده، آن رفتار را حفظ کن").
     public async Task<IActionResult> Index(string? status, int page = 1, int? pageSize = null)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "OCRProcessing", "View"))
+            return Forbid();
+
         ViewData["Title"] = "OCR Processing";
         ViewData["Section"] = "AI Engineering Intelligence";
 
@@ -89,8 +106,11 @@ public class OCRProcessingController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Retry(int id)
+    public async Task<IActionResult> Retry(int id)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "OCRProcessing", "Create"))
+            return Forbid();
+
         Hangfire.BackgroundJob.Enqueue<IDocumentAIIngestionService>(x => x.ProcessAttachmentAsync(id));
 
         TempData["Message"] = "Re-analysis started in the background.";
