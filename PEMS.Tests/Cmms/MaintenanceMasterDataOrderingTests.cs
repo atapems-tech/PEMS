@@ -1,5 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using PEMS.Domain.Entities;
+using PEMS.Persistence.Identity;
+using PEMS.Persistence.Seed;
+using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
 using PEMS.Web.Controllers;
 
@@ -13,6 +17,9 @@ namespace PEMS.Tests.Cmms;
 /// نکن» است و به UX ادمین (که باید همه‌ی موارد را همزمان ببیند) آسیب می‌زند. تنها اصلاح
 /// متناسب: ترتیب قطعی (Tie-breaker) روی هر ۴ کوئری - طبق همون الگوی P2 که برای
 /// DocumentRegister/EngineeringDocuments/AuditLog اعمال شد.
+/// طبق «PEMS — P1 Organization &amp; Master Data Authorization Hardening»: Index حالا نیازمند
+/// مجوز "MaintenanceMasterData"/"View" است - این تست‌ها با نقش MaintenanceEngineer (که این
+/// مجوز را دارد) اجرا می‌شوند.
 /// </summary>
 public class MaintenanceMasterDataOrderingTests
 {
@@ -21,7 +28,22 @@ public class MaintenanceMasterDataOrderingTests
         ctx = PemsDbContextFactory.CreateInMemory($"MmdOrdering_{dbName}");
         ctx.Disciplines.Add(new Discipline { DisciplineId = 1, Code = "MECH", Name = "Mechanical" });
         ctx.SaveChanges();
-        return new MaintenanceMasterDataController(ctx);
+
+        foreach (var roleName in SystemRoles.All)
+            ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
+        ctx.SaveChanges();
+
+        var accessControl = new AccessControlService(ctx);
+        var permissionService = new PermissionService(ctx, accessControl);
+        permissionService.SeedDefaultsAsync().GetAwaiter().GetResult();
+
+        var services = new ServiceCollection();
+        services.AddSingleton(ctx);
+        AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider()).GetAwaiter().GetResult();
+
+        var currentUser = new FakeCurrentUserService { Roles = new List<string> { SystemRoles.MaintenanceEngineer } };
+
+        return new MaintenanceMasterDataController(ctx, currentUser, permissionService);
     }
 
     private static int _nextId = 1;

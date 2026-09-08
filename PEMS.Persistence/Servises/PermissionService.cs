@@ -22,7 +22,8 @@ public class PermissionService : IPermissionService
         "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan",
         "ProcurementPackage",
         "MDRImport", "EquipmentImport", "MrsImport",
-        "AIExtraction", "TableExtraction", "Relationship", "OCRProcessing"
+        "AIExtraction", "TableExtraction", "Relationship", "OCRProcessing",
+        "Team", "Crew", "InventoryMasterData", "MaintenanceMasterData"
     };
 
     public PermissionService(PEMSDbContext context, IAccessControlService accessControlService)
@@ -292,7 +293,17 @@ public class PermissionService : IPermissionService
         await SeedMissingRolesAsync("DisciplineWorkspace", new List<RolePermission>
         {
             New(SystemRoles.EngineeringSupervisor, "DisciplineWorkspace", create: true, edit: true),
-            New(SystemRoles.DisciplineEngineer, "DisciplineWorkspace", create: true, edit: true)
+            New(SystemRoles.DisciplineEngineer, "DisciplineWorkspace", create: true, edit: true),
+            // طبق «PEMS — P1 Organization & Master Data Authorization Hardening»: این ماژول از
+            // فاز ۶B Seed شده بود اما DisciplineController هرگز واقعاً HasPermissionAsync را
+            // صدا نمی‌زد - یعنی این دو نقش تنها نقش‌های "طراحی‌شده" بودند، نه نقش‌های واقعی که
+            // امروز لینک سایدبار «Disciplines» را می‌بینند (MenuAccess.EngineeringManagement
+            // شامل EngineeringManager/DocumentController/Viewer هم می‌شود). با سیم‌کشی‌کردن این
+            // ماژول به Controller، این سه نقش هم اضافه شدند تا آن لینک به یک صفحه‌ی 403 ختم
+            // نشود (بند ۲۱-C: «Sidebar visible + Permission denied = BAD»).
+            New(SystemRoles.EngineeringManager, "DisciplineWorkspace", create: true, edit: true),
+            New(SystemRoles.DocumentController, "DisciplineWorkspace"),
+            New(SystemRoles.Viewer, "DisciplineWorkspace")
         });
 
         // Correspondence (مکاتبات رسمی)
@@ -471,6 +482,55 @@ public class PermissionService : IPermissionService
         {
             New(SystemRoles.DocumentController, "OCRProcessing", create: true),
             New(SystemRoles.EngineeringManager, "OCRProcessing", create: true)
+        });
+
+        // ==============================================================================
+        // طبق «PEMS — P1 Organization & Master Data Authorization Hardening»: TeamController/
+        // CrewController/InventoryMasterDataController/MaintenanceMasterDataController هیچ‌کدام
+        // بررسی مجوزی نداشتند - CreateTeam/AddMember/RemoveMember/MoveMember (که عضویت واحد
+        // سازمانی اجرایی را تغییر می‌دهند و روی تخصیص کار اثر می‌گذارند) و Create*/Toggle*Active
+        // روی داده‌ی مرجع (Category/UOM/Warehouse/MaintenanceGroup/Skill/Qualification/
+        // Certification) برای هر کاربر احرازهویت‌شده‌ای باز بودند.
+        //
+        // نقش‌ها بر اساس مالکیت واقعی CMMS انتخاب شدند - همون سه نقشی که سایدبار «CMMS
+        // Integration»/«Inventory & Materials» از قبل نشانشان می‌دهد (MenuAccess.CmmsIntegration:
+        // MaintenanceEngineer/EngineeringSupervisor/EngineeringManager)، نه SystemAdmin-فقط،
+        // مطابق بند ۳۷-۳۸ («Master Data لزوماً Admin نیست»).
+        // ==============================================================================
+        await SeedMissingRolesAsync("Team", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "Team", create: true, edit: true),
+            New(SystemRoles.EngineeringSupervisor, "Team", create: true, edit: true),
+            New(SystemRoles.EngineeringManager, "Team", create: true, edit: true),
+            // GetTeamMembers توسط فرم WorkOrder هم مصرف می‌شود - همون سطح View که ماژول
+            // WorkOrder به این دو نقش می‌دهد، اینجا هم لازم است (وگرنه دیدن اعضای تیم در
+            // بازبینی WorkOrder برایشان می‌شکند).
+            New(SystemRoles.DisciplineEngineer, "Team"),
+            New(SystemRoles.Viewer, "Team")
+        });
+
+        await SeedMissingRolesAsync("Crew", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "Crew", create: true, edit: true),
+            New(SystemRoles.EngineeringSupervisor, "Crew", create: true, edit: true),
+            New(SystemRoles.EngineeringManager, "Crew", create: true, edit: true),
+            New(SystemRoles.Viewer, "Crew")
+        });
+
+        await SeedMissingRolesAsync("InventoryMasterData", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "InventoryMasterData", create: true, edit: true),
+            New(SystemRoles.EngineeringSupervisor, "InventoryMasterData", create: true, edit: true),
+            New(SystemRoles.EngineeringManager, "InventoryMasterData", create: true, edit: true),
+            New(SystemRoles.Viewer, "InventoryMasterData")
+        });
+
+        await SeedMissingRolesAsync("MaintenanceMasterData", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "MaintenanceMasterData", create: true, edit: true),
+            New(SystemRoles.EngineeringSupervisor, "MaintenanceMasterData", create: true, edit: true),
+            New(SystemRoles.EngineeringManager, "MaintenanceMasterData", create: true, edit: true),
+            New(SystemRoles.Viewer, "MaintenanceMasterData")
         });
     }
 }

@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
+using PEMS.Web.Security;
 
 namespace PEMS.Web.Controllers;
 
@@ -9,17 +11,32 @@ namespace PEMS.Web.Controllers;
 /// طبق سند Inventory بخش ۶-۸-۲۵: به‌جای سه صفحه‌ی جدا برای Lookup های کوچک (Category/UOM/
 /// Warehouse)، یک صفحه با تب - همون الگوی MaintenanceMasterDataController.
 /// </summary>
+/// <remarks>
+/// طبق «PEMS — P1 Organization &amp; Master Data Authorization Hardening»: این Controller قبلاً
+/// هیچ بررسی مجوزی نداشت - Create*/Toggle*Active برای هر کاربر احرازهویت‌شده‌ای باز بودند.
+/// ماژول جدید "InventoryMasterData" چون هیچ ماژول موجودی این قابلیت (پیکربندی مرجع دامنه‌ی
+/// انبار/موجودی) را پوشش نمی‌دهد - همون نقش‌های عملیاتی CMMS که سایدبار «Inventory & Materials»
+/// از قبل به آن‌ها نشان می‌دهد (MenuAccess.CmmsIntegration).
+/// </remarks>
 public class InventoryMasterDataController : Controller
 {
     private readonly PEMSDbContext _context;
+    private readonly ICurrentUserService _currentUser;
+    private readonly IPermissionService _permissionService;
 
-    public InventoryMasterDataController(PEMSDbContext context)
+    public InventoryMasterDataController(PEMSDbContext context, ICurrentUserService currentUser,
+        IPermissionService permissionService)
     {
         _context = context;
+        _currentUser = currentUser;
+        _permissionService = permissionService;
     }
 
     public async Task<IActionResult> Index()
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "InventoryMasterData", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Inventory Master Data";
         ViewData["Section"] = "Inventory & Materials";
 
@@ -47,6 +64,9 @@ public class InventoryMasterDataController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateCategory(string code, string name, int? parentCategoryId, string? description)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "InventoryMasterData", "Create"))
+            return Forbid();
+
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(code))
         {
             TempData["Error"] = "کد و نام دسته‌بندی الزامی هستند.";
@@ -78,6 +98,9 @@ public class InventoryMasterDataController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleCategoryActive(int id)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "InventoryMasterData", "Edit"))
+            return Forbid();
+
         var category = await _context.MaterialCategories.FirstOrDefaultAsync(x => x.MaterialCategoryId == id);
         if (category == null) return NotFound();
 
@@ -91,6 +114,9 @@ public class InventoryMasterDataController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateUom(string code, string name, decimal? conversionFactor, string? description)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "InventoryMasterData", "Create"))
+            return Forbid();
+
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(code))
         {
             TempData["Error"] = "کد و نام واحد الزامی هستند.";
@@ -122,6 +148,9 @@ public class InventoryMasterDataController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleUomActive(int id)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "InventoryMasterData", "Edit"))
+            return Forbid();
+
         var uom = await _context.MaterialUOMs.FirstOrDefaultAsync(x => x.MaterialUOMId == id);
         if (uom == null) return NotFound();
 
@@ -135,6 +164,9 @@ public class InventoryMasterDataController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateWarehouse(string code, string name, string? description)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "InventoryMasterData", "Create"))
+            return Forbid();
+
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(code))
         {
             TempData["Error"] = "کد و نام انبار الزامی هستند.";
@@ -165,6 +197,9 @@ public class InventoryMasterDataController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleWarehouseActive(int id)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "InventoryMasterData", "Edit"))
+            return Forbid();
+
         var warehouse = await _context.Warehouses.FirstOrDefaultAsync(x => x.WarehouseId == id);
         if (warehouse == null) return NotFound();
 
@@ -178,6 +213,9 @@ public class InventoryMasterDataController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateStorageLocation(int warehouseId, string code, string name, int? parentLocationId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "InventoryMasterData", "Create"))
+            return Forbid();
+
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(code))
         {
             TempData["Error"] = "کد و نام محل نگهداری الزامی هستند.";

@@ -31,7 +31,9 @@ public class PermissionMatrixController : Controller
         // SeedDefaultsAsync هم Seed دارند - یعنی SystemAdmin عملاً نمی‌توانست این دو ماژول را
         // از طریق همین صفحه ببیند یا ویرایش کند. MDRImport/EquipmentImport/MrsImport هم تازه
         // اضافه شدند (طبق بند ۹-۱۲). AIExtraction/TableExtraction/Relationship/OCRProcessing هم
-        // تازه اضافه شدند (طبق «PEMS — P0 AI Pipeline Endpoint Hardening»).
+        // تازه اضافه شدند (طبق «PEMS — P0 AI Pipeline Endpoint Hardening»). Team/Crew/
+        // InventoryMasterData/MaintenanceMasterData هم تازه اضافه شدند (طبق «PEMS — P1
+        // Organization & Master Data Authorization Hardening»).
         ViewBag.Modules = new[]
         {
             "EngineeringDocuments", "VDR", "Contracts", "Vendors",
@@ -40,7 +42,8 @@ public class PermissionMatrixController : Controller
             "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan",
             "ProcurementPackage",
             "MDRImport", "EquipmentImport", "MrsImport",
-            "AIExtraction", "TableExtraction", "Relationship", "OCRProcessing"
+            "AIExtraction", "TableExtraction", "Relationship", "OCRProcessing",
+            "Team", "Crew", "InventoryMasterData", "MaintenanceMasterData"
         };
 
         return View(matrix);

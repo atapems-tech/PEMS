@@ -26,7 +26,11 @@ public class PermissionSeedHardeningTests
         { "Vendors", new[] { SystemRoles.ContractManager } },
         { "MaterialRequisition", new[] { SystemRoles.EngineeringManager, SystemRoles.DisciplineEngineer } },
         { "Equipment", new[] { SystemRoles.MaintenanceEngineer } },
-        { "DisciplineWorkspace", new[] { SystemRoles.EngineeringSupervisor, SystemRoles.DisciplineEngineer } },
+        // طبق «PEMS — P1 Organization & Master Data Authorization Hardening»: این ماژول از فاز
+        // ۶B فقط Seed شده بود ولی DisciplineController هرگز HasPermissionAsync را صدا نمی‌زد.
+        // با سیم‌کشی‌کردنش، EngineeringManager/DocumentController/Viewer هم اضافه شدند تا لینک
+        // سایدبار «Disciplines» (که از قبل به این سه نقش هم نشان داده می‌شود) به 403 ختم نشود.
+        { "DisciplineWorkspace", new[] { SystemRoles.EngineeringSupervisor, SystemRoles.DisciplineEngineer, SystemRoles.EngineeringManager, SystemRoles.DocumentController, SystemRoles.Viewer } },
         { "Correspondence", new[] { SystemRoles.DocumentController, SystemRoles.EngineeringManager, SystemRoles.EngineeringSupervisor, SystemRoles.DisciplineEngineer, SystemRoles.ContractManager } },
     };
 

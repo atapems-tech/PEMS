@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
+using PEMS.Web.Security;
 
 namespace PEMS.Web.Controllers;
 
@@ -10,17 +12,31 @@ namespace PEMS.Web.Controllers;
 /// تقریباً یکسان برای هر Lookup کوچک (MaintenanceGroup/Skill/Qualification/Certification)،
 /// یک صفحه با تب - همون روحیه‌ی ممیزی سایدباری که قبلاً روی این پروژه انجام شد.
 /// </summary>
+/// <remarks>
+/// طبق «PEMS — P1 Organization &amp; Master Data Authorization Hardening»: این Controller قبلاً
+/// هیچ بررسی مجوزی نداشت - Create*/Toggle*Active برای هر کاربر احرازهویت‌شده‌ای باز بودند.
+/// ماژول جدید "MaintenanceMasterData" چون هیچ ماژول موجودی این قابلیت (پیکربندی مرجع دامنه‌ی
+/// نیروی کار تعمیرات) را پوشش نمی‌دهد - همون نقش‌های عملیاتی CMMS که سایدبار از قبل نشان می‌دهد.
+/// </remarks>
 public class MaintenanceMasterDataController : Controller
 {
     private readonly PEMSDbContext _context;
+    private readonly ICurrentUserService _currentUser;
+    private readonly IPermissionService _permissionService;
 
-    public MaintenanceMasterDataController(PEMSDbContext context)
+    public MaintenanceMasterDataController(PEMSDbContext context, ICurrentUserService currentUser,
+        IPermissionService permissionService)
     {
         _context = context;
+        _currentUser = currentUser;
+        _permissionService = permissionService;
     }
 
     public async Task<IActionResult> Index()
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Maintenance Master Data";
         ViewData["Section"] = "CMMS Integration";
 
@@ -62,6 +78,9 @@ public class MaintenanceMasterDataController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateGroup(string code, string name, int disciplineId, string? description)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Create"))
+            return Forbid();
+
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(code))
         {
             TempData["Error"] = "کد و نام گروه تعمیراتی الزامی هستند.";
@@ -95,6 +114,9 @@ public class MaintenanceMasterDataController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleGroupActive(int id)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Edit"))
+            return Forbid();
+
         var group = await _context.MaintenanceGroups.FirstOrDefaultAsync(x => x.MaintenanceGroupId == id);
         if (group == null) return NotFound();
 
@@ -109,6 +131,9 @@ public class MaintenanceMasterDataController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateSkill(string name, int? disciplineId, string? description)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Create"))
+            return Forbid();
+
         if (string.IsNullOrWhiteSpace(name))
         {
             TempData["Error"] = "نام مهارت الزامی است.";
@@ -141,6 +166,9 @@ public class MaintenanceMasterDataController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleSkillActive(int id)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Edit"))
+            return Forbid();
+
         var skill = await _context.Skills.FirstOrDefaultAsync(x => x.SkillId == id);
         if (skill == null) return NotFound();
 
@@ -155,6 +183,9 @@ public class MaintenanceMasterDataController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateQualification(string name, int? disciplineId, string? description)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Create"))
+            return Forbid();
+
         if (string.IsNullOrWhiteSpace(name))
         {
             TempData["Error"] = "نام صلاحیت الزامی است.";
@@ -186,6 +217,9 @@ public class MaintenanceMasterDataController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleQualificationActive(int id)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Edit"))
+            return Forbid();
+
         var qualification = await _context.Qualifications.FirstOrDefaultAsync(x => x.QualificationId == id);
         if (qualification == null) return NotFound();
 
@@ -200,6 +234,9 @@ public class MaintenanceMasterDataController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateCertification(string name, int? disciplineId, string? description)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Create"))
+            return Forbid();
+
         if (string.IsNullOrWhiteSpace(name))
         {
             TempData["Error"] = "نام گواهینامه الزامی است.";
@@ -231,6 +268,9 @@ public class MaintenanceMasterDataController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleCertificationActive(int id)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Edit"))
+            return Forbid();
+
         var certification = await _context.Certifications.FirstOrDefaultAsync(x => x.CertificationId == id);
         if (certification == null) return NotFound();
 
