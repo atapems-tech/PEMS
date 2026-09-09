@@ -17,6 +17,8 @@ public interface IEquipmentClassificationService
 
     Task<ReviewQueueItemDto?> GetPendingSuggestionForEquipmentAsync(int equipmentId);
 
+    Task<ClassificationExplanationDto?> ExplainClassificationAsync(int equipmentId);
+
     Task<BackfillResultDto> BackfillAsync();
 
     Task<bool> AcceptSuggestionAsync(int suggestionId, string reviewedBy, string? comment);

@@ -14,13 +14,16 @@ namespace PEMS.Web.Controllers;
 public class EquipmentClassificationController : Controller
 {
     private readonly IEquipmentClassificationService _classificationService;
+    private readonly IEquipmentClassCoverageService _coverageService;
     private readonly ICurrentUserService _currentUser;
     private readonly IPermissionService _permissionService;
 
     public EquipmentClassificationController(IEquipmentClassificationService classificationService,
-        ICurrentUserService currentUser, IPermissionService permissionService)
+        IEquipmentClassCoverageService coverageService, ICurrentUserService currentUser,
+        IPermissionService permissionService)
     {
         _classificationService = classificationService;
+        _coverageService = coverageService;
         _currentUser = currentUser;
         _permissionService = permissionService;
     }
@@ -48,6 +51,18 @@ public class EquipmentClassificationController : Controller
 
         var result = await _classificationService.GetReviewQueueAsync(page, 50, status);
         return View(result);
+    }
+
+    public async Task<IActionResult> Coverage()
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "View"))
+            return Forbid();
+
+        ViewData["Title"] = "Maintenance Intelligence Coverage";
+        ViewData["Section"] = "CMMS Integration";
+
+        var matrix = await _coverageService.GetCoverageMatrixAsync();
+        return View(matrix);
     }
 
     [HttpPost]

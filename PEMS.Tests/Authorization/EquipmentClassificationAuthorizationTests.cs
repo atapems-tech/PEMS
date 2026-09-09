@@ -45,10 +45,20 @@ public class EquipmentClassificationAuthorizationTests
         public Task<ClassificationDashboardDto> GetDashboardAsync() => Task.FromResult(new ClassificationDashboardDto());
         public Task<ReviewQueuePageDto> GetReviewQueueAsync(int page, int pageSize, string statusFilter = "PENDING") => Task.FromResult(new ReviewQueuePageDto());
         public Task<ReviewQueueItemDto?> GetPendingSuggestionForEquipmentAsync(int equipmentId) => Task.FromResult<ReviewQueueItemDto?>(null);
+        public Task<ClassificationExplanationDto?> ExplainClassificationAsync(int equipmentId) => Task.FromResult<ClassificationExplanationDto?>(null);
         public Task<BackfillResultDto> BackfillAsync() => Task.FromResult(new BackfillResultDto());
         public Task<bool> AcceptSuggestionAsync(int suggestionId, string reviewedBy, string? comment) => Task.FromResult(true);
         public Task<bool> RejectSuggestionAsync(int suggestionId, string reviewedBy, string? comment) => Task.FromResult(true);
     }
+
+    private class FakeCoverageService : IEquipmentClassCoverageService
+    {
+        public Task<MaintenanceIntelligenceCoverageSummaryDto> GetCoverageMatrixAsync() => Task.FromResult(new MaintenanceIntelligenceCoverageSummaryDto());
+    }
+
+    private static EquipmentClassificationController CreateController(IEquipmentClassificationService classificationService,
+        ICurrentUserService user, IPermissionService perms) =>
+        new EquipmentClassificationController(classificationService, new FakeCoverageService(), user, perms).WithTempData();
 
     [Fact]
     public async Task Index_NoMaintenanceMasterDataPermission_ReturnsForbid()
@@ -56,7 +66,7 @@ public class EquipmentClassificationAuthorizationTests
         // QAManager طبق Seed موجود هیچ Grant ای روی ماژول "MaintenanceMasterData" ندارد
         // (بر خلاف Viewer که یک ردیف View فقط‌خواندنی روی همین ماژول دارد).
         var (ctx, perms, user) = await CreateInfra(nameof(Index_NoMaintenanceMasterDataPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = new EquipmentClassificationController(new FakeClassificationService(), user, perms).WithTempData();
+        var controller = CreateController(new FakeClassificationService(), user, perms);
 
         var result = await controller.Index();
 
@@ -68,7 +78,7 @@ public class EquipmentClassificationAuthorizationTests
     {
         // MaintenanceEngineer طبق Seed موجود روی "MaintenanceMasterData" دسترسی View دارد
         var (ctx, perms, user) = await CreateInfra(nameof(Index_RoleWithMaintenanceMasterDataView_ReturnsView), role: SystemRoles.MaintenanceEngineer);
-        var controller = new EquipmentClassificationController(new FakeClassificationService(), user, perms).WithTempData();
+        var controller = CreateController(new FakeClassificationService(), user, perms);
 
         var result = await controller.Index();
 
@@ -79,7 +89,7 @@ public class EquipmentClassificationAuthorizationTests
     public async Task Index_SystemAdmin_ReturnsView()
     {
         var (ctx, perms, user) = await CreateInfra(nameof(Index_SystemAdmin_ReturnsView), role: SystemRoles.SystemAdmin);
-        var controller = new EquipmentClassificationController(new FakeClassificationService(), user, perms).WithTempData();
+        var controller = CreateController(new FakeClassificationService(), user, perms);
 
         var result = await controller.Index();
 
@@ -90,7 +100,7 @@ public class EquipmentClassificationAuthorizationTests
     public async Task ReviewQueue_NoPermission_ReturnsForbid()
     {
         var (ctx, perms, user) = await CreateInfra(nameof(ReviewQueue_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = new EquipmentClassificationController(new FakeClassificationService(), user, perms).WithTempData();
+        var controller = CreateController(new FakeClassificationService(), user, perms);
 
         var result = await controller.ReviewQueue();
 
@@ -102,7 +112,7 @@ public class EquipmentClassificationAuthorizationTests
     {
         // Viewer فقط View دارد نه Edit - باید صف را ببیند ولی نتواند Accept کند
         var (ctx, perms, user) = await CreateInfra(nameof(ReviewQueue_ViewerRole_CanSeeQueue_ButAcceptRequiresEdit), role: SystemRoles.Viewer);
-        var controller = new EquipmentClassificationController(new FakeClassificationService(), user, perms).WithTempData();
+        var controller = CreateController(new FakeClassificationService(), user, perms);
 
         var viewResult = await controller.ReviewQueue();
         Assert.IsType<ViewResult>(viewResult);
@@ -115,7 +125,7 @@ public class EquipmentClassificationAuthorizationTests
     public async Task Accept_RoleWithEditPermission_Succeeds()
     {
         var (ctx, perms, user) = await CreateInfra(nameof(Accept_RoleWithEditPermission_Succeeds), role: SystemRoles.MaintenanceEngineer);
-        var controller = new EquipmentClassificationController(new FakeClassificationService(), user, perms).WithTempData();
+        var controller = CreateController(new FakeClassificationService(), user, perms);
 
         var result = await controller.Accept(1, null);
 
@@ -126,10 +136,32 @@ public class EquipmentClassificationAuthorizationTests
     public async Task Reject_NoEditPermission_ReturnsForbid()
     {
         var (ctx, perms, user) = await CreateInfra(nameof(Reject_NoEditPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = new EquipmentClassificationController(new FakeClassificationService(), user, perms).WithTempData();
+        var controller = CreateController(new FakeClassificationService(), user, perms);
 
         var result = await controller.Reject(1, null);
 
         Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
+    public async Task Coverage_NoPermission_ReturnsForbid()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(Coverage_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
+        var controller = CreateController(new FakeClassificationService(), user, perms);
+
+        var result = await controller.Coverage();
+
+        Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
+    public async Task Coverage_RoleWithView_ReturnsView()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(Coverage_RoleWithView_ReturnsView), role: SystemRoles.MaintenanceEngineer);
+        var controller = CreateController(new FakeClassificationService(), user, perms);
+
+        var result = await controller.Coverage();
+
+        Assert.IsType<ViewResult>(result);
     }
 }

@@ -88,6 +88,24 @@ public class EquipmentClassificationService : IEquipmentClassificationService
         ("DEVICE", "FLOW SWITCH LOW", "FLOW_SWITCH", "نام دقیقاً یک Flow Switch را توصیف می‌کند"),
         ("DEVICE", "ELECTRONIC LEVEL INDICATOR", "LEVEL_TRANSMITTER", "نشانگر سطح الکترونیکی یک نوع Level Transmitter است"),
 
+        // طبق «PEMS Phase 3.5» بند ۸/۱۱: پروفایل مجدد Top-Unclassified-Name پس از فاز ۳ این
+        // مقادیر اضافی واقعی را آشکار کرد (هرکدام ≥۱۹ رکورد) - نه فرضی.
+        ("DEVICE", "PRESSURE SWITCH LOW", "PRESSURE_SWITCH", "نام دقیقاً یک Pressure Switch را توصیف می‌کند"),
+        ("DEVICE", "TEMPERATURE TRANSMITTER", "TEMPERATURE_TRANSMITTER", "نام دقیقاً 'TEMPERATURE TRANSMITTER' است (نسخه‌ی کامل 'TEMP. TRANSMITTER')"),
+        ("DEVICE", "TEMPERATURE GAUGE", "TEMPERATURE_GAUGE", "نام دقیقاً 'TEMPERATURE GAUGE' است (نسخه‌ی کامل 'TEMP. GAUGE')"),
+        ("DEVICE", "FLOW SWITCH HIGH", "FLOW_SWITCH", "نام دقیقاً یک Flow Switch را توصیف می‌کند"),
+        ("DEVICE", "LEVEL SWITCH HIGH HIGH", "LEVEL_SWITCH", "نام دقیقاً یک Level Switch را توصیف می‌کند"),
+        ("DEVICE", "PRESSURE DIFFERENTIAL TRANSMITTER FieldBusFF", "PRESSURE_TRANSMITTER", "ترانسمیتر فشار افتراقی یک نوع Pressure Transmitter است"),
+        ("DEVICE", "ELECTRONIC PRESSURE INDICATOR", "PRESSURE_GAUGE", "نشانگر فشار الکترونیکی از نظر عملکردی معادل Pressure Gauge محلی است"),
+        ("DEVICE", "ELECTRONIC TEMP. INDICATOR", "TEMPERATURE_GAUGE", "نشانگر دمای الکترونیکی از نظر عملکردی معادل Temperature Gauge محلی است"),
+        ("DEVICE", "PRESSURE INDICATOR", "PRESSURE_GAUGE", "نشانگر فشار از نظر عملکردی معادل Pressure Gauge محلی است"),
+        ("DEVICE", "MAGNETIC FLOAT LEVEL GAUGE", "LEVEL_GAUGE", "نوع خاصی از Level Gauge (شناور مغناطیسی)"),
+        ("DEVICE", "LEVEL SWITCH - TUNING FORK", "LEVEL_SWITCH", "نوع خاصی از Level Switch (چنگک ارتعاشی)"),
+        ("DEVICE", "RF/RADAR LEVEL XMTR", "LEVEL_TRANSMITTER", "ترانسمیتر سطح راداری یک نوع Level Transmitter است"),
+        ("DEVICE", "DYNSCO TEMPERATURE ELEMENT", "RTD_ELEMENT", "المان دما (برند Dynisco) - یک RTD Element است"),
+        ("DEVICE", "BURST INDICATOR", "PRESSURE_SAFETY_VALVE", "نشانگر پارگی معمولاً همراه با Rupture Disc/PSV نصب می‌شود"),
+        ("DEVICE", "DIVERTER VALVE", "ON_OFF_VALVE", "شیر مسیرگردان معمولاً دوحالته (باز/بسته) است، نه مدولاتینگ"),
+
         ("F&G DEVICE", "SMOKE DETECTOR", "FIRE_DETECTOR", "نام دقیقاً یک آشکارساز دود را توصیف می‌کند"),
         ("F&G DEVICE", "HYDROCARBON GAS DETECTOR", "GAS_DETECTOR", "نام دقیقاً یک آشکارساز گاز را توصیف می‌کند"),
         ("F&G DEVICE", "MANUAL CALL POINT", "MANUAL_CALL_POINT", "نام دقیقاً 'MANUAL CALL POINT' است"),
@@ -100,6 +118,32 @@ public class EquipmentClassificationService : IEquipmentClassificationService
         ("F&G DEVICE", "LINEAR HEAT DETECTOR", "FIRE_DETECTOR", "آشکارساز حرارتی خطی یک نوع آشکارساز آتش است"),
         ("F&G DEVICE", "HAND SWITCH", "HAND_SWITCH", "نام دقیقاً 'HAND SWITCH' است"),
         ("F&G DEVICE", "SOLENOID VALVE", "ON_OFF_VALVE", "شیر سولنوییدی از نظر عملکردی یک On/Off Valve است"),
+    };
+
+    // ==============================================================================================
+    // طبق «PEMS Phase 3.5» بند ۸: پروفایل مجدد Top-Unclassified-Name برای F&G DEVICE نشان داد
+    // بسیاری از رکوردهای واقعی یک پسوند محل نصب دارند که مستقیماً در همان ستون Name ذخیره شده
+    // (با یک کاراکتر خط‌جدید واقعی، نه یک فرمت نمایشی) - مثلاً
+    // "TOXIC GAS DETECTOR\n( HVAC ROOM )". این پسوند نوع تجهیز را عوض نمی‌کند، فقط محل نصب را
+    // توصیف می‌کند. StartsWith هنوز کاملاً قطعی و توضیح‌پذیر است (نه Fuzzy Match مبتنی بر شباهت) -
+    // فقط پیشوند دقیق و شناخته‌شده بررسی می‌شود.
+    // ==============================================================================================
+    private static readonly (string EquipmentTypeExact, string NamePrefix, string EquipmentClassCode, string Reason)[] HighTypeNamePrefixRules =
+    {
+        ("F&G DEVICE", "SMOKE DETECTOR", "FIRE_DETECTOR", "پیشوند نام دقیقاً 'SMOKE DETECTOR' است (پسوند محل نصب نوع تجهیز را تغییر نمی‌دهد)"),
+        ("F&G DEVICE", "SMOKE/HEAT DETECTOR", "FIRE_DETECTOR", "پیشوند نام دقیقاً 'SMOKE/HEAT DETECTOR' است"),
+        ("F&G DEVICE", "SMOKE / HEAT DETECTOR", "FIRE_DETECTOR", "پیشوند نام دقیقاً 'SMOKE / HEAT DETECTOR' است"),
+        ("F&G DEVICE", "HEAT DETECTOR", "FIRE_DETECTOR", "پیشوند نام دقیقاً 'HEAT DETECTOR' است"),
+        ("F&G DEVICE", "TOXIC GAS DETECTOR", "GAS_DETECTOR", "پیشوند نام دقیقاً 'TOXIC GAS DETECTOR' است"),
+        ("F&G DEVICE", "HYDROCARBON GAS DETECTOR", "GAS_DETECTOR", "پیشوند نام دقیقاً 'HYDROCARBON GAS DETECTOR' است"),
+        ("F&G DEVICE", "HYDROGEN GAS DETECTOR", "GAS_DETECTOR", "پیشوند نام دقیقاً 'HYDROGEN GAS DETECTOR' است"),
+        ("F&G DEVICE", "OXYGEN GAS DETECTOR", "GAS_DETECTOR", "پیشوند نام دقیقاً 'OXYGEN GAS DETECTOR' است"),
+        ("F&G DEVICE", "UV/IR FLAME DETECTOR", "FIRE_DETECTOR", "پیشوند نام دقیقاً 'UV/IR FLAME DETECTOR' است"),
+        ("F&G DEVICE", "MANUAL CALL POINT", "MANUAL_CALL_POINT", "پیشوند نام دقیقاً 'MANUAL CALL POINT' است"),
+        ("F&G DEVICE", "HOOTER", "ALARM_NOTIFICATION_DEVICE", "پیشوند نام دقیقاً 'HOOTER' است"),
+        ("F&G DEVICE", "FLASHING LIGHT", "ALARM_NOTIFICATION_DEVICE", "پیشوند نام دقیقاً 'FLASHING LIGHT' است"),
+        ("F&G DEVICE", "BLUE FLASHER", "ALARM_NOTIFICATION_DEVICE", "پیشوند نام دقیقاً 'BLUE FLASHER' است"),
+        ("F&G DEVICE", "RED FLASHER", "ALARM_NOTIFICATION_DEVICE", "پیشوند نام دقیقاً 'RED FLASHER' است"),
     };
 
     // ==================== MEDIUM: محتمل ولی نه صددرصد قطعی - فقط Suggestion ====================
@@ -163,6 +207,15 @@ public class EquipmentClassificationService : IEquipmentClassificationService
             if (highRule != default && classesByCode.TryGetValue(highRule.EquipmentClassCode, out var highClass))
             {
                 equipmentToUpdate.Add((eq.EquipmentId, highClass.EquipmentClassId, "HIGH"));
+                continue;
+            }
+
+            var highPrefixRule = HighTypeNamePrefixRules.FirstOrDefault(r =>
+                string.Equals(r.EquipmentTypeExact, type, StringComparison.OrdinalIgnoreCase) &&
+                name.StartsWith(r.NamePrefix, StringComparison.OrdinalIgnoreCase));
+            if (highPrefixRule != default && classesByCode.TryGetValue(highPrefixRule.EquipmentClassCode, out var highPrefixClass))
+            {
+                equipmentToUpdate.Add((eq.EquipmentId, highPrefixClass.EquipmentClassId, "HIGH"));
                 continue;
             }
 
@@ -367,6 +420,82 @@ public class EquipmentClassificationService : IEquipmentClassificationService
             Page = page,
             PageSize = pageSize
         };
+    }
+
+    // ============================================================================================
+    // طبق «PEMS Phase 3.5» بند ۱۴: توضیح قاعده‌ی دقیق پشت یک طبقه‌بندی - با اجرای دوباره‌ی همان
+    // زنجیره‌ی قواعد (EXACT→HIGH exact→HIGH prefix→MEDIUM) روی ورودی فعلی Equipment، نه با
+    // ذخیره‌ی یک کپی جدا که ممکن است Stale شود.
+    // ============================================================================================
+
+    public async Task<ClassificationExplanationDto?> ExplainClassificationAsync(int equipmentId)
+    {
+        var equipment = await _context.Equipments
+            .AsNoTracking()
+            .Where(x => x.EquipmentId == equipmentId)
+            .Select(x => new { x.EquipmentId, x.EquipmentType, x.Name, x.ClassificationConfidence })
+            .FirstOrDefaultAsync();
+
+        if (equipment == null) return null;
+
+        var type = (equipment.EquipmentType ?? string.Empty).Trim();
+        var name = (equipment.Name ?? string.Empty).Trim();
+
+        var result = new ClassificationExplanationDto
+        {
+            EquipmentId = equipment.EquipmentId,
+            EquipmentType = equipment.EquipmentType,
+            EquipmentName = equipment.Name
+        };
+
+        var exactRule = ExactTypeRules.FirstOrDefault(r => string.Equals(r.EquipmentTypeExact, type, StringComparison.OrdinalIgnoreCase));
+        if (exactRule != default)
+        {
+            result.MatchedRuleTier = "EXACT";
+            result.MatchedInput = $"EquipmentType = \"{type}\"";
+            result.Reason = exactRule.Reason;
+            result.ResolvedEquipmentClassCode = exactRule.EquipmentClassCode;
+            return result;
+        }
+
+        var highRule = HighTypeNameRules.FirstOrDefault(r =>
+            string.Equals(r.EquipmentTypeExact, type, StringComparison.OrdinalIgnoreCase) &&
+            string.Equals(r.NameExact, name, StringComparison.OrdinalIgnoreCase));
+        if (highRule != default)
+        {
+            result.MatchedRuleTier = "HIGH (exact Type+Name)";
+            result.MatchedInput = $"EquipmentType = \"{type}\", Name = \"{name}\"";
+            result.Reason = highRule.Reason;
+            result.ResolvedEquipmentClassCode = highRule.EquipmentClassCode;
+            return result;
+        }
+
+        var highPrefixRule = HighTypeNamePrefixRules.FirstOrDefault(r =>
+            string.Equals(r.EquipmentTypeExact, type, StringComparison.OrdinalIgnoreCase) &&
+            name.StartsWith(r.NamePrefix, StringComparison.OrdinalIgnoreCase));
+        if (highPrefixRule != default)
+        {
+            result.MatchedRuleTier = "HIGH (Type+Name prefix)";
+            result.MatchedInput = $"EquipmentType = \"{type}\", Name starts with \"{highPrefixRule.NamePrefix}\"";
+            result.Reason = highPrefixRule.Reason;
+            result.ResolvedEquipmentClassCode = highPrefixRule.EquipmentClassCode;
+            return result;
+        }
+
+        var mediumRule = MediumTypeNameRules.FirstOrDefault(r =>
+            string.Equals(r.EquipmentTypeExact, type, StringComparison.OrdinalIgnoreCase) &&
+            string.Equals(r.NameExact, name, StringComparison.OrdinalIgnoreCase));
+        if (mediumRule != default)
+        {
+            result.MatchedRuleTier = "MEDIUM (review queue only)";
+            result.MatchedInput = $"EquipmentType = \"{type}\", Name = \"{name}\"";
+            result.Reason = mediumRule.Reason;
+            result.ResolvedEquipmentClassCode = mediumRule.EquipmentClassCode;
+            return result;
+        }
+
+        result.MatchedRuleTier = null; // هیچ قاعده‌ای مطابقت نکرد - اگر EquipmentClassId ست شده، منبع آن MANUAL/AI/IMPORT/OEM است، نه RULE
+        return result;
     }
 
     // ============================================================================================

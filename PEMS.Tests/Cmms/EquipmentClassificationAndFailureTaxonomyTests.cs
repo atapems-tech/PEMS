@@ -688,4 +688,246 @@ public class EquipmentClassificationAndFailureTaxonomyTests
         var template = result!.CandidatePMTemplates.Single(x => x.Code == "PMT_PUMP_CENT_MONTHLY");
         Assert.Contains("Exact match", template.Source);
     }
+
+    // ================= Phase 3.5: پروفایل مجدد داده + قاعده‌ی پیشوندی + توضیح قاعده =================
+
+    [Fact]
+    public async Task Backfill_HighConfidencePrefixRule_ClassifiesLocationSuffixedNames()
+    {
+        // طبق کشف فاز ۳.۵: بسیاری از رکوردهای واقعی F&G DEVICE یک پسوند محل نصب دارند
+        // (با یک خط‌جدید واقعی) - مثلاً "TOXIC GAS DETECTOR\n( HVAC ROOM )". قاعده‌ی پیشوندی
+        // باید این‌ها را هم به همان اندازه‌ی تطابق دقیق، قطعی طبقه‌بندی کند.
+        var ctx = await SeedFullBaselineAsync(nameof(Backfill_HighConfidencePrefixRule_ClassifiesLocationSuffixedNames));
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "82-XA-100", Name = "TOXIC GAS DETECTOR\n( HVAC ROOM )", EquipmentType = "F&G DEVICE",
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassificationService(ctx);
+        var result = await service.BackfillAsync();
+
+        Assert.Equal(1, result.AutoClassifiedCount);
+
+        var equipment = await ctx.Equipments.AsNoTracking().SingleAsync(x => x.EquipmentId == 1);
+        Assert.Equal("HIGH", equipment.ClassificationConfidence);
+
+        var equipmentClass = await ctx.EquipmentClasses.SingleAsync(x => x.EquipmentClassId == equipment.EquipmentClassId);
+        Assert.Equal("GAS_DETECTOR", equipmentClass.Code);
+    }
+
+    [Fact]
+    public async Task Backfill_HighConfidencePrefixRule_DoesNotMatchUnrelatedPrefix()
+    {
+        // یک نام که با هیچ پیشوند شناخته‌شده‌ای شروع نمی‌شود نباید به‌اشتباه تطبیق پیدا کند.
+        var ctx = await SeedFullBaselineAsync(nameof(Backfill_HighConfidencePrefixRule_DoesNotMatchUnrelatedPrefix));
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "82-XA-101", Name = "UNKNOWN F&G DEVICE VARIANT", EquipmentType = "F&G DEVICE",
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassificationService(ctx);
+        var result = await service.BackfillAsync();
+
+        Assert.Equal(0, result.AutoClassifiedCount);
+        Assert.Equal(0, result.SuggestionsCreatedCount);
+    }
+
+    [Fact]
+    public async Task Backfill_AddingNewRules_NeverTouchesAlreadyClassifiedEquipment()
+    {
+        // طبق بند ۳۱ (Phase 3.5 Data Safety): گسترش دیکشنری قواعد هرگز نباید رکوردهایی که از
+        // فازهای قبل طبقه‌بندی شده‌اند را دوباره بنویسد - Backfill فقط EquipmentClassId=Null را می‌بیند.
+        var ctx = await SeedFullBaselineAsync(nameof(Backfill_AddingNewRules_NeverTouchesAlreadyClassifiedEquipment));
+
+        var motorClass = await ctx.EquipmentClasses.SingleAsync(x => x.Code == "MOTOR");
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "EQ-1", Name = "EQ-1", EquipmentType = "compressor",
+            EquipmentClassId = motorClass.EquipmentClassId, ClassificationConfidence = "MANUAL", ClassificationSource = "MANUAL",
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassificationService(ctx);
+        await service.BackfillAsync();
+
+        var equipment = await ctx.Equipments.AsNoTracking().SingleAsync(x => x.EquipmentId == 1);
+        Assert.Equal(motorClass.EquipmentClassId, equipment.EquipmentClassId);
+        Assert.Equal("MANUAL", equipment.ClassificationSource);
+    }
+
+    [Fact]
+    public async Task ExplainClassification_ExactTier_ReturnsRuleAndMatchedInput()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(ExplainClassification_ExactTier_ReturnsRuleAndMatchedInput));
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "EQ-1", Name = "EQ-1", EquipmentType = "compressor",
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassificationService(ctx);
+        var explanation = await service.ExplainClassificationAsync(1);
+
+        Assert.NotNull(explanation);
+        Assert.Equal("EXACT", explanation!.MatchedRuleTier);
+        Assert.Contains("EquipmentType", explanation.MatchedInput);
+        Assert.Equal("COMPRESSOR", explanation.ResolvedEquipmentClassCode);
+    }
+
+    [Fact]
+    public async Task ExplainClassification_PrefixTier_ReturnsPrefixMatchedInput()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(ExplainClassification_PrefixTier_ReturnsPrefixMatchedInput));
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "EQ-1", Name = "MANUAL CALL POINT (OUTDOOR)", EquipmentType = "F&G DEVICE",
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassificationService(ctx);
+        var explanation = await service.ExplainClassificationAsync(1);
+
+        Assert.NotNull(explanation);
+        Assert.Contains("prefix", explanation!.MatchedRuleTier);
+        Assert.Equal("MANUAL_CALL_POINT", explanation.ResolvedEquipmentClassCode);
+    }
+
+    [Fact]
+    public async Task ExplainClassification_NoRuleMatches_ReturnsNullTier()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(ExplainClassification_NoRuleMatches_ReturnsNullTier));
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "EQ-1", Name = "CABLE", EquipmentType = "CABLE",
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassificationService(ctx);
+        var explanation = await service.ExplainClassificationAsync(1);
+
+        Assert.NotNull(explanation);
+        Assert.Null(explanation!.MatchedRuleTier);
+    }
+
+    // ================= Phase 3.5: Maintenance Intelligence Coverage Matrix =================
+
+    [Fact]
+    public async Task CoverageMatrix_DirectVsInherited_AreCorrectlySeparated()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(CoverageMatrix_DirectVsInherited_AreCorrectlySeparated));
+
+        var pumpCentClass = await ctx.EquipmentClasses.SingleAsync(x => x.Code == "PUMP_CENT");
+        var pumpClass = await ctx.EquipmentClasses.SingleAsync(x => x.Code == "PUMP");
+        var group = await ctx.MaintenanceGroups.FirstAsync();
+
+        var parentActivity = new MaintenanceActivity
+        {
+            Code = "TEST_COVERAGE_PARENT_ACT", Name = "Parent Activity", MaintenanceGroupId = group.MaintenanceGroupId,
+            IsActive = true, IsSystemDefault = false, CreatedDate = DateTime.Now
+        };
+        ctx.MaintenanceActivities.Add(parentActivity);
+        await ctx.SaveChangesAsync();
+
+        ctx.MaintenanceActivityEquipmentClasses.Add(new MaintenanceActivityEquipmentClass
+        {
+            MaintenanceActivityId = parentActivity.MaintenanceActivityId,
+            EquipmentClassId = pumpClass.EquipmentClassId
+        });
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "EQ-1", Name = "EQ-1", EquipmentType = "pump",
+            EquipmentClassId = pumpCentClass.EquipmentClassId,
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassCoverageService(ctx);
+        var matrix = await service.GetCoverageMatrixAsync();
+
+        var pumpCentRow = matrix.Classes.Single(x => x.Code == "PUMP_CENT");
+        Assert.Equal(1, pumpCentRow.EquipmentCount);
+        Assert.True(pumpCentRow.InheritedActivityCount >= 1); // از PUMP به ارث رسیده
+
+        var pumpRow = matrix.Classes.Single(x => x.Code == "PUMP");
+        Assert.True(pumpRow.DirectActivityCount >= 1); // مستقیماً روی خودِ PUMP تعریف شده
+    }
+
+    [Fact]
+    public async Task CoverageMatrix_ClassWithEquipmentButNoActivities_FlagsGap()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(CoverageMatrix_ClassWithEquipmentButNoActivities_FlagsGap));
+
+        // CHILLER (زیر HVAC_EQUIPMENT، فاز ۲) هیچ Activity/PMTemplate/FailureMode ای ندارد - نه
+        // مستقیم نه به‌ارث‌رسیده، چون MaintenanceActivitySeeder فاز ۱ فقط تجهیزات دوار/ثابت/برقی
+        // را هدف گرفته بود، نه HVAC.
+        var chillerClass = await ctx.EquipmentClasses.SingleAsync(x => x.Code == "CHILLER");
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "EQ-1", Name = "EQ-1", EquipmentType = "chiller",
+            EquipmentClassId = chillerClass.EquipmentClassId,
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassCoverageService(ctx);
+        var matrix = await service.GetCoverageMatrixAsync();
+
+        var chillerRow = matrix.Classes.Single(x => x.Code == "CHILLER");
+        Assert.Equal(1, chillerRow.EquipmentCount);
+        Assert.Equal(0, chillerRow.TotalActivityCoverage);
+        Assert.Contains(chillerRow.GapReasons, g => g.Contains("Missing applicability"));
+        Assert.Contains(chillerRow.GapReasons, g => g.Contains("Missing PM template"));
+        Assert.Contains(chillerRow.GapReasons, g => g.Contains("Missing failure taxonomy"));
+    }
+
+    [Fact]
+    public async Task CoverageMatrix_ClassWithNoEquipmentAndNoMasterData_IsMarkedIntentional()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(CoverageMatrix_ClassWithNoEquipmentAndNoMasterData_IsMarkedIntentional));
+
+        var service = new EquipmentClassCoverageService(ctx);
+        var matrix = await service.GetCoverageMatrixAsync();
+
+        // یک کلاس خیلی خاص که هیچ‌وقت Equipment/Activity ندارد (مثلاً یکی از کلاس‌های تازه‌ی فاز ۳)
+        var emptyRow = matrix.Classes.Single(x => x.Code == "BATTERY");
+        Assert.Equal(0, emptyRow.EquipmentCount);
+        Assert.Contains(emptyRow.GapReasons, g => g.StartsWith("Intentional"));
+    }
+
+    [Fact]
+    public async Task CoverageMatrix_SummaryPercentages_OnlyCountClassesWithEquipment()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(CoverageMatrix_SummaryPercentages_OnlyCountClassesWithEquipment));
+
+        var pumpCentClass = await ctx.EquipmentClasses.SingleAsync(x => x.Code == "PUMP_CENT");
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "EQ-1", Name = "EQ-1", EquipmentType = "pump",
+            EquipmentClassId = pumpCentClass.EquipmentClassId,
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassCoverageService(ctx);
+        var matrix = await service.GetCoverageMatrixAsync();
+
+        Assert.Equal(1, matrix.ClassesWithEquipment);
+        // PUMP_CENT از قبل PMT_PUMP_CENT_MONTHLY و MaintenanceActivity های فاز ۱ را دارد
+        Assert.True(matrix.PMTemplateCoveragePercent > 0);
+    }
 }

@@ -246,6 +246,14 @@ public class PEMSDbContext
     // طبق «PEMS Phase 3 — Equipment Classification Completion» بند ۹: صف بازبینی انسانی
     public DbSet<EquipmentClassificationSuggestion> EquipmentClassificationSuggestions { get; set; }
 
+    // طبق «PEMS Phase 4 — RCM/FMEA/FMECA Decision Intelligence»
+    public DbSet<FunctionalRequirement> FunctionalRequirements { get; set; }
+    public DbSet<FunctionalFailure> FunctionalFailures { get; set; }
+    public DbSet<FMEAAnalysis> FMEAAnalyses { get; set; }
+    public DbSet<FMEAItem> FMEAItems { get; set; }
+    public DbSet<RCMAnalysis> RCMAnalyses { get; set; }
+    public DbSet<RCMDecision> RCMDecisions { get; set; }
+
     public DbSet<Team> Teams { get; set; }
     public DbSet<TeamMember> TeamMembers { get; set; }
     public DbSet<Crew> Crews { get; set; }

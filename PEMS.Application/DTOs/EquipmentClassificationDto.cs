@@ -63,6 +63,25 @@ public class ReviewQueuePageDto
 }
 
 /// <summary>
+/// طبق «PEMS Phase 3.5» بند ۱۴ (Classification Auditability): برای یک Equipment مشخص، دقیقاً
+/// کدام قاعده (از کدام لایه‌ی قطعیت)، روی کدام ورودی (EquipmentType/Name)، چه زمانی منجر به
+/// این طبقه‌بندی شد را توضیح می‌دهد. برخلاف AuditLog سراسری (که فقط Old→New مقدار را ثبت
+/// می‌کند)، این DTO دلیل کسب‌وکاری (Reason) پشت آن مقدار را هم برمی‌گرداند - با اجرای دوباره‌ی
+/// همان قواعد قطعیِ نسخه‌کنترل‌شده روی ورودی فعلی (نه با ذخیره‌ی یک رشته‌ی جدا که ممکن است با
+/// تغییر بعدی قواعد قدیمی/نامعتبر شود).
+/// </summary>
+public class ClassificationExplanationDto
+{
+    public int EquipmentId { get; set; }
+    public string EquipmentType { get; set; } = string.Empty;
+    public string EquipmentName { get; set; } = string.Empty;
+    public string? MatchedRuleTier { get; set; }
+    public string? MatchedInput { get; set; }
+    public string? Reason { get; set; }
+    public string? ResolvedEquipmentClassCode { get; set; }
+}
+
+/// <summary>
 /// طبق بند ۱۲: نتیجه‌ی یک اجرای Backfill - چند رکورد به‌صورت خودکار (EXACT/HIGH) طبقه‌بندی شدند
 /// در برابر چند Suggestion جدید (MEDIUM/LOW) برای بازبینی ساخته شد؛ این دو عدد هرگز نباید با هم
 /// مخلوط شوند چون معنای اعتمادپذیری‌شان کاملاً متفاوت است.

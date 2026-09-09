@@ -91,6 +91,7 @@ public class EquipmentController : Controller
         // روی صفحه‌ی موجود.
         ViewBag.MaintenanceIntelligence = await _intelligenceService.GetForEquipmentAsync(id);
         ViewBag.PendingClassificationSuggestion = await _classificationService.GetPendingSuggestionForEquipmentAsync(id);
+        ViewBag.ClassificationExplanation = await _classificationService.ExplainClassificationAsync(id);
 
         return View(passport);
     }

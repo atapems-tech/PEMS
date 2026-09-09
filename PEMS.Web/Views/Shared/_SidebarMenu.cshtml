@@ -40,7 +40,7 @@
     var qualityControllers = new[] { "QC", "MOC" };
     var contractControllers = new[] { "Contract", "Vendor" };
     var projectControlControllers = new[] { "Task", "Tag", "Report", "Meeting" };
-    var cmmsControllers = new[] { "Equipment", "EquipmentImport", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "MaintenanceMasterData", "EquipmentClassification", "EquipmentCriticality", "FunctionalLocation", "Reliability", "Inspection", "Kpi", "Permit" };
+    var cmmsControllers = new[] { "Equipment", "EquipmentImport", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "FunctionalLocation", "Reliability", "Inspection", "Kpi", "Permit" };
     var inventoryControllers = new[] { "Inventory", "MaterialItem", "InventoryMasterData", "InventoryTransaction", "StoreRequisition", "MrsImport" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
     var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "Department", "Employee" };
@@ -342,6 +342,10 @@
 
             <a class="nav-link @(IsActive("EquipmentClassification") ? "active" : "")" asp-controller="EquipmentClassification" asp-action="Index">
                 <i class="bi bi-diagram-3-fill"></i> Equipment Classification
+            </a>
+
+            <a class="nav-link @(IsActive("RcmFmea") ? "active" : "")" asp-controller="RcmFmea" asp-action="Index">
+                <i class="bi bi-clipboard2-pulse"></i> RCM / FMEA
             </a>
 
             <a class="nav-link @(IsActive("EquipmentCriticality") ? "active" : "")" asp-controller="EquipmentCriticality" asp-action="Index">

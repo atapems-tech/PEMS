@@ -1,0 +1,83 @@
+@model PEMS.Application.DTOs.RcmFmeaCoverageMatrixDto
+
+<div class="content-card mb-3">
+    <p class="text-muted small mb-3">
+        دامنه‌ی تحلیل عمداً EquipmentClass است، نه Equipment (طبق «Class First») - هرگز به‌ازای
+        هر تجهیز یک تحلیل جدا ساخته نمی‌شود. آماده‌بودن (Readiness) صرفاً به دلیل وجود کلاس یا
+        وجود یک تحلیل تاییدنشده اعلام نمی‌شود.
+    </p>
+    <div class="row g-3 text-center">
+        <div class="col-md-2">
+            <div class="fs-4 fw-bold">@Model.ClassesWithEquipment</div>
+            <div class="text-muted small">Classes with Equipment</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-4 fw-bold text-success">@Model.ClassesFmeaReady</div>
+            <div class="text-muted small">FMEA Ready</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-4 fw-bold text-warning">@Model.ClassesFmeaPartiallyReady</div>
+            <div class="text-muted small">FMEA Partial</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-4 fw-bold text-success">@Model.ClassesRcmReady</div>
+            <div class="text-muted small">RCM Ready</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-4 fw-bold text-warning">@Model.ClassesRcmPartiallyReady</div>
+            <div class="text-muted small">RCM Partial</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-4 fw-bold">@Model.TotalApprovedFMEAs / @Model.TotalApprovedRCMs</div>
+            <div class="text-muted small">Approved FMEA / RCM</div>
+        </div>
+    </div>
+</div>
+
+<div class="content-card">
+    <div class="table-responsive">
+        <table class="table table-enterprise table-sm">
+            <thead>
+                <tr>
+                    <th>Equipment Class</th>
+                    <th class="text-end">Equipment</th>
+                    <th class="text-end">Func. Req.</th>
+                    <th class="text-end">Failure Modes</th>
+                    <th class="text-end">Causes</th>
+                    <th class="text-end">Effects</th>
+                    <th class="text-end">Consequences</th>
+                    <th class="text-end">Strategy Types</th>
+                    <th>FMEA</th>
+                    <th>RCM</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model.Classes.Where(x => x.EquipmentCount > 0))
+                {
+                    string Badge(string status) => status switch
+                    {
+                        "READY" => "text-bg-success",
+                        "PARTIALLY_READY" => "text-bg-warning",
+                        "INSUFFICIENT_DATA" => "text-bg-secondary",
+                        _ => "text-bg-light"
+                    };
+
+                    <tr>
+                        <td><strong>@c.Name</strong> <code class="small">@c.Code</code></td>
+                        <td class="text-end">@c.EquipmentCount.ToString("N0")</td>
+                        <td class="text-end">@c.FunctionalRequirementCount</td>
+                        <td class="text-end">@c.FailureModeCount</td>
+                        <td class="text-end">@c.FailureCauseCount</td>
+                        <td class="text-end">@c.FailureEffectCount</td>
+                        <td class="text-end">@c.FailureConsequenceCount</td>
+                        <td class="text-end">@c.StrategyTypeCount</td>
+                        <td><span class="badge @Badge(c.FMEAReadiness)">@c.FMEAReadiness</span> <span class="small text-muted">(@c.ApprovedFMEACount approved)</span></td>
+                        <td><span class="badge @Badge(c.RCMReadiness)">@c.RCMReadiness</span> <span class="small text-muted">(@c.ApprovedRCMCount approved)</span></td>
+                        <td><a asp-action="ClassDetail" asp-route-id="@c.EquipmentClassId" class="btn btn-sm btn-outline-secondary">Open</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

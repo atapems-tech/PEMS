@@ -45,6 +45,13 @@ public static class StandardReferenceSeeder
             "Reliability / Best Practice", "بهترین‌روش‌های صنعتی نگهداری و قابلیت‌اطمینان (KPI ها و طبقه‌بندی نگهداری) - مرجع مفهومی، نه یک کد اجباری."),
         ("AMPP", "AMPP", "Best Practices", "Association for Materials Protection and Performance practices",
             "Corrosion", "بهترین‌روش‌های مدیریت خوردگی و حفاظت مواد (ادغام NACE/SSPC سابق) - مرجع مفهومی برای گروه Corrosion Management."),
+
+        // طبق «PEMS Phase 4 — RCM/FMEA/FMECA Decision Intelligence» بند ۲۹: دو استاندارد
+        // بنیادین RCM - فقط ابرداده (نه متن دارای Copyright).
+        ("SAE-JA1011", "SAE", "JA1011", "Evaluation Criteria for Reliability-Centered Maintenance (RCM) Processes",
+            "Reliability / RCM", "معیارهای ارزیابی یک فرآیند RCM معتبر - چارچوب مفهومی پایه‌ی ماژول RCM در PEMS (نه یک متن اجباری کپی‌شده)."),
+        ("SAE-JA1012", "SAE", "JA1012", "A Guide to the Reliability-Centered Maintenance (RCM) Standard",
+            "Reliability / RCM", "راهنمای تفسیری SAE JA1011 - مرجع مفهومی برای واژگان و گردش‌کار RCM (Functional Failure/Failure Mode/Consequence) استفاده‌شده در PEMS."),
     };
 
     public static async Task SeedAsync(IServiceProvider services)

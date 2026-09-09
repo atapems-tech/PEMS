@@ -535,6 +535,23 @@ public class PermissionService : IPermissionService
         });
 
         // ==============================================================================
+        // طبق «PEMS Phase 4 — RCM/FMEA/FMECA Decision Intelligence» بند ۳۷: ماژول مجوز مجزا
+        // (نه بازاستفاده از MaintenanceMasterData) چون تایید نهایی یک تحلیل RCM/FMEA یک
+        // مسئولیت مهندسی/حاکمیتی متمایز و پرمخاطره‌تر از CRUD ساده‌ی داده‌ی مرجع است - دقیقاً
+        // همون تمایزی که پروژه از قبل بین WorkOrder/Inspection (دارای CanApprove) و سایر
+        // ماژول‌های ساده‌تر قائل شده. MaintenanceEngineer فقط Draft می‌سازد/ویرایش می‌کند
+        // (Editor طبق بند ۳۷)؛ فقط EngineeringSupervisor/EngineeringManager می‌توانند تایید
+        // کنند (Reviewer/Approver).
+        // ==============================================================================
+        await SeedMissingRolesAsync("RCMFMEA", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "RCMFMEA", create: true, edit: true),
+            New(SystemRoles.EngineeringSupervisor, "RCMFMEA", create: true, edit: true, approve: true),
+            New(SystemRoles.EngineeringManager, "RCMFMEA", create: true, edit: true, approve: true),
+            New(SystemRoles.Viewer, "RCMFMEA")
+        });
+
+        // ==============================================================================
         // طبق «PEMS — Quick Setup & Domain Import Architecture Refactoring» بند ۱۰: Quick Setup
         // یک قابلیت سیستمی/سرتاسری است (شامل وضعیت Permissions/AI Administration که هر دو
         // منحصر به SystemAdmin هستند) - نه یک ابزار عملیاتی تک‌دامنه. فقط "View" تعریف شد چون

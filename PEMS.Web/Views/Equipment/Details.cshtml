@@ -612,6 +612,7 @@
     <div class="tab-pane fade" id="tab-classification" role="tabpanel">
         @{
             var intel = ViewBag.MaintenanceIntelligence as PEMS.Application.DTOs.EquipmentMaintenanceIntelligenceDto;
+            var explanation = ViewBag.ClassificationExplanation as PEMS.Application.DTOs.ClassificationExplanationDto;
         }
         <div class="content-card mb-3">
             <h6 class="mb-3"><i class="bi bi-diagram-3-fill"></i> Equipment Classification</h6>
@@ -623,6 +624,15 @@
                     <div class="col-md-3"><strong>Confidence</strong><div><span class="badge text-bg-info">@intel.ClassificationConfidence</span></div></div>
                     <div class="col-md-3"><strong>Source</strong><div><span class="badge text-bg-secondary">@intel.ClassificationSource</span></div></div>
                 </div>
+                @if (explanation?.MatchedRuleTier != null)
+                {
+                    <div class="alert alert-light border small mt-3 mb-0">
+                        <strong>چرا این طبقه‌بندی؟</strong>
+                        Rule tier: <span class="badge text-bg-light border">@explanation.MatchedRuleTier</span> &middot;
+                        Matched on: <code>@explanation.MatchedInput</code> &middot;
+                        @explanation.Reason
+                    </div>
+                }
             }
             else
             {

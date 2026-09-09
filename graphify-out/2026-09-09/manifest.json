@@ -1524,9 +1524,9 @@
     "semantic_hash": "dacbb68ad3f3363731257b252a96ac1b"
   },
   "PEMS.Persistence/Context/PEMSDbContext.cs": {
-    "mtime": 1788897424.1328173,
-    "seen": 1788899731.7157402,
-    "ast_hash": "8ca0ee63347a2d18fa0742b00186b9c0",
+    "mtime": 1788939716.489002,
+    "seen": 1788942398.1112542,
+    "ast_hash": "9d86930d545c49d38f982a6e3bdffabf",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Context/PEMSDbContextFactory.cs": {
@@ -1578,9 +1578,9 @@
     "semantic_hash": "5809af8d8afaa80014e62788179b6dd4"
   },
   "PEMS.Persistence/Migrations/PEMSDbContextModelSnapshot.cs": {
-    "mtime": 1788898688.106095,
-    "seen": 1788899731.7157402,
-    "ast_hash": "b419d4f7e39ea8bda73fe9ff51fdbdd4",
+    "mtime": 1788941895.197626,
+    "seen": 1788942398.1431715,
+    "ast_hash": "d2c0cbfeb7b386ff2b88aa3e72a4c722",
     "semantic_hash": ""
   },
   "PEMS.Persistence/PEMS.Persistence.csproj": {
@@ -2364,10 +2364,10 @@
     "semantic_hash": "8f23a807eea419fc2cb5e5b991f0268b"
   },
   "PEMS.Web/Controllers/EquipmentController.cs": {
-    "mtime": 1788523187.0574815,
-    "seen": 1788613735.670535,
-    "ast_hash": "40ee60e9d65b2b399dda0648048e4067",
-    "semantic_hash": "40ee60e9d65b2b399dda0648048e4067"
+    "mtime": 1788944556.7076783,
+    "seen": 1788945674.0925732,
+    "ast_hash": "0d18881bedf205475ec249cf898d6ff4",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/EquipmentCriticalityController.cs": {
     "mtime": 1788641277.914975,
@@ -2682,9 +2682,9 @@
     "semantic_hash": "ab7e34a2113cfa2a4d952bac4edc6cb4"
   },
   "PEMS.Web/Program.cs": {
-    "mtime": 1788898900.4904554,
-    "seen": 1788899731.7655349,
-    "ast_hash": "b61065225ce2091efa5d6b6df0255287",
+    "mtime": 1788944371.6789687,
+    "seen": 1788945674.1050885,
+    "ast_hash": "8b3ad66571bf49e9f56c024419aa84e3",
     "semantic_hash": ""
   },
   "PEMS.Web/Properties/launchSettings.json": {
@@ -3030,10 +3030,10 @@
     "semantic_hash": "c1853eacb6c97e51e73376201c931789"
   },
   "PEMS.Web/Views/Equipment/Details.cshtml": {
-    "mtime": 1788350906.295456,
-    "seen": 1788613735.670535,
-    "ast_hash": "863483173e8e369a127667541afd99f6",
-    "semantic_hash": "863483173e8e369a127667541afd99f6"
+    "mtime": 1788944583.7517858,
+    "seen": 1788945674.1094978,
+    "ast_hash": "2a726ccb5afed85ef078294bb50b5b95",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Equipment/Index.cshtml": {
     "mtime": 1788523211.1912515,
@@ -9492,9 +9492,9 @@
     "semantic_hash": ""
   },
   "PEMS.Persistence/Seed/EquipmentClassSeeder.cs": {
-    "mtime": 1788898140.2081945,
-    "seen": 1788899731.7157402,
-    "ast_hash": "1fbe51543c65221124562b8c67826cf9",
+    "mtime": 1788939596.3798163,
+    "seen": 1788942398.1431715,
+    "ast_hash": "5b050c86ef5fd3a92c65cb5d5c57c0c6",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Seed/MaintenanceActivitySeeder.cs": {
@@ -9564,21 +9564,21 @@
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/EquipmentClassificationDto.cs": {
-    "mtime": 1788898222.107646,
-    "seen": 1788899731.6757827,
-    "ast_hash": "94365b13fa0c93afb496cce489c6896f",
+    "mtime": 1788944099.331215,
+    "seen": 1788945673.9822025,
+    "ast_hash": "0f245415910e2d7328639f5b210888cf",
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/EquipmentMaintenanceIntelligenceDto.cs": {
-    "mtime": 1788898850.4355989,
-    "seen": 1788899731.6757827,
-    "ast_hash": "c8f4d9c059188820882e8bde6ca5e6ed",
+    "mtime": 1788941164.3330815,
+    "seen": 1788942397.9999495,
+    "ast_hash": "50cab4a36ba90a2398a80b281c80f7b0",
     "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/IEquipmentClassificationService.cs": {
-    "mtime": 1788898232.170325,
-    "seen": 1788899731.6822493,
-    "ast_hash": "18e3934d59e23e2df1d70c4afe7e1b7b",
+    "mtime": 1788944113.6210635,
+    "seen": 1788945673.9822025,
+    "ast_hash": "c29a2d34b3a40d43615b39340464adc3",
     "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/IMaintenanceIntelligenceService.cs": {
@@ -9660,39 +9660,99 @@
     "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/EquipmentClassificationService.cs": {
-    "mtime": 1788898272.5518644,
-    "seen": 1788899731.7322614,
-    "ast_hash": "0705eaf2e7f04c43346a145225fe7d7e",
+    "mtime": 1788944140.759827,
+    "seen": 1788945674.0611591,
+    "ast_hash": "01ee0c04b6827dc82f2da72810d69707",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/MaintenanceIntelligenceService.cs": {
-    "mtime": 1788898890.2497633,
-    "seen": 1788899731.7322614,
-    "ast_hash": "7f4bedd173f834bb0b566eab875e448a",
+    "mtime": 1788941223.206466,
+    "seen": 1788942398.1738367,
+    "ast_hash": "5bce01fc09bc630891490f7e91dfcfae",
     "semantic_hash": ""
   },
   "PEMS.Tests/Authorization/EquipmentClassificationAuthorizationTests.cs": {
-    "mtime": 1788899548.3275836,
-    "seen": 1788899731.7322614,
-    "ast_hash": "b3f626729fcb449feac164a7b84189e4",
+    "mtime": 1788944940.923397,
+    "seen": 1788945674.0780554,
+    "ast_hash": "96645eafb0a29dc834c842fee31c259d",
     "semantic_hash": ""
   },
   "PEMS.Tests/Cmms/EquipmentClassificationAndFailureTaxonomyTests.cs": {
-    "mtime": 1788899418.6433356,
-    "seen": 1788899731.7322614,
-    "ast_hash": "45b01a2c435ea64f05cc18cb9fe26840",
+    "mtime": 1788945054.098308,
+    "seen": 1788945674.0780554,
+    "ast_hash": "0b844f11d7d0cdf42ddd0ed434dabad9",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/EquipmentClassificationController.cs": {
-    "mtime": 1788899178.8883862,
-    "seen": 1788899731.7488098,
-    "ast_hash": "a95180b51f4e6213b7966deb7d72dd55",
+    "mtime": 1788944471.3067908,
+    "seen": 1788945674.0925732,
+    "ast_hash": "63a386567c66deedffb81f2f5b644748",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/EquipmentClassification/Index.cshtml": {
-    "mtime": 1788899197.4328218,
-    "seen": 1788899731.7777731,
-    "ast_hash": "01dbcb8e7e48aa7b0ea24ed619b8e83e",
+    "mtime": 1788944538.3215945,
+    "seen": 1788945674.1094978,
+    "ast_hash": "8e10d213b6a56d4d5dcbef4def8c0586",
+    "semantic_hash": ""
+  },
+  "PEMS.Domain/Entities/EquipmentClassificationSuggestion.cs": {
+    "mtime": 1788939641.4557655,
+    "seen": 1788942398.0508654,
+    "ast_hash": "b692e0fbc9fb5adba462144b10986e18",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Configurations/EquipmentClassificationIndexConfiguration.cs": {
+    "mtime": 1788941538.1176677,
+    "seen": 1788942398.1102715,
+    "ast_hash": "93d6fa2d9add12170e649fe8e2e9f746",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Configurations/EquipmentClassificationSuggestionConfiguration.cs": {
+    "mtime": 1788939678.5525901,
+    "seen": 1788942398.1102715,
+    "ast_hash": "b205b3418f40f75f6180510db5d493e7",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260909081814_AddEquipmentClassificationSuggestionsAndIndexes.Designer.cs": {
+    "mtime": 1788941895.1893408,
+    "seen": 1788942398.1431715,
+    "ast_hash": "1a4aafd4c5d9176a8d83ff46e937efe5",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260909081814_AddEquipmentClassificationSuggestionsAndIndexes.cs": {
+    "mtime": 1788941895.1893408,
+    "seen": 1788942398.1431715,
+    "ast_hash": "00caeb564751efc51627797372b61cf0",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Views/EquipmentClassification/ReviewQueue.cshtml": {
+    "mtime": 1788940373.8433025,
+    "seen": 1788942398.284856,
+    "ast_hash": "7b132a5b79a9cb2a1ab21a7eff8fb8e6",
+    "semantic_hash": ""
+  },
+  "PEMS.Application/DTOs/EquipmentClassCoverageDto.cs": {
+    "mtime": 1788944286.9476614,
+    "seen": 1788945673.9822025,
+    "ast_hash": "6eed1b0dc43a3336ecf84dfa051eac5f",
+    "semantic_hash": ""
+  },
+  "PEMS.Application/Interfaces/IEquipmentClassCoverageService.cs": {
+    "mtime": 1788944304.4499338,
+    "seen": 1788945673.9822025,
+    "ast_hash": "a253c3f98ab15da100e4a8b880ca99c6",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Servises/EquipmentClassCoverageService.cs": {
+    "mtime": 1788944355.080403,
+    "seen": 1788945674.0611591,
+    "ast_hash": "6645bae9c43208540ee852e81036b600",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Views/EquipmentClassification/Coverage.cshtml": {
+    "mtime": 1788944510.3422415,
+    "seen": 1788945674.1094978,
+    "ast_hash": "dbb55d133f26a3dddb4c9e23afd4540e",
     "semantic_hash": ""
   }
 }
