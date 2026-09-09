@@ -242,6 +242,10 @@ public class PEMSDbContext
     public DbSet<FailureModeCause> FailureModeCauses { get; set; }
     public DbSet<FailureCauseMechanism> FailureCauseMechanisms { get; set; }
     public DbSet<PMTemplate> PMTemplates { get; set; }
+
+    // طبق «PEMS Phase 3 — Equipment Classification Completion» بند ۹: صف بازبینی انسانی
+    public DbSet<EquipmentClassificationSuggestion> EquipmentClassificationSuggestions { get; set; }
+
     public DbSet<Team> Teams { get; set; }
     public DbSet<TeamMember> TeamMembers { get; set; }
     public DbSet<Crew> Crews { get; set; }

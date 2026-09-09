@@ -3,14 +3,23 @@ using PEMS.Application.DTOs;
 namespace PEMS.Application.Interfaces;
 
 /// <summary>
-/// طبق «PEMS Phase 2 — Equipment Classification» بند ۹: هرگز طبقه‌بندی حدسی روی رکورد Equipment
-/// اعمال نمی‌شود - فقط وقتی EquipmentType به‌صورت قطعی (Exact/Deterministic Rule Dictionary) با
-/// یک EquipmentClass شناخته‌شده مطابقت دارد. رکوردهایی که از قبل EquipmentClassId دارند هرگز
-/// بازنویسی نمی‌شوند (Master Data Protection، مطابق بند ۳۰).
+/// طبق «PEMS Phase 3 — Equipment Classification Completion» بند ۴/۹/۱۰: موتور طبقه‌بندی
+/// قطعی و چندلایه (Exact/Alias/Pattern روی EquipmentType+Name) + گردش‌کار تایید انسانی. EXACT/HIGH
+/// مستقیم اعمال می‌شوند (بند ۱۲)؛ MEDIUM/LOW هرگز Equipment.EquipmentClassId را تغییر نمی‌دهند -
+/// فقط یک EquipmentClassificationSuggestion برای بازبینی می‌سازند. رکوردهایی که از قبل
+/// EquipmentClassId دارند (صرف‌نظر از Source) هرگز توسط Backfill بازنویسی نمی‌شوند.
 /// </summary>
 public interface IEquipmentClassificationService
 {
-    Task<EquipmentClassificationReportDto> GetClassificationReportAsync();
+    Task<ClassificationDashboardDto> GetDashboardAsync();
 
-    Task<int> BackfillAsync();
+    Task<ReviewQueuePageDto> GetReviewQueueAsync(int page, int pageSize, string statusFilter = "PENDING");
+
+    Task<ReviewQueueItemDto?> GetPendingSuggestionForEquipmentAsync(int equipmentId);
+
+    Task<BackfillResultDto> BackfillAsync();
+
+    Task<bool> AcceptSuggestionAsync(int suggestionId, string reviewedBy, string? comment);
+
+    Task<bool> RejectSuggestionAsync(int suggestionId, string reviewedBy, string? comment);
 }

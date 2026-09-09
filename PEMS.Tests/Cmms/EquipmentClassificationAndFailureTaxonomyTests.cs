@@ -194,9 +194,10 @@ public class EquipmentClassificationAndFailureTaxonomyTests
         await ctx.SaveChangesAsync();
 
         var service = new EquipmentClassificationService(ctx);
-        var applied = await service.BackfillAsync();
+        var result = await service.BackfillAsync();
 
-        Assert.Equal(1, applied);
+        Assert.Equal(1, result.AutoClassifiedCount);
+        Assert.Equal(0, result.SuggestionsCreatedCount);
 
         var equipment = await ctx.Equipments.AsNoTracking().SingleAsync(x => x.EquipmentId == 1);
         Assert.NotNull(equipment.EquipmentClassId);
@@ -205,6 +206,33 @@ public class EquipmentClassificationAndFailureTaxonomyTests
 
         var equipmentClass = await ctx.EquipmentClasses.SingleAsync(x => x.EquipmentClassId == equipment.EquipmentClassId);
         Assert.Equal("COMPRESSOR", equipmentClass.Code);
+    }
+
+    [Fact]
+    public async Task Backfill_HighConfidenceTypeNameCombo_ClassifiesEquipment_WithHighConfidence()
+    {
+        // طبق فاز ۳ بند ۸: کشف اصلی این فاز - EquipmentType='DEVICE' به‌تنهایی عمومی است، ولی
+        // ترکیب با Name واقعی ("THERMOWELL") قطعی و بدون‌ابهام یک کلاس مشخص را تعیین می‌کند.
+        var ctx = await SeedFullBaselineAsync(nameof(Backfill_HighConfidenceTypeNameCombo_ClassifiesEquipment_WithHighConfidence));
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "80-TW-480210", Name = "THERMOWELL", EquipmentType = "DEVICE",
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassificationService(ctx);
+        var result = await service.BackfillAsync();
+
+        Assert.Equal(1, result.AutoClassifiedCount);
+
+        var equipment = await ctx.Equipments.AsNoTracking().SingleAsync(x => x.EquipmentId == 1);
+        Assert.Equal("HIGH", equipment.ClassificationConfidence);
+        Assert.Equal("RULE", equipment.ClassificationSource);
+
+        var equipmentClass = await ctx.EquipmentClasses.SingleAsync(x => x.EquipmentClassId == equipment.EquipmentClassId);
+        Assert.Equal("THERMOWELL", equipmentClass.Code);
     }
 
     [Fact]
@@ -220,9 +248,10 @@ public class EquipmentClassificationAndFailureTaxonomyTests
         await ctx.SaveChangesAsync();
 
         var service = new EquipmentClassificationService(ctx);
-        var applied = await service.BackfillAsync();
+        var result = await service.BackfillAsync();
 
-        Assert.Equal(0, applied);
+        Assert.Equal(0, result.AutoClassifiedCount);
+        Assert.Equal(0, result.SuggestionsCreatedCount);
 
         var equipment = await ctx.Equipments.AsNoTracking().SingleAsync(x => x.EquipmentId == 1);
         Assert.Null(equipment.EquipmentClassId);
@@ -244,9 +273,9 @@ public class EquipmentClassificationAndFailureTaxonomyTests
         await ctx.SaveChangesAsync();
 
         var service = new EquipmentClassificationService(ctx);
-        var applied = await service.BackfillAsync();
+        var result = await service.BackfillAsync();
 
-        Assert.Equal(0, applied); // چون EquipmentClassId از قبل مقداردهی شده - Backfill کاری نمی‌کند
+        Assert.Equal(0, result.AutoClassifiedCount); // چون EquipmentClassId از قبل مقداردهی شده - Backfill کاری نمی‌کند
 
         var equipment = await ctx.Equipments.AsNoTracking().SingleAsync(x => x.EquipmentId == 1);
         Assert.Equal(manualClass.EquipmentClassId, equipment.EquipmentClassId);
@@ -269,29 +298,187 @@ public class EquipmentClassificationAndFailureTaxonomyTests
         var firstRun = await service.BackfillAsync();
         var secondRun = await service.BackfillAsync();
 
-        Assert.Equal(1, firstRun);
-        Assert.Equal(0, secondRun);
+        Assert.Equal(1, firstRun.AutoClassifiedCount);
+        Assert.Equal(0, secondRun.AutoClassifiedCount);
     }
 
     [Fact]
-    public async Task ClassificationReport_ListsUnmatchedEquipment_ForHumanReview()
+    public async Task Backfill_MediumConfidence_CreatesSuggestion_NeverWritesEquipmentClassId()
     {
-        var ctx = await SeedFullBaselineAsync(nameof(ClassificationReport_ListsUnmatchedEquipment_ForHumanReview));
+        var ctx = await SeedFullBaselineAsync(nameof(Backfill_MediumConfidence_CreatesSuggestion_NeverWritesEquipmentClassId));
 
         ctx.Equipments.Add(new Equipment
         {
-            EquipmentId = 1, TagNumber = "EQ-1", Name = "EQ-1", EquipmentType = "PANEL",
+            EquipmentId = 1, TagNumber = "80-XA-100", Name = "CUMULATIVE ALARM", EquipmentType = "DEVICE",
             ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
         });
         await ctx.SaveChangesAsync();
 
         var service = new EquipmentClassificationService(ctx);
-        var report = await service.GetClassificationReportAsync();
+        var result = await service.BackfillAsync();
 
-        Assert.Equal(1, report.TotalUnclassifiedEquipment);
-        Assert.Equal(1, report.UnmatchedNeedsReview);
-        Assert.Equal(0, report.MatchedByRule);
-        Assert.Contains(report.Suggestions, s => s.EquipmentId == 1 && s.ProposedEquipmentClassCode == null);
+        Assert.Equal(0, result.AutoClassifiedCount);
+        Assert.Equal(1, result.SuggestionsCreatedCount);
+
+        var equipment = await ctx.Equipments.AsNoTracking().SingleAsync(x => x.EquipmentId == 1);
+        Assert.Null(equipment.EquipmentClassId); // MEDIUM هرگز مستقیم روی Equipment نوشته نمی‌شود
+
+        var suggestion = await ctx.EquipmentClassificationSuggestions.SingleAsync(x => x.EquipmentId == 1);
+        Assert.Equal("MEDIUM", suggestion.Confidence);
+        Assert.Equal("PENDING", suggestion.Status);
+    }
+
+    [Fact]
+    public async Task Backfill_MediumConfidence_IsIdempotent_NeverDuplicatesSuggestion()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(Backfill_MediumConfidence_IsIdempotent_NeverDuplicatesSuggestion));
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "80-XA-100", Name = "CUMULATIVE ALARM", EquipmentType = "DEVICE",
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassificationService(ctx);
+        await service.BackfillAsync();
+        await service.BackfillAsync();
+
+        Assert.Equal(1, await ctx.EquipmentClassificationSuggestions.CountAsync(x => x.EquipmentId == 1));
+    }
+
+    [Fact]
+    public async Task Backfill_MediumConfidence_RejectedSuggestion_IsNeverRecreated()
+    {
+        // طبق بند ۱۳: یک تصمیم قبلی انسانی (Rejected) هرگز توسط اجرای بعدی Backfill دور زده نمی‌شود.
+        var ctx = await SeedFullBaselineAsync(nameof(Backfill_MediumConfidence_RejectedSuggestion_IsNeverRecreated));
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "80-XA-100", Name = "CUMULATIVE ALARM", EquipmentType = "DEVICE",
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassificationService(ctx);
+        await service.BackfillAsync();
+
+        var suggestion = await ctx.EquipmentClassificationSuggestions.SingleAsync(x => x.EquipmentId == 1);
+        var rejected = await service.RejectSuggestionAsync(suggestion.EquipmentClassificationSuggestionId, "reviewer", "not applicable");
+        Assert.True(rejected);
+
+        await service.BackfillAsync();
+
+        Assert.Equal(1, await ctx.EquipmentClassificationSuggestions.CountAsync(x => x.EquipmentId == 1));
+        var equipment = await ctx.Equipments.AsNoTracking().SingleAsync(x => x.EquipmentId == 1);
+        Assert.Null(equipment.EquipmentClassId);
+    }
+
+    [Fact]
+    public async Task AcceptSuggestion_AppliesClassification_MarksReviewedByAndAt()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(AcceptSuggestion_AppliesClassification_MarksReviewedByAndAt));
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "80-XA-100", Name = "CUMULATIVE ALARM", EquipmentType = "DEVICE",
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassificationService(ctx);
+        await service.BackfillAsync();
+        var suggestion = await ctx.EquipmentClassificationSuggestions.SingleAsync(x => x.EquipmentId == 1);
+
+        var accepted = await service.AcceptSuggestionAsync(suggestion.EquipmentClassificationSuggestionId, "reviewer1", "looks right");
+        Assert.True(accepted);
+
+        var equipment = await ctx.Equipments.AsNoTracking().SingleAsync(x => x.EquipmentId == 1);
+        Assert.NotNull(equipment.EquipmentClassId);
+        Assert.Equal("MEDIUM", equipment.ClassificationConfidence);
+        Assert.Equal("MANUAL", equipment.ClassificationSource); // تایید انسانی - نه RULE خام
+
+        var reloadedSuggestion = await ctx.EquipmentClassificationSuggestions.AsNoTracking()
+            .SingleAsync(x => x.EquipmentClassificationSuggestionId == suggestion.EquipmentClassificationSuggestionId);
+        Assert.Equal("ACCEPTED", reloadedSuggestion.Status);
+        Assert.Equal("reviewer1", reloadedSuggestion.ReviewedBy);
+        Assert.NotNull(reloadedSuggestion.ReviewedAt);
+    }
+
+    [Fact]
+    public async Task AcceptSuggestion_AlreadyReviewed_ReturnsFalse_DoesNotDoubleApply()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(AcceptSuggestion_AlreadyReviewed_ReturnsFalse_DoesNotDoubleApply));
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "80-XA-100", Name = "CUMULATIVE ALARM", EquipmentType = "DEVICE",
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassificationService(ctx);
+        await service.BackfillAsync();
+        var suggestion = await ctx.EquipmentClassificationSuggestions.SingleAsync(x => x.EquipmentId == 1);
+
+        await service.RejectSuggestionAsync(suggestion.EquipmentClassificationSuggestionId, "reviewer1", null);
+        var secondAttempt = await service.AcceptSuggestionAsync(suggestion.EquipmentClassificationSuggestionId, "reviewer2", null);
+
+        Assert.False(secondAttempt);
+    }
+
+    [Fact]
+    public async Task Dashboard_ReportsCorrectCoverageAndBreakdowns()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(Dashboard_ReportsCorrectCoverageAndBreakdowns));
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "EQ-1", Name = "EQ-1", EquipmentType = "compressor",
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 2, TagNumber = "80-PSH-1", Name = "PANEL", EquipmentType = "PANEL",
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassificationService(ctx);
+        await service.BackfillAsync();
+
+        var dashboard = await service.GetDashboardAsync();
+
+        Assert.Equal(2, dashboard.TotalActiveEquipment);
+        Assert.Equal(1, dashboard.ClassifiedCount);
+        Assert.Equal(1, dashboard.UnclassifiedCount);
+        Assert.Equal(50.0, dashboard.CoveragePercent);
+        Assert.Contains(dashboard.ByConfidence, x => x.Key == "EXACT" && x.Count == 1);
+        Assert.Contains(dashboard.TopUnclassifiedEquipmentTypes, x => x.Key == "PANEL" && x.Count == 1);
+    }
+
+    [Fact]
+    public async Task ReviewQueue_ReturnsOnlyRequestedStatus_Paginated()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(ReviewQueue_ReturnsOnlyRequestedStatus_Paginated));
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "80-XA-100", Name = "CUMULATIVE ALARM", EquipmentType = "DEVICE",
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new EquipmentClassificationService(ctx);
+        await service.BackfillAsync();
+
+        var pendingPage = await service.GetReviewQueueAsync(1, 50, "PENDING");
+        Assert.Equal(1, pendingPage.TotalCount);
+        Assert.Equal("80-XA-100", pendingPage.Items.Single().TagNumber);
+        Assert.Equal("CUMULATIVE ALARM", pendingPage.Items.Single().EquipmentName);
+
+        var acceptedPage = await service.GetReviewQueueAsync(1, 50, "ACCEPTED");
+        Assert.Equal(0, acceptedPage.TotalCount);
     }
 
     // ================= Maintenance Intelligence Service =================
@@ -350,5 +537,155 @@ public class EquipmentClassificationAndFailureTaxonomyTests
         var result = await service.GetForEquipmentAsync(999);
 
         Assert.Null(result);
+    }
+
+    // ================= Hierarchy-Aware Intelligence (Phase 3 بند ۱۷-۲۱) =================
+
+    [Fact]
+    public async Task IntelligenceService_Activity_InheritedFromParentClass_WhenNotDefinedOnExactClass()
+    {
+        // PUMP_CENT فرزند PUMP است (طبق EquipmentClassSeeder) - یک Activity فقط روی PUMP تعریف
+        // می‌شود و باید برای تجهیزی با کلاس دقیق PUMP_CENT هم قابل‌مشاهده باشد.
+        var ctx = await SeedFullBaselineAsync(nameof(IntelligenceService_Activity_InheritedFromParentClass_WhenNotDefinedOnExactClass));
+
+        var pumpCentClass = await ctx.EquipmentClasses.SingleAsync(x => x.Code == "PUMP_CENT");
+        var pumpClass = await ctx.EquipmentClasses.SingleAsync(x => x.Code == "PUMP");
+        var group = await ctx.MaintenanceGroups.FirstAsync();
+
+        var activity = new MaintenanceActivity
+        {
+            Code = "TEST_PUMP_PARENT_ACT", Name = "Parent-Level Pump Activity", MaintenanceGroupId = group.MaintenanceGroupId,
+            IsActive = true, IsSystemDefault = false, CreatedDate = DateTime.Now
+        };
+        ctx.MaintenanceActivities.Add(activity);
+        await ctx.SaveChangesAsync();
+
+        ctx.MaintenanceActivityEquipmentClasses.Add(new MaintenanceActivityEquipmentClass
+        {
+            MaintenanceActivityId = activity.MaintenanceActivityId,
+            EquipmentClassId = pumpClass.EquipmentClassId
+        });
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "EQ-1", Name = "EQ-1", EquipmentType = "pump",
+            EquipmentClassId = pumpCentClass.EquipmentClassId,
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new MaintenanceIntelligenceService(ctx);
+        var result = await service.GetForEquipmentAsync(1);
+
+        Assert.NotNull(result);
+        var inherited = result!.ApplicableActivities.SingleOrDefault(x => x.Code == "TEST_PUMP_PARENT_ACT");
+        Assert.NotNull(inherited);
+        Assert.Contains("Inherited from", inherited!.Source);
+        Assert.Contains("Pump", inherited.Source);
+    }
+
+    [Fact]
+    public async Task IntelligenceService_Activity_ExactClassOverridesParent_NoDuplicate()
+    {
+        // همان Activity هم روی PUMP_CENT (دقیق) هم روی PUMP (والد) تعریف می‌شود - نتیجه باید
+        // دقیقاً یک بار برگردد و منبع آن باید "Exact match" باشد، نه "Inherited".
+        var ctx = await SeedFullBaselineAsync(nameof(IntelligenceService_Activity_ExactClassOverridesParent_NoDuplicate));
+
+        var pumpCentClass = await ctx.EquipmentClasses.SingleAsync(x => x.Code == "PUMP_CENT");
+        var pumpClass = await ctx.EquipmentClasses.SingleAsync(x => x.Code == "PUMP");
+        var group = await ctx.MaintenanceGroups.FirstAsync();
+
+        var activity = new MaintenanceActivity
+        {
+            Code = "TEST_DUAL_LEVEL_ACT", Name = "Dual Level Activity", MaintenanceGroupId = group.MaintenanceGroupId,
+            IsActive = true, IsSystemDefault = false, CreatedDate = DateTime.Now
+        };
+        ctx.MaintenanceActivities.Add(activity);
+        await ctx.SaveChangesAsync();
+
+        ctx.MaintenanceActivityEquipmentClasses.Add(new MaintenanceActivityEquipmentClass { MaintenanceActivityId = activity.MaintenanceActivityId, EquipmentClassId = pumpClass.EquipmentClassId });
+        ctx.MaintenanceActivityEquipmentClasses.Add(new MaintenanceActivityEquipmentClass { MaintenanceActivityId = activity.MaintenanceActivityId, EquipmentClassId = pumpCentClass.EquipmentClassId });
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "EQ-1", Name = "EQ-1", EquipmentType = "pump",
+            EquipmentClassId = pumpCentClass.EquipmentClassId,
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new MaintenanceIntelligenceService(ctx);
+        var result = await service.GetForEquipmentAsync(1);
+
+        Assert.NotNull(result);
+        var matches = result!.ApplicableActivities.Where(x => x.Code == "TEST_DUAL_LEVEL_ACT").ToList();
+        Assert.Single(matches); // بدون تکرار
+        Assert.Contains("Exact match", matches[0].Source);
+    }
+
+    [Fact]
+    public async Task IntelligenceService_GrandparentInheritance_Works()
+    {
+        // PUMP_CENT → PUMP → ROTATING_EQUIPMENT: یک Activity فقط روی جد (ROTATING_EQUIPMENT)
+        // تعریف می‌شود و باید تا دو سطح پایین‌تر هم به ارث برسد.
+        var ctx = await SeedFullBaselineAsync(nameof(IntelligenceService_GrandparentInheritance_Works));
+
+        var pumpCentClass = await ctx.EquipmentClasses.SingleAsync(x => x.Code == "PUMP_CENT");
+        var rotatingClass = await ctx.EquipmentClasses.SingleAsync(x => x.Code == "ROTATING_EQUIPMENT");
+        var group = await ctx.MaintenanceGroups.FirstAsync();
+
+        var activity = new MaintenanceActivity
+        {
+            Code = "TEST_GRANDPARENT_ACT", Name = "Grandparent-Level Activity", MaintenanceGroupId = group.MaintenanceGroupId,
+            IsActive = true, IsSystemDefault = false, CreatedDate = DateTime.Now
+        };
+        ctx.MaintenanceActivities.Add(activity);
+        await ctx.SaveChangesAsync();
+
+        ctx.MaintenanceActivityEquipmentClasses.Add(new MaintenanceActivityEquipmentClass
+        {
+            MaintenanceActivityId = activity.MaintenanceActivityId,
+            EquipmentClassId = rotatingClass.EquipmentClassId
+        });
+
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "EQ-1", Name = "EQ-1", EquipmentType = "pump",
+            EquipmentClassId = pumpCentClass.EquipmentClassId,
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new MaintenanceIntelligenceService(ctx);
+        var result = await service.GetForEquipmentAsync(1);
+
+        Assert.NotNull(result);
+        Assert.Contains(result!.ApplicableActivities, x => x.Code == "TEST_GRANDPARENT_ACT");
+        Assert.Equal(3, result.ResolvedClassHierarchy.Count); // PUMP_CENT, PUMP, ROTATING_EQUIPMENT
+    }
+
+    [Fact]
+    public async Task IntelligenceService_PMTemplate_InheritedFromParentClass()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(IntelligenceService_PMTemplate_InheritedFromParentClass));
+
+        var pumpCentClass = await ctx.EquipmentClasses.SingleAsync(x => x.Code == "PUMP_CENT");
+
+        // PMT_PUMP_CENT_MONTHLY از قبل روی خودِ PUMP_CENT (نه PUMP) تعریف شده - نتیجه باید
+        // "Exact match" باشد نه "Inherited"
+        ctx.Equipments.Add(new Equipment
+        {
+            EquipmentId = 1, TagNumber = "EQ-1", Name = "EQ-1", EquipmentType = "pump",
+            EquipmentClassId = pumpCentClass.EquipmentClassId,
+            ProjectId = 1, DisciplineId = 1, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await ctx.SaveChangesAsync();
+
+        var service = new MaintenanceIntelligenceService(ctx);
+        var result = await service.GetForEquipmentAsync(1);
+
+        Assert.NotNull(result);
+        var template = result!.CandidatePMTemplates.Single(x => x.Code == "PMT_PUMP_CENT_MONTHLY");
+        Assert.Contains("Exact match", template.Source);
     }
 }

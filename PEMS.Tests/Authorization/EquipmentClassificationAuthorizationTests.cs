@@ -13,9 +13,10 @@ using PEMS.Web.Security;
 namespace PEMS.Tests.Authorization;
 
 /// <summary>
-/// طبق «PEMS Phase 2 — Equipment Classification» بند ۴۲: این Controller هیچ ماژول مجوز جدیدی
-/// نساخته - از همان "MaintenanceMasterData" موجود استفاده می‌کند؛ این تست‌ها اثبات می‌کنند گیت
-/// واقعاً روی همون مجوز است (نه بدون بررسی باز مانده باشد).
+/// طبق «PEMS Phase 3 — Equipment Classification Completion» بند ۲۸: این Controller هیچ ماژول
+/// مجوز جدیدی نساخته - از همان "MaintenanceMasterData" موجود استفاده می‌کند (View برای
+/// Dashboard/Queue، Edit برای Accept/Reject). این تست‌ها اثبات می‌کنند گیت واقعاً روی همون مجوز
+/// است و کاربر فقط‌خواندنی نمی‌تواند طبقه‌بندی معتبر را تغییر دهد.
 /// </summary>
 public class EquipmentClassificationAuthorizationTests
 {
@@ -35,14 +36,18 @@ public class EquipmentClassificationAuthorizationTests
         services.AddSingleton(ctx);
         await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
 
-        var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
+        var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>(), UserName = "tester" };
         return (ctx, permissionService, currentUser);
     }
 
     private class FakeClassificationService : IEquipmentClassificationService
     {
-        public Task<EquipmentClassificationReportDto> GetClassificationReportAsync() => Task.FromResult(new EquipmentClassificationReportDto());
-        public Task<int> BackfillAsync() => Task.FromResult(0);
+        public Task<ClassificationDashboardDto> GetDashboardAsync() => Task.FromResult(new ClassificationDashboardDto());
+        public Task<ReviewQueuePageDto> GetReviewQueueAsync(int page, int pageSize, string statusFilter = "PENDING") => Task.FromResult(new ReviewQueuePageDto());
+        public Task<ReviewQueueItemDto?> GetPendingSuggestionForEquipmentAsync(int equipmentId) => Task.FromResult<ReviewQueueItemDto?>(null);
+        public Task<BackfillResultDto> BackfillAsync() => Task.FromResult(new BackfillResultDto());
+        public Task<bool> AcceptSuggestionAsync(int suggestionId, string reviewedBy, string? comment) => Task.FromResult(true);
+        public Task<bool> RejectSuggestionAsync(int suggestionId, string reviewedBy, string? comment) => Task.FromResult(true);
     }
 
     [Fact]
@@ -79,5 +84,52 @@ public class EquipmentClassificationAuthorizationTests
         var result = await controller.Index();
 
         Assert.IsType<ViewResult>(result);
+    }
+
+    [Fact]
+    public async Task ReviewQueue_NoPermission_ReturnsForbid()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(ReviewQueue_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
+        var controller = new EquipmentClassificationController(new FakeClassificationService(), user, perms).WithTempData();
+
+        var result = await controller.ReviewQueue();
+
+        Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
+    public async Task ReviewQueue_ViewerRole_CanSeeQueue_ButAcceptRequiresEdit()
+    {
+        // Viewer فقط View دارد نه Edit - باید صف را ببیند ولی نتواند Accept کند
+        var (ctx, perms, user) = await CreateInfra(nameof(ReviewQueue_ViewerRole_CanSeeQueue_ButAcceptRequiresEdit), role: SystemRoles.Viewer);
+        var controller = new EquipmentClassificationController(new FakeClassificationService(), user, perms).WithTempData();
+
+        var viewResult = await controller.ReviewQueue();
+        Assert.IsType<ViewResult>(viewResult);
+
+        var acceptResult = await controller.Accept(1, null);
+        Assert.IsType<ForbidResult>(acceptResult);
+    }
+
+    [Fact]
+    public async Task Accept_RoleWithEditPermission_Succeeds()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(Accept_RoleWithEditPermission_Succeeds), role: SystemRoles.MaintenanceEngineer);
+        var controller = new EquipmentClassificationController(new FakeClassificationService(), user, perms).WithTempData();
+
+        var result = await controller.Accept(1, null);
+
+        Assert.IsType<RedirectToActionResult>(result);
+    }
+
+    [Fact]
+    public async Task Reject_NoEditPermission_ReturnsForbid()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(Reject_NoEditPermission_ReturnsForbid), role: SystemRoles.QAManager);
+        var controller = new EquipmentClassificationController(new FakeClassificationService(), user, perms).WithTempData();
+
+        var result = await controller.Reject(1, null);
+
+        Assert.IsType<ForbidResult>(result);
     }
 }

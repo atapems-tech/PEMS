@@ -2774,10 +2774,10 @@ namespace PEMS.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClassificationConfidence")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ClassificationSource")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -2859,6 +2859,12 @@ namespace PEMS.Persistence.Migrations
 
                     b.HasKey("EquipmentId");
 
+                    b.HasIndex("ClassificationConfidence")
+                        .HasDatabaseName("IX_Equipments_ClassificationConfidence");
+
+                    b.HasIndex("ClassificationSource")
+                        .HasDatabaseName("IX_Equipments_ClassificationSource");
+
                     b.HasIndex("DisciplineId");
 
                     b.HasIndex("EquipmentClassId");
@@ -2870,6 +2876,9 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("ProjectId");
 
                     b.HasIndex("RelatedMRId");
+
+                    b.HasIndex("IsActive", "EquipmentClassId")
+                        .HasDatabaseName("IX_Equipments_IsActive_EquipmentClassId");
 
                     b.ToTable("Equipments");
                 });
@@ -2936,6 +2945,79 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("ParentEquipmentClassId");
 
                     b.ToTable("EquipmentClasses", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.EquipmentClassificationSuggestion", b =>
+                {
+                    b.Property<int>("EquipmentClassificationSuggestionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EquipmentClassificationSuggestionId"));
+
+                    b.Property<string>("Confidence")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ReviewComment")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReviewedBy")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Source")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("SuggestedEquipmentClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EquipmentClassificationSuggestionId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("SuggestedEquipmentClassId");
+
+                    b.HasIndex("EquipmentId", "Status");
+
+                    b.ToTable("EquipmentClassificationSuggestions", (string)null);
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.EquipmentCriticality", b =>
@@ -13291,6 +13373,25 @@ namespace PEMS.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("ParentEquipmentClass");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.EquipmentClassificationSuggestion", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.EquipmentClass", "SuggestedEquipmentClass")
+                        .WithMany()
+                        .HasForeignKey("SuggestedEquipmentClassId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("SuggestedEquipmentClass");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.EquipmentCriticality", b =>

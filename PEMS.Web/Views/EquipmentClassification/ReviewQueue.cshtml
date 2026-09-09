@@ -1,0 +1,87 @@
+@model PEMS.Application.DTOs.ReviewQueuePageDto
+@{
+    var status = (string)ViewBag.StatusFilter;
+    var totalPages = Model.PageSize == 0 ? 1 : (int)Math.Ceiling(Model.TotalCount / (double)Model.PageSize);
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+}
+
+<div class="content-card mb-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <p class="text-muted small mb-0">
+            هر پیشنهاد فقط MEDIUM/LOW یا AI است (EXACT/HIGH مستقیم اعمال شده‌اند) - تایید یا رد
+            کاملاً روی Equipment.EquipmentClassId اثر دارد و به‌صورت خودکار در Audit Log ثبت می‌شود.
+        </p>
+        <div class="btn-group btn-group-sm">
+            <a asp-action="ReviewQueue" asp-route-status="PENDING" class="btn @(status == "PENDING" ? "btn-pems-solid" : "btn-outline-secondary")">Pending</a>
+            <a asp-action="ReviewQueue" asp-route-status="ACCEPTED" class="btn @(status == "ACCEPTED" ? "btn-pems-solid" : "btn-outline-secondary")">Accepted</a>
+            <a asp-action="ReviewQueue" asp-route-status="REJECTED" class="btn @(status == "REJECTED" ? "btn-pems-solid" : "btn-outline-secondary")">Rejected</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-enterprise">
+            <thead>
+                <tr>
+                    <th>Tag</th><th>Name</th><th>Type</th><th>Discipline</th>
+                    <th>Suggested Class</th><th>Confidence</th><th>Source</th><th>Reason</th>
+                    @if (status == "PENDING") { <th></th> }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td><code>@item.TagNumber</code></td>
+                        <td class="small">@item.EquipmentName</td>
+                        <td class="small text-muted">@item.EquipmentType</td>
+                        <td class="small text-muted">@(item.DisciplineName ?? "-")</td>
+                        <td class="small"><span class="badge text-bg-light border">@item.SuggestedEquipmentClassName</span></td>
+                        <td><span class="badge text-bg-warning">@item.Confidence</span></td>
+                        <td class="small text-muted">@item.Source</td>
+                        <td class="small text-muted">@item.Reason</td>
+                        @if (status == "PENDING")
+                        {
+                            <td class="text-end text-nowrap">
+                                <form asp-action="Accept" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@item.SuggestionId" />
+                                    <input type="hidden" name="status" value="@status" />
+                                    <input type="hidden" name="page" value="@Model.Page" />
+                                    <button type="submit" class="btn btn-sm btn-outline-success" title="تایید"><i class="bi bi-check-lg"></i></button>
+                                </form>
+                                <form asp-action="Reject" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@item.SuggestionId" />
+                                    <input type="hidden" name="status" value="@status" />
+                                    <input type="hidden" name="page" value="@Model.Page" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="رد"><i class="bi bi-x-lg"></i></button>
+                                </form>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">موردی در این وضعیت وجود ندارد.</p> }
+    </div>
+
+    @if (totalPages > 1)
+    {
+        <nav>
+            <ul class="pagination pagination-sm justify-content-center">
+                @for (var p = 1; p <= totalPages; p++)
+                {
+                    <li class="page-item @(p == Model.Page ? "active" : "")">
+                        <a class="page-link" asp-action="ReviewQueue" asp-route-status="@status" asp-route-page="@p">@p</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>

@@ -20,10 +20,13 @@ public class EquipmentController : Controller
     private readonly ICurrentUserService _currentUser;
     private readonly IReliabilityService _reliabilityService;
     private readonly IInspectionService _inspectionService;
+    private readonly IEquipmentClassificationService _classificationService;
+    private readonly IMaintenanceIntelligenceService _intelligenceService;
 
     public EquipmentController(IEquipmentService service, PEMSDbContext context,
         IFunctionalLocationService functionalLocationService, ICurrentUserService currentUser,
-        IReliabilityService reliabilityService, IInspectionService inspectionService)
+        IReliabilityService reliabilityService, IInspectionService inspectionService,
+        IEquipmentClassificationService classificationService, IMaintenanceIntelligenceService intelligenceService)
     {
         _service = service;
         _context = context;
@@ -31,6 +34,8 @@ public class EquipmentController : Controller
         _currentUser = currentUser;
         _reliabilityService = reliabilityService;
         _inspectionService = inspectionService;
+        _classificationService = classificationService;
+        _intelligenceService = intelligenceService;
     }
 
     // طبق سند «PEMS — Global Data Grid Standard» (فاز ۵C - Equipment Reconciliation): قبلاً
@@ -80,6 +85,12 @@ public class EquipmentController : Controller
         ViewBag.FunctionalLocations = await _functionalLocationService.GetPickerListAsync();
         ViewBag.Reliability = await _reliabilityService.GetEquipmentReliabilityAsync(id);
         ViewBag.Inspections = await _inspectionService.GetForEquipmentAsync(id);
+
+        // طبق «PEMS Phase 3 — Equipment Classification Completion» بند ۱۶: طبقه‌بندی + هوش
+        // نگهداری + پیشنهاد در انتظار بازبینی (در صورت وجود) - در یک بخش جمع‌وجور، نه اضافه‌بار
+        // روی صفحه‌ی موجود.
+        ViewBag.MaintenanceIntelligence = await _intelligenceService.GetForEquipmentAsync(id);
+        ViewBag.PendingClassificationSuggestion = await _classificationService.GetPendingSuggestionForEquipmentAsync(id);
 
         return View(passport);
     }

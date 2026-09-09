@@ -1,75 +1,159 @@
-@model PEMS.Application.DTOs.EquipmentClassificationReportDto
+@model PEMS.Application.DTOs.ClassificationDashboardDto
+
+@{
+    string BarWidth(int count, int max) => max == 0 ? "0%" : $"{Math.Round(count * 100.0 / max, 1)}%";
+}
 
 <div class="content-card mb-3">
     <div class="row g-3 text-center">
-        <div class="col-md-4">
-            <div class="fs-3 fw-bold">@Model.TotalUnclassifiedEquipment</div>
-            <div class="text-muted small">Total Unclassified Equipment</div>
+        <div class="col-md-2">
+            <div class="fs-3 fw-bold">@Model.TotalActiveEquipment.ToString("N0")</div>
+            <div class="text-muted small">Total Active Equipment</div>
         </div>
-        <div class="col-md-4">
-            <div class="fs-3 fw-bold text-success">@Model.MatchedByRule</div>
-            <div class="text-muted small">Auto-Classified by Rule (Applied)</div>
+        <div class="col-md-2">
+            <div class="fs-3 fw-bold text-success">@Model.ClassifiedCount.ToString("N0")</div>
+            <div class="text-muted small">Classified</div>
         </div>
-        <div class="col-md-4">
-            <div class="fs-3 fw-bold text-warning">@Model.UnmatchedNeedsReview</div>
-            <div class="text-muted small">Needs Human Review</div>
+        <div class="col-md-2">
+            <div class="fs-3 fw-bold text-secondary">@Model.UnclassifiedCount.ToString("N0")</div>
+            <div class="text-muted small">Unclassified</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-3 fw-bold">@Model.CoveragePercent.ToString("0.0")%</div>
+            <div class="text-muted small">Coverage</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-3 fw-bold text-warning">@Model.PendingReviewCount.ToString("N0")</div>
+            <div class="text-muted small">Pending Review</div>
+        </div>
+        <div class="col-md-2">
+            <a asp-action="ReviewQueue" class="btn btn-pems-solid btn-sm mt-2">
+                <i class="bi bi-list-check"></i> Review Queue
+            </a>
         </div>
     </div>
 </div>
 
-<div class="content-card">
-    <p class="text-muted small mb-3">
-        طبق بند ۹/۳۳: طبقه‌بندی خودکار فقط وقتی اعمال می‌شود که EquipmentType به‌صورت قطعی
-        (بدون‌ابهام) با یک Equipment Class شناخته‌شده مطابقت داشته باشد - ردیف‌های بدون قاعده
-        هرگز حدس زده نمی‌شوند و برای بازبینی انسانی این‌جا فهرست شده‌اند.
-    </p>
+<div class="row g-3 mb-3">
+    <div class="col-md-6">
+        <div class="content-card h-100">
+            <h6 class="mb-3">Classified — by Confidence</h6>
+            @foreach (var item in Model.ByConfidence)
+            {
+                <div class="d-flex justify-content-between small mb-1">
+                    <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
+                </div>
+                <div class="progress mb-2" style="height:6px;">
+                    <div class="progress-bar" style="width:@BarWidth(item.Count, Model.ClassifiedCount)"></div>
+                </div>
+            }
+            @if (!Model.ByConfidence.Any()) { <p class="text-muted small">داده‌ای موجود نیست.</p> }
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="content-card h-100">
+            <h6 class="mb-3">Classified — by Source</h6>
+            @foreach (var item in Model.BySource)
+            {
+                <div class="d-flex justify-content-between small mb-1">
+                    <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
+                </div>
+                <div class="progress mb-2" style="height:6px;">
+                    <div class="progress-bar bg-info" style="width:@BarWidth(item.Count, Model.ClassifiedCount)"></div>
+                </div>
+            }
+            @if (!Model.BySource.Any()) { <p class="text-muted small">داده‌ای موجود نیست.</p> }
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-6">
+        <div class="content-card h-100">
+            <h6 class="mb-3">Pending Suggestions — by Confidence</h6>
+            @foreach (var item in Model.PendingSuggestionsByConfidence)
+            {
+                <div class="d-flex justify-content-between small mb-1">
+                    <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
+                </div>
+            }
+            @if (!Model.PendingSuggestionsByConfidence.Any()) { <p class="text-muted small">هیچ پیشنهادی در انتظار بازبینی نیست.</p> }
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="content-card h-100">
+            <h6 class="mb-3">Unclassified — by Discipline</h6>
+            @foreach (var item in Model.UnclassifiedByDiscipline)
+            {
+                <div class="d-flex justify-content-between small mb-1">
+                    <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
+                </div>
+            }
+            @if (!Model.UnclassifiedByDiscipline.Any()) { <p class="text-muted small">داده‌ای موجود نیست.</p> }
+        </div>
+    </div>
+</div>
+
+<div class="content-card mb-3">
+    <h6 class="mb-3">Classified — by Equipment Class (Top 20)</h6>
     <div class="table-responsive">
-        <table class="table table-enterprise">
-            <thead>
-                <tr>
-                    <th>Equipment</th>
-                    <th>Current Type</th>
-                    <th>Proposed Class</th>
-                    <th>Confidence</th>
-                    <th>Reason</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
+        <table class="table table-enterprise table-sm">
+            <thead><tr><th>Equipment Class</th><th>Count</th></tr></thead>
             <tbody>
-                @foreach (var s in Model.Suggestions.OrderByDescending(x => x.ProposedEquipmentClassCode != null))
+                @foreach (var item in Model.ByEquipmentClass)
                 {
-                    <tr>
-                        <td><code>@s.TagNumber</code></td>
-                        <td class="small">@s.CurrentEquipmentType</td>
-                        <td class="small">
-                            @if (s.ProposedEquipmentClassCode != null)
-                            {
-                                <span class="badge text-bg-light border">@s.ProposedEquipmentClassName</span>
-                            }
-                            else
-                            {
-                                <span class="text-muted">-</span>
-                            }
-                        </td>
-                        <td class="small">@(s.Confidence ?? "-")</td>
-                        <td class="small text-muted">@s.Reason</td>
-                        <td>
-                            @if (s.ProposedEquipmentClassCode != null)
-                            {
-                                <span class="badge text-bg-success">Classified</span>
-                            }
-                            else
-                            {
-                                <span class="badge text-bg-secondary">Needs Review</span>
-                            }
-                        </td>
-                    </tr>
+                    <tr><td>@item.Key</td><td>@item.Count.ToString("N0")</td></tr>
                 }
             </tbody>
         </table>
-        @if (!Model.Suggestions.Any())
-        {
-            <p class="text-muted text-center py-4">همه‌ی Equipment های فعال از قبل طبقه‌بندی شده‌اند.</p>
-        }
+        @if (!Model.ByEquipmentClass.Any()) { <p class="text-muted small text-center py-3">داده‌ای موجود نیست.</p> }
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="content-card h-100">
+            <h6 class="mb-3">Top Unclassified — EquipmentType</h6>
+            <div class="table-responsive" style="max-height:400px;">
+                <table class="table table-enterprise table-sm">
+                    <tbody>
+                        @foreach (var item in Model.TopUnclassifiedEquipmentTypes)
+                        {
+                            <tr><td class="small">@item.Key</td><td class="text-end">@item.Count.ToString("N0")</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="content-card h-100">
+            <h6 class="mb-3">Top Unclassified — Name</h6>
+            <div class="table-responsive" style="max-height:400px;">
+                <table class="table table-enterprise table-sm">
+                    <tbody>
+                        @foreach (var item in Model.TopUnclassifiedEquipmentNames)
+                        {
+                            <tr><td class="small">@item.Key</td><td class="text-end">@item.Count.ToString("N0")</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="content-card h-100">
+            <h6 class="mb-3">Top Unclassified — Tag Pattern</h6>
+            <div class="table-responsive" style="max-height:400px;">
+                <table class="table table-enterprise table-sm">
+                    <tbody>
+                        @foreach (var item in Model.TopUnclassifiedTagPatterns)
+                        {
+                            <tr><td class="small"><code>@item.Key</code></td><td class="text-end">@item.Count.ToString("N0")</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

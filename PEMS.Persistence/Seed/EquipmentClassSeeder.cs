@@ -87,6 +87,32 @@ public static class EquipmentClassSeeder
         // زنده (drum/mixer/agitator/conveyor به تعداد قابل توجه یافت شدند - نه فرضی/ساختگی)
         ("MIXER_AGITATOR", "Mixer / Agitator", "میکسر / اجیتاتور", "ROTATING_EQUIPMENT", 71),
         ("CONVEYOR", "Conveyor", "نوار نقاله", "ROTATING_EQUIPMENT", 72),
+
+        // ==============================================================================
+        // طبق «PEMS Phase 3 — Equipment Classification Completion» بند ۸: پروفایل مستقیم
+        // داده‌ی زنده‌ی Equipment.Name برای EquipmentType='DEVICE'/'F&G DEVICE' نشان داد این دو
+        // نوع عمومی در واقع فقط ۱۶۳/۱۵ مقدار Name متمایز دارند که هرکدام یک نوع ابزاردقیق/آتش‌ونشانی
+        // مشخص و صددرصد قابل‌تفسیر است (مثلاً "THERMOWELL" با ۱۳۱۸ رکورد واقعی) - نه یک حدس، بلکه
+        // استخراج مستقیم از خودِ داده. این ۱۵ کلاس جدید فقط برای Name هایی اضافه شدند که تعداد
+        // رکورد واقعی‌شان (≥۳۰) توجیه‌کننده بود؛ دنباله‌ی کم‌تکرار (Long Tail) عمداً بدون کلاس
+        // جدید می‌ماند تا در صف بازبینی انسانی (Review Queue) بماند - طبق بند ۳۱: «Do NOT define
+        // 100% coverage as a target».
+        // ==============================================================================
+        ("THERMOWELL", "Thermowell", "ترموول", "INSTRUMENTATION_EQUIPMENT", 290),
+        ("PRESSURE_GAUGE", "Pressure Gauge", "فشارسنج عقربه‌ای", "INSTRUMENTATION_EQUIPMENT", 291),
+        ("TEMPERATURE_GAUGE", "Temperature Gauge", "دماسنج عقربه‌ای", "INSTRUMENTATION_EQUIPMENT", 292),
+        ("RTD_ELEMENT", "RTD Element", "المان RTD", "INSTRUMENTATION_EQUIPMENT", 293),
+        ("LEVEL_GAUGE", "Level Gauge", "سطح‌سنج عینکی", "INSTRUMENTATION_EQUIPMENT", 294),
+        ("LEVEL_SWITCH", "Level Switch", "سوئیچ سطح", "INSTRUMENTATION_EQUIPMENT", 295),
+        ("PRESSURE_SWITCH", "Pressure Switch", "سوئیچ فشار", "INSTRUMENTATION_EQUIPMENT", 296),
+        ("FLOW_SWITCH", "Flow Switch", "سوئیچ دبی", "INSTRUMENTATION_EQUIPMENT", 297),
+        ("LIMIT_SWITCH", "Limit / Position Switch", "سوئیچ وضعیت (لیمیت)", "INSTRUMENTATION_EQUIPMENT", 298),
+        ("HAND_SWITCH", "Hand Switch", "سوئیچ دستی", "INSTRUMENTATION_EQUIPMENT", 299),
+        ("FLOW_ELEMENT", "Flow Element (Orifice)", "المان دبی (اوریفیس)", "INSTRUMENTATION_EQUIPMENT", 300),
+        ("ROTAMETER", "Rotameter", "روتامتر", "INSTRUMENTATION_EQUIPMENT", 301),
+        ("PRESSURE_SAFETY_VALVE", "Pressure Safety Valve", "شیر اطمینان فشار (PSV)", "PIPING", 131),
+        ("MANUAL_CALL_POINT", "Manual Call Point", "شستی اعلام حریق دستی", "FIRE_GAS_EQUIPMENT", 351),
+        ("ALARM_NOTIFICATION_DEVICE", "Alarm Notification Device (Hooter/Flasher)", "دستگاه اعلام هشدار (هوتر/چراغ چشمک‌زن)", "FIRE_GAS_EQUIPMENT", 352),
     };
 
     public static async Task SeedAsync(IServiceProvider services)

@@ -207,6 +207,13 @@
             @if (qcCount > 0) { <span class="badge bg-secondary">@qcCount</span> }
         </button>
     </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-classification" type="button">
+            <i class="bi bi-diagram-3-fill"></i> Classification
+            @{ var pendingSuggestion = ViewBag.PendingClassificationSuggestion as PEMS.Application.DTOs.ReviewQueueItemDto; }
+            @if (pendingSuggestion != null) { <span class="badge bg-warning text-dark">1</span> }
+        </button>
+    </li>
 </ul>
 
 <div class="tab-content">
@@ -599,6 +606,104 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    @* ===================== Classification & Maintenance Intelligence ===================== *@
+    <div class="tab-pane fade" id="tab-classification" role="tabpanel">
+        @{
+            var intel = ViewBag.MaintenanceIntelligence as PEMS.Application.DTOs.EquipmentMaintenanceIntelligenceDto;
+        }
+        <div class="content-card mb-3">
+            <h6 class="mb-3"><i class="bi bi-diagram-3-fill"></i> Equipment Classification</h6>
+            @if (intel?.EquipmentClassId != null)
+            {
+                <div class="row g-2 small">
+                    <div class="col-md-3"><strong>Equipment Class</strong><div>@intel.EquipmentClassName <code>@intel.EquipmentClassCode</code></div></div>
+                    <div class="col-md-3"><strong>Class Hierarchy</strong><div>@string.Join(" ← ", intel.ResolvedClassHierarchy)</div></div>
+                    <div class="col-md-3"><strong>Confidence</strong><div><span class="badge text-bg-info">@intel.ClassificationConfidence</span></div></div>
+                    <div class="col-md-3"><strong>Source</strong><div><span class="badge text-bg-secondary">@intel.ClassificationSource</span></div></div>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted small mb-0">این تجهیز هنوز طبقه‌بندی نشده (EquipmentType: <code>@eq.EquipmentType</code>).</p>
+            }
+
+            @if (pendingSuggestion != null)
+            {
+                <div class="alert alert-warning small mt-3 mb-0">
+                    <strong>پیشنهاد در انتظار بازبینی:</strong> @pendingSuggestion.SuggestedEquipmentClassName
+                    (<span class="badge text-bg-warning">@pendingSuggestion.Confidence</span>) &mdash; @pendingSuggestion.Reason
+                    <a asp-controller="EquipmentClassification" asp-action="ReviewQueue" class="ms-2">بازبینی در صف →</a>
+                </div>
+            }
+        </div>
+
+        @if (intel?.EquipmentClassId != null)
+        {
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="content-card h-100">
+                        <h6 class="mb-3">Applicable Maintenance Activities <span class="badge bg-secondary">@intel.ApplicableActivities.Count</span></h6>
+                        <ul class="list-unstyled mb-0 small">
+                            @foreach (var a in intel.ApplicableActivities)
+                            {
+                                <li class="d-flex justify-content-between border-bottom py-1">
+                                    <span>@a.Name</span>
+                                    <span class="text-muted">@a.Source</span>
+                                </li>
+                            }
+                        </ul>
+                        @if (!intel.ApplicableActivities.Any()) { <p class="text-muted small mb-0">موردی تعریف نشده.</p> }
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="content-card h-100">
+                        <h6 class="mb-3">Candidate PM Templates <span class="badge bg-secondary">@intel.CandidatePMTemplates.Count</span></h6>
+                        <ul class="list-unstyled mb-0 small">
+                            @foreach (var t in intel.CandidatePMTemplates)
+                            {
+                                <li class="d-flex justify-content-between border-bottom py-1">
+                                    <span>@t.Name (@t.TriggerType@(t.IntervalDays.HasValue ? $" / {t.IntervalDays}d" : ""))</span>
+                                    <span class="text-muted">@t.Source</span>
+                                </li>
+                            }
+                        </ul>
+                        @if (!intel.CandidatePMTemplates.Any()) { <p class="text-muted small mb-0">موردی تعریف نشده.</p> }
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="content-card h-100">
+                        <h6 class="mb-3">Applicable Failure Modes <span class="badge bg-secondary">@intel.ApplicableFailureModes.Count</span></h6>
+                        <ul class="list-unstyled mb-0 small">
+                            @foreach (var fm in intel.ApplicableFailureModes)
+                            {
+                                <li class="d-flex justify-content-between border-bottom py-1">
+                                    <span>@fm.Name</span>
+                                    <span class="text-muted">@fm.Source</span>
+                                </li>
+                            }
+                        </ul>
+                        @if (!intel.ApplicableFailureModes.Any()) { <p class="text-muted small mb-0">موردی تعریف نشده.</p> }
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="content-card h-100">
+                        <h6 class="mb-3">Standard References <span class="badge bg-secondary">@intel.ApplicableStandardReferences.Count</span></h6>
+                        <ul class="list-unstyled mb-0 small">
+                            @foreach (var s in intel.ApplicableStandardReferences)
+                            {
+                                <li class="d-flex justify-content-between border-bottom py-1">
+                                    <span>@s.Name</span>
+                                    <code>@s.Code</code>
+                                </li>
+                            }
+                        </ul>
+                        @if (!intel.ApplicableStandardReferences.Any()) { <p class="text-muted small mb-0">موردی تعریف نشده.</p> }
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 
 </div>
