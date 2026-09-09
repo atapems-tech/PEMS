@@ -1578,9 +1578,9 @@
     "semantic_hash": "5809af8d8afaa80014e62788179b6dd4"
   },
   "PEMS.Persistence/Migrations/PEMSDbContextModelSnapshot.cs": {
-    "mtime": 1788949232.2078657,
-    "seen": 1788950972.6545749,
-    "ast_hash": "eca9f7825204523042f4f3630a461f9f",
+    "mtime": 1788981524.773139,
+    "seen": 1788982661.8566046,
+    "ast_hash": "81b721d466c503586bfbdc3738f29305",
     "semantic_hash": ""
   },
   "PEMS.Persistence/PEMS.Persistence.csproj": {
@@ -1836,9 +1836,9 @@
     "semantic_hash": "c44e3a6583e46ef0cb4def2c6c08e4e4"
   },
   "PEMS.Persistence/Servises/PermissionService.cs": {
-    "mtime": 1788948492.083403,
-    "seen": 1788950972.6879776,
-    "ast_hash": "cfa6e9e64ccb9156f9890d355e924a29",
+    "mtime": 1788953724.6819785,
+    "seen": 1788982661.8801844,
+    "ast_hash": "16c71501379fd915f7021f86a0110433",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/ProcurementPackageService.cs": {
@@ -2682,9 +2682,9 @@
     "semantic_hash": "ab7e34a2113cfa2a4d952bac4edc6cb4"
   },
   "PEMS.Web/Program.cs": {
-    "mtime": 1788948419.2419105,
-    "seen": 1788950972.796185,
-    "ast_hash": "8be4830bde0a924d79537fdc57704d3a",
+    "mtime": 1788953591.3881304,
+    "seen": 1788982661.9369397,
+    "ast_hash": "f0e27c4b0ebcd2aa4c7353c2a80d8cc3",
     "semantic_hash": ""
   },
   "PEMS.Web/Properties/launchSettings.json": {
@@ -5040,10 +5040,10 @@
     "semantic_hash": "29a9fef66910ff12ca4d5390b49a0c02"
   },
   "PEMS.Application/DTOs/ReliabilityDto.cs": {
-    "mtime": 1788350901.9744349,
-    "seen": 1788613735.6693618,
-    "ast_hash": "8139812c5c4924b674b6e04601d6cec0",
-    "semantic_hash": "8139812c5c4924b674b6e04601d6cec0"
+    "mtime": 1788952971.3039982,
+    "seen": 1788982661.7853565,
+    "ast_hash": "ab487793479f9e68b53d8a38c3b6e41e",
+    "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/IReliabilityService.cs": {
     "mtime": 1788350902.3677378,
@@ -5058,10 +5058,10 @@
     "semantic_hash": "c5330ae8f84e102368872027f6a1ed7a"
   },
   "PEMS.Web/Controllers/ReliabilityController.cs": {
-    "mtime": 1788350905.5389037,
-    "seen": 1788613735.670535,
-    "ast_hash": "dc6c467add49cdebbd1b5748c78ef3a7",
-    "semantic_hash": "dc6c467add49cdebbd1b5748c78ef3a7"
+    "mtime": 1788980537.15916,
+    "seen": 1788982661.928867,
+    "ast_hash": "fb0ade09e006714bc6ba2cb980b120d1",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Reliability/Details.cshtml": {
     "mtime": 1788350906.8944786,
@@ -5070,10 +5070,10 @@
     "semantic_hash": "87c1afd3d244594ff6e45e9ab672e5f8"
   },
   "PEMS.Web/Views/Reliability/Index.cshtml": {
-    "mtime": 1788350906.908532,
-    "seen": 1788613735.670535,
-    "ast_hash": "d130408905982614ea59e613f18039f6",
-    "semantic_hash": "d130408905982614ea59e613f18039f6"
+    "mtime": 1788980867.8333206,
+    "seen": 1788982661.9598215,
+    "ast_hash": "478d8a0f4e64849228cb85826dca9068",
+    "semantic_hash": ""
   },
   "PEMS.Application/DTOs/InspectionDto.cs": {
     "mtime": 1788350901.8656664,
@@ -9849,6 +9849,72 @@
     "mtime": 1788948881.4577498,
     "seen": 1788950972.8537812,
     "ast_hash": "c6d315b710316fc586823e11ef060c7a",
+    "semantic_hash": ""
+  },
+  "PEMS.Application/Interfaces/IReliabilityAnalyticsService.cs": {
+    "mtime": 1788953027.691046,
+    "seen": 1788982661.7975185,
+    "ast_hash": "64ea7e6deae6a78e2479ba91b7d079b4",
+    "semantic_hash": ""
+  },
+  "PEMS.Application/Interfaces/IReliabilityDataQualityService.cs": {
+    "mtime": 1788953067.9383206,
+    "seen": 1788982661.7975185,
+    "ast_hash": "91b930a9b275aa7033f4020374933e71",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Configurations/ReliabilityIndexConfiguration.cs": {
+    "mtime": 1788981087.6295862,
+    "seen": 1788982661.825561,
+    "ast_hash": "4e24e6045366704032d9433f9605a20d",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260909191844_AddReliabilityAnalyticsIndexes.Designer.cs": {
+    "mtime": 1788981524.773139,
+    "seen": 1788982661.8566046,
+    "ast_hash": "8261342183b6a3285917ffcf9d0f960d",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260909191844_AddReliabilityAnalyticsIndexes.cs": {
+    "mtime": 1788981524.773139,
+    "seen": 1788982661.8566046,
+    "ast_hash": "54d3729bbc52fb48157483031e30fc01",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Servises/ReliabilityAnalyticsService.cs": {
+    "mtime": 1788953302.2633278,
+    "seen": 1788982661.8801844,
+    "ast_hash": "32d1b357955ad305b2cd72e55f850be9",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Servises/ReliabilityDataQualityService.cs": {
+    "mtime": 1788953157.369035,
+    "seen": 1788982661.8801844,
+    "ast_hash": "a45ad32b2b2c68de035ac672f4d17694",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Authorization/ReliabilityAuthorizationTests.cs": {
+    "mtime": 1788981377.9762201,
+    "seen": 1788982661.9045088,
+    "ast_hash": "93430e8f270ef662b7134a078d49f719",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/ReliabilityAnalyticsTests.cs": {
+    "mtime": 1788981223.3785176,
+    "seen": 1788982661.9125204,
+    "ast_hash": "489c00317c388240769f1d64cd291ead",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Views/Reliability/ClassDetail.cshtml": {
+    "mtime": 1788980935.8210886,
+    "seen": 1788982661.9598215,
+    "ast_hash": "4d71aa3520f237d205f21e81e36dca2b",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Views/Reliability/DataQuality.cshtml": {
+    "mtime": 1788980983.5044596,
+    "seen": 1788982661.9598215,
+    "ast_hash": "c2606621125887302d15a553dd1d8c55",
     "semantic_hash": ""
   }
 }

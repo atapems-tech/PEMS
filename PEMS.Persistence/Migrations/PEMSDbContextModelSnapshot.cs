@@ -3925,6 +3925,9 @@ namespace PEMS.Persistence.Migrations
 
                     b.HasIndex("WorkOrderId");
 
+                    b.HasIndex("IsActive", "FailureDate")
+                        .HasDatabaseName("IX_FailureRecords_IsActive_FailureDate");
+
                     b.ToTable("FailureRecords");
                 });
 
@@ -11956,7 +11959,7 @@ namespace PEMS.Persistence.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("TenantId")
                         .HasColumnType("int");
@@ -11987,6 +11990,9 @@ namespace PEMS.Persistence.Migrations
 
                     b.HasIndex("WorkOrderNumber")
                         .IsUnique();
+
+                    b.HasIndex("Status", "CompletionDate")
+                        .HasDatabaseName("IX_WorkOrders_Status_CompletionDate");
 
                     b.ToTable("WorkOrders");
                 });

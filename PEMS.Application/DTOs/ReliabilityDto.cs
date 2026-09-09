@@ -41,3 +41,88 @@ public class FailureHistoryItemDto
     public int? WorkOrderId { get; set; }
     public string? WorkOrderNumber { get; set; }
 }
+
+// ============================================================================================
+// طبق «PEMS Phase 5 — Final Reliability Intelligence, Failure Analytics & RAM Foundation»:
+// همه‌ی DTO های زیر روی همون منبع حقیقت موجود (FailureRecord، طبق بند بالا) و همون فرمول‌های
+// از قبل تاییدشده‌ی ReliabilityService (MTBF نیازمند ≥۲ خرابی، MTTR فقط از WorkOrder های با
+// StartDate/CompletionDate واقعی، Availability = MTBF/(MTBF+MTTR)) ساخته شده‌اند - نه یک مدل
+// موازی. هیچ‌کدام مقدار را جعل نمی‌کنند: هرجا داده کافی نیست، Null می‌ماند (بند ۵۰: Zero ≠ Null).
+// ============================================================================================
+
+public class EquipmentClassReliabilityDto
+{
+    public int EquipmentClassId { get; set; }
+    public string Code { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+
+    public int EquipmentPopulation { get; set; }
+    public int EquipmentWithFailureHistory { get; set; }
+    public int FailureCount { get; set; }
+    public decimal TotalDowntimeHours { get; set; }
+
+    // میانگین مقادیر معتبر سطح-تجهیز (نه یک نرخ Pooled روی زمان بهره‌برداری - چون PEMS فعلاً
+    // تاریخ شروع بهره‌برداری قابل‌اتکا را برای محاسبه‌ی Exposure ذخیره نمی‌کند)
+    public double? AverageMTBFHours { get; set; }
+    public double? AverageMTTRHours { get; set; }
+    public double? AverageAvailabilityPercent { get; set; }
+
+    // طبق بند ۵۱: اندازه‌ی نمونه - چند تجهیز واقعاً در محاسبه‌ی میانگین بالا سهیم بودند
+    public int MTBFSampleSize { get; set; }
+    public int MTTRSampleSize { get; set; }
+}
+
+public class FailureParetoItemDto
+{
+    public string Key { get; set; } = string.Empty;
+    public int Count { get; set; }
+    public decimal DowntimeHours { get; set; }
+    public double CumulativePercent { get; set; }
+}
+
+/// <summary>
+/// طبق بند ۲۱: هر عامل رتبه‌بندی صریح و قابل‌توضیح است - نه یک فرمول پنهان یا امتیاز مبهم AI.
+/// </summary>
+public class BadActorDto
+{
+    public int EquipmentId { get; set; }
+    public string TagNumber { get; set; } = string.Empty;
+    public string? EquipmentClassName { get; set; }
+    public string? CriticalityClass { get; set; }
+
+    public int FailureCount { get; set; }
+    public decimal TotalDowntimeHours { get; set; }
+    public double? MTBFHours { get; set; }
+
+    public double RankScore { get; set; }
+    public List<string> RankFactors { get; set; } = new();
+}
+
+public class ReliabilityTrendPointDto
+{
+    public string PeriodLabel { get; set; } = string.Empty;
+    public DateTime PeriodStart { get; set; }
+    public int FailureCount { get; set; }
+    public decimal TotalDowntimeHours { get; set; }
+}
+
+/// <summary>
+/// طبق بند ۳۵/۷۳: شفافیت کیفیت داده - نشان می‌دهد چه چیزی موجود است و چه چیزی غایب، بدون
+/// تبدیل خودکار مقادیر غایب به صفر یا حدس.
+/// </summary>
+public class ReliabilityDataQualityDto
+{
+    public int TotalActiveEquipment { get; set; }
+    public int EquipmentWithFailureHistory { get; set; }
+    public int TotalFailureRecords { get; set; }
+    public int FailureRecordsWithoutFailureMode { get; set; }
+    public int FailureRecordsWithoutFailureCause { get; set; }
+    public int FailureRecordsWithoutDowntimeHours { get; set; }
+    public int FailureRecordsWithInvalidDate { get; set; }
+    public int FailureRecordsLinkedToWorkOrderMissingDuration { get; set; }
+    public int FailureRecordsWithNegativeDuration { get; set; }
+
+    public double EquipmentReliabilityCoveragePercent { get; set; }
+    public double FailureTaxonomyCoveragePercent { get; set; }
+    public double RepairDataCoveragePercent { get; set; }
+}

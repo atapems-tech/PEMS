@@ -552,6 +552,21 @@ public class PermissionService : IPermissionService
         });
 
         // ==============================================================================
+        // طبق «PEMS Phase 5 — Final Reliability Intelligence» بند ۴۶: کنترلر ReliabilityController
+        // از قبل (پیش از این فاز) هیچ بررسی مجوزی نداشت - همزمان با معرفی این ماژول، همان
+        // کنترلر هم سخت‌سازی شد (طبق اصل ثابت این پروژه: «Hidden Navigation != Security»).
+        // View برای مشاهده‌ی تحلیل؛ Edit/Approve برای پیکربندی روش‌شناسی آینده (بند ۴۷) - فعلاً
+        // هیچ اکشن Mutation ای در این فاز وجود ندارد، ولی ساختار مجوز از الان آماده است.
+        // ==============================================================================
+        await SeedMissingRolesAsync("Reliability", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "Reliability", create: true, edit: true),
+            New(SystemRoles.EngineeringSupervisor, "Reliability", create: true, edit: true, approve: true),
+            New(SystemRoles.EngineeringManager, "Reliability", create: true, edit: true, approve: true),
+            New(SystemRoles.Viewer, "Reliability")
+        });
+
+        // ==============================================================================
         // طبق «PEMS — Quick Setup & Domain Import Architecture Refactoring» بند ۱۰: Quick Setup
         // یک قابلیت سیستمی/سرتاسری است (شامل وضعیت Permissions/AI Administration که هر دو
         // منحصر به SystemAdmin هستند) - نه یک ابزار عملیاتی تک‌دامنه. فقط "View" تعریف شد چون

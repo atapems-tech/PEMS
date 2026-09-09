@@ -439,6 +439,10 @@ builder.Services.AddScoped<IFMEAService, FMEAService>();
 builder.Services.AddScoped<IRCMService, RCMService>();
 builder.Services.AddScoped<IRcmFmeaReadinessService, RcmFmeaReadinessService>();
 
+// طبق «PEMS Phase 5 — Final Reliability Intelligence, Failure Analytics & RAM Foundation»
+builder.Services.AddScoped<IReliabilityAnalyticsService, ReliabilityAnalyticsService>();
+builder.Services.AddScoped<IReliabilityDataQualityService, ReliabilityDataQualityService>();
+
 // طبق ممیزی امنیتی (P0 - Engineering File Security Containment): ریشه‌ی ذخیره‌سازی عمداً بیرون
 // از wwwroot (خواهر آن، نه زیرشاخه‌اش) - این همان چیزی است که آسیب‌پذیری اصلی را می‌بندد؛
 // UseStaticFiles فقط داخل wwwroot سرویس می‌دهد.

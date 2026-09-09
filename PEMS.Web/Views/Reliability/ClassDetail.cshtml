@@ -1,0 +1,39 @@
+@model PEMS.Application.DTOs.EquipmentClassReliabilityDto
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">@Model.Name <code class="small">@Model.Code</code></h5>
+    <a asp-action="Index" class="small">← Fleet Reliability</a>
+</div>
+
+<div class="content-card">
+    <div class="row g-3 text-center">
+        <div class="col-md-2">
+            <div class="fs-4 fw-bold">@Model.EquipmentPopulation</div>
+            <div class="text-muted small">Population</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-4 fw-bold">@Model.EquipmentWithFailureHistory</div>
+            <div class="text-muted small">With Failure History</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-4 fw-bold">@Model.FailureCount</div>
+            <div class="text-muted small">Total Failures</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-4 fw-bold">@Model.TotalDowntimeHours.ToString("N1")h</div>
+            <div class="text-muted small">Total Downtime</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-4 fw-bold">@(Model.AverageMTBFHours.HasValue ? $"{Model.AverageMTBFHours.Value:N1}h" : "N/A")</div>
+            <div class="text-muted small">Avg MTBF (n=@Model.MTBFSampleSize)</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-4 fw-bold">@(Model.AverageMTTRHours.HasValue ? $"{Model.AverageMTTRHours.Value:N1}h" : "N/A")</div>
+            <div class="text-muted small">Avg MTTR (n=@Model.MTTRSampleSize)</div>
+        </div>
+    </div>
+    @if (Model.EquipmentWithFailureHistory == 0)
+    {
+        <p class="text-muted text-center py-3 mb-0 mt-3 border-top">این کلاس هنوز هیچ تاریخچه‌ی خرابی معتبری ندارد - همه‌ی معیارها N/A هستند تا داده‌ی واقعی وارد شود.</p>
+    }
+</div>
