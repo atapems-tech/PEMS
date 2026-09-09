@@ -196,21 +196,65 @@ public class ReliabilityAnalyticsService : IReliabilityAnalyticsService
             .Where(x => equipmentIds.Contains(x.EquipmentId) && x.IsActive)
             .ToDictionaryAsync(x => x.EquipmentId, x => x.CriticalityClass);
 
-        return filtered.Select(x => new BadActorDto
+        // طبق «PEMS Phase 7» بند ۱۶: گسترش Bad Actor - فقط برای Top-N از قبل انتخاب‌شده (نه
+        // کل ناوگان)، پس هزینه‌ی این Query محدود است.
+        var maintenanceCounts = await _context.MaintenanceHistories
+            .AsNoTracking()
+            .Where(x => x.IsActive && equipmentIds.Contains(x.EquipmentId))
+            .GroupBy(x => x.EquipmentId)
+            .Select(g => new { EquipmentId = g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.EquipmentId, x => x.Count);
+
+        return filtered.Select(x =>
         {
-            EquipmentId = x.Equipment.EquipmentId,
-            TagNumber = x.Equipment.TagNumber,
-            EquipmentClassName = classNames.GetValueOrDefault(x.Equipment.EquipmentId),
-            CriticalityClass = criticalityByEquipment.GetValueOrDefault(x.Equipment.EquipmentId),
-            FailureCount = x.FailureCount,
-            TotalDowntimeHours = x.DowntimeHours,
-            MTBFHours = x.Equipment.MTBFHours,
-            RankScore = x.FailureCount,
-            RankFactors = new List<string>
+            // طبق بند ۱۵: همان قاعده‌ی خرابی تکراری (پنجره‌ی ۹۰ روزه) - از روی تاریخچه‌ای که
+            // همین‌جا از قبل در حافظه است، بدون Query جدید.
+            const int repeatWindowDays = 90;
+            var repeatCount = x.Equipment.FailureHistory
+                .GroupBy(f => f.FailureMode)
+                .Count(g =>
+                {
+                    var dates = g.Select(f => f.FailureDate).OrderBy(d => d).ToList();
+                    for (var i = 1; i < dates.Count; i++)
+                        if ((dates[i] - dates[i - 1]).TotalDays <= repeatWindowDays) return true;
+                    return false;
+                });
+
+            var primaryFailureMode = x.Equipment.FailureHistory
+                .Where(f => !string.IsNullOrWhiteSpace(f.FailureMode))
+                .GroupBy(f => f.FailureMode)
+                .OrderByDescending(g => g.Count())
+                .Select(g => g.Key)
+                .FirstOrDefault();
+
+            var primaryFailureCause = x.Equipment.FailureHistory
+                .Where(f => !string.IsNullOrWhiteSpace(f.FailureCause))
+                .GroupBy(f => f.FailureCause)
+                .OrderByDescending(g => g.Count())
+                .Select(g => g.Key)
+                .FirstOrDefault();
+
+            return new BadActorDto
             {
-                $"Ranked primarily by failure count ({x.FailureCount})",
-                $"Tie-broken by total downtime ({x.DowntimeHours:0.#}h)"
-            }
+                EquipmentId = x.Equipment.EquipmentId,
+                TagNumber = x.Equipment.TagNumber,
+                EquipmentClassName = classNames.GetValueOrDefault(x.Equipment.EquipmentId),
+                CriticalityClass = criticalityByEquipment.GetValueOrDefault(x.Equipment.EquipmentId),
+                FailureCount = x.FailureCount,
+                TotalDowntimeHours = x.DowntimeHours,
+                MTBFHours = x.Equipment.MTBFHours,
+                RankScore = x.FailureCount,
+                RankFactors = new List<string>
+                {
+                    $"Ranked primarily by failure count ({x.FailureCount})",
+                    $"Tie-broken by total downtime ({x.DowntimeHours:0.#}h)"
+                },
+                RepeatFailureCount = repeatCount,
+                MTTRHours = x.Equipment.MTTRHours,
+                MaintenanceCount = maintenanceCounts.GetValueOrDefault(x.Equipment.EquipmentId, 0),
+                PrimaryFailureMode = primaryFailureMode,
+                PrimaryFailureCause = primaryFailureCause
+            };
         }).ToList();
     }
 

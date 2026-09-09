@@ -7,28 +7,36 @@ namespace PEMS.Persistence.Seed;
 
 public static class DisciplineSeeder
 {
-    private static readonly Discipline[] Defaults =
+    // طبق «PEMS Phase 6» ممیزی پایداری تست: قبلاً این‌جا یک آرایه‌ی static از خودِ Entity های
+    // Discipline بود (نمونه‌های Object مشترک و Mutable بین همه‌ی فراخوانی‌ها/تست‌ها در یک
+    // پروسه). وقتی اولین DbContext این نمونه‌ها رو SaveChanges می‌کرد، EF مقدار کلید تولیدشده
+    // (DisciplineId) رو مستقیم روی همون Object مشترک می‌نوشت؛ فراخوانی بعدی (حتی روی یک
+    // DbContext کاملاً متفاوت/InMemory جدا) دوباره همون Object آلوده‌شده رو اضافه می‌کرد و باعث
+    // خطای IdentityMap («cannot be tracked... already being tracked») می‌شد - دقیقاً مثل باگی
+    // که در سایر Seeder ها (که این‌جا الگوی Tuple+ساخت‌در-حلقه رو درست پیاده کرده بودند) وجود
+    // نداشت. حالا همون الگوی امنِ بقیه‌ی Seeder ها اینجا هم اعمال شد.
+    private static readonly (string Code, string Name, string Description, string ImportAliases)[] Defaults =
     {
-        new() { Code = "MECH", Name = "Mechanical", Description = "Mechanical engineering discipline", ImportAliases = "ME, MEC, MECH ENG, Mechanical Engineering", IsActive = true, CreatedDate = DateTime.Now },
-        new() { Code = "ELEC", Name = "Electrical", Description = "Electrical engineering discipline", ImportAliases = "EL, ELEC, E&I, Electrical Engineering", IsActive = true, CreatedDate = DateTime.Now },
-        new() { Code = "INST", Name = "Instrumentation", Description = "Instrumentation and controls discipline", ImportAliases = "IN, INS, I&C, Instrumentation", IsActive = true, CreatedDate = DateTime.Now },
-        new() { Code = "PROC", Name = "Process", Description = "Process engineering discipline", ImportAliases = "PR, PRO, PROCESS, Process Engineering", IsActive = true, CreatedDate = DateTime.Now },
-        new() { Code = "PIP", Name = "Piping", Description = "Piping engineering discipline", ImportAliases = "PI, PIPING, Pipe, Piping Engineering", IsActive = true, CreatedDate = DateTime.Now },
-        new() { Code = "CIV", Name = "Civil", Description = "Civil and structural engineering discipline", ImportAliases = "CV, CIVIL, Structural, Civil Engineering", IsActive = true, CreatedDate = DateTime.Now },
-        new() { Code = "STR", Name = "Structural", Description = "Structural engineering discipline", ImportAliases = "ST, STRUCT, Structural Engineering", IsActive = true, CreatedDate = DateTime.Now },
-        new() { Code = "HSE", Name = "HSE", Description = "Health, safety and environment discipline", ImportAliases = "HS, SHE, SAFETY, HSE Engineering", IsActive = true, CreatedDate = DateTime.Now },
-        new() { Code = "ARCH", Name = "Architecture", Description = "Architectural engineering discipline", ImportAliases = "AR, ARCHITECTURE, Architectural", IsActive = true, CreatedDate = DateTime.Now },
+        ("MECH", "Mechanical", "Mechanical engineering discipline", "ME, MEC, MECH ENG, Mechanical Engineering"),
+        ("ELEC", "Electrical", "Electrical engineering discipline", "EL, ELEC, E&I, Electrical Engineering"),
+        ("INST", "Instrumentation", "Instrumentation and controls discipline", "IN, INS, I&C, Instrumentation"),
+        ("PROC", "Process", "Process engineering discipline", "PR, PRO, PROCESS, Process Engineering"),
+        ("PIP", "Piping", "Piping engineering discipline", "PI, PIPING, Pipe, Piping Engineering"),
+        ("CIV", "Civil", "Civil and structural engineering discipline", "CV, CIVIL, Structural, Civil Engineering"),
+        ("STR", "Structural", "Structural engineering discipline", "ST, STRUCT, Structural Engineering"),
+        ("HSE", "HSE", "Health, safety and environment discipline", "HS, SHE, SAFETY, HSE Engineering"),
+        ("ARCH", "Architecture", "Architectural engineering discipline", "AR, ARCHITECTURE, Architectural"),
 
         // ==============================================================================
         // طبق «PEMS — Enterprise Maintenance Master Data & Standards Implementation» بند ۴:
         // Maintenance Domain از Discipline موجود دوباره استفاده می‌کند (نه یک Entity جدید) -
         // این ۵ مورد در لیست اصلی نبودند و برای پوشش کامل Maintenance Domain اضافه شدند.
         // ==============================================================================
-        new() { Code = "UTIL", Name = "Utilities", Description = "Utilities maintenance domain (steam, air, water, HVAC)", ImportAliases = "UTIL, Utility, Utilities Engineering", IsActive = true, CreatedDate = DateTime.Now },
-        new() { Code = "FIRE", Name = "Fire & Gas", Description = "Fire protection and fire & gas detection domain", ImportAliases = "FIRE, F&G, Fire Protection, Fire and Gas", IsActive = true, CreatedDate = DateTime.Now },
-        new() { Code = "INSP", Name = "Inspection", Description = "Inspection / Mechanical Integrity domain", ImportAliases = "INSP, MI, Mechanical Integrity, Inspection Engineering", IsActive = true, CreatedDate = DateTime.Now },
-        new() { Code = "CORR", Name = "Corrosion", Description = "Corrosion management domain", ImportAliases = "CORR, Corrosion Management, Corrosion Engineering", IsActive = true, CreatedDate = DateTime.Now },
-        new() { Code = "REL", Name = "Reliability", Description = "Reliability engineering domain", ImportAliases = "REL, RCM, Reliability Engineering", IsActive = true, CreatedDate = DateTime.Now }
+        ("UTIL", "Utilities", "Utilities maintenance domain (steam, air, water, HVAC)", "UTIL, Utility, Utilities Engineering"),
+        ("FIRE", "Fire & Gas", "Fire protection and fire & gas detection domain", "FIRE, F&G, Fire Protection, Fire and Gas"),
+        ("INSP", "Inspection", "Inspection / Mechanical Integrity domain", "INSP, MI, Mechanical Integrity, Inspection Engineering"),
+        ("CORR", "Corrosion", "Corrosion management domain", "CORR, Corrosion Management, Corrosion Engineering"),
+        ("REL", "Reliability", "Reliability engineering domain", "REL, RCM, Reliability Engineering")
     };
 
     // ==============================================================================
@@ -48,7 +56,19 @@ public static class DisciplineSeeder
         var missing = Defaults.Where(d => !existingCodes.Contains(d.Code)).ToList();
         if (missing.Count == 0) return;
 
-        db.Disciplines.AddRange(missing);
+        foreach (var (code, name, description, importAliases) in missing)
+        {
+            db.Disciplines.Add(new Discipline
+            {
+                Code = code,
+                Name = name,
+                Description = description,
+                ImportAliases = importAliases,
+                IsActive = true,
+                CreatedDate = DateTime.Now
+            });
+        }
+
         await db.SaveChangesAsync();
     }
 }

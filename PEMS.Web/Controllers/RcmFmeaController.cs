@@ -17,17 +17,19 @@ public class RcmFmeaController : Controller
     private readonly IRcmFmeaReadinessService _readinessService;
     private readonly IFMEAService _fmeaService;
     private readonly IRCMService _rcmService;
+    private readonly IRcmOperationalBridgeService _rcmBridge;
     private readonly PEMSDbContext _context;
     private readonly ICurrentUserService _currentUser;
     private readonly IPermissionService _permissionService;
 
     public RcmFmeaController(IRcmFmeaReadinessService readinessService, IFMEAService fmeaService,
-        IRCMService rcmService, PEMSDbContext context, ICurrentUserService currentUser,
-        IPermissionService permissionService)
+        IRCMService rcmService, IRcmOperationalBridgeService rcmBridge, PEMSDbContext context,
+        ICurrentUserService currentUser, IPermissionService permissionService)
     {
         _readinessService = readinessService;
         _fmeaService = fmeaService;
         _rcmService = rcmService;
+        _rcmBridge = rcmBridge;
         _context = context;
         _currentUser = currentUser;
         _permissionService = permissionService;
@@ -79,6 +81,14 @@ public class RcmFmeaController : Controller
             .Where(x => x.IsActive).OrderBy(x => x.Name).ToListAsync();
         ViewBag.PMTemplates = await _context.PMTemplates.AsNoTracking()
             .Where(x => x.IsActive && x.EquipmentClassId == id).OrderBy(x => x.Name).ToListAsync();
+
+        // طبق «PEMS Phase 6» بند ۱۳/۵۳: برای اعمال یک تصمیم APPROVED روی یک تجهیز واقعی مشخص،
+        // فهرست تجهیزات همین کلاس لازم است (پل هرگز خودکار/بی‌هدف روی همه‌ی تجهیزات اعمال نمی‌شود).
+        ViewBag.EquipmentInClass = await _context.Equipments.AsNoTracking()
+            .Where(x => x.IsActive && x.EquipmentClassId == id)
+            .OrderBy(x => x.TagNumber)
+            .Select(x => new { x.EquipmentId, x.TagNumber, x.Name })
+            .ToListAsync();
 
         return View();
     }
@@ -316,6 +326,34 @@ public class RcmFmeaController : Controller
 
         var ok = await _rcmService.RejectAsync(rcmAnalysisId, _currentUser.UserName ?? "Unknown");
         TempData[ok ? "Message" : "Error"] = ok ? "به DRAFT بازگشت داده شد." : "این تحلیل آماده‌ی رد نیست.";
+        return RedirectToAction(nameof(ClassDetail), new { id = equipmentClassId });
+    }
+
+    // طبق «PEMS Phase 6» بند ۱۳/۵۳-۵۴: تنها مسیر به عملیاتی‌شدن یک تصمیم RCM - همان مجوز
+    // Approve (نه یک نقش جدید) چون اعمال روی داده‌ی واقعی، ادامه‌ی همان اختیار تایید است.
+    // RcmOperationalBridgeService خودش دوباره وضعیت APPROVED و تطابق کلاس تجهیز را چک می‌کند
+    // (Defense in Depth - هرگز فقط به این چک سمت Controller متکی نیست).
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ApplyRcmDecision(int equipmentClassId, int rcmDecisionId, int equipmentId)
+    {
+        if (!await CanApproveAsync()) return Forbid();
+
+        var result = await _rcmBridge.ApplyApprovedDecisionAsync(rcmDecisionId, equipmentId, _currentUser.UserName ?? "Unknown");
+
+        if (!result.Success)
+        {
+            TempData["Error"] = result.Error;
+        }
+        else
+        {
+            var strategyNote = result.MaintenanceStrategyWasReused ? "به‌روزرسانی شد" : "ساخته شد";
+            var planNote = result.MaintenancePlanId.HasValue
+                ? $" — Maintenance Plan نیز {(result.MaintenancePlanWasReused ? "به‌روزرسانی شد" : "ساخته شد")}."
+                : "";
+            TempData["Message"] = $"Maintenance Strategy {strategyNote}.{planNote}";
+        }
+
         return RedirectToAction(nameof(ClassDetail), new { id = equipmentClassId });
     }
 }

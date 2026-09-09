@@ -12,6 +12,9 @@
     var functionalFailures = (List<FunctionalFailure>)ViewBag.FunctionalFailures;
     var strategyTypes = (List<MaintenanceStrategyType>)ViewBag.MaintenanceStrategyTypes;
     var pmTemplates = (List<PMTemplate>)ViewBag.PMTemplates;
+    // طبق «PEMS Phase 6.1» بند ۹: از همان لیست از-قبل-محاسبه‌شده در Controller استفاده می‌شود
+    // (فقط تجهیزات همین EquipmentClass) - هیچ Query جدیدی این‌جا زده نمی‌شود.
+    IEnumerable<dynamic> equipmentInClass = ViewBag.EquipmentInClass ?? Array.Empty<dynamic>();
 
     string StatusBadge(string status) => status switch
     {
@@ -262,11 +265,77 @@
                                             <button type="submit" class="btn btn-sm btn-outline-success">Approve</button>
                                         </form>
                                     }
+                                    @* طبق «PEMS Phase 6.1»: تنها مسیر UI به پل عملیاتی - فقط برای تصمیم APPROVED و کاربر دارای Approve *@
+                                    @if (d.Status == "APPROVED" && canApprove)
+                                    {
+                                        <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#applyRcmModal_@d.RCMDecisionId">
+                                            <i class="bi bi-gear-fill"></i> Apply
+                                        </button>
+                                    }
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
+
+                @* ==================== Apply RCM Decision → Operational Bridge ====================
+                   طبق «PEMS Phase 6.1»: هیچ منطق کسب‌وکاری جدیدی این‌جا نیست - این Modal فقط
+                   EquipmentId و RCMDecisionId موجود را به RcmFmeaController.ApplyRcmDecision
+                   (که خودش IRcmOperationalBridgeService موجود از فاز ۶ را صدا می‌زند) می‌فرستد.
+                   لیست تجهیزات از همان ViewBag.EquipmentInClass از قبل محاسبه‌شده در Controller
+                   می‌آید - هیچ Query تازه‌ای این‌جا زده نمی‌شود. *@
+                @if (canApprove)
+                {
+                    @foreach (var d in rcm.Decisions.Where(x => x.Status == "APPROVED"))
+                    {
+                        <div class="modal fade" id="applyRcmModal_@d.RCMDecisionId" tabindex="-1">
+                            <div class="modal-dialog"><div class="modal-content">
+                                <form asp-action="ApplyRcmDecision" method="post">
+                                    <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
+                                    <input type="hidden" name="rcmDecisionId" value="@d.RCMDecisionId" />
+                                    <div class="modal-header">
+                                        <h6 class="modal-title">Apply RCM Decision — @d.FailureModeName</h6>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row g-2 small mb-2">
+                                            <div class="col-6"><strong>Status</strong><div><span class="badge @StatusBadge(d.Status)">@d.Status</span></div></div>
+                                            <div class="col-6"><strong>Decision Type</strong><div>@d.DecisionType</div></div>
+                                            <div class="col-6"><strong>Recommended Strategy</strong><div>@(d.MaintenanceStrategyTypeName ?? "-")</div></div>
+                                            <div class="col-6"><strong>Recommended PM Template</strong><div>@(d.RecommendedPMTemplateName ?? "-")</div></div>
+                                        </div>
+                                        <div class="alert alert-warning small py-2 px-3">
+                                            Applying this approved RCM decision will <strong>create or update the operational Maintenance Strategy</strong> for the equipment selected below
+                                            (and its Maintenance Plan, if a PM Template was recommended). This is not a preview — it changes real operational configuration.
+                                            Re-applying to the same equipment will safely reuse the existing Maintenance Strategy/Plan, never duplicate it.
+                                        </div>
+                                        @if (equipmentInClass.Any())
+                                        {
+                                            <label class="form-label small">Equipment</label>
+                                            <select name="equipmentId" class="form-select form-select-sm" required>
+                                                <option value="">Select equipment...</option>
+                                                @foreach (var eq in equipmentInClass)
+                                                {
+                                                    <option value="@eq.EquipmentId">@eq.TagNumber — @eq.Name</option>
+                                                }
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <div class="alert alert-light border small mb-0">این کلاس هنوز تجهیز فعالی ندارد - چیزی برای انتخاب نیست.</div>
+                                        }
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                        @if (equipmentInClass.Any())
+                                        {
+                                            <button type="submit" class="btn btn-pems-solid btn-sm">Apply RCM Decision</button>
+                                        }
+                                    </div>
+                                </form>
+                            </div></div>
+                        </div>
+                    }
+                }
 
                 @if (rcm.Status == "DRAFT" && canEdit && sourceFmea != null)
                 {

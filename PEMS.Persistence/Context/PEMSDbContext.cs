@@ -254,6 +254,9 @@ public class PEMSDbContext
     public DbSet<RCMAnalysis> RCMAnalyses { get; set; }
     public DbSet<RCMDecision> RCMDecisions { get; set; }
 
+    // طبق «PEMS Phase 7 — Maintenance Intelligence & Reliability Operationalization» بند ۲۰
+    public DbSet<RcmReviewRecommendation> RcmReviewRecommendations { get; set; }
+
     public DbSet<Team> Teams { get; set; }
     public DbSet<TeamMember> TeamMembers { get; set; }
     public DbSet<Crew> Crews { get; set; }

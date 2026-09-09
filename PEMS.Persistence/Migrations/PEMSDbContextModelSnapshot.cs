@@ -3917,8 +3917,6 @@ namespace PEMS.Persistence.Migrations
 
                     b.HasKey("FailureRecordId");
 
-                    b.HasIndex("EquipmentId");
-
                     b.HasIndex("FailureCauseId");
 
                     b.HasIndex("FailureModeId");
@@ -3927,6 +3925,9 @@ namespace PEMS.Persistence.Migrations
 
                     b.HasIndex("IsActive", "FailureDate")
                         .HasDatabaseName("IX_FailureRecords_IsActive_FailureDate");
+
+                    b.HasIndex("EquipmentId", "FailureModeId", "FailureDate")
+                        .HasDatabaseName("IX_FailureRecords_EquipmentId_FailureModeId_FailureDate");
 
                     b.ToTable("FailureRecords");
                 });
@@ -8828,6 +8829,90 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("RCMDecisions", (string)null);
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.RcmReviewRecommendation", b =>
+                {
+                    b.Property<int>("RcmReviewRecommendationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RcmReviewRecommendationId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Evidence")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("FailureCountInWindow")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("GeneratedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaintenanceStrategyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RCMDecisionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RepeatFailureCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReviewNotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReviewedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("TotalDowntimeHoursInWindow")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("TriggerReason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WindowDays")
+                        .HasColumnType("int");
+
+                    b.HasKey("RcmReviewRecommendationId");
+
+                    b.HasIndex("EquipmentId");
+
+                    b.HasIndex("MaintenanceStrategyId");
+
+                    b.HasIndex("RCMDecisionId");
+
+                    b.ToTable("RcmReviewRecommendations");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.RequiredSkill", b =>
                 {
                     b.Property<int>("RequiredSkillId")
@@ -11915,6 +12000,9 @@ namespace PEMS.Persistence.Migrations
                     b.Property<decimal?>("DowntimeHours")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("EquipmentId")
                         .HasColumnType("int");
 
@@ -11970,7 +12058,7 @@ namespace PEMS.Persistence.Migrations
 
                     b.Property<string>("WorkOrderType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("WorkOrderId");
 
@@ -11993,6 +12081,9 @@ namespace PEMS.Persistence.Migrations
 
                     b.HasIndex("Status", "CompletionDate")
                         .HasDatabaseName("IX_WorkOrders_Status_CompletionDate");
+
+                    b.HasIndex("WorkOrderType", "CreatedDate")
+                        .HasDatabaseName("IX_WorkOrders_WorkOrderType_CreatedDate");
 
                     b.ToTable("WorkOrders");
                 });
@@ -15543,6 +15634,31 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("RCMAnalysis");
 
                     b.Navigation("RecommendedPMTemplate");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.RcmReviewRecommendation", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.MaintenanceStrategy", "MaintenanceStrategy")
+                        .WithMany()
+                        .HasForeignKey("MaintenanceStrategyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.RCMDecision", "RCMDecision")
+                        .WithMany()
+                        .HasForeignKey("RCMDecisionId");
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("MaintenanceStrategy");
+
+                    b.Navigation("RCMDecision");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.RequiredSkill", b =>

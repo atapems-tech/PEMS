@@ -1,0 +1,106 @@
+@model List<PEMS.Application.DTOs.RcmReviewRecommendationDto>
+@{
+    var statusFilter = (string?)ViewBag.StatusFilter;
+    var canGenerate = (bool)ViewBag.CanGenerate;
+    var canReview = (bool)ViewBag.CanReview;
+
+    string StatusBadge(string status) => status switch
+    {
+        "ACCEPTED" => "text-bg-success",
+        "REJECTED" => "text-bg-secondary",
+        "PENDING" => "text-bg-warning",
+        _ => "text-bg-light border"
+    };
+
+    string TriggerLabel(string reason) => reason switch
+    {
+        "RepeatFailure" => "Repeat Failure",
+        "HighFailureFrequency" => "High Failure Frequency",
+        "HighDowntime" => "High Downtime",
+        "PoorPMEffectiveness" => "Poor PM Effectiveness",
+        _ => reason
+    };
+}
+
+@if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
+@if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-arrow-repeat"></i> RCM Feedback</h5>
+    <div>
+        <a asp-action="Intelligence" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clipboard-data-fill"></i> Maintenance Intelligence</a>
+        @if (canGenerate)
+        {
+            <form asp-action="GenerateRcmEvidence" method="post" class="d-inline">
+                <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-search"></i> Generate Evidence</button>
+            </form>
+        }
+    </div>
+</div>
+<p class="text-muted small">
+    طبق «PEMS Phase 7» بند ۲۰: این‌جا فقط شواهد و توصیه‌ی بازبینی تولید می‌شود - هیچ‌چیز خودکار
+    تغییر نمی‌کند. پذیرفتن یک توصیه یعنی مهندس با تغییر دستی MaintenanceStrategy/MaintenancePlan
+    موافق است؛ آن تغییر همچنان جدا و توسط خودِ مهندس (با ابزارهای موجود) انجام می‌شود.
+</p>
+
+<div class="content-card mb-3">
+    <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-3">
+            <label class="form-label small">Status</label>
+            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                <option value="" selected="@(string.IsNullOrEmpty(statusFilter))">All</option>
+                <option value="PENDING" selected="@(statusFilter == "PENDING")">Pending</option>
+                <option value="ACCEPTED" selected="@(statusFilter == "ACCEPTED")">Accepted</option>
+                <option value="REJECTED" selected="@(statusFilter == "REJECTED")">Rejected</option>
+            </select>
+        </div>
+    </form>
+</div>
+
+<div class="content-card">
+    <table class="table table-enterprise table-sm mb-0">
+        <thead>
+            <tr>
+                <th>Equipment</th><th>Strategy</th><th>Trigger</th><th>Evidence</th><th>Status</th>
+                <th>Generated</th><th>Reviewed</th><th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in Model)
+            {
+                <tr>
+                    <td class="fw-bold">@r.EquipmentTagNumber</td>
+                    <td class="small text-muted">@(r.MaintenanceStrategyType ?? "-") @(r.FailureModeCode != null ? $"({r.FailureModeCode})" : "")</td>
+                    <td><span class="badge text-bg-info">@TriggerLabel(r.TriggerReason)</span></td>
+                    <td class="small">@r.Evidence</td>
+                    <td><span class="badge @StatusBadge(r.Status)">@r.Status</span></td>
+                    <td class="small">@r.GeneratedDate.ToString("yyyy-MM-dd")</td>
+                    <td class="small text-muted">
+                        @if (r.ReviewedBy != null)
+                        {
+                            @($"{r.ReviewedBy} · {r.ReviewedAt:yyyy-MM-dd}")
+                            @if (r.ReviewNotes != null) { <div>@r.ReviewNotes</div> }
+                        }
+                        else { <span>-</span> }
+                    </td>
+                    <td>
+                        @if (r.Status == "PENDING" && canReview)
+                        {
+                            <form asp-action="ReviewRcmRecommendation" method="post" class="d-inline">
+                                <input type="hidden" name="recommendationId" value="@r.RcmReviewRecommendationId" />
+                                <input type="hidden" name="accept" value="true" />
+                                <button type="submit" class="btn btn-sm btn-outline-success"><i class="bi bi-check-lg"></i></button>
+                            </form>
+                            <form asp-action="ReviewRcmRecommendation" method="post" class="d-inline">
+                                <input type="hidden" name="recommendationId" value="@r.RcmReviewRecommendationId" />
+                                <input type="hidden" name="accept" value="false" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i></button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ توصیه‌ای موجود نیست. @(canGenerate ? "برای تولید شواهد، دکمه‌ی Generate Evidence را بزنید." : "")</p> }
+</div>

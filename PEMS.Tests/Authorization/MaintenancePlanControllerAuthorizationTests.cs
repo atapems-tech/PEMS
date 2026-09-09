@@ -25,6 +25,15 @@ public class MaintenancePlanControllerAuthorizationTests
             Task.FromResult($"{documentType}-0001");
     }
 
+    // طبق «PEMS Phase 6»: این تست‌ها فقط مسیر مجوز را می‌سنجند (Forbid قبل از رسیدن به سرویس) -
+    // یک Fake ساده کافی است، نه پیاده‌سازی واقعی Idempotency.
+    private class FakePMGenerationService : IPMGenerationService
+    {
+        public Task<string?> GenerateForPlanAsync(int planId) => Task.FromResult<string?>("WO-0001");
+        public Task<PEMS.Application.DTOs.PMGenerationResultDto> GenerateDueWorkOrdersAsync() =>
+            Task.FromResult(new PEMS.Application.DTOs.PMGenerationResultDto());
+    }
+
     private static async Task<(MaintenancePlanController Controller, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateController(
         string dbName, string? role = SystemRoles.MaintenanceEngineer)
     {
@@ -44,7 +53,7 @@ public class MaintenancePlanControllerAuthorizationTests
         var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
 
         var maintenancePlanService = new MaintenancePlanService(ctx);
-        var controller = new MaintenancePlanController(ctx, new FakeNumberingService(), maintenancePlanService, currentUser, permissionService)
+        var controller = new MaintenancePlanController(ctx, new FakeNumberingService(), maintenancePlanService, new FakePMGenerationService(), currentUser, permissionService)
             .WithTempData();
         return (controller, ctx);
     }

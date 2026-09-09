@@ -12,7 +12,11 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0"><i class="bi bi-graph-up-arrow"></i> Reliability Analysis</h5>
-    <a asp-action="DataQuality" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clipboard-data"></i> Data Quality</a>
+    <div>
+        <a asp-action="Intelligence" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clipboard-data-fill"></i> Maintenance Intelligence</a>
+        <a asp-action="RcmFeedback" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-repeat"></i> RCM Feedback</a>
+        <a asp-action="DataQuality" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clipboard-data"></i> Data Quality</a>
+    </div>
 </div>
 <p class="text-muted small">
     طبق CMMS Production Baseline v1 - CMMS-06: MTBF/MTTR/Availability محاسبه‌شده از روی
@@ -153,7 +157,7 @@
         <div class="content-card">
             <p class="text-muted small">هر رتبه با عوامل صریح توضیح داده می‌شود - نه یک امتیاز مبهم.</p>
             <table class="table table-enterprise table-sm mb-0">
-                <thead><tr><th>Tag</th><th>Class</th><th>Criticality</th><th class="text-end">Failures</th><th class="text-end">Downtime</th><th>Why Ranked Here</th></tr></thead>
+                <thead><tr><th>Tag</th><th>Class</th><th>Criticality</th><th class="text-end">Failures</th><th class="text-end">Repeat</th><th class="text-end">Downtime</th><th class="text-end">MTTR</th><th class="text-end">Maint. Count</th><th>Primary Mode / Cause</th><th>Why Ranked Here</th></tr></thead>
                 <tbody>
                     @foreach (var b in badActors)
                     {
@@ -162,7 +166,11 @@
                             <td class="small text-muted">@(b.EquipmentClassName ?? "-")</td>
                             <td class="small text-muted">@(b.CriticalityClass ?? "-")</td>
                             <td class="text-end">@b.FailureCount</td>
+                            <td class="text-end">@(b.RepeatFailureCount ?? 0)</td>
                             <td class="text-end">@b.TotalDowntimeHours.ToString("N1")h</td>
+                            <td class="text-end">@(b.MTTRHours.HasValue ? $"{b.MTTRHours.Value:N1}h" : "N/A")</td>
+                            <td class="text-end">@(b.MaintenanceCount ?? 0)</td>
+                            <td class="small text-muted">@(b.PrimaryFailureMode ?? "-") / @(b.PrimaryFailureCause ?? "-")</td>
                             <td class="small text-muted">@string.Join(" · ", b.RankFactors)</td>
                         </tr>
                     }

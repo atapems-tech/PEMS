@@ -50,9 +50,16 @@ public class RcmFmeaAuthorizationTests
         return cls.EquipmentClassId;
     }
 
+    // طبق «PEMS Phase 6» بند ۱۳: این تست‌ها فقط مسیر مجوز را می‌سنجند - یک Fake ساده کافی است.
+    private class FakeNumberingService : INumberingService
+    {
+        public Task<string> GetNextNumberAsync(string documentType, string? scopeKey = null) =>
+            Task.FromResult($"{documentType}-0001");
+    }
+
     private static RcmFmeaController CreateController(PEMSDbContext ctx, ICurrentUserService user, IPermissionService perms) =>
         new RcmFmeaController(new RcmFmeaReadinessService(ctx), new FMEAService(ctx), new RCMService(ctx),
-            ctx, user, perms).WithTempData();
+            new RcmOperationalBridgeService(ctx, new FakeNumberingService()), ctx, user, perms).WithTempData();
 
     [Fact]
     public async Task Index_NoPermission_ReturnsForbid()
@@ -156,5 +163,183 @@ public class RcmFmeaAuthorizationTests
         Assert.IsType<ForbidResult>(result);
         var decision = await ctx.RCMDecisions.AsNoTracking().SingleAsync();
         Assert.Equal("DRAFT", decision.Status);
+    }
+
+    [Fact]
+    public async Task ApplyRcmDecision_EditorRole_ReturnsForbid_NeverAppliesToOperationalData()
+    {
+        // طبق «PEMS Phase 6» بند ۱۳/۵۳: اعمال یک تصمیم روی داده‌ی عملیاتی واقعی، ادامه‌ی همان
+        // اختیار Approve است - Editor (بدون CanApprove) هرگز نباید بتواند این پل را فعال کند.
+        var (ctx, perms, editorUser) = await CreateInfra(nameof(ApplyRcmDecision_EditorRole_ReturnsForbid_NeverAppliesToOperationalData), role: SystemRoles.MaintenanceEngineer);
+        var classId = await SeedEquipmentClassAsync(ctx);
+
+        var services = new ServiceCollection();
+        services.AddSingleton(ctx);
+        await FailureCauseSeeder.SeedAsync(services.BuildServiceProvider());
+        await FailureEffectSeeder.SeedAsync(services.BuildServiceProvider());
+        await FailureConsequenceSeeder.SeedAsync(services.BuildServiceProvider());
+        await FailureModeSeeder.SeedAsync(services.BuildServiceProvider());
+        var failureMode = await ctx.FailureModes.FirstAsync();
+
+        var equipment = new Equipment { TagNumber = "EQ-AUTH-1", Name = "EQ-AUTH-1", EquipmentType = "Pump", IsActive = true, EquipmentClassId = classId };
+        ctx.Equipments.Add(equipment);
+        await ctx.SaveChangesAsync();
+
+        var fmeaService = new FMEAService(ctx);
+        var fmeaId = await fmeaService.CreateDraftAsync(classId, "FMEA", null, "engineer1");
+        var itemId = await fmeaService.AddItemAsync(fmeaId, failureMode.FailureModeId, null, null, null, null, null,
+            null, null, null, null, null, null, null, null);
+        var rcmService = new RCMService(ctx);
+        var rcmId = await rcmService.CreateDraftAsync(classId, fmeaId, "engineer1");
+        var decisionId = await rcmService.AddDecisionAsync(rcmId, itemId, "PREDICTIVE", null, null, null, "Operational");
+        await rcmService.ApproveDecisionAsync(decisionId, "manager1");
+
+        var controller = CreateController(ctx, editorUser, perms);
+        var result = await controller.ApplyRcmDecision(classId, decisionId, equipment.EquipmentId);
+
+        Assert.IsType<ForbidResult>(result);
+        Assert.Empty(ctx.MaintenanceStrategies);
+    }
+
+    [Fact]
+    public async Task ApplyRcmDecision_EngineeringSupervisor_CanApply()
+    {
+        var (ctx, perms, editorUser) = await CreateInfra(nameof(ApplyRcmDecision_EngineeringSupervisor_CanApply), role: SystemRoles.MaintenanceEngineer);
+        var classId = await SeedEquipmentClassAsync(ctx);
+
+        var services = new ServiceCollection();
+        services.AddSingleton(ctx);
+        await FailureCauseSeeder.SeedAsync(services.BuildServiceProvider());
+        await FailureEffectSeeder.SeedAsync(services.BuildServiceProvider());
+        await FailureConsequenceSeeder.SeedAsync(services.BuildServiceProvider());
+        await FailureModeSeeder.SeedAsync(services.BuildServiceProvider());
+        var failureMode = await ctx.FailureModes.FirstAsync();
+
+        var equipment = new Equipment { TagNumber = "EQ-AUTH-2", Name = "EQ-AUTH-2", EquipmentType = "Pump", IsActive = true, EquipmentClassId = classId };
+        ctx.Equipments.Add(equipment);
+        await ctx.SaveChangesAsync();
+
+        var fmeaService = new FMEAService(ctx);
+        var fmeaId = await fmeaService.CreateDraftAsync(classId, "FMEA", null, "engineer1");
+        var itemId = await fmeaService.AddItemAsync(fmeaId, failureMode.FailureModeId, null, null, null, null, null,
+            null, null, null, null, null, null, null, null);
+        var rcmService = new RCMService(ctx);
+        var rcmId = await rcmService.CreateDraftAsync(classId, fmeaId, "engineer1");
+        var decisionId = await rcmService.AddDecisionAsync(rcmId, itemId, "PREDICTIVE", null, null, null, "Operational");
+        await rcmService.ApproveDecisionAsync(decisionId, "manager1");
+
+        var (_, _, supervisorUser) = await CreateInfra(nameof(ApplyRcmDecision_EngineeringSupervisor_CanApply) + "_sup", role: SystemRoles.EngineeringSupervisor);
+        var supervisorController = CreateController(ctx, supervisorUser, perms);
+
+        var result = await supervisorController.ApplyRcmDecision(classId, decisionId, equipment.EquipmentId);
+
+        Assert.IsType<RedirectToActionResult>(result);
+        Assert.Single(ctx.MaintenanceStrategies);
+    }
+
+    // ==============================================================================
+    // طبق «PEMS Phase 6.1» بند ۲۲: پوشش مسیر Controller (نه فقط خودِ Service) برای سه حالت رد -
+    // تصمیم تاییدنشده، عدم تطابق کلاس تجهیز، و اعمال تکراری - چون این‌ها همان چیزهایی هستند که
+    // UI جدید (Modal داخل ClassDetail) واقعاً از طریق همین Action صدا می‌زند.
+    // ==============================================================================
+
+    private static async Task<(PEMSDbContext Ctx, IPermissionService Perms, int ClassId, int DecisionId, Equipment Equipment)>
+        SeedApprovableDecisionAsync(string dbName, bool approve)
+    {
+        var (ctx, perms, editorUser) = await CreateInfra(dbName, role: SystemRoles.MaintenanceEngineer);
+        var classId = await SeedEquipmentClassAsync(ctx);
+
+        var services = new ServiceCollection();
+        services.AddSingleton(ctx);
+        await FailureCauseSeeder.SeedAsync(services.BuildServiceProvider());
+        await FailureEffectSeeder.SeedAsync(services.BuildServiceProvider());
+        await FailureConsequenceSeeder.SeedAsync(services.BuildServiceProvider());
+        await FailureModeSeeder.SeedAsync(services.BuildServiceProvider());
+        var failureMode = await ctx.FailureModes.FirstAsync();
+
+        var equipment = new Equipment { TagNumber = $"EQ-{dbName}", Name = $"EQ-{dbName}", EquipmentType = "Pump", IsActive = true, EquipmentClassId = classId };
+        ctx.Equipments.Add(equipment);
+        await ctx.SaveChangesAsync();
+
+        var fmeaService = new FMEAService(ctx);
+        var fmeaId = await fmeaService.CreateDraftAsync(classId, "FMEA", null, "engineer1");
+        var itemId = await fmeaService.AddItemAsync(fmeaId, failureMode.FailureModeId, null, null, null, null, null,
+            null, null, null, null, null, null, null, null);
+        var rcmService = new RCMService(ctx);
+        var rcmId = await rcmService.CreateDraftAsync(classId, fmeaId, "engineer1");
+        var decisionId = await rcmService.AddDecisionAsync(rcmId, itemId, "PREDICTIVE", null, null, null, "Operational");
+        if (approve) await rcmService.ApproveDecisionAsync(decisionId, "manager1");
+
+        return (ctx, perms, classId, decisionId, equipment);
+    }
+
+    [Fact]
+    public async Task ApplyRcmDecision_NonApprovedDecision_Rejected_NoOperationalDataCreated()
+    {
+        var (ctx, perms, classId, decisionId, equipment) = await SeedApprovableDecisionAsync(
+            nameof(ApplyRcmDecision_NonApprovedDecision_Rejected_NoOperationalDataCreated), approve: false);
+
+        var (_, _, supervisorUser) = await CreateInfra(nameof(ApplyRcmDecision_NonApprovedDecision_Rejected_NoOperationalDataCreated) + "_sup", role: SystemRoles.EngineeringSupervisor);
+        var controller = CreateController(ctx, supervisorUser, perms);
+
+        var result = await controller.ApplyRcmDecision(classId, decisionId, equipment.EquipmentId);
+
+        Assert.IsType<RedirectToActionResult>(result); // نه Forbid - این یک رد کسب‌وکاری است، نه مجوزی
+        Assert.NotNull(controller.TempData["Error"]);
+        Assert.Empty(ctx.MaintenanceStrategies);
+        Assert.Empty(ctx.MaintenancePlans);
+    }
+
+    [Fact]
+    public async Task ApplyRcmDecision_WrongEquipmentClass_Rejected_NoOperationalDataCreated()
+    {
+        var (ctx, perms, classId, decisionId, _) = await SeedApprovableDecisionAsync(
+            nameof(ApplyRcmDecision_WrongEquipmentClass_Rejected_NoOperationalDataCreated), approve: true);
+
+        var motorClass = await ctx.EquipmentClasses.SingleAsync(x => x.Code == "MOTOR");
+        var wrongClassEquipment = new Equipment { TagNumber = "EQ-WRONGCLASS", Name = "EQ-WRONGCLASS", EquipmentType = "Motor", IsActive = true, EquipmentClassId = motorClass.EquipmentClassId };
+        ctx.Equipments.Add(wrongClassEquipment);
+        await ctx.SaveChangesAsync();
+
+        var (_, _, supervisorUser) = await CreateInfra(nameof(ApplyRcmDecision_WrongEquipmentClass_Rejected_NoOperationalDataCreated) + "_sup", role: SystemRoles.EngineeringSupervisor);
+        var controller = CreateController(ctx, supervisorUser, perms);
+
+        var result = await controller.ApplyRcmDecision(classId, decisionId, wrongClassEquipment.EquipmentId);
+
+        Assert.IsType<RedirectToActionResult>(result);
+        Assert.NotNull(controller.TempData["Error"]);
+        Assert.Empty(ctx.MaintenanceStrategies);
+    }
+
+    [Fact]
+    public async Task ApplyRcmDecision_AppliedTwice_NoDuplicateStrategyOrPlan()
+    {
+        var (ctx, perms, classId, decisionId, equipment) = await SeedApprovableDecisionAsync(
+            nameof(ApplyRcmDecision_AppliedTwice_NoDuplicateStrategyOrPlan), approve: true);
+
+        var (_, _, supervisorUser) = await CreateInfra(nameof(ApplyRcmDecision_AppliedTwice_NoDuplicateStrategyOrPlan) + "_sup", role: SystemRoles.EngineeringSupervisor);
+
+        var firstController = CreateController(ctx, supervisorUser, perms);
+        var firstResult = await firstController.ApplyRcmDecision(classId, decisionId, equipment.EquipmentId);
+        var secondController = CreateController(ctx, supervisorUser, perms);
+        var secondResult = await secondController.ApplyRcmDecision(classId, decisionId, equipment.EquipmentId);
+
+        Assert.IsType<RedirectToActionResult>(firstResult);
+        Assert.IsType<RedirectToActionResult>(secondResult);
+        Assert.Null(secondController.TempData["Error"]); // اعمال دوباره خطا نیست - بازاستفاده‌ی امن است
+        Assert.Single(ctx.MaintenanceStrategies); // هرگز رکورد تکراری ساخته نشد
+        Assert.Empty(ctx.MaintenancePlans); // این تصمیم PMTemplate توصیه نکرده بود
+    }
+
+    [Fact]
+    public void ApplyRcmDecision_Action_IsAntiForgeryProtected()
+    {
+        // طبق «PEMS Phase 6.1» بند ۱۱/۲۲: این Action یک POST با تاثیر واقعی روی داده‌ی عملیاتی
+        // است - باید دقیقاً مثل بقیه‌ی Action های POST این کنترلر، توسط ValidateAntiForgeryToken
+        // محافظت شود.
+        var method = typeof(RcmFmeaController).GetMethod(nameof(RcmFmeaController.ApplyRcmDecision));
+        Assert.NotNull(method);
+        Assert.True(method!.GetCustomAttributes(typeof(Microsoft.AspNetCore.Mvc.ValidateAntiForgeryTokenAttribute), inherit: true).Any());
+        Assert.True(method.GetCustomAttributes(typeof(Microsoft.AspNetCore.Mvc.HttpPostAttribute), inherit: true).Any());
     }
 }

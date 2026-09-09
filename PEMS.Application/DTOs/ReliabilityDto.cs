@@ -96,6 +96,16 @@ public class BadActorDto
 
     public double RankScore { get; set; }
     public List<string> RankFactors { get; set; } = new();
+
+    // ==============================================================================
+    // طبق «PEMS Phase 7» بند ۱۶: گسترش Bad Actor موجود - فیلدهای زیر فقط زمانی پر می‌شوند که
+    // داده‌ی واقعی موجود باشد (Null یعنی داده کافی نیست، نه صفر جعلی).
+    // ==============================================================================
+    public int? RepeatFailureCount { get; set; }
+    public double? MTTRHours { get; set; }
+    public int? MaintenanceCount { get; set; }
+    public string? PrimaryFailureMode { get; set; }
+    public string? PrimaryFailureCause { get; set; }
 }
 
 public class ReliabilityTrendPointDto
@@ -125,4 +135,23 @@ public class ReliabilityDataQualityDto
     public double EquipmentReliabilityCoveragePercent { get; set; }
     public double FailureTaxonomyCoveragePercent { get; set; }
     public double RepairDataCoveragePercent { get; set; }
+
+    // ==============================================================================
+    // طبق «PEMS Phase 7» بند ۲۱: گسترش گیت کیفیت داده‌ی فاز ۵ - پوشش زنجیره‌ی نگهداری فراتر
+    // از خودِ FailureRecord (Criticality/Strategy/Plan/WorkOrder/MaintenanceType). همه SQL-Aggregated.
+    // ==============================================================================
+    public int TotalWorkOrders { get; set; }
+    public int WorkOrdersMissingWorkOrderType { get; set; }
+    public int CompletedOrClosedWorkOrders { get; set; }
+    public int WorkOrdersMissingCompletionDate { get; set; }
+
+    public int EquipmentWithCriticality { get; set; }
+    public int EquipmentWithMaintenanceStrategy { get; set; }
+    public int EquipmentWithMaintenancePlan { get; set; }
+
+    public double MaintenanceTypeCompletenessPercent { get; set; }
+    public double WorkOrderCompletionCoveragePercent { get; set; }
+    public double CriticalityCoveragePercent { get; set; }
+    public double MaintenanceStrategyCoveragePercent { get; set; }
+    public double MaintenancePlanCoveragePercent { get; set; }
 }

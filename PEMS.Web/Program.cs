@@ -250,7 +250,13 @@ builder.Services.AddScoped<IWorkOrderReviewService, WorkOrderReviewService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IWorkOrderLaborService, WorkOrderLaborService>();
 
+// طبق «PEMS Phase 6 — CMMS Operational Excellence & Maintenance Execution»: باید قبل از
+// WorkOrderLifecycleService ثبت شود چون آن سرویس به IWorkOrderReleaseGateService وابسته است
+// (ترتیب ثبت DI مهم نیست چون Scoped/Constructor Injection است، ولی همین‌جا برای خوانایی کنار هم آمدند)
+builder.Services.AddScoped<IWorkOrderReleaseGateService, WorkOrderReleaseGateService>();
 builder.Services.AddScoped<IWorkOrderLifecycleService, WorkOrderLifecycleService>();
+builder.Services.AddScoped<IPMGenerationService, PMGenerationService>();
+builder.Services.AddScoped<IRcmOperationalBridgeService, RcmOperationalBridgeService>();
 builder.Services.AddScoped<IStoreRequisitionLifecycleService, StoreRequisitionLifecycleService>();
 builder.Services.AddScoped<IReliabilityService, ReliabilityService>();
 builder.Services.AddScoped<IInspectionService, InspectionService>();
@@ -442,6 +448,12 @@ builder.Services.AddScoped<IRcmFmeaReadinessService, RcmFmeaReadinessService>();
 // طبق «PEMS Phase 5 — Final Reliability Intelligence, Failure Analytics & RAM Foundation»
 builder.Services.AddScoped<IReliabilityAnalyticsService, ReliabilityAnalyticsService>();
 builder.Services.AddScoped<IReliabilityDataQualityService, ReliabilityDataQualityService>();
+
+// طبق «PEMS Phase 7 — Maintenance Intelligence & Reliability Operationalization» - نام عمداً
+// IReliabilityIntelligenceService است (نه IMaintenanceIntelligenceService) چون آن نام از قبل
+// توسط سرویس متفاوت فاز ۲/۳ (توصیه‌ی PMTemplate/JobPlan بر اساس EquipmentClass) اشغال شده بود.
+builder.Services.AddScoped<IReliabilityIntelligenceService, ReliabilityIntelligenceService>();
+builder.Services.AddScoped<IRcmFeedbackService, RcmFeedbackService>();
 
 // طبق ممیزی امنیتی (P0 - Engineering File Security Containment): ریشه‌ی ذخیره‌سازی عمداً بیرون
 // از wwwroot (خواهر آن، نه زیرشاخه‌اش) - این همان چیزی است که آسیب‌پذیری اصلی را می‌بندد؛

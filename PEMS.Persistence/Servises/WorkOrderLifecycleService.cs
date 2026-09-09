@@ -12,6 +12,7 @@ namespace PEMS.Persistence.Services;
 public class WorkOrderLifecycleService : IWorkOrderLifecycleService
 {
     private readonly PEMSDbContext _context;
+    private readonly IWorkOrderReleaseGateService _releaseGate;
 
     // طبق CMMS Production Baseline v1 بند ۹.۳ («State Machine Rule» - Do not rely only on
     // Controller logic): قبلاً هیچ اعتبارسنجی‌ای این‌جا نبود؛ AdvanceStatusAsync هر nextStatus
@@ -27,9 +28,10 @@ public class WorkOrderLifecycleService : IWorkOrderLifecycleService
         ["Completed"] = new[] { "Closed" },
     };
 
-    public WorkOrderLifecycleService(PEMSDbContext context)
+    public WorkOrderLifecycleService(PEMSDbContext context, IWorkOrderReleaseGateService releaseGate)
     {
         _context = context;
+        _releaseGate = releaseGate;
     }
 
     public async Task<(bool Success, string? Error)> AdvanceStatusAsync(
@@ -50,6 +52,16 @@ public class WorkOrderLifecycleService : IWorkOrderLifecycleService
 
         if (!LegalTransitions.TryGetValue(fromStatus, out var allowed) || !allowed.Contains(nextStatus))
             return (false, $"گذار از وضعیت «{fromStatus}» به «{nextStatus}» مجاز نیست.");
+
+        // طبق «PEMS Phase 6» بند ۱۸: قبل از اجرا، گیت ایمنی (Permit/LOTO/GasTest، اگر JobPlan
+        // آن‌ها را الزامی کرده باشد) بررسی می‌شود - تنها نقطه‌ی اجرای این گیت، همین‌جاست (نه
+        // یک مسیر دوم قابل‌دورزدن در Controller).
+        if (nextStatus == "InProgress")
+        {
+            var gate = await _releaseGate.EvaluateAsync(workOrderId);
+            if (!gate.CanRelease)
+                return (false, "Cannot release Work Order.\n" + string.Join("\n", gate.Reasons.Select(r => $"Reason: {r}")));
+        }
 
         if (nextStatus == "Assigned")
         {

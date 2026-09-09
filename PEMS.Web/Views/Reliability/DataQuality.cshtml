@@ -30,17 +30,50 @@
     </div>
 </div>
 
+<div class="content-card mb-3">
+    <h6 class="mb-2">Maintenance Chain Coverage <span class="badge text-bg-light border">Phase 7</span></h6>
+    <div class="row g-3 text-center">
+        <div class="col-md-2">
+            <div class="fs-5 fw-bold">@Model.MaintenanceTypeCompletenessPercent.ToString("N1")%</div>
+            <div class="text-muted small">Maintenance Type Completeness</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-5 fw-bold">@Model.WorkOrderCompletionCoveragePercent.ToString("N1")%</div>
+            <div class="text-muted small">Work Order Completion Coverage</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-5 fw-bold">@Model.CriticalityCoveragePercent.ToString("N1")%</div>
+            <div class="text-muted small">Criticality Coverage</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-5 fw-bold">@Model.MaintenanceStrategyCoveragePercent.ToString("N1")%</div>
+            <div class="text-muted small">Maintenance Strategy Coverage</div>
+        </div>
+        <div class="col-md-2">
+            <div class="fs-5 fw-bold">@Model.MaintenancePlanCoveragePercent.ToString("N1")%</div>
+            <div class="text-muted small">Maintenance Plan Coverage</div>
+        </div>
+    </div>
+</div>
+
 <div class="content-card">
     <table class="table table-enterprise table-sm mb-0">
         <tbody>
             <tr><td>Total Active Equipment</td><td class="text-end">@Model.TotalActiveEquipment</td></tr>
             <tr><td>Equipment with Failure History</td><td class="text-end">@Model.EquipmentWithFailureHistory</td></tr>
+            <tr><td>Equipment with Criticality</td><td class="text-end">@Model.EquipmentWithCriticality</td></tr>
+            <tr><td>Equipment with Maintenance Strategy</td><td class="text-end">@Model.EquipmentWithMaintenanceStrategy</td></tr>
+            <tr><td>Equipment with Maintenance Plan</td><td class="text-end">@Model.EquipmentWithMaintenancePlan</td></tr>
             <tr><td>Failure Records without Failure Mode</td><td class="text-end">@Model.FailureRecordsWithoutFailureMode</td></tr>
             <tr><td>Failure Records without Failure Cause</td><td class="text-end">@Model.FailureRecordsWithoutFailureCause</td></tr>
             <tr><td>Failure Records without Downtime Hours</td><td class="text-end">@Model.FailureRecordsWithoutDowntimeHours</td></tr>
             <tr><td>Failure Records with Invalid (Future) Date</td><td class="text-end">@Model.FailureRecordsWithInvalidDate</td></tr>
             <tr><td>Failure Records Linked to WorkOrder Missing Start/Completion Date</td><td class="text-end">@Model.FailureRecordsLinkedToWorkOrderMissingDuration</td></tr>
             <tr><td>Failure Records with Negative Repair Duration</td><td class="text-end">@Model.FailureRecordsWithNegativeDuration</td></tr>
+            <tr><td>Total Work Orders</td><td class="text-end">@Model.TotalWorkOrders</td></tr>
+            <tr><td>Work Orders Missing Work Order Type</td><td class="text-end">@Model.WorkOrdersMissingWorkOrderType</td></tr>
+            <tr><td>Completed/Closed Work Orders</td><td class="text-end">@Model.CompletedOrClosedWorkOrders</td></tr>
+            <tr><td>Completed/Closed Work Orders Missing Completion Date</td><td class="text-end">@Model.WorkOrdersMissingCompletionDate</td></tr>
         </tbody>
     </table>
 </div>

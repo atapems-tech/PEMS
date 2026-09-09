@@ -17,15 +17,18 @@ public class MaintenancePlanController : Controller
     private readonly PEMSDbContext _context;
     private readonly INumberingService _numberingService;
     private readonly IMaintenancePlanService _maintenancePlanService;
+    private readonly IPMGenerationService _pmGenerationService;
     private readonly ICurrentUserService _currentUser;
     private readonly IPermissionService _permissionService;
 
     public MaintenancePlanController(PEMSDbContext context, INumberingService numberingService,
-        IMaintenancePlanService maintenancePlanService, ICurrentUserService currentUser, IPermissionService permissionService)
+        IMaintenancePlanService maintenancePlanService, IPMGenerationService pmGenerationService,
+        ICurrentUserService currentUser, IPermissionService permissionService)
     {
         _context = context;
         _numberingService = numberingService;
         _maintenancePlanService = maintenancePlanService;
+        _pmGenerationService = pmGenerationService;
         _currentUser = currentUser;
         _permissionService = permissionService;
     }
@@ -149,7 +152,8 @@ public class MaintenancePlanController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // طبق درخواست: از یک برنامه‌ی نگهداری، دستور کار واقعی بسازد
+    // طبق «PEMS Phase 6» بند ۱۵/۵۵-۵۶: منطق واقعی به PMGenerationService منتقل شد (Controller
+    // نازک‌تر شود) و حالا Idempotent است - کلیک تکراری/Double-Submit دیگر WorkOrder تکراری نمی‌سازد.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> GenerateWorkOrder(int planId)
@@ -157,96 +161,37 @@ public class MaintenancePlanController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "Edit"))
             return Forbid();
 
-        var plan = await _context.MaintenancePlans
-            .Include(x => x.Equipment)
-            .FirstOrDefaultAsync(x => x.MaintenancePlanId == planId);
+        var workOrderNumber = await _pmGenerationService.GenerateForPlanAsync(planId);
 
-        if (plan == null) return NotFound();
-
-        var workOrderNumber = await _numberingService.GetNextNumberAsync("WorkOrder");
-
-        var workOrder = new WorkOrder
+        if (workOrderNumber == null)
         {
-            EquipmentId = plan.EquipmentId,
-            MaintenancePlanId = plan.MaintenancePlanId,
-            WorkOrderNumber = workOrderNumber,
-            WorkOrderType = "Preventive",
-            Priority = "Medium",
-            Status = "Open",
-            Description = plan.Title + (string.IsNullOrEmpty(plan.Description) ? "" : " - " + plan.Description),
-            IsActive = true,
-            CreatedDate = DateTime.Now
-        };
-
-        await _context.WorkOrders.AddAsync(workOrder);
-        await _context.SaveChangesAsync();
-
-        // طبق CMMS Production Baseline v1 بند ۱۰.۴: اگر این Plan یک Job Plan دارد، Task/Skill/
-        // Material های آن روی WorkOrder تازه‌ساخته‌شده کپی می‌شوند (Snapshot زمان ساخت، نه
-        // Join زنده) - این‌جوری اگر بعداً Job Plan تغییر کند، WorkOrder های قبلی دست‌نخورده می‌مانند.
-        if (plan.JobPlanId.HasValue)
-        {
-            var tasks = await _context.MaintenanceTasks
-                .Where(x => x.JobPlanId == plan.JobPlanId.Value && x.IsActive)
-                .OrderBy(x => x.TaskNumber)
-                .ToListAsync();
-
-            foreach (var task in tasks)
-            {
-                await _context.WorkOrderTasks.AddAsync(new WorkOrderTask
-                {
-                    WorkOrderId = workOrder.WorkOrderId,
-                    TaskNumber = task.TaskNumber,
-                    Title = task.Title,
-                    Description = task.Description,
-                    IsCompleted = false,
-                    CreatedDate = DateTime.Now
-                });
-            }
-
-            var requiredSkills = await _context.JobPlanRequiredSkills
-                .Where(x => x.JobPlanId == plan.JobPlanId.Value)
-                .ToListAsync();
-
-            foreach (var rs in requiredSkills)
-            {
-                await _context.RequiredSkills.AddAsync(new RequiredSkill
-                {
-                    WorkOrderId = workOrder.WorkOrderId,
-                    SkillId = rs.SkillId,
-                    MinimumProficiencyLevel = rs.MinimumProficiencyLevel,
-                    PlannedHours = rs.PlannedHours,
-                    CreatedDate = DateTime.Now
-                });
-            }
-
-            var requiredMaterials = await _context.JobPlanRequiredMaterials
-                .Where(x => x.JobPlanId == plan.JobPlanId.Value)
-                .ToListAsync();
-
-            foreach (var rm in requiredMaterials)
-            {
-                await _context.WorkOrderMaterials.AddAsync(new WorkOrderMaterial
-                {
-                    WorkOrderId = workOrder.WorkOrderId,
-                    MaterialItemId = rm.MaterialItemId,
-                    RequiredQuantity = rm.RequiredQuantity,
-                    UomId = rm.UomId,
-                    CreatedDate = DateTime.Now
-                });
-            }
-
-            await _context.SaveChangesAsync();
+            TempData["Error"] = "این Plan یا وجود ندارد یا از قبل یک Work Order فعال (تکمیل‌نشده) دارد - برای جلوگیری از تکرار، Work Order جدیدی ساخته نشد.";
+            return RedirectToAction(nameof(Index));
         }
 
-        plan.LastExecutionDate = DateTime.Now;
-        if (plan.IntervalDays.HasValue)
-            plan.NextDueDate = DateTime.Now.AddDays(plan.IntervalDays.Value);
-
-        await _context.SaveChangesAsync();
+        var workOrderId = await _context.WorkOrders
+            .Where(x => x.WorkOrderNumber == workOrderNumber)
+            .Select(x => x.WorkOrderId)
+            .FirstOrDefaultAsync();
 
         TempData["Message"] = $"Work order {workOrderNumber} generated from plan";
-        return RedirectToAction("Details", "WorkOrder", new { id = workOrder.WorkOrderId });
+        return RedirectToAction("Details", "WorkOrder", new { id = workOrderId });
+    }
+
+    // طبق «PEMS Phase 6» بند ۱۵/۳۹/۵۶: اجرای دستی (انسان‌محور) روی همه‌ی Plan های سررسیدرسیده -
+    // Hangfire زیرساخت موجود است اما بند ۵۶ صراحتاً هیچ زمان‌بند خودکار جدیدی را الزامی نمی‌کند؛
+    // این دکمه دقیقاً همان GenerateForPlanAsync Idempotent را برای هر Plan سررسیدرسیده صدا می‌زند.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> GenerateDueWorkOrders()
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "Edit"))
+            return Forbid();
+
+        var result = await _pmGenerationService.GenerateDueWorkOrdersAsync();
+
+        TempData["Message"] = $"{result.WorkOrdersGenerated} Work Order جدید ساخته شد؛ {result.PlansSkippedAlreadyHasOpenWorkOrder} مورد به‌دلیل داشتن Work Order فعال از قبل، رد شد.";
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]

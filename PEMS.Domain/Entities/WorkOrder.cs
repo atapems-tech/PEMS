@@ -24,6 +24,16 @@ public class WorkOrder : BaseEntity
 
     public MaintenancePlan? MaintenancePlan { get; set; }
 
+    // ==============================================================================
+    // طبق «PEMS Phase 7 — Maintenance Intelligence» بند ۱۲: سررسیدی که این WorkOrder (اگر از
+    // یک MaintenancePlan تولید شده) قرار بود پوشش دهد - در لحظه‌ی تولید از
+    // MaintenancePlan.NextDueDate کپی می‌شود (PMGenerationService)، پیش از این‌که خودِ Plan آن
+    // را جلو ببرد. بدون این فیلد، محاسبه‌ی «به‌موقع تکمیل شد یا دیر» بعداً غیرممکن است چون
+    // NextDueDate هر بار جلو می‌رود. برای WorkOrder های اصلاحی/اضطراری/دستی همیشه Null است؛
+    // برای رکوردهای تاریخی پیش از این فیلد هم Null می‌ماند (طبق بند ۳۸: هرگز جعل نمی‌شود).
+    // ==============================================================================
+    public DateTime? DueDate { get; set; }
+
     // طبق CMMS Production Baseline v1 بند P0-05/۹.۱: WorkRequest منشأ این WorkOrder (در صورت
     // وجود) - مسیر مجاز ساخت کار اجرایی. WorkOrder هایی که مستقیم ساخته شده‌اند (بدون
     // WorkRequest) این فیلد را Null نگه می‌دارند - کنترل این مسیر مستقیم بخشی از فاز بعدی است.

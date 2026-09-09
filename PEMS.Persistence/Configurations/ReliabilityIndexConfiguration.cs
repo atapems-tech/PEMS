@@ -27,3 +27,28 @@ public class WorkOrderReliabilityIndexConfiguration : IEntityTypeConfiguration<W
             .HasDatabaseName("IX_WorkOrders_Status_CompletionDate");
     }
 }
+
+/// <summary>
+/// طبق «PEMS Phase 7 — Maintenance Intelligence» بند ۲۷: این دو ایندکس دقیقاً همان الگوی
+/// Query تازه‌ی این فاز را پوشش می‌دهند - نه بیشتر:
+/// (WorkOrderType, CreatedDate) برای شکست Preventive/Corrective/Emergency در یک بازه‌ی زمانی
+/// (GetMaintenanceTypeBreakdownAsync)، و (EquipmentId, FailureModeId, FailureDate) برای
+/// تشخیص خرابی تکراری با پنجره‌ی زمانی روی هر ترکیب تجهیز+حالت‌خرابی (GetRepeatFailuresAsync).
+/// </summary>
+public class WorkOrderMaintenanceIntelligenceIndexConfiguration : IEntityTypeConfiguration<WorkOrder>
+{
+    public void Configure(EntityTypeBuilder<WorkOrder> builder)
+    {
+        builder.HasIndex(x => new { x.WorkOrderType, x.CreatedDate })
+            .HasDatabaseName("IX_WorkOrders_WorkOrderType_CreatedDate");
+    }
+}
+
+public class FailureRecordRepeatFailureIndexConfiguration : IEntityTypeConfiguration<FailureRecord>
+{
+    public void Configure(EntityTypeBuilder<FailureRecord> builder)
+    {
+        builder.HasIndex(x => new { x.EquipmentId, x.FailureModeId, x.FailureDate })
+            .HasDatabaseName("IX_FailureRecords_EquipmentId_FailureModeId_FailureDate");
+    }
+}
