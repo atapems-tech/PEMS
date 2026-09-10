@@ -1,0 +1,95 @@
+@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.CriticalityAssessmentListDto>
+@{
+    var statusFilter = (string?)ViewBag.StatusFilter;
+    var equipmentClassId = (int?)ViewBag.EquipmentClassId;
+    var canEdit = (bool)ViewBag.CanEdit;
+    var equipmentClasses = (IEnumerable<dynamic>)ViewBag.EquipmentClasses;
+
+    string StatusBadge(string status) => status switch
+    {
+        "APPROVED" => "text-bg-success",
+        "UNDER_REVIEW" => "text-bg-warning",
+        "SUPERSEDED" => "text-bg-secondary",
+        _ => "text-bg-light border"
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-list-check"></i> Criticality Assessment Queue</h5>
+    <div>
+        <a asp-action="Dashboard" class="btn btn-outline-secondary btn-sm">← Dashboard</a>
+        @if (canEdit)
+        {
+            <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> New Assessment</a>
+        }
+    </div>
+</div>
+
+@if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
+@if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
+
+<div class="content-card mb-3">
+    <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-3">
+            <label class="form-label small">Status</label>
+            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                <option value="" selected="@(string.IsNullOrEmpty(statusFilter))">All</option>
+                <option value="DRAFT" selected="@(statusFilter == "DRAFT")">Draft</option>
+                <option value="UNDER_REVIEW" selected="@(statusFilter == "UNDER_REVIEW")">Under Review</option>
+                <option value="APPROVED" selected="@(statusFilter == "APPROVED")">Approved</option>
+                <option value="SUPERSEDED" selected="@(statusFilter == "SUPERSEDED")">Superseded</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small">Equipment Class</label>
+            <select name="equipmentClassId" class="form-select form-select-sm" onchange="this.form.submit()">
+                <option value="">All</option>
+                @foreach (var ec in equipmentClasses)
+                {
+                    <option value="@ec.EquipmentClassId" selected="@(equipmentClassId == (int)ec.EquipmentClassId)">@ec.Name (@ec.Code)</option>
+                }
+            </select>
+        </div>
+    </form>
+</div>
+
+<div class="content-card">
+    <div class="table-scroll-area" style="overflow-x:auto;">
+    <table class="table table-enterprise table-sm mb-0">
+        <thead>
+            <tr>
+                <th>Equipment</th><th>Class</th><th>Framework</th><th>Status</th>
+                <th>Proposed</th><th>Prepared By</th><th>Approved By</th><th>Created</th><th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in Model.Items)
+            {
+                <tr>
+                    <td class="fw-bold small">@a.EquipmentTagNumber</td>
+                    <td class="small text-muted">@(a.EquipmentClassName ?? "-")</td>
+                    <td class="small text-muted">@a.FrameworkVersion</td>
+                    <td><span class="badge @StatusBadge(a.Status)">@a.Status</span></td>
+                    <td>@(a.ProposedCriticalityClass ?? "-")</td>
+                    <td class="small">@(a.PreparedBy ?? "-")</td>
+                    <td class="small">@(a.ApprovedBy ?? "-")</td>
+                    <td class="small">@a.CreatedDate.ToString("yyyy-MM-dd")</td>
+                    <td><a asp-action="Details" asp-route-id="@a.CriticalityAssessmentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ ارزیابی‌ای با این فیلتر موجود نیست.</p> }
+
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "CriticalityAssessmentQueue",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = ""
+    })
+</div>

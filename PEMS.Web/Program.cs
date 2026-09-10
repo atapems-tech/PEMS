@@ -455,6 +455,12 @@ builder.Services.AddScoped<IReliabilityDataQualityService, ReliabilityDataQualit
 builder.Services.AddScoped<IReliabilityIntelligenceService, ReliabilityIntelligenceService>();
 builder.Services.AddScoped<IRcmFeedbackService, RcmFeedbackService>();
 
+// طبق «PEMS Phase 7.5 — CMMS Operational Data Readiness & Master Data Activation»
+builder.Services.AddScoped<IEquipmentReadinessService, EquipmentReadinessService>();
+
+// طبق «PEMS Phase 7.6 — Engineering Criticality Assessment & Controlled Maintenance Activation»
+builder.Services.AddScoped<ICriticalityAssessmentService, CriticalityAssessmentService>();
+
 // طبق ممیزی امنیتی (P0 - Engineering File Security Containment): ریشه‌ی ذخیره‌سازی عمداً بیرون
 // از wwwroot (خواهر آن، نه زیرشاخه‌اش) - این همان چیزی است که آسیب‌پذیری اصلی را می‌بندد؛
 // UseStaticFiles فقط داخل wwwroot سرویس می‌دهد.

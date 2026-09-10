@@ -1,0 +1,227 @@
+@model PEMS.Application.DTOs.CriticalityAssessmentDetailDto
+@{
+    var canEdit = (bool)ViewBag.CanEdit;
+    var canApprove = (bool)ViewBag.CanApprove;
+
+    string StatusBadge(string status) => status switch
+    {
+        "APPROVED" => "text-bg-success",
+        "UNDER_REVIEW" => "text-bg-warning",
+        "SUPERSEDED" => "text-bg-secondary",
+        _ => "text-bg-light border"
+    };
+
+    string ScoreLabel(int? score) => score switch
+    {
+        1 => "1 — Negligible", 2 => "2 — Minor", 3 => "3 — Moderate", 4 => "4 — Major", 5 => "5 — Severe", _ => "Not scored"
+    };
+}
+
+@if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
+@if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
+
+<div class="content-card mb-3">
+    <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
+        <div class="kpi-icon bg-icon-blue" style="width:56px;height:56px;font-size:26px;"><i class="bi bi-shield-exclamation"></i></div>
+        <div>
+            <h5 class="mb-0">@Model.EquipmentTagNumber <span class="text-muted small">(@(Model.EquipmentClassName ?? "Unclassified"))</span></h5>
+            <span class="text-muted small">Framework @Model.FrameworkVersion</span>
+        </div>
+        <span class="badge @StatusBadge(Model.Status) ms-auto" style="font-size:1rem;">@Model.Status</span>
+    </div>
+
+    <div class="row g-2 small mt-2">
+        <div class="col-md-3"><strong>Prepared By</strong><div>@(Model.PreparedBy ?? "-")</div></div>
+        <div class="col-md-3"><strong>Reviewed By</strong><div>@(Model.ReviewedBy ?? "-")</div></div>
+        <div class="col-md-3"><strong>Approved By</strong><div>@(Model.ApprovedBy ?? "-")</div></div>
+        <div class="col-md-3"><strong>Approved At</strong><div>@(Model.ApprovedAt?.ToString("yyyy-MM-dd HH:mm") ?? "-")</div></div>
+    </div>
+
+    <div class="row g-2 mt-3">
+        @if (Model.Status == "DRAFT" && canEdit)
+        {
+            <div class="col-auto">
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#scoresModal">Set Dimension Scores</button>
+            </div>
+        }
+        @if (Model.Status != "APPROVED" && Model.Status != "SUPERSEDED" && canEdit)
+        {
+            <div class="col-auto">
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evidenceModal">Add Evidence</button>
+            </div>
+        }
+        @if (Model.Status == "DRAFT" && canEdit)
+        {
+            <div class="col-auto">
+                <form asp-action="SubmitForReview" method="post">
+                    <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
+                    <button type="submit" class="btn btn-sm btn-outline-warning">Submit for Review</button>
+                </form>
+            </div>
+        }
+        @if (Model.Status == "UNDER_REVIEW" && canApprove)
+        {
+            <div class="col-auto">
+                <form asp-action="Approve" method="post" onsubmit="return confirm('تایید این ارزیابی، نتیجه را بلافاصله در EquipmentCriticality منتشر می‌کند. ادامه می‌دهید؟');">
+                    <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
+                    <button type="submit" class="btn btn-sm btn-success">Approve &amp; Publish</button>
+                </form>
+            </div>
+            <div class="col-auto">
+                <form asp-action="Reject" method="post">
+                    <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Reject → Draft</button>
+                </form>
+            </div>
+        }
+    </div>
+</div>
+
+<ul class="nav nav-tabs mb-3">
+    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-scores">Dimension Scores</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-evidence">Evidence (@Model.Evidence.Count)</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-history">History (@Model.PriorAssessments.Count)</button></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="tab-scores">
+        <div class="content-card">
+            <p class="text-muted small">
+                طبق «PEMS Phase 7.6»: نتیجه از قاعده‌ی «بدترین بُعد حاکم است» (Max، نه میانگین)
+                محاسبه می‌شود - یک تجهیز با پیامد ایمنی شدید صرفاً به این دلیل که پیامد
+                تولید/محیط‌زیستی پایین است، کم‌اهمیت جلوه نمی‌کند.
+            </p>
+            <table class="table table-enterprise table-sm mb-0">
+                <tbody>
+                    <tr><td>Safety</td><td class="text-end">@ScoreLabel(Model.SafetyScore)</td></tr>
+                    <tr><td>Production / Availability</td><td class="text-end">@ScoreLabel(Model.ProductionScore)</td></tr>
+                    <tr><td>Environment</td><td class="text-end">@ScoreLabel(Model.EnvironmentScore)</td></tr>
+                    <tr class="table-active"><td><strong>Calculated (Max) Score</strong></td><td class="text-end"><strong>@(Model.CalculatedMaxScore?.ToString() ?? "N/A — incomplete")</strong></td></tr>
+                    <tr class="table-active"><td><strong>Proposed Criticality Class</strong></td><td class="text-end"><strong>@(Model.ProposedCriticalityClass ?? "N/A")</strong></td></tr>
+                </tbody>
+            </table>
+            @if (!string.IsNullOrWhiteSpace(Model.Rationale))
+            {
+                <div class="small text-muted mt-2"><strong>Rationale:</strong> @Model.Rationale</div>
+            }
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-evidence">
+        <div class="content-card">
+            <table class="table table-enterprise table-sm mb-0">
+                <thead><tr><th>Source Type</th><th>Identifier</th><th>Reference</th><th>Description</th><th>By</th><th>Date</th></tr></thead>
+                <tbody>
+                    @foreach (var e in Model.Evidence)
+                    {
+                        <tr>
+                            <td class="small">@e.SourceType</td>
+                            <td class="small">@(e.SourceIdentifier ?? "-")</td>
+                            <td class="small">@(e.Reference ?? "-")</td>
+                            <td class="small">@e.Description</td>
+                            <td class="small">@(e.CreatedBy ?? "-")</td>
+                            <td class="small">@e.CreatedDate.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!Model.Evidence.Any()) { <p class="text-muted text-center py-4 mb-0">هنوز هیچ شاهدی ثبت نشده - قبل از ارسال برای بازبینی، حداقل یکی الزامی است.</p> }
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-history">
+        <div class="content-card">
+            <p class="text-muted small">طبق بند ۱۳: نسخه‌های قبلی هرگز حذف نمی‌شوند - فقط SUPERSEDED علامت می‌خورند.</p>
+            <table class="table table-enterprise table-sm mb-0">
+                <thead><tr><th>Status</th><th>Proposed</th><th>Prepared By</th><th>Approved By</th><th>Created</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var p in Model.PriorAssessments)
+                    {
+                        <tr>
+                            <td><span class="badge @StatusBadge(p.Status)">@p.Status</span></td>
+                            <td>@(p.ProposedCriticalityClass ?? "-")</td>
+                            <td class="small">@(p.PreparedBy ?? "-")</td>
+                            <td class="small">@(p.ApprovedBy ?? "-")</td>
+                            <td class="small">@p.CreatedDate.ToString("yyyy-MM-dd")</td>
+                            <td><a asp-action="Details" asp-route-id="@p.CriticalityAssessmentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!Model.PriorAssessments.Any()) { <p class="text-muted text-center py-4 mb-0">این اولین ارزیابی این تجهیز است.</p> }
+        </div>
+    </div>
+</div>
+
+@if (canEdit)
+{
+    <div class="modal fade" id="scoresModal" tabindex="-1">
+        <div class="modal-dialog"><div class="modal-content">
+            <form asp-action="SetScores" method="post">
+                <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
+                <div class="modal-header"><h6 class="modal-title">Set Dimension Scores</h6></div>
+                <div class="modal-body">
+                    <p class="text-muted small">مقیاس ۱ (Negligible) تا ۵ (Severe) برای هر بُعد.</p>
+                    <div class="mb-2">
+                        <label class="form-label small">Safety</label>
+                        <select name="safetyScore" class="form-select form-select-sm">
+                            <option value="">Not scored</option>
+                            @for (var i = 1; i <= 5; i++) { <option value="@i" selected="@(Model.SafetyScore == i)">@i</option> }
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">Production / Availability</label>
+                        <select name="productionScore" class="form-select form-select-sm">
+                            <option value="">Not scored</option>
+                            @for (var i = 1; i <= 5; i++) { <option value="@i" selected="@(Model.ProductionScore == i)">@i</option> }
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">Environment</label>
+                        <select name="environmentScore" class="form-select form-select-sm">
+                            <option value="">Not scored</option>
+                            @for (var i = 1; i <= 5; i++) { <option value="@i" selected="@(Model.EnvironmentScore == i)">@i</option> }
+                        </select>
+                    </div>
+                    <div class="mb-2"><label class="form-label small">Rationale</label><textarea name="rationale" class="form-control form-control-sm" rows="2">@Model.Rationale</textarea></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-pems-solid btn-sm">Save</button>
+                </div>
+            </form>
+        </div></div>
+    </div>
+
+    <div class="modal fade" id="evidenceModal" tabindex="-1">
+        <div class="modal-dialog"><div class="modal-content">
+            <form asp-action="AddEvidence" method="post">
+                <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
+                <div class="modal-header"><h6 class="modal-title">Add Evidence</h6></div>
+                <div class="modal-body">
+                    <div class="mb-2">
+                        <label class="form-label small">Source Type</label>
+                        <select name="sourceType" class="form-select form-select-sm">
+                            <option value="Equipment">Equipment Record</option>
+                            <option value="EquipmentClass">Equipment Class</option>
+                            <option value="EngineeringDocument">Engineering Document</option>
+                            <option value="PID">P&amp;ID</option>
+                            <option value="Datasheet">Datasheet</option>
+                            <option value="ProjectRecord">Project Record</option>
+                            <option value="FailureTaxonomy">Failure Taxonomy</option>
+                            <option value="MaintenanceRecord">Maintenance Record</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-2"><label class="form-label small">Source Identifier</label><input name="sourceIdentifier" class="form-control form-control-sm" placeholder="e.g. document number, tag" /></div>
+                    <div class="mb-2"><label class="form-label small">Reference</label><input name="reference" class="form-control form-control-sm" placeholder="e.g. revision, path" /></div>
+                    <div class="mb-2"><label class="form-label small">Description</label><textarea name="description" class="form-control form-control-sm" rows="2" required></textarea></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-pems-solid btn-sm">Save</button>
+                </div>
+            </form>
+        </div></div>
+    </div>
+}

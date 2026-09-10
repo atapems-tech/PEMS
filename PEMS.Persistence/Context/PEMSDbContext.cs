@@ -257,6 +257,10 @@ public class PEMSDbContext
     // طبق «PEMS Phase 7 — Maintenance Intelligence & Reliability Operationalization» بند ۲۰
     public DbSet<RcmReviewRecommendation> RcmReviewRecommendations { get; set; }
 
+    // طبق «PEMS Phase 7.6 — Engineering Criticality Assessment & Controlled Maintenance Activation»
+    public DbSet<CriticalityAssessment> CriticalityAssessments { get; set; }
+    public DbSet<CriticalityAssessmentEvidence> CriticalityAssessmentEvidences { get; set; }
+
     public DbSet<Team> Teams { get; set; }
     public DbSet<TeamMember> TeamMembers { get; set; }
     public DbSet<Crew> Crews { get; set; }

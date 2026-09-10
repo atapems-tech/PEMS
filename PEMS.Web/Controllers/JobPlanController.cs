@@ -41,17 +41,24 @@ public class JobPlanController : Controller
         ViewData["Section"] = "CMMS Integration";
 
         var items = await _service.GetListAsync(page, DataGridPageSize.Normalize(pageSize));
+
+        // طبق «PEMS Phase 7.5» بند ۱۴: برای وصل‌کردن آگاهانه‌ی JobPlan به EquipmentClass در فرم ساخت
+        ViewBag.EquipmentClasses = await _context.EquipmentClasses.Where(x => x.IsActive)
+            .OrderBy(x => x.Name).Select(x => new { x.EquipmentClassId, x.Name, x.Code }).ToListAsync();
+
         return View(items);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements)
+    public async Task<IActionResult> Create(string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements,
+        int? equipmentClassId = null, bool permitRequired = false, bool lotoRequired = false)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "JobPlan", "Create"))
             return Forbid();
 
-        var (success, error, id) = await _service.CreateAsync(title, scope, estimatedDurationHours, safetyRequirements, _currentUser.UserName);
+        var (success, error, id) = await _service.CreateAsync(title, scope, estimatedDurationHours, safetyRequirements, _currentUser.UserName,
+            equipmentClassId, permitRequired, lotoRequired);
 
         if (!success)
         {
@@ -80,17 +87,22 @@ public class JobPlanController : Controller
         ViewBag.MaterialItems = await _context.MaterialItems.Where(x => x.IsActive && x.IsStockItem)
             .OrderBy(x => x.MaterialCode).Select(x => new { x.MaterialItemId, x.MaterialCode, x.Description }).ToListAsync();
 
+        ViewBag.EquipmentClasses = await _context.EquipmentClasses.Where(x => x.IsActive)
+            .OrderBy(x => x.Name).Select(x => new { x.EquipmentClassId, x.Name, x.Code }).ToListAsync();
+
         return View(jobPlan);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int jobPlanId, string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements)
+    public async Task<IActionResult> Edit(int jobPlanId, string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements,
+        int? equipmentClassId = null, bool permitRequired = false, bool lotoRequired = false)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "JobPlan", "Edit"))
             return Forbid();
 
-        var (success, error) = await _service.UpdateAsync(jobPlanId, title, scope, estimatedDurationHours, safetyRequirements, _currentUser.UserName);
+        var (success, error) = await _service.UpdateAsync(jobPlanId, title, scope, estimatedDurationHours, safetyRequirements, _currentUser.UserName,
+            equipmentClassId, permitRequired, lotoRequired);
         TempData[success ? "Message" : "Error"] = success ? "Job Plan updated" : error;
         return RedirectToAction(nameof(Details), new { id = jobPlanId });
     }

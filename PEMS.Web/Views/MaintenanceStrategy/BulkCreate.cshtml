@@ -1,6 +1,9 @@
 ﻿@{
     var equipments = (List<PEMS.Domain.Entities.Equipment>)ViewBag.Equipments;
     var criticalityByEquipment = (Dictionary<int, string>)ViewBag.CriticalityByEquipment;
+    var noFilterApplied = (bool)ViewBag.NoFilterApplied;
+    var matchingCount = (int?)ViewBag.MatchingCount;
+    var maxResults = (int)ViewBag.MaxResults;
 
     // طبق درخواست: دسته‌بندی دوسطحی - اول بر اساس واحد (Area/Unit)، بعد داخل هر واحد بر
     // اساس نوع تجهیز - چون در عمل RCM دقیقاً همین‌طور فکر می‌کنه («همه‌ی پمپ‌های واحد ۱۰۰»)
@@ -38,6 +41,21 @@
         <div class="col-md-4"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-funnel"></i> فیلتر تجهیزات</button></div>
     </form>
 </div>
+
+@if (noFilterApplied)
+{
+    <div class="alert alert-warning small">
+        طبق «PEMS Phase 7.6»: این فرم برای فعال‌سازی کنترل‌شده است، نه مرور کل ناوگان (۲۱٬۶۲۵
+        تجهیز) - ابتدا حداقل یک فیلتر (واحد یا نوع تجهیز) را انتخاب کنید تا کاندیدها نمایش داده شوند.
+    </div>
+}
+else if (matchingCount.HasValue && matchingCount.Value > maxResults)
+{
+    <div class="alert alert-warning small">
+        @matchingCount.Value.ToString("N0") تجهیز با این فیلتر مطابقت دارد - فقط @maxResults مورد
+        اول نمایش داده می‌شود. برای محدودتر کردن نتیجه، فیلتر دقیق‌تری انتخاب کنید.
+    </div>
+}
 
 <form asp-action="BulkCreate" method="post">
     <div class="row">
@@ -113,7 +131,7 @@
                             </div>
                         </div>
                     }
-                    @if (!equipments.Any()) { <p class="text-muted small text-center py-3">تجهیزی با این فیلتر پیدا نشد.</p> }
+                    @if (!equipments.Any() && !noFilterApplied) { <p class="text-muted small text-center py-3">تجهیزی با این فیلتر پیدا نشد.</p> }
                 </div>
             </div>
         </div>

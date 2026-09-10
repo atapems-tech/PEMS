@@ -44,7 +44,11 @@ public class JobPlanService : IJobPlanService
                 EstimatedDurationHours = x.EstimatedDurationHours,
                 IsActive = x.IsActive,
                 TaskCount = _context.MaintenanceTasks.Count(t => t.JobPlanId == x.JobPlanId && t.IsActive),
-                PlanUsageCount = _context.MaintenancePlans.Count(p => p.JobPlanId == x.JobPlanId && p.IsActive)
+                PlanUsageCount = _context.MaintenancePlans.Count(p => p.JobPlanId == x.JobPlanId && p.IsActive),
+                EquipmentClassId = x.EquipmentClassId,
+                EquipmentClassName = x.EquipmentClass != null ? x.EquipmentClass.Name : null,
+                PermitRequired = x.PermitRequired,
+                LOTORequired = x.LOTORequired
             })
             .ToListAsync();
 
@@ -61,7 +65,7 @@ public class JobPlanService : IJobPlanService
 
     public async Task<JobPlanDetailDto?> GetDetailsAsync(int jobPlanId)
     {
-        var jobPlan = await _context.JobPlans.FirstOrDefaultAsync(x => x.JobPlanId == jobPlanId);
+        var jobPlan = await _context.JobPlans.Include(x => x.EquipmentClass).FirstOrDefaultAsync(x => x.JobPlanId == jobPlanId);
         if (jobPlan == null) return null;
 
         var tasks = await _context.MaintenanceTasks
@@ -112,6 +116,10 @@ public class JobPlanService : IJobPlanService
             EstimatedDurationHours = jobPlan.EstimatedDurationHours,
             SafetyRequirements = jobPlan.SafetyRequirements,
             IsActive = jobPlan.IsActive,
+            EquipmentClassId = jobPlan.EquipmentClassId,
+            EquipmentClassName = jobPlan.EquipmentClass?.Name,
+            PermitRequired = jobPlan.PermitRequired,
+            LOTORequired = jobPlan.LOTORequired,
             Tasks = tasks,
             RequiredSkills = requiredSkills,
             RequiredMaterials = requiredMaterials
@@ -119,7 +127,8 @@ public class JobPlanService : IJobPlanService
     }
 
     public async Task<(bool Success, string? Error, int? Id)> CreateAsync(
-        string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements, string? currentUserName)
+        string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements, string? currentUserName,
+        int? equipmentClassId = null, bool permitRequired = false, bool lotoRequired = false)
     {
         title = title?.Trim() ?? "";
         if (string.IsNullOrWhiteSpace(title)) return (false, "عنوان Job Plan الزامی است.", null);
@@ -131,6 +140,11 @@ public class JobPlanService : IJobPlanService
             Scope = scope,
             EstimatedDurationHours = estimatedDurationHours,
             SafetyRequirements = safetyRequirements,
+            EquipmentClassId = equipmentClassId,
+            // طبق «PEMS Phase 7.5» بند ۱۵: این دو فیلد از فاز ۴ در Entity موجود بودند اما تا این
+            // فاز هیچ فرم UI ای آن‌ها را تنظیم نمی‌کرد - حالا انتخاب آگاهانه‌ی سازنده‌ی JobPlan است.
+            PermitRequired = permitRequired,
+            LOTORequired = lotoRequired,
             IsActive = true,
             CreatedBy = currentUserName,
             CreatedDate = DateTime.Now
@@ -143,7 +157,8 @@ public class JobPlanService : IJobPlanService
     }
 
     public async Task<(bool Success, string? Error)> UpdateAsync(
-        int jobPlanId, string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements, string? currentUserName)
+        int jobPlanId, string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements, string? currentUserName,
+        int? equipmentClassId = null, bool permitRequired = false, bool lotoRequired = false)
     {
         var jobPlan = await _context.JobPlans.FirstOrDefaultAsync(x => x.JobPlanId == jobPlanId);
         if (jobPlan == null) return (false, "Job Plan پیدا نشد.");
@@ -155,6 +170,9 @@ public class JobPlanService : IJobPlanService
         jobPlan.Scope = scope;
         jobPlan.EstimatedDurationHours = estimatedDurationHours;
         jobPlan.SafetyRequirements = safetyRequirements;
+        jobPlan.EquipmentClassId = equipmentClassId;
+        jobPlan.PermitRequired = permitRequired;
+        jobPlan.LOTORequired = lotoRequired;
         jobPlan.ModifiedBy = currentUserName;
 
         await _context.SaveChangesAsync();

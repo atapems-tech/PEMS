@@ -9,6 +9,13 @@ public class JobPlanListDto
     public int TaskCount { get; set; }
     public int PlanUsageCount { get; set; }
     public bool IsActive { get; set; }
+
+    // طبق «PEMS Phase 7.5»: پیش از این فاز هیچ راه UI ای برای تنظیم این دو فیلد (که از فاز ۴
+    // در Entity موجود بودند و توسط WorkOrderReleaseGateService فاز ۶ مصرف می‌شوند) وجود نداشت.
+    public int? EquipmentClassId { get; set; }
+    public string? EquipmentClassName { get; set; }
+    public bool PermitRequired { get; set; }
+    public bool LOTORequired { get; set; }
 }
 
 /// <summary>
@@ -24,6 +31,11 @@ public class JobPlanDetailDto
     public decimal? EstimatedDurationHours { get; set; }
     public string? SafetyRequirements { get; set; }
     public bool IsActive { get; set; }
+
+    public int? EquipmentClassId { get; set; }
+    public string? EquipmentClassName { get; set; }
+    public bool PermitRequired { get; set; }
+    public bool LOTORequired { get; set; }
 
     public List<MaintenanceTaskDto> Tasks { get; set; } = new();
     public List<JobPlanRequiredSkillDto> RequiredSkills { get; set; } = new();

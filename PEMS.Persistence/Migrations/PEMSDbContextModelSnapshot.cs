@@ -1060,6 +1060,126 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("CrewMembers", (string)null);
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.CriticalityAssessment", b =>
+                {
+                    b.Property<int>("CriticalityAssessmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CriticalityAssessmentId"));
+
+                    b.Property<DateTime?>("ApprovedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ApprovedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("AssessmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("EnvironmentScore")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FrameworkVersion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreparedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProductionScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Rationale")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReasonForChange")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReviewedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("SafetyScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("SupersededByAssessmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CriticalityAssessmentId");
+
+                    b.HasIndex("SupersededByAssessmentId");
+
+                    b.HasIndex("EquipmentId", "Status")
+                        .HasDatabaseName("IX_CriticalityAssessments_EquipmentId_Status");
+
+                    b.ToTable("CriticalityAssessments");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.CriticalityAssessmentEvidence", b =>
+                {
+                    b.Property<int>("CriticalityAssessmentEvidenceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CriticalityAssessmentEvidenceId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CriticalityAssessmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Reference")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SourceIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SourceType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CriticalityAssessmentEvidenceId");
+
+                    b.HasIndex("CriticalityAssessmentId");
+
+                    b.ToTable("CriticalityAssessmentEvidences");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Department", b =>
                 {
                     b.Property<int>("DepartmentId")
@@ -13445,6 +13565,35 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.CriticalityAssessment", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.CriticalityAssessment", "SupersededByAssessment")
+                        .WithMany()
+                        .HasForeignKey("SupersededByAssessmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("SupersededByAssessment");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.CriticalityAssessmentEvidence", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.CriticalityAssessment", "CriticalityAssessment")
+                        .WithMany("Evidence")
+                        .HasForeignKey("CriticalityAssessmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CriticalityAssessment");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Department", b =>
                 {
                     b.HasOne("PEMS.Domain.Entities.Department", "ParentDepartment")
@@ -16743,6 +16892,11 @@ namespace PEMS.Persistence.Migrations
             modelBuilder.Entity("PEMS.Domain.Entities.Crew", b =>
                 {
                     b.Navigation("Members");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.CriticalityAssessment", b =>
+                {
+                    b.Navigation("Evidence");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.Document", b =>

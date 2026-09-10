@@ -385,6 +385,38 @@ public class PermissionService : IPermissionService
             New(SystemRoles.Viewer, "MaintenancePlan")
         });
 
+        // ==============================================================================
+        // ==============================================================================
+        // طبق «PEMS Phase 7.6 — Engineering Criticality Assessment & Controlled Maintenance
+        // Activation» بند ۱۱: ماژول مجزا از "EquipmentCriticality" موجود (که فقط یک ثبت
+        // مستقیم بدون گردش‌کار است) - Create/Edit برای آماده‌سازی/ویرایش DRAFT (MaintenanceEngineer
+        // هم مجاز)، Approve فقط برای Supervisor/Manager (تفکیک وظایف - سازنده نمی‌تواند
+        // تایید‌کننده باشد).
+        // ==============================================================================
+        await SeedMissingRolesAsync("CriticalityAssessment", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "CriticalityAssessment", create: true, edit: true),
+            New(SystemRoles.EngineeringSupervisor, "CriticalityAssessment", create: true, edit: true, approve: true),
+            New(SystemRoles.EngineeringManager, "CriticalityAssessment", create: true, edit: true, approve: true),
+            New(SystemRoles.Viewer, "CriticalityAssessment")
+        });
+
+        // طبق «PEMS Phase 7.5 — CMMS Operational Data Readiness» ممیزی: MaintenanceStrategyController
+        // هیچ بررسی مجوزی نداشت - هر کاربر احرازهویت‌شده‌ای می‌توانست برای هر تجهیزی (حتی به‌صورت
+        // Bulk، برای صدها تجهیز هم‌زمان) استراتژی نگهداری بسازد یا غیرفعال کند؛ دقیقاً همان کلاس
+        // خلأ امنیتی که JobPlan/MaintenancePlan/Reliability/RCMFMEA در فازهای قبلی داشتند.
+        // BulkCreate فقط برای Supervisor/Manager (Approve) است - چون بند ۴۳ صریحاً فعال‌سازی
+        // انبوه/غیرکنترل‌شده را یک ریسک واقعی می‌داند؛ Create تکی برای MaintenanceEngineer هم
+        // در دسترس است (آماده‌سازی مستند طبق بند ۱۱).
+        // ==============================================================================
+        await SeedMissingRolesAsync("MaintenanceStrategy", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "MaintenanceStrategy", create: true, edit: true),
+            New(SystemRoles.EngineeringSupervisor, "MaintenanceStrategy", create: true, edit: true, approve: true),
+            New(SystemRoles.EngineeringManager, "MaintenanceStrategy", create: true, edit: true, approve: true),
+            New(SystemRoles.Viewer, "MaintenanceStrategy")
+        });
+
         // طبق «PEMS — Final Global Repository Audit» بند ۱۹: ProcurementPackageController
         // (شامل AddApproval - ثبت تصمیم Approve/Reject روی زنجیره‌ی MR/MRQ/Vendor Inquiry)
         // هیچ بررسی مجوزی نداشت - هر کاربر احرازهویت‌شده‌ای (صرف‌نظر از نقش) می‌توانست Package

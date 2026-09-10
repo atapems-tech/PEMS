@@ -15,10 +15,12 @@ public interface IJobPlanService
     Task<JobPlanDetailDto?> GetDetailsAsync(int jobPlanId);
 
     Task<(bool Success, string? Error, int? Id)> CreateAsync(
-        string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements, string? currentUserName);
+        string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements, string? currentUserName,
+        int? equipmentClassId = null, bool permitRequired = false, bool lotoRequired = false);
 
     Task<(bool Success, string? Error)> UpdateAsync(
-        int jobPlanId, string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements, string? currentUserName);
+        int jobPlanId, string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements, string? currentUserName,
+        int? equipmentClassId = null, bool permitRequired = false, bool lotoRequired = false);
 
     Task<(bool Success, string? Error)> AddTaskAsync(int jobPlanId, int taskNumber, string title, string? description, int? estimatedDurationMinutes);
     Task RemoveTaskAsync(int maintenanceTaskId);
