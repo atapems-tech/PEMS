@@ -191,6 +191,22 @@ public class DocumentAttachmentRevisionConfiguration : IEntityTypeConfiguration<
     }
 }
 
+/// <summary>
+/// طبق «PEMS EDMS Phase 2 Lifecycle Design» بند ۳: پاسخ کارفرما مخصوص یک رویژن - Restrict (نه
+/// Cascade) طبق قرارداد این نشست، تا حذف یک نامه هرگز تاریخچه‌ی پاسخ کارفرمای یک رویژن را
+/// خودکار پاک نکند.
+/// </summary>
+public class DocumentRevisionClientReviewConfiguration : IEntityTypeConfiguration<DocumentRevision>
+{
+    public void Configure(EntityTypeBuilder<DocumentRevision> builder)
+    {
+        builder.HasOne(x => x.ClientReviewLetter)
+            .WithMany()
+            .HasForeignKey(x => x.ClientReviewLetterId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+}
+
 public class DocumentCommentConfiguration : IEntityTypeConfiguration<DocumentComment>
 {
     public void Configure(EntityTypeBuilder<DocumentComment> builder)

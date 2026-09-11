@@ -326,7 +326,11 @@ public class EngineeringDocumentService : IEngineeringDocumentService
                     IssuedDate = x.IssuedDate,
                     EffectiveDate = x.EffectiveDate,
                     SupersededRevisionNo = x.SupersededRevision != null ? x.SupersededRevision.RevisionNo : null,
-                    AIRevisionSummary = x.AIRevisionSummary
+                    AIRevisionSummary = x.AIRevisionSummary,
+
+                    ClientReviewStatus = x.ClientReviewStatus,
+                    ClientReviewComment = x.ClientReviewComment,
+                    ClientReviewDate = x.ClientReviewDate
 
                 })
 

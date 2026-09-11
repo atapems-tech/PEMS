@@ -42,4 +42,10 @@ public class DocumentRevisionDto
     public DateTime? EffectiveDate { get; set; }
     public string? SupersededRevisionNo { get; set; }
     public string? AIRevisionSummary { get; set; }
+
+    // طبق «PEMS EDMS Phase 2 Lifecycle Design» یافته L2-01: پاسخ کارفرمای مخصوص همین رویژن -
+    // نه یک Cache سطح-مدرک که ممکن است رویژن جدیدتر باشد
+    public string? ClientReviewStatus { get; set; }
+    public string? ClientReviewComment { get; set; }
+    public DateTime? ClientReviewDate { get; set; }
 }

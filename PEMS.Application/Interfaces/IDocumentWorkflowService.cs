@@ -85,6 +85,12 @@ public interface IDocumentWorkflowService
     /// <summary>
     /// طبق تصمیم: پاسخ کارفرما دیگر متن آزاد نیست - باید از روی یک نامه‌ی وارده‌ی واقعی
     /// (ثبت‌شده در ماژول نامه‌نگاری، LetterType=Incoming) ثبت شود تا ردیابی رسمی داشته باشد.
+    ///
+    /// طبق «PEMS EDMS Phase 2 Lifecycle Design» بند ۲: revisionId اختیاری - اگر داده نشود
+    /// (رفتار قبلی، دست‌نخورده برای فراخوانی‌های موجود)، آخرین رویژن مدرک انتخاب می‌شود -
+    /// دقیقاً همان منطق تفکیک "آخرین رویژن" که ساخت رویژن جدید برای SupersededRevisionId
+    /// استفاده می‌کند. پاسخ روی همان رویژن مشخص ثبت می‌شود (مرجع حقیقت)؛ فیلدهای هم‌نام روی
+    /// Document فقط به‌عنوان Cache آخرین رویژن به‌روز می‌مانند.
     /// </summary>
     Task RecordClientResponseAsync(
         int documentId,
@@ -94,7 +100,8 @@ public interface IDocumentWorkflowService
         int? actionByEmployeeId,
         IReadOnlyList<string> actorRoles,
         string? ipAddress = null,
-        string? userAgent = null);
+        string? userAgent = null,
+        int? revisionId = null);
 
 
     /// <summary>

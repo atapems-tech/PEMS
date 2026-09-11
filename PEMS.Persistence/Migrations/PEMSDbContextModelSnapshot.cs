@@ -2185,6 +2185,18 @@ namespace PEMS.Persistence.Migrations
                     b.Property<int?>("CheckedById")
                         .HasColumnType("int");
 
+                    b.Property<string>("ClientReviewComment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ClientReviewDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ClientReviewLetterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClientReviewStatus")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
 
@@ -2243,6 +2255,8 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("ApprovedById");
 
                     b.HasIndex("CheckedById");
+
+                    b.HasIndex("ClientReviewLetterId");
 
                     b.HasIndex("CreatedById");
 
@@ -14400,6 +14414,11 @@ namespace PEMS.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("CheckedById");
 
+                    b.HasOne("PEMS.Domain.Entities.Letter", "ClientReviewLetter")
+                        .WithMany()
+                        .HasForeignKey("ClientReviewLetterId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("PEMS.Domain.Entities.Employee", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
@@ -14428,6 +14447,8 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("ApprovedBy");
 
                     b.Navigation("CheckedBy");
+
+                    b.Navigation("ClientReviewLetter");
 
                     b.Navigation("CreatedBy");
 

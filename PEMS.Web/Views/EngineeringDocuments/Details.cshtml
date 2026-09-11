@@ -513,7 +513,7 @@
             @if (Model.Revisions != null && Model.Revisions.Any())
             {
                 <table class="table table-enterprise">
-                    <thead><tr><th>Revision</th><th>Status</th><th>Reason</th><th>Created By</th><th>Reviewer</th><th>Approved</th>
+                    <thead><tr><th>Revision</th><th>Status</th><th>Client Review</th><th>Reason</th><th>Created By</th><th>Reviewer</th><th>Approved</th>
                         <th>Created</th><th>Issued</th><th>Effective</th><th>Supersedes</th></tr></thead>
                     <tbody>
                         @foreach (var rev in Model.Revisions)
@@ -521,6 +521,24 @@
                             <tr>
                                 <td>@rev.RevisionNo</td>
                                 <td><span class="badge bg-secondary">@rev.Status</span></td>
+                                <td class="small">
+                                    @{
+                                        var clientBadge = rev.ClientReviewStatus switch
+                                        {
+                                            "A" => "bg-success",
+                                            "B" or "C" or "D" => "bg-danger",
+                                            _ => null
+                                        };
+                                    }
+                                    @if (clientBadge != null)
+                                    {
+                                        <span class="badge @clientBadge" title="@rev.ClientReviewComment">@rev.ClientReviewStatus @(rev.ClientReviewDate.HasValue ? $"({rev.ClientReviewDate:yyyy-MM-dd})" : "")</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Not yet submitted to client</span>
+                                    }
+                                </td>
                                 <td class="small">@rev.Reason</td>
                                 <td class="small">@(rev.CreatedByName ?? "—")</td>
                                 <td>@rev.ReviewerName</td>
@@ -533,7 +551,7 @@
                             @if (!string.IsNullOrEmpty(rev.ChangeDescription) || !string.IsNullOrEmpty(rev.AIRevisionSummary) || !string.IsNullOrEmpty(rev.VendorComment))
                             {
                                 <tr class="table-light">
-                                    <td colspan="10" class="small">
+                                    <td colspan="11" class="small">
                                         @if (!string.IsNullOrEmpty(rev.ChangeDescription)) { <div><strong>Change:</strong> @rev.ChangeDescription</div> }
                                         @if (!string.IsNullOrEmpty(rev.VendorComment)) { <div><i class="bi bi-building"></i> <strong>Vendor Comment:</strong> @rev.VendorComment</div> }
                                         @if (!string.IsNullOrEmpty(rev.AIRevisionSummary)) { <div><i class="bi bi-robot"></i> <strong>AI Summary:</strong> @rev.AIRevisionSummary</div> }

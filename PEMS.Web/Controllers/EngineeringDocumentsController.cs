@@ -897,6 +897,12 @@ public class EngineeringDocumentsController : Controller
         document.Status =
             "Draft";
 
+        // طبق «PEMS EDMS Phase 2 Lifecycle Design» یافته L2-01: رویژن تازه هنوز پاسخ کارفرما
+        // ندارد - این Cache نباید پاسخ کارفرمای رویژن قبلی را به‌اشتباه نشان بدهد. حقیقت مرجع
+        // (rev-به-rev) روی خودِ رویژن‌های قبلی دست‌نخورده باقی می‌ماند.
+        document.ClientApprovalStatus = null;
+        document.ClientComment = null;
+        document.ClientResponseDate = null;
 
         document.ModifiedDate =
             DateTime.Now;

@@ -96,4 +96,23 @@ public class DocumentRevision
     // طبق «PEMS EDMS Deep Repository Audit» یافته F-06: فایل‌های پیوست‌شده‌ی مخصوص همین رویژن
     // (اختیاری - پیوست‌های قدیمی/سطح-مدرک همچنان از طریق Document.Attachments قابل‌دسترسی می‌مانند)
     public ICollection<DocumentAttachment> Attachments { get; set; } = new List<DocumentAttachment>();
+
+    // ==============================================================================
+    // طبق «PEMS EDMS Phase 2 Lifecycle Design» یافته L2-01: پیش از این، پاسخ کارفرما فقط روی
+    // EngineeringDocument.ClientApprovalStatus ثبت می‌شد - نه مخصوص یک رویژن - و هنگام ساخت
+    // رویژن جدید هرگز پاک نمی‌شد، پس رویژن تازه (بدون بازبینی) به‌اشتباه تاییدشده نشان داده
+    // می‌شد. حالا حقیقت مرجع همین‌جاست؛ فیلدهای هم‌نام روی Document فقط یک Cache از آخرین
+    // رویژن هستند و روی ساخت رویژن جدید پاک می‌شوند.
+    // ==============================================================================
+
+    // کد پاسخ کارفرما - همان واژگان امروزی Document.ClientApprovalStatus: A/B/C/D
+    public string? ClientReviewStatus { get; set; }
+
+    public string? ClientReviewComment { get; set; }
+
+    public DateTime? ClientReviewDate { get; set; }
+
+    // پاسخ کارفرما باید از روی یک نامه‌ی وارده‌ی واقعی ثبت شود - همان قاعده‌ی سطح-مدرک قبلی
+    public int? ClientReviewLetterId { get; set; }
+    public Letter? ClientReviewLetter { get; set; }
 }

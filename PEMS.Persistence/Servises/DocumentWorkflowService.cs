@@ -318,7 +318,8 @@ public class DocumentWorkflowService
         int? actionByEmployeeId,
         IReadOnlyList<string> actorRoles,
         string? ipAddress = null,
-        string? userAgent = null)
+        string? userAgent = null,
+        int? revisionId = null)
     {
         // طبق فاز ۳ RBAC-ABAC: آرایه‌ی ثابت ClientResponseRoles جایگزین شد با مجوز داده‌محور
         // «Document.RecordClientResponse» (AccessControlSeeder.SeedPhase3PermissionsAsync) -
@@ -346,17 +347,44 @@ public class DocumentWorkflowService
 
         var normalizedCode = clientStatus.Trim().ToUpperInvariant();
 
-        document.ClientApprovalStatus = clientStatus;
-        document.ClientComment = string.IsNullOrWhiteSpace(clientComment)
+        if (normalizedCode != "A" && normalizedCode != "B" && normalizedCode != "C" && normalizedCode != "D")
+            throw new Exception($"کد وضعیت کارفرما نامعتبر است: {clientStatus} (باید A/B/C/D باشد)");
+
+        // طبق یافته‌ی L2-01: پاسخ کارفرما مخصوص یک رویژن مشخص است، نه کل مدرک. اگر revisionId
+        // داده نشود، آخرین رویژن انتخاب می‌شود - همان منطقی که ساخت رویژن جدید برای
+        // SupersededRevisionId استفاده می‌کند.
+        var targetRevision = revisionId.HasValue
+            ? await _context.DocumentRevisions.FirstOrDefaultAsync(x => x.RevisionId == revisionId.Value && x.DocumentId == documentId)
+            : await _context.DocumentRevisions
+                .Where(x => x.DocumentId == documentId)
+                .OrderByDescending(x => x.RevisionId)
+                .FirstOrDefaultAsync();
+
+        if (revisionId.HasValue && targetRevision == null)
+            throw new Exception("رویژن انتخاب‌شده متعلق به این مدرک نیست یا یافت نشد.");
+
+        var normalizedComment = string.IsNullOrWhiteSpace(clientComment)
             ? $"طبق نامه‌ی وارده شماره {letter.LetterNumber}"
             : $"{clientComment} (طبق نامه‌ی وارده شماره {letter.LetterNumber})";
+
+        if (targetRevision != null)
+        {
+            targetRevision.ClientReviewStatus = clientStatus;
+            targetRevision.ClientReviewComment = normalizedComment;
+            targetRevision.ClientReviewDate = DateTime.Now;
+            targetRevision.ClientReviewLetterId = incomingLetterId;
+        }
+
+        // فیلدهای هم‌نام روی Document فقط Cache آخرین رویژن هستند - برای سازگاری با خواننده‌های
+        // موجود (View ها، EngineeringDocumentService DTO) دست‌نخورده نگه داشته می‌شوند
+        document.ClientApprovalStatus = clientStatus;
+        document.ClientComment = normalizedComment;
         document.ClientResponseDate = DateTime.Now;
 
         document.Status = normalizedCode switch
         {
             "A" => "Client Approved",
-            "B" or "C" or "D" => "Rejected",
-            _ => throw new Exception($"کد وضعیت کارفرما نامعتبر است: {clientStatus} (باید A/B/C/D باشد)")
+            _ => "Rejected"
         };
 
         document.ModifiedDate = DateTime.Now;
