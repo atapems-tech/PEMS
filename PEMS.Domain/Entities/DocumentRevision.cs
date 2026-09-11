@@ -92,4 +92,8 @@ public class DocumentRevision
 
 
     public bool IsActive { get; set; } = true;
+
+    // طبق «PEMS EDMS Deep Repository Audit» یافته F-06: فایل‌های پیوست‌شده‌ی مخصوص همین رویژن
+    // (اختیاری - پیوست‌های قدیمی/سطح-مدرک همچنان از طریق Document.Attachments قابل‌دسترسی می‌مانند)
+    public ICollection<DocumentAttachment> Attachments { get; set; } = new List<DocumentAttachment>();
 }

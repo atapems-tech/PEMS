@@ -1,5 +1,6 @@
-﻿@{
+@{
     ViewData["Title"] = "Upload Attachment";
+    var revisions = (IEnumerable<dynamic>)(ViewBag.Revisions ?? Array.Empty<dynamic>());
 }
 
 
@@ -31,7 +32,29 @@ Upload Document Attachment
 
     </div>
 
+    <div class="mb-3">
+        <label class="form-label">Revision <span class="text-muted small">(optional — leave blank for a document-level attachment not tied to a specific revision)</span></label>
+        <select name="revisionId" class="form-select">
+            <option value="">-- Document-level (no specific revision) --</option>
+            @foreach (var rev in revisions)
+            {
+                <option value="@rev.RevisionId">Rev @rev.RevisionNo (@rev.Status)</option>
+            }
+        </select>
+    </div>
 
+    <div class="mb-3">
+        <label class="form-label">File Role <span class="text-muted small">(optional)</span></label>
+        <select name="fileRole" class="form-select">
+            <option value="">-- Unspecified --</option>
+            <option value="Native">Native / Source File</option>
+            <option value="PdfRendition">PDF Rendition</option>
+            <option value="MarkedUp">Marked-up File</option>
+            <option value="ReviewCopy">Review Copy</option>
+            <option value="SupportingAttachment">Supporting Attachment</option>
+        </select>
+        <div class="form-text">If this revision has no official file yet, the first upload for it becomes official automatically.</div>
+    </div>
 
     <button type="submit"
             class="btn btn-primary">

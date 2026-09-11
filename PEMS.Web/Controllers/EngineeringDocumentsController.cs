@@ -588,9 +588,18 @@ public class EngineeringDocumentsController : Controller
     // =========================
 
     [HttpGet]
-    public IActionResult UploadAttachment(int id)
+    public async Task<IActionResult> UploadAttachment(int id)
     {
         ViewBag.DocumentId = id;
+
+        // طبق یافته F-06 ممیزی EDMS: کاربر باید بتواند صریحاً انتخاب کند این فایل برای کدام
+        // رویژن است - اختیاری می‌ماند (گزینه‌ی "سطح مدرک، بدون رویژن مشخص" همیشه موجود است) تا
+        // با جریان قدیمی/پیوست‌های عمومی سازگار بماند
+        ViewBag.Revisions = await _context.DocumentRevisions
+            .Where(x => x.DocumentId == id && x.IsActive)
+            .OrderByDescending(x => x.RevisionId)
+            .Select(x => new { x.RevisionId, x.RevisionNo, x.Status })
+            .ToListAsync();
 
         return View();
     }
@@ -607,7 +616,9 @@ public class EngineeringDocumentsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UploadAttachment(
         int documentId,
-        IFormFile file)
+        IFormFile file,
+        int? revisionId,
+        string? fileRole)
     {
 
         if(file == null || file.Length == 0)
@@ -618,24 +629,58 @@ public class EngineeringDocumentsController : Controller
             );
 
             ViewBag.DocumentId = documentId;
+            ViewBag.Revisions = await _context.DocumentRevisions
+                .Where(x => x.DocumentId == documentId && x.IsActive)
+                .OrderByDescending(x => x.RevisionId)
+                .Select(x => new { x.RevisionId, x.RevisionNo, x.Status })
+                .ToListAsync();
 
             return View();
         }
 
-
+        // طبق یافته F-06 ممیزی EDMS: اگر revisionId داده شده، باید واقعاً متعلق به همین مدرک باشد -
+        // هرگز به یک رویژن مدرک دیگر وصل نمی‌شود
+        if (revisionId.HasValue)
+        {
+            var revisionBelongsToDocument = await _context.DocumentRevisions
+                .AnyAsync(x => x.RevisionId == revisionId.Value && x.DocumentId == documentId);
+            if (!revisionBelongsToDocument)
+                return BadRequest("رویژن انتخاب‌شده متعلق به این مدرک نیست.");
+        }
 
         // طبق ممیزی امنیتی (P0 - Engineering File Security Containment): دیگر مستقیم زیر
-        // wwwroot نوشته نمی‌شود - IFileStorageService ریشه‌ی امن بیرون از wwwroot را مدیریت می‌کند
+        // wwwroot نوشته نمی‌شود - IFileStorageService ریشه‌ی امن بیرون از wwwroot را مدیریت می‌کند.
+        // طبق یافته F-07 ممیزی EDMS: SHA-256 حین همان یک بار Streaming محاسبه می‌شود (نه با خواندن
+        // دوباره‌ی فایل) - HashingStream همان کلاس ساخته‌شده برای Enterprise File Storage است،
+        // این‌جا دوباره استفاده می‌شود نه بازتولید.
         string storageKey;
+        string fileHash;
         await using (var uploadStream = file.OpenReadStream())
         {
-            storageKey = await _fileStorage.SaveAsync("documents", file.FileName, uploadStream);
+            var hashingStream = new PEMS.Persistence.Services.HashingStream(uploadStream);
+            storageKey = await _fileStorage.SaveAsync("documents", file.FileName, hashingStream);
+            fileHash = hashingStream.GetHexHash();
         }
+
+        // طبق یافته F-06: اگر این رویژن هنوز هیچ فایل رسمی ندارد، اولین فایل آپلودشده برایش
+        // خودکار رسمی می‌شود؛ در غیر این صورت کاربر باید بعداً صریحاً "Set Official" کند - هرگز دو
+        // فایل هم‌زمان به‌طور خاموش رسمی یک رویژن نمی‌شوند
+        var isFirstOfficialForRevision = revisionId.HasValue &&
+            !await _context.DocumentAttachments.AnyAsync(x =>
+                x.DocumentRevisionId == revisionId.Value && x.IsActive && x.IsOfficial);
 
         var attachment =
             new DocumentAttachment
             {
                 DocumentId = documentId,
+
+                DocumentRevisionId = revisionId,
+
+                FileRole = string.IsNullOrWhiteSpace(fileRole) ? null : fileRole,
+
+                IsOfficial = isFirstOfficialForRevision,
+
+                FileHash = fileHash,
 
                 FileName = file.FileName,
 

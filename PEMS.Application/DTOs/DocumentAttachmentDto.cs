@@ -15,6 +15,12 @@ public class DocumentAttachmentDto
 
     public string? MimeType { get; set; }
 
+    public int? DocumentRevisionId { get; set; }
+    public string? RevisionNo { get; set; }
+    public bool IsOfficial { get; set; }
+    public string? FileRole { get; set; }
+    public string? FileHash { get; set; }
+
 
     public string? AIStatus { get; set; }
 

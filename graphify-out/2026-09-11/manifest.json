@@ -1392,10 +1392,10 @@
     "semantic_hash": "53fdf3996934c743a3aff9adffc8a0e8"
   },
   "PEMS.Infrastructure/PEMS.Infrastructure.csproj": {
-    "mtime": 1788350903.3569963,
-    "seen": 1788613735.670535,
-    "ast_hash": "667d85fca43799787a200ab0b57c12c1",
-    "semantic_hash": "667d85fca43799787a200ab0b57c12c1"
+    "mtime": 1789125254.8694408,
+    "seen": 1789128632.1880693,
+    "ast_hash": "8046ad34dc6c92c4db40a73f7c2d3cc8",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Configurations/ContractConfiguration.cs": {
     "mtime": 1788350903.4040544,
@@ -1524,9 +1524,9 @@
     "semantic_hash": "dacbb68ad3f3363731257b252a96ac1b"
   },
   "PEMS.Persistence/Context/PEMSDbContext.cs": {
-    "mtime": 1789054247.8141088,
-    "seen": 1789059854.6673257,
-    "ast_hash": "7c355e82351143b8c7775aaf521f755a",
+    "mtime": 1789115800.891266,
+    "seen": 1789128632.2050607,
+    "ast_hash": "26233daae2518592d2a88210b9d38190",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Context/PEMSDbContextFactory.cs": {
@@ -1578,16 +1578,16 @@
     "semantic_hash": "5809af8d8afaa80014e62788179b6dd4"
   },
   "PEMS.Persistence/Migrations/PEMSDbContextModelSnapshot.cs": {
-    "mtime": 1789054803.3062682,
-    "seen": 1789059854.7005928,
-    "ast_hash": "63a43acfd3216c21fbe31f35e78df353",
+    "mtime": 1789116018.964114,
+    "seen": 1789128632.2466176,
+    "ast_hash": "9927ca0fa88db3a580d0274b7562a155",
     "semantic_hash": ""
   },
   "PEMS.Persistence/PEMS.Persistence.csproj": {
-    "mtime": 1788350903.3884242,
-    "seen": 1788613735.670535,
-    "ast_hash": "72e15f61fd70c6402f16cbdeba7983c8",
-    "semantic_hash": "72e15f61fd70c6402f16cbdeba7983c8"
+    "mtime": 1789125077.5490174,
+    "seen": 1789128632.2466176,
+    "ast_hash": "c06c9ed0c89bb1325f6b466489f57b50",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Repositories/EngineeringDocumentRepository.cs": {
     "mtime": 1788704759.309141,
@@ -2682,9 +2682,9 @@
     "semantic_hash": "ab7e34a2113cfa2a4d952bac4edc6cb4"
   },
   "PEMS.Web/Program.cs": {
-    "mtime": 1789055112.6702566,
-    "seen": 1789059854.8176231,
-    "ast_hash": "116dccb3c33b7b08304dc1af6c865801",
+    "mtime": 1789127093.4319353,
+    "seen": 1789128632.4117832,
+    "ast_hash": "1ce80785a1d630175437410aaafa3616",
     "semantic_hash": ""
   },
   "PEMS.Web/Properties/launchSettings.json": {
@@ -3360,10 +3360,10 @@
     "semantic_hash": "04e1f226a85d58381b2a2c15a6e3aa4b"
   },
   "PEMS.Web/Views/Settings/Index.cshtml": {
-    "mtime": 1788350906.9445174,
-    "seen": 1788613735.670535,
-    "ast_hash": "013039b414fa555337035f3d130e7cb1",
-    "semantic_hash": "013039b414fa555337035f3d130e7cb1"
+    "mtime": 1789127161.1217184,
+    "seen": 1789128632.47545,
+    "ast_hash": "b0365410a4629e6418956172264a0120",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Shared/Error.cshtml": {
     "mtime": 1788350906.9554095,
@@ -10599,6 +10599,252 @@
     "mtime": 1789061610.09699,
     "seen": 1789111951.295835,
     "ast_hash": "6c0fd3ae1abb5ab7222d2241b0cf2856",
+    "semantic_hash": ""
+  },
+  "PEMS.Application/DTOs/StorageProviderDto.cs": {
+    "mtime": 1789116094.3102946,
+    "seen": 1789128632.094334,
+    "ast_hash": "65baeacfe1d26b8cafddc3452ad03d5b",
+    "semantic_hash": ""
+  },
+  "PEMS.Application/Exceptions/StorageException.cs": {
+    "mtime": 1789124666.7208595,
+    "seen": 1789128632.1009014,
+    "ast_hash": "5f1d787b19ff731db8d7257478260538",
+    "semantic_hash": ""
+  },
+  "PEMS.Application/Interfaces/ICredentialProtector.cs": {
+    "mtime": 1789124535.4115458,
+    "seen": 1789128632.1038992,
+    "ast_hash": "ee68b6bc60f53109e534621960f99b36",
+    "semantic_hash": ""
+  },
+  "PEMS.Application/Interfaces/IEnterpriseFileStorageService.cs": {
+    "mtime": 1789124756.063004,
+    "seen": 1789128632.1099675,
+    "ast_hash": "9de1d4397720406225a1c1273a08ecfe",
+    "semantic_hash": ""
+  },
+  "PEMS.Application/Interfaces/IStorageProviderClient.cs": {
+    "mtime": 1789124701.869397,
+    "seen": 1789128632.132996,
+    "ast_hash": "1f5e251e85870993b0858181aa8b5d37",
+    "semantic_hash": ""
+  },
+  "PEMS.Application/Interfaces/IStorageProviderService.cs": {
+    "mtime": 1789124783.385754,
+    "seen": 1789128632.132996,
+    "ast_hash": "1ec058a7f2b40b1cf200284c970b3c8d",
+    "semantic_hash": ""
+  },
+  "PEMS.Application/Interfaces/IStorageRouteResolver.cs": {
+    "mtime": 1789124726.8969789,
+    "seen": 1789128632.132996,
+    "ast_hash": "233f2515320c7d8aa8a86c48d6d6fc55",
+    "semantic_hash": ""
+  },
+  "PEMS.Domain/Entities/StorageProvider.cs": {
+    "mtime": 1789115495.6878045,
+    "seen": 1789128632.1820695,
+    "ast_hash": "435932d52a1a16e3d45ceac0e2c02b40",
+    "semantic_hash": ""
+  },
+  "PEMS.Domain/Entities/StorageRoute.cs": {
+    "mtime": 1789115539.926569,
+    "seen": 1789128632.1820695,
+    "ast_hash": "55ecb2b885b6fb926f14079f2d38c2c8",
+    "semantic_hash": ""
+  },
+  "PEMS.Infrastructure/FileStorage/CredentialProtector.cs": {
+    "mtime": 1789125284.8220825,
+    "seen": 1789128632.1880693,
+    "ast_hash": "1e5b59e94fe2c1b6ea1b17d2655d2a6e",
+    "semantic_hash": ""
+  },
+  "PEMS.Infrastructure/FileStorage/FileSystemStorageProviderClient.cs": {
+    "mtime": 1789125334.217016,
+    "seen": 1789128632.1880693,
+    "ast_hash": "2a8e4a740b9114d88aa299a34d4e5034",
+    "semantic_hash": ""
+  },
+  "PEMS.Infrastructure/FileStorage/FtpStorageProviderClient.cs": {
+    "mtime": 1789125665.8656552,
+    "seen": 1789128632.1880693,
+    "ast_hash": "9d6ea6d098e40b3a72ba86a799ceda70",
+    "semantic_hash": ""
+  },
+  "PEMS.Infrastructure/FileStorage/SftpStorageProviderClient.cs": {
+    "mtime": 1789126004.3741903,
+    "seen": 1789128632.1880693,
+    "ast_hash": "8ae5af6b62e806308afd9d20e71258fb",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Configurations/StorageProviderConfiguration.cs": {
+    "mtime": 1789115723.6521566,
+    "seen": 1789128632.2020605,
+    "ast_hash": "40eeeb6adc04a2e4657a930609ad3293",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260911084018_AddEnterpriseFileStorageManagement.Designer.cs": {
+    "mtime": 1789116018.9621153,
+    "seen": 1789128632.2466176,
+    "ast_hash": "36a6b756f3ca6a94aba3f5977928a8ab",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260911084018_AddEnterpriseFileStorageManagement.cs": {
+    "mtime": 1789116018.9611185,
+    "seen": 1789128632.2466176,
+    "ast_hash": "1138bb94630795175754b33161b90e55",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Servises/EnterpriseFileStorageService.cs": {
+    "mtime": 1789126186.5736089,
+    "seen": 1789128632.2697468,
+    "ast_hash": "42caaaec0e393ad92a755fdfb226a4bc",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Servises/HashingStream.cs": {
+    "mtime": 1789126153.537692,
+    "seen": 1789128632.2747562,
+    "ast_hash": "5e1920606238f87ee7692f507ce510ad",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Servises/StorageProviderClientFactory.cs": {
+    "mtime": 1789126086.7333634,
+    "seen": 1789128632.3075638,
+    "ast_hash": "c7c6b0beba814ea92afc36f875f998f8",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Servises/StorageProviderService.cs": {
+    "mtime": 1789127010.339149,
+    "seen": 1789128632.3075638,
+    "ast_hash": "d12f04dcb1aff06c09e029d2a90711d6",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Servises/StorageRouteResolver.cs": {
+    "mtime": 1789126114.9905767,
+    "seen": 1789128632.3075638,
+    "ast_hash": "dfd1f3583f3c932bb0c5a2afbfd84e36",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Servises/StorageRouteService.cs": {
+    "mtime": 1789128055.524057,
+    "seen": 1789128632.3075638,
+    "ast_hash": "09dd1f067c1461042afd7cf737fb5436",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/FileStorage/CredentialProtectorTests.cs": {
+    "mtime": 1789127726.2632537,
+    "seen": 1789128632.3552637,
+    "ast_hash": "ac60d2313eb56e4c4b0a0007a91d8f5c",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/FileStorage/EnterpriseFileStorageServiceTests.cs": {
+    "mtime": 1789127919.8545246,
+    "seen": 1789128632.3552637,
+    "ast_hash": "570a6bf170777117cab750343c66da63",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/FileStorage/FileSystemStorageProviderClientTests.cs": {
+    "mtime": 1789127784.5634034,
+    "seen": 1789128632.3552637,
+    "ast_hash": "2d99325402e1fc2792b8472287b9e0b0",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/FileStorage/RemoteStorageProviderClientTests.cs": {
+    "mtime": 1789127849.0140052,
+    "seen": 1789128632.3552637,
+    "ast_hash": "d5be378ddef2db38acc444aaed169e02",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/FileStorage/StorageProviderClientFactoryTests.cs": {
+    "mtime": 1789127867.9209354,
+    "seen": 1789128632.3552637,
+    "ast_hash": "bc5c1dc5736987728a5c4dc09dfe5ed0",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/FileStorage/StorageProviderServiceTests.cs": {
+    "mtime": 1789127714.487176,
+    "seen": 1789128632.3552637,
+    "ast_hash": "d6cf9efe69690736f2f4ec9a801a469f",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/FileStorage/StorageRouteResolverTests.cs": {
+    "mtime": 1789127684.4241471,
+    "seen": 1789128632.3552637,
+    "ast_hash": "f6ecee0ef8f6b19b0feef5738016f47b",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/FileStorage/StorageRouteServiceTests.cs": {
+    "mtime": 1789128071.7555912,
+    "seen": 1789128632.3562758,
+    "ast_hash": "1a25484e5b41792c15441fad42470d51",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Areas/Admin/Controllers/StorageProvidersController.cs": {
+    "mtime": 1789127181.041581,
+    "seen": 1789128632.3637953,
+    "ast_hash": "59d872447c950314981e3c2d931985e0",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Areas/Admin/Controllers/StorageRoutingController.cs": {
+    "mtime": 1789127196.0893543,
+    "seen": 1789128632.3637953,
+    "ast_hash": "9fd6a55f67734eca5cff81863d80ea64",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Areas/Admin/Views/StorageProviders/Create.cshtml": {
+    "mtime": 1789127260.498704,
+    "seen": 1789128632.367816,
+    "ast_hash": "29e82c8089d677aed7324053968b3efa",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Areas/Admin/Views/StorageProviders/Edit.cshtml": {
+    "mtime": 1789127268.3432178,
+    "seen": 1789128632.367816,
+    "ast_hash": "9e632404ab649502ac7cba33e3eaa716",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Areas/Admin/Views/StorageProviders/Index.cshtml": {
+    "mtime": 1789127220.172325,
+    "seen": 1789128632.367816,
+    "ast_hash": "504b9caafacc894291cea69872473772",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Areas/Admin/Views/StorageProviders/_Form.cshtml": {
+    "mtime": 1789127241.2415066,
+    "seen": 1789128632.367816,
+    "ast_hash": "223671344c4c381a554556d89d8763d1",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Areas/Admin/Views/StorageRouting/Create.cshtml": {
+    "mtime": 1789127307.1577525,
+    "seen": 1789128632.367816,
+    "ast_hash": "b595b0252e30f145c5b3e60931ac113e",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Areas/Admin/Views/StorageRouting/Edit.cshtml": {
+    "mtime": 1789127314.6909008,
+    "seen": 1789128632.367816,
+    "ast_hash": "d1054288048ff8f017026919f3f65f59",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Areas/Admin/Views/StorageRouting/Index.cshtml": {
+    "mtime": 1789127282.0375817,
+    "seen": 1789128632.367816,
+    "ast_hash": "f1f587380b628abc1e82cfae5940e41d",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Areas/Admin/Views/StorageRouting/_Form.cshtml": {
+    "mtime": 1789127293.7886486,
+    "seen": 1789128632.367816,
+    "ast_hash": "23b7118e55bd1fd0d29d83a7dbad6b49",
+    "semantic_hash": ""
+  },
+  ".claude/Role/PEMS Help Governance Baseline \u2014 Mandatory Documentation Synchronization.md": {
+    "mtime": 1789125915.1098993,
+    "seen": 1789128632.5120037,
+    "ast_hash": "7a91b07c3733536ea0a6f2476f844f96",
     "semantic_hash": ""
   }
 }

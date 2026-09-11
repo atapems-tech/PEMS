@@ -10,6 +10,26 @@ public class DocumentAttachment
 
     public int? DocumentId { get; set; }
 
+    // طبق «PEMS EDMS Deep Repository Audit» یافته F-06: قبلاً پیوست فقط به مدرک وصل می‌شد، نه به
+    // یک رویژن مشخص - یعنی هیچ راهی برای تشخیص «فایل رسمی رویژن ۰۳» از «فایل رسمی رویژن ۰۵» در
+    // یک مدرک با چند رویژن وجود نداشت. این فیلد کاملاً اختیاری است (رکوردهای قدیمی همچنان
+    // DocumentRevisionId=null دارند و معتبرند - سازگاری کامل با گذشته).
+    public int? DocumentRevisionId { get; set; }
+    public DocumentRevision? DocumentRevision { get; set; }
+
+    // آیا این فایل، فایل رسمی همان رویژن است (وقتی چند فایل برای یک رویژن آپلود می‌شود - مثلاً
+    // Native + PDF Rendition + Marked-up - باید مشخص باشد کدام یکی مرجع رسمی است)
+    public bool IsOfficial { get; set; }
+
+    // Native, PdfRendition, MarkedUp, ReviewCopy, SupportingAttachment - طبق بند ۹ سند؛ آزاد
+    // (نه Enum) چون این‌جا فقط برچسب توصیفی است، نه یک وضعیت گردش‌کاری قابل انتقال
+    public string? FileRole { get; set; }
+
+    // SHA-256 هگزادسیمال - طبق یافته F-07، حین Streaming آپلود محاسبه می‌شود (نه با خواندن دوباره‌ی
+    // فایل). رکوردهای قدیمی این فیلد را خالی دارند - بازمحاسبه‌ی گذشته‌نگر عمداً انجام نشده (نیازمند
+    // خواندن مجدد هر فایل از دیسک، خارج از محدوده و پرریسک).
+    public string? FileHash { get; set; }
+
     // طبق بررسی قبلی: "چه کسی این فایل را آپلود کرد" اصلاً هیچ‌جا ذخیره نمی‌شد - پارامترش
     // در سرویس وجود داشت ولی نادیده گرفته می‌شد
     public int? UploadedById { get; set; }

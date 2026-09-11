@@ -175,6 +175,22 @@ public class MaintenanceDocumentConfiguration : IEntityTypeConfiguration<Mainten
     }
 }
 
+/// <summary>
+/// طبق «PEMS EDMS Deep Repository Audit» یافته F-06 (Revision-File Binding): پیوست یک مدرک اختیاراً
+/// می‌تواند به یک رویژن مشخص وصل شود. Restrict (نه Cascade) طبق قرارداد این نشست برای جلوگیری از
+/// ریسک چرخه‌ی Cascade چندگانه در SQL Server - حذف یک رویژن نباید پیوست‌هایش را خودکار حذف کند.
+/// </summary>
+public class DocumentAttachmentRevisionConfiguration : IEntityTypeConfiguration<DocumentAttachment>
+{
+    public void Configure(EntityTypeBuilder<DocumentAttachment> builder)
+    {
+        builder.HasOne(x => x.DocumentRevision)
+            .WithMany(x => x.Attachments)
+            .HasForeignKey(x => x.DocumentRevisionId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+}
+
 public class DocumentCommentConfiguration : IEntityTypeConfiguration<DocumentComment>
 {
     public void Configure(EntityTypeBuilder<DocumentComment> builder)

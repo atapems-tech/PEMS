@@ -1904,8 +1904,14 @@ namespace PEMS.Persistence.Migrations
                     b.Property<int?>("DocumentId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("DocumentRevisionId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FileExtension")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileHash")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FileName")
@@ -1914,6 +1920,9 @@ namespace PEMS.Persistence.Migrations
 
                     b.Property<string>("FilePath")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileRole")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("FileSize")
@@ -1926,6 +1935,9 @@ namespace PEMS.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsOfficial")
                         .HasColumnType("bit");
 
                     b.Property<int?>("LetterId")
@@ -1955,6 +1967,8 @@ namespace PEMS.Persistence.Migrations
                     b.HasKey("AttachmentId");
 
                     b.HasIndex("DocumentId");
+
+                    b.HasIndex("DocumentRevisionId");
 
                     b.HasIndex("IntakeProjectId");
 
@@ -14243,6 +14257,11 @@ namespace PEMS.Persistence.Migrations
                         .HasForeignKey("DocumentId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("PEMS.Domain.Entities.DocumentRevision", "DocumentRevision")
+                        .WithMany("Attachments")
+                        .HasForeignKey("DocumentRevisionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("PEMS.Domain.Entities.Project", "IntakeProject")
                         .WithMany()
                         .HasForeignKey("IntakeProjectId")
@@ -14269,6 +14288,8 @@ namespace PEMS.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Document");
+
+                    b.Navigation("DocumentRevision");
 
                     b.Navigation("IntakeProject");
 
@@ -17543,6 +17564,11 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("ExtractedSpecifications");
 
                     b.Navigation("ExtractedTags");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.DocumentRevision", b =>
+                {
+                    b.Navigation("Attachments");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.Equipment", b =>

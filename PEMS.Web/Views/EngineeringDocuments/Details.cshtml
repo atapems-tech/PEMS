@@ -379,7 +379,7 @@
             {
                 <table class="table table-enterprise">
                     <thead>
-                        <tr><th>File Name</th><th>Ext</th><th>Size</th><th>AI Status</th><th>Date</th><th class="text-end">Actions</th></tr>
+                        <tr><th>File Name</th><th>Revision</th><th>Ext</th><th>Size</th><th>AI Status</th><th>Date</th><th class="text-end">Actions</th></tr>
                     </thead>
                     <tbody>
                         @foreach (var file in Model.Attachments)
@@ -393,7 +393,31 @@
                                 _ => "bg-secondary"
                             };
                             <tr>
-                                <td>@file.FileName</td>
+                                <td>
+                                    @file.FileName
+                                    @if (!string.IsNullOrEmpty(file.FileHash))
+                                    {
+                                        <i class="bi bi-shield-check text-success ms-1" data-bs-toggle="tooltip" title="SHA-256: @file.FileHash"></i>
+                                    }
+                                </td>
+                                <td>
+                                    @if (file.DocumentRevisionId.HasValue)
+                                    {
+                                        <span class="badge bg-secondary">Rev @file.RevisionNo</span>
+                                        @if (file.IsOfficial)
+                                        {
+                                            <span class="badge bg-success" data-bs-toggle="tooltip" title="Official file for this revision">Official</span>
+                                        }
+                                        @if (!string.IsNullOrEmpty(file.FileRole))
+                                        {
+                                            <span class="text-muted small d-block">@file.FileRole</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small">Document-level</span>
+                                    }
+                                </td>
                                 <td>@file.FileExtension</td>
                                 <td>@(file.FileSize / 1024) KB</td>
                                 <td><span class="badge @badgeClass">@file.AIStatus</span></td>

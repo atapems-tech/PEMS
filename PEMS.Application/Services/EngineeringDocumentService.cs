@@ -257,6 +257,18 @@ public class EngineeringDocumentService : IEngineeringDocumentService
 
                     MimeType = x.MimeType,
 
+                    DocumentRevisionId = x.DocumentRevisionId,
+
+                    RevisionNo = x.DocumentRevisionId.HasValue
+                        ? document.Revisions.FirstOrDefault(r => r.RevisionId == x.DocumentRevisionId.Value)?.RevisionNo
+                        : null,
+
+                    IsOfficial = x.IsOfficial,
+
+                    FileRole = x.FileRole,
+
+                    FileHash = x.FileHash,
+
                     AIStatus = x.AIStatus,
 
                     AISummary = x.AISummary,
