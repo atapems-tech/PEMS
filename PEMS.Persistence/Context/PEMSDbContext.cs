@@ -272,6 +272,10 @@ public class PEMSDbContext
     public DbSet<FunctionalLocationImportBatch> FunctionalLocationImportBatches { get; set; }
     public DbSet<FunctionalLocationImportRow> FunctionalLocationImportRows { get; set; }
 
+    // طبق «PEMS — Enterprise File Storage Management»
+    public DbSet<StorageProvider> StorageProviders { get; set; }
+    public DbSet<StorageRoute> StorageRoutes { get; set; }
+
     public DbSet<Team> Teams { get; set; }
     public DbSet<TeamMember> TeamMembers { get; set; }
     public DbSet<Crew> Crews { get; set; }

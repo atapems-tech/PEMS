@@ -481,6 +481,16 @@ builder.Services.AddSingleton<PEMS.Application.Interfaces.IFileStorageService>(
     _ => new PEMS.Infrastructure.FileStorage.LocalFileStorageProvider(
         Path.Combine(Directory.GetCurrentDirectory(), "filestore")));
 
+// طبق «PEMS — Enterprise File Storage Management»: زیرساخت جدید و کاملاً افزودنی چند-Provider -
+// IFileStorageService بالا دست‌نخورده باقی می‌ماند؛ این‌ها موازی آن ثبت می‌شوند (بند ۲۲).
+builder.Services.AddDataProtection();
+builder.Services.AddSingleton<PEMS.Application.Interfaces.ICredentialProtector, PEMS.Infrastructure.FileStorage.CredentialProtector>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IStorageProviderClientFactory, PEMS.Persistence.Services.StorageProviderClientFactory>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IStorageRouteResolver, PEMS.Persistence.Services.StorageRouteResolver>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IEnterpriseFileStorageService, PEMS.Persistence.Services.EnterpriseFileStorageService>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IStorageProviderService, PEMS.Persistence.Services.StorageProviderService>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IStorageRouteService, PEMS.Persistence.Services.StorageRouteService>();
+
 builder.Services.AddScoped<IPermissionService, PermissionService>();
 
 builder.Services.AddScoped<IEngineeringDocumentIntelligenceService, EngineeringDocumentIntelligenceService>();

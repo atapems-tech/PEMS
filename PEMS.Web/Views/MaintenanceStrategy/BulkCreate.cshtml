@@ -1,9 +1,16 @@
-﻿@{
+﻿@using PEMS.Application.DTOs
+@{
     var equipments = (List<PEMS.Domain.Entities.Equipment>)ViewBag.Equipments;
     var criticalityByEquipment = (Dictionary<int, string>)ViewBag.CriticalityByEquipment;
     var noFilterApplied = (bool)ViewBag.NoFilterApplied;
     var matchingCount = (int?)ViewBag.MatchingCount;
     var maxResults = (int)ViewBag.MaxResults;
+    var functionalLocations = (List<FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations;
+    var equipmentWithFlCount = (int)ViewBag.EquipmentWithFunctionalLocationCount;
+    var selectedDisciplineIds = (List<int>)ViewBag.SelectedDisciplineIds;
+    var selectedEquipmentTypes = (List<string>)ViewBag.SelectedEquipmentTypes;
+    var selectedFunctionalLocationIds = (List<int>)ViewBag.SelectedFunctionalLocationIds;
+    var selectedTagSearch = (string?)ViewBag.SelectedTagSearch;
 
     // طبق درخواست: دسته‌بندی دوسطحی - اول بر اساس واحد (Area/Unit)، بعد داخل هر واحد بر
     // اساس نوع تجهیز - چون در عمل RCM دقیقاً همین‌طور فکر می‌کنه («همه‌ی پمپ‌های واحد ۱۰۰»)
@@ -26,19 +33,45 @@
 
 <div class="content-card mb-3">
     <form method="get" class="row g-2">
-        <div class="col-md-4">
-            <select name="disciplineId" class="form-select form-select-sm">
-                <option value="">All Disciplines</option>
-                @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == (int?)ViewBag.SelectedDisciplineId)">@d.Name</option> }
+        <div class="col-md-3">
+            <label class="form-label small mb-0">Discipline (چندانتخابی)</label>
+            <select name="disciplineIds" class="form-select form-select-sm" multiple size="4">
+                @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId" selected="@selectedDisciplineIds.Contains((int)d.DisciplineId)">@d.Name</option> }
             </select>
         </div>
-        <div class="col-md-4">
-            <select name="equipmentType" class="form-select form-select-sm">
-                <option value="">All Types</option>
-                @foreach (var t in (IEnumerable<string>)ViewBag.EquipmentTypes) { <option value="@t" selected="@(t == (string?)ViewBag.SelectedEquipmentType)">@t</option> }
+        <div class="col-md-3">
+            <label class="form-label small mb-0">Equipment Type (چندانتخابی)</label>
+            <select name="equipmentTypes" class="form-select form-select-sm" multiple size="4">
+                @foreach (var t in (IEnumerable<string>)ViewBag.EquipmentTypes) { <option value="@t" selected="@selectedEquipmentTypes.Contains(t)">@t</option> }
             </select>
         </div>
-        <div class="col-md-4"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-funnel"></i> فیلتر تجهیزات</button></div>
+        <div class="col-md-3">
+            <label class="form-label small mb-0">
+                Functional Location (چندانتخابی)
+                @if (equipmentWithFlCount == 0)
+                {
+                    <i class="bi bi-info-circle text-muted" title="هیچ تجهیزی هنوز به Functional Location متصل نشده - این فیلتر فعلاً نتیجه‌ای محدود نمی‌کند."></i>
+                }
+            </label>
+            <select name="functionalLocationIds" class="form-select form-select-sm" multiple size="4">
+                @foreach (var fl in functionalLocations) { <option value="@fl.FunctionalLocationId" selected="@selectedFunctionalLocationIds.Contains(fl.FunctionalLocationId)">@fl.PathBreadcrumb</option> }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small mb-0">Tag Number (جستجوی متنی)</label>
+            <input type="text" name="tagSearch" value="@selectedTagSearch" class="form-control form-control-sm" placeholder="مثلاً P-101" />
+            <button class="btn btn-sm btn-pems-solid w-100 mt-2"><i class="bi bi-funnel"></i> فیلتر تجهیزات</button>
+        </div>
+        @if (equipmentWithFlCount == 0)
+        {
+            <div class="col-12">
+                <p class="text-muted small mb-0">
+                    <i class="bi bi-info-circle"></i> در حال حاضر هیچ تجهیزی به Functional Location متصل نشده
+                    (۰ از ۲۱٬۶۲۵) - فیلتر Functional Location آماده است اما فعلاً هیچ نتیجه‌ای برنمی‌گرداند.
+                    این یک محدودیت داده است، نه نقص این فرم.
+                </p>
+            </div>
+        }
     </form>
 </div>
 

@@ -1,0 +1,9 @@
+@model PEMS.Application.DTOs.StorageProviderUpsertRequest
+
+<div class="admin-page-shell">
+    <div class="admin-hero"><div class="d-flex align-items-center gap-3"><div class="admin-hero-icon"><i class="bi bi-hdd-network-fill"></i></div><div><h2>New Storage Provider</h2><p>Configure a new Local / Network Share / FTP / SFTP destination.</p></div></div></div>
+    @if (TempData["Error"] != null) { <div class="alert alert-danger">@TempData["Error"]</div> }
+    <form asp-action="Create" method="post">
+        @await Html.PartialAsync("_Form", Model)
+    </form>
+</div>

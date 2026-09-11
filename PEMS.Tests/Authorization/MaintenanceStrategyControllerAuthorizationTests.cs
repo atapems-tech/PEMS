@@ -39,7 +39,8 @@ public class MaintenanceStrategyControllerAuthorizationTests
         var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
 
         var strategyService = new MaintenanceStrategyService(ctx);
-        var controller = new MaintenanceStrategyController(ctx, strategyService, currentUser, permissionService).WithTempData();
+        var functionalLocationService = new FunctionalLocationService(ctx);
+        var controller = new MaintenanceStrategyController(ctx, strategyService, functionalLocationService, currentUser, permissionService).WithTempData();
         return (controller, ctx);
     }
 
@@ -114,7 +115,7 @@ public class MaintenanceStrategyControllerAuthorizationTests
         // طبق بند ۴۳: فعال‌سازی هم‌زمان چند تجهیز، بالاترین ریسک است - فقط Approve (Supervisor/Manager)
         var (controller, _) = await CreateController(nameof(BulkCreate_Get_MaintenanceEngineer_ReturnsForbid), role: SystemRoles.MaintenanceEngineer);
 
-        var result = await controller.BulkCreate(null, null);
+        var result = await controller.BulkCreate(null, null, null, null);
 
         Assert.IsType<ForbidResult>(result);
     }
@@ -124,7 +125,7 @@ public class MaintenanceStrategyControllerAuthorizationTests
     {
         var (controller, _) = await CreateController(nameof(BulkCreate_Get_EngineeringSupervisor_CanView), role: SystemRoles.EngineeringSupervisor);
 
-        var result = await controller.BulkCreate(null, null);
+        var result = await controller.BulkCreate(null, null, null, null);
 
         Assert.IsType<ViewResult>(result);
     }

@@ -33,6 +33,7 @@
     <ProjectReference Include="..\PEMS.Domain\PEMS.Domain.csproj" />
     <ProjectReference Include="..\PEMS.Shared\PEMS.Shared.csproj" />
     <ProjectReference Include="..\PEMS.WorkflowPlatform\PEMS.WorkflowPlatform.csproj" />
+    <ProjectReference Include="..\PEMS.Infrastructure\PEMS.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

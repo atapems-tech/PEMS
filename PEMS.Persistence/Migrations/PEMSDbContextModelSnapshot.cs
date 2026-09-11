@@ -10407,6 +10407,169 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("StorageLocations", (string)null);
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.StorageProvider", b =>
+                {
+                    b.Property<int>("StorageProviderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StorageProviderId"));
+
+                    b.Property<bool>("AllowDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AllowRead")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AllowWrite")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BaseUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EncryptedPassword")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Host")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastHealthCheckAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastHealthMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastHealthStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Port")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProviderType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RootPath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("UsePassiveMode")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("UseSsl")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("StorageProviderId");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasFilter("[IsActive] = 1");
+
+                    b.HasIndex("IsDefault")
+                        .IsUnique()
+                        .HasFilter("[IsDefault] = 1 AND [IsActive] = 1");
+
+                    b.ToTable("StorageProviders");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.StorageRoute", b =>
+                {
+                    b.Property<int>("StorageRouteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StorageRouteId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DocumentType")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Module")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RelativeRootPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("StorageProviderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StorageRouteId");
+
+                    b.HasIndex("StorageProviderId");
+
+                    b.HasIndex("Module", "DocumentType")
+                        .HasDatabaseName("IX_StorageRoutes_Module_DocumentType");
+
+                    b.ToTable("StorageRoutes");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.StoreRequisition", b =>
                 {
                     b.Property<int>("StoreRequisitionId")
@@ -16500,6 +16663,17 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Warehouse");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.StorageRoute", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.StorageProvider", "StorageProvider")
+                        .WithMany("Routes")
+                        .HasForeignKey("StorageProviderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("StorageProvider");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.StoreRequisition", b =>
                 {
                     b.HasOne("PEMS.Domain.Entities.Employee", "ApprovedBy")
@@ -17538,6 +17712,11 @@ namespace PEMS.Persistence.Migrations
             modelBuilder.Entity("PEMS.Domain.Entities.StorageLocation", b =>
                 {
                     b.Navigation("Children");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.StorageProvider", b =>
+                {
+                    b.Navigation("Routes");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.StoreRequisition", b =>
