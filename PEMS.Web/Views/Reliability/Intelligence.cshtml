@@ -5,6 +5,7 @@
     var repeatFailures = (List<RepeatFailureGroupDto>)ViewBag.RepeatFailures;
     var effectiveness = (MaintenanceEffectivenessDto)ViewBag.Effectiveness;
     var criticalityMatrix = (List<CriticalityMatrixRowDto>)ViewBag.CriticalityMatrix;
+    var criticalityMaintenanceMatrix = ViewBag.CriticalityFailureMaintenanceMatrix as List<CriticalityFailureMaintenanceRowDto>;
     DateTime? from = ViewBag.From;
     DateTime? to = ViewBag.To;
 
@@ -96,6 +97,7 @@
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-repeat">Repeat Failures</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-effectiveness">Effectiveness</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-matrix">Criticality Matrix</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-matrix2">Criticality × Maintenance/RCM</button></li>
 </ul>
 
 <div class="tab-content">
@@ -227,6 +229,53 @@
                 </tbody>
             </table>
             @if (!criticalityMatrix.Any()) { <p class="text-muted text-center py-4 mb-0">داده‌ای موجود نیست.</p> }
+        </div>
+    </div>
+
+    @* ===================== Phase 9: Criticality × Failure × Maintenance/RCM ===================== *@
+    <div class="tab-pane fade" id="tab-matrix2">
+        <div class="content-card">
+            <p class="text-muted small">
+                طبق «PEMS Phase 9» بند ۹: بُعد MaintenanceStrategy/RCM اضافه‌شده روی همان گروه‌بندی
+                بحرانیت - آیا تجهیزات این کلاس بحرانیت واقعاً استراتژی نگهداری فعال دارند، و آیا
+                کلاس‌های تجهیز نماینده‌شان تحلیل RCM تاییدشده دارند.
+            </p>
+            @if (criticalityMaintenanceMatrix != null && criticalityMaintenanceMatrix.Any())
+            {
+                <table class="table table-enterprise table-sm mb-0">
+                    <thead><tr><th>Criticality</th><th class="text-end">Equipment</th><th class="text-end">Strategy Coverage</th><th class="text-end">Equipment Classes</th><th class="text-end">Classes w/ Approved RCM</th><th>Strategy Type Mix</th><th>Findings</th></tr></thead>
+                    <tbody>
+                        @foreach (var row in criticalityMaintenanceMatrix)
+                        {
+                            <tr>
+                                <td class="fw-bold">@row.CriticalityClass</td>
+                                <td class="text-end">@row.EquipmentCount</td>
+                                <td class="text-end">@row.StrategyCoveredEquipmentCount / @row.EquipmentCount (@row.StrategyCoveragePercent.ToString("N0")%)</td>
+                                <td class="text-end">@row.DistinctEquipmentClassCount</td>
+                                <td class="text-end">@row.EquipmentClassesWithApprovedRcmCount (@(row.RcmClassCoveragePercent.HasValue ? $"{row.RcmClassCoveragePercent.Value:N0}%" : "N/A"))</td>
+                                <td class="small">
+                                    @if (row.StrategyTypeMix.Any())
+                                    {
+                                        @string.Join(", ", row.StrategyTypeMix.Select(kv => $"{kv.Key}={kv.Value}"))
+                                    }
+                                    else { <span class="text-muted">-</span> }
+                                </td>
+                                <td class="small">
+                                    @if (row.Findings.Any())
+                                    {
+                                        @foreach (var f in row.Findings) { <div class="text-warning">⚠ @f</div> }
+                                    }
+                                    else { <span class="text-muted">-</span> }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-muted text-center py-4 mb-0">داده‌ای موجود نیست.</p>
+            }
         </div>
     </div>
 </div>

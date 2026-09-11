@@ -128,3 +128,27 @@ public class CriticalityMatrixRowDto
     public double? PmCompliancePercent { get; set; }
     public List<string> Findings { get; set; } = new();
 }
+
+/// <summary>
+/// طبق «PEMS Phase 9» بند ۹: بسط CriticalityMatrixRowDto با بُعد نگهداری/RCM - آیا تجهیزات
+/// این کلاس بحرانیت واقعاً یک MaintenanceStrategy فعال دارند، و آیا کلاس‌های تجهیز نماینده‌شان
+/// یک تحلیل RCM تاییدشده دارند. این یک بُعد کاملاً جدید است، نه تکرار CriticalityMatrixRowDto.
+/// </summary>
+public class CriticalityFailureMaintenanceRowDto
+{
+    public string CriticalityClass { get; set; } = string.Empty;
+    public int EquipmentCount { get; set; }
+    public int FailureCount { get; set; }
+    public int RepeatFailureGroupCount { get; set; }
+    public double? PmCompliancePercent { get; set; }
+
+    public int StrategyCoveredEquipmentCount { get; set; }
+    public double StrategyCoveragePercent { get; set; }
+    public Dictionary<string, int> StrategyTypeMix { get; set; } = new();
+
+    public int DistinctEquipmentClassCount { get; set; }
+    public int EquipmentClassesWithApprovedRcmCount { get; set; }
+    public double? RcmClassCoveragePercent { get; set; }
+
+    public List<string> Findings { get; set; } = new();
+}

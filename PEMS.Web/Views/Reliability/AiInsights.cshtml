@@ -1,0 +1,93 @@
+@model List<PEMS.Application.DTOs.AIReliabilityInsightDto>
+@{
+    var statusFilter = (string?)ViewBag.StatusFilter;
+    var canGenerate = (bool)ViewBag.CanGenerate;
+    var canReview = (bool)ViewBag.CanReview;
+
+    string ReviewBadge(string status) => status switch
+    {
+        "Approved" => "text-bg-success",
+        "Rejected" => "text-bg-danger",
+        _ => "text-bg-warning"
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-stars"></i> AI Reliability Insights</h5>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">← Reliability</a>
+</div>
+<div class="alert alert-info small">
+    طبق «PEMS Phase 9» بند ۱۷ (AI Governance): این بینش‌ها فقط <strong>پیشنهاد</strong> هستند -
+    هرگز خودکار هیچ RCMDecision/MaintenanceStrategy/EquipmentCriticality/FailureRecord/WorkOrder
+    ای را تغییر نمی‌دهند. هر بینش باید توسط یک مهندس انسانی بازبینی (تایید/رد) شود. مدل و منبع
+    داده‌ی واقعی همیشه ثبت می‌شود.
+</div>
+
+@if (canGenerate)
+{
+    <div class="content-card mb-3">
+        <form method="post" asp-action="GenerateAiInsights" class="row g-2 align-items-end">
+            @Html.AntiForgeryToken()
+            <div class="col-auto">
+                <label class="form-label small mb-0">Equipment Class ID (optional)</label>
+                <input type="number" name="equipmentClassId" class="form-control form-control-sm" style="width:160px" />
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-sm btn-pems-solid">Generate Insights (Ollama, local)</button>
+            </div>
+        </form>
+    </div>
+}
+
+<div class="content-card mb-3">
+    <form method="get" class="row g-2">
+        <div class="col-auto">
+            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                <option value="">All</option>
+                <option value="Draft" selected="@(statusFilter == "Draft")">Draft</option>
+                <option value="Approved" selected="@(statusFilter == "Approved")">Approved</option>
+                <option value="Rejected" selected="@(statusFilter == "Rejected")">Rejected</option>
+            </select>
+        </div>
+    </form>
+</div>
+
+<div class="content-card">
+    <div class="table-scroll-area" style="overflow-x:auto;">
+    <table class="table table-enterprise table-sm mb-0">
+        <thead><tr><th>Scope</th><th>Type</th><th>Suggestion</th><th>Source Data</th><th>Model</th><th>Status</th><th>Reviewed By</th><th></th></tr></thead>
+        <tbody>
+            @foreach (var insight in Model)
+            {
+                <tr>
+                    <td class="small">@(insight.EquipmentTagNumber ?? insight.EquipmentClassName ?? "Fleet")</td>
+                    <td class="small">@insight.InsightType</td>
+                    <td class="small">@insight.SuggestionText</td>
+                    <td class="small text-muted">@insight.SourceDataSummary</td>
+                    <td class="small">@insight.ModelName <span class="badge text-bg-light border">AI_SUGGESTED</span></td>
+                    <td><span class="badge @ReviewBadge(insight.ReviewStatus)">@insight.ReviewStatus</span></td>
+                    <td class="small">@insight.ReviewedByName</td>
+                    <td>
+                        @if (canReview && insight.ReviewStatus == "Draft")
+                        {
+                            <form method="post" asp-action="ReviewAiInsight" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="insightId" value="@insight.AIReliabilityInsightId" />
+                                <input type="hidden" name="approve" value="true" />
+                                <button type="submit" class="btn btn-sm btn-outline-success">Approve</button>
+                            </form>
+                            <form method="post" asp-action="ReviewAiInsight" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="insightId" value="@insight.AIReliabilityInsightId" />
+                                <input type="hidden" name="approve" value="false" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Reject</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ بینشی هنوز تولید نشده.</p> }
+</div>

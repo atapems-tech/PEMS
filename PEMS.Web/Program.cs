@@ -417,6 +417,7 @@ builder.Services.AddScoped<IVendorRiskService, VendorRiskService>();
 builder.Services.AddScoped<IDocumentCommentService, DocumentCommentService>();
 
 builder.Services.AddScoped<IEquipmentImportService, EquipmentImportService>();
+builder.Services.AddScoped<IFunctionalLocationImportService, FunctionalLocationImportService>();
 
 builder.Services.AddScoped<IEquipmentPdfScanService, EquipmentPdfScanService>();
 
@@ -460,6 +461,18 @@ builder.Services.AddScoped<IEquipmentReadinessService, EquipmentReadinessService
 
 // طبق «PEMS Phase 7.6 — Engineering Criticality Assessment & Controlled Maintenance Activation»
 builder.Services.AddScoped<ICriticalityAssessmentService, CriticalityAssessmentService>();
+
+// طبق «PEMS Phase 8 — Operational Maintenance & Reliability Data Activation» بند ۲۱/۲۲
+builder.Services.AddScoped<ICmmsOperationsService, CmmsOperationsService>();
+
+// طبق «PEMS Phase 9 — Enterprise Reliability, RAM & Predictive Maintenance Intelligence»
+builder.Services.AddScoped<IRamWeibullService, RamWeibullService>();
+builder.Services.AddScoped<IReliabilitySimulationService, ReliabilitySimulationService>();
+builder.Services.AddScoped<IConditionMonitoringService, ConditionMonitoringService>();
+builder.Services.AddScoped<IPredictiveMaintenanceService, PredictiveMaintenanceService>();
+builder.Services.AddScoped<IAIReliabilityInsightService, AIReliabilityInsightService>();
+builder.Services.AddScoped<IClassIntelligenceService, ClassIntelligenceService>();
+builder.Services.AddScoped<IEquipmentIntelligenceService, EquipmentIntelligenceService>();
 
 // طبق ممیزی امنیتی (P0 - Engineering File Security Containment): ریشه‌ی ذخیره‌سازی عمداً بیرون
 // از wwwroot (خواهر آن، نه زیرشاخه‌اش) - این همان چیزی است که آسیب‌پذیری اصلی را می‌بندد؛

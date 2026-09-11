@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
+using PEMS.Web.Security;
 
 namespace PEMS.Web.Controllers;
 
@@ -14,15 +15,25 @@ public class KpiController : Controller
 {
     private readonly IKpiService _kpiService;
     private readonly IReliabilityService _reliabilityService;
+    private readonly ICurrentUserService _currentUser;
+    private readonly IPermissionService _permissionService;
 
-    public KpiController(IKpiService kpiService, IReliabilityService reliabilityService)
+    public KpiController(IKpiService kpiService, IReliabilityService reliabilityService,
+        ICurrentUserService currentUser, IPermissionService permissionService)
     {
         _kpiService = kpiService;
         _reliabilityService = reliabilityService;
+        _currentUser = currentUser;
+        _permissionService = permissionService;
     }
 
+    // همان ماژول مجوز "Reliability" موجود بازاستفاده شد (نه یک ماژول جدید) - این داشبورد هم
+    // فقط-مشاهده است و از همان الگوی ReliabilityController پیروی می‌کند.
     public async Task<IActionResult> Index(DateTime? fromDate, DateTime? toDate)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "View"))
+            return Forbid();
+
         ViewData["Title"] = "KPI Dashboard";
         ViewData["Section"] = "CMMS Integration";
 

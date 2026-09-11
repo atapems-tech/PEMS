@@ -352,6 +352,89 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("AIExtractedTags");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.AIReliabilityInsight", b =>
+                {
+                    b.Property<int>("AIReliabilityInsightId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AIReliabilityInsightId"));
+
+                    b.Property<double?>("Confidence")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("EquipmentClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("GeneratedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InsightType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModelName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReviewComment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReviewStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("ReviewedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ReviewedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("SourceDataSummary")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SuggestionText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AIReliabilityInsightId");
+
+                    b.HasIndex("EquipmentClassId");
+
+                    b.HasIndex("EquipmentId");
+
+                    b.HasIndex("ReviewStatus")
+                        .HasDatabaseName("IX_AIReliabilityInsights_ReviewStatus");
+
+                    b.HasIndex("ReviewedById");
+
+                    b.ToTable("AIReliabilityInsights");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Alarm", b =>
                 {
                     b.Property<int>("AlarmId")
@@ -844,6 +927,110 @@ namespace PEMS.Persistence.Migrations
                     b.HasKey("ChatMessageId");
 
                     b.ToTable("ChatMessages");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ConditionMonitoringPoint", b =>
+                {
+                    b.Property<int>("ConditionMonitoringPointId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ConditionMonitoringPointId"));
+
+                    b.Property<decimal?>("AlarmThresholdHigh")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("AlarmThresholdLow")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Tag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Unit")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VariableType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ConditionMonitoringPointId");
+
+                    b.HasIndex("EquipmentId")
+                        .HasDatabaseName("IX_ConditionMonitoringPoints_EquipmentId");
+
+                    b.ToTable("ConditionMonitoringPoints");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ConditionReading", b =>
+                {
+                    b.Property<int>("ConditionReadingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ConditionReadingId"));
+
+                    b.Property<int>("ConditionMonitoringPointId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsAlarm")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Provenance")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ReadingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RecordedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Source")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("ConditionReadingId");
+
+                    b.HasIndex("ConditionMonitoringPointId", "ReadingDate")
+                        .HasDatabaseName("IX_ConditionReadings_PointId_ReadingDate");
+
+                    b.ToTable("ConditionReadings");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.Contract", b =>
@@ -4149,6 +4336,87 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("FunctionalLocations");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.FunctionalLocationImportBatch", b =>
+                {
+                    b.Property<int>("FunctionalLocationImportBatchId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FunctionalLocationImportBatchId"));
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ImportDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ImportedById")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FunctionalLocationImportBatchId");
+
+                    b.HasIndex("ImportedById");
+
+                    b.ToTable("FunctionalLocationImportBatches");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.FunctionalLocationImportRow", b =>
+                {
+                    b.Property<int>("FunctionalLocationImportRowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FunctionalLocationImportRowId"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CreatedFunctionalLocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FunctionalLocationImportBatchId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IncludeInCommit")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUpdate")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PayloadJson")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RowNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SourceRowNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ValidationMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ValidationStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FunctionalLocationImportRowId");
+
+                    b.HasIndex("FunctionalLocationImportBatchId");
+
+                    b.ToTable("FunctionalLocationImportRows");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.FunctionalRequirement", b =>
@@ -8421,6 +8689,104 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Positions", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PredictiveMaintenanceModel", b =>
+                {
+                    b.Property<int>("PredictiveMaintenanceModelId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PredictiveMaintenanceModelId"));
+
+                    b.Property<string>("Algorithm")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("TargetName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TrainingDataStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ValidationStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PredictiveMaintenanceModelId");
+
+                    b.ToTable("PredictiveMaintenanceModels");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PredictiveMaintenanceResult", b =>
+                {
+                    b.Property<int>("PredictiveMaintenanceResultId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PredictiveMaintenanceResultId"));
+
+                    b.Property<double?>("AnomalyScore")
+                        .HasColumnType("float");
+
+                    b.Property<int>("EquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("FailureProbability")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("GeneratedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PredictiveMaintenanceModelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Provenance")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Rationale")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("RemainingUsefulLifeDays")
+                        .HasColumnType("float");
+
+                    b.HasKey("PredictiveMaintenanceResultId");
+
+                    b.HasIndex("PredictiveMaintenanceModelId");
+
+                    b.HasIndex("EquipmentId", "GeneratedDate")
+                        .HasDatabaseName("IX_PredictiveMaintenanceResults_EquipmentId_GeneratedDate");
+
+                    b.ToTable("PredictiveMaintenanceResults");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.ProcurementApproval", b =>
@@ -13421,6 +13787,30 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("ReviewedBy");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.AIReliabilityInsight", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.EquipmentClass", "EquipmentClass")
+                        .WithMany()
+                        .HasForeignKey("EquipmentClassId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.Employee", "ReviewedBy")
+                        .WithMany()
+                        .HasForeignKey("ReviewedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("EquipmentClass");
+
+                    b.Navigation("ReviewedBy");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Alarm", b =>
                 {
                     b.HasOne("PEMS.Domain.Entities.Instrument", "Instrument")
@@ -13498,6 +13888,28 @@ namespace PEMS.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Discipline");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ConditionMonitoringPoint", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Equipment");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ConditionReading", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.ConditionMonitoringPoint", "ConditionMonitoringPoint")
+                        .WithMany("Readings")
+                        .HasForeignKey("ConditionMonitoringPointId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ConditionMonitoringPoint");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.Contract", b =>
@@ -14366,6 +14778,26 @@ namespace PEMS.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.FunctionalLocationImportBatch", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Employee", "ImportedBy")
+                        .WithMany()
+                        .HasForeignKey("ImportedById");
+
+                    b.Navigation("ImportedBy");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.FunctionalLocationImportRow", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.FunctionalLocationImportBatch", "Batch")
+                        .WithMany("Rows")
+                        .HasForeignKey("FunctionalLocationImportBatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Batch");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.FunctionalRequirement", b =>
@@ -15643,6 +16075,25 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Department");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.PredictiveMaintenanceResult", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.PredictiveMaintenanceModel", "PredictiveMaintenanceModel")
+                        .WithMany("Results")
+                        .HasForeignKey("PredictiveMaintenanceModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("PredictiveMaintenanceModel");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.ProcurementApproval", b =>
                 {
                     b.HasOne("PEMS.Domain.Entities.ProcurementPackage", "ProcurementPackage")
@@ -16882,6 +17333,11 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Vendor");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.ConditionMonitoringPoint", b =>
+                {
+                    b.Navigation("Readings");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Contract", b =>
                 {
                     b.Navigation("EngineeringDocuments");
@@ -16957,6 +17413,11 @@ namespace PEMS.Persistence.Migrations
             modelBuilder.Entity("PEMS.Domain.Entities.FunctionalLocation", b =>
                 {
                     b.Navigation("Children");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.FunctionalLocationImportBatch", b =>
+                {
+                    b.Navigation("Rows");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.FunctionalRequirement", b =>
@@ -17041,6 +17502,11 @@ namespace PEMS.Persistence.Migrations
             modelBuilder.Entity("PEMS.Domain.Entities.MrsImportRow", b =>
                 {
                     b.Navigation("Metadata");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PredictiveMaintenanceModel", b =>
+                {
+                    b.Navigation("Results");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.ProcurementPackage", b =>

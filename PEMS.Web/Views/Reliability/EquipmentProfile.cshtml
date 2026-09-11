@@ -1,0 +1,110 @@
+@model PEMS.Application.DTOs.EquipmentIntelligenceProfileDto
+@{
+    string StatusBadge(string status) => status switch
+    {
+        "READY" => "text-bg-success",
+        "PARTIAL" => "text-bg-warning",
+        "INSUFFICIENT_DATA" => "text-bg-warning",
+        "NOT_READY" => "text-bg-secondary",
+        "NOT_APPLICABLE" => "text-bg-light border",
+        _ => "text-bg-light border"
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-person-badge"></i> Equipment Intelligence — @Model.TagNumber <span class="text-muted small">@Model.Name</span></h5>
+    <div>
+        <a asp-action="Details" asp-route-id="@Model.EquipmentId" class="btn btn-outline-secondary btn-sm">Reliability Detail</a>
+        <a asp-action="Ram" asp-route-id="@Model.EquipmentId" class="btn btn-outline-primary btn-sm">RAM / Weibull</a>
+        <a asp-controller="EquipmentCriticality" asp-action="Index" class="btn btn-outline-secondary btn-sm">Criticality</a>
+    </div>
+</div>
+<p class="text-muted small">
+    طبق «PEMS Phase 9» بند ۱۹: این صفحه چیزی محاسبه نمی‌کند - فقط داده‌ی واقعی از سرویس‌های
+    موجود را کنار هم می‌گذارد. هر معیار در دسترس‌نبود، دلیل صریح دارد.
+</p>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-3">
+        <div class="content-card h-100">
+            <div class="small text-muted">Class / Discipline</div>
+            <div class="fw-bold">@(Model.EquipmentClassName ?? "Unclassified")</div>
+            <div class="small">@(Model.DisciplineName ?? "—")</div>
+            @if (Model.ParentEquipmentTagNumber != null) { <div class="small text-muted">Parent: @Model.ParentEquipmentTagNumber</div> }
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="content-card h-100">
+            <div class="small text-muted">Criticality</div>
+            <div class="fw-bold fs-5">@(Model.CurrentCriticalityClass ?? "N/A")</div>
+            <div class="small">Risk: @(Model.CurrentRiskLevel ?? "N/A")</div>
+            <div class="small text-muted">Latest Assessment: @(Model.LatestAssessmentStatus ?? "None") (@Model.LatestAssessmentEvidenceCount evidence)</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="content-card h-100">
+            <div class="small text-muted">Reliability</div>
+            <span class="badge @StatusBadge(Model.ReliabilityDataStatus)">@Model.ReliabilityDataStatus</span>
+            <div class="small mt-1">MTBF: @(Model.MTBFHours.HasValue ? $"{Model.MTBFHours.Value:N1}h" : "N/A")</div>
+            <div class="small">MTTR: @(Model.MTTRHours.HasValue ? $"{Model.MTTRHours.Value:N1}h" : "N/A")</div>
+            <div class="small">Availability: @(Model.AvailabilityPercent.HasValue ? $"{Model.AvailabilityPercent.Value:N1}%" : "N/A")</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="content-card h-100">
+            <div class="small text-muted">Intelligence Signals</div>
+            <div class="small">Bad Actor: <span class="badge @(Model.IsBadActor ? "text-bg-danger" : "text-bg-secondary")">@(Model.IsBadActor ? "Yes" : "No")</span></div>
+            <div class="small">Weibull: <span class="badge @StatusBadge(Model.WeibullDataStatus)">@Model.WeibullDataStatus</span></div>
+            <div class="small">Predictive: <span class="badge @StatusBadge(Model.PredictiveStatus)">@Model.PredictiveStatus</span></div>
+            <div class="small">Condition Monitoring: <span class="badge @StatusBadge(Model.ConditionMonitoringStatus)">@Model.ConditionMonitoringStatus</span></div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-6">
+        <div class="content-card h-100">
+            <h6 class="mb-2">Maintenance</h6>
+            <table class="table table-enterprise table-sm mb-0">
+                <tbody>
+                    <tr><td>Active Strategies</td><td class="text-end">@Model.ActiveStrategyCount</td></tr>
+                    <tr><td>Active PM Plans</td><td class="text-end">@Model.ActiveMaintenancePlanCount</td></tr>
+                    <tr><td>Preventive WOs</td><td class="text-end">@Model.PreventiveWorkOrderCount</td></tr>
+                    <tr><td>Corrective WOs</td><td class="text-end">@Model.CorrectiveWorkOrderCount</td></tr>
+                    <tr><td>Emergency WOs</td><td class="text-end">@Model.EmergencyWorkOrderCount</td></tr>
+                    <tr><td>Open Backlog</td><td class="text-end">@Model.OpenBacklogWorkOrderCount</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="content-card h-100">
+            <h6 class="mb-2">Failure Intelligence &amp; Safety</h6>
+            <div class="small text-muted mb-1">Top Failure Modes</div>
+            @if (Model.TopFailureModes.Any())
+            {
+                @foreach (var fm in Model.TopFailureModes) { <div class="small">@fm</div> }
+            }
+            else
+            {
+                <div class="small text-muted">No failure history recorded.</div>
+            }
+            <hr />
+            <div class="small">FMEA (class-level): <span class="badge @StatusBadge(Model.FMEAReadiness)">@Model.FMEAReadiness</span></div>
+            <div class="small">RCM (class-level): <span class="badge @StatusBadge(Model.RCMReadiness)">@Model.RCMReadiness</span></div>
+            <div class="small mt-1">Permit Required: @(Model.AnyLinkedJobPlanRequiresPermit ? "Yes" : "No / Unknown")</div>
+            <div class="small">LOTO Required: @(Model.AnyLinkedJobPlanRequiresLOTO ? "Yes" : "No / Unknown")</div>
+        </div>
+    </div>
+</div>
+
+@if (Model.UnavailableMetricReasons.Any())
+{
+    <div class="content-card">
+        <h6 class="mb-2">Unavailable Metrics — Reasons</h6>
+        @foreach (var reason in Model.UnavailableMetricReasons)
+        {
+            <div class="small text-muted">• @reason</div>
+        }
+    </div>
+}

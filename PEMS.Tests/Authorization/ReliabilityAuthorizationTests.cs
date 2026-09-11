@@ -39,10 +39,26 @@ public class ReliabilityAuthorizationTests
         return (ctx, permissionService, currentUser);
     }
 
-    private static ReliabilityController CreateController(PEMSDbContext ctx, ICurrentUserService user, IPermissionService perms) =>
-        new ReliabilityController(new ReliabilityService(ctx), new ReliabilityAnalyticsService(ctx, new ReliabilityService(ctx)),
-            new ReliabilityDataQualityService(ctx), new ReliabilityIntelligenceService(ctx), new RcmFeedbackService(ctx), user, perms)
+    private static ReliabilityController CreateController(PEMSDbContext ctx, ICurrentUserService user, IPermissionService perms)
+    {
+        var reliabilityService = new ReliabilityService(ctx);
+        var intelligenceService = new ReliabilityIntelligenceService(ctx);
+        var ramWeibullService = new RamWeibullService(ctx, reliabilityService);
+        var predictiveMaintenanceService = new PredictiveMaintenanceService(ctx);
+        var conditionMonitoringService = new ConditionMonitoringService(ctx);
+        var analyticsService = new ReliabilityAnalyticsService(ctx, reliabilityService);
+        var rcmFmeaReadinessService = new RcmFmeaReadinessService(ctx);
+
+        return new ReliabilityController(reliabilityService, analyticsService,
+            new ReliabilityDataQualityService(ctx), intelligenceService, new RcmFeedbackService(ctx), user, perms,
+            ramWeibullService, new ReliabilitySimulationService(ramWeibullService), conditionMonitoringService,
+            predictiveMaintenanceService,
+            new AIReliabilityInsightService(ctx, null!, analyticsService, intelligenceService, new Microsoft.Extensions.Configuration.ConfigurationBuilder().Build()),
+            new ClassIntelligenceService(ctx, new EquipmentClassCoverageService(ctx), analyticsService, intelligenceService, rcmFmeaReadinessService),
+            new EquipmentIntelligenceService(ctx, reliabilityService, analyticsService, ramWeibullService, rcmFmeaReadinessService, predictiveMaintenanceService, conditionMonitoringService),
+            ctx)
             .WithTempData();
+    }
 
     [Fact]
     public async Task Index_NoPermission_ReturnsForbid()
@@ -192,6 +208,191 @@ public class ReliabilityAuthorizationTests
 
         // شناسه‌ی ناموجود عمداً استفاده شد - هدف این تست فقط اثبات عبور از گیت مجوز است، نه منطق سرویس
         var result = await controller.ReviewRcmRecommendation(99999, true, null);
+
+        Assert.IsType<RedirectToActionResult>(result);
+    }
+
+    // ==============================================================================
+    // طبق «PEMS Phase 9 — Enterprise Reliability, RAM & Predictive Maintenance Intelligence»
+    // بند ۲۳: همان ماژول مجوز "Reliability" برای اکشن‌های جدید - این تست‌ها اثبات می‌کنند
+    // گیت واقعاً روی هر اکشن جدید هم اعمال شده، نه فقط اکشن‌های قدیمی‌تر.
+    // ==============================================================================
+
+    [Fact]
+    public async Task Dashboard_NoPermission_ReturnsForbid()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(Dashboard_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
+        var controller = CreateController(ctx, user, perms);
+
+        var result = await controller.Dashboard();
+
+        Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
+    public async Task Dashboard_ViewerRole_CanView()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(Dashboard_ViewerRole_CanView), role: SystemRoles.Viewer);
+        var controller = CreateController(ctx, user, perms);
+
+        var result = await controller.Dashboard();
+
+        Assert.IsType<ViewResult>(result);
+    }
+
+    [Fact]
+    public async Task EquipmentProfile_NoPermission_ReturnsForbid()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(EquipmentProfile_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
+        var controller = CreateController(ctx, user, perms);
+
+        var result = await controller.EquipmentProfile(1);
+
+        Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
+    public async Task ClassIntelligence_NoPermission_ReturnsForbid()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(ClassIntelligence_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
+        var controller = CreateController(ctx, user, perms);
+
+        var result = await controller.ClassIntelligence(1);
+
+        Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
+    public async Task Ram_NoPermission_ReturnsForbid()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(Ram_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
+        var controller = CreateController(ctx, user, perms);
+
+        var result = await controller.Ram(1);
+
+        Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
+    public async Task ConditionMonitoring_NoPermission_ReturnsForbid()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(ConditionMonitoring_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
+        var controller = CreateController(ctx, user, perms);
+
+        var result = await controller.ConditionMonitoring(null);
+
+        Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
+    public async Task ConditionMonitoring_ViewerRole_CanView()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(ConditionMonitoring_ViewerRole_CanView), role: SystemRoles.Viewer);
+        var controller = CreateController(ctx, user, perms);
+
+        var result = await controller.ConditionMonitoring(null);
+
+        Assert.IsType<ViewResult>(result);
+    }
+
+    [Fact]
+    public async Task CreateConditionMonitoringPoint_ViewerRole_CannotCreate_ReturnsForbid()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(CreateConditionMonitoringPoint_ViewerRole_CannotCreate_ReturnsForbid), role: SystemRoles.Viewer);
+        var controller = CreateController(ctx, user, perms);
+
+        var result = await controller.CreateConditionMonitoringPoint(1, "Vibration", "VT-1", null, null, null, null);
+
+        Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
+    public async Task CreateConditionMonitoringPoint_MaintenanceEngineer_CanCreate()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(CreateConditionMonitoringPoint_MaintenanceEngineer_CanCreate), role: SystemRoles.MaintenanceEngineer);
+        var controller = CreateController(ctx, user, perms);
+
+        // شناسه‌ی ناموجود عمداً استفاده شد - هدف این تست فقط اثبات عبور از گیت مجوز است
+        var result = await controller.CreateConditionMonitoringPoint(99999, "Vibration", "VT-1", null, null, null, null);
+
+        Assert.IsType<RedirectToActionResult>(result);
+    }
+
+    [Fact]
+    public async Task PredictiveMaintenance_NoPermission_ReturnsForbid()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(PredictiveMaintenance_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
+        var controller = CreateController(ctx, user, perms);
+
+        var result = await controller.PredictiveMaintenance();
+
+        Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
+    public async Task PredictiveMaintenance_ViewerRole_CanView()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(PredictiveMaintenance_ViewerRole_CanView), role: SystemRoles.Viewer);
+        var controller = CreateController(ctx, user, perms);
+
+        var result = await controller.PredictiveMaintenance();
+
+        Assert.IsType<ViewResult>(result);
+    }
+
+    [Fact]
+    public async Task AiInsights_NoPermission_ReturnsForbid()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(AiInsights_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
+        var controller = CreateController(ctx, user, perms);
+
+        var result = await controller.AiInsights(null);
+
+        Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
+    public async Task AiInsights_ViewerRole_CanView()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(AiInsights_ViewerRole_CanView), role: SystemRoles.Viewer);
+        var controller = CreateController(ctx, user, perms);
+
+        var result = await controller.AiInsights(null);
+
+        Assert.IsType<ViewResult>(result);
+    }
+
+    [Fact]
+    public async Task GenerateAiInsights_ViewerRole_CannotGenerate_ReturnsForbid()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(GenerateAiInsights_ViewerRole_CannotGenerate_ReturnsForbid), role: SystemRoles.Viewer);
+        var controller = CreateController(ctx, user, perms);
+
+        var result = await controller.GenerateAiInsights(null);
+
+        Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
+    public async Task ReviewAiInsight_MaintenanceEngineer_CannotApprove_ReturnsForbid()
+    {
+        // طبق بند ۱۷: بازبینی/تایید یک بینش AI باید همان سطح مجوز Approve را بخواهد -
+        // دقیقاً مثل ReviewRcmRecommendation (نه فقط Edit).
+        var (ctx, perms, user) = await CreateInfra(nameof(ReviewAiInsight_MaintenanceEngineer_CannotApprove_ReturnsForbid), role: SystemRoles.MaintenanceEngineer);
+        var controller = CreateController(ctx, user, perms);
+
+        var result = await controller.ReviewAiInsight(1, true, null);
+
+        Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
+    public async Task ReviewAiInsight_EngineeringSupervisor_CanReview()
+    {
+        var (ctx, perms, user) = await CreateInfra(nameof(ReviewAiInsight_EngineeringSupervisor_CanReview), role: SystemRoles.EngineeringSupervisor);
+        var controller = CreateController(ctx, user, perms);
+
+        var result = await controller.ReviewAiInsight(99999, true, null);
 
         Assert.IsType<RedirectToActionResult>(result);
     }

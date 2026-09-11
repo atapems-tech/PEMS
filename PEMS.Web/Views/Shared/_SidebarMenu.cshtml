@@ -40,7 +40,7 @@
     var qualityControllers = new[] { "QC", "MOC" };
     var contractControllers = new[] { "Contract", "Vendor" };
     var projectControlControllers = new[] { "Task", "Tag", "Report", "Meeting" };
-    var cmmsControllers = new[] { "Equipment", "EquipmentImport", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness" };
+    var cmmsControllers = new[] { "Equipment", "EquipmentImport", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "FunctionalLocationImport", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
     var inventoryControllers = new[] { "Inventory", "MaterialItem", "InventoryMasterData", "InventoryTransaction", "StoreRequisition", "MrsImport" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
     var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "Department", "Employee" };
@@ -348,6 +348,10 @@
                 <i class="bi bi-clipboard-check"></i> CMMS Readiness
             </a>
 
+            <a class="nav-link @(IsActive("CmmsOperations") ? "active" : "")" asp-controller="CmmsOperations" asp-action="Dashboard">
+                <i class="bi bi-speedometer2"></i> CMMS Operations
+            </a>
+
             <a class="nav-link @(IsActive("RcmFmea") ? "active" : "")" asp-controller="RcmFmea" asp-action="Index">
                 <i class="bi bi-clipboard2-pulse"></i> RCM / FMEA
             </a>
@@ -360,7 +364,7 @@
                 <i class="bi bi-clipboard2-check"></i> Criticality Assessment
             </a>
 
-            <a class="nav-link @(IsActive("Reliability") ? "active" : "")" asp-controller="Reliability" asp-action="Index">
+            <a class="nav-link @(IsActive("Reliability") ? "active" : "")" asp-controller="Reliability" asp-action="Dashboard">
                 <i class="bi bi-graph-up-arrow"></i> Reliability
             </a>
 
@@ -379,6 +383,13 @@
             <a class="nav-link @(IsActive("FunctionalLocation") ? "active" : "")" asp-controller="FunctionalLocation" asp-action="Index">
                 <i class="bi bi-diagram-3"></i> Functional Locations
             </a>
+
+            @if (MenuAccess.CanSee(User, MenuAccess.ImportCenter))
+            {
+                <a class="nav-link @(IsActive("FunctionalLocationImport") ? "active" : "")" asp-controller="FunctionalLocationImport" asp-action="Index">
+                    <i class="bi bi-file-earmark-arrow-up"></i> Functional Location Import
+                </a>
+            }
         </div>
     }
 

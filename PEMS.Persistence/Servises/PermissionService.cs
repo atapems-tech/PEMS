@@ -21,7 +21,7 @@ public class PermissionService : IPermissionService
         "StoreRequisition", "WorkRequest", "Inspection", "Transmittal",
         "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan",
         "ProcurementPackage",
-        "MDRImport", "EquipmentImport", "MrsImport",
+        "MDRImport", "EquipmentImport", "MrsImport", "FunctionalLocationImport",
         "AIExtraction", "TableExtraction", "Relationship", "OCRProcessing",
         "Team", "Crew", "InventoryMasterData", "MaintenanceMasterData",
         "Setup"
@@ -459,6 +459,15 @@ public class PermissionService : IPermissionService
             New(SystemRoles.MaintenanceEngineer, "MrsImport", create: true, del: true, approve: true),
             New(SystemRoles.EngineeringManager, "MrsImport", create: true, del: true, approve: true),
             New(SystemRoles.Viewer, "MrsImport")
+        });
+
+        // طبق «Functional Location Master Data Import»: همان الگوی EquipmentImport/MDRImport/
+        // MrsImport - Upload/Review با Create، Commit (پرریسک‌ترین اکشن) با Approve، Discard با Delete.
+        await SeedMissingRolesAsync("FunctionalLocationImport", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "FunctionalLocationImport", create: true, del: true, approve: true),
+            New(SystemRoles.EngineeringManager, "FunctionalLocationImport", create: true, del: true, approve: true),
+            New(SystemRoles.Viewer, "FunctionalLocationImport")
         });
 
         // ==============================================================================

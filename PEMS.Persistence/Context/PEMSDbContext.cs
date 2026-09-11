@@ -261,6 +261,17 @@ public class PEMSDbContext
     public DbSet<CriticalityAssessment> CriticalityAssessments { get; set; }
     public DbSet<CriticalityAssessmentEvidence> CriticalityAssessmentEvidences { get; set; }
 
+    // طبق «PEMS Phase 9 — Enterprise Reliability, RAM & Predictive Maintenance Intelligence»
+    public DbSet<ConditionMonitoringPoint> ConditionMonitoringPoints { get; set; }
+    public DbSet<ConditionReading> ConditionReadings { get; set; }
+    public DbSet<PredictiveMaintenanceModel> PredictiveMaintenanceModels { get; set; }
+    public DbSet<PredictiveMaintenanceResult> PredictiveMaintenanceResults { get; set; }
+    public DbSet<AIReliabilityInsight> AIReliabilityInsights { get; set; }
+
+    // طبق «Functional Location Master Data Import»
+    public DbSet<FunctionalLocationImportBatch> FunctionalLocationImportBatches { get; set; }
+    public DbSet<FunctionalLocationImportRow> FunctionalLocationImportRows { get; set; }
+
     public DbSet<Team> Teams { get; set; }
     public DbSet<TeamMember> TeamMembers { get; set; }
     public DbSet<Crew> Crews { get; set; }

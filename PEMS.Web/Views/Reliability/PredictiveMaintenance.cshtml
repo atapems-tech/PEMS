@@ -1,0 +1,58 @@
+@model List<PEMS.Application.DTOs.PredictiveMaintenanceModelDto>
+@using PEMS.Application.DTOs
+@{
+    var readiness = (PredictiveMaintenanceReadinessDto)ViewBag.Readiness;
+
+    string StatusBadge(string status) => status switch
+    {
+        "READY" => "text-bg-success",
+        "PARTIAL" => "text-bg-warning",
+        "NOT_READY" => "text-bg-secondary",
+        _ => "text-bg-light border"
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-cpu"></i> Predictive Maintenance</h5>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">← Reliability</a>
+</div>
+<p class="text-muted small">
+    طبق «PEMS Phase 9» بند ۱۶: هیچ مدلی بدون اعتبارسنجی واقعی «آماده‌ی تولید» اعلام نمی‌شود.
+    زیرساخت نرم‌افزاری از الان آماده است تا وقتی داده‌ی کافی جمع شود، بدون بازطراحی معماری.
+</p>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-6">
+        <div class="content-card h-100 text-center">
+            <div class="text-muted small">Engine (software/architecture)</div>
+            <span class="badge fs-6 @StatusBadge(readiness.EngineStatus)">@readiness.EngineStatus</span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="content-card h-100 text-center">
+            <div class="text-muted small">Production Model (validated on real data)</div>
+            <span class="badge fs-6 @StatusBadge(readiness.ProductionModelStatus)">@readiness.ProductionModelStatus</span>
+        </div>
+    </div>
+</div>
+<p class="text-muted small">@readiness.Reason</p>
+
+<div class="content-card">
+    <h6 class="mb-2">Defined Models (@readiness.ModelCount total, @readiness.ValidatedModelCount validated)</h6>
+    <table class="table table-enterprise table-sm mb-0">
+        <thead><tr><th>Target</th><th>Algorithm</th><th>Training Data</th><th>Validation</th><th class="text-end">Results</th></tr></thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td>@m.TargetName</td>
+                    <td class="small">@m.Algorithm</td>
+                    <td><span class="badge @StatusBadge(m.TrainingDataStatus)">@m.TrainingDataStatus</span></td>
+                    <td class="small">@m.ValidationStatus</td>
+                    <td class="text-end">@m.ResultCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ مدل پیش‌بینانه‌ای هنوز تعریف نشده - هیچ داده‌ی جعلی برای پرکردن این صفحه درج نشده.</p> }
+</div>

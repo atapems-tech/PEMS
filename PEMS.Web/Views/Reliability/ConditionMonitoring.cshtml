@@ -1,0 +1,131 @@
+@model List<PEMS.Application.DTOs.ConditionMonitoringPointDto>
+@using PEMS.Application.DTOs
+@{
+    var foundation = (ConditionMonitoringFoundationStatusDto)ViewBag.Foundation;
+    var equipmentId = (int?)ViewBag.EquipmentId;
+    var variableTypes = (string[])ViewBag.SupportedVariableTypes;
+
+    string StatusBadge(string status) => status switch
+    {
+        "READY" => "text-bg-success",
+        "PARTIAL" => "text-bg-warning",
+        "NOT_READY" => "text-bg-secondary",
+        _ => "text-bg-light border"
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-activity"></i> Condition Monitoring</h5>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">← Reliability</a>
+</div>
+<p class="text-muted small">
+    طبق «PEMS Phase 9» بند ۱۵: زیرساخت نرم‌افزاری همیشه آماده است - آنچه به داده‌ی واقعی نیاز
+    دارد فقط تله‌متری زنده است. هیچ قرائتی هرگز شبیه‌سازی/جعل نمی‌شود.
+</p>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-3">
+        <div class="content-card h-100 text-center">
+            <div class="text-muted small">Foundation</div>
+            <span class="badge @StatusBadge(foundation.FoundationStatus)">@foundation.FoundationStatus</span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="content-card h-100 text-center">
+            <div class="text-muted small">Live Telemetry</div>
+            <span class="badge @StatusBadge(foundation.LiveTelemetryStatus)">@foundation.LiveTelemetryStatus</span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="content-card h-100 text-center">
+            <div class="fs-4 fw-bold">@foundation.MonitoringPointCount</div>
+            <div class="text-muted small">Monitoring Points (Fleet)</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="content-card h-100 text-center">
+            <div class="fs-4 fw-bold">@foundation.ReadingCount</div>
+            <div class="text-muted small">Readings Recorded (Fleet)</div>
+        </div>
+    </div>
+</div>
+
+<div class="content-card mb-3">
+    <form method="get" class="row g-2 align-items-end">
+        <div class="col-auto">
+            <label class="form-label small mb-0">Equipment ID</label>
+            <input type="number" name="equipmentId" value="@equipmentId" class="form-control form-control-sm" style="width:140px" />
+        </div>
+        <div class="col-auto"><button type="submit" class="btn btn-sm btn-pems-solid">Load Points</button></div>
+    </form>
+</div>
+
+@if (equipmentId.HasValue)
+{
+    <div class="content-card mb-3">
+        <h6 class="mb-2">Monitoring Points — Equipment #@equipmentId</h6>
+        <table class="table table-enterprise table-sm mb-0">
+            <thead><tr><th>Variable</th><th>Tag</th><th>Unit</th><th class="text-end">Alarm Range</th><th class="text-end">Readings</th><th>Last Reading</th></tr></thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr class="@(p.LastReadingIsAlarm ? "table-danger" : "")">
+                        <td>@p.VariableType</td>
+                        <td>@p.Tag</td>
+                        <td>@p.Unit</td>
+                        <td class="text-end small">@p.AlarmThresholdLow – @p.AlarmThresholdHigh</td>
+                        <td class="text-end">@p.ReadingCount</td>
+                        <td class="small">@(p.LastReadingDate.HasValue ? $"{p.LastValue} @ {p.LastReadingDate.Value:yyyy-MM-dd}" : "No readings yet")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">هیچ نقطه‌ی پایشی برای این تجهیز تعریف نشده.</p> }
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="content-card">
+                <h6 class="mb-2">Add Monitoring Point</h6>
+                <form method="post" asp-action="CreateConditionMonitoringPoint">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="equipmentId" value="@equipmentId" />
+                    <div class="mb-2">
+                        <label class="form-label small">Variable Type</label>
+                        <select name="variableType" class="form-select form-select-sm">
+                            @foreach (var vt in variableTypes) { <option value="@vt">@vt</option> }
+                        </select>
+                    </div>
+                    <div class="mb-2"><label class="form-label small">Tag</label><input name="tag" class="form-control form-control-sm" required /></div>
+                    <div class="mb-2"><label class="form-label small">Unit</label><input name="unit" class="form-control form-control-sm" /></div>
+                    <div class="row g-2 mb-2">
+                        <div class="col"><label class="form-label small">Alarm Low</label><input type="number" step="0.01" name="alarmLow" class="form-control form-control-sm" /></div>
+                        <div class="col"><label class="form-label small">Alarm High</label><input type="number" step="0.01" name="alarmHigh" class="form-control form-control-sm" /></div>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-pems-solid">Create Point</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="content-card">
+                <h6 class="mb-2">Record Reading (Manual)</h6>
+                <form method="post" asp-action="RecordConditionReading">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="equipmentId" value="@equipmentId" />
+                    <div class="mb-2">
+                        <label class="form-label small">Point</label>
+                        <select name="pointId" class="form-select form-select-sm">
+                            @foreach (var p in Model) { <option value="@p.ConditionMonitoringPointId">@p.VariableType — @p.Tag</option> }
+                        </select>
+                    </div>
+                    <div class="row g-2 mb-2">
+                        <div class="col"><label class="form-label small">Date</label><input type="datetime-local" name="readingDate" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" /></div>
+                        <div class="col"><label class="form-label small">Value</label><input type="number" step="0.01" name="value" class="form-control form-control-sm" required /></div>
+                    </div>
+                    <div class="mb-2"><label class="form-label small">Source</label><input name="source" value="Manual" class="form-control form-control-sm" /></div>
+                    <button type="submit" class="btn btn-sm btn-pems-solid">Record Reading</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}

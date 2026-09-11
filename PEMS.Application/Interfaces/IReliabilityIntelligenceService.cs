@@ -28,4 +28,8 @@ public interface IReliabilityIntelligenceService
     Task<MaintenanceEffectivenessDto> GetMaintenanceEffectivenessAsync(int windowDays = 90);
 
     Task<List<CriticalityMatrixRowDto>> GetCriticalityFailureMatrixAsync();
+
+    // طبق «PEMS Phase 9» بند ۹: بسط ماتریس موجود با بُعد MaintenanceStrategy/RCM - GetCriticalityFailureMatrixAsync
+    // بازنویسی/تکرار نمی‌شود، این یک متد مستقل و مکمل است.
+    Task<List<CriticalityFailureMaintenanceRowDto>> GetCriticalityFailureMaintenanceMatrixAsync();
 }

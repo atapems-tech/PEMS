@@ -366,4 +366,100 @@ public class ReliabilityIntelligenceService : IReliabilityIntelligenceService
 
         return result.OrderBy(x => x.CriticalityClass).ToList();
     }
+
+    // طبق «PEMS Phase 9» بند ۹: بُعد جدید MaintenanceStrategy/RCM روی همان گروه‌بندی بحرانیت -
+    // از GetCriticalityFailureMatrixAsync/GetRepeatFailuresAsync موجود بازاستفاده می‌کند، فقط
+    // MaintenanceStrategy/RCMAnalysis واقعی را اضافه می‌کند.
+    public async Task<List<CriticalityFailureMaintenanceRowDto>> GetCriticalityFailureMaintenanceMatrixAsync()
+    {
+        var criticalityByEquipment = await _context.EquipmentCriticalities.AsNoTracking()
+            .Where(x => x.IsActive)
+            .Select(x => new { x.EquipmentId, x.CriticalityClass })
+            .ToDictionaryAsync(x => x.EquipmentId, x => x.CriticalityClass);
+
+        var equipment = await _context.Equipments.AsNoTracking()
+            .Where(x => x.IsActive)
+            .Select(x => new { x.EquipmentId, x.EquipmentClassId })
+            .ToListAsync();
+
+        if (equipment.Count == 0) return new List<CriticalityFailureMaintenanceRowDto>();
+
+        var groupedByClass = equipment.GroupBy(e => criticalityByEquipment.GetValueOrDefault(e.EquipmentId, "Unclassified"));
+
+        var allRepeatFailures = await GetRepeatFailuresAsync(null, null, 90);
+        var repeatFailureEquipmentIds = allRepeatFailures.Select(x => x.EquipmentId).ToHashSet();
+
+        var failureCounts = await _context.FailureRecords.AsNoTracking()
+            .Where(x => x.IsActive)
+            .GroupBy(x => x.EquipmentId)
+            .Select(g => new { EquipmentId = g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.EquipmentId, x => x.Count);
+
+        var activeStrategiesByEquipment = await _context.MaintenanceStrategies.AsNoTracking()
+            .Where(x => x.IsActive)
+            .Select(x => new { x.EquipmentId, x.StrategyType })
+            .ToListAsync();
+        var strategiesByEquipmentId = activeStrategiesByEquipment
+            .GroupBy(x => x.EquipmentId)
+            .ToDictionary(g => g.Key, g => g.Select(x => x.StrategyType).ToList());
+
+        var approvedRcmClassIds = await _context.RCMAnalyses.AsNoTracking()
+            .Where(x => x.IsActive && x.Status == "APPROVED")
+            .Select(x => x.EquipmentClassId)
+            .Distinct()
+            .ToListAsync();
+        var approvedRcmClassIdSet = approvedRcmClassIds.ToHashSet();
+
+        var result = new List<CriticalityFailureMaintenanceRowDto>();
+
+        foreach (var group in groupedByClass)
+        {
+            var idsInGroup = group.Select(g => g.EquipmentId).ToList();
+            var classIdsInGroup = group.Select(g => g.EquipmentClassId).Where(id => id.HasValue).Select(id => id!.Value).Distinct().ToList();
+
+            var failureCount = idsInGroup.Sum(id => failureCounts.GetValueOrDefault(id));
+            var repeatCount = idsInGroup.Count(id => repeatFailureEquipmentIds.Contains(id));
+
+            var pmRows = await _context.WorkOrders.AsNoTracking()
+                .Where(x => x.MaintenancePlanId != null && idsInGroup.Contains(x.EquipmentId))
+                .Select(x => new { x.Status, x.DueDate, x.CompletionDate })
+                .ToListAsync();
+            var pmCompliance = BuildPmComplianceDto(pmRows.Select(x => (x.Status, x.DueDate, x.CompletionDate)));
+
+            var strategyCoveredCount = idsInGroup.Count(id => strategiesByEquipmentId.ContainsKey(id));
+            var strategyTypeMix = idsInGroup
+                .SelectMany(id => strategiesByEquipmentId.GetValueOrDefault(id) ?? new List<string>())
+                .GroupBy(t => t)
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            var classesWithApprovedRcm = classIdsInGroup.Count(cid => approvedRcmClassIdSet.Contains(cid));
+
+            var row = new CriticalityFailureMaintenanceRowDto
+            {
+                CriticalityClass = group.Key,
+                EquipmentCount = idsInGroup.Count,
+                FailureCount = failureCount,
+                RepeatFailureGroupCount = repeatCount,
+                PmCompliancePercent = pmCompliance.CompliancePercent,
+                StrategyCoveredEquipmentCount = strategyCoveredCount,
+                StrategyCoveragePercent = idsInGroup.Count == 0 ? 0 : 100.0 * strategyCoveredCount / idsInGroup.Count,
+                StrategyTypeMix = strategyTypeMix,
+                DistinctEquipmentClassCount = classIdsInGroup.Count,
+                EquipmentClassesWithApprovedRcmCount = classesWithApprovedRcm,
+                RcmClassCoveragePercent = classIdsInGroup.Count == 0 ? null : 100.0 * classesWithApprovedRcm / classIdsInGroup.Count
+            };
+
+            var isHighCriticality = group.Key is "A" or "B";
+            if (isHighCriticality && row.StrategyCoveragePercent < 50.0 && idsInGroup.Count > 0)
+                row.Findings.Add("High Criticality + Low Maintenance Strategy Coverage (below 50% of equipment)");
+            if (isHighCriticality && row.RcmClassCoveragePercent.HasValue && row.RcmClassCoveragePercent.Value == 0)
+                row.Findings.Add("High Criticality + No Approved RCM Analysis for its represented Equipment Classes");
+            if (isHighCriticality && repeatCount > 0 && strategyCoveredCount > 0)
+                row.Findings.Add("Repeated Failure Despite Existing Maintenance Strategy — investigate strategy effectiveness");
+
+            result.Add(row);
+        }
+
+        return result.OrderBy(x => x.CriticalityClass).ToList();
+    }
 }

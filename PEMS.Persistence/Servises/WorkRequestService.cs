@@ -246,14 +246,16 @@ public class WorkRequestService : IWorkRequestService
             CreatedDate = DateTime.Now
         };
 
-        await _context.WorkOrders.AddAsync(workOrder);
-        await _context.SaveChangesAsync();
-
         var fromStatus = wr.Status;
-        wr.LinkedWorkOrderId = workOrder.WorkOrderId;
+        // از navigation property به جای FK خام استفاده شد چون workOrder هنوز Id واقعی ندارد -
+        // EF Core موقع SaveChanges به‌صورت خودکار FK را از روی object reference پر می‌کند (fixup).
+        wr.LinkedWorkOrder = workOrder;
         wr.Status = "Converted";
         wr.ModifiedBy = currentUserName;
 
+        // هر دو تغییر (ساخت WorkOrder و به‌روزرسانی WorkRequest) باید یک‌جا و اتمیک ذخیره شوند
+        // تا در صورت خطا بین این دو مرحله، WorkOrder یتیم بدون به‌روزرسانی WorkRequest باقی نماند.
+        await _context.WorkOrders.AddAsync(workOrder);
         await _context.WorkRequestStatusHistories.AddAsync(new WorkRequestStatusHistory
         {
             WorkRequestId = wr.WorkRequestId,

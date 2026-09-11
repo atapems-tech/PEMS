@@ -620,6 +620,7 @@ public class WorkOrderController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateCrewForWorkOrder(int workOrderId, string code, string name)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
         var (success, error, _) = await _crewService.CreateAsync(code, name, workOrderId);
         TempData[success ? "Message" : "Error"] = success ? "Crew ساخته شد." : error;
         return RedirectToAction(nameof(Details), new { id = workOrderId });
