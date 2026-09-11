@@ -68,6 +68,38 @@ public class TransmittalConfiguration : IEntityTypeConfiguration<Transmittal>
     }
 }
 
+/// <summary>
+/// طبق «PEMS EDMS Phase 3 Transmittal Audit» یافته G-21/G-22: هر دو FK جدید Restrict هستند
+/// (نه Cascade) طبق قرارداد این نشست - حذف یک DocumentRevision/DocumentAttachment/Employee
+/// هرگز نباید تاریخچه‌ی یک Transmittal صادرشده را خودکار پاک کند.
+/// </summary>
+public class TransmittalItemConfiguration : IEntityTypeConfiguration<TransmittalItem>
+{
+    public void Configure(EntityTypeBuilder<TransmittalItem> builder)
+    {
+        builder.HasOne(x => x.DocumentRevision)
+            .WithMany()
+            .HasForeignKey(x => x.DocumentRevisionId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.DocumentAttachment)
+            .WithMany()
+            .HasForeignKey(x => x.DocumentAttachmentId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+}
+
+public class TransmittalRecipientConfiguration : IEntityTypeConfiguration<TransmittalRecipient>
+{
+    public void Configure(EntityTypeBuilder<TransmittalRecipient> builder)
+    {
+        builder.HasOne(x => x.AcknowledgedBy)
+            .WithMany()
+            .HasForeignKey(x => x.AcknowledgedById)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+}
+
 public class EngineeringDocumentConfiguration : IEntityTypeConfiguration<EngineeringDocument>
 {
     public void Configure(EntityTypeBuilder<EngineeringDocument> builder)

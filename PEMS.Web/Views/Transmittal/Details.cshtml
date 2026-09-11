@@ -118,7 +118,7 @@
 <div class="content-card mb-3">
     <h6 class="mb-3">Recipients</h6>
     <table class="table table-enterprise">
-        <thead><tr><th>Name</th><th>Type</th><th>Organization</th><th>Response Required</th></tr></thead>
+        <thead><tr><th>Name</th><th>Type</th><th>Organization</th><th>Response Required</th><th>Acknowledgement</th></tr></thead>
         <tbody>
             @foreach (var r in Model.Recipients)
             {
@@ -127,6 +127,26 @@
                     <td>@r.RecipientType</td>
                     <td>@r.Organization</td>
                     <td>@(r.ResponseRequired ? "Yes" : "")</td>
+                    <td>
+                        @if (r.AcknowledgedAt.HasValue)
+                        {
+                            <span class="badge bg-success">Acknowledged @r.AcknowledgedAt.Value.ToString("yyyy-MM-dd")</span>
+                            @if (!string.IsNullOrEmpty(r.AcknowledgedByName)) { <div class="small text-muted">by @r.AcknowledgedByName</div> }
+                            @if (!string.IsNullOrEmpty(r.AcknowledgementNote)) { <div class="small text-muted">@r.AcknowledgementNote</div> }
+                        }
+                        else if (Model.IsIssued && (bool)(ViewBag.CanRecordResponse ?? false))
+                        {
+                            <form asp-action="Acknowledge" asp-route-id="@Model.TransmittalId" method="post" class="d-flex gap-1 align-items-center">
+                                <input type="hidden" name="recipientId" value="@r.TransmittalRecipientId" />
+                                <input name="note" class="form-control form-control-sm" placeholder="Note (optional)" style="min-width:140px;" />
+                                <button class="btn btn-sm btn-outline-success" title="Record Acknowledgement"><i class="bi bi-check2"></i></button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="text-muted small">Pending</span>
+                        }
+                    </td>
                 </tr>
             }
         </tbody>
@@ -142,7 +162,7 @@
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
     <table class="table table-enterprise">
         <thead>
-            <tr><th>Document No</th><th>Title</th><th>Revision at time of sending</th><th>Remarks</th></tr>
+            <tr><th>Document No</th><th>Title</th><th>Revision at time of sending</th><th>File at time of sending</th><th>Remarks</th></tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Items)
@@ -151,6 +171,21 @@
                     <td>@item.DocumentNo</td>
                     <td>@item.DocumentTitle</td>
                     <td><span class="badge bg-secondary">@item.RevisionNo</span></td>
+                    <td class="small">
+                        @if (!string.IsNullOrEmpty(item.SnapshotFileName))
+                        {
+                            <i class="bi bi-file-earmark-lock text-muted" title="Historical snapshot - not a live link"></i>
+                            @item.SnapshotFileName
+                            @if (!string.IsNullOrEmpty(item.SnapshotFileHash))
+                            {
+                                <span class="text-muted" title="SHA-256: @item.SnapshotFileHash">(@item.SnapshotFileHash.Substring(0, 8)&hellip;)</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="text-muted">No official file was on record at time of sending</span>
+                        }
+                    </td>
                     <td>@item.Remarks</td>
                 </tr>
             }

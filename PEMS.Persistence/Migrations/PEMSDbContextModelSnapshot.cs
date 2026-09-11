@@ -11345,7 +11345,13 @@ namespace PEMS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransmittalItemId"));
 
+                    b.Property<int?>("DocumentAttachmentId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DocumentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DocumentRevisionId")
                         .HasColumnType("int");
 
                     b.Property<string>("Remarks")
@@ -11355,12 +11361,25 @@ namespace PEMS.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SnapshotFileHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SnapshotFileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("SnapshotFileSize")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("TransmittalId")
                         .HasColumnType("int");
 
                     b.HasKey("TransmittalItemId");
 
+                    b.HasIndex("DocumentAttachmentId");
+
                     b.HasIndex("DocumentId");
+
+                    b.HasIndex("DocumentRevisionId");
 
                     b.HasIndex("TransmittalId");
 
@@ -11374,6 +11393,15 @@ namespace PEMS.Persistence.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransmittalRecipientId"));
+
+                    b.Property<DateTime?>("AcknowledgedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("AcknowledgedById")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AcknowledgementNote")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -11399,6 +11427,8 @@ namespace PEMS.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("TransmittalRecipientId");
+
+                    b.HasIndex("AcknowledgedById");
 
                     b.HasIndex("TransmittalId");
 
@@ -16964,11 +16994,21 @@ namespace PEMS.Persistence.Migrations
 
             modelBuilder.Entity("PEMS.Domain.Entities.TransmittalItem", b =>
                 {
+                    b.HasOne("PEMS.Domain.Entities.DocumentAttachment", "DocumentAttachment")
+                        .WithMany()
+                        .HasForeignKey("DocumentAttachmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("PEMS.Domain.Entities.Document", "Document")
                         .WithMany()
                         .HasForeignKey("DocumentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.DocumentRevision", "DocumentRevision")
+                        .WithMany()
+                        .HasForeignKey("DocumentRevisionId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("PEMS.Domain.Entities.Transmittal", "Transmittal")
                         .WithMany("Items")
@@ -16978,16 +17018,27 @@ namespace PEMS.Persistence.Migrations
 
                     b.Navigation("Document");
 
+                    b.Navigation("DocumentAttachment");
+
+                    b.Navigation("DocumentRevision");
+
                     b.Navigation("Transmittal");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.TransmittalRecipient", b =>
                 {
+                    b.HasOne("PEMS.Domain.Entities.Employee", "AcknowledgedBy")
+                        .WithMany()
+                        .HasForeignKey("AcknowledgedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("PEMS.Domain.Entities.Transmittal", "Transmittal")
                         .WithMany("Recipients")
                         .HasForeignKey("TransmittalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AcknowledgedBy");
 
                     b.Navigation("Transmittal");
                 });

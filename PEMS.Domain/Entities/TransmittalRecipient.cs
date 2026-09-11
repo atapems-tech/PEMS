@@ -30,4 +30,18 @@ public class TransmittalRecipient
     public bool IsActive { get; set; } = true;
 
     public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+    // ==============================================================================
+    // طبق «PEMS EDMS Phase 3 Transmittal Audit» یافته G-22: قبلاً فقط یک ResponseReceivedDate/
+    // ResponseNote سطح-کل-Transmittal وجود داشت - یعنی با چند گیرنده هیچ راهی برای دیدن این‌که
+    // کدام گیرنده هنوز تایید دریافت نکرده وجود نداشت. این مفهوم («آیا دریافت شد») عمداً از
+    // Response جدا نگه داشته شده («پاسخ رسمی کارفرما/گیرنده») - این‌ها دو سوال متفاوت‌اند.
+    // ==============================================================================
+
+    public DateTime? AcknowledgedAt { get; set; }
+
+    public int? AcknowledgedById { get; set; }
+    public Employee? AcknowledgedBy { get; set; }
+
+    public string? AcknowledgementNote { get; set; }
 }

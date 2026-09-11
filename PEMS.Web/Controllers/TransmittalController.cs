@@ -206,6 +206,26 @@ public class TransmittalController : Controller
         return RedirectToAction(nameof(Details), new { id });
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Acknowledge(int id, int recipientId, string? note)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Transmittal", "Edit"))
+            return Forbid();
+
+        try
+        {
+            await _service.AcknowledgeAsync(recipientId, note, await GetCurrentEmployeeIdAsync());
+            TempData["Message"] = "Acknowledgement recorded";
+        }
+        catch (InvalidOperationException ex)
+        {
+            TempData["Error"] = ex.Message;
+        }
+
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
     private async Task LoadCreateViewBagsAsync()
     {
         ViewBag.Projects = await _context.Projects.Where(x => x.IsActive)

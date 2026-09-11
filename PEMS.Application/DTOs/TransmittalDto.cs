@@ -42,6 +42,13 @@ public class TransmittalItemDto
     public string DocumentTitle { get; set; } = "";
     public string RevisionNo { get; set; } = "";
     public string? Remarks { get; set; }
+
+    // طبق یافته‌ی G-21: هویت تاریخی فایل رسمی در لحظه‌ی ارسال - null یعنی رویژن/فایل رسمی در
+    // آن لحظه قابل تشخیص نبود (مثلاً مدرک هنوز هیچ DocumentRevision واقعی نداشت)
+    public int? DocumentRevisionId { get; set; }
+    public string? SnapshotFileName { get; set; }
+    public string? SnapshotFileHash { get; set; }
+    public long? SnapshotFileSize { get; set; }
 }
 
 public class TransmittalRecipientDto
@@ -51,6 +58,11 @@ public class TransmittalRecipientDto
     public string RecipientType { get; set; } = "";
     public string? Organization { get; set; }
     public bool ResponseRequired { get; set; }
+
+    // طبق یافته‌ی G-22
+    public DateTime? AcknowledgedAt { get; set; }
+    public string? AcknowledgedByName { get; set; }
+    public string? AcknowledgementNote { get; set; }
 }
 
 /// <summary>ورودی یک گیرنده هنگام ساخت Transmittal - طبق بخش ۷ (Structured Recipients).</summary>

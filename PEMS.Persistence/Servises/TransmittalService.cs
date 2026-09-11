@@ -145,8 +145,18 @@ public class TransmittalService : ITransmittalService
             DocumentNo = i.Document?.DocumentNo ?? "",
             DocumentTitle = i.Document?.Title ?? "",
             RevisionNo = i.RevisionNo,
-            Remarks = i.Remarks
+            Remarks = i.Remarks,
+            DocumentRevisionId = i.DocumentRevisionId,
+            SnapshotFileName = i.SnapshotFileName,
+            SnapshotFileHash = i.SnapshotFileHash,
+            SnapshotFileSize = i.SnapshotFileSize
         }).ToList();
+
+        var acknowledgerIds = t.Recipients.Where(r => r.AcknowledgedById.HasValue).Select(r => r.AcknowledgedById!.Value).Distinct().ToList();
+        var acknowledgerNames = acknowledgerIds.Count == 0
+            ? new Dictionary<int, string>()
+            : await _context.Employees.Where(e => acknowledgerIds.Contains(e.EmployeeId))
+                .ToDictionaryAsync(e => e.EmployeeId, e => e.FirstName + " " + e.LastName);
 
         dto.Recipients = t.Recipients.Where(r => r.IsActive).Select(r => new TransmittalRecipientDto
         {
@@ -154,7 +164,10 @@ public class TransmittalService : ITransmittalService
             Name = r.Name,
             RecipientType = r.RecipientType,
             Organization = r.Organization,
-            ResponseRequired = r.ResponseRequired
+            ResponseRequired = r.ResponseRequired,
+            AcknowledgedAt = r.AcknowledgedAt,
+            AcknowledgedByName = r.AcknowledgedById.HasValue ? acknowledgerNames.GetValueOrDefault(r.AcknowledgedById.Value) : null,
+            AcknowledgementNote = r.AcknowledgementNote
         }).ToList();
 
         return dto;
@@ -198,11 +211,35 @@ public class TransmittalService : ITransmittalService
         foreach (var docId in documentIds.Distinct())
         {
             var doc = await _context.Documents.FirstOrDefaultAsync(x => x.DocumentId == docId);
+            var revisionNo = doc?.RevisionNo ?? "00";
+
+            // طبق یافته‌ی G-21: هویت رویژن/فایل رسمی همین‌جا (لحظه‌ی افزودن آیتم، دقیقاً همان
+            // لحظه‌ای که RevisionNo هم ثبت می‌شود) Snapshot می‌شود - نه دیرتر، نه در لحظه‌ی Send.
+            // اگر مدرک هنوز هیچ DocumentRevision واقعی ندارد (مدارک قدیمی‌تر)، این فیلدها null
+            // می‌مانند - حدس زده نمی‌شوند.
+            var revision = await _context.DocumentRevisions
+                .Where(r => r.DocumentId == docId && r.RevisionNo == revisionNo)
+                .OrderByDescending(r => r.RevisionId)
+                .FirstOrDefaultAsync();
+
+            DocumentAttachment? officialAttachment = null;
+            if (revision != null)
+            {
+                officialAttachment = await _context.DocumentAttachments
+                    .Where(a => a.DocumentRevisionId == revision.RevisionId && a.IsOfficial && a.IsActive)
+                    .OrderByDescending(a => a.UploadDate)
+                    .FirstOrDefaultAsync();
+            }
 
             transmittal.Items.Add(new TransmittalItem
             {
                 DocumentId = docId,
-                RevisionNo = doc?.RevisionNo ?? "00"
+                RevisionNo = revisionNo,
+                DocumentRevisionId = revision?.RevisionId,
+                DocumentAttachmentId = officialAttachment?.AttachmentId,
+                SnapshotFileName = officialAttachment?.FileName,
+                SnapshotFileHash = officialAttachment?.FileHash,
+                SnapshotFileSize = officialAttachment?.FileSize
             });
         }
 
@@ -324,11 +361,19 @@ public class TransmittalService : ITransmittalService
 
         foreach (var item in original.Items)
         {
+            // طبق یافته‌ی G-21: دقیقاً همان الگوی موجود RevisionNo - کپی عیناً، نه Resolve دوباره.
+            // یک Reissue باید همان چیزی را که قبلاً Cancel شده دوباره پیشنهاد بدهد، نه نسخه‌ی
+            // تازه‌ی رویژن/فایل که ممکن است از وقت Cancel به بعد تغییر کرده باشد.
             reissued.Items.Add(new TransmittalItem
             {
                 DocumentId = item.DocumentId,
                 RevisionNo = item.RevisionNo,
-                Remarks = item.Remarks
+                Remarks = item.Remarks,
+                DocumentRevisionId = item.DocumentRevisionId,
+                DocumentAttachmentId = item.DocumentAttachmentId,
+                SnapshotFileName = item.SnapshotFileName,
+                SnapshotFileHash = item.SnapshotFileHash,
+                SnapshotFileSize = item.SnapshotFileSize
             });
         }
 
@@ -364,6 +409,38 @@ public class TransmittalService : ITransmittalService
 
         t.ResponseReceivedDate = DateTime.Now;
         t.ResponseNote = responseNote;
+
+        await SaveWithConcurrencyCheckAsync();
+    }
+
+    public async Task AcknowledgeAsync(int transmittalRecipientId, string? note, int? actorEmployeeId)
+    {
+        var recipient = await _context.TransmittalRecipients
+            .Include(r => r.Transmittal)
+            .FirstOrDefaultAsync(r => r.TransmittalRecipientId == transmittalRecipientId);
+
+        if (recipient == null) throw new InvalidOperationException("گیرنده یافت نشد.");
+        if (recipient.Transmittal == null) throw new InvalidOperationException("ترانسمیتال یافت نشد.");
+
+        if (!recipient.Transmittal.IsIssued)
+            throw new InvalidOperationException("فقط گیرندگان یک ترانسمیتال صادرشده (Sent) قابل تایید دریافت هستند.");
+
+        if (recipient.AcknowledgedAt.HasValue)
+            throw new InvalidOperationException($"گیرنده «{recipient.Name}» قبلاً تایید دریافت کرده است ({recipient.AcknowledgedAt:yyyy-MM-dd}).");
+
+        recipient.AcknowledgedAt = DateTime.Now;
+        recipient.AcknowledgedById = actorEmployeeId;
+        recipient.AcknowledgementNote = note;
+
+        // طبق بند ۱۵ (Partial Acknowledgement): فقط وقتی همه‌ی گیرندگان فعال تایید کرده باشند،
+        // خودِ Transmittal هم Acknowledged می‌شود - هرگز به‌خاطر یک گیرنده. "Acknowledged" از قبل
+        // یک مقدار معتبر Status بود (Transmittal.cs) اما هیچ کدی تاکنون آن را واقعاً تنظیم نمی‌کرد.
+        var activeRecipients = await _context.TransmittalRecipients
+            .Where(r => r.TransmittalId == recipient.TransmittalId && r.IsActive)
+            .ToListAsync();
+
+        if (activeRecipients.Count > 0 && activeRecipients.All(r => r.AcknowledgedAt.HasValue) && recipient.Transmittal.Status == "Sent")
+            recipient.Transmittal.Status = "Acknowledged";
 
         await SaveWithConcurrencyCheckAsync();
     }

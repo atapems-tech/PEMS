@@ -6,9 +6,31 @@ before adding new surface area, and never touch AI-assisted features before the 
 reliable.
 
 **Important:** per the governing directive's own instruction ("Do not begin broad implementation until the
-audit and roadmap are completed"), **no code in this roadmap has been implemented yet.** This document is
-the Phase 0 planning deliverable. Each phase below is scoped and ready to execute on explicit direction, one
-phase at a time, with full build/migration/test verification before moving to the next.
+audit and roadmap are completed"), **no code in this roadmap had been implemented at the time it was
+written.** This document was the Phase 0 planning deliverable. Each phase below was scoped and ready to
+execute on explicit direction.
+
+## Actual Execution Log (updated as phases complete)
+
+The plan below is a Phase-0-era forecast. As each phase was actually commissioned, its real scope was
+determined by its own fresh audit (per every phase's mandatory "audit before coding" rule), which did not
+always match this document's original guess. This log is the honest record of what was actually done, kept
+in sync rather than letting the forecast silently drift from reality:
+
+- **Phase 1 (executed):** Revision-file binding & integrity — matches the original Phase 1 plan below almost
+  exactly (G-06/G-07). See `docs/audits/PEMS_EDMS_FINAL_IMPLEMENTATION_REPORT.md`.
+- **Phase 2 (executed):** Document lifecycle audit + revision-scoped client review (Finding L2-01) — **not**
+  the original plan's "Phase 2" (client-review `Document.Status` separation, G-10) exactly; the fresh Phase 2
+  audit found the more urgent, concretely-verified bug was that client-review state wasn't revision-scoped at
+  all, which the original G-10 framing hadn't identified. See `PEMS_EDMS_PHASE2_LIFECYCLE_AUDIT.md`,
+  `PEMS_EDMS_PHASE2_DESIGN.md`, `PEMS_EDMS_PHASE2_IMPLEMENTATION_REPORT.md`.
+- **Phase 3 (executed):** Transmittal historical integrity (G-21) + per-recipient acknowledgement (G-22) —
+  **not** in this original plan at all; a mature Transmittal system was discovered to already exist (not
+  reflected in the Phase 0 audit, which never searched for it), so Phase 3 became its own fresh audit +
+  targeted fix rather than following any phase below. See `PEMS_EDMS_PHASE3_TRANSMITTAL_AUDIT.md`.
+
+The phases below remain the current forecast for what has **not** yet been executed (Handover/Retention/SoD
+enumeration/AI), renumbered relative to what actually shipped as Phases 1-3 above.
 
 ---
 

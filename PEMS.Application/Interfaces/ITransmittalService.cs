@@ -31,4 +31,13 @@ public interface ITransmittalService
     Task<int> ReissueAsync(int id, int? actorEmployeeId);
 
     Task RecordResponseAsync(int id, string? responseNote);
+
+    /// <summary>
+    /// طبق «PEMS EDMS Phase 3 Transmittal Audit» یافته G-22: تایید دریافت مخصوص یک گیرنده -
+    /// جدا از RecordResponseAsync (پاسخ رسمی کل Transmittal). فقط برای Transmittal صادرشده
+    /// (Sent/Acknowledged) مجاز است؛ تایید تکراری همان گیرنده رد می‌شود. اگر با این تایید همه‌ی
+    /// گیرندگان فعال تایید کرده باشند، خودِ Transmittal.Status به "Acknowledged" تغییر می‌کند -
+    /// هرگز به‌خاطر یک گیرنده.
+    /// </summary>
+    Task AcknowledgeAsync(int transmittalRecipientId, string? note, int? actorEmployeeId);
 }
