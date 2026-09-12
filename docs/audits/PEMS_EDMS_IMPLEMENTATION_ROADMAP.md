@@ -28,6 +28,13 @@ in sync rather than letting the forecast silently drift from reality:
   **not** in this original plan at all; a mature Transmittal system was discovered to already exist (not
   reflected in the Phase 0 audit, which never searched for it), so Phase 3 became its own fresh audit +
   targeted fix rather than following any phase below. See `PEMS_EDMS_PHASE3_TRANSMITTAL_AUDIT.md`.
+- **Phase 4 (executed):** SoD self-approval enforcement + EngineeringDocuments Create/Edit authorization gap
+  + AI-pipeline authority-boundary fix (G-16/G-25/G-26) — **not** in this original plan at all either; the
+  Phase 0 audit's G-16 row flagged "SoD enumeration not re-confirmed" as a low-effort investigation item, but
+  never surfaced that the enforcement mechanism was fully built, tested, and seeded yet completely unwired
+  from any real caller, nor that Create/Edit had zero authorization at all. Phase 4's own fresh audit found
+  both and fixed both with zero new architecture. MDR completeness (Area A) was investigated and confirmed
+  genuinely absent but deliberately deferred as too large for one phase. See `PEMS_EDMS_PHASE4_AUDIT.md`.
 
 The phases below remain the current forecast for what has **not** yet been executed (Handover/Retention/SoD
 enumeration/AI), renumbered relative to what actually shipped as Phases 1-3 above.

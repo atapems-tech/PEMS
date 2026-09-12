@@ -16,13 +16,17 @@ public class DocumentWorkflowController : Controller
     private readonly PEMSDbContext _context;
     private readonly IDocumentWorkflowService _workflowService;
     private readonly ICurrentUserService _currentUser;
+    private readonly IPermissionService _permissionService;
+    private readonly IAccessControlService _accessControlService;
 
     public DocumentWorkflowController(PEMSDbContext context, IDocumentWorkflowService workflowService,
-        ICurrentUserService currentUser)
+        ICurrentUserService currentUser, IPermissionService permissionService, IAccessControlService accessControlService)
     {
         _context = context;
         _workflowService = workflowService;
         _currentUser = currentUser;
+        _permissionService = permissionService;
+        _accessControlService = accessControlService;
     }
 
     private async Task<int?> GetCurrentEmployeeIdAsync()
@@ -125,6 +129,33 @@ public class DocumentWorkflowController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Approve(int documentId, string? comment)
     {
+        // طبق «PEMS EDMS Phase 4 Verification» یافته P4-04: این کنترلر یک مسیر دوم و کاملاً
+        // ناشناخته برای همان EngineeringDocumentsController.ApproveAsync بود - بدون هیچ بررسی
+        // مجوز و بدون بررسی SoD (که در EngineeringDocumentsController.Approve همین فاز اضافه
+        // شد). همان دو محافظت این‌جا هم اعمال می‌شود.
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EngineeringDocuments", "Approve"))
+            return Forbid();
+
+        if (_currentUser.UserId.HasValue)
+        {
+            var sodDecision = await _accessControlService.AuthorizeAsync(new AccessControlRequest
+            {
+                UserId = _currentUser.UserId.Value,
+                ResourceName = "EngineeringDocuments",
+                ActionName = "Approve",
+                ResourceId = documentId.ToString(),
+                IpAddress = GetClientIp()
+            });
+
+            if (!sodDecision.Allowed && sodDecision.Reason == AccessDecisionReason.DeniedBySoD)
+            {
+                TempData["Error"] = string.IsNullOrWhiteSpace(sodDecision.Detail)
+                    ? "طبق سیاست تفکیک وظایف، شما نمی‌توانید مدرکی را که خودتان ایجاد/ویرایش کرده‌اید تایید کنید."
+                    : sodDecision.Detail;
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
         try
         {
             await _workflowService.ApproveAsync(

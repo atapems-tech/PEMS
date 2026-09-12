@@ -360,10 +360,10 @@
     "semantic_hash": "e8040296de57e344f98af8d72c7d5026"
   },
   "PEMS.Application/DTOs/TransmittalDto.cs": {
-    "mtime": 1788350902.0218177,
-    "seen": 1788613735.6693618,
-    "ast_hash": "d8d9b87a454ab18b399ef8010f4d66e7",
-    "semantic_hash": "d8d9b87a454ab18b399ef8010f4d66e7"
+    "mtime": 1789160037.8072329,
+    "seen": 1789161046.054108,
+    "ast_hash": "63ca462cc7f13b46a8e5f0ddc7164592",
+    "semantic_hash": ""
   },
   "PEMS.Application/DTOs/UserDashboardWidgetDto.cs": {
     "mtime": 1788350902.0218177,
@@ -684,9 +684,9 @@
     "semantic_hash": "a8d24f820115f169d2dcb133a7a3861c"
   },
   "PEMS.Application/Interfaces/ITransmittalService.cs": {
-    "mtime": 1788704855.0801575,
-    "seen": 1788706892.311517,
-    "ast_hash": "f39dabeaf35c49153934eb1ed75d5627",
+    "mtime": 1789160017.075641,
+    "seen": 1789161046.0783854,
+    "ast_hash": "8350d758c127cf4f7f56bf1a7045bf47",
     "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/IUserDashboardService.cs": {
@@ -1296,10 +1296,10 @@
     "semantic_hash": "4586fcf0e586214788d4eb4aea4fb0eb"
   },
   "PEMS.Domain/Entities/TransmittalItem.cs": {
-    "mtime": 1788350903.2483182,
-    "seen": 1788613735.670535,
-    "ast_hash": "84de9b05ed6286b72b57c6e01bf6128b",
-    "semantic_hash": "84de9b05ed6286b72b57c6e01bf6128b"
+    "mtime": 1789159957.454348,
+    "seen": 1789161046.147104,
+    "ast_hash": "b863fd26620f7a1c4c7fd74724161e31",
+    "semantic_hash": ""
   },
   "PEMS.Domain/Entities/User.cs": {
     "mtime": 1788350903.2483182,
@@ -1410,9 +1410,9 @@
     "semantic_hash": "3827f0489a4f5d665bfa13f2202cdff5"
   },
   "PEMS.Persistence/Configurations/DocumentCoreConfigurations.cs": {
-    "mtime": 1789157413.5232759,
-    "seen": 1789158519.5606232,
-    "ast_hash": "438bfe3eafa960105f0108ce82453ba5",
+    "mtime": 1789159998.061177,
+    "seen": 1789161046.1598961,
+    "ast_hash": "7ad466ae88771dbcfe87d0f3d4dfecaf",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Configurations/DocumentIdcReferralConfiguration.cs": {
@@ -1578,9 +1578,9 @@
     "semantic_hash": "5809af8d8afaa80014e62788179b6dd4"
   },
   "PEMS.Persistence/Migrations/PEMSDbContextModelSnapshot.cs": {
-    "mtime": 1789157746.294816,
-    "seen": 1789158519.6076107,
-    "ast_hash": "5336bcc5ec476abacc30106492d4106e",
+    "mtime": 1789160329.4175563,
+    "seen": 1789161046.2015343,
+    "ast_hash": "058bdefd6c7859904d6094070f39c557",
     "semantic_hash": ""
   },
   "PEMS.Persistence/PEMS.Persistence.csproj": {
@@ -1728,10 +1728,10 @@
     "semantic_hash": "80b6ed005c97eb18272101fba5772f05"
   },
   "PEMS.Persistence/Servises/EngineeringDocumentIntelligenceService.cs": {
-    "mtime": 1788350904.3601568,
-    "seen": 1788613735.670535,
-    "ast_hash": "288a17cded5bc6901103a56dbe7f3cce",
-    "semantic_hash": "288a17cded5bc6901103a56dbe7f3cce"
+    "mtime": 1789164379.0175486,
+    "seen": 1789184957.0803628,
+    "ast_hash": "5fe7c838292184b54d61939115fdb5a5",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/EngineeringReportService.cs": {
     "mtime": 1788350904.3601568,
@@ -2034,9 +2034,9 @@
     "semantic_hash": "653043f17c907feb9a377088e49d6b7b"
   },
   "PEMS.Persistence/Servises/TransmittalService.cs": {
-    "mtime": 1788706379.013703,
-    "seen": 1788706892.3761957,
-    "ast_hash": "0f234a7ac1dc66f7e41bfd5fedb32ae7",
+    "mtime": 1789160121.9463263,
+    "seen": 1789161046.2434194,
+    "ast_hash": "5993216b360cef1328aae2a4c67470d0",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/UserDashboardService.cs": {
@@ -2358,9 +2358,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/EngineeringDocumentsController.cs": {
-    "mtime": 1789157487.4277995,
-    "seen": 1789158519.73333,
-    "ast_hash": "4901498d9ec74bcdd08689c2646f0f5b",
+    "mtime": 1789164355.864107,
+    "seen": 1789184957.175127,
+    "ast_hash": "985a458263132ffd08cc7b2f4a38f74b",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/EquipmentController.cs": {
@@ -2544,9 +2544,9 @@
     "semantic_hash": "2919ae31cca6ae970a19c935b5eeb099"
   },
   "PEMS.Web/Controllers/TransmittalController.cs": {
-    "mtime": 1788704883.5383124,
-    "seen": 1788706892.404212,
-    "ast_hash": "b851556843924888897e8fe03f007579",
+    "mtime": 1789160137.7975233,
+    "seen": 1789161046.3174381,
+    "ast_hash": "7e2d63a123b2c629018f94a890cf1ee4",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/VDRController.cs": {
@@ -3486,10 +3486,10 @@
     "semantic_hash": "b49719ddb55812de9ece32f3806a061a"
   },
   "PEMS.Web/Views/Transmittal/Details.cshtml": {
-    "mtime": 1788350907.1596496,
-    "seen": 1788613735.670535,
-    "ast_hash": "2ccc1b28975d4aa1ebdbdf81d2d2a32c",
-    "semantic_hash": "2ccc1b28975d4aa1ebdbdf81d2d2a32c"
+    "mtime": 1789160262.6207945,
+    "seen": 1789161046.385322,
+    "ast_hash": "b999a56003556714afe7b5654b0adb8c",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Transmittal/Index.cshtml": {
     "mtime": 1788704909.8258748,
@@ -6108,10 +6108,10 @@
     "semantic_hash": "ed8341c598418ad265449983c55c8904"
   },
   "PEMS.Domain/Entities/TransmittalRecipient.cs": {
-    "mtime": 1788350903.2483182,
-    "seen": 1788613735.670535,
-    "ast_hash": "8218a24859bdd1ae18b1764ae0fda811",
-    "semantic_hash": "8218a24859bdd1ae18b1764ae0fda811"
+    "mtime": 1789159976.673333,
+    "seen": 1789161046.147104,
+    "ast_hash": "4803eeca7aa5493fb088d1ff7a143ce2",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Migrations/20260818155557_AddTransmittalGovernanceAndHoldLifecycle.Designer.cs": {
     "mtime": 1788350904.0472362,
@@ -10872,15 +10872,15 @@
     "semantic_hash": ""
   },
   "docs/audits/PEMS_EDMS_GAP_MATRIX.md": {
-    "mtime": 1789141369.4063928,
-    "seen": 1789145033.1228826,
-    "ast_hash": "fd27e9f43f70a27fbb2235d1b0021b55",
+    "mtime": 1789184616.3740444,
+    "seen": 1789184957.3093648,
+    "ast_hash": "ef1d3040763b306f989e9c28e8211b05",
     "semantic_hash": ""
   },
   "docs/audits/PEMS_EDMS_IMPLEMENTATION_ROADMAP.md": {
-    "mtime": 1789141442.7574236,
-    "seen": 1789145033.1228826,
-    "ast_hash": "d0f0050deb40c73d3dec204d60df17d6",
+    "mtime": 1789184655.123179,
+    "seen": 1789184957.3093648,
+    "ast_hash": "a3b63bb94c0f9d5ab4e766f59b894eb2",
     "semantic_hash": ""
   },
   "PEMS.Web/wwwroot/uploads/letters/inline/4223eb4e-4c87-4b37-8c8e-ddc5f15f9203.jpg": {
@@ -10917,6 +10917,60 @@
     "mtime": 1789157337.7648196,
     "seen": 1789158519.8920345,
     "ast_hash": "7cf953dcedf4b0ae3a9ececa7282cd44",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260911205849_AddTransmittalHistoricalSnapshotAndAcknowledgement.Designer.cs": {
+    "mtime": 1789160329.4145217,
+    "seen": 1789161046.2015343,
+    "ast_hash": "b9bb072187595f95855a98b28e3a7fa2",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260911205849_AddTransmittalHistoricalSnapshotAndAcknowledgement.cs": {
+    "mtime": 1789160329.4054918,
+    "seen": 1789161046.2015343,
+    "ast_hash": "36671c3c375c31fa0b32902f0d8c14af",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Engineering/TransmittalHistoricalIntegrityTests.cs": {
+    "mtime": 1789160606.7108483,
+    "seen": 1789161046.2764091,
+    "ast_hash": "6b338756e4794e8e5f02f8b54dabb1be",
+    "semantic_hash": ""
+  },
+  "docs/audits/PEMS_EDMS_PHASE2_IMPLEMENTATION_REPORT.md": {
+    "mtime": 1789158656.5149224,
+    "seen": 1789161046.418631,
+    "ast_hash": "130c2464f1b080b00f1f8bdd1690d5df",
+    "semantic_hash": ""
+  },
+  "docs/audits/PEMS_EDMS_PHASE3_TRANSMITTAL_AUDIT.md": {
+    "mtime": 1789159754.834079,
+    "seen": 1789161046.418631,
+    "ast_hash": "279b6d68071b576b094408bdac080675",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Authorization/EngineeringDocumentSelfApprovalTests.cs": {
+    "mtime": 1789184239.8799946,
+    "seen": 1789184957.1275134,
+    "ast_hash": "6c44eb201b0b235f8937a76b8ba0e646",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Engineering/AIWorkflowStageAuthorityBoundaryTests.cs": {
+    "mtime": 1789184308.236598,
+    "seen": 1789184957.1431372,
+    "ast_hash": "9c3d86eb4b30f09bb9b7cd63608f78eb",
+    "semantic_hash": ""
+  },
+  "docs/audits/PEMS_EDMS_PHASE3_FINAL_REPORT.md": {
+    "mtime": 1789161325.8077743,
+    "seen": 1789184957.3093648,
+    "ast_hash": "f92f999bbd6464fdad026f7f93429da5",
+    "semantic_hash": ""
+  },
+  "docs/audits/PEMS_EDMS_PHASE4_AUDIT.md": {
+    "mtime": 1789184512.5238106,
+    "seen": 1789184957.3093648,
+    "ast_hash": "9cb1704c1d37b5fd1c24c5480fa1777d",
     "semantic_hash": ""
   }
 }

@@ -230,6 +230,11 @@ public class EngineeringDocumentsController : Controller
     public async Task<IActionResult> Create(
         EngineeringDocument document, bool useManualNumber = false)
     {
+        // طبق «PEMS EDMS Phase 4 Audit» یافته P4-01: پیش از این هیچ بررسی مجوز روی ایجاد مدرک
+        // وجود نداشت - هر کاربر احرازهویت‌شده (با هر نقشی) می‌توانست مدرک بسازد. دقیقاً همان
+        // الگوی Freeze/Unfreeze/Hold همین کنترلر.
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EngineeringDocuments", "Create"))
+            return Forbid();
 
         if (!ModelState.IsValid)
         {
@@ -343,7 +348,19 @@ public class EngineeringDocumentsController : Controller
 
         await _context.SaveChangesAsync();
 
-
+        // طبق یافته‌ی P4-01: ثبت این اقدام در تاریخچه‌ی مجوزدهی - همان رکوردی که بعداً هنگام
+        // Approve توسط AuthorizeAsync برای تشخیص خودتاییدی (SoD) خوانده می‌شود
+        if (_currentUser.UserId.HasValue)
+        {
+            await _accessControlService.AuthorizeAsync(new PEMS.Application.DTOs.AccessControlRequest
+            {
+                UserId = _currentUser.UserId.Value,
+                ResourceName = "EngineeringDocuments",
+                ActionName = "Create",
+                ResourceId = document.DocumentId.ToString(),
+                IpAddress = GetClientIp()
+            });
+        }
 
         return RedirectToAction(nameof(Index));
 
@@ -449,6 +466,9 @@ public class EngineeringDocumentsController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
+        // طبق یافته‌ی P4-01: همان بررسی سمت‌سرور - نمایش فرم ویرایش هم باید مجوز داشته باشد
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EngineeringDocuments", "Edit"))
+            return Forbid();
 
         var document =
             await _service.GetEntityByIdAsync(id);
@@ -479,6 +499,9 @@ public class EngineeringDocumentsController : Controller
     public async Task<IActionResult> Edit(
         EngineeringDocument document)
     {
+        // طبق یافته‌ی P4-01
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EngineeringDocuments", "Edit"))
+            return Forbid();
 
         if (!ModelState.IsValid)
         {
@@ -500,6 +523,19 @@ public class EngineeringDocumentsController : Controller
             return RedirectToAction(nameof(Details), new { id = document.DocumentId });
         }
 
+        // طبق یافته‌ی P4-01: ثبت در تاریخچه‌ی مجوزدهی - Edit هم طبق SoDPolicy موجود با Approve
+        // در تعارض است (کاربری که ویرایش کرده نمی‌تواند همان مدرک را تایید کند)
+        if (_currentUser.UserId.HasValue)
+        {
+            await _accessControlService.AuthorizeAsync(new PEMS.Application.DTOs.AccessControlRequest
+            {
+                UserId = _currentUser.UserId.Value,
+                ResourceName = "EngineeringDocuments",
+                ActionName = "Edit",
+                ResourceId = document.DocumentId.ToString(),
+                IpAddress = GetClientIp()
+            });
+        }
 
         TempData["Message"] = "Document updated successfully";
         return RedirectToAction(nameof(Details), new { id = document.DocumentId });
@@ -1211,6 +1247,32 @@ public class EngineeringDocumentsController : Controller
         {
             TempData["Error"] = "You can only approve documents in your own discipline";
             return RedirectToAction(nameof(Details), new { id });
+        }
+
+        // طبق «PEMS EDMS Phase 4 Audit» یافته P4-02: AccessControlService.AuthorizeAsync از فاز ۱
+        // RBAC-ABAC ساخته و تست شده بود (AccessControlScopeAndSoDTests) و SoDPolicy موجود
+        // («EngineeringDocuments.Create/Edit در تعارض با Approve») همین الان هم در دیتابیس Seed
+        // شده - اما هیچ فراخوان واقعی‌ای در کل پروژه نداشت. این‌جا اولین فراخوان واقعی است: اگر
+        // همین کاربر قبلاً این مدرک را ایجاد یا ویرایش کرده باشد (طبق تاریخچه‌ی واقعی
+        // AuthorizationAuditLog که همان اقدامات بالا در Create/Edit ثبت می‌کنند)، تایید رد می‌شود.
+        if (_currentUser.UserId.HasValue)
+        {
+            var sodDecision = await _accessControlService.AuthorizeAsync(new PEMS.Application.DTOs.AccessControlRequest
+            {
+                UserId = _currentUser.UserId.Value,
+                ResourceName = "EngineeringDocuments",
+                ActionName = "Approve",
+                ResourceId = document.DocumentId.ToString(),
+                IpAddress = GetClientIp()
+            });
+
+            if (!sodDecision.Allowed && sodDecision.Reason == PEMS.Application.DTOs.AccessDecisionReason.DeniedBySoD)
+            {
+                TempData["Error"] = string.IsNullOrWhiteSpace(sodDecision.Detail)
+                    ? "طبق سیاست تفکیک وظایف، شما نمی‌توانید مدرکی را که خودتان ایجاد/ویرایش کرده‌اید تایید کنید."
+                    : sodDecision.Detail;
+                return RedirectToAction(nameof(Details), new { id });
+            }
         }
 
 

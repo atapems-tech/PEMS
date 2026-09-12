@@ -230,11 +230,16 @@ public class EngineeringDocumentIntelligenceService : IEngineeringDocumentIntell
         var document = await _context.EngineeringDocuments.FirstOrDefaultAsync(x => x.DocumentId == documentId);
         if (document == null) throw new Exception("مدرک یافت نشد");
 
+        // طبق «PEMS EDMS Phase 4 Audit» یافته P4-03: AIWorkflowStage خط‌سیر جداگانه‌ی
+        // Intake/Classification است (Uploaded→...→Approved→KnowledgeBase یعنی «طبقه‌بندی AI
+        // تایید شد»)، نه گردش‌کار رسمی مهندسی (Draft→Submitted→Checked→Approved→Issued که فقط
+        // DocumentWorkflowService/IWorkflowRuntime کنترل می‌کند). قبلاً وقتی این خط‌سیر به
+        // "Approved" می‌رسید، مستقیماً Document.Status هم بدون عبور از Submit/Check، بدون بررسی
+        // محدوده‌ی دیسیپلین و بدون بررسی SoD بازنویسی می‌شد - یک مسیر دوم و ناسازگار برای همان
+        // فیلد. این‌جا فقط AIWorkflowStage (خط‌سیر AI) تغییر می‌کند؛ Document.Status هرگز از
+        // این مسیر دست‌نخورده نمی‌ماند.
         document.AIWorkflowStage = newStage;
         document.ModifiedDate = DateTime.Now;
-
-        if (newStage == "Approved")
-            document.Status = "Approved";
 
         await _context.SaveChangesAsync();
     }
