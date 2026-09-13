@@ -673,6 +673,29 @@ using (var scope = app.Services.CreateScope())
 // HTTP Pipeline
 // =========================
 
+// ==============================================================================
+// طبق «PEMS UAT Deployment» بند ۱۴: هر Host واقعی روی اینترنت (Azure Container Apps/App
+// Service/Render/...) درخواست HTTPS را روی یک Reverse Proxy خاتمه می‌دهد و به برنامه با
+// پروتکل HTTP داخلی Forward می‌کند - بدون این Middleware، UseHttpsRedirection/UseHsts/کوکی
+// امن اشتباهاً فکر می‌کنند درخواست HTTP واقعی است (حلقه‌ی Redirect یا کوکی رد شده).
+//
+// این‌جا عمداً یک Middleware دستی کوچک است، نه Microsoft.AspNetCore.HttpOverrides.
+// UseForwardedHeaders() استاندارد - یک تعارض Assembly از پیش موجود در گراف وابستگی‌های این
+// پروژه (همان‌طور که قبلاً در PEMSDbContextFactory با IConfigurationBuilder دیده شد) باعث
+// خطای کامپایل CS0234 روی خودِ نوع ForwardedHeadersOptions می‌شد؛ این نسخه‌ی دستی هیچ
+// وابستگی‌ای به آن سطح از API ندارد و همان رفتار عملی لازم (تشخیص درست Scheme از
+// X-Forwarded-Proto) را تضمین می‌کند. باید همیشه اولین Middleware باشد.
+// ==============================================================================
+app.Use(async (context, next) =>
+{
+    if (context.Request.Headers.TryGetValue("X-Forwarded-Proto", out var proto) && proto.Count > 0)
+    {
+        context.Request.Scheme = proto[0]!;
+    }
+
+    await next();
+});
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -783,6 +806,27 @@ app.MapControllerRoute(
 );
 
 app.MapHub<PEMS.Web.Hubs.NotificationHub>("/hubs/notifications");
+
+// ==============================================================================
+// طبق بند ۲۰: نقطه‌ی Health Check سبک - بدون نیاز به احراز هویت (AuthorizeFilter سراسری فقط
+// روی MVC Controllers اعمال می‌شود، نه روی این Endpoint حداقلی Minimal API) و بدون هیچ جزئیات
+// حساس (Connection String/نسخه/زیرساخت داخلی) - فقط "Healthy"/"Unhealthy" ساده.
+// عمداً از AddHealthChecks()/AddDbContextCheck استاندارد استفاده نشده - همون تعارض Assembly
+// که در بالا (UseForwardedHeaders) توضیح داده شد باعث خطای کامپایل روی AddDbContextCheck هم
+// می‌شد؛ این‌جا مستقیماً یک Query سبک روی همون PEMSDbContext زده می‌شود.
+// ==============================================================================
+app.MapGet("/health", async (PEMS.Persistence.Context.PEMSDbContext db) =>
+{
+    try
+    {
+        await db.Database.ExecuteSqlRawAsync("SELECT 1");
+        return Results.Text("Healthy");
+    }
+    catch
+    {
+        return Results.Text("Unhealthy", statusCode: StatusCodes.Status503ServiceUnavailable);
+    }
+});
 
 
 

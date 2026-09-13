@@ -1,0 +1,76 @@
+# طبق «PEMS UAT Deployment» بند ۲۷/۲۸: استقرار UAT باید صریحاً از Production/main جدا و
+# قابل‌بازتولید باشد - این Workflow فقط با اجرای دستی (workflow_dispatch) فعال می‌شود، هرگز
+# با push روی main. هیچ Secret ای در این فایل نیست - همه از GitHub Repo Secrets خوانده می‌شوند
+# (Settings → Secrets and variables → Actions)، دقیقاً طبق بند ۴ (هرگز رمز/کلید در Git).
+#
+# پیش‌نیازهای این Workflow (باید قبل از اولین اجرا در تنظیمات GitHub این Repository تعریف شوند):
+#   AZURE_CREDENTIALS        - خروجی JSON یک Azure Service Principal
+#                              (az ad sp create-for-rbac --sdk-auth ...)
+#   AZURE_RESOURCE_GROUP     - نام Resource Group موجود یا جدید برای UAT
+#   AZURE_CONTAINERAPPS_ENV  - نام محیط Azure Container Apps (Consumption/Free)
+#   UAT_SQL_CONNECTION_STRING - رشته‌ی اتصال کامل به دیتابیس UAT جدا (نه PEMSDB زنده)
+#
+# هیچ‌کدام از این چهار مقدار توسط این Session ساخته یا تنظیم نشده‌اند - این فقط یک الگوی
+# آماده‌ی اجراست؛ ساخت واقعی Azure Subscription/Service Principal/دیتابیس UAT به تایید و اقدام
+# مستقیم کاربر نیاز دارد (طبق بند ۳۱: STOP CONDITIONS - این Session به این اعتبارنامه‌ها
+# دسترسی ندارد).
+
+name: PEMS UAT Deploy (manual only)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type UAT to confirm this deploys to the UAT environment (never production)'
+        required: true
+
+jobs:
+  build-test-deploy:
+    if: ${{ github.event.inputs.confirm == 'UAT' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore PEMS.slnx
+
+      - name: Build
+        run: dotnet build PEMS.slnx --no-restore --configuration Release
+
+      # طبق بند ۲۹: قبل از استقرار باید تست‌های موجود واقعاً اجرا شوند و FAIL باید همچنان
+      # کل Job را متوقف کند - بدون continue-on-error
+      - name: Test
+        run: dotnet test PEMS.slnx --no-build --configuration Release --verbosity normal
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # az containerapp up یک‌جا Image را از همین Dockerfile موجود Build/Push/Deploy می‌کند -
+      # هیچ Dockerfile جدیدی لازم نیست (طبق بند ۳۲: کد/معماری موجود دست‌نخورده می‌ماند)
+      - name: Deploy to Azure Container Apps (UAT)
+        run: |
+          az containerapp up \
+            --name pems-uat \
+            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+            --environment "${{ secrets.AZURE_CONTAINERAPPS_ENV }}" \
+            --source . \
+            --ingress external \
+            --target-port 8080 \
+            --env-vars \
+              ASPNETCORE_ENVIRONMENT=UAT \
+              "ConnectionStrings__PEMSConnection=secretref:pems-uat-sql-connection"
+
+      - name: Set UAT SQL connection as a Container App secret
+        run: |
+          az containerapp secret set \
+            --name pems-uat \
+            --resource-group "${{ secrets.AZURE_RESOURCE_GROUP }}" \
+            --secrets "pems-uat-sql-connection=${{ secrets.UAT_SQL_CONNECTION_STRING }}"
