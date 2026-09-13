@@ -13,7 +13,7 @@
                     <td>@l.LetterNumber</td>
                     <td>@l.Subject</td>
                     <td>@l.LetterDate.ToString("yyyy-MM-dd")</td>
-                    <td><span class="badge bg-info text-dark">@l.Status</span></td>
+                    <td><span class="badge @PEMS.Web.Helpers.LetterStatusBadge.CssClass(l.Status)">@l.Status</span></td>
                     <td><a asp-action="Details" asp-route-id="@l.LetterId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
                 </tr>
             }

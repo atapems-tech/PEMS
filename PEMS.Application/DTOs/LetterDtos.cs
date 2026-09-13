@@ -32,6 +32,42 @@ public class LetterDto
 
     public string? SignedByName { get; set; }
     public DateTime? SignedDate { get; set; }
+
+    // طبق بند ۲۹ (Concurrency): برای Round-trip در فرم ویرایش/ارسال‌مجدد، تا EF بتواند ویرایش
+    // هم‌زمان را تشخیص دهد
+    public byte[]? RowVersion { get; set; }
+
+    public int? RegisteredById { get; set; }
+
+    public string? ReturnedByName { get; set; }
+    public DateTime? ReturnedDate { get; set; }
+    public string? ReturnReason { get; set; }
+
+    public string? RejectedByName { get; set; }
+    public DateTime? RejectedDate { get; set; }
+    public string? RejectReason { get; set; }
+
+    public string? ApprovedByName { get; set; }
+    public DateTime? ApprovedDate { get; set; }
+
+    public DateTime? IssuedDate { get; set; }
+    public DateTime? ClosedDate { get; set; }
+
+    public int RevisionCount { get; set; }
+}
+
+public class LetterReviewDto
+{
+    public int LetterReviewId { get; set; }
+    public string? ReviewerName { get; set; }
+    public string Decision { get; set; } = "";
+    public string? Comment { get; set; }
+    public DateTime CreatedDate { get; set; }
+
+    // طبق «PEMS Correspondence Workspace» بند ۱۷: نمایش نسخه‌ی قبلی (همان‌که بازبین دیده) در کنار
+    // فرم ویرایش «Resubmit» - فقط برای Decision=ReturnedForRevision پر می‌شود
+    public string? PreviousSubjectSnapshot { get; set; }
+    public string? PreviousBodySnapshot { get; set; }
 }
 
 public class LetterRecipientDto
@@ -74,6 +110,7 @@ public class LetterDetailDto
     public List<LetterReferralDto> Referrals { get; set; } = new();
     public List<LetterAttachmentDto> Attachments { get; set; } = new();
     public List<LetterRecipientDto> Recipients { get; set; } = new();
+    public List<LetterReviewDto> Reviews { get; set; } = new();
 }
 
 public class LetterDashboardDto

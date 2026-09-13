@@ -342,6 +342,7 @@ public class PEMSDbContext
 
     public DbSet<Letter> Letters { get; set; }
     public DbSet<LetterReferral> LetterReferrals { get; set; }
+    public DbSet<LetterReview> LetterReviews { get; set; }
     public DbSet<Notification> Notifications { get; set; }
 
     public DbSet<ProcurementPackage> ProcurementPackages { get; set; }

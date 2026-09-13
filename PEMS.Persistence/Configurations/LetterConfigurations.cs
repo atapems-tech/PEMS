@@ -78,6 +78,24 @@ public class LetterReferralConfiguration : IEntityTypeConfiguration<LetterReferr
     }
 }
 
+/// <summary>
+/// طبق «PEMS Letter Details — Controlled Lifecycle» بند ۱۳: Restrict (نه Cascade) طبق قرارداد
+/// این نشست - حذف یک نامه نباید تاریخچه‌ی تصمیمات بازبینی‌اش را خودکار پاک کند؛ IsActive برای
+/// حذف نرم به‌کار می‌رود.
+/// </summary>
+public class LetterReviewConfiguration : IEntityTypeConfiguration<LetterReview>
+{
+    public void Configure(EntityTypeBuilder<LetterReview> builder)
+    {
+        builder.HasOne(x => x.Letter)
+            .WithMany(x => x.Reviews)
+            .HasForeignKey(x => x.LetterId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(x => new { x.LetterId, x.CreatedDate });
+    }
+}
+
 public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
 {
     public void Configure(EntityTypeBuilder<Notification> builder)

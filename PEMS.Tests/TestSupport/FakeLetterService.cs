@@ -33,17 +33,23 @@ public class FakeLetterService : ILetterService
     public Task<PagedResult<LetterDto>> SearchAsync(string? letterType, string? letterNumber, string? subject,
         string? sender, string? receiver, int? projectId, int? disciplineId, string? status,
         DateTime? fromDate, DateTime? toDate, int page, int pageSize,
-        bool canViewConfidential, int? requestingApplicationUserId)
+        bool canViewConfidential, int? requestingApplicationUserId, bool starredOnly = false)
         => throw new NotSupportedException("در این تست‌ها استفاده نمی‌شود.");
 
     public Task<LetterDetailDto?> GetDetailAsync(int letterId) => throw new NotSupportedException();
     public Task<List<RelatedLetterDto>> GetRelatedToMRAsync(int mrId) => throw new NotSupportedException();
-    public Task AdvanceStatusAsync(int letterId, string newStatus, int? actorId) => throw new NotSupportedException();
     public Task<LetterDashboardDto> GetDashboardAsync(int? currentApplicationUserId = null) => throw new NotSupportedException();
     public Task ToggleStarAsync(int letterId, int applicationUserId) => throw new NotSupportedException();
     public Task MarkRecipientReadAsync(int letterRecipientId, int applicationUserId) => throw new NotSupportedException();
     public Task SignAsync(int letterId, string signedByName) => throw new NotSupportedException();
-    public Task UpdateBodyAsync(int letterId, string body) => throw new NotSupportedException();
+    public Task<(bool Success, string? Error)> SubmitForReviewAsync(int letterId, int? actorApplicationUserId) => throw new NotSupportedException();
+    public Task<(bool Success, string? Error)> ApproveAsync(int letterId, int? reviewerApplicationUserId, string? comment) => throw new NotSupportedException();
+    public Task<(bool Success, string? Error)> ReturnForRevisionAsync(int letterId, int? reviewerApplicationUserId, string reason) => throw new NotSupportedException();
+    public Task<(bool Success, string? Error)> RejectAsync(int letterId, int? reviewerApplicationUserId, string reason) => throw new NotSupportedException();
+    public Task<(bool Success, string? Error)> IssueAsync(int letterId, int? actorApplicationUserId) => throw new NotSupportedException();
+    public Task<(bool Success, string? Error)> CloseAsync(int letterId, int? actorApplicationUserId) => throw new NotSupportedException();
+    public Task<(bool Success, string? Error)> ResubmitAsync(int letterId, string subject, string body, int currentApplicationUserId, byte[]? rowVersion) => throw new NotSupportedException();
+    public Task<(bool Success, string? Error)> SaveDraftEditAsync(int letterId, string subject, string body, int currentApplicationUserId, byte[]? rowVersion) => throw new NotSupportedException();
     public Task<List<LetterTimelineEventDto>> GetTimelineAsync(int letterId) => throw new NotSupportedException();
     public Task<List<ThreadMessageDto>> GetThreadAsync(int letterId) => throw new NotSupportedException();
     public Task<int> ReplyAsync(int parentLetterId, string letterNumber, string subject, string? body, string? receiver,

@@ -264,10 +264,10 @@
     "semantic_hash": "1e02d40947b9e3a9fce2bd7d0d40e61b"
   },
   "PEMS.Application/DTOs/LetterDtos.cs": {
-    "mtime": 1788350901.9019952,
-    "seen": 1788613735.6693618,
-    "ast_hash": "8ae4accb1c1844f571864542c307b64a",
-    "semantic_hash": "8ae4accb1c1844f571864542c307b64a"
+    "mtime": 1789250183.4200444,
+    "seen": 1789286258.2646756,
+    "ast_hash": "9b63fcb0cef7a4b3abaaf0b4077e3286",
+    "semantic_hash": ""
   },
   "PEMS.Application/DTOs/LetterTimelineEventDto.cs": {
     "mtime": 1788350901.9115014,
@@ -558,10 +558,10 @@
     "semantic_hash": "e185450ffed9a4fe76226f402f2c3f4a"
   },
   "PEMS.Application/Interfaces/ILetterService.cs": {
-    "mtime": 1788350902.2733562,
-    "seen": 1788613735.6693618,
-    "ast_hash": "8c7a19d63a79b0a856eec1b6bfad0423",
-    "semantic_hash": "8c7a19d63a79b0a856eec1b6bfad0423"
+    "mtime": 1789249579.0220704,
+    "seen": 1789286258.2798376,
+    "ast_hash": "4771e459f1d05fb790177c717d0690fb",
+    "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/IMDRImportService.cs": {
     "mtime": 1788350902.2733562,
@@ -1032,10 +1032,10 @@
     "semantic_hash": "bbe023f6c9df305d9fff79b4dcdcc10d"
   },
   "PEMS.Domain/Entities/Letter.cs": {
-    "mtime": 1788350902.8576472,
-    "seen": 1788613735.6703675,
-    "ast_hash": "b1821231fef3a54314aea08256f96985",
-    "semantic_hash": "b1821231fef3a54314aea08256f96985"
+    "mtime": 1789219948.2053041,
+    "seen": 1789246599.4019468,
+    "ast_hash": "3388a8e7e903e3de1e2abef883279e44",
+    "semantic_hash": ""
   },
   "PEMS.Domain/Entities/LetterRecipient.cs": {
     "mtime": 1788350902.8576472,
@@ -1428,10 +1428,10 @@
     "semantic_hash": "c713ce5d8ce97998919fb89ebc43acbe"
   },
   "PEMS.Persistence/Configurations/LetterConfigurations.cs": {
-    "mtime": 1788350903.4509327,
-    "seen": 1788613735.670535,
-    "ast_hash": "5541d4f58dc428e1b0d489d98f403dd0",
-    "semantic_hash": "5541d4f58dc428e1b0d489d98f403dd0"
+    "mtime": 1789220030.1135366,
+    "seen": 1789246599.452731,
+    "ast_hash": "83d98b6c261b101fc7b40e1a7b4c173b",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Configurations/LetterRecipientConfiguration.cs": {
     "mtime": 1788350903.4509327,
@@ -1524,16 +1524,16 @@
     "semantic_hash": "dacbb68ad3f3363731257b252a96ac1b"
   },
   "PEMS.Persistence/Context/PEMSDbContext.cs": {
-    "mtime": 1789115800.891266,
-    "seen": 1789128632.2050607,
-    "ast_hash": "26233daae2518592d2a88210b9d38190",
+    "mtime": 1789219608.2815526,
+    "seen": 1789246599.46213,
+    "ast_hash": "5187b8c6eaf10dfa0166f4f4c21bc3b0",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Context/PEMSDbContextFactory.cs": {
-    "mtime": 1788350903.5602894,
-    "seen": 1788613735.670535,
-    "ast_hash": "2e2cc3ac34137dd3787b4bf38167e8e7",
-    "semantic_hash": "2e2cc3ac34137dd3787b4bf38167e8e7"
+    "mtime": 1789248616.317008,
+    "seen": 1789286258.3047915,
+    "ast_hash": "08b851efa2020e36d433ff61fdba4dd6",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Identity/ApplicationRole.cs": {
     "mtime": 1788350903.5759125,
@@ -1578,9 +1578,9 @@
     "semantic_hash": "5809af8d8afaa80014e62788179b6dd4"
   },
   "PEMS.Persistence/Migrations/PEMSDbContextModelSnapshot.cs": {
-    "mtime": 1789160329.4175563,
-    "seen": 1789161046.2015343,
-    "ast_hash": "058bdefd6c7859904d6094070f39c557",
+    "mtime": 1789221019.4021032,
+    "seen": 1789246599.506655,
+    "ast_hash": "14967f38f3f89f087d5d3ee4b54b1976",
     "semantic_hash": ""
   },
   "PEMS.Persistence/PEMS.Persistence.csproj": {
@@ -1794,10 +1794,10 @@
     "semantic_hash": "b45a17a94614d88d03baf91f71b7116c"
   },
   "PEMS.Persistence/Servises/LetterService.cs": {
-    "mtime": 1788542380.9665525,
-    "seen": 1788613735.670535,
-    "ast_hash": "66208122eef8a1c0cbec10683dc449ed",
-    "semantic_hash": "66208122eef8a1c0cbec10683dc449ed"
+    "mtime": 1789250209.4025626,
+    "seen": 1789286258.3214014,
+    "ast_hash": "5a063b09098b49ec2fc7835487729ae8",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/MDRImportService.cs": {
     "mtime": 1788350904.4549267,
@@ -2406,10 +2406,10 @@
     "semantic_hash": "2eb35366d78fee4f23342ccaa0be4f95"
   },
   "PEMS.Web/Controllers/LetterController.cs": {
-    "mtime": 1788542357.2748494,
-    "seen": 1788613735.670535,
-    "ast_hash": "fc41ed542d12d11c6820e2ac2fd7f720",
-    "semantic_hash": "fc41ed542d12d11c6820e2ac2fd7f720"
+    "mtime": 1789250117.2836194,
+    "seen": 1789286258.3462906,
+    "ast_hash": "1037e6468e26c91874b6e814259f3257",
+    "semantic_hash": ""
   },
   "PEMS.Web/Controllers/MDRImportController.cs": {
     "mtime": 1788865094.0760825,
@@ -3078,28 +3078,28 @@
     "semantic_hash": "9ede58dc067a9281775cc8bc24ad78f0"
   },
   "PEMS.Web/Views/Letter/Create.cshtml": {
-    "mtime": 1788350906.5000143,
-    "seen": 1788613735.670535,
-    "ast_hash": "55f35671d5e7a4146fac74e9ac0b9aa4",
-    "semantic_hash": "55f35671d5e7a4146fac74e9ac0b9aa4"
+    "mtime": 1789250023.869743,
+    "seen": 1789286258.3649828,
+    "ast_hash": "295cd7bbd0e8c81736b7c9d8cc044f6e",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Letter/Details.cshtml": {
-    "mtime": 1788350906.5156436,
-    "seen": 1788613735.670535,
-    "ast_hash": "0a859456d14021c8fff4cfd853540722",
-    "semantic_hash": "0a859456d14021c8fff4cfd853540722"
+    "mtime": 1789250472.5938597,
+    "seen": 1789286258.3649828,
+    "ast_hash": "c8805ae9f9997e12626f8912dd0b11e8",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Letter/Index.cshtml": {
-    "mtime": 1788542412.115772,
-    "seen": 1788613735.670535,
-    "ast_hash": "e558b0eca43a55aca43fdbf4e42c46bb",
-    "semantic_hash": "e558b0eca43a55aca43fdbf4e42c46bb"
+    "mtime": 1789250433.8024168,
+    "seen": 1789286258.3649828,
+    "ast_hash": "987784f73cf62c2603faf0fffd31f3e5",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Letter/MyReferrals.cshtml": {
-    "mtime": 1788350906.5259829,
-    "seen": 1788613735.670535,
-    "ast_hash": "683b1fbe47663c24521115aeb6d00928",
-    "semantic_hash": "683b1fbe47663c24521115aeb6d00928"
+    "mtime": 1789250418.597959,
+    "seen": 1789286258.3649828,
+    "ast_hash": "e6cb09f167a7e5be86eb55dd5dd48bfb",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Letter/Reply.cshtml": {
     "mtime": 1788350906.5291185,
@@ -5778,10 +5778,10 @@
     "semantic_hash": "75c3ec936ae59a0ce94ebe46aeaa92c3"
   },
   "PEMS.Tests/TestSupport/FakeLetterService.cs": {
-    "mtime": 1788350905.0045605,
-    "seen": 1788613735.670535,
-    "ast_hash": "1c36bd5aab81ad68bdf11b1497e20685",
-    "semantic_hash": "1c36bd5aab81ad68bdf11b1497e20685"
+    "mtime": 1789249662.5926466,
+    "seen": 1789286258.3380306,
+    "ast_hash": "dd89cd8a8d8ad673a3ab26d605382dcb",
+    "semantic_hash": ""
   },
   ".claude/Role/UIUX/E-05 \u2014 PETROCHEMICAL  EPC ENGINEERING MANAGEMENT COCKPIT.md": {
     "mtime": 1788350901.0767858,
@@ -6906,10 +6906,10 @@
     "semantic_hash": "c17de8ec88be7f5aa4c857a82735f3de"
   },
   "PEMS.Tests/Cmms/LetterGridPaginationTests.cs": {
-    "mtime": 1788542527.115733,
-    "seen": 1788613735.670535,
-    "ast_hash": "9d622446f30179840b121d5b0e3036fc",
-    "semantic_hash": "9d622446f30179840b121d5b0e3036fc"
+    "mtime": 1789250938.0256014,
+    "seen": 1789286258.3380306,
+    "ast_hash": "209ee3878427d6eb2b7790bedb17b631",
+    "semantic_hash": ""
   },
   "PEMS.Tests/Cmms/MaintenanceMasterDataOrderingTests.cs": {
     "mtime": 1788855872.2502654,
@@ -7473,12 +7473,6 @@
     "mtime": 1788350920.7889318,
     "seen": 1788706892.458408,
     "ast_hash": "d0c86da0d8793b38cd788051eb25a3e9",
-    "semantic_hash": ""
-  },
-  "src/stitch-temp/edit_employee_modal_en/code.html": {
-    "mtime": 1788350920.821635,
-    "seen": 1788706892.458408,
-    "ast_hash": "98b7334cc2074ab4065dff361821e2af",
     "semantic_hash": ""
   },
   "src/stitch-temp/edit_employee_modal_overlay/code.html": {
@@ -8551,12 +8545,6 @@
   },
   "src/stitch-temp/edit_employee_modal_dual_language_en_fa/screen.png": {
     "mtime": 1788350920.8045943,
-    "seen": 1788706892.458408,
-    "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
-    "semantic_hash": ""
-  },
-  "src/stitch-temp/edit_employee_modal_en/screen.png": {
-    "mtime": 1788350920.821635,
     "seen": 1788706892.458408,
     "ast_hash": "21bddf681cbed99d8cdf2f2ff791fce7",
     "semantic_hash": ""
@@ -10980,9 +10968,63 @@
     "semantic_hash": ""
   },
   "docs/audits/PEMS_EDMS_PHASE4_FINAL_REPORT.md": {
-    "mtime": 1789205910.219852,
-    "seen": 1789205932.32293,
-    "ast_hash": "cda874dc83d3606e88c65fd75267b0a3",
+    "mtime": 1789205947.7577004,
+    "seen": 1789246599.7977777,
+    "ast_hash": "587c574970b5c6921a131a11a3257829",
+    "semantic_hash": ""
+  },
+  "PEMS.Domain/Entities/LetterReview.cs": {
+    "mtime": 1789219975.3692825,
+    "seen": 1789246599.4019468,
+    "ast_hash": "fd2adc0d9416bb4097be27230cc2ce92",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260912135019_LetterControlledLifecycle.Designer.cs": {
+    "mtime": 1789221019.4021032,
+    "seen": 1789246599.506655,
+    "ast_hash": "0229551ac8463fd1f3ce7c52507f9277",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260912135019_LetterControlledLifecycle.cs": {
+    "mtime": 1789221019.394972,
+    "seen": 1789246599.506655,
+    "ast_hash": "79a2f04ddbe1591041b87c6b30edc458",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/LetterControlledLifecycleTests.cs": {
+    "mtime": 1789245651.5020607,
+    "seen": 1789246599.5867777,
+    "ast_hash": "0bf02a5c0278c54b28f1d890ed941260",
+    "semantic_hash": ""
+  },
+  "docs/audits/PEMS_EDMS_G28_CONTEXT_CORRECTED_REMEDIATION_DESIGN.md": {
+    "mtime": 1789211527.7322018,
+    "seen": 1789246599.7977777,
+    "ast_hash": "dfdefeb29d8f98c82c798adb8ebef3d5",
+    "semantic_hash": ""
+  },
+  "docs/audits/PEMS_EDMS_G28_MDR_IMPORT_APPROVAL_AUDIT.md": {
+    "mtime": 1789210203.2699306,
+    "seen": 1789246599.7977777,
+    "ast_hash": "58522d71c6ba169486dc80e674c15fbf",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/LetterConcurrencyTests.cs": {
+    "mtime": 1789249135.3906865,
+    "seen": 1789286258.3380306,
+    "ast_hash": "4c4a3daafeeff2a4e33925148eda3d88",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/Helpers/LetterStatusBadge.cs": {
+    "mtime": 1789250400.3987377,
+    "seen": 1789286258.3546453,
+    "ast_hash": "334bf452e2ab41f7ade8e70b59c2a1ae",
+    "semantic_hash": ""
+  },
+  "docs/audits/PEMS_LETTER_CONTROLLED_LIFECYCLE_FINAL_REPORT.md": {
+    "mtime": 1789246533.232069,
+    "seen": 1789286258.3880062,
+    "ast_hash": "8c7f9028796484a7f4f28cd234d6262b",
     "semantic_hash": ""
   }
 }

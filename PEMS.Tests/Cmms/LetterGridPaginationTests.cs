@@ -147,4 +147,40 @@ public class LetterGridPaginationTests
         Assert.Single(result.Items);
         Assert.Equal("Incoming letter", result.Items[0].Subject);
     }
+
+    // طبق «PEMS Correspondence Workspace» بند ۸: پوشه‌ی «Starred» باید یک فیلتر واقعی سمت سرور
+    // باشد - نه فقط پرچم IsStarred روی نتایج صفحه‌ی جاری
+    [Fact]
+    public async Task SearchAsync_StarredOnly_ReturnsOnlyLettersStarredByThisUser()
+    {
+        var service = CreateService(nameof(SearchAsync_StarredOnly_ReturnsOnlyLettersStarredByThisUser), out var ctx);
+        var starredLetter = NewLetter("Starred by me", DateTime.Today);
+        var otherStarredLetter = NewLetter("Starred by someone else", DateTime.Today);
+        var unstarredLetter = NewLetter("Not starred", DateTime.Today);
+        ctx.Letters.AddRange(starredLetter, otherStarredLetter, unstarredLetter);
+        await ctx.SaveChangesAsync();
+
+        ctx.LetterStars.Add(new LetterStar { LetterId = starredLetter.LetterId, ApplicationUserId = 500 });
+        ctx.LetterStars.Add(new LetterStar { LetterId = otherStarredLetter.LetterId, ApplicationUserId = 999 });
+        await ctx.SaveChangesAsync();
+
+        var result = await service.SearchAsync(null, null, null, null, null, null, null, null, null, null,
+            page: 1, pageSize: 20, canViewConfidential: true, requestingApplicationUserId: 500, starredOnly: true);
+
+        Assert.Single(result.Items);
+        Assert.Equal("Starred by me", result.Items[0].Subject);
+    }
+
+    [Fact]
+    public async Task SearchAsync_StarredOnly_AnonymousUser_ReturnsEmpty()
+    {
+        var service = CreateService(nameof(SearchAsync_StarredOnly_AnonymousUser_ReturnsEmpty), out var ctx);
+        ctx.Letters.Add(NewLetter("Some letter", DateTime.Today));
+        await ctx.SaveChangesAsync();
+
+        var result = await service.SearchAsync(null, null, null, null, null, null, null, null, null, null,
+            page: 1, pageSize: 20, canViewConfidential: true, requestingApplicationUserId: null, starredOnly: true);
+
+        Assert.Empty(result.Items);
+    }
 }

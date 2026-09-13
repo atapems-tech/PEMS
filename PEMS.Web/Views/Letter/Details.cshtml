@@ -1,324 +1,593 @@
-﻿@model PEMS.Application.DTOs.LetterDetailDto
+@model PEMS.Application.DTOs.LetterDetailDto
 @{
     var l = Model.Letter;
-    var employees = (IEnumerable<dynamic>)ViewBag.Employees;
     var departments = (IEnumerable<dynamic>)ViewBag.Departments;
     var allTags = (List<PEMS.Application.DTOs.TagDto>)ViewBag.AllTags;
+    var timeline = (List<PEMS.Application.DTOs.LetterTimelineEventDto>)ViewBag.Timeline;
+    var thread = (List<PEMS.Application.DTOs.ThreadMessageDto>)ViewBag.Thread;
+    bool canEditReturned = ViewBag.CanEditReturned;
+    bool canEditDraft = ViewBag.CanEditDraft;
+    bool canReview = ViewBag.CanReview;
+    bool canEditNow = canEditReturned || canEditDraft;
+
+    string statusBadgeClass = PEMS.Web.Helpers.LetterStatusBadge.CssClass(l.Status);
 }
 
+<style>
+    .letter-header .meta-item { color: var(--pems-muted, #6c757d); }
+    .letter-header .meta-item strong { color: inherit; font-weight: 600; }
+    .thread-message { border-inline-start: 3px solid var(--bs-border-color, #dee2e6); padding-inline-start: .75rem; }
+    .thread-message.current { border-inline-start-color: var(--bs-primary, #0d6efd); }
+    .thread-message .msg-summary { cursor: pointer; }
+    .section-title { font-size: .85rem; text-transform: uppercase; letter-spacing: .03em; color: var(--pems-muted, #6c757d); }
+</style>
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-start">
+<div class="content-card mb-3 letter-header">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
         <div>
-            <h5 class="mb-1">@l.LetterNumber &mdash; @l.Subject</h5>
-            <span class="badge bg-secondary">@l.LetterType</span>
-            <span class="badge bg-info text-dark">@l.Status</span>
-            @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal")
-            { <span class="badge bg-dark"><i class="bi bi-lock-fill"></i> @l.ConfidentialityLevel</span> }
-            <span class="text-muted small ms-2">@l.LetterDate.ToString("yyyy-MM-dd")</span>
-
-            <div class="d-flex flex-wrap align-items-center gap-1 mt-2">
-                @foreach (var tag in l.Tags)
-                {
-                    <span class="badge bg-@tag.Color">
-                        @tag.Name
-                        <form asp-action="DetachTag" method="post" class="d-inline">
-                            <input type="hidden" name="letterId" value="@l.LetterId" />
-                            <input type="hidden" name="tagId" value="@tag.TagId" />
-                            <button type="submit" class="btn-close btn-close-white btn-sm" style="font-size:8px;" title="Remove tag"></button>
-                        </form>
-                    </span>
-                }
-                <div class="dropdown d-inline">
-                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown">
-                        <i class="bi bi-tag"></i> Add Tag
-                    </button>
-                    <div class="dropdown-menu p-2" style="min-width:220px;">
-                        <form asp-action="AttachTag" method="post" class="mb-2">
-                            <input type="hidden" name="letterId" value="@l.LetterId" />
-                            <select name="tagId" class="form-select form-select-sm mb-1" onchange="this.form.submit()">
-                                <option value="">-- existing tag --</option>
-                                @foreach (var t in allTags.Where(t => !l.Tags.Any(lt => lt.TagId == t.TagId)))
-                                { <option value="@t.TagId">@t.Name</option> }
-                            </select>
-                        </form>
-                        <form asp-action="AttachTag" method="post" class="d-flex gap-1">
-                            <input type="hidden" name="letterId" value="@l.LetterId" />
-                            <input name="newTagName" class="form-control form-control-sm" placeholder="New tag..." />
-                            <select name="newTagColor" class="form-select form-select-sm" style="width:90px;">
-                                @foreach (var c in new[] { "secondary", "primary", "success", "danger", "warning", "info", "dark" })
-                                { <option value="@c">@c</option> }
-                            </select>
-                            <button class="btn btn-sm btn-pems-solid">+</button>
-                        </form>
-                    </div>
-                </div>
+            <div class="d-flex align-items-center flex-wrap gap-2">
+                <h5 class="mb-0">@l.LetterNumber</h5>
+                <span class="badge @statusBadgeClass">@l.Status</span>
+                <span class="badge bg-light text-dark border">@l.LetterType</span>
+                @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal")
+                { <span class="badge bg-dark"><i class="bi bi-lock-fill"></i> @l.ConfidentialityLevel</span> }
+                @if (l.RevisionCount > 0)
+                { <span class="badge bg-light text-dark border">Rev. @l.RevisionCount</span> }
+            </div>
+            <h6 class="mt-2 mb-1">@l.Subject</h6>
+            <div class="d-flex flex-wrap gap-3 small meta-item">
+                <span><strong>@(l.LetterType == "Incoming" ? "From" : "To"):</strong> @(l.LetterType == "Incoming" ? l.Sender : l.Receiver)</span>
+                <span><strong>Date:</strong> @l.LetterDate.ToString("yyyy-MM-dd")</span>
+                <span><strong>Priority:</strong> @l.Priority</span>
+                @if (!string.IsNullOrEmpty(l.ProjectName)) { <span><strong>Project:</strong> @l.ProjectName</span> }
+                @if (!string.IsNullOrEmpty(l.DisciplineName)) { <span><strong>Discipline:</strong> @l.DisciplineName</span> }
             </div>
         </div>
-        <a asp-action="ExportPdf" asp-route-id="@l.LetterId" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-file-earmark-pdf"></i> Export PDF
-        </a>
-        <a asp-action="Reply" asp-route-id="@l.LetterId" class="btn btn-outline-primary btn-sm">
-            <i class="bi bi-reply-fill"></i> Reply
-        </a>
-    </div>
 
-    <div class="row g-3 mt-2">
-        <div class="col-md-3"><strong>@(l.LetterType == "Incoming" ? "Sender" : "Receiver"):</strong> @(l.LetterType == "Incoming" ? l.Sender : l.Receiver)</div>
-        <div class="col-md-3"><strong>Priority:</strong> @l.Priority</div>
-        <div class="col-md-3"><strong>Project:</strong> @l.ProjectName</div>
-        <div class="col-md-3"><strong>Discipline:</strong> @l.DisciplineName</div>
-        @if (l.RelatedDocumentId.HasValue)
-        {
-            <div class="col-md-3"><strong>Related Document:</strong>
-                <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@l.RelatedDocumentId">@l.RelatedDocumentNo</a>
-            </div>
-        }
-        @if (l.RelatedMRId.HasValue)
-        {
-            <div class="col-md-3"><strong>Related MR:</strong>
-                <a asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@l.RelatedMRId">@l.RelatedMRNumber</a>
-            </div>
-        }
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
-                <strong>Body:</strong>
-                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleBodyEdit()"><i class="bi bi-pencil"></i> Edit</button>
-            </div>
-            <div id="bodyViewMode" class="mt-1 border rounded p-2">@Html.Raw(Model.Body)</div>
-
-            <form id="bodyEditForm" asp-action="UpdateBody" method="post" class="d-none mt-2">
-                <input type="hidden" name="letterId" value="@l.LetterId" />
-                <textarea name="body" id="letterBodyEditEditor" class="form-control">@Html.Raw(Model.Body)</textarea>
-                <div class="mt-2 d-flex gap-2">
-                    <button type="submit" class="btn btn-sm btn-pems-solid">Save Body</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleBodyEdit()">Cancel</button>
-                </div>
-            </form>
-
-            @await Html.PartialAsync("_RichTextEditorScripts", "letterBodyEditEditor")
-
-            <script>
-                function toggleBodyEdit() {
-                    document.getElementById('bodyViewMode').classList.toggle('d-none');
-                    document.getElementById('bodyEditForm').classList.toggle('d-none');
-                }
-            </script>
-        </div>
-    </div>
-
-    @if (l.LetterType == "Outgoing")
-    {
-        var stages = new[] { "Draft", "PendingApproval", "Approved", "Issued" };
-        <div class="d-flex flex-wrap gap-2 mt-3">
-            @foreach (var st in stages)
+        <div class="d-flex align-items-center gap-2">
+            @* طبق بند ۳۳: بدون دکمه‌ی وضعیت آزاد - فقط اقدامات کسب‌وکاری نام‌گذاری‌شده، هرکدام
+               فقط زمانی نمایش داده می‌شوند که واقعاً از وضعیت فعلی مجاز باشند (سرویس هم دوباره
+               اعتبارسنجی می‌کند - این‌جا فقط UX است) *@
+            @if (l.Status == "Draft" && canEditDraft)
             {
-                <form asp-action="AdvanceStatus" method="post" class="d-inline">
+                <form asp-action="SubmitForReview" method="post" onsubmit="return confirm('Submit this draft for review?');">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
-                    <input type="hidden" name="newStatus" value="@st" />
-                    <button type="submit" class="btn btn-sm @(st == l.Status ? "btn-pems-solid" : "btn-outline-secondary")">@st</button>
+                    <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-send"></i> Submit for Review</button>
                 </form>
             }
-            <form asp-action="AdvanceStatus" method="post" class="d-inline">
-                <input type="hidden" name="letterId" value="@l.LetterId" />
-                <input type="hidden" name="newStatus" value="Rejected" />
-                <button type="submit" class="btn btn-sm btn-outline-danger">Reject</button>
-            </form>
+            @if (l.Status == "ReturnedForRevision" && canEditReturned)
+            {
+                <button type="button" class="btn btn-pems-solid btn-sm" onclick="toggleBodyEdit()"><i class="bi bi-pencil-square"></i> Edit &amp; Resubmit</button>
+            }
+            @if (l.Status == "PendingApproval" && canReview)
+            {
+                <form asp-action="Approve" method="post" class="d-inline" onsubmit="return confirm('Approve this letter?');">
+                    <input type="hidden" name="letterId" value="@l.LetterId" />
+                    <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> Approve</button>
+                </form>
+                <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#returnModal"><i class="bi bi-arrow-return-left"></i> Return</button>
+                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal"><i class="bi bi-x-lg"></i> Reject</button>
+            }
+            @if (l.Status == "Approved" && canReview)
+            {
+                <form asp-action="Issue" method="post" onsubmit="return confirm('Issue this letter?');">
+                    <input type="hidden" name="letterId" value="@l.LetterId" />
+                    <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-send-check"></i> Issue</button>
+                </form>
+            }
+            @if (l.Status == "Issued" && canReview)
+            {
+                <form asp-action="Close" method="post" onsubmit="return confirm('Close this letter?');">
+                    <input type="hidden" name="letterId" value="@l.LetterId" />
+                    <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="bi bi-archive"></i> Close</button>
+                </form>
+            }
+
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="More">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" asp-action="Reply" asp-route-id="@l.LetterId"><i class="bi bi-reply-fill me-1"></i> Reply</a></li>
+                    <li><a class="dropdown-item" asp-action="ExportPdf" asp-route-id="@l.LetterId"><i class="bi bi-file-earmark-pdf me-1"></i> Export PDF</a></li>
+                    @if (string.IsNullOrEmpty(l.SignedByName))
+                    {
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#signModal"><i class="bi bi-pen me-1"></i> Sign / Acknowledge</a></li>
+                    }
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="collapse" data-bs-target="#addTagCollapse"><i class="bi bi-tag me-1"></i> Manage Tags</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    @if (l.Tags.Any())
+    {
+        <div class="d-flex flex-wrap align-items-center gap-1 mt-2">
+            @foreach (var tag in l.Tags)
+            {
+                <span class="badge bg-@tag.Color">
+                    @tag.Name
+                    <form asp-action="DetachTag" method="post" class="d-inline">
+                        <input type="hidden" name="letterId" value="@l.LetterId" />
+                        <input type="hidden" name="tagId" value="@tag.TagId" />
+                        <button type="submit" class="btn-close btn-close-white btn-sm" style="font-size:8px;" title="Remove tag"></button>
+                    </form>
+                </span>
+            }
         </div>
     }
 
-    @if (!string.IsNullOrEmpty(l.SignedByName))
+    <div class="collapse mt-2" id="addTagCollapse">
+        <div class="d-flex flex-wrap gap-2">
+            <form asp-action="AttachTag" method="post" class="d-flex gap-1">
+                <input type="hidden" name="letterId" value="@l.LetterId" />
+                <select name="tagId" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">-- existing tag --</option>
+                    @foreach (var t in allTags.Where(t => !l.Tags.Any(lt => lt.TagId == t.TagId)))
+                    { <option value="@t.TagId">@t.Name</option> }
+                </select>
+            </form>
+            <form asp-action="AttachTag" method="post" class="d-flex gap-1">
+                <input type="hidden" name="letterId" value="@l.LetterId" />
+                <input name="newTagName" class="form-control form-control-sm" placeholder="New tag..." />
+                <select name="newTagColor" class="form-select form-select-sm" style="width:90px;">
+                    @foreach (var c in new[] { "secondary", "primary", "success", "danger", "warning", "info", "dark" })
+                    { <option value="@c">@c</option> }
+                </select>
+                <button class="btn btn-sm btn-pems-solid">+</button>
+            </form>
+        </div>
+    </div>
+
+    @if (l.Status == "ReturnedForRevision" && !string.IsNullOrEmpty(l.ReturnReason))
     {
-        <div class="alert alert-success mt-3 mb-0 py-2">
-            <i class="bi bi-patch-check-fill"></i> Electronically acknowledged by <strong>@l.SignedByName</strong>
-            on @l.SignedDate?.ToString("yyyy-MM-dd HH:mm")
+        <div class="alert alert-warning mt-3 mb-0 py-2 small">
+            <i class="bi bi-arrow-return-left"></i> Returned for revision by <strong>@l.ReturnedByName</strong>
+            on @l.ReturnedDate?.ToString("yyyy-MM-dd HH:mm") &mdash; <em>@l.ReturnReason</em>
         </div>
     }
-    else
+    @if (l.Status == "Rejected" && !string.IsNullOrEmpty(l.RejectReason))
     {
-        <form asp-action="Sign" method="post" class="d-flex gap-2 mt-3">
-            <input type="hidden" name="letterId" value="@l.LetterId" />
-            <input name="signedByName" class="form-control form-control-sm" placeholder="Type your full name to sign" style="max-width:300px;" required />
-            <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-pen"></i> Sign / Acknowledge</button>
-        </form>
-        <div class="form-text small">This is a lightweight electronic acknowledgment (typed name + timestamp), not a PKI digital signature.</div>
+        <div class="alert alert-danger mt-3 mb-0 py-2 small">
+            <i class="bi bi-x-circle"></i> Rejected by <strong>@l.RejectedByName</strong>
+            on @l.RejectedDate?.ToString("yyyy-MM-dd HH:mm") &mdash; <em>@l.RejectReason</em>
+        </div>
     }
 </div>
 
+@* طبق بند ۱۴-۲۰: مکالمه/زنجیره‌ی پاسخ - محتوای رسمی به‌طور پیش‌فرض فقط-خواندنی؛ ویرایش فقط
+   در حالت‌های مجاز و فقط توسط نویسنده‌ی اصلی، به‌صورت یک فرم صریح و مجزا (نه دکمه‌ی همیشه-حاضر) *@
 <div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-diagram-3"></i> Correspondence Flow (گردش پیام)</h6>
-    @{
-        var timeline = (List<PEMS.Application.DTOs.LetterTimelineEventDto>)ViewBag.Timeline;
-    }
-    @if (timeline != null && timeline.Any())
+    <div class="section-title mb-2">Message</div>
+
+    @if (thread != null && thread.Count > 1)
     {
-        <ul class="list-unstyled mb-0">
-            @foreach (var ev in timeline)
-            {
-                <li class="d-flex gap-3 pb-3 position-relative">
-                    <div class="flex-shrink-0">
-                        <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-@ev.Color text-white" style="width:32px;height:32px;">
-                            <i class="bi @ev.Icon"></i>
-                        </span>
+        for (int i = 0; i < thread.Count; i++)
+        {
+            var msg = thread[i];
+            var isCurrent = msg.LetterId == l.LetterId;
+            <div class="thread-message mb-2 @(isCurrent ? "current" : "")">
+                @if (isCurrent)
+                {
+                    <div class="small text-muted mb-1"><strong>@msg.SenderOrRegisteredByName</strong> &middot; @msg.LetterNumber &middot; @msg.LetterDate.ToString("yyyy-MM-dd")</div>
+                }
+                else
+                {
+                    <div class="msg-summary small text-muted" data-bs-toggle="collapse" data-bs-target="#threadMsg@(i)">
+                        <i class="bi bi-chevron-right"></i> <strong>@msg.SenderOrRegisteredByName</strong> &middot; @msg.LetterNumber &middot; @msg.LetterDate.ToString("yyyy-MM-dd") &mdash; @msg.Subject
                     </div>
+                    <div class="collapse" id="threadMsg@(i)">
+                        <div class="border rounded p-2 mt-1 small">@Html.Raw(msg.Body)</div>
+                    </div>
+                }
+            </div>
+        }
+    }
+
+    @{
+        // طبق بند ۱۴: Body پیش‌فرض فقط-خواندنی است. استثنای تنها Draft: چون این نامه هنوز اصلاً
+        // منتشر نشده (هیچ‌کس دیگری آن را ندیده)، فرم ویرایش مستقیماً نمایش داده می‌شود؛ برای
+        // ReturnedForRevision (که قبلاً یک‌بار برای بازبینی دیده شده) پیش‌فرض فقط-خواندنی است و
+        // ویرایش فقط با کلیک صریح دکمه‌ی «Edit & Resubmit» در هدر باز می‌شود.
+        bool showEditFormByDefault = l.Status == "Draft" && canEditDraft;
+    }
+
+    <div id="bodyViewMode" class="@(showEditFormByDefault ? "d-none" : "")">
+        <div class="border rounded p-2">@Html.Raw(Model.Body)</div>
+    </div>
+
+    @if (canEditNow)
+    {
+        var editAction = l.Status == "Draft" ? "SaveDraft" : "Resubmit";
+        var submitLabel = l.Status == "Draft" ? "Save Draft" : "Save & Resubmit for Review";
+
+        @* طبق بند ۱۷: حالت ویرایش کنترل‌شده - قبل از فرم ویرایش، شماره‌ی رویژن و نسخه‌ای که بازبین
+           واقعاً دیده (Snapshot) قابل‌مشاهده است تا نویسنده دقیقاً بداند از چه نسخه‌ای اصلاح می‌کند *@
+        @if (l.Status == "ReturnedForRevision")
+        {
+            var latestReturnReview = Model.Reviews.FirstOrDefault(r => r.Decision == "ReturnedForRevision");
+            <div class="d-flex align-items-center justify-content-between mt-2">
+                <span class="badge bg-light text-dark border">Revision @(l.RevisionCount + 1)</span>
+                @if (latestReturnReview?.PreviousBodySnapshot != null)
+                {
+                    <button type="button" class="btn btn-sm btn-link p-0" data-bs-toggle="collapse" data-bs-target="#previousVersionPanel">
+                        <i class="bi bi-clock-history"></i> View previous version (as reviewed)
+                    </button>
+                }
+            </div>
+            @if (latestReturnReview?.PreviousBodySnapshot != null)
+            {
+                <div class="collapse mt-2" id="previousVersionPanel">
+                    <div class="border rounded p-2 bg-light">
+                        <div class="small text-muted mb-1">Subject: @latestReturnReview.PreviousSubjectSnapshot</div>
+                        <div class="small">@Html.Raw(latestReturnReview.PreviousBodySnapshot)</div>
+                    </div>
+                </div>
+            }
+        }
+
+        <form id="bodyEditForm" asp-action="@editAction" method="post" class="mt-2 @(showEditFormByDefault ? "" : "d-none")">
+            <input type="hidden" name="letterId" value="@l.LetterId" />
+            <input type="hidden" name="rowVersion" value="@Convert.ToBase64String(l.RowVersion ?? Array.Empty<byte>())" id="rowVersionB64" />
+            <div class="mb-2">
+                <label class="form-label small">Subject</label>
+                <input type="text" name="subject" class="form-control" value="@l.Subject" required />
+            </div>
+            <textarea name="body" id="letterBodyEditEditor" class="form-control">@Html.Raw(Model.Body)</textarea>
+            <div class="mt-2 d-flex gap-2">
+                <button type="submit" class="btn btn-sm btn-pems-solid">@submitLabel</button>
+                @if (!showEditFormByDefault)
+                {
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleBodyEdit()">Cancel</button>
+                }
+            </div>
+        </form>
+
+        @await Html.PartialAsync("_RichTextEditorScripts", "letterBodyEditEditor")
+    }
+
+    <script>
+        function toggleBodyEdit() {
+            document.getElementById('bodyViewMode').classList.toggle('d-none');
+            document.getElementById('bodyEditForm').classList.toggle('d-none');
+        }
+    </script>
+</div>
+
+@* طبق بند ۷/۱۲: بخش Review کاملاً جدا از Referral - «آیا نامه می‌تواند جلو برود» *@
+@if (Model.Reviews.Any())
+{
+    <div class="content-card mb-3">
+        <div class="section-title mb-2">Review Decisions</div>
+        <ul class="list-unstyled mb-0">
+            @foreach (var rv in Model.Reviews)
+            {
+                var decColor = rv.Decision switch { "Approved" => "success", "Rejected" => "danger", _ => "warning" };
+                <li class="d-flex gap-2 pb-2 small">
+                    <span class="badge bg-@decColor" style="height:fit-content;">@rv.Decision</span>
                     <div>
-                        <div>@ev.Description</div>
-                        <div class="text-muted small">
-                            @ev.EventDate.ToString("yyyy-MM-dd HH:mm")
-                            @if (!string.IsNullOrEmpty(ev.ActorName)) { <span>&middot; by @ev.ActorName</span> }
-                        </div>
+                        <div>by <strong>@rv.ReviewerName</strong> &middot; @rv.CreatedDate.ToString("yyyy-MM-dd HH:mm")</div>
+                        @if (!string.IsNullOrEmpty(rv.Comment)) { <div class="text-muted">@rv.Comment</div> }
                     </div>
                 </li>
             }
         </ul>
-    }
-    else
-    {
-        <p class="text-muted text-center py-3">No activity yet.</p>
-    }
-</div>
-
-<div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-people"></i> Recipients (To / Cc)</h6>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
-        <thead><tr><th>Type</th><th>Name</th><th>Read</th></tr></thead>
-        <tbody>
-            @foreach (var r in Model.Recipients)
-            {
-                <tr>
-                    <td><span class="badge @(r.RecipientType == "To" ? "bg-primary" : "bg-secondary")">@(r.RecipientType == "To" ? "To" : "Cc")</span></td>
-                    <td>@r.DisplayName</td>
-                    <td>
-                        @if (r.IsRead)
-                        { <span class="text-success small"><i class="bi bi-check2-all"></i> @r.ReadDate?.ToString("yyyy-MM-dd")</span> }
-                        else
-                        {
-                            <form asp-action="MarkRecipientRead" method="post" class="d-inline">
-                                <input type="hidden" name="letterId" value="@l.LetterId" />
-                                <input type="hidden" name="letterRecipientId" value="@r.LetterRecipientId" />
-                                <button class="btn btn-sm btn-outline-secondary">Mark Read</button>
-                            </form>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
     </div>
-    @if (!Model.Recipients.Any()) { <p class="text-muted small">No additional recipients yet.</p> }
+}
 
-    <form asp-action="AddRecipient" method="post" class="row g-2 mt-2">
-        <input type="hidden" name="letterId" value="@l.LetterId" />
-        <div class="col-md-3">
-            <select name="recipientType" class="form-select form-select-sm">
-                <option value="To">To (اصلی)</option>
-                <option value="Cc">Cc (رونوشت)</option>
-            </select>
+@if (!string.IsNullOrEmpty(l.SignedByName))
+{
+    <div class="alert alert-success py-2 small mb-3">
+        <i class="bi bi-patch-check-fill"></i> Electronically acknowledged by <strong>@l.SignedByName</strong> on @l.SignedDate?.ToString("yyyy-MM-dd HH:mm")
+    </div>
+}
+
+@if ((l.RelatedDocumentId.HasValue || l.RelatedMRId.HasValue))
+{
+    <div class="content-card mb-3">
+        <div class="section-title mb-2">Related Records</div>
+        <div class="d-flex flex-wrap gap-3 small">
+            @if (l.RelatedDocumentId.HasValue)
+            {
+                <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@l.RelatedDocumentId"><i class="bi bi-file-earmark-text"></i> @l.RelatedDocumentNo</a>
+            }
+            @if (l.RelatedMRId.HasValue)
+            {
+                <a asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@l.RelatedMRId"><i class="bi bi-cart"></i> @l.RelatedMRNumber</a>
+            }
         </div>
-        <div class="col-md-4">
-            <select name="employeeId" class="form-select form-select-sm">
-                <option value="">-- Employee --</option>
-                @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Name</option> }
-            </select>
+    </div>
+}
+
+<div class="accordion mb-3" id="letterAccordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accRecipients">
+                <i class="bi bi-people me-2"></i> Recipients (@Model.Recipients.Count)
+            </button>
+        </h2>
+        <div id="accRecipients" class="accordion-collapse collapse" data-bs-parent="#letterAccordion">
+            <div class="accordion-body">
+                @if (Model.Recipients.Any())
+                {
+                    <table class="table table-sm table-enterprise mb-2">
+                        <thead><tr><th>Type</th><th>Name</th><th>Read</th></tr></thead>
+                        <tbody>
+                            @foreach (var r in Model.Recipients)
+                            {
+                                <tr>
+                                    <td><span class="badge @(r.RecipientType == "To" ? "bg-primary" : "bg-secondary")">@(r.RecipientType == "To" ? "To" : "Cc")</span></td>
+                                    <td>@r.DisplayName</td>
+                                    <td>
+                                        @if (r.IsRead)
+                                        { <span class="text-success small"><i class="bi bi-check2-all"></i> @r.ReadDate?.ToString("yyyy-MM-dd")</span> }
+                                        else
+                                        {
+                                            <form asp-action="MarkRecipientRead" method="post" class="d-inline">
+                                                <input type="hidden" name="letterId" value="@l.LetterId" />
+                                                <input type="hidden" name="letterRecipientId" value="@r.LetterRecipientId" />
+                                                <button class="btn btn-sm btn-outline-secondary">Mark Read</button>
+                                            </form>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                { <p class="text-muted small">No additional recipients yet.</p> }
+
+                <form asp-action="AddRecipient" method="post" class="row g-2 mt-1 add-recipient-form">
+                    <input type="hidden" name="letterId" value="@l.LetterId" />
+                    <div class="col-md-3">
+                        <select name="recipientType" class="form-select form-select-sm">
+                            <option value="To">To</option>
+                            <option value="Cc">Cc</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="employeeId" class="form-select form-select-sm employee-picker">
+                            <option value="">-- Employee --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="departmentId" class="form-select form-select-sm">
+                            <option value="">-- or Department --</option>
+                            @foreach (var d in departments) { <option value="@d.DepartmentId">@d.Name</option> }
+                        </select>
+                    </div>
+                    <div class="col-md-2"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> Add</button></div>
+                </form>
+            </div>
         </div>
-        <div class="col-md-3">
-            <select name="departmentId" class="form-select form-select-sm">
-                <option value="">-- or Department --</option>
-                @foreach (var d in departments) { <option value="@d.DepartmentId">@d.Name</option> }
-            </select>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accAttachments">
+                <i class="bi bi-paperclip me-2"></i> Attachments (@Model.Attachments.Count)
+            </button>
+        </h2>
+        <div id="accAttachments" class="accordion-collapse collapse" data-bs-parent="#letterAccordion">
+            <div class="accordion-body">
+                @if (Model.Attachments.Any())
+                {
+                    <ul class="list-unstyled mb-2">
+                        @foreach (var a in Model.Attachments)
+                        {
+                            <li class="mb-1"><a href="@Url.Action("Download", "Files", new { id = a.AttachmentId })" target="_blank"><i class="bi bi-file-earmark"></i> @a.FileName</a></li>
+                        }
+                    </ul>
+                }
+                else
+                { <p class="text-muted small">No attachments yet.</p> }
+
+                <form asp-action="UploadAttachment" method="post" enctype="multipart/form-data" class="d-flex gap-2">
+                    <input type="hidden" name="letterId" value="@l.LetterId" />
+                    <input type="file" name="file" class="form-control form-control-sm" required />
+                    <button class="btn btn-sm btn-outline-primary"><i class="bi bi-upload"></i> Upload</button>
+                </form>
+            </div>
         </div>
-        <div class="col-md-2"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> Add</button></div>
-    </form>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accReferrals">
+                <i class="bi bi-signpost-split me-2"></i> Referrals (@Model.Referrals.Count)
+            </button>
+        </h2>
+        <div id="accReferrals" class="accordion-collapse collapse" data-bs-parent="#letterAccordion">
+            <div class="accordion-body">
+                @if (Model.Referrals.Any())
+                {
+                    <table class="table table-sm table-enterprise mb-2">
+                        <thead><tr><th>Referred To</th><th>Instructions</th><th>Due</th><th>Status</th><th>Read</th><th>By / When</th><th></th></tr></thead>
+                        <tbody>
+                            @foreach (var r in Model.Referrals)
+                            {
+                                <tr class="@(r.IsOverdue ? "table-danger" : "")">
+                                    <td>@(r.ReferredToEmployeeName ?? r.ReferredToDepartmentName)</td>
+                                    <td class="small">@r.Instructions</td>
+                                    <td>@(r.DueDate?.ToString("yyyy-MM-dd"))</td>
+                                    <td>
+                                        @{
+                                            var sb = r.Status switch { "Completed" => "bg-success", "InProgress" => "bg-info text-dark", _ => "bg-warning text-dark" };
+                                        }
+                                        <span class="badge @sb">@r.Status</span>
+                                        @if (r.IsOverdue) { <span class="badge bg-danger">Overdue</span> }
+                                    </td>
+                                    <td>
+                                        @if (r.IsRead)
+                                        { <span class="text-success"><i class="bi bi-check2-all"></i> Read</span> }
+                                        else
+                                        {
+                                            <form asp-action="MarkReferralRead" method="post" class="d-inline">
+                                                <input type="hidden" name="referralId" value="@r.LetterReferralId" />
+                                                <input type="hidden" name="letterId" value="@l.LetterId" />
+                                                <button class="btn btn-sm btn-outline-secondary">Mark Read</button>
+                                            </form>
+                                        }
+                                    </td>
+                                    <td class="small text-muted">@r.ReferredByName<br />@r.ReferredDate.ToString("yyyy-MM-dd")</td>
+                                    <td>
+                                        @if (r.Status != "Completed")
+                                        {
+                                            <form asp-action="CompleteReferral" method="post" class="d-flex gap-1">
+                                                <input type="hidden" name="referralId" value="@r.LetterReferralId" />
+                                                <input type="hidden" name="letterId" value="@l.LetterId" />
+                                                <input name="responseNote" class="form-control form-control-sm" placeholder="Response" />
+                                                <button class="btn btn-sm btn-success">Done</button>
+                                            </form>
+                                        }
+                                        else
+                                        { @r.ResponseNote }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                { <p class="text-muted small">No referrals yet.</p> }
+
+                <form asp-action="Refer" method="post" class="row g-2">
+                    <input type="hidden" name="letterId" value="@l.LetterId" />
+                    <div class="col-md-3">
+                        <select name="referredToEmployeeId" class="form-select form-select-sm employee-picker">
+                            <option value="">-- Employee --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="referredToDepartmentId" class="form-select form-select-sm">
+                            <option value="">-- or Department --</option>
+                            @foreach (var d in departments) { <option value="@d.DepartmentId">@d.Name</option> }
+                        </select>
+                    </div>
+                    <div class="col-md-3"><input name="instructions" class="form-control form-control-sm" placeholder="Instructions" /></div>
+                    <div class="col-md-2"><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
+                    <div class="col-md-1"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-send"></i></button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accTimeline">
+                <i class="bi bi-diagram-3 me-2"></i> Activity Timeline
+            </button>
+        </h2>
+        <div id="accTimeline" class="accordion-collapse collapse" data-bs-parent="#letterAccordion">
+            <div class="accordion-body">
+                @if (timeline != null && timeline.Any())
+                {
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var ev in timeline)
+                        {
+                            <li class="d-flex gap-2 pb-2 small">
+                                <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-@ev.Color text-white flex-shrink-0" style="width:24px;height:24px;">
+                                    <i class="bi @ev.Icon" style="font-size:12px;"></i>
+                                </span>
+                                <div>
+                                    <div>@ev.Description</div>
+                                    <div class="text-muted">
+                                        @ev.EventDate.ToString("yyyy-MM-dd HH:mm")
+                                        @if (!string.IsNullOrEmpty(ev.ActorName)) { <span>&middot; by @ev.ActorName</span> }
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                { <p class="text-muted text-center py-2 small">No activity yet.</p> }
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-paperclip"></i> Attachments</h6>
-    <ul class="list-unstyled">
-        @foreach (var a in Model.Attachments)
-        {
-            <li class="mb-1"><a href="@Url.Action("Download", "Files", new { id = a.AttachmentId })" target="_blank"><i class="bi bi-file-earmark"></i> @a.FileName</a></li>
+@* مودال‌های Return/Reject/Sign - این‌ها Bootstrap استاندارد هستند (همون کتابخانه‌ای که Dropdown
+   بالا هم استفاده می‌کند)، نه یک کتابخانه‌ی جدید *@
+<div class="modal fade" id="returnModal" tabindex="-1">
+    <div class="modal-dialog">
+        <form asp-action="ReturnForRevision" method="post" class="modal-content">
+            <input type="hidden" name="letterId" value="@l.LetterId" />
+            <div class="modal-header"><h6 class="modal-title">Return for Revision</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <label class="form-label small">Reason (required)</label>
+                <textarea name="reason" class="form-control" rows="3" required></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-warning btn-sm">Return for Revision</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="rejectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <form asp-action="Reject" method="post" class="modal-content">
+            <input type="hidden" name="letterId" value="@l.LetterId" />
+            <div class="modal-header"><h6 class="modal-title">Reject Letter</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <label class="form-label small">Reason (required)</label>
+                <textarea name="reason" class="form-control" rows="3" required></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="signModal" tabindex="-1">
+    <div class="modal-dialog">
+        <form asp-action="Sign" method="post" class="modal-content">
+            <input type="hidden" name="letterId" value="@l.LetterId" />
+            <div class="modal-header"><h6 class="modal-title">Sign / Acknowledge</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <label class="form-label small">Type your full name to sign</label>
+                <input name="signedByName" class="form-control" required />
+                <div class="form-text small">Lightweight electronic acknowledgment (typed name + timestamp), not a PKI digital signature.</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">Sign</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@* طبق بند ۲۶: Employee فقط زمانی که کاربر واقعاً یکی از این دو Select را باز می‌کند، به‌صورت
+   یک‌باره (نه برای هر Select جدا) از GetEmployeesForPicker بارگذاری می‌شود - نه هنگام بارگذاری صفحه *@
+<script>
+    (function () {
+        var loaded = false;
+        var pickers = document.querySelectorAll('.employee-picker');
+
+        function loadEmployeesOnce() {
+            if (loaded) return;
+            loaded = true;
+            fetch('/Letter/GetEmployeesForPicker')
+                .then(function (r) { return r.json(); })
+                .then(function (list) {
+                    pickers.forEach(function (sel) {
+                        list.forEach(function (e) {
+                            var opt = document.createElement('option');
+                            opt.value = e.employeeId;
+                            opt.textContent = e.name;
+                            sel.appendChild(opt);
+                        });
+                    });
+                });
         }
-    </ul>
-    @if (!Model.Attachments.Any()) { <p class="text-muted small">No attachments yet.</p> }
 
-    <form asp-action="UploadAttachment" method="post" enctype="multipart/form-data" class="d-flex gap-2 mt-2">
-        <input type="hidden" name="letterId" value="@l.LetterId" />
-        <input type="file" name="file" class="form-control form-control-sm" required />
-        <button class="btn btn-sm btn-outline-primary"><i class="bi bi-upload"></i> Upload</button>
-    </form>
-</div>
-
-<div class="content-card">
-    <h6 class="mb-3"><i class="bi bi-signpost-split"></i> Referral Workflow</h6>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
-        <thead><tr><th>Referred To</th><th>Instructions</th><th>Due</th><th>Status</th><th>Read</th><th>By / When</th><th></th></tr></thead>
-        <tbody>
-            @foreach (var r in Model.Referrals)
-            {
-                <tr class="@(r.IsOverdue ? "table-danger" : "")">
-                    <td>@(r.ReferredToEmployeeName ?? r.ReferredToDepartmentName)</td>
-                    <td class="small">@r.Instructions</td>
-                    <td>@(r.DueDate?.ToString("yyyy-MM-dd"))</td>
-                    <td>
-                        @{
-                            var sb = r.Status switch { "Completed" => "bg-success", "InProgress" => "bg-info text-dark", _ => "bg-warning text-dark" };
-                        }
-                        <span class="badge @sb">@r.Status</span>
-                        @if (r.IsOverdue) { <span class="badge bg-danger">Overdue</span> }
-                    </td>
-                    <td>
-                        @if (r.IsRead)
-                        { <span class="text-success"><i class="bi bi-check2-all"></i> Read</span> }
-                        else
-                        {
-                            <form asp-action="MarkReferralRead" method="post" class="d-inline">
-                                <input type="hidden" name="referralId" value="@r.LetterReferralId" />
-                                <input type="hidden" name="letterId" value="@l.LetterId" />
-                                <button class="btn btn-sm btn-outline-secondary">Mark Read</button>
-                            </form>
-                        }
-                    </td>
-                    <td class="small text-muted">@r.ReferredByName<br />@r.ReferredDate.ToString("yyyy-MM-dd")</td>
-                    <td>
-                        @if (r.Status != "Completed")
-                        {
-                            <form asp-action="CompleteReferral" method="post" class="d-flex gap-1">
-                                <input type="hidden" name="referralId" value="@r.LetterReferralId" />
-                                <input type="hidden" name="letterId" value="@l.LetterId" />
-                                <input name="responseNote" class="form-control form-control-sm" placeholder="Response" />
-                                <button class="btn btn-sm btn-success">Done</button>
-                            </form>
-                        }
-                        else
-                        {
-                            @r.ResponseNote
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Referrals.Any()) { <p class="text-muted small">No referrals yet.</p> }
-
-    <form asp-action="Refer" method="post" class="row g-2 mt-2">
-        <input type="hidden" name="letterId" value="@l.LetterId" />
-        <div class="col-md-3">
-            <select name="referredToEmployeeId" class="form-select form-select-sm">
-                <option value="">-- Employee --</option>
-                @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Name</option> }
-            </select>
-        </div>
-        <div class="col-md-3">
-            <select name="referredToDepartmentId" class="form-select form-select-sm">
-                <option value="">-- or Department --</option>
-                @foreach (var d in departments) { <option value="@d.DepartmentId">@d.Name</option> }
-            </select>
-        </div>
-        <div class="col-md-3"><input name="instructions" class="form-control form-control-sm" placeholder="Instructions" /></div>
-        <div class="col-md-2"><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
-        <div class="col-md-1"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-send"></i></button></div>
-    </form>
-</div>
+        pickers.forEach(function (sel) {
+            sel.addEventListener('focus', loadEmployeesOnce, { once: true });
+        });
+    })();
+</script>

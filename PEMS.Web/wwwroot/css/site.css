@@ -430,3 +430,43 @@ html[dir="rtl"] .pems-sidebar .collapse .nav-link {
     padding: 24px;
     box-shadow: 0 1px 4px rgba(20,32,51,0.06);
     border: 1px solid var(--p
+
+/* =========================================
+   Correspondence (Letter) status badges - طبق «PEMS Letter Details — Controlled Lifecycle»:
+   دو رنگ اضافی که پالت استاندارد Bootstrap ندارد (ReturnedForRevision/Referred) - نه یک
+   سیستم طراحی جدید، فقط دو کلاس badge سازگار با همون قرارداد bg-* موجود
+   ========================================= */
+
+.bg-orange { background-color: #fd7e14 !important; }
+.bg-purple { background-color: #6f42c1 !important; }
+
+/* =========================================
+   Correspondence Workspace - سایدبار پوشه‌ای سبک Gmail (بند ۸) و ردیف‌های فشرده‌ی فهرست (بند ۷/۲۶):
+   از همون توکن‌های رنگ/فاصله‌ی موجود استفاده می‌کند - سیستم طراحی جدیدی نیست
+   ========================================= */
+
+.pems-folder-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: var(--pems-navy, #142033);
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.pems-folder-link:hover {
+    background: var(--pems-surface-hover, rgba(20,32,51,0.05));
+}
+
+.pems-folder-link.active {
+    background: var(--pems-accent, #d98c2b);
+    color: #fff;
+    font-weight: 600;
+}
+
+.pems-compact-rows td {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}

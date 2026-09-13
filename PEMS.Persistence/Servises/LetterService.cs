@@ -28,7 +28,7 @@ public class LetterService : ILetterService
     public async Task<PagedResult<LetterDto>> SearchAsync(string? letterType, string? letterNumber, string? subject,
         string? sender, string? receiver, int? projectId, int? disciplineId, string? status,
         DateTime? fromDate, DateTime? toDate, int page, int pageSize,
-        bool canViewConfidential, int? requestingApplicationUserId)
+        bool canViewConfidential, int? requestingApplicationUserId, bool starredOnly = false)
     {
         var query = _context.Letters
             .AsNoTracking()
@@ -38,6 +38,13 @@ public class LetterService : ILetterService
             .Include(x => x.RelatedMR)
             .Where(x => x.IsActive)
             .AsQueryable();
+
+        if (starredOnly)
+        {
+            query = requestingApplicationUserId.HasValue
+                ? query.Where(x => _context.LetterStars.Any(s => s.LetterId == x.LetterId && s.ApplicationUserId == requestingApplicationUserId.Value))
+                : query.Where(x => false);
+        }
 
         if (!string.IsNullOrWhiteSpace(letterType)) query = query.Where(x => x.LetterType == letterType);
         if (!string.IsNullOrWhiteSpace(letterNumber)) query = query.Where(x => x.LetterNumber.Contains(letterNumber));
@@ -205,6 +212,25 @@ public class LetterService : ILetterService
             .Select(x => new TagDto { TagId = x.Tag!.TagId, Name = x.Tag.Name, Color = x.Tag.Color })
             .ToListAsync();
 
+        var reviews = await _context.LetterReviews
+            .Where(x => x.LetterId == letterId && x.IsActive)
+            .OrderByDescending(x => x.CreatedDate)
+            .ToListAsync();
+
+        // طبق قرارداد موجود این Entity: RegisteredById/ApprovedById/ReturnedByUserId/
+        // RejectedByUserId/ReviewerUserId همه ApplicationUserId هستند، بدون Navigation - نام
+        // نمایشی این‌جا با یک Query گروهی واحد از روی ApplicationUsers.FullName حل می‌شود
+        var actorUserIds = new[] { letter.ApprovedById, letter.ReturnedByUserId, letter.RejectedByUserId }
+            .Concat(reviews.Select(r => r.ReviewerUserId))
+            .Where(x => x.HasValue).Select(x => x!.Value).Distinct().ToList();
+
+        var actorNames = actorUserIds.Count == 0
+            ? new Dictionary<int, string>()
+            : await _context.Users.Where(u => actorUserIds.Contains(u.Id))
+                .ToDictionaryAsync(u => u.Id, u => u.FullName ?? u.UserName ?? "-");
+
+        string? NameOf(int? userId) => userId.HasValue && actorNames.TryGetValue(userId.Value, out var n) ? n : null;
+
         return new LetterDetailDto
         {
             Letter = new LetterDto
@@ -230,9 +256,32 @@ public class LetterService : ILetterService
                 OpenReferralsCount = referrals.Count(r => r.Status != "Completed"),
                 Tags = tags,
                 SignedByName = letter.SignedByName,
-                SignedDate = letter.SignedDate
+                SignedDate = letter.SignedDate,
+                RowVersion = letter.RowVersion,
+                RegisteredById = letter.RegisteredById,
+                ReturnedByName = NameOf(letter.ReturnedByUserId),
+                ReturnedDate = letter.ReturnedDate,
+                ReturnReason = letter.ReturnReason,
+                RejectedByName = NameOf(letter.RejectedByUserId),
+                RejectedDate = letter.RejectedDate,
+                RejectReason = letter.RejectReason,
+                ApprovedByName = NameOf(letter.ApprovedById),
+                ApprovedDate = letter.ApprovedDate,
+                IssuedDate = letter.IssuedDate,
+                ClosedDate = letter.ClosedDate,
+                RevisionCount = letter.RevisionCount
             },
             Body = letter.Body,
+            Reviews = reviews.Select(r => new LetterReviewDto
+            {
+                LetterReviewId = r.LetterReviewId,
+                ReviewerName = NameOf(r.ReviewerUserId),
+                Decision = r.Decision,
+                Comment = r.Comment,
+                CreatedDate = r.CreatedDate,
+                PreviousSubjectSnapshot = r.PreviousSubjectSnapshot,
+                PreviousBodySnapshot = r.PreviousBodySnapshot
+            }).ToList(),
             Referrals = referrals.Select(r => new LetterReferralDto
             {
                 LetterReferralId = r.LetterReferralId,
@@ -360,24 +409,268 @@ public class LetterService : ILetterService
             .ToListAsync();
     }
 
-    public async Task AdvanceStatusAsync(int letterId, string newStatus, int? actorId)
+    // ==============================================================================
+    // طبق «PEMS Letter Details — Controlled Lifecycle» بند ۳۴: نگاشت گذارهای قانونی - کاربر
+    // هرگز وضعیت دلخواه انتخاب نمی‌کند، فقط یک اقدام کسب‌وکاری صریح که خودش گذار درست را
+    // اعمال می‌کند. این نگاشت فقط برای نامه‌های Outgoing/Internal است که واقعاً از این
+    // گردش‌کار عبور می‌کنند - Incoming خط‌سیر ساده‌ی خودش (Registered/UnderReview/Referred/
+    // Closed) را دارد و دست‌نخورده می‌ماند (بند ۳: هرگز به یک گردش‌کار یکسان اجباری نمی‌شود).
+    // ==============================================================================
+    private static readonly Dictionary<string, string> RequiredFromStatus = new()
     {
-        var letter = await _context.Letters.FirstOrDefaultAsync(x => x.LetterId == letterId);
-        if (letter == null) throw new Exception("نامه یافت نشد");
+        [nameof(SubmitForReviewAsync)] = "Draft",
+        [nameof(ApproveAsync)] = "PendingApproval",
+        [nameof(ReturnForRevisionAsync)] = "PendingApproval",
+        [nameof(RejectAsync)] = "PendingApproval",
+        [nameof(IssueAsync)] = "Approved",
+        [nameof(CloseAsync)] = "Issued",
+    };
 
-        letter.Status = newStatus;
+    private async Task<(Letter? Letter, string? Error)> LoadForTransitionAsync(int letterId, string requiredFromStatus, string actionLabel)
+    {
+        var letter = await _context.Letters.FirstOrDefaultAsync(x => x.LetterId == letterId && x.IsActive);
+        if (letter == null) return (null, "نامه یافت نشد.");
 
-        if (newStatus == "Approved")
-        {
-            letter.ApprovedDate = DateTime.Now;
-            letter.ApprovedById = actorId;
-        }
-        else if (newStatus == "Issued")
-        {
-            letter.IssuedDate = DateTime.Now;
-        }
+        if (letter.Status != requiredFromStatus)
+            return (null, $"«{actionLabel}» فقط از وضعیت «{requiredFromStatus}» ممکن است - وضعیت فعلی این نامه «{letter.Status}» است.");
 
+        return (letter, null);
+    }
+
+    // طبق بند ۱۳: «مالکیت» یکی از چک‌های الزامی برای هر عملیات مهم است - فقط نویسنده‌ی اصلی
+    // (RegisteredById) می‌تواند پیش‌نویس خودش را برای بازبینی ارسال کند؛ در غیر این‌صورت هر
+    // کاربر احرازهویت‌شده‌ای می‌توانست پیش‌نویس نامه‌ی شخص دیگری را زودتر از موعد ارسال کند.
+    public async Task<(bool Success, string? Error)> SubmitForReviewAsync(int letterId, int? actorApplicationUserId)
+    {
+        var (letter, error) = await LoadForTransitionAsync(letterId, RequiredFromStatus[nameof(SubmitForReviewAsync)], "Submit for Review");
+        if (letter == null) return (false, error);
+
+        if (letter.RegisteredById != actorApplicationUserId)
+            return (false, "فقط نویسنده‌ی اصلی این نامه مجاز به ارسال آن برای بازبینی است.");
+
+        letter.Status = "PendingApproval";
         await _context.SaveChangesAsync();
+        return (true, null);
+    }
+
+    public async Task<(bool Success, string? Error)> ApproveAsync(int letterId, int? reviewerApplicationUserId, string? comment)
+    {
+        var (letter, error) = await LoadForTransitionAsync(letterId, RequiredFromStatus[nameof(ApproveAsync)], "Approve");
+        if (letter == null) return (false, error);
+
+        letter.Status = "Approved";
+        letter.ApprovedDate = DateTime.Now;
+        letter.ApprovedById = reviewerApplicationUserId;
+
+        await _context.LetterReviews.AddAsync(new LetterReview
+        {
+            LetterId = letterId,
+            ReviewerUserId = reviewerApplicationUserId,
+            Decision = LetterReviewDecisions.Approved,
+            Comment = comment,
+            CreatedDate = DateTime.Now,
+            IsActive = true
+        });
+
+        return await SaveWithConcurrencyCheckAsync();
+    }
+
+    public async Task<(bool Success, string? Error)> ReturnForRevisionAsync(int letterId, int? reviewerApplicationUserId, string reason)
+    {
+        if (string.IsNullOrWhiteSpace(reason))
+            return (false, "دلیل برگشت برای اصلاح (Return Reason) الزامی است.");
+
+        var (letter, error) = await LoadForTransitionAsync(letterId, RequiredFromStatus[nameof(ReturnForRevisionAsync)], "Return for Revision");
+        if (letter == null) return (false, error);
+
+        // طبق بند ۱۱: Snapshot محتوایی که بازبین همین الان دیده - پیش از این‌که نویسنده آن را ویرایش کند
+        await _context.LetterReviews.AddAsync(new LetterReview
+        {
+            LetterId = letterId,
+            ReviewerUserId = reviewerApplicationUserId,
+            Decision = LetterReviewDecisions.ReturnedForRevision,
+            Comment = reason,
+            PreviousSubjectSnapshot = letter.Subject,
+            PreviousBodySnapshot = letter.Body,
+            CreatedDate = DateTime.Now,
+            IsActive = true
+        });
+
+        letter.Status = "ReturnedForRevision";
+        letter.ReturnedByUserId = reviewerApplicationUserId;
+        letter.ReturnedDate = DateTime.Now;
+        letter.ReturnReason = reason;
+
+        return await SaveWithConcurrencyCheckAsync();
+    }
+
+    public async Task<(bool Success, string? Error)> RejectAsync(int letterId, int? reviewerApplicationUserId, string reason)
+    {
+        if (string.IsNullOrWhiteSpace(reason))
+            return (false, "دلیل رد (Reject Reason) الزامی است.");
+
+        var (letter, error) = await LoadForTransitionAsync(letterId, RequiredFromStatus[nameof(RejectAsync)], "Reject");
+        if (letter == null) return (false, error);
+
+        letter.Status = "Rejected";
+        letter.RejectedByUserId = reviewerApplicationUserId;
+        letter.RejectedDate = DateTime.Now;
+        letter.RejectReason = reason;
+
+        await _context.LetterReviews.AddAsync(new LetterReview
+        {
+            LetterId = letterId,
+            ReviewerUserId = reviewerApplicationUserId,
+            Decision = LetterReviewDecisions.Rejected,
+            Comment = reason,
+            CreatedDate = DateTime.Now,
+            IsActive = true
+        });
+
+        return await SaveWithConcurrencyCheckAsync();
+    }
+
+    public async Task<(bool Success, string? Error)> IssueAsync(int letterId, int? actorApplicationUserId)
+    {
+        var (letter, error) = await LoadForTransitionAsync(letterId, RequiredFromStatus[nameof(IssueAsync)], "Issue");
+        if (letter == null) return (false, error);
+
+        letter.Status = "Issued";
+        letter.IssuedDate = DateTime.Now;
+
+        return await SaveWithConcurrencyCheckAsync();
+    }
+
+    public async Task<(bool Success, string? Error)> CloseAsync(int letterId, int? actorApplicationUserId)
+    {
+        var letter = await _context.Letters.FirstOrDefaultAsync(x => x.LetterId == letterId && x.IsActive);
+        if (letter == null) return (false, "نامه یافت نشد.");
+
+        // طبق بند ۳: Incoming/Internal خط‌سیر پایانی خودشان را دارند (Referred/Sent/Acknowledged
+        // هم می‌توانند به Closed برسند) - فقط Outgoing باید حتماً از Issued عبور کرده باشد
+        var validFromStatuses = letter.LetterType == "Outgoing"
+            ? new[] { "Issued" }
+            : new[] { "Registered", "UnderReview", "Referred", "Sent", "Acknowledged" };
+
+        if (!validFromStatuses.Contains(letter.Status))
+            return (false, $"«Close» از وضعیت فعلی «{letter.Status}» برای این نوع نامه ممکن نیست.");
+
+        letter.Status = "Closed";
+        letter.ClosedDate = DateTime.Now;
+
+        return await SaveWithConcurrencyCheckAsync();
+    }
+
+    // ==============================================================================
+    // طبق بند ۷: قلب کل قانون خودتاییدی این نشست - فقط CurrentUserId == RegisteredById AND
+    // Status == ReturnedForRevision. نه بر اساس Role، نه بر اساس نام Employee، نه فقط مخفی‌کردن
+    // دکمه در UI - این‌جا (لایه‌ی سرویس) تنها مرز واقعی اجراست.
+    // ==============================================================================
+    private static (bool Allowed, string? Error) CheckOriginalAuthorCanEdit(Letter letter, int currentApplicationUserId)
+    {
+        if (letter.RegisteredById != currentApplicationUserId)
+            return (false, "فقط نویسنده‌ی اصلی این نامه مجاز به ویرایش محتوای آن است.");
+
+        if (letter.Status != "Draft" && letter.Status != "ReturnedForRevision")
+            return (false, $"محتوای رسمی این نامه در وضعیت «{letter.Status}» غیرقابل‌ویرایش است.");
+
+        return (true, null);
+    }
+
+    public async Task<(bool Success, string? Error)> SaveDraftEditAsync(int letterId, string subject, string body,
+        int currentApplicationUserId, byte[]? rowVersion)
+    {
+        var letter = await _context.Letters.FirstOrDefaultAsync(x => x.LetterId == letterId && x.IsActive);
+        if (letter == null) return (false, "نامه یافت نشد.");
+
+        var (allowed, error) = CheckOriginalAuthorCanEdit(letter, currentApplicationUserId);
+        if (!allowed) return (false, error);
+
+        ApplyConcurrencyToken(letter, rowVersion);
+
+        letter.Subject = subject;
+        letter.Body = _sanitizer.Sanitize(body);
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return (false, "این نامه هم‌زمان توسط کاربر دیگری تغییر کرده است. لطفاً صفحه را رفرش کنید و دوباره تلاش کنید.");
+        }
+
+        return (true, null);
+    }
+
+    public async Task<(bool Success, string? Error)> ResubmitAsync(int letterId, string subject, string body,
+        int currentApplicationUserId, byte[]? rowVersion)
+    {
+        var letter = await _context.Letters.FirstOrDefaultAsync(x => x.LetterId == letterId && x.IsActive);
+        if (letter == null) return (false, "نامه یافت نشد.");
+
+        // طبق بند ۷/۳۵: بازارسال فقط از ReturnedForRevision و فقط توسط نویسنده‌ی اصلی
+        if (letter.Status != "ReturnedForRevision")
+            return (false, $"«Resubmit» فقط از وضعیت «ReturnedForRevision» ممکن است - وضعیت فعلی «{letter.Status}» است.");
+
+        if (letter.RegisteredById != currentApplicationUserId)
+            return (false, "فقط نویسنده‌ی اصلی این نامه مجاز به ارسال مجدد آن است.");
+
+        ApplyConcurrencyToken(letter, rowVersion);
+
+        letter.Subject = subject;
+        letter.Body = _sanitizer.Sanitize(body);
+        letter.RevisionCount += 1;
+
+        // طبق بند ۳۵: بلافاصله دوباره غیرقابل‌ویرایش می‌شود - Cache برگشت پاک می‌شود (تاریخچه‌ی
+        // واقعی در LetterReview دست‌نخورده می‌ماند، دقیقاً همون الگوی ClientReviewStatus فاز ۲ EDMS)
+        letter.Status = "PendingApproval";
+        letter.ReturnedByUserId = null;
+        letter.ReturnedDate = null;
+        letter.ReturnReason = null;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return (false, "این نامه هم‌زمان توسط کاربر دیگری تغییر کرده است. لطفاً صفحه را رفرش کنید و دوباره تلاش کنید.");
+        }
+
+        return (true, null);
+    }
+
+    // طبق بند ۲۹ (Concurrency): مقدار RowVersion ارسالی از فرم (که کاربر لحظه‌ی بازکردن صفحه
+    // دیده) به‌عنوان OriginalValue تنظیم می‌شود - نه CurrentValue. این‌طوری دستور UPDATE واقعی
+    // EF دقیقاً همان چیزی را در WHERE می‌گذارد که کاربر دیده؛ اگر بین‌این‌مدت کس دیگری ذخیره
+    // کرده باشد، صفر ردیف تطبیق می‌یابد و DbUpdateConcurrencyException پرتاب می‌شود - برخلاف
+    // اشتباه رایج «ست‌کردن مستقیم CurrentValue» که اصلاً هیچ تعارضی را تشخیص نمی‌دهد چون همین
+    // متد لحظه‌ای قبلش خودش رکورد را تازه خوانده است.
+    private void ApplyConcurrencyToken(Letter letter, byte[]? rowVersion)
+    {
+        if (rowVersion != null)
+            _context.Entry(letter).Property(x => x.RowVersion).OriginalValue = rowVersion;
+    }
+
+    // طبق «PEMS Correspondence Workspace» بند ۳۰: تست Concurrency واقعی (روی SQL Server ایزوله،
+    // نه InMemory) ثابت کرد این متد قبلاً یک Exception خام پرتاب می‌کرد به‌جای برگرداندن همون
+    // Tuple (Success, Error) که بقیه‌ی متدهای این کلاس استفاده می‌کنند - یعنی وقتی دو درخواست
+    // هم‌زمان (مثلاً Approve و ReturnForRevision) روی یک نامه هم‌پوشانی می‌کردند، بازنده به‌جای
+    // یک پیام کنترل‌شده در TempData["Error"]، باعث یک خطای ۵۰۰ کنترل‌نشده در Controller می‌شد
+    // (چون LetterController فقط منتظر Tuple است، نه try/catch اطراف هر Action). مکانیزم واقعی
+    // Concurrency (RowVersion) درست کار می‌کرد - فقط شکل بازگشت خطا اشتباه بود.
+    private async Task<(bool Success, string? Error)> SaveWithConcurrencyCheckAsync()
+    {
+        try
+        {
+            await _context.SaveChangesAsync();
+            return (true, null);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return (false, "این نامه هم‌زمان توسط کاربر دیگری تغییر کرده است. لطفاً صفحه را رفرش کنید و دوباره تلاش کنید.");
+        }
     }
 
     public async Task<LetterDashboardDto> GetDashboardAsync(int? currentApplicationUserId = null)
@@ -476,16 +769,6 @@ public class LetterService : ILetterService
 
         letter.SignedByName = signedByName;
         letter.SignedDate = DateTime.Now;
-
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task UpdateBodyAsync(int letterId, string body)
-    {
-        var letter = await _context.Letters.FirstOrDefaultAsync(x => x.LetterId == letterId);
-        if (letter == null) return;
-
-        letter.Body = _sanitizer.Sanitize(body);
 
         await _context.SaveChangesAsync();
     }

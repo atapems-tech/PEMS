@@ -5643,6 +5643,9 @@ namespace PEMS.Persistence.Migrations
                     b.Property<string>("Body")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("ClosedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ConfidentialityLevel")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -5698,10 +5701,31 @@ namespace PEMS.Persistence.Migrations
                     b.Property<int?>("RegisteredById")
                         .HasColumnType("int");
 
+                    b.Property<string>("RejectReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RejectedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("RejectedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("RelatedDocumentId")
                         .HasColumnType("int");
 
                     b.Property<int?>("RelatedMRId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReturnReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ReturnedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ReturnedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RevisionCount")
                         .HasColumnType("int");
 
                     b.Property<byte[]>("RowVersion")
@@ -5882,6 +5906,60 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("ReferredToEmployeeId");
 
                     b.ToTable("LetterReferrals");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.LetterReview", b =>
+                {
+                    b.Property<int>("LetterReviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LetterReviewId"));
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Decision")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LetterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreviousBodySnapshot")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreviousSubjectSnapshot")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ReviewerUserId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LetterReviewId");
+
+                    b.HasIndex("LetterId", "CreatedDate");
+
+                    b.ToTable("LetterReviews");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.LetterStar", b =>
@@ -15497,6 +15575,17 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("ReferredToEmployee");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.LetterReview", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Letter", "Letter")
+                        .WithMany("Reviews")
+                        .HasForeignKey("LetterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Letter");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.LetterStar", b =>
                 {
                     b.HasOne("PEMS.Domain.Entities.Letter", "Letter")
@@ -17719,6 +17808,8 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Recipients");
 
                     b.Navigation("Referrals");
+
+                    b.Navigation("Reviews");
 
                     b.Navigation("Tags");
                 });

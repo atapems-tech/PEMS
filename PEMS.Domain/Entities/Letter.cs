@@ -72,9 +72,36 @@ public class Letter : BaseEntity
 
     public DateTime? IssuedDate { get; set; }
 
+    public DateTime? ClosedDate { get; set; }
+
     // تایید الکترونیکی سبک (نام تایپ‌شده + مهر زمانی) - نه امضای PKI واقعی
     public string? SignedByName { get; set; }
     public DateTime? SignedDate { get; set; }
+
+    // ==============================================================================
+    // طبق «PEMS Letter Details — Controlled Lifecycle» بند ۴-۱۱: برگشت برای اصلاح (Returned
+    // For Revision) یک وضعیت کسب‌وکاری کاملاً جدا از Rejected است - نامه رد نشده، فقط نیاز به
+    // اصلاح دارد و باید توسط همان نویسنده‌ی اصلی (RegisteredById) دوباره ویرایش و ارسال شود.
+    // این سه فیلد فقط Cache آخرین برگشت هستند (دقیقاً همون الگوی DocumentRevision.
+    // ClientReviewStatus از فاز ۲ EDMS) - تاریخچه‌ی کامل چند-دوره‌ای در LetterReview است.
+    //
+    // *UserId عمداً بدون Navigation/FK پیکربندی‌شده - دقیقاً همون قرارداد موجود RegisteredById/
+    // ApprovedById در همین Entity (شناسه‌ی ApplicationUser، نه Employee - نامش هم برای وضوح
+    // همین الان اصلاح شد).
+    // ==============================================================================
+    public int? ReturnedByUserId { get; set; }
+    public DateTime? ReturnedDate { get; set; }
+    public string? ReturnReason { get; set; }
+
+    public int? RejectedByUserId { get; set; }
+    public DateTime? RejectedDate { get; set; }
+    public string? RejectReason { get; set; }
+
+    // هر بار نویسنده‌ی اصلی بعد از برگشت، اصلاح و دوباره ارسال کند، یکی افزایش می‌یابد - برای
+    // نمایش «رویژن N» به کاربر، بدون نیاز به شمارش دستی ردیف‌های LetterReview
+    public int RevisionCount { get; set; }
+
+    public ICollection<LetterReview> Reviews { get; set; } = new List<LetterReview>();
 
     public bool IsActive { get; set; } = true;
 
