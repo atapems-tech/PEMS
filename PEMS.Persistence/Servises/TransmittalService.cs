@@ -16,6 +16,26 @@ public class TransmittalService : ITransmittalService
         _context = context;
     }
 
+    // طبق «PEMS Phase 2A — EDMS Foundation»: Query هدفمند سمت SQL (نه GetAllAsync + فیلتر در
+    // حافظه) - فقط ستون‌های لازم برای یک ردیف خلاصه در تب «Related Transmittals»
+    public async Task<List<RelatedTransmittalDto>> GetForDocumentAsync(int documentId)
+    {
+        return await _context.TransmittalItems
+            .Where(x => x.DocumentId == documentId && x.Transmittal != null && x.Transmittal.IsActive)
+            .Select(x => new RelatedTransmittalDto
+            {
+                TransmittalId = x.Transmittal!.TransmittalId,
+                TransmittalNo = x.Transmittal.TransmittalNo,
+                Status = x.Transmittal.Status,
+                TransmittalDate = x.Transmittal.TransmittalDate,
+                SentDate = x.Transmittal.SentDate,
+                Purpose = x.Transmittal.Purpose,
+                RevisionNoAtTransmittal = x.RevisionNo
+            })
+            .OrderByDescending(x => x.TransmittalDate)
+            .ToListAsync();
+    }
+
     public async Task<List<TransmittalDto>> GetAllAsync()
     {
         var transmittals = await _context.Transmittals

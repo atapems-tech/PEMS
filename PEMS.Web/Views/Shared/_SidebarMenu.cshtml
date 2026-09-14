@@ -40,7 +40,7 @@
     var qualityControllers = new[] { "QC", "MOC" };
     var contractControllers = new[] { "Contract", "Vendor" };
     var projectControlControllers = new[] { "Task", "Tag", "Report", "Meeting" };
-    var cmmsControllers = new[] { "Equipment", "EquipmentImport", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "FunctionalLocationImport", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
+    var cmmsControllers = new[] { "Equipment", "EquipmentImport", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "FunctionalLocationImport", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
     var inventoryControllers = new[] { "Inventory", "MaterialItem", "InventoryMasterData", "InventoryTransaction", "StoreRequisition", "MrsImport" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
     var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "Department", "Employee" };
@@ -334,6 +334,19 @@
 
             <a class="nav-link @(IsActive("Crew") ? "active" : "")" asp-controller="Crew" asp-action="Index">
                 <i class="bi bi-people-fill"></i> Crews
+            </a>
+
+            @* طبق «PEMS Phase 2C-1 — Navigation Integrity»: ShiftHandoverController یک ماژول واقعی و
+               کاملاً مجوزدار بود (RoleModuleActionService، ماژول "ShiftHandover") ولی هیچ ورودی
+               سایدباری نداشت - کاربر فقط با URL مستقیم یا از یک لینک متقاطع درون Permit/Details
+               (فقط وقتی یک Permit به یک Handover خاص لینک شده) به آن می‌رسید. گیت این لینک از همان
+               MenuAccess.CmmsIntegration سطح‌بخش استفاده می‌کند (بدون مجوز/سیاست جدید) - نقش‌هایی
+               که این بخش را می‌بینند (SystemAdmin/EngineeringManager/EngineeringSupervisor/
+               MaintenanceEngineer) همگی طبق Seed واقعی RoleModuleActionService دسترسی کامل
+               View/Create/Prepare/Acknowledge/Complete به ShiftHandover دارند - هیچ نقشی لینکی را
+               می‌بیند که پشتش Forbid بگیرد. *@
+            <a class="nav-link @(IsActive("ShiftHandover") ? "active" : "")" asp-controller="ShiftHandover" asp-action="Index">
+                <i class="bi bi-arrow-left-right"></i> Shift Handovers
             </a>
 
             <a class="nav-link @(IsActive("MaintenanceMasterData") ? "active" : "")" asp-controller="MaintenanceMasterData" asp-action="Index">

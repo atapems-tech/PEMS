@@ -23,6 +23,7 @@ public class EngineeringDocumentsController : Controller
     private readonly PEMS.Application.Interfaces.IDocumentHoldService _holdService;
     private readonly PEMS.Application.Interfaces.IAccessControlService _accessControlService;
     private readonly PEMS.Application.Interfaces.IFileStorageService _fileStorage;
+    private readonly PEMS.Application.Interfaces.ITransmittalService _transmittalService;
     private readonly ILogger<EngineeringDocumentsController> _logger;
 
 
@@ -40,6 +41,7 @@ public class EngineeringDocumentsController : Controller
         PEMS.Application.Interfaces.IDocumentHoldService holdService,
         PEMS.Application.Interfaces.IAccessControlService accessControlService,
         PEMS.Application.Interfaces.IFileStorageService fileStorage,
+        PEMS.Application.Interfaces.ITransmittalService transmittalService,
         ILogger<EngineeringDocumentsController> logger)
     {
         _service = service;
@@ -55,6 +57,7 @@ public class EngineeringDocumentsController : Controller
         _holdService = holdService;
         _accessControlService = accessControlService;
         _fileStorage = fileStorage;
+        _transmittalService = transmittalService;
         _logger = logger;
     }
 
@@ -392,6 +395,10 @@ public class EngineeringDocumentsController : Controller
             return Forbid();
 
         ViewBag.RelatedLetters = await _letterService.GetRelatedToDocumentAsync(id);
+
+        // طبق «PEMS Phase 2A — EDMS Foundation» بخش ۲: پیوند متقابل با Transmittal (قبلاً هیچ‌جا
+        // روی این صفحه نشان داده نمی‌شد - سرویس/موجودیت موجود، فقط یک Query هدفمند جدید)
+        ViewBag.RelatedTransmittals = await _transmittalService.GetForDocumentAsync(id);
 
         // طبق Phase E-01
         ViewBag.CanFreeze = await _permissionService.HasPermissionAsync(_currentUser.Roles, "EngineeringDocuments", "Freeze");

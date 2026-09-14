@@ -20,11 +20,12 @@ public class VDRController : Controller
     private readonly IVdrDocumentNumberingService _numberingService;
     private readonly IFtpUploadService _ftpService;
     private readonly IFileStorageService _fileStorage;
+    private readonly IPermissionService _permissionService;
 
     public VDRController(IVDRService service, IDocumentCommentService commentService,
         IVdrWorkflowService workflowService, ILetterService letterService, IWorkflowRuntime runtime,
         PEMSDbContext context, ICurrentUserService currentUser, IVdrDocumentNumberingService numberingService,
-        IFtpUploadService ftpService, IFileStorageService fileStorage)
+        IFtpUploadService ftpService, IFileStorageService fileStorage, IPermissionService permissionService)
     {
         _service = service;
         _commentService = commentService;
@@ -36,6 +37,7 @@ public class VDRController : Controller
         _numberingService = numberingService;
         _ftpService = ftpService;
         _fileStorage = fileStorage;
+        _permissionService = permissionService;
     }
 
     public async Task<IActionResult> Index(int? projectId, int? vendorId, string? status, int page = 1, int? pageSize = null)
@@ -112,6 +114,15 @@ public class VDRController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(VDRItemDto item)
     {
+        // طبق «PEMS Phase 2B — VDR/Vendor/Equipment Authorization Wiring»: ماتریس مجوز ماژول
+        // "VDR" از قبل Seed شده بود (EngineeringManager/DocumentController: Create) اما هیچ‌جا
+        // واقعاً بررسی نمی‌شد - این‌جا همون سیاست از‌قبل‌تعریف‌شده سیم‌کشی می‌شود، نه یک سیاست جدید
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", "Create"))
+        {
+            TempData["Error"] = "شما مجاز به ثبت مدرک VDR جدید نیستید.";
+            return RedirectToAction(nameof(Index));
+        }
+
         var id = await _service.CreateManualAsync(item);
         TempData["Message"] = "VDR item created";
         return RedirectToAction(nameof(Details), new { id });
@@ -125,6 +136,9 @@ public class VDRController : Controller
     public async Task<IActionResult> GenerateContractorNumber(
         int vdrItemId, string? vendorCode, string? plantCode, string? unitCode, string? materialCode)
     {
+        if (!await EnsurePermissionAsync("Edit", vdrItemId, "شما مجاز به ویرایش این مدرک VDR نیستید."))
+            return RedirectToAction(nameof(Details), new { id = vdrItemId });
+
         var item = await _context.VDRItems
             .Include(x => x.Vendor)
             .Include(x => x.Project)
@@ -164,6 +178,9 @@ public class VDRController : Controller
     public async Task<IActionResult> GenerateVendorNumber(
         int vdrItemId, string? jobNumber, string? unitCode, string? typologyCode)
     {
+        if (!await EnsurePermissionAsync("Edit", vdrItemId, "شما مجاز به ویرایش این مدرک VDR نیستید."))
+            return RedirectToAction(nameof(Details), new { id = vdrItemId });
+
         var item = await _context.VDRItems
             .Include(x => x.Project)
             .FirstOrDefaultAsync(x => x.DocumentId == vdrItemId);
@@ -199,6 +216,9 @@ public class VDRController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UploadToFtp(int vdrItemId, int submissionId, IFormFile file)
     {
+        if (!await EnsurePermissionAsync("Edit", vdrItemId, "شما مجاز به آپلود روی FTP برای این مدرک VDR نیستید."))
+            return RedirectToAction(nameof(Details), new { id = vdrItemId });
+
         var item = await _context.VDRItems
             .Include(x => x.Project)
             .Include(x => x.Vendor)
@@ -250,6 +270,9 @@ public class VDRController : Controller
         int vdrItemId, int revisionNo, string vendorTransmittalNo,
         DateTime? vendorActualIssuedDate, string? purposeOfIssueCode, List<int>? disciplineIds)
     {
+        if (!await EnsurePermissionAsync("Edit", vdrItemId, "شما مجاز به شروع چرخه‌ی بازبینی این مدرک VDR نیستید."))
+            return RedirectToAction(nameof(Details), new { id = vdrItemId });
+
         try
         {
             await _workflowService.SubmitForReviewAsync(
@@ -270,6 +293,9 @@ public class VDRController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DisciplineRespond(int vdrItemId, string decision, string? comment)
     {
+        if (!await EnsurePermissionAsync("Edit", vdrItemId, "شما مجاز به ثبت پاسخ بازبینی برای این مدرک VDR نیستید."))
+            return RedirectToAction(nameof(Details), new { id = vdrItemId });
+
         var myDisciplineId = await GetCurrentEmployeeDisciplineIdAsync();
         var myEmployeeId = await GetCurrentEmployeeIdAsync();
 
@@ -298,6 +324,9 @@ public class VDRController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> LeadReview(int vdrItemId, string reviewCategory, string? clientCommentSheetNo, DateTime? clientCommentDate)
     {
+        if (!await EnsurePermissionAsync("Approve", vdrItemId, "شما مجاز به ثبت تصمیم نهایی برای این مدرک VDR نیستید."))
+            return RedirectToAction(nameof(Details), new { id = vdrItemId });
+
         try
         {
             await _workflowService.LeadReviewAsync(
@@ -318,6 +347,9 @@ public class VDRController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ReturnToVendor(int vdrItemId, string? replySheetNo, string? clientTransmittalNo)
     {
+        if (!await EnsurePermissionAsync("Approve", vdrItemId, "شما مجاز به بازگرداندن این مدرک VDR به وندور نیستید."))
+            return RedirectToAction(nameof(Details), new { id = vdrItemId });
+
         try
         {
             await _workflowService.ReturnToVendorAsync(
@@ -406,6 +438,18 @@ public class VDRController : Controller
         }
 
         return RedirectToAction(nameof(Details), new { id = vdrItemId });
+    }
+
+    // طبق «PEMS Phase 2B»: بررسی مجوز مشترک برای اکشن‌های تغییردهنده - در صورت رد، پیام دوستانه
+    // + بازگشت به Details (نه Forbid خام) تا با سبک خطاهای موجود این کنترلر (TempData["Error"])
+    // یکدست بماند
+    private async Task<bool> EnsurePermissionAsync(string action, int vdrItemId, string friendlyMessage)
+    {
+        if (await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", action))
+            return true;
+
+        TempData["Error"] = friendlyMessage;
+        return false;
     }
 
     private async Task<int?> GetCurrentEmployeeIdAsync()

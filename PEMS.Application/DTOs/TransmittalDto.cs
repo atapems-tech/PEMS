@@ -73,3 +73,19 @@ public class TransmittalRecipientInput
     public string? Organization { get; set; }
     public bool ResponseRequired { get; set; }
 }
+
+/// <summary>
+/// طبق «PEMS Phase 2A — EDMS Foundation» بخش ۲: خلاصه‌ی سبک برای نمایش پیوند متقابل روی صفحه‌ی
+/// Engineering Document Details - عمداً از TransmittalDto کامل (با Items/Recipients تودرتو)
+/// جدا نگه داشته شده چون این‌جا فقط یک ردیف خلاصه در یک تب مرتبط لازم است، نه کل رکورد.
+/// </summary>
+public class RelatedTransmittalDto
+{
+    public int TransmittalId { get; set; }
+    public string TransmittalNo { get; set; } = "";
+    public string Status { get; set; } = "";
+    public DateTime TransmittalDate { get; set; }
+    public DateTime? SentDate { get; set; }
+    public string Purpose { get; set; } = "";
+    public string RevisionNoAtTransmittal { get; set; } = "";
+}

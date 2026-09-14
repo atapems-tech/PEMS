@@ -14,25 +14,38 @@ namespace PEMS.Persistence.Services.SearchProviders;
 /// عبارت جستجو نباشند، فقط هم‌معنی/مرتبط باشند)، این Provider علاوه بر LIKE/Full-Text، از
 /// Semantic Search واقعی (Ollama Embedding از طریق IKnowledgeBaseService) هم استفاده
 /// می‌کند - طبق فاز D.
+///
+/// طبق «PEMS Phase 2A — Global Search Security» (Category D: Permission + Resource):
+/// این‌جا دقیقاً همون قانون محرمانگی LetterService.SearchAsync (منبع حقیقت واقعی، نه یک
+/// قانون جدید اختراع‌شده) تکرار می‌شود - بدون آن، یک نامه‌ی Confidential/Restricted که کاربر
+/// حق دیدنش را در فهرست عادی Letters ندارد، همچنان با شماره/موضوع/طرف از طریق جستجوی
+/// سراسری قابل‌کشف بود.
 /// ==============================================================================
 /// </summary>
 public class LetterSearchProvider : ISearchableEntityProvider
 {
     private readonly PEMSDbContext _context;
     private readonly IKnowledgeBaseService _knowledgeBaseService;
+    private readonly IPermissionService _permissionService;
+    private readonly ICurrentUserContext _currentUser;
 
     public string EntityType => "Letter";
     public string DisplayName => "نامه‌نگاری (Correspondence)";
 
-    public LetterSearchProvider(PEMSDbContext context, IKnowledgeBaseService knowledgeBaseService)
+    public LetterSearchProvider(PEMSDbContext context, IKnowledgeBaseService knowledgeBaseService,
+        IPermissionService permissionService, ICurrentUserContext currentUser)
     {
         _context = context;
         _knowledgeBaseService = knowledgeBaseService;
+        _permissionService = permissionService;
+        _currentUser = currentUser;
     }
 
     public async Task<(List<GlobalSearchResultItemDto> Items, int TotalCount)> SearchAsync(
         string query, int page, int pageSize, int? projectId)
     {
+        var canViewConfidential = await LetterConfidentialityScope.CanViewConfidentialAsync(_permissionService, _currentUser);
+
         // مرحله ۱ - تطبیق مستقیم (LIKE/Full-Text) روی فیلدهای ساختاریافته
         var likeQuery = _context.Letters
             .Include(x => x.Project)
@@ -46,6 +59,8 @@ public class LetterSearchProvider : ISearchableEntityProvider
 
         if (projectId.HasValue)
             likeQuery = likeQuery.Where(x => x.ProjectId == projectId.Value);
+
+        likeQuery = await LetterConfidentialityScope.ApplyAsync(likeQuery, canViewConfidential, _context, _currentUser);
 
         var matches = await likeQuery.Take(300).ToListAsync();
         var matchedIds = new HashSet<int>(matches.Select(x => x.LetterId));
@@ -69,15 +84,18 @@ public class LetterSearchProvider : ISearchableEntityProvider
         var idsToFetch = semanticIds.Where(id => !matchedIds.Contains(id)).ToList();
         if (idsToFetch.Count > 0)
         {
-            var semanticLetters = await _context.Letters
+            var semanticQuery = _context.Letters
                 .Include(x => x.Project)
-                .Where(x => x.IsActive && idsToFetch.Contains(x.LetterId))
-                .ToListAsync();
+                .Where(x => x.IsActive && idsToFetch.Contains(x.LetterId));
 
             if (projectId.HasValue)
-                semanticLetters = semanticLetters.Where(x => x.ProjectId == projectId.Value).ToList();
+                semanticQuery = semanticQuery.Where(x => x.ProjectId == projectId.Value);
 
-            matches.AddRange(semanticLetters);
+            // طبق بند بالا: مسیر جستجوی معنایی یک راه دوم برای دور زدن همون محدودیت محرمانگی
+            // نیست - دقیقاً همون فیلتر روی این Query هم اعمال می‌شود
+            semanticQuery = await LetterConfidentialityScope.ApplyAsync(semanticQuery, canViewConfidential, _context, _currentUser);
+
+            matches.AddRange(await semanticQuery.ToListAsync());
         }
 
         var scored = matches

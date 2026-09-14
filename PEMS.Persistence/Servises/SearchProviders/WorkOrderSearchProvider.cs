@@ -6,21 +6,34 @@ using PEMS.Shared.Search;
 
 namespace PEMS.Persistence.Services.SearchProviders;
 
+/// <summary>
+/// طبق «PEMS Phase 2A — Global Search Security» (Category A: Permission only):
+/// WorkOrderController.Index خودش قبل از هرچیز HasPermissionAsync(..., "WorkOrder", "View")
+/// را بررسی می‌کند - این‌جا هم عیناً همون مجوز اعمال می‌شود تا کاربری که حتی حق دیدن فهرست
+/// عادی WorkOrder را ندارد، از طریق جستجوی سراسری هم داده‌ای نبیند.
+/// </summary>
 public class WorkOrderSearchProvider : ISearchableEntityProvider
 {
     private readonly PEMSDbContext _context;
+    private readonly IPermissionService _permissionService;
+    private readonly ICurrentUserContext _currentUser;
 
     public string EntityType => "WorkOrder";
     public string DisplayName => "دستورکارهای تعمیر و نگهداری (CMMS)";
 
-    public WorkOrderSearchProvider(PEMSDbContext context)
+    public WorkOrderSearchProvider(PEMSDbContext context, IPermissionService permissionService, ICurrentUserContext currentUser)
     {
         _context = context;
+        _permissionService = permissionService;
+        _currentUser = currentUser;
     }
 
     public async Task<(List<GlobalSearchResultItemDto> Items, int TotalCount)> SearchAsync(
         string query, int page, int pageSize, int? projectId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View"))
+            return (new List<GlobalSearchResultItemDto>(), 0);
+
         var pool = await _context.WorkOrders
             .Include(x => x.Equipment)
             .Where(x => x.IsActive)

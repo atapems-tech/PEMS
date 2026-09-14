@@ -22,11 +22,13 @@ public class EquipmentController : Controller
     private readonly IInspectionService _inspectionService;
     private readonly IEquipmentClassificationService _classificationService;
     private readonly IMaintenanceIntelligenceService _intelligenceService;
+    private readonly IPermissionService _permissionService;
 
     public EquipmentController(IEquipmentService service, PEMSDbContext context,
         IFunctionalLocationService functionalLocationService, ICurrentUserService currentUser,
         IReliabilityService reliabilityService, IInspectionService inspectionService,
-        IEquipmentClassificationService classificationService, IMaintenanceIntelligenceService intelligenceService)
+        IEquipmentClassificationService classificationService, IMaintenanceIntelligenceService intelligenceService,
+        IPermissionService permissionService)
     {
         _service = service;
         _context = context;
@@ -36,6 +38,18 @@ public class EquipmentController : Controller
         _inspectionService = inspectionService;
         _classificationService = classificationService;
         _intelligenceService = intelligenceService;
+        _permissionService = permissionService;
+    }
+
+    // طبق «PEMS Phase 2B»: بررسی مجوز مشترک برای اکشن‌های تغییردهنده - داده‌های Permission
+    // از قبل برای Equipment seed شده بودند (MaintenanceEngineer: Create/Edit) ولی هرگز به
+    // کنترلر وصل نشده بودند. صفحات فقط-خواندنی (Index/Details) دست‌نخورده می‌مانند.
+    private async Task<bool> EnsurePermissionAsync(string action, string friendlyMessage)
+    {
+        if (await _permissionService.HasPermissionAsync(_currentUser.Roles, "Equipment", action))
+            return true;
+        TempData["Error"] = friendlyMessage;
+        return false;
     }
 
     // طبق سند «PEMS — Global Data Grid Standard» (فاز ۵C - Equipment Reconciliation): قبلاً
@@ -100,6 +114,9 @@ public class EquipmentController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AssignFoundation(int equipmentId, int? functionalLocationId, int? parentEquipmentId, DateTime? installationDate)
     {
+        if (!await EnsurePermissionAsync("Edit", "شما مجاز به ویرایش محل استقرار/تجهیز والد این تجهیز نیستید."))
+            return RedirectToAction(nameof(Details), new { id = equipmentId });
+
         var (success, error) = await _service.AssignFoundationAsync(
             equipmentId, functionalLocationId, parentEquipmentId, installationDate, _currentUser.UserName);
 
@@ -110,6 +127,9 @@ public class EquipmentController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
+        if (!await EnsurePermissionAsync("Create", "شما مجاز به ثبت تجهیز جدید نیستید."))
+            return RedirectToAction(nameof(Index));
+
         ViewData["Title"] = "New Equipment";
         ViewData["Section"] = "CMMS Integration";
 
@@ -126,6 +146,9 @@ public class EquipmentController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Equipment equipment)
     {
+        if (!await EnsurePermissionAsync("Create", "شما مجاز به ثبت تجهیز جدید نیستید."))
+            return RedirectToAction(nameof(Index));
+
         var id = await _service.CreateAsync(equipment);
         TempData["Message"] = "Equipment created successfully";
         return RedirectToAction(nameof(Details), new { id });

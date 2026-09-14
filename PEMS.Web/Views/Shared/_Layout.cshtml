@@ -9,7 +9,7 @@
 @inject ICurrentUserService CurrentUser
 @{
     var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
-    var currentTheme = Context.Request.Cookies[PEMS.Web.Controllers.ThemeController.CookieName] == "dark" ? "dark" : "light";
+    var currentTheme = PEMS.Web.Controllers.ThemeController.Normalize(Context.Request.Cookies[PEMS.Web.Controllers.ThemeController.CookieName]);
     var currentUrl = Context.Request.PathBase + Context.Request.Path + Context.Request.QueryString;
     var isAdminArea = string.Equals(ViewContext.RouteData.Values["area"]?.ToString(), "Admin", StringComparison.OrdinalIgnoreCase);
 
@@ -85,11 +85,18 @@
                     <i class="bi bi-palette-fill fs-5"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item theme-switch" href="#" data-theme="light"><i class="bi bi-sun me-2"></i> Light (Default)</a></li>
-                    <li><a class="dropdown-item theme-switch" href="#" data-theme="dark"><i class="bi bi-moon-stars me-2"></i> Dark</a></li>
-                    <li><a class="dropdown-item theme-switch" href="#" data-theme="ocean"><i class="bi bi-water me-2"></i> Ocean</a></li>
-                    <li><a class="dropdown-item theme-switch" href="#" data-theme="warm"><i class="bi bi-tree me-2"></i> Warm</a></li>
-                    <li><a class="dropdown-item theme-switch" href="#" data-theme="midnight"><i class="bi bi-moon me-2"></i> Midnight</a></li>
+                    @foreach (var (themeValue, icon, label) in new[] {
+                        ("light", "bi-sun", "Light (Default)"), ("dark", "bi-moon-stars", "Dark"),
+                        ("ocean", "bi-water", "Ocean"), ("warm", "bi-tree", "Warm"), ("midnight", "bi-moon", "Midnight")
+                    })
+                    {
+                        <li>
+                            <a class="dropdown-item theme-switch @(currentTheme == themeValue ? "active" : "")"
+                               href="@Url.Action("SetTheme", "Theme", new { theme = themeValue, returnUrl = currentUrl })">
+                                <i class="bi @icon me-2"></i> @label
+                            </a>
+                        </li>
+                    }
                 </ul>
             </div>
 
@@ -234,7 +241,7 @@
                 if (event.persisted) window.location.reload();
             });
 
-            document.querySelectorAll('.culture-switch').forEach(function (link) {
+            document.querySelectorAll('.culture-switch, .theme-switch').forEach(function (link) {
                 link.addEventListener('click', function () {
                     document.documentElement.setAttribute('data-culture-switching', 'true');
                     document.body.style.visibility = 'hidden';

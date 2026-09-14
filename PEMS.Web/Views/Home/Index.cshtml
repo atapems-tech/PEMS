@@ -91,6 +91,20 @@
                         </a>
                     </div>
                 }
+                @if (myWork.ShowDocumentReviews)
+                {
+                    <div class="col-md-4">
+                        <a asp-controller="EngineeringDocuments" asp-action="Index"
+                           class="d-flex align-items-center gap-3 p-2 rounded text-decoration-none"
+                           aria-label="@myWork.PendingDocumentReviewsCount Engineering Documents awaiting your review or approval">
+                            <div class="kpi-icon @(myWork.PendingDocumentReviewsCount > 0 ? "bg-icon-purple" : "bg-icon-slate")"><i class="bi bi-file-earmark-check"></i></div>
+                            <div>
+                                <div class="kpi-value">@myWork.PendingDocumentReviewsCount</div>
+                                <div class="small text-muted">Documents awaiting your review</div>
+                            </div>
+                        </a>
+                    </div>
+                }
             </div>
         }
     </div>

@@ -1,9 +1,63 @@
 ﻿@model PEMS.Application.DTOs.VDRItemDto
+@using PEMS.Web.Models
 
 @{
     var sbTop = Model.WorkflowStatus switch { "Closed" => "bg-success", "PendingResubmission" => "bg-warning text-dark", "UnderReview" => "bg-info text-dark", _ => "bg-secondary" };
     var relatedLetters = (List<PEMS.Application.DTOs.RelatedLetterDto>)(ViewBag.RelatedLetters ?? new List<PEMS.Application.DTOs.RelatedLetterDto>());
     var workflowHistory = (IReadOnlyList<PEMS.WorkflowPlatform.Dtos.WorkflowHistoryDto>)(ViewBag.WorkflowHistory ?? new List<PEMS.WorkflowPlatform.Dtos.WorkflowHistoryDto>());
+
+    // طبق «PEMS Phase 2C-3»: منطق تعیین مرحله عیناً همان منطق قبلی _VdrWorkflowStagesDiagram
+    // است - فقط جابه‌جا شده به این‌جا، بدون هیچ تغییر رفتاری.
+    var wfStatus = Model.WorkflowStatus ?? "Planned";
+    var wfStageName = (string?)ViewBag.CurrentStageName;
+    var wfStageOrder = new[] { "Planned", "Check", "DisciplineReview", "LeadReview", "ReturnToVendor", "Closed" };
+    var wfStageLabels = new Dictionary<string, string>
+    {
+        ["Planned"] = "Planned", ["Check"] = "Submitted", ["DisciplineReview"] = "بازبینی موازی",
+        ["LeadReview"] = "تصمیم نهایی", ["ReturnToVendor"] = "بازگشت به وندور", ["Closed"] = "Closed"
+    };
+    var wfStageIcons = new Dictionary<string, string>
+    {
+        ["Planned"] = "bi-hourglass", ["Check"] = "bi-send", ["DisciplineReview"] = "bi-diagram-3",
+        ["LeadReview"] = "bi-clipboard-check", ["ReturnToVendor"] = "bi-reply", ["Closed"] = "bi-check2-circle"
+    };
+    var wfStageRoles = new Dictionary<string, string>
+    {
+        ["Planned"] = "Vendor", ["Check"] = "Vendor", ["DisciplineReview"] = "دیسیپلین‌های ارجاع‌شده",
+        ["LeadReview"] = "Eng. Supervisor / Manager", ["ReturnToVendor"] = "Document Controller", ["Closed"] = "—"
+    };
+    var wfIsPendingResubmission = wfStatus == "PendingResubmission";
+
+    int wfCurrentIndex;
+    if (!string.IsNullOrEmpty(wfStageName) && Array.IndexOf(wfStageOrder, wfStageName) >= 0)
+        wfCurrentIndex = Array.IndexOf(wfStageOrder, wfStageName);
+    else if (wfStatus == "Closed")
+        wfCurrentIndex = wfStageOrder.Length - 1;
+    else if (wfIsPendingResubmission)
+        wfCurrentIndex = Array.IndexOf(wfStageOrder, "LeadReview");
+    else
+        wfCurrentIndex = 0;
+
+    var wfStageDiagramModel = new StageDiagramViewModel
+    {
+        Stages = wfStageOrder.Select((key, i) =>
+        {
+            var isBranchedRange = wfIsPendingResubmission && i >= wfCurrentIndex && key != "Planned" && key != "Check";
+            var state = isBranchedRange
+                ? (i == wfCurrentIndex ? StageItemState.Rejected : StageItemState.Pending)
+                : i < wfCurrentIndex ? StageItemState.Done
+                : i == wfCurrentIndex ? StageItemState.Current
+                : StageItemState.Pending;
+
+            return new StageDiagramItem
+            {
+                Label = wfStageLabels[key],
+                IconCssClass = wfStageIcons[key],
+                RoleLabel = wfStageRoles[key],
+                State = state
+            };
+        }).ToList()
+    };
 }
 
 <div class="content-card mb-3">
@@ -19,7 +73,7 @@
     </div>
 
     <hr class="my-2" />
-    <partial name="_VdrWorkflowStagesDiagram" model="@(( Model.WorkflowStatus, (string?)ViewBag.CurrentStageName ))" />
+    <partial name="_PemsStageDiagram" model="wfStageDiagramModel" />
 </div>
 
 <ul class="nav nav-tabs mb-3" id="vdrTabs" role="tablist">

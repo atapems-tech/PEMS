@@ -13,6 +13,12 @@ public interface ITransmittalService
 
     Task<TransmittalDto?> GetByIdAsync(int id);
 
+    /// <summary>
+    /// طبق «PEMS Phase 2A — EDMS Foundation»: برای تب/بخش «Related Transmittals» روی صفحه‌ی
+    /// Engineering Document Details - یک Query هدفمند (نه GetAllAsync + فیلتر در حافظه).
+    /// </summary>
+    Task<List<RelatedTransmittalDto>> GetForDocumentAsync(int documentId);
+
     Task<int> CreateAsync(string transmittalNo, int projectId, string from, string to,
         string purpose, string? description, List<int> documentIds,
         bool responseRequired, List<TransmittalRecipientInput> recipients);

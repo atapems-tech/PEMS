@@ -6,21 +6,33 @@ using PEMS.Shared.Search;
 
 namespace PEMS.Persistence.Services.SearchProviders;
 
+/// <summary>
+/// طبق «PEMS Phase 2A — Global Search Security» (Category A: Permission only):
+/// MaterialRequisitionController.Index خودش HasPermissionAsync(..., "MaterialRequisition",
+/// "View") را بررسی می‌کند - این‌جا هم عیناً همون مجوز اعمال می‌شود.
+/// </summary>
 public class MaterialRequisitionSearchProvider : ISearchableEntityProvider
 {
     private readonly PEMSDbContext _context;
+    private readonly IPermissionService _permissionService;
+    private readonly ICurrentUserContext _currentUser;
 
     public string EntityType => "MaterialRequisition";
     public string DisplayName => "درخواست‌های خرید (MR/MRQ)";
 
-    public MaterialRequisitionSearchProvider(PEMSDbContext context)
+    public MaterialRequisitionSearchProvider(PEMSDbContext context, IPermissionService permissionService, ICurrentUserContext currentUser)
     {
         _context = context;
+        _permissionService = permissionService;
+        _currentUser = currentUser;
     }
 
     public async Task<(List<GlobalSearchResultItemDto> Items, int TotalCount)> SearchAsync(
         string query, int page, int pageSize, int? projectId)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaterialRequisition", "View"))
+            return (new List<GlobalSearchResultItemDto>(), 0);
+
         var candidatesQuery = _context.MaterialRequisitions
             .Include(x => x.Discipline)
             .Where(x => x.MRNumber.Contains(query) || x.Description.Contains(query)

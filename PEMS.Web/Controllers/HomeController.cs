@@ -16,6 +16,7 @@ namespace PEMS.Web.Controllers
         private readonly PEMS.Application.Interfaces.IRoleModuleActionService _roleModuleActionService;
         private readonly PEMS.Application.Interfaces.IPermissionService _permissionService;
         private readonly PEMS.Application.Interfaces.ISetupService _setupService;
+        private readonly PEMS.Application.Interfaces.IAccessControlService _accessControlService;
         private readonly IWorkflowRuntime _runtime;
 
 
@@ -25,6 +26,7 @@ namespace PEMS.Web.Controllers
             PEMS.Application.Interfaces.IRoleModuleActionService roleModuleActionService,
             PEMS.Application.Interfaces.IPermissionService permissionService,
             PEMS.Application.Interfaces.ISetupService setupService,
+            PEMS.Application.Interfaces.IAccessControlService accessControlService,
             IWorkflowRuntime runtime)
         {
             _context = context;
@@ -34,6 +36,7 @@ namespace PEMS.Web.Controllers
             _roleModuleActionService = roleModuleActionService;
             _permissionService = permissionService;
             _setupService = setupService;
+            _accessControlService = accessControlService;
             _runtime = runtime;
         }
 
@@ -175,6 +178,31 @@ namespace PEMS.Web.Controllers
                         summary.ShowReferrals = true;
                         summary.MyReferralsCount = await _context.LetterReferrals.CountAsync(r =>
                             r.Status != "Completed" && r.ReferredToEmployeeId == employeeId.Value);
+
+                        // طبق «PEMS Phase 2A — EDMS Foundation» بخش ۳: عیناً همون قانون
+                        // دیسیپلین EngineeringDocumentsController.ScopeToOwnDisciplineIfRestrictedAsync -
+                        // فقط دو Query هدفمند (نه بارگذاری/فیلتر همه‌ی مدارک در حافظه)
+                        var canViewAllDisciplines = (await _accessControlService.AuthorizeForRolesAsync(
+                            _currentUser.Roles, "EngineeringDocuments", "ViewAllDisciplines")).Allowed;
+
+                        summary.ShowDocumentReviews = true;
+                        if (canViewAllDisciplines)
+                        {
+                            summary.PendingDocumentReviewsCount = await _context.EngineeringDocuments.CountAsync(x =>
+                                x.IsActive && (x.Status == "Submitted" || x.Status == "Checked"));
+                        }
+                        else
+                        {
+                            var myDisciplineId = await _context.Employees
+                                .Where(e => e.EmployeeId == employeeId.Value)
+                                .Select(e => (int?)e.DisciplineId)
+                                .FirstOrDefaultAsync();
+
+                            // طبق رفتار دقیق فعلی: کارمند بدون دیسیپلین محدود به مدارک
+                            // بدون‌دیسیپلین می‌ماند - نه نامحدود، نه صفر
+                            summary.PendingDocumentReviewsCount = await _context.EngineeringDocuments.CountAsync(x =>
+                                x.IsActive && x.Status == "IDC Review" && (x.DisciplineId == myDisciplineId || x.DisciplineId == null));
+                        }
 
                         ViewBag.MyWork = summary;
                     }

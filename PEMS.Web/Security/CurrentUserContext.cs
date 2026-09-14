@@ -26,6 +26,8 @@ public class CurrentUserContext : ICurrentUserContext
 
     public int? UserId => _currentUser.UserId;
 
+    public IReadOnlyList<string> Roles => _currentUser.Roles;
+
     public int? EmployeeId
     {
         get

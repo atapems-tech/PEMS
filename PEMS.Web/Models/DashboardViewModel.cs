@@ -37,10 +37,17 @@ public class MyWorkSummary
     public bool ShowReferrals { get; set; }
     public int MyReferralsCount { get; set; }
 
-    public bool HasAnyCategory => ShowPermitApprovals || ShowWorkOrders || ShowReferrals;
+    // طبق «PEMS Phase 2A — EDMS Foundation» بخش ۳: قبلاً هیچ‌کدام از Engineering Documents/VDR/
+    // TechnicalQuery/MOC در My Work نبودند (فقط Permit/WorkOrder/Letters) - این اولین مورد
+    // (EDMS)، دقیقاً همون قانون دیسیپلین/ViewAllDisciplines موجود، بدون هیچ موتور Task جدید
+    public bool ShowDocumentReviews { get; set; }
+    public int PendingDocumentReviewsCount { get; set; }
+
+    public bool HasAnyCategory => ShowPermitApprovals || ShowWorkOrders || ShowReferrals || ShowDocumentReviews;
 
     public bool HasAnyActionable =>
         (ShowPermitApprovals && PendingPermitApprovals > 0) ||
         (ShowWorkOrders && MyWorkOrdersCount > 0) ||
-        (ShowReferrals && MyReferralsCount > 0);
+        (ShowReferrals && MyReferralsCount > 0) ||
+        (ShowDocumentReviews && PendingDocumentReviewsCount > 0);
 }

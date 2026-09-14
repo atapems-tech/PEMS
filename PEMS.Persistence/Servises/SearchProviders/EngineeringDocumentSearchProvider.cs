@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
@@ -9,25 +9,39 @@ namespace PEMS.Persistence.Services.SearchProviders;
 /// <summary>
 /// جستجوی مدارک مهندسی (MDR) - طبق مثال درخواست اصلی: کاربر با Document Number، بخشی از
 /// عنوان، یا بخشی از Description بتواند مدرک را پیدا کند.
+///
+/// طبق «PEMS Phase 2A — Global Search Security» (Category C: Permission + Resource): این‌جا
+/// دقیقاً همون قانون محدودیت دیسیپلین EngineeringDocumentsController.Index/
+/// ScopeToOwnDisciplineIfRestrictedAsync (منبع حقیقت واقعی) تکرار می‌شود - بدون آن، یک
+/// Discipline Engineer که در فهرست عادی فقط مدارک دیسیپلین خودش را می‌بیند، همچنان می‌توانست
+/// شماره/عنوان مدارک هر دیسیپلین دیگری را از طریق جستجوی سراسری کشف کند.
 /// </summary>
 public class EngineeringDocumentSearchProvider : ISearchableEntityProvider
 {
     private readonly PEMSDbContext _context;
     private readonly IKnowledgeBaseService _knowledgeBaseService;
+    private readonly IAccessControlService _accessControlService;
+    private readonly ICurrentUserContext _currentUser;
 
     public string EntityType => "EngineeringDocument";
     public string DisplayName => "مدارک مهندسی (MDR)";
 
-    public EngineeringDocumentSearchProvider(PEMSDbContext context, IKnowledgeBaseService knowledgeBaseService)
+    public EngineeringDocumentSearchProvider(PEMSDbContext context, IKnowledgeBaseService knowledgeBaseService,
+        IAccessControlService accessControlService, ICurrentUserContext currentUser)
     {
         _context = context;
         _knowledgeBaseService = knowledgeBaseService;
+        _accessControlService = accessControlService;
+        _currentUser = currentUser;
     }
 
     public async Task<(List<GlobalSearchResultItemDto> Items, int TotalCount)> SearchAsync(
         string query, int page, int pageSize, int? projectId)
     {
-        var matches = await TryFullTextSearchAsync(query, projectId);
+        var (isRestricted, disciplineId) = await EngineeringDocumentDisciplineScope.ResolveAsync(
+            _context, _accessControlService, _currentUser);
+
+        var matches = await TryFullTextSearchAsync(query, projectId, isRestricted, disciplineId);
 
         if (matches == null)
         {
@@ -42,6 +56,8 @@ public class EngineeringDocumentSearchProvider : ISearchableEntityProvider
             if (projectId.HasValue)
                 candidatesQuery = candidatesQuery.Where(x => x.ProjectId == projectId.Value);
 
+            candidatesQuery = EngineeringDocumentDisciplineScope.Apply(candidatesQuery, isRestricted, disciplineId);
+
             matches = await candidatesQuery.Take(500).ToListAsync();
 
             // طبق همون محدودیت شناخته‌شده‌ی فاز A: نمونه‌ی Fallback برای Fuzzy وقتی LIKE کم نتیجه داد
@@ -50,6 +66,7 @@ public class EngineeringDocumentSearchProvider : ISearchableEntityProvider
                 var fallbackQuery = _context.Set<PEMS.Domain.Entities.EngineeringDocument>()
                     .Include(x => x.Discipline).Where(x => x.IsActive);
                 if (projectId.HasValue) fallbackQuery = fallbackQuery.Where(x => x.ProjectId == projectId.Value);
+                fallbackQuery = EngineeringDocumentDisciplineScope.Apply(fallbackQuery, isRestricted, disciplineId);
 
                 var fallbackPool = await fallbackQuery.OrderByDescending(x => x.CreatedDate).Take(500).ToListAsync();
                 foreach (var doc in fallbackPool)
@@ -82,6 +99,7 @@ public class EngineeringDocumentSearchProvider : ISearchableEntityProvider
                     .Where(x => x.IsActive && idsToFetch.Contains(x.DocumentId));
 
                 if (projectId.HasValue) semanticQuery = semanticQuery.Where(x => x.ProjectId == projectId.Value);
+                semanticQuery = EngineeringDocumentDisciplineScope.Apply(semanticQuery, isRestricted, disciplineId);
 
                 matches.AddRange(await semanticQuery.ToListAsync());
             }
@@ -134,7 +152,8 @@ public class EngineeringDocumentSearchProvider : ISearchableEntityProvider
     }
 
 
-    private async Task<List<PEMS.Domain.Entities.EngineeringDocument>?> TryFullTextSearchAsync(string query, int? projectId)
+    private async Task<List<PEMS.Domain.Entities.EngineeringDocument>?> TryFullTextSearchAsync(
+        string query, int? projectId, bool isRestricted, int? disciplineId)
     {
         try
         {
@@ -151,6 +170,8 @@ public class EngineeringDocumentSearchProvider : ISearchableEntityProvider
 
             if (projectId.HasValue)
                 ftsQuery = ftsQuery.Where(x => x.ProjectId == projectId.Value);
+
+            ftsQuery = EngineeringDocumentDisciplineScope.Apply(ftsQuery, isRestricted, disciplineId);
 
             return await ftsQuery.Take(500).ToListAsync();
         }

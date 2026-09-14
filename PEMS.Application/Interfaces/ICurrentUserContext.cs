@@ -14,4 +14,11 @@ public interface ICurrentUserContext
 {
     int? UserId { get; }
     int? EmployeeId { get; }
+
+    // طبق «PEMS Phase 2A — Global Search Security»: Providerهایی که باید همون مجوز/محدودیت
+    // دیسیپلینی صفحه‌ی اصلی موجودیت را تکرار کنند (مثلاً LetterSearchProvider باید همون
+    // قانون محرمانگی LetterService.SearchAsync را رعایت کند) به نقش‌های کاربر جاری نیاز
+    // دارند - IPermissionService.HasPermissionAsync/IAccessControlService.AuthorizeForRolesAsync
+    // هر دو IEnumerable<string> roles می‌گیرند، نه UserId.
+    IReadOnlyList<string> Roles { get; }
 }

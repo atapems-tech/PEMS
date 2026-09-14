@@ -1,5 +1,6 @@
 ﻿@model PEMS.Application.DTOs.EngineeringDocumentDto
 @using PEMS.Web.Helpers
+@using PEMS.Web.Models
 @{
     ViewData["Title"] = "Engineering Document Details";
 
@@ -7,6 +8,44 @@
     var idcStatusForPage = (IReadOnlyList<PEMS.Application.Interfaces.IdcStatusItemDto>)
         (ViewBag.IdcStatus ?? new List<PEMS.Application.Interfaces.IdcStatusItemDto>());
     var idcApprovedCount = idcStatusForPage.Count(x => x.Status == "Approve");
+
+    // طبق «PEMS Phase 2C-3»: منطق تعیین مرحله عیناً همان منطق قبلی _WorkflowStagesDiagram
+    // است - فقط جابه‌جا شده به این‌جا، بدون هیچ تغییر رفتاری. محاسبه یک‌بار انجام می‌شود چون
+    // این صفحه دو بار (بالای صفحه + داخل Modal Submit) همین نمودار را نشان می‌دهد.
+    var wfCurrentStatus = Model.Status ?? "Draft";
+    var wfStageOrder = new[] { "Draft", "Submitted", "IDC Review", "Checked", "Approved", "Issued", "ClientReview" };
+    var wfStageLabels = new Dictionary<string, string>
+    {
+        ["Draft"] = "Draft", ["Submitted"] = "Check", ["IDC Review"] = "IDC", ["Checked"] = "Approval",
+        ["Approved"] = "Issue", ["Issued"] = "Issued", ["ClientReview"] = "Client Review"
+    };
+    var wfStageIcons = new Dictionary<string, string>
+    {
+        ["Draft"] = "bi-pencil-square", ["Submitted"] = "bi-clipboard-check", ["IDC Review"] = "bi-diagram-3",
+        ["Checked"] = "bi-patch-check", ["Approved"] = "bi-send-check", ["Issued"] = "bi-check2-circle", ["ClientReview"] = "bi-building"
+    };
+    var wfStageRoles = new Dictionary<string, string>
+    {
+        ["Draft"] = "Engineer", ["Submitted"] = "Eng. Supervisor / Manager", ["IDC Review"] = "دیسیپلین‌های ارجاع‌شده",
+        ["Checked"] = "Eng. Manager", ["Approved"] = "Document Controller", ["Issued"] = "—", ["ClientReview"] = "Document Controller"
+    };
+    var wfIsRejected = wfCurrentStatus == "Rejected" || wfCurrentStatus == "Revise & Resubmit";
+    var wfCurrentIndex = Array.IndexOf(wfStageOrder, wfCurrentStatus);
+    if (wfCurrentIndex < 0) wfCurrentIndex = wfIsRejected ? 0 : wfStageOrder.Length - 1;
+
+    var wfStageDiagramModel = new StageDiagramViewModel
+    {
+        Stages = wfStageOrder.Select((key, i) => new StageDiagramItem
+        {
+            Label = wfStageLabels[key],
+            IconCssClass = wfStageIcons[key],
+            RoleLabel = wfStageRoles[key],
+            State = wfIsRejected && i > wfCurrentIndex ? StageItemState.Rejected
+                : i < wfCurrentIndex ? StageItemState.Done
+                : i == wfCurrentIndex ? StageItemState.Current
+                : StageItemState.Pending
+        }).ToList()
+    };
 }
 
 
@@ -239,7 +278,7 @@
     @if (Model.Status != "Draft")
     {
         <hr class="my-2" />
-        <partial name="_WorkflowStagesDiagram" model="@Model.Status" />
+        <partial name="_PemsStageDiagram" model="wfStageDiagramModel" />
 
         @if (Model.Status == "IDC Review" && idcStatusForPage.Any())
         {
@@ -665,6 +704,38 @@
                 <p class="text-muted text-center py-4">No correspondence linked to this document yet.</p>
             }
         </div>
+
+        @* طبق «PEMS Phase 2A — EDMS Foundation» بخش ۲: قبلاً هیچ پیوند متقابلی با Transmittal
+           روی این صفحه نبود - Service/Entity موجود، فقط یک بخش خلاصه‌ی جدید *@
+        <div class="content-card mt-3">
+            <h6 class="mb-3"><i class="bi bi-truck"></i> Related Transmittals</h6>
+            @{
+                var relatedTransmittals = (List<PEMS.Application.DTOs.RelatedTransmittalDto>)(ViewBag.RelatedTransmittals ?? new List<PEMS.Application.DTOs.RelatedTransmittalDto>());
+            }
+            @if (relatedTransmittals.Any())
+            {
+                <table class="table table-enterprise">
+                    <thead><tr><th>Transmittal No</th><th>Rev. Sent</th><th>Purpose</th><th>Date</th><th>Status</th><th></th></tr></thead>
+                    <tbody>
+                        @foreach (var t in relatedTransmittals)
+                        {
+                            <tr>
+                                <td>@t.TransmittalNo</td>
+                                <td class="small text-muted">Rev @t.RevisionNoAtTransmittal</td>
+                                <td>@t.Purpose</td>
+                                <td class="small text-muted">@(t.SentDate?.ToString("yyyy-MM-dd") ?? t.TransmittalDate.ToString("yyyy-MM-dd"))</td>
+                                <td><span class="badge bg-info text-dark">@t.Status</span></td>
+                                <td><a asp-controller="Transmittal" asp-action="Details" asp-route-id="@t.TransmittalId" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="View transmittal" aria-label="View transmittal @t.TransmittalNo"><i class="bi bi-eye"></i></a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-muted text-center py-4">No transmittals include this document yet.</p>
+            }
+        </div>
     </div>
 
 </div>
@@ -684,7 +755,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <partial name="_WorkflowStagesDiagram" model="@Model.Status" />
+                    <partial name="_PemsStageDiagram" model="wfStageDiagramModel" />
 
                     <hr />
 
