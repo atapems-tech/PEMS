@@ -12,6 +12,17 @@
     var selectedFunctionalLocationIds = (List<int>)ViewBag.SelectedFunctionalLocationIds;
     var selectedTagSearch = (string?)ViewBag.SelectedTagSearch;
 
+    var plants = (List<string>)ViewBag.Plants;
+    var flAreas = (List<string>)ViewBag.Areas;
+    var units = (List<string>)ViewBag.Units;
+    var selectedPlants = (List<string>)ViewBag.SelectedPlants;
+    var selectedAreas = (List<string>)ViewBag.SelectedAreas;
+    var selectedUnits = (List<string>)ViewBag.SelectedUnits;
+    var selectedFlMode = (string)ViewBag.SelectedFunctionalLocationMode;
+    var selectedTagList = (string?)ViewBag.SelectedTagList;
+    var requestedTagCount = (int)ViewBag.RequestedTagCount;
+    var matchedTagCount = (int)ViewBag.MatchedTagCount;
+
     // طبق درخواست: دسته‌بندی دوسطحی - اول بر اساس واحد (Area/Unit)، بعد داخل هر واحد بر
     // اساس نوع تجهیز - چون در عمل RCM دقیقاً همین‌طور فکر می‌کنه («همه‌ی پمپ‌های واحد ۱۰۰»)
     var byArea = equipments
@@ -48,9 +59,9 @@
         <div class="col-md-3">
             <label class="form-label small mb-0">
                 Functional Location (چندانتخابی)
-                @if (equipmentWithFlCount == 0)
+                @if (equipmentWithFlCount < 50)
                 {
-                    <i class="bi bi-info-circle text-muted" title="هیچ تجهیزی هنوز به Functional Location متصل نشده - این فیلتر فعلاً نتیجه‌ای محدود نمی‌کند."></i>
+                    <i class="bi bi-info-circle text-muted" title="فقط تعداد کمی تجهیز هنوز به Functional Location متصل شده - این فیلتر فعلاً نتیجه‌ی محدودی برمی‌گرداند."></i>
                 }
             </label>
             <select name="functionalLocationIds" class="form-select form-select-sm" multiple size="4">
@@ -60,15 +71,70 @@
         <div class="col-md-3">
             <label class="form-label small mb-0">Tag Number (جستجوی متنی)</label>
             <input type="text" name="tagSearch" value="@selectedTagSearch" class="form-control form-control-sm" placeholder="مثلاً P-101" />
-            <button class="btn btn-sm btn-pems-solid w-100 mt-2"><i class="bi bi-funnel"></i> فیلتر تجهیزات</button>
         </div>
-        @if (equipmentWithFlCount == 0)
+
+        @* طبق «PEMS CMMS — Bulk Define Maintenance Strategy Scope & Location/Equipment
+           Resolution»: زنجیره‌ی Plant/Area/Unit/Functional Location/Equipment/Tag - بدون
+           تغییر در ساختار فرم موجود، فقط سه بُعد جدید + حالت Exact/Descendants برای FL. *@
+        <div class="col-md-3">
+            <label class="form-label small mb-0">
+                Plant (چندانتخابی)
+                @if (!plants.Any()) { <i class="bi bi-info-circle text-muted" title="در حال حاضر هیچ Functional Location ای مقدار Plant ندارد."></i> }
+            </label>
+            <select name="plants" class="form-select form-select-sm" multiple size="3">
+                @foreach (var p in plants) { <option value="@p" selected="@selectedPlants.Contains(p)">@p</option> }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small mb-0">Area (Functional Location، چندانتخابی)</label>
+            <select name="areas" class="form-select form-select-sm" multiple size="3">
+                @foreach (var a in flAreas) { <option value="@a" selected="@selectedAreas.Contains(a)">@a</option> }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small mb-0">
+                Unit (چندانتخابی)
+                @if (!units.Any()) { <i class="bi bi-info-circle text-muted" title="در حال حاضر هیچ Functional Location ای مقدار Unit ندارد."></i> }
+            </label>
+            <select name="units" class="form-select form-select-sm" multiple size="3">
+                @foreach (var u in units) { <option value="@u" selected="@selectedUnits.Contains(u)">@u</option> }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small mb-0">Functional Location Mode</label>
+            <div class="d-flex gap-3 mt-1">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="functionalLocationMode" value="Exact" id="flModeExact" checked="@(selectedFlMode == "Exact")" />
+                    <label class="form-check-label small" for="flModeExact" title="فقط خودِ Functional Location(های) انتخاب‌شده">Exact</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="functionalLocationMode" value="Descendants" id="flModeDescendants" checked="@(selectedFlMode == "Descendants")" />
+                    <label class="form-check-label small" for="flModeDescendants" title="Functional Location(های) انتخاب‌شده + همه‌ی زیرشاخه‌های واقعی آن‌ها">Descendants</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label small mb-0">
+                Tag List (چند Tag دقیق - با کاما یا خط جدید جدا کنید)
+                <i class="bi bi-info-circle text-muted" title="این‌ها همیشه به نتیجه اضافه می‌شوند، صرف‌نظر از فیلترهای بالا - برای وقتی که تگ‌های مشخصی را از قبل می‌دانید."></i>
+            </label>
+            <textarea name="tagList" class="form-control form-control-sm" rows="2" placeholder="P-1001, P-1002, P-1003">@selectedTagList</textarea>
+            @if (requestedTagCount > 0)
+            {
+                <div class="form-text">@matchedTagCount از @requestedTagCount Tag درخواست‌شده پیدا شد.</div>
+            }
+        </div>
+        <div class="col-md-6 d-flex align-items-end">
+            <button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-funnel"></i> فیلتر تجهیزات</button>
+        </div>
+
+        @if (equipmentWithFlCount < 50)
         {
             <div class="col-12">
                 <p class="text-muted small mb-0">
-                    <i class="bi bi-info-circle"></i> در حال حاضر هیچ تجهیزی به Functional Location متصل نشده
-                    (۰ از ۲۱٬۶۲۵) - فیلتر Functional Location آماده است اما فعلاً هیچ نتیجه‌ای برنمی‌گرداند.
-                    این یک محدودیت داده است، نه نقص این فرم.
+                    <i class="bi bi-info-circle"></i> در حال حاضر فقط @equipmentWithFlCount تجهیز به Functional Location متصل شده -
+                    فیلترهای Functional Location/Plant/Area/Unit آماده‌اند اما تا زمانی که تخصیص بیشتری از طریق
+                    «Equipment ↔ FL Assignment» انجام نشود، نتیجه‌ی محدودی برمی‌گردانند. این یک محدودیت داده است، نه نقص این فرم.
                 </p>
             </div>
         }
@@ -78,8 +144,8 @@
 @if (noFilterApplied)
 {
     <div class="alert alert-warning small">
-        طبق «PEMS Phase 7.6»: این فرم برای فعال‌سازی کنترل‌شده است، نه مرور کل ناوگان (۲۱٬۶۲۵
-        تجهیز) - ابتدا حداقل یک فیلتر (واحد یا نوع تجهیز) را انتخاب کنید تا کاندیدها نمایش داده شوند.
+        طبق «PEMS Phase 7.6»: این فرم برای فعال‌سازی کنترل‌شده است، نه مرور کل ناوگان تجهیزات
+        - ابتدا حداقل یک فیلتر (Discipline، نوع تجهیز، Functional Location/Plant/Area/Unit، یا Tag) را انتخاب کنید تا کاندیدها نمایش داده شوند.
     </div>
 }
 else if (matchingCount.HasValue && matchingCount.Value > maxResults)

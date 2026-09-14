@@ -3471,6 +3471,92 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("EquipmentDatasheets");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.EquipmentFunctionalLocationAssignmentBatch", b =>
+                {
+                    b.Property<int>("EquipmentFunctionalLocationAssignmentBatchId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EquipmentFunctionalLocationAssignmentBatchId"));
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ImportDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ImportedById")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EquipmentFunctionalLocationAssignmentBatchId");
+
+                    b.HasIndex("ImportedById");
+
+                    b.ToTable("EquipmentFunctionalLocationAssignmentBatches");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.EquipmentFunctionalLocationAssignmentRow", b =>
+                {
+                    b.Property<int>("EquipmentFunctionalLocationAssignmentRowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EquipmentFunctionalLocationAssignmentRowId"));
+
+                    b.Property<bool>("CommittedAssignment")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("EquipmentFunctionalLocationAssignmentBatchId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IncludeInCommit")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PayloadJson")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PreviousFunctionalLocationId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("ReplaceExistingAssignment")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ResolvedEquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ResolvedFunctionalLocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RowNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SourceRowNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ValidationMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ValidationStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EquipmentFunctionalLocationAssignmentRowId");
+
+                    b.HasIndex("EquipmentFunctionalLocationAssignmentBatchId");
+
+                    b.ToTable("EquipmentFunctionalLocationAssignmentRows");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.EquipmentImportBatch", b =>
                 {
                     b.Property<int>("EquipmentImportBatchId")
@@ -6521,6 +6607,89 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("WorkOrderId");
 
                     b.ToTable("MaintenanceHistories");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.MaintenanceHistoryImportBatch", b =>
+                {
+                    b.Property<int>("MaintenanceHistoryImportBatchId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaintenanceHistoryImportBatchId"));
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ImportDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ImportedById")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MaintenanceHistoryImportBatchId");
+
+                    b.HasIndex("ImportedById");
+
+                    b.ToTable("MaintenanceHistoryImportBatches");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.MaintenanceHistoryImportRow", b =>
+                {
+                    b.Property<int>("MaintenanceHistoryImportRowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaintenanceHistoryImportRowId"));
+
+                    b.Property<int?>("CommittedMaintenanceHistoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DuplicateOfMaintenanceHistoryId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IncludeInCommit")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaintenanceHistoryImportBatchId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PayloadJson")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ResolvedEquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ResolvedWorkOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RowNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SourceRowNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ValidationMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ValidationStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MaintenanceHistoryImportRowId");
+
+                    b.HasIndex("MaintenanceHistoryImportBatchId");
+
+                    b.ToTable("MaintenanceHistoryImportRows");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.MaintenancePlan", b =>
@@ -14823,6 +14992,27 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Equipment");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.EquipmentFunctionalLocationAssignmentBatch", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Employee", "ImportedBy")
+                        .WithMany()
+                        .HasForeignKey("ImportedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ImportedBy");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.EquipmentFunctionalLocationAssignmentRow", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.EquipmentFunctionalLocationAssignmentBatch", "Batch")
+                        .WithMany("Rows")
+                        .HasForeignKey("EquipmentFunctionalLocationAssignmentBatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Batch");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.EquipmentImportBatch", b =>
                 {
                     b.HasOne("PEMS.Domain.Entities.Employee", "ImportedBy")
@@ -15791,6 +15981,27 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Equipment");
 
                     b.Navigation("WorkOrder");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.MaintenanceHistoryImportBatch", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Employee", "ImportedBy")
+                        .WithMany()
+                        .HasForeignKey("ImportedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ImportedBy");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.MaintenanceHistoryImportRow", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.MaintenanceHistoryImportBatch", "Batch")
+                        .WithMany("Rows")
+                        .HasForeignKey("MaintenanceHistoryImportBatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Batch");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.MaintenancePlan", b =>
@@ -17744,6 +17955,11 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("ChildEquipmentClasses");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.EquipmentFunctionalLocationAssignmentBatch", b =>
+                {
+                    b.Navigation("Rows");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.EquipmentImportBatch", b =>
                 {
                     b.Navigation("Rows");
@@ -17831,6 +18047,11 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("ApplicableStandardReferences");
 
                     b.Navigation("ApplicableStrategyTypes");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.MaintenanceHistoryImportBatch", b =>
+                {
+                    b.Navigation("Rows");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.ManufacturerDataBook", b =>

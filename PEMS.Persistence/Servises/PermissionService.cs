@@ -22,6 +22,7 @@ public class PermissionService : IPermissionService
         "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan",
         "ProcurementPackage",
         "MDRImport", "EquipmentImport", "MrsImport", "FunctionalLocationImport",
+        "EquipmentFunctionalLocationAssignment", "MaintenanceHistoryImport",
         "AIExtraction", "TableExtraction", "Relationship", "OCRProcessing",
         "Team", "Crew", "InventoryMasterData", "MaintenanceMasterData",
         "Setup"
@@ -452,6 +453,30 @@ public class PermissionService : IPermissionService
             New(SystemRoles.MaintenanceEngineer, "EquipmentImport", create: true, del: true, approve: true),
             New(SystemRoles.EngineeringManager, "EquipmentImport", create: true, del: true, approve: true),
             New(SystemRoles.Viewer, "EquipmentImport")
+        });
+
+        // طبق «PEMS CMMS — Equipment Functional Location Assignment & Import» بند «Authorization»:
+        // همون نقش‌هایی که ایمپورت تجهیزات (بالا) و ایمپورت Functional Location (پایین) را
+        // مجاز می‌کنند - نه یک سیاست مجوز جدید. ماژول جدا (نه استفاده‌ی مجدد از "EquipmentImport")
+        // چون این پایپ‌لاین مفهوماً مستقل است (تخصیص رابطه‌ی موجود، نه ساخت رکورد Equipment جدید) -
+        // دقیقاً همون قاعده‌ای که MDRImport/EquipmentImport/MrsImport/FunctionalLocationImport
+        // هرکدام ماژول جدای خودشان را دارند، نه یک ماژول Import مشترک.
+        await SeedMissingRolesAsync("EquipmentFunctionalLocationAssignment", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "EquipmentFunctionalLocationAssignment", create: true, del: true, approve: true),
+            New(SystemRoles.EngineeringManager, "EquipmentFunctionalLocationAssignment", create: true, del: true, approve: true),
+            New(SystemRoles.Viewer, "EquipmentFunctionalLocationAssignment")
+        });
+
+        // طبق «PEMS CMMS — Data Migration & Controlled Data Onboarding»: همون نقش‌هایی که
+        // بقیه‌ی Importهای CMMS (بالا) را مجاز می‌کنند - نه یک سیاست مجوز جدید. ماژول جدا (نه
+        // استفاده‌ی مجدد از "EquipmentImport") چون این پایپ‌لاین مفهوماً مستقل است (رکورد
+        // MaintenanceHistory، نه Equipment).
+        await SeedMissingRolesAsync("MaintenanceHistoryImport", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "MaintenanceHistoryImport", create: true, del: true, approve: true),
+            New(SystemRoles.EngineeringManager, "MaintenanceHistoryImport", create: true, del: true, approve: true),
+            New(SystemRoles.Viewer, "MaintenanceHistoryImport")
         });
 
         await SeedMissingRolesAsync("MrsImport", new List<RolePermission>

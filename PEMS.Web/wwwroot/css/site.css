@@ -429,7 +429,8 @@ html[dir="rtl"] .pems-sidebar .collapse .nav-link {
     border-radius: 12px;
     padding: 24px;
     box-shadow: 0 1px 4px rgba(20,32,51,0.06);
-    border: 1px solid var(--p
+    border: 1px solid var(--pems-surface-border);
+}
 
 /* =========================================
    Correspondence (Letter) status badges - طبق «PEMS Letter Details — Controlled Lifecycle»:
@@ -469,4 +470,113 @@ html[dir="rtl"] .pems-sidebar .collapse .nav-link {
 .pems-compact-rows td {
     padding-top: 6px;
     padding-bottom: 6px;
+}
+
+/* =========================================
+   PEMS — Azure-Inspired Enterprise UI Consolidation
+   Shared, opt-in utility classes for resource-level command bars, filter bars, and status
+   badges - not a new component framework, just consistent classes any existing view can adopt
+   by adding a class to markup it already has. All layout uses flexbox/gap so RTL flips
+   automatically (طبق قرارداد موجود admin.rtl.css - فقط رگه‌های واقعاً جهت‌دار override می‌شوند،
+   نه Flexbox که خودش با dir="rtl" برمی‌گردد).
+   ========================================= */
+
+/* Command Bar - نوار عملیات سطح-منبع، درست زیر عنوان/هدر صفحه. جایگزین دکمه‌های پراکنده در
+   گوشه‌های مختلف صفحه - هر صفحه‌ی موجود فقط با اضافه‌کردن این کلاس به Wrapper دکمه‌های خودش
+   می‌تواند از آن استفاده کند، بدون هیچ تغییر در منطق دکمه‌ها/فرم‌ها/مجوزها. */
+.pems-command-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 0;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--pems-surface-border);
+}
+
+.pems-command-bar .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pems-command-bar .pems-command-bar-spacer {
+    flex: 1 1 auto;
+}
+
+/* Filter Bar - ردیف فشرده‌ی فیلتر با برچسب/تعداد فیلتر فعال. فقط استایل - منطق فیلتر همچنان
+   سمت سرور و در همون Controller/Query موجود باقی می‌ماند (بدون تکرار منطق Filter سمت کلاینت). */
+.pems-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: var(--pems-table-header-bg);
+    border: 1px solid var(--pems-surface-border);
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.pems-filter-bar .pems-filter-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--pems-text-muted);
+    text-transform: uppercase;
+    letter-spacing: .03em;
+}
+
+.pems-filter-active-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--pems-accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.pems-filter-clear-all {
+    font-size: 12.5px;
+    color: var(--pems-text-muted);
+    text-decoration: none;
+}
+
+.pems-filter-clear-all:hover {
+    color: var(--pems-accent-dark);
+    text-decoration: underline;
+}
+
+/* Status Badges - طبق قرارداد badge-status-* موجود در admin.css (EDMS) - همین‌جا برای واژگان
+   عمومی CMMS (بند ۱۰ سند وظیفه) بسط داده شد، نه یک سیستم جدا. حالت‌هایی که از قبل با
+   bg-success/bg-secondary/bg-primary/bg-danger/bg-warning استاندارد Bootstrap به‌درستی نگاشت
+   می‌شدند (Active/Inactive/Completed/Approved/Rejected/Draft/Pending/Submitted/Warning/Error)
+   عمداً دوباره تعریف نشدند - این‌جا فقط حالت‌های صنعتی/CMMS که Bootstrap معادل مستقیم ندارد. */
+.badge-status-Released {
+    background: #0d9488;
+    color: #fff;
+}
+
+.badge-status-InProgress {
+    background: #2563eb;
+    color: #fff;
+}
+
+.badge-status-Cancelled {
+    background: #6b7280;
+    color: #fff;
+}
+
+.badge-status-Overdue {
+    background: #dc2626;
+    color: #fff;
+}
+
+.badge-status-DueSoon {
+    background: #f59e0b;
+    color: #1b2733;
 }

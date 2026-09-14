@@ -161,6 +161,45 @@ public class FunctionalLocationService : IFunctionalLocationService
         return (true, null);
     }
 
+    // طبق «PEMS CMMS — Bulk Define Maintenance Strategy»: جدول FunctionalLocation کوچک است
+    // (طبق ممیزی مستقیم دیتابیس: ۳۲ ردیف واقعی) - یک بارگذاری کامل + پیمایش در حافظه، دقیقاً
+    // همون الگوی BuildBreadcrumb بالا که از قبل کل جدول را برای مسیر رو-به-بالا می‌خواند؛
+    // این‌جا همون داده، فقط رو-به-پایین (Children) پیمایش می‌شود.
+    public async Task<List<int>> GetDescendantIdsAsync(IEnumerable<int> functionalLocationIds, bool includeSelf)
+    {
+        var ids = functionalLocationIds?.Distinct().ToList() ?? new List<int>();
+        if (ids.Count == 0) return new List<int>();
+
+        var all = await _context.FunctionalLocations
+            .Select(x => new { x.FunctionalLocationId, x.ParentId })
+            .ToListAsync();
+
+        var childrenByParent = all
+            .Where(x => x.ParentId.HasValue)
+            .GroupBy(x => x.ParentId!.Value)
+            .ToDictionary(g => g.Key, g => g.Select(x => x.FunctionalLocationId).ToList());
+
+        var result = new HashSet<int>();
+        var queue = new Queue<int>(ids);
+        var visited = new HashSet<int>();
+
+        while (queue.Count > 0)
+        {
+            var current = queue.Dequeue();
+            if (!visited.Add(current)) continue; // جلوگیری از حلقه‌ی بی‌نهایت در صورت داده‌ی نامعتبر
+
+            if (includeSelf || !ids.Contains(current))
+                result.Add(current);
+
+            if (childrenByParent.TryGetValue(current, out var children))
+                foreach (var child in children)
+                    if (!visited.Contains(child))
+                        queue.Enqueue(child);
+        }
+
+        return result.ToList();
+    }
+
     private async Task<bool> WouldCreateCycleAsync(int id, int proposedParentId)
     {
         var all = await _context.FunctionalLocations.Select(x => new { x.FunctionalLocationId, x.ParentId }).ToListAsync();

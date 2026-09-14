@@ -28,4 +28,12 @@ public interface IFunctionalLocationService
     Task<(bool Success, string? Error)> UpdateAsync(
         int id, string code, string name, int? parentId, string? plant, string? area, string? unit,
         string? description, string? currentUserName);
+
+    /// <summary>
+    /// طبق «PEMS CMMS — Bulk Define Maintenance Strategy»: رفع تفاوت Exact/Descendants برای
+    /// یک یا چند Functional Location - با پیمایش درخت Parent/Child واقعی (نه فرض بر مبنای
+    /// پیشوند رشته‌ای Code). وقتی includeSelf=false، فقط فرزندان واقعی برمی‌گردند (نه خودِ
+    /// شناسه‌های ورودی) - برای مواردی که فراخوان‌کننده خودش شناسه‌های Exact را جدا مدیریت می‌کند.
+    /// </summary>
+    Task<List<int>> GetDescendantIdsAsync(IEnumerable<int> functionalLocationIds, bool includeSelf);
 }

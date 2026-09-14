@@ -115,6 +115,16 @@
                             <option value="@fl.FunctionalLocationId" selected="@(fl.FunctionalLocationId == eq.FunctionalLocationId)">@fl.PathBreadcrumb</option>
                         }
                     </select>
+                    @* طبق «PEMS CMMS — Equipment Functional Location Assignment & Import» بند «Existing
+                       Assignment Protection»: تخصیص فعلی باید صریحاً قابل‌دیدن باشد، نه فقط ضمنی از
+                       طریق گزینه‌ی از‌قبل‌انتخاب‌شده‌ی Select - عیناً همون الگوی «Currently: ...» که
+                       همین Modal برای Parent Equipment پایین‌تر دارد. *@
+                    @if (eq.FunctionalLocationId.HasValue)
+                    {
+                        var currentFl = ((List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations)
+                            .FirstOrDefault(x => x.FunctionalLocationId == eq.FunctionalLocationId);
+                        <div class="form-text">Currently: @(currentFl?.PathBreadcrumb ?? NA(eq.FunctionalLocationBreadcrumb))</div>
+                    }
                     <div class="form-text">Real link, distinct from the raw "@NA(eq.Area)" import value. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">Manage list</a></div>
                 </div>
                 <div class="mb-2">

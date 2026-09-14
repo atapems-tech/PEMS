@@ -58,19 +58,31 @@
             };
         }).ToList()
     };
+
+    // طبق «PEMS Phase 2C-4B»: عیناً همان اطلاعات/همان منطق نگاشت وضعیت→رنگ که قبلاً مستقیم در
+    // Markup هدر بود - فقط جابه‌جا شده به یک مدل، بدون هیچ تغییر رفتاری. sbTop بالا دست‌نخورده
+    // می‌ماند چون تب Overview هم مستقل از این‌جا همان مقدار را دوباره استفاده می‌کند (خط ۱۳۰).
+    var vdrHeaderModel = new ResourceHeaderViewModel
+    {
+        Identifier = Model.DocumentNumber,
+        SecondaryText = $"Rev {Model.LatestRevisionNo ?? 0}",
+        MetaLine = $"{Model.VendorName} · {Model.ProjectName}",
+        StatusText = Model.WorkflowStatus,
+        StatusTone = Model.WorkflowStatus switch
+        {
+            "Closed" => ResourceHeaderTone.Success,
+            "PendingResubmission" => ResourceHeaderTone.Warning,
+            "UnderReview" => ResourceHeaderTone.Info,
+            _ => ResourceHeaderTone.Neutral
+        },
+        ConditionalBadges = Model.IsOverdue
+            ? new List<ResourceHeaderBadge> { new() { Text = "Overdue", Tone = ResourceHeaderTone.Danger } }
+            : new List<ResourceHeaderBadge>()
+    };
 }
 
 <div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <div>
-            <h5 class="mb-0">@Model.DocumentNumber <span class="text-muted small">Rev @(Model.LatestRevisionNo ?? 0)</span></h5>
-            <span class="text-muted small">@Model.VendorName &middot; @Model.ProjectName</span>
-        </div>
-        <div class="d-flex align-items-center gap-2">
-            <span class="badge @sbTop fs-6">@Model.WorkflowStatus</span>
-            @if (Model.IsOverdue) { <span class="badge bg-danger fs-6">Overdue</span> }
-        </div>
-    </div>
+    <partial name="_PemsResourceHeader" model="vdrHeaderModel" />
 
     <hr class="my-2" />
     <partial name="_PemsStageDiagram" model="wfStageDiagramModel" />

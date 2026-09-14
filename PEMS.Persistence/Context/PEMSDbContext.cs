@@ -272,6 +272,17 @@ public class PEMSDbContext
     public DbSet<FunctionalLocationImportBatch> FunctionalLocationImportBatches { get; set; }
     public DbSet<FunctionalLocationImportRow> FunctionalLocationImportRows { get; set; }
 
+    // طبق «PEMS CMMS — Equipment Functional Location Assignment & Import»: همون الگوی
+    // Staging/Batch بالا - فقط برای پیشنهاد/تایید تخصیص Equipment.FunctionalLocationId موجود،
+    // نه ساخت رکورد جدید.
+    public DbSet<EquipmentFunctionalLocationAssignmentBatch> EquipmentFunctionalLocationAssignmentBatches { get; set; }
+    public DbSet<EquipmentFunctionalLocationAssignmentRow> EquipmentFunctionalLocationAssignmentRows { get; set; }
+
+    // طبق «PEMS CMMS — Data Migration & Controlled Data Onboarding»: همون الگوی Staging/Batch
+    // بالا - برای رکورد تاریخچه‌ی نگهداری/تعمیر (MaintenanceHistory، Append-only).
+    public DbSet<MaintenanceHistoryImportBatch> MaintenanceHistoryImportBatches { get; set; }
+    public DbSet<MaintenanceHistoryImportRow> MaintenanceHistoryImportRows { get; set; }
+
     // طبق «PEMS — Enterprise File Storage Management»
     public DbSet<StorageProvider> StorageProviders { get; set; }
     public DbSet<StorageRoute> StorageRoutes { get; set; }
@@ -773,6 +784,34 @@ public class PEMSDbContext
             .HasOne(x => x.Batch)
             .WithMany(x => x.Rows)
             .HasForeignKey(x => x.EquipmentImportBatchId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // طبق «PEMS CMMS — Equipment Functional Location Assignment & Import»: همون الگوی
+        // Batch/Row بالا - فقط Staging پیشنهاد تخصیص، بدون ساخت Equipment/FunctionalLocation جدید.
+        modelBuilder.Entity<EquipmentFunctionalLocationAssignmentBatch>()
+            .HasOne(x => x.ImportedBy)
+            .WithMany()
+            .HasForeignKey(x => x.ImportedById)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<EquipmentFunctionalLocationAssignmentRow>()
+            .HasOne(x => x.Batch)
+            .WithMany(x => x.Rows)
+            .HasForeignKey(x => x.EquipmentFunctionalLocationAssignmentBatchId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // طبق «PEMS CMMS — Data Migration & Controlled Data Onboarding»: همون الگوی Batch/Row
+        // بالا - Staging برای رکورد پیشنهادی MaintenanceHistory (بدون هیچ رکورد واقعی تا Commit).
+        modelBuilder.Entity<MaintenanceHistoryImportBatch>()
+            .HasOne(x => x.ImportedBy)
+            .WithMany()
+            .HasForeignKey(x => x.ImportedById)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<MaintenanceHistoryImportRow>()
+            .HasOne(x => x.Batch)
+            .WithMany(x => x.Rows)
+            .HasForeignKey(x => x.MaintenanceHistoryImportBatchId)
             .OnDelete(DeleteBehavior.Cascade);
 
 

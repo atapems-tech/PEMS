@@ -418,6 +418,8 @@ builder.Services.AddScoped<IDocumentCommentService, DocumentCommentService>();
 
 builder.Services.AddScoped<IEquipmentImportService, EquipmentImportService>();
 builder.Services.AddScoped<IFunctionalLocationImportService, FunctionalLocationImportService>();
+builder.Services.AddScoped<IEquipmentFunctionalLocationAssignmentService, EquipmentFunctionalLocationAssignmentService>();
+builder.Services.AddScoped<IMaintenanceHistoryImportService, MaintenanceHistoryImportService>();
 
 builder.Services.AddScoped<IEquipmentPdfScanService, EquipmentPdfScanService>();
 

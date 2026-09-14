@@ -1,0 +1,170 @@
+@model PEMS.Application.DTOs.EquipmentFunctionalLocationAssignmentBatchDto
+@{
+    string StatusBadge(string status) => status switch
+    {
+        "Exact" => "bg-success",
+        "NoChange" => "bg-secondary",
+        "AlreadyAssigned" => "bg-warning text-dark",
+        "UnresolvedEquipment" or "UnresolvedFunctionalLocation" => "bg-danger",
+        "ConflictEquipment" or "ConflictFunctionalLocation" => "bg-danger",
+        "ValidationError" => "bg-danger",
+        _ => "bg-light text-dark"
+    };
+
+    string StatusLabel(string status) => status switch
+    {
+        "Exact" => "Exact match",
+        "NoChange" => "Already correct",
+        "AlreadyAssigned" => "Already assigned (different)",
+        "UnresolvedEquipment" => "Equipment not found",
+        "UnresolvedFunctionalLocation" => "Functional Location not found",
+        "ConflictEquipment" => "Duplicate Equipment match",
+        "ConflictFunctionalLocation" => "Duplicate Functional Location match",
+        "ValidationError" => "Validation error",
+        _ => status
+    };
+
+    var statusFilter = (string?)ViewBag.StatusFilter;
+    var filterOptions = new[] { "Exact", "AlreadyAssigned", "NoChange", "UnresolvedEquipment", "UnresolvedFunctionalLocation", "ConflictEquipment", "ConflictFunctionalLocation", "ValidationError" };
+}
+
+<div class="content-card mb-3">
+    <div class="row g-3">
+        <div class="col-md-3"><strong>File:</strong> @Model.FileName</div>
+        <div class="col-md-2"><strong>Total Rows:</strong> @Model.TotalRows</div>
+        <div class="col-md-2"><strong>Exact / No Change:</strong> @Model.ExactCount / @Model.NoChangeCount</div>
+        <div class="col-md-2"><strong>Already Assigned:</strong> @Model.AlreadyAssignedCount</div>
+        <div class="col-md-1"><strong>Unresolved:</strong> @(Model.UnresolvedCount)</div>
+        <div class="col-md-2"><strong>Status:</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
+    </div>
+
+    @if (Model.Status == "Staging")
+    {
+        <div class="pems-command-bar">
+            <form asp-action="Commit" method="post">
+                <input type="hidden" name="batchId" value="@Model.EquipmentFunctionalLocationAssignmentBatchId" />
+                <button type="submit" class="btn btn-pems-solid" onclick="return confirm('Commit the approved rows? Equipment Functional Location assignments will be updated.')">
+                    <i class="bi bi-check-circle"></i> Commit Approved Rows
+                </button>
+            </form>
+            <form asp-action="Discard" method="post">
+                <input type="hidden" name="batchId" value="@Model.EquipmentFunctionalLocationAssignmentBatchId" />
+                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Discard this entire assignment batch?')">
+                    <i class="bi bi-trash"></i> Discard Batch
+                </button>
+            </form>
+        </div>
+    }
+</div>
+
+<div class="pems-filter-bar mb-3">
+    <span class="pems-filter-label">Filter</span>
+    @if (!string.IsNullOrEmpty(statusFilter))
+    {
+        <span class="pems-filter-active-count">1</span>
+    }
+    <a asp-action="Review" asp-route-batchId="@Model.EquipmentFunctionalLocationAssignmentBatchId"
+       class="btn btn-sm @(statusFilter == null ? "btn-pems-solid" : "btn-outline-secondary")">All</a>
+    @foreach (var s in filterOptions)
+    {
+        <a asp-action="Review" asp-route-batchId="@Model.EquipmentFunctionalLocationAssignmentBatchId" asp-route-status="@s"
+           class="btn btn-sm @(statusFilter == s ? "btn-pems-solid" : "btn-outline-secondary")">@StatusLabel(s)</a>
+    }
+    @if (!string.IsNullOrEmpty(statusFilter))
+    {
+        <span class="pems-command-bar-spacer"></span>
+        <a asp-action="Review" asp-route-batchId="@Model.EquipmentFunctionalLocationAssignmentBatchId" class="pems-filter-clear-all">Clear All</a>
+    }
+</div>
+
+<div class="content-card">
+    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise">
+            <thead>
+                <tr>
+                    <th>Approve</th><th>Src Row</th><th>Equipment Tag</th><th>Equipment</th>
+                    <th>Current FL</th><th>Proposed FL</th><th>Match Result</th><th>Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model.Rows.Items)
+                {
+                    <tr>
+                        <td>
+                            @if (Model.Status == "Staging")
+                            {
+                                var canToggle = r.Status is "Exact" or "AlreadyAssigned";
+                                if (canToggle)
+                                {
+                                    <form asp-action="ToggleRow" method="post">
+                                        <input type="hidden" name="rowId" value="@r.EquipmentFunctionalLocationAssignmentRowId" />
+                                        <input type="hidden" name="batchId" value="@Model.EquipmentFunctionalLocationAssignmentBatchId" />
+                                        <input type="hidden" name="page" value="@Model.Rows.Page" />
+                                        <input type="hidden" name="status" value="@statusFilter" />
+                                        <input type="hidden" name="include" value="@(!r.IncludeInCommit)" />
+                                        <button type="submit" class="btn btn-sm @(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" style="width:36px;"
+                                                title="@(r.IncludeInCommit ? "Approved - click to exclude" : "Excluded - click to approve")">
+                                            <i class="bi @(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")"></i>
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">N/A</span>
+                                }
+
+                                @if (r.Status == "AlreadyAssigned")
+                                {
+                                    <form asp-action="ReplaceExisting" method="post" class="mt-1">
+                                        <input type="hidden" name="rowId" value="@r.EquipmentFunctionalLocationAssignmentRowId" />
+                                        <input type="hidden" name="batchId" value="@Model.EquipmentFunctionalLocationAssignmentBatchId" />
+                                        <input type="hidden" name="page" value="@Model.Rows.Page" />
+                                        <input type="hidden" name="status" value="@statusFilter" />
+                                        <input type="hidden" name="replace" value="@(!r.ReplaceExistingAssignment)" />
+                                        <button type="submit" class="btn btn-sm @(r.ReplaceExistingAssignment ? "btn-warning" : "btn-outline-warning")"
+                                                onclick="return confirm('Replace the existing Functional Location assignment for this equipment?')">
+                                            @(r.ReplaceExistingAssignment ? "Replace: Yes" : "Replace existing?")
+                                        </button>
+                                    </form>
+                                }
+                            }
+                            else
+                            {
+                                @(r.CommittedAssignment ? "Assigned" : (r.IncludeInCommit ? "Approved" : "No"))
+                            }
+                        </td>
+                        <td>@r.SourceRowNumber</td>
+                        <td><strong dir="ltr">@r.EquipmentTag</strong></td>
+                        <td class="small">@(r.EquipmentDescription ?? "-")</td>
+                        <td class="small" dir="ltr">@(r.CurrentFunctionalLocationBreadcrumb ?? "-")</td>
+                        <td class="small" dir="ltr">@(r.ProposedFunctionalLocationBreadcrumb ?? r.FunctionalLocationCode)</td>
+                        <td><span class="badge @StatusBadge(r.Status)">@StatusLabel(r.Status)</span></td>
+                        <td class="small">
+                            @if (r.ValidationMessage != null)
+                            {
+                                <span class="text-muted" style="white-space:normal;">@r.ValidationMessage</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (!Model.Rows.Items.Any()) { <p class="text-muted text-center py-4">No rows match this filter.</p> }
+
+    @{
+        var qsParts = new List<string>();
+        if (!string.IsNullOrEmpty(statusFilter)) qsParts.Add($"status={Uri.EscapeDataString(statusFilter)}");
+        qsParts.Add($"batchId={Model.EquipmentFunctionalLocationAssignmentBatchId}");
+    }
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Rows.Page,
+        TotalPages = Model.Rows.TotalPages,
+        TotalCount = Model.Rows.TotalCount,
+        PageSize = Model.Rows.PageSize,
+        GridKey = "EquipmentFunctionalLocationAssignment",
+        BaseUrl = Url.Action("Review") ?? "",
+        ExistingQueryString = string.Join("&", qsParts)
+    })
+</div>

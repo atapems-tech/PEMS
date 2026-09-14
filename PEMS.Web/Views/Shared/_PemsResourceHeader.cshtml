@@ -1,0 +1,42 @@
+@* ==============================================================================
+   طبق «PEMS Phase 2C-4B — Safe VDR Resource Header Pilot»: این Partial کاملاً Stateless و
+   بدون منطق کسب‌وکار/گردش‌کار/مجوز است - فقط یک مدل از‌پیش‌محاسبه‌شده (شناسه/متن ثانویه/خط
+   متادیتا/وضعیت/Badgeهای شرطی) را رندر می‌کند. تصمیم این‌که StatusTone چه باشد، همچنان کاملاً
+   در همان View مصرف‌کننده (بر اساس فیلد وضعیت دامنه‌محور خودش) محاسبه می‌شود - دقیقاً همان
+   مرز مسئولیتی که _PemsStageDiagram.cshtml (فاز ۲C-3) از قبل برقرار کرده.
+
+   طبق ممیزی فاز ۲C-4A/طراحی Pilot: این پایلوت فقط روی VDR/Details.cshtml پیاده شده - هیچ
+   منبع دیگری (Equipment/WorkOrder/Permit/...) به این Partial مهاجرت نکرده.
+   ============================================================================== *@
+@model PEMS.Web.Models.ResourceHeaderViewModel
+
+@{
+    string ToneClass(PEMS.Web.Models.ResourceHeaderTone tone) => tone switch
+    {
+        PEMS.Web.Models.ResourceHeaderTone.Success => "bg-success",
+        PEMS.Web.Models.ResourceHeaderTone.Warning => "bg-warning text-dark",
+        PEMS.Web.Models.ResourceHeaderTone.Info => "bg-info text-dark",
+        PEMS.Web.Models.ResourceHeaderTone.Danger => "bg-danger",
+        _ => "bg-secondary"
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+        <h5 class="mb-0">
+            <span dir="ltr">@Model.Identifier</span>
+            @if (!string.IsNullOrEmpty(Model.SecondaryText))
+            {
+                <span class="text-muted small">@Model.SecondaryText</span>
+            }
+        </h5>
+        <span class="text-muted small">@Model.MetaLine</span>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+        <span class="badge @ToneClass(Model.StatusTone) fs-6">@Model.StatusText</span>
+        @foreach (var b in Model.ConditionalBadges)
+        {
+            <span class="badge @ToneClass(b.Tone) fs-6">@b.Text</span>
+        }
+    </div>
+</div>

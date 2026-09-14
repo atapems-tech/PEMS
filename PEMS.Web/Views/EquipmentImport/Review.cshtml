@@ -18,7 +18,7 @@
 
     @if (Model.Status == "Staging")
     {
-        <div class="d-flex gap-2 mt-3">
+        <div class="pems-command-bar">
             <form asp-action="Commit" method="post">
                 <input type="hidden" name="batchId" value="@Model.EquipmentImportBatchId" />
                 <button type="submit" class="btn btn-pems-solid" onclick="return confirm('Commit the selected rows into the live Equipment register?')">

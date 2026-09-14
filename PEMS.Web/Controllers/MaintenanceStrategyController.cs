@@ -107,7 +107,9 @@ public class MaintenanceStrategyController : Controller
     // ==============================================================================
     [HttpGet]
     public async Task<IActionResult> BulkCreate(List<int>? disciplineIds, List<string>? equipmentTypes,
-        List<int>? functionalLocationIds, string? tagSearch)
+        List<int>? functionalLocationIds, string? tagSearch,
+        List<string>? plants = null, List<string>? areas = null, List<string>? units = null,
+        string? functionalLocationMode = null, string? tagList = null)
     {
         // طبق بند ۴۳/۲۸: فعال‌سازی هم‌زمان چند تجهیز، بالاترین ریسک این کنترلر است - فقط
         // Supervisor/Manager (Approve)، نه MaintenanceEngineer.
@@ -120,6 +122,59 @@ public class MaintenanceStrategyController : Controller
         disciplineIds ??= new List<int>();
         equipmentTypes ??= new List<string>();
         functionalLocationIds ??= new List<int>();
+
+        // ==============================================================================
+        // طبق «PEMS CMMS — Bulk Define Maintenance Strategy Scope & Location/Equipment
+        // Resolution»: زنجیره‌ی Plant/Area/Unit/Functional Location/Equipment/Tag - بدون
+        // موتور جدید، فقط بسط همون IQueryable.Where زنجیره‌ای موجود بالا (هر بُعد جدید یک
+        // Where دیگر است، دقیقاً همون الگوی AND-بین-ابعاد/OR-درون-هر-بُعد که از قبل برای
+        // Discipline/EquipmentType/FunctionalLocation/Tag برقرار بود).
+        //
+        // Plant/Area/Unit روی FunctionalLocation.Plant/Area/Unit هستند (رشته‌ی تخت، نه
+        // موجودیت جدا - طبق بازرسی مستقیم Schema) - نه Equipment.Area (که یک فیلد متنی خامِ
+        // Import جداست، طبق کامنت خودِ Equipment.cs). چون این‌ها فیلد تخت‌اند نه گره‌ی درخت،
+        // برای آن‌ها مفهوم Exact/Descendants معنا ندارد - فقط تطبیق دقیق مقدار.
+        //
+        // Functional Location Exact/Descendants: طبق FunctionalLocationService.GetDescendantIdsAsync
+        // (پیمایش واقعی درخت Parent/Child) - نه هیچ فرض پیشوند رشته‌ای روی Code.
+        // ==============================================================================
+        plants ??= new List<string>();
+        areas ??= new List<string>();
+        units ??= new List<string>();
+        var flMode = string.Equals(functionalLocationMode, "Descendants", StringComparison.OrdinalIgnoreCase) ? "Descendants" : "Exact";
+
+        var requestedTags = (tagList ?? "")
+            .Split(new[] { ',', '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries)
+            .Select(x => x.Trim())
+            .Where(x => x.Length > 0)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        List<int> effectiveFunctionalLocationIds;
+        if (functionalLocationIds.Count == 0)
+        {
+            effectiveFunctionalLocationIds = new List<int>();
+        }
+        else if (flMode == "Descendants")
+        {
+            effectiveFunctionalLocationIds = await _functionalLocationService.GetDescendantIdsAsync(functionalLocationIds, includeSelf: true);
+        }
+        else
+        {
+            effectiveFunctionalLocationIds = functionalLocationIds;
+        }
+
+        var matchedTagCount = 0;
+        if (requestedTags.Count > 0)
+        {
+            matchedTagCount = await _context.Equipments
+                .Where(x => x.IsActive)
+                .Select(x => x.TagNumber)
+                .Where(t => requestedTags.Contains(t))
+                .CountAsync();
+        }
+        ViewBag.RequestedTagCount = requestedTags.Count;
+        ViewBag.MatchedTagCount = matchedTagCount;
 
         // ==============================================================================
         // طبق «PEMS Phase 7.6» بند ۲۴: ممیزی فاز ۷.۵ این ریسک را شناسایی کرد - این فرم برای
@@ -140,32 +195,74 @@ public class MaintenanceStrategyController : Controller
         // ==============================================================================
         const int maxResults = 200;
         List<PEMS.Domain.Entities.Equipment> equipmentList;
-        var hasFilter = disciplineIds.Count > 0 || equipmentTypes.Count > 0 ||
-                         functionalLocationIds.Count > 0 || !string.IsNullOrWhiteSpace(tagSearch);
+
+        // طبق تصمیم صریح این فاز (چون مخزن قاعده‌ای برای این ترکیب تعریف نکرده بود):
+        // Discipline/EquipmentType/FunctionalLocation/Plant/Area/Unit/tagSearch همگی «فیلتر
+        // محدودکننده» هستند و با AND ترکیب می‌شوند (دقیقاً همون قرارداد موجود که Phase 7.6
+        // برقرار کرده بود) - اما Tag List (تطبیق دقیق چندتایی) یک «انتخابگر صریح دارایی» است،
+        // نه یک فیلتر محدودکننده؛ با UNION به نتیجه اضافه می‌شود تا وقتی کاربر Tagهای مشخصی
+        // را می‌چسباند، آن‌ها به‌خاطر فیلترهای دیگر (که شاید اصلاً انتخاب نکرده) بی‌صدا حذف
+        // نشوند - این دقیقاً همون قاعده‌ی «حداقل قانون قطعی لازم» است که سند وظیفه خواسته بود.
+        var hasNarrowingFilter = disciplineIds.Count > 0 || equipmentTypes.Count > 0 ||
+                                  functionalLocationIds.Count > 0 || plants.Count > 0 || areas.Count > 0 || units.Count > 0 ||
+                                  !string.IsNullOrWhiteSpace(tagSearch);
+        var hasFilter = hasNarrowingFilter || requestedTags.Count > 0;
 
         if (!hasFilter)
         {
             equipmentList = new List<PEMS.Domain.Entities.Equipment>();
             ViewBag.NoFilterApplied = true;
+            ViewBag.MatchingCount = 0;
         }
         else
         {
-            // طبق ممیزی: Include(Discipline) این‌جا هرگز واقعاً استفاده نمی‌شد (View فقط از
-            // ViewBag.Disciplines جدا برای Dropdown فیلتر استفاده می‌کند، نه از این ردیف‌ها) -
-            // یک Include بلااستفاده حذف شد.
-            var query = _context.Equipments
-                .Where(x => x.IsActive)
-                .AsQueryable();
+            var resolvedIds = new HashSet<int>();
+            var totalMatchingCount = 0;
 
-            if (disciplineIds.Count > 0) query = query.Where(x => disciplineIds.Contains(x.DisciplineId));
-            if (equipmentTypes.Count > 0) query = query.Where(x => equipmentTypes.Contains(x.EquipmentType));
-            if (functionalLocationIds.Count > 0)
-                query = query.Where(x => x.FunctionalLocationId.HasValue && functionalLocationIds.Contains(x.FunctionalLocationId.Value));
-            if (!string.IsNullOrWhiteSpace(tagSearch))
-                query = query.Where(x => x.TagNumber.Contains(tagSearch.Trim()));
+            if (hasNarrowingFilter)
+            {
+                // طبق ممیزی: Include(Discipline) این‌جا هرگز واقعاً استفاده نمی‌شد (View فقط از
+                // ViewBag.Disciplines جدا برای Dropdown فیلتر استفاده می‌کند، نه از این ردیف‌ها) -
+                // یک Include بلااستفاده حذف شد.
+                var query = _context.Equipments
+                    .Where(x => x.IsActive)
+                    .AsQueryable();
 
-            ViewBag.MatchingCount = await query.CountAsync();
-            equipmentList = await query.OrderBy(x => x.TagNumber).Take(maxResults).ToListAsync();
+                if (disciplineIds.Count > 0) query = query.Where(x => disciplineIds.Contains(x.DisciplineId));
+                if (equipmentTypes.Count > 0) query = query.Where(x => equipmentTypes.Contains(x.EquipmentType));
+                if (effectiveFunctionalLocationIds.Count > 0)
+                    query = query.Where(x => x.FunctionalLocationId.HasValue && effectiveFunctionalLocationIds.Contains(x.FunctionalLocationId.Value));
+                if (plants.Count > 0)
+                    query = query.Where(x => x.FunctionalLocationRef != null && x.FunctionalLocationRef.Plant != null && plants.Contains(x.FunctionalLocationRef.Plant));
+                if (areas.Count > 0)
+                    query = query.Where(x => x.FunctionalLocationRef != null && x.FunctionalLocationRef.Area != null && areas.Contains(x.FunctionalLocationRef.Area));
+                if (units.Count > 0)
+                    query = query.Where(x => x.FunctionalLocationRef != null && x.FunctionalLocationRef.Unit != null && units.Contains(x.FunctionalLocationRef.Unit));
+                if (!string.IsNullOrWhiteSpace(tagSearch))
+                    query = query.Where(x => x.TagNumber.Contains(tagSearch.Trim()));
+
+                totalMatchingCount += await query.CountAsync();
+                var narrowedIds = await query.OrderBy(x => x.TagNumber).Take(maxResults).Select(x => x.EquipmentId).ToListAsync();
+                foreach (var id in narrowedIds) resolvedIds.Add(id);
+            }
+
+            if (requestedTags.Count > 0)
+            {
+                var tagMatchIds = await _context.Equipments
+                    .Where(x => x.IsActive && requestedTags.Contains(x.TagNumber))
+                    .Select(x => x.EquipmentId)
+                    .ToListAsync();
+
+                totalMatchingCount += tagMatchIds.Count(id => !resolvedIds.Contains(id));
+                foreach (var id in tagMatchIds) resolvedIds.Add(id);
+            }
+
+            ViewBag.MatchingCount = totalMatchingCount;
+            equipmentList = await _context.Equipments
+                .Where(x => resolvedIds.Contains(x.EquipmentId))
+                .OrderBy(x => x.TagNumber)
+                .Take(maxResults)
+                .ToListAsync();
             ViewBag.NoFilterApplied = false;
         }
         ViewBag.MaxResults = maxResults;
@@ -192,6 +289,22 @@ public class MaintenanceStrategyController : Controller
         // طبق بند ۸ ممیزی: آیا اصلاً داده‌ای برای فیلتر Functional Location وجود دارد - View
         // این را برای پیام صادقانه (نه پنهان‌کردن محدودیت) استفاده می‌کند.
         ViewBag.EquipmentWithFunctionalLocationCount = await _context.Equipments.CountAsync(x => x.IsActive && x.FunctionalLocationId != null);
+
+        // طبق همون اصل صداقت داده‌ای: Plant/Unit طبق بازرسی مستقیم دیتابیس امروز صفر مقدار
+        // پرشده دارند (فقط Area پر است) - این فیلترها آماده‌اند ولی View باید همین وضعیت
+        // واقعی را نشان دهد، نه فرض کند همیشه داده دارند.
+        ViewBag.Plants = await _context.FunctionalLocations.Where(x => x.IsActive && x.Plant != null && x.Plant != "")
+            .Select(x => x.Plant!).Distinct().OrderBy(x => x).ToListAsync();
+        ViewBag.Areas = await _context.FunctionalLocations.Where(x => x.IsActive && x.Area != null && x.Area != "")
+            .Select(x => x.Area!).Distinct().OrderBy(x => x).ToListAsync();
+        ViewBag.Units = await _context.FunctionalLocations.Where(x => x.IsActive && x.Unit != null && x.Unit != "")
+            .Select(x => x.Unit!).Distinct().OrderBy(x => x).ToListAsync();
+
+        ViewBag.SelectedPlants = plants;
+        ViewBag.SelectedAreas = areas;
+        ViewBag.SelectedUnits = units;
+        ViewBag.SelectedFunctionalLocationMode = flMode;
+        ViewBag.SelectedTagList = tagList;
 
         ViewBag.SelectedDisciplineIds = disciplineIds;
         ViewBag.SelectedEquipmentTypes = equipmentTypes;
