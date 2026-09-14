@@ -458,10 +458,15 @@
     </div>
     @if (!sparesUsed.Any()) { <p class="text-muted small">No spare parts recorded yet.</p> }
 
+    <div class="input-group input-group-sm mb-2" style="max-width:420px;">
+        <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+        <input type="text" id="spareUsageScanInput" class="form-control" dir="ltr" placeholder="Scan Material barcode..." />
+        <button type="button" class="btn btn-outline-secondary" id="spareUsageScanBtn">Resolve</button>
+    </div>
     <form asp-action="AddSpareUsage" method="post" class="row g-2 mt-2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
         <div class="col-md-4">
-            <select name="materialItemId" class="form-select form-select-sm" required>
+            <select name="materialItemId" id="spareUsageMaterialSelect" class="form-select form-select-sm" required>
                 @foreach (var p in materialItems) { <option value="@p.MaterialItemId">@p.MaterialCode - @p.Description</option> }
             </select>
         </div>
@@ -576,10 +581,15 @@
     </table>
     @if (!requiredMaterials.Any()) { <p class="text-muted small">متریال موردنیازی ثبت نشده.</p> }
 
+    <div class="input-group input-group-sm mb-2" style="max-width:420px;">
+        <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+        <input type="text" id="requiredMaterialScanInput" class="form-control" dir="ltr" placeholder="Scan Material barcode..." />
+        <button type="button" class="btn btn-outline-secondary" id="requiredMaterialScanBtn">Resolve</button>
+    </div>
     <form asp-action="AddRequiredMaterial" method="post" class="row g-2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
         <div class="col-md-6">
-            <select name="materialItemId" class="form-select form-select-sm" required>
+            <select name="materialItemId" id="requiredMaterialSelect" class="form-select form-select-sm" required>
                 @foreach (var m in materialItems) { <option value="@m.MaterialItemId">@m.MaterialCode - @m.Description</option> }
             </select>
         </div>
@@ -612,3 +622,54 @@
         </form>
     }
 </div>
+
+@section Scripts {
+<script>
+    // طبق «PEMS — Warehouse and Inventory Barcode Integration»: اسکن فقط فیلد موجود را از
+    // قبل پر می‌کند - فرم همان مسیر/اعتبارسنجی/Transaction موجود را طی می‌کند، بدون هیچ تغییر.
+    async function pemsResolveBarcodeInto(inputId, selectId, expectedTargetType) {
+        const input = document.getElementById(inputId);
+        const select = document.getElementById(selectId);
+        const code = (input.value || '').trim();
+        if (!code) return;
+
+        try {
+            const res = await fetch('/Barcode/ResolveJson?code=' + encodeURIComponent(code));
+            const data = await res.json();
+
+            if (!data.success) {
+                alert('Barcode not resolved: ' + (data.errorMessage || data.errorCode));
+                return;
+            }
+            if (data.targetType !== expectedTargetType) {
+                alert('This barcode belongs to a ' + data.targetType + ', not a ' + expectedTargetType + '.');
+                return;
+            }
+
+            var matched = false;
+            for (var i = 0; i < select.options.length; i++) {
+                if (select.options[i].value == data.targetId) {
+                    select.value = select.options[i].value;
+                    matched = true;
+                    break;
+                }
+            }
+            if (!matched) {
+                alert('Resolved to ' + (data.label || ('Material #' + data.targetId)) + ', but it is not in this list.');
+                return;
+            }
+
+            input.value = '';
+        } catch (e) {
+            alert('Could not resolve barcode.');
+        }
+    }
+
+    document.getElementById('spareUsageScanBtn')?.addEventListener('click', function () {
+        pemsResolveBarcodeInto('spareUsageScanInput', 'spareUsageMaterialSelect', 'MaterialItem');
+    });
+    document.getElementById('requiredMaterialScanBtn')?.addEventListener('click', function () {
+        pemsResolveBarcodeInto('requiredMaterialScanInput', 'requiredMaterialSelect', 'MaterialItem');
+    });
+</script>
+}

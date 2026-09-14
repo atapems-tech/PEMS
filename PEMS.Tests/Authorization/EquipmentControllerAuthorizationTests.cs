@@ -118,7 +118,7 @@ public class EquipmentControllerAuthorizationTests
             equipmentService, ctx, new ThrowingFunctionalLocationService(), currentUser,
             new ThrowingReliabilityService(), new ThrowingInspectionService(),
             new ThrowingEquipmentClassificationService(), new ThrowingMaintenanceIntelligenceService(),
-            permissionService).WithTempData();
+            permissionService, new PEMS.Persistence.Services.BarcodeService(ctx)).WithTempData();
 
         return (controller, equipmentService);
     }

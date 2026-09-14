@@ -1,0 +1,67 @@
+@model PEMS.Web.Models.BarcodePanelViewModel
+@* طبق «PEMS — Enterprise Barcode System» بند «UI»: یک پارتیال مشترک برای تب Barcode - روی هر
+   صفحه‌ی Details موجودی که ازش استفاده کند (Equipment/MaterialItem/...) بدون تکرار کد. *@
+
+<div class="content-card">
+    @if (Model.ActiveBarcode == null)
+    {
+        <p class="text-muted small">No active barcode for this record yet.</p>
+        @if (Model.CanManage)
+        {
+            <form asp-controller="Barcode" asp-action="Generate" method="post" class="d-flex gap-2 align-items-end">
+                <input type="hidden" name="targetType" value="@Model.TargetType" />
+                <input type="hidden" name="targetId" value="@Model.TargetId" />
+                <div>
+                    <label class="form-label small mb-0">Symbology</label>
+                    <select name="symbology" class="form-select form-select-sm">
+                        <option value="Code128">Code128</option>
+                        <option value="QR">QR</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-upc-scan"></i> Generate Barcode</button>
+            </form>
+        }
+    }
+    else
+    {
+        var b = Model.ActiveBarcode;
+        <div class="row g-3 align-items-center">
+            <div class="col-md-3 text-center">
+                <img src="@Url.Action("Svg", "Barcode", new { id = b.BarcodeIdentityId })" alt="barcode" style="max-width:100%;" />
+                <div class="small mt-1" dir="ltr"><code>@b.Code</code></div>
+            </div>
+            <div class="col-md-9">
+                <div class="row g-2 small mb-2">
+                    <div class="col-md-3"><strong>Symbology</strong><div>@b.Symbology</div></div>
+                    <div class="col-md-3"><strong>Status</strong><div><span class="badge @(b.Status == "Active" ? "bg-success" : "bg-secondary")">@b.Status</span></div></div>
+                    <div class="col-md-3"><strong>Prints</strong><div>@b.PrintCount</div></div>
+                    <div class="col-md-3"><strong>Created</strong><div>@b.CreatedDate.ToString("yyyy-MM-dd")</div></div>
+                </div>
+
+                @if (Model.CanManage)
+                {
+                    <div class="d-flex flex-wrap gap-2">
+                        <form asp-controller="Barcode" asp-action="Print" asp-route-id="@b.BarcodeIdentityId" method="post">
+                            <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-printer"></i> Print Label</button>
+                        </form>
+                        <form asp-controller="Barcode" asp-action="Disable" asp-route-id="@b.BarcodeIdentityId" method="post">
+                            <input type="hidden" name="targetType" value="@Model.TargetType" />
+                            <input type="hidden" name="targetId" value="@Model.TargetId" />
+                            <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('Disable this barcode?')">Disable</button>
+                        </form>
+                        <form asp-controller="Barcode" asp-action="Revoke" asp-route-id="@b.BarcodeIdentityId" method="post">
+                            <input type="hidden" name="targetType" value="@Model.TargetType" />
+                            <input type="hidden" name="targetId" value="@Model.TargetId" />
+                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Revoke this barcode? It can never be reactivated.')">Revoke</button>
+                        </form>
+                        <form asp-controller="Barcode" asp-action="Replace" asp-route-id="@b.BarcodeIdentityId" method="post">
+                            <input type="hidden" name="targetType" value="@Model.TargetType" />
+                            <input type="hidden" name="targetId" value="@Model.TargetId" />
+                            <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return confirm('Revoke this barcode and generate a new one for the same record?')">Replace</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

@@ -283,6 +283,10 @@ public class PEMSDbContext
     public DbSet<MaintenanceHistoryImportBatch> MaintenanceHistoryImportBatches { get; set; }
     public DbSet<MaintenanceHistoryImportRow> MaintenanceHistoryImportRows { get; set; }
 
+    // طبق «PEMS — Enterprise Barcode System»: یک جدول هویت مشترک برای کل PEMS - نه یک جدول
+    // جدا به‌ازای هر ماژول (Equipment/Material/Warehouse/StorageLocation).
+    public DbSet<BarcodeIdentity> BarcodeIdentities { get; set; }
+
     // طبق «PEMS — Enterprise File Storage Management»
     public DbSet<StorageProvider> StorageProviders { get; set; }
     public DbSet<StorageRoute> StorageRoutes { get; set; }
@@ -813,6 +817,56 @@ public class PEMSDbContext
             .WithMany(x => x.Rows)
             .HasForeignKey(x => x.MaintenanceHistoryImportBatchId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // ==============================================================================
+        // طبق «PEMS — Enterprise Barcode System»:
+        // - Code باید در کل جدول یکتا باشد (طبق بند «Duplicate Protection»).
+        // - برای هر Target حداکثر یک بارکد Active مجاز است - یک ایندکس یکتای فیلترشده
+        //   (نه فقط بررسی سمت اپلیکیشن) تا Race واقعی هم در سطح دیتابیس مسدود شود
+        //   (طبق بند «Concurrency-safe creation»).
+        // - زنجیره‌ی Replace خودارجاع است (Restrict - نه Cascade، چون حذف یک بارکد هرگز
+        //   زنجیره‌ی تاریخچه‌اش را نباید حذف کند؛ اصلاً Delete هم برای این جدول پیاده نشده).
+        // ==============================================================================
+        modelBuilder.Entity<BarcodeIdentity>()
+            .HasIndex(x => x.Code)
+            .IsUnique();
+
+        modelBuilder.Entity<BarcodeIdentity>()
+            .HasIndex(x => new { x.TargetType, x.TargetId, x.Status })
+            .IsUnique()
+            .HasFilter("[Status] = 'Active'");
+
+        modelBuilder.Entity<BarcodeIdentity>()
+            .HasOne(x => x.CreatedBy)
+            .WithMany()
+            .HasForeignKey(x => x.CreatedById)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<BarcodeIdentity>()
+            .HasOne(x => x.DisabledBy)
+            .WithMany()
+            .HasForeignKey(x => x.DisabledById)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<BarcodeIdentity>()
+            .HasOne(x => x.RevokedBy)
+            .WithMany()
+            .HasForeignKey(x => x.RevokedById)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // خودارجاع دوسویه‌ی ساده (نه WithOne) - هر دو جهت زنجیره‌ی Replace مستقل تنظیم می‌شوند
+        // (در ReplaceAsync هر دو صریحاً مقداردهی می‌شوند)، نه با تکیه بر Navigation Fixup خودکار EF.
+        modelBuilder.Entity<BarcodeIdentity>()
+            .HasOne(x => x.ReplacedByBarcodeIdentity)
+            .WithMany()
+            .HasForeignKey(x => x.ReplacedByBarcodeIdentityId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<BarcodeIdentity>()
+            .HasOne(x => x.ReplacesBarcodeIdentity)
+            .WithMany()
+            .HasForeignKey(x => x.ReplacesBarcodeIdentityId)
+            .OnDelete(DeleteBehavior.Restrict);
 
 
         modelBuilder.Entity<DisciplineTask>()

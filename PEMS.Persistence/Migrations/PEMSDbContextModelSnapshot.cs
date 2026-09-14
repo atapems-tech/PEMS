@@ -657,6 +657,91 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("AuthorizationAuditLogs", (string)null);
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.BarcodeIdentity", b =>
+                {
+                    b.Property<int>("BarcodeIdentityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BarcodeIdentityId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("CreatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DisableReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DisabledById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DisabledDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastPrintedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PrintCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ReplacedByBarcodeIdentityId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ReplacesBarcodeIdentityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RevokeReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RevokedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("RevokedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Symbology")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TargetId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TargetType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("BarcodeIdentityId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("DisabledById");
+
+                    b.HasIndex("ReplacedByBarcodeIdentityId");
+
+                    b.HasIndex("ReplacesBarcodeIdentityId");
+
+                    b.HasIndex("RevokedById");
+
+                    b.HasIndex("TargetType", "TargetId", "Status")
+                        .IsUnique()
+                        .HasFilter("[Status] = 'Active'");
+
+                    b.ToTable("BarcodeIdentities");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Cable", b =>
                 {
                     b.Property<int>("CableId")
@@ -14306,6 +14391,44 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Equipment");
 
                     b.Navigation("FunctionalLocationRef");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.BarcodeIdentity", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Employee", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.Employee", "DisabledBy")
+                        .WithMany()
+                        .HasForeignKey("DisabledById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.BarcodeIdentity", "ReplacedByBarcodeIdentity")
+                        .WithMany()
+                        .HasForeignKey("ReplacedByBarcodeIdentityId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.BarcodeIdentity", "ReplacesBarcodeIdentity")
+                        .WithMany()
+                        .HasForeignKey("ReplacesBarcodeIdentityId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.Employee", "RevokedBy")
+                        .WithMany()
+                        .HasForeignKey("RevokedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("DisabledBy");
+
+                    b.Navigation("ReplacedByBarcodeIdentity");
+
+                    b.Navigation("ReplacesBarcodeIdentity");
+
+                    b.Navigation("RevokedBy");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.CableConnection", b =>

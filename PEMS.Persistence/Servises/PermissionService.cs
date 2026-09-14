@@ -22,7 +22,7 @@ public class PermissionService : IPermissionService
         "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan",
         "ProcurementPackage",
         "MDRImport", "EquipmentImport", "MrsImport", "FunctionalLocationImport",
-        "EquipmentFunctionalLocationAssignment", "MaintenanceHistoryImport",
+        "EquipmentFunctionalLocationAssignment", "MaintenanceHistoryImport", "Barcode",
         "AIExtraction", "TableExtraction", "Relationship", "OCRProcessing",
         "Team", "Crew", "InventoryMasterData", "MaintenanceMasterData",
         "Setup"
@@ -477,6 +477,17 @@ public class PermissionService : IPermissionService
             New(SystemRoles.MaintenanceEngineer, "MaintenanceHistoryImport", create: true, del: true, approve: true),
             New(SystemRoles.EngineeringManager, "MaintenanceHistoryImport", create: true, del: true, approve: true),
             New(SystemRoles.Viewer, "MaintenanceHistoryImport")
+        });
+
+        // طبق «PEMS — Enterprise Barcode System» بند «Authorization»: همون ۵ عمل ثابت موجود
+        // (View/Create/Edit/Delete/Approve) - نه ۷ مجوز جدید Barcode.* دلخواه. نگاشت:
+        // View=مشاهده/Resolve، Create=Generate تکی/چاپ/تکرار چاپ، Approve=BulkGenerate (پرریسک‌ترین،
+        // دقیقاً همون قاعده‌ی سایر Importها)، Delete=Disable/Revoke (توقف یک هویت فعال).
+        await SeedMissingRolesAsync("Barcode", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "Barcode", create: true, del: true, approve: true),
+            New(SystemRoles.EngineeringManager, "Barcode", create: true, del: true, approve: true),
+            New(SystemRoles.Viewer, "Barcode")
         });
 
         await SeedMissingRolesAsync("MrsImport", new List<RolePermission>

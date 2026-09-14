@@ -23,12 +23,13 @@ public class EquipmentController : Controller
     private readonly IEquipmentClassificationService _classificationService;
     private readonly IMaintenanceIntelligenceService _intelligenceService;
     private readonly IPermissionService _permissionService;
+    private readonly IBarcodeService _barcodeService;
 
     public EquipmentController(IEquipmentService service, PEMSDbContext context,
         IFunctionalLocationService functionalLocationService, ICurrentUserService currentUser,
         IReliabilityService reliabilityService, IInspectionService inspectionService,
         IEquipmentClassificationService classificationService, IMaintenanceIntelligenceService intelligenceService,
-        IPermissionService permissionService)
+        IPermissionService permissionService, IBarcodeService barcodeService)
     {
         _service = service;
         _context = context;
@@ -39,6 +40,7 @@ public class EquipmentController : Controller
         _classificationService = classificationService;
         _intelligenceService = intelligenceService;
         _permissionService = permissionService;
+        _barcodeService = barcodeService;
     }
 
     // طبق «PEMS Phase 2B»: بررسی مجوز مشترک برای اکشن‌های تغییردهنده - داده‌های Permission
@@ -106,6 +108,16 @@ public class EquipmentController : Controller
         ViewBag.MaintenanceIntelligence = await _intelligenceService.GetForEquipmentAsync(id);
         ViewBag.PendingClassificationSuggestion = await _classificationService.GetPendingSuggestionForEquipmentAsync(id);
         ViewBag.ClassificationExplanation = await _classificationService.ExplainClassificationAsync(id);
+
+        // طبق «PEMS — Enterprise Barcode System» بند «UI»: تب Barcode مشترک - همون پارتیال
+        // _BarcodePanel که MaterialItem/Details هم استفاده می‌کند.
+        ViewBag.BarcodePanel = new PEMS.Web.Models.BarcodePanelViewModel
+        {
+            TargetType = "Equipment",
+            TargetId = id,
+            ActiveBarcode = await _barcodeService.GetActiveByTargetAsync("Equipment", id),
+            CanManage = await _permissionService.HasPermissionAsync(_currentUser.Roles, "Barcode", "Create")
+        };
 
         return View(passport);
     }

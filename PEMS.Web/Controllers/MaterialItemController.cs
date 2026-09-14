@@ -16,15 +16,20 @@ public class MaterialItemController : Controller
     private readonly IMaterialItemService _materialItemService;
     private readonly IMaterialStockService _materialStockService;
     private readonly ICurrentUserService _currentUser;
+    private readonly IPermissionService _permissionService;
+    private readonly IBarcodeService _barcodeService;
 
     public MaterialItemController(
         PEMSDbContext context, IMaterialItemService materialItemService,
-        IMaterialStockService materialStockService, ICurrentUserService currentUser)
+        IMaterialStockService materialStockService, ICurrentUserService currentUser,
+        IPermissionService permissionService, IBarcodeService barcodeService)
     {
         _context = context;
         _materialItemService = materialItemService;
         _materialStockService = materialStockService;
         _currentUser = currentUser;
+        _permissionService = permissionService;
+        _barcodeService = barcodeService;
     }
 
     public async Task<IActionResult> Index(string? q, int? categoryId, bool lowStockOnly = false, bool criticalOnly = false, int page = 1)
@@ -80,6 +85,16 @@ public class MaterialItemController : Controller
 
         ViewBag.Warehouses = await _context.Warehouses.Where(x => x.IsActive)
             .OrderBy(x => x.Code).Select(x => new { x.WarehouseId, x.Code }).ToListAsync();
+
+        // طبق «PEMS — Enterprise Barcode System» بند «UI»: همون پارتیال مشترک _BarcodePanel
+        // که Equipment/Details هم استفاده می‌کند.
+        ViewBag.BarcodePanel = new PEMS.Web.Models.BarcodePanelViewModel
+        {
+            TargetType = "MaterialItem",
+            TargetId = id,
+            ActiveBarcode = await _barcodeService.GetActiveByTargetAsync("MaterialItem", id),
+            CanManage = await _permissionService.HasPermissionAsync(_currentUser.Roles, "Barcode", "Create")
+        };
 
         return View(item);
     }

@@ -47,6 +47,7 @@
     {
         <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-source" type="button"><i class="bi bi-file-earmark-excel"></i> Source Imports <span class="badge bg-secondary">@Model.SourceImports.Count</span></button></li>
     }
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-barcode" type="button"><i class="bi bi-upc-scan"></i> Barcode</button></li>
 </ul>
 
 <div class="tab-content">
@@ -129,6 +130,10 @@
             @if (!Model.RecentTransactions.Any()) { <p class="text-muted text-center py-4">هنوز تراکنشی ثبت نشده.</p> }
         </div>
     </div>
+
+    <div class="tab-pane fade" id="tab-barcode" role="tabpanel">
+        <partial name="_BarcodePanel" model="(PEMS.Web.Models.BarcodePanelViewModel)ViewBag.BarcodePanel" />
+    </div>
 </div>
 
 <div class="modal fade" id="receiveStockModal" tabindex="-1">
@@ -138,8 +143,16 @@
             <div class="modal-header"><h6 class="modal-title">دریافت کالا به انبار</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
+                    <label class="form-label small">اسکن بارکد انبار (اختیاری)</label>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+                        <input type="text" id="receiveWarehouseScanInput" class="form-control" dir="ltr" placeholder="Scan Warehouse barcode..." />
+                        <button type="button" class="btn btn-outline-secondary" id="receiveWarehouseScanBtn">Resolve</button>
+                    </div>
+                </div>
+                <div class="mb-2">
                     <label class="form-label small">انبار</label>
-                    <select name="warehouseId" class="form-select form-select-sm" required>
+                    <select name="warehouseId" id="receiveWarehouseSelect" class="form-select form-select-sm" required>
                         @foreach (var w in warehouses) { <option value="@w.WarehouseId">@w.Code</option> }
                     </select>
                 </div>
@@ -247,6 +260,33 @@ document.querySelectorAll('.transfer-stock-btn').forEach(function (btn) {
         document.getElementById('transferAvailable').textContent = btn.dataset.available;
         new bootstrap.Modal(document.getElementById('transferStockModal')).show();
     });
+});
+
+// طبق «PEMS — Warehouse and Inventory Barcode Integration»: اسکن فقط <select name="warehouseId">
+// موجود را از قبل پر می‌کند - ReceiveStock همون مسیر/سرویس موجود (IMaterialStockService) را طی می‌کند.
+document.getElementById('receiveWarehouseScanBtn')?.addEventListener('click', async function () {
+    var input = document.getElementById('receiveWarehouseScanInput');
+    var select = document.getElementById('receiveWarehouseSelect');
+    var code = (input.value || '').trim();
+    if (!code) return;
+
+    try {
+        var res = await fetch('/Barcode/ResolveJson?code=' + encodeURIComponent(code));
+        var data = await res.json();
+
+        if (!data.success) { alert('Barcode not resolved: ' + (data.errorMessage || data.errorCode)); return; }
+        if (data.targetType !== 'Warehouse') { alert('This barcode belongs to a ' + data.targetType + ', not a Warehouse.'); return; }
+
+        var matched = false;
+        for (var i = 0; i < select.options.length; i++) {
+            if (select.options[i].value == data.targetId) { select.value = select.options[i].value; matched = true; break; }
+        }
+        if (!matched) { alert('Resolved to ' + (data.label || ('Warehouse #' + data.targetId)) + ', but it is not in this list.'); return; }
+
+        input.value = '';
+    } catch (e) {
+        alert('Could not resolve barcode.');
+    }
 });
 </script>
 }
