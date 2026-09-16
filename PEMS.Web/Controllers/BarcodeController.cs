@@ -364,6 +364,8 @@ public class BarcodeController : Controller
         "Equipment" => RedirectToAction("Details", "Equipment", new { id = targetId }),
         "MaterialItem" => RedirectToAction("Details", "MaterialItem", new { id = targetId }),
         "Warehouse" or "StorageLocation" => RedirectToAction("Index", "InventoryMasterData"),
+        // طبق «PEMS Operations & Production Architecture Spec v1» فاز ۱ بند AB
+        "ProductionBatch" => RedirectToAction("BatchDetails", "ProductionRun", new { id = targetId }),
         _ => RedirectToAction(nameof(Index))
     };
 

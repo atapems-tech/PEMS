@@ -82,7 +82,12 @@ public static class AccessControlSeeder
             new { FirstResource = "EngineeringDocuments", FirstAction = "Edit", SecondResource = "EngineeringDocuments", SecondAction = "Approve", Description = "کاربر نمی‌تواند همان مدرک را ویرایش و سپس تأیید کند." },
             new { FirstResource = "WorkOrder", FirstAction = "Create", SecondResource = "WorkOrder", SecondAction = "Close", Description = "ایجاد و بستن همان WorkOrder توسط یک نفر ممنوع است." },
             new { FirstResource = "WorkOrder", FirstAction = "Edit", SecondResource = "WorkOrder", SecondAction = "Close", Description = "ویرایش و بستن همان WorkOrder توسط یک نفر ممنوع است." },
-            new { FirstResource = "Permit", FirstAction = "Create", SecondResource = "Permit", SecondAction = "Issue", Description = "نمی‌توان یک Permit را ایجاد و در همان لحظه صادر کرد." }
+            new { FirstResource = "Permit", FirstAction = "Create", SecondResource = "Permit", SecondAction = "Issue", Description = "نمی‌توان یک Permit را ایجاد و در همان لحظه صادر کرد." },
+            // طبق «PEMS Operations & Production Architecture Spec v1» فاز ۱ بند AF: همون الگوی
+            // WorkOrder.Create/Close - کسی که سفارش/بچ تولید را ایجاد یا ویرایش کرده، نمی‌تواند
+            // همان رکورد را خودش Release/Complete/Close یا از نظر کیفیت Release/Reject کند.
+            new { FirstResource = "Production", FirstAction = "Create", SecondResource = "Production", SecondAction = "Approve", Description = "کاربر نمی‌تواند سفارش/بچ تولیدی را که خودش ایجاد کرده، خودش Release/تایید کیفیت کند." },
+            new { FirstResource = "Production", FirstAction = "Edit", SecondResource = "Production", SecondAction = "Approve", Description = "کاربر نمی‌تواند سفارش تولیدی را که خودش برنامه‌ریزی (Plan) کرده، خودش Release/Close کند." }
         };
 
         foreach (var policy in defaultPolicies)

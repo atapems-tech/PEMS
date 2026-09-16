@@ -50,6 +50,13 @@ public class NumberingService : INumberingService
         // VdrDocumentNumberingService.GenerateVendorNumberAsync رشتهٔ کامل SUB-CONTRACTOR/Vendor
         // (3863-XX-VD-TT-UU-MMMM-NNNNNN-YYY) را می‌سازد.
         ["VdrVendorDocument"] = new("VD", 3, false, () => ""),
+        // طبق «PEMS Operations & Production Architecture Spec v1» فاز ۱ (بند ۲۶ - Numbering):
+        // سه نوع سند جدید، هم‌الگو با WorkOrder (سالانه) برای Order، Scope به‌ازای هر سفارش برای
+        // Run (شماره‌ی اجرا زیرمجموعه‌ی همان سفارش معنی دارد)، و سالانه با پدینگ بزرگ‌تر برای
+        // Batch (حجم بالاتر انتظار می‌رود).
+        ["ProductionOrder"] = new("PRO", 4, true, () => DateTime.Now.Year.ToString()),
+        ["ProductionRun"] = new("PRN", 3, true, () => "GEN"),
+        ["ProductionBatch"] = new("PB", 5, true, () => DateTime.Now.Year.ToString()),
     };
 
     public NumberingService(PEMSDbContext context)

@@ -27,7 +27,10 @@ public class BarcodeService : IBarcodeService
 
     public static readonly HashSet<string> SupportedTargetTypes = new(StringComparer.OrdinalIgnoreCase)
     {
-        "Equipment", "MaterialItem", "Warehouse", "StorageLocation"
+        // طبق «PEMS Operations & Production Architecture Spec v1» فاز ۱ بند AB (QR/Barcode
+        // Architecture): افزودن ProductionBatch به این مجموعه بدون هیچ تغییر Schema - دقیقاً
+        // همون نکته‌ای که سند معماری از قبل پیش‌بینی کرده بود.
+        "Equipment", "MaterialItem", "Warehouse", "StorageLocation", "ProductionBatch"
     };
 
     // ساده و قطعی: هر بایت تصادفی مستقیم به یک نویسه از الفبا نگاشت می‌شود - بدون هیچ فرمول پیچیده
@@ -313,6 +316,7 @@ public class BarcodeService : IBarcodeService
         "MaterialItem" => await _context.MaterialItems.AnyAsync(x => x.MaterialItemId == targetId),
         "Warehouse" => await _context.Warehouses.AnyAsync(x => x.WarehouseId == targetId),
         "StorageLocation" => await _context.StorageLocations.AnyAsync(x => x.StorageLocationId == targetId),
+        "ProductionBatch" => await _context.ProductionBatches.AnyAsync(x => x.ProductionBatchId == targetId),
         _ => false
     };
 
@@ -323,6 +327,7 @@ public class BarcodeService : IBarcodeService
         "MaterialItem" => (await _context.MaterialItems.Where(x => targetIds.Contains(x.MaterialItemId)).Select(x => x.MaterialItemId).ToListAsync()).ToHashSet(),
         "Warehouse" => (await _context.Warehouses.Where(x => targetIds.Contains(x.WarehouseId)).Select(x => x.WarehouseId).ToListAsync()).ToHashSet(),
         "StorageLocation" => (await _context.StorageLocations.Where(x => targetIds.Contains(x.StorageLocationId)).Select(x => x.StorageLocationId).ToListAsync()).ToHashSet(),
+        "ProductionBatch" => (await _context.ProductionBatches.Where(x => targetIds.Contains(x.ProductionBatchId)).Select(x => x.ProductionBatchId).ToListAsync()).ToHashSet(),
         _ => new HashSet<int>()
     };
 
@@ -340,6 +345,8 @@ public class BarcodeService : IBarcodeService
                 .Select(x => x.Code + " - " + x.Name).FirstOrDefaultAsync(),
             "StorageLocation" => await _context.StorageLocations.Where(x => x.StorageLocationId == targetId)
                 .Select(x => x.Code + " - " + x.Name).FirstOrDefaultAsync(),
+            "ProductionBatch" => await _context.ProductionBatches.Where(x => x.ProductionBatchId == targetId)
+                .Select(x => x.BatchNumber + " - " + x.QualityStatus).FirstOrDefaultAsync(),
             _ => null
         };
     }

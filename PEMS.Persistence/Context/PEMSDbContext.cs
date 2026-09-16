@@ -130,6 +130,25 @@ public class PEMSDbContext
     public DbSet<MrsImportRowMetadata> MrsImportRowMetadata { get; set; }
     public DbSet<NumberingSequence> NumberingSequences { get; set; }
 
+    // طبق «PEMS Operations & Production Architecture Spec v1» فاز ۱ (Production Core) - همه‌ی
+    // موجودیت‌های جدید، بدون تغییر در جدول‌های بالا (Warehouse/StorageLocation/MaterialStock/
+    // InventoryTransaction دست‌نخورده می‌مانند - طبق قاعده‌ی REUSE > EXTEND > CREATE).
+    public DbSet<ProductionWorkCenter> ProductionWorkCenters { get; set; }
+    public DbSet<ShiftDefinition> ShiftDefinitions { get; set; }
+    public DbSet<ProductionOrder> ProductionOrders { get; set; }
+    public DbSet<ProductionRun> ProductionRuns { get; set; }
+    public DbSet<ProductionBatch> ProductionBatches { get; set; }
+    public DbSet<ProductionInput> ProductionInputs { get; set; }
+    public DbSet<ProductionOutput> ProductionOutputs { get; set; }
+    public DbSet<ProductionLoss> ProductionLosses { get; set; }
+    public DbSet<ProductionEvent> ProductionEvents { get; set; }
+
+    // طبق «PEMS Operations Phase 2A — Foundational Hardening»: بدون تغییر در جدول‌های فاز ۱ -
+    // فقط دو موجودیت جدید (Target/Downtime) و یک ستون افزودنی روی InventoryTransaction (بالاتر
+    // در Configuration خودش، نه این‌جا).
+    public DbSet<ProductionTarget> ProductionTargets { get; set; }
+    public DbSet<ProductionDowntimeEvent> ProductionDowntimeEvents { get; set; }
+
     // طبق CMMS Production Baseline v1 بند ۱۰.۳-۱۰.۴ (CMMS-02: Maintenance Planning)
     public DbSet<JobPlan> JobPlans { get; set; }
     public DbSet<MaintenanceTask> MaintenanceTasks { get; set; }

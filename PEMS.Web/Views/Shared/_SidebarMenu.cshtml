@@ -42,6 +42,10 @@
     var projectControlControllers = new[] { "Task", "Tag", "Report", "Meeting" };
     var cmmsControllers = new[] { "Equipment", "EquipmentImport", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "FunctionalLocationImport", "EquipmentFunctionalLocationAssignment", "MaintenanceHistoryImport", "Barcode", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
     var inventoryControllers = new[] { "Inventory", "MaterialItem", "InventoryMasterData", "InventoryTransaction", "StoreRequisition", "MrsImport" };
+    // طبق «PEMS Operations CMMS Boundary Correction»: Operations دیگر زیرمجموعه‌ی CMMS Integration
+    // نیست - بخش سایدباری کاملاً مستقل خودش را دارد (دقیقاً هم‌الگو با جدایی Inventory & Materials
+    // از CMMS Integration که از قبل در همین فایل وجود داشت).
+    var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
     var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "Department", "Employee" };
 
@@ -65,7 +69,8 @@
     @if (MenuAccess.CanSee(User, MenuAccess.EngineeringManagement))
     {
         var active = ContainsActive(engineeringControllers);
-        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-eng" role="button" aria-expanded="@active.ToString().ToLower()">
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-eng" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
+            <i class="bi bi-building nav-section-icon"></i>
             <span>@Localizer["EngineeringManagement"]</span>
             <i class="@ChevronClass(active)"></i>
         </div>
@@ -137,7 +142,8 @@
     @if (MenuAccess.CanSee(User, MenuAccess.AIIntelligence))
     {
         var active = ContainsActive(aiControllers);
-        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-ai" role="button" aria-expanded="@active.ToString().ToLower()">
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-ai" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
+            <i class="bi bi-robot nav-section-icon"></i>
             <span>AI &amp; Knowledge</span>
             <i class="@ChevronClass(active)"></i>
         </div>
@@ -173,7 +179,8 @@
     @if (MenuAccess.CanSee(User, MenuAccess.CorrespondenceDocControl))
     {
         var active = ContainsActive(correspondenceControllers);
-        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-correspondence" role="button" aria-expanded="@active.ToString().ToLower()">
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-correspondence" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
+            <i class="bi bi-envelope-paper nav-section-icon"></i>
             <span>@Localizer["CorrespondenceDocControl"]</span>
             <i class="@ChevronClass(active)"></i>
         </div>
@@ -203,7 +210,8 @@
     @if (MenuAccess.CanSee(User, MenuAccess.QualityControl))
     {
         var active = ContainsActive(qualityControllers);
-        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-quality" role="button" aria-expanded="@active.ToString().ToLower()">
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-quality" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
+            <i class="bi bi-patch-check nav-section-icon"></i>
             <span>@Localizer["QualityControl"]</span>
             <i class="@ChevronClass(active)"></i>
         </div>
@@ -223,7 +231,8 @@
     @if (MenuAccess.CanSee(User, MenuAccess.ContractManagement))
     {
         var active = ContainsActive(contractControllers);
-        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-contract" role="button" aria-expanded="@active.ToString().ToLower()">
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-contract" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
+            <i class="bi bi-file-earmark-ruled nav-section-icon"></i>
             <span>@Localizer["ContractManagement"]</span>
             <i class="@ChevronClass(active)"></i>
         </div>
@@ -251,7 +260,8 @@
     @if (MenuAccess.CanSee(User, MenuAccess.ProjectControls))
     {
         var active = ContainsActive(projectControlControllers);
-        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-projctrl" role="button" aria-expanded="@active.ToString().ToLower()">
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-projctrl" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
+            <i class="bi bi-sliders nav-section-icon"></i>
             <span>@Localizer["ProjectControls"]</span>
             <i class="@ChevronClass(active)"></i>
         </div>
@@ -279,7 +289,8 @@
     @if (MenuAccess.CanSee(User, MenuAccess.CmmsIntegration))
     {
         var active = ContainsActive(cmmsControllers);
-        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-cmms" role="button" aria-expanded="@active.ToString().ToLower()">
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-cmms" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
+            <i class="bi bi-tools nav-section-icon"></i>
             <span>@Localizer["CmmsIntegration"]</span>
             <i class="@ChevronClass(active)"></i>
         </div>
@@ -419,10 +430,41 @@
     }
 
 
+    @* طبق «PEMS Operations CMMS Boundary Correction»: طبق ممیزی معماری، Operations هرگز زیرمجموعه‌ی
+       واقعی CMMS نبود (بدون هیچ وابستگی دامنه/سرویس به CMMS) - تنها اتصال اشتباه همین دو لینک بود
+       که داخل Accordion بخش CMMS Integration رندر می‌شدند. حالا دقیقاً هم‌الگو با جدایی
+       Inventory & Materials از CMMS Integration بالاتر: بخش Accordion کاملاً مستقل خودش، با
+       MenuAccess.Operations مستقل (نه به‌اشتراک‌گذاشته‌شده با CmmsIntegration). فقط دو روتی که
+       واقعاً در ریپازیتوری وجود دارند لینک شده‌اند (Production/Dashboard, ProductionOrder/Index) -
+       طبق دستور صریح «Do not invent routes»: نه ProductionRun و نه ProductionBatch صفحه‌ی Index
+       مستقلی ندارند (فقط از داخل Details سفارش/اجرا قابل‌دسترسی‌اند) و گزارش‌گیری Operations هنوز
+       پیاده‌سازی نشده - هیچ‌کدام این‌جا لینک نشدند. *@
+    @if (MenuAccess.CanSee(User, MenuAccess.Operations))
+    {
+        var active = ContainsActive(operationsControllers);
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-operations" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
+            <i class="bi bi-diagram-3-fill nav-section-icon"></i>
+            <span>Operations &amp; Production</span>
+            <i class="@ChevronClass(active)"></i>
+        </div>
+        <div class="@SectionClass(active)" id="sec-operations">
+
+            <a class="nav-link @(IsActive("Production") ? "active" : "")" asp-controller="Production" asp-action="Dashboard">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+
+            <a class="nav-link @(IsActive("ProductionOrder") ? "active" : "")" asp-controller="ProductionOrder" asp-action="Index">
+                <i class="bi bi-clipboard-data"></i> Production Orders
+            </a>
+        </div>
+    }
+
+
     @if (MenuAccess.CanSee(User, MenuAccess.CmmsIntegration))
     {
         var active = ContainsActive(inventoryControllers);
-        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-inventory" role="button" aria-expanded="@active.ToString().ToLower()">
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-inventory" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
+            <i class="bi bi-boxes nav-section-icon"></i>
             <span>Inventory &amp; Materials</span>
             <i class="@ChevronClass(active)"></i>
         </div>
@@ -469,7 +511,8 @@
     @if (canSeeAdminCore)
     {
         var active = ContainsActive(adminControllers) || ContainsActive(aiAdminControllers) || InArea("Admin");
-        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-admin" role="button" aria-expanded="@active.ToString().ToLower()">
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-admin" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
+            <i class="bi bi-gear nav-section-icon"></i>
             <span>@Localizer["Administration"]</span>
             <i class="@ChevronClass(active)"></i>
         </div>
@@ -573,5 +616,45 @@
 
         target.addEventListener('show.bs.collapse', function () { chevron.classList.add('rotated'); });
         target.addEventListener('hide.bs.collapse', function () { chevron.classList.remove('rotated'); });
+
+        // طبق «PEMS — Hover-Expandable Sidebar Navigation» بند Accessibility: این div ها
+        // role="button" دارند ولی Div بومی با Enter/Space کلیک نمی‌شود - برخلاف <button>.
+        // بدون این، تیتر بخش‌ها فقط با ماوس قابل باز/بسته شدن بودند.
+        title.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                title.click();
+            }
+        });
+    });
+
+    // طبق اصلاح ممیزی بصری (Critical Visual Correction): متن هر nav-link از قبل در HTML
+    // در یک Span جداگانه Wrap نشده بود (برخلاف .nav-section-title که از قبل <span> دارد) -
+    // بدون این، در حالت Icon Rail، خودِ Flex Item متن (نه فقط ظرف بیرونی) هرگز باریک‌تر از
+    // عرض واقعیِ برچسبش نمی‌شد (رفتار پیش‌فرض min-width:auto در Flexbox) و در نیمه‌راه توسط
+    // لبه‌ی نوار ۶۴px بریده می‌شد - دقیقاً همون بریدگی «Quick Set...» گزارش‌شده. این‌جا بدون
+    // تغییر Razor Markup (که می‌شد ~۱۰۰ پیوند را دستی ویرایش کرد)، متن هر پیوند در یک
+    // <span class="nav-label"> بسته‌بندی می‌شود تا CSS بتواند مستقیماً روی عرض/شفافیت خودِ
+    // متن کنترل داشته باشد، نه فقط ظرف بیرونی‌اش.
+    document.querySelectorAll('.pems-sidebar .nav-link').forEach(function (link) {
+        if (link.querySelector('.nav-label')) return; // قبلاً Wrap شده - از اجرای دوباره جلوگیری می‌کند
+        var label = document.createElement('span');
+        label.className = 'nav-label';
+        Array.from(link.childNodes).forEach(function (node) {
+            if (node.nodeType === 1 && node.tagName === 'I') return; // آیکون در جای خودش می‌ماند
+            label.appendChild(node);
+        });
+        link.appendChild(label);
+    });
+
+    // طبق بند «Preserve tooltips for icon-only navigation»: به‌جای افزودن title به هر
+    // پیوند/تیتر بخش به‌صورت دستی (~۱۰۰ مورد)، از همون متن قابل‌مشاهده‌ی موجود (بدون آیکون -
+    // چون گلیف Bootstrap Icons از طریق CSS ::before است، نه textContent) به‌صورت خودکار
+    // Tooltip بومی مرورگر ساخته می‌شود - برای هر آیتم فعلی و آینده، بدون نگهداری دستی.
+    document.querySelectorAll('.pems-sidebar .nav-link, .pems-sidebar .nav-section-title').forEach(function (el) {
+        if (!el.hasAttribute('title')) {
+            var label = el.textContent.trim();
+            if (label) el.setAttribute('title', label);
+        }
     });
 </script>

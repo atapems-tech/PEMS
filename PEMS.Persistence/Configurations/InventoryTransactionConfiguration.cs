@@ -46,6 +46,14 @@ public class InventoryTransactionConfiguration : IEntityTypeConfiguration<Invent
             .HasForeignKey(x => x.EmployeeId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        // طبق «PEMS Operations Phase 2A» بخش ۹: پیوند اختیاری Nullable به ProductionBatch -
+        // Restrict هم‌الگو با بقیه‌ی FKهای همین جدول؛ ایندکس برای Query موجودی بچ-آگاه (بخش ۱۲).
+        builder.HasOne(x => x.ProductionBatch)
+            .WithMany()
+            .HasForeignKey(x => x.ProductionBatchId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         builder.HasIndex(x => new { x.MaterialItemId, x.WarehouseId, x.TransactionDate });
+        builder.HasIndex(x => x.ProductionBatchId);
     }
 }

@@ -70,6 +70,19 @@ public static class MenuAccess
         SystemRoles.MaintenanceEngineer
     };
 
+    // طبق «PEMS Operations CMMS Boundary Correction»: مستقل از CmmsIntegration بالا - دقیقاً
+    // همون نقش‌هایی که PermissionService.SeedDefaultsAsync برای ماژول "Production" مجوز
+    // گرفتند (MaintenanceEngineer/QAManager/EngineeringManager/Viewer)، تا هیچ نقشی لینک را
+    // ببیند که پشتش Forbid بگیرد یا برعکس.
+    public static readonly string[] Operations =
+    {
+        SystemRoles.SystemAdmin,
+        SystemRoles.MaintenanceEngineer,
+        SystemRoles.QAManager,
+        SystemRoles.EngineeringManager,
+        SystemRoles.Viewer
+    };
+
     public static readonly string[] Administration =
     {
         SystemRoles.SystemAdmin

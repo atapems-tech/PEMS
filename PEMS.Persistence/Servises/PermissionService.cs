@@ -25,7 +25,11 @@ public class PermissionService : IPermissionService
         "EquipmentFunctionalLocationAssignment", "MaintenanceHistoryImport", "Barcode",
         "AIExtraction", "TableExtraction", "Relationship", "OCRProcessing",
         "Team", "Crew", "InventoryMasterData", "MaintenanceMasterData",
-        "Setup"
+        "Setup",
+        // طبق «PEMS Operations & Production Architecture Spec v1» فاز ۱: ماژول مستقل جدید -
+        // نامش عمداً "Production" است نه "Warehouse" (که با InventoryMasterData/Inventory موجود
+        // تداخل معنایی می‌داشت - طبق سوال باز AQ-7 سند معماری).
+        "Production"
     };
 
     public PermissionService(PEMSDbContext context, IAccessControlService accessControlService)
@@ -495,6 +499,30 @@ public class PermissionService : IPermissionService
             New(SystemRoles.MaintenanceEngineer, "MrsImport", create: true, del: true, approve: true),
             New(SystemRoles.EngineeringManager, "MrsImport", create: true, del: true, approve: true),
             New(SystemRoles.Viewer, "MrsImport")
+        });
+
+        // ==============================================================================
+        // طبق «PEMS Operations & Production Architecture Spec v1» فاز ۱ بند AF (RBAC/SoD Matrix):
+        // نقش جدیدی ساخته نشد (طبق قاعده‌ی REUSE > EXTEND > CREATE و دستور صریح بند ۱۹ سند فاز:
+        // "audit the existing permission naming convention first"). نگاشت روی همون ۷ فیلد ثابت
+        // موجود:
+        //   View    = مشاهده Dashboard/سفارش/اجرا/بچ
+        //   Create  = ایجاد سفارش/اجرا + ثبت Input/Output/Loss + Post به موجودی + Submit بچ برای QC
+        //   Edit    = Plan سفارش (تایید برنامه)
+        //   Delete  = Cancel سفارش/اجرا (طبق همون قیاس Barcode: Delete = متوقف‌کردن یک رکورد فعال،
+        //             نه حذف فیزیکی)
+        //   Approve = گیت‌های پرریسک: Release/Complete/Close سفارش + Release/Reject بچ (QC)
+        //   Hold/ReleaseHold = تعلیق/ازسرگیری سفارش، اجرا، و Block/Unblock بچ
+        // MaintenanceEngineer عمداً Approve ندارد - جداسازی وظایف (SoD) طبیعی بین «کسی که تولید/
+        // ثبت می‌کند» و «کسی که رها/تایید کیفیت می‌کند» (QAManager/EngineeringManager)، دقیقاً هم‌سو
+        // با الگوی SoDPolicy موجود (EngineeringDocuments.Create ↔ Approve).
+        // ==============================================================================
+        await SeedMissingRolesAsync("Production", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "Production", create: true, edit: true, hold: true, releaseHold: true),
+            New(SystemRoles.QAManager, "Production", approve: true),
+            New(SystemRoles.EngineeringManager, "Production", create: true, edit: true, del: true, approve: true, hold: true, releaseHold: true),
+            New(SystemRoles.Viewer, "Production")
         });
 
         // طبق «Functional Location Master Data Import»: همان الگوی EquipmentImport/MDRImport/

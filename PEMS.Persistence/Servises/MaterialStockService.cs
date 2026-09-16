@@ -45,7 +45,8 @@ public class MaterialStockService : IMaterialStockService
 
     public async Task<(bool Success, string? Error)> ReceiveAsync(
         int materialItemId, int warehouseId, int? storageLocationId, decimal quantity,
-        string? reason, int? employeeId)
+        string? reason, int? employeeId, string? referenceType = null, int? referenceId = null,
+        int? productionBatchId = null)
     {
         if (quantity <= 0) return (false, "مقدار دریافتی باید بزرگ‌تر از صفر باشد.");
 
@@ -61,7 +62,9 @@ public class MaterialStockService : IMaterialStockService
             StorageLocationId = storageLocationId,
             TransactionType = "Receipt",
             Quantity = quantity,
-            ReferenceType = "Manual",
+            ReferenceType = referenceType ?? "Manual",
+            ReferenceId = referenceId,
+            ProductionBatchId = productionBatchId,
             EmployeeId = employeeId,
             TransactionDate = DateTime.Now,
             Reason = reason
@@ -73,7 +76,8 @@ public class MaterialStockService : IMaterialStockService
 
     public async Task<(bool Success, string? Error)> AdjustAsync(
         int materialItemId, int warehouseId, int? storageLocationId, decimal newOnHandQuantity,
-        string? reason, int? employeeId)
+        string? reason, int? employeeId, string? referenceType = null, int? referenceId = null,
+        int? productionBatchId = null)
     {
         if (newOnHandQuantity < 0) return (false, "موجودی نمی‌تواند منفی باشد.");
 
@@ -91,7 +95,9 @@ public class MaterialStockService : IMaterialStockService
             StorageLocationId = storageLocationId,
             TransactionType = "Adjustment",
             Quantity = delta,
-            ReferenceType = "Manual",
+            ReferenceType = referenceType ?? "Manual",
+            ReferenceId = referenceId,
+            ProductionBatchId = productionBatchId,
             EmployeeId = employeeId,
             TransactionDate = DateTime.Now,
             Reason = reason
@@ -101,9 +107,18 @@ public class MaterialStockService : IMaterialStockService
         return (true, null);
     }
 
+    public async Task<int?> GetLastTransactionIdAsync(string referenceType, int referenceId)
+    {
+        return await _context.InventoryTransactions
+            .Where(x => x.ReferenceType == referenceType && x.ReferenceId == referenceId)
+            .OrderByDescending(x => x.InventoryTransactionId)
+            .Select(x => (int?)x.InventoryTransactionId)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<(bool Success, string? Error)> ReturnAsync(
         int materialItemId, int warehouseId, int? storageLocationId, decimal quantity,
-        string? reason, int? employeeId)
+        string? reason, int? employeeId, int? productionBatchId = null)
     {
         if (quantity <= 0) return (false, "مقدار برگشتی باید بزرگ‌تر از صفر باشد.");
 
@@ -120,6 +135,7 @@ public class MaterialStockService : IMaterialStockService
             TransactionType = "Return",
             Quantity = quantity,
             ReferenceType = "Manual",
+            ProductionBatchId = productionBatchId,
             EmployeeId = employeeId,
             TransactionDate = DateTime.Now,
             Reason = reason
@@ -131,7 +147,8 @@ public class MaterialStockService : IMaterialStockService
 
     public async Task<(bool Success, string? Error)> TransferAsync(
         int materialItemId, int fromWarehouseId, int? fromStorageLocationId,
-        int toWarehouseId, int? toStorageLocationId, decimal quantity, string? reason, int? employeeId)
+        int toWarehouseId, int? toStorageLocationId, decimal quantity, string? reason, int? employeeId,
+        int? productionBatchId = null)
     {
         if (quantity <= 0) return (false, "مقدار انتقال باید بزرگ‌تر از صفر باشد.");
 
@@ -167,6 +184,7 @@ public class MaterialStockService : IMaterialStockService
             TransactionType = "TransferOut",
             Quantity = quantity,
             ReferenceType = "Manual",
+            ProductionBatchId = productionBatchId,
             EmployeeId = employeeId,
             TransactionDate = DateTime.Now,
             Reason = reason ?? $"انتقال به {toWarehouseCode}"
@@ -180,6 +198,7 @@ public class MaterialStockService : IMaterialStockService
             TransactionType = "TransferIn",
             Quantity = quantity,
             ReferenceType = "Manual",
+            ProductionBatchId = productionBatchId,
             EmployeeId = employeeId,
             TransactionDate = DateTime.Now,
             Reason = reason ?? $"انتقال از {fromWarehouseCode}"

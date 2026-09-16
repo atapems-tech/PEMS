@@ -5418,6 +5418,9 @@ namespace PEMS.Persistence.Migrations
                     b.Property<int>("MaterialItemId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ProductionBatchId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(18,3)");
 
@@ -5455,6 +5458,8 @@ namespace PEMS.Persistence.Migrations
                     b.HasKey("InventoryTransactionId");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ProductionBatchId");
 
                     b.HasIndex("StorageLocationId");
 
@@ -9305,6 +9310,669 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("ProcurementPackages");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionBatch", b =>
+                {
+                    b.Property<int>("ProductionBatchId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductionBatchId"));
+
+                    b.Property<string>("BatchNumber")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MaterialItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ProducedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductionOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductionRunId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("QualityStatus")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int?>("QualityStatusChangedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("QualityStatusChangedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("QualityStatusReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductionBatchId");
+
+                    b.HasIndex("BatchNumber")
+                        .IsUnique();
+
+                    b.HasIndex("MaterialItemId");
+
+                    b.HasIndex("ProductionOrderId");
+
+                    b.HasIndex("ProductionRunId");
+
+                    b.HasIndex("QualityStatus");
+
+                    b.HasIndex("QualityStatusChangedById");
+
+                    b.HasIndex("UomId");
+
+                    b.ToTable("ProductionBatches", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionDowntimeEvent", b =>
+                {
+                    b.Property<int>("ProductionDowntimeEventId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductionDowntimeEventId"));
+
+                    b.Property<string>("CauseCategory")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("EquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductionRunId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductionWorkCenterId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("SourceWorkOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SourceWorkRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductionDowntimeEventId");
+
+                    b.HasIndex("EquipmentId");
+
+                    b.HasIndex("ProductionRunId");
+
+                    b.HasIndex("ProductionWorkCenterId");
+
+                    b.HasIndex("SourceWorkOrderId");
+
+                    b.HasIndex("SourceWorkRequestId");
+
+                    b.HasIndex("StartTime");
+
+                    b.ToTable("ProductionDowntimeEvents", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionEvent", b =>
+                {
+                    b.Property<int>("ProductionEventId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductionEventId"));
+
+                    b.Property<string>("Details")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EventDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EventType")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<int?>("ProductionOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductionRunId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductionEventId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ProductionOrderId");
+
+                    b.HasIndex("ProductionRunId");
+
+                    b.ToTable("ProductionEvents", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionInput", b =>
+                {
+                    b.Property<int>("ProductionInputId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductionInputId"));
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("InventoryTransactionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaterialItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductionRunId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<int?>("SourceProductionBatchId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductionInputId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("InventoryTransactionId");
+
+                    b.HasIndex("MaterialItemId");
+
+                    b.HasIndex("ProductionRunId");
+
+                    b.HasIndex("SourceProductionBatchId");
+
+                    b.HasIndex("UomId");
+
+                    b.ToTable("ProductionInputs", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionLoss", b =>
+                {
+                    b.Property<int>("ProductionLossId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductionLossId"));
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LossCategory")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductionRunId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductionLossId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ProductionRunId");
+
+                    b.HasIndex("UomId");
+
+                    b.ToTable("ProductionLosses", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionOrder", b =>
+                {
+                    b.Property<int>("ProductionOrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductionOrderId"));
+
+                    b.Property<DateTime?>("ActualFinishDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ActualStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CancellationReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("EquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("HoldReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaterialItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrderNumber")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<DateTime?>("PlannedFinishDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("PlannedQuantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<DateTime?>("PlannedStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PreHoldStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductionWorkCenterId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ResponsibleEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductionOrderId");
+
+                    b.HasIndex("EquipmentId");
+
+                    b.HasIndex("MaterialItemId");
+
+                    b.HasIndex("OrderNumber")
+                        .IsUnique();
+
+                    b.HasIndex("ProductionWorkCenterId");
+
+                    b.HasIndex("ResponsibleEmployeeId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("UomId");
+
+                    b.ToTable("ProductionOrders", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionOutput", b =>
+                {
+                    b.Property<int>("ProductionOutputId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductionOutputId"));
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("InventoryTransactionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaterialItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OutputClassification")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("ProductionBatchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductionRunId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductionOutputId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("InventoryTransactionId");
+
+                    b.HasIndex("MaterialItemId");
+
+                    b.HasIndex("ProductionBatchId");
+
+                    b.HasIndex("ProductionRunId");
+
+                    b.HasIndex("UomId");
+
+                    b.ToTable("ProductionOutputs", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionRun", b =>
+                {
+                    b.Property<int>("ProductionRunId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductionRunId"));
+
+                    b.Property<string>("CancellationReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("EquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("HoldReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OperatorEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PreHoldStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductionOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductionWorkCenterId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("RunNumber")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<int?>("ShiftDefinitionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductionRunId");
+
+                    b.HasIndex("EquipmentId");
+
+                    b.HasIndex("OperatorEmployeeId");
+
+                    b.HasIndex("ProductionOrderId");
+
+                    b.HasIndex("ProductionWorkCenterId");
+
+                    b.HasIndex("RunNumber")
+                        .IsUnique();
+
+                    b.HasIndex("ShiftDefinitionId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("ProductionRuns", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionTarget", b =>
+                {
+                    b.Property<int>("ProductionTargetId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductionTargetId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaterialItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProductionOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductionWorkCenterId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("ShiftDefinitionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TargetDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("TargetQuantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductionTargetId");
+
+                    b.HasIndex("MaterialItemId");
+
+                    b.HasIndex("ProductionOrderId");
+
+                    b.HasIndex("ProductionWorkCenterId");
+
+                    b.HasIndex("ShiftDefinitionId");
+
+                    b.HasIndex("TargetDate");
+
+                    b.HasIndex("UomId");
+
+                    b.HasIndex("TargetDate", "ProductionWorkCenterId", "MaterialItemId", "ShiftDefinitionId")
+                        .IsUnique()
+                        .HasFilter("[ShiftDefinitionId] IS NOT NULL");
+
+                    b.ToTable("ProductionTargets", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionWorkCenter", b =>
+                {
+                    b.Property<int>("ProductionWorkCenterId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductionWorkCenterId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FunctionalLocationId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductionWorkCenterId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("EquipmentId");
+
+                    b.HasIndex("FunctionalLocationId");
+
+                    b.ToTable("ProductionWorkCenters", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Project", b =>
                 {
                     b.Property<int>("ProjectId")
@@ -10115,6 +10783,58 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("ApplicationUserId", "PageKey");
 
                     b.ToTable("SavedFilters");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ShiftDefinition", b =>
+                {
+                    b.Property<int>("ShiftDefinitionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShiftDefinitionId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ShiftDefinitionId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("ShiftDefinitions", (string)null);
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.ShiftHandover", b =>
@@ -15613,6 +16333,11 @@ namespace PEMS.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("PEMS.Domain.Entities.ProductionBatch", "ProductionBatch")
+                        .WithMany()
+                        .HasForeignKey("ProductionBatchId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("PEMS.Domain.Entities.StorageLocation", "StorageLocation")
                         .WithMany()
                         .HasForeignKey("StorageLocationId")
@@ -15637,6 +16362,8 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Employee");
 
                     b.Navigation("MaterialItem");
+
+                    b.Navigation("ProductionBatch");
 
                     b.Navigation("StorageLocation");
 
@@ -16804,6 +17531,368 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Discipline");
 
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionBatch", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.MaterialItem", "MaterialItem")
+                        .WithMany()
+                        .HasForeignKey("MaterialItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionOrder", "ProductionOrder")
+                        .WithMany()
+                        .HasForeignKey("ProductionOrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionRun", "ProductionRun")
+                        .WithMany()
+                        .HasForeignKey("ProductionRunId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.Employee", "QualityStatusChangedBy")
+                        .WithMany()
+                        .HasForeignKey("QualityStatusChangedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.MaterialUOM", "Uom")
+                        .WithMany()
+                        .HasForeignKey("UomId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("MaterialItem");
+
+                    b.Navigation("ProductionOrder");
+
+                    b.Navigation("ProductionRun");
+
+                    b.Navigation("QualityStatusChangedBy");
+
+                    b.Navigation("Uom");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionDowntimeEvent", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionRun", "ProductionRun")
+                        .WithMany()
+                        .HasForeignKey("ProductionRunId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionWorkCenter", "ProductionWorkCenter")
+                        .WithMany()
+                        .HasForeignKey("ProductionWorkCenterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.WorkOrder", "SourceWorkOrder")
+                        .WithMany()
+                        .HasForeignKey("SourceWorkOrderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.WorkRequest", "SourceWorkRequest")
+                        .WithMany()
+                        .HasForeignKey("SourceWorkRequestId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("ProductionRun");
+
+                    b.Navigation("ProductionWorkCenter");
+
+                    b.Navigation("SourceWorkOrder");
+
+                    b.Navigation("SourceWorkRequest");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionEvent", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionOrder", "ProductionOrder")
+                        .WithMany()
+                        .HasForeignKey("ProductionOrderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionRun", "ProductionRun")
+                        .WithMany("Events")
+                        .HasForeignKey("ProductionRunId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("ProductionOrder");
+
+                    b.Navigation("ProductionRun");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionInput", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.InventoryTransaction", "InventoryTransaction")
+                        .WithMany()
+                        .HasForeignKey("InventoryTransactionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.MaterialItem", "MaterialItem")
+                        .WithMany()
+                        .HasForeignKey("MaterialItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionRun", "ProductionRun")
+                        .WithMany("Inputs")
+                        .HasForeignKey("ProductionRunId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionBatch", "SourceProductionBatch")
+                        .WithMany("ConsumedAsSourceIn")
+                        .HasForeignKey("SourceProductionBatchId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.MaterialUOM", "Uom")
+                        .WithMany()
+                        .HasForeignKey("UomId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("InventoryTransaction");
+
+                    b.Navigation("MaterialItem");
+
+                    b.Navigation("ProductionRun");
+
+                    b.Navigation("SourceProductionBatch");
+
+                    b.Navigation("Uom");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionLoss", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionRun", "ProductionRun")
+                        .WithMany("Losses")
+                        .HasForeignKey("ProductionRunId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.MaterialUOM", "Uom")
+                        .WithMany()
+                        .HasForeignKey("UomId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("ProductionRun");
+
+                    b.Navigation("Uom");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionOrder", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.MaterialItem", "MaterialItem")
+                        .WithMany()
+                        .HasForeignKey("MaterialItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionWorkCenter", "ProductionWorkCenter")
+                        .WithMany()
+                        .HasForeignKey("ProductionWorkCenterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.Employee", "ResponsibleEmployee")
+                        .WithMany()
+                        .HasForeignKey("ResponsibleEmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.MaterialUOM", "Uom")
+                        .WithMany()
+                        .HasForeignKey("UomId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("MaterialItem");
+
+                    b.Navigation("ProductionWorkCenter");
+
+                    b.Navigation("ResponsibleEmployee");
+
+                    b.Navigation("Uom");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionOutput", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.InventoryTransaction", "InventoryTransaction")
+                        .WithMany()
+                        .HasForeignKey("InventoryTransactionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.MaterialItem", "MaterialItem")
+                        .WithMany()
+                        .HasForeignKey("MaterialItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionBatch", "ProductionBatch")
+                        .WithMany("Outputs")
+                        .HasForeignKey("ProductionBatchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionRun", "ProductionRun")
+                        .WithMany("Outputs")
+                        .HasForeignKey("ProductionRunId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.MaterialUOM", "Uom")
+                        .WithMany()
+                        .HasForeignKey("UomId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("InventoryTransaction");
+
+                    b.Navigation("MaterialItem");
+
+                    b.Navigation("ProductionBatch");
+
+                    b.Navigation("ProductionRun");
+
+                    b.Navigation("Uom");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionRun", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.Employee", "OperatorEmployee")
+                        .WithMany()
+                        .HasForeignKey("OperatorEmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionOrder", "ProductionOrder")
+                        .WithMany("ProductionRuns")
+                        .HasForeignKey("ProductionOrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionWorkCenter", "ProductionWorkCenter")
+                        .WithMany()
+                        .HasForeignKey("ProductionWorkCenterId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.ShiftDefinition", "ShiftDefinition")
+                        .WithMany()
+                        .HasForeignKey("ShiftDefinitionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("OperatorEmployee");
+
+                    b.Navigation("ProductionOrder");
+
+                    b.Navigation("ProductionWorkCenter");
+
+                    b.Navigation("ShiftDefinition");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionTarget", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.MaterialItem", "MaterialItem")
+                        .WithMany()
+                        .HasForeignKey("MaterialItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionOrder", "ProductionOrder")
+                        .WithMany()
+                        .HasForeignKey("ProductionOrderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.ProductionWorkCenter", "ProductionWorkCenter")
+                        .WithMany()
+                        .HasForeignKey("ProductionWorkCenterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.ShiftDefinition", "ShiftDefinition")
+                        .WithMany()
+                        .HasForeignKey("ShiftDefinitionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.MaterialUOM", "Uom")
+                        .WithMany()
+                        .HasForeignKey("UomId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("MaterialItem");
+
+                    b.Navigation("ProductionOrder");
+
+                    b.Navigation("ProductionWorkCenter");
+
+                    b.Navigation("ShiftDefinition");
+
+                    b.Navigation("Uom");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionWorkCenter", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.FunctionalLocation", "FunctionalLocation")
+                        .WithMany()
+                        .HasForeignKey("FunctionalLocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("FunctionalLocation");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.PurchaseOrder", b =>
@@ -18225,6 +19314,29 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("MaterialRequisitions");
 
                     b.Navigation("Quotations");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionBatch", b =>
+                {
+                    b.Navigation("ConsumedAsSourceIn");
+
+                    b.Navigation("Outputs");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionOrder", b =>
+                {
+                    b.Navigation("ProductionRuns");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ProductionRun", b =>
+                {
+                    b.Navigation("Events");
+
+                    b.Navigation("Inputs");
+
+                    b.Navigation("Losses");
+
+                    b.Navigation("Outputs");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.PurchaseOrder", b =>

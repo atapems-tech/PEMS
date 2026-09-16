@@ -41,4 +41,12 @@ public class InventoryTransaction
     public DateTime TransactionDate { get; set; } = DateTime.Now;
 
     public string? Reason { get; set; }
+
+    // طبق «PEMS Operations Phase 2A — Foundational Hardening» بخش ۹: پیوند اختیاری به بچ تولید -
+    // Nullable، بدون تغییر معنای تراکنش‌های قدیمی (که همیشه Null باقی می‌مانند). فقط وقتی پر
+    // می‌شود که منبع واقعی تراکنش به یک ProductionBatch شناخته‌شده وصل باشد (هرگز حدسی/بازسازی‌شده
+    // برای داده‌ی تاریخی). این معماری موجود (InventoryTransaction = دفتر کل، MaterialStock =
+    // فرافکنی موجودی) را جایگزین نمی‌کند - فقط دفتر کل موجود را بچ-آگاه می‌کند.
+    public int? ProductionBatchId { get; set; }
+    public ProductionBatch? ProductionBatch { get; set; }
 }

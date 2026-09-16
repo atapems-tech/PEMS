@@ -361,4 +361,42 @@ public class BarcodeServiceTests
         Assert.Single(ctx.BarcodeIdentities);
         Assert.Equal(real.EquipmentId, ctx.BarcodeIdentities.Single().TargetId);
     }
+
+    // ================= Production Core (Phase 1) extension =================
+
+    [Fact]
+    public async Task GenerateAsync_ProductionBatchTarget_Succeeds_NoSchemaChangeNeeded()
+    {
+        // طبق «PEMS Operations & Production Architecture Spec v1» فاز ۱ بند AB: افزودن یک
+        // TargetType جدید (ProductionBatch) فقط با ثبت آن در SupportedTargetTypes و سه Switch
+        // موجود ممکن است - بدون هیچ تغییر Schema روی خودِ BarcodeIdentity.
+        var ctx = CreateContext(nameof(GenerateAsync_ProductionBatchTarget_Succeeds_NoSchemaChangeNeeded));
+        var batch = new ProductionBatch
+        {
+            BatchNumber = "PB-00001",
+            MaterialItemId = 1,
+            ProductionOrderId = 1,
+            ProductionRunId = 1,
+            Quantity = 10,
+            QualityStatus = "Produced"
+        };
+        ctx.ProductionBatches.Add(batch);
+        await ctx.SaveChangesAsync();
+        var service = new BarcodeService(ctx);
+
+        var (barcode, wasExisting) = await service.GenerateAsync("ProductionBatch", batch.ProductionBatchId, "QR", null);
+
+        Assert.False(wasExisting);
+        Assert.Equal("Active", barcode.Status);
+        Assert.Contains(batch.BatchNumber, barcode.TargetDisplayLabel ?? "");
+    }
+
+    [Fact]
+    public async Task GenerateAsync_ProductionBatchTarget_OrphanTargetIsRejected()
+    {
+        var ctx = CreateContext(nameof(GenerateAsync_ProductionBatchTarget_OrphanTargetIsRejected));
+        var service = new BarcodeService(ctx);
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.GenerateAsync("ProductionBatch", 99999, "QR", null));
+    }
 }

@@ -285,6 +285,15 @@ builder.Services.AddScoped<IMaterialStockService, MaterialStockService>();
 builder.Services.AddScoped<IInventoryTransactionService, InventoryTransactionService>();
 builder.Services.AddScoped<IMrsImportService, MrsImportService>();
 
+// طبق «PEMS Operations & Production Architecture Spec v1» فاز ۱ (Production Core)
+builder.Services.AddScoped<IProductionOrderService, ProductionOrderService>();
+builder.Services.AddScoped<IProductionRunService, ProductionRunService>();
+
+// طبق «PEMS Operations Phase 2A — Foundational Hardening»
+builder.Services.AddScoped<IProductionTargetService, ProductionTargetService>();
+builder.Services.AddScoped<IProductionDowntimeService, ProductionDowntimeService>();
+builder.Services.AddScoped<IOperationsReportService, OperationsReportService>();
+
 // ==============================================================================
 // Global Intelligent Search Framework (فاز A) - طبق معماری: هر Provider جدید فقط با یک
 // خط AddScoped اضافه ثبت می‌شود و خودکار توسط GlobalSearchService شناسایی می‌شود؛ خودِ

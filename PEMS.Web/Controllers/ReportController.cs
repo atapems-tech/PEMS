@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Common;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
 
@@ -16,17 +17,20 @@ public class ReportController : Controller
     private readonly IVDRReportService _vdrReportService;
     private readonly ICmmsReportService _cmmsReportService;
     private readonly IProcurementReportService _procurementReportService;
+    private readonly IOperationsReportService _operationsReportService;
     private readonly PEMSDbContext _context;
 
     public ReportController(ICorrespondenceReportService service, IEngineeringReportService engineeringReportService,
         IVDRReportService vdrReportService, ICmmsReportService cmmsReportService,
-        IProcurementReportService procurementReportService, PEMSDbContext context)
+        IProcurementReportService procurementReportService, IOperationsReportService operationsReportService,
+        PEMSDbContext context)
     {
         _service = service;
         _engineeringReportService = engineeringReportService;
         _vdrReportService = vdrReportService;
         _cmmsReportService = cmmsReportService;
         _procurementReportService = procurementReportService;
+        _operationsReportService = operationsReportService;
         _context = context;
     }
 
@@ -115,5 +119,42 @@ public class ReportController : Controller
         ViewBag.ToDate = toDate;
 
         return View(report);
+    }
+
+    // ==============================================================================
+    // طبق «PEMS Operations Phase 2A — Foundational Hardening» بخش ۲۱: پایه‌ی حداقلی گزارش‌گیری
+    // Operations - فقط Day/Month/CustomRange (نه Week - چون WeekStartDay هنوز توسط کسب‌وکار
+    // تایید نشده و ReportingPeriod.Resolve عمداً بدون مقدار پیش‌فرض برای آن Exception می‌دهد؛
+    // افزودن Week به این فرم قبل از آن تصمیم فقط یک مسیر همیشه-خطا می‌ساخت). Gross/Net عمداً
+    // در این گزارش نیست - بند ۴ سند فاز.
+    // ==============================================================================
+    public async Task<IActionResult> Operations(string periodType, DateTime? anchorOrFrom, DateTime? toDate, int? productionWorkCenterId, int? materialItemId)
+    {
+        ViewData["Title"] = "Operations Report";
+        ViewData["Section"] = "Operations & Production";
+
+        var normalizedPeriodType = periodType switch
+        {
+            "Month" => PeriodType.Month,
+            "CustomRange" => PeriodType.CustomRange,
+            _ => PeriodType.Day
+        };
+
+        var summary = await _operationsReportService.GetSummaryAsync(
+            normalizedPeriodType, anchorOrFrom, toDate, weekStartDay: null, productionWorkCenterId, materialItemId);
+
+        ViewBag.PeriodType = normalizedPeriodType.ToString();
+        ViewBag.AnchorOrFrom = anchorOrFrom;
+        ViewBag.ToDate = toDate;
+
+        ViewBag.WorkCenters = await _context.ProductionWorkCenters.Where(x => x.IsActive)
+            .OrderBy(x => x.Code).Select(x => new { x.ProductionWorkCenterId, x.Code, x.Name }).ToListAsync();
+        ViewBag.SelectedWorkCenterId = productionWorkCenterId;
+
+        ViewBag.MaterialItems = await _context.MaterialItems.Where(x => x.IsActive)
+            .OrderBy(x => x.MaterialCode).Select(x => new { x.MaterialItemId, x.MaterialCode }).ToListAsync();
+        ViewBag.SelectedMaterialItemId = materialItemId;
+
+        return View(summary);
     }
 }
