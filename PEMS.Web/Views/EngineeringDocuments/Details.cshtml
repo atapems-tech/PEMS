@@ -3,6 +3,11 @@
 @using PEMS.Web.Models
 @{
     ViewData["Title"] = "Engineering Document Details";
+    // طبق «PEMS — Engineering Documents Upper-Whitespace Correction»: این صفحه از قبل یک
+    // Breadcrumb محلی (خط ۶۱ پایین‌تر، شامل لینک به لیست + شماره‌ی واقعی مدرک) و یک کارت هویت
+    // مدرک (DocumentNo/Status/Revision) بلافاصله زیرش دارد - H1 عمومی Layout همون متن ثابت بالا
+    // را با فونت درشت‌تر و ۴۸px+ فاصله‌ی عمودی اضافه تکرار می‌کرد، بدون اطلاعات جدید.
+    ViewData["HidePageTitle"] = true;
 
     var relatedLetters = (List<PEMS.Application.DTOs.RelatedLetterDto>)(ViewBag.RelatedLetters ?? new List<PEMS.Application.DTOs.RelatedLetterDto>());
     var idcStatusForPage = (IReadOnlyList<PEMS.Application.Interfaces.IdcStatusItemDto>)

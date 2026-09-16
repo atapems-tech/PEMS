@@ -229,6 +229,155 @@ body {
     }
 }
 
+/* =========================================
+   PEMS — Hover-Expandable Sidebar Navigation (Icon Rail)
+   طبق سند وظیفه: پیش‌فرض دسکتاپ یک نوار باریک آیکون‌محور (~۶۴px) - با Hover ماوس یا
+   Focus صفحه‌کلید (Tab)، به‌صورت Overlay (روی محتوا، بدون جابه‌جایی/فشردن آن) به عرض کامل
+   موجود (--sidebar-width) باز می‌شود. فقط دسکتاپ (≥۹۹۲px) - رفتار موبایل/تبلت زیر ۹۹۲px
+   کاملاً دست‌نخورده می‌ماند (طبق بند Responsive سند وظیفه، بدون تکیه بر Hover در لمسی).
+   دکمه‌ی همبرگر موجود («پنهان‌سازی کامل») مستقل از این رفتار باقی می‌ماند.
+   ========================================= */
+@media (min-width: 992px) {
+    /* طبق ممیزی: admin.css (که بدون قید Media روی همه‌ی صفحات، بعد از site.css بارگذاری
+       می‌شود) یک قاعده‌ی هم‌مشخصیت‌ی دیگر برای .pems-sidebar { width: var(--sidebar-width) }
+       دارد - بدون !important این‌جا، آن قاعده (چون دیرتر لود می‌شود) عرض Icon Rail را بی‌اثر
+       می‌کرد. دقیقاً همون دلیلی که قاعده‌ی .pems-collapsed موجود از قبل !important دارد. */
+    .pems-sidebar {
+        position: fixed !important;
+        top: var(--topbar-height);
+        bottom: 0;
+        left: 0;
+        width: 64px !important;
+        z-index: 1035;
+        transition: width 200ms ease;
+    }
+
+    html[dir="rtl"] .pems-sidebar {
+        left: auto;
+        right: 0;
+    }
+
+    /* Overlay: عرض واقعی نوار تغییر می‌کند ولی چون position:fixed است، هیچ محتوایی
+       فشرده/جابه‌جا نمی‌شود - فقط روی محتوای موجود قرار می‌گیرد (طبق بند Overlay Behavior). */
+    .pems-sidebar:hover,
+    .pems-sidebar:focus-within {
+        width: var(--sidebar-width) !important;
+        box-shadow: 6px 0 24px rgba(0,0,0,0.18);
+    }
+
+    html[dir="rtl"] .pems-sidebar:hover,
+    html[dir="rtl"] .pems-sidebar:focus-within {
+        box-shadow: -6px 0 24px rgba(0,0,0,0.18);
+    }
+
+    /* چون نوار حالا position:fixed است (خارج از چیدمان Flex)، محتوا باید فضای نوار باریک
+       را خودش رزرو کند - فقط عرض حالت جمع‌شده (۶۴px)، نه عرض حالت باز (Overlay است). */
+    .pems-content {
+        margin-left: 64px;
+    }
+
+    html[dir="rtl"] .pems-content {
+        margin-left: 0;
+        margin-right: 64px;
+    }
+
+    /* وقتی نوار با دکمه‌ی همبرگر کاملاً پنهان شده (نه فقط جمع به Icon Rail)، محتوا دیگر
+       فضایی رزرو نمی‌کند. */
+    body.pems-sidebar-fully-hidden .pems-content {
+        margin-left: 0;
+    }
+
+    html[dir="rtl"] body.pems-sidebar-fully-hidden .pems-content {
+        margin-right: 0;
+    }
+
+    /* حالت Icon Rail - طبق اصلاح ممیزی بصری: تکیه‌ی صرف به overflow:hidden روی خودِ
+       .pems-sidebar کافی نبود - چون .nav-link یک Flex Container است، Flex Item متن با
+       white-space:nowrap طبق رفتار پیش‌فرض min-width:auto در Flexbox هرگز باریک‌تر از
+       عرض واقعی متنش نمی‌شود؛ آن متن از همون لبه‌ی چپ (بعد از آیکون) شروع به رندر می‌کند و
+       فقط در نیمه‌ی راه توسط لبه‌ی نوار ۶۴px قطع می‌شود - نتیجه دقیقاً همون «Quick Set...»ی
+       بریده‌ی گزارش‌شده، نه عدم‌نمایش کامل. راه‌حل درست: خودِ متن برچسب (نه فقط ظرف بیرونی)
+       در یک <span class="nav-label"> بسته‌بندی می‌شود (برای .nav-link با جاوااسکریپت پایین
+       همین فایل - چون از قبل Wrap نشده بود؛ .nav-section-title از قبل یک <span> واقعی دارد)
+       و خودِ همان Span عرض صفر می‌گیرد - نه فقط ظرف بیرونی‌اش. */
+    .pems-sidebar .nav-link,
+    .pems-sidebar .nav-section-title {
+        justify-content: center !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .pems-sidebar .nav-link .nav-label,
+    .pems-sidebar .nav-section-title span {
+        display: inline-block;
+        max-width: 0;
+        opacity: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        transition: max-width 200ms ease, opacity 150ms ease;
+    }
+
+    .pems-sidebar .collapse .nav-link {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .pems-sidebar .nav-section-chevron {
+        display: none;
+    }
+
+    .pems-sidebar .nav-section-icon {
+        width: 20px;
+        text-align: center;
+        font-size: 16px;
+        opacity: .85;
+        flex-shrink: 0;
+    }
+
+    /* حالت باز (Hover/Focus): برگشت به چیدمان کامل موجود - دقیقاً همون Padding/Justify که
+       پیش از این ویژگی هم برای نوار همیشه-باز استفاده می‌شد. عرض ۲۲۰px برای max-width کافی
+       است چون طولانی‌ترین برچسب فعلی (فارسی/انگلیسی) داخل عرض ۲۶۰px نوار باز جا می‌شود. */
+    .pems-sidebar:hover .nav-link,
+    .pems-sidebar:hover .nav-section-title,
+    .pems-sidebar:focus-within .nav-link,
+    .pems-sidebar:focus-within .nav-section-title {
+        justify-content: flex-start !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+    .pems-sidebar:hover .nav-link .nav-label,
+    .pems-sidebar:hover .nav-section-title span,
+    .pems-sidebar:focus-within .nav-link .nav-label,
+    .pems-sidebar:focus-within .nav-section-title span {
+        max-width: 220px;
+        opacity: 1;
+    }
+
+    .pems-sidebar:hover .collapse .nav-link,
+    .pems-sidebar:focus-within .collapse .nav-link {
+        padding-left: 36px !important;
+    }
+
+    html[dir="rtl"] .pems-sidebar:hover .collapse .nav-link,
+    html[dir="rtl"] .pems-sidebar:focus-within .collapse .nav-link {
+        padding-left: 20px !important;
+        padding-right: 36px !important;
+    }
+
+    .pems-sidebar:hover .nav-section-chevron,
+    .pems-sidebar:focus-within .nav-section-chevron {
+        display: inline-block;
+    }
+}
+
+/* طبق بند Accessibility: بدون گذار عرض برای کاربرانی که انیمیشن کمتر ترجیح می‌دهند */
+@media (min-width: 992px) and (prefers-reduced-motion: reduce) {
+    .pems-sidebar {
+        transition: none;
+    }
+}
+
 /* منطق موبایل: مخفی کردن با Margin و نمایش به صورت Overlay */
 @media (max-width: 991px) {
     .pems-sidebar {

@@ -150,11 +150,18 @@
     <div class="pems-shell">
         <partial name="_SidebarMenu" />
         <main class="pems-content">
+            @* طبق «PEMS — Engineering Documents Upper-Whitespace Correction»: برخی صفحات (مثلاً
+               Engineering Documents/Details) از قبل هدر اختصاصی خودشان (Breadcrumb محلی + کارت
+               هویت مدرک) را دارند که همون متن ViewData["Title"] را دقیق‌تر/مفیدتر نشان می‌دهند -
+               این H1 عمومی برای آن‌ها صرفاً تکرار همان متن با فونت درشت‌تر است، نه اطلاعات جدید.
+               پیش‌فرض این پرچم false می‌ماند (یعنی رفتار همه‌ی صفحات دیگر دقیقاً مثل قبل است) -
+               فقط صفحاتی که صریحاً ViewData["HidePageTitle"]=true تنظیم کنند این H1 را نمی‌بینند. *@
+            @{ var hidePageTitle = ViewData["HidePageTitle"] is true; }
             @if (isAdminArea)
             {
                 <div class="admin-ui-surface">
                     <partial name="_Breadcrumb" />
-                    @if (ViewData["Title"] != null)
+                    @if (ViewData["Title"] != null && !hidePageTitle)
                     {
                         <h1 class="pems-page-title">@ViewData["Title"]</h1>
                     }
@@ -164,7 +171,7 @@
             else
             {
                 <partial name="_Breadcrumb" />
-                @if (ViewData["Title"] != null)
+                @if (ViewData["Title"] != null && !hidePageTitle)
                 {
                     <h1 class="pems-page-title">@ViewData["Title"]</h1>
                 }
@@ -231,6 +238,10 @@
                 toggleBtn.addEventListener('click', function () {
                     if (window.innerWidth >= 992) {
                         sidebar.classList.toggle('pems-collapsed');
+                        // طبق «PEMS — Hover-Expandable Sidebar Navigation»: وقتی نوار کاملاً
+                        // پنهان می‌شود (نه فقط جمع به حالت Icon Rail)، محتوا دیگر فضایی برای
+                        // آن رزرو نمی‌کند - این کلاس روی body برای همین تصمیم در CSS استفاده می‌شود.
+                        document.body.classList.toggle('pems-sidebar-fully-hidden', sidebar.classList.contains('pems-collapsed'));
                     } else {
                         sidebar.classList.toggle('pems-opened');
                     }

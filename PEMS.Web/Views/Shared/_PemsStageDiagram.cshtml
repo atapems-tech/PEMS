@@ -27,7 +27,12 @@
 }
 
 <style>
-    .pems-wf-diagram { display: flex; align-items: flex-start; justify-content: space-between; padding: 1.5rem 0.5rem; overflow-x: auto; }
+    /* طبق «PEMS — Engineering Documents Upper-Whitespace Correction»: پدینگ عمودی ۱.۵rem بالا/
+       پایین (=۴۸px خالی فقط برای فاصله، جدا از خودِ محتوای دایره/برچسب) روی یک نمودار که همیشه
+       بالای هر دو مصرف‌کننده (EngineeringDocuments/Details و VDR/Details) نمایش داده می‌شود، سهم
+       واقعی در فضای خالی بالای صفحه دارد - محتوای نمودار (دایره+برچسب+نقش) تغییر نکرد، فقط فاصله‌ی
+       اطراف آن جمع‌تر شد. هر دو مصرف‌کننده‌ی این Partial بررسی شدند - تغییری در هیچ‌کدام لازم نیست. */
+    .pems-wf-diagram { display: flex; align-items: flex-start; justify-content: space-between; padding: 0.65rem 0.5rem; overflow-x: auto; }
     .pems-wf-step { display: flex; flex-direction: column; align-items: center; min-width: 92px; text-align: center; position: relative; z-index: 1; }
     .pems-wf-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; border: 2px solid #dee2e6; background: #fff; color: #adb5bd; transition: all .2s; }
     .pems-wf-step.done .pems-wf-circle { background: #198754; border-color: #198754; color: #fff; }
