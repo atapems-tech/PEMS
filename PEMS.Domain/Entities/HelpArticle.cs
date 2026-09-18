@@ -32,7 +32,12 @@ public class HelpArticle : BaseEntity
     public int HelpCategoryId { get; set; }
     public HelpCategory? Category { get; set; }
 
-    // Module | Page | Field | Action | Workflow | Faq | Glossary | Troubleshooting | RoleGuide
+    // Module | Page | Field | Action | Workflow | Faq | Glossary | Troubleshooting | RoleGuide |
+    // Concept | DisciplineGuide | StandardReference (سه مورد آخر طبق «PEMS Help Phase 4 —
+    // Increment 3A»: همون اصل بالا - نه Entity جدا، فقط یک مقدار ArticleType دیگر؛ فقط
+    // StandardReference یک رکورد کمکی HelpStandardReference هم دارد، چون آن یکی واقعاً
+    // فیلدهای ساختاریافته/قابل‌جست‌وجو دارد که در HTML آزاد جا نمی‌گیرند - نه HelpArticleId
+    // موازی یا JSON آزاد)
     public string ArticleType { get; set; } = "Module";
 
     // طبق بخش ۵ سند: کلید پایدار Context-Aware مثل "EngineeringDocuments.Details" یا
@@ -61,4 +66,7 @@ public class HelpArticle : BaseEntity
 
     // طبق «PEMS Help System — Phase 3»
     public ICollection<HelpVisual> Visuals { get; set; } = new List<HelpVisual>();
+
+    // طبق «PEMS Help Phase 4 — Increment 3A» - فقط وقتی ArticleType=StandardReference است مقدار دارد
+    public HelpStandardReference? StandardReference { get; set; }
 }

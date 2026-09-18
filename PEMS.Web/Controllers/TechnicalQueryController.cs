@@ -32,6 +32,7 @@ public class TechnicalQueryController : Controller
     {
         ViewData["Title"] = "TQ / TSR / RFI";
         ViewData["Section"] = "Engineering Communication";
+        ViewData["HelpKey"] = "TechnicalQuery.Index";
 
         var query = _context.TechnicalQueries
             .AsNoTracking()

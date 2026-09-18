@@ -39,6 +39,7 @@ public class EquipmentImportController : Controller
 
         ViewData["Title"] = "Equipment Import";
         ViewData["Section"] = "CMMS Integration";
+        ViewData["HelpKey"] = "Imports.StagedBatchOverview";
 
         ViewBag.Projects = await _context.Projects.Where(x => x.IsActive)
             .Select(x => new { x.ProjectId, x.ProjectName }).ToListAsync();

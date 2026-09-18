@@ -35,6 +35,7 @@ public class FunctionalLocationImportController : Controller
 
         ViewData["Title"] = "Functional Location Import";
         ViewData["Section"] = "CMMS Integration";
+        ViewData["HelpKey"] = "Imports.StagedBatchOverview";
 
         var recentBatches = await _importService.GetRecentBatchesAsync();
         return View(recentBatches);

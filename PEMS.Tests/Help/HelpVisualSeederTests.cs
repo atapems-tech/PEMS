@@ -104,6 +104,71 @@ public class HelpVisualSeederTests
         Assert.All(visualArticleIds, id => Assert.Contains(id, articleIds));
     }
 
+    // ==============================================================================
+    // طبق «PEMS Help Phase 4»: این فاز نمودار سه گردش‌کار واقعیِ باقی‌مانده‌ی موتور گردش‌کار
+    // (MOC/ChangeApproval, NCR/CriticalApproval, TechnicalQuery/Response) را اضافه کرد - این
+    // تست تاییدشده می‌کند که اکنون هر هفت WorkflowDefinition واقعیِ زنده‌ی سیستم (تاییدشده با
+    // sqlcmd در فاز ۳) حداقل یک HelpVisual از نوع WorkflowDiagram متناظر دارد (پوشش کامل ۷ از
+    // ۷). EngineeringDocument/Approval عمداً دو بار ظاهر می‌شود (document-workflow و
+    // idc-inter-discipline-check - هر دو از همان گردش‌کار زنده، با زاویه‌ی توضیحی متفاوت،
+    // طبق طراحی فاز ۳) - پس شمارش بر اساس ترکیب‌های Module/Category یکتا انجام می‌شود، نه
+    // تعداد کل ردیف‌ها.
+    // ==============================================================================
+    [Fact]
+    public async Task SeedAsync_WorkflowDiagramVisuals_CoverAllSevenKnownRealWorkflows()
+    {
+        var ctx = CreateContext(nameof(SeedAsync_WorkflowDiagramVisuals_CoverAllSevenKnownRealWorkflows));
+        await SeedAllAsync(ctx);
+
+        var sources = await ctx.HelpVisuals
+            .Where(v => v.VisualType == "WorkflowDiagram")
+            .Select(v => new { v.SourceWorkflowModule, v.SourceWorkflowCategory })
+            .ToListAsync();
+
+        var expected = new (string Module, string Category)[]
+        {
+            ("EngineeringDocument", "Approval"),
+            ("VendorDocument", "Review"),
+            ("Permit", "PermitApproval"),
+            ("WorkOrder", "MultiDisciplineReview"),
+            ("MOC", "ChangeApproval"),
+            ("NCR", "CriticalApproval"),
+            ("TechnicalQuery", "Response"),
+        };
+
+        foreach (var (module, category) in expected)
+        {
+            Assert.Contains(sources, s => s.SourceWorkflowModule == module && s.SourceWorkflowCategory == category);
+        }
+
+        var distinctSources = sources.Select(s => (s.SourceWorkflowModule, s.SourceWorkflowCategory)).Distinct().Count();
+        Assert.Equal(7, distinctSources);
+    }
+
+    // ==============================================================================
+    // طبق «PEMS Help Phase 4 — Increment 2»: نمودار چرخه‌ی مجوز کار (LifecycleDiagram دستی،
+    // مبتنی بر PermitService.LegalTransitions واقعی) باید هم گذار Reject (به Rejected) و هم
+    // گذار جدای «بازگشت برای اصلاح» (به Draft) را از همان مرحله‌ی Under Review، به‌عنوان دو
+    // یال متمایز نشان دهد - نه یکی را گم کند یا با هم قاطی کند.
+    // ==============================================================================
+    [Fact]
+    public async Task SeedAsync_PermitLifecycleVisual_HasDistinctRejectAndReturnForReworkEdgesFromUnderReview()
+    {
+        var ctx = CreateContext(nameof(SeedAsync_PermitLifecycleVisual_HasDistinctRejectAndReturnForReworkEdgesFromUnderReview));
+        await SeedAllAsync(ctx);
+
+        var permitVisual = await ctx.HelpVisuals
+            .Include(v => v.Article)
+            .FirstAsync(v => v.Article!.Code == "permit-details" && v.VisualType == "LifecycleDiagram");
+
+        var def = System.Text.Json.JsonSerializer.Deserialize<PEMS.Application.DTOs.HelpVisualDefinition>(permitVisual.DefinitionJson!)!;
+
+        Assert.Contains(def.Edges, e => e.FromNodeId == "review" && e.ToNodeId == "rejected" && e.Kind == "reject");
+        Assert.Contains(def.Edges, e => e.FromNodeId == "review" && e.ToNodeId == "draft" && e.Kind == "normal");
+        Assert.Contains(def.Nodes, n => n.Id == "suspended");
+        Assert.Contains(def.Nodes, n => n.Id == "revoked");
+    }
+
     [Fact]
     public async Task SeedAsync_IdcArticle_HasBothWorkflowDiagramAndStepGuide()
     {

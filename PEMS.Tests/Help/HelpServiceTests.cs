@@ -225,4 +225,96 @@ public class HelpServiceTests
 
         Assert.Equal(1, categories.Single(c => c.HelpCategoryId == cat.HelpCategoryId).ArticleCount);
     }
+
+    // ==============================================================================
+    // طبق «PEMS Help Phase 4 — Increment 3A» بخش ۱۵ («English concept search / Persian
+    // concept search / Standard identifier search»): HelpService.SearchAsync هیچ فیلتر
+    // ArticleType ندارد (تایید‌شده با خواندن مستقیم کد) - پس Concept/StandardReference باید
+    // دقیقاً مثل هر مقاله‌ی دیگر قابل‌جست‌وجو باشند، بدون هیچ تغییر در این سرویس. این تست آن
+    // مکانیزم موجود را در برابر داده‌ای با ArticleType های جدید تایید می‌کند - نه یک موتور
+    // جستجوی جدید.
+    // ==============================================================================
+    [Fact]
+    public async Task SearchAsync_FindsConceptAndStandardReferenceArticles_ByAcronymAndPersianTitle()
+    {
+        var (ctx, svc) = CreateService(nameof(SearchAsync_FindsConceptAndStandardReferenceArticles_ByAcronymAndPersianTitle));
+        var cat = SeedCategory(ctx, "concepts");
+
+        var conceptDto = BuildDto(cat.HelpCategoryId, "concept-rcm-test");
+        conceptDto.ArticleType = "Concept";
+        conceptDto.TitleEn = "RCM (Reliability-Centered Maintenance)";
+        conceptDto.SearchKeywordsEn = "rcm,reliability centered maintenance";
+        await svc.CreateArticleAsync(conceptDto, null);
+
+        var standardDto = BuildDto(cat.HelpCategoryId, "standard-iso-test");
+        standardDto.ArticleType = "StandardReference";
+        standardDto.TitleEn = "ISO 14224 Test Standard";
+        standardDto.SearchKeywordsEn = "iso 14224,reliability data";
+        await svc.CreateArticleAsync(standardDto, null);
+
+        var byAcronym = await svc.SearchAsync("RCM", "en");
+        var byStandardId = await svc.SearchAsync("ISO 14224", "en");
+        var byPersianTitle = await svc.SearchAsync(conceptDto.TitleFa, "fa");
+
+        Assert.Contains(byAcronym, r => r.Code == "concept-rcm-test");
+        Assert.Contains(byStandardId, r => r.Code == "standard-iso-test");
+        Assert.Contains(byPersianTitle, r => r.Code == "concept-rcm-test");
+    }
+
+    // ==============================================================================
+    // طبق «PEMS Help Phase 4 — Increment 3A.1» بخش ۷ («Unpublished content is not exposed
+    // through public related-content navigation»): این رفتار از فاز ۱ در ToDetailDto از قبل
+    // درست پیاده‌سازی شده بود (`Where(r => r.IsPublished)`) - این تست فقط تایید می‌کند همان
+    // رفتار برای انواع مقاله‌ی جدید (Concept/StandardReference) هم به همان اندازه درست کار
+    // می‌کند، نه یک مسیر کد جدا.
+    // ==============================================================================
+    [Fact]
+    public async Task GetArticleByCodeAsync_UnpublishedRelatedConceptOrStandard_NeverAppearsInPublicRelatedList()
+    {
+        var (ctx, svc) = CreateService(nameof(GetArticleByCodeAsync_UnpublishedRelatedConceptOrStandard_NeverAppearsInPublicRelatedList));
+        var cat = SeedCategory(ctx, "concepts");
+
+        var publishedConceptDto = BuildDto(cat.HelpCategoryId, "concept-published-test");
+        publishedConceptDto.ArticleType = "Concept";
+        var publishedId = await svc.CreateArticleAsync(publishedConceptDto, null);
+
+        var draftStandardDto = BuildDto(cat.HelpCategoryId, "standard-draft-test");
+        draftStandardDto.ArticleType = "StandardReference";
+        draftStandardDto.IsPublished = false;
+        var draftId = await svc.CreateArticleAsync(draftStandardDto, null);
+
+        var editDto = await svc.GetForEditAsync(publishedId);
+        editDto!.RelatedArticleIds = new List<int> { draftId };
+        await svc.UpdateArticleAsync(publishedId, editDto);
+
+        var detail = await svc.GetArticleByCodeAsync("concept-published-test", "en");
+
+        Assert.NotNull(detail);
+        Assert.DoesNotContain(detail!.RelatedArticles, r => r.Code == "standard-draft-test");
+    }
+
+    // ==============================================================================
+    // طبق «PEMS Help Phase 4 — Increment 3B» بخش ۱۵/۱۷: جست‌وجوی Reliability/MTBF/Bad Actor
+    // به هر دو زبان باید همان مسیر جست‌وجوی موجود (بدون تغییر) را استفاده کند.
+    // ==============================================================================
+    [Fact]
+    public async Task SearchAsync_FindsReliabilityConcepts_ByEnglishAndPersianTerms()
+    {
+        var (ctx, svc) = CreateService(nameof(SearchAsync_FindsReliabilityConcepts_ByEnglishAndPersianTerms));
+        var cat = SeedCategory(ctx, "concepts");
+
+        var mtbfDto = BuildDto(cat.HelpCategoryId, "concept-mtbf-test");
+        mtbfDto.ArticleType = "Concept";
+        mtbfDto.TitleEn = "MTBF / MTTR / Availability";
+        mtbfDto.TitleFa = "MTBF / MTTR / Availability";
+        mtbfDto.SearchKeywordsEn = "mtbf,mttr,availability,reliability metrics";
+        mtbfDto.SearchKeywordsFa = "mtbf,mttr,قابلیت اطمینان";
+        await svc.CreateArticleAsync(mtbfDto, null);
+
+        var byMtbf = await svc.SearchAsync("MTBF", "en");
+        var byPersianKeyword = await svc.SearchAsync("قابلیت اطمینان", "fa");
+
+        Assert.Contains(byMtbf, r => r.Code == "concept-mtbf-test");
+        Assert.Contains(byPersianKeyword, r => r.Code == "concept-mtbf-test");
+    }
 }

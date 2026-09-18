@@ -213,6 +213,7 @@ public class PEMSDbContext
     public DbSet<HelpArticleTranslation> HelpArticleTranslations { get; set; }
     public DbSet<HelpRelatedArticle> HelpRelatedArticles { get; set; }
     public DbSet<HelpVisual> HelpVisuals { get; set; }
+    public DbSet<HelpStandardReference> HelpStandardReferences { get; set; }
 
 
     public DbSet<Vendor> Vendors { get; set; }

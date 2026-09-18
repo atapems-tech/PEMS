@@ -114,6 +114,43 @@ public static class HelpVisualSeeder
             "Diagram of the work order's discipline-review workflow stage, generated live from the workflow engine configuration.",
             "نموداری از مرحله‌ی بازبینی دیسیپلینیِ دستور کار، تولیدشده به‌صورت زنده از پیکربندی موتور گردش‌کار."),
 
+        // ===================== Phase 4: remaining real workflow-engine workflows (completes 7/7 coverage) =====================
+        new V("moc-overview", "WorkflowDiagram", 0,
+            "MOC", "ChangeApproval", null,
+            "MOC change-approval workflow (generated from the live workflow configuration)",
+            "گردش‌کار تایید تغییر MOC (تولیدشده از پیکربندی زنده‌ی گردش‌کار)",
+            "The Senior Approval stage only actually runs for High-risk MOCs - for Low/Medium risk it is skipped automatically by the workflow engine.",
+            "مرحله‌ی Senior Approval فقط برای MOC های با ریسک High واقعاً اجرا می‌شود - برای ریسک Low/Medium به‌صورت خودکار توسط موتور گردش‌کار رد می‌شود.",
+            "Diagram of the MOC change-approval workflow stages (Risk Assessment, Approval, Senior Approval, Closure) and the transitions between them, generated live from the workflow engine configuration.",
+            "نموداری از مراحل گردش‌کار تایید تغییر MOC (ارزیابی ریسک، تایید، تایید ارشد، بستن) و گذارهای میان آن‌ها، تولیدشده به‌صورت زنده از پیکربندی موتور گردش‌کار."),
+
+        new V("ncr-critical-approval-workflow", "WorkflowDiagram", 0,
+            "NCR", "CriticalApproval", null,
+            "NCR critical-approval workflow (generated from the live workflow configuration)",
+            "گردش‌کار تایید NCR بحرانی (تولیدشده از پیکربندی زنده‌ی گردش‌کار)",
+            "This single-stage workflow is only invoked for NCRs with Severity=Critical - Minor/Major NCRs are dispositioned and closed without it.",
+            "این گردش‌کار تک‌مرحله‌ای فقط برای NCR هایی با Severity=Critical فراخوانی می‌شود - NCR های Minor/Major بدون آن Disposition و بسته می‌شوند.",
+            "Diagram of the NCR critical-approval workflow stage, generated live from the workflow engine configuration.",
+            "نموداری از مرحله‌ی گردش‌کار تایید NCR بحرانی، تولیدشده به‌صورت زنده از پیکربندی موتور گردش‌کار."),
+
+        new V("technical-query-overview", "WorkflowDiagram", 0,
+            "TechnicalQuery", "Response", null,
+            "TQ/TSR/RFI response workflow (generated from the live workflow configuration)",
+            "گردش‌کار پاسخ‌دهی TQ/TSR/RFI (تولیدشده از پیکربندی زنده‌ی گردش‌کار)",
+            null, null,
+            "Diagram of the technical query response workflow stages and transitions, including the Reopen loop back to the responding discipline, generated live from the workflow engine configuration.",
+            "نموداری از مراحل و گذارهای گردش‌کار پاسخ‌دهی پرسش فنی، شامل حلقه‌ی بازگشتی Reopen به دیسیپلین پاسخ‌دهنده، تولیدشده به‌صورت زنده از پیکربندی موتور گردش‌کار."),
+
+        // ===================== Phase 4 Increment 2: manual, grounded in verified service code =====================
+        new V("permit-details", "LifecycleDiagram", 0,
+            null, null, PermitLifecycleJson(),
+            "Full Permit status lifecycle (verified against PermitService.LegalTransitions)",
+            "چرخه‌ی کامل وضعیت مجوز کار (تاییدشده در برابر PermitService.LegalTransitions)",
+            "This is the permit's own outer status - the internal HSE/Maintenance/Operations approval chain that runs during Under Review has its own separate live-generated diagram.",
+            "این وضعیت بیرونیِ خودِ مجوز است - زنجیره‌ی تایید داخلی HSE/نگهداری/عملیات که در طول Under Review اجرا می‌شود نمودار زنده‌ی تولیدشده‌ی جداگانه‌ی خودش را دارد.",
+            "Diagram showing the permit statuses Draft, Submitted, Under Review, Approved, Issued, Active, Suspended and Closed, and the exact points where Cancelled, Rejected (including the return to Draft for rework) and Revoked are reachable, verified against the service's own transition table.",
+            "نموداری که وضعیت‌های مجوز (Draft، Submitted، Under Review، Approved، Issued، Active، Suspended، Closed) و نقاط دقیقی که Cancelled، Rejected (شامل بازگشت به Draft برای اصلاح) و Revoked قابل‌دسترس‌اند را نشان می‌دهد، تاییدشده در برابر جدول گذار خودِ سرویس."),
+
         // ===================== Manual (grounded in verified service/controller code) =====================
         new V("work-request-vs-work-order", "LifecycleDiagram", 0,
             null, null, WorkRequestLifecycleJson(),
@@ -180,6 +217,45 @@ public static class HelpVisualSeeder
         E("review", "cancelled", "Cancel", "لغو", "terminal");
         E("approved", "cancelled", "Cancel", "لغو", "terminal");
         E("planned", "cancelled", "Cancel", "لغو", "terminal");
+
+        return System.Text.Json.JsonSerializer.Serialize(def);
+    }
+
+    private static string PermitLifecycleJson()
+    {
+        var def = new PEMS.Application.DTOs.HelpVisualDefinition();
+        void N(string id, string en, string fa) => def.Nodes.Add(new PEMS.Application.DTOs.HelpVisualNodeDto { Id = id, LabelEn = en, LabelFa = fa });
+        void E(string from, string? to, string en, string fa, string kind) =>
+            def.Edges.Add(new PEMS.Application.DTOs.HelpVisualEdgeDto { FromNodeId = from, ToNodeId = to, LabelEn = en, LabelFa = fa, Kind = kind });
+
+        N("draft", "Draft", "پیش‌نویس");
+        N("submitted", "Submitted", "ارسال‌شده");
+        N("review", "Under Review", "در حال بازبینی");
+        N("approved", "Approved", "تاییدشده");
+        N("issued", "Issued", "صادرشده");
+        N("active", "Active", "فعال");
+        N("suspended", "Suspended", "معلق");
+        N("closed", "Closed", "بسته‌شده");
+        N("cancelled", "Cancelled", "لغوشده");
+        N("rejected", "Rejected", "رد شده");
+        N("revoked", "Revoked", "باطل‌شده");
+
+        // طبق PermitService.LegalTransitions (تاییدشده در کد) - عیناً همان جدول
+        E("draft", "submitted", "Submit", "ارسال", "normal");
+        E("draft", "cancelled", "Cancel", "لغو", "terminal");
+        E("submitted", "review", "Start Review", "شروع بازبینی", "normal");
+        E("submitted", "cancelled", "Cancel", "لغو", "terminal");
+        E("review", "approved", "Approve", "تایید", "normal");
+        E("review", "rejected", "Reject", "رد", "reject");
+        E("review", "draft", "Return for rework", "بازگشت برای اصلاح", "normal");
+        E("approved", "issued", "Issue", "صدور", "normal");
+        E("approved", "revoked", "Revoke", "ابطال", "terminal");
+        E("issued", "active", "Start", "شروع", "normal");
+        E("issued", "revoked", "Revoke", "ابطال", "terminal");
+        E("active", "suspended", "Suspend", "تعلیق", "normal");
+        E("active", "closed", "Close", "بستن", "terminal");
+        E("active", "revoked", "Revoke", "ابطال", "terminal");
+        E("suspended", "active", "Resume", "از سرگیری", "normal");
 
         return System.Text.Json.JsonSerializer.Serialize(def);
     }

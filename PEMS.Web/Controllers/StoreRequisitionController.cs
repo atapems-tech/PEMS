@@ -55,6 +55,7 @@ public class StoreRequisitionController : Controller
     {
         ViewData["Title"] = "Store Requisitions";
         ViewData["Section"] = "Inventory & Materials";
+        ViewData["HelpKey"] = "StoreRequisition.Index";
 
         var query = _context.StoreRequisitions.Where(x => x.IsActive).AsQueryable();
 

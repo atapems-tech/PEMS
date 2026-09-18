@@ -38,6 +38,7 @@ public class VendorController : Controller
     {
         ViewData["Title"] = "Vendors";
         ViewData["Section"] = "Contract Management";
+        ViewData["HelpKey"] = "Vendor.Index";
 
         var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
         var result = await _service.GetPagedAsync(page, normalizedPageSize);

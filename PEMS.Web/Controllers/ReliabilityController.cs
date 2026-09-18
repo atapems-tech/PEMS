@@ -68,6 +68,10 @@ public class ReliabilityController : Controller
 
         ViewData["Title"] = "Reliability Analysis";
         ViewData["Section"] = "CMMS Integration";
+        // طبق «PEMS Help Phase 4 — Increment 3B»: این صفحه و Dashboard() هر دو همان مفاهیم
+        // اصلی (MTBF/MTTR/Availability/Bad Actor) را نشان می‌دهند - یک مقاله‌ی جامع مشترک،
+        // نه دو مقاله‌ی نیمه‌تکراری (دقیقاً همان الگوی Imports.StagedBatchOverview در Increment 2)
+        ViewData["HelpKey"] = "Reliability.Overview";
 
         ViewBag.From = from;
         ViewBag.To = to;
@@ -206,6 +210,7 @@ public class ReliabilityController : Controller
 
         ViewData["Title"] = "Enterprise Reliability Dashboard";
         ViewData["Section"] = "CMMS Integration";
+        ViewData["HelpKey"] = "Reliability.Overview";
 
         ViewBag.ClassReliability = await _analyticsService.GetClassReliabilityAsync();
         ViewBag.BadActors = await _analyticsService.GetBadActorsAsync(null, null, top: 10);

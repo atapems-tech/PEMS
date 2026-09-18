@@ -39,6 +39,7 @@ public class JobPlanController : Controller
 
         ViewData["Title"] = "Job Plans";
         ViewData["Section"] = "CMMS Integration";
+        ViewData["HelpKey"] = "JobPlan.Index";
 
         var items = await _service.GetListAsync(page, DataGridPageSize.Normalize(pageSize));
 

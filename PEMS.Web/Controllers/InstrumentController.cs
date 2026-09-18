@@ -77,6 +77,7 @@ public class InstrumentController : Controller
     {
         ViewData["Title"] = "Instrument Passport";
         ViewData["Section"] = "CMMS Integration";
+        ViewData["HelpKey"] = "Instrument.Passport";
 
         var instrument = await _context.Instruments
             .Include(x => x.Equipment)

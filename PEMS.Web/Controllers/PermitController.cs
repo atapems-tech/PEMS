@@ -208,6 +208,7 @@ public class PermitController : Controller
 
         ViewData["Title"] = "Permit Details";
         ViewData["Section"] = "CMMS Integration";
+        ViewData["HelpKey"] = "Permit.Details";
 
         ViewBag.NextStatus = NextStatusMap.TryGetValue(permit.Status, out var next) ? next : null;
 

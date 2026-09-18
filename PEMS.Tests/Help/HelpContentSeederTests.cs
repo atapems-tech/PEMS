@@ -132,15 +132,131 @@ public class HelpContentSeederTests
     }
 
     [Fact]
-    public async Task SeedAsync_TotalArticleCount_MatchesPhase1PlusPhase2()
+    public async Task SeedAsync_TotalArticleCount_MatchesPhase1Through4()
     {
         // طبق بخش ۱ سند («These claims must be independently verified»): تعداد واقعی باید
         // دقیقاً منطبق با آنچه seed می‌شود باشد - نه یک عدد تخمینی در گزارش
-        var ctx = CreateContext(nameof(SeedAsync_TotalArticleCount_MatchesPhase1PlusPhase2));
+        var ctx = CreateContext(nameof(SeedAsync_TotalArticleCount_MatchesPhase1Through4));
         await SeedAsync(ctx);
 
         var totalArticles = await ctx.HelpArticles.CountAsync();
 
-        Assert.Equal(37, totalArticles); // 20 (Phase 1) + 17 (Phase 2)
+        Assert.Equal(54, totalArticles); // 20 (Phase 1) + 17 (Phase 2) + 7 (Increment 1) + 9 (Increment 2) + 1 (Increment 3B: reliability-overview)
+    }
+
+    [Fact]
+    public async Task SeedAsync_ReliabilityOverview_HasCorrectHelpKeyAndIsBilingual()
+    {
+        var ctx = CreateContext(nameof(SeedAsync_ReliabilityOverview_HasCorrectHelpKeyAndIsBilingual));
+        await SeedAsync(ctx);
+
+        var article = await ctx.HelpArticles.Include(a => a.Translations).FirstOrDefaultAsync(a => a.Code == "reliability-overview");
+
+        Assert.NotNull(article);
+        Assert.Equal("Reliability.Overview", article!.HelpKey);
+        Assert.True(article.IsPublished);
+        Assert.Contains(article.Translations, t => t.LanguageCode == "en" && t.Content.Contains("MTBF"));
+        Assert.Contains(article.Translations, t => t.LanguageCode == "fa" && t.Content.Contains("MTBF"));
+    }
+
+    // ==============================================================================
+    // طبق «PEMS Help Phase 4» بخش ۴/۲۰: HelpKey های تازه‌سیم‌شده در کنترلرهای واقعی
+    // (MOCController, QCController, TechnicalQueryController, LetterController,
+    // ContractController, VendorController, ProductionController) باید به یک مقاله‌ی
+    // منتشرشده‌ی دوزبانه برسند - قبل از این فاز این ۷ ماژول اصلاً HelpKey نداشتند.
+    // ==============================================================================
+    [Fact]
+    public async Task SeedAsync_Phase4HelpKeys_ExistAndArePublished_AndAreBilingual()
+    {
+        var ctx = CreateContext(nameof(SeedAsync_Phase4HelpKeys_ExistAndArePublished_AndAreBilingual));
+        await SeedAsync(ctx);
+
+        var expectedKeys = new[]
+        {
+            "MOC.Index", "QC.Index", "TechnicalQuery.Index", "Letter.Index",
+            "Contract.Index", "Vendor.Index", "Production.Dashboard"
+        };
+
+        foreach (var key in expectedKeys)
+        {
+            var article = await ctx.HelpArticles.Include(a => a.Translations).FirstOrDefaultAsync(a => a.HelpKey == key);
+            Assert.True(article != null, $"Expected a Help article with HelpKey '{key}'");
+            Assert.True(article!.IsPublished, $"Article for HelpKey '{key}' should be published");
+            Assert.Contains(article.Translations, t => t.LanguageCode == "en" && !string.IsNullOrWhiteSpace(t.Content));
+            Assert.Contains(article.Translations, t => t.LanguageCode == "fa" && !string.IsNullOrWhiteSpace(t.Content));
+        }
+    }
+
+    [Fact]
+    public async Task SeedAsync_OperationsProductionOverview_BackfilledWithProductionDashboardHelpKey()
+    {
+        // این مقاله در فاز ۲ بدون HelpKey seed شده بود - فاز ۴ آن را بدون تغییر محتوا Backfill می‌کند
+        var ctx = CreateContext(nameof(SeedAsync_OperationsProductionOverview_BackfilledWithProductionDashboardHelpKey));
+        await SeedAsync(ctx);
+
+        var article = await ctx.HelpArticles.FirstOrDefaultAsync(a => a.Code == "operations-production-overview");
+
+        Assert.NotNull(article);
+        Assert.Equal("Production.Dashboard", article!.HelpKey);
+    }
+
+    [Fact]
+    public async Task SeedAsync_RunTwice_BackfillIsIdempotent()
+    {
+        var ctx = CreateContext(nameof(SeedAsync_RunTwice_BackfillIsIdempotent));
+
+        await SeedAsync(ctx);
+        await SeedAsync(ctx);
+
+        var article = await ctx.HelpArticles.SingleAsync(a => a.Code == "operations-production-overview");
+        Assert.Equal("Production.Dashboard", article.HelpKey);
+    }
+
+    // ==============================================================================
+    // طبق «PEMS Help Phase 4 — Increment 2»: ۹ HelpKey تازه‌سیم‌شده در کنترلرهای واقعیِ
+    // زیرمجموعه‌های تا‌کنون‌بدون‌راهنما (CriticalityAssessment, Instrument, RcmFmea, SparePart,
+    // JobPlan, Permit.Details, StoreRequisition, DocumentRevisions) به‌علاوه‌ی یک HelpKey
+    // مشترک («Imports.StagedBatchOverview») که شش کنترلر Import جداگانه به یک مقاله‌ی واحد
+    // وصل می‌کند - همان الگویی که HelpService.GetArticleByContextAsync ذاتاً پشتیبانی می‌کند
+    // (چند مقاله می‌توانند یک HelpKey را به اشتراک بگذارند؛ این‌جا برعکسش - چند صفحه یک
+    // HelpKey - که همان مکانیزم زیرساختی را به همان سادگی استفاده می‌کند).
+    // ==============================================================================
+    [Fact]
+    public async Task SeedAsync_Phase4Increment2HelpKeys_ExistAndArePublished_AndAreBilingual()
+    {
+        var ctx = CreateContext(nameof(SeedAsync_Phase4Increment2HelpKeys_ExistAndArePublished_AndAreBilingual));
+        await SeedAsync(ctx);
+
+        var expectedKeys = new[]
+        {
+            "CriticalityAssessment.Dashboard", "Instrument.Passport", "RcmFmea.Index", "SparePart.Index",
+            "JobPlan.Index", "Permit.Details", "StoreRequisition.Index", "DocumentRevisions.Index",
+            "Imports.StagedBatchOverview"
+        };
+
+        foreach (var key in expectedKeys)
+        {
+            var article = await ctx.HelpArticles.Include(a => a.Translations).FirstOrDefaultAsync(a => a.HelpKey == key);
+            Assert.True(article != null, $"Expected a Help article with HelpKey '{key}'");
+            Assert.True(article!.IsPublished, $"Article for HelpKey '{key}' should be published");
+            Assert.Contains(article.Translations, t => t.LanguageCode == "en" && !string.IsNullOrWhiteSpace(t.Content));
+            Assert.Contains(article.Translations, t => t.LanguageCode == "fa" && !string.IsNullOrWhiteSpace(t.Content));
+        }
+    }
+
+    [Fact]
+    public async Task SeedAsync_ImportsSharedHelpKey_ResolvesToExactlyOneArticle()
+    {
+        // شش کنترلر Import همه HelpKey="Imports.StagedBatchOverview" را ست می‌کنند - این تست
+        // تایید می‌کند که دقیقاً یک مقاله (نه صفر، نه چند مقاله‌ی متناقض) با این کلید seed شده -
+        // چون HelpService.GetArticleByContextAsync با FirstOrDefaultAsync کار می‌کند، وجود دو
+        // مقاله‌ی متفاوت با همین کلید می‌توانست باعث شود بعضی صفحات محتوای غلط ببینند
+        var ctx = CreateContext(nameof(SeedAsync_ImportsSharedHelpKey_ResolvesToExactlyOneArticle));
+        await SeedAsync(ctx);
+
+        var matches = await ctx.HelpArticles.Where(a => a.HelpKey == "Imports.StagedBatchOverview").ToListAsync();
+
+        Assert.Single(matches);
+        Assert.Equal("import-batches-overview", matches[0].Code);
     }
 }

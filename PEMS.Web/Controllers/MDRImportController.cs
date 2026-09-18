@@ -37,6 +37,7 @@ public class MDRImportController : Controller
 
         ViewData["Title"] = "MDR Import";
         ViewData["Section"] = "Engineering Management";
+        ViewData["HelpKey"] = "Imports.StagedBatchOverview";
 
         ViewBag.Projects = await _context.Projects.Where(x => x.IsActive)
             .Select(x => new { x.ProjectId, x.ProjectName }).ToListAsync();

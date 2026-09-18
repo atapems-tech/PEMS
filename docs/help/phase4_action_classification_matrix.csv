@@ -1,0 +1,687 @@
+﻿Module,Controller,Action,Verb,HelpKeyExisting,Classification,Reason
+Engineering,EngineeringDocumentsController,Index(filter),GET,EngineeringDocuments.Index,A,"list page, has HelpKey"
+Engineering,EngineeringDocumentsController,Create(),GET,,A,standalone create form page
+Engineering,EngineeringDocumentsController,Create(...),POST,,B,POST create handler
+Engineering,EngineeringDocumentsController,Details(id),GET,EngineeringDocuments.Details,A,"detail page, has HelpKey"
+Engineering,EngineeringDocumentsController,AnalyzeRelationships(id),POST,,B,"triggers AI analysis, real consequence"
+Engineering,EngineeringDocumentsController,Edit(id),GET,,A,standalone edit form page
+Engineering,EngineeringDocumentsController,Edit(...),POST,,B,POST edit handler
+Engineering,EngineeringDocumentsController,Delete(id),POST,,B,"delete action, real consequence"
+Engineering,EngineeringDocumentsController,UploadAttachment(id),GET,,A,standalone upload form page
+Engineering,EngineeringDocumentsController,UploadAttachment(...),POST,,B,file upload action
+Engineering,EngineeringDocumentsController,DownloadAttachment(id),GET,,D,file stream/download endpoint
+Engineering,EngineeringDocumentsController,DeleteAttachment(id),POST,,B,"delete action, real consequence"
+Engineering,EngineeringDocumentsController,"CreateRevision(id,...)",POST,,B,"creates new revision, real consequence"
+Engineering,EngineeringDocumentsController,"Freeze(id, reason)",POST,,C,workflow status transition
+Engineering,EngineeringDocumentsController,"Unfreeze(id, reason)",POST,,C,workflow status transition
+Engineering,EngineeringDocumentsController,"Hold(id, reason, disciplineId)",POST,,C,workflow status transition
+Engineering,EngineeringDocumentsController,"ReleaseHold(id, reason)",POST,,C,workflow status transition
+Engineering,EngineeringDocumentsController,"Submit(id, comment, idcDisciplineIds)",POST,,C,workflow status transition (IDC submit)
+Engineering,EngineeringDocumentsController,"Check(id, comment)",POST,,C,IDC workflow check step
+Engineering,EngineeringDocumentsController,"IdcRespond(id, decision, comment)",POST,,C,workflow decision response
+Engineering,EngineeringDocumentsController,"Approve(id, comment)",POST,,C,workflow status transition
+Engineering,EngineeringDocumentsController,"Reject(id, comment)",POST,,C,workflow status transition
+Engineering,EngineeringDocumentsController,Issue(...),POST,,C,workflow status transition
+Engineering,EngineeringDocumentsController,"ReviseAndResubmit(id, comment)",POST,,C,workflow status transition
+Engineering,EngineeringDocumentsController,"RecordClientResponse(id, clientStatus, incomingLetterId, clientComment)",POST,,C,sets client review status
+Engineering,EngineeringDocumentsController,"AddComment(documentId, commentText, raisedByName,...)",POST,,G,"comment sub-thread, embedded in detail page"
+Engineering,EngineeringDocumentsController,"SetCommentAction(documentId, commentId, actionStatus)",POST,,G,"comment sub-thread, embedded in detail page"
+Engineering,EngineeringDocumentsController,"RecordCommentResponse(documentId, commentId, responseText, replyAttachment)",POST,,G,"comment sub-thread, embedded in detail page"
+Engineering,EngineeringDocumentIntelligenceController,Index(),GET,,A,"list page, no HelpKey yet"
+Engineering,EngineeringDocumentIntelligenceController,Review(id),GET,,A,"review page, no HelpKey yet"
+Engineering,EngineeringDocumentIntelligenceController,"ApproveClassification(documentId, classificationId,...)",POST,,C,workflow status transition
+Engineering,EngineeringDocumentIntelligenceController,"RejectClassification(documentId, classificationId)",POST,,C,workflow status transition
+Engineering,EngineeringDocumentIntelligenceController,"ApproveTagLink(documentId, tagLinkId)",POST,,C,workflow status transition
+Engineering,EngineeringDocumentIntelligenceController,"RejectTagLink(documentId, tagLinkId)",POST,,C,workflow status transition
+Engineering,EngineeringDocumentIntelligenceController,"AdvanceStage(documentId, newStage)",POST,,C,workflow status transition
+Engineering,EngineeringDocumentIntelligenceController,"AddComment(documentId, commentText)",POST,,G,"comment sub-thread, embedded in detail page"
+Engineering,EngineeringDocumentIntelligenceController,"SetCommentAction(documentId, commentId, actionStatus)",POST,,G,"comment sub-thread, embedded in detail page"
+Engineering,EngineeringDocumentIntelligenceController,"RecordCommentResponse(documentId, commentId, responseText)",POST,,G,"comment sub-thread, embedded in detail page"
+Engineering,EngineeringDashboardController,"Index(projectId, disciplineId, minRevisionCount)",GET,,A,KPI dashboard page
+Engineering,DocumentRegisterController,"Index(project, disciplines, status, q, page, pageSize)",GET,DocumentRegister.Index,A,"list page, has HelpKey"
+Engineering,DocumentRegisterController,ExportExcel(...),GET,,D,export/download endpoint
+Engineering,DocumentRegisterController,ExportSelected(ids),POST,,D,export/download endpoint
+Engineering,DocumentRegisterController,"SaveFilter(name, queryString, isDefault)",POST,,B,"meaningful POST action, real consequence"
+Engineering,DocumentRegisterController,DeleteFilter(id),POST,,B,"delete action, real consequence"
+Engineering,DocumentRevisionsController,"Index(documentId, page, pageSize)",GET,DocumentRevisions.Index,A,"list page, has HelpKey (Phase 4)"
+Engineering,DocumentRevisionsController,Create(documentId),GET,,A,standalone create form page
+Engineering,DocumentWorkflowController,"Index(status, page, pageSize)",GET,,A,workflow queue page
+Engineering,DocumentWorkflowController,"Check(documentId, comment)",POST,,C,workflow status transition
+Engineering,DocumentWorkflowController,"Approve(documentId, comment)",POST,,C,workflow status transition
+Engineering,DocumentWorkflowController,"Reject(documentId, comment)",POST,,C,workflow status transition
+Engineering,DocumentUploadController,Index(),GET,,A,upload landing page
+Engineering,DocumentUploadController,"Upload(projectId, files)",POST,,B,bulk file upload action
+Engineering,DisciplineController,Index(),GET,,A,"list page, no HelpKey yet"
+Engineering,DisciplineController,"Details(id, projectId)",GET,,A,"detail page, no HelpKey yet"
+Engineering,DisciplineController,"AddTask(disciplineId, projectId, title, description,...)",POST,,G,"sub-item task, embedded in detail page"
+Engineering,DisciplineController,"SetTaskStatus(disciplineId, taskId, status)",POST,,B,"updates task status, real consequence"
+Engineering,ProjectsController,Index(),GET,,A,"list page, no HelpKey yet"
+Engineering,ProjectsController,Create(),GET,,A,standalone create form page
+Engineering,ProjectsController,Create(project),POST,,B,POST create handler
+Engineering,ProjectsController,Edit(id),GET,,A,standalone edit form page
+Engineering,ProjectsController,Edit(project),POST,,B,POST edit handler
+Engineering,ProjectsController,ToggleActive(id),POST,,B,simple state toggle action
+Engineering,FunctionalLocationController,"Index(page, pageSize)",GET,FunctionalLocations.Index,A,"list page, has HelpKey"
+Engineering,FunctionalLocationController,Create(...),POST,,B,"create handler, likely modal (no GET form)"
+Engineering,FunctionalLocationController,Edit(...),POST,,B,"edit handler, likely modal (no GET form)"
+Engineering,FunctionalLocationImportController,Index(),GET,Imports.StagedBatchOverview,A,import landing page
+Engineering,FunctionalLocationImportController,Upload(file),POST,,B,file upload action
+Engineering,FunctionalLocationImportController,Review(batchId),GET,,A,staged-batch review page
+Engineering,FunctionalLocationImportController,"ToggleRow(rowId, include, batchId)",POST,,G,"row toggle, embedded in review page"
+Engineering,FunctionalLocationImportController,Commit(batchId),POST,,C,advances import batch workflow state
+Engineering,FunctionalLocationImportController,Discard(batchId),POST,,C,advances import batch workflow state
+Engineering,EquipmentController,"Index(projectId, disciplineId, equipmentType, status, q, page, pageSize)",GET,Equipment.Index,A,"list page, has HelpKey"
+Engineering,EquipmentController,Details(id),GET,Equipment.Details,A,"detail page, has HelpKey"
+Engineering,EquipmentController,"AssignFoundation(equipmentId, functionalLocationId, parentEquipmentId, installationDate)",POST,,B,"meaningful POST action, real consequence"
+Engineering,EquipmentController,Create(),GET,,A,standalone create form page
+Engineering,EquipmentController,Create(equipment),POST,,B,POST create handler
+Engineering,EquipmentImportController,Index(),GET,Imports.StagedBatchOverview,A,import landing page
+Engineering,EquipmentImportController,"Upload(file, projectId)",POST,,B,file upload action
+Engineering,EquipmentImportController,Review(batchId),GET,,A,staged-batch review page
+Engineering,EquipmentImportController,"ToggleRow(rowId, include, batchId)",POST,,G,"row toggle, embedded in review page"
+Engineering,EquipmentImportController,Commit(batchId),POST,,C,advances import batch workflow state
+Engineering,EquipmentImportController,Discard(batchId),POST,,C,advances import batch workflow state
+Engineering,EquipmentImportController,"ScanPdf(file, projectId)",POST,,B,"AI scan action, real consequence"
+Engineering,EquipmentImportController,"CreateFromTags(projectId, disciplineId, tags)",POST,,B,"bulk-create action, real consequence"
+Engineering,EquipmentClassificationController,Index(),GET,,A,classification overview page
+Engineering,EquipmentClassificationController,"ReviewQueue(status, page)",GET,,A,review queue page
+Engineering,EquipmentClassificationController,Coverage(),GET,,A,coverage report page
+Engineering,EquipmentClassificationController,"Accept(id, comment, status, page)",POST,,C,workflow status transition
+Engineering,EquipmentClassificationController,"Reject(id, comment, status, page)",POST,,C,workflow status transition
+Engineering,EquipmentCriticalityController,"Index(criticalityClass, page, pageSize)",GET,,A,"list page, no HelpKey yet"
+Engineering,EquipmentCriticalityController,Assess(...),POST,,B,"records assessment, real consequence"
+Engineering,EquipmentFunctionalLocationAssignmentController,Index(),GET,,A,import landing page
+Engineering,EquipmentFunctionalLocationAssignmentController,Upload(file),POST,,B,file upload action
+Engineering,EquipmentFunctionalLocationAssignmentController,"Review(batchId, page, pageSize, status)",GET,,A,staged-batch review page
+Engineering,EquipmentFunctionalLocationAssignmentController,"ToggleRow(rowId, include, batchId, page, status)",POST,,G,"row toggle, embedded in review page"
+Engineering,EquipmentFunctionalLocationAssignmentController,"ReplaceExisting(rowId, replace, batchId, page, status)",POST,,G,"row flag, embedded in review page"
+Engineering,EquipmentFunctionalLocationAssignmentController,Commit(batchId),POST,,C,advances import batch workflow state
+Engineering,EquipmentFunctionalLocationAssignmentController,Discard(batchId),POST,,C,advances import batch workflow state
+Engineering,CriticalityAssessmentController,Dashboard(),GET,CriticalityAssessment.Dashboard,A,dashboard page
+Engineering,CriticalityAssessmentController,"Index(status, equipmentClassId, page)",GET,,A,"list page, no HelpKey yet"
+Engineering,CriticalityAssessmentController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Engineering,CriticalityAssessmentController,Create(equipmentId),GET,,A,standalone create form page
+Engineering,CriticalityAssessmentController,"Create(equipmentId, rationale)",POST,,B,POST create handler
+Engineering,CriticalityAssessmentController,"SetScores(id, safetyScore, productionScore, environmentScore, rationale)",POST,,B,"records data, real consequence"
+Engineering,CriticalityAssessmentController,"AddEvidence(id, sourceType, sourceIdentifier, reference, description)",POST,,G,"sub-item evidence, embedded in detail page"
+Engineering,CriticalityAssessmentController,SubmitForReview(id),POST,,C,workflow status transition
+Engineering,CriticalityAssessmentController,Approve(id),POST,,C,workflow status transition
+Engineering,CriticalityAssessmentController,Reject(id),POST,,C,workflow status transition
+Engineering,MDRImportController,Index(),GET,Imports.StagedBatchOverview,A,import landing page
+Engineering,MDRImportController,"Upload(file, projectId)",POST,,B,file upload action
+Engineering,MDRImportController,Review(batchId),GET,,A,staged-batch review page
+Engineering,MDRImportController,"ToggleRow(rowId, include, batchId)",POST,,G,"row toggle, embedded in review page"
+Engineering,MDRImportController,Commit(batchId),POST,,C,advances import batch workflow state
+Engineering,MDRImportController,Discard(batchId),POST,,C,advances import batch workflow state
+Engineering,MDRImportController,RematchDisciplines(projectId),POST,,B,data-fix utility action
+Engineering,MDRImportController,FixLegacyStatuses(projectId),POST,,B,data-fix utility action
+Engineering,MDBController,"Index(projectId, vendorId, page, pageSize)",GET,,A,"list page, no HelpKey yet"
+Engineering,MDBController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Engineering,MDBController,Create(),GET,,A,standalone create form page
+Engineering,MDBController,"Create(equipmentId, vendorId, poId, projectId, plannedFinalIssueDate)",POST,,B,POST create handler
+Engineering,MDBController,"AddDocument(mdbId, part, documentId, title, dvdVolumeNo, isNotApplicable, notes)",POST,,G,"sub-item document, embedded in detail page"
+Engineering,MDBController,"RemoveDocument(mdbId, mdbDocumentId)",POST,,G,"sub-item document, embedded in detail page"
+Engineering,MDBController,MarkIndexSubmitted(mdbId),POST,,C,"MDB progression milestone, workflow transition"
+Engineering,MDBController,MarkFinalIssued(mdbId),POST,,C,"MDB progression milestone, workflow transition"
+Engineering,MDBController,"MarkHardCopyShipped(mdbId, hardCopyCount)",POST,,C,"MDB progression milestone, workflow transition"
+Engineering,MDBController,MarkSoftCopyDelivered(mdbId),POST,,C,"MDB progression milestone, workflow transition"
+Engineering,VDRController,"Index(projectId, vendorId, status, page, pageSize)",GET,VDR.Index,A,"list page, has HelpKey"
+Engineering,VDRController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Engineering,VDRController,Create(),GET,,A,standalone create form page
+Engineering,VDRController,Create(item),POST,,B,POST create handler
+Engineering,VDRController,GenerateContractorNumber(...),POST,,B,"meaningful POST action, real consequence"
+Engineering,VDRController,GenerateVendorNumber(...),POST,,B,"meaningful POST action, real consequence"
+Engineering,VDRController,"UploadToFtp(vdrItemId, submissionId, file)",POST,,B,file upload action
+Engineering,VDRController,SubmitForReview(...),POST,,C,workflow status transition
+Engineering,VDRController,"DisciplineRespond(vdrItemId, decision, comment)",POST,,C,workflow decision response
+Engineering,VDRController,"LeadReview(vdrItemId, reviewCategory, clientCommentSheetNo, clientCommentDate)",POST,,C,workflow review decision
+Engineering,VDRController,"ReturnToVendor(vdrItemId, replySheetNo, clientTransmittalNo)",POST,,C,workflow status transition
+Engineering,VDRController,"AddComment(vdrItemId, vdrSubmissionId, commentText, raisedByName,...)",POST,,G,"comment sub-thread, embedded in detail page"
+Engineering,VDRController,"SetCommentAction(vdrItemId, commentId, actionStatus)",POST,,G,"comment sub-thread, embedded in detail page"
+Engineering,VDRController,"RecordCommentResponse(vdrItemId, commentId, responseText, replyAttachment)",POST,,G,"comment sub-thread, embedded in detail page"
+Engineering,VDRController,"UploadCommentSheet(vdrItemId, submissionId, file)",POST,,G,"sub-item upload, embedded in detail page"
+Engineering,VDRController,"UploadReplySheet(vdrItemId, submissionId, file)",POST,,G,"sub-item upload, embedded in detail page"
+Engineering,VDRImportController,Index(),GET,Imports.StagedBatchOverview,A,import landing page
+Engineering,VDRImportController,"Upload(file, projectId)",POST,,B,file upload action
+Engineering,VDRImportController,Review(batchId),GET,,A,staged-batch review page
+Engineering,VDRImportController,"ToggleRow(rowId, include, batchId)",POST,,G,"row toggle, embedded in review page"
+Engineering,VDRImportController,Commit(batchId),POST,,C,advances import batch workflow state
+Engineering,VDRImportController,Discard(batchId),POST,,C,advances import batch workflow state
+Engineering,TransmittalController,"Index(page, pageSize)",GET,Transmittals.Index,A,"list page, has HelpKey"
+Engineering,TransmittalController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Engineering,TransmittalController,Create(),GET,,A,standalone create form page
+Engineering,TransmittalController,"Create(transmittalNo, projectId, from, to,...)",POST,,B,POST create handler
+Engineering,TransmittalController,"MarkSent(id, responseDueWorkingDays)",POST,,C,workflow status transition
+Engineering,TransmittalController,"Cancel(id, reason)",POST,,C,workflow status transition
+Engineering,TransmittalController,Reissue(id),POST,,C,workflow status transition
+Engineering,TransmittalController,"RecordResponse(id, responseNote)",POST,,B,"records data, real consequence"
+Engineering,TransmittalController,"Acknowledge(id, recipientId, note)",POST,,C,workflow status transition
+Engineering,LetterController,"Index(letterType, letterNumber, subject,...)",GET,Letter.Index,A,"list page, has HelpKey (Phase 4)"
+Engineering,LetterController,"ToggleStar(letterId, returnUrl)",POST,,B,simple state toggle action
+Engineering,LetterController,"AddRecipient(letterId, recipientType, employeeId, departmentId, externalName)",POST,,G,"sub-item recipient, embedded in detail page"
+Engineering,LetterController,"MarkRecipientRead(letterId, letterRecipientId)",POST,,G,"sub-item state, embedded in detail page"
+Engineering,LetterController,"AttachTag(letterId, tagId, newTagName, newTagColor)",POST,,G,"sub-item tag, embedded in detail page"
+Engineering,LetterController,"DetachTag(letterId, tagId)",POST,,G,"sub-item tag, embedded in detail page"
+Engineering,LetterController,MyReferrals(),GET,,A,"list page, no HelpKey yet"
+Engineering,LetterController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Engineering,LetterController,Reply(id),GET,,A,standalone reply form page
+Engineering,LetterController,"Reply(parentLetterId, subject, body, receiver)",POST,,B,POST create handler
+Engineering,LetterController,Create(letterType),GET,,A,standalone create form page
+Engineering,LetterController,"Create(letterType, letterNumber, letterDate,...)",POST,,B,POST create handler
+Engineering,LetterController,UploadEditorImage(file),POST,,D,AJAX rich-text editor image upload
+Engineering,LetterController,"UploadAttachment(letterId, file)",POST,,B,file upload action
+Engineering,LetterController,SubmitForReview(letterId),POST,,C,workflow status transition
+Engineering,LetterController,"Approve(letterId, comment)",POST,,C,workflow status transition
+Engineering,LetterController,"ReturnForRevision(letterId, reason)",POST,,C,workflow status transition
+Engineering,LetterController,"Reject(letterId, reason)",POST,,C,workflow status transition
+Engineering,LetterController,Issue(letterId),POST,,C,workflow status transition
+Engineering,LetterController,Close(letterId),POST,,C,workflow status transition
+Engineering,LetterController,"SaveDraft(letterId, subject, body, rowVersion)",POST,,B,"records data, real consequence"
+Engineering,LetterController,"Resubmit(letterId, subject, body, rowVersion)",POST,,C,workflow status transition
+Engineering,LetterController,"Refer(letterId, referredToEmployeeId,...)",POST,,B,"meaningful POST action, real consequence"
+Engineering,LetterController,"MarkReferralRead(referralId, letterId)",POST,,G,"sub-item state, embedded in detail page"
+Engineering,LetterController,"CompleteReferral(referralId, letterId, responseNote)",POST,,C,workflow status transition
+Engineering,LetterController,"Sign(letterId, signedByName)",POST,,B,"meaningful POST action, real consequence"
+Engineering,LetterController,ExportPdf(id),GET,,D,export/download endpoint
+Engineering,LetterController,GetEmployeesForPicker(),GET,,D,AJAX picker endpoint
+Engineering,TechnicalQueryController,"Index(queryType, status, projectId, page, pageSize)",GET,TechnicalQuery.Index,A,"list page, has HelpKey (Phase 4)"
+Engineering,TechnicalQueryController,Raise(),GET,,A,standalone create form page
+Engineering,TechnicalQueryController,Raise(...),POST,,B,POST create handler
+Engineering,TechnicalQueryController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Engineering,TechnicalQueryController,"Respond(technicalQueryId, responseText)",POST,,B,"records data, real consequence"
+Engineering,TechnicalQueryController,Confirm(technicalQueryId),POST,,C,workflow status transition
+Engineering,TechnicalQueryController,"Reopen(technicalQueryId, reason)",POST,,C,workflow status transition
+Engineering,TechnicalQueryController,"UploadAttachment(technicalQueryId, file)",POST,,B,file upload action
+Engineering,MOCController,"Index(riskLevel, status, projectId, page, pageSize)",GET,MOC.Index,A,"list page, has HelpKey (Phase 4)"
+Engineering,MOCController,Raise(relatedEquipmentId),GET,,A,standalone create form page
+Engineering,MOCController,Raise(...),POST,,B,POST create handler
+Engineering,MOCController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Engineering,MOCController,"AssessRisk(mocId, riskAssessmentText)",POST,,B,"records data, real consequence"
+Engineering,MOCController,Approve(mocId),POST,,C,workflow status transition
+Engineering,MOCController,"Reject(mocId, reason)",POST,,C,workflow status transition
+Engineering,MOCController,"RecordImplementation(mocId, implementationPlan)",POST,,B,"records data, real consequence"
+Engineering,MOCController,"MarkDocumentsUpdated(mocId, note)",POST,,B,"checklist item mark, not primary status"
+Engineering,MOCController,MarkTrainingCompleted(mocId),POST,,B,"checklist item mark, not primary status"
+Engineering,MOCController,Close(mocId),POST,,C,workflow status transition
+Engineering,MOCController,"UploadAttachment(mocId, file)",POST,,B,file upload action
+Engineering,DCCController,Index(),GET,,A,intake dashboard page
+Engineering,DCCController,RegisterIncoming(),GET,,A,standalone create form page
+Engineering,DCCController,RegisterIncoming(...),POST,,B,POST create handler
+Engineering,ContractController,"Index(page, pageSize)",GET,Contract.Index,A,"list page, has HelpKey (Phase 4)"
+Engineering,ContractController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Engineering,ContractController,Create(),GET,,A,standalone create form page
+Engineering,ContractController,"Create(contractNo, projectId, vendorId, scope,...)",POST,,B,POST create handler
+Engineering,ContractController,"ChangeStatus(contractId, status)",POST,,C,workflow status transition
+Engineering,VendorController,"Index(page, pageSize)",GET,Vendor.Index,A,"list page, has HelpKey (Phase 4)"
+Engineering,VendorController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Engineering,VendorController,Create(),GET,,A,standalone create form page
+Engineering,VendorController,Create(vendor),POST,,B,POST create handler
+Engineering,VendorController,Edit(id),GET,,A,standalone edit form page
+Engineering,VendorController,Edit(vendor),POST,,B,POST edit handler
+Engineering,VendorController,ToggleActive(id),POST,,B,simple state toggle action
+Engineering,VendorController,RecalculateRisk(id),POST,,B,"meaningful POST action, real consequence"
+Engineering,ProcurementPackageController,"Index(page, pageSize)",GET,,A,"list page, no HelpKey yet"
+Engineering,ProcurementPackageController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Engineering,ProcurementPackageController,Create(),GET,,A,standalone create form page
+Engineering,ProcurementPackageController,"Create(packageNumber, projectId, disciplineId, title, description)",POST,,B,POST create handler
+Engineering,ProcurementPackageController,"AdvanceStage(packageId, newStage)",POST,,C,workflow status transition
+Engineering,ProcurementPackageController,"LinkMR(packageId, mrId)",POST,,B,"meaningful POST action, real consequence"
+Engineering,ProcurementPackageController,"AddCommunication(packageId, type, subject, body, vendorId)",POST,,G,"communication sub-thread, embedded in detail page"
+Engineering,ProcurementPackageController,"RespondCommunication(packageId, communicationId, responseText)",POST,,G,"communication sub-thread, embedded in detail page"
+Engineering,ProcurementPackageController,"SetCommunicationStatus(packageId, communicationId, actionStatus)",POST,,G,"communication sub-thread, embedded in detail page"
+Engineering,ProcurementPackageController,"AddApproval(packageId, decision, comment)",POST,,C,workflow decision response
+Engineering,ProcurementPackageController,Closeout(packageId),POST,,C,workflow status transition
+Engineering,RelationshipController,Index(q),GET,,A,search home page
+Engineering,RelationshipController,Search(q),GET,,H,ambiguous: full search page vs. AJAX fragment for Index
+Engineering,RelationshipController,Equipment(id),GET,,A,relationship graph page
+Engineering,RelationshipController,Document(id),GET,,A,relationship graph page
+Engineering,RelationshipController,Vendor(id),GET,,A,relationship graph page
+Engineering,RelationshipController,"ConfirmSuggestedLink(equipmentId, targetType, targetId, force)",POST,,C,workflow status transition
+Engineering,RelationshipController,GapReport(projectId),GET,,A,report page
+Engineering,RelationshipController,BulkSuggestions(projectId),GET,,A,"list page, no HelpKey yet"
+Engineering,RelationshipController,BulkConfirm(selectedItems),POST,,C,workflow status transition
+Engineering,TableExtractionController,"Index(page, pageSize)",GET,,A,queue list page
+Engineering,TableExtractionController,"Analyze(attachmentId, documentHint)",POST,,B,"triggers AI analysis, real consequence"
+Engineering,TableExtractionController,AnalyzeDeterministic(attachmentId),POST,,B,"triggers rule-based analysis, real consequence"
+Engineering,TableExtractionController,StageForReview(attachmentId),POST,,C,advances rows into review stage
+Engineering,TableExtractionController,Review(batchId),GET,,A,staged-batch review page
+Engineering,TableExtractionController,"ConfirmRow(rowId, equipmentId, batchId)",POST,,C,workflow status transition
+Engineering,TableExtractionController,"BulkConfirm(batchId, selectedRowIds)",POST,,C,workflow status transition
+Engineering,TableExtractionController,"ConfirmRowManual(rowId, batchId, equipmentTagNumber)",POST,,C,workflow status transition
+Engineering,TableExtractionController,"RejectRow(rowId, batchId, comment)",POST,,C,workflow status transition
+Engineering,OCRProcessingController,"Index(status, page, pageSize)",GET,,A,job queue page
+Engineering,OCRProcessingController,Retry(id),POST,,B,"retry action, real consequence"
+Engineering,AIExtractionController,Index(),GET,,A,AI extraction dashboard page
+Engineering,AIExtractionController,Review(attachmentId),GET,,A,"review page, no HelpKey yet"
+Engineering,AIExtractionController,"ApproveExtractedTag(extractedTagId, equipmentId, attachmentId)",POST,,C,workflow status transition
+Engineering,AIExtractionController,"RejectExtractedTag(extractedTagId, attachmentId)",POST,,C,workflow status transition
+Engineering,AIExtractionController,"ApproveExtractedSpecification(extractedSpecificationId, attachmentId)",POST,,C,workflow status transition
+Engineering,AIExtractionController,"RejectExtractedSpecification(extractedSpecificationId, attachmentId)",POST,,C,workflow status transition
+Engineering,AISearchController,"Index(q, discipline, documentType, status)",GET,,A,AI-assisted search page
+Engineering,AIInsightsController,Index(projectId),GET,,A,AI insights dashboard page
+Engineering,KnowledgeBaseController,Index(q),GET,,A,knowledge base browse page
+CMMS,WorkOrderController,"Index(status, equipmentId, assignedToMe, page, pageSize)",GET,WorkOrders.Index,A,"list page, has HelpKey"
+CMMS,WorkOrderController,Create(equipmentId),GET,,A,standalone create form page
+CMMS,WorkOrderController,Create(...),POST,,B,POST create handler
+CMMS,WorkOrderController,Details(id),GET,WorkOrders.Details,A,"detail page, has HelpKey"
+CMMS,WorkOrderController,"CompleteTask(workOrderTaskId, workOrderId)",POST,,C,workflow status transition
+CMMS,WorkOrderController,"ReopenTask(workOrderTaskId, workOrderId)",POST,,C,workflow status transition
+CMMS,WorkOrderController,"AdvanceStatus(id, assignedTeamId, assignedEmployeeId,...)",POST,,C,workflow status transition
+CMMS,WorkOrderController,"Hold(id, reason)",POST,,C,workflow status transition
+CMMS,WorkOrderController,"Resume(id, reason)",POST,,C,workflow status transition
+CMMS,WorkOrderController,"Cancel(id, reason)",POST,,C,workflow status transition
+CMMS,WorkOrderController,"Reject(id, reason)",POST,,C,workflow status transition
+CMMS,WorkOrderController,"AddLaborEntry(workOrderId, employeeId, teamId, workDate,...)",POST,,G,"sub-item labor entry, embedded in detail page"
+CMMS,WorkOrderController,"AddSpareUsage(workOrderId, materialItemId, quantity, unitCost)",POST,,G,"sub-item spare usage, embedded in detail page"
+CMMS,WorkOrderController,"ReturnSpareUsage(maintenanceSpareUsageId, workOrderId, returnQuantity, reason)",POST,,G,"sub-item spare usage, embedded in detail page"
+CMMS,WorkOrderController,"AddRequiredSkill(workOrderId, skillId, minimumProficiencyLevel, plannedHours)",POST,,G,"sub-item skill requirement, embedded in detail page"
+CMMS,WorkOrderController,"AddRequiredMaterial(workOrderId, materialItemId, requiredQuantity)",POST,,G,"sub-item material requirement, embedded in detail page"
+CMMS,WorkOrderController,"RemoveRequiredMaterial(workOrderMaterialId, workOrderId)",POST,,G,"sub-item material requirement, embedded in detail page"
+CMMS,WorkOrderController,"RemoveRequiredSkill(requiredSkillId, workOrderId)",POST,,G,"sub-item skill requirement, embedded in detail page"
+CMMS,WorkOrderController,"CreateCrewForWorkOrder(workOrderId, code, name)",POST,,G,"sub-item crew creation, embedded in detail page"
+CMMS,WorkOrderController,"RequestDisciplineReview(workOrderId, disciplineIds)",POST,,B,"meaningful POST action, real consequence"
+CMMS,WorkOrderController,"RespondDisciplineReview(workOrderId, decision, findings, failureModeCode, failureCauseCode)",POST,,C,workflow decision response
+CMMS,WorkRequestController,"Index(status, page, pageSize)",GET,WorkRequests.Index,A,"list page, has HelpKey"
+CMMS,WorkRequestController,Create(),GET,,A,standalone create form page
+CMMS,WorkRequestController,"Create(title, description, equipmentId, assetId,...)",POST,,B,POST create handler
+CMMS,WorkRequestController,Details(id),GET,,A,"detail page, no HelpKey yet"
+CMMS,WorkRequestController,"AdvanceStatus(id, reason)",POST,,C,workflow status transition
+CMMS,WorkRequestController,"Reject(id, reason)",POST,,C,workflow status transition
+CMMS,WorkRequestController,"Cancel(id, reason)",POST,,C,workflow status transition
+CMMS,WorkRequestController,"ConvertToWorkOrder(id, workOrderType)",POST,,C,workflow status transition
+CMMS,JobPlanController,"Index(page, pageSize)",GET,JobPlan.Index,A,"list page, has HelpKey (Phase 4)"
+CMMS,JobPlanController,"Create(title, scope, estimatedDurationHours, safetyRequirements,...)",POST,,B,"create handler, likely modal (no GET form)"
+CMMS,JobPlanController,Details(id),GET,,A,"detail page, no HelpKey yet"
+CMMS,JobPlanController,"Edit(jobPlanId, title, scope, estimatedDurationHours, safetyRequirements,...)",POST,,B,"edit handler, likely modal (no GET form)"
+CMMS,JobPlanController,"AddTask(jobPlanId, taskNumber, title, description, estimatedDurationMinutes)",POST,,G,"sub-item task, embedded in detail page"
+CMMS,JobPlanController,"RemoveTask(maintenanceTaskId, jobPlanId)",POST,,G,"sub-item task, embedded in detail page"
+CMMS,JobPlanController,"AddRequiredSkill(jobPlanId, skillId, minimumProficiencyLevel, plannedHours)",POST,,G,"sub-item skill requirement, embedded in detail page"
+CMMS,JobPlanController,"RemoveRequiredSkill(jobPlanRequiredSkillId, jobPlanId)",POST,,G,"sub-item skill requirement, embedded in detail page"
+CMMS,JobPlanController,"AddRequiredMaterial(jobPlanId, materialItemId, requiredQuantity)",POST,,G,"sub-item material requirement, embedded in detail page"
+CMMS,JobPlanController,"RemoveRequiredMaterial(jobPlanRequiredMaterialId, jobPlanId)",POST,,G,"sub-item material requirement, embedded in detail page"
+CMMS,MaintenanceStrategyController,"Index(equipmentId, page, pageSize)",GET,MaintenanceStrategies.Index,A,"list page, has HelpKey"
+CMMS,MaintenanceStrategyController,"Create(equipmentId, strategyType, failureModeCode,...)",POST,,B,"create handler, likely modal (no GET form)"
+CMMS,MaintenanceStrategyController,"BulkCreate(disciplineIds, equipmentTypes,...)",GET,,A,bulk-create wizard page
+CMMS,MaintenanceStrategyController,BulkCreate(...),POST,,B,"executes bulk creation, real consequence"
+CMMS,MaintenanceStrategyController,Deactivate(strategyId),POST,,C,lifecycle status transition
+CMMS,MaintenancePlanController,"Index(page, pageSize)",GET,MaintenancePlans.Index,A,"list page, has HelpKey"
+CMMS,MaintenancePlanController,"Create(strategyId, equipmentId)",GET,,A,standalone create form page
+CMMS,MaintenancePlanController,"Create(equipmentId, maintenanceStrategyId, title,...)",POST,,B,POST create handler
+CMMS,MaintenancePlanController,"RecordMeterReading(planId, currentReading)",POST,,B,"records data, real consequence"
+CMMS,MaintenancePlanController,GenerateWorkOrder(planId),POST,,B,"generates a work order, real consequence"
+CMMS,MaintenancePlanController,GenerateDueWorkOrders(),POST,,B,"bulk-generates work orders, real consequence"
+CMMS,MaintenancePlanController,Deactivate(planId),POST,,C,lifecycle status transition
+CMMS,MaintenanceMasterDataController,Index(),GET,,A,master-data admin hub page
+CMMS,MaintenanceMasterDataController,CreateGroup,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,ToggleGroupActive,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,CreateSkill,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,ToggleSkillActive,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,CreateQualification,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,ToggleQualificationActive,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,CreateCertification,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,ToggleCertificationActive,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,CreateMaintenanceType,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,ToggleMaintenanceTypeActive,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,CreateMaintenanceStrategyType,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,ToggleMaintenanceStrategyTypeActive,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,CreateEquipmentClass,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,ToggleEquipmentClassActive,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,CreateStandardReference,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,ToggleStandardReferenceActive,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,CreateMaintenanceActivity,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,ToggleMaintenanceActivityActive,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,ToggleFailureModeActive,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceMasterDataController,TogglePMTemplateActive,POST,,G,"reference-data CRUD-lite, embedded in hub"
+CMMS,MaintenanceHistoryImportController,Index(),GET,Imports.StagedBatchOverview,A,import landing page
+CMMS,MaintenanceHistoryImportController,Upload(file),POST,,B,file upload action
+CMMS,MaintenanceHistoryImportController,"Review(batchId, page, pageSize, status)",GET,,A,staged-batch review page
+CMMS,MaintenanceHistoryImportController,"ToggleRow(rowId, include, batchId, page, status)",POST,,G,"row toggle, embedded in review page"
+CMMS,MaintenanceHistoryImportController,Commit(batchId),POST,,C,advances import batch workflow state
+CMMS,MaintenanceHistoryImportController,Discard(batchId),POST,,C,advances import batch workflow state
+CMMS,SparePartController,"Index(q, lowStockOnly, page, pageSize)",GET,SparePart.Index,A,"list page, has HelpKey (Phase 4)"
+CMMS,SparePartController,"Create(partNumber, partName, manufacturer,...)",POST,,B,"create handler, likely modal (no GET form)"
+CMMS,SparePartController,"Edit(sparePartId, partNumber, partName,...)",POST,,B,"edit handler, likely modal (no GET form)"
+CMMS,SparePartController,Deactivate(sparePartId),POST,,C,lifecycle status transition
+CMMS,InstrumentController,"Index(status, q, page, pageSize)",GET,,A,"list page, no HelpKey yet"
+CMMS,InstrumentController,Passport(id),GET,Instrument.Passport,A,instrument passport page
+CMMS,InstrumentController,Create(...),POST,,B,"create handler, likely modal (no GET form)"
+CMMS,InstrumentController,Edit(id),GET,,A,standalone edit form page
+CMMS,InstrumentController,"Edit(instrumentId, form)",POST,,B,POST edit handler
+CMMS,InstrumentController,AddCalibration(...),POST,,G,"sub-item calibration, embedded in passport page"
+CMMS,InstrumentController,AddAlarm(...),POST,,G,"sub-item alarm, embedded in passport page"
+CMMS,InstrumentController,AddCauseEffect(...),POST,,G,"sub-item cause & effect, embedded in passport page"
+CMMS,InstrumentController,AssignControlLoop(...),POST,,G,"sub-item assignment, embedded in passport page"
+CMMS,InstrumentController,RaiseWorkRequestFromCauseEffect(causeEffectId),POST,,B,"raises a work request, real consequence"
+CMMS,InstrumentController,GenerateCalibrationWorkOrder(instrumentId),POST,,B,"generates a work order, real consequence"
+CMMS,InstrumentController,ToggleActive(id),POST,,B,simple state toggle action
+CMMS,InstrumentController,Export(),GET,,D,export/download endpoint
+CMMS,InstrumentController,Import(file),POST,,B,file import action
+CMMS,InspectionController,"Index(page, pageSize)",GET,Inspections.Index,A,"list page, has HelpKey"
+CMMS,InspectionController,Create(...),POST,,B,"create handler, likely modal (no GET form)"
+CMMS,InspectionController,RaiseWorkRequest(inspectionRecordId),POST,,B,"raises a work request, real consequence"
+CMMS,CrewController,Index(),GET,,A,"list page, no HelpKey yet"
+CMMS,CrewController,"CreateCrew(code, name, workOrderId)",POST,,B,"create handler, likely modal (no GET form)"
+CMMS,CrewController,"AddMember(crewId, employeeId, roleId)",POST,,G,"sub-item member, embedded in parent page"
+CMMS,CrewController,RemoveMember(crewMemberId),POST,,G,"sub-item member, embedded in parent page"
+CMMS,TeamController,Index(),GET,,A,"list page, no HelpKey yet"
+CMMS,TeamController,"CreateTeam(code, name, maintenanceGroupId, shift, supervisorEmployeeId)",POST,,B,"create handler, likely modal (no GET form)"
+CMMS,TeamController,"AddMember(teamId, employeeId, roleId)",POST,,G,"sub-item member, embedded in parent page"
+CMMS,TeamController,RemoveMember(teamMemberId),POST,,G,"sub-item member, embedded in parent page"
+CMMS,TeamController,"MoveMember(employeeId, fromTeamId, toTeamId, roleId)",POST,,B,"meaningful POST action, real consequence"
+CMMS,TeamController,GetTeamMembers(teamId),GET,,D,AJAX picker/lookup endpoint
+CMMS,RcmFmeaController,Index(),GET,RcmFmea.Index,A,overview page
+CMMS,RcmFmeaController,ClassDetail(id),GET,,A,"detail page, no HelpKey yet"
+CMMS,RcmFmeaController,CreateFunctionalRequirement(...),POST,,G,"sub-item requirement, embedded in class detail page"
+CMMS,RcmFmeaController,CreateFunctionalFailure(...),POST,,G,"sub-item failure, embedded in class detail page"
+CMMS,RcmFmeaController,"CreateFmeaDraft(equipmentClassId, title, description)",POST,,G,"sub-item draft, embedded in class detail page"
+CMMS,RcmFmeaController,AddFmeaItem(...),POST,,G,"sub-item FMEA item, embedded in class detail page"
+CMMS,RcmFmeaController,"SubmitFmea(equipmentClassId, fmeaAnalysisId)",POST,,C,workflow status transition
+CMMS,RcmFmeaController,ApproveFmea(...),POST,,C,workflow status transition
+CMMS,RcmFmeaController,RejectFmea(...),POST,,C,workflow status transition
+CMMS,RcmFmeaController,"CreateRcmDraft(equipmentClassId, fmeaAnalysisId)",POST,,G,"sub-item draft, embedded in class detail page"
+CMMS,RcmFmeaController,AddRcmDecision(...),POST,,G,"sub-item decision, embedded in class detail page"
+CMMS,RcmFmeaController,"ApproveRcmDecision(equipmentClassId, rcmDecisionId)",POST,,C,workflow status transition
+CMMS,RcmFmeaController,"SubmitRcm(equipmentClassId, rcmAnalysisId)",POST,,C,workflow status transition
+CMMS,RcmFmeaController,"ApproveRcm(equipmentClassId, rcmAnalysisId)",POST,,C,workflow status transition
+CMMS,RcmFmeaController,"RejectRcm(equipmentClassId, rcmAnalysisId)",POST,,C,workflow status transition
+CMMS,RcmFmeaController,"ApplyRcmDecision(equipmentClassId, rcmDecisionId, equipmentId)",POST,,B,"creates strategy from decision, real consequence"
+CMMS,ReliabilityController,"Index(from, to)",GET,Reliability.Overview,A,"KPI overview page, has HelpKey (Increment 3B)"
+CMMS,ReliabilityController,Details(id),GET,,A,"detail page, no HelpKey yet"
+CMMS,ReliabilityController,ClassDetail(id),GET,,A,"detail page, no HelpKey yet"
+CMMS,ReliabilityController,DataQuality(),GET,,A,diagnostics page
+CMMS,ReliabilityController,"Intelligence(from, to, equipmentClassId)",GET,,A,AI intelligence view page
+CMMS,ReliabilityController,RcmFeedback(status),GET,,A,feedback-loop queue page
+CMMS,ReliabilityController,GenerateRcmEvidence(),POST,,B,"generates evidence package, real consequence"
+CMMS,ReliabilityController,"ReviewRcmRecommendation(recommendationId, accept, notes)",POST,,C,workflow status transition
+CMMS,ReliabilityController,Dashboard(),GET,Reliability.Overview,A,"dashboard page, has HelpKey (Increment 3B)"
+CMMS,ReliabilityController,EquipmentProfile(id),GET,,A,"profile page, no HelpKey yet"
+CMMS,ReliabilityController,ClassIntelligence(id),GET,,A,intelligence view page
+CMMS,ReliabilityController,Ram(id),GET,,A,RAM view page
+CMMS,ReliabilityController,"Simulate(id, iterations, horizonHours)",POST,,B,"runs simulation, real consequence"
+CMMS,ReliabilityController,ConditionMonitoring(equipmentId),GET,,A,condition-monitoring view page
+CMMS,ReliabilityController,CreateConditionMonitoringPoint(...),POST,,G,"sub-item CM point, embedded in monitoring page"
+CMMS,ReliabilityController,RecordConditionReading(...),POST,,G,"sub-item reading, embedded in monitoring page"
+CMMS,ReliabilityController,PredictiveMaintenance(),GET,,A,predictive maintenance view page
+CMMS,ReliabilityController,AiInsights(status),GET,,A,AI insights list page
+CMMS,ReliabilityController,GenerateAiInsights(equipmentClassId),POST,,B,"triggers AI generation, real consequence"
+CMMS,ReliabilityController,"ReviewAiInsight(insightId, approve, notes)",POST,,C,workflow status transition
+CMMS,CmmsReadinessController,Index(),GET,,A,readiness dashboard page
+CMMS,CmmsReadinessController,"ClassDetail(id, page)",GET,,A,"detail page, no HelpKey yet"
+CMMS,CmmsOperationsController,Dashboard(),GET,,A,dashboard page
+CMMS,CmmsOperationsController,"Backlog(status, priority, equipmentId,...)",GET,,A,filterable backlog view page
+CMMS,ExecutionGateController,"StartWork(permitId, webAuthnAssertionJson, webAuthnOptionsJson)",POST,,C,workflow status transition (start work under permit)
+CMMS,ExecutionGateController,"EmergencyOverride(permitId, reason, webAuthnAssertionJson, webAuthnOptionsJson)",POST,,C,workflow status transition (emergency override)
+CMMS,AssetController,"Index(status, q, page, pageSize)",GET,,A,"list page, no HelpKey yet"
+CMMS,AssetController,Create(...),POST,,B,"create handler, likely modal (no GET form)"
+CMMS,AssetController,Details(id),GET,,A,"detail page, no HelpKey yet"
+CMMS,AssetController,Edit(...),POST,,B,"edit handler, likely modal (no GET form)"
+CMMS,AssetController,ToggleActive(id),POST,,B,simple state toggle action
+Operations,PermitController,"Index(status, pendingMyApproval, page, pageSize)",GET,Permits.Index,A,"list page, has HelpKey"
+Operations,PermitController,Create(),GET,,A,standalone create form page
+Operations,PermitController,Create(...),POST,,B,POST create handler
+Operations,PermitController,Details(id),GET,Permit.Details,A,"detail page, has HelpKey (Phase 4)"
+Operations,PermitController,"AdvanceStatus(id, reason)",POST,,C,workflow status transition
+Operations,PermitController,SubmitForApproval(id),POST,,C,workflow status transition
+Operations,PermitController,"RespondApproval(id, decision, comment, webAuthnAssertionJson, webAuthnOptionsJson)",POST,,C,workflow status transition
+Operations,PermitController,"ReturnForRework(id, comment)",POST,,C,workflow status transition
+Operations,PermitController,"Cancel(id, reason)",POST,,C,workflow status transition
+Operations,PermitController,"Revoke(id, reason)",POST,,C,workflow status transition
+Operations,PermitController,"Suspend(id, reason)",POST,,C,workflow status transition
+Operations,PermitController,"Close(id, reason, webAuthnAssertionJson, webAuthnOptionsJson)",POST,,C,workflow status transition
+Operations,IsolationController,Create(...),POST,,G,"operates on a permit, no standalone page"
+Operations,IsolationController,"MarkIsolated(id, permitId, lockNumber, tagNumber, reason)",POST,,G,"operates on a permit, no standalone page"
+Operations,IsolationController,"Verify(id, permitId, reason, webAuthnAssertionJson, webAuthnOptionsJson)",POST,,G,"operates on a permit, no standalone page"
+Operations,IsolationController,"Deisolate(id, permitId, reason)",POST,,G,"operates on a permit, no standalone page"
+Operations,IsolationController,"Cancel(id, permitId, reason)",POST,,G,"operates on a permit, no standalone page"
+Operations,GasTestController,Create(...),POST,,G,"operates on a permit, no standalone page"
+Operations,GasTestController,"Invalidate(id, permitId, reason)",POST,,G,"operates on a permit, no standalone page"
+Operations,SimopsController,"Create(permitId, otherPermitId)",POST,,G,"operates on a permit, no standalone page"
+Operations,SimopsController,"Confirm(id, permitId, reason, webAuthnAssertionJson, webAuthnOptionsJson)",POST,,G,"operates on a permit, no standalone page"
+Operations,SimopsController,"Resolve(id, permitId, resolutionNotes, webAuthnAssertionJson, webAuthnOptionsJson)",POST,,G,"operates on a permit, no standalone page"
+Operations,SimopsController,"AcceptRisk(id, permitId, justification, webAuthnAssertionJson, webAuthnOptionsJson)",POST,,G,"operates on a permit, no standalone page"
+Operations,ShiftHandoverController,Index(status),GET,,A,"list page, no HelpKey yet"
+Operations,ShiftHandoverController,Create(),GET,,A,standalone create form page
+Operations,ShiftHandoverController,"Create(outgoingEmployeeId, incomingEmployeeId, shiftLabel, handoverDate, notes)",POST,,B,POST create handler
+Operations,ShiftHandoverController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Operations,ShiftHandoverController,Prepare(id),POST,,C,workflow status transition
+Operations,ShiftHandoverController,Acknowledge(id),POST,,C,workflow status transition
+Operations,ShiftHandoverController,Complete(id),POST,,C,workflow status transition
+Operations,ProductionController,Dashboard(),GET,Production.Dashboard,A,dashboard page
+Operations,ProductionOrderController,"Index(page, pageSize, status, search)",GET,,A,"list page, no HelpKey yet"
+Operations,ProductionOrderController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Operations,ProductionOrderController,Create(),GET,,A,standalone create form page
+Operations,ProductionOrderController,Create(...),POST,,B,POST create handler
+Operations,ProductionOrderController,Plan(id),POST,,C,workflow status transition
+Operations,ProductionOrderController,Release(id),POST,,C,workflow status transition
+Operations,ProductionOrderController,"Hold(id, reason)",POST,,C,workflow status transition
+Operations,ProductionOrderController,Resume(id),POST,,C,workflow status transition
+Operations,ProductionOrderController,"Cancel(id, reason)",POST,,C,workflow status transition
+Operations,ProductionOrderController,Complete(id),POST,,C,workflow status transition
+Operations,ProductionOrderController,Close(id),POST,,C,workflow status transition
+Operations,ProductionRunController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Operations,ProductionRunController,Create(productionOrderId),GET,,A,standalone create form page
+Operations,ProductionRunController,"Create(productionOrderId, equipmentId, operatorEmployeeId, shiftDefinitionId, notes)",POST,,B,POST create handler
+Operations,ProductionRunController,Start(id),POST,,C,workflow status transition
+Operations,ProductionRunController,Pause(id),POST,,C,workflow status transition
+Operations,ProductionRunController,Resume(id),POST,,C,workflow status transition
+Operations,ProductionRunController,"Hold(id, reason)",POST,,C,workflow status transition
+Operations,ProductionRunController,Complete(id),POST,,C,workflow status transition
+Operations,ProductionRunController,"Cancel(id, reason)",POST,,C,workflow status transition
+Operations,ProductionRunController,RecordInput(...),POST,,G,"sub-item input record, embedded in run detail page"
+Operations,ProductionRunController,RecordOutput(...),POST,,G,"sub-item output record, embedded in run detail page"
+Operations,ProductionRunController,RecordLoss(...),POST,,G,"sub-item loss record, embedded in run detail page"
+Operations,ProductionRunController,PostInputToInventory(...),POST,,B,"posts inventory transaction, real consequence"
+Operations,ProductionRunController,PostOutputToInventory(...),POST,,B,"posts inventory transaction, real consequence"
+Operations,ProductionRunController,BatchDetails(id),GET,,A,"detail page, no HelpKey yet"
+Operations,ProductionRunController,SubmitBatchForQc(id),POST,,C,workflow status transition
+Operations,ProductionRunController,ReleaseBatch(id),POST,,C,workflow status transition
+Operations,ProductionRunController,"BlockBatch(id, reason)",POST,,C,workflow status transition
+Operations,ProductionRunController,UnblockBatch(id),POST,,C,workflow status transition
+Operations,ProductionRunController,"RejectBatch(id, reason)",POST,,C,workflow status transition
+Operations,QCController,Index(),GET,QC.Index,A,module home page
+Operations,QCController,ItpIndex(),GET,,A,"list page, no HelpKey yet"
+Operations,QCController,ItpCreate(),GET,,A,standalone create form page
+Operations,QCController,ItpCreate(...),POST,,B,POST create handler
+Operations,QCController,ItpDetails(id),GET,,A,"detail page, no HelpKey yet"
+Operations,QCController,ItpAddLineItem(...),POST,,G,"sub-item line item, embedded in detail page"
+Operations,QCController,ItpApprove(id),POST,,C,workflow status transition
+Operations,QCController,"ItpNotifyHoldPoint(lineItemId, itpId)",POST,,C,workflow milestone notification
+Operations,QCController,ItpPerformInspection(...),POST,,B,"records inspection result, real consequence"
+Operations,QCController,NcrIndex(),GET,,A,"list page, no HelpKey yet"
+Operations,QCController,NcrCreate(),GET,,A,standalone create form page
+Operations,QCController,NcrCreate(...),POST,,B,POST create handler
+Operations,QCController,NcrDetails(id),GET,,A,"detail page, no HelpKey yet"
+Operations,QCController,NcrDisposition(...),POST,,C,workflow status transition
+Operations,QCController,"NcrApprove(id, decision, comment)",POST,,C,workflow status transition
+Operations,QCController,NcrClose(id),POST,,C,workflow status transition
+Operations,QCController,Kpi(),GET,,A,KPI dashboard page
+Operations,InventoryController,Index(),GET,,A,module landing page
+Operations,InventoryMasterDataController,Index(),GET,,A,master-data hub page
+Operations,InventoryMasterDataController,CreateCategory,POST,,G,"reference-data CRUD-lite, embedded in hub"
+Operations,InventoryMasterDataController,ToggleCategoryActive,POST,,G,"reference-data CRUD-lite, embedded in hub"
+Operations,InventoryMasterDataController,CreateUom,POST,,G,"reference-data CRUD-lite, embedded in hub"
+Operations,InventoryMasterDataController,ToggleUomActive,POST,,G,"reference-data CRUD-lite, embedded in hub"
+Operations,InventoryMasterDataController,CreateWarehouse,POST,,G,"reference-data CRUD-lite, embedded in hub"
+Operations,InventoryMasterDataController,ToggleWarehouseActive,POST,,G,"reference-data CRUD-lite, embedded in hub"
+Operations,InventoryMasterDataController,CreateStorageLocation(...),POST,,G,"reference-data CRUD-lite, embedded in hub"
+Operations,InventoryTransactionController,"Index(materialItemId, warehouseId, transactionType, fromDate, toDate, page, pageSize)",GET,,A,"list page, no HelpKey yet"
+Operations,MaterialItemController,"Index(q, categoryId, lowStockOnly, criticalOnly, page)",GET,MaterialItems.Index,A,"list page, has HelpKey"
+Operations,MaterialItemController,Create(...),POST,,B,"create handler, likely modal (no GET form)"
+Operations,MaterialItemController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Operations,MaterialItemController,Edit(...),POST,,B,"edit handler, likely modal (no GET form)"
+Operations,MaterialItemController,ToggleActive(id),POST,,B,simple state toggle action
+Operations,MaterialItemController,"ReceiveStock(materialItemId, warehouseId, quantity, reason)",POST,,B,"meaningful POST action, real consequence"
+Operations,MaterialItemController,"AdjustStock(materialItemId, warehouseId, newOnHandQuantity, reason)",POST,,B,"meaningful POST action, real consequence"
+Operations,MaterialItemController,"TransferStock(materialItemId, fromWarehouseId, toWarehouseId, quantity, reason)",POST,,B,"meaningful POST action, real consequence"
+Operations,MaterialRequisitionController,"Index(page, pageSize)",GET,MaterialRequisitions.Index,A,"list page, has HelpKey"
+Operations,MaterialRequisitionController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Operations,MaterialRequisitionController,Create(),GET,,A,standalone create form page
+Operations,MaterialRequisitionController,Create(...),POST,,B,POST create handler
+Operations,MaterialRequisitionController,"ChangeStatus(mrId, status)",POST,,C,workflow status transition
+Operations,MaterialRequisitionController,"AddQuotation(mrId, mrqNumber, vendorName,...)",POST,,G,"sub-item quotation, embedded in detail page"
+Operations,MaterialRequisitionController,"UpdateQuotationEvaluation(mrId, mrqId,...)",POST,,G,"sub-item quotation, embedded in detail page"
+Operations,MaterialRequisitionController,"Quotations(page, pageSize)",GET,,A,"list page, no HelpKey yet"
+Operations,StoreRequisitionController,"Index(status, page, pageSize)",GET,StoreRequisition.Index,A,"list page, has HelpKey (Phase 4)"
+Operations,StoreRequisitionController,"Create(warehouseId, purpose, workOrderId)",POST,,B,"create handler, likely modal (no GET form)"
+Operations,StoreRequisitionController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Operations,StoreRequisitionController,"AddLine(storeRequisitionId, materialItemId, requestedQuantity)",POST,,G,"sub-item line, embedded in detail page"
+Operations,StoreRequisitionController,"AdvanceStatus(id, reason)",POST,,C,workflow status transition
+Operations,StoreRequisitionController,"Reject(id, reason)",POST,,C,workflow status transition
+Operations,StoreRequisitionController,"Cancel(id, reason)",POST,,C,workflow status transition
+Operations,MrsImportController,Index(),GET,Imports.StagedBatchOverview,A,import landing page
+Operations,MrsImportController,"Upload(file, sheetName)",POST,,B,file upload action
+Operations,MrsImportController,"Review(batchId, matchStatusFilter)",GET,,A,staged-batch review page
+Operations,MrsImportController,"BulkCommit(batchId, selectedRowIds)",POST,,C,advances import batch workflow state
+Operations,MrsImportController,"BulkReject(batchId, selectedRowIds)",POST,,C,advances import batch workflow state
+Operations,MeetingController,"Index(page, pageSize)",GET,,A,"list page, no HelpKey yet"
+Operations,MeetingController,Details(id),GET,,A,"detail page, no HelpKey yet"
+Operations,MeetingController,Create(),GET,,A,standalone create form page
+Operations,MeetingController,"Create(title, meetingDate, location,...)",POST,,B,POST create handler
+Operations,MeetingController,"UpdateMinutes(meetingId, minutesNotes, status)",POST,,B,"records data, real consequence"
+Operations,MeetingController,"AddAttendee(meetingId, employeeId, externalName, isRequired)",POST,,G,"sub-item attendee, embedded in detail page"
+Operations,MeetingController,"MarkAttended(meetingAttendeeId, meetingId, attended)",POST,,G,"sub-item attendance, embedded in detail page"
+Operations,MeetingController,"AddActionItem(meetingId, title, assignedToEmployeeId, dueDate)",POST,,G,"sub-item action, embedded in detail page"
+Operations,TaskController,"Index(tab, page, pageSize)",GET,,A,tabbed task list page
+Operations,TaskController,"Create(title, description, assignedToEmployeeId,...)",POST,,B,"create handler, likely modal (no GET form)"
+Operations,TaskController,"UpdateStatus(taskItemId, status, completionNote, tab)",POST,,B,"updates task status, real consequence"
+Operations,KpiController,"Index(fromDate, toDate)",GET,,A,cross-module KPI dashboard page
+Operations,ReportController,"Index(projectId, disciplineId, fromDate, toDate)",GET,,A,reports hub page
+Operations,ReportController,Engineering(...),GET,,A,report page
+Operations,ReportController,Vdr(...),GET,,A,report page
+Operations,ReportController,"Cmms(status, priority, fromDate, toDate)",GET,,A,report page
+Operations,ReportController,Procurement(...),GET,,A,report page
+Operations,ReportController,"Operations(periodType, anchorOrFrom, toDate, productionWorkCenterId, materialItemId)",GET,,A,report page
+Administration,Admin/UsersController,"Index(search, page, pageSize)",GET,Admin.Users.Index,A,"list page, has HelpKey"
+Administration,Admin/UsersController,Create(),GET,,A,standalone create form page
+Administration,Admin/UsersController,Create(model),POST,,B,POST create handler
+Administration,Admin/UsersController,Edit(id),GET,,A,standalone edit form page
+Administration,Admin/UsersController,Edit(model),POST,,B,POST edit handler
+Administration,Admin/UsersController,ToggleActive(id),POST,,B,simple state toggle action
+Administration,Admin/UsersController,Export(),GET,,D,export/download endpoint
+Administration,Admin/RolesController,Index(),GET,Admin.Roles.Index,A,"list page, has HelpKey"
+Administration,Admin/RolesController,Create(),GET,,A,standalone create form page
+Administration,Admin/RolesController,Create(model),POST,,B,POST create handler
+Administration,Admin/RolesController,Delete(id),POST,,B,"delete action, real consequence"
+Administration,Admin/PermissionMatrixController,Index(),GET,Admin.PermissionMatrix.Index,A,"list page, has HelpKey"
+Administration,Admin/PermissionMatrixController,"SetRole(roleName, permissions)",POST,,B,"meaningful POST action, real consequence"
+Administration,Admin/AuditLogController,"Index(entityName, userName, page, pageSize)",GET,Admin.AuditLog.Index,A,"list page, has HelpKey"
+Administration,Admin/RoutingRulesController,Index(),GET,,A,"list page, no HelpKey yet"
+Administration,Admin/RoutingRulesController,"SetRule(category, targetModule, allowAutoRouting, description)",POST,,B,"meaningful POST action, real consequence"
+Administration,Admin/RoutingRulesController,"SetConfidence(highThreshold, mediumThreshold)",POST,,B,"meaningful POST action, real consequence"
+Administration,Admin/StorageProvidersController,Index(),GET,,A,"list page, no HelpKey yet"
+Administration,Admin/StorageProvidersController,Create(),GET,,A,standalone create form page
+Administration,Admin/StorageProvidersController,Create(request),POST,,B,POST create handler
+Administration,Admin/StorageProvidersController,Edit(id),GET,,A,standalone edit form page
+Administration,Admin/StorageProvidersController,"Edit(id, request)",POST,,B,POST edit handler
+Administration,Admin/StorageProvidersController,TestConnection(id),POST,,D,diagnostic/test endpoint
+Administration,Admin/StorageProvidersController,SetDefault(id),POST,,B,"meaningful POST action, real consequence"
+Administration,Admin/StorageProvidersController,"SetEnabled(id, enabled)",POST,,B,simple state toggle action
+Administration,Admin/StorageProvidersController,Delete(id),POST,,B,"delete action, real consequence"
+Administration,Admin/StorageRoutingController,Index(),GET,,A,"list page, no HelpKey yet"
+Administration,Admin/StorageRoutingController,Create(),GET,,A,standalone create form page
+Administration,Admin/StorageRoutingController,Create(request),POST,,B,POST create handler
+Administration,Admin/StorageRoutingController,Edit(id),GET,,A,standalone edit form page
+Administration,Admin/StorageRoutingController,"Edit(id, request)",POST,,B,POST edit handler
+Administration,Admin/StorageRoutingController,Delete(id),POST,,B,"delete action, real consequence"
+Administration,Admin/ProjectIntelligenceController,Index(),GET,,A,configuration/overview page
+Administration,Admin/ProjectIntelligenceController,Refresh(),POST,,B,"triggers refresh, real consequence"
+Administration,Admin/HelpController,"Index(categoryId, articleType, isPublished)",GET,,A,admin list page
+Administration,Admin/HelpController,Create(),GET,,A,standalone create form page
+Administration,Admin/HelpController,Create(dto),POST,,B,POST create handler
+Administration,Admin/HelpController,Edit(id),GET,,A,standalone edit form page
+Administration,Admin/HelpController,"Edit(id, dto)",POST,,B,POST edit handler
+Administration,Admin/HelpController,VisualCreate(articleId),GET,,A,standalone create form page
+Administration,Admin/HelpController,VisualCreate(dto),POST,,B,POST create handler
+Administration,Admin/HelpController,VisualEdit(id),GET,,A,standalone edit form page
+Administration,Admin/HelpController,"VisualEdit(id, dto)",POST,,B,POST edit handler
+Administration,Admin/HelpController,"VisualSetPublished(id, articleId, isPublished)",POST,,B,simple state toggle action
+Administration,Admin/HelpController,"VisualDelete(id, articleId)",POST,,B,"delete action, real consequence"
+Administration,Admin/HelpController,"SetPublished(id, isPublished)",POST,,B,simple state toggle action
+Administration,Admin/HelpController,Delete(id),POST,,B,"delete action, real consequence"
+Administration,Admin/HelpController,History(id),GET,,A,revision history page
+Administration,Admin/DepartmentController,Index(),GET,,F,redirect stub to root controller
+Administration,Admin/EmployeeController,Index(),GET,,F,redirect stub to root controller
+Administration,Admin/SettingsController,Index(),GET,,F,redirect stub to root controller
+Administration,DepartmentController,Index(),GET,Departments.Index,A,"list page, has HelpKey"
+Administration,DepartmentController,"Create(code, name, description)",POST,,B,"create handler, likely modal (no GET form)"
+Administration,DepartmentController,"Edit(departmentId, code, name, description)",POST,,B,"edit handler, likely modal (no GET form)"
+Administration,DepartmentController,ToggleActive(departmentId),POST,,B,simple state toggle action
+Administration,DepartmentController,Export(),GET,,D,export/download endpoint
+Administration,DepartmentController,Import(file),POST,,B,file import action
+Administration,EmployeeController,Details(id),GET,Employee.Details,A,"detail page, has HelpKey"
+Administration,EmployeeController,AddSkill,POST,,G,"sub-item skill, embedded in detail page"
+Administration,EmployeeController,RemoveSkill,POST,,G,"sub-item skill, embedded in detail page"
+Administration,EmployeeController,AddQualification,POST,,G,"sub-item qualification, embedded in detail page"
+Administration,EmployeeController,RemoveQualification,POST,,G,"sub-item qualification, embedded in detail page"
+Administration,EmployeeController,AddCertification,POST,,G,"sub-item certification, embedded in detail page"
+Administration,EmployeeController,RemoveCertification,POST,,G,"sub-item certification, embedded in detail page"
+Administration,EmployeeController,SetLaborRate(...),POST,,G,"sub-item labor rate, embedded in detail page"
+Administration,EmployeeController,"Index(departmentId, disciplineId, q, page, pageSize)",GET,,A,"list page, no HelpKey yet"
+Administration,EmployeeController,Create(...),POST,,B,"create handler, likely modal (no GET form)"
+Administration,EmployeeController,Edit(...),POST,,B,"edit handler, likely modal (no GET form)"
+Administration,EmployeeController,ToggleActive(employeeId),POST,,B,simple state toggle action
+Administration,EmployeeController,Export(),GET,,D,export/download endpoint
+Administration,EmployeeController,Import(file),POST,,B,file import action
+Administration,AccountController,ManagePasskeys(),GET,,E,auth/infrastructure endpoint
+Administration,AccountController,Login(),GET,,E,"auth/infrastructure endpoint, AllowAnonymous"
+Administration,AccountController,Login(model),POST,,E,"auth/infrastructure endpoint, AllowAnonymous"
+Administration,AccountController,ChangePassword(),GET,,E,auth/infrastructure endpoint
+Administration,AccountController,ChangePassword(model),POST,,E,auth/infrastructure endpoint
+Administration,AccountController,Logout(),POST,,E,"auth/infrastructure endpoint, AllowAnonymous"
+Administration,AccountController,AccessDenied(),GET,,E,"auth/infrastructure endpoint, AllowAnonymous"
+Administration,AccountController,ForgotPassword(),GET,,E,"auth/infrastructure endpoint, AllowAnonymous"
+Administration,AccountController,ForgotPassword(model),POST,,E,"auth/infrastructure endpoint, AllowAnonymous"
+Administration,WebAuthnController,GetRegistrationOptions(),GET,,E,WebAuthn infrastructure endpoint
+Administration,WebAuthnController,"CompleteRegistration(attestationResponseJson, optionsJson, nickname)",POST,,E,WebAuthn infrastructure endpoint
+Administration,WebAuthnController,GetAssertionOptions(),GET,,E,WebAuthn infrastructure endpoint
+Administration,MyProfileController,Index(),GET,,A,own profile page
+Administration,MyProfileController,UploadPhoto(file),POST,,B,file upload action
+Administration,MyProfileController,SaveSignature(signatureDataUrl),POST,,B,"records data, real consequence"
+Administration,PerformanceController,Index(),GET,,H,ambiguous: real feature page vs. internal dev tool
+Administration,SettingsController,Index(),GET,,A,user/system settings page
+Administration,DashboardSettingsController,Index(),GET,,A,widget configuration page
+Administration,DashboardSettingsController,Save(widgets),POST,,B,"records data, real consequence"
+Administration,DashboardSettingsController,Reset(),POST,,B,"meaningful POST action, real consequence"
+Administration,ThemeController,"SetTheme(theme, returnUrl)",GET,,E,"UI theme switch, infra"
+Administration,CultureController,"SetCulture(culture, returnUrl)",GET,,E,"UI culture switch, infra, AllowAnonymous"
+Administration,NotificationController,Index(),GET,,A,full notifications list page
+Administration,NotificationController,Dropdown(),GET,,D,AJAX notification dropdown endpoint
+Administration,NotificationController,MarkRead(id),POST,,B,simple state toggle action
+Administration,NotificationController,MarkAllRead(),POST,,B,simple state toggle action
+Administration,QuickSetupController,Index(),GET,,A,guided setup wizard page
+Help,HelpController,Index(),GET,,A,help home/category browse page
+Help,HelpController,Category(id),GET,,A,category article list page
+Help,HelpController,Article(code),GET,,A,article render page
+Help,HelpController,Search(q),GET,,A,search results page
+Help,HelpController,Context(key),GET,,D,AJAX contextual help drawer endpoint
+Help,HelpController,"AskAi(articleCode, question)",POST,,D,AJAX AI-assistant query endpoint
+Other,HomeController,Index(),GET,,A,main landing/dashboard page
+Other,HomeController,Privacy(),GET,,E,"static legal page, not a feature"
+Other,HomeController,Error(),GET,,E,"error page, infra"
+Other,ComingSoonController,"Index(title, section)",GET,,H,ambiguous: real page vs. non-content placeholder
+Other,GlobalSearchController,Index(q),GET,,A,cross-module search results page
+Other,SearchApiController,"Index(type, q, page, pageSize, projectId)",GET,,D,generic JSON search API
+Other,SearchApiController,Entities(),GET,,D,AJAX lookup endpoint
+Other,FilesController,Download(id),GET,,D,file stream/download endpoint
+Other,BarcodeController,Index(),GET,,A,module home page
+Other,BarcodeController,Resolve(code),GET,,D,scan-resolve redirect endpoint
+Other,BarcodeController,"Verify(code, expectedTargetType, expectedTargetId)",GET,,D,scan-verify endpoint
+Other,BarcodeController,ResolveJson(code),GET,,D,JSON resolve endpoint for scanner UI
+Other,BarcodeController,"Generate(targetType, targetId, symbology)",POST,,B,"meaningful POST action, real consequence"
+Other,BarcodeController,"BulkGenerate(disciplineIds, equipmentTypes, tagSearch)",GET,,A,bulk generation picker page
+Other,BarcodeController,"BulkGenerateCommit(equipmentIds, symbology)",POST,,B,"executes bulk generation, real consequence"
+Other,BarcodeController,Print(id),POST,,B,"marks/prints label, real consequence"
+Other,BarcodeController,LabelPdf(id),GET,,D,file render endpoint
+Other,BarcodeController,"BulkLabelSheet(targetType, ids)",GET,,D,file render endpoint
+Other,BarcodeController,Svg(id),GET,,D,file render endpoint
+Other,BarcodeController,Png(id),GET,,D,file render endpoint
+Other,BarcodeController,"Disable(id, reason, targetType, targetId)",POST,,C,workflow status transition
+Other,BarcodeController,"Revoke(id, reason, targetType, targetId)",POST,,C,workflow status transition
+Other,BarcodeController,"Replace(id, targetType, targetId, symbology)",POST,,C,workflow status transition
+Other,ChatAssistantController,Index(),GET,,A,AI chat-assistant panel page
+Other,ChatAssistantController,Ask(message),POST,,D,AJAX chat message endpoint
+Other,ChatAssistantController,Clear(),POST,,D,AJAX clear-session endpoint
+Other,AIController,Test(),GET,,E,AI connectivity smoke-test endpoint
+Other,TagController,Index(),GET,,A,list tags page
+Other,TagController,"Create(name, color, returnUrl)",POST,,B,"create handler, likely modal (no GET form)"
+Other,TagController,Delete(tagId),POST,,B,"delete action, real consequence"

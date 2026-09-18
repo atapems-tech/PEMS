@@ -2,7 +2,11 @@
 @{
     var categories = (IEnumerable<dynamic>)ViewBag.Categories;
     var allArticles = (IEnumerable<dynamic>)ViewBag.AllArticlesForRelated;
-    var articleTypes = new[] { "Module", "Page", "Field", "Action", "Workflow", "Faq", "Glossary", "Troubleshooting", "RoleGuide" };
+    var articleTypes = new[] { "Module", "Page", "Field", "Action", "Workflow", "Faq", "Glossary", "Troubleshooting", "RoleGuide", "Concept", "DisciplineGuide" };
+    @* StandardReference is intentionally NOT in this list - it requires the structured metadata
+       (Identifier/IssuingOrganization/ApplicabilityStatus/...) that only the dedicated
+       Standard Create/Edit form on this page collects; creating one here would leave that
+       required row missing. *@
 }
 
 @if (!ViewData.ModelState.IsValid)

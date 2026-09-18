@@ -89,8 +89,87 @@ public static class HelpContentSeeder
 
         await db.SaveChangesAsync();
 
+        // طبق «PEMS Help Phase 4» بخش ۲۳ (ایدمپوتنت، بدون تغییر مخرب): این مقاله در فاز ۲ بدون
+        // HelpKey seed شده بود (صفحه‌ی متناظرش - Production/Dashboard - وقتی هنوز HelpKey نداشت).
+        // این‌جا فقط اگر مقاله از‌قبل وجود دارد و هنوز HelpKey ندارد، آن را ست می‌کنیم - محتوای
+        // موجود دست‌نخورده می‌ماند، و اجرای دوباره هیچ تغییری اضافه نمی‌کند.
+        var operationsOverview = await db.HelpArticles.FirstOrDefaultAsync(x => x.Code == "operations-production-overview");
+        if (operationsOverview != null && string.IsNullOrEmpty(operationsOverview.HelpKey))
+        {
+            operationsOverview.HelpKey = "Production.Dashboard";
+            await db.SaveChangesAsync();
+        }
+
+        // طبق «PEMS Help Phase 4 - Increment 3C» بند ۹ (Outcome B، اصلاح هدفمند، نه نوشتن مقاله‌ی
+        // جدید): این پچ ایدمپوتنت است - فقط اگر متنِ دقیقِ نسخه‌ی قبل از اصلاح هنوز موجود باشد
+        // (یعنی هیچ ادمینی محتوا را دستی تغییر نداده) آن را با نسخه‌ی اصلاح‌شده جایگزین می‌کند؛
+        // اجرای دوباره هیچ تغییری اضافه نمی‌کند چون متن قدیمی دیگر پیدا نمی‌شود.
+        await PatchReliabilityOverviewGapCaveatsAsync(db);
+
         // پیوندهای «مقاله‌ی مرتبط» - بعد از این‌که همه‌ی مقالات (چه تازه‌ساخته چه قبلاً موجود) شناسه دارند
         await LinkRelatedArticlesAsync(db, articles);
+    }
+
+    private static async Task PatchReliabilityOverviewGapCaveatsAsync(PEMSDbContext db)
+    {
+        var article = await db.HelpArticles
+            .Include(x => x.Translations)
+            .FirstOrDefaultAsync(x => x.Code == "reliability-overview");
+        if (article == null) return;
+
+        var en = article.Translations.FirstOrDefault(t => t.LanguageCode == "en");
+        if (en != null)
+        {
+            const string oldAvailabilityEn = "<li><strong>Availability</strong> = MTBF / (MTBF + MTTR) × 100 - the standard Inherent Availability " +
+                "formula, calculated only when both MTBF and MTTR are available.</li>";
+            const string newAvailabilityEn = "<li><strong>Availability</strong> = MTBF / (MTBF + MTTR) × 100 - the standard Inherent Availability " +
+                "formula, calculated only when both MTBF and MTTR are available. <strong>Verified limitation:</strong> this " +
+                "result is not mathematically bounded to 0-100% - if a linked Work Order has an invalid duration (Completion " +
+                "Date recorded before Start Date), MTTR can go negative and push Availability above 100%; PEMS does not " +
+                "currently guard against this.</li>";
+            const string oldParetoAnchorEn = "</ul>" +
+                "<p><strong>Critical data-integrity fact (verified):</strong> a Failure Record is <em>never</em> created";
+            const string newParetoAnchorEn = "</ul>" +
+                "<p><strong>Known limitation (verified):</strong> the Failure Mode and Failure Cause Pareto charts on this " +
+                "page, and the Failure Taxonomy Coverage indicator on the Data Quality page, rely on a structured " +
+                "failure-mode/cause classification field that is not currently populated by any PEMS workflow. These charts " +
+                "and this indicator may show little or no data even when the free-text failure mode/cause used by Bad Actors " +
+                "above is fully populated - this is a data-wiring gap, not a sign of a healthy or unhealthy fleet.</p>" +
+                "<p><strong>Critical data-integrity fact (verified):</strong> a Failure Record is <em>never</em> created";
+
+            if (en.Content.Contains(oldAvailabilityEn))
+                en.Content = en.Content.Replace(oldAvailabilityEn, newAvailabilityEn);
+            if (en.Content.Contains(oldParetoAnchorEn))
+                en.Content = en.Content.Replace(oldParetoAnchorEn, newParetoAnchorEn);
+        }
+
+        var fa = article.Translations.FirstOrDefault(t => t.LanguageCode == "fa");
+        if (fa != null)
+        {
+            const string oldAvailabilityFa = "<li><strong>Availability</strong> = MTBF / (MTBF + MTTR) × ۱۰۰ - فرمول استاندارد Inherent Availability، " +
+                "فقط وقتی هر دو MTBF و MTTR در دسترس باشند محاسبه می‌شود.</li>";
+            const string newAvailabilityFa = "<li><strong>Availability</strong> = MTBF / (MTBF + MTTR) × ۱۰۰ - فرمول استاندارد Inherent Availability، " +
+                "فقط وقتی هر دو MTBF و MTTR در دسترس باشند محاسبه می‌شود. <strong>محدودیت تاییدشده:</strong> این نتیجه از نظر " +
+                "ریاضی به بازه‌ی ۰-۱۰۰٪ محدود نیست - اگر دستور کارِ مرتبط مدت نامعتبری داشته باشد (تاریخ تکمیل قبل از تاریخ " +
+                "شروع ثبت شده باشد)، MTTR می‌تواند منفی شود و Availability را بالای ۱۰۰٪ ببرد؛ PEMS در حال حاضر در برابر این " +
+                "حالت محافظتی ندارد.</li>";
+            const string oldParetoAnchorFa = "</ul>" +
+                "<p><strong>واقعیت حیاتیِ یکپارچگیِ داده (تاییدشده):</strong> یک رکورد خرابی <em>هرگز</em> از طریق فرم";
+            const string newParetoAnchorFa = "</ul>" +
+                "<p><strong>محدودیت تاییدشده:</strong> نمودارهای Pareto حالت خرابی و علت خرابی در این صفحه، و شاخص پوشش " +
+                "طبقه‌بندیِ خرابی (Failure Taxonomy Coverage) در صفحه‌ی کیفیت داده، به یک فیلد طبقه‌بندیِ ساختاریافته‌ی " +
+                "حالت/علت خرابی وابسته‌اند که در حال حاضر توسط هیچ روندی در PEMS پر نمی‌شود. این نمودارها و این شاخص ممکن " +
+                "است داده‌ی کم یا هیچ نشان دهند حتی وقتی فیلد متنیِ حالت/علت خرابی (که Bad Actors بالا از آن استفاده می‌کند) " +
+                "کاملاً پر شده باشد - این یک شکاف در اتصال داده است، نه نشانه‌ی سلامت یا ناسلامتیِ ناوگان.</p>" +
+                "<p><strong>واقعیت حیاتیِ یکپارچگیِ داده (تاییدشده):</strong> یک رکورد خرابی <em>هرگز</em> از طریق فرم";
+
+            if (fa.Content.Contains(oldAvailabilityFa))
+                fa.Content = fa.Content.Replace(oldAvailabilityFa, newAvailabilityFa);
+            if (fa.Content.Contains(oldParetoAnchorFa))
+                fa.Content = fa.Content.Replace(oldParetoAnchorFa, newParetoAnchorFa);
+        }
+
+        await db.SaveChangesAsync();
     }
 
     private static async Task LinkRelatedArticlesAsync(PEMSDbContext db, List<Art> articles)
@@ -352,6 +431,157 @@ public static class HelpContentSeeder
             "idc,بازبینی بین دیسیپلینی,بازبینی دیسیپلین,نیازمند اصلاح",
             new[] { "document-workflow", "engineering-documents-details" }),
 
+        // ============================= PHASE 4: ENGINEERING COMMUNICATION =============================
+        new Art("moc-overview", "engineering", "Workflow", "MOC.Index", 12,
+            "Management of Change (MOC)",
+            "The verified MOC lifecycle: Risk Assessment, Approval, a risk-based Senior Approval, and a gated Closure.",
+            "<p>A <strong>Management of Change (MOC)</strong> request is raised against a project/discipline, optionally " +
+            "linked to a related engineering document or piece of equipment, and given a <strong>Risk Level</strong> of " +
+            "<strong>Low</strong>, <strong>Medium</strong> or <strong>High</strong>. Its verified status flow is: " +
+            "<strong>Pending Risk Assessment</strong> → (risk assessment recorded) → <strong>Pending Approval</strong> " +
+            "→ <strong>Approved</strong>. If, and only if, the Risk Level is <strong>High</strong>, approval does not " +
+            "finish the workflow - it instead moves to a dedicated <strong>Pending Senior Approval</strong> stage requiring " +
+            "an independent System Admin/Engineering Manager decision. Low/Medium-risk MOCs skip that stage automatically.</p>" +
+            "<p>Approval (of either kind) can instead end in <strong>Rejected</strong>. Once approved, implementation is " +
+            "recorded (status <strong>Pending Closure</strong>), and <strong>Close</strong> is verified to be blocked by the " +
+            "system unless the affected documents have actually been marked updated, and - if the MOC was flagged as " +
+            "requiring training - unless that training has actually been marked complete.</p>",
+            "moc,management of change,risk assessment,senior approval",
+            "مدیریت تغییر (MOC)",
+            "چرخه‌ی تاییدشده‌ی MOC: ارزیابی ریسک، تایید، تایید ارشد (فقط ریسک بالا)، و بستنی که مشروط است.",
+            "<p>یک درخواست <strong>مدیریت تغییر (MOC)</strong> برای یک پروژه/دیسیپلین ثبت می‌شود، به‌صورت اختیاری به یک " +
+            "مدرک مهندسی یا تجهیز مرتبط وصل می‌شود، و یک <strong>سطح ریسک</strong> <strong>Low</strong>، " +
+            "<strong>Medium</strong> یا <strong>High</strong> می‌گیرد. چرخه‌ی وضعیت تاییدشده‌ی آن: " +
+            "<strong>Pending Risk Assessment</strong> ← (ارزیابی ریسک ثبت می‌شود) → <strong>Pending " +
+            "Approval</strong> → <strong>Approved</strong>. اگر و فقط اگر سطح ریسک <strong>High</strong> باشد، تایید " +
+            "به پایان گردش‌کار نمی‌رسد - در عوض به مرحله‌ی اختصاصی <strong>Pending Senior Approval</strong> می‌رود که " +
+            "نیازمند تصمیم مستقل System Admin/Engineering Manager است. MOC های با ریسک Low/Medium این مرحله را به‌صورت " +
+            "خودکار رد می‌کنند.</p>" +
+            "<p>تایید (از هر نوع) می‌تواند به‌جای آن به <strong>Rejected</strong> ختم شود. پس از تایید، اجرا ثبت می‌شود " +
+            "(وضعیت <strong>Pending Closure</strong>)، و تاییدشده است که <strong>Close</strong> توسط سیستم مسدود می‌شود " +
+            "مگر این‌که مدارک متاثر واقعاً به‌روزرسانی‌شده علامت‌گذاری شده باشند، و - اگر MOC نیازمند آموزش علامت‌گذاری شده " +
+            "بود - مگر این‌که آن آموزش واقعاً تکمیل‌شده علامت‌گذاری شده باشد.</p>",
+            "moc,مدیریت تغییر,ارزیابی ریسک,تایید ارشد",
+            new[] { "document-workflow" }),
+
+        new Art("technical-query-overview", "engineering", "Workflow", "TechnicalQuery.Index", 13,
+            "TQ / TSR / RFI",
+            "The verified query-response lifecycle, including the Reopen loop back to the responding discipline.",
+            "<p>A query is raised with one of three verified types - <strong>TQ</strong>, <strong>TSR</strong> or " +
+            "<strong>RFI</strong> (the codebase defines TQ as \"Technical Query\"; it does not define an expansion for " +
+            "TSR, so it is shown here as-is rather than guessed) - against a project and discipline. Its verified status " +
+            "flow is: <strong>Open</strong> → (the responsible discipline responds) → <strong>Pending " +
+            "Confirmation</strong> → either <strong>Closed</strong> (the raiser confirms the response) or " +
+            "<strong>Reopened</strong> (the raiser rejects the response, which sends it back to the responding discipline " +
+            "for another answer).</p>",
+            "tq,tsr,rfi,technical query,reopen",
+            "TQ / TSR / RFI",
+            "چرخه‌ی تاییدشده‌ی پرسش-پاسخ، شامل حلقه‌ی بازگشتی Reopen به دیسیپلین پاسخ‌دهنده.",
+            "<p>یک پرسش با یکی از سه نوع تاییدشده - <strong>TQ</strong>، <strong>TSR</strong> یا <strong>RFI</strong> " +
+            "(کد پایه TQ را «Technical Query» تعریف می‌کند؛ بسطی برای TSR در کد تعریف نشده، پس همین‌طور که هست نمایش " +
+            "داده می‌شود، نه حدس‌زده) - برای یک پروژه و دیسیپلین ثبت می‌شود. چرخه‌ی وضعیت تاییدشده‌ی آن: " +
+            "<strong>Open</strong> → (دیسیپلین مسئول پاسخ می‌دهد) → <strong>Pending Confirmation</strong> → " +
+            "یا <strong>Closed</strong> (ثبت‌کننده پاسخ را تایید می‌کند) یا <strong>Reopened</strong> (ثبت‌کننده پاسخ را " +
+            "رد می‌کند، که آن را برای پاسخ دوباره به دیسیپلین پاسخ‌دهنده برمی‌گرداند).</p>",
+            "tq,tsr,rfi,پرسش فنی,بازگشایی",
+            new[] { "engineering-documents-overview" }),
+
+        new Art("correspondence-overview", "engineering", "Workflow", "Letter.Index", 14,
+            "Correspondence",
+            "The verified letter lifecycle from Draft to Closed, and what Refer does (and does not) mean.",
+            "<p>A letter's verified status flow is: <strong>Draft</strong> (a draft can only be saved while it is Draft " +
+            "or ReturnedForRevision) → <strong>Pending Approval</strong> → either <strong>Approved</strong> or " +
+            "<strong>Returned For Revision</strong> (which can only be resubmitted, sending it back to Pending Approval) " +
+            "or <strong>Rejected</strong>. An approved letter is then <strong>Issued</strong> and finally " +
+            "<strong>Closed</strong>.</p>" +
+            "<p><strong>Referring</strong> a letter to another employee is a separate, parallel concept from this status " +
+            "flow - it creates a per-recipient referral (with its own read/completion tracking) without changing the " +
+            "letter's own status. A reply letter is linked to its parent, and creating one marks the parent as " +
+            "\"Referred\".</p>",
+            "correspondence,letter,referral,approval",
+            "مکاتبات",
+            "چرخه‌ی تاییدشده‌ی نامه از Draft تا Closed، و این‌که Refer دقیقاً به چه معناست (و به چه معنایی نیست).",
+            "<p>چرخه‌ی وضعیت تاییدشده‌ی یک نامه: <strong>Draft</strong> (پیش‌نویس فقط وقتی Draft یا ReturnedForRevision " +
+            "باشد قابل‌ذخیره است) → <strong>Pending Approval</strong> → یا <strong>Approved</strong> یا " +
+            "<strong>Returned For Revision</strong> (که فقط قابل ارسال دوباره است و به Pending Approval برمی‌گردد) یا " +
+            "<strong>Rejected</strong>. نامه‌ی تاییدشده سپس <strong>Issued</strong> و در نهایت <strong>Closed</strong> " +
+            "می‌شود.</p>" +
+            "<p><strong>ارجاع (Refer)</strong> نامه به کارمند دیگر مفهومی جدا و موازی از این چرخه‌ی وضعیت است - یک ارجاعِ " +
+            "مختص به هر گیرنده (با ردگیری خواندن/تکمیل خودش) می‌سازد بدون این‌که وضعیت خودِ نامه را تغییر دهد. نامه‌ی " +
+            "پاسخ به والدش وصل است، و ساختن آن والد را «ارجاع‌شده» علامت می‌زند.</p>",
+            "مکاتبات,نامه,ارجاع,تایید",
+            null),
+
+        new Art("contracts-overview", "engineering", "Page", "Contract.Index", 15,
+            "Contracts",
+            "What a contract record tracks, and the verified status set offered by the UI.",
+            "<p>A contract links a project to a vendor and records the contract number, scope of work, value/currency, " +
+            "and start/end dates. Its status is changed via a dropdown offering exactly four verified values - " +
+            "<strong>Draft</strong>, <strong>Active</strong>, <strong>Completed</strong>, <strong>Terminated</strong> - " +
+            "and, unlike most other PEMS lifecycles in this Help system, the system does not currently enforce a strict " +
+            "order between them; any of the four can be selected from any other. Changing status requires the " +
+            "\"Contracts / Approve\" permission.</p>",
+            "contract,vendor,scope of work",
+            "قراردادها",
+            "یک رکورد قرارداد چه چیزی را ردیابی می‌کند، و مجموعه‌ی وضعیتِ تاییدشده‌ای که رابط کاربری ارائه می‌دهد.",
+            "<p>یک قرارداد یک پروژه را به یک وندور وصل می‌کند و شماره‌ی قرارداد، محدوده‌ی کار، ارزش/ارز، و تاریخ‌های " +
+            "شروع/پایان را ثبت می‌کند. وضعیت آن از طریق یک منوی کشویی با دقیقاً چهار مقدار تاییدشده تغییر می‌کند - " +
+            "<strong>Draft</strong>، <strong>Active</strong>، <strong>Completed</strong>، <strong>Terminated</strong> - " +
+            "و، برخلاف بیشتر چرخه‌های دیگر PEMS در این راهنما، سیستم در حال حاضر ترتیب سخت‌گیرانه‌ای بین آن‌ها اجرا " +
+            "نمی‌کند؛ هر کدام از این چهار مورد از هر مورد دیگری قابل‌انتخاب است. تغییر وضعیت نیازمند مجوز «Contracts / " +
+            "Approve» است.</p>",
+            "قرارداد,وندور,محدوده کار",
+            new[] { "vendors-overview" }),
+
+        new Art("vendors-overview", "engineering", "Page", "Vendor.Index", 16,
+            "Vendors and Risk Score",
+            "How a vendor's Risk Score is actually calculated - entirely from its VDR submission history.",
+            "<p>A vendor's <strong>Risk Score</strong> (0 = lowest risk, 1 = highest) is a weighted, verified formula: " +
+            "<strong>40%</strong> the vendor's overdue-submission rate across its Vendor Document Register (VDR) items, " +
+            "<strong>40%</strong> its resubmission rate (how often a reviewed submission was found to require " +
+            "resubmission), and <strong>20%</strong> the inverse of its VDR item closure rate. The resulting score maps " +
+            "to a <strong>Risk Level</strong> of <strong>Low</strong> (&lt; 0.25), <strong>Medium</strong> (&lt; 0.55) or " +
+            "<strong>High</strong> (≥ 0.55). A vendor with no VDR items at all is shown as <strong>Unknown</strong>, " +
+            "not as low-risk. This means the score reflects only VDR document performance - it is not a general vendor " +
+            "quality or financial rating.</p>",
+            "vendor,risk score,vdr,resubmission",
+            "وندورها و امتیاز ریسک",
+            "امتیاز ریسک یک وندور واقعاً چگونه محاسبه می‌شود - کاملاً بر اساس تاریخچه‌ی ارسال VDR آن.",
+            "<p><strong>امتیاز ریسک (Risk Score)</strong> یک وندور (۰ = کم‌ترین ریسک، ۱ = بیشترین ریسک) یک فرمول وزن‌دار " +
+            "و تاییدشده است: <strong>۴۰٪</strong> نرخ تاخیر ارسال در آیتم‌های VDR آن وندور، <strong>۴۰٪</strong> نرخ " +
+            "اصلاح دوباره (چند بار یک ارسالِ بازبینی‌شده نیازمند ارسال دوباره تشخیص داده شده)، و <strong>۲۰٪</strong> " +
+            "معکوسِ نرخ بسته‌شدن آیتم‌های VDR آن. امتیاز نهایی به <strong>سطح ریسک</strong> <strong>Low</strong> " +
+            "(&lt; 0.25)، <strong>Medium</strong> (&lt; 0.55) یا <strong>High</strong> (≥ 0.55) نگاشت می‌شود. " +
+            "وندوری که اصلاً آیتم VDR ندارد <strong>Unknown</strong> نمایش داده می‌شود، نه کم‌ریسک. این یعنی امتیاز فقط " +
+            "عملکرد مدارک VDR را نشان می‌دهد - یک رتبه‌بندی کلی کیفیت یا مالی وندور نیست.</p>",
+            "وندور,امتیاز ریسک,vdr,اصلاح دوباره",
+            new[] { "vdr-overview", "contracts-overview" }),
+
+        new Art("document-revisions-overview", "engineering", "Page", "DocumentRevisions.Index", 17,
+            "Document Revision History",
+            "A cross-document revision browser - and why new revisions are created elsewhere, not here.",
+            "<p>This page is a read-only, filterable history of revisions across all engineering documents (or, when " +
+            "opened from a specific document, just that document's own revisions) - revision number, previous revision " +
+            "number, status, issue purpose, revision date, and who prepared/checked/approved it.</p>" +
+            "<p><strong>Verified deliberately:</strong> this page does not let you create a new revision directly - " +
+            "attempting to reaches a redirect back to the document's own Details page with a message pointing to the " +
+            "\"Create New Revision\" action there instead. That is by design: creating a revision through the document's " +
+            "own workflow is what correctly numbers it, records who created it, and supersedes the previous revision - a " +
+            "shortcut that bypassed this was found and closed. There is currently no revision comparison/diff feature.</p>",
+            "revision,document revision,history",
+            "تاریخچه‌ی بازنگری مدرک",
+            "یک مرورگر بازنگری بین‌مدرکی - و این‌که چرا بازنگری‌های جدید جای دیگری ساخته می‌شوند، نه این‌جا.",
+            "<p>این صفحه یک تاریخچه‌ی فقط-خواندنی و قابل‌فیلتر از بازنگری‌ها در همه‌ی مدارک مهندسی است (یا، وقتی از یک " +
+            "مدرک مشخص باز شود، فقط بازنگری‌های همان مدرک) - شماره‌ی بازنگری، شماره‌ی بازنگری قبلی، وضعیت، هدف صدور، تاریخ " +
+            "بازنگری، و این‌که چه کسی آن را تهیه/بررسی/تایید کرده.</p>" +
+            "<p><strong>عمداً تاییدشده:</strong> این صفحه اجازه‌ی ساخت مستقیم یک بازنگری جدید را نمی‌دهد - تلاش برای این " +
+            "کار به بازگشت به صفحه‌ی جزئیات خودِ مدرک با پیامی که به اقدام «Create New Revision» همان‌جا اشاره می‌کند " +
+            "ختم می‌شود. این عمدی است: ساخت بازنگری از طریق گردش‌کار خودِ مدرک است که به‌درستی شماره‌گذاری می‌کند، ثبت " +
+            "می‌کند چه کسی ساخته، و بازنگری قبلی را جایگزین می‌کند - میان‌بری که این را دور می‌زد پیدا و بسته شد. در حال " +
+            "حاضر قابلیت مقایسه/Diff بازنگری‌ها وجود ندارد.</p>",
+            "بازنگری,بازنگری مدرک,تاریخچه",
+            new[] { "document-workflow" }),
+
         // ============================= CMMS =============================
         new Art("cmms-overview", "cmms", "Module", null, 0,
             "CMMS Overview",
@@ -433,6 +663,389 @@ public static class HelpContentSeeder
             "درخواست‌های کار موردی متکی باشد.</p>",
             "استراتژی نگهداری,نگهداری پیشگیرانه,محرک",
             new[] { "cmms-overview" }),
+
+        // ============================= PHASE 4: QC/QA =============================
+        new Art("qc-qa-overview", "cmms", "Module", "QC.Index", 17,
+            "QC / QA",
+            "Inspection & Test Plans and Non-Conformance Reports - what each one is for.",
+            "<p>The QC/QA hub covers two verified object types. An <strong>Inspection &amp; Test Plan (ITP)</strong> " +
+            "starts as <strong>Draft</strong>, is approved to become <strong>Active</strong>, and its individual line " +
+            "items move from <strong>Pending</strong> to <strong>Notified</strong> (a hold point has been raised) to " +
+            "either <strong>Passed</strong> or <strong>Failed</strong> once an inspection result is recorded. A " +
+            "<strong>Non-Conformance Report (NCR)</strong> is raised with a <strong>Severity</strong> of " +
+            "<strong>Minor</strong>, <strong>Major</strong> or <strong>Critical</strong> and a QC discipline (a separate " +
+            "concept from engineering disciplines) - see the dedicated NCR article for its verified disposition/closure " +
+            "workflow, including the extra approval step that only applies to Critical NCRs.</p>",
+            "qc,qa,itp,ncr,inspection and test plan",
+            "QC / QA",
+            "برنامه‌ی بازرسی و آزمون (ITP) و گزارش عدم‌انطباق (NCR) - هرکدام برای چه چیزی است.",
+            "<p>مرکز QC/QA دو نوع شیء تاییدشده را پوشش می‌دهد. <strong>برنامه‌ی بازرسی و آزمون (ITP)</strong> به‌صورت " +
+            "<strong>Draft</strong> شروع می‌شود، با تایید به <strong>Active</strong> می‌رود، و آیتم‌های خط آن از " +
+            "<strong>Pending</strong> به <strong>Notified</strong> (یک نقطه‌ی توقف اعلام شده) و سپس با ثبت نتیجه‌ی " +
+            "بازرسی به <strong>Passed</strong> یا <strong>Failed</strong> می‌روند. <strong>گزارش عدم‌انطباق (NCR)</strong> " +
+            "با یک <strong>شدت (Severity)</strong> <strong>Minor</strong>، <strong>Major</strong> یا " +
+            "<strong>Critical</strong> و یک دیسیپلین QC (مفهومی جدا از دیسیپلین‌های مهندسی) ثبت می‌شود - برای گردش‌کار " +
+            "تاییدشده‌ی Disposition/بستن آن، شامل مرحله‌ی تایید اضافه‌ای که فقط برای NCR های Critical اعمال می‌شود، مقاله‌ی " +
+            "اختصاصی NCR را ببینید.</p>",
+            "qc,qa,itp,ncr,برنامه بازرسی و آزمون",
+            new[] { "ncr-critical-approval-workflow" }),
+
+        new Art("ncr-critical-approval-workflow", "cmms", "Workflow", null, 18,
+            "NCR Disposition and Critical Approval",
+            "The verified NCR lifecycle, and the extra independent-approval step required only for Critical severity.",
+            "<p>A Non-Conformance Report's verified status flow is: <strong>Open</strong> → (a disposition is " +
+            "recorded) → for <strong>Minor</strong>/<strong>Major</strong> severity, directly to " +
+            "<strong>Dispositioned</strong>; for <strong>Critical</strong> severity, first to <strong>Pending " +
+            "Approval</strong>, requiring an independent QA Manager/System Admin decision before it can reach " +
+            "<strong>Dispositioned</strong> (a Reject sends it back to <strong>Open</strong>, not to Dispositioned). " +
+            "Only once <strong>Dispositioned</strong> can an NCR be <strong>Closed</strong>. This extra approval gate " +
+            "exists, per the code's own reasoning, so a critical non-conformance cannot be closed out on the sole " +
+            "authority of the person who recorded its disposition.</p>",
+            "ncr,non-conformance,disposition,critical,qa approval",
+            "بستن و تایید NCR بحرانی",
+            "چرخه‌ی تاییدشده‌ی NCR، و مرحله‌ی تایید مستقل اضافه که فقط برای شدت Critical لازم است.",
+            "<p>چرخه‌ی وضعیت تاییدشده‌ی یک گزارش عدم‌انطباق: <strong>Open</strong> → (یک Disposition ثبت می‌شود) " +
+            "→ برای شدت <strong>Minor</strong>/<strong>Major</strong>، مستقیماً به <strong>Dispositioned</strong>؛ " +
+            "برای شدت <strong>Critical</strong>، ابتدا به <strong>Pending Approval</strong>، که نیازمند تصمیم مستقل " +
+            "مدیر QA/System Admin پیش از رسیدن به <strong>Dispositioned</strong> است (رد آن را به <strong>Open</strong> " +
+            "برمی‌گرداند، نه به Dispositioned). فقط پس از <strong>Dispositioned</strong> است که یک NCR می‌تواند " +
+            "<strong>Closed</strong> شود. این دروازه‌ی تایید اضافه، طبق استدلال خودِ کد، وجود دارد تا یک عدم‌انطباق " +
+            "بحرانی نتواند صرفاً با اختیار همان کسی که Disposition آن را ثبت کرده بسته شود.</p>",
+            "ncr,عدم انطباق,disposition,بحرانی,تایید qa",
+            new[] { "qc-qa-overview" }),
+
+        // ============================= PHASE 4 INCREMENT 2 =============================
+        new Art("permit-details", "cmms", "Page", "Permit.Details", 19,
+            "Permit Details - Isolation, Gas Test and the Approval Chain",
+            "How the Permit's own status, its internal approval workflow, and its embedded Isolation/Gas Test safety data fit together.",
+            "<p>A permit's own verified status flow is: <strong>Draft</strong> → <strong>Submitted</strong> → " +
+            "<strong>Under Review</strong> → <strong>Approved</strong> → <strong>Issued</strong> → " +
+            "<strong>Active</strong> → <strong>Closed</strong>, with <strong>Suspended</strong> reachable from " +
+            "Active (and returning to Active), and exception exits <strong>Cancelled</strong> (from Draft/Submitted), " +
+            "<strong>Rejected</strong> (from Under Review, which can also send it back to <strong>Draft</strong> for " +
+            "rework rather than a final rejection), and <strong>Revoked</strong> (from Approved/Issued/Active). The " +
+            "nine verified permit types are Cold Work, Hot Work, Confined Space, Electrical, Excavation, Working at " +
+            "Height, Radiography, Line Breaking and Other.</p>" +
+            "<p>While a permit is Under Review, a separate multi-stage approval chain (HSE Review → Maintenance " +
+            "Approval → Operations Approval - see its own workflow diagram) actually runs on the workflow engine; " +
+            "the Details page shows that chain's live progress and history.</p>" +
+            "<p>This page also embeds two verified safety sub-processes rather than having their own separate pages: " +
+            "<strong>Isolation Points</strong> (Lock-Out/Tag-Out) each move through <strong>Requested</strong> → " +
+            "<strong>Isolated</strong> → <strong>Verified</strong> → <strong>Deisolated</strong> (plus " +
+            "Requested → Cancelled) - verifying an isolation requires a WebAuthn (passkey) step-up confirmation, " +
+            "not just being logged in, since it is the safety-critical confirmation that a point is genuinely isolated. " +
+            "<strong>Gas Tests</strong> are recorded against the permit and can be invalidated. Starting actual work " +
+            "under the permit, and its emergency-override path, are also WebAuthn-gated for the same reason.</p>",
+            "permit,isolation,loto,gas test,webauthn,simops",
+            "جزئیات مجوز کار - ایزوله‌سازی، تست گاز و زنجیره‌ی تایید",
+            "این‌که وضعیت خودِ مجوز، گردش‌کار تایید داخلی آن، و داده‌ی ایمنیِ تعبیه‌شده‌ی ایزوله‌سازی/تست گاز چگونه کنار هم می‌آیند.",
+            "<p>چرخه‌ی وضعیت تاییدشده‌ی خودِ مجوز: <strong>Draft</strong> → <strong>Submitted</strong> → " +
+            "<strong>Under Review</strong> → <strong>Approved</strong> → <strong>Issued</strong> → " +
+            "<strong>Active</strong> → <strong>Closed</strong>، با <strong>Suspended</strong> که از Active قابل‌دسترس " +
+            "است (و به Active برمی‌گردد)، و خروجی‌های استثنایی <strong>Cancelled</strong> (از Draft/Submitted)، " +
+            "<strong>Rejected</strong> (از Under Review، که می‌تواند آن را برای اصلاح به <strong>Draft</strong> هم " +
+            "برگرداند، نه فقط رد نهایی)، و <strong>Revoked</strong> (از Approved/Issued/Active). نُه نوع مجوز تاییدشده: " +
+            "Cold Work، Hot Work، Confined Space، Electrical، Excavation، Working at Height، Radiography، Line Breaking " +
+            "و Other.</p>" +
+            "<p>وقتی مجوز در Under Review است، یک زنجیره‌ی تایید چندمرحله‌ای جدا (HSE Review → Maintenance Approval " +
+            "→ Operations Approval - نمودار گردش‌کار اختصاصی خودش را ببینید) واقعاً روی موتور گردش‌کار اجرا می‌شود؛ " +
+            "صفحه‌ی جزئیات پیشرفت و تاریخچه‌ی زنده‌ی آن زنجیره را نشان می‌دهد.</p>" +
+            "<p>این صفحه همچنین دو زیرفرآیند ایمنیِ تاییدشده را به‌جای صفحه‌ی جداگانه، تعبیه‌شده نشان می‌دهد: " +
+            "<strong>نقاط ایزوله‌سازی (Isolation Points / LOTO)</strong> هرکدام از <strong>Requested</strong> → " +
+            "<strong>Isolated</strong> → <strong>Verified</strong> → <strong>Deisolated</strong> عبور می‌کنند " +
+            "(به‌علاوه‌ی Requested → Cancelled) - تایید یک ایزوله‌سازی نیازمند تاییدِ گام دومِ WebAuthn (پس‌کلید) " +
+            "است، نه صرفاً واردشدن به سیستم، چون این همان تایید ایمنی‌بحرانیِ واقعاً ایزوله‌بودن یک نقطه است. " +
+            "<strong>تست‌های گاز</strong> در برابر مجوز ثبت می‌شوند و قابل‌ابطال‌اند. شروع واقعیِ کار زیرِ مجوز، و مسیر " +
+            "بازگشایی اضطراری آن، هم به همین دلیل با WebAuthn محافظت می‌شوند.</p>",
+            "مجوز کار,ایزوله سازی,loto,تست گاز,webauthn,simops",
+            new[] { "permits-overview" }),
+
+        new Art("criticality-assessment-overview", "cmms", "Workflow", "CriticalityAssessment.Dashboard", 20,
+            "Criticality Assessment",
+            "The verified scoring rule - the worst dimension governs, not the average - and how approval updates the equipment's real criticality.",
+            "<p>An assessment scores a piece of equipment on three dimensions - <strong>Safety</strong>, " +
+            "<strong>Production</strong> and <strong>Environment</strong> - each from 1 to 5. Its verified rule: the " +
+            "resulting class comes from the <strong>maximum</strong> of the three scores, not their average, so an " +
+            "equipment with a severe safety consequence is never diluted by low production/environmental impact. Score " +
+            "5 or 4 → Class A, score 3 → Class B, score 1 or 2 → Class C. This methodology (PEMS-CRIT-1.0) " +
+            "is a project-defined scoring convention informed by common risk-assessment practice - it is not presented " +
+            "as certified compliance with a specific external standard.</p>" +
+            "<p>Its verified status flow is: <strong>Draft</strong> (only one Draft/Under-Review assessment is allowed " +
+            "per equipment at a time; all three scores must be set before it can be submitted) → <strong>Under " +
+            "Review</strong> → <strong>Approved</strong> or back to <strong>Draft</strong> (Reject). " +
+            "<strong>Approving is what actually updates the equipment's real Criticality Class</strong> - it also " +
+            "automatically supersedes whichever previous assessment was Approved for that equipment, keeping exactly " +
+            "one current approved assessment per equipment.</p>",
+            "criticality,criticality assessment,safety score,class a,class b,class c",
+            "ارزیابی بحرانی‌بودن",
+            "قاعده‌ی امتیازدهیِ تاییدشده - بدترین بُعد حاکم است، نه میانگین - و این‌که تایید چگونه بحرانی‌بودن واقعیِ تجهیز را به‌روزرسانی می‌کند.",
+            "<p>یک ارزیابی یک تجهیز را در سه بُعد نمره‌گذاری می‌کند - <strong>ایمنی</strong>، <strong>تولید</strong> و " +
+            "<strong>محیط‌زیست</strong> - هرکدام از ۱ تا ۵. قاعده‌ی تاییدشده‌ی آن: کلاس نهایی از <strong>بیشینه</strong>ی " +
+            "سه امتیاز می‌آید، نه میانگین آن‌ها، پس تجهیزی با پیامد ایمنیِ شدید هرگز به‌خاطر پیامد پایین تولید/محیط‌زیست " +
+            "کم‌رنگ نمی‌شود. امتیاز ۵ یا ۴ → کلاس A، امتیاز ۳ → کلاس B، امتیاز ۱ یا ۲ → کلاس C. این " +
+            "روش‌شناسی (PEMS-CRIT-1.0) یک قرارداد امتیازدهیِ پروژه‌ای متاثر از رویه‌ی رایج ارزیابی ریسک است - به‌عنوان " +
+            "انطباق تاییدشده با یک استاندارد بیرونی مشخص ارائه نمی‌شود.</p>" +
+            "<p>چرخه‌ی وضعیت تاییدشده‌ی آن: <strong>Draft</strong> (فقط یک ارزیابی Draft/Under-Review در هر لحظه برای " +
+            "هر تجهیز مجاز است؛ پیش از ارسال باید هر سه امتیاز ست شده باشند) → <strong>Under Review</strong> " +
+            "→ <strong>Approved</strong> یا بازگشت به <strong>Draft</strong> (Reject). <strong>تایید همان چیزی " +
+            "است که کلاس بحرانی‌بودن واقعیِ تجهیز را به‌روزرسانی می‌کند</strong> - همچنین به‌صورت خودکار هر ارزیابیِ " +
+            "قبلیِ Approved همان تجهیز را جایگزین می‌کند، تا دقیقاً یک ارزیابیِ تاییدشده‌ی جاری برای هر تجهیز باقی بماند.</p>",
+            "بحرانی بودن,ارزیابی بحرانی بودن,امتیاز ایمنی,کلاس a,کلاس b,کلاس c",
+            new[] { "equipment-register-overview" }),
+
+        new Art("rcm-fmea-overview", "cmms", "Workflow", "RcmFmea.Index", 21,
+            "RCM / FMEA / FMECA",
+            "How a class-level FMEA feeds an RCM analysis, and how an approved RCM decision becomes a real Maintenance Strategy.",
+            "<p>An <strong>FMEA</strong> (Failure Mode and Effects Analysis) is built per <strong>equipment class</strong> " +
+            "(not per individual equipment). Each analyzed failure mode gets a <strong>Risk Priority Number</strong>, " +
+            "calculated (never stored, so it is never stale) as the classic <strong>Severity × Occurrence × " +
+            "Detectability</strong> formula, each scored 1-10 by an engineer - a widely-used FMEA convention, not a " +
+            "claim of formal ISO/SAE compliance. An FMEA item can optionally cite a Standard Reference record (from " +
+            "Maintenance Master Data) that informed it - this is an admin-configured reference, not evidence that PEMS " +
+            "itself implements that standard. An FMEA's own status flow matches the verified Draft → Under Review " +
+            "→ Approved (or back to Draft) pattern, superseding the previous Approved analysis for that class.</p>" +
+            "<p>An <strong>RCM</strong> (Reliability-Centered Maintenance) analysis can only be started from an " +
+            "<strong>Approved</strong> FMEA, and follows the same Draft/Submit/Approve pattern at both the whole-analysis " +
+            "level and for each individual maintenance-task <strong>Decision</strong> within it (which reuses the " +
+            "existing Maintenance Strategy Type taxonomy, not a new one). <strong>Applying</strong> an approved RCM " +
+            "decision is the verified bridge to real maintenance planning: it creates an actual Maintenance Strategy " +
+            "for one specific piece of equipment in that class.</p>",
+            "rcm,fmea,fmeca,risk priority number,reliability centered maintenance",
+            "RCM / FMEA / FMECA",
+            "چگونه یک FMEA در سطح کلاس یک تحلیل RCM را تغذیه می‌کند، و چگونه یک تصمیم تاییدشده‌ی RCM به یک استراتژی نگهداری واقعی تبدیل می‌شود.",
+            "<p><strong>FMEA</strong> (تحلیل حالات خرابی و اثرات آن) به‌ازای هر <strong>کلاس تجهیز</strong> ساخته می‌شود " +
+            "(نه به‌ازای هر تجهیز مجزا). هر حالت خرابیِ تحلیل‌شده یک <strong>عدد اولویت ریسک (RPN)</strong> می‌گیرد، " +
+            "محاسبه‌شده (هرگز ذخیره نشده، پس هرگز کهنه نمی‌شود) به‌عنوان فرمول کلاسیک <strong>شدت × وقوع × " +
+            "قابلیت‌تشخیص</strong>، هرکدام توسط یک مهندس از ۱ تا ۱۰ نمره‌گذاری می‌شود - یک قرارداد رایج FMEA، نه ادعای " +
+            "انطباق رسمی با ISO/SAE. یک آیتم FMEA می‌تواند به‌صورت اختیاری به یک رکورد Standard Reference (از " +
+            "Maintenance Master Data) که به آن کمک کرده اشاره کند - این یک مرجع پیکربندی‌شده توسط ادمین است، نه شاهدی " +
+            "بر این‌که خودِ PEMS آن استاندارد را پیاده‌سازی می‌کند. چرخه‌ی وضعیت خودِ FMEA با الگوی تاییدشده‌ی Draft " +
+            "→ Under Review → Approved (یا بازگشت به Draft) مطابقت دارد، و تحلیل Approved قبلیِ همان کلاس را " +
+            "جایگزین می‌کند.</p>" +
+            "<p>تحلیل <strong>RCM</strong> (نگهداری متمرکز بر قابلیت‌اطمینان) فقط از یک FMEA <strong>Approved</strong> " +
+            "قابل‌شروع است، و همان الگوی Draft/Submit/Approve را هم در سطح کل تحلیل و هم برای هر <strong>تصمیم</strong> " +
+            "منفردِ کار نگهداری درون آن دنبال می‌کند (که از تاکسونومی موجود Maintenance Strategy Type استفاده می‌کند، نه " +
+            "تاکسونومی جدید). <strong>Apply کردن</strong> یک تصمیم تاییدشده‌ی RCM همان پل تاییدشده به برنامه‌ریزی نگهداری " +
+            "واقعی است: یک استراتژی نگهداری واقعی برای یک تجهیز مشخص در آن کلاس می‌سازد.</p>",
+            "rcm,fmea,fmeca,عدد اولویت ریسک,نگهداری متمرکز بر قابلیت اطمینان",
+            new[] { "maintenance-strategy-overview" }),
+
+        new Art("instrument-passport", "cmms", "Page", "Instrument.Passport", 22,
+            "Instrument Passport",
+            "The full instrumentation record: calibration history, alarms with cause-and-effect, control loop, and a direct path to raise a Work Request.",
+            "<p>An instrument's Passport page brings together its full history in one place: append-only <strong>" +
+            "Calibration History</strong> (each new calibration also refreshes the instrument's cached Last/Next " +
+            "Calibration Due dates - never edited or deleted after the fact), latest maintenance history, its assigned " +
+            "<strong>Control Loop</strong> (verified as at most one per instrument), I/O Points, and its " +
+            "<strong>Alarms</strong> - each of which can have one or more <strong>Cause &amp; Effect</strong> entries " +
+            "(cause → effect → action, including Trip/Shutdown actions and an optional trip signal).</p>" +
+            "<p><strong>Verified cross-module link:</strong> a Cause &amp; Effect entry can directly raise a Work " +
+            "Request against the instrument's linked equipment - the request's title, description and priority are " +
+            "generated from that alarm/cause/effect data (Critical or High alarm priority carries through as High " +
+            "priority on the resulting Work Request).</p>",
+            "instrument,calibration,alarm,cause and effect,control loop",
+            "پاسپورت ابزار دقیق",
+            "رکورد کامل ابزار دقیق: تاریخچه‌ی کالیبراسیون، آلارم‌ها با علت و اثر، حلقه‌ی کنترل، و مسیر مستقیم ثبت درخواست کار.",
+            "<p>صفحه‌ی پاسپورت یک ابزار دقیق، تاریخچه‌ی کامل آن را در یک‌جا کنار هم می‌آورد: <strong>تاریخچه‌ی " +
+            "کالیبراسیون</strong> فقط-افزایشی (هر کالیبراسیون جدید تاریخ‌های کش‌شده‌ی آخرین/بعدی سررسید کالیبراسیون " +
+            "ابزار را هم تازه می‌کند - هرگز پس از ثبت ویرایش یا حذف نمی‌شود)، آخرین تاریخچه‌ی نگهداری، " +
+            "<strong>حلقه‌ی کنترل (Control Loop)</strong> تخصیص‌یافته‌اش (تاییدشده حداکثر یکی به‌ازای هر ابزار)، " +
+            "نقاط I/O، و <strong>آلارم‌های</strong> آن - هرکدام می‌توانند یک یا چند رکورد <strong>علت و اثر</strong> " +
+            "داشته باشند (علت → اثر → اقدام، شامل اقدامات Trip/Shutdown و یک سیگنال Trip اختیاری).</p>" +
+            "<p><strong>پیوند بین‌ماژولیِ تاییدشده:</strong> یک رکورد علت و اثر می‌تواند مستقیماً یک درخواست کار در " +
+            "برابر تجهیز متصل به ابزار ثبت کند - عنوان، توضیح و اولویت درخواست از همان داده‌ی آلارم/علت/اثر ساخته " +
+            "می‌شود (اولویت آلارم Critical یا High به‌عنوان اولویت High روی درخواست کار نتیجه منتقل می‌شود).</p>",
+            "ابزار دقیق,کالیبراسیون,آلارم,علت و اثر,حلقه کنترل",
+            null),
+
+        new Art("spare-parts-overview", "cmms", "Page", "SparePart.Index", 23,
+            "Spare Parts",
+            "A standalone parts catalog with its own stock levels - verified as not yet linked to Equipment or to Work Order spare consumption.",
+            "<p>The Spare Parts register tracks a part catalog with real stock fields - <strong>Quantity On " +
+            "Hand</strong>, <strong>Minimum Stock Level</strong>, and a <strong>Reorder Point</strong> (a part is " +
+            "flagged Low Stock once its Quantity On Hand falls to or below its Reorder Point).</p>" +
+            "<p><strong>Verified gap worth knowing:</strong> a Spare Part record currently has no link to a specific " +
+            "Equipment record, and when a Work Order records spare-part consumption (\"Add Spare Usage\"), it draws " +
+            "from <strong>Material Items</strong> (the Inventory &amp; Materials module) rather than from this Spare " +
+            "Parts catalog. Treat this page as an independent parts-catalog/stock reference today, not as the source " +
+            "actually consumed by work order execution.</p>",
+            "spare part,stock,reorder point,quantity on hand",
+            "قطعات یدکی",
+            "یک کاتالوگ مستقل قطعات با سطح موجودی خودش - تاییدشده که هنوز به تجهیز یا مصرف قطعه‌ی دستور کار وصل نیست.",
+            "<p>رجیستر قطعات یدکی یک کاتالوگ قطعه را با فیلدهای موجودیِ واقعی ردیابی می‌کند - <strong>موجودی فعلی " +
+            "(Quantity On Hand)</strong>، <strong>حداقل سطح موجودی</strong>، و یک <strong>نقطه‌ی سفارش مجدد</strong> " +
+            "(قطعه‌ای کمبود موجودی علامت می‌خورد وقتی موجودی فعلی‌اش به نقطه‌ی سفارش مجدد برسد یا کمتر شود).</p>" +
+            "<p><strong>نکته‌ی تاییدشده‌ی قابل‌توجه:</strong> یک رکورد قطعه‌ی یدکی در حال حاضر هیچ پیوندی به یک رکورد " +
+            "تجهیز مشخص ندارد، و وقتی یک دستور کار مصرف قطعه ثبت می‌کند («Add Spare Usage»)، از <strong>اقلام مواد " +
+            "(Material Items)</strong> (ماژول موجودی و مواد) استفاده می‌کند، نه از این کاتالوگ قطعات یدکی. این صفحه را " +
+            "امروز به‌عنوان یک مرجع مستقل کاتالوگ/موجودی قطعات در نظر بگیرید، نه منبع واقعیِ مصرف‌شده توسط اجرای دستور کار.</p>",
+            "قطعه یدکی,موجودی,نقطه سفارش مجدد,موجودی فعلی",
+            null),
+
+        new Art("job-plans-overview", "cmms", "Page", "JobPlan.Index", 24,
+            "Job Plans",
+            "Reusable work templates, and how they attach to a Maintenance Plan rather than directly to a Work Order.",
+            "<p>A Job Plan is a reusable template - scope, estimated duration, safety requirements, a list of tasks, and " +
+            "required skills/materials - with no status or approval workflow of its own; it exists to standardize how a " +
+            "recurring job should be carried out.</p>" +
+            "<p><strong>Verified linkage:</strong> a Job Plan attaches to a Maintenance Plan (optionally), not directly " +
+            "to a Work Order. When a Maintenance Plan that references a Job Plan generates a Work Order, that is how the " +
+            "template's content reaches actual execution.</p>",
+            "job plan,work template,maintenance plan",
+            "برنامه‌های کار (Job Plan)",
+            "قالب‌های کار قابل‌استفاده‌ی مجدد، و این‌که چگونه به یک برنامه‌ی نگهداری وصل می‌شوند، نه مستقیم به دستور کار.",
+            "<p>Job Plan یک قالب قابل‌استفاده‌ی مجدد است - محدوده، مدت‌زمان تخمینی، الزامات ایمنی، فهرست وظایف، و " +
+            "مهارت‌ها/مواد لازم - بدون هیچ وضعیت یا گردش‌کار تاییدی برای خودش؛ برای استانداردسازیِ این‌که یک کار " +
+            "تکرارشونده چگونه باید انجام شود وجود دارد.</p>" +
+            "<p><strong>پیوند تاییدشده:</strong> یک Job Plan (به‌صورت اختیاری) به یک برنامه‌ی نگهداری وصل می‌شود، نه " +
+            "مستقیم به یک دستور کار. وقتی برنامه‌ی نگهداری‌ای که به یک Job Plan ارجاع می‌دهد یک دستور کار می‌سازد، " +
+            "این‌طوری محتوای قالب به اجرای واقعی می‌رسد.</p>",
+            "برنامه کار,قالب کار,برنامه نگهداری",
+            new[] { "maintenance-plans-overview" }),
+
+        new Art("store-requisitions-overview", "cmms", "Workflow", "StoreRequisition.Index", 25,
+            "Store Requisitions",
+            "The verified Draft-to-Closed flow, and why \"Reserved\" and \"Issued\" are two distinct, separately-tracked steps.",
+            "<p>A Store Requisition's verified status flow is strictly linear: <strong>Draft</strong> → " +
+            "<strong>Submitted</strong> → <strong>Approved</strong> → <strong>Reserved</strong> → " +
+            "<strong>Issued</strong> → <strong>Closed</strong>, with Reject/Cancel as exception exits.</p>" +
+            "<p><strong>Verified and deliberate:</strong> Reserved and Issued are not the same thing. Reaching " +
+            "<strong>Reserved</strong> only raises each requested line's Reserved Quantity against warehouse stock (and " +
+            "fails with a clear error if not enough is actually available to reserve) - it does not yet reduce real " +
+            "on-hand stock. Only reaching <strong>Issued</strong> actually reduces on-hand quantity. Both steps create " +
+            "an Inventory Transaction record, so stock never changes without a traceable transaction; a Reject or " +
+            "Cancel at any point releases any reservation already made. Every status change is recorded in a full " +
+            "from/to/who/when/reason history.</p>",
+            "store requisition,reserve,issue,inventory transaction",
+            "درخواست انبار",
+            "چرخه‌ی تاییدشده‌ی Draft تا Closed، و این‌که چرا «رزرو» و «صدور» دو گام جدا و مجزا هستند.",
+            "<p>چرخه‌ی وضعیت تاییدشده‌ی یک درخواست انبار کاملاً خطی است: <strong>Draft</strong> → " +
+            "<strong>Submitted</strong> → <strong>Approved</strong> → <strong>Reserved</strong> → " +
+            "<strong>Issued</strong> → <strong>Closed</strong>، با Reject/Cancel به‌عنوان خروجی‌های استثنایی.</p>" +
+            "<p><strong>تاییدشده و عمدی:</strong> رزرو (Reserved) و صدور (Issued) یک چیز نیستند. رسیدن به " +
+            "<strong>Reserved</strong> فقط مقدار رزروشده‌ی هر ردیف درخواستی را در برابر موجودی انبار بالا می‌برد (و اگر " +
+            "واقعاً موجودی کافی برای رزرو در دسترس نباشد، با خطای روشن شکست می‌خورد) - هنوز موجودی واقعیِ در دست را کم " +
+            "نمی‌کند. فقط رسیدن به <strong>Issued</strong> واقعاً مقدار در دست را کم می‌کند. هر دو گام یک رکورد " +
+            "تراکنش موجودی می‌سازند، پس موجودی هرگز بدون یک تراکنشِ قابل‌ردیابی تغییر نمی‌کند؛ یک Reject یا Cancel در " +
+            "هر نقطه هر رزروِ قبلاً انجام‌شده را آزاد می‌کند. هر تغییر وضعیت در یک تاریخچه‌ی کاملِ از/به/چه‌کسی/چه‌زمانی/" +
+            "دلیل ثبت می‌شود.</p>",
+            "درخواست انبار,رزرو,صدور,تراکنش موجودی",
+            new[] { "material-items-overview" }),
+
+        new Art("import-batches-overview", "cmms", "Concept", "Imports.StagedBatchOverview", 26,
+            "How Staged Imports Work",
+            "The universal staged-batch pattern shared by every Excel/data importer in PEMS: upload, review, then commit or discard.",
+            "<p>This applies to every staged importer in PEMS (Equipment, Functional Location, MDR, VDR, Maintenance " +
+            "History, and - with one verified difference noted below - MRS/Material). Uploading a file never writes " +
+            "directly into real records; it creates a <strong>Batch</strong> in a <strong>Staging</strong> status with " +
+            "one row per parsed spreadsheet row. Each row gets a validation status, and rows the importer auto-detects " +
+            "as duplicates within the same file default to <strong>excluded</strong> from commit - the human reviewer " +
+            "must explicitly include them after checking, they are never auto-committed.</p>" +
+            "<p>On the Review screen, each row can be individually included or excluded (\"Toggle Row\"). " +
+            "<strong>Commit</strong> processes only the included rows: a row matches an existing record (verified, for " +
+            "Equipment, by Tag Number + Description together) is <strong>updated</strong>; a row with no match is " +
+            "<strong>created</strong> new; a row missing required data is <strong>skipped</strong> - the commit result " +
+            "reports exact created/updated/skipped counts. <strong>Discard</strong> abandons the whole batch instead. " +
+            "Raw reference fields captured from the file (such as an MR or PO number on an equipment import) are stored " +
+            "as plain text only - no other record is automatically created or linked from them; real links are made " +
+            "later by a human, through the Relationship Explorer.</p>" +
+            "<p><strong>Verified difference:</strong> the MRS/Material importer uses a slightly different reviewer " +
+            "flow - rows carry a match-status filter and are committed or rejected in bulk by explicit selection, " +
+            "rather than the per-row include/exclude-then-single-commit pattern the other importers use.</p>",
+            "import,staging,batch,commit,discard,mdr import,vdr import,equipment import",
+            "واردات مرحله‌ای چگونه کار می‌کند",
+            "الگوی جهانیِ Batch مرحله‌ای که هر Import‌کننده‌ی اکسل/داده در PEMS به اشتراک می‌گذارد: آپلود، بازبینی، سپس Commit یا Discard.",
+            "<p>این الگو روی هر Import‌کننده‌ی مرحله‌ای در PEMS اعمال می‌شود (تجهیز، موقعیت فنی، MDR، VDR، تاریخچه‌ی " +
+            "نگهداری، و - با یک تفاوت تاییدشده که پایین ذکر شده - MRS/مواد). آپلود یک فایل هرگز مستقیم در رکوردهای " +
+            "واقعی نمی‌نویسد؛ یک <strong>Batch</strong> در وضعیت <strong>Staging</strong> با یک ردیف به‌ازای هر ردیف " +
+            "تجزیه‌شده‌ی صفحه‌گسترده می‌سازد. هر ردیف یک وضعیت اعتبارسنجی می‌گیرد، و ردیف‌هایی که Import‌کننده به‌صورت " +
+            "خودکار به‌عنوان تکراری درون همان فایل تشخیص می‌دهد، پیش‌فرض از Commit <strong>مستثنی</strong> می‌شوند - " +
+            "بازبین انسانی باید پس از بررسی، صریحاً آن‌ها را شامل کند، هرگز خودکار Commit نمی‌شوند.</p>" +
+            "<p>در صفحه‌ی بازبینی، هر ردیف می‌تواند جداگانه شامل یا مستثنی شود («Toggle Row»). <strong>Commit</strong> " +
+            "فقط ردیف‌های شامل‌شده را پردازش می‌کند: ردیفی که با یک رکورد موجود مطابقت دارد (برای تجهیز، تاییدشده با " +
+            "ترکیب شماره‌ی تگ + توضیح) <strong>به‌روزرسانی</strong> می‌شود؛ ردیفی بدون تطابق تازه <strong>ساخته</strong> " +
+            "می‌شود؛ ردیفی با داده‌ی الزامیِ ناقص <strong>رد</strong> می‌شود - نتیجه‌ی Commit شمارش دقیق " +
+            "ساخته/به‌روزرسانی/ردشده را گزارش می‌دهد. <strong>Discard</strong> کل Batch را به‌جای آن کنار می‌گذارد. " +
+            "فیلدهای مرجع خام گرفته‌شده از فایل (مثل شماره‌ی MR یا PO روی یک ایمپورت تجهیز) فقط به‌صورت متن ساده ذخیره " +
+            "می‌شوند - هیچ رکورد دیگری به‌صورت خودکار از آن‌ها ساخته یا وصل نمی‌شود؛ پیوندهای واقعی بعداً توسط یک انسان، " +
+            "از طریق کاوشگر روابط، ساخته می‌شوند.</p>" +
+            "<p><strong>تفاوت تاییدشده:</strong> Import‌کننده‌ی MRS/مواد یک روند بازبینیِ کمی متفاوت استفاده می‌کند - " +
+            "ردیف‌ها یک فیلتر وضعیت تطابق دارند و به‌صورت گروهی با انتخاب صریح Commit یا رد می‌شوند، نه الگوی " +
+            "شامل/مستثنی-به‌ازای-هر-ردیف-سپس-یک-Commit که بقیه‌ی Import‌کننده‌ها استفاده می‌کنند.</p>",
+            "ایمپورت,مرحله بندی,batch,commit,discard,ایمپورت mdr,ایمپورت vdr,ایمپورت تجهیز",
+            null),
+
+        // ============================= PHASE 4 INCREMENT 3B: RELIABILITY =============================
+        new Art("reliability-overview", "cmms", "Workflow", "Reliability.Overview", 27,
+            "Reliability Analysis (MTBF / MTTR / Availability / Bad Actors)",
+            "The exact formulas PEMS actually calculates, and the one data-entry habit they silently depend on.",
+            "<p>This page (and the richer Enterprise Dashboard, which shares this same Help content) shows fleet- and " +
+            "class-level reliability metrics computed <strong>entirely from real Failure Records</strong> - nothing here " +
+            "is manually entered or estimated.</p>" +
+            "<p><strong>Verified formulas (exact, from the calculation code):</strong></p>" +
+            "<ul>" +
+            "<li><strong>MTBF</strong> (Mean Time Between Failures) requires at least 2 failure records for a piece of " +
+            "equipment: it is the time span from the first to the last recorded failure, divided by (failure count − 1). " +
+            "An equipment with 0 or 1 failure record has no MTBF value.</li>" +
+            "<li><strong>MTTR</strong> (Mean Time To Repair) is the average of the actual Work Order repair durations " +
+            "(Start Date to Completion Date) for the Work Orders linked to those failures - only failures with a linked, " +
+            "completed Work Order contribute.</li>" +
+            "<li><strong>Availability</strong> = MTBF / (MTBF + MTTR) × 100 - the standard Inherent Availability " +
+            "formula, calculated only when both MTBF and MTTR are available. <strong>Verified limitation:</strong> this " +
+            "result is not mathematically bounded to 0-100% - if a linked Work Order has an invalid duration (Completion " +
+            "Date recorded before Start Date), MTTR can go negative and push Availability above 100%; PEMS does not " +
+            "currently guard against this.</li>" +
+            "<li><strong>Bad Actors</strong> (top-N worst equipment) are ranked by failure count, then downtime hours, " +
+            "within the selected date range; each one's \"repeat failure\" count uses a verified 90-day window rule - the " +
+            "same failure mode recurring within 90 days counts as a repeat.</li>" +
+            "</ul>" +
+            "<p><strong>Known limitation (verified):</strong> the Failure Mode and Failure Cause Pareto charts on this " +
+            "page, and the Failure Taxonomy Coverage indicator on the Data Quality page, rely on a structured " +
+            "failure-mode/cause classification field that is not currently populated by any PEMS workflow. These charts " +
+            "and this indicator may show little or no data even when the free-text failure mode/cause used by Bad Actors " +
+            "above is fully populated - this is a data-wiring gap, not a sign of a healthy or unhealthy fleet.</p>" +
+            "<p><strong>Critical data-integrity fact (verified):</strong> a Failure Record is <em>never</em> created " +
+            "through its own form. It is automatically synced only when a Work Order is completed with its ISO 14224 " +
+            "failure-coding fields (Failure Mode Code, Failure Cause Code, Root Cause, Downtime Hours) filled in - by " +
+            "design, so Failure Record is never a second, independently-editable source of truth. This means: if " +
+            "technicians skip those fields when closing a Corrective/Emergency Work Order, that failure is invisible to " +
+            "every metric on this page - MTBF, MTTR, Availability and Bad Actors will silently understate the real " +
+            "picture for that equipment, with no error or warning shown anywhere.</p>",
+            "reliability,mtbf,mttr,availability,bad actor,failure record",
+            "تحلیل قابلیت‌اطمینان (MTBF / MTTR / Availability / Bad Actors)",
+            "فرمول‌هایی که PEMS واقعاً محاسبه می‌کند، و همان یک عادتِ ثبت داده که همه‌ی این‌ها بی‌صدا به آن وابسته‌اند.",
+            "<p>این صفحه (و داشبورد سازمانیِ غنی‌تر، که همین محتوای راهنما را به اشتراک می‌گذارد) معیارهای قابلیت‌اطمینان " +
+            "در سطح ناوگان و کلاس را نشان می‌دهد که <strong>کاملاً از روی رکوردهای واقعیِ خرابی</strong> محاسبه شده‌اند - " +
+            "هیچ‌کدام دستی وارد یا تخمین زده نشده‌اند.</p>" +
+            "<p><strong>فرمول‌های تاییدشده (دقیق، از خودِ کد محاسبه):</strong></p>" +
+            "<ul>" +
+            "<li><strong>MTBF</strong> (میانگین زمان بین خرابی‌ها) نیازمند حداقل ۲ رکورد خرابی برای یک تجهیز است: " +
+            "بازه‌ی زمانی از اولین تا آخرین خرابیِ ثبت‌شده، تقسیم‌بر (تعداد خرابی − ۱). تجهیزی با ۰ یا ۱ رکورد خرابی " +
+            "مقدار MTBF ندارد.</li>" +
+            "<li><strong>MTTR</strong> (میانگین زمان تعمیر) میانگینِ مدت واقعیِ تعمیر دستورهای کار (تاریخ شروع تا تاریخ " +
+            "تکمیل) مرتبط با آن خرابی‌هاست - فقط خرابی‌هایی که یک دستور کارِ تکمیل‌شده‌ی مرتبط دارند سهیم‌اند.</li>" +
+            "<li><strong>Availability</strong> = MTBF / (MTBF + MTTR) × ۱۰۰ - فرمول استاندارد Inherent Availability، " +
+            "فقط وقتی هر دو MTBF و MTTR در دسترس باشند محاسبه می‌شود. <strong>محدودیت تاییدشده:</strong> این نتیجه از نظر " +
+            "ریاضی به بازه‌ی ۰-۱۰۰٪ محدود نیست - اگر دستور کارِ مرتبط مدت نامعتبری داشته باشد (تاریخ تکمیل قبل از تاریخ " +
+            "شروع ثبت شده باشد)، MTTR می‌تواند منفی شود و Availability را بالای ۱۰۰٪ ببرد؛ PEMS در حال حاضر در برابر این " +
+            "حالت محافظتی ندارد.</li>" +
+            "<li><strong>Bad Actors</strong> (بدترین N تجهیز) بر اساس تعداد خرابی، سپس ساعات توقف، در بازه‌ی زمانیِ " +
+            "انتخاب‌شده رتبه‌بندی می‌شوند؛ تعداد «خرابیِ تکراری» هر کدام از یک قاعده‌ی تاییدشده‌ی پنجره‌ی ۹۰روزه استفاده " +
+            "می‌کند - تکرار همان حالت خرابی درون ۹۰ روز، تکراری شمرده می‌شود.</li>" +
+            "</ul>" +
+            "<p><strong>محدودیت تاییدشده:</strong> نمودارهای Pareto حالت خرابی و علت خرابی در این صفحه، و شاخص پوشش " +
+            "طبقه‌بندیِ خرابی (Failure Taxonomy Coverage) در صفحه‌ی کیفیت داده، به یک فیلد طبقه‌بندیِ ساختاریافته‌ی " +
+            "حالت/علت خرابی وابسته‌اند که در حال حاضر توسط هیچ روندی در PEMS پر نمی‌شود. این نمودارها و این شاخص ممکن " +
+            "است داده‌ی کم یا هیچ نشان دهند حتی وقتی فیلد متنیِ حالت/علت خرابی (که Bad Actors بالا از آن استفاده می‌کند) " +
+            "کاملاً پر شده باشد - این یک شکاف در اتصال داده است، نه نشانه‌ی سلامت یا ناسلامتیِ ناوگان.</p>" +
+            "<p><strong>واقعیت حیاتیِ یکپارچگیِ داده (تاییدشده):</strong> یک رکورد خرابی <em>هرگز</em> از طریق فرم " +
+            "مخصوص خودش ساخته نمی‌شود. فقط وقتی یک دستور کار با فیلدهای کدگذاریِ خرابیِ ISO 14224 خودش (کد حالت خرابی، " +
+            "کد علت خرابی، علت ریشه‌ای، ساعات توقف) پرشده تکمیل شود، به‌صورت خودکار همگام می‌شود - عمداً، تا رکورد خرابی " +
+            "هرگز منبع حقیقتِ دومِ مستقلاً قابل‌ویرایش نباشد. یعنی: اگر تکنسین‌ها هنگام بستن یک دستور کار اصلاحی/اضطراری " +
+            "آن فیلدها را رد کنند، آن خرابی برای همه‌ی معیارهای این صفحه نامرئی می‌ماند - MTBF، MTTR، Availability و Bad " +
+            "Actors بی‌صدا تصویر واقعی آن تجهیز را کم‌تر از واقع نشان می‌دهند، بدون هیچ خطا یا هشداری.</p>",
+            "قابلیت اطمینان,mtbf,mttr,availability,bad actor,رکورد خرابی",
+            new[] { "rcm-fmea-overview", "criticality-assessment-overview", "maintenance-strategy-overview" }),
 
         // ============================= OPERATIONS =============================
         new Art("operations-production-overview", "operations", "Module", null, 0,

@@ -372,4 +372,234 @@ public class ReliabilityAnalyticsTests
 
         Assert.Empty(trend);
     }
+
+    // ================= Increment 3C - MTBF edge cases =================
+
+    [Fact]
+    public async Task MTBF_ThreeFailures_DividesTotalSpanByCountMinusOne()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(MTBF_ThreeFailures_DividesTotalSpanByCountMinusOne));
+        await AddEquipmentAsync(ctx, 1);
+        ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = 1, EquipmentId = 1, FailureDate = new DateTime(2026, 1, 1), FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = 2, EquipmentId = 1, FailureDate = new DateTime(2026, 1, 6), FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = 3, EquipmentId = 1, FailureDate = new DateTime(2026, 1, 11), FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        await ctx.SaveChangesAsync();
+
+        var service = new ReliabilityService(ctx);
+        var dto = await service.GetEquipmentReliabilityAsync(1);
+
+        Assert.NotNull(dto);
+        Assert.Equal(3, dto!.FailureCount);
+        Assert.Equal(120.0, dto.MTBFHours); // ۱۰ روز = ۲۴۰ ساعت / (۳-۱)=۲ => ۱۲۰
+    }
+
+    [Fact]
+    public async Task MTBF_DuplicateFailureTimestamps_ReturnsExactZero_NotNull()
+    {
+        // طبق بند ۵۰ (Zero != Null): وقتی FirstFailureDate == LastFailureDate، فاصله‌ی زمانی
+        // صفر است - این یک صفر واقعی است، نه نشانه‌ی «داده‌ی کافی نیست» (که Null می‌بود).
+        var ctx = await SeedFullBaselineAsync(nameof(MTBF_DuplicateFailureTimestamps_ReturnsExactZero_NotNull));
+        await AddEquipmentAsync(ctx, 1);
+        var sameInstant = new DateTime(2026, 1, 1, 8, 0, 0);
+        ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = 1, EquipmentId = 1, FailureDate = sameInstant, FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = 2, EquipmentId = 1, FailureDate = sameInstant, FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        await ctx.SaveChangesAsync();
+
+        var service = new ReliabilityService(ctx);
+        var dto = await service.GetEquipmentReliabilityAsync(1);
+
+        Assert.NotNull(dto);
+        Assert.NotNull(dto!.MTBFHours);
+        Assert.Equal(0.0, dto.MTBFHours!.Value);
+    }
+
+    [Fact]
+    public async Task MTBF_FutureDatedFailure_IncludedInSpan_NoExclusionApplied()
+    {
+        // ثابت می‌کند Gap G-5: تاریخ خرابی آینده از محاسبه‌ی MTBF حذف نمی‌شود - فقط به عنوان
+        // یک معیار کیفیت داده‌ی جدا (FailureRecordsWithInvalidDate) ردیابی می‌شود، نه اینجا.
+        var ctx = await SeedFullBaselineAsync(nameof(MTBF_FutureDatedFailure_IncludedInSpan_NoExclusionApplied));
+        await AddEquipmentAsync(ctx, 1);
+        var first = new DateTime(2026, 1, 1);
+        var farFuture = new DateTime(2030, 1, 1); // نسبت به تاریخ سیستم (۲۰۲۶) کاملاً آینده است
+        ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = 1, EquipmentId = 1, FailureDate = first, FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = 2, EquipmentId = 1, FailureDate = farFuture, FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        await ctx.SaveChangesAsync();
+
+        var service = new ReliabilityService(ctx);
+        var dto = await service.GetEquipmentReliabilityAsync(1);
+
+        var expectedHours = (farFuture - first).TotalHours / 1; // (count-1) = 1
+        Assert.NotNull(dto);
+        Assert.Equal(farFuture, dto!.LastFailureDate);
+        Assert.Equal(expectedHours, dto.MTBFHours);
+    }
+
+    // ================= Increment 3C - MTTR edge cases =================
+
+    [Fact]
+    public async Task MTTR_UnlinkedFailureRecord_ExcludedFromAverage_OnlyLinkedFailuresCounted()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(MTTR_UnlinkedFailureRecord_ExcludedFromAverage_OnlyLinkedFailuresCounted));
+        await AddEquipmentAsync(ctx, 1);
+
+        var wo = new WorkOrder { WorkOrderId = 1, EquipmentId = 1, WorkOrderType = "Corrective", Status = "Closed", StartDate = new DateTime(2026, 1, 1, 8, 0, 0), CompletionDate = new DateTime(2026, 1, 1, 13, 0, 0), IsActive = true, CreatedDate = DateTime.Now };
+        ctx.WorkOrders.Add(wo);
+        // خرابی ۱: مرتبط با WorkOrder (۵ ساعت). خرابی ۲: بدون WorkOrderId (باید از میانگین حذف شود، نه صفر جعلی).
+        ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = 1, EquipmentId = 1, WorkOrderId = 1, FailureDate = new DateTime(2026, 1, 1), FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = 2, EquipmentId = 1, WorkOrderId = null, FailureDate = new DateTime(2026, 2, 1), FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        await ctx.SaveChangesAsync();
+
+        var service = new ReliabilityService(ctx);
+        var dto = await service.GetEquipmentReliabilityAsync(1);
+
+        Assert.NotNull(dto);
+        Assert.Equal(2, dto!.FailureCount); // هر دو در FailureCount/MTBF حساب می‌شوند
+        Assert.Equal(5.0, dto.MTTRHours); // اما فقط رکورد مرتبط در MTTR
+    }
+
+    [Fact]
+    public async Task MTTR_NegativeDurationWorkOrder_NotExcludedOrClamped_ProvesGapG1()
+    {
+        // ثابت می‌کند Gap G-1: هیچ محافظی برای CompletionDate < StartDate در محاسبه‌ی MTTR
+        // وجود ندارد - با اینکه ReliabilityDataQualityService دقیقاً همین شرط را به عنوان یک
+        // مشکل کیفیت داده ردیابی می‌کند (FailureRecordsWithNegativeDuration)، ReliabilityService
+        // آن را از میانگین MTTR حذف یا Clamp نمی‌کند.
+        var ctx = await SeedFullBaselineAsync(nameof(MTTR_NegativeDurationWorkOrder_NotExcludedOrClamped_ProvesGapG1));
+        await AddEquipmentAsync(ctx, 1);
+
+        var wo = new WorkOrder { WorkOrderId = 1, EquipmentId = 1, WorkOrderType = "Corrective", Status = "Closed", StartDate = new DateTime(2026, 1, 1, 10, 0, 0), CompletionDate = new DateTime(2026, 1, 1, 8, 0, 0), IsActive = true, CreatedDate = DateTime.Now };
+        ctx.WorkOrders.Add(wo);
+        ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = 1, EquipmentId = 1, WorkOrderId = 1, FailureDate = new DateTime(2026, 1, 1), FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        await ctx.SaveChangesAsync();
+
+        var service = new ReliabilityService(ctx);
+        var dto = await service.GetEquipmentReliabilityAsync(1);
+
+        Assert.NotNull(dto);
+        Assert.NotNull(dto!.MTTRHours);
+        Assert.Equal(-2.0, dto.MTTRHours!.Value); // منفی، نه Null و نه Clamp‌شده به صفر
+    }
+
+    [Fact]
+    public async Task MTTR_ZeroDurationWorkOrder_CountsAsExactZero_NotNull()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(MTTR_ZeroDurationWorkOrder_CountsAsExactZero_NotNull));
+        await AddEquipmentAsync(ctx, 1);
+
+        var sameInstant = new DateTime(2026, 1, 1, 8, 0, 0);
+        var wo = new WorkOrder { WorkOrderId = 1, EquipmentId = 1, WorkOrderType = "Corrective", Status = "Closed", StartDate = sameInstant, CompletionDate = sameInstant, IsActive = true, CreatedDate = DateTime.Now };
+        ctx.WorkOrders.Add(wo);
+        ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = 1, EquipmentId = 1, WorkOrderId = 1, FailureDate = new DateTime(2026, 1, 1), FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        await ctx.SaveChangesAsync();
+
+        var service = new ReliabilityService(ctx);
+        var dto = await service.GetEquipmentReliabilityAsync(1);
+
+        Assert.NotNull(dto);
+        Assert.NotNull(dto!.MTTRHours);
+        Assert.Equal(0.0, dto.MTTRHours!.Value);
+    }
+
+    // ================= Increment 3C - Availability edge cases =================
+
+    [Fact]
+    public async Task Availability_NegativeMTTR_CanExceedOneHundredPercent_ProvesGapG1()
+    {
+        // ثابت می‌کند Availability به بازه‌ی ۰-۱۰۰٪ محدود نیست: محافظ فعلی فقط از تقسیم بر صفر
+        // جلوگیری می‌کند ((MTBF+MTTR) > 0)، نه از علامت یا اندازه‌ی MTTR.
+        var ctx = await SeedFullBaselineAsync(nameof(Availability_NegativeMTTR_CanExceedOneHundredPercent_ProvesGapG1));
+        await AddEquipmentAsync(ctx, 1);
+
+        var wo = new WorkOrder { WorkOrderId = 1, EquipmentId = 1, WorkOrderType = "Corrective", Status = "Closed", StartDate = new DateTime(2026, 1, 1, 10, 0, 0), CompletionDate = new DateTime(2026, 1, 1, 8, 0, 0), IsActive = true, CreatedDate = DateTime.Now };
+        ctx.WorkOrders.Add(wo);
+        // ۲ خرابی به فاصله‌ی ۱۰ روز => MTBF=240h. خرابی اول به یک WorkOrder با مدت منفی (-۲h) مرتبط است؛
+        // خرابی دوم بدون WorkOrder است، پس MTTR = میانگین فقط همان -۲h = -۲.
+        ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = 1, EquipmentId = 1, WorkOrderId = 1, FailureDate = new DateTime(2026, 1, 1), FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = 2, EquipmentId = 1, WorkOrderId = null, FailureDate = new DateTime(2026, 1, 11), FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        await ctx.SaveChangesAsync();
+
+        var service = new ReliabilityService(ctx);
+        var dto = await service.GetEquipmentReliabilityAsync(1);
+
+        Assert.NotNull(dto);
+        Assert.Equal(240.0, dto!.MTBFHours);
+        Assert.Equal(-2.0, dto.MTTRHours);
+        Assert.NotNull(dto.AvailabilityPercent);
+        Assert.True(dto.AvailabilityPercent!.Value > 100.0, $"Expected Availability > 100% (unbounded gap), got {dto.AvailabilityPercent}");
+    }
+
+    [Fact]
+    public async Task Availability_MTBFAndMTTRBothExactlyZero_GuardPreventsZeroDivision_ReturnsNull()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(Availability_MTBFAndMTTRBothExactlyZero_GuardPreventsZeroDivision_ReturnsNull));
+        await AddEquipmentAsync(ctx, 1);
+
+        var sameInstant = new DateTime(2026, 1, 1, 8, 0, 0);
+        var wo = new WorkOrder { WorkOrderId = 1, EquipmentId = 1, WorkOrderType = "Corrective", Status = "Closed", StartDate = sameInstant, CompletionDate = sameInstant, IsActive = true, CreatedDate = DateTime.Now };
+        ctx.WorkOrders.Add(wo);
+        // هر دو خرابی دقیقاً همزمان (MTBF=0) و WorkOrder با مدت دقیقاً صفر (MTTR=0)
+        ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = 1, EquipmentId = 1, WorkOrderId = 1, FailureDate = sameInstant, FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = 2, EquipmentId = 1, WorkOrderId = null, FailureDate = sameInstant, FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        await ctx.SaveChangesAsync();
+
+        var service = new ReliabilityService(ctx);
+        var dto = await service.GetEquipmentReliabilityAsync(1);
+
+        Assert.NotNull(dto);
+        Assert.Equal(0.0, dto!.MTBFHours);
+        Assert.Equal(0.0, dto.MTTRHours);
+        Assert.Null(dto.AvailabilityPercent); // محافظ (MTBF+MTTR)>0 از تقسیم ۰/۰ جلوگیری می‌کند
+    }
+
+    // ================= Increment 3C - Bad Actor edge cases =================
+
+    [Fact]
+    public async Task BadActors_ThreeWayTieOnCountAndDowntime_OrderIsStableAcrossRepeatedCalls()
+    {
+        // ثابت می‌کند Gap G-3: هیچ کلید تفکیک صریح سوم (مثل EquipmentId) وجود ندارد - ترتیب
+        // فعلی صرفاً از پایداری Sort کتابخانه‌ی LINQ و ترتیب ورودی FailureRecords ناشی می‌شود،
+        // نه یک قاعده‌ی صریح مستند‌شده. این تست فقط «پایداری بین دو فراخوانی» را اثبات می‌کند،
+        // نه اینکه کدام تجهیز برنده می‌شود.
+        var ctx = await SeedFullBaselineAsync(nameof(BadActors_ThreeWayTieOnCountAndDowntime_OrderIsStableAcrossRepeatedCalls));
+        await AddEquipmentAsync(ctx, 1);
+        await AddEquipmentAsync(ctx, 2);
+        await AddEquipmentAsync(ctx, 3);
+
+        var id = 1;
+        foreach (var equipmentId in new[] { 1, 2, 3 })
+        {
+            ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = id++, EquipmentId = equipmentId, FailureDate = new DateTime(2026, 1, 1), FailureMode = "X", DowntimeHours = 5, IsActive = true, CreatedDate = DateTime.Now });
+            ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = id++, EquipmentId = equipmentId, FailureDate = new DateTime(2026, 1, 2), FailureMode = "X", DowntimeHours = 5, IsActive = true, CreatedDate = DateTime.Now });
+        }
+        await ctx.SaveChangesAsync();
+
+        var service = new ReliabilityAnalyticsService(ctx, new ReliabilityService(ctx));
+        var firstCall = await service.GetBadActorsAsync(null, null);
+        var secondCall = await service.GetBadActorsAsync(null, null);
+
+        Assert.Equal(3, firstCall.Count);
+        Assert.Equal(firstCall.Select(x => x.EquipmentId), secondCall.Select(x => x.EquipmentId));
+    }
+
+    [Fact]
+    public async Task BadActors_TopNParameter_LimitsResultCountToRequestedTop()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(BadActors_TopNParameter_LimitsResultCountToRequestedTop));
+        for (var equipmentId = 1; equipmentId <= 5; equipmentId++)
+        {
+            await AddEquipmentAsync(ctx, equipmentId);
+            for (var f = 1; f <= equipmentId; f++) // Equipment N گیرد N خرابی (رتبه‌بندی متمایز)
+                ctx.FailureRecords.Add(new FailureRecord { FailureRecordId = equipmentId * 10 + f, EquipmentId = equipmentId, FailureDate = new DateTime(2026, 1, f), FailureMode = "X", IsActive = true, CreatedDate = DateTime.Now });
+        }
+        await ctx.SaveChangesAsync();
+
+        var service = new ReliabilityAnalyticsService(ctx, new ReliabilityService(ctx));
+        var badActors = await service.GetBadActorsAsync(null, null, top: 3);
+
+        Assert.Equal(3, badActors.Count);
+        Assert.Equal("EQ-5", badActors[0].TagNumber); // بیشترین خرابی (۵) اول
+        Assert.Equal("EQ-4", badActors[1].TagNumber);
+        Assert.Equal("EQ-3", badActors[2].TagNumber);
+    }
 }

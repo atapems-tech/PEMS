@@ -36,6 +36,7 @@ public class CriticalityAssessmentController : Controller
 
         ViewData["Title"] = "Criticality Assessment Dashboard";
         ViewData["Section"] = "CMMS Integration";
+        ViewData["HelpKey"] = "CriticalityAssessment.Dashboard";
 
         var dashboard = await _service.GetDashboardAsync();
         return View(dashboard);

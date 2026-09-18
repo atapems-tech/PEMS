@@ -38,6 +38,7 @@ public class MrsImportController : Controller
 
         ViewData["Title"] = "MRS Import";
         ViewData["Section"] = "Inventory & Materials";
+        ViewData["HelpKey"] = "Imports.StagedBatchOverview";
 
         var batches = await _service.GetBatchesAsync();
         return View(batches);

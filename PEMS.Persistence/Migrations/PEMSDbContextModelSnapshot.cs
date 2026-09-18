@@ -5175,6 +5175,93 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("HelpRelatedArticles", (string)null);
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.HelpStandardReference", b =>
+                {
+                    b.Property<int>("HelpStandardReferenceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HelpStandardReferenceId"));
+
+                    b.Property<string>("ApplicabilityStatus")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EditionOrYear")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("EvidencePath")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<int>("HelpArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Identifier")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("IssuingOrganization")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("OfficialReferenceUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("PEMSImplementationStatus")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<string>("RelatedModule")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VerificationStatus")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("HelpStandardReferenceId");
+
+                    b.HasIndex("HelpArticleId")
+                        .IsUnique();
+
+                    b.HasIndex("Identifier")
+                        .IsUnique();
+
+                    b.ToTable("HelpStandardReferences", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.HelpVisual", b =>
                 {
                     b.Property<int>("HelpVisualId")
@@ -16584,6 +16671,17 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("RelatedArticle");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.HelpStandardReference", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.HelpArticle", "Article")
+                        .WithOne("StandardReference")
+                        .HasForeignKey("PEMS.Domain.Entities.HelpStandardReference", "HelpArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.HelpVisual", b =>
                 {
                     b.HasOne("PEMS.Domain.Entities.HelpArticle", "Article")
@@ -19598,6 +19696,8 @@ namespace PEMS.Persistence.Migrations
             modelBuilder.Entity("PEMS.Domain.Entities.HelpArticle", b =>
                 {
                     b.Navigation("RelatedArticles");
+
+                    b.Navigation("StandardReference");
 
                     b.Navigation("Translations");
 

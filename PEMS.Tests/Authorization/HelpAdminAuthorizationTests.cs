@@ -47,6 +47,21 @@ public class HelpAdminAuthorizationTests
     }
 
     [Fact]
+    public void AdminHelpController_StandardReferenceManagementActions_ExistOnSameRoleProtectedController()
+    {
+        // طبق «PEMS Help Phase 4 — Increment 3A» بخش ۱۴: مدیریت Standard Reference هم دقیقاً
+        // همان الگوی Visual را تکرار می‌کند - بدون کنترلر/Attribute مجوز جداگانه
+        var controllerType = typeof(PEMS.Web.Areas.Admin.Controllers.HelpController);
+        var actionNames = new[] { "StandardMatrix", "StandardCreate", "StandardEdit", "StandardSetPublished", "StandardDelete" };
+
+        foreach (var name in actionNames)
+        {
+            var hasAction = controllerType.GetMethods().Any(m => m.Name == name);
+            Assert.True(hasAction, $"Expected action '{name}' on Admin HelpController");
+        }
+    }
+
+    [Fact]
     public void PublicHelpController_RequiresAuthenticatedUser_ButNoSpecificRole()
     {
         // طبق بخش ۹ سند: راهنما باید برای هر کاربر واردشده در دسترس باشد - نه محدودتر از

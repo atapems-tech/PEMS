@@ -32,6 +32,7 @@ public class MOCController : Controller
     {
         ViewData["Title"] = "Management of Change (MOC)";
         ViewData["Section"] = "Engineering Communication";
+        ViewData["HelpKey"] = "MOC.Index";
 
         var query = _context.MOCs
             .AsNoTracking()

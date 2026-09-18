@@ -28,15 +28,18 @@ public class HelpController : Controller
     private readonly IHelpService _helpService;
     private readonly IHelpVisualService _helpVisualService;
     private readonly IHelpWorkflowDiagramService _helpWorkflowDiagramService;
+    private readonly IHelpStandardReferenceService _helpStandardReferenceService;
     private readonly PEMSDbContext _context;
 
     public HelpController(
         IHelpService helpService, IHelpVisualService helpVisualService,
-        IHelpWorkflowDiagramService helpWorkflowDiagramService, PEMSDbContext context)
+        IHelpWorkflowDiagramService helpWorkflowDiagramService,
+        IHelpStandardReferenceService helpStandardReferenceService, PEMSDbContext context)
     {
         _helpService = helpService;
         _helpVisualService = helpVisualService;
         _helpWorkflowDiagramService = helpWorkflowDiagramService;
+        _helpStandardReferenceService = helpStandardReferenceService;
         _context = context;
     }
 
@@ -189,6 +192,96 @@ public class HelpController : Controller
         await _helpVisualService.DeleteAsync(id);
         TempData["Message"] = "Visual deleted.";
         return RedirectToAction(nameof(Edit), new { id = articleId });
+    }
+
+    // ============ Standard References (طبق «PEMS Help Phase 4 — Increment 3A») ============
+
+    public async Task<IActionResult> StandardMatrix()
+    {
+        ViewData["Title"] = "Standards Matrix";
+        ViewData["Section"] = "Administration";
+
+        var rows = await _helpStandardReferenceService.GetMatrixAsync(includeUnpublished: true);
+        return View(rows);
+    }
+
+    public async Task<IActionResult> StandardCreate()
+    {
+        ViewData["Title"] = "New Standard Reference";
+        ViewData["Section"] = "Administration";
+        await LoadFormDropdownsAsync();
+        return View(new HelpStandardReferenceAdminEditDto
+        {
+            ApplicabilityStatus = "NotVerified",
+            VerificationStatus = "NotVerified",
+            PEMSImplementationStatus = "NotImplemented",
+            IsPublished = false
+        });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> StandardCreate(HelpStandardReferenceAdminEditDto dto)
+    {
+        try
+        {
+            await _helpStandardReferenceService.CreateAsync(dto, GetCurrentEmployeeId());
+            TempData["Message"] = "Standard reference created.";
+            return RedirectToAction(nameof(StandardMatrix));
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", ex.Message);
+            await LoadFormDropdownsAsync();
+            return View(dto);
+        }
+    }
+
+    public async Task<IActionResult> StandardEdit(int id)
+    {
+        var dto = await _helpStandardReferenceService.GetForEditAsync(id);
+        if (dto == null) return NotFound();
+
+        ViewData["Title"] = "Edit Standard Reference";
+        ViewData["Section"] = "Administration";
+        await LoadFormDropdownsAsync(dto.HelpArticleId);
+        return View("StandardCreate", dto);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> StandardEdit(int id, HelpStandardReferenceAdminEditDto dto)
+    {
+        try
+        {
+            await _helpStandardReferenceService.UpdateAsync(id, dto);
+            TempData["Message"] = "Standard reference updated.";
+            return RedirectToAction(nameof(StandardMatrix));
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", ex.Message);
+            await LoadFormDropdownsAsync(dto.HelpArticleId);
+            return View("StandardCreate", dto);
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> StandardSetPublished(int id, bool isPublished)
+    {
+        await _helpStandardReferenceService.SetPublishedAsync(id, isPublished);
+        TempData["Message"] = isPublished ? "Standard reference published." : "Standard reference unpublished.";
+        return RedirectToAction(nameof(StandardMatrix));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> StandardDelete(int id)
+    {
+        await _helpStandardReferenceService.DeleteAsync(id);
+        TempData["Message"] = "Standard reference deleted.";
+        return RedirectToAction(nameof(StandardMatrix));
     }
 
     [HttpPost]

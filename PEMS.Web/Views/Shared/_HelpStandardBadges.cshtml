@@ -1,0 +1,51 @@
+@model PEMS.Application.DTOs.HelpStandardReferenceMatrixRowDto
+@using System.Globalization
+@{
+    var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
+    string L(string en, string fa) => isRtl ? fa : en;
+
+    string ImplBadgeClass(string status) => status switch
+    {
+        "ComplianceEvidenceAvailable" => "bg-success",
+        "ImplementedButNotComplianceVerified" or "ConceptuallyMapped" or "PartiallyRelated" => "bg-info text-dark",
+        "NotApplicable" => "bg-light text-dark border",
+        _ => "bg-secondary"
+    };
+}
+
+@* طبق «PEMS Help Phase 4 — Increment 3A» بخش ۲/۶: هرگز نباید این بخش را طوری نمایش داد که
+   انگار یک ادعای انطباقِ تاییدشده است - همیشه هر دو وضعیت (Verification/Implementation) با
+   برچسب صریح کنار هم نشان داده می‌شوند، و اگر ComplianceEvidenceAvailable نباشد، یک یادداشت
+   صریح «این تایید انطباق رسمی نیست» هم اضافه می‌شود. *@
+<div class="content-card mb-3" role="group" aria-label="@L("Standard reference summary", "خلاصه‌ی مرجع استاندارد")">
+    <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+        <span class="badge bg-dark fs-6">@Model.Identifier</span>
+        <span class="text-muted small">@Model.IssuingOrganization@(string.IsNullOrWhiteSpace(Model.EditionOrYear) ? "" : $" · {Model.EditionOrYear}")</span>
+    </div>
+    <div class="d-flex flex-wrap gap-3 small mb-2">
+        <div><strong>@L("Applicability", "قابلیت‌اعمال")</strong>: <span class="badge bg-light text-dark border">@Model.ApplicabilityStatus</span></div>
+        <div><strong>@L("Verification", "تایید منبع")</strong>: <span class="badge bg-light text-dark border">@Model.VerificationStatus</span></div>
+        <div><strong>@L("PEMS status", "وضعیت در PEMS")</strong>: <span class="badge @ImplBadgeClass(Model.PEMSImplementationStatus)">@Model.PEMSImplementationStatus</span></div>
+    </div>
+
+    @if (Model.PEMSImplementationStatus != "ComplianceEvidenceAvailable")
+    {
+        <p class="small text-muted mb-1">
+            <i class="bi bi-info-circle"></i>
+            @L("This is not a formal compliance claim - it only describes how this PEMS feature relates to the standard's subject area.",
+                "این یک ادعای انطباق رسمی نیست - فقط توضیح می‌دهد این قابلیت PEMS چه ارتباطی با موضوع استاندارد دارد.")
+        </p>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.EvidencePath))
+    {
+        <p class="small text-muted mb-1"><strong>@L("Evidence", "شاهد")</strong>: <code>@Model.EvidencePath</code></p>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.OfficialReferenceUrl))
+    {
+        <a href="@Model.OfficialReferenceUrl" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-box-arrow-up-right"></i> @L("Official source", "منبع رسمی")
+        </a>
+    }
+</div>

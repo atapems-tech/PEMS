@@ -5,6 +5,7 @@
     var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
     string L(string en, string fa) => isRtl ? fa : en;
     var visuals = (IReadOnlyList<PEMS.Application.DTOs.HelpVisualRenderDto>)(ViewBag.Visuals ?? new List<PEMS.Application.DTOs.HelpVisualRenderDto>());
+    var standardReference = ViewBag.StandardReference as PEMS.Application.DTOs.HelpStandardReferenceMatrixRowDto;
 }
 
 <nav aria-label="breadcrumb" class="mb-2">
@@ -23,6 +24,11 @@
                 <span class="badge bg-light text-dark border">@Model.ArticleType</span>
             </div>
             <p class="text-muted">@Model.Summary</p>
+
+            @if (standardReference != null)
+            {
+                @await Html.PartialAsync("_HelpStandardBadges", standardReference)
+            }
 
             @* طبق «PEMS Help System — Phase 3» بخش ۱۰: ترتیب توصیه‌شده - عنوان/خلاصه، سپس
                نمودار (اگر باشد)، سپس متن نوشتاری. هر مقاله‌ای بدون نمودار عیناً مثل قبل

@@ -45,6 +45,7 @@ public class RcmFmeaController : Controller
 
         ViewData["Title"] = "RCM / FMEA / FMECA Dashboard";
         ViewData["Section"] = "CMMS Integration";
+        ViewData["HelpKey"] = "RcmFmea.Index";
 
         var matrix = await _readinessService.GetCoverageMatrixAsync();
         return View(matrix);

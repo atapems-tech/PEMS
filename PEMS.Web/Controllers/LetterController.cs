@@ -52,6 +52,7 @@ public class LetterController : Controller
     {
         ViewData["Title"] = "Correspondence";
         ViewData["Section"] = "Correspondence Management";
+        ViewData["HelpKey"] = "Letter.Index";
 
         var isSystemAdmin = _currentUser.Roles.Contains("SystemAdmin");
         var canViewConfidential = isSystemAdmin ||

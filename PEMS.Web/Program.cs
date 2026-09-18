@@ -341,6 +341,7 @@ builder.Services.AddScoped<IHelpService, HelpService>();
 builder.Services.AddScoped<IHelpAiExplainerService, HelpAiExplainerService>();
 builder.Services.AddScoped<IHelpWorkflowDiagramService, HelpWorkflowDiagramService>();
 builder.Services.AddScoped<IHelpVisualService, HelpVisualService>();
+builder.Services.AddScoped<IHelpStandardReferenceService, HelpStandardReferenceService>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.HelpArticleSearchProvider>();
 
 
@@ -665,6 +666,9 @@ using (var scope = app.Services.CreateScope())
 
     // طبق «PEMS Help System — Phase 3» - محتوای بصری راهنما (نمودارهای گردش‌کار زنده + دستی، ایدمپوتنت)
     await PEMS.Persistence.Seed.HelpVisualSeeder.SeedAsync(scope.ServiceProvider);
+
+    // طبق «PEMS Help Phase 4 — Increment 3A» - لایه‌ی دانش مهندسی (Concept/DisciplineGuide/StandardReference، ایدمپوتنت)
+    await PEMS.Persistence.Seed.HelpKnowledgeSeeder.SeedAsync(scope.ServiceProvider);
 
     // بخش QC/QA - دیسیپلین‌های استاندارد بازرسی
     await PEMS.Persistence.Seed.QCDisciplineSeeder.SeedAsync(scope.ServiceProvider);

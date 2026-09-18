@@ -29,6 +29,7 @@ public class ProductionController : Controller
 
         ViewData["Title"] = "Production Dashboard";
         ViewData["Section"] = "Operations & Production";
+        ViewData["HelpKey"] = "Production.Dashboard";
 
         var dashboard = await _orderService.GetDashboardAsync();
         return View(dashboard);

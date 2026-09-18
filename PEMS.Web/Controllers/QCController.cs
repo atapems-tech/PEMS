@@ -38,6 +38,7 @@ public class QCController : Controller
     {
         ViewData["Title"] = "QC / QA";
         ViewData["Section"] = "QC/QA";
+        ViewData["HelpKey"] = "QC.Index";
 
         ViewBag.OpenNCRCount = await _context.NonConformanceReports.CountAsync(x => x.IsActive && x.Status != "Closed");
         ViewBag.ActiveITPCount = await _context.InspectionTestPlans.CountAsync(x => x.IsActive && x.Status == "Active");

@@ -98,6 +98,38 @@ public class HelpVisualConfiguration : IEntityTypeConfiguration<HelpVisual>
     }
 }
 
+public class HelpStandardReferenceConfiguration : IEntityTypeConfiguration<HelpStandardReference>
+{
+    public void Configure(EntityTypeBuilder<HelpStandardReference> builder)
+    {
+        builder.ToTable("HelpStandardReferences");
+        builder.HasKey(x => x.HelpStandardReferenceId);
+
+        builder.Property(x => x.Identifier).HasMaxLength(50).IsRequired();
+        builder.Property(x => x.IssuingOrganization).HasMaxLength(200).IsRequired();
+        builder.Property(x => x.EditionOrYear).HasMaxLength(200);
+        builder.Property(x => x.OfficialReferenceUrl).HasMaxLength(500);
+        builder.Property(x => x.RelatedModule).HasMaxLength(200);
+        builder.Property(x => x.ApplicabilityStatus).HasMaxLength(30).IsRequired();
+        builder.Property(x => x.VerificationStatus).HasMaxLength(30).IsRequired();
+        builder.Property(x => x.PEMSImplementationStatus).HasMaxLength(40).IsRequired();
+        builder.Property(x => x.EvidencePath).HasMaxLength(300);
+        builder.Property(x => x.Notes).HasMaxLength(1000);
+
+        // طبق بخش ۶ سند («Standard uniqueness»): دو رکورد نمی‌توانند یک شناسه‌ی رسمی یکسان
+        // (مثلاً "ISO 14224") داشته باشند
+        builder.HasIndex(x => x.Identifier).IsUnique();
+
+        // یک‌به‌یک واقعی با HelpArticle - هر مقاله حداکثر یک رکورد Standard Reference دارد
+        builder.HasIndex(x => x.HelpArticleId).IsUnique();
+
+        builder.HasOne(x => x.Article)
+            .WithOne(a => a.StandardReference)
+            .HasForeignKey<HelpStandardReference>(x => x.HelpArticleId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+}
+
 public class HelpRelatedArticleConfiguration : IEntityTypeConfiguration<HelpRelatedArticle>
 {
     public void Configure(EntityTypeBuilder<HelpRelatedArticle> builder)

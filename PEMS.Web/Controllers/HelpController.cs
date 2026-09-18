@@ -16,12 +16,16 @@ public class HelpController : Controller
     private readonly IHelpService _helpService;
     private readonly IHelpAiExplainerService _aiExplainer;
     private readonly IHelpVisualService _helpVisualService;
+    private readonly IHelpStandardReferenceService _helpStandardReferenceService;
 
-    public HelpController(IHelpService helpService, IHelpAiExplainerService aiExplainer, IHelpVisualService helpVisualService)
+    public HelpController(
+        IHelpService helpService, IHelpAiExplainerService aiExplainer, IHelpVisualService helpVisualService,
+        IHelpStandardReferenceService helpStandardReferenceService)
     {
         _helpService = helpService;
         _aiExplainer = aiExplainer;
         _helpVisualService = helpVisualService;
+        _helpStandardReferenceService = helpStandardReferenceService;
     }
 
     private string CurrentLanguage => CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa" ? "fa" : "en";
@@ -61,6 +65,9 @@ public class HelpController : Controller
         ViewData["Section"] = "Help";
 
         ViewBag.Visuals = await _helpVisualService.GetVisualsForArticleAsync(article.HelpArticleId, CurrentLanguage);
+
+        if (article.ArticleType == "StandardReference")
+            ViewBag.StandardReference = await _helpStandardReferenceService.GetByArticleIdAsync(article.HelpArticleId);
 
         return View(article);
     }

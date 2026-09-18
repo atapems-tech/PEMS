@@ -29,6 +29,7 @@ public class SparePartController : Controller
     {
         ViewData["Title"] = "Spare Parts";
         ViewData["Section"] = "CMMS Integration";
+        ViewData["HelpKey"] = "SparePart.Index";
 
         var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
         var result = await _sparePartService.GetListAsync(page, normalizedPageSize, q, lowStockOnly);

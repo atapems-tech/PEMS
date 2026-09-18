@@ -39,6 +39,7 @@ public class MaintenanceHistoryImportController : Controller
 
         ViewData["Title"] = "Maintenance History Import";
         ViewData["Section"] = "CMMS Integration";
+        ViewData["HelpKey"] = "Imports.StagedBatchOverview";
 
         var recentBatches = await _service.GetRecentBatchesAsync();
         return View(recentBatches);

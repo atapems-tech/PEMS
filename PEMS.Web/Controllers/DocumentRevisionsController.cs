@@ -27,6 +27,7 @@ public class DocumentRevisionsController : Controller
     {
         ViewData["Title"] = "Document Revision";
         ViewData["Section"] = "Engineering Management";
+        ViewData["HelpKey"] = "DocumentRevisions.Index";
 
         var query = _context.DocumentRevisions
             .AsNoTracking()

@@ -22,6 +22,7 @@ public class ContractController : Controller
     {
         ViewData["Title"] = "Contracts";
         ViewData["Section"] = "Contract Management";
+        ViewData["HelpKey"] = "Contract.Index";
 
         var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
         var result = await _service.GetPagedAsync(page, normalizedPageSize);
