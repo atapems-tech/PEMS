@@ -1,0 +1,30 @@
+@model IReadOnlyList<PEMS.Domain.Entities.AuditLog>
+@{ ViewData["HidePageTitle"] = true; }
+
+<div class="content-card">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0"><i class="bi bi-clock-history"></i> Change History</h5>
+        <a asp-action="Edit" asp-route-id="@ViewBag.HelpArticleId" class="btn btn-sm btn-outline-secondary">Back to article</a>
+    </div>
+    @if (!Model.Any())
+    {
+        <p class="text-muted text-center py-4">No recorded changes yet.</p>
+    }
+    else
+    {
+        <table class="table table-enterprise">
+            <thead><tr><th>When</th><th>Action</th><th>By</th><th>Changed fields</th></tr></thead>
+            <tbody>
+                @foreach (var log in Model)
+                {
+                    <tr>
+                        <td class="small text-muted">@log.Timestamp.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td><span class="badge bg-light text-dark border">@log.Action</span></td>
+                        <td class="small">@(log.UserName ?? "—")</td>
+                        <td class="small"><pre class="mb-0 small">@log.ChangedFieldsSummary</pre></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

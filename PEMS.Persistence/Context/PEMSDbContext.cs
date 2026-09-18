@@ -207,6 +207,13 @@ public class PEMSDbContext
 
     public DbSet<ChatMessage> ChatMessages { get; set; }
 
+    // طبق «PEMS Bilingual Help & Knowledge System»
+    public DbSet<HelpCategory> HelpCategories { get; set; }
+    public DbSet<HelpArticle> HelpArticles { get; set; }
+    public DbSet<HelpArticleTranslation> HelpArticleTranslations { get; set; }
+    public DbSet<HelpRelatedArticle> HelpRelatedArticles { get; set; }
+    public DbSet<HelpVisual> HelpVisuals { get; set; }
+
 
     public DbSet<Vendor> Vendors { get; set; }
     public DbSet<Contract> Contracts { get; set; }

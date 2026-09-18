@@ -396,6 +396,24 @@ public class DocumentWorkflowService
     }
 
 
+    // ==============================================================================
+    // طبق «PEMS Engineering IDC Ownership Correction»: قبلاً این متد نتیجه‌ی کل مرحله‌ی IDC
+    // (که موتور بر اساس ApprovalStrategy=AllApprovalsRequired محاسبه می‌کند - یعنی حتی یک
+    // Reject از یک دیسیپلین کافی بود) را مستقیماً و بدون هیچ واسطه‌ای روی Document.Status
+    // می‌نوشت؛ اگر آن نتیجه "Reject" بود، متادیتای Check/Approve پاک می‌شد و یک نامه‌ی رد
+    // رسمی خودکار ساخته می‌شد - یعنی یک بازبین دیسیپلین (نه سازنده‌ی مدرک، نه تأییدکننده‌ی
+    // رسمی) عملاً می‌توانست کل چرخه‌ی مدرک را تک‌نفره ببندد.
+    //
+    // اصلاح: (۱) نتیجه‌ی این دیسیپلین به‌صورت دائمی روی DocumentIdcReferral خودش ثبت می‌شود -
+    // نه فقط روی جدول گذرای موتور - تا سازنده‌ی مدرک بتواند همه‌ی نظرات را واقعاً تجمیع کند.
+    // (۲) از نسخه‌ی ۳ گردش‌کار (EngineeringDocumentWorkflowSeeder.SeedVersion3Async) به بعد،
+    // خروجی مرحله‌ی IDC - چه Approve چه Reject - همیشه به مرحله‌ی Approval می‌رود، نه به پایان
+    // مدرک؛ یعنی موتور دیگر instance.Status="Rejected" را از خروجی IDC تولید نمی‌کند. با این‌
+    // حال، اگر مدرکی هنوز با نسخه‌ی ۲ (قدیمی) در حال اجراست، این متد صراحتاً از رد شدنِ کل
+    // مدرک به‌خاطر IDC جلوگیری می‌کند - نتیجه‌ی IDC هرگز، حتی در آن حالت، معادل رد رسمی مدرک
+    // گرفته نمی‌شود؛ فقط به‌عنوان "IDC Review" (منتظر ادامه) باقی می‌ماند تا سازنده/تأییدکننده
+    // به‌صورت جداگانه (Reject/ReviseAndResubmit در مرحله‌ی Approval) تصمیم رسمی را بگیرد.
+    // ==============================================================================
     public async Task IdcRespondAsync(
         int documentId,
         string decision,
@@ -412,67 +430,104 @@ public class DocumentWorkflowService
         var document = await GetDocumentOrThrowAsync(documentId);
         var instanceId = await GetActiveInstanceIdOrThrowAsync(documentId);
 
+        var referral = await _context.DocumentIdcReferrals
+            .FirstOrDefaultAsync(r => r.DocumentId == documentId && r.DisciplineId == actorDisciplineId);
+        if (referral == null)
+            throw new UnauthorizedAccessException("دیسیپلین شما برای بازبینی IDC این مدرک ارجاع نشده است.");
+
         var actorRoles = new[] { EngineeringDocumentWorkflowSeeder.DisciplineRole(actorDisciplineId) };
 
         await _runtime.ExecuteActionAsync(instanceId, normalizedDecision, actorEmployeeId, actorRoles, comment, ipAddress, userAgent);
 
+        referral.Status = normalizedDecision;
+        referral.Comment = comment;
+        referral.RespondedById = actorEmployeeId;
+        referral.RespondedDate = DateTime.Now;
+
         var updated = await _runtime.GetInstanceByIdAsync(instanceId);
-        document.Status = MapStageToLegacyStatus(updated!);
+
+        // نتیجه‌ی IDC هرگز به‌تنهایی وضعیت مدرک را "Rejected" نمی‌کند - حتی اگر (روی نسخه‌ی
+        // قدیمی‌تر گردش‌کار) موتور instance را با آن وضعیت تمام کرده باشد، این‌جا صراحتاً به
+        // "IDC Review" نگه داشته می‌شود تا تصمیم رسمی جای درستش (مرحله‌ی Approval) گرفته شود.
+        document.Status = updated!.Status == "Rejected" ? "IDC Review" : MapStageToLegacyStatus(updated);
         document.ModifiedDate = DateTime.Now;
 
-        var causedRejection = updated!.Status == "Rejected";
-        if (causedRejection) ClearCheckApproveMetadata(document);
-
         await SaveWithConcurrencyCheckAsync();
-
-        if (causedRejection)
-            await CreateInternalRejectionLetterAsync(document, "IDC", comment, actorEmployeeId);
     }
 
 
+    // طبق «PEMS Engineering IDC Ownership Correction»: قبلاً این متد از جداول گذرای موتور
+    // گردش‌کار عمومی (WorkflowInstanceStage، فقط مربوط به آخرین Instance) می‌خواند - نه
+    // Comment/پاسخ‌دهنده/تاریخ داشت و نه با بستن/تمام‌شدن Instance قابل‌اعتماد می‌ماند. حالا از
+    // DocumentIdcReferral (رکورد دائمی همین مدرک، مستقل از عمر هر Instance) می‌خواند - دقیقاً
+    // همان داده‌ای که سازنده‌ی مدرک برای «تجمیع نظرات IDC» (Phase 9) لازم دارد.
     public async Task<IReadOnlyList<IdcStatusItemDto>> GetIdcStatusAsync(int documentId)
     {
-        var instance = await _context.WorkflowInstances
-            .Where(x => x.Module == Module && x.BusinessObjectType == BusinessObjectType && x.BusinessObjectId == documentId)
-            .OrderByDescending(x => x.StartDate)
-            .FirstOrDefaultAsync();
-
-        if (instance == null) return Array.Empty<IdcStatusItemDto>();
-
-        var idcStage = await _context.WorkflowStages
-            .FirstOrDefaultAsync(s => s.WorkflowVersionId == instance.WorkflowVersionId && s.Name == "IDC");
-
-        if (idcStage == null) return Array.Empty<IdcStatusItemDto>();
-
-        var instanceStages = await _context.WorkflowInstanceStages
-            .Where(x => x.WorkflowInstanceId == instance.WorkflowInstanceId && x.WorkflowStageId == idcStage.WorkflowStageId)
+        var referrals = await _context.DocumentIdcReferrals
+            .Include(r => r.Discipline)
+            .Where(r => r.DocumentId == documentId)
             .ToListAsync();
 
-        if (instanceStages.Count == 0) return Array.Empty<IdcStatusItemDto>();
+        if (referrals.Count == 0) return Array.Empty<IdcStatusItemDto>();
 
-        var disciplineIds = instanceStages
-            .Select(x => ParseDisciplineId(x.AssignedToRole))
-            .Where(id => id.HasValue)
-            .Select(id => id!.Value)
-            .Distinct()
-            .ToList();
+        var responderIds = referrals.Where(r => r.RespondedById.HasValue).Select(r => r.RespondedById!.Value).Distinct().ToList();
+        var responderNames = await _context.Employees
+            .Where(e => responderIds.Contains(e.EmployeeId))
+            .ToDictionaryAsync(e => e.EmployeeId, e => e.FirstName + " " + e.LastName);
 
-        var disciplineNames = await _context.Disciplines
-            .Where(d => disciplineIds.Contains(d.DisciplineId))
-            .ToDictionaryAsync(d => d.DisciplineId, d => d.Name);
-
-        return instanceStages
-            .Select(x =>
+        return referrals
+            .Select(r => new IdcStatusItemDto
             {
-                var did = ParseDisciplineId(x.AssignedToRole);
-                return new IdcStatusItemDto
-                {
-                    DisciplineId = did ?? 0,
-                    DisciplineName = did.HasValue ? disciplineNames.GetValueOrDefault(did.Value, "?") : "?",
-                    Status = x.Status
-                };
+                DisciplineId = r.DisciplineId,
+                DisciplineName = r.Discipline?.Name ?? "?",
+                Status = r.Status,
+                Comment = r.Comment,
+                RespondedByName = r.RespondedById.HasValue ? responderNames.GetValueOrDefault(r.RespondedById.Value) : null,
+                RespondedDate = r.RespondedDate
             })
             .ToList();
+    }
+
+
+    // ==============================================================================
+    // طبق «PEMS Engineering Workflow History Read-Path Correction»: صفحه‌ی Details از
+    // EngineeringDocument.Workflows (جدول قدیمی DocumentWorkflow که فقط یک‌بار موقع Create
+    // نوشته می‌شود) می‌خواند - نه از WorkflowHistory واقعی که هر Submit/Check/IDC/Approve/
+    // Reject/Issue را ثبت می‌کند. این متد منبع درست را برمی‌گرداند؛ روی همه‌ی Instance های
+    // این مدرک (نه فقط آخرین/فعال) چون هر چرخه‌ی Submit یک Instance جدید می‌سازد و تاریخچه‌ی
+    // چرخه‌های قبلی هم باید قابل‌مشاهده بماند.
+    // ==============================================================================
+    public async Task<IReadOnlyList<DocumentWorkflowHistoryItemDto>> GetWorkflowHistoryAsync(int documentId)
+    {
+        var instanceIds = await _context.WorkflowInstances
+            .Where(x => x.Module == Module && x.BusinessObjectType == BusinessObjectType && x.BusinessObjectId == documentId)
+            .Select(x => x.WorkflowInstanceId)
+            .ToListAsync();
+
+        if (instanceIds.Count == 0) return Array.Empty<DocumentWorkflowHistoryItemDto>();
+
+        var stageNames = await _context.WorkflowStages.ToDictionaryAsync(s => s.WorkflowStageId, s => s.Name);
+
+        var rows = await _context.WorkflowHistories
+            .Where(h => instanceIds.Contains(h.WorkflowInstanceId))
+            .OrderBy(h => h.ActionDate)
+            .ToListAsync();
+
+        var userIds = rows.Where(r => r.UserId.HasValue).Select(r => r.UserId!.Value).Distinct().ToList();
+        var userNames = await _context.Employees
+            .Where(e => userIds.Contains(e.EmployeeId))
+            .ToDictionaryAsync(e => e.EmployeeId, e => e.FirstName + " " + e.LastName);
+
+        return rows.Select(h => new DocumentWorkflowHistoryItemDto
+        {
+            ActionType = h.ActionType,
+            Decision = h.Decision,
+            FromStageName = h.FromStageId.HasValue ? stageNames.GetValueOrDefault(h.FromStageId.Value) : null,
+            ToStageName = h.ToStageId.HasValue ? stageNames.GetValueOrDefault(h.ToStageId.Value) : null,
+            Comment = h.Comment,
+            ActorName = h.UserId.HasValue ? userNames.GetValueOrDefault(h.UserId.Value) : null,
+            ActionDate = h.ActionDate
+        }).ToList();
     }
 
 
@@ -502,13 +557,6 @@ public class DocumentWorkflowService
 
     private static string GenerateLetterNumber(string documentNo, string prefix)
         => $"{prefix}-{documentNo}-{DateTime.Now:yyyyMMdd-HHmmss}";
-
-    private static int? ParseDisciplineId(string? role)
-    {
-        if (role == null || !role.StartsWith(EngineeringDocumentWorkflowSeeder.DisciplineRolePrefix)) return null;
-        var idPart = role[EngineeringDocumentWorkflowSeeder.DisciplineRolePrefix.Length..];
-        return int.TryParse(idPart, out var id) ? id : null;
-    }
 
     private static void ClearCheckApproveMetadata(EngineeringDocument document)
     {

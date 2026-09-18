@@ -42,6 +42,11 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
         builder.Property(x => x.FirstName).HasMaxLength(100).IsRequired();
         builder.Property(x => x.LastName).HasMaxLength(100).IsRequired();
 
+        // طبق «Employee Details — Stitch UI Redesign»: فیلدهای افزایشی پروفایل
+        builder.Property(x => x.Location).HasMaxLength(200);
+        builder.Property(x => x.Shift).HasMaxLength(100);
+        builder.Property(x => x.HomeAddress).HasMaxLength(500);
+
         builder.HasIndex(x => x.PersonnelCode)
             .IsUnique()
             .HasFilter("[PersonnelCode] IS NOT NULL AND [PersonnelCode] <> ''");

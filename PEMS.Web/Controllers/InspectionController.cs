@@ -37,6 +37,7 @@ public class InspectionController : Controller
             return Forbid();
 
         ViewData["Title"] = "Inspections";
+        ViewData["HelpKey"] = "Inspections.Index";
         ViewData["Section"] = "CMMS Integration";
 
         var items = await _service.GetPagedFleetAsync(page, DataGridPageSize.Normalize(pageSize));

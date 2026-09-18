@@ -541,6 +541,11 @@
                     <i class="bi bi-sliders"></i> @Localizer["PermissionMatrix"]
                 </a>
 
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Help", "Admin") ? "active" : "")"
+                   asp-area="Admin" asp-controller="Help" asp-action="Index">
+                    <i class="bi bi-life-preserver"></i> Help Administration
+                </a>
+
                 <div class="nav-subheading">Organization</div>
 
                 <a class="nav-link nav-subitem @(IsActive("Department") ? "active" : "")" asp-controller="Department" asp-action="Index">

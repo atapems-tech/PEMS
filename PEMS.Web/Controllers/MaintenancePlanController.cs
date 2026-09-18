@@ -45,6 +45,7 @@ public class MaintenancePlanController : Controller
             return Forbid();
 
         ViewData["Title"] = "Maintenance Plans";
+        ViewData["HelpKey"] = "MaintenancePlans.Index";
         ViewData["Section"] = "CMMS Integration";
 
         var normalizedPageSize = DataGridPageSize.Normalize(pageSize);

@@ -26,6 +26,7 @@ public class DepartmentController : Controller
     {
         ViewData["Title"] = "Departments";
         ViewData["Section"] = "Administration";
+        ViewData["HelpKey"] = "Departments.Index";
 
         var departments = await _context.Departments
             .OrderBy(x => x.Name)

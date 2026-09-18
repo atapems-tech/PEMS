@@ -287,6 +287,12 @@ public class ProductionRunServiceTests
         Assert.False(runBeforePost!.Outputs.Single().PostedToInventory);
         Assert.Empty(ctx.InventoryTransactions);
 
+        // طبق «PEMS Operations Phase 2C — Production Safety Correction»: از این پس فقط بچِ
+        // Released قابل Post شدن به موجودی است - بدون این دو خط، PostOutputToInventoryAsync
+        // به‌درستی رد می‌شود (طبق تست‌های اختصاصی PostOutputToInventory_*QualityGate* پایین‌تر).
+        await runService.SubmitBatchForQcAsync(batchId!.Value, null);
+        await runService.ReleaseBatchAsync(batchId.Value, null);
+
         var outputId = runBeforePost.Outputs.Single().ProductionOutputId;
         var postResult = await runService.PostOutputToInventoryAsync(outputId, warehouse.WarehouseId, null, null);
 
@@ -315,7 +321,9 @@ public class ProductionRunServiceTests
         var orderId = await CreateReleasedOrderAsync(ctx, orderService, material.MaterialItemId, wc.ProductionWorkCenterId);
         var (_, _, runId) = await runService.CreateAsync(orderId, null, null, null, null, null, null);
         await runService.StartAsync(runId!.Value, null);
-        await runService.RecordOutputAsync(runId.Value, material.MaterialItemId, null, 20m, null, "Primary", null, null);
+        var (_, _, batchId) = await runService.RecordOutputAsync(runId.Value, material.MaterialItemId, null, 20m, null, "Primary", null, null);
+        await runService.SubmitBatchForQcAsync(batchId!.Value, null);
+        await runService.ReleaseBatchAsync(batchId.Value, null);
 
         var run = await runService.GetByIdAsync(runId.Value);
         var outputId = run!.Outputs.Single().ProductionOutputId;

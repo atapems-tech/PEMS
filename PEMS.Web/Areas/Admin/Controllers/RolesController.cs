@@ -33,6 +33,7 @@ public class RolesController : Controller
     {
         ViewData["Title"] = "Roles";
         ViewData["Section"] = "Administration";
+        ViewData["HelpKey"] = "Admin.Roles.Index";
 
         var roles = await _roleManager.Roles.ToListAsync();
 

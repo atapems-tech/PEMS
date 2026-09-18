@@ -73,6 +73,7 @@ public class PermitController : Controller
             return Forbid();
 
         ViewData["Title"] = "Permits";
+        ViewData["HelpKey"] = "Permits.Index";
         ViewData["Section"] = "CMMS Integration";
 
         var normalizedPage = page < 1 ? 1 : page;

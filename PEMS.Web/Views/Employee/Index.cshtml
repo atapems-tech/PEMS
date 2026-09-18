@@ -169,6 +169,11 @@
                             </select>
                         </div>
 
+                        <div class="col-md-3"><label class="form-label">Hire Date</label><input name="hireDate" type="date" class="form-control" /></div>
+                        <div class="col-md-3"><label class="form-label">Location / Site</label><input name="location" class="form-control" /></div>
+                        <div class="col-md-3"><label class="form-label">Shift</label><input name="shift" class="form-control" /></div>
+                        <div class="col-md-3"><label class="form-label">Home Address</label><input name="homeAddress" class="form-control" /></div>
+
                         <div class="col-12"><hr /></div>
                         <div class="col-12">
                             <div class="form-check">
@@ -256,6 +261,11 @@
                                     @foreach (var v in vendors) { <option value="@v.VendorId" selected="@(v.VendorId == e.VendorId)">@v.Name</option> }
                                 </select>
                             </div>
+
+                            <div class="col-md-3"><label class="form-label">Hire Date</label><input name="hireDate" type="date" value="@(e.HireDate?.ToString("yyyy-MM-dd"))" class="form-control" /></div>
+                            <div class="col-md-3"><label class="form-label">Location / Site</label><input name="location" value="@e.Location" class="form-control" /></div>
+                            <div class="col-md-3"><label class="form-label">Shift</label><input name="shift" value="@e.Shift" class="form-control" /></div>
+                            <div class="col-md-3"><label class="form-label">Home Address</label><input name="homeAddress" value="@e.HomeAddress" class="form-control" /></div>
                         </div>
                     </div>
                     <div class="modal-footer">

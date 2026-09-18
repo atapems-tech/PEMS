@@ -44,6 +44,7 @@ public class VDRController : Controller
     {
         ViewData["Title"] = "Vendor Document Register (VDR)";
         ViewData["Section"] = "Engineering Management";
+        ViewData["HelpKey"] = "VDR.Index";
 
         var result = await _service.GetPagedAsync(projectId, vendorId, status, page, PEMS.Application.Common.DataGridPageSize.Normalize(pageSize));
         var dashboard = await _service.GetDashboardAsync(projectId);

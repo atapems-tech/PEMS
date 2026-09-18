@@ -101,6 +101,7 @@ public class DocumentRegisterController : Controller
     {
         ViewData["Title"] = "Document Register";
         ViewData["Section"] = "Engineering Management";
+        ViewData["HelpKey"] = "DocumentRegister.Index";
 
         var (isRestricted, myDisciplineId) = await ResolveScopeAsync();
         var filter = BuildFilter(project, disciplines, status, q, page, pageSize);

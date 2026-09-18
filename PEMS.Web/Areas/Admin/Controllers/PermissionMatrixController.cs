@@ -21,6 +21,7 @@ public class PermissionMatrixController : Controller
     {
         ViewData["Title"] = "Permission Matrix";
         ViewData["Section"] = "Administration";
+        ViewData["HelpKey"] = "Admin.PermissionMatrix.Index";
 
         var matrix = await _service.GetMatrixAsync();
 

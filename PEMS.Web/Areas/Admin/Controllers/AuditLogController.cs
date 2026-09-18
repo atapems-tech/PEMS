@@ -23,6 +23,7 @@ public class AuditLogController : Controller
     public async Task<IActionResult> Index(string? entityName, string? userName, int page = 1, int? pageSize = null)
     {
         ViewData["Title"] = "Audit Log";
+        ViewData["HelpKey"] = "Admin.AuditLog.Index";
         ViewData["Section"] = "Administration";
 
         // طبق سند Global Data Grid Standard بند ۴/۳۶: AuditLog با ~۲۰۵۰۰۰ ردیف دقیقاً همان

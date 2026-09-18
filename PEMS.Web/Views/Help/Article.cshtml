@@ -1,0 +1,101 @@
+@model PEMS.Application.DTOs.HelpArticleDetailDto
+@using System.Globalization
+@{
+    ViewData["HidePageTitle"] = true;
+    var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
+    string L(string en, string fa) => isRtl ? fa : en;
+    var visuals = (IReadOnlyList<PEMS.Application.DTOs.HelpVisualRenderDto>)(ViewBag.Visuals ?? new List<PEMS.Application.DTOs.HelpVisualRenderDto>());
+}
+
+<nav aria-label="breadcrumb" class="mb-2">
+    <ol class="breadcrumb mb-0 small">
+        <li class="breadcrumb-item"><a asp-action="Index">@L("Help Center", "مرکز راهنما")</a></li>
+        <li class="breadcrumb-item"><a asp-action="Category" asp-route-id="@Model.HelpCategoryId">@Model.CategoryName</a></li>
+        <li class="breadcrumb-item active">@Model.Title</li>
+    </ol>
+</nav>
+
+<div class="row g-3">
+    <div class="col-lg-9">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                <h4 class="mb-0">@Model.Title</h4>
+                <span class="badge bg-light text-dark border">@Model.ArticleType</span>
+            </div>
+            <p class="text-muted">@Model.Summary</p>
+
+            @* طبق «PEMS Help System — Phase 3» بخش ۱۰: ترتیب توصیه‌شده - عنوان/خلاصه، سپس
+               نمودار (اگر باشد)، سپس متن نوشتاری. هر مقاله‌ای بدون نمودار عیناً مثل قبل
+               رندر می‌شود - این بخش هیچ‌وقت خالی/شکسته نمایش داده نمی‌شود. *@
+            @if (visuals.Any())
+            {
+                <hr />
+                @foreach (var visual in visuals)
+                {
+                    @await Html.PartialAsync("_HelpVisual", visual)
+                }
+            }
+
+            <hr />
+            <div class="pems-help-article-body">
+                @Html.Raw(Model.Content)
+            </div>
+            <p class="text-muted small mt-3 mb-0">
+                <i class="bi bi-clock-history"></i> @L("Last updated", "آخرین به‌روزرسانی"): @Model.ModifiedDate.ToString("yyyy-MM-dd")
+            </p>
+        </div>
+
+        @if (Model.RelatedArticles.Any())
+        {
+            <div class="content-card mt-3">
+                <h6 class="mb-3">@L("Related Help", "راهنمای مرتبط")</h6>
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach (var r in Model.RelatedArticles)
+                    {
+                        <a asp-action="Article" asp-route-code="@r.Code" class="btn btn-sm btn-outline-secondary">@r.Title</a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="col-lg-3">
+        <div class="content-card">
+            <h6 class="mb-3"><i class="bi bi-robot"></i> @L("Ask PEMS AI", "پرسش از هوش مصنوعی PEMS")</h6>
+            <p class="text-muted small">@L("Ask a question about this article - the answer is based only on its content.", "درباره‌ی همین مقاله سوال بپرسید - پاسخ فقط بر اساس محتوای همین مقاله است.")</p>
+            <textarea id="helpAiQuestion" class="form-control form-control-sm mb-2" rows="3" placeholder="@L("e.g. What happens if I don't respond to IDC?", "مثلاً اگر به IDC پاسخ ندهم چه می‌شود؟")"></textarea>
+            <button type="button" class="btn btn-sm btn-pems-solid w-100" id="helpAiAskBtn">
+                <i class="bi bi-send"></i> @L("Ask", "پرسیدن")
+            </button>
+            <div id="helpAiAnswer" class="small mt-2" hidden></div>
+        </div>
+    </div>
+</div>
+
+@* توکن ضد جعل برای درخواست fetch به AskAi - فرم واقعی وجود ندارد، فقط برای گرفتن توکن *@
+<form id="helpAiTokenForm" style="display:none">@Html.AntiForgeryToken()</form>
+
+@section Scripts {
+    <script>
+        document.getElementById('helpAiAskBtn').addEventListener('click', async function () {
+            var question = document.getElementById('helpAiQuestion').value.trim();
+            if (!question) return;
+            var answerBox = document.getElementById('helpAiAnswer');
+            answerBox.hidden = false;
+            answerBox.innerHTML = '<span class="text-muted">@L("Thinking...", "در حال فکر کردن...")</span>';
+
+            var form = new FormData();
+            form.append('articleCode', '@Model.Code');
+            form.append('question', question);
+            form.append('__RequestVerificationToken', document.querySelector('input[name="__RequestVerificationToken"]')?.value || '');
+
+            try {
+                var res = await fetch('@Url.Action("AskAi", "Help")', { method: 'POST', body: form });
+                var data = await res.json();
+                answerBox.innerHTML = '<div class="p-2 rounded bg-body-tertiary">' + (data.answer || '').replace(/\n/g, '<br/>') + '</div>';
+            } catch (e) {
+                answerBox.innerHTML = '<span class="text-danger">@L("Could not reach the AI assistant.", "ارتباط با دستیار هوش مصنوعی برقرار نشد.")</span>';
+            }
+        });
+    </script>
+}

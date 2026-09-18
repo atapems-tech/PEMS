@@ -36,6 +36,7 @@ public class MaterialItemController : Controller
     {
         ViewData["Title"] = "Material Master";
         ViewData["Section"] = "Inventory & Materials";
+        ViewData["HelpKey"] = "MaterialItems.Index";
 
         var result = await _materialItemService.GetListAsync(page, 25, q, categoryId, lowStockOnly, criticalOnly);
 

@@ -1,0 +1,20 @@
+@model PEMS.Application.DTOs.HelpVisualRenderDto
+@{
+    var roots = PEMS.Web.Helpers.HelpVisualTreeBuilder.BuildRoots(Model);
+}
+
+<style>
+    .pems-help-node-tree ul { list-style: none; padding-inline-start: 1.5rem; margin: 0; }
+    .pems-help-node-tree > ul { padding-inline-start: 0; }
+    .pems-help-node-tree .pems-help-tree-label { display: flex; align-items: center; gap: .4rem; padding: .25rem 0; }
+    .pems-help-node-tree .pems-help-tree-edge-label { font-size: .78rem; color: var(--pems-text-muted, #6c757d); padding-inline-start: .2rem; }
+</style>
+
+<div class="pems-help-node-tree">
+    <ul>
+        @foreach (var root in roots)
+        {
+            @await Html.PartialAsync("_HelpNodeTreeItem", root)
+        }
+    </ul>
+</div>

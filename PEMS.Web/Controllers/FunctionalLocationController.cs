@@ -32,6 +32,8 @@ public class FunctionalLocationController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "FunctionalLocation", "View"))
             return Forbid();
 
+        ViewData["HelpKey"] = "FunctionalLocations.Index";
+
         ViewData["Title"] = "Functional Locations";
         ViewData["Section"] = "CMMS Integration";
 

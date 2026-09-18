@@ -58,6 +58,11 @@ public class InventoryBatchTraceabilityTests
         await runService.StartAsync(runId!.Value, null);
         var (_, _, batchId) = await runService.RecordOutputAsync(runId.Value, material.MaterialItemId, null, 30m, null, "Primary", null, null);
 
+        // طبق «PEMS Operations Phase 2C — Production Safety Correction»: فقط بچِ Released
+        // قابل Post شدن است.
+        await runService.SubmitBatchForQcAsync(batchId!.Value, null);
+        await runService.ReleaseBatchAsync(batchId.Value, null);
+
         var run = await runService.GetByIdAsync(runId.Value);
         var outputId = run!.Outputs.Single().ProductionOutputId;
         var postResult = await runService.PostOutputToInventoryAsync(outputId, warehouse.WarehouseId, null, null);
@@ -227,7 +232,9 @@ public class InventoryBatchTraceabilityTests
         await orderService.ReleaseAsync(orderId.Value, null);
         var (_, _, runId) = await runService.CreateAsync(orderId.Value, null, null, null, null, null, null);
         await runService.StartAsync(runId!.Value, null);
-        await runService.RecordOutputAsync(runId.Value, material.MaterialItemId, null, 20m, null, "Primary", null, null);
+        var (_, _, batchId) = await runService.RecordOutputAsync(runId.Value, material.MaterialItemId, null, 20m, null, "Primary", null, null);
+        await runService.SubmitBatchForQcAsync(batchId!.Value, null);
+        await runService.ReleaseBatchAsync(batchId.Value, null);
 
         var run = await runService.GetByIdAsync(runId.Value);
         var outputId = run!.Outputs.Single().ProductionOutputId;

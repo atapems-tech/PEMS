@@ -2228,6 +2228,10 @@ namespace PEMS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocumentIdcReferralId"));
 
+                    b.Property<string>("Comment")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
                     b.Property<int?>("CreatedById")
                         .HasColumnType("int");
 
@@ -2239,6 +2243,17 @@ namespace PEMS.Persistence.Migrations
 
                     b.Property<int>("DocumentId")
                         .HasColumnType("int");
+
+                    b.Property<int?>("RespondedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("RespondedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("DocumentIdcReferralId");
 
@@ -2816,6 +2831,13 @@ namespace PEMS.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<DateTime?>("HireDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("HomeAddress")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -2823,6 +2845,10 @@ namespace PEMS.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Location")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("PersonnelCode")
                         .HasMaxLength(50)
@@ -2845,6 +2871,10 @@ namespace PEMS.Persistence.Migrations
 
                     b.Property<int?>("PositionId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Shift")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("SignaturePath")
                         .HasColumnType("nvarchar(max)");
@@ -4941,6 +4971,300 @@ namespace PEMS.Persistence.Migrations
                     b.HasKey("GasTestValidityRuleId");
 
                     b.ToTable("GasTestValidityRules");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.HelpArticle", b =>
+                {
+                    b.Property<int>("HelpArticleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HelpArticleId"));
+
+                    b.Property<string>("ArticleType")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HelpCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("HelpKey")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RelevantRoles")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("HelpArticleId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("HelpCategoryId");
+
+                    b.HasIndex("HelpKey");
+
+                    b.ToTable("HelpArticles", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.HelpArticleTranslation", b =>
+                {
+                    b.Property<int>("HelpArticleTranslationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HelpArticleTranslationId"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("HelpArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("SearchKeywords")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.HasKey("HelpArticleTranslationId");
+
+                    b.HasIndex("HelpArticleId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("HelpArticleTranslations", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.HelpCategory", b =>
+                {
+                    b.Property<int>("HelpCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HelpCategoryId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IconCssClass")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("NameFa")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("HelpCategoryId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("HelpCategories", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.HelpRelatedArticle", b =>
+                {
+                    b.Property<int>("HelpRelatedArticleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HelpRelatedArticleId"));
+
+                    b.Property<int>("HelpArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RelatedHelpArticleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("HelpRelatedArticleId");
+
+                    b.HasIndex("RelatedHelpArticleId");
+
+                    b.HasIndex("HelpArticleId", "RelatedHelpArticleId")
+                        .IsUnique();
+
+                    b.ToTable("HelpRelatedArticles", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.HelpVisual", b =>
+                {
+                    b.Property<int>("HelpVisualId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HelpVisualId"));
+
+                    b.Property<string>("AccessibilityDescriptionEn")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("AccessibilityDescriptionFa")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("CaptionEn")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("CaptionFa")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DefinitionJson")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HelpArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LegendEn")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("LegendFa")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RelatedHelpKey")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("SourceWorkflowCategory")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SourceWorkflowModule")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VisualType")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("HelpVisualId");
+
+                    b.HasIndex("HelpArticleId");
+
+                    b.ToTable("HelpVisuals", (string)null);
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.IOPoint", b =>
@@ -16219,6 +16543,58 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("GasTest");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.HelpArticle", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.HelpCategory", "Category")
+                        .WithMany()
+                        .HasForeignKey("HelpCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.HelpArticleTranslation", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.HelpArticle", "Article")
+                        .WithMany("Translations")
+                        .HasForeignKey("HelpArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.HelpRelatedArticle", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.HelpArticle", "Article")
+                        .WithMany("RelatedArticles")
+                        .HasForeignKey("HelpArticleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.HelpArticle", "RelatedArticle")
+                        .WithMany()
+                        .HasForeignKey("RelatedHelpArticleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("RelatedArticle");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.HelpVisual", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.HelpArticle", "Article")
+                        .WithMany("Visuals")
+                        .HasForeignKey("HelpArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.IOPoint", b =>
                 {
                     b.HasOne("PEMS.Domain.Entities.Instrument", "Instrument")
@@ -19217,6 +19593,15 @@ namespace PEMS.Persistence.Migrations
             modelBuilder.Entity("PEMS.Domain.Entities.GasTest", b =>
                 {
                     b.Navigation("Readings");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.HelpArticle", b =>
+                {
+                    b.Navigation("RelatedArticles");
+
+                    b.Navigation("Translations");
+
+                    b.Navigation("Visuals");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.InspectionTestPlan", b =>

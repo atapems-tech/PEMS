@@ -12,7 +12,11 @@
     var relatedLetters = (List<PEMS.Application.DTOs.RelatedLetterDto>)(ViewBag.RelatedLetters ?? new List<PEMS.Application.DTOs.RelatedLetterDto>());
     var idcStatusForPage = (IReadOnlyList<PEMS.Application.Interfaces.IdcStatusItemDto>)
         (ViewBag.IdcStatus ?? new List<PEMS.Application.Interfaces.IdcStatusItemDto>());
-    var idcApprovedCount = idcStatusForPage.Count(x => x.Status == "Approve");
+    var workflowHistoryForPage = (IReadOnlyList<PEMS.Application.Interfaces.DocumentWorkflowHistoryItemDto>)
+        (ViewBag.WorkflowHistory ?? new List<PEMS.Application.Interfaces.DocumentWorkflowHistoryItemDto>());
+    // طبق «Phase 9 - IDC Summary»: معیار پیشرفت، تعداد دیسیپلین‌هایی است که پاسخ داده‌اند
+    // (صرف‌نظر از این‌که Approve/Comment/Reject بوده) - نه فقط تعداد Approve
+    var idcApprovedCount = idcStatusForPage.Count(x => x.Status != "Pending");
 
     // طبق «PEMS Phase 2C-3»: منطق تعیین مرحله عیناً همان منطق قبلی _WorkflowStagesDiagram
     // است - فقط جابه‌جا شده به این‌جا، بدون هیچ تغییر رفتاری. محاسبه یک‌بار انجام می‌شود چون
@@ -116,13 +120,18 @@
 
                 if (myPendingIdc != null)
                 {
+                    @* طبق «Phase 11 - UI/UX» ممیزی: این دکمه‌ها فقط نتیجه‌ی بازبینیِ دیسیپلینِ خودِ کاربر
+                       (My Review) هستند - نه اقدام تایید/رد رسمیِ کل مدرک (که فقط در مرحله‌ی Approval،
+                       با برچسب مشابه ولی جدا، پایین‌تر ظاهر می‌شود). برچسب‌ها عمداً متفاوت نگه داشته
+                       شده‌اند تا با دکمه‌های تصمیم رسمی اشتباه گرفته نشوند. *@
+                    <span class="text-muted small me-1">My IDC Review:</span>
                     <form asp-action="IdcRespond" method="post" class="d-inline">
                         <input type="hidden" name="id" value="@Model.DocumentId" />
                         <input type="hidden" name="decision" value="Approve" />
-                        <button class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> Approve</button>
+                        <button class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> No Comment</button>
                     </form>
-                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#idcCommentModal">Comment</button>
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#idcRejectModal">Reject</button>
+                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#idcCommentModal">Approve with Comments</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#idcRejectModal">Revision Required</button>
                 }
                 else
                 {
@@ -495,36 +504,46 @@
     </div>
 
     @* ===================== IDC Review ===================== *@
-    @* طبق بخش ۲۵-۲۶ ممیزی UX: IDC یک کامپوننت درجه‌یک است - ماتریس کامل هر دیسیپلین با زبان
-       بصری ثابت (متن + آیکون، نه فقط رنگ). داده دقیقاً همون IdcStatusItemDto موجود است -
-       فیلد Reviewer/تاریخ در این DTO وجود ندارد، پس ساخته نشد (طبق بخش ۲۷: "Only show
-       relationships/metrics that actually exist"). *@
+    @* طبق «PEMS Engineering IDC Ownership Correction» (بخش ۹ - Originator Actions): این
+       ماتریس اکنون خلاصه‌ی تجمیع‌شده‌ی IDC برای سازنده/تأییدکننده‌ی مدرک است - نه فقط یک
+       نشانگر وضعیت. IdcStatusItemDto حالا Comment/RespondedByName/RespondedDate هم دارد
+       (از DocumentIdcReferral دائمی، نه جدول گذرای موتور) تا نظرات واقعاً قابل‌مرور باشند.
+       مهم: نتیجه‌ی هیچ دیسیپلینی این‌جا (حتی Reject) وضعیت رسمی مدرک را تعیین نمی‌کند -
+       این فقط یک خلاصه‌ی اطلاعاتی است؛ تصمیم رسمی در مرحله‌ی Approval گرفته می‌شود. *@
     @if (idcStatusForPage.Any())
     {
         <div class="tab-pane fade" id="tab-idc" role="tabpanel">
             <div class="content-card">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h6 class="mb-0"><i class="bi bi-diagram-3"></i> Inter-Discipline Check (IDC)</h6>
-                    <span class="text-muted small">@idcApprovedCount / @idcStatusForPage.Count disciplines completed</span>
+                    <h6 class="mb-0"><i class="bi bi-diagram-3"></i> Inter-Discipline Check (IDC) — Discipline Review Summary</h6>
+                    <span class="text-muted small">@idcApprovedCount / @idcStatusForPage.Count disciplines responded</span>
                 </div>
+                <p class="text-muted small">
+                    <i class="bi bi-info-circle"></i> نتایج زیر صرفاً مشورتی هستند و به‌تنهایی وضعیت رسمی مدرک را
+                    تعیین نمی‌کنند - حتی اگر یک یا چند دیسیپلین «Reject» بدهند. تصمیم نهایی (Approve/Reject/Revise &amp;
+                    Resubmit) همیشه توسط سازنده/تأییدکننده‌ی مدرک، با در نظر گرفتن مجموع این نظرات، گرفته می‌شود.
+                </p>
                 <div class="progress mb-3" style="height:8px;" role="progressbar" aria-valuenow="@idcApprovedCount" aria-valuemin="0" aria-valuemax="@idcStatusForPage.Count">
                     <div class="progress-bar bg-success" style="width:@(idcStatusForPage.Count > 0 ? idcApprovedCount * 100 / idcStatusForPage.Count : 0)%"></div>
                 </div>
                 <table class="table table-enterprise">
-                    <thead><tr><th>Discipline</th><th>Status</th></tr></thead>
+                    <thead><tr><th>Discipline</th><th>Status</th><th>Comment</th><th>Responded By</th><th>Responded Date</th></tr></thead>
                     <tbody>
                         @foreach (var idc in idcStatusForPage)
                         {
                             var (idcIcon, idcBadge, idcLabel) = idc.Status switch
                             {
                                 "Approve" => ("bi-check-circle-fill", "bg-success", "Approved"),
-                                "Comment" => ("bi-chat-left-text-fill", "bg-warning text-dark", "Comment"),
-                                "Reject" => ("bi-x-circle-fill", "bg-danger", "Rejected"),
+                                "Comment" => ("bi-chat-left-text-fill", "bg-warning text-dark", "Approved with Comments"),
+                                "Reject" => ("bi-x-circle-fill", "bg-danger", "Revision Required"),
                                 _ => ("bi-hourglass-split", "bg-secondary", "Pending")
                             };
                             <tr>
                                 <td>@idc.DisciplineName</td>
                                 <td><span class="badge @idcBadge"><i class="bi @idcIcon"></i> @idcLabel</span></td>
+                                <td class="small">@(idc.Comment ?? "—")</td>
+                                <td class="small">@(idc.RespondedByName ?? "—")</td>
+                                <td class="small">@(idc.RespondedDate?.ToString("yyyy-MM-dd HH:mm") ?? "—")</td>
                             </tr>
                         }
                     </tbody>
@@ -535,14 +554,15 @@
                     var myPendingIdcTab = idcStatusForPage.FirstOrDefault(x => x.DisciplineId == myDisciplineIdForIdcTab && x.Status == "Pending");
                     @if (myPendingIdcTab != null)
                     {
-                        <div class="d-flex gap-2 mt-3">
+                        <div class="d-flex align-items-center gap-2 mt-3">
+                            <span class="text-muted small">My IDC Review:</span>
                             <form asp-action="IdcRespond" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@Model.DocumentId" />
                                 <input type="hidden" name="decision" value="Approve" />
-                                <button class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> Approve</button>
+                                <button class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> No Comment</button>
                             </form>
-                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#idcCommentModal">Comment</button>
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#idcRejectModal">Reject</button>
+                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#idcCommentModal">Approve with Comments</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#idcRejectModal">Revision Required</button>
                         </div>
                     }
                 }
@@ -616,12 +636,17 @@
     @* ===================== Workflow History ===================== *@
     @* طبق بخش ۳۳ ممیزی UX: جدول خام قبلی به Timeline تبدیل شد؛ خودِ جدول کامل هم برای Audit
        کامل در یک <details> در پایین حفظ شده - هیچ داده‌ای حذف نشده. *@
+    @* طبق «PEMS Engineering Workflow History Read-Path Correction»: این تب قبلاً از
+       Model.Workflows (جدول قدیمی DocumentWorkflow) می‌خواند - که فقط یک‌بار موقع Create یک
+       ردیف می‌گیرد و هیچ‌کدام از Submit/Check/IDC/Approve/Reject/Issue را ثبت نمی‌کند؛ یعنی
+       این تب همیشه (نه فقط بعد از اصلاح مالکیت IDC) عملاً خالی/ناقص بود. حالا از
+       WorkflowHistory واقعی (روی همه‌ی Instance های این مدرک، نه فقط چرخه‌ی جاری) می‌خواند. *@
     <div class="tab-pane fade" id="tab-workflow" role="tabpanel">
         <div class="content-card">
             <h6 class="mb-3">Workflow History</h6>
-            @if (Model.Workflows != null && Model.Workflows.Any())
+            @if (workflowHistoryForPage.Any())
             {
-                var orderedWorkflow = Model.Workflows.OrderByDescending(x => x.ActionDate).ToList();
+                var orderedWorkflow = workflowHistoryForPage.OrderByDescending(x => x.ActionDate).ToList();
                 <div class="pems-workflow-timeline">
                     @foreach (var item in orderedWorkflow)
                     {
@@ -630,8 +655,9 @@
                             "Approve" => "bi-check-circle-fill text-success",
                             "Reject" => "bi-x-circle-fill text-danger",
                             "Comment" => "bi-chat-left-text-fill text-warning",
-                            "Submit" => "bi-send-fill text-primary",
+                            "Start" or "Submit" => "bi-send-fill text-primary",
                             "Issue" => "bi-check2-circle text-primary",
+                            "AutoSkip" => "bi-fast-forward-fill text-secondary",
                             _ => "bi-record-circle-fill text-secondary"
                         };
                         <div class="pems-timeline-item">
@@ -640,7 +666,7 @@
                                 <div class="d-flex justify-content-between flex-wrap gap-2">
                                     <div>
                                         <span class="badge bg-secondary">@item.ActionType</span>
-                                        <span class="small text-muted ms-1">@item.FromStatus &rarr; @item.ToStatus</span>
+                                        <span class="small text-muted ms-1">@(item.FromStageName ?? "—") &rarr; @(item.ToStageName ?? "—")</span>
                                     </div>
                                     <span class="small text-muted">@item.ActionDate.ToString("yyyy-MM-dd HH:mm")</span>
                                 </div>
@@ -648,7 +674,7 @@
                                 {
                                     <div class="small mt-1">"@item.Comment"</div>
                                 }
-                                <div class="small text-muted mt-1"><i class="bi bi-person"></i> @item.ActionBy</div>
+                                <div class="small text-muted mt-1"><i class="bi bi-person"></i> @(item.ActorName ?? "System")</div>
                             </div>
                         </div>
                     }
@@ -662,12 +688,12 @@
                             @foreach (var item in orderedWorkflow)
                             {
                                 <tr>
-                                    <td>@item.FromStatus</td>
-                                    <td>@item.ToStatus</td>
+                                    <td>@(item.FromStageName ?? "—")</td>
+                                    <td>@(item.ToStageName ?? "—")</td>
                                     <td><span class="badge bg-secondary">@item.ActionType</span></td>
                                     <td>@item.Comment</td>
                                     <td class="small text-muted">@item.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                                    <td>@item.ActionBy</td>
+                                    <td>@(item.ActorName ?? "System")</td>
                                 </tr>
                             }
                         </tbody>
@@ -806,9 +832,9 @@
             <form asp-action="IdcRespond" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <input type="hidden" name="decision" value="Comment" />
-                <div class="modal-header"><h6 class="modal-title">ثبت کامنت بازبینی IDC</h6></div>
+                <div class="modal-header"><h6 class="modal-title">ثبت کامنت بازبینی IDC (دیسیپلین شما)</h6></div>
                 <div class="modal-body">
-                    <p class="text-muted small">با ثبت کامنت، مدرک برمی‌گرده پیش سازنده برای اصلاح و ارسال دوباره.</p>
+                    <p class="text-muted small">این نظر به‌عنوان نتیجه‌ی بازبینی دیسیپلین شما ثبت می‌شود و مستقیماً روی وضعیت رسمی مدرک اثر نمی‌گذارد. بعد از پاسخ همه‌ی دیسیپلین‌های ارجاع‌شده، سازنده/تأییدکننده‌ی مدرک با دیدن مجموع نظرات IDC تصمیم نهایی را می‌گیرد.</p>
                     <textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea>
                 </div>
                 <div class="modal-footer">
@@ -826,9 +852,9 @@
             <form asp-action="IdcRespond" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <input type="hidden" name="decision" value="Reject" />
-                <div class="modal-header"><h6 class="modal-title">رد بازبینی IDC</h6></div>
+                <div class="modal-header"><h6 class="modal-title">اعلام نیاز به اصلاح (دیسیپلین شما)</h6></div>
                 <div class="modal-body">
-                    <p class="text-muted small">با رد کردن، مدرک برمی‌گرده پیش سازنده و باید اصلاح و دوباره Submit بشه.</p>
+                    <p class="text-muted small"><strong>این اقدام، مدرک را رد نمی‌کند و آن را به سازنده برنمی‌گرداند.</strong> فقط نتیجه‌ی بازبینی دیسیپلین شما را «نیازمند اصلاح» ثبت می‌کند. بعد از پاسخ همه‌ی دیسیپلین‌های ارجاع‌شده، مدرک برای تصمیم رسمی (تایید / رد / بازگشت برای اصلاح) به سازنده/تأییدکننده می‌رسد - با دیدن نظر شما در کنار سایر نظرات.</p>
                     <textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea>
                 </div>
                 <div class="modal-footer">

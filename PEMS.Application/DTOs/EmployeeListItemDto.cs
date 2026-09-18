@@ -21,4 +21,11 @@ public class EmployeeListItemDto
     public int? VendorId { get; set; }
     public string? VendorName { get; set; }
     public bool IsActive { get; set; }
+
+    // طبق «Employee Details — Stitch UI Redesign»: لازم است تا Modal ویرایش هر ردیف در
+    // Index این فیلدها را با مقدار خالی POST نکند و مقدار قبلی را پاک نکند
+    public DateTime? HireDate { get; set; }
+    public string? Location { get; set; }
+    public string? Shift { get; set; }
+    public string? HomeAddress { get; set; }
 }

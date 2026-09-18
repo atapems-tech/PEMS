@@ -38,6 +38,7 @@ public class MaterialRequisitionController : Controller
             return Forbid();
 
         ViewData["Title"] = "MR Management";
+        ViewData["HelpKey"] = "MaterialRequisitions.Index";
         ViewData["Section"] = "Engineering Management";
 
         var normalizedPageSize = DataGridPageSize.Normalize(pageSize);

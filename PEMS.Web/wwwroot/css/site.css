@@ -729,3 +729,38 @@ html[dir="rtl"] .pems-sidebar .collapse .nav-link {
     background: #f59e0b;
     color: #1b2733;
 }
+
+/* =========================================
+   PEMS Bilingual Help & Knowledge System - محتوای پاک‌سازی‌شده‌ی HTML مقالات (IRichTextSanitizerService)
+   ========================================= */
+.pems-help-article-body h1, .pems-help-article-body h2, .pems-help-article-body h3,
+.pems-help-article-body h4, .pems-help-article-body h5, .pems-help-article-body h6 {
+    margin-top: 1.25em;
+    margin-bottom: 0.5em;
+}
+.pems-help-article-body p { margin-bottom: 0.75em; }
+.pems-help-article-body ul, .pems-help-article-body ol { margin-bottom: 0.75em; padding-inline-start: 1.5em; }
+.pems-help-article-body table { width: 100%; margin-bottom: 0.75em; }
+.pems-help-article-body table, .pems-help-article-body th, .pems-help-article-body td {
+    border: 1px solid var(--pems-surface-border);
+    border-collapse: collapse;
+    padding: 6px 10px;
+}
+.pems-help-article-body blockquote {
+    border-inline-start: 3px solid var(--pems-accent);
+    padding-inline-start: 12px;
+    color: var(--pems-text-muted);
+    margin: 0.75em 0;
+}
+
+/* طبق «PEMS Help System — Phase 3»: راهنمای گام‌به‌گام - فهرست شماره‌دار ساده، بدون JS/SVG */
+.pems-help-step-guide {
+    padding-inline-start: 1.5rem;
+}
+.pems-help-step-guide > li {
+    padding: 0.35rem 0;
+    border-bottom: 1px dashed var(--pems-surface-border);
+}
+.pems-help-step-guide > li:last-child {
+    border-bottom: none;
+}

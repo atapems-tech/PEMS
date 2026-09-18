@@ -51,18 +51,27 @@ public class EmployeeController : Controller
     {
         ViewData["Title"] = "Employee Details";
         ViewData["Section"] = "Account";
+        ViewData["HelpKey"] = "Employee.Details";
 
         var employee = await _context.Employees
             .Include(x => x.Department)
             .Include(x => x.Discipline)
+            .Include(x => x.VendorRef)
             .FirstOrDefaultAsync(x => x.EmployeeId == id);
 
         if (employee == null) return NotFound();
 
+        // طبق «Employee Details — Stitch UI Redesign»: Modal ویرایش پروفایل روی همین صفحه
+        // همان Dropdown هایی را لازم دارد که Modal ویرایش داخل Index استفاده می‌کند
+        await LoadDropdownsAsync();
+
         ViewBag.LaborRates = await _laborRateService.GetHistoryAsync(id);
 
+        // طبق «Employee Details — Stitch UI Redesign»: Employee فیلد Manager مستقل ندارد -
+        // «مدیر» از طریق سرپرست تیمِ فعلیِ کارمند (Team.SupervisorEmployeeId) مشتق می‌شود، نه
+        // یک فیلد تکراری جدید (Single Source of Truth طبق سند معماری Employee/Team)
         ViewBag.TeamHistory = await _context.TeamMembers
-            .Include(x => x.Team)
+            .Include(x => x.Team!).ThenInclude(t => t.SupervisorEmployee)
             .Include(x => x.Role)
             .Where(x => x.EmployeeId == id)
             .OrderByDescending(x => x.JoinedDate)
@@ -272,7 +281,11 @@ public class EmployeeController : Controller
                 VendorName = x.VendorId != null
                     ? _context.Vendors.Where(v => v.VendorId == x.VendorId).Select(v => v.Name).FirstOrDefault()
                     : null,
-                IsActive = x.IsActive
+                IsActive = x.IsActive,
+                HireDate = x.HireDate,
+                Location = x.Location,
+                Shift = x.Shift,
+                HomeAddress = x.HomeAddress
             })
             .ToListAsync();
 
@@ -299,7 +312,8 @@ public class EmployeeController : Controller
         string personnelCode, string firstName, string lastName, string? position,
         string? email, string? phone, int departmentId, int disciplineId,
         bool createUser, string? userName, List<string>? selectedRoles,
-        string? personnelType, int? vendorId)
+        string? personnelType, int? vendorId,
+        DateTime? hireDate, string? location, string? shift, string? homeAddress)
     {
         if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
         {
@@ -362,7 +376,11 @@ public class EmployeeController : Controller
             PersonnelType = resolvedPersonnelType,
             VendorId = resolvedPersonnelType == "Internal" ? null : vendorId,
             IsActive = true,
-            CreatedDate = DateTime.Now
+            CreatedDate = DateTime.Now,
+            HireDate = hireDate,
+            Location = location,
+            Shift = shift,
+            HomeAddress = homeAddress
         };
 
         await _context.Employees.AddAsync(employee);
@@ -421,27 +439,36 @@ public class EmployeeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int employeeId, string personnelCode, string firstName, string lastName,
         string? position, string? email, string? phone, int departmentId, int disciplineId,
-        string? personnelType, int? vendorId)
+        string? personnelType, int? vendorId,
+        DateTime? hireDate, string? location, string? shift, string? homeAddress,
+        bool returnToDetails = false)
     {
+        // طبق «Employee Details — Stitch UI Redesign»: قبلاً Edit همیشه به Index برمی‌گشت،
+        // چون تنها مسیر ویرایش Modal داخل Index بود. حالا صفحه‌ی Details هم Modal ویرایش
+        // خودش را دارد - این پرچم (فقط وقتی از آن Modal بیاید) مسیر بازگشت را حفظ می‌کند،
+        // بدون تغییر رفتار پیش‌فرض برای Modal قدیمیِ Index.
+        IActionResult BackToCaller() =>
+            returnToDetails ? RedirectToAction(nameof(Details), new { id = employeeId }) : RedirectToAction(nameof(Index));
+
         var employee = await _context.Employees.FirstOrDefaultAsync(x => x.EmployeeId == employeeId);
         if (employee == null) return NotFound();
 
         if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
         {
             TempData["Error"] = "First and last name are required";
-            return RedirectToAction(nameof(Index));
+            return BackToCaller();
         }
 
         var resolvedPersonnelType = string.IsNullOrWhiteSpace(personnelType) ? "Internal" : personnelType;
         if (!EmployeePersonnelTypes.Contains(resolvedPersonnelType, StringComparer.Ordinal))
         {
             TempData["Error"] = "نوع پرسنل نامعتبره.";
-            return RedirectToAction(nameof(Index));
+            return BackToCaller();
         }
         if (resolvedPersonnelType != "Internal" && !vendorId.HasValue)
         {
             TempData["Error"] = "برای پرسنل غیر-Internal، انتخاب Vendor الزامی است.";
-            return RedirectToAction(nameof(Index));
+            return BackToCaller();
         }
 
         var trimmedCode = personnelCode?.Trim() ?? "";
@@ -454,7 +481,7 @@ public class EmployeeController : Controller
             if (duplicateCode)
             {
                 TempData["Error"] = $"کد پرسنلی «{trimmedCode}» قبلاً برای یک کارمند دیگر ثبت شده است.";
-                return RedirectToAction(nameof(Index));
+                return BackToCaller();
             }
         }
 
@@ -468,11 +495,15 @@ public class EmployeeController : Controller
         employee.DisciplineId = disciplineId;
         employee.PersonnelType = resolvedPersonnelType;
         employee.VendorId = resolvedPersonnelType == "Internal" ? null : vendorId;
+        employee.HireDate = hireDate;
+        employee.Location = location;
+        employee.Shift = shift;
+        employee.HomeAddress = homeAddress;
 
         await _context.SaveChangesAsync();
 
         TempData["Message"] = "Employee updated";
-        return RedirectToAction(nameof(Index));
+        return BackToCaller();
     }
 
     [HttpPost]

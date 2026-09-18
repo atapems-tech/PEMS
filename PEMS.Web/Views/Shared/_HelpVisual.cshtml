@@ -1,0 +1,97 @@
+@model PEMS.Application.DTOs.HelpVisualRenderDto
+@using System.Globalization
+@{
+    var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
+    string L(string en, string fa) => isRtl ? fa : en;
+}
+
+@* ==============================================================================
+   طبق «PEMS Help System — Phase 3»: نقطه‌ی واحد ورود برای رندر هر نوع محتوای بصری راهنما.
+   هرگز از Mermaid/SVG/کتابخانه‌ی جدید استفاده نمی‌کند - فقط سه الگوی HTML/CSS ساده که همه
+   با متن واقعی (نه تصویر/Canvas) کار می‌کنند، پس صفحه‌خوان‌ها بومی آن‌ها را می‌خوانند:
+     ۱) توالی مرحله‌ها (WorkflowDiagram/ProcessFlowchart/LifecycleDiagram) - Partial موجودِ
+        _PemsStageDiagram (بدون هیچ تغییر) + فهرست کامل گذارهای واقعی زیرش برای دقت.
+     ۲) درخت تو‌رفته (DecisionTree/EntityRelationship) - _HelpNodeTree.
+     ۳) راهنمای گام‌به‌گام (StepGuide) - فهرست شماره‌دار ساده.
+   ============================================================================== *@
+
+<figure class="pems-help-visual mb-4" role="group" aria-label="@Model.AccessibilityDescription">
+    @if (Model.VisualType is "WorkflowDiagram" or "ProcessFlowchart" or "LifecycleDiagram")
+    {
+        var stageModel = new PEMS.Web.Models.StageDiagramViewModel
+        {
+            Stages = Model.Nodes.Select(n => new PEMS.Web.Models.StageDiagramItem
+            {
+                Label = n.Label,
+                IconCssClass = string.IsNullOrEmpty(n.IconCssClass) ? "bi-circle" : n.IconCssClass,
+                State = PEMS.Web.Models.StageItemState.Pending
+            }).ToList()
+        };
+
+        @await Html.PartialAsync("_PemsStageDiagram", stageModel)
+
+        @if (Model.Edges.Any())
+        {
+            <div class="pems-help-visual-transitions mt-2">
+                <p class="text-uppercase text-muted small mb-1">@L("Possible outcomes at each stage", "نتایج ممکن در هر مرحله")</p>
+                <ul class="list-unstyled small mb-0">
+                    @foreach (var e in Model.Edges)
+                    {
+                        var toLabel = e.ToNodeId != null
+                            ? (Model.Nodes.FirstOrDefault(n => n.Id == e.ToNodeId)?.Label ?? e.ToNodeId)
+                            : L("Process ends", "پایان فرآیند");
+                        var fromLabel = Model.Nodes.FirstOrDefault(n => n.Id == e.FromNodeId)?.Label ?? e.FromNodeId;
+                        var badgeClass = e.Kind == "reject" ? "bg-danger" : (e.Kind == "terminal" ? "bg-secondary" : "bg-success");
+
+                        <li class="d-flex align-items-center gap-2 py-1 border-bottom">
+                            <span class="badge @badgeClass" style="min-width:70px;">@e.Label</span>
+                            <span>@fromLabel <i class="bi bi-arrow-@(isRtl ? "left" : "right")"></i> @toLabel</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Model.SourceWorkflowModule))
+        {
+            <p class="text-muted small mt-2 mb-0">
+                <i class="bi bi-database-check"></i>
+                @L("Generated live from the actual workflow configuration", "به‌صورت زنده از پیکربندی واقعی گردش‌کار ساخته شده")
+                (@Model.SourceWorkflowModule / @Model.SourceWorkflowCategory@(Model.SourceWorkflowVersion.HasValue ? $", v{Model.SourceWorkflowVersion}" : "")) -
+                @L("always matches the live system, never a stale copy.", "همیشه با سیستم واقعی منطبق است، هرگز یک نسخه‌ی کهنه نیست.")
+            </p>
+        }
+    }
+    else if (Model.VisualType is "DecisionTree" or "EntityRelationship")
+    {
+        @await Html.PartialAsync("_HelpNodeTree", Model)
+    }
+    else if (Model.VisualType == "StepGuide")
+    {
+        <ol class="pems-help-step-guide">
+            @foreach (var n in Model.Nodes)
+            {
+                <li>
+                    @if (!string.IsNullOrEmpty(n.IconCssClass))
+                    {
+                        <i class="bi @n.IconCssClass me-1"></i>
+                    }
+                    @n.Label
+                </li>
+            }
+        </ol>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.Caption))
+    {
+        <figcaption class="text-muted small mt-2">@Model.Caption</figcaption>
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.Legend))
+    {
+        <p class="text-muted small mb-0"><i class="bi bi-info-circle"></i> @Model.Legend</p>
+    }
+
+    @* طبق بخش ۱۲ سند (Accessibility): معادل متنیِ کامل - همیشه در DOM هست، فقط بصری مخفی
+       (نه display:none، تا صفحه‌خوان‌ها بخوانندش) *@
+    <span class="visually-hidden">@Model.AccessibilityDescription</span>
+</figure>

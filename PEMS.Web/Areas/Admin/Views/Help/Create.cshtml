@@ -1,0 +1,14 @@
+@model PEMS.Application.DTOs.HelpArticleAdminEditDto
+@{ ViewData["HidePageTitle"] = true; }
+
+<div class="content-card">
+    <h5 class="mb-3"><i class="bi bi-plus-circle"></i> New Help Article</h5>
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        @await Html.PartialAsync("_HelpArticleForm", Model)
+        <div class="mt-3 d-flex gap-2">
+            <button type="submit" class="btn btn-pems-solid">Create</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

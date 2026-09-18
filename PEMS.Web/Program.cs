@@ -336,6 +336,13 @@ builder.Services.AddScoped<IExcelExportService, ExcelExportService>();
 
 builder.Services.AddScoped<IChatAssistantService, ChatAssistantService>();
 
+// طبق «PEMS Bilingual Help & Knowledge System»
+builder.Services.AddScoped<IHelpService, HelpService>();
+builder.Services.AddScoped<IHelpAiExplainerService, HelpAiExplainerService>();
+builder.Services.AddScoped<IHelpWorkflowDiagramService, HelpWorkflowDiagramService>();
+builder.Services.AddScoped<IHelpVisualService, HelpVisualService>();
+builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.HelpArticleSearchProvider>();
+
 
 builder.Services.AddScoped<IVendorService, VendorService>();
 
@@ -652,6 +659,12 @@ using (var scope = app.Services.CreateScope())
 
     // طبق درخواست: گردش‌کار بازبینی چند-دیسیپلینه WorkOrder
     await PEMS.Persistence.Seed.WorkOrderReviewWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // طبق «PEMS Bilingual Help & Knowledge System» - کتابخانه‌ی اولیه‌ی محتوای راهنما (ایدمپوتنت)
+    await PEMS.Persistence.Seed.HelpContentSeeder.SeedAsync(scope.ServiceProvider);
+
+    // طبق «PEMS Help System — Phase 3» - محتوای بصری راهنما (نمودارهای گردش‌کار زنده + دستی، ایدمپوتنت)
+    await PEMS.Persistence.Seed.HelpVisualSeeder.SeedAsync(scope.ServiceProvider);
 
     // بخش QC/QA - دیسیپلین‌های استاندارد بازرسی
     await PEMS.Persistence.Seed.QCDisciplineSeeder.SeedAsync(scope.ServiceProvider);

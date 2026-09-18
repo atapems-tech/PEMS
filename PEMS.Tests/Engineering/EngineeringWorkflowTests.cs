@@ -88,8 +88,16 @@ public class EngineeringWorkflowTests : EngineeringWorkflowTestBase
             () => WorkflowService.IdcRespondAsync(doc.DocumentId, "Approve", null, 5, DisciplineElec.DisciplineId));
     }
 
+    // ==============================================================================
+    // طبق «PEMS Engineering IDC Ownership Correction»: این تست قبلاً نام و محتوایش دقیقاً
+    // همان نقص گزارش‌شده را به‌عنوان رفتار «درست» قفل کرده بود - یک Reject از تنها دیسیپلینِ
+    // ارجاع‌شده، کل مدرک را Rejected می‌کرد و متادیتای Check را پاک می‌کرد. رفتار صحیح: نتیجه‌ی
+    // IDC (حتی Reject) هرگز به‌تنهایی وضعیت رسمی مدرک را تعیین نمی‌کند - فقط وقتی همه‌ی
+    // دیسیپلین‌های ارجاع‌شده پاسخ دادند، مدرک به مرحله‌ی Approval («Checked») می‌رود تا
+    // سازنده/تأییدکننده‌ی مدرک تصمیم رسمی را بگیرد.
+    // ==============================================================================
     [Fact]
-    public async Task IdcRespondAsync_Reject_RejectsWholeDocument_AndClearsCheckMetadata()
+    public async Task IdcRespondAsync_Reject_DoesNotRejectDocument_MovesToApprovalInstead()
     {
         var doc = CreateDraftDocument();
         await WorkflowService.SubmitAsync(doc.DocumentId, null, 1, ManagerRole,
@@ -99,11 +107,76 @@ public class EngineeringWorkflowTests : EngineeringWorkflowTestBase
 
         await WorkflowService.IdcRespondAsync(doc.DocumentId, "Reject", "not acceptable", 3, DisciplineMech.DisciplineId);
 
-        Assert.Equal("Rejected", doc.Status);
-        Assert.Null(doc.CheckedById);
-        Assert.Null(doc.CheckedDate);
+        // نه Rejected - چون تنها دیسیپلینِ ارجاع‌شده پاسخ داده، مدرک باید به مرحله‌ی رسمی
+        // Approval برسد (Checked)، نه این‌که خودش رد شود
+        Assert.Equal("Checked", doc.Status);
+        Assert.NotNull(doc.CheckedById);
+        Assert.NotNull(doc.CheckedDate);
 
-        // طبق درخواست ممیزی: رد در IDC باید یک نامه‌ی داخلی خودکار بسازد
+        // IDC دیگر نباید نامه‌ی رد خودکار بسازد - این فقط اقدام رسمی Reject/ReviseAndResubmit
+        // در مرحله‌ی Approval است که باید نامه بسازد
+        Assert.DoesNotContain(Letters.CreatedLetters, l => l.RelatedDocumentId == doc.DocumentId);
+    }
+
+    [Fact]
+    public async Task IdcRespondAsync_Reject_PersistsAsDisciplineReviewResult_NotDocumentRejection()
+    {
+        // طبق Phase 2/3-B/9: نتیجه‌ی هر دیسیپلین باید به‌صورت دائمی و مستقل از عمر Instance
+        // موتور، روی خودِ ارجاع IDC ثبت شود - قابل بازیابی از GetIdcStatusAsync
+        var doc = CreateDraftDocument();
+        await WorkflowService.SubmitAsync(doc.DocumentId, null, 1, ManagerRole,
+            idcDisciplineIds: new[] { DisciplineMech.DisciplineId });
+        await WorkflowService.CheckAsync(doc.DocumentId, null, 1, SupervisorRole);
+
+        await WorkflowService.IdcRespondAsync(doc.DocumentId, "Reject", "missing calculations", 3, DisciplineMech.DisciplineId);
+
+        var idcStatus = await WorkflowService.GetIdcStatusAsync(doc.DocumentId);
+        var mechResult = Assert.Single(idcStatus, x => x.DisciplineId == DisciplineMech.DisciplineId);
+
+        Assert.Equal("Reject", mechResult.Status);
+        Assert.Equal("missing calculations", mechResult.Comment);
+        Assert.NotNull(mechResult.RespondedDate);
+    }
+
+    [Fact]
+    public async Task IdcRespondAsync_MixedDisciplineResults_AllPreservedIndependently_DocumentReachesApproval()
+    {
+        // طبق الزام کسب‌وکار (مثال اصلی): Mechanical=Approve, Electrical=Reject نباید یعنی
+        // Document=Rejected باشد - هر دو نتیجه باید مستقل باقی بمانند و مدرک باید برای تصمیم
+        // رسمی به Approval برسد
+        var doc = CreateDraftDocument();
+        await WorkflowService.SubmitAsync(doc.DocumentId, null, 1, ManagerRole,
+            idcDisciplineIds: new[] { DisciplineMech.DisciplineId, DisciplineElec.DisciplineId });
+        await WorkflowService.CheckAsync(doc.DocumentId, null, 1, SupervisorRole);
+
+        await WorkflowService.IdcRespondAsync(doc.DocumentId, "Approve", null, 3, DisciplineMech.DisciplineId);
+        Assert.Equal("IDC Review", doc.Status); // Electrical هنوز پاسخ نداده
+
+        await WorkflowService.IdcRespondAsync(doc.DocumentId, "Reject", "revise clearances", 4, DisciplineElec.DisciplineId);
+
+        Assert.Equal("Checked", doc.Status);
+
+        var idcStatus = await WorkflowService.GetIdcStatusAsync(doc.DocumentId);
+        Assert.Equal("Approve", idcStatus.Single(x => x.DisciplineId == DisciplineMech.DisciplineId).Status);
+        Assert.Equal("Reject", idcStatus.Single(x => x.DisciplineId == DisciplineElec.DisciplineId).Status);
+    }
+
+    [Fact]
+    public async Task FormalReject_AfterIdcWithRejectVote_IsSeparateAuthorizedAction()
+    {
+        // طبق Phase 7: تصمیم رسمی (Reject در مرحله‌ی Approval) از تصمیم IDC جداست و باید
+        // به‌صراحت توسط اقدام دیگری (RejectAsync، نه IdcRespondAsync) گرفته شود
+        var doc = CreateDraftDocument();
+        await WorkflowService.SubmitAsync(doc.DocumentId, null, 1, ManagerRole,
+            idcDisciplineIds: new[] { DisciplineMech.DisciplineId });
+        await WorkflowService.CheckAsync(doc.DocumentId, null, 1, SupervisorRole);
+        await WorkflowService.IdcRespondAsync(doc.DocumentId, "Reject", "not acceptable", 3, DisciplineMech.DisciplineId);
+        Assert.Equal("Checked", doc.Status);
+
+        // فقط حالا، با یک اقدام رسمی جدا (RejectAsync در مرحله‌ی Approval)، مدرک واقعاً رد می‌شود
+        await WorkflowService.RejectAsync(doc.DocumentId, "confirmed by manager after IDC comments", 1, ManagerRole);
+
+        Assert.Equal("Rejected", doc.Status);
         Assert.Contains(Letters.CreatedLetters, l => l.RelatedDocumentId == doc.DocumentId);
     }
 
@@ -179,6 +252,38 @@ public class EngineeringWorkflowTests : EngineeringWorkflowTestBase
     }
 
     // طبق Phase E-04 (IssuePurpose در لحظه‌ی Issue)
+
+    // ==============================================================================
+    // طبق «PEMS Engineering Workflow History Read-Path Correction»: EngineeringDocumentsController
+    // .Details صفحه از EngineeringDocument.Workflows (جدول قدیمی DocumentWorkflow که فقط
+    // موقع Create یک ردیف می‌گیرد) می‌خواند - نه WorkflowHistory واقعی. این تست ثابت می‌کند
+    // GetWorkflowHistoryAsync (منبع درستِ جدید) هر Submit/Check/IDC را واقعاً می‌بیند.
+    // ==============================================================================
+    [Fact]
+    public async Task GetWorkflowHistoryAsync_ReflectsEverySubmitCheckAndIdcAction()
+    {
+        var doc = CreateDraftDocument();
+        await WorkflowService.SubmitAsync(doc.DocumentId, "submit", 1, ManagerRole,
+            idcDisciplineIds: new[] { DisciplineMech.DisciplineId });
+        await WorkflowService.CheckAsync(doc.DocumentId, "checked", 1, SupervisorRole);
+        await WorkflowService.IdcRespondAsync(doc.DocumentId, "Reject", "please review clause 4", 3, DisciplineMech.DisciplineId);
+
+        var history = await WorkflowService.GetWorkflowHistoryAsync(doc.DocumentId);
+
+        Assert.Contains(history, h => h.ActionType == "Start");
+        Assert.Contains(history, h => h.ActionType == "Approve" && h.Comment == "checked");
+        Assert.Contains(history, h => h.Comment == "please review clause 4");
+    }
+
+    [Fact]
+    public async Task GetWorkflowHistoryAsync_NoInstanceYet_ReturnsEmpty_NotError()
+    {
+        var doc = CreateDraftDocument();
+
+        var history = await WorkflowService.GetWorkflowHistoryAsync(doc.DocumentId);
+
+        Assert.Empty(history);
+    }
 
     [Fact]
     public async Task IssueAsync_WithIssuePurpose_PersistsIt()

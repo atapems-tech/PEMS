@@ -25,6 +25,7 @@
             ("Equipment", "bi-gear", Model.Equipment, "Equipment"),
             ("Vendors", "bi-building", Model.Vendors, "Vendor"),
             ("Correspondence", "bi-envelope-paper", Model.Letters, "Letter"),
+            ("Help", "bi-life-preserver", Model.HelpArticles, "Help"),
         };
 
         foreach (var s in sections.Where(s => s.Items.Any()))
@@ -35,7 +36,14 @@
                     @foreach (var item in s.Items)
                     {
                         <li class="mb-1 d-flex justify-content-between border-bottom pb-1">
-                            <a asp-controller="@s.Controller" asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
+                            @if (item.Url != null)
+                            {
+                                <a href="@item.Url">@item.Title</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="@s.Controller" asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
+                            }
                             <span class="text-muted small">@item.SubTitle</span>
                         </li>
                     }

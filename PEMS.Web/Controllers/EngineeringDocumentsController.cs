@@ -71,6 +71,7 @@ public class EngineeringDocumentsController : Controller
     {
         ViewData["Title"] = "Engineering Documents";
         ViewData["Section"] = "Engineering Management";
+        ViewData["HelpKey"] = "EngineeringDocuments.Index";
 
         // طبق Phase E-03 (رفع P1 ممیزی Performance): دقیقاً همان دو سیگنال جدایی که
         // ScopeToOwnDisciplineIfRestrictedAsync امروز درون‌حافظه‌ای اعمال می‌کند - این‌جا
@@ -381,6 +382,7 @@ public class EngineeringDocumentsController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
+        ViewData["HelpKey"] = "EngineeringDocuments.Details";
 
         var document =
             await _service.GetByIdAsync(id);
@@ -416,6 +418,11 @@ public class EngineeringDocumentsController : Controller
         ViewBag.AllDisciplines = await _context.Disciplines.Where(x => x.IsActive).OrderBy(x => x.Name).ToListAsync();
         ViewBag.IdcStatus = await _workflowService.GetIdcStatusAsync(id);
         ViewBag.MyDisciplineId = await GetCurrentEmployeeDisciplineIdAsync();
+
+        // طبق «PEMS Engineering Workflow History Read-Path Correction»: Model.Workflows
+        // (EngineeringDocument.Workflows) جدول قدیمی DocumentWorkflow است که فقط موقع Create
+        // یک ردیف می‌گیرد - منبع واقعیِ تاریخچه‌ی کامل گردش‌کار WorkflowHistory است
+        ViewBag.WorkflowHistory = await _workflowService.GetWorkflowHistoryAsync(id);
 
         // برای پاپ‌آپ Issue (انتخاب واحد تحویل داخلی) و پاپ‌آپ پاسخ کارفرما (انتخاب نامه‌ی وارده)
         ViewBag.AllDepartments = await _context.Departments.Where(x => x.IsActive).OrderBy(x => x.Name).ToListAsync();

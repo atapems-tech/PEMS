@@ -31,6 +31,7 @@ public class TransmittalController : Controller
     {
         ViewData["Title"] = "Transmittal";
         ViewData["Section"] = "Engineering Management";
+        ViewData["HelpKey"] = "Transmittals.Index";
 
         var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
         var result = await _service.GetPagedAsync(page, normalizedPageSize);

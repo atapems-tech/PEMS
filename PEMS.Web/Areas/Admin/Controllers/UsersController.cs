@@ -83,6 +83,7 @@ public class UsersController : Controller
     {
         ViewData["Title"] = "Users";
         ViewData["Section"] = "Administration";
+        ViewData["HelpKey"] = "Admin.Users.Index";
 
         var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
 

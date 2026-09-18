@@ -42,6 +42,8 @@ public class MaintenanceStrategyController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceStrategy", "View"))
             return Forbid();
 
+        ViewData["HelpKey"] = "MaintenanceStrategies.Index";
+
         ViewData["Title"] = "Maintenance Strategies";
         ViewData["Section"] = "CMMS Integration";
 

@@ -13,6 +13,9 @@ public class DocumentIdcReferralConfiguration : IEntityTypeConfiguration<Documen
 
         builder.HasIndex(x => new { x.DocumentId, x.DisciplineId }).IsUnique();
 
+        builder.Property(x => x.Status).HasMaxLength(20).IsRequired();
+        builder.Property(x => x.Comment).HasMaxLength(2000);
+
         builder.HasOne(x => x.Discipline)
             .WithMany()
             .HasForeignKey(x => x.DisciplineId)

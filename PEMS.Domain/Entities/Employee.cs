@@ -57,4 +57,22 @@ public class Employee
     public Vendor? VendorRef { get; set; }
 
     public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+    // ==============================================================================
+    // طبق «Employee Details — Stitch UI Redesign»: این چهار فیلد صرفاً افزایشی (Nullable)
+    // هستند - چون CreatedDate معنای «تاریخ ثبت رکورد» دارد نه «تاریخ استخدام واقعی»، و PEMS
+    // تا پیش از این هیچ فیلد Location/Shift/آدرس منزل برای Employee نداشت. مدیر مستقیم عمداً
+    // این‌جا تکرار نشده - از طریق Team.SupervisorEmployeeId (عضویت فعال در TeamMember) مشتق
+    // می‌شود تا Single Source of Truth حفظ شود.
+    // ==============================================================================
+    public DateTime? HireDate { get; set; }
+
+    // سایت/محل کاری - رشته‌ی آزاد، اختیاری
+    public string? Location { get; set; }
+
+    // شیفت کاری خودِ کارمند - مستقل از Team.Shift (که شیفت کل تیم است)
+    public string? Shift { get; set; }
+
+    // آدرس منزل - اختیاری
+    public string? HomeAddress { get; set; }
 }

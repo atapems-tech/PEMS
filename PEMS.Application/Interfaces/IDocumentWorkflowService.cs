@@ -105,9 +105,14 @@ public interface IDocumentWorkflowService
 
 
     /// <summary>
-    /// پاسخ یک دیسیپلین به بازبینی IDC. decision باید Approve/Comment/Reject باشد. فقط وقتی
-    /// همه‌ی دیسیپلین‌های ارجاع‌شده Approve بدهند، مدرک به مرحله‌ی Approval می‌رود؛ اگر حتی
-    /// یکی Comment یا Reject بدهد، مدرک رد می‌شود و باید دوباره Submit شود.
+    /// پاسخ یک دیسیپلین به بازبینی IDC. decision باید Approve/Comment/Reject باشد.
+    ///
+    /// طبق «PEMS Engineering IDC Ownership Correction»: این پاسخ فقط نتیجه‌ی همان دیسیپلین را
+    /// (به‌صورت دائمی روی DocumentIdcReferral) ثبت می‌کند - هرگز به‌تنهایی Document.Status را
+    /// به "Rejected" نمی‌برد، حتی اگر decision برابر "Reject" باشد. وقتی همه‌ی دیسیپلین‌های
+    /// ارجاع‌شده پاسخ دادند (صرف‌نظر از این‌که هرکدام چه پاسخی دادند)، مدرک به مرحله‌ی Approval
+    /// می‌رود (Document.Status = "Checked") تا سازنده/تأییدکننده‌ی مدرک با دیدن مجموع نظرات
+    /// IDC، تصمیم رسمی (Approve/Reject/Revise &amp; Resubmit) را خودش بگیرد.
     /// </summary>
     Task IdcRespondAsync(
         int documentId,
@@ -123,6 +128,27 @@ public interface IDocumentWorkflowService
     /// داده‌اند - برای نمایش گرافیکی «دقیقاً کجا گیر کرده».
     /// </summary>
     Task<IReadOnlyList<IdcStatusItemDto>> GetIdcStatusAsync(int documentId);
+
+    /// <summary>
+    /// طبق «PEMS Engineering Workflow History Read-Path Correction»: تاریخچه‌ی واقعیِ کامل
+    /// گردش‌کار این مدرک - روی تمام Instance هایی که این مدرک تا امروز داشته (هر چرخه‌ی
+    /// Submit یک Instance جدید می‌سازد)، از جدول واقعاً به‌روز نگه‌داشته‌شده WorkflowHistory؛
+    /// نه از EngineeringDocument.Workflows قدیمی (که فقط یک‌بار، موقع Create نوشته می‌شود و
+    /// هیچ‌کدام از Submit/Check/IDC/Approve/Reject/Issue را ثبت نمی‌کند).
+    /// </summary>
+    Task<IReadOnlyList<DocumentWorkflowHistoryItemDto>> GetWorkflowHistoryAsync(int documentId);
+}
+
+
+public class DocumentWorkflowHistoryItemDto
+{
+    public string ActionType { get; set; } = "";
+    public string? Decision { get; set; }
+    public string? FromStageName { get; set; }
+    public string? ToStageName { get; set; }
+    public string? Comment { get; set; }
+    public string? ActorName { get; set; }
+    public DateTime ActionDate { get; set; }
 }
 
 
@@ -131,4 +157,12 @@ public class IdcStatusItemDto
     public int DisciplineId { get; set; }
     public string DisciplineName { get; set; } = "";
     public string Status { get; set; } = ""; // Pending | Approve | Comment | Reject
+
+    // طبق «PEMS Engineering IDC Ownership Correction»: قبلاً این DTO از جداول گذرای موتور
+    // گردش‌کار عمومی پر می‌شد و نظر/پاسخ‌دهنده/تاریخ اصلاً در دسترس نبود - حالا از
+    // DocumentIdcReferral (رکورد دائمی) می‌آید تا سازنده‌ی مدرک بتواند واقعاً نظرات را
+    // تجمیع/مرور کند (Originator Consolidation)
+    public string? Comment { get; set; }
+    public string? RespondedByName { get; set; }
+    public DateTime? RespondedDate { get; set; }
 }

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
 
 namespace PEMS.Web.Controllers;
@@ -8,14 +10,21 @@ namespace PEMS.Web.Controllers;
 /// جستجوی سراسری واقعی برای نوار بالای همه‌ی صفحات - طبق بند ۶.۱ گزارش ممیزی فیلترینگ
 /// ("جعبه‌ی جستجوی سراسری تزئینی است و هیچ کاری نمی‌کند"). یک جستجوی چندجدولی ساده روی
 /// مهم‌ترین موجودیت‌ها - نه Semantic، همان چیزی که کاربر از یک جعبه‌ی جستجوی بالای صفحه انتظار دارد.
+///
+/// طبق «PEMS Help System — Phase 2» بخش ۹: بخش راهنما به‌جای نوشتن یک Query خام جدید مثل
+/// بقیه‌ی بخش‌ها، مستقیماً از IHelpService.SearchAsync موجود (همان سرویسی که خودِ Help Center
+/// استفاده می‌کند) استفاده می‌کند - تا منطق جستجوی دوزبانه/Published-only یک‌بار پیاده‌سازی
+/// شده باقی بماند، نه دو بار.
 /// </summary>
 public class GlobalSearchController : Controller
 {
     private readonly PEMSDbContext _context;
+    private readonly IHelpService _helpService;
 
-    public GlobalSearchController(PEMSDbContext context)
+    public GlobalSearchController(PEMSDbContext context, IHelpService helpService)
     {
         _context = context;
+        _helpService = helpService;
     }
 
     public async Task<IActionResult> Index(string? q)
@@ -87,6 +96,18 @@ public class GlobalSearchController : Controller
             .Select(x => new GlobalSearchItem { Id = x.WorkOrderId, Title = x.WorkOrderNumber + " - " + x.Description, SubTitle = x.Status })
             .ToListAsync();
 
+        var currentLanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa" ? "fa" : "en";
+        var helpResults = await _helpService.SearchAsync(term, currentLanguage, page: 1, pageSize: 10);
+        var helpItems = helpResults
+            .Select(h => new GlobalSearchItem
+            {
+                Id = h.HelpArticleId,
+                Title = h.Title,
+                SubTitle = h.CategoryName,
+                Url = Url.Action("Article", "Help", new { code = h.Code })
+            })
+            .ToList();
+
         return View(new GlobalSearchResults
         {
             Documents = documents,
@@ -96,7 +117,8 @@ public class GlobalSearchController : Controller
             Letters = letters,
             Projects = projects,
             Permits = permits,
-            WorkOrders = workOrders
+            WorkOrders = workOrders,
+            HelpArticles = helpItems
         });
     }
 }
@@ -106,6 +128,11 @@ public class GlobalSearchItem
     public int Id { get; set; }
     public string Title { get; set; } = "";
     public string? SubTitle { get; set; }
+
+    // طبق «PEMS Help System — Phase 2»: مقالات راهنما با Code (رشته‌ای) مسیریابی می‌شوند نه Id
+    // عددی - این فیلد اختیاری، فقط وقتی پر شود، جایگزین لینک پیش‌فرض asp-controller/asp-action
+    // می‌شود؛ برای بقیه‌ی موجودیت‌ها Null می‌ماند و رفتار موجود کاملاً دست‌نخورده می‌ماند.
+    public string? Url { get; set; }
 }
 
 public class GlobalSearchResults
@@ -118,6 +145,7 @@ public class GlobalSearchResults
     public List<GlobalSearchItem> Projects { get; set; } = new();
     public List<GlobalSearchItem> Permits { get; set; } = new();
     public List<GlobalSearchItem> WorkOrders { get; set; } = new();
+    public List<GlobalSearchItem> HelpArticles { get; set; } = new();
 
-    public int TotalCount => Documents.Count + VendorDocuments.Count + Equipment.Count + Vendors.Count + Letters.Count + Projects.Count + Permits.Count + WorkOrders.Count;
+    public int TotalCount => Documents.Count + VendorDocuments.Count + Equipment.Count + Vendors.Count + Letters.Count + Projects.Count + Permits.Count + WorkOrders.Count + HelpArticles.Count;
 }

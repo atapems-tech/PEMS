@@ -459,6 +459,20 @@ public class ProductionRunService : IProductionRunService
         if (output == null) return (false, "ردیف خروجی یافت نشد.");
         if (output.InventoryTransactionId.HasValue) return (false, "این خروجی قبلاً به موجودی ارسال شده است.");
 
+        // طبق «PEMS Operations Phase 2C — Production Safety Correction»: قبل از این تغییر، این
+        // متد وضعیت کیفیت بچ را اصلاً بررسی نمی‌کرد - یک بچ Blocked/Rejected می‌توانست عیناً مثل
+        // یک بچ Released وارد موجودیِ در دسترس شود (چون MaterialStock هیچ سطل "موجود ولی
+        // بلوکه" جدایی ندارد - هر چیزی که Post شود بلافاصله AvailableQuantity را افزایش
+        // می‌دهد). طبق تصمیم صریح سند فاز (بدون مسیر Override در این فاز - اگر روزی لازم شد،
+        // یک تصمیم کسب‌وکاری جدا و مجزاست، نه یک اثر جانبیِ این اصلاح ایمنی): فقط بچِ Released
+        // اجازه‌ی Post شدن دارد. Produced/AwaitingQC (هنوز تصمیم‌گیری نشده) و Blocked/Rejected
+        // (تصمیم منفی) همگی رد می‌شوند - نه فقط دو حالت منفی.
+        if (output.ProductionBatch == null || output.ProductionBatch.QualityStatus != "Released")
+        {
+            var currentStatus = output.ProductionBatch?.QualityStatus ?? "نامشخص";
+            return (false, $"این خروجی قابل ارسال به موجودی نیست - بچ مربوطه هنوز Released نشده (وضعیت فعلی: {currentStatus}). فقط بچ‌های Released قابل ارسال به موجودی هستند.");
+        }
+
         // طبق «PEMS Operations Phase 2A» بخش ۱۰: خروجی همیشه ProductionBatchId مشخص دارد
         // (فیلد اجباری روی ProductionOutput) - همان هویت بچ مستقیم روی تراکنش موجودی ثبت
         // می‌شود، بدون هیچ جستجوی حدسی جدید.

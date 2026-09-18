@@ -60,6 +60,7 @@ public class WorkOrderController : Controller
             return Forbid();
 
         ViewData["Title"] = "Work Orders";
+        ViewData["HelpKey"] = "WorkOrders.Index";
         ViewData["Section"] = "CMMS Integration";
 
         var query = _context.WorkOrders.Where(x => x.IsActive).AsQueryable();
@@ -224,6 +225,7 @@ public class WorkOrderController : Controller
 
         ViewData["Title"] = "Work Order Details";
         ViewData["Section"] = "CMMS Integration";
+        ViewData["HelpKey"] = "WorkOrders.Details";
 
         var workOrder = await _context.WorkOrders
             .Include(x => x.Equipment)

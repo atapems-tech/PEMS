@@ -114,6 +114,12 @@
                 </ul>
             </div>
 
+            @await Html.PartialAsync("_ContextualHelpDrawer")
+
+            <a asp-controller="Help" asp-action="Index" class="text-secondary" title="@(isRtl ? "مرکز راهنما" : "Help Center")">
+                <i class="bi bi-question-circle fs-5"></i>
+            </a>
+
             <div class="dropdown">
                 <a href="#" class="text-secondary position-relative dropdown-toggle" data-bs-toggle="dropdown" id="notifBell" title="@Localizer["Notifications"]" onclick="loadNotifDropdown()">
                     <i class="bi bi-bell fs-5"></i>

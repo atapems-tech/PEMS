@@ -61,6 +61,7 @@ public class EquipmentController : Controller
     {
         ViewData["Title"] = "Equipment";
         ViewData["Section"] = "CMMS Integration";
+        ViewData["HelpKey"] = "Equipment.Index";
 
         var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
         var equipment = await _service.GetPagedAsync(page, normalizedPageSize, projectId, disciplineId, equipmentType, status, q);
@@ -94,6 +95,7 @@ public class EquipmentController : Controller
     {
         ViewData["Title"] = "Digital Equipment Passport";
         ViewData["Section"] = "CMMS Integration";
+        ViewData["HelpKey"] = "Equipment.Details";
 
         var passport = await _service.GetPassportAsync(id);
         if (passport == null) return NotFound();

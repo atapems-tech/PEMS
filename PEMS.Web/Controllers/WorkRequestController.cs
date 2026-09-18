@@ -45,6 +45,8 @@ public class WorkRequestController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "View"))
             return Forbid();
 
+        ViewData["HelpKey"] = "WorkRequests.Index";
+
         ViewData["Title"] = "Work Requests";
         ViewData["Section"] = "CMMS Integration";
 
