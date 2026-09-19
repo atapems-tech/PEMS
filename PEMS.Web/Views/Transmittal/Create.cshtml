@@ -1,7 +1,13 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
     var documents = (IEnumerable<dynamic>)ViewBag.Documents;
 }
+
+<div class="vs-page">
+
 
 <div class="content-card" style="max-width:900px;">
     <div asp-validation-summary="All" class="alert alert-danger py-2 px-3 small" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></div>
@@ -169,4 +175,11 @@
             applyFilter();
         })();
     </script>
+}
+
+</div>
+
+@{ ViewData["Title"] = Localizer["Vs_NewTransmittal"].Value; }
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-vdr.css" asp-append-version="true" />
 }

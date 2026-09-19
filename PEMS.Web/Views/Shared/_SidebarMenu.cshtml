@@ -14,6 +14,11 @@
     // دلیل، برخلاف بقیه‌ی این فایل، مستقیماً از IPermissionService استفاده می‌کند.
     var canSeeQuickSetup = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "Setup", "View");
 
+    // مرکز Import: ورودی واحد سایدبار برای همه‌ی Importها (ImportCatalog). فقط نقش را (بدون DB) می‌سنجد؛ کاربری که
+    // قبلاً حداقل یک لینک Import پراکنده می‌دید، این ورودی را می‌بیند و برعکس. مجوز دقیق هر Import در خودِ صفحه‌ی مرکز
+    // Import و - مرجع نهایی - در Controller همان Import اعمال می‌شود.
+    var canSeeImportCenter = ImportCatalog.VisibleByRole(User).Any();
+
     bool IsActive(string controller, string area = "") =>
         currentController.Equals(controller, StringComparison.OrdinalIgnoreCase) &&
         currentArea.Equals(area, StringComparison.OrdinalIgnoreCase);
@@ -29,19 +34,18 @@
     string SectionClass(bool containsActive) => "collapse" + (containsActive ? " show" : "");
     string ChevronClass(bool containsActive) => "bi bi-chevron-down nav-section-chevron" + (containsActive ? " rotated" : "");
 
-    // طبق «PEMS — Quick Setup & Domain Import Architecture Refactoring» بند ۷/۲۸: Import ها
-    // قابلیت دامنه‌ای هستند، نه قابلیت Administration - MDRImport/VDRImport به Engineering،
-    // EquipmentImport به CMMS، MrsImport به Inventory برگشتند (هرکدام هنوز با نقش‌های
-    // MenuAccess.ImportCenter گیت می‌شوند، نه با نقش‌های گسترده‌ی خودِ بخش - طبق ممیزی قبلی، تا
-    // کسی که مجوز Backend این Pipeline را ندارد لینکش را هم نبیند).
-    var engineeringControllers = new[] { "EngineeringDashboard", "Projects", "EngineeringDocuments", "DocumentRegister", "DocumentRevisions", "DocumentWorkflow", "VDR", "VDRImport", "MDRImport", "Transmittal", "MDB", "ProcurementPackage", "MaterialRequisition", "Discipline" };
-    var aiControllers = new[] { "DocumentUpload", "EngineeringDocumentIntelligence", "KnowledgeBase", "AISearch", "ChatAssistant", "AIInsights" };
+    // طبق «PEMS — Centralized Import Center»: لینک‌های پراکنده‌ی Import (MDR/VDR/Equipment/FL/Equipment↔FL/
+    // Maintenance History/MRS/Document Upload) از بخش‌های دامنه حذف و زیر ورودی واحد «Import Center» جمع شدند
+    // (ImportCatalog). Import همچنان قابلیتِ متعلق به ماژول خودش است: Controller/Action/مسیر/مجوز/گردش‌کار
+    // هیچ‌کدام تغییر نکرد - فقط ناوبری متمرکز شد. شرط دیدن هر Import همان شرط قبلی لینک پراکنده‌ی آن است.
+    var engineeringControllers = new[] { "EngineeringDashboard", "Projects", "EngineeringDocuments", "DocumentRegister", "DocumentRevisions", "DocumentWorkflow", "VDR", "Transmittal", "MDB", "ProcurementPackage", "MaterialRequisition", "Discipline" };
+    var aiControllers = new[] { "EngineeringDocumentIntelligence", "KnowledgeBase", "AISearch", "ChatAssistant", "AIInsights" };
     var correspondenceControllers = new[] { "Letter", "DCC", "TechnicalQuery" };
     var qualityControllers = new[] { "QC", "MOC" };
     var contractControllers = new[] { "Contract", "Vendor" };
     var projectControlControllers = new[] { "Task", "Tag", "Report", "Meeting" };
-    var cmmsControllers = new[] { "Equipment", "EquipmentImport", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "FunctionalLocationImport", "EquipmentFunctionalLocationAssignment", "MaintenanceHistoryImport", "Barcode", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
-    var inventoryControllers = new[] { "Inventory", "MaterialItem", "InventoryMasterData", "InventoryTransaction", "StoreRequisition", "MrsImport" };
+    var cmmsControllers = new[] { "Equipment", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "Barcode", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
+    var inventoryControllers = new[] { "Inventory", "MaterialItem", "InventoryMasterData", "InventoryTransaction", "StoreRequisition" };
     // طبق «PEMS Operations CMMS Boundary Correction»: Operations دیگر زیرمجموعه‌ی CMMS Integration
     // نیست - بخش سایدباری کاملاً مستقل خودش را دارد (دقیقاً هم‌الگو با جدایی Inventory & Materials
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
@@ -62,6 +66,13 @@
     {
         <a class="nav-link @(IsActive("QuickSetup") ? "active" : "")" asp-controller="QuickSetup" asp-action="Index">
             <i class="bi bi-rocket-takeoff"></i> Quick Setup
+        </a>
+    }
+
+    @if (canSeeImportCenter)
+    {
+        <a class="nav-link @(ContainsActive(ImportCatalog.StandaloneImportControllers) ? "active" : "")" asp-controller="ImportCenter" asp-action="Index">
+            <i class="bi bi-cloud-arrow-up"></i> @Localizer["IC_Title"]
         </a>
     }
 
@@ -105,17 +116,6 @@
                 <i class="bi bi-journal-check"></i> @Localizer["VDR"]
             </a>
 
-            @if (MenuAccess.CanSee(User, MenuAccess.ImportCenter))
-            {
-                <a class="nav-link @(IsActive("MDRImport") ? "active" : "")" asp-controller="MDRImport" asp-action="Index">
-                    <i class="bi bi-file-earmark-arrow-up"></i> MDR Import
-                </a>
-
-                <a class="nav-link @(IsActive("VDRImport") ? "active" : "")" asp-controller="VDRImport" asp-action="Index">
-                    <i class="bi bi-file-earmark-arrow-up"></i> VDR Import
-                </a>
-            }
-
             <a class="nav-link @(IsActive("Transmittal") ? "active" : "")" asp-controller="Transmittal" asp-action="Index">
                 <i class="bi bi-send"></i> Transmittal
             </a>
@@ -148,10 +148,6 @@
             <i class="@ChevronClass(active)"></i>
         </div>
         <div class="@SectionClass(active)" id="sec-ai">
-
-            <a class="nav-link @(IsActive("DocumentUpload") ? "active" : "")" asp-controller="DocumentUpload" asp-action="Index">
-                <i class="bi bi-cloud-upload"></i> Document Upload
-            </a>
 
             <a class="nav-link @(IsActive("EngineeringDocumentIntelligence") ? "active" : "")" asp-controller="EngineeringDocumentIntelligence" asp-action="Index">
                 <i class="bi bi-diagram-3-fill"></i> @Localizer["DocumentIntelligence"]
@@ -300,13 +296,6 @@
                 <i class="bi bi-gear"></i> @Localizer["Equipment"]
             </a>
 
-            @if (MenuAccess.CanSee(User, MenuAccess.ImportCenter))
-            {
-                <a class="nav-link @(IsActive("EquipmentImport") ? "active" : "")" asp-controller="EquipmentImport" asp-action="Index">
-                    <i class="bi bi-file-earmark-arrow-up"></i> Equipment Import
-                </a>
-            }
-
             <a class="nav-link @(IsActive("Instrument") ? "active" : "")" asp-controller="Instrument" asp-action="Index">
                 <i class="bi bi-cpu"></i> Instrument Passport
             </a>
@@ -410,18 +399,6 @@
 
             @if (MenuAccess.CanSee(User, MenuAccess.ImportCenter))
             {
-                <a class="nav-link @(IsActive("FunctionalLocationImport") ? "active" : "")" asp-controller="FunctionalLocationImport" asp-action="Index">
-                    <i class="bi bi-file-earmark-arrow-up"></i> Functional Location Import
-                </a>
-
-                <a class="nav-link @(IsActive("EquipmentFunctionalLocationAssignment") ? "active" : "")" asp-controller="EquipmentFunctionalLocationAssignment" asp-action="Index">
-                    <i class="bi bi-signpost-split"></i> Equipment ↔ FL Assignment
-                </a>
-
-                <a class="nav-link @(IsActive("MaintenanceHistoryImport") ? "active" : "")" asp-controller="MaintenanceHistoryImport" asp-action="Index">
-                    <i class="bi bi-clock-history"></i> Maintenance History Import
-                </a>
-
                 <a class="nav-link @(IsActive("Barcode") ? "active" : "")" asp-controller="Barcode" asp-action="Index">
                     <i class="bi bi-upc-scan"></i> Barcode
                 </a>
@@ -478,13 +455,6 @@
                 <i class="bi bi-box-seam"></i> Material Master
             </a>
 
-            @if (MenuAccess.CanSee(User, MenuAccess.ImportCenter))
-            {
-                <a class="nav-link @(IsActive("MrsImport") ? "active" : "")" asp-controller="MrsImport" asp-action="Index">
-                    <i class="bi bi-file-earmark-excel"></i> MRS Import
-                </a>
-            }
-
             <a class="nav-link @(IsActive("InventoryTransaction") ? "active" : "")" asp-controller="InventoryTransaction" asp-action="Index">
                 <i class="bi bi-list-ul"></i> Transaction Ledger
             </a>
@@ -501,10 +471,8 @@
 
 
     @{
-        // طبق «PEMS — Quick Setup & Domain Import Architecture Refactoring» بند ۹/۲۸: Import
-        // Center به‌عنوان زیربخش سایدباری حذف شد - Administration دیگر محل اصلی Importهای
-        // عملیاتی نیست (آن‌ها به Engineering/CMMS/Inventory برگشتند، بالاتر در همین فایل).
-        // Administration دوباره فقط برای SystemAdmin است - هر زیربخش (User & Access/
+        // طبق «PEMS — Centralized Import Center»: Importها زیر ورودی سطح‌بالای «Import Center» هستند (نه زیر
+        // Administration و نه پراکنده در بخش‌ها). Administration فقط برای SystemAdmin است - هر زیربخش (User & Access/
         // Organization/AI Administration/System Monitoring) دسترسی خودش را کنترل می‌کند.
         var canSeeAdminCore = MenuAccess.CanSee(User, MenuAccess.Administration);
     }

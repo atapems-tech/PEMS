@@ -1,46 +1,59 @@
-﻿@{
+﻿@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
     var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
     var equipments = (IEnumerable<dynamic>)ViewBag.Equipments;
 }
 
+<div class="vs-page">
+
+
 <div class="content-card" style="max-width:800px;">
     <form asp-action="Create" method="post">
         <div class="row g-3">
-            <div class="col-md-3"><label class="form-label">Sequence No</label><input name="SequenceNo" type="number" class="form-control" value="1" /></div>
+            <div class="col-md-3"><label class="form-label">@Localizer["Vc_SeqNo"]</label><input name="SequenceNo" type="number" class="form-control" value="1" /></div>
             <div class="col-md-3">
-                <label class="form-label">Project</label>
+                <label class="form-label">@Localizer["Vs_Project"]</label>
                 <select name="ProjectId" class="form-select" required>
                     @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                 </select>
             </div>
             <div class="col-md-3">
-                <label class="form-label">Vendor</label>
+                <label class="form-label">@Localizer["Vendor"]</label>
                 <select name="VendorId" class="form-select" required>
                     @foreach (var v in vendors) { <option value="@v.VendorId">@v.Name</option> }
                 </select>
             </div>
-            <div class="col-md-3"><label class="form-label">Discipline Code</label><input name="DisciplineCodeRaw" class="form-control" placeholder="ME / EL / IN / PI / PM / HV / HS" /></div>
+            <div class="col-md-3"><label class="form-label">@Localizer["Vc_DisciplineCode"]</label><input name="DisciplineCodeRaw" class="form-control" placeholder="ME / EL / IN / PI / PM / HV / HS" /></div>
             <div class="col-md-4">
-                <label class="form-label">Related Equipment <span class="text-muted small">(optional)</span></label>
+                <label class="form-label">@Localizer["Vc_RelatedEquipment"] <span class="text-muted small">@Localizer["Vd_Optional"]</span></label>
                 <select name="EquipmentId" class="form-select">
-                    <option value="">-- None --</option>
+                    <option value="">@Localizer["Vc_None"]</option>
                     @foreach (var eq in equipments) { <option value="@eq.EquipmentId">@eq.TagNumber</option> }
                 </select>
             </div>
-            <div class="col-md-3"><label class="form-label">Document Type</label><input name="DocumentTypeCode" class="form-control" placeholder="DWG / DSH / PRC ..." required /></div>
-            <div class="col-md-5"><label class="form-label">Document Number</label><input name="DocumentNumber" class="form-control" required /></div>
-            <div class="col-md-4"><label class="form-label">MR Number</label><input name="MRNumber" class="form-control" /></div>
-            <div class="col-md-4"><label class="form-label">Material Code <span class="text-muted small">(Appendix 4, official numbering)</span></label><input name="MaterialCode" class="form-control" placeholder="e.g. 0611" /></div>
-            <div class="col-md-4"><label class="form-label">Typology Code <span class="text-muted small">(Appendix 3, Vendor-format numbering)</span></label><input name="TypologyCode" class="form-control" placeholder="e.g. GS, LG, IS ..." /></div>
-            <div class="col-12"><label class="form-label">Document Description</label><input name="DocumentDescription" class="form-control" /></div>
-            <div class="col-md-4"><label class="form-label">Responsible Party</label><input name="ResponsiblePartyCode" class="form-control" placeholder="PJPC-Eng / QC / Procurement ..." /></div>
-            <div class="col-md-4"><label class="form-label">Class</label><input name="DocumentClass" type="number" min="1" max="3" class="form-control" /></div>
-            <div class="col-md-4"><label class="form-label">Planned 1st Issue Date</label><input name="PlannedFirstIssueDate" type="date" class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">@Localizer["Vc_DocType"]</label><input name="DocumentTypeCode" class="form-control" placeholder="DWG / DSH / PRC ..." required /></div>
+            <div class="col-md-5"><label class="form-label">@Localizer["Vc_DocNumber"]</label><input name="DocumentNumber" class="form-control" required /></div>
+            <div class="col-md-4"><label class="form-label">@Localizer["Vc_MrNumber"]</label><input name="MRNumber" class="form-control" /></div>
+            <div class="col-md-4"><label class="form-label">@Localizer["Vd_MaterialCode"] <span class="text-muted small">@Localizer["Vc_MaterialCodeHint"]</span></label><input name="MaterialCode" class="form-control" placeholder="e.g. 0611" /></div>
+            <div class="col-md-4"><label class="form-label">@Localizer["Vd_TypologyCode"] <span class="text-muted small">@Localizer["Vc_TypologyHint"]</span></label><input name="TypologyCode" class="form-control" placeholder="e.g. GS, LG, IS ..." /></div>
+            <div class="col-12"><label class="form-label">@Localizer["Vc_DocDescription"]</label><input name="DocumentDescription" class="form-control" /></div>
+            <div class="col-md-4"><label class="form-label">@Localizer["Vc_ResponsibleParty"]</label><input name="ResponsiblePartyCode" class="form-control" placeholder="PJPC-Eng / QC / Procurement ..." /></div>
+            <div class="col-md-4"><label class="form-label">@Localizer["Vs_Class"]</label><input name="DocumentClass" type="number" min="1" max="3" class="form-control" /></div>
+            <div class="col-md-4"><label class="form-label">@Localizer["Vc_PlannedIssue"]</label><input name="PlannedFirstIssueDate" type="date" class="form-control" /></div>
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">Save</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
         </div>
     </form>
 </div>
+
+</div>
+
+@{ ViewData["Title"] = Localizer["Vs_ManualEntry"].Value; }
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-vdr.css" asp-append-version="true" />
+}

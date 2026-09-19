@@ -1,6 +1,7 @@
-﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.VDRListItemDto>
+@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.VDRListItemDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var dash = (PEMS.Application.DTOs.VDRDashboardDto)ViewBag.Dashboard;
@@ -8,170 +9,155 @@
     var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
 }
 
-@* جستجوی سریع هوشمند - طبق مثال اصلی: نام Vendor، شماره مدرک، Status، Discipline، عنوان *@
-<div class="content-card mb-3">
-    <label class="form-label small fw-bold"><i class="bi bi-search"></i> جستجوی سریع مدرک وندور</label>
-    <input type="text" class="form-control" id="vdrQuickSearch" placeholder="نام وندور، شماره مدرک، وضعیت یا دیسیپلین..."
-           data-pems-search data-search-type="VDRItem" autocomplete="off" />
-</div>
-<script>
-    document.getElementById('vdrQuickSearch').addEventListener('pems:search-select', function (e) {
-        if (e.detail && e.detail.url) window.location.href = e.detail.url;
-    });
-</script>
-
-
-<div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-list-check"></i></div>
-            <div><div class="kpi-value">@dash.TotalItems</div><div class="kpi-label">Total VDR Items</div></div></div>
-    </div>
-    <div class="col-md-2 col-sm-6">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div>
-            <div><div class="kpi-value">@dash.ClosedItems</div><div class="kpi-label">Closed</div></div></div>
-    </div>
-    <div class="col-md-2 col-sm-6">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-arrow-repeat"></i></div>
-            <div><div class="kpi-value">@dash.PendingResubmissionItems</div><div class="kpi-label">Pending Resubmission</div></div></div>
-    </div>
-    <div class="col-md-2 col-sm-6">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-blue"><i class="bi bi-hourglass-split"></i></div>
-            <div><div class="kpi-value">@dash.UnderReviewItems</div><div class="kpi-label">Under Review</div></div></div>
-    </div>
-    <div class="col-md-2 col-sm-6">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-exclamation-triangle"></i></div>
-            <div><div class="kpi-value">@dash.OverdueItems</div><div class="kpi-label">Overdue</div></div></div>
-    </div>
-    <div class="col-md-2 col-sm-6">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-teal"><i class="bi bi-speedometer2"></i></div>
-            <div><div class="kpi-value">@dash.OnTimePercentage%</div><div class="kpi-label">On-Time Rate</div></div></div>
-    </div>
-    <div class="col-md-2 col-sm-6">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-alarm"></i></div>
-            <div><div class="kpi-value">@dash.SlaOverdueItems</div><div class="kpi-label">SLA Overdue (10/15 wd)</div></div></div>
-    </div>
-</div>
-
-@if (dash.TopDelayedVendors.Any())
-{
-    <div class="content-card mb-3">
-        <h6 class="mb-3">Vendor Delay / Risk Overview</h6>
-        <table class="table table-enterprise">
-            <thead><tr><th>Vendor</th><th>Overdue Items</th><th>Avg. First-Submission Delay (days)</th><th>Risk Level</th></tr></thead>
-            <tbody>
-                @foreach (var v in dash.TopDelayedVendors)
-                {
-                    <tr>
-                        <td>@v.VendorName</td>
-                        <td>@v.OverdueCount</td>
-                        <td>@v.AverageDelayDays</td>
-                        <td>
-                            @{
-                                var rb = v.RiskLevel switch { "Low" => "bg-success", "Medium" => "bg-warning text-dark", "High" => "bg-danger", _ => "bg-secondary" };
-                            }
-                            <span class="badge @rb">@v.RiskLevel</span>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+@{ ViewData["Title"] = Localizer["Vs_VdrTitle"].Value; }
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-vdr.css" asp-append-version="true" />
 }
 
-<div class="content-card mb-3">
-    <form method="get" class="row g-2 align-items-end">
-        <div class="col-md-3">
-            <label class="form-label small">Project</label>
+<div class="vs-page">
+
+    @* Stitch: vdr_management_dashboard - page header + primary actions (all actions are the pre-existing PEMS routes) *@
+    <div class="vs-header">
+        <div class="vs-chips" style="margin:0;">
+            <span class="vs-chip">@Localizer["Vs_TotalItems"] <strong>@dash.TotalItems</strong></span>
+            <span class="vs-chip">@Localizer["Vs_UnderReview"] <strong>@dash.UnderReviewItems</strong></span>
+            <span class="vs-chip">@Localizer["Vs_PendingResubmission"] <strong>@dash.PendingResubmissionItems</strong></span>
+            <span class="vs-chip @(dash.OverdueItems > 0 ? "vs-chip--danger" : "")">@Localizer["Vs_Overdue"] <strong>@dash.OverdueItems</strong></span>
+            <span class="vs-chip">@Localizer["Vs_Closed"] <strong>@dash.ClosedItems</strong></span>
+            <span class="vs-chip">@Localizer["Vs_OnTimeRate"] <strong>@dash.OnTimePercentage%</strong></span>
+            <span class="vs-chip @(dash.SlaOverdueItems > 0 ? "vs-chip--danger" : "")">@Localizer["Vs_SlaOverdue"] <strong>@dash.SlaOverdueItems</strong></span>
+        </div>
+        <div class="vs-actions">
+            <a asp-action="Create" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-plus-lg"></i> @Localizer["Vs_ManualEntry"]</a>
+        </div>
+    </div>
+
+    <form method="get" class="vs-filters">
+        <div class="vs-filters__search vs-search">
+            <label>@Localizer["Search"]</label>
+            <i class="bi bi-search"></i>
+            <input type="text" class="form-control form-control-sm" id="vdrQuickSearch" aria-label="@Localizer["Vs_QuickSearchLabel"]"
+                   placeholder="@Localizer["Vs_QuickSearchPlaceholder"]"
+                   data-pems-search data-search-type="VDRItem" autocomplete="off" />
+        </div>
+        <div>
+            <label>@Localizer["Vs_Project"]</label>
             <select name="projectId" class="form-select form-select-sm">
-                <option value="">All</option>
+                <option value="">@Localizer["All"]</option>
                 @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == (int?)ViewBag.SelectedProjectId)">@p.ProjectName</option> }
             </select>
         </div>
-        <div class="col-md-3">
-            <label class="form-label small">Vendor</label>
+        <div>
+            <label>@Localizer["Vendor"]</label>
             <select name="vendorId" class="form-select form-select-sm">
-                <option value="">All</option>
+                <option value="">@Localizer["All"]</option>
                 @foreach (var v in vendors) { <option value="@v.VendorId" selected="@(v.VendorId == (int?)ViewBag.SelectedVendorId)">@v.Name</option> }
             </select>
         </div>
-        <div class="col-md-3">
-            <label class="form-label small">Status</label>
+        <div>
+            <label>@Localizer["Status"]</label>
             <select name="status" class="form-select form-select-sm">
-                <option value="">All</option>
+                <option value="">@Localizer["All"]</option>
                 @foreach (var s in new[] { "Planned", "Submitted", "UnderReview", "PendingResubmission", "Closed" })
-                { <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option> }
+                { <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@VdrUi.Loc(Localizer, "St_", s)</option> }
             </select>
         </div>
-        <div class="col-md-3 d-flex gap-2">
-            <button type="submit" class="btn btn-sm btn-pems-solid flex-fill"><i class="bi bi-funnel"></i> Filter</button>
-            <a asp-action="Index" class="btn btn-sm btn-outline-danger" title="Reset"><i class="bi bi-x-lg"></i></a>
-            <a asp-controller="VDRImport" asp-action="Index" class="btn btn-sm btn-outline-success flex-fill"><i class="bi bi-cloud-upload"></i> Import Excel</a>
-            <a asp-action="Create" class="btn btn-sm btn-outline-secondary flex-fill"><i class="bi bi-plus-lg"></i> Manual</a>
+        <div class="vs-filters__end">
+            <button type="submit" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-funnel"></i> @Localizer["Filter"]</button>
+            <a asp-action="Index" class="vs-btn vs-btn--danger vs-btn--sm" title="@Localizer["Reset"]"><i class="bi bi-x-lg"></i></a>
         </div>
     </form>
-</div>
 
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('VDR')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["ResetColumns"]
-        </button>
-    </div>
-    <div class="table-responsive pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="VDR">
-            <thead>
-                <tr>
-                    <th data-col-key="docNo" data-resizable="true" data-min-width="110" data-max-width="220" style="width:150px">Doc No.</th>
-                    <th data-col-key="description" data-resizable="true" data-min-width="180" data-max-width="500" style="width:280px">Description</th>
-                    <th data-col-key="type" data-resizable="true" data-min-width="80" data-max-width="180" style="width:110px">Type</th>
-                    <th data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="240" style="width:160px">Vendor</th>
-                    <th data-col-key="rev" data-resizable="true" data-min-width="60" data-max-width="110" style="width:80px">Rev</th>
-                    <th data-col-key="latestCategory" data-resizable="true" data-min-width="90" data-max-width="180" style="width:130px">Latest Category</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="110" data-max-width="220" style="width:150px">Status</th>
-                    <th data-col-key="actions" data-resizable="false" style="width:70px"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var i in Model.Items)
-                {
-                    <tr class="@(i.IsOverdue ? "table-danger" : "")">
-                        <td title="@i.DocumentNumber">@i.DocumentNumber</td>
-                        <td title="@i.DocumentDescription">@i.DocumentDescription</td>
-                        <td title="@i.DocumentTypeCode">@i.DocumentTypeCode</td>
-                        <td title="@i.VendorName">@i.VendorName</td>
-                        <td>@i.LatestRevisionNo</td>
-                        <td title="@i.LatestReviewCategory">@i.LatestReviewCategory</td>
-                        <td>
-                            @{
-                                var sb = i.WorkflowStatus switch { "Closed" => "bg-success", "PendingResubmission" => "bg-warning text-dark", "UnderReview" => "bg-info text-dark", _ => "bg-secondary" };
-                            }
-                            <span class="badge @sb">@i.WorkflowStatus</span>
-                            @if (i.IsOverdue) { <span class="badge bg-danger">Overdue</span> }
-                        </td>
-                        <td><a asp-action="Details" asp-route-id="@i.VDRItemId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
-                    </tr>
+    <script>
+        document.getElementById('vdrQuickSearch').addEventListener('pems:search-select', function (e) {
+            if (e.detail && e.detail.url) window.location.href = e.detail.url;
+        });
+    </script>
+
+    @* the register is the primary working surface *@
+    <div>
+        <div class="vs-panel">
+            <div class="vs-panel__head">
+                <h3 class="vs-panel__title"><i class="bi bi-table"></i> @Localizer["Vs_RegisterTitle"]</h3>
+                <button type="button" class="vs-btn vs-btn--sm" onclick="PemsDataGrid.resetColumns('VDR')">
+                    <i class="bi bi-arrow-counterclockwise"></i> @Localizer["ResetColumns"]
+                </button>
+            </div>
+            <div class="table-responsive pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
+                <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="VDR">
+                    <thead>
+                        <tr>
+                            <th data-col-key="docNo" data-resizable="true" data-min-width="110" data-max-width="220" style="width:150px">@Localizer["Vs_DocNo"]</th>
+                            <th data-col-key="description" data-resizable="true" data-min-width="180" data-max-width="500" style="width:280px">@Localizer["Vs_Description"]</th>
+                            <th data-col-key="type" data-resizable="true" data-min-width="80" data-max-width="180" style="width:110px">@Localizer["Type"]</th>
+                            <th data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="240" style="width:160px">@Localizer["Vendor"]</th>
+                            <th data-col-key="rev" data-resizable="true" data-min-width="60" data-max-width="110" style="width:80px">@Localizer["Vs_Rev"]</th>
+                            <th data-col-key="latestCategory" data-resizable="true" data-min-width="90" data-max-width="180" style="width:130px">@Localizer["Vs_LatestCategory"]</th>
+                            <th data-col-key="status" data-resizable="true" data-min-width="110" data-max-width="220" style="width:150px">@Localizer["Status"]</th>
+                            <th data-col-key="actions" data-resizable="false" style="width:70px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var i in Model.Items)
+                        {
+                            <tr class="@(i.IsOverdue ? "table-danger" : "")">
+                                <td class="vs-mono" title="@i.DocumentNumber">@i.DocumentNumber</td>
+                                <td class="vs-cell-strong" title="@i.DocumentDescription">@i.DocumentDescription</td>
+                                <td title="@i.DocumentTypeCode">@i.DocumentTypeCode</td>
+                                <td title="@i.VendorName">@i.VendorName</td>
+                                <td>@i.LatestRevisionNo</td>
+                                <td title="@i.LatestReviewCategory">@i.LatestReviewCategory</td>
+                                <td>
+                                    <span class="vs-pill @VdrUi.WorkflowTone(i.WorkflowStatus)">@VdrUi.Loc(Localizer, "St_", i.WorkflowStatus)</span>
+                                    @if (i.IsOverdue) { <span class="vs-pill vs-pill--danger">@Localizer["Vs_Overdue"]</span> }
+                                </td>
+                                <td><a asp-action="Details" asp-route-id="@i.VDRItemId" class="vs-icon-btn" title="@Localizer["Vs_View"]"><i class="bi bi-eye"></i></a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @if (!Model.Items.Any()) { <div class="vs-empty"><i class="bi bi-inbox"></i>@Localizer["Vs_NoVdrItems"]</div> }
+            </div>
+            <div class="vs-panel__foot">
+                @{
+                    var vdrQsParts = new List<string>();
+                    if (ViewBag.SelectedProjectId != null) vdrQsParts.Add($"projectId={ViewBag.SelectedProjectId}");
+                    if (ViewBag.SelectedVendorId != null) vdrQsParts.Add($"vendorId={ViewBag.SelectedVendorId}");
+                    if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus)) vdrQsParts.Add($"status={Uri.EscapeDataString((string)ViewBag.SelectedStatus)}");
                 }
-            </tbody>
-        </table>
-        @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No VDR items yet. Use "Import Excel" to bring in your existing register.</p> }
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "VDR",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = string.Join("&", vdrQsParts)
+                })
+            </div>
+        </div>
+
     </div>
 
-    @{
-        var vdrQsParts = new List<string>();
-        if (ViewBag.SelectedProjectId != null) vdrQsParts.Add($"projectId={ViewBag.SelectedProjectId}");
-        if (ViewBag.SelectedVendorId != null) vdrQsParts.Add($"vendorId={ViewBag.SelectedVendorId}");
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus)) vdrQsParts.Add($"status={Uri.EscapeDataString((string)ViewBag.SelectedStatus)}");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    @if (dash.TopDelayedVendors.Any())
     {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "VDR",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", vdrQsParts)
-    })
+        <details class="vs-panel vs-collapse">
+            <summary class="vs-panel__head"><span class="vs-panel__title"><i class="bi bi-shield-exclamation"></i> @Localizer["Vs_VendorDelayRisk"] <span class="vs-cell-sub">(@dash.TopDelayedVendors.Count)</span></span></summary>
+            <ul class="vs-list">
+                @foreach (var v in dash.TopDelayedVendors)
+                {
+                    <li>
+                        <div>
+                            <div class="vs-cell-strong">@v.VendorName</div>
+                            <div class="vs-cell-sub">@Localizer["Vs_OverdueItems"]: @v.OverdueCount &middot; @Localizer["Vs_AvgDelay"]: @v.AverageDelayDays</div>
+                        </div>
+                        <span class="vs-pill @VdrUi.RiskTone(v.RiskLevel)">@VdrUi.Loc(Localizer, "St_", v.RiskLevel)</span>
+                    </li>
+                }
+            </ul>
+        </details>
+    }
 </div>
 
 @section Scripts {

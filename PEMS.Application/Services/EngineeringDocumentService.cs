@@ -98,28 +98,38 @@ public class EngineeringDocumentService : IEngineeringDocumentService
             Page = paged.Page,
             PageSize = paged.PageSize,
             TotalCount = paged.TotalCount,
-            Items = paged.Items.Select(x => new EngineeringDocumentDto
-            {
-                DocumentId = x.DocumentId,
-                DocumentNo = x.DocumentNo,
-                Title = x.Title,
-                Description = x.Description,
-                DocumentType = x.DocumentType,
-                ProjectId = x.ProjectId,
-                ProjectName = x.Project?.ProjectName ?? "",
-                DisciplineId = x.DisciplineId ?? 0,
-                DisciplineName = x.Discipline?.Name ?? "",
-                Status = x.Status,
-                RevisionNo = x.RevisionNo ?? "00",
-                Area = x.Area,
-                CommentStatus = x.CommentStatus,
-                IsFrozen = x.IsFrozen,
-                PlannedDate = x.PlannedDate,
-                ActualDate = x.ActualDate,
-                DelayDays = x.DelayDays,
-                CreatedDate = x.CreatedDate
-            }).ToList()
+            Items = paged.Items.Select(ToListDto).ToList()
         };
+    }
+
+    // نگاشت مشترک ردیف فهرست (Index و Export) - یک‌جا تا دو مسیر هرگز از هم منحرف نشوند
+    private static EngineeringDocumentDto ToListDto(EngineeringDocument x) => new EngineeringDocumentDto
+    {
+        DocumentId = x.DocumentId,
+        DocumentNo = x.DocumentNo,
+        Title = x.Title,
+        Description = x.Description,
+        DocumentType = x.DocumentType,
+        ProjectId = x.ProjectId,
+        ProjectName = x.Project?.ProjectName ?? "",
+        DisciplineId = x.DisciplineId ?? 0,
+        DisciplineName = x.Discipline?.Name ?? "",
+        Status = x.Status,
+        RevisionNo = x.RevisionNo ?? "00",
+        Area = x.Area,
+        CommentStatus = x.CommentStatus,
+        IsFrozen = x.IsFrozen,
+        PlannedDate = x.PlannedDate,
+        ActualDate = x.ActualDate,
+        DelayDays = x.DelayDays,
+        CreatedDate = x.CreatedDate
+    };
+
+    public async Task<(List<EngineeringDocumentDto> Items, int TotalMatching)> GetAllMatchingAsync(
+        EngineeringDocumentListFilter filter, bool restrictToDiscipline, int? disciplineId, int maxRows)
+    {
+        var (items, total) = await _repository.GetAllMatchingAsync(filter, restrictToDiscipline, disciplineId, maxRows);
+        return (items.Select(ToListDto).ToList(), total);
     }
 
     public async Task<EngineeringDocumentSummaryCountsDto> GetSummaryCountsAsync(bool restrictToDiscipline, int? disciplineId)

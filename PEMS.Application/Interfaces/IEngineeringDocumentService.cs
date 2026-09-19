@@ -21,6 +21,10 @@ public interface IEngineeringDocumentService
     Task<PagedResult<EngineeringDocumentDto>> GetRegisterPagedAsync(
         DocumentRegisterFilter filter, bool restrictToDiscipline, int? disciplineId);
 
+    // Export فهرست Index: همان فیلتر و همان محدودیت دیسیپلین، بدون صفحه‌بندی، با سقف ردیف
+    Task<(List<EngineeringDocumentDto> Items, int TotalMatching)> GetAllMatchingAsync(
+        EngineeringDocumentListFilter filter, bool restrictToDiscipline, int? disciplineId, int maxRows);
+
     Task<(List<EngineeringDocumentDto> Items, int TotalMatching)> GetRegisterAllMatchingAsync(
         DocumentRegisterFilter filter, bool restrictToDiscipline, int? disciplineId, int maxRows);
 

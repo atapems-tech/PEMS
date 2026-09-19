@@ -12,7 +12,7 @@
     // طبق Phase E-03: مجموعه‌ی بسته‌ی وضعیت‌های واقعی که DocumentWorkflowService/
     // RecordClientResponseAsync تنظیم می‌کنند - همان الگوی Views/Permit/Index.cshtml (فهرست
     // ثابت به‌جای Query جدا برای SELECT DISTINCT Status).
-    var statusOptions = new[] { "Draft", "Submitted", "IDC Review", "Checked", "Approved", "Issued", "Rejected", "Client Approved" };
+    var statusOptions = new[] { "Draft", "Submitted", "IDC Review", "Checked", "Approved", "Issued", "Rejected", "Revise & Resubmit", "Client Approved" };
 }
 
 @{
@@ -26,7 +26,6 @@
 <div class="d-flex flex-wrap gap-2 mb-2">
     <a asp-controller="EngineeringDocuments" asp-action="Index" class="btn btn-sm btn-pems-solid"><i class="bi bi-file-earmark-text"></i> Documents</a>
     <a asp-controller="DocumentRegister" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-journal-bookmark"></i> Register</a>
-    <a asp-controller="MDRImport" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-arrow-up"></i> Import (MDR)</a>
     <a asp-controller="VDR" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-journal-check"></i> Vendor Documents (VDR)</a>
     <a asp-controller="Transmittal" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-send"></i> Transmittals</a>
 </div>
@@ -165,7 +164,10 @@
 </script>
 
 <div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
+    <div class="d-flex justify-content-end gap-2 mb-2">
+        <a asp-action="Export" asp-route-Search="@filter.Search" asp-route-ProjectId="@filter.ProjectId" asp-route-DisciplineId="@filter.DisciplineId"
+           asp-route-Status="@filter.Status" asp-route-Area="@filter.Area" asp-route-MinRevisionCount="@filter.MinRevisionCount"
+           class="btn btn-sm btn-outline-secondary" title="@Localizer["ExportFilteredList"]"><i class="bi bi-file-earmark-excel"></i> @Localizer["Export"]</a>
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('EngineeringDocuments')">
             <i class="bi bi-arrow-counterclockwise"></i> @Localizer["ResetColumns"]
         </button>

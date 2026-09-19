@@ -1,4 +1,16 @@
 ﻿@model PEMS.Application.DTOs.VDRImportBatchDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+
+<div class="vs-page">
+
+
+<div class="vs-stepper">
+    <div class="vs-stepper__item vs-stepper__item--done"><span class="vs-stepper__num"><i class="bi bi-check-lg"></i></span>@Localizer["Vs_StepUpload"]</div>
+    <div class="vs-stepper__item vs-stepper__item--active"><span class="vs-stepper__num">2</span>@Localizer["Vs_StepReview"]</div>
+    <div class="vs-stepper__item "><span class="vs-stepper__num">3</span>@Localizer["Vs_StepCommit"]</div>
+</div>
 
 <div class="content-card mb-3">
     <div class="row g-3">
@@ -78,3 +90,10 @@
         </table>
     </div>
 </div>
+
+</div>
+
+@{ ViewData["Title"] = Localizer["Vs_ImportTitle"].Value; }
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-vdr.css" asp-append-version="true" />
+}

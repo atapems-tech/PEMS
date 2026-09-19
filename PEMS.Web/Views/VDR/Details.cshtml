@@ -1,8 +1,11 @@
 ﻿@model PEMS.Application.DTOs.VDRItemDto
 @using PEMS.Web.Models
+@using PEMS.Web.Helpers
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 @{
-    var sbTop = Model.WorkflowStatus switch { "Closed" => "bg-success", "PendingResubmission" => "bg-warning text-dark", "UnderReview" => "bg-info text-dark", _ => "bg-secondary" };
     var relatedLetters = (List<PEMS.Application.DTOs.RelatedLetterDto>)(ViewBag.RelatedLetters ?? new List<PEMS.Application.DTOs.RelatedLetterDto>());
     var workflowHistory = (IReadOnlyList<PEMS.WorkflowPlatform.Dtos.WorkflowHistoryDto>)(ViewBag.WorkflowHistory ?? new List<PEMS.WorkflowPlatform.Dtos.WorkflowHistoryDto>());
 
@@ -13,8 +16,8 @@
     var wfStageOrder = new[] { "Planned", "Check", "DisciplineReview", "LeadReview", "ReturnToVendor", "Closed" };
     var wfStageLabels = new Dictionary<string, string>
     {
-        ["Planned"] = "Planned", ["Check"] = "Submitted", ["DisciplineReview"] = "بازبینی موازی",
-        ["LeadReview"] = "تصمیم نهایی", ["ReturnToVendor"] = "بازگشت به وندور", ["Closed"] = "Closed"
+        ["Planned"] = Localizer["Vd_Stage_Planned"].Value, ["Check"] = Localizer["Vd_Stage_Check"].Value, ["DisciplineReview"] = Localizer["Vd_Stage_DisciplineReview"].Value,
+        ["LeadReview"] = Localizer["Vd_Stage_LeadReview"].Value, ["ReturnToVendor"] = Localizer["Vd_Stage_ReturnToVendor"].Value, ["Closed"] = Localizer["Vd_Stage_Closed"].Value
     };
     var wfStageIcons = new Dictionary<string, string>
     {
@@ -23,8 +26,8 @@
     };
     var wfStageRoles = new Dictionary<string, string>
     {
-        ["Planned"] = "Vendor", ["Check"] = "Vendor", ["DisciplineReview"] = "دیسیپلین‌های ارجاع‌شده",
-        ["LeadReview"] = "Eng. Supervisor / Manager", ["ReturnToVendor"] = "Document Controller", ["Closed"] = "—"
+        ["Planned"] = Localizer["Vd_Role_Vendor"].Value, ["Check"] = Localizer["Vd_Role_Vendor"].Value, ["DisciplineReview"] = Localizer["Vd_Role_Disciplines"].Value,
+        ["LeadReview"] = Localizer["Vd_Role_Lead"].Value, ["ReturnToVendor"] = Localizer["Vd_Role_DocControl"].Value, ["Closed"] = "—"
     };
     var wfIsPendingResubmission = wfStatus == "PendingResubmission";
 
@@ -58,60 +61,65 @@
             };
         }).ToList()
     };
-
-    // طبق «PEMS Phase 2C-4B»: عیناً همان اطلاعات/همان منطق نگاشت وضعیت→رنگ که قبلاً مستقیم در
-    // Markup هدر بود - فقط جابه‌جا شده به یک مدل، بدون هیچ تغییر رفتاری. sbTop بالا دست‌نخورده
-    // می‌ماند چون تب Overview هم مستقل از این‌جا همان مقدار را دوباره استفاده می‌کند (خط ۱۳۰).
-    var vdrHeaderModel = new ResourceHeaderViewModel
-    {
-        Identifier = Model.DocumentNumber,
-        SecondaryText = $"Rev {Model.LatestRevisionNo ?? 0}",
-        MetaLine = $"{Model.VendorName} · {Model.ProjectName}",
-        StatusText = Model.WorkflowStatus,
-        StatusTone = Model.WorkflowStatus switch
-        {
-            "Closed" => ResourceHeaderTone.Success,
-            "PendingResubmission" => ResourceHeaderTone.Warning,
-            "UnderReview" => ResourceHeaderTone.Info,
-            _ => ResourceHeaderTone.Neutral
-        },
-        ConditionalBadges = Model.IsOverdue
-            ? new List<ResourceHeaderBadge> { new() { Text = "Overdue", Tone = ResourceHeaderTone.Danger } }
-            : new List<ResourceHeaderBadge>()
-    };
 }
 
-<div class="content-card mb-3">
-    <partial name="_PemsResourceHeader" model="vdrHeaderModel" />
+@{ ViewData["Title"] = Model.DocumentNumber; }
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-vdr.css" asp-append-version="true" />
+}
 
-    <hr class="my-2" />
-    <partial name="_PemsStageDiagram" model="wfStageDiagramModel" />
+<div class="vs-page">
+
+<div class="vs-header">
+    <div class="d-flex flex-wrap align-items-center gap-2">
+        <span class="vs-pill @VdrUi.WorkflowTone(Model.WorkflowStatus)">@VdrUi.Loc(Localizer, "St_", Model.WorkflowStatus)</span>
+        @if (Model.IsOverdue) { <span class="vs-pill vs-pill--danger">@Localizer["Vs_Overdue"]</span> }
+        <span class="vs-cell-strong">@Model.VendorName</span>
+        <span class="vs-cell-sub">&middot; @Model.ProjectName &middot; @Localizer["Vd_Rev"] @(Model.LatestRevisionNo ?? 0)</span>
+    </div>
+    <a asp-action="Index" class="vs-btn vs-btn--sm"><i class="bi bi-arrow-left"></i> @Localizer["Vs_Back"]</a>
+</div>
+
+<div class="vs-panel">
+    <div class="vs-panel__body">
+        <div class="vs-tracker">
+            @foreach (var st in wfStageDiagramModel.Stages)
+            {
+                var cls = st.State switch { StageItemState.Done => "vs-step--done", StageItemState.Current => "vs-step--current", StageItemState.Rejected => "vs-step--rejected", _ => "" };
+                <div class="vs-step @cls">
+                    <div class="vs-step__dot"><i class="bi @(st.State == StageItemState.Done ? "bi-check-lg" : st.IconCssClass)"></i></div>
+                    <div class="vs-step__label">@st.Label</div>
+                    <div class="vs-step__meta">@st.RoleLabel</div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
 <ul class="nav nav-tabs mb-3" id="vdrTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
-            <i class="bi bi-info-circle"></i> Overview
+            <i class="bi bi-info-circle"></i> @Localizer["Vs_TabOverview"]
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-submissions" type="button">
-            <i class="bi bi-clock-history"></i> Submissions <span class="badge bg-secondary">@Model.Submissions.Count</span>
+            <i class="bi bi-clock-history"></i> @Localizer["Vs_TabSubmissions"] <span class="badge bg-secondary">@Model.Submissions.Count</span>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
-            <i class="bi bi-chat-square-text"></i> Comments
+            <i class="bi bi-chat-square-text"></i> @Localizer["Vs_TabComments"]
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
-            <i class="bi bi-signpost-split"></i> Workflow
+            <i class="bi bi-signpost-split"></i> @Localizer["Vs_TabWorkflow"]
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
-            <i class="bi bi-envelope-paper"></i> Correspondence
+            <i class="bi bi-envelope-paper"></i> @Localizer["Vs_TabCorrespondence"]
             @if (relatedLetters.Any()) { <span class="badge bg-secondary">@relatedLetters.Count</span> }
         </button>
     </li>
@@ -121,28 +129,25 @@
 
 @* ===================== Overview ===================== *@
 <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
-<div class="content-card mb-3">
-    <div class="row g-3">
-        <div class="col-md-3"><strong>Document No:</strong> @Model.DocumentNumber</div>
-        <div class="col-md-3"><strong>Type:</strong> @Model.DocumentTypeCode</div>
-        <div class="col-md-3"><strong>Vendor:</strong> @Model.VendorName</div>
-        <div class="col-md-3"><strong>PO:</strong> @Model.PoNumber</div>
-        <div class="col-md-3">
-            <strong>Equipment:</strong>
-            @if (Model.EquipmentId.HasValue)
-            { <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</a> }
-            else
-            { <span class="text-muted">-</span> }
+<div class="vs-panel">
+    <div class="vs-panel__body">
+        <div class="vs-info">
+            <div><p class="vs-info__label">@Localizer["Vs_Type"]</p><p class="vs-info__value">@Model.DocumentTypeCode</p></div>
+            <div><p class="vs-info__label">@Localizer["Vs_Po"]</p><p class="vs-info__value">@Model.PoNumber</p></div>
+            <div>
+                <p class="vs-info__label">@Localizer["Vs_Equipment"]</p>
+                <p class="vs-info__value">
+                    @if (Model.EquipmentId.HasValue)
+                    { <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</a> }
+                    else
+                    { <span class="text-muted">-</span> }
+                </p>
+            </div>
+            <div><p class="vs-info__label">@Localizer["Vs_Discipline"]</p><p class="vs-info__value">@Model.DisciplineCodeRaw @(Model.IsMultiDiscipline ? Localizer["Vs_MultiDiscipline"].Value : "")</p></div>
+            <div><p class="vs-info__label">@Localizer["Vs_Class"]</p><p class="vs-info__value">@Model.DocumentClass</p></div>
+            <div><p class="vs-info__label">@Localizer["Vs_PlannedFirstIssue"]</p><p class="vs-info__value">@(Model.PlannedFirstIssueDate?.ToString("yyyy-MM-dd"))</p></div>
+            <div class="vs-info__wide"><p class="vs-info__label">@Localizer["Vs_Description"]</p><p class="vs-info__value">@Model.DocumentDescription</p></div>
         </div>
-        <div class="col-md-3"><strong>Discipline:</strong> @Model.DisciplineCodeRaw @(Model.IsMultiDiscipline ? "(Multi-Discipline)" : "")</div>
-        <div class="col-md-3"><strong>Class:</strong> @Model.DocumentClass</div>
-        <div class="col-md-3"><strong>Planned 1st Issue:</strong> @(Model.PlannedFirstIssueDate?.ToString("yyyy-MM-dd"))</div>
-        <div class="col-md-3">
-            <strong>Status:</strong>
-            <span class="badge @sbTop">@Model.WorkflowStatus</span>
-            @if (Model.IsOverdue) { <span class="badge bg-danger">Overdue</span> }
-        </div>
-        <div class="col-12"><strong>Description:</strong> @Model.DocumentDescription</div>
     </div>
 </div>
 
@@ -150,44 +155,43 @@
    CONTRACTOR. هر فیلد مرجع خالی این‌جا پر می‌شود و همزمان روی Vendor/Project/VDR Item ذخیره
    می‌شود - دفعه‌ی بعد از قبل پرشده می‌آید. *@
 <div class="content-card mb-3">
-    <h6 class="mb-2">Official Document Number (CONTRACTOR format)</h6>
+    <h6 class="mb-2">@Localizer["Vd_OfficialNoTitle"]</h6>
     <p class="text-muted small mb-3">
-        Format: Plant-Unit-VendorCode-DisciplineCode-DocType-MaterialCode-MRLast4-Sequence-Revision.
-        Requires this item to already be linked to a real MR (via Relationship Explorer).
+        @Localizer["Vd_OfficialNoHint"]
     </p>
     <form asp-action="GenerateContractorNumber" method="post">
         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
         <div class="row g-3">
-            <div class="col-md-3"><label class="form-label">Vendor Code</label><input name="vendorCode" class="form-control" placeholder="e.g. FSK" /></div>
-            <div class="col-md-3"><label class="form-label">Plant Code</label><input name="plantCode" class="form-control" placeholder="e.g. J" /></div>
-            <div class="col-md-3"><label class="form-label">Unit Code</label><input name="unitCode" class="form-control" placeholder="e.g. 85" /></div>
-            <div class="col-md-3"><label class="form-label">Material Code</label><input name="materialCode" class="form-control" value="@Model.MaterialCode" placeholder="e.g. 0611" /></div>
+            <div class="col-md-3"><label class="form-label">@Localizer["Vd_VendorCode"]</label><input name="vendorCode" class="form-control" placeholder="e.g. FSK" /></div>
+            <div class="col-md-3"><label class="form-label">@Localizer["Vd_PlantCode"]</label><input name="plantCode" class="form-control" placeholder="e.g. J" /></div>
+            <div class="col-md-3"><label class="form-label">@Localizer["Vd_UnitCode"]</label><input name="unitCode" class="form-control" placeholder="e.g. 85" /></div>
+            <div class="col-md-3"><label class="form-label">@Localizer["Vd_MaterialCode"]</label><input name="materialCode" class="form-control" value="@Model.MaterialCode" placeholder="e.g. 0611" /></div>
         </div>
         <button type="submit" class="btn btn-outline-primary btn-sm mt-3">
-            <i class="bi bi-hash"></i> Generate Official Number
+            <i class="bi bi-hash"></i> @Localizer["Vd_GenOfficial"]
         </button>
     </form>
 </div>
 
 @* طبق بخش ۴.۳.۲ همان سند: شماره‌ی موازی به فرمت SUB-CONTRACTOR/Vendor *@
 <div class="content-card mb-3">
-    <h6 class="mb-2">Vendor-format Document Number (SUB-CONTRACTOR)</h6>
+    <h6 class="mb-2">@Localizer["Vd_VendorNoTitle"]</h6>
     <p class="text-muted small mb-3">
-        Format: Job-DisciplineCode-VD-TypologyCode-Unit-MRLast4-EquipmentTagLast6-Sequence.
+        @Localizer["Vd_VendorNoHint"]
         @if (!string.IsNullOrWhiteSpace(Model.VendorFormatDocumentNumber))
         {
-            <span>Current: <strong>@Model.VendorFormatDocumentNumber</strong></span>
+            <span>@Localizer["Vd_Current"] <strong>@Model.VendorFormatDocumentNumber</strong></span>
         }
     </p>
     <form asp-action="GenerateVendorNumber" method="post">
         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
         <div class="row g-3">
-            <div class="col-md-4"><label class="form-label">Job Number</label><input name="jobNumber" class="form-control" placeholder="e.g. 3863" /></div>
-            <div class="col-md-4"><label class="form-label">Unit Code</label><input name="unitCode" class="form-control" placeholder="e.g. 85" /></div>
-            <div class="col-md-4"><label class="form-label">Typology Code</label><input name="typologyCode" class="form-control" value="@Model.TypologyCode" placeholder="e.g. GS, LG, IS ..." /></div>
+            <div class="col-md-4"><label class="form-label">@Localizer["Vd_JobNumber"]</label><input name="jobNumber" class="form-control" placeholder="e.g. 3863" /></div>
+            <div class="col-md-4"><label class="form-label">@Localizer["Vd_UnitCode"]</label><input name="unitCode" class="form-control" placeholder="e.g. 85" /></div>
+            <div class="col-md-4"><label class="form-label">@Localizer["Vd_TypologyCode"]</label><input name="typologyCode" class="form-control" value="@Model.TypologyCode" placeholder="e.g. GS, LG, IS ..." /></div>
         </div>
         <button type="submit" class="btn btn-outline-primary btn-sm mt-3">
-            <i class="bi bi-hash"></i> Generate Vendor-format Number
+            <i class="bi bi-hash"></i> @Localizer["Vd_GenVendor"]
         </button>
     </form>
 </div>
@@ -196,10 +200,10 @@
 @* ===================== Submissions ===================== *@
 <div class="tab-pane fade" id="tab-submissions" role="tabpanel">
 <div class="content-card mb-3">
-    <h6 class="mb-3">Submission / Review History</h6>
+    <h6 class="mb-3">@Localizer["Vd_SubHistory"]</h6>
     <table class="table table-enterprise">
         <thead>
-            <tr><th>Rev</th><th>Vendor Transmittal</th><th>Client Transmittal</th><th>Vendor Issued</th><th>POI</th><th>SLA (10/15 working days, Fri off)</th><th>FTP</th><th>Comment Sheet</th><th>Comment Date</th><th>Category</th><th>Resubmit?</th><th>Comment File</th><th>Reply File</th></tr>
+            <tr><th>@Localizer["Vd_Rev"]</th><th>@Localizer["Vd_VendorTransmittal"]</th><th>@Localizer["Vd_ClientTransmittal"]</th><th>@Localizer["Vd_VendorIssued"]</th><th>@Localizer["Vd_Poi"]</th><th>@Localizer["Vd_Sla"]</th><th>@Localizer["Vd_Ftp"]</th><th>@Localizer["Vd_CommentSheet"]</th><th>@Localizer["Vd_CommentDate"]</th><th>@Localizer["Vd_Category"]</th><th>@Localizer["Vd_Resubmit"]</th><th>@Localizer["Vd_CommentFile"]</th><th>@Localizer["Vd_ReplyFile"]</th></tr>
         </thead>
         <tbody>
             @foreach (var s in Model.Submissions)
@@ -223,13 +227,13 @@
                         @if (s.ClientCommentDate == null && s.ContractorCommentDueDate.HasValue)
                         {
                             <span class="badge @(s.IsContractorCommentOverdue ? "bg-danger" : "bg-info text-dark")">
-                                Contractor comment due @s.ContractorCommentDueDate.Value.ToString("yyyy-MM-dd")@(s.IsContractorCommentOverdue ? " (overdue)" : "")
+                                @Localizer["Vd_ContractorDue"] @s.ContractorCommentDueDate.Value.ToString("yyyy-MM-dd")@(s.IsContractorCommentOverdue ? " " + Localizer["Vd_OverdueParen"].Value : "")
                             </span>
                         }
                         else if (s.ReplySheetDate == null && s.VendorReturnDueDate.HasValue)
                         {
                             <span class="badge @(s.IsVendorReturnOverdue ? "bg-danger" : "bg-info text-dark")">
-                                Return to vendor due @s.VendorReturnDueDate.Value.ToString("yyyy-MM-dd")@(s.IsVendorReturnOverdue ? " (overdue)" : "")
+                                @Localizer["Vd_ReturnDue"] @s.VendorReturnDueDate.Value.ToString("yyyy-MM-dd")@(s.IsVendorReturnOverdue ? " " + Localizer["Vd_OverdueParen"].Value : "")
                             </span>
                         }
                     </td>
@@ -244,14 +248,14 @@
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
                                 <input type="file" name="file" class="form-control form-control-sm" style="max-width:120px;" required />
-                                <button class="btn btn-sm btn-outline-primary" title="Upload to FTP"><i class="bi bi-cloud-upload"></i></button>
+                                <button class="btn btn-sm btn-outline-primary" title="@Localizer["Vd_UploadFtp"]"><i class="bi bi-cloud-upload"></i></button>
                             </form>
                         }
                     </td>
                     <td>@s.ClientCommentSheetNo</td>
                     <td>@(s.ClientCommentDate?.ToString("yyyy-MM-dd"))</td>
                     <td><span class="badge bg-secondary">@s.ReviewCategory</span></td>
-                    <td>@(s.RequiresResubmission ? "Yes" : "")</td>
+                    <td>@(s.RequiresResubmission ? Localizer["Vd_Yes"].Value : "")</td>
                     <td>
                         @if (!string.IsNullOrEmpty(s.CommentSheetFilePath))
                         {
@@ -286,7 +290,7 @@
             }
         </tbody>
     </table>
-    @if (!Model.Submissions.Any()) { <p class="text-muted">No submissions recorded yet.</p> }
+    @if (!Model.Submissions.Any()) { <p class="text-muted">@Localizer["Vd_NoSubmissions"]</p> }
 </div>
 </div>
 
@@ -303,10 +307,10 @@
 {
     <div class="content-card mb-3">
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></h6>
+            <h6 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> @Localizer["Vd_DocViewer"] <span class="text-muted small">@Localizer["Vd_PinHint"]</span></h6>
             <div class="d-flex align-items-center gap-2">
                 <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfPrevPage"><i class="bi bi-chevron-left"></i></button>
-                <span class="small" id="pdfPageLabel">Page - / -</span>
+                <span class="small" id="pdfPageLabel">@Localizer["Vd_Page"] - / -</span>
                 <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfNextPage"><i class="bi bi-chevron-right"></i></button>
                 <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomOut"><i class="bi bi-zoom-out"></i></button>
                 <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomIn"><i class="bi bi-zoom-in"></i></button>
@@ -327,6 +331,7 @@
             var canvas = document.getElementById('pdfCanvas');
             var ctx = canvas.getContext('2d');
             var pdfDoc = null, currentPage = 1, scale = 1.2;
+            var T = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(new { page = Localizer["Vd_Page"].Value, pinned = Localizer["Vd_PinnedOnPage"].Value, pdfError = Localizer["Vd_PdfError"].Value }, new System.Text.Json.JsonSerializerOptions { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping }));
 
             // پین‌های کامنت موجود، فقط برای همان چرخه‌ی ارسال فعلی (@latestSubmissionWithFile.VDRSubmissionId)
             var pins = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(comments
@@ -341,7 +346,7 @@
                     canvas.height = viewport.height;
 
                     page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function () {
-                        document.getElementById('pdfPageLabel').textContent = 'Page ' + num + ' / ' + pdfDoc.numPages;
+                        document.getElementById('pdfPageLabel').textContent = T.page + ' ' + num + ' / ' + pdfDoc.numPages;
                         renderPins(num, viewport.width, viewport.height);
                     });
                 });
@@ -365,7 +370,7 @@
                 pdfDoc = doc;
                 renderPage(currentPage);
             }).catch(function () {
-                wrapper.innerHTML = '<p class="text-muted py-4">Could not load the PDF preview. Use the download link in the submission history above.</p>';
+                wrapper.innerHTML = '<p class="text-muted py-4"></p>'; wrapper.firstChild.textContent = T.pdfError;
             });
 
             document.getElementById('pdfPrevPage').addEventListener('click', function () {
@@ -385,7 +390,7 @@
                 document.getElementById('pinPageNumber').value = currentPage;
                 document.getElementById('pinX').value = xPct.toFixed(2);
                 document.getElementById('pinY').value = yPct.toFixed(2);
-                document.getElementById('pinLocationLabel').textContent = 'Pinned on page ' + currentPage;
+                document.getElementById('pinLocationLabel').textContent = T.pinned + ' ' + currentPage;
 
                 var modal = new bootstrap.Modal(document.getElementById('addCommentModal'));
                 modal.show();
@@ -402,10 +407,10 @@
 }
 
 <div class="content-card mb-3">
-    <h6 class="mb-3">Comment Management <span class="text-muted small">(Action Status is tracked independently from Review Status)</span></h6>
+    <h6 class="mb-3">@Localizer["Vd_CommentMgmt"] <span class="text-muted small">@Localizer["Vd_ActionIndependent"]</span></h6>
 
     <table class="table table-enterprise">
-        <thead><tr><th>No</th><th>Rev</th><th>Category</th><th>Sheet/Zone</th><th>Comment</th><th>Raised By</th><th>Raised</th><th>Action Status</th><th>Response</th></tr></thead>
+        <thead><tr><th>@Localizer["Vd_No"]</th><th>@Localizer["Vd_Rev"]</th><th>@Localizer["Vd_Category"]</th><th>@Localizer["Vd_SheetZone"]</th><th>@Localizer["Vd_Comment"]</th><th>@Localizer["Vd_RaisedBy"]</th><th>@Localizer["Vd_Raised"]</th><th>@Localizer["Vd_ActionStatus"]</th><th>@Localizer["Vd_Response"]</th></tr></thead>
         <tbody>
             @foreach (var c in comments)
             {
@@ -413,8 +418,8 @@
                     <td><strong>@c.CommentNo</strong></td>
                     <td>@c.RevisionNo</td>
                     <td>
-                        @if (!string.IsNullOrEmpty(c.Category)) { <span class="badge bg-secondary">@c.Category</span> }
-                        @if (!string.IsNullOrEmpty(c.Severity)) { <span class="badge bg-dark">@c.Severity</span> }
+                        @if (!string.IsNullOrEmpty(c.Category)) { <span class="badge bg-secondary">@VdrUi.Loc(Localizer, "Vd_Cat_", c.Category)</span> }
+                        @if (!string.IsNullOrEmpty(c.Severity)) { <span class="badge bg-dark">@VdrUi.Loc(Localizer, "Vd_Sev_", c.Severity)</span> }
                     </td>
                     <td class="small">@c.Sheet @c.Zone</td>
                     <td class="small">
@@ -425,7 +430,7 @@
                         }
                         @if (!string.IsNullOrEmpty(c.RequiredAction))
                         {
-                            <div class="text-muted">Required: @c.RequiredAction</div>
+                            <div class="text-muted">@Localizer["Vd_Required"] @c.RequiredAction</div>
                         }
                     </td>
                     <td>@c.RaisedByName</td>
@@ -441,13 +446,13 @@
                                 _ => "bg-danger"
                             };
                         }
-                        <span class="badge @ab">@c.ActionStatus</span>
+                        <span class="vs-pill @VdrUi.CommentActionTone(c.ActionStatus)">@VdrUi.Loc(Localizer, "St_", c.ActionStatus)</span>
                         <form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                             <input type="hidden" name="commentId" value="@c.VDRCommentId" />
                             <select name="actionStatus" class="form-select form-select-sm mt-1" style="width:170px;" onchange="this.form.submit()">
                                 @foreach (var s in new[] { "OpenComment", "VendorResponsePending", "Verified", "Closed", "NoActionRequired" })
-                                { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
+                                { <option value="@s" selected="@(s == c.ActionStatus)">@VdrUi.Loc(Localizer, "St_", s)</option> }
                             </select>
                         </form>
                     </td>
@@ -460,7 +465,7 @@
                         @if (string.IsNullOrEmpty(c.ResponseText) && string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
                             <button type="button" class="btn btn-sm btn-outline-primary mt-1" data-bs-toggle="modal" data-bs-target="#replyModal_@c.VDRCommentId">
-                                <i class="bi bi-reply"></i> Reply
+                                <i class="bi bi-reply"></i> @Localizer["Vd_Reply"]
                             </button>
                         }
                     </td>
@@ -468,12 +473,12 @@
             }
         </tbody>
     </table>
-    @if (!comments.Any()) { <p class="text-muted">No comments recorded yet.</p> }
+    @if (!comments.Any()) { <p class="text-muted">@Localizer["Vd_NoComments"]</p> }
 
     @if (Model.Submissions.Any())
     {
         <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#addCommentModal">
-            <i class="bi bi-plus-lg"></i> Add Comment
+            <i class="bi bi-plus-lg"></i> @Localizer["Vd_AddComment"]
         </button>
     }
 </div>
@@ -489,46 +494,46 @@
                 <input type="hidden" name="pageNumber" id="pinPageNumber" value="" />
                 <input type="hidden" name="pinX" id="pinX" value="" />
                 <input type="hidden" name="pinY" id="pinY" value="" />
-                <div class="modal-header"><h6 class="modal-title">Add Comment</h6></div>
+                <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_AddComment"]</h6></div>
                 <div class="modal-body">
                     <div id="pinLocationLabel" class="small text-primary mb-2"></div>
                     <div class="row g-3">
                         <div class="col-md-4">
-                            <label class="form-label small">Revision</label>
+                            <label class="form-label small">@Localizer["Vd_Revision"]</label>
                             <select name="vdrSubmissionId" class="form-select form-select-sm">
                                 @foreach (var s in Model.Submissions)
-                                { <option value="@s.VDRSubmissionId">Rev @s.RevisionNo</option> }
+                                { <option value="@s.VDRSubmissionId">@Localizer["Vd_Rev"] @s.RevisionNo</option> }
                             </select>
                         </div>
-                        <div class="col-md-4"><label class="form-label small">Raised By</label><input name="raisedByName" class="form-control form-control-sm" /></div>
+                        <div class="col-md-4"><label class="form-label small">@Localizer["Vd_RaisedBy"]</label><input name="raisedByName" class="form-control form-control-sm" /></div>
                         <div class="col-md-4">
-                            <label class="form-label small">Category</label>
+                            <label class="form-label small">@Localizer["Vd_Category"]</label>
                             <select name="category" class="form-select form-select-sm">
-                                <option value="">-- select --</option>
+                                <option value="">@Localizer["Vd_Select"]</option>
                                 @foreach (var cat in new[] { "Technical", "Safety", "Constructability", "Documentation", "Specification", "Calculation", "Typographical", "Clarification" })
-                                { <option value="@cat">@cat</option> }
+                                { <option value="@cat">@Localizer["Vd_Cat_" + cat]</option> }
                             </select>
                         </div>
-                        <div class="col-md-3"><label class="form-label small">Sheet</label><input name="sheet" class="form-control form-control-sm" placeholder="e.g. Sheet 4" /></div>
-                        <div class="col-md-3"><label class="form-label small">Zone</label><input name="zone" class="form-control form-control-sm" placeholder="e.g. Grid B3" /></div>
-                        <div class="col-md-3"><label class="form-label small">Reference</label><input name="reference" class="form-control form-control-sm" placeholder="e.g. Note 12" /></div>
+                        <div class="col-md-3"><label class="form-label small">@Localizer["Vd_Sheet"]</label><input name="sheet" class="form-control form-control-sm" placeholder="e.g. Sheet 4" /></div>
+                        <div class="col-md-3"><label class="form-label small">@Localizer["Vd_Zone"]</label><input name="zone" class="form-control form-control-sm" placeholder="e.g. Grid B3" /></div>
+                        <div class="col-md-3"><label class="form-label small">@Localizer["Vd_Reference"]</label><input name="reference" class="form-control form-control-sm" placeholder="e.g. Note 12" /></div>
                         <div class="col-md-3">
-                            <label class="form-label small">Severity</label>
+                            <label class="form-label small">@Localizer["Vd_Severity"]</label>
                             <select name="severity" class="form-select form-select-sm">
-                                <option value="">-- select --</option>
+                                <option value="">@Localizer["Vd_Select"]</option>
                                 @foreach (var sev in new[] { "Low", "Medium", "High", "Critical" })
-                                { <option value="@sev">@sev</option> }
+                                { <option value="@sev">@Localizer["Vd_Sev_" + sev]</option> }
                             </select>
                         </div>
-                        <div class="col-12"><label class="form-label small">Comment</label><textarea name="commentText" class="form-control form-control-sm" rows="3" required></textarea></div>
-                        <div class="col-md-6"><label class="form-label small">Required Action</label><input name="requiredAction" class="form-control form-control-sm" placeholder="e.g. Revise Drawing" /></div>
-                        <div class="col-md-6"><label class="form-label small">Due Date</label><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
-                        <div class="col-12"><label class="form-label small">Attachment <span class="text-muted">(optional)</span></label><input type="file" name="attachment" class="form-control form-control-sm" /></div>
+                        <div class="col-12"><label class="form-label small">@Localizer["Vd_Comment"]</label><textarea name="commentText" class="form-control form-control-sm" rows="3" required></textarea></div>
+                        <div class="col-md-6"><label class="form-label small">@Localizer["Vd_RequiredAction"]</label><input name="requiredAction" class="form-control form-control-sm" placeholder="e.g. Revise Drawing" /></div>
+                        <div class="col-md-6"><label class="form-label small">@Localizer["Vd_DueDate"]</label><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
+                        <div class="col-12"><label class="form-label small">@Localizer["Vd_Attachment"] <span class="text-muted">@Localizer["Vd_Optional"]</span></label><input type="file" name="attachment" class="form-control form-control-sm" /></div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-pems-solid">Save Comment</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</button>
+                    <button type="submit" class="btn btn-pems-solid">@Localizer["Vd_SaveComment"]</button>
                 </div>
             </form>
         </div>
@@ -545,21 +550,21 @@
                 <form asp-action="RecordCommentResponse" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                     <input type="hidden" name="commentId" value="@c.VDRCommentId" />
-                    <div class="modal-header"><h6 class="modal-title">Reply to @c.CommentNo</h6></div>
+                    <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_ReplyTo"] @c.CommentNo</h6></div>
                     <div class="modal-body">
                         <p class="small text-muted">@c.CommentText</p>
                         <div class="mb-2">
-                            <label class="form-label small">Vendor Reply <span class="text-muted">(optional if attaching a file)</span></label>
+                            <label class="form-label small">@Localizer["Vd_VendorReply"] <span class="text-muted">@Localizer["Vd_OptionalIfFile"]</span></label>
                             <textarea name="responseText" class="form-control form-control-sm" rows="3"></textarea>
                         </div>
                         <div class="mb-2">
-                            <label class="form-label small">Or attach the Reply Sheet file</label>
+                            <label class="form-label small">@Localizer["Vd_OrAttachReply"]</label>
                             <input type="file" name="replyAttachment" class="form-control form-control-sm" />
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-pems-solid btn-sm">Save Reply</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</button>
+                        <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Vd_SaveReply"]</button>
                     </div>
                 </form>
             </div>
@@ -570,11 +575,11 @@
 @* ===================== Workflow (اکشن‌ها + تاریخچه‌ی واقعی) ===================== *@
 <div class="tab-pane fade" id="tab-workflow" role="tabpanel">
 <div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-signpost-split"></i> Review Workflow</h6>
+    <h6 class="mb-3"><i class="bi bi-signpost-split"></i> @Localizer["Vd_ReviewWorkflow"]</h6>
 
     @if (Model.Submissions.Any())
     {
-        <p class="text-muted small">Already recorded: @string.Join(", ", Model.Submissions.OrderBy(s => s.RevisionNo).Select(s => "Rev " + s.RevisionNo))</p>
+        <p class="text-muted small">@Localizer["Vd_AlreadyRecorded"] @string.Join(", ", Model.Submissions.OrderBy(s => s.RevisionNo).Select(s => Localizer["Vd_Rev"].Value + " " + s.RevisionNo))</p>
     }
 
     @{
@@ -584,14 +589,14 @@
 
     @if (!workflowRunning)
     {
-        <p class="text-muted small">هیچ چرخه‌ی بازبینی فعالی نیست - وندور مدرک را ارسال کرده؟ اطلاعات ترانسمیتال رو ثبت کن تا چرخه‌ی بازبینی شروع بشه.</p>
+        <p class="text-muted small">@Localizer["Vd_NoActiveCycle"]</p>
         <form asp-action="SubmitForReview" method="post" class="row g-2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-            <div class="col-md-2"><label class="form-label small">Rev</label><input name="revisionNo" type="number" min="0" class="form-control form-control-sm" value="@((Model.LatestRevisionNo ?? -1) + 1)" required /></div>
-            <div class="col-md-3"><label class="form-label small">Vendor Transmittal <span class="text-danger">*</span></label><input name="vendorTransmittalNo" class="form-control form-control-sm" required /></div>
-            <div class="col-md-2"><label class="form-label small">Vendor Issued Date</label><input name="vendorActualIssuedDate" type="date" class="form-control form-control-sm" /></div>
+            <div class="col-md-2"><label class="form-label small">@Localizer["Vd_Rev"]</label><input name="revisionNo" type="number" min="0" class="form-control form-control-sm" value="@((Model.LatestRevisionNo ?? -1) + 1)" required /></div>
+            <div class="col-md-3"><label class="form-label small">@Localizer["Vd_VendorTransmittalReq"] <span class="text-danger">*</span></label><input name="vendorTransmittalNo" class="form-control form-control-sm" required /></div>
+            <div class="col-md-2"><label class="form-label small">@Localizer["Vd_VendorIssuedDate"]</label><input name="vendorActualIssuedDate" type="date" class="form-control form-control-sm" /></div>
             <div class="col-md-2">
-                <label class="form-label small">POI</label>
+                <label class="form-label small">@Localizer["Vd_Poi"]</label>
                 @* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۶.۱ - همین لیست دقیقاً در
                    EngineeringDocuments/Edit.cshtml (فیلد IssuePurpose) هم تکرار شده؛ اگر این‌جا تغییر داد آن‌جا را هم به‌روزرسانی کنید. *@
                 <select name="purposeOfIssueCode" class="form-select form-select-sm">
@@ -600,13 +605,13 @@
                     <option value="IFR">IFR</option>
                     <option value="IFI">IFI</option>
                     <option value="FI">FI</option>
-                    <option value="AB">AB (legacy)</option>
-                    <option value="AFD">AFD (legacy)</option>
+                    <option value="AB">AB @Localizer["Vd_LegacyTag"]</option>
+                    <option value="AFD">AFD @Localizer["Vd_LegacyTag"]</option>
                 </select>
             </div>
 
             <div class="col-12 mt-2">
-                <label class="form-label small fw-bold">دیسیپلین‌هایی که باید بازبینی کنن (اختیاری)</label>
+                <label class="form-label small fw-bold">@Localizer["Vd_ReviewDisciplines"]</label>
                 <div class="row">
                     @foreach (var d in (IEnumerable<PEMS.Domain.Entities.Discipline>)ViewBag.AllDisciplines)
                     {
@@ -621,7 +626,7 @@
             </div>
 
             <div class="col-12 mt-2">
-                <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-play-fill"></i> شروع بازبینی</button>
+                <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-play-fill"></i> @Localizer["Vd_StartReview"]</button>
             </div>
         </form>
     }
@@ -631,12 +636,12 @@
         var myDisciplineId = ViewBag.MyDisciplineId as int?;
         var myPending = reviewStatus.FirstOrDefault(x => x.DisciplineId == myDisciplineId && x.Status == "Pending");
 
-        <h6 class="small fw-bold">بازبینی موازی دیسیپلین‌ها</h6>
+        <h6 class="small fw-bold">@Localizer["Vd_ParallelReview"]</h6>
         <div class="d-flex flex-wrap gap-2 mb-3">
             @foreach (var r in reviewStatus)
             {
                 var badgeClass = r.Status switch { "Approve" => "bg-success", "Comment" => "bg-warning text-dark", "Reject" => "bg-danger", _ => "bg-secondary" };
-                <span class="badge @badgeClass">@r.DisciplineName: @r.Status</span>
+                <span class="badge @badgeClass">@r.DisciplineName: @VdrUi.Loc(Localizer, "St_", r.Status)</span>
             }
         </div>
 
@@ -646,10 +651,10 @@
                 <form asp-action="DisciplineRespond" method="post" class="d-inline">
                     <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                     <input type="hidden" name="decision" value="Approve" />
-                    <button class="btn btn-success btn-sm">Approve</button>
+                    <button class="btn btn-success btn-sm">@Localizer["Vd_Approve"]</button>
                 </form>
-                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#vdrCommentModal">Comment</button>
-                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#vdrRejectModal">Reject</button>
+                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#vdrCommentModal">@Localizer["Vd_CommentBtn"]</button>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#vdrRejectModal">@Localizer["Vd_RejectBtn"]</button>
             </div>
 
             <div class="modal fade" id="vdrCommentModal" tabindex="-1">
@@ -657,11 +662,11 @@
                     <form asp-action="DisciplineRespond" method="post">
                         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                         <input type="hidden" name="decision" value="Comment" />
-                        <div class="modal-header"><h6 class="modal-title">ثبت کامنت</h6></div>
+                        <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_RecordComment"]</h6></div>
                         <div class="modal-body"><textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea></div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                            <button type="submit" class="btn btn-warning btn-sm">ثبت</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</button>
+                            <button type="submit" class="btn btn-warning btn-sm">@Localizer["Vd_Submit"]</button>
                         </div>
                     </form>
                 </div></div>
@@ -671,11 +676,11 @@
                     <form asp-action="DisciplineRespond" method="post">
                         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                         <input type="hidden" name="decision" value="Reject" />
-                        <div class="modal-header"><h6 class="modal-title">رد کردن</h6></div>
+                        <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_RejectTitle"]</h6></div>
                         <div class="modal-body"><textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea></div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                            <button type="submit" class="btn btn-danger btn-sm">رد کن</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</button>
+                            <button type="submit" class="btn btn-danger btn-sm">@Localizer["Vd_RejectBtn"]</button>
                         </div>
                     </form>
                 </div></div>
@@ -683,41 +688,41 @@
         }
         else
         {
-            <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> منتظر پاسخ سایر دیسیپلین‌ها</span>
+            <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> @Localizer["Vd_WaitingOthers"]</span>
         }
     }
     else if (currentStageName == "LeadReview")
     {
-        <h6 class="small fw-bold">تصمیم نهایی بازبینی</h6>
+        <h6 class="small fw-bold">@Localizer["Vd_FinalDecision"]</h6>
         <form asp-action="LeadReview" method="post" class="row g-2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
             <div class="col-md-3">
-                <label class="form-label small">Review Category</label>
+                <label class="form-label small">@Localizer["Vd_ReviewCategory"]</label>
                 <select name="reviewCategory" class="form-select form-select-sm" required>
-                    <option value="AP">AP - Approved</option>
-                    <option value="NC">NC - No Comment</option>
-                    <option value="AC">AC - Accepted w/ Comments</option>
-                    <option value="CO">CO - Comments (Resubmit)</option>
-                    <option value="RE">RE - Rejected</option>
+                    <option value="AP">@Localizer["Vd_Cat_AP"]</option>
+                    <option value="NC">@Localizer["Vd_Cat_NC"]</option>
+                    <option value="AC">@Localizer["Vd_Cat_AC"]</option>
+                    <option value="CO">@Localizer["Vd_Cat_CO"]</option>
+                    <option value="RE">@Localizer["Vd_Cat_RE"]</option>
                 </select>
             </div>
-            <div class="col-md-3"><label class="form-label small">Comment Sheet No</label><input name="clientCommentSheetNo" class="form-control form-control-sm" /></div>
-            <div class="col-md-3"><label class="form-label small">Comment Date</label><input name="clientCommentDate" type="date" class="form-control form-control-sm" /></div>
+            <div class="col-md-3"><label class="form-label small">@Localizer["Vd_CommentSheetNo"]</label><input name="clientCommentSheetNo" class="form-control form-control-sm" /></div>
+            <div class="col-md-3"><label class="form-label small">@Localizer["Vd_CommentDate"]</label><input name="clientCommentDate" type="date" class="form-control form-control-sm" /></div>
             <div class="col-md-3 d-flex align-items-end">
-                <button type="submit" class="btn btn-sm btn-pems-solid w-100">ثبت تصمیم نهایی</button>
+                <button type="submit" class="btn btn-sm btn-pems-solid w-100">@Localizer["Vd_RecordFinal"]</button>
             </div>
         </form>
     }
     else if (currentStageName == "ReturnToVendor")
     {
-        <h6 class="small fw-bold">بازگشت رسمی به وندور</h6>
-        <p class="text-muted small">با ثبت، یک نامه‌ی خروجی رسمی خودکار برای وندور ساخته می‌شه.</p>
+        <h6 class="small fw-bold">@Localizer["Vd_FormalReturn"]</h6>
+        <p class="text-muted small">@Localizer["Vd_ReturnHint"]</p>
         <form asp-action="ReturnToVendor" method="post" class="row g-2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-            <div class="col-md-4"><label class="form-label small">Reply Sheet No</label><input name="replySheetNo" class="form-control form-control-sm" /></div>
-            <div class="col-md-4"><label class="form-label small">Client Transmittal No</label><input name="clientTransmittalNo" class="form-control form-control-sm" /></div>
+            <div class="col-md-4"><label class="form-label small">@Localizer["Vd_ReplySheetNo"]</label><input name="replySheetNo" class="form-control form-control-sm" /></div>
+            <div class="col-md-4"><label class="form-label small">@Localizer["Vd_ClientTransmittalNo"]</label><input name="clientTransmittalNo" class="form-control form-control-sm" /></div>
             <div class="col-md-4 d-flex align-items-end">
-                <button type="submit" class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-send"></i> بازگشت به وندور</button>
+                <button type="submit" class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-send"></i> @Localizer["Vd_ReturnToVendor"]</button>
             </div>
         </form>
     }
@@ -725,17 +730,17 @@
 
 @* تاریخچه‌ی واقعی گردش‌کار از موتور عمومی (نه فقط رشته‌ی خلاصه‌ی وضعیت) *@
 <div class="content-card">
-    <h6 class="mb-3"><i class="bi bi-clock-history"></i> Workflow History</h6>
+    <h6 class="mb-3"><i class="bi bi-clock-history"></i> @Localizer["Vd_WorkflowHistory"]</h6>
     @if (workflowHistory.Any())
     {
         <table class="table table-enterprise mb-0">
-            <thead><tr><th>From</th><th>To</th><th>Action</th><th>Decision</th><th>Comment</th><th>Date</th></tr></thead>
+            <thead><tr><th>@Localizer["Vd_From"]</th><th>@Localizer["Vd_To"]</th><th>@Localizer["Vd_Action"]</th><th>@Localizer["Vd_Decision"]</th><th>@Localizer["Vd_Comment"]</th><th>@Localizer["Vd_Date"]</th></tr></thead>
             <tbody>
                 @foreach (var h in workflowHistory.OrderByDescending(x => x.ActionDate))
                 {
                     <tr>
-                        <td class="small">@h.FromStageName</td>
-                        <td class="small">@h.ToStageName</td>
+                        <td class="small">@VdrUi.Loc(Localizer, "Vd_Stage_", h.FromStageName)</td>
+                        <td class="small">@VdrUi.Loc(Localizer, "Vd_Stage_", h.ToStageName)</td>
                         <td><span class="badge bg-secondary">@h.ActionType</span></td>
                         <td class="small">@h.Decision</td>
                         <td class="small">@h.Comment</td>
@@ -747,7 +752,7 @@
     }
     else
     {
-        <p class="text-muted text-center py-4 mb-0">هنوز هیچ گردش‌کاری برای این مدرک شروع نشده.</p>
+        <p class="text-muted text-center py-4 mb-0">@Localizer["Vd_NoWorkflowYet"]</p>
     }
 </div>
 </div>
@@ -755,11 +760,11 @@
 @* ===================== Correspondence ===================== *@
 <div class="tab-pane fade" id="tab-correspondence" role="tabpanel">
 <div class="content-card">
-    <h6 class="mb-3"><i class="bi bi-envelope-paper"></i> Related Correspondence</h6>
+    <h6 class="mb-3"><i class="bi bi-envelope-paper"></i> @Localizer["Vd_RelatedCorr"]</h6>
     @if (relatedLetters.Any())
     {
         <table class="table table-enterprise">
-            <thead><tr><th>Type</th><th>Letter No</th><th>Subject</th><th>Date</th><th>Status</th><th></th></tr></thead>
+            <thead><tr><th>@Localizer["Vd_Type"]</th><th>@Localizer["Vd_LetterNo"]</th><th>@Localizer["Vd_Subject"]</th><th>@Localizer["Vd_Date"]</th><th>@Localizer["Vd_Status"]</th><th></th></tr></thead>
             <tbody>
                 @foreach (var l in relatedLetters)
                 {
@@ -777,10 +782,13 @@
     }
     else
     {
-        <p class="text-muted text-center py-4 mb-0">هنوز هیچ مکاتبه‌ای به این مدرک وصل نشده - وقتی مرحله‌ی ReturnToVendor انجام بشه، خودکار یک نامه‌ی خروجی این‌جا ظاهر می‌شه.</p>
+        <p class="text-muted text-center py-4 mb-0">@Localizer["Vd_NoCorr"]</p>
     }
 </div>
 </div>
 
 </div>
 @* پایان tab-content *@
+
+</div>
+@* پایان vs-page *@

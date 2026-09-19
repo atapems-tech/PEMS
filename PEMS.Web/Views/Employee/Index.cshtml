@@ -37,7 +37,6 @@
     </form>
     <div class="d-flex gap-2 mt-2">
         <a asp-action="Export" class="btn btn-sm btn-outline-primary"><i class="bi bi-file-earmark-excel"></i> Export</a>
-        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#importEmpModal"><i class="bi bi-upload"></i> Import</button>
     </div>
 </div>
 
@@ -111,24 +110,6 @@
         });
     </script>
 }
-
-<div class="modal fade" id="importEmpModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form asp-action="Import" method="post" enctype="multipart/form-data">
-                <div class="modal-header"><h6 class="modal-title">Import Employees</h6></div>
-                <div class="modal-body">
-                    <p class="text-muted small">فایل اکسل با همون ستون‌بندی خروجی Export - ردیف‌های با کد پرسنلی تکراری رد می‌شوند.</p>
-                    <input type="file" name="file" class="form-control" accept=".xlsx" required />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-pems-solid">Import</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <div class="modal fade" id="createEmpModal" tabindex="-1">
     <div class="modal-dialog modal-lg">

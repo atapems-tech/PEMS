@@ -1,36 +1,44 @@
 ﻿@model List<PEMS.Application.DTOs.VDRImportBatchDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
 }
 
 
+<div class="vs-page">
+
+<div class="vs-stepper">
+    <div class="vs-stepper__item vs-stepper__item--active"><span class="vs-stepper__num">1</span>@Localizer["Vs_StepUpload"]</div>
+    <div class="vs-stepper__item "><span class="vs-stepper__num">2</span>@Localizer["Vs_StepReview"]</div>
+    <div class="vs-stepper__item "><span class="vs-stepper__num">3</span>@Localizer["Vs_StepCommit"]</div>
+</div>
+
 <div class="content-card mb-3" style="max-width:700px;">
-    <p class="text-muted">
-        فایل اکسل VDR فعلی سازمان را آپلود کنید. سیستم آن را می‌خواند، اعتبارسنجی و بررسی موارد
-        تکراری می‌کند، ولی هیچ داده‌ای وارد جداول اصلی نمی‌شود تا شما در صفحه‌ی بعد آن را تایید کنید.
-    </p>
+    <p class="text-muted small">@Localizer["Vs_ImportSub"]</p>
     <form asp-action="Upload" method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
         <div class="col-md-5">
-            <label class="form-label small">Project</label>
+            <label class="form-label small">@Localizer["Vs_Project"]</label>
             <select name="projectId" class="form-select" required>
                 @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
             </select>
         </div>
         <div class="col-md-5">
-            <label class="form-label small">VDR Excel File</label>
+            <label class="form-label small">@Localizer["Vs_ExcelFile"]</label>
             <input type="file" name="file" class="form-control" accept=".xlsx" required />
         </div>
         <div class="col-md-2">
-            <button type="submit" class="btn btn-pems-solid w-100"><i class="bi bi-cloud-upload"></i> Upload</button>
+            <button type="submit" class="btn btn-pems-solid w-100"><i class="bi bi-cloud-upload"></i> @Localizer["Vs_Upload"]</button>
         </div>
     </form>
 </div>
 
 <div class="content-card">
-    <h6 class="mb-3">Recent Import Batches</h6>
+    <h6 class="mb-3">@Localizer["Vs_RecentImports"]</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
     <table class="table table-enterprise">
-        <thead><tr><th>File</th><th>Project</th><th>Date</th><th>Total</th><th>Valid</th><th>Warning</th><th>Error</th><th>Duplicate</th><th>Status</th><th></th></tr></thead>
+        <thead><tr><th>@Localizer["Vs_File"]</th><th>@Localizer["Vs_Project"]</th><th>@Localizer["Vs_Date"]</th><th>@Localizer["Total"]</th><th>@Localizer["Vs_Valid"]</th><th>@Localizer["Vs_Warning"]</th><th>@Localizer["Vs_Error"]</th><th>@Localizer["Vs_Duplicate"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
         <tbody>
             @foreach (var b in Model)
             {
@@ -55,5 +63,12 @@
         </tbody>
     </table>
     </div>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4">No imports yet.</p> }
+    @if (!Model.Any()) { <p class="text-muted text-center py-4">@Localizer["Vs_NoImports"]</p> }
 </div>
+
+</div>
+
+@{ ViewData["Title"] = Localizer["Vs_ImportTitle"].Value; }
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-vdr.css" asp-append-version="true" />
+}

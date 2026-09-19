@@ -25,6 +25,11 @@ public interface IEngineeringDocumentRepository
     // "نامحدود").
     Task<PagedResult<EngineeringDocument>> GetPagedAsync(EngineeringDocumentListFilter filter, bool restrictToDiscipline, int? disciplineId);
 
+    // Export: دقیقاً همان فیلتر/محدودیت دیسیپلین Index (ApplyFilters) ولی بدون صفحه‌بندی و با سقف ردیف -
+    // TotalMatching تعداد واقعی است (اگر > maxRows، Items خالی می‌ماند تا فراخوان خطای «بیش از سقف» بدهد).
+    Task<(List<EngineeringDocument> Items, int TotalMatching)> GetAllMatchingAsync(
+        EngineeringDocumentListFilter filter, bool restrictToDiscipline, int? disciplineId, int maxRows);
+
     Task<EngineeringDocumentSummaryCountsDto> GetSummaryCountsAsync(bool restrictToDiscipline, int? disciplineId);
 
     // طبق Phase E-05C (E-05B §9 Quality Model): RevisionCount/RejectionCount/FirstPassApproved

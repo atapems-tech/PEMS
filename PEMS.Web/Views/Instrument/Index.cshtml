@@ -23,9 +23,6 @@
                     <i class="bi bi-plus-lg"></i> New Instrument
                 </button>
                 <div class="d-flex gap-2 justify-content-center">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#importInstrumentModal">
-                        <i class="bi bi-upload"></i> Import
-                    </button>
                     <a asp-action="Export" class="btn btn-outline-secondary btn-sm"><i class="bi bi-download"></i> Export</a>
                 </div>
             </div>
@@ -115,24 +112,6 @@
         });
     </script>
 }
-
-<div class="modal fade" id="importInstrumentModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form asp-action="Import" method="post" enctype="multipart/form-data">
-                <div class="modal-header"><h6 class="modal-title">Import Instruments</h6></div>
-                <div class="modal-body">
-                    <p class="text-muted small">فایل اکسل با همون ستون‌بندی خروجی Export (Equipment, InstrumentType, LoopNumber, System, ..., CalibrationInterval). تگ تجهیز باید از قبل در Equipment ثبت شده باشد؛ تگ‌های پیدا نشده رد می‌شوند.</p>
-                    <input type="file" name="file" class="form-control" accept=".xlsx" required />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-pems-solid">Import</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <div class="modal fade" id="createInstrumentModal" tabindex="-1">
     <div class="modal-dialog modal-lg">

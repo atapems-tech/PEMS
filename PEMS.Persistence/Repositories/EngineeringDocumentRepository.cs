@@ -75,6 +75,29 @@ public class EngineeringDocumentRepository
 
     // طبق Phase E-03 (رفع P1 ممیزی Performance): فقط Include هایی که Index.cshtml واقعاً
     // نمایش می‌دهد (Discipline/Project) - Attachments/Equipment/Contract فقط در Details لازم‌اند.
+    public async Task<(List<EngineeringDocument> Items, int TotalMatching)> GetAllMatchingAsync(
+        EngineeringDocumentListFilter filter, bool restrictToDiscipline, int? disciplineId, int maxRows)
+    {
+        var query = _context.EngineeringDocuments
+            .AsNoTracking()
+            .Where(x => x.IsActive)
+            .Include(x => x.Discipline)
+            .Include(x => x.Project)
+            .AsQueryable();
+
+        query = ApplyFilters(query, filter, restrictToDiscipline, disciplineId);
+
+        var total = await query.CountAsync();
+        if (total > maxRows) return (new List<EngineeringDocument>(), total);
+
+        var items = await query
+            .OrderByDescending(x => x.CreatedDate)
+            .ThenByDescending(x => x.DocumentId)
+            .ToListAsync();
+
+        return (items, total);
+    }
+
     public async Task<PagedResult<EngineeringDocument>> GetPagedAsync(
         EngineeringDocumentListFilter filter, bool restrictToDiscipline, int? disciplineId)
     {
@@ -379,6 +402,7 @@ public class EngineeringDocumentRepository
         Status = x.Status,
         RevisionNo = x.RevisionNo ?? "00",
         Area = x.Area,
+        IssuePurpose = x.IssuePurpose,
         CommentStatus = x.CommentStatus,
         IsFrozen = x.IsFrozen,
         PlannedDate = x.PlannedDate,

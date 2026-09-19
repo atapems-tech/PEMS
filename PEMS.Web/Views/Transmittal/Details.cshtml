@@ -1,18 +1,25 @@
 @model PEMS.Application.DTOs.TransmittalDto
-@{
-    var statusBadge = Model.Status switch { "Sent" => "bg-success", "Acknowledged" => "bg-info text-dark", "Cancelled" => "bg-danger", _ => "bg-secondary" };
-}
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@using PEMS.Web.Helpers
+@{ ViewData["Title"] = Model.TransmittalNo; }
+
+<div class="vs-page">
+
+<div class="vs-header">
+    <span class="vs-pill @VdrUi.TransmittalTone(Model.Status)">@VdrUi.Loc(Localizer, "St_", Model.Status)</span>
+    <a asp-action="Index" class="vs-btn vs-btn--sm"><i class="bi bi-arrow-left"></i> @Localizer["Vs_Back"]</a>
+</div>
 
 <div class="content-card mb-3">
     <div class="row g-3">
-        <div class="col-md-3"><strong>Transmittal No:</strong> @Model.TransmittalNo</div>
-        <div class="col-md-3"><strong>Project:</strong> @Model.ProjectName</div>
-        <div class="col-md-3"><strong>From:</strong> @Model.From</div>
-        <div class="col-md-3"><strong>To:</strong> @Model.To</div>
-        <div class="col-md-3"><strong>Purpose:</strong> @Model.Purpose</div>
-        <div class="col-md-3"><strong>Status:</strong> <span class="badge @statusBadge">@Model.Status</span></div>
-        <div class="col-md-3"><strong>Created:</strong> @Model.TransmittalDate.ToString("yyyy-MM-dd")</div>
-        <div class="col-md-3"><strong>Sent:</strong> @(Model.SentDate?.ToString("yyyy-MM-dd") ?? "-")</div>
+        <div class="col-md-3"><strong>@Localizer["Vs_Project"]:</strong> @Model.ProjectName</div>
+        <div class="col-md-3"><strong>@Localizer["Vs_From"]:</strong> @Model.From</div>
+        <div class="col-md-3"><strong>@Localizer["Vs_To"]:</strong> @Model.To</div>
+        <div class="col-md-3"><strong>@Localizer["Vs_Purpose"]:</strong> @Model.Purpose</div>
+        <div class="col-md-3"><strong>@Localizer["Td_Created"]:</strong> @Model.TransmittalDate.ToString("yyyy-MM-dd")</div>
+        <div class="col-md-3"><strong>@Localizer["Td_Sent"]:</strong> @(Model.SentDate?.ToString("yyyy-MM-dd") ?? "-")</div>
     </div>
 
     @if (!string.IsNullOrEmpty(Model.Description))
@@ -23,14 +30,14 @@
     @if (Model.SupersedesTransmittalId.HasValue)
     {
         <p class="small text-muted">
-            <i class="bi bi-arrow-return-right"></i> Reissued from
+            <i class="bi bi-arrow-return-right"></i> @Localizer["Td_ReissuedFrom"]
             <a asp-action="Details" asp-route-id="@Model.SupersedesTransmittalId">@Model.SupersedesTransmittalNo</a>
         </p>
     }
     @if (Model.SupersededByTransmittalId.HasValue)
     {
         <p class="small text-muted">
-            <i class="bi bi-arrow-return-right"></i> Superseded by
+            <i class="bi bi-arrow-return-right"></i> @Localizer["Td_SupersededBy"]
             <a asp-action="Details" asp-route-id="@Model.SupersededByTransmittalId">@Model.SupersededByTransmittalNo</a>
         </p>
     }
@@ -38,7 +45,7 @@
     @if (Model.Status == "Cancelled")
     {
         <div class="alert alert-danger py-2 px-3 small mb-2">
-            Cancelled @Model.CancelledDate?.ToString("yyyy-MM-dd") - @Model.CancelledReason
+            @Localizer["Td_Cancelled"] @Model.CancelledDate?.ToString("yyyy-MM-dd") - @Model.CancelledReason
         </div>
     }
 
@@ -48,17 +55,17 @@
             @if (Model.ResponseRequired)
             {
                 <div>
-                    <label class="form-label small mb-0">Response due (working days)</label>
+                    <label class="form-label small mb-0">@Localizer["Td_ResponseDueDays"]</label>
                     <input name="responseDueWorkingDays" type="number" value="10" min="1" class="form-control form-control-sm" style="width:100px;" />
                 </div>
             }
             @if ((bool)(ViewBag.CanIssue ?? false))
             {
-                <button class="btn btn-sm btn-pems-solid"><i class="bi bi-send"></i> Mark as Sent (Issue)</button>
+                <button class="btn btn-sm btn-pems-solid"><i class="bi bi-send"></i> @Localizer["Td_MarkSent"]</button>
             }
             else
             {
-                <span class="text-muted small">You do not have permission to issue transmittals.</span>
+                <span class="text-muted small">@Localizer["Td_NoIssuePerm"]</span>
             }
         </form>
     }
@@ -66,41 +73,40 @@
     @if (Model.Status == "Sent" || Model.Status == "Acknowledged")
     {
         <div class="alert alert-secondary py-2 px-3 small mt-2 mb-2">
-            <i class="bi bi-lock"></i> This transmittal has been issued - number, documents, recipients and issue purpose are locked.
-            To correct it, cancel and reissue.
+            <i class="bi bi-lock"></i> @Localizer["Td_Locked"]
         </div>
 
         @if ((bool)(ViewBag.CanCancel ?? false))
         {
             <form asp-action="Cancel" asp-route-id="@Model.TransmittalId" method="post" class="d-flex gap-2 align-items-end mt-2">
                 <div class="flex-grow-1">
-                    <label class="form-label small mb-0">Cancel Reason</label>
+                    <label class="form-label small mb-0">@Localizer["Td_CancelReason"]</label>
                     <input name="reason" class="form-control form-control-sm" required />
                 </div>
-                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle"></i> Cancel</button>
+                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle"></i> @Localizer["Td_CancelBtn"]</button>
             </form>
         }
 
         @if (Model.ResponseRequired)
         {
             <div class="mt-3">
-                <strong>Response Due:</strong> @(Model.ResponseDueDate?.ToString("yyyy-MM-dd") ?? "-")
+                <strong>@Localizer["Td_ResponseDue"]</strong> @(Model.ResponseDueDate?.ToString("yyyy-MM-dd") ?? "-")
                 @if (Model.IsResponseOverdue)
                 {
-                    <span class="badge bg-danger">overdue</span>
+                    <span class="badge bg-danger">@Localizer["Td_Overdue"]</span>
                 }
                 @if (Model.ResponseReceivedDate.HasValue)
                 {
-                    <span class="badge bg-success">received @Model.ResponseReceivedDate.Value.ToString("yyyy-MM-dd")</span>
+                    <span class="badge bg-success">@Localizer["Td_Received"] @Model.ResponseReceivedDate.Value.ToString("yyyy-MM-dd")</span>
                     <div class="small text-muted">@Model.ResponseNote</div>
                 }
                 else if ((bool)(ViewBag.CanRecordResponse ?? false))
                 {
                     <form asp-action="RecordResponse" asp-route-id="@Model.TransmittalId" method="post" class="d-flex gap-2 align-items-end mt-1">
                         <div class="flex-grow-1">
-                            <input name="responseNote" class="form-control form-control-sm" placeholder="Response note (optional)" />
+                            <input name="responseNote" class="form-control form-control-sm" placeholder="@Localizer["Td_ResponseNotePh"]" />
                         </div>
-                        <button class="btn btn-sm btn-outline-primary">Record Response Received</button>
+                        <button class="btn btn-sm btn-outline-primary">@Localizer["Td_RecordResponse"]</button>
                     </form>
                 }
             </div>
@@ -110,15 +116,15 @@
     @if (Model.Status == "Cancelled" && (bool)(ViewBag.CanReissue ?? false))
     {
         <form asp-action="Reissue" asp-route-id="@Model.TransmittalId" method="post" class="mt-2">
-            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-repeat"></i> Reissue as new Draft</button>
+            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-repeat"></i> @Localizer["Td_Reissue"]</button>
         </form>
     }
 </div>
 
 <div class="content-card mb-3">
-    <h6 class="mb-3">Recipients</h6>
+    <h6 class="mb-3">@Localizer["Td_Recipients"]</h6>
     <table class="table table-enterprise">
-        <thead><tr><th>Name</th><th>Type</th><th>Organization</th><th>Response Required</th><th>Acknowledgement</th></tr></thead>
+        <thead><tr><th>@Localizer["Td_Name"]</th><th>@Localizer["Td_Type"]</th><th>@Localizer["Td_Organization"]</th><th>@Localizer["Td_ResponseRequired"]</th><th>@Localizer["Td_Acknowledgement"]</th></tr></thead>
         <tbody>
             @foreach (var r in Model.Recipients)
             {
@@ -126,25 +132,25 @@
                     <td>@r.Name</td>
                     <td>@r.RecipientType</td>
                     <td>@r.Organization</td>
-                    <td>@(r.ResponseRequired ? "Yes" : "")</td>
+                    <td>@(r.ResponseRequired ? Localizer["Td_Yes"].Value : "")</td>
                     <td>
                         @if (r.AcknowledgedAt.HasValue)
                         {
-                            <span class="badge bg-success">Acknowledged @r.AcknowledgedAt.Value.ToString("yyyy-MM-dd")</span>
-                            @if (!string.IsNullOrEmpty(r.AcknowledgedByName)) { <div class="small text-muted">by @r.AcknowledgedByName</div> }
+                            <span class="badge bg-success">@Localizer["Td_Acknowledged"] @r.AcknowledgedAt.Value.ToString("yyyy-MM-dd")</span>
+                            @if (!string.IsNullOrEmpty(r.AcknowledgedByName)) { <div class="small text-muted">@Localizer["Td_By"] @r.AcknowledgedByName</div> }
                             @if (!string.IsNullOrEmpty(r.AcknowledgementNote)) { <div class="small text-muted">@r.AcknowledgementNote</div> }
                         }
                         else if (Model.IsIssued && (bool)(ViewBag.CanRecordResponse ?? false))
                         {
                             <form asp-action="Acknowledge" asp-route-id="@Model.TransmittalId" method="post" class="d-flex gap-1 align-items-center">
                                 <input type="hidden" name="recipientId" value="@r.TransmittalRecipientId" />
-                                <input name="note" class="form-control form-control-sm" placeholder="Note (optional)" style="min-width:140px;" />
-                                <button class="btn btn-sm btn-outline-success" title="Record Acknowledgement"><i class="bi bi-check2"></i></button>
+                                <input name="note" class="form-control form-control-sm" placeholder="@Localizer["Td_NotePh"]" style="min-width:140px;" />
+                                <button class="btn btn-sm btn-outline-success" title="@Localizer["Td_RecordAck"]"><i class="bi bi-check2"></i></button>
                             </form>
                         }
                         else
                         {
-                            <span class="text-muted small">Pending</span>
+                            <span class="text-muted small">@Localizer["Td_Pending"]</span>
                         }
                     </td>
                 </tr>
@@ -153,16 +159,16 @@
     </table>
     @if (!Model.Recipients.Any())
     {
-        <p class="text-muted small mb-0">No structured recipients (legacy free-text "To" field only).</p>
+        <p class="text-muted small mb-0">@Localizer["Td_NoRecipients"]</p>
     }
 </div>
 
 <div class="content-card">
-    <h6 class="mb-3">Included Documents</h6>
+    <h6 class="mb-3">@Localizer["Td_IncludedDocs"]</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
     <table class="table table-enterprise">
         <thead>
-            <tr><th>Document No</th><th>Title</th><th>Revision at time of sending</th><th>File at time of sending</th><th>Remarks</th></tr>
+            <tr><th>@Localizer["Td_DocNo"]</th><th>@Localizer["Td_Title"]</th><th>@Localizer["Td_RevAtSend"]</th><th>@Localizer["Td_FileAtSend"]</th><th>@Localizer["Td_Remarks"]</th></tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Items)
@@ -174,7 +180,7 @@
                     <td class="small">
                         @if (!string.IsNullOrEmpty(item.SnapshotFileName))
                         {
-                            <i class="bi bi-file-earmark-lock text-muted" title="Historical snapshot - not a live link"></i>
+                            <i class="bi bi-file-earmark-lock text-muted" title="@Localizer["Td_Snapshot"]"></i>
                             @item.SnapshotFileName
                             @if (!string.IsNullOrEmpty(item.SnapshotFileHash))
                             {
@@ -183,7 +189,7 @@
                         }
                         else
                         {
-                            <span class="text-muted">No official file was on record at time of sending</span>
+                            <span class="text-muted">@Localizer["Td_NoFile"]</span>
                         }
                     </td>
                     <td>@item.Remarks</td>
@@ -193,3 +199,10 @@
     </table>
     </div>
 </div>
+
+</div>
+
+@{ ViewData["Title"] = Localizer["Vs_TransmittalRegistry"].Value; }
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-vdr.css" asp-append-version="true" />
+}

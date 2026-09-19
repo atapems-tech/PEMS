@@ -36,6 +36,10 @@ public class DocumentUploadController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
+        // Import Center parity: this action has no module permission, so enforce the same role gate that shows the Import Center card
+        if (!PEMS.Web.Security.ImportCatalog.CanUse("DocumentUpload", User))
+            return Forbid();
+
         ViewData["Title"] = "Document Upload";
         ViewData["Section"] = "AI Engineering Intelligence";
 
@@ -49,6 +53,10 @@ public class DocumentUploadController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Upload(int projectId, List<IFormFile> files)
     {
+        // Import Center parity: this action has no module permission, so enforce the same role gate that shows the Import Center card
+        if (!PEMS.Web.Security.ImportCatalog.CanUse("DocumentUpload", User))
+            return Forbid();
+
         if (files == null || !files.Any())
         {
             TempData["Error"] = "Please select at least one file.";

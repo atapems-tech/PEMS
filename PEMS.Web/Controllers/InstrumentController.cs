@@ -522,6 +522,10 @@ public class InstrumentController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Import(IFormFile file)
     {
+        // Import Center parity: this action has no module permission, so enforce the same role gate that shows the Import Center card
+        if (!PEMS.Web.Security.ImportCatalog.CanUse("Instrument", User))
+            return Forbid();
+
         if (file == null || file.Length == 0)
         {
             TempData["Error"] = "فایلی انتخاب نشده.";
