@@ -104,6 +104,13 @@ public class EquipmentController : Controller
         ViewBag.Reliability = await _reliabilityService.GetEquipmentReliabilityAsync(id);
         ViewBag.Inspections = await _inspectionService.GetForEquipmentAsync(id);
 
+        // دکمه‌ی «Work Request جدید» فقط با مجوز واقعیِ Backend نمایش داده می‌شود (Action مقصد هم خودش چک می‌کند)
+        ViewBag.CanCreateWorkRequest = await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "Create");
+        ViewBag.CanViewWorkRequest = await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "View");
+        ViewBag.CanViewWorkOrder = await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View");
+        ViewBag.CanViewStrategy = await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceStrategy", "View");
+        ViewBag.CanViewPlan = await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "View");
+
         // طبق «PEMS Phase 3 — Equipment Classification Completion» بند ۱۶: طبقه‌بندی + هوش
         // نگهداری + پیشنهاد در انتظار بازبینی (در صورت وجود) - در یک بخش جمع‌وجور، نه اضافه‌بار
         // روی صفحه‌ی موجود.

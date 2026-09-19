@@ -1,7 +1,9 @@
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+}
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.WorkRequestListDto>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-clipboard-plus"></i> Work Requests</h5>
+<div class="d-flex justify-content-end align-items-center mb-2">
     <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> New Request</a>
 </div>
 <p class="text-muted small">
@@ -50,21 +52,27 @@
         <tbody>
             @foreach (var wr in Model.Items)
             {
-                var badgeClass = wr.Status switch
+                var tone = wr.Status switch
                 {
-                    "Converted" => "bg-success",
-                    "Rejected" or "Cancelled" => "bg-secondary",
-                    "Approved" or "Planned" => "bg-info text-dark",
-                    _ => "bg-primary"
+                    "Converted" or "Approved" or "Planned" => "vs-pill--success",
+                    "Rejected" => "vs-pill--danger",
+                    "Cancelled" or "Draft" => "vs-pill--neutral",
+                    _ => "vs-pill--info"
                 };
+                var icon = wr.Status switch
+                {
+                    "Draft" => "bi-pencil", "Submitted" => "bi-send", "UnderReview" => "bi-hourglass-split", "Approved" => "bi-check-circle",
+                    "Planned" => "bi-calendar-check", "Converted" => "bi-box-arrow-up-right", "Rejected" => "bi-x-circle", "Cancelled" => "bi-slash-circle", _ => "bi-circle"
+                };
+                var prioTone = wr.Priority switch { "Critical" => "vs-pill--danger", "High" => "vs-pill--warning", _ => "vs-pill--neutral" };
                 <tr>
-                    <td class="small fw-bold"><a asp-action="Details" asp-route-id="@wr.WorkRequestId">@wr.RequestNumber</a></td>
+                    <td class="small fw-bold vs-num"><a asp-action="Details" asp-route-id="@wr.WorkRequestId">@wr.RequestNumber</a></td>
                     <td class="small">@wr.Title</td>
-                    <td class="small">@(wr.EquipmentTagNumber ?? "-")</td>
-                    <td class="small">@wr.Priority</td>
-                    <td><span class="badge @badgeClass">@wr.Status</span></td>
+                    <td class="small vs-num">@(wr.EquipmentTagNumber ?? "-")</td>
+                    <td><span class="vs-pill @prioTone">@wr.Priority</span></td>
+                    <td><span class="vs-pill vs-pill--icon @tone"><i class="bi @icon" aria-hidden="true"></i> @wr.Status</span></td>
                     <td class="small">@wr.RequestedByName</td>
-                    <td class="small">@wr.RequestedDate.ToString("yyyy-MM-dd")</td>
+                    <td class="small vs-num">@wr.RequestedDate.ToString("yyyy-MM-dd")</td>
                 </tr>
             }
         </tbody>

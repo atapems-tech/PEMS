@@ -156,31 +156,18 @@
     <div class="pems-shell">
         <partial name="_SidebarMenu" />
         <main class="pems-content">
-            @* طبق «PEMS — Engineering Documents Upper-Whitespace Correction»: برخی صفحات (مثلاً
-               Engineering Documents/Details) از قبل هدر اختصاصی خودشان (Breadcrumb محلی + کارت
-               هویت مدرک) را دارند که همون متن ViewData["Title"] را دقیق‌تر/مفیدتر نشان می‌دهند -
-               این H1 عمومی برای آن‌ها صرفاً تکرار همان متن با فونت درشت‌تر است، نه اطلاعات جدید.
-               پیش‌فرض این پرچم false می‌ماند (یعنی رفتار همه‌ی صفحات دیگر دقیقاً مثل قبل است) -
-               فقط صفحاتی که صریحاً ViewData["HidePageTitle"]=true تنظیم کنند این H1 را نمی‌بینند. *@
-            @{ var hidePageTitle = ViewData["HidePageTitle"] is true; }
+            @* هدر عمومی صفحه: فقط یک ردیف فشرده (عنوان + برچسب ماژول) - بدون مسیر/URL و بدون Breadcrumb تکراری.
+               صفحاتی که هدر اختصاصی دارند ViewData["HidePageTitle"]=true می‌گذارند. *@
             @if (isAdminArea)
             {
                 <div class="admin-ui-surface">
-                    <partial name="_Breadcrumb" />
-                    @if (ViewData["Title"] != null && !hidePageTitle)
-                    {
-                        <h1 class="pems-page-title">@ViewData["Title"]</h1>
-                    }
+                    <partial name="_PageHeader" />
                     @RenderBody()
                 </div>
             }
             else
             {
-                <partial name="_Breadcrumb" />
-                @if (ViewData["Title"] != null && !hidePageTitle)
-                {
-                    <h1 class="pems-page-title">@ViewData["Title"]</h1>
-                }
+                <partial name="_PageHeader" />
                 @RenderBody()
             }
         </main>

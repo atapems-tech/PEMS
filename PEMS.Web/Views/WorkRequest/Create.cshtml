@@ -11,8 +11,8 @@
             <div class="col-12">
                 <label class="form-label">Equipment (optional)</label>
                 <input type="text" class="form-control" placeholder="جستجوی تگ، نام..."
-                       data-pems-search data-search-type="Equipment" data-search-hidden="#wrEquipmentIdHidden" autocomplete="off" />
-                <input type="hidden" name="equipmentId" id="wrEquipmentIdHidden" />
+                       data-pems-search data-search-type="Equipment" data-search-hidden="#wrEquipmentIdHidden" autocomplete="off" value="@ViewBag.PrefillEquipmentText" />
+                <input type="hidden" name="equipmentId" id="wrEquipmentIdHidden" value="@ViewBag.PrefillEquipmentId" />
                 <div class="form-text small">اگر مشکل به یک تجهیز مشخص وصل نیست، خالی بگذار و فقط Functional Location را انتخاب کن.</div>
             </div>
 

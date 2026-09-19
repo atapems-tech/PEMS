@@ -1,6 +1,7 @@
 /* =============================================================================
-   PEMS Vendor / VDR - Stitch design system (vdr_management_dashboard, vdr_package_detail,
-   supplier_directory, transmittal_management, quick_config_vdr_mdr_bulk_import_wizard).
+   PEMS document-workspace design system (.vs-*): shared by Vendor/VDR/Transmittal (Stitch-based) and
+   Engineering Documents (register + document workspace). Reusable pieces: .vs-header, .vs-panel, .vs-pill,
+   .vs-chips, .vs-filters, .vs-info, .vs-tracker, .vs-doc-*, .vs-subnav, .vs-num, .vs-toolbar, .vs-bulkbar.
    Presentation only: uses the existing --pems-* theme tokens (so dark/other themes still work)
    and CSS logical properties (so English LTR and Persian RTL both mirror correctly).
    Everything is namespaced under .vs-* / .vs-page and does not affect other modules.
@@ -28,7 +29,7 @@
     border: 1px solid var(--vs-border); background: var(--pems-surface); color: var(--pems-text); font-weight: 600; font-size: 13.5px;
     text-decoration: none; cursor: pointer; transition: border-color .15s, color .15s, opacity .15s; line-height: 20px; }
 .vs-btn:hover { border-color: var(--vs-accent); color: var(--vs-accent); }
-.vs-btn--primary { background: linear-gradient(90deg, var(--vs-accent), var(--vs-accent-dark)); border-color: transparent; color: #fff; }
+.vs-btn--primary { background: var(--vs-accent-dark); border-color: transparent; color: #fff; }
 .vs-btn--primary:hover { color: #fff; opacity: .9; border-color: transparent; }
 .vs-btn--danger:hover { border-color: #ba1a1a; color: #ba1a1a; }
 .vs-btn--sm { padding: 4px 10px; font-size: 12px; }
@@ -166,3 +167,71 @@
     .vs-filters > div { flex: 1 1 100%; }
     .vs-filters__end { margin-inline-start: 0; }
 }
+
+/* ---------- document workspace additions (Engineering Documents) ---------- */
+/* technical identifiers (document numbers, revisions, codes) stay left-to-right and readable inside RTL text */
+.vs-num { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; direction: ltr; unicode-bidi: isolate; display: inline-block; font-variant-numeric: tabular-nums; }
+.vs-num--strong { font-weight: 700; color: var(--pems-text); }
+
+/* module sub-navigation: underline links instead of a row of buttons */
+.vs-subnav { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid var(--vs-border); margin-block-end: 12px; }
+.vs-subnav a { padding: 8px 12px; font-weight: 600; font-size: 13px; color: var(--vs-muted); text-decoration: none; border-bottom: 2px solid transparent; margin-block-end: -1px; }
+.vs-subnav a:hover { color: var(--vs-accent); }
+.vs-subnav a.active { color: var(--pems-text); border-bottom-color: var(--vs-accent); }
+.vs-subnav a:focus-visible, .vs-btn:focus-visible, .vs-icon-btn:focus-visible, .vs-page a:focus-visible, .vs-page button:focus-visible { outline: 2px solid var(--vs-accent); outline-offset: 2px; }
+
+/* single toolbar row: search + filter + primary actions */
+.vs-toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-block-end: 10px; }
+.vs-toolbar .pems-search-bar { flex: 1 1 280px; min-width: 200px; }
+.vs-toolbar__end { display: flex; gap: 8px; align-items: center; margin-inline-start: auto; }
+
+/* icon + text status pill (never colour alone) */
+.vs-pill--icon::before { display: none; }
+.vs-pill i { font-size: 11px; }
+
+/* register table: sticky header, compact rows, secondary line under the title */
+.vs-page .table-scroll-area thead th { position: sticky; top: 0; z-index: 2; }
+.vs-page .table-enterprise.vs-dense tbody td { padding-block: 5px; }
+.vs-sub { display: block; font-size: 11.5px; color: var(--vs-muted); line-height: 1.3; }
+.vs-title-cell { display: block; max-width: 46ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vs-row-actions { display: inline-flex; gap: 4px; align-items: center; justify-content: flex-end; }
+.vs-row-actions .dropdown-menu { font-size: 13px; }
+.vs-row-actions .dropdown-item.text-danger:hover { background: rgba(186, 26, 26, .08); }
+
+/* document header (detail workspace) */
+.vs-doc-head { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px 24px; padding-block-end: 12px; margin-block-end: 12px; border-bottom: 1px solid var(--vs-border); }
+.vs-doc-number { font-size: 22px; line-height: 28px; font-weight: 700; margin: 0; }
+.vs-doc-title { color: var(--pems-text); font-size: 14px; margin-block-start: 2px; overflow-wrap: anywhere; }
+.vs-doc-meta { color: var(--vs-muted); font-size: 12.5px; margin-block-start: 2px; }
+.vs-doc-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.vs-doc-actions .vs-sep { align-self: stretch; width: 1px; background: var(--vs-border); margin-inline: 4px; }
+
+/* revision awareness: current vs superseded */
+.vs-rev-current > td { background: color-mix(in srgb, var(--vs-accent) 9%, transparent) !important; }
+.vs-rev-superseded > td { color: var(--vs-muted); }
+.vs-pill--current { background: var(--vs-navy); color: #fff; }
+.vs-pill--current::before { background: #fff; }
+
+/* bulk-action bar (appears only while rows are selected) */
+.vs-bulkbar { display: none; align-items: center; gap: 12px; padding: 8px 16px; background: var(--vs-navy); color: #fff; border-radius: var(--vs-radius); margin-block-end: 8px; }
+.vs-bulkbar.is-active { display: flex; }
+.vs-bulkbar .vs-btn { background: transparent; color: #fff; border-color: rgba(255,255,255,.4); }
+.vs-bulkbar .vs-btn:hover { border-color: var(--vs-accent); color: var(--vs-accent); }
+
+/* flat sections instead of stacked cards */
+.vs-section { margin-block-end: 20px; }
+.vs-section__title { font-size: 15px; font-weight: 700; margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+.vs-section__title .bi { color: var(--vs-accent); }
+
+@media (prefers-reduced-motion: reduce) { .vs-page * { transition: none !important; animation: none !important; } }
+@media (max-width: 992px) { .vs-page .vs-hide-md { display: none; } }
+
+/* Dangerous secondary action: outlined red, visually separated from the dominant primary */
+.vs-btn--dangerline { color: var(--vs-danger, #b42318); border-color: currentColor; background: transparent; }
+.vs-btn--dangerline:hover { background: rgba(180, 35, 24, .08); color: var(--vs-danger, #b42318); }
+.vs-section > h6 { font-size: 14px; font-weight: 700; }
+.vs-section { margin-block-end: 16px; }
+.vs-page .tab-content > .tab-pane > .vs-section { padding-block-start: 8px; }
+/* .vs-num on a table cell must stay a real table-cell (inline-block breaks row borders) */
+td.vs-num, th.vs-num { display: table-cell; white-space: nowrap; }
+html[dir="rtl"] td.vs-num, html[dir="rtl"] th.vs-num { text-align: right; }

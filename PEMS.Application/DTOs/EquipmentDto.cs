@@ -55,7 +55,20 @@ public class EquipmentPassportDto
 
     public List<MRDto> RelatedMRs { get; set; } = new();
 
+    /// <summary>Work Orderهای اجراشده‌ی این تجهیز (فقط خواندنی) - جدا از درخواست‌ها.</summary>
     public List<WorkOrderSummaryDto> WorkOrders { get; set; } = new();
+
+    /// <summary>
+    /// Maintenance History = درخواست‌های کار (Work Request) ثبت‌شده برای این تجهیز (مستقیم یا از طریق
+    /// Asset همین تجهیز). Work Order فقط از مسیر رسمی Work Request → ConvertToWorkOrder ساخته می‌شود.
+    /// </summary>
+    public List<WorkRequestSummaryDto> WorkRequests { get; set; } = new();
+
+    /// <summary>استراتژی‌های نگهداری تعریف‌شده برای این تجهیز (MaintenanceStrategy.EquipmentId) - فقط خواندنی.</summary>
+    public List<EquipmentStrategySummaryDto> Strategies { get; set; } = new();
+
+    /// <summary>برنامه‌های PM فعال این تجهیز (MaintenancePlan.EquipmentId) - فقط خواندنی.</summary>
+    public List<EquipmentPlanSummaryDto> Plans { get; set; } = new();
 
     // طبق درخواست: کلیک روی شماره P&ID باید مستقیم به مدرک مهندسی متناظر منتقل کند
     public EngineeringDocumentDto? PIDDocument { get; set; }
@@ -109,6 +122,38 @@ public class InstrumentPassportSummaryDto
     public DateTime? LastMaintenanceDate { get; set; }
     public DateTime? NextMaintenanceDue { get; set; }
     public string CurrentStatus { get; set; } = "";
+}
+
+public class EquipmentStrategySummaryDto
+{
+    public int MaintenanceStrategyId { get; set; }
+    public string StrategyType { get; set; } = "";
+    public string RecommendedTriggerType { get; set; } = "";
+    public string? Frequency { get; set; }
+    public string ConsequenceCategory { get; set; } = "";
+}
+
+public class EquipmentPlanSummaryDto
+{
+    public int MaintenancePlanId { get; set; }
+    public string PlanNumber { get; set; } = "";
+    public string Title { get; set; } = "";
+    public string TriggerType { get; set; } = "";
+    public int? IntervalDays { get; set; }
+    public DateTime? LastExecutionDate { get; set; }
+    public DateTime? NextDueDate { get; set; }
+}
+
+public class WorkRequestSummaryDto
+{
+    public int WorkRequestId { get; set; }
+    public string RequestNumber { get; set; } = "";
+    public string Title { get; set; } = "";
+    public string Status { get; set; } = "";
+    public string Priority { get; set; } = "";
+    public DateTime RequestedDate { get; set; }
+    public int? LinkedWorkOrderId { get; set; }
+    public string? LinkedWorkOrderNo { get; set; }
 }
 
 public class WorkOrderSummaryDto

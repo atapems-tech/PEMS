@@ -1,0 +1,16 @@
+@* Global PEMS page header (single source): one compact row = page title + optional muted module label.
+   Rules (docs/design/WORKSPACE_DESIGN_SYSTEM.md): no raw URL / controller-action route / "Dashboard / Section / Title"
+   breadcrumb chain, no duplicated title. The sidebar is the module navigation. Pages that need a parent link
+   provide a local action link in their own header. Pages with their own header set ViewData["HidePageTitle"]=true. *@
+@{
+    var title = ViewData["Title"]?.ToString();
+    var moduleLabel = ViewData["Section"] as string;
+    var showSection = !string.IsNullOrWhiteSpace(moduleLabel) && !string.Equals(moduleLabel, title, StringComparison.OrdinalIgnoreCase);
+}
+@if (!string.IsNullOrWhiteSpace(title) && ViewData["HidePageTitle"] is not true)
+{
+    <div class="pems-page-head">
+        <h1 class="pems-page-title">@title</h1>
+        @if (showSection) { <span class="pems-page-section">@moduleLabel</span> }
+    </div>
+}

@@ -821,3 +821,8 @@ body {
 .pems-doc-page .pems-doc-meta {
     font-size: var(--pems-text-xs);
 }
+
+/* Global page header: one compact row (title + muted module label). Replaces the old breadcrumb chain + duplicate H1. */
+.pems-page-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; margin-bottom: 12px; }
+.pems-page-head .pems-page-title { margin: 0; font-size: 20px; line-height: 28px; }
+.pems-page-section { font-size: 12.5px; color: var(--pems-steel); }

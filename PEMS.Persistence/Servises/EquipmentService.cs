@@ -457,7 +457,51 @@ public class EquipmentService : IEquipmentService
             PlannedOrDueDate = t.RequiredResponseDate
         }).ToList();
 
-        // Maintenance History (Work Orders)
+        // Maintenance History = Work Requests (نه Work Order): درخواست‌هایی که مستقیم به این تجهیز یا
+        // به Asset همین تجهیز وصل‌اند. فقط رکوردهای فعال؛ WorkOrder مرتبط (بعد از تبدیل) فقط برای ردیابی.
+        var assetIds = await _context.Assets.Where(a => a.EquipmentId == equipmentId).Select(a => a.AssetId).ToListAsync();
+        passport.WorkRequests = await _context.WorkRequests
+            .Where(r => r.IsActive && (r.EquipmentId == equipmentId || (r.AssetId != null && assetIds.Contains(r.AssetId.Value))))
+            .OrderByDescending(r => r.RequestedDate).ThenByDescending(r => r.WorkRequestId)
+            .Select(r => new WorkRequestSummaryDto
+            {
+                WorkRequestId = r.WorkRequestId,
+                RequestNumber = r.RequestNumber,
+                Title = r.Title,
+                Status = r.Status,
+                Priority = r.Priority,
+                RequestedDate = r.RequestedDate,
+                LinkedWorkOrderId = r.LinkedWorkOrderId,
+                LinkedWorkOrderNo = r.LinkedWorkOrder != null ? r.LinkedWorkOrder.WorkOrderNumber : null
+            }).ToListAsync();
+
+        // استراتژی + PM: روابط موجود دامنه (EquipmentId مستقیم روی MaintenanceStrategy/MaintenancePlan) - رابطه‌ی جدیدی ساخته نشده
+        passport.Strategies = await _context.MaintenanceStrategies
+            .Where(s => s.EquipmentId == equipmentId && s.IsActive)
+            .OrderBy(s => s.StrategyType)
+            .Select(s => new EquipmentStrategySummaryDto
+            {
+                MaintenanceStrategyId = s.MaintenanceStrategyId,
+                StrategyType = s.StrategyType,
+                RecommendedTriggerType = s.RecommendedTriggerType,
+                Frequency = s.Frequency,
+                ConsequenceCategory = s.ConsequenceCategory
+            }).ToListAsync();
+        passport.Plans = await _context.MaintenancePlans
+            .Where(p => p.EquipmentId == equipmentId && p.IsActive)
+            .OrderBy(p => p.NextDueDate == null).ThenBy(p => p.NextDueDate)
+            .Select(p => new EquipmentPlanSummaryDto
+            {
+                MaintenancePlanId = p.MaintenancePlanId,
+                PlanNumber = p.PlanNumber,
+                Title = p.Title,
+                TriggerType = p.TriggerType,
+                IntervalDays = p.IntervalDays,
+                LastExecutionDate = p.LastExecutionDate,
+                NextDueDate = p.NextDueDate
+            }).ToListAsync();
+
+        // Work Orderهای اجراشده‌ی تجهیز (فقط خواندنی، بخش جداگانه)
         var workOrders = await _context.WorkOrders
             .Where(x => x.EquipmentId == equipmentId)
             .OrderByDescending(x => x.CreatedDate)

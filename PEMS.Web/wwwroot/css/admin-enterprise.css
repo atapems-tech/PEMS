@@ -52,3 +52,4 @@
 [dir="rtl"] .admin-area .admin-actions{justify-content:flex-start}
 [dir="rtl"] .admin-area .admin-hero{flex-direction:row-reverse}
 [dir="rtl"] .admin-area .admin-toolbar{direction:rtl}
+.admin-area .pems-page-head .pems-page-title{font-size:20px;line-height:28px;margin:0}

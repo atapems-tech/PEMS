@@ -58,10 +58,18 @@ public class WorkRequestController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public async Task<IActionResult> Create(int? equipmentId)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "Create"))
             return Forbid();
+
+        // پیش‌پر کردن تجهیز وقتی از Digital Equipment Passport آمده (فقط نمایشی؛ ثبت همچنان از همین Action)
+        if (equipmentId.HasValue)
+        {
+            var eq = await _context.Equipments.Where(e => e.EquipmentId == equipmentId.Value)
+                .Select(e => new { e.EquipmentId, e.TagNumber, e.Name }).FirstOrDefaultAsync();
+            if (eq != null) { ViewBag.PrefillEquipmentId = eq.EquipmentId; ViewBag.PrefillEquipmentText = eq.TagNumber + " — " + eq.Name; }
+        }
 
         ViewData["Title"] = "New Work Request";
         ViewData["Section"] = "CMMS Integration";
