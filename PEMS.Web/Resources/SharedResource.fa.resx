@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"><xsd:import namespace="http://www.w3.org/XML/1998/namespace" /><xsd:element name="root" msdata:IsDataSet="true"><xsd:complexType><xsd:choice maxOccurs="unbounded"><xsd:element name="metadata"><xsd:complexType><xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" /></xsd:sequence><xsd:attribute name="name" use="required" type="xsd:string" /><xsd:attribute name="type" type="xsd:string" /><xsd:attribute name="mimetype" type="xsd:string" /><xsd:attribute ref="xml:space" /></xsd:complexType></xsd:element><xsd:element name="assembly"><xsd:complexType><xsd:attribute name="alias" type="xsd:string" /><xsd:attribute name="name" type="xsd:string" /></xsd:complexType></xsd:element><xsd:element name="data"><xsd:complexType><xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" /><xsd:element name="comment" type="xsd:string" minOccurs="0" /></xsd:sequence><xsd:attribute name="name" type="xsd:string" use="required" /><xsd:attribute ref="xml:space" /></xsd:complexType></xsd:element><xsd:element name="resheader"><xsd:complexType><xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" /></xsd:sequence><xsd:attribute name="name" type="xsd:string" use="required" /></xsd:complexType></xsd:element></xsd:choice></xsd:complexType></xsd:element></xsd:schema>
   <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader><resheader name="version"><value>2.0</value></resheader><resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader><resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
@@ -35,4 +35,298 @@
 <data name="To"><value>به</value></data>
 <data name="New Request"><value>درخواست جدید</value></data>
 <data name="Originating Discipline"><value>دیسیپلین مبدأ</value></data><data name="Responsible Maintenance Discipline"><value>دیسیپلین مسئول نگهداری</value></data><data name="Completion data"><value>اطلاعات تکمیل</value></data><data name="Failure Cause"><value>علت خرابی</value></data><data name="Downtime Hours"><value>ساعت توقف</value></data><data name="Failure Effect"><value>اثر خرابی</value></data><data name="Contractor"><value>پیمانکار</value></data><data name="Contractor Cost"><value>هزینه پیمانکار</value></data><data name="Team"><value>تیم</value></data><data name="Executor"><value>مجری</value></data><data name="Assign"><value>تخصیص</value></data>
+  <data name="(end)" xml:space="preserve">
+    <value>(پایان)</value>
+  </data>
+  <data name="(start)" xml:space="preserve">
+    <value>(شروع)</value>
+  </data>
+  <data name="Access" xml:space="preserve">
+    <value>دسترسی</value>
+  </data>
+  <data name="Add stage" xml:space="preserve">
+    <value>افزودن مرحله</value>
+  </data>
+  <data name="Add transition" xml:space="preserve">
+    <value>افزودن گذار</value>
+  </data>
+  <data name="Approval strategy" xml:space="preserve">
+    <value>راهبرد تأیید</value>
+  </data>
+  <data name="Archived" xml:space="preserve">
+    <value>بایگانی‌شده</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>بازگشت</value>
+  </data>
+  <data name="Binding" xml:space="preserve">
+    <value>اتصال (Binding)</value>
+  </data>
+  <data name="Bindings" xml:space="preserve">
+    <value>اتصال‌ها</value>
+  </data>
+  <data name="Bound" xml:space="preserve">
+    <value>متصل</value>
+  </data>
+  <data name="Bound version" xml:space="preserve">
+    <value>نسخه‌ی متصل</value>
+  </data>
+  <data name="Business status" xml:space="preserve">
+    <value>وضعیت کسب‌وکاری</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>تغییر</value>
+  </data>
+  <data name="Change binding" xml:space="preserve">
+    <value>تغییر اتصال</value>
+  </data>
+  <data name="Change summary" xml:space="preserve">
+    <value>خلاصه‌ی تغییر</value>
+  </data>
+  <data name="Clone" xml:space="preserve">
+    <value>کپی</value>
+  </data>
+  <data name="Clone into a new draft" xml:space="preserve">
+    <value>کپی به یک پیش‌نویس جدید</value>
+  </data>
+  <data name="Condition" xml:space="preserve">
+    <value>شرط</value>
+  </data>
+  <data name="Configuration audit" xml:space="preserve">
+    <value>ممیزی پیکربندی</value>
+  </data>
+  <data name="Context" xml:space="preserve">
+    <value>زمینه</value>
+  </data>
+  <data name="Created by" xml:space="preserve">
+    <value>ایجادکننده</value>
+  </data>
+  <data name="Current version" xml:space="preserve">
+    <value>نسخه‌ی جاری</value>
+  </data>
+  <data name="Definition details" xml:space="preserve">
+    <value>مشخصات تعریف</value>
+  </data>
+  <data name="Discard draft" xml:space="preserve">
+    <value>رها کردن پیش‌نویس</value>
+  </data>
+  <data name="Discard this draft? Its structure is kept for audit but it can no longer be edited." xml:space="preserve">
+    <value>این پیش‌نویس رها شود؟ ساختار آن برای ممیزی می‌ماند اما دیگر قابل ویرایش نیست.</value>
+  </data>
+  <data name="Discarded" xml:space="preserve">
+    <value>رهاشده</value>
+  </data>
+  <data name="Editable" xml:space="preserve">
+    <value>قابل‌ویرایش</value>
+  </data>
+  <data name="Editing or publishing a new workflow version does not alter existing pinned workflow instances." xml:space="preserve">
+    <value>ویرایش یا انتشار نسخه‌ی جدید گردش‌کار، نمونه‌های در جریانِ ثابت‌شده روی نسخه‌ی قبلی را تغییر نمی‌دهد.</value>
+  </data>
+  <data name="Explicit bindings resolve which published version new workflow instances use." xml:space="preserve">
+    <value>اتصال‌های صریح تعیین می‌کنند نمونه‌های جدید گردش‌کار از کدام نسخه‌ی منتشرشده استفاده کنند.</value>
+  </data>
+  <data name="Four-eyes control: the last editor of this draft cannot publish it." xml:space="preserve">
+    <value>کنترل چهارچشمی: آخرین ویرایشگر این پیش‌نویس نمی‌تواند آن را منتشر کند.</value>
+  </data>
+  <data name="I understand and confirm the binding change." xml:space="preserve">
+    <value>تغییر اتصال را متوجه شدم و تأیید می‌کنم.</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>غیرفعال</value>
+  </data>
+  <data name="Initiator cannot perform this action" xml:space="preserve">
+    <value>آغازکننده نمی‌تواند این اقدام را انجام دهد</value>
+  </data>
+  <data name="Label" xml:space="preserve">
+    <value>برچسب</value>
+  </data>
+  <data name="Last editor" xml:space="preserve">
+    <value>آخرین ویرایشگر</value>
+  </data>
+  <data name="Last modified" xml:space="preserve">
+    <value>آخرین تغییر</value>
+  </data>
+  <data name="Last published" xml:space="preserve">
+    <value>آخرین انتشار</value>
+  </data>
+  <data name="Mandatory" xml:space="preserve">
+    <value>اجباری</value>
+  </data>
+  <data name="Minimum approvals" xml:space="preserve">
+    <value>حداقل تأییدها</value>
+  </data>
+  <data name="No Persian name" xml:space="preserve">
+    <value>نام فارسی ندارد</value>
+  </data>
+  <data name="No active binding" xml:space="preserve">
+    <value>اتصال فعال ندارد</value>
+  </data>
+  <data name="No instances have used this workflow." xml:space="preserve">
+    <value>هنوز هیچ نمونه‌ای از این گردش‌کار استفاده نکرده است.</value>
+  </data>
+  <data name="One open draft per workflow: finish or discard v{0} before cloning again." xml:space="preserve">
+    <value>هر گردش‌کار فقط یک پیش‌نویس باز دارد: پیش از کپی دوباره، نسخه‌ی v{0} را تکمیل یا رها کنید.</value>
+  </data>
+  <data name="Only new instances will use the target version. Existing running instances stay pinned to the version they started with; nothing is rewritten. The change is audited." xml:space="preserve">
+    <value>فقط نمونه‌های جدید از نسخه‌ی هدف استفاده می‌کنند. نمونه‌های در جریان روی نسخه‌ی شروعشان می‌مانند و چیزی بازنویسی نمی‌شود. این تغییر ممیزی می‌شود.</value>
+  </data>
+  <data name="Open draft" xml:space="preserve">
+    <value>پیش‌نویس باز</value>
+  </data>
+  <data name="Persian label" xml:space="preserve">
+    <value>برچسب فارسی</value>
+  </data>
+  <data name="Persian name" xml:space="preserve">
+    <value>نام فارسی</value>
+  </data>
+  <data name="Process type" xml:space="preserve">
+    <value>نوع فرآیند</value>
+  </data>
+  <data name="Publish" xml:space="preserve">
+    <value>انتشار</value>
+  </data>
+  <data name="Publish this version? Published versions are immutable." xml:space="preserve">
+    <value>این نسخه منتشر شود؟ نسخه‌های منتشرشده تغییرناپذیرند.</value>
+  </data>
+  <data name="Published version" xml:space="preserve">
+    <value>نسخه‌ی منتشرشده</value>
+  </data>
+  <data name="Recent changes" xml:space="preserve">
+    <value>تغییرات اخیر</value>
+  </data>
+  <data name="Remove stage" xml:space="preserve">
+    <value>حذف مرحله</value>
+  </data>
+  <data name="Remove this stage and its transitions?" xml:space="preserve">
+    <value>این مرحله و گذارهایش حذف شوند؟</value>
+  </data>
+  <data name="Remove this transition?" xml:space="preserve">
+    <value>این گذار حذف شود؟</value>
+  </data>
+  <data name="Remove transition" xml:space="preserve">
+    <value>حذف گذار</value>
+  </data>
+  <data name="Required permission" xml:space="preserve">
+    <value>مجوز لازم</value>
+  </data>
+  <data name="Responsible employee" xml:space="preserve">
+    <value>کارمند مسئول</value>
+  </data>
+  <data name="Responsible role" xml:space="preserve">
+    <value>نقش مسئول</value>
+  </data>
+  <data name="Retire" xml:space="preserve">
+    <value>بازنشسته کردن</value>
+  </data>
+  <data name="Retire this version? Running instances keep using it." xml:space="preserve">
+    <value>این نسخه بازنشسته شود؟ نمونه‌های در جریان همچنان از آن استفاده می‌کنند.</value>
+  </data>
+  <data name="Retired" xml:space="preserve">
+    <value>بازنشسته</value>
+  </data>
+  <data name="Review binding change" xml:space="preserve">
+    <value>بررسی تغییر اتصال</value>
+  </data>
+  <data name="Role name or Permission:Resource.Action" xml:space="preserve">
+    <value>نام نقش یا Permission:Resource.Action</value>
+  </data>
+  <data name="Running instances" xml:space="preserve">
+    <value>نمونه‌های در جریان</value>
+  </data>
+  <data name="Running instances (unchanged)" xml:space="preserve">
+    <value>نمونه‌های در جریان (بدون تغییر)</value>
+  </data>
+  <data name="Save stage" xml:space="preserve">
+    <value>ذخیره‌ی مرحله</value>
+  </data>
+  <data name="Save transition" xml:space="preserve">
+    <value>ذخیره‌ی گذار</value>
+  </data>
+  <data name="Select a stage or a transition in the graph or the tables to inspect or edit it." xml:space="preserve">
+    <value>برای مشاهده یا ویرایش، یک مرحله یا گذار را در گراف یا جدول‌ها انتخاب کنید.</value>
+  </data>
+  <data name="Stage type" xml:space="preserve">
+    <value>نوع مرحله</value>
+  </data>
+  <data name="Stages" xml:space="preserve">
+    <value>مراحل</value>
+  </data>
+  <data name="Target version" xml:space="preserve">
+    <value>نسخه‌ی هدف</value>
+  </data>
+  <data name="This version has no stages yet." xml:space="preserve">
+    <value>این نسخه هنوز مرحله‌ای ندارد.</value>
+  </data>
+  <data name="This version is {0} and immutable. To change the workflow, clone a published version into a draft." xml:space="preserve">
+    <value>این نسخه {0} و تغییرناپذیر است. برای تغییر گردش‌کار، یک نسخه‌ی منتشرشده را به پیش‌نویس کپی کنید.</value>
+  </data>
+  <data name="Timeout (hours)" xml:space="preserve">
+    <value>مهلت (ساعت)</value>
+  </data>
+  <data name="Transition" xml:space="preserve">
+    <value>گذار</value>
+  </data>
+  <data name="Transitions" xml:space="preserve">
+    <value>گذارها</value>
+  </data>
+  <data name="Usage" xml:space="preserve">
+    <value>استفاده</value>
+  </data>
+  <data name="Valid state: legacy modules resolve this definition directly." xml:space="preserve">
+    <value>وضعیت معتبر: ماژول‌های قدیمی این تعریف را مستقیم پیدا می‌کنند.</value>
+  </data>
+  <data name="Validate" xml:space="preserve">
+    <value>اعتبارسنجی</value>
+  </data>
+  <data name="Validate the draft first." xml:space="preserve">
+    <value>ابتدا پیش‌نویس را اعتبارسنجی کنید.</value>
+  </data>
+  <data name="Validated" xml:space="preserve">
+    <value>اعتبارسنجی‌شده</value>
+  </data>
+  <data name="Versions" xml:space="preserve">
+    <value>نسخه‌ها</value>
+  </data>
+  <data name="View Only" xml:space="preserve">
+    <value>فقط مشاهده</value>
+  </data>
+  <data name="View only:" xml:space="preserve">
+    <value>فقط مشاهده:</value>
+  </data>
+  <data name="Workflow Management" xml:space="preserve">
+    <value>مدیریت گردش‌کار</value>
+  </data>
+  <data name="Workflow graph" xml:space="preserve">
+    <value>گراف گردش‌کار</value>
+  </data>
+  <data name="Workflow versions are immutable once published. Editing a workflow means cloning a version into a draft; running instances stay on the version they started with." xml:space="preserve">
+    <value>نسخه‌های گردش‌کار پس از انتشار تغییرناپذیرند. ویرایش یعنی کپی یک نسخه به پیش‌نویس؛ نمونه‌های در جریان روی نسخه‌ی شروعشان می‌مانند.</value>
+  </data>
+  <data name="errors" xml:space="preserve">
+    <value>خطا</value>
+  </data>
+  <data name="forward" xml:space="preserve">
+    <value>رو به جلو</value>
+  </data>
+  <data name="latest published" xml:space="preserve">
+    <value>آخرین منتشرشده</value>
+  </data>
+  <data name="return" xml:space="preserve">
+    <value>بازگشت</value>
+  </data>
+  <data name="shared by all versions" xml:space="preserve">
+    <value>مشترک بین همه‌ی نسخه‌ها</value>
+  </data>
+  <data name="stage(s)" xml:space="preserve">
+    <value>مرحله</value>
+  </data>
+  <data name="transition(s)" xml:space="preserve">
+    <value>گذار</value>
+  </data>
+  <data name="warnings" xml:space="preserve">
+    <value>هشدار</value>
+  </data>
+  <data name="workflow definitions" xml:space="preserve">
+    <value>تعریف گردش‌کار</value>
+  </data>
 </root>

@@ -146,13 +146,37 @@ public class WorkflowDefinitionService : IWorkflowDefinitionService
     }
 
     // ---------------- Draft editing ----------------
-    private async Task<WorkflowVersion> EditableVersionAsync(int versionId, CancellationToken ct)
+    private async Task<WorkflowVersion> EditableVersionAsync(int versionId, CancellationToken ct, byte[]? expectedRowVersion = null)
     {
         var v = await _db.WorkflowVersions.FirstOrDefaultAsync(x => x.WorkflowVersionId == versionId, ct)
                 ?? throw new InvalidOperationException("نسخه یافت نشد.");
         if (WorkflowVersionStatus.IsImmutable(v.Status))
             throw new WorkflowImmutableVersionException($"نسخه‌ی {v.Status} تغییرناپذیر است. یک Draft جدید بسازید (CloneVersion).");
+        UseToken(v, expectedRowVersion);
         return v;
+    }
+
+    /// <summary>
+    /// Concurrency خوشبینانه‌ی Draft: توکن نمایش‌داده‌شده به مدیر، مقدار «اصلی» RowVersion می‌شود و ردیف نسخه در هر ویرایش
+    /// (حتی وقتی فقط مرحله/گذار تغییر کرده) به‌روزرسانی می‌شود تا RowVersion تغییر کند. اگر مدیر دیگری قبلاً ذخیره کرده باشد،
+    /// SaveChanges با DbUpdateConcurrencyException رد می‌شود (بدون رونویسی).
+    /// </summary>
+    private void UseToken(WorkflowVersion v, byte[]? expected)
+    {
+        if (_db is not DbContext ctx) return;
+        var entry = ctx.Entry(v);
+        if (expected != null) entry.Property(x => x.RowVersion).OriginalValue = expected;
+        entry.Property(x => x.ChangeSummary).IsModified = true;
+    }
+
+    private async Task SaveAsync(CancellationToken ct)
+    {
+        try { await _db.SaveChangesAsync(ct); }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            if (_db is DbContext c) c.ChangeTracker.Clear();
+            throw new WorkflowConcurrencyConflictException("این Draft گردش‌کار هم‌زمان توسط مدیر دیگری تغییر کرد؛ صفحه را دوباره بارگذاری کنید. | This workflow draft was changed by another administrator. Reload before continuing.");
+        }
     }
 
     private void ReopenIfValidated(WorkflowVersion v, WorkflowActor actor, string what)
@@ -171,41 +195,41 @@ public class WorkflowDefinitionService : IWorkflowDefinitionService
         s.TimeoutHours = i.TimeoutHours; s.EscalationRole = i.EscalationRole; s.NotificationKey = i.NotificationKey; s.Description = i.Description; s.NameFa = i.NameFa; s.BusinessStatus = i.BusinessStatus;
     }
 
-    public async Task<WorkflowStage> AddStageAsync(int versionId, WorkflowStageInput input, WorkflowActor actor, CancellationToken ct = default)
+    public async Task<WorkflowStage> AddStageAsync(int versionId, WorkflowStageInput input, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null)
     {
-        var v = await EditableVersionAsync(versionId, ct);
+        var v = await EditableVersionAsync(versionId, ct, expectedRowVersion);
         var s = new WorkflowStage { WorkflowVersionId = versionId };
         Apply(s, input);
         _db.WorkflowStages.Add(s);
         ReopenIfValidated(v, actor, $"AddStage:{s.Name}");
-        await _db.SaveChangesAsync(ct);
+        await SaveAsync(ct);
         return s;
     }
 
-    public async Task<WorkflowStage> UpdateStageAsync(int stageId, WorkflowStageInput input, WorkflowActor actor, CancellationToken ct = default)
+    public async Task<WorkflowStage> UpdateStageAsync(int stageId, WorkflowStageInput input, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null)
     {
         var s = await _db.WorkflowStages.FirstOrDefaultAsync(x => x.WorkflowStageId == stageId, ct) ?? throw new InvalidOperationException("مرحله یافت نشد.");
-        var v = await EditableVersionAsync(s.WorkflowVersionId, ct);
+        var v = await EditableVersionAsync(s.WorkflowVersionId, ct, expectedRowVersion);
         Apply(s, input);
         ReopenIfValidated(v, actor, $"UpdateStage:{s.Name}");
-        await _db.SaveChangesAsync(ct);
+        await SaveAsync(ct);
         return s;
     }
 
-    public async Task RemoveStageAsync(int stageId, WorkflowActor actor, CancellationToken ct = default)
+    public async Task RemoveStageAsync(int stageId, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null)
     {
         var s = await _db.WorkflowStages.FirstOrDefaultAsync(x => x.WorkflowStageId == stageId, ct) ?? throw new InvalidOperationException("مرحله یافت نشد.");
-        var v = await EditableVersionAsync(s.WorkflowVersionId, ct);
+        var v = await EditableVersionAsync(s.WorkflowVersionId, ct, expectedRowVersion);
         var trs = await _db.WorkflowTransitions.Where(t => t.FromStageId == stageId || t.ToStageId == stageId).ToListAsync(ct);
         _db.WorkflowTransitions.RemoveRange(trs);
         _db.WorkflowStages.Remove(s);
         ReopenIfValidated(v, actor, $"RemoveStage:{s.Name} (+{trs.Count} transitions)");
-        await _db.SaveChangesAsync(ct);
+        await SaveAsync(ct);
     }
 
-    public async Task<WorkflowTransition> AddTransitionAsync(int versionId, WorkflowTransitionInput input, WorkflowActor actor, CancellationToken ct = default)
+    public async Task<WorkflowTransition> AddTransitionAsync(int versionId, WorkflowTransitionInput input, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null)
     {
-        var v = await EditableVersionAsync(versionId, ct);
+        var v = await EditableVersionAsync(versionId, ct, expectedRowVersion);
         var ids = new[] { input.FromStageId, input.ToStageId }.Where(x => x.HasValue).Select(x => x!.Value).Distinct().ToList();
         var ok = await _db.WorkflowStages.CountAsync(s => s.WorkflowVersionId == versionId && ids.Contains(s.WorkflowStageId), ct);
         if (ok != ids.Count) throw new InvalidOperationException("مرحله‌ی مبدأ/مقصد گذار متعلق به این نسخه نیست.");
@@ -218,23 +242,70 @@ public class WorkflowDefinitionService : IWorkflowDefinitionService
         };
         _db.WorkflowTransitions.Add(t);
         ReopenIfValidated(v, actor, $"AddTransition:{input.ActionType}");
-        await _db.SaveChangesAsync(ct);
+        await SaveAsync(ct);
         return t;
     }
 
-    public async Task RemoveTransitionAsync(int transitionId, WorkflowActor actor, CancellationToken ct = default)
+    public async Task RemoveTransitionAsync(int transitionId, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null)
     {
         var t = await _db.WorkflowTransitions.FirstOrDefaultAsync(x => x.WorkflowTransitionId == transitionId, ct) ?? throw new InvalidOperationException("گذار یافت نشد.");
-        var v = await EditableVersionAsync(t.WorkflowVersionId, ct);
+        var v = await EditableVersionAsync(t.WorkflowVersionId, ct, expectedRowVersion);
         _db.WorkflowTransitions.Remove(t);
         ReopenIfValidated(v, actor, $"RemoveTransition:{t.ActionType}");
+        await SaveAsync(ct);
+    }
+
+    public async Task<WorkflowTransition> UpdateTransitionAsync(int transitionId, WorkflowTransitionInput input, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null)
+    {
+        var t = await _db.WorkflowTransitions.FirstOrDefaultAsync(x => x.WorkflowTransitionId == transitionId, ct) ?? throw new InvalidOperationException("گذار یافت نشد.");
+        var v = await EditableVersionAsync(t.WorkflowVersionId, ct, expectedRowVersion);
+        var ids = new[] { input.FromStageId, input.ToStageId }.Where(x => x.HasValue).Select(x => x!.Value).Distinct().ToList();
+        var ok = await _db.WorkflowStages.CountAsync(s => s.WorkflowVersionId == t.WorkflowVersionId && ids.Contains(s.WorkflowStageId), ct);
+        if (ok != ids.Count) throw new InvalidOperationException("مرحله‌ی مبدأ/مقصد گذار متعلق به این نسخه نیست.");
+        t.FromStageId = input.FromStageId; t.ToStageId = input.ToStageId; t.ActionType = input.ActionType;
+        t.ConditionExpression = input.ConditionExpression; t.Priority = input.Priority; t.RequiredPermission = input.RequiredPermission;
+        t.ForbidInitiator = input.ForbidInitiator; t.Label = input.Label; t.LabelFa = input.LabelFa;
+        ReopenIfValidated(v, actor, $"UpdateTransition:{t.ActionType}");
+        await SaveAsync(ct);
+        return t;
+    }
+
+    public async Task<WorkflowDefinition> UpdateDefinitionAsync(int definitionId, string name, string? nameFa, string? description, WorkflowActor actor, CancellationToken ct = default)
+    {
+        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Name الزامی است.");
+        var d = await _db.WorkflowDefinitions.FirstOrDefaultAsync(x => x.WorkflowDefinitionId == definitionId, ct) ?? throw new InvalidOperationException("تعریف یافت نشد.");
+        if (!d.IsActive) throw new InvalidOperationException("تعریف بایگانی شده است.");
+        var trimmed = name.Trim();
+        if (await _db.WorkflowDefinitions.AnyAsync(x => x.WorkflowDefinitionId != definitionId && x.Module == d.Module && x.Category == d.Category && x.Name == trimmed, ct))
+            throw new InvalidOperationException("تعریفی با همین Module/Category/Name وجود دارد.");
+        var before = $"{d.Name} | {d.NameFa} | {d.Description}";
+        d.Name = trimmed; d.NameFa = string.IsNullOrWhiteSpace(nameFa) ? null : nameFa.Trim(); d.Description = string.IsNullOrWhiteSpace(description) ? null : description.Trim();
+        WorkflowConfigAuditWriter.Add(_db, WorkflowConfigAuditActions.DefinitionUpdated, actor, definitionId, previous: before, current: $"{d.Name} | {d.NameFa} | {d.Description}");
         await _db.SaveChangesAsync(ct);
+        return d;
+    }
+
+    public async Task<WorkflowVersion> DiscardDraftAsync(int versionId, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null)
+    {
+        var v = await _db.WorkflowVersions.FirstOrDefaultAsync(x => x.WorkflowVersionId == versionId, ct) ?? throw new InvalidOperationException("نسخه یافت نشد.");
+        if (!WorkflowVersionStatus.IsEditable(v.Status))
+            throw new InvalidOperationException($"فقط Draft/Validated قابل رها کردن است (وضعیت فعلی: {v.Status}).");
+        if (await _db.WorkflowInstances.AnyAsync(i => i.WorkflowVersionId == versionId, ct))
+            throw new InvalidOperationException("Instance ای به این نسخه ارجاع دارد؛ قابل رها کردن نیست.");
+        if (await _db.WorkflowBindings.AnyAsync(b => b.PinnedVersionId == versionId, ct))
+            throw new InvalidOperationException("Binding ای به این نسخه پین شده است؛ قابل رها کردن نیست.");
+        UseToken(v, expectedRowVersion);
+        var prev = v.Status;
+        v.Status = WorkflowVersionStatus.Discarded;
+        WorkflowConfigAuditWriter.Add(_db, WorkflowConfigAuditActions.DraftDiscarded, actor, v.WorkflowDefinitionId, versionId, previous: prev, current: v.Status, details: $"v{v.VersionNumber}");
+        await SaveAsync(ct);
+        return v;
     }
 
     // ---------------- Lifecycle ----------------
-    public async Task<WorkflowValidationResult> ValidateVersionAsync(int versionId, WorkflowActor actor, CancellationToken ct = default)
+    public async Task<WorkflowValidationResult> ValidateVersionAsync(int versionId, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null)
     {
-        var v = await EditableVersionAsync(versionId, ct);
+        var v = await EditableVersionAsync(versionId, ct, expectedRowVersion);
         var result = await _validator.ValidateAsync(versionId, ct);
         if (result.IsValid)
         {
@@ -248,15 +319,16 @@ public class WorkflowDefinitionService : IWorkflowDefinitionService
             WorkflowConfigAuditWriter.Add(_db, WorkflowConfigAuditActions.ValidationFailed, actor, v.WorkflowDefinitionId, versionId, previous: v.Status, current: v.Status,
                 details: string.Join("; ", result.Errors.Take(10).Select(e => e.Code)));
         }
-        await _db.SaveChangesAsync(ct);
+        await SaveAsync(ct);
         return result;
     }
 
-    public async Task<WorkflowVersion> PublishVersionAsync(int versionId, WorkflowActor actor, DateTime? effectiveDate = null, CancellationToken ct = default)
+    public async Task<WorkflowVersion> PublishVersionAsync(int versionId, WorkflowActor actor, DateTime? effectiveDate = null, CancellationToken ct = default, byte[]? expectedRowVersion = null)
     {
         var v = await _db.WorkflowVersions.FirstOrDefaultAsync(x => x.WorkflowVersionId == versionId, ct) ?? throw new InvalidOperationException("نسخه یافت نشد.");
         if (v.Status != WorkflowVersionStatus.Validated)
             throw new InvalidOperationException($"فقط نسخه‌ی Validated قابل انتشار است (وضعیت فعلی: {v.Status}).");
+        UseToken(v, expectedRowVersion);
 
         var result = await _validator.ValidateAsync(versionId, ct);
         if (!result.IsValid)
@@ -264,7 +336,7 @@ public class WorkflowDefinitionService : IWorkflowDefinitionService
 
         v.Status = WorkflowVersionStatus.Published; v.PublishedDate = DateTime.Now; v.PublishedById = actor.UserId; v.EffectiveDate = effectiveDate ?? DateTime.Now;
         WorkflowConfigAuditWriter.Add(_db, WorkflowConfigAuditActions.Published, actor, v.WorkflowDefinitionId, versionId, previous: WorkflowVersionStatus.Validated, current: v.Status, details: $"v{v.VersionNumber}");
-        await _db.SaveChangesAsync(ct);
+        await SaveAsync(ct);
         return v;
     }
 

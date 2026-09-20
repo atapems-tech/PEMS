@@ -14,6 +14,7 @@ public class WorkflowDefinitionConfiguration : IEntityTypeConfiguration<Workflow
         builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
         builder.Property(x => x.Category).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Module).HasMaxLength(100).IsRequired();
+        builder.Property(x => x.NameFa).HasMaxLength(200);
 
         // یک ماژول نمی‌تواند دو تعریف گردش‌کار هم‌نام در یک دسته داشته باشد
         builder.HasIndex(x => new { x.Module, x.Category, x.Name }).IsUnique();
@@ -33,6 +34,7 @@ public class WorkflowVersionConfiguration : IEntityTypeConfiguration<WorkflowVer
         builder.HasKey(x => x.WorkflowVersionId);
 
         builder.Property(x => x.Status).HasMaxLength(30).IsRequired();
+        builder.Property(x => x.RowVersion).IsRowVersion();
 
         // هر تعریف فقط یک نسخه‌ی N دارد
         builder.HasIndex(x => new { x.WorkflowDefinitionId, x.VersionNumber }).IsUnique();

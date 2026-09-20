@@ -9,6 +9,9 @@ public class WorkflowDefinition
     public int WorkflowDefinitionId { get; set; }
 
     public string Name { get; set; } = "";
+    // Phase 4 (additive): نام فارسی نمایشی؛ خالی = «Name» (بازگشت صریح در UI)
+    [System.ComponentModel.DataAnnotations.MaxLength(200)]
+    public string? NameFa { get; set; }
 
     public string Category { get; set; } = "";
 

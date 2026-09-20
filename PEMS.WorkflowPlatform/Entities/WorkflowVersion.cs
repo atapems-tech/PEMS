@@ -36,6 +36,9 @@ public class WorkflowVersion
     public string? ChangeSummary { get; set; }
 
     public int? PublishedById { get; set; }
+    // Phase 4 (additive): Concurrency خوشبینانه‌ی Draft - دو مدیر نمی‌توانند بی‌صدا روی هم بنویسند
+    [System.ComponentModel.DataAnnotations.Timestamp]
+    public byte[]? RowVersion { get; set; }
 
     public ICollection<WorkflowStage> Stages { get; set; } = new List<WorkflowStage>();
     public ICollection<WorkflowTransition> Transitions { get; set; } = new List<WorkflowTransition>();

@@ -266,6 +266,7 @@ builder.Services.AddScoped<IWorkflowAuthorizationHook, AccessControlWorkflowAuth
 builder.Services.AddScoped<IWorkflowVersionValidator, WorkflowVersionValidator>();
 builder.Services.AddScoped<IWorkflowBindingService, WorkflowBindingService>();
 builder.Services.AddScoped<IWorkflowDefinitionService, WorkflowDefinitionService>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkflowAdministrationService, PEMS.Persistence.Services.WorkflowAdministrationService>();
 builder.Services.AddScoped<IWorkflowReadModelService, WorkflowReadModelService>();
 
 builder.Services.AddScoped<IVdrWorkflowService, VdrWorkflowService>();
@@ -697,6 +698,7 @@ using (var scope = app.Services.CreateScope())
     // Work Order های Legacy و Instance های موجود دست نمی‌خورند.
     await PEMS.Persistence.Seed.WorkOrderGovernanceSeeder.SeedAsync(scope.ServiceProvider);
     await PEMS.Persistence.Seed.WorkOrderLifecycleWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+    await PEMS.Persistence.Seed.WorkflowManagementSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق «PEMS Bilingual Help & Knowledge System» - کتابخانه‌ی اولیه‌ی محتوای راهنما (ایدمپوتنت)
     await PEMS.Persistence.Seed.HelpContentSeeder.SeedAsync(scope.ServiceProvider);

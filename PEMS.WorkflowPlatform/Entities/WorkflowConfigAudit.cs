@@ -1,4 +1,4 @@
-namespace PEMS.WorkflowPlatform.Entities;
+﻿namespace PEMS.WorkflowPlatform.Entities;
 
 /// <summary>
 /// لاگ ممیزی «پیکربندی» گردش‌کار (ایجاد، Clone، نسخه، ویرایش Draft، Validate، Publish، Binding، ...).
@@ -40,6 +40,8 @@ public static class WorkflowConfigAuditActions
     public const string Deactivated = "Deactivated";
     public const string BindingCreated = "BindingCreated";
     public const string BindingChanged = "BindingChanged";
+    public const string DefinitionUpdated = "DefinitionUpdated";
+    public const string DraftDiscarded = "DraftDiscarded";
 }
 
 public static class WorkflowVersionStatus
@@ -48,7 +50,8 @@ public static class WorkflowVersionStatus
     public const string Validated = "Validated";
     public const string Published = "Published";
     public const string Retired = "Retired";
+    public const string Discarded = "Discarded";
 
     public static bool IsEditable(string? status) => status == Draft || status == Validated;
-    public static bool IsImmutable(string? status) => status == Published || status == Retired;
+    public static bool IsImmutable(string? status) => status == Published || status == Retired || status == Discarded;
 }

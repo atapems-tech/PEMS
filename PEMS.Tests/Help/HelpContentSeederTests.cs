@@ -141,7 +141,7 @@ public class HelpContentSeederTests
 
         var totalArticles = await ctx.HelpArticles.CountAsync();
 
-        Assert.Equal(57, totalArticles); // 20 (Phase 1) + 17 (Phase 2) + 7 (Increment 1) + 9 (Increment 2) + 1 (Increment 3B: reliability-overview) + 1 (Site-wide UI: ui-conventions) + 1 (Workflow Platform Phase 2: work-request-workflow) + 1 (Workflow Platform Phase 3B: work-order-lifecycle)
+        Assert.Equal(58, totalArticles); // 20 (Phase 1) + 17 (Phase 2) + 7 (Increment 1) + 9 (Increment 2) + 1 (Increment 3B: reliability-overview) + 1 (Site-wide UI: ui-conventions) + 1 (Workflow Platform Phase 2: work-request-workflow) + 1 (Workflow Platform Phase 3B: work-order-lifecycle) + 1 (Workflow Platform Phase 4: workflow-management)
     }
 
     [Fact]

@@ -71,7 +71,8 @@ public class AccessControlService : IAccessControlService
     {
         var grants = await ResolveUserRoleGrantsAsync(userId);
 
-        var isBreakGlassAction = resourceName == "ExecutionGate" && actionName == "EmergencyOverride";
+        var isBreakGlassAction = (resourceName == "ExecutionGate" && actionName == "EmergencyOverride")
+            || resourceName == "WorkflowManagement"; // Phase 4: مدیریت گردش‌کار همیشه Grant صریح می‌خواهد (حتی SystemAdmin)
         if (!isBreakGlassAction && grants.Any(g => g.RoleName == SystemRoles.SystemAdmin))
             return AccessDecision.Allow(SystemRoles.SystemAdmin, "SystemAdmin bypass");
 
@@ -165,7 +166,8 @@ public class AccessControlService : IAccessControlService
     {
         // طبق بند ۱۲ سند PEMS-SEC-PERMIT-AUTH-001: یک نقش SystemAdmin عادی نباید به‌طور خودکار
         // اختیار Break-Glass داشته باشد - حتی SystemAdmin باید یک RolePermissionGrant صریح داشته باشد
-        var isBreakGlassAction = resourceName == "ExecutionGate" && actionName == "EmergencyOverride";
+        var isBreakGlassAction = (resourceName == "ExecutionGate" && actionName == "EmergencyOverride")
+            || resourceName == "WorkflowManagement"; // Phase 4: مدیریت گردش‌کار همیشه Grant صریح می‌خواهد (حتی SystemAdmin)
 
         if (!isBreakGlassAction && roleNames.Contains(SystemRoles.SystemAdmin))
             return AccessDecision.Allow(SystemRoles.SystemAdmin, "SystemAdmin bypass");

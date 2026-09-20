@@ -81,22 +81,31 @@ public interface IWorkflowDefinitionService
     /// <summary>تعریف جدید با نام جدید که آخرین نسخه‌ی مبدأ را به‌صورت Draft v1 کپی می‌کند.</summary>
     Task<WorkflowDefinition> CloneDefinitionAsync(int sourceDefinitionId, string newName, WorkflowActor actor, CancellationToken ct = default);
 
-    Task<WorkflowStage> AddStageAsync(int versionId, WorkflowStageInput input, WorkflowActor actor, CancellationToken ct = default);
-    Task<WorkflowStage> UpdateStageAsync(int stageId, WorkflowStageInput input, WorkflowActor actor, CancellationToken ct = default);
-    Task RemoveStageAsync(int stageId, WorkflowActor actor, CancellationToken ct = default);
-    Task<WorkflowTransition> AddTransitionAsync(int versionId, WorkflowTransitionInput input, WorkflowActor actor, CancellationToken ct = default);
-    Task RemoveTransitionAsync(int transitionId, WorkflowActor actor, CancellationToken ct = default);
+    Task<WorkflowStage> AddStageAsync(int versionId, WorkflowStageInput input, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null);
+    Task<WorkflowStage> UpdateStageAsync(int stageId, WorkflowStageInput input, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null);
+    Task RemoveStageAsync(int stageId, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null);
+    Task<WorkflowTransition> AddTransitionAsync(int versionId, WorkflowTransitionInput input, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null);
+
+    /// <summary>Phase 4: ویرایش اتمیک گذار در Draft (مبدأ/مقصد/اکشن/برچسب/مجوز/شرط). فقط Draft/Validated.</summary>
+    Task<WorkflowTransition> UpdateTransitionAsync(int transitionId, WorkflowTransitionInput input, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null);
+    Task RemoveTransitionAsync(int transitionId, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null);
 
     /// <summary>Draft → Validated در صورت نداشتن خطا. نتیجه‌ی کامل Validator برگردانده می‌شود.</summary>
-    Task<WorkflowValidationResult> ValidateVersionAsync(int versionId, WorkflowActor actor, CancellationToken ct = default);
+    Task<WorkflowValidationResult> ValidateVersionAsync(int versionId, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null);
 
     /// <summary>Validated → Published (اعتبارسنجی مجدد در لحظه‌ی انتشار). پس از انتشار نسخه تغییرناپذیر است.</summary>
-    Task<WorkflowVersion> PublishVersionAsync(int versionId, WorkflowActor actor, DateTime? effectiveDate = null, CancellationToken ct = default);
+    Task<WorkflowVersion> PublishVersionAsync(int versionId, WorkflowActor actor, DateTime? effectiveDate = null, CancellationToken ct = default, byte[]? expectedRowVersion = null);
 
     /// <summary>Published → Retired. اگر Binding فعالی به این نسخه پین شده باشد رد می‌شود.</summary>
     Task<WorkflowVersion> RetireVersionAsync(int versionId, WorkflowActor actor, CancellationToken ct = default);
 
     Task ArchiveDefinitionAsync(int definitionId, WorkflowActor actor, CancellationToken ct = default);
+
+    /// <summary>Phase 4: ویرایش فراداده‌ی تعریف (نام/نام فارسی/توضیح) - مشترک بین همه‌ی نسخه‌ها؛ نسخه‌ها را تغییر نمی‌دهد.</summary>
+    Task<WorkflowDefinition> UpdateDefinitionAsync(int definitionId, string name, string? nameFa, string? description, WorkflowActor actor, CancellationToken ct = default);
+
+    /// <summary>Phase 4: رها کردن Draft/Validated (ردیف حذف نمی‌شود؛ وضعیت Discarded). اگر Instance یا Binding به آن ارجاع دارد رد می‌شود.</summary>
+    Task<WorkflowVersion> DiscardDraftAsync(int versionId, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null);
 
     Task<IReadOnlyList<WorkflowConfigAudit>> GetAuditAsync(int? definitionId = null, int? versionId = null, CancellationToken ct = default);
 }

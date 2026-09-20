@@ -14958,6 +14958,10 @@ namespace PEMS.Persistence.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("NameFa")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.HasKey("WorkflowDefinitionId");
 
                     b.HasIndex("Module", "Category", "Name")
@@ -15316,6 +15320,11 @@ namespace PEMS.Persistence.Migrations
 
                     b.Property<DateTime?>("RetiredDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Status")
                         .IsRequired()
