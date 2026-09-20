@@ -1,4 +1,4 @@
-# Workflow Platform — Phase 4: Workflow Administration & Visual Designer
+﻿# Workflow Platform — Phase 4: Workflow Administration & Visual Designer
 
 **Classification: ACCEPTED WITH DOCUMENTED LIMITATIONS** (see §21–22)
 
@@ -93,5 +93,30 @@ Migration `WorkflowAdminDefinitionNameFaVersionRowVersion` (2 nullable additive 
 ## 24. Tests
 `WorkflowAdministrationTests` (14, in-memory): per-permission denial with a real SystemAdmin, non-SystemAdmin denial, editable vs view-only/unbound (no error state), metadata + NameFa + audit, clone → edit → validate → publish with four-eyes, editor rotation, immutability (published/retired, platform and facade), invalid workflow cannot publish, one open draft + discard (rows kept) + discard refusal with instance, stage/transition add/update/remove with preserved fields and cross-version rejection, graph generation/determinism/no overlap/branches/back edges, rebinding with confirmation and pinned instances/rollback. `WorkflowAdministrationConcurrencyTests` (3, real SQL Server, retrying strategy): stale save, stale add/remove/validate/discard, 20 simultaneous-save races. A recursion defect in the new save helper was caught by the first test run before any UI use.
 
-## 25. Verification summary
-Build, full test results, `graphify update .` and PEMSDB checks are recorded in the final report of the phase.
+## 25. Final closure audit (verified 2026-09-21)
+
+| Gate | Result | Evidence |
+|---|---|---|
+| Build | PASS | `dotnet build PEMS.slnx --configuration Debug`: 0 errors, 22 warnings (none in Phase 4 files) |
+| Full tests | PASS | 1762 passed / 0 failed / 0 skipped (baseline 1745; +17 = 14 `WorkflowAdministrationTests` + 3 `WorkflowAdministrationConcurrencyTests`; the Help count assertion changed 57 → 58 without a new test) |
+| PEMSDB integrity | PASS | Backup `PEMSDB_pre_phase4.bak` unmodified (last write 2026-09-20 23:07); 9 definitions, 3 bindings, 39 stages, 93 transitions; Work Orders 1–3 and running review instance 74 intact; nothing deleted or reset |
+| Migration | PASS | `20260920193708_WorkflowAdminDefinitionNameFaVersionRowVersion` applied; `WorkflowDefinitions.NameFa` and `WorkflowVersions.RowVersion` present; 2 AddColumn only (no CreateTable); it is the only migration applied by this phase |
+| Administration UI | PASS | Browser QA on isolated DB (§18); definitions, versions, bindings, usage, audit |
+| Visual designer | PASS | Graph nodes/edges equal persisted stages/transitions; theme-following colours and mobile scaling fixed after QA and re-verified at 1440/820/390 |
+| Security | PASS | SystemAdmin AND `WorkflowManagement.*`; explicit-grant rule in `AccessControlService`; six permissions + six SystemAdmin grants seeded; forged POSTs verified (non-SystemAdmin, missing Publish grant, legacy clone, published edit) |
+| Four-eyes | PASS | Last editor = latest `VersionCreated/VersionCloned/DraftEdited` audit row of the version; server refuses the same user, allows another (tests + browser) |
+| Concurrency | PASS | Real SQL: stale save/add/remove/validate/discard rejected, 20/20 simultaneous-save races with one winner; two browser sessions EN and FA |
+| Binding/Versioning | PASS | Impact page, explicit confirmation, unconfirmed change refused, existing instances stay pinned, rollback by rebinding to v1 |
+| Dynamic proof | PASS | Reliability Review added via the designer only; new Work Order used v2, existing stayed on v1; reverted by rebinding + retiring v2; no Work Order controller/service/view change |
+| Browser QA | PASS | 46/48 first run (2 harness artifacts re-verified passing), 48/48 responsive+localization, 8/8 FA functional |
+| EN/LTR | PASS | 1440/820/390, no page overflow, no Persian UI labels |
+| FA/RTL | PASS | 1440/820/390, no page overflow, no untranslated English UI labels |
+| Help | PASS | `workflow-management` (EN+FA) in the administration category; 58-article test green |
+| Audit | PASS | `WorkflowConfigAudits` reused; VersionCloned, DraftEdited, Validated, ValidationFailed, Published, Retired, BindingChanged, DefinitionUpdated, DraftDiscarded recorded |
+| Architecture integrity | PASS | Only three platform entity files changed (2 columns + constants); no new tables/DbSets/engine/history/audit; controller has no EF/DbContext use |
+
+Notes recorded during closure:
+* An earlier full run used an output folder outside the repository and reported 3 failures (1759/3/0 of 1762): the source-guard tests walk up from the test output folder to find the repo's views and could not. They are environmental, not product failures; the rerun with output inside the repository passed 1762/0/0.
+* PEMSDB grew during closure for reasons outside this phase: (a) the existing test suite writes EngineeringDocument test workflow instances into the live PEMSDB on every full run (pre-existing test behaviour; nothing deleted); (b) Work Order WO-2026-0004 (with lifecycle and review instances) was created on 2026-09-20 23:19 while Phase 4 QA used a separate database, consistent with the user's live instance; (c) at 00:25 on 2026-09-21 "admin" cloned Work Order Lifecycle v1 → v2 and discarded it in PEMSDB (a Discarded row and two audit rows) after the user's PEMS.Web restarted at 00:20 with the Phase 4 build — the live Workflow Management feature working; binding and published versions unchanged.
+
+FINAL CLASSIFICATION: **ACCEPTED WITH DOCUMENTED LIMITATIONS**. BLOCKERS: none. NEXT PHASE: not started.
