@@ -744,10 +744,10 @@
     "semantic_hash": "67d1581a4c0be7ccf0cea8a40fee95d0"
   },
   "PEMS.Application/PEMS.Application.csproj": {
-    "mtime": 1788350901.732816,
-    "seen": 1788613735.6703675,
-    "ast_hash": "71c8601d0682e1dfa587cd4d75ad7443",
-    "semantic_hash": "71c8601d0682e1dfa587cd4d75ad7443"
+    "mtime": 1789861804.912804,
+    "seen": 1789863535.4938653,
+    "ast_hash": "1364abc5ec3a89ed4151287c523ee5bd",
+    "semantic_hash": ""
   },
   "PEMS.Application/Services/EngineeringDocumentService.cs": {
     "mtime": 1789815008.1122494,
@@ -1524,9 +1524,9 @@
     "semantic_hash": "dacbb68ad3f3363731257b252a96ac1b"
   },
   "PEMS.Persistence/Context/PEMSDbContext.cs": {
-    "mtime": 1789704863.2143724,
-    "seen": 1789826033.542353,
-    "ast_hash": "8300e1fd68ad95610eb3cfb6d796c7f7",
+    "mtime": 1789861455.0827346,
+    "seen": 1789863535.5438266,
+    "ast_hash": "3187031a2384637137dacda4dfae95d3",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Context/PEMSDbContextFactory.cs": {
@@ -1578,9 +1578,9 @@
     "semantic_hash": "5809af8d8afaa80014e62788179b6dd4"
   },
   "PEMS.Persistence/Migrations/PEMSDbContextModelSnapshot.cs": {
-    "mtime": 1789705002.0976412,
-    "seen": 1789826033.5638604,
-    "ast_hash": "179593f15460b68074cce31b3a94254c",
+    "mtime": 1789861575.4208221,
+    "seen": 1789863535.559807,
+    "ast_hash": "4a962a04f437d323d38fae4e9bce5be5",
     "semantic_hash": ""
   },
   "PEMS.Persistence/PEMS.Persistence.csproj": {
@@ -2184,52 +2184,52 @@
     "semantic_hash": "7d673e45424b2976e9edaad034207279"
   },
   "PEMS.Web/Areas/Admin/Views/AuditLog/Index.cshtml": {
-    "mtime": 1788350905.1463964,
-    "seen": 1788613735.670535,
-    "ast_hash": "d2e9e15f874cf0c84bd76960929f5d29",
-    "semantic_hash": "d2e9e15f874cf0c84bd76960929f5d29"
+    "mtime": 1789851197.46068,
+    "seen": 1789854334.7180836,
+    "ast_hash": "9cdb7c1d1d1e83c67c2a3fe847a050f6",
+    "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/PermissionMatrix/Index.cshtml": {
-    "mtime": 1788350905.1463964,
-    "seen": 1788613735.670535,
-    "ast_hash": "96a9b9341b1b46ebd1ffcfba9d2147a7",
-    "semantic_hash": "96a9b9341b1b46ebd1ffcfba9d2147a7"
+    "mtime": 1789851197.4681926,
+    "seen": 1789854334.7180836,
+    "ast_hash": "f9a38afaabe80afd71206929357bbaa8",
+    "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Roles/Create.cshtml": {
-    "mtime": 1788350905.1769986,
-    "seen": 1788613735.670535,
-    "ast_hash": "6dd3bebc9a66c85b464e7ee5f77c0836",
-    "semantic_hash": "6dd3bebc9a66c85b464e7ee5f77c0836"
+    "mtime": 1789851197.4691925,
+    "seen": 1789854334.7180836,
+    "ast_hash": "44fa0d1d821cba2312549214b797ab06",
+    "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Roles/Index.cshtml": {
-    "mtime": 1788350905.1769986,
-    "seen": 1788613735.670535,
-    "ast_hash": "6aa3c1e7fadcc5fe33a4b1d7ecd86d3d",
-    "semantic_hash": "6aa3c1e7fadcc5fe33a4b1d7ecd86d3d"
+    "mtime": 1789851197.4701927,
+    "seen": 1789854334.7180836,
+    "ast_hash": "696c167480778cba8c3c274f66173e2f",
+    "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/RoutingRules/Index.cshtml": {
-    "mtime": 1788350905.1926322,
-    "seen": 1788613735.670535,
-    "ast_hash": "14f4d954bdde5aa6d6d01ea3d036198d",
-    "semantic_hash": "14f4d954bdde5aa6d6d01ea3d036198d"
+    "mtime": 1789851197.4711926,
+    "seen": 1789854334.7180836,
+    "ast_hash": "c0193110bc891afea12c4818e0497f8a",
+    "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Users/Create.cshtml": {
-    "mtime": 1788350905.1926322,
-    "seen": 1788613735.670535,
-    "ast_hash": "45cc814a4aac440a5344c62075d7e8b3",
-    "semantic_hash": "45cc814a4aac440a5344c62075d7e8b3"
+    "mtime": 1789851197.475314,
+    "seen": 1789854334.7180836,
+    "ast_hash": "4eff1bc980b56de2e3726672a03ce4ac",
+    "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Users/Edit.cshtml": {
-    "mtime": 1788350905.2113626,
-    "seen": 1788613735.670535,
-    "ast_hash": "01b599b8905285b76e25f94dfe252d02",
-    "semantic_hash": "01b599b8905285b76e25f94dfe252d02"
+    "mtime": 1789851634.1060936,
+    "seen": 1789854334.7180836,
+    "ast_hash": "27241f43cd40e6b565a052f6c43c1194",
+    "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Users/Index.cshtml": {
-    "mtime": 1788543263.41819,
-    "seen": 1788613735.670535,
-    "ast_hash": "81e4f71df46e88c8c8bafa014ce342b8",
-    "semantic_hash": "81e4f71df46e88c8c8bafa014ce342b8"
+    "mtime": 1789851197.4763148,
+    "seen": 1789854334.7180836,
+    "ast_hash": "aa1fed2a11ffd0cbcc9dd5fcaa098bb7",
+    "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/_ViewImports.cshtml": {
     "mtime": 1788350905.129344,
@@ -2682,9 +2682,9 @@
     "semantic_hash": "ab7e34a2113cfa2a4d952bac4edc6cb4"
   },
   "PEMS.Web/Program.cs": {
-    "mtime": 1789705627.4422653,
-    "seen": 1789826033.5971777,
-    "ast_hash": "1d17abd3a038a324353a49de95641c0b",
+    "mtime": 1789861960.834347,
+    "seen": 1789863535.6465378,
+    "ast_hash": "2df8e93b96d528d178003f78ae10f698",
     "semantic_hash": ""
   },
   "PEMS.Web/Properties/launchSettings.json": {
@@ -2802,190 +2802,190 @@
     "semantic_hash": "88fa7b30ecfde87e4c4d80751899ec5f"
   },
   "PEMS.Web/Views/AIExtraction/Index.cshtml": {
-    "mtime": 1788350905.9628491,
-    "seen": 1788613735.670535,
-    "ast_hash": "1ee0b59191fb4a6d0e84bf5720cffecb",
-    "semantic_hash": "1ee0b59191fb4a6d0e84bf5720cffecb"
+    "mtime": 1789851197.1458578,
+    "seen": 1789854334.7330844,
+    "ast_hash": "e4f1a401ff9e79caf27b57f63513fe84",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/AIExtraction/Review.cshtml": {
-    "mtime": 1788350905.9628491,
-    "seen": 1788613735.670535,
-    "ast_hash": "6f9bd2525652b985581fe93aba72a16b",
-    "semantic_hash": "6f9bd2525652b985581fe93aba72a16b"
+    "mtime": 1789850496.6054919,
+    "seen": 1789854334.7330844,
+    "ast_hash": "0c09f88706c44e59ac287a8b1e95f12e",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/AIInsights/Index.cshtml": {
-    "mtime": 1789822664.1666334,
-    "seen": 1789826033.5971777,
-    "ast_hash": "eba822da9f1c308a1d86a69d19772676",
+    "mtime": 1789851633.7480125,
+    "seen": 1789854334.7330844,
+    "ast_hash": "b1cf53b467ce58e2a8f7c7ac9979bfec",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/AISearch/Index.cshtml": {
-    "mtime": 1788350905.9784825,
-    "seen": 1788613735.670535,
-    "ast_hash": "77e17a51c5511a6767fe8e2a7069d9de",
-    "semantic_hash": "77e17a51c5511a6767fe8e2a7069d9de"
+    "mtime": 1789851197.1488557,
+    "seen": 1789854334.7330844,
+    "ast_hash": "30960fb1257e5c2ce114b3c2f36c4135",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Account/AccessDenied.cshtml": {
-    "mtime": 1788350905.9958646,
-    "seen": 1788613735.670535,
-    "ast_hash": "efed0f5dbfeca993b6fb8a6d807b7d97",
-    "semantic_hash": "efed0f5dbfeca993b6fb8a6d807b7d97"
+    "mtime": 1789851197.143859,
+    "seen": 1789854334.7330844,
+    "ast_hash": "6950bfaee651bc58be7588fbe82063c0",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Account/ChangePassword.cshtml": {
-    "mtime": 1788350905.9958646,
-    "seen": 1788613735.670535,
-    "ast_hash": "fa5a09059d9788714fd387036ad25c99",
-    "semantic_hash": "fa5a09059d9788714fd387036ad25c99"
+    "mtime": 1789850496.6054919,
+    "seen": 1789854334.7330844,
+    "ast_hash": "8ddcd68f2bd51fd368daa5b9a1e617b3",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Account/ForgotPassword.cshtml": {
-    "mtime": 1788350906.0103729,
-    "seen": 1788613735.670535,
-    "ast_hash": "f78d0d4fb6a0ce10dbae5c2a17ed2083",
-    "semantic_hash": "f78d0d4fb6a0ce10dbae5c2a17ed2083"
+    "mtime": 1789851197.144858,
+    "seen": 1789854334.7330844,
+    "ast_hash": "8a8780a9ce8468e0adda408a311a4c83",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Account/Login.cshtml": {
-    "mtime": 1788350906.0103729,
-    "seen": 1788613735.670535,
-    "ast_hash": "9d748ac3a78976f6f3bd4b4b1754b58f",
-    "semantic_hash": "9d748ac3a78976f6f3bd4b4b1754b58f"
+    "mtime": 1789850496.6054919,
+    "seen": 1789854334.7330844,
+    "ast_hash": "af47efc3e2f1d85cf0f5768f2859e7ee",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/ChatAssistant/Index.cshtml": {
-    "mtime": 1788350906.0417168,
-    "seen": 1788613735.670535,
-    "ast_hash": "d106e04e7227b88fa3a8107f33c546a9",
-    "semantic_hash": "d106e04e7227b88fa3a8107f33c546a9"
+    "mtime": 1789851197.1528566,
+    "seen": 1789854334.7340822,
+    "ast_hash": "861707ae3f01367821f7f1e93f2e5c44",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/ComingSoon/Index.cshtml": {
-    "mtime": 1788350906.0589085,
-    "seen": 1788613735.670535,
-    "ast_hash": "d88f87bca2d3dd612dd9630298fd7a7d",
-    "semantic_hash": "d88f87bca2d3dd612dd9630298fd7a7d"
+    "mtime": 1789851633.7620196,
+    "seen": 1789854334.7340822,
+    "ast_hash": "d41e4ddf7d5f3a52ba8e43f3aad7c318",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Contract/Create.cshtml": {
-    "mtime": 1788350906.0589085,
-    "seen": 1788613735.670535,
-    "ast_hash": "17a2902874aaec9a29d0977e5ecb3860",
-    "semantic_hash": "17a2902874aaec9a29d0977e5ecb3860"
+    "mtime": 1789850496.6214805,
+    "seen": 1789854334.7340822,
+    "ast_hash": "febe6bd7f2789acb24f22c089ba0478c",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Contract/Details.cshtml": {
-    "mtime": 1788350906.0761173,
-    "seen": 1788613735.670535,
-    "ast_hash": "cf04c6713ed6f8ba58afa8155cea676e",
-    "semantic_hash": "cf04c6713ed6f8ba58afa8155cea676e"
+    "mtime": 1789850496.6214805,
+    "seen": 1789854334.7340822,
+    "ast_hash": "6315226277a8108b45c10f01997f0170",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Contract/Index.cshtml": {
-    "mtime": 1788705459.0140133,
-    "seen": 1788706892.4152284,
-    "ast_hash": "00e3e1455d75bdd802bfb1a34a9ae885",
+    "mtime": 1789851197.1588566,
+    "seen": 1789854334.7340822,
+    "ast_hash": "d492d00fd17c8cdf68580d4238bb6f94",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/DCC/Index.cshtml": {
-    "mtime": 1789822664.17264,
-    "seen": 1789826033.5971777,
-    "ast_hash": "6bf8692856e45fe6dc528175802c5e62",
+    "mtime": 1789851633.7710197,
+    "seen": 1789854334.7340822,
+    "ast_hash": "dbceb969a66e50876f13ad2fda0712d1",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/DCC/RegisterIncoming.cshtml": {
-    "mtime": 1788350906.1149042,
-    "seen": 1788613735.670535,
-    "ast_hash": "ae924c0896b74e18c30d4de733629168",
-    "semantic_hash": "ae924c0896b74e18c30d4de733629168"
+    "mtime": 1789851633.7710197,
+    "seen": 1789854334.7340822,
+    "ast_hash": "d4a16789c4000db2080b680e8db958a1",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/DashboardSettings/Index.cshtml": {
-    "mtime": 1788350906.1202278,
-    "seen": 1788613735.670535,
-    "ast_hash": "43603a36642d86e4eb6504829293c46a",
-    "semantic_hash": "43603a36642d86e4eb6504829293c46a"
+    "mtime": 1789850496.6214805,
+    "seen": 1789854334.7340822,
+    "ast_hash": "ef7bcd50c3e62c7ad36c7be1a2db13b2",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Department/Index.cshtml": {
-    "mtime": 1789813889.880296,
-    "seen": 1789826033.5971777,
-    "ast_hash": "0288a1d848e05b783917b7421fab938d",
+    "mtime": 1789851197.1648574,
+    "seen": 1789854334.7340822,
+    "ast_hash": "c88d534d948c09d9ba0d2a3b6cce71a2",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Discipline/Details.cshtml": {
-    "mtime": 1788350906.1520233,
-    "seen": 1788613735.670535,
-    "ast_hash": "1c96ea459aeb5bca872dcfef470a6ec0",
-    "semantic_hash": "1c96ea459aeb5bca872dcfef470a6ec0"
+    "mtime": 1789850496.6214805,
+    "seen": 1789854334.7340822,
+    "ast_hash": "52891af0bf3a265fe158aa5e63793a71",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Discipline/Index.cshtml": {
-    "mtime": 1788350906.1520233,
-    "seen": 1788613735.670535,
-    "ast_hash": "2b15921e036b65ff1f12db08bb842948",
-    "semantic_hash": "2b15921e036b65ff1f12db08bb842948"
+    "mtime": 1789850496.6214805,
+    "seen": 1789854334.7340822,
+    "ast_hash": "5421468e7a11a7c0184c8e79ffde5d99",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/DocumentRegister/Index.cshtml": {
-    "mtime": 1789813889.8834727,
-    "seen": 1789826033.5971777,
-    "ast_hash": "b1d7eff20b93964ea9f18916af8d3e5e",
+    "mtime": 1789851197.1718583,
+    "seen": 1789854334.7340822,
+    "ast_hash": "3846f205c7bd2121ac7ded8f0c631125",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/DocumentRevisions/Create.cshtml": {
-    "mtime": 1788350906.1838584,
-    "seen": 1788613735.670535,
-    "ast_hash": "97a6c54ff1ae97711873b71fd6eeed78",
-    "semantic_hash": "97a6c54ff1ae97711873b71fd6eeed78"
+    "mtime": 1789850496.6214805,
+    "seen": 1789854334.7340822,
+    "ast_hash": "632a92b85618cc2af28c36b5af19a70b",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/DocumentRevisions/Index.cshtml": {
-    "mtime": 1788723465.8286123,
-    "seen": 1788724564.0492759,
-    "ast_hash": "2a36575ce9a62d92f513cc0bf429aa59",
+    "mtime": 1789851197.1738605,
+    "seen": 1789854334.7340822,
+    "ast_hash": "5cbdd484680a5bfe4e13d0140b296389",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/DocumentUpload/Index.cshtml": {
-    "mtime": 1788350906.1998298,
-    "seen": 1788613735.670535,
-    "ast_hash": "40e04debe7f0d5b585b2c42b917e56b7",
-    "semantic_hash": "40e04debe7f0d5b585b2c42b917e56b7"
+    "mtime": 1789850496.6214805,
+    "seen": 1789854334.7340822,
+    "ast_hash": "a59e89d10a75544647876d10097efa76",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/DocumentWorkflow/Index.cshtml": {
-    "mtime": 1788723460.1671753,
-    "seen": 1788724564.0492759,
-    "ast_hash": "b19c0c31f3645d2630cb8648346c526f",
+    "mtime": 1789851197.1768572,
+    "seen": 1789854334.7340822,
+    "ast_hash": "f53e2221810c3412018e8f9096754abf",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Employee/Details.cshtml": {
-    "mtime": 1789598199.9443593,
-    "seen": 1789826033.5971777,
-    "ast_hash": "7957e932ce31d0238043f54ad91438f7",
+    "mtime": 1789850496.6214805,
+    "seen": 1789854334.7340822,
+    "ast_hash": "9fe5f6a5cd77aa3b71a88e87a30fa389",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Employee/Index.cshtml": {
-    "mtime": 1789813889.8819077,
-    "seen": 1789826033.5971777,
-    "ast_hash": "286e45bff2a41311d770ce12b0226c61",
+    "mtime": 1789851197.1944947,
+    "seen": 1789854334.7340822,
+    "ast_hash": "13ab2bc9620146d825201d1d745e9079",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/EngineeringDocumentIntelligence/Index.cshtml": {
-    "mtime": 1788350906.2331738,
-    "seen": 1788613735.670535,
-    "ast_hash": "de9790be841306a02db3b2d2e2ad1916",
-    "semantic_hash": "de9790be841306a02db3b2d2e2ad1916"
+    "mtime": 1789850496.6382077,
+    "seen": 1789854334.7340822,
+    "ast_hash": "229bfd8811b7c9d0cdc85e5a33cd0b16",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/EngineeringDocumentIntelligence/Review.cshtml": {
-    "mtime": 1788350906.247679,
-    "seen": 1788613735.670535,
-    "ast_hash": "2b9d6e505995b0d763403f060f211555",
-    "semantic_hash": "2b9d6e505995b0d763403f060f211555"
+    "mtime": 1789850496.6382077,
+    "seen": 1789854334.7340822,
+    "ast_hash": "3a2c1679fe1b02212c41f5240c3b258b",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/EngineeringDocuments/Create.cshtml": {
-    "mtime": 1788350906.247679,
-    "seen": 1788613735.670535,
-    "ast_hash": "474dfccaf129bbfa133a7c710b7dd0c5",
-    "semantic_hash": "474dfccaf129bbfa133a7c710b7dd0c5"
+    "mtime": 1789850496.6382077,
+    "seen": 1789854334.7340822,
+    "ast_hash": "ca3b5580c51ec0eb8a912653ce463935",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/EngineeringDocuments/Details.cshtml": {
-    "mtime": 1789819226.636724,
-    "seen": 1789826033.5971777,
-    "ast_hash": "7f9d1d68e4176bdba284962c17768cf0",
+    "mtime": 1789851633.8262494,
+    "seen": 1789854334.7340822,
+    "ast_hash": "4aa1f3531cf2508d512e95758db68146",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/EngineeringDocuments/Edit.cshtml": {
-    "mtime": 1788350906.273528,
-    "seen": 1788613735.670535,
-    "ast_hash": "0e349d75198792940a6a5216872d909e",
-    "semantic_hash": "0e349d75198792940a6a5216872d909e"
+    "mtime": 1789850496.6382077,
+    "seen": 1789854334.7340822,
+    "ast_hash": "fdc514aff16631929e1a01af56aafcb3",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/EngineeringDocuments/Index.cshtml": {
     "mtime": 1789819008.9743705,
@@ -2994,226 +2994,226 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/EngineeringDocuments/UploadAttachment.cshtml": {
-    "mtime": 1789143783.2383444,
-    "seen": 1789145033.051737,
-    "ast_hash": "ebe090c0b775200aa6cf33ad2b4904a9",
+    "mtime": 1789851197.2310057,
+    "seen": 1789854334.7340822,
+    "ast_hash": "38d285e574e5db7a11350ce393516373",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/EquipmentCriticality/Index.cshtml": {
-    "mtime": 1789822664.175633,
-    "seen": 1789826033.5971777,
-    "ast_hash": "54325f15fa454c76a57105ebc560035e",
+    "mtime": 1789851633.8574336,
+    "seen": 1789854334.7340822,
+    "ast_hash": "f0f564a5786c483b9641ef8cc14e212c",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/EquipmentImport/Index.cshtml": {
-    "mtime": 1788350906.3272696,
-    "seen": 1788613735.670535,
-    "ast_hash": "10e38b2c434917244f79e810087f19d2",
-    "semantic_hash": "10e38b2c434917244f79e810087f19d2"
+    "mtime": 1789851197.2430966,
+    "seen": 1789854334.7340822,
+    "ast_hash": "4c476619508a823ac06f7b9c3855af43",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/EquipmentImport/Review.cshtml": {
-    "mtime": 1789388664.371335,
-    "seen": 1789422256.5526927,
-    "ast_hash": "0b27536caf0d8604e0adc45166c31c8e",
+    "mtime": 1789850496.6548417,
+    "seen": 1789854334.7340822,
+    "ast_hash": "d5dc3ea472628d475d7daf8524e5f6f3",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/EquipmentImport/ScanResult.cshtml": {
-    "mtime": 1788350906.3272696,
-    "seen": 1788613735.670535,
-    "ast_hash": "f9cae7cf8b5ec72cccac94767f8d64bc",
-    "semantic_hash": "f9cae7cf8b5ec72cccac94767f8d64bc"
+    "mtime": 1789850496.6548417,
+    "seen": 1789854334.7340822,
+    "ast_hash": "dbae3631ae2d725dfe0ecf62d4097391",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Equipment/Create.cshtml": {
-    "mtime": 1788350906.295456,
-    "seen": 1788613735.670535,
-    "ast_hash": "c1853eacb6c97e51e73376201c931789",
-    "semantic_hash": "c1853eacb6c97e51e73376201c931789"
+    "mtime": 1789850496.6382077,
+    "seen": 1789854334.7340822,
+    "ast_hash": "b1a84335eacdd3d2bb726991a6e5b6c4",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Equipment/Details.cshtml": {
-    "mtime": 1789824385.27083,
-    "seen": 1789826033.5971777,
-    "ast_hash": "a14627bd64c530fbb8a0f2b04c6b6b3c",
+    "mtime": 1789850496.6382077,
+    "seen": 1789854334.7340822,
+    "ast_hash": "52524cee552f85e1d4ecf7f49b61654a",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Equipment/Index.cshtml": {
-    "mtime": 1788523211.1912515,
-    "seen": 1788613735.670535,
-    "ast_hash": "0005152bd1df8277d5eb04d7cddcafb8",
-    "semantic_hash": "0005152bd1df8277d5eb04d7cddcafb8"
+    "mtime": 1789851197.2380054,
+    "seen": 1789854334.7340822,
+    "ast_hash": "881538cc8acddd939631931808ee8ed5",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/GlobalSearch/Index.cshtml": {
-    "mtime": 1789687844.2329736,
-    "seen": 1789826033.5971777,
-    "ast_hash": "93fd9f02b68845e9267527ef35b1a614",
+    "mtime": 1789851197.2501051,
+    "seen": 1789854334.7340822,
+    "ast_hash": "3a4d894916f460c86b07a1caed6230d2",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Home/Index.cshtml": {
-    "mtime": 1789311319.1544333,
-    "seen": 1789422256.553945,
-    "ast_hash": "583c122bbfd0048770f525972265828b",
+    "mtime": 1789852323.1156707,
+    "seen": 1789854334.7340822,
+    "ast_hash": "ee25bcb64f0784feea71b0ef4cbef560",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Home/Privacy.cshtml": {
-    "mtime": 1788350906.3586748,
-    "seen": 1788613735.670535,
-    "ast_hash": "bb439cbd3264713aeb6f23a15d8a4ce3",
-    "semantic_hash": "bb439cbd3264713aeb6f23a15d8a4ce3"
+    "mtime": 1789829174.4085617,
+    "seen": 1789841437.6331615,
+    "ast_hash": "2d9eeeb0f1fe55f5aa30418a21d7dadb",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Intake/Index.cshtml": {
-    "mtime": 1789813889.8842068,
-    "seen": 1789826033.5971777,
-    "ast_hash": "7fec436c616b17a410111eac786adda3",
+    "mtime": 1789851197.2681794,
+    "seen": 1789854334.7340822,
+    "ast_hash": "3e819ee9a2a89576a86d13b49ee24b34",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Intake/Review.cshtml": {
-    "mtime": 1788350906.4180987,
-    "seen": 1788613735.670535,
-    "ast_hash": "3ff0b4a881a95d95a15671de3dab1ced",
-    "semantic_hash": "3ff0b4a881a95d95a15671de3dab1ced"
+    "mtime": 1789851197.2697842,
+    "seen": 1789854334.7340822,
+    "ast_hash": "c52eac36e318cd402650d61e5d309604",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/KnowledgeBase/Index.cshtml": {
-    "mtime": 1788350906.4842703,
-    "seen": 1788613735.670535,
-    "ast_hash": "9ede58dc067a9281775cc8bc24ad78f0",
-    "semantic_hash": "9ede58dc067a9281775cc8bc24ad78f0"
+    "mtime": 1789851197.275351,
+    "seen": 1789854334.7340822,
+    "ast_hash": "c3d45630e4f4893b8b64891b245f52ea",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Letter/Create.cshtml": {
-    "mtime": 1789250023.869743,
-    "seen": 1789286258.3649828,
-    "ast_hash": "295cd7bbd0e8c81736b7c9d8cc044f6e",
+    "mtime": 1789843447.0695674,
+    "seen": 1789854334.7340822,
+    "ast_hash": "33c8f8c65b35a20f93596141fbf28331",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Letter/Details.cshtml": {
-    "mtime": 1789250472.5938597,
-    "seen": 1789286258.3649828,
-    "ast_hash": "c8805ae9f9997e12626f8912dd0b11e8",
+    "mtime": 1789851197.2813506,
+    "seen": 1789854334.7340822,
+    "ast_hash": "b0b473827212f6f1e53878915f54f848",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Letter/Index.cshtml": {
-    "mtime": 1789250433.8024168,
-    "seen": 1789286258.3649828,
-    "ast_hash": "987784f73cf62c2603faf0fffd31f3e5",
+    "mtime": 1789852323.156193,
+    "seen": 1789854334.7340822,
+    "ast_hash": "0646ce675919424841b94fbaeefadca6",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Letter/MyReferrals.cshtml": {
-    "mtime": 1789250418.597959,
-    "seen": 1789286258.3649828,
-    "ast_hash": "e6cb09f167a7e5be86eb55dd5dd48bfb",
+    "mtime": 1789850496.6719248,
+    "seen": 1789854334.7340822,
+    "ast_hash": "7b86d83a7448b75da86404dbacc6a8d3",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Letter/Reply.cshtml": {
-    "mtime": 1788350906.5291185,
-    "seen": 1788613735.670535,
-    "ast_hash": "bdfcf5b5990dbcc2ae01c4763240621a",
-    "semantic_hash": "bdfcf5b5990dbcc2ae01c4763240621a"
+    "mtime": 1789850496.6719248,
+    "seen": 1789854334.7340822,
+    "ast_hash": "70e8611f38c729d9a65643776e062187",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MDRImport/Index.cshtml": {
-    "mtime": 1788350906.5642571,
-    "seen": 1788613735.670535,
-    "ast_hash": "fc3a92546bb816fd7ba5a9a737b95caf",
-    "semantic_hash": "fc3a92546bb816fd7ba5a9a737b95caf"
+    "mtime": 1789851197.3231242,
+    "seen": 1789854334.7340822,
+    "ast_hash": "6c95d750181d7064c164571f9d292e04",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MDRImport/Review.cshtml": {
-    "mtime": 1788350906.5642571,
-    "seen": 1788613735.670535,
-    "ast_hash": "7088d869a505d3f1c3c63cf430cf1167",
-    "semantic_hash": "7088d869a505d3f1c3c63cf430cf1167"
+    "mtime": 1789850496.6885939,
+    "seen": 1789854334.7340822,
+    "ast_hash": "f741034c41788df7461cee5f83453700",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MOC/Details.cshtml": {
-    "mtime": 1788350906.5839388,
-    "seen": 1788613735.670535,
-    "ast_hash": "3a2c42a0056ed4bcabf021b638cdc62b",
-    "semantic_hash": "3a2c42a0056ed4bcabf021b638cdc62b"
+    "mtime": 1789851197.3271296,
+    "seen": 1789854334.7340822,
+    "ast_hash": "d6efa1c23c4b682157b63f7592a2ef49",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MOC/Index.cshtml": {
-    "mtime": 1789822664.183179,
-    "seen": 1789826033.5971777,
-    "ast_hash": "8ab20317da115a0cb04db83829e443f1",
+    "mtime": 1789851633.9468994,
+    "seen": 1789854334.7340822,
+    "ast_hash": "65f310d2342ab36e8f2b42ac372ca5e0",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/MOC/Raise.cshtml": {
-    "mtime": 1788350906.594448,
-    "seen": 1788613735.670535,
-    "ast_hash": "ea90a264405fc8d49ea3170f85bcc618",
-    "semantic_hash": "ea90a264405fc8d49ea3170f85bcc618"
+    "mtime": 1789850496.6885939,
+    "seen": 1789854334.7340822,
+    "ast_hash": "bb5790c57c9794f1061dd51770b05475",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MaintenancePlan/Create.cshtml": {
-    "mtime": 1788350906.610084,
-    "seen": 1788613735.670535,
-    "ast_hash": "483b2c7dde051ce71685506248739963",
-    "semantic_hash": "483b2c7dde051ce71685506248739963"
+    "mtime": 1789851633.9140997,
+    "seen": 1789854334.7340822,
+    "ast_hash": "4ffba84a0b58c34d121f69e15bf3c331",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MaintenancePlan/Index.cshtml": {
-    "mtime": 1788986383.4146905,
-    "seen": 1788987303.5034666,
-    "ast_hash": "2d5f4dbddbc3bf26270dcfcb442e7780",
+    "mtime": 1789851197.2949023,
+    "seen": 1789854334.7340822,
+    "ast_hash": "8050719e1b803751d7f39591f378018a",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/MaintenanceStrategy/BulkCreate.cshtml": {
-    "mtime": 1789381521.471024,
-    "seen": 1789422256.5575128,
-    "ast_hash": "88adfd565c17d4bc7e2d2f379ece50d0",
+    "mtime": 1789851633.9249,
+    "seen": 1789854334.7340822,
+    "ast_hash": "af8d51dd9d00209bf31a5715f70b026c",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/MaintenanceStrategy/Index.cshtml": {
-    "mtime": 1788508218.4478264,
-    "seen": 1788613735.670535,
-    "ast_hash": "905949fe4767190cabcf1bc3ee7e5219",
-    "semantic_hash": "905949fe4767190cabcf1bc3ee7e5219"
+    "mtime": 1789851633.928868,
+    "seen": 1789854334.7340822,
+    "ast_hash": "875d930ce277ef70c8a9328992eb4f74",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MaterialRequisition/Create.cshtml": {
-    "mtime": 1788350906.656747,
-    "seen": 1788613735.670535,
-    "ast_hash": "683d0672a210260aeeaa382c2d586c7f",
-    "semantic_hash": "683d0672a210260aeeaa382c2d586c7f"
+    "mtime": 1789850496.6880863,
+    "seen": 1789854334.7340822,
+    "ast_hash": "35a59a9ba0bcc44441913c05f1a70538",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MaterialRequisition/Details.cshtml": {
-    "mtime": 1788350906.6723702,
-    "seen": 1788613735.670535,
-    "ast_hash": "cfe0d0baeb9b2eb11a88222e031f0dcd",
-    "semantic_hash": "cfe0d0baeb9b2eb11a88222e031f0dcd"
+    "mtime": 1789850496.6885939,
+    "seen": 1789854334.7340822,
+    "ast_hash": "5fb6f26f96c74911a30a806f3dbfb3e7",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MaterialRequisition/Index.cshtml": {
-    "mtime": 1788555698.0420632,
-    "seen": 1788613735.670535,
-    "ast_hash": "26cd2302f7c3e4ff4cf9f93ca05e1750",
-    "semantic_hash": "26cd2302f7c3e4ff4cf9f93ca05e1750"
+    "mtime": 1789851197.3186352,
+    "seen": 1789854334.7340822,
+    "ast_hash": "80c9a4c7a137e16067f137994021794d",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MaterialRequisition/Quotations.cshtml": {
-    "mtime": 1788555707.2498014,
-    "seen": 1788613735.670535,
-    "ast_hash": "6bff32718f9b01e4313d885679e57ce3",
-    "semantic_hash": "6bff32718f9b01e4313d885679e57ce3"
+    "mtime": 1789851197.3186352,
+    "seen": 1789854334.7340822,
+    "ast_hash": "a5b601a104bbb4ab66c64d0f487fed6f",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Meeting/Create.cshtml": {
-    "mtime": 1788350906.6970963,
-    "seen": 1788613735.670535,
-    "ast_hash": "0baa43e9cc6e476b5a290b4ae9d7d12d",
-    "semantic_hash": "0baa43e9cc6e476b5a290b4ae9d7d12d"
+    "mtime": 1789851197.3251297,
+    "seen": 1789854334.7340822,
+    "ast_hash": "f306465a15241ae86c6de8bd3c6922a4",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Meeting/Details.cshtml": {
-    "mtime": 1788350906.7041028,
-    "seen": 1788613735.670535,
-    "ast_hash": "ec11e850f018038c5cbea58acce869cc",
-    "semantic_hash": "ec11e850f018038c5cbea58acce869cc"
+    "mtime": 1789850496.6885939,
+    "seen": 1789854334.7340822,
+    "ast_hash": "eee1b7d7993dcbb0e156d2f2b30a0d9e",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Meeting/Index.cshtml": {
-    "mtime": 1788705225.6771493,
-    "seen": 1788706892.4242651,
-    "ast_hash": "b94bf3acac721f8e49d6db3c95200e14",
+    "mtime": 1789851197.3261297,
+    "seen": 1789854334.7340822,
+    "ast_hash": "9dd3c7f6006fe3c15096cd35ac624dc2",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/MyProfile/Index.cshtml": {
-    "mtime": 1788350906.7381346,
-    "seen": 1788613735.670535,
-    "ast_hash": "cbe5b3ed918f56100bdd9950c45903da",
-    "semantic_hash": "cbe5b3ed918f56100bdd9950c45903da"
+    "mtime": 1789851633.9538963,
+    "seen": 1789854334.7340822,
+    "ast_hash": "c6e2f73be3257184894613363573f00e",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Notification/Index.cshtml": {
-    "mtime": 1788350906.7472663,
-    "seen": 1788613735.670535,
-    "ast_hash": "9db9da579ded51b03629fb4171c90be6",
-    "semantic_hash": "9db9da579ded51b03629fb4171c90be6"
+    "mtime": 1789829043.033623,
+    "seen": 1789841437.6331615,
+    "ast_hash": "9427ee44f55050c2f23a29e2a21e7caf",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Notification/_NotificationDropdown.cshtml": {
     "mtime": 1788350906.7519467,
@@ -3222,160 +3222,160 @@
     "semantic_hash": "c9e295353144cde5fe109b812c9dbb47"
   },
   "PEMS.Web/Views/OCRProcessing/Index.cshtml": {
-    "mtime": 1788544492.8244538,
-    "seen": 1788613735.670535,
-    "ast_hash": "122c86b69b066fe0f5f4107b8d51fbca",
-    "semantic_hash": "122c86b69b066fe0f5f4107b8d51fbca"
+    "mtime": 1789851197.33213,
+    "seen": 1789854334.7340822,
+    "ast_hash": "87f200ed7ca9e8d13c580247a554b807",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/ProcurementPackage/Create.cshtml": {
-    "mtime": 1788350906.8040369,
-    "seen": 1788613735.670535,
-    "ast_hash": "9085c5c8079cdb7858357d270bf1121f",
-    "semantic_hash": "9085c5c8079cdb7858357d270bf1121f"
+    "mtime": 1789850496.6885939,
+    "seen": 1789854334.7340822,
+    "ast_hash": "1446e20b78315937c783e73b5baf37ac",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/ProcurementPackage/Details.cshtml": {
-    "mtime": 1788350906.8040369,
-    "seen": 1788613735.670535,
-    "ast_hash": "0db34301ede53fbbf3b8f8c47fe6903b",
-    "semantic_hash": "0db34301ede53fbbf3b8f8c47fe6903b"
+    "mtime": 1789850496.7036037,
+    "seen": 1789854334.7340822,
+    "ast_hash": "731a6431644805d144ce6a6581de12dc",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/ProcurementPackage/Index.cshtml": {
-    "mtime": 1788705595.6304865,
-    "seen": 1788706892.4274118,
-    "ast_hash": "552c864ccb76600af18e4136b229c194",
+    "mtime": 1789851197.3445354,
+    "seen": 1789854334.7340822,
+    "ast_hash": "e37f8d56cc8e89f31518690b9a05ab39",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Projects/Create.cshtml": {
-    "mtime": 1788350906.8140428,
-    "seen": 1788613735.670535,
-    "ast_hash": "e44fa791fa545bbcc37172896fe7eb46",
-    "semantic_hash": "e44fa791fa545bbcc37172896fe7eb46"
+    "mtime": 1789850496.704968,
+    "seen": 1789854334.7340822,
+    "ast_hash": "40ac306445367a59c0321dd547b8a1aa",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Projects/Edit.cshtml": {
-    "mtime": 1788350906.8140428,
-    "seen": 1788613735.670535,
-    "ast_hash": "c7d1a8aa8f36592d12fb32209d2e11ed",
-    "semantic_hash": "c7d1a8aa8f36592d12fb32209d2e11ed"
+    "mtime": 1789850496.704968,
+    "seen": 1789854334.7340822,
+    "ast_hash": "c8dbaa3adb10afc5bf22bdc8653a23b9",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Projects/Index.cshtml": {
-    "mtime": 1788350906.829889,
-    "seen": 1788613735.670535,
-    "ast_hash": "055acbb988d80bbf40347d728c755b84",
-    "semantic_hash": "055acbb988d80bbf40347d728c755b84"
+    "mtime": 1789851197.3595445,
+    "seen": 1789854334.7340822,
+    "ast_hash": "5e10ea60c46998e3e570eaccc348363f",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/QC/Index.cshtml": {
-    "mtime": 1789822664.1881669,
-    "seen": 1789826033.612833,
-    "ast_hash": "bd0a4158ff6b25d83b935ee6cf8ad48b",
+    "mtime": 1789851633.980162,
+    "seen": 1789854334.7340822,
+    "ast_hash": "c755e22abf2eb902cc75598998a759f2",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/QC/ItpCreate.cshtml": {
-    "mtime": 1788350906.8447714,
-    "seen": 1788613735.670535,
-    "ast_hash": "3239a16a6405475ead592daae290702f",
-    "semantic_hash": "3239a16a6405475ead592daae290702f"
+    "mtime": 1789850496.704968,
+    "seen": 1789854334.7340822,
+    "ast_hash": "e177b68d486ff5429100f169c2277a0d",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/QC/ItpDetails.cshtml": {
-    "mtime": 1788350906.848651,
-    "seen": 1788613735.670535,
-    "ast_hash": "9ed1ae2e870e327914c6c35f58cb7d8f",
-    "semantic_hash": "9ed1ae2e870e327914c6c35f58cb7d8f"
+    "mtime": 1789850496.704968,
+    "seen": 1789854334.7340822,
+    "ast_hash": "5846917e75f1fac08ec29e6b87ccd35c",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/QC/ItpIndex.cshtml": {
-    "mtime": 1788350906.8528671,
-    "seen": 1788613735.670535,
-    "ast_hash": "c6212820d9cb3c57a64888407a28cc69",
-    "semantic_hash": "c6212820d9cb3c57a64888407a28cc69"
+    "mtime": 1789850496.704968,
+    "seen": 1789854334.7340822,
+    "ast_hash": "3456a66d83ab4c3ab643d27d3a610f04",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/QC/Kpi.cshtml": {
-    "mtime": 1789822664.1891668,
-    "seen": 1789826033.613179,
-    "ast_hash": "f9634e22e3ed2ab660c40fc2e59dbb42",
+    "mtime": 1789851633.9831624,
+    "seen": 1789854334.7340822,
+    "ast_hash": "efe04c03519dbbba5c180da9ed491c94",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/QC/NcrCreate.cshtml": {
-    "mtime": 1788350906.862719,
-    "seen": 1788613735.670535,
-    "ast_hash": "a1732e3419a03244d970fd430d67e3cd",
-    "semantic_hash": "a1732e3419a03244d970fd430d67e3cd"
+    "mtime": 1789851197.3655355,
+    "seen": 1789854334.7340822,
+    "ast_hash": "0693763c050313c7af109d8e3bd36c78",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/QC/NcrDetails.cshtml": {
-    "mtime": 1788350906.8637254,
-    "seen": 1788613735.670535,
-    "ast_hash": "16cb7fd2fd11c83e319d515af45e9125",
-    "semantic_hash": "16cb7fd2fd11c83e319d515af45e9125"
+    "mtime": 1789850496.704968,
+    "seen": 1789854334.7340822,
+    "ast_hash": "a53b3452ead4e5a0d140a9fd42062b59",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/QC/NcrIndex.cshtml": {
-    "mtime": 1789822664.1901667,
-    "seen": 1789826033.614181,
-    "ast_hash": "fe9157f57dbee33878fadb35a0b368f4",
+    "mtime": 1789851197.3665373,
+    "seen": 1789854334.7340822,
+    "ast_hash": "0335119baa347813d15e8369a5fc5312",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Relationship/BulkSuggestions.cshtml": {
-    "mtime": 1788350906.8773062,
-    "seen": 1788613735.670535,
-    "ast_hash": "2d6c93a66342d708f7cff6b89cdd9c93",
-    "semantic_hash": "2d6c93a66342d708f7cff6b89cdd9c93"
+    "mtime": 1789851197.3773189,
+    "seen": 1789854334.7340822,
+    "ast_hash": "0a063dd20a7edf55f417eb9cd695d6e5",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Relationship/GapReport.cshtml": {
-    "mtime": 1788350906.8773062,
-    "seen": 1788613735.670535,
-    "ast_hash": "dbf8de10f9e74697600c8c13fb66cba3",
-    "semantic_hash": "dbf8de10f9e74697600c8c13fb66cba3"
+    "mtime": 1789851633.9948351,
+    "seen": 1789854334.7340822,
+    "ast_hash": "ceff6372d6f0180f63fcf014eab514ce",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Relationship/Index.cshtml": {
-    "mtime": 1788350906.8934734,
-    "seen": 1788613735.670535,
-    "ast_hash": "95d5da7f89ceaae83529ab61cff7af6b",
-    "semantic_hash": "95d5da7f89ceaae83529ab61cff7af6b"
+    "mtime": 1789851197.3833175,
+    "seen": 1789854334.7340822,
+    "ast_hash": "a2e489b15d571cb2383d5b8239310c69",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Report/Cmms.cshtml": {
-    "mtime": 1789494680.008849,
-    "seen": 1789552831.676998,
-    "ast_hash": "93c0139040e05b48e15e2d87726d271a",
+    "mtime": 1789852016.2972755,
+    "seen": 1789854334.7340822,
+    "ast_hash": "72d4a480948051379140c9d7257fc2ca",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Report/Engineering.cshtml": {
-    "mtime": 1789494672.4273667,
-    "seen": 1789552831.676998,
-    "ast_hash": "0e1f1998c3a1d654beb195f284cc5780",
+    "mtime": 1789852016.2982838,
+    "seen": 1789854334.7340822,
+    "ast_hash": "265ea5c243e6ab4122fbe754807cc449",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Report/Index.cshtml": {
-    "mtime": 1789494670.2474556,
-    "seen": 1789552831.676998,
-    "ast_hash": "bee60d1480f7209e98e2d2b8731f0e55",
+    "mtime": 1789852016.2992852,
+    "seen": 1789854334.7340822,
+    "ast_hash": "542fb28c48e267cabb27d10344888243",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Report/Procurement.cshtml": {
-    "mtime": 1789494677.1643243,
-    "seen": 1789552831.676998,
-    "ast_hash": "2f3866a3d70ddccb8f308d072c3f433e",
+    "mtime": 1789852016.3002832,
+    "seen": 1789854334.7340822,
+    "ast_hash": "6cd11ce024f1d83dd8392bae632cdd71",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Report/Vdr.cshtml": {
-    "mtime": 1789494674.7700934,
-    "seen": 1789552831.676998,
-    "ast_hash": "3fbd1dccc8c4b0e1247baed2423eff98",
+    "mtime": 1789852016.3012822,
+    "seen": 1789854334.7340822,
+    "ast_hash": "62ef85bf3631e9bde17f5ede590298e7",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Settings/Index.cshtml": {
-    "mtime": 1789127161.1217184,
-    "seen": 1789128632.47545,
-    "ast_hash": "b0365410a4629e6418956172264a0120",
+    "mtime": 1789851197.404681,
+    "seen": 1789854334.7340822,
+    "ast_hash": "3b3e6e6a6cb16da032d8bc326f7822c0",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Shared/Error.cshtml": {
-    "mtime": 1788350906.9554095,
-    "seen": 1788613735.670535,
-    "ast_hash": "39fa0e5bf61d62e8ea203ef92ffe10b2",
-    "semantic_hash": "39fa0e5bf61d62e8ea203ef92ffe10b2"
+    "mtime": 1789850496.7386484,
+    "seen": 1789854334.7340822,
+    "ast_hash": "7b13c58c27acfa6ed3124b6b9cc32e3b",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Shared/_AuthLayout.cshtml": {
-    "mtime": 1788350906.9554095,
-    "seen": 1788613735.670535,
-    "ast_hash": "d6251cd7be372696d09635ebe099abb1",
-    "semantic_hash": "d6251cd7be372696d09635ebe099abb1"
+    "mtime": 1789852016.224374,
+    "seen": 1789854334.7340822,
+    "ast_hash": "0875766759b205b682c793dc21be1b31",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Shared/_KpiCard.cshtml": {
     "mtime": 1788350906.9710472,
@@ -3384,9 +3384,9 @@
     "semantic_hash": "7db87b2e3d2653aac081faa2a4963742"
   },
   "PEMS.Web/Views/Shared/_Layout.cshtml": {
-    "mtime": 1789822580.5314822,
-    "seen": 1789826033.6171813,
-    "ast_hash": "1d052b19c80e72022f8d437f4d3de6ef",
+    "mtime": 1789852016.253155,
+    "seen": 1789854334.7350821,
+    "ast_hash": "48bb272b999213e538a94610408b3095",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Shared/_Pagination.cshtml": {
@@ -3396,15 +3396,15 @@
     "semantic_hash": "11267db7fce64584bdd7d30d0a2d82e5"
   },
   "PEMS.Web/Views/Shared/_RichTextEditorScripts.cshtml": {
-    "mtime": 1788350906.9867022,
-    "seen": 1788613735.670535,
-    "ast_hash": "329af3e630e2ba19fd81d23f832f6a96",
-    "semantic_hash": "329af3e630e2ba19fd81d23f832f6a96"
+    "mtime": 1789852016.2647083,
+    "seen": 1789854334.7350821,
+    "ast_hash": "30da9abb2a93ee224a9e6f20420ef6a9",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Shared/_SidebarMenu.cshtml": {
-    "mtime": 1789809979.3885207,
-    "seen": 1789826033.6181793,
-    "ast_hash": "44f705bed5fd08b07517dcc25a218d42",
+    "mtime": 1789851634.039865,
+    "seen": 1789854334.7350821,
+    "ast_hash": "6af41c423b1719892e7796e7f2586de4",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Shared/_ValidationScriptsPartial.cshtml": {
@@ -3420,51 +3420,51 @@
     "semantic_hash": "c30ed69da4842bc1d71efcfd13294b97"
   },
   "PEMS.Web/Views/SparePart/Index.cshtml": {
-    "mtime": 1788507681.440282,
-    "seen": 1788613735.670535,
-    "ast_hash": "d3a9c49d48ba08333a7075aa84284988",
-    "semantic_hash": "d3a9c49d48ba08333a7075aa84284988"
+    "mtime": 1789851634.039865,
+    "seen": 1789854334.7350821,
+    "ast_hash": "9ab0eea94d405ab90a57d83853b11b74",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Tag/Index.cshtml": {
-    "mtime": 1788350907.1123827,
-    "seen": 1788613735.670535,
-    "ast_hash": "a6a10fa5b3d4d13c9dc7105ba4be46fe",
-    "semantic_hash": "a6a10fa5b3d4d13c9dc7105ba4be46fe"
+    "mtime": 1789850496.7553844,
+    "seen": 1789854334.7350821,
+    "ast_hash": "ad50c1cd7e85e47d79701986ab9434da",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Task/Index.cshtml": {
-    "mtime": 1788557120.6186018,
-    "seen": 1788613735.670535,
-    "ast_hash": "04191deb6e4fe31bdec989faa599f454",
-    "semantic_hash": "04191deb6e4fe31bdec989faa599f454"
+    "mtime": 1789851197.4387054,
+    "seen": 1789854334.7350821,
+    "ast_hash": "23a8b479909a6239067f1db2304bb7c9",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Team/Index.cshtml": {
-    "mtime": 1789822664.200093,
-    "seen": 1789826033.6201828,
-    "ast_hash": "bb418dcde0c8dc995eb07fbded47c5cc",
+    "mtime": 1789851634.0561724,
+    "seen": 1789854334.7350821,
+    "ast_hash": "cc4af992f1da6535d13d7577265cbf9f",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/TechnicalQuery/Details.cshtml": {
-    "mtime": 1788350907.1435385,
-    "seen": 1788613735.670535,
-    "ast_hash": "ec9cb3b35266f0968a41b93b3b649204",
-    "semantic_hash": "ec9cb3b35266f0968a41b93b3b649204"
+    "mtime": 1789850496.7553844,
+    "seen": 1789854334.7350821,
+    "ast_hash": "b896306226ff53c3e6762766560422be",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/TechnicalQuery/Index.cshtml": {
-    "mtime": 1789822664.2011006,
-    "seen": 1789826033.6201828,
-    "ast_hash": "7ffebf0e19f7fe8a3278f96b06bed9a9",
+    "mtime": 1789851634.0561724,
+    "seen": 1789854334.7350821,
+    "ast_hash": "4c7b9ab803af366d54a6792272a72574",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/TechnicalQuery/Raise.cshtml": {
-    "mtime": 1788350907.1496425,
-    "seen": 1788613735.670535,
-    "ast_hash": "a2b82a8d56ee79d012554e782245b89e",
-    "semantic_hash": "a2b82a8d56ee79d012554e782245b89e"
+    "mtime": 1789850496.7553844,
+    "seen": 1789854334.7350821,
+    "ast_hash": "33fd3238b39db4163a12eff96580183b",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Transmittal/Create.cshtml": {
-    "mtime": 1789818844.4656906,
-    "seen": 1789826033.6201828,
-    "ast_hash": "963ed165dad91cd2f6b396e80dbb8e56",
+    "mtime": 1789850496.7553844,
+    "seen": 1789854334.7350821,
+    "ast_hash": "f5b301c38fdbeee29288ae8567c3f182",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Transmittal/Details.cshtml": {
@@ -3474,9 +3474,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Transmittal/Index.cshtml": {
-    "mtime": 1789818844.4686875,
-    "seen": 1789826033.6201828,
-    "ast_hash": "eca3176a49f2e2ab486c43eb2fea643f",
+    "mtime": 1789829043.0463471,
+    "seen": 1789841437.6529255,
+    "ast_hash": "841d6463cdbc1d68e406b1285e34b945",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/VDRImport/Index.cshtml": {
@@ -3486,9 +3486,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/VDRImport/Review.cshtml": {
-    "mtime": 1789818844.4726875,
-    "seen": 1789826033.6201828,
-    "ast_hash": "7c7ff1b873c9e32a5cc8638a9927c527",
+    "mtime": 1789850496.770392,
+    "seen": 1789854334.7360847,
+    "ast_hash": "136196a3988a5dfe8ea86cee9666a26b",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/VDR/Create.cshtml": {
@@ -3528,22 +3528,22 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/WorkOrder/Create.cshtml": {
-    "mtime": 1788350907.2225268,
-    "seen": 1788613735.670535,
-    "ast_hash": "ab7ee9e11696075f843cb5f4d1ee6a7e",
-    "semantic_hash": "ab7ee9e11696075f843cb5f4d1ee6a7e"
+    "mtime": 1789851634.0729675,
+    "seen": 1789854334.7360847,
+    "ast_hash": "efade1c5d092448199562b5b8349bca0",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/WorkOrder/Details.cshtml": {
-    "mtime": 1789419464.8654172,
-    "seen": 1789422256.5923193,
-    "ast_hash": "49c26e5809aff0cd1e592edbe5bb1a4a",
+    "mtime": 1789852323.324964,
+    "seen": 1789854334.7360847,
+    "ast_hash": "abe3143a638087f9d2d0748b3ec49243",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/WorkOrder/Index.cshtml": {
-    "mtime": 1788546819.9182808,
-    "seen": 1788613735.670535,
-    "ast_hash": "26bcb583a0cd6eac44cfde817ac23986",
-    "semantic_hash": "26bcb583a0cd6eac44cfde817ac23986"
+    "mtime": 1789850496.7715418,
+    "seen": 1789854334.7360847,
+    "ast_hash": "550dfd4d1ec4663d7cfed6148fb49f44",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/_ViewImports.cshtml": {
     "mtime": 1788350905.9472184,
@@ -3582,10 +3582,10 @@
     "semantic_hash": ""
   },
   "PEMS.WorkflowPlatform/Configurations/WorkflowConfigurations.cs": {
-    "mtime": 1788350908.9374068,
-    "seen": 1788613735.670535,
-    "ast_hash": "eccb300f0b49573e172c9d926c1e8029",
-    "semantic_hash": "eccb300f0b49573e172c9d926c1e8029"
+    "mtime": 1789858255.076421,
+    "seen": 1789859919.2908504,
+    "ast_hash": "d2f4542ac3ef6a49cbc507461a1b7cc7",
+    "semantic_hash": ""
   },
   "PEMS.WorkflowPlatform/Dtos/WorkflowDtos.cs": {
     "mtime": 1788350908.9524126,
@@ -3606,10 +3606,10 @@
     "semantic_hash": "85f0ee2936bf64dccdc2bda15b704390"
   },
   "PEMS.WorkflowPlatform/Entities/WorkflowInstance.cs": {
-    "mtime": 1788350908.983541,
-    "seen": 1788613735.670535,
-    "ast_hash": "fcd2821cb8ce2356239e49b4faeb88c1",
-    "semantic_hash": "fcd2821cb8ce2356239e49b4faeb88c1"
+    "mtime": 1789858241.510288,
+    "seen": 1789859919.2908504,
+    "ast_hash": "2af6924a320f6620f22067d1850523ba",
+    "semantic_hash": ""
   },
   "PEMS.WorkflowPlatform/Entities/WorkflowInstanceStage.cs": {
     "mtime": 1788350908.984546,
@@ -3618,28 +3618,28 @@
     "semantic_hash": "4fcefe10139a9c247bd777f00d5d75a4"
   },
   "PEMS.WorkflowPlatform/Entities/WorkflowStage.cs": {
-    "mtime": 1788350908.984546,
-    "seen": 1788613735.670535,
-    "ast_hash": "6b6bbf8fd99bd2a4faa7dc4d3c1893a9",
-    "semantic_hash": "6b6bbf8fd99bd2a4faa7dc4d3c1893a9"
+    "mtime": 1789861498.4518187,
+    "seen": 1789863535.6783876,
+    "ast_hash": "87e030b2c18f39cfb43a49eea1685453",
+    "semantic_hash": ""
   },
   "PEMS.WorkflowPlatform/Entities/WorkflowTransition.cs": {
-    "mtime": 1788350908.9990516,
-    "seen": 1788613735.670535,
-    "ast_hash": "4e3e291fabedff9cd31e7c26d9c0641e",
-    "semantic_hash": "4e3e291fabedff9cd31e7c26d9c0641e"
+    "mtime": 1789861498.4518187,
+    "seen": 1789863535.6783876,
+    "ast_hash": "6e0df8eccb2b6baf698db8730bc82b83",
+    "semantic_hash": ""
   },
   "PEMS.WorkflowPlatform/Entities/WorkflowVersion.cs": {
-    "mtime": 1788350908.9990516,
-    "seen": 1788613735.670535,
-    "ast_hash": "e865003b4e8096bb5300ad4937f67e16",
-    "semantic_hash": "e865003b4e8096bb5300ad4937f67e16"
+    "mtime": 1789858241.5043185,
+    "seen": 1789859919.2908504,
+    "ast_hash": "04bcb9c1510ea557cf7a330546ffe189",
+    "semantic_hash": ""
   },
   "PEMS.WorkflowPlatform/Interfaces/IWorkflowDbContext.cs": {
-    "mtime": 1788350909.0163667,
-    "seen": 1788613735.670535,
-    "ast_hash": "e93b7c9e93d4caa61aeb62805015f3f2",
-    "semantic_hash": "e93b7c9e93d4caa61aeb62805015f3f2"
+    "mtime": 1789858255.076421,
+    "seen": 1789859919.2908504,
+    "ast_hash": "75daa20ea9b4d2ff659c839085e9fcf2",
+    "semantic_hash": ""
   },
   "PEMS.WorkflowPlatform/Interfaces/IWorkflowRuntime.cs": {
     "mtime": 1788350909.0163667,
@@ -3654,10 +3654,10 @@
     "semantic_hash": "51a16dd470b289a34be53e70d490b4fd"
   },
   "PEMS.WorkflowPlatform/Services/WorkflowRuntimeService.cs": {
-    "mtime": 1788350909.0620368,
-    "seen": 1788613735.670535,
-    "ast_hash": "b441bff7a053de875f226f9146c28254",
-    "semantic_hash": "b441bff7a053de875f226f9146c28254"
+    "mtime": 1789861498.4632337,
+    "seen": 1789863535.6783876,
+    "ast_hash": "a79d3ebefc1d94c46913df483124f330",
+    "semantic_hash": ""
   },
   "PEMS.slnx": {
     "mtime": 1788350900.7297907,
@@ -3846,10 +3846,10 @@
     "semantic_hash": "74be7ee5f09b7bfe6c14524765897b00"
   },
   "PEMS.Web/Areas/Admin/Views/ProjectIntelligence/Index.cshtml": {
-    "mtime": 1788350905.1692944,
-    "seen": 1788613735.670535,
-    "ast_hash": "1485643339e62a765907b69b02c95f36",
-    "semantic_hash": "1485643339e62a765907b69b02c95f36"
+    "mtime": 1789851197.4691925,
+    "seen": 1789854334.7180836,
+    "ast_hash": "3527076128682d35bdb47365aeec984d",
+    "semantic_hash": ""
   },
   "scripts/project-intelligence/Generate-ProjectIntelligence.ps1": {
     "mtime": 1788350920.146237,
@@ -3858,16 +3858,16 @@
     "semantic_hash": "3aeeffd547cad5808d1730e0fb508d7b"
   },
   "PEMS_PROJECT_INTELLIGENCE_REPORT.md": {
-    "mtime": 1789491327.068529,
-    "seen": 1789552831.716251,
-    "ast_hash": "447e09d2d042a93aa9872578f4a01e45",
+    "mtime": 1789844595.4016273,
+    "seen": 1789854334.7413795,
+    "ast_hash": "dc713e4d74d910d9adc020d4686abd94",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Users/_RoleCheckboxes.cshtml": {
-    "mtime": 1788350905.2216666,
-    "seen": 1788613735.670535,
-    "ast_hash": "3ecb871bac252568deaa9580fc793d72",
-    "semantic_hash": "3ecb871bac252568deaa9580fc793d72"
+    "mtime": 1789851197.477314,
+    "seen": 1789854334.7180836,
+    "ast_hash": "88631d6cea7dce8dfd55fd8921620882",
+    "semantic_hash": ""
   },
   "PEMS.Web/Helpers/ExcelExportHelper.cs": {
     "mtime": 1788350905.6638935,
@@ -3906,22 +3906,22 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Instrument/Edit.cshtml": {
-    "mtime": 1788350906.3901527,
-    "seen": 1788613735.670535,
-    "ast_hash": "6aa0660ccfb0d31d0d0145ec1a7347cf",
-    "semantic_hash": "6aa0660ccfb0d31d0d0145ec1a7347cf"
+    "mtime": 1789850496.6548417,
+    "seen": 1789854334.7340822,
+    "ast_hash": "0ea62bda226e94584f81d129150ca5a2",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Instrument/Index.cshtml": {
-    "mtime": 1789813889.8827963,
-    "seen": 1789826033.5971777,
-    "ast_hash": "792a182cb8b6ff072cbc30c7c04cc6e5",
+    "mtime": 1789851197.264181,
+    "seen": 1789854334.7340822,
+    "ast_hash": "dadd4b75148f07b5764c6140dd279c11",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Instrument/Passport.cshtml": {
-    "mtime": 1788350906.3901527,
-    "seen": 1788613735.670535,
-    "ast_hash": "d83a027d4e99dedea1db9cbd9df91815",
-    "semantic_hash": "d83a027d4e99dedea1db9cbd9df91815"
+    "mtime": 1789850496.670506,
+    "seen": 1789854334.7340822,
+    "ast_hash": "3db9c08be993a04e4b613badc6df5ed1",
+    "semantic_hash": ""
   },
   ".claude/New Text Document.txt": {
     "mtime": 1788350900.79221,
@@ -3960,16 +3960,16 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/TableExtraction/Analyze.cshtml": {
-    "mtime": 1788350907.0892823,
-    "seen": 1788613735.670535,
-    "ast_hash": "4f2d6a15a142f8bcba79ce62e0c1e2b7",
-    "semantic_hash": "4f2d6a15a142f8bcba79ce62e0c1e2b7"
+    "mtime": 1789850496.7553844,
+    "seen": 1789854334.7350821,
+    "ast_hash": "246b1f6fed29a9a504f650fb2b8d058b",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/TableExtraction/Index.cshtml": {
-    "mtime": 1788544233.656914,
-    "seen": 1788613735.670535,
-    "ast_hash": "5d01755c3fdd48d3faeab54b5d69b344",
-    "semantic_hash": "5d01755c3fdd48d3faeab54b5d69b344"
+    "mtime": 1789851197.4335027,
+    "seen": 1789854334.7350821,
+    "ast_hash": "8826bb0d0c10dbc7b4c778dfa83c8eed",
+    "semantic_hash": ""
   },
   "PEMS.Web/wwwroot/uploads/intake/4016aa5d-5471-40f5-b9b1-7427a2279946.pdf": {
     "mtime": 1788350908.6072347,
@@ -4038,10 +4038,10 @@
     "semantic_hash": "48862c09589c6a249f9dfa94ec08358c"
   },
   "PEMS.Web/Views/TableExtraction/Review.cshtml": {
-    "mtime": 1788350907.0971894,
-    "seen": 1788613735.670535,
-    "ast_hash": "2a2854ad1f6b44d7bb1c79c82f641fac",
-    "semantic_hash": "2a2854ad1f6b44d7bb1c79c82f641fac"
+    "mtime": 1789850496.7553844,
+    "seen": 1789854334.7350821,
+    "ast_hash": "0aa7093cbc0b6dc3008d1d6f74c90d8c",
+    "semantic_hash": ""
   },
   ".claude/Role/ENGINEERING_AND_AI_MODULES_GUIDE.md": {
     "mtime": 1788350900.8867333,
@@ -4152,16 +4152,16 @@
     "semantic_hash": "4390f19dfcdd5afce7a0be02f17c8912"
   },
   "PEMS.Web/Views/Asset/Details.cshtml": {
-    "mtime": 1788350906.0302346,
-    "seen": 1788613735.670535,
-    "ast_hash": "645442c35a7c1102b7c0eee436c13235",
-    "semantic_hash": "645442c35a7c1102b7c0eee436c13235"
+    "mtime": 1789850496.6054919,
+    "seen": 1789854334.7330844,
+    "ast_hash": "a0363b9167622aa15ea034040dfbd353",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Asset/Index.cshtml": {
-    "mtime": 1788523442.5090725,
-    "seen": 1788613735.670535,
-    "ast_hash": "40d1c145999c643fc278dbb2c776215d",
-    "semantic_hash": "40d1c145999c643fc278dbb2c776215d"
+    "mtime": 1789851197.1508553,
+    "seen": 1789854334.7330844,
+    "ast_hash": "74a8c2812db8908762f7c145abd6c013",
+    "semantic_hash": ""
   },
   ".claude/Role/PEMS_CMMS_ARCHITECTURE.md": {
     "mtime": 1788350900.996424,
@@ -4350,15 +4350,15 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Crew/Index.cshtml": {
-    "mtime": 1789822664.1696339,
-    "seen": 1789826033.5971777,
-    "ast_hash": "dbe244709a0eb4852275f2ccba68b465",
+    "mtime": 1789851633.7660196,
+    "seen": 1789854334.7340822,
+    "ast_hash": "517bcb06267207e10f429f28fea20aba",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/MaintenanceMasterData/Index.cshtml": {
-    "mtime": 1788899109.2607815,
-    "seen": 1788899731.7823243,
-    "ast_hash": "4bc21cde6f0e42db7afe5cd55c0d3389",
+    "mtime": 1789851633.9120986,
+    "seen": 1789854334.7340822,
+    "ast_hash": "e540926d9e4d38f80c63adec4a661386",
     "semantic_hash": ""
   },
   ".claude/Role/PEMS_CMMS_MAINTENANCE_ORGANIZATION_BLUEPRINT.md": {
@@ -4692,58 +4692,58 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/InventoryMasterData/Index.cshtml": {
-    "mtime": 1788350906.4368503,
-    "seen": 1788613735.670535,
-    "ast_hash": "1e4c5b5a5e025e23b50268ac8b8f9d8f",
-    "semantic_hash": "1e4c5b5a5e025e23b50268ac8b8f9d8f"
+    "mtime": 1789851633.8819895,
+    "seen": 1789854334.7340822,
+    "ast_hash": "4b8579de1cd9b791dfd1223b1691bf92",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/InventoryTransaction/Index.cshtml": {
-    "mtime": 1788542715.6029022,
-    "seen": 1788613735.670535,
-    "ast_hash": "df29dfaaef03ab27cb1c7160ae2413ef",
-    "semantic_hash": "df29dfaaef03ab27cb1c7160ae2413ef"
+    "mtime": 1789851197.273352,
+    "seen": 1789854334.7340822,
+    "ast_hash": "e85d74c4b3d661a2cc96663981781524",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Inventory/Index.cshtml": {
-    "mtime": 1789813889.8842068,
-    "seen": 1789826033.5971777,
-    "ast_hash": "88926828f8f974c8acb31b7c8a1b2b74",
+    "mtime": 1789851633.8779895,
+    "seen": 1789854334.7340822,
+    "ast_hash": "4631260fb4a8d6aca21eb0c520775406",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/MaterialItem/Details.cshtml": {
-    "mtime": 1789419560.7918532,
-    "seen": 1789422256.5575128,
-    "ast_hash": "03cbcc80f677e456091f9c1e0f8bcdee",
+    "mtime": 1789851197.3126369,
+    "seen": 1789854334.7340822,
+    "ast_hash": "6cc3a832d53c977bcfd0b11defb56a87",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/MaterialItem/Index.cshtml": {
-    "mtime": 1788350906.656747,
-    "seen": 1788613735.670535,
-    "ast_hash": "eb1bb4859579e7fbb81baa4121d33aad",
-    "semantic_hash": "eb1bb4859579e7fbb81baa4121d33aad"
+    "mtime": 1789851197.315635,
+    "seen": 1789854334.7340822,
+    "ast_hash": "1e55127f8dbdb79771fbef5cd6fd2bc8",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MrsImport/Index.cshtml": {
-    "mtime": 1788350906.719734,
-    "seen": 1788613735.670535,
-    "ast_hash": "0cfc0a6dffc6ba7c09f9383e25535de7",
-    "semantic_hash": "0cfc0a6dffc6ba7c09f9383e25535de7"
+    "mtime": 1789851633.9488974,
+    "seen": 1789854334.7340822,
+    "ast_hash": "468c62afb85b1153c6436780efb5c716",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MrsImport/Review.cshtml": {
-    "mtime": 1788350906.719734,
-    "seen": 1788613735.670535,
-    "ast_hash": "2dab4678ce4d82c367b1f41a15f81d64",
-    "semantic_hash": "2dab4678ce4d82c367b1f41a15f81d64"
+    "mtime": 1789850496.6885939,
+    "seen": 1789854334.7340822,
+    "ast_hash": "56bf7e607124f6509d1a42189a3ff1de",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/StoreRequisition/Details.cshtml": {
-    "mtime": 1788350907.0654724,
-    "seen": 1788613735.670535,
-    "ast_hash": "fac61da87f5dab0e3b74cf50095e8407",
-    "semantic_hash": "fac61da87f5dab0e3b74cf50095e8407"
+    "mtime": 1789850496.7553844,
+    "seen": 1789854334.7350821,
+    "ast_hash": "a8a6d033100e6a7aca5b23e30ef866cc",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/StoreRequisition/Index.cshtml": {
-    "mtime": 1788556088.521923,
-    "seen": 1788613735.670535,
-    "ast_hash": "34c5251b53900f81dbb209ad6080be0f",
-    "semantic_hash": "34c5251b53900f81dbb209ad6080be0f"
+    "mtime": 1789851634.039865,
+    "seen": 1789854334.7350821,
+    "ast_hash": "3d94ee55829ee55420ddecd3537f2f54",
+    "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/INumberingService.cs": {
     "mtime": 1788350902.320309,
@@ -4842,9 +4842,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/FunctionalLocation/Index.cshtml": {
-    "mtime": 1789822634.2506642,
-    "seen": 1789826033.5971777,
-    "ast_hash": "943679d3cc943404797c71b71d090c3b",
+    "mtime": 1789851197.2471135,
+    "seen": 1789854334.7340822,
+    "ast_hash": "0b4d787ea693c4f7a476e65d8da3ec58",
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/JobPlanDto.cs": {
@@ -4920,28 +4920,28 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/JobPlan/Details.cshtml": {
-    "mtime": 1789028736.0586326,
-    "seen": 1789030605.3667483,
-    "ast_hash": "cfa48763cc1fed492cb435b871663859",
+    "mtime": 1789852323.137192,
+    "seen": 1789854334.7340822,
+    "ast_hash": "c5019336a4e3194a25f8bfad6bcf0c1c",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/JobPlan/Index.cshtml": {
-    "mtime": 1789822664.1801667,
-    "seen": 1789826033.5971777,
-    "ast_hash": "a69a6f4f2596e2b9cbc730090d24d434",
+    "mtime": 1789851197.275351,
+    "seen": 1789854334.7340822,
+    "ast_hash": "3006e7cb0ed7d10606435d75163bffe5",
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/WorkRequestDto.cs": {
-    "mtime": 1788350902.0691507,
-    "seen": 1788613735.6693618,
-    "ast_hash": "382af4a525b3d114849b70985f08a22a",
-    "semantic_hash": "382af4a525b3d114849b70985f08a22a"
+    "mtime": 1789861891.2035298,
+    "seen": 1789863535.472306,
+    "ast_hash": "a5beaada4fcd2e88696c8a7df54cfe35",
+    "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/IWorkRequestService.cs": {
-    "mtime": 1788547174.393273,
-    "seen": 1788613735.6703675,
-    "ast_hash": "3738f268bdcde31cbbfd5c3090007696",
-    "semantic_hash": "3738f268bdcde31cbbfd5c3090007696"
+    "mtime": 1789893667.384325,
+    "seen": 1789896630.3200717,
+    "ast_hash": "152cd08d12530c7c3f826b3700491aaa",
+    "semantic_hash": ""
   },
   "PEMS.Domain/Entities/WorkRequest.cs": {
     "mtime": 1788350903.34132,
@@ -4968,33 +4968,33 @@
     "semantic_hash": "cea2907be6bd2f5c867e02fcd2365377"
   },
   "PEMS.Persistence/Servises/WorkRequestService.cs": {
-    "mtime": 1789039604.4579554,
-    "seen": 1789041895.943493,
-    "ast_hash": "ceef321682276981fc4cb6a535937e72",
+    "mtime": 1789894461.0132751,
+    "seen": 1789896630.4579258,
+    "ast_hash": "2c516153dfb0c7da20e120705385d5b9",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/WorkRequestController.cs": {
-    "mtime": 1789820641.2851105,
-    "seen": 1789826033.5971777,
-    "ast_hash": "2ca1a5f720e0f2eed0ea81883a5293ab",
+    "mtime": 1789894884.320381,
+    "seen": 1789896630.521109,
+    "ast_hash": "abb5d4c7ae409d9762e5efa55d624d0d",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/WorkRequest/Create.cshtml": {
-    "mtime": 1789820641.2851105,
-    "seen": 1789826033.6201828,
-    "ast_hash": "24a0fad7f4baf9e2f8ff6b9ce25af725",
+    "mtime": 1789851634.0729675,
+    "seen": 1789854334.7360847,
+    "ast_hash": "be45eb87eb9c5ac0da225d0ffea6ce47",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/WorkRequest/Details.cshtml": {
-    "mtime": 1788350907.2622406,
-    "seen": 1788613735.670535,
-    "ast_hash": "665e4b173d54e8fe091df848626d7b17",
-    "semantic_hash": "665e4b173d54e8fe091df848626d7b17"
+    "mtime": 1789895879.9581454,
+    "seen": 1789896630.5780375,
+    "ast_hash": "650b753be73c312f94416f2c9a17fa21",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/WorkRequest/Index.cshtml": {
-    "mtime": 1789823985.85138,
-    "seen": 1789826033.6216886,
-    "ast_hash": "c841e279d8e2ec9232bba49ae1825914",
+    "mtime": 1789895931.2628007,
+    "seen": 1789896630.5780375,
+    "ast_hash": "2d8846a6777170448693e6652e87b6b8",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Migrations/20260815040001_RequiredSkillPlannedHours.Designer.cs": {
@@ -5046,15 +5046,15 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Reliability/Details.cshtml": {
-    "mtime": 1789048138.914688,
-    "seen": 1789049821.7201374,
-    "ast_hash": "2f89ad5f5a8fc6f8574436253f5131e2",
+    "mtime": 1789851197.3905044,
+    "seen": 1789854334.7340822,
+    "ast_hash": "93931375b8278fe35ce583c2293827cf",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Reliability/Index.cshtml": {
-    "mtime": 1789822634.2506642,
-    "seen": 1789826033.615179,
-    "ast_hash": "ef49ba3e560dcc2c9a12c6acf610931f",
+    "mtime": 1789851197.3944986,
+    "seen": 1789854334.7340822,
+    "ast_hash": "dba8dd2eb264a45deeb6de678965ac5f",
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/InspectionDto.cs": {
@@ -5094,9 +5094,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Inspection/Index.cshtml": {
-    "mtime": 1789822664.1791666,
-    "seen": 1789826033.5971777,
-    "ast_hash": "493f7d12f46636f60c0cd79b3e661d2c",
+    "mtime": 1789851197.2596574,
+    "seen": 1789854334.7340822,
+    "ast_hash": "aee593fab51101a7f4039b1286803081",
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/KpiDto.cs": {
@@ -5136,10 +5136,10 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Kpi/Index.cshtml": {
-    "mtime": 1788350906.5000143,
-    "seen": 1788613735.670535,
-    "ast_hash": "97fd643a2e76aa2e536964d5a4450c11",
-    "semantic_hash": "97fd643a2e76aa2e536964d5a4450c11"
+    "mtime": 1789851197.276351,
+    "seen": 1789854334.7340822,
+    "ast_hash": "4babace395728d38d23c9a46f22b9981",
+    "semantic_hash": ""
   },
   ".claude/Role/PEMS_CMMS-10_Permit_to_Work_Architecture_Baseline_v1.0.md": {
     "mtime": 1788350900.9807687,
@@ -5220,21 +5220,21 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Permit/Create.cshtml": {
-    "mtime": 1788350906.7824214,
-    "seen": 1788613735.670535,
-    "ast_hash": "742a184d98fa8ec802dfa4e840dafa65",
-    "semantic_hash": "742a184d98fa8ec802dfa4e840dafa65"
+    "mtime": 1789851633.9596817,
+    "seen": 1789854334.7340822,
+    "ast_hash": "08f46f48bdc92b4116a35460849b7a41",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Permit/Details.cshtml": {
-    "mtime": 1788350906.7824214,
-    "seen": 1788613735.670535,
-    "ast_hash": "ef3c88aa57d91273e76a3502cc6285de",
-    "semantic_hash": "ef3c88aa57d91273e76a3502cc6285de"
+    "mtime": 1789850496.6885939,
+    "seen": 1789854334.7340822,
+    "ast_hash": "80bb59b8ecc3a842c33a5ac9d7c9a2b5",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/Permit/Index.cshtml": {
-    "mtime": 1789822664.186169,
-    "seen": 1789826033.5971777,
-    "ast_hash": "1bbea360b08b503a99201a44aa3667d6",
+    "mtime": 1789851197.3405404,
+    "seen": 1789854334.7340822,
+    "ast_hash": "7d078d6c3ad3fba99ede18efa4679b2d",
     "semantic_hash": ""
   },
   ".claude/Role/PEMS CMMS-10a \u2014 Execution Baseline & Claude Implementation Directive.md": {
@@ -5484,21 +5484,21 @@
     "semantic_hash": "13742d619e97ed7d8fa7db24af18fd5e"
   },
   "PEMS.Web/Views/ShiftHandover/Create.cshtml": {
-    "mtime": 1788350907.0351818,
-    "seen": 1788613735.670535,
-    "ast_hash": "6e06d840d6310aa7e4e68ca6eecee8fb",
-    "semantic_hash": "6e06d840d6310aa7e4e68ca6eecee8fb"
+    "mtime": 1789850496.7553844,
+    "seen": 1789854334.7350821,
+    "ast_hash": "df770f30598cf096a849f2ed23e4f33b",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/ShiftHandover/Details.cshtml": {
-    "mtime": 1788350907.0351818,
-    "seen": 1788613735.670535,
-    "ast_hash": "313b2d1be746bfde6cde3cfe23984798",
-    "semantic_hash": "313b2d1be746bfde6cde3cfe23984798"
+    "mtime": 1789850496.7553844,
+    "seen": 1789854334.7350821,
+    "ast_hash": "6960eaad40eef710fa13a24b57253bbe",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/ShiftHandover/Index.cshtml": {
-    "mtime": 1789822664.1980846,
-    "seen": 1789826033.6191792,
-    "ast_hash": "56b4ebfffec011e9a76fc5474077f13c",
+    "mtime": 1789850496.7553844,
+    "seen": 1789854334.7350821,
+    "ast_hash": "440d18fa98a79d645ce5a39c2e997c2e",
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/ExecutionGateDto.cs": {
@@ -5622,10 +5622,10 @@
     "semantic_hash": "53a83d157d1b7f5c671b2228e20d7ae9"
   },
   "PEMS.Web/Views/Account/ManagePasskeys.cshtml": {
-    "mtime": 1788350906.0103729,
-    "seen": 1788613735.670535,
-    "ast_hash": "867d77af243d4526e9e6a7d94e27a5d9",
-    "semantic_hash": "867d77af243d4526e9e6a7d94e27a5d9"
+    "mtime": 1789851197.1458578,
+    "seen": 1789854334.7330844,
+    "ast_hash": "de099827a7d7c6ce7e6e1aba51127780",
+    "semantic_hash": ""
   },
   "PEMS.Web/wwwroot/js/webauthn.js": {
     "mtime": 1788350907.8672097,
@@ -5856,10 +5856,10 @@
     "semantic_hash": "9c7459fcb94275dff709aa5ebe0458e0"
   },
   "PEMS.Web/Views/EngineeringDashboard/Index.cshtml": {
-    "mtime": 1788350906.2331738,
-    "seen": 1788613735.670535,
-    "ast_hash": "3d3f44d91f11a64d5e99dd1d53f2c903",
-    "semantic_hash": "3d3f44d91f11a64d5e99dd1d53f2c903"
+    "mtime": 1789850496.6382077,
+    "seen": 1789854334.7340822,
+    "ast_hash": "afb293ed83aeb61eeb4ad0499e661cda",
+    "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/ITransmittalNumberingService.cs": {
     "mtime": 1788350902.4304748,
@@ -6054,21 +6054,21 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/MDB/Create.cshtml": {
-    "mtime": 1788350906.5316246,
-    "seen": 1788613735.670535,
-    "ast_hash": "ea38c1d82f893de43edadb3ce4788b45",
-    "semantic_hash": "ea38c1d82f893de43edadb3ce4788b45"
+    "mtime": 1789850496.6885939,
+    "seen": 1789854334.7340822,
+    "ast_hash": "39b2f6c08a40ef6856f1745f610c2c7a",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MDB/Details.cshtml": {
-    "mtime": 1788350906.5472527,
-    "seen": 1788613735.670535,
-    "ast_hash": "65c0de4616cdac283b022529e1fcac64",
-    "semantic_hash": "65c0de4616cdac283b022529e1fcac64"
+    "mtime": 1789850496.6885939,
+    "seen": 1789854334.7340822,
+    "ast_hash": "beb16424da9e4de34e696f183b876196",
+    "semantic_hash": ""
   },
   "PEMS.Web/Views/MDB/Index.cshtml": {
-    "mtime": 1788705140.3186393,
-    "seen": 1788706892.422275,
-    "ast_hash": "8ad6a452c6e8aaf66d0e929ac6fe90bb",
+    "mtime": 1789851197.322099,
+    "seen": 1789854334.7340822,
+    "ast_hash": "58a787140f8fbaf3fcbcf20b2a22075f",
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/DocumentHoldDto.cs": {
@@ -7068,10 +7068,10 @@
     "semantic_hash": "26aa9310ffb5c490f54749eeda7fe062"
   },
   "PEMS.Web/Views/Performance/Index.cshtml": {
-    "mtime": 1788350906.767912,
-    "seen": 1788613735.670535,
-    "ast_hash": "da0e0ca14edd390437bc5da38f5d42ba",
-    "semantic_hash": "da0e0ca14edd390437bc5da38f5d42ba"
+    "mtime": 1789851633.9576848,
+    "seen": 1789854334.7340822,
+    "ast_hash": "bcb14ae400cd9b6b8e1132d5c03067c8",
+    "semantic_hash": ""
   },
   "PEMS.Web/appsettings.Development.json": {
     "mtime": 1788350905.0351555,
@@ -9462,9 +9462,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/QuickSetup/Index.cshtml": {
-    "mtime": 1789813963.1090548,
-    "seen": 1789826033.614181,
-    "ast_hash": "f07d73fdcdc0e087ed90840644a24992",
+    "mtime": 1789851197.3675368,
+    "seen": 1789854334.7340822,
+    "ast_hash": "8158a3cb1e8b79a8f6da9fae1dac86f6",
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/EquipmentClassificationDto.cs": {
@@ -9594,9 +9594,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/EquipmentClassification/Index.cshtml": {
-    "mtime": 1788944538.3215945,
-    "seen": 1788945674.1094978,
-    "ast_hash": "8e10d213b6a56d4d5dcbef4def8c0586",
+    "mtime": 1789851633.8534036,
+    "seen": 1789854334.7340822,
+    "ast_hash": "e670fa20a00c2664ab78a085970f4a3a",
     "semantic_hash": ""
   },
   "PEMS.Domain/Entities/EquipmentClassificationSuggestion.cs": {
@@ -9630,9 +9630,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/EquipmentClassification/ReviewQueue.cshtml": {
-    "mtime": 1788940373.8433025,
-    "seen": 1788942398.284856,
-    "ast_hash": "7b132a5b79a9cb2a1ab21a7eff8fb8e6",
+    "mtime": 1789850496.6548417,
+    "seen": 1789854334.7340822,
+    "ast_hash": "887403eb339fe8283d721872bf1fa9d1",
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/EquipmentClassCoverageDto.cs": {
@@ -9654,9 +9654,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/EquipmentClassification/Coverage.cshtml": {
-    "mtime": 1788944510.3422415,
-    "seen": 1788945674.1094978,
-    "ast_hash": "dbb55d133f26a3dddb4c9e23afd4540e",
+    "mtime": 1789850496.654018,
+    "seen": 1789854334.7340822,
+    "ast_hash": "946e6cd6a4810cb41127f5d33950c7db",
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/RcmFmeaDto.cs": {
@@ -9744,15 +9744,15 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/RcmFmea/ClassDetail.cshtml": {
-    "mtime": 1788988004.413927,
-    "seen": 1788989167.8926408,
-    "ast_hash": "c3e2b478b42c32dcf30e3fb989a1b7c5",
+    "mtime": 1789851633.990837,
+    "seen": 1789854334.7340822,
+    "ast_hash": "28e641538f4d8d2faa9542a23ad75852",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/RcmFmea/Index.cshtml": {
-    "mtime": 1788948881.4577498,
-    "seen": 1788950972.8537812,
-    "ast_hash": "c6d315b710316fc586823e11ef060c7a",
+    "mtime": 1789851197.376319,
+    "seen": 1789854334.7340822,
+    "ast_hash": "d20b4d14e69b41c498b74ef7fe565f34",
     "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/IReliabilityAnalyticsService.cs": {
@@ -9810,15 +9810,15 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Reliability/ClassDetail.cshtml": {
-    "mtime": 1788980935.8210886,
-    "seen": 1788982661.9598215,
-    "ast_hash": "4d71aa3520f237d205f21e81e36dca2b",
+    "mtime": 1789850496.7221534,
+    "seen": 1789854334.7340822,
+    "ast_hash": "e5e587c7d30324ee2d1fb666bd0884a1",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Reliability/DataQuality.cshtml": {
-    "mtime": 1789822664.1931667,
-    "seen": 1789826033.615179,
-    "ast_hash": "e009e7f8912fcb6788253a19568dc4f4",
+    "mtime": 1789850496.7221534,
+    "seen": 1789854334.7340822,
+    "ast_hash": "47ff9d1f6beb17699dc1fa8645c23551",
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/PMGenerationDto.cs": {
@@ -9948,15 +9948,15 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Reliability/Intelligence.cshtml": {
-    "mtime": 1789822664.1941667,
-    "seen": 1789826033.615179,
-    "ast_hash": "3fcecca4ef86f578a211c4db565b7c14",
+    "mtime": 1789851197.3974962,
+    "seen": 1789854334.7340822,
+    "ast_hash": "76f8cfe4251588b16bd2da9cfee78dca",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Reliability/RcmFeedback.cshtml": {
-    "mtime": 1789822664.1960742,
-    "seen": 1789826033.615179,
-    "ast_hash": "6c353d0f5adef585c5d711cdd709b455",
+    "mtime": 1789850496.7221534,
+    "seen": 1789854334.7340822,
+    "ast_hash": "f4f2ee4bd3e3ed2610f7343374e75052",
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/EquipmentReadinessDto.cs": {
@@ -10008,15 +10008,15 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/CmmsReadiness/ClassDetail.cshtml": {
-    "mtime": 1789032374.7615204,
-    "seen": 1789033626.544513,
-    "ast_hash": "cdae921ca3f299b2ac11553202e255de",
+    "mtime": 1789851197.1558669,
+    "seen": 1789854334.7340822,
+    "ast_hash": "f24e05746e4c813476e6688d7b84c7eb",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/CmmsReadiness/Index.cshtml": {
-    "mtime": 1789822634.2496674,
-    "seen": 1789826033.5971777,
-    "ast_hash": "aa7724db3076be2d837960f46c48a6df",
+    "mtime": 1789851197.1578605,
+    "seen": 1789854334.7340822,
+    "ast_hash": "02d9d89e0685dc89678229e61548f387",
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/CriticalityAssessmentDto.cs": {
@@ -10080,27 +10080,27 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/CriticalityAssessment/Create.cshtml": {
-    "mtime": 1789822650.4126492,
-    "seen": 1789826033.5971777,
-    "ast_hash": "fc2e93cdfe990a4a33b15e8c46f77f66",
+    "mtime": 1789850496.6214805,
+    "seen": 1789854334.7340822,
+    "ast_hash": "e27405c5e6cf3af34361ad9463e3222e",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/CriticalityAssessment/Dashboard.cshtml": {
-    "mtime": 1789822664.1706333,
-    "seen": 1789826033.5971777,
-    "ast_hash": "e551ad3a56e9449a66a47459ca118a8b",
+    "mtime": 1789850496.6214805,
+    "seen": 1789854334.7340822,
+    "ast_hash": "00dd048f271bbeae2c3519ca9e19672d",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/CriticalityAssessment/Details.cshtml": {
-    "mtime": 1789032238.619778,
-    "seen": 1789033626.5528166,
-    "ast_hash": "1a781c2070f5e60a20bfdaec406c6dbe",
+    "mtime": 1789850496.6214805,
+    "seen": 1789854334.7340822,
+    "ast_hash": "92c6479932f3511b27850598c5b71cb0",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/CriticalityAssessment/Index.cshtml": {
-    "mtime": 1789822664.171633,
-    "seen": 1789826033.5971777,
-    "ast_hash": "81a8f22c4616706ac0d1193472e158fd",
+    "mtime": 1789850496.6214805,
+    "seen": 1789854334.7340822,
+    "ast_hash": "c25b65a77c7c006669de0046c603641f",
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/CmmsOperationsDashboardDto.cs": {
@@ -10152,15 +10152,15 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/CmmsOperations/Backlog.cshtml": {
-    "mtime": 1789822664.1696339,
-    "seen": 1789826033.5971777,
-    "ast_hash": "684fd25514ddfa720fc68d507d9ee29c",
+    "mtime": 1789851197.153856,
+    "seen": 1789854334.7340822,
+    "ast_hash": "2a1b8a818d64dd56b24a943d66e47f4b",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/CmmsOperations/Dashboard.cshtml": {
-    "mtime": 1789822634.2496674,
-    "seen": 1789826033.5971777,
-    "ast_hash": "abc0aa1c411923d79567e968c1adeac3",
+    "mtime": 1789851197.1548567,
+    "seen": 1789854334.7340822,
+    "ast_hash": "47514c6694134636dce0e9ff6557424b",
     "semantic_hash": ""
   },
   "PEMS.Application/Common/DataProvenance.cs": {
@@ -10368,45 +10368,45 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Reliability/AiInsights.cshtml": {
-    "mtime": 1789822664.191167,
-    "seen": 1789826033.614181,
-    "ast_hash": "e6f7ebcba63ea9a8f6b58f7143ed040f",
+    "mtime": 1789850496.7221534,
+    "seen": 1789854334.7340822,
+    "ast_hash": "6c4612eb257a0ef09267f58b6d8fa8fd",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Reliability/ClassIntelligence.cshtml": {
-    "mtime": 1789048306.1255946,
-    "seen": 1789049821.7191424,
-    "ast_hash": "ab862d2ba3f2d2313ae10e6d3e04a823",
+    "mtime": 1789850496.7221534,
+    "seen": 1789854334.7340822,
+    "ast_hash": "c63c47b0a024b8e6e4674f6d374fbc07",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Reliability/ConditionMonitoring.cshtml": {
-    "mtime": 1789822664.1921663,
-    "seen": 1789826033.615179,
-    "ast_hash": "8b3b70e4699caf3dd487b93e273d192d",
+    "mtime": 1789850496.7221534,
+    "seen": 1789854334.7340822,
+    "ast_hash": "afe6f5f3ab7883798d39d55abce66716",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Reliability/Dashboard.cshtml": {
-    "mtime": 1789822634.2516634,
-    "seen": 1789826033.615179,
-    "ast_hash": "490d485ca716737d71cde3579bd3a7f7",
+    "mtime": 1789851197.3885953,
+    "seen": 1789854334.7340822,
+    "ast_hash": "68083f934ff9641e74bb15be59449ec9",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Reliability/EquipmentProfile.cshtml": {
-    "mtime": 1789048283.4284813,
-    "seen": 1789049821.7201374,
-    "ast_hash": "52c3513407f950df2cb0209b3c900db5",
+    "mtime": 1789850496.7221534,
+    "seen": 1789854334.7340822,
+    "ast_hash": "0a445b4bd60bc75dba0a24fb58db9d53",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Reliability/PredictiveMaintenance.cshtml": {
-    "mtime": 1789822664.1941667,
-    "seen": 1789826033.615179,
-    "ast_hash": "93210d7a2363cd169e7cd6eac9fc9226",
+    "mtime": 1789850496.7221534,
+    "seen": 1789854334.7340822,
+    "ast_hash": "1adb525d796d5ce19d95514b5d91918e",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Reliability/Ram.cshtml": {
-    "mtime": 1789048339.3287902,
-    "seen": 1789049821.7201374,
-    "ast_hash": "6625c9e7921df7bcacd415d9270a4bd6",
+    "mtime": 1789850496.7221534,
+    "seen": 1789854334.7340822,
+    "ast_hash": "1f4afd3867b30c3c2cb3905bce601ec7",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Reliability/Simulate.cshtml": {
@@ -10476,15 +10476,15 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/FunctionalLocationImport/Index.cshtml": {
-    "mtime": 1789822664.1781669,
-    "seen": 1789826033.5971777,
-    "ast_hash": "ab877efcfe6b4bff7b1aa4e1babf149f",
+    "mtime": 1789851197.248111,
+    "seen": 1789854334.7340822,
+    "ast_hash": "7009aae780aebe0709035ad73d2db739",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/FunctionalLocationImport/Review.cshtml": {
-    "mtime": 1789388623.9255037,
-    "seen": 1789422256.553945,
-    "ast_hash": "e721b58de4de8190798fba15370cede8",
+    "mtime": 1789850496.6548417,
+    "seen": 1789854334.7340822,
+    "ast_hash": "be31bbe1cd24be681ffd686404b72f01",
     "semantic_hash": ""
   },
   "PEMS.Tests/Cmms/BulkDefineMaintenanceStrategyTests.cs": {
@@ -10686,51 +10686,51 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/StorageProviders/Create.cshtml": {
-    "mtime": 1789127260.498704,
-    "seen": 1789128632.367816,
-    "ast_hash": "29e82c8089d677aed7324053968b3efa",
+    "mtime": 1789843470.2577348,
+    "seen": 1789854334.7180836,
+    "ast_hash": "5df5170c1a1d7621f320677b0b2b2850",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/StorageProviders/Edit.cshtml": {
-    "mtime": 1789127268.3432178,
-    "seen": 1789128632.367816,
-    "ast_hash": "9e632404ab649502ac7cba33e3eaa716",
+    "mtime": 1789843470.2577348,
+    "seen": 1789854334.7180836,
+    "ast_hash": "9f278a48f42572517e796c1cff0d502e",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/StorageProviders/Index.cshtml": {
-    "mtime": 1789127220.172325,
-    "seen": 1789128632.367816,
-    "ast_hash": "504b9caafacc894291cea69872473772",
+    "mtime": 1789851197.4722767,
+    "seen": 1789854334.7180836,
+    "ast_hash": "2bf61d8e8974a566b9c62726db894960",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/StorageProviders/_Form.cshtml": {
-    "mtime": 1789127241.2415066,
-    "seen": 1789128632.367816,
-    "ast_hash": "223671344c4c381a554556d89d8763d1",
+    "mtime": 1789851197.473314,
+    "seen": 1789854334.7180836,
+    "ast_hash": "b94842b6fdc17ddcb947410ee39bd88a",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/StorageRouting/Create.cshtml": {
-    "mtime": 1789127307.1577525,
-    "seen": 1789128632.367816,
-    "ast_hash": "b595b0252e30f145c5b3e60931ac113e",
+    "mtime": 1789843470.2621257,
+    "seen": 1789854334.7180836,
+    "ast_hash": "7ee33e640ba575b1ff8eb8d49c117b79",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/StorageRouting/Edit.cshtml": {
-    "mtime": 1789127314.6909008,
-    "seen": 1789128632.367816,
-    "ast_hash": "d1054288048ff8f017026919f3f65f59",
+    "mtime": 1789843470.2621257,
+    "seen": 1789854334.7180836,
+    "ast_hash": "958db28c6c1409ae8e26b8c759eb1625",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/StorageRouting/Index.cshtml": {
-    "mtime": 1789127282.0375817,
-    "seen": 1789128632.367816,
-    "ast_hash": "f1f587380b628abc1e82cfae5940e41d",
+    "mtime": 1789851197.474313,
+    "seen": 1789854334.7180836,
+    "ast_hash": "d9e8dba823f9481392ab0c0dda27fe4a",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/StorageRouting/_Form.cshtml": {
-    "mtime": 1789127293.7886486,
-    "seen": 1789128632.367816,
-    "ast_hash": "23b7118e55bd1fd0d29d83a7dbad6b49",
+    "mtime": 1789851197.474313,
+    "seen": 1789854334.7180836,
+    "ast_hash": "7e0ea7c2c2fb48cfbc61329f01e5b037",
     "semantic_hash": ""
   },
   ".claude/Role/PEMS Help Governance Baseline \u2014 Mandatory Documentation Synchronization.md": {
@@ -11208,21 +11208,21 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Barcode/BulkGenerate.cshtml": {
-    "mtime": 1789822664.1676333,
-    "seen": 1789826033.5971777,
-    "ast_hash": "9d5b1d8eb22efc1eb5dcb89afe26eb1f",
+    "mtime": 1789851197.1518583,
+    "seen": 1789854334.7330844,
+    "ast_hash": "89196ca1babc8b4b4f6491c6be07b9e7",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Barcode/Index.cshtml": {
-    "mtime": 1789822664.1686332,
-    "seen": 1789826033.5971777,
-    "ast_hash": "a59aa9fee916fa93e63cda77dc6e00e5",
+    "mtime": 1789851197.1518583,
+    "seen": 1789854334.7330844,
+    "ast_hash": "0cef4b466443748cc5cbaf57a972075b",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Barcode/ResolveError.cshtml": {
-    "mtime": 1789395142.709983,
-    "seen": 1789422256.533893,
-    "ast_hash": "15883445cc460be714f8b3ff4508ea2a",
+    "mtime": 1789851197.1528566,
+    "seen": 1789854334.7330844,
+    "ast_hash": "dd1552820ed2d74cdc054c971506b1e3",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Barcode/Verify.cshtml": {
@@ -11232,33 +11232,33 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/EquipmentFunctionalLocationAssignment/Index.cshtml": {
-    "mtime": 1789822664.1766336,
-    "seen": 1789826033.5971777,
-    "ast_hash": "3a4e111a9542e47f640445b00682ff1d",
+    "mtime": 1789851197.2410958,
+    "seen": 1789854334.7340822,
+    "ast_hash": "22b1dcdc2d735c4da0ffd762e896a5a6",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/EquipmentFunctionalLocationAssignment/Review.cshtml": {
-    "mtime": 1789388549.5625336,
-    "seen": 1789422256.550181,
-    "ast_hash": "79a57e097692ccad5481ffc521398e24",
+    "mtime": 1789850496.6548417,
+    "seen": 1789854334.7340822,
+    "ast_hash": "68b00311625a5220810cc104eb037c2a",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/MaintenanceHistoryImport/Index.cshtml": {
-    "mtime": 1789822664.183179,
-    "seen": 1789826033.5971777,
-    "ast_hash": "15408f7655f3054106a5ae2a8eccbbe8",
+    "mtime": 1789851197.2853508,
+    "seen": 1789854334.7340822,
+    "ast_hash": "0e5e6b4dbff1ddc4aa7d46cca56b09c0",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/MaintenanceHistoryImport/Review.cshtml": {
-    "mtime": 1789388527.6371732,
-    "seen": 1789422256.5575128,
-    "ast_hash": "5847d88fe2a8d0c106d04d38990ddc89",
+    "mtime": 1789850496.6719248,
+    "seen": 1789854334.7340822,
+    "ast_hash": "210873cfbc1b0011f0b7d9a970fe24c5",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Shared/_BarcodePanel.cshtml": {
-    "mtime": 1789395281.6734748,
-    "seen": 1789422256.5815296,
-    "ast_hash": "02d52696967a98f54d4da8efe1b19531",
+    "mtime": 1789850496.7386484,
+    "seen": 1789854334.7340822,
+    "ast_hash": "e489b2a1f243294b3e81fac3cb596dd7",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Shared/_PemsResourceHeader.cshtml": {
@@ -11676,51 +11676,51 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/ProductionOrder/Create.cshtml": {
-    "mtime": 1789477075.670581,
-    "seen": 1789552831.670369,
-    "ast_hash": "cd0e9a6abcb7ba83e8d30f545df593b6",
+    "mtime": 1789850496.704968,
+    "seen": 1789854334.7340822,
+    "ast_hash": "96447bee830684f7af49b674a052955e",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/ProductionOrder/Details.cshtml": {
-    "mtime": 1789477098.339033,
-    "seen": 1789552831.670369,
-    "ast_hash": "21cef9365bf4fc15f3ef945742d53df9",
+    "mtime": 1789850496.704968,
+    "seen": 1789854334.7340822,
+    "ast_hash": "7efe33eed2b8526be18505565a21929a",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/ProductionOrder/Index.cshtml": {
-    "mtime": 1789477061.3397472,
-    "seen": 1789552831.670369,
-    "ast_hash": "4b68b3a49443590809579bda0c5bb661",
+    "mtime": 1789850496.704968,
+    "seen": 1789854334.7340822,
+    "ast_hash": "28fedd9af2950b171b48d27a92616b7d",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/ProductionRun/BatchDetails.cshtml": {
-    "mtime": 1789477172.1108584,
-    "seen": 1789552831.670369,
-    "ast_hash": "9c34edbde20a869a3b1099a449a25156",
+    "mtime": 1789850496.704968,
+    "seen": 1789854334.7340822,
+    "ast_hash": "b538d28670c0ce93e4cf59ada1601b40",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/ProductionRun/Create.cshtml": {
-    "mtime": 1789477107.1448417,
-    "seen": 1789552831.670369,
-    "ast_hash": "d40c92a148fe50d146d7e8680f71b2b6",
+    "mtime": 1789850496.704968,
+    "seen": 1789854334.7340822,
+    "ast_hash": "4e9ecb29bc5cba2c065039df63454ab6",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/ProductionRun/Details.cshtml": {
-    "mtime": 1789477152.5267222,
-    "seen": 1789552831.670369,
-    "ast_hash": "cc3bdf92cf40f01614f0506d92248aab",
+    "mtime": 1789850496.704968,
+    "seen": 1789854334.7340822,
+    "ast_hash": "e19ec2917699de6e56c820370ec559b2",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Production/Dashboard.cshtml": {
-    "mtime": 1789477046.4618497,
-    "seen": 1789552831.670369,
-    "ast_hash": "ec5758d77db8789b7252fd9603e153be",
+    "mtime": 1789850496.704968,
+    "seen": 1789854334.7340822,
+    "ast_hash": "bb2fdff8fc04e6407441a75e12611c66",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Report/Operations.cshtml": {
-    "mtime": 1789494624.283996,
-    "seen": 1789552831.676998,
-    "ast_hash": "b361e9a18ae5014d92e7b63c6fcb7b9a",
+    "mtime": 1789852016.3002832,
+    "seen": 1789854334.7340822,
+    "ast_hash": "d2f19d2ee0af183d496cd8b368a70447",
     "semantic_hash": ""
   },
   "docs/audits/PEMS_OPERATIONAL_DATA_AND_PERIOD_REPORTING_ARCHITECTURE_AUDIT.md": {
@@ -12264,9 +12264,9 @@
     "semantic_hash": ""
   },
   "PEMS.Persistence/Seed/HelpContentSeeder.cs": {
-    "mtime": 1789759243.8606994,
-    "seen": 1789826033.5638604,
-    "ast_hash": "cc0e7c5ff112e88ba30c9919e13099ce",
+    "mtime": 1789862456.9107838,
+    "seen": 1789863535.559807,
+    "ast_hash": "5bef301649e5cc04095cf85ef60b59ef",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Seed/HelpKnowledgeSeeder.cs": {
@@ -12366,9 +12366,9 @@
     "semantic_hash": ""
   },
   "PEMS.Tests/Help/HelpContentSeederTests.cs": {
-    "mtime": 1789756681.0455954,
-    "seen": 1789826033.580529,
-    "ast_hash": "75214131cf0058970f0fa7ad3a7b184a",
+    "mtime": 1789862456.9107838,
+    "seen": 1789863535.6109388,
+    "ast_hash": "e43c3800b98e6f0f041c5845a39bee71",
     "semantic_hash": ""
   },
   "PEMS.Tests/Help/HelpKnowledgeSeederTests.cs": {
@@ -12396,15 +12396,15 @@
     "semantic_hash": ""
   },
   "PEMS.Tests/Help/HelpVisualServiceTests.cs": {
-    "mtime": 1789691311.0773883,
-    "seen": 1789826033.580529,
-    "ast_hash": "6b80bba460094302de705ba7b2e3613e",
+    "mtime": 1789861447.8100963,
+    "seen": 1789863535.6208012,
+    "ast_hash": "5007d476e1e85528949c491b53f0b802",
     "semantic_hash": ""
   },
   "PEMS.Tests/Help/HelpWorkflowDiagramServiceTests.cs": {
-    "mtime": 1789691245.1924834,
-    "seen": 1789826033.580529,
-    "ast_hash": "1777b94f3cec180c15dc86b1fb7079a1",
+    "mtime": 1789861447.8542335,
+    "seen": 1789863535.6208012,
+    "ast_hash": "f6b31f5a30b68169b06657d37d60a031",
     "semantic_hash": ""
   },
   "PEMS.Tests/Help/ReliabilityHelpContentAccuracyTests.cs": {
@@ -12432,51 +12432,51 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Help/Create.cshtml": {
-    "mtime": 1789682406.169704,
-    "seen": 1789826033.580529,
-    "ast_hash": "14eae05952b53ca967058e93bd5260eb",
+    "mtime": 1789851197.4621859,
+    "seen": 1789854334.7180836,
+    "ast_hash": "5c3a25cc5d1c8e3f5e0dde106ad738bc",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Help/Edit.cshtml": {
-    "mtime": 1789690587.0319166,
-    "seen": 1789826033.580529,
-    "ast_hash": "9ee9cfc7b290beab7423eca0ef7cc761",
+    "mtime": 1789851197.4621859,
+    "seen": 1789854334.7180836,
+    "ast_hash": "569bc136e8ba49e0aeeb89f1de2b7262",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Help/History.cshtml": {
-    "mtime": 1789682430.1596868,
-    "seen": 1789826033.580529,
-    "ast_hash": "f0f1142aac39dfb79fa0e3b13c87e959",
+    "mtime": 1789851197.4631932,
+    "seen": 1789854334.7180836,
+    "ast_hash": "ea405be0113d8520d7b5f331773e57ec",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Help/Index.cshtml": {
-    "mtime": 1789682423.6444397,
-    "seen": 1789826033.580529,
-    "ast_hash": "7e6d3b69fe63511b915441d9c31bcfb3",
+    "mtime": 1789851197.4631932,
+    "seen": 1789854334.7180836,
+    "ast_hash": "711fa6897fbb4a347ae5a4a0ba0d1114",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Help/StandardCreate.cshtml": {
-    "mtime": 1789705211.325143,
-    "seen": 1789826033.580529,
-    "ast_hash": "8fb7c47c812bd0f2ed6dfdcf5b175380",
+    "mtime": 1789850496.7802775,
+    "seen": 1789854334.7180836,
+    "ast_hash": "d69a973d3f26a09ef37e8ef73d3011d9",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Help/StandardMatrix.cshtml": {
-    "mtime": 1789705221.6628034,
-    "seen": 1789826033.580529,
-    "ast_hash": "1eed7d1db41d195958ca730e4e7040fb",
+    "mtime": 1789851197.4651923,
+    "seen": 1789854334.7180836,
+    "ast_hash": "1c1aa1511f652dee7e903f421afa14bc",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Help/VisualCreate.cshtml": {
-    "mtime": 1789690607.5810342,
-    "seen": 1789826033.580529,
-    "ast_hash": "c6bb4964caa3102bfe926a6fc50e78c1",
+    "mtime": 1789851197.4661925,
+    "seen": 1789854334.7180836,
+    "ast_hash": "8dd089fe793d175ac2577dc5926a2d10",
     "semantic_hash": ""
   },
   "PEMS.Web/Areas/Admin/Views/Help/_HelpArticleForm.cshtml": {
-    "mtime": 1789705077.0990114,
-    "seen": 1789826033.580529,
-    "ast_hash": "9cdde91f690fdb478aff0cb675d653a4",
+    "mtime": 1789851197.4671924,
+    "seen": 1789854334.7180836,
+    "ast_hash": "1b299bf9b9398d2908b2b78b0cc263c4",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/HelpController.cs": {
@@ -12540,9 +12540,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/ImportCenter/Index.cshtml": {
-    "mtime": 1789813927.2855847,
-    "seen": 1789826033.5971777,
-    "ast_hash": "576f9dd8a032a2d9a1667f819f232f17",
+    "mtime": 1789829988.3903039,
+    "seen": 1789841437.6331615,
+    "ast_hash": "ad612ecec5a1a84a5dce69e943a17f6c",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Shared/_ContextualHelpDrawer.cshtml": {
@@ -12576,9 +12576,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Shared/_PageHeader.cshtml": {
-    "mtime": 1789822944.5306065,
-    "seen": 1789826033.6171813,
-    "ast_hash": "d2e2eabd755f52bcba4d4726a215b50b",
+    "mtime": 1789846035.7273498,
+    "seen": 1789854334.7350821,
+    "ast_hash": "ac0a9efceef715860c6415b8f298423d",
     "semantic_hash": ""
   },
   ".claude/skills/banner-design/SKILL.md": {
@@ -12972,9 +12972,9 @@
     "semantic_hash": ""
   },
   "docs/design/WORKSPACE_DESIGN_SYSTEM.md": {
-    "mtime": 1789824707.3166153,
-    "seen": 1789826033.6306968,
-    "ast_hash": "13f890781a229b7861172592ad42728a",
+    "mtime": 1789853574.5348334,
+    "seen": 1789854334.757008,
+    "ast_hash": "f035c1805d7c36722309d955c838d6c3",
     "semantic_hash": ""
   },
   "docs/engineering-documents/EDMS_AUDIT.md": {
@@ -13035,6 +13035,234 @@
     "mtime": 1789693660.5331872,
     "seen": 1789826033.6610856,
     "ast_hash": "e840af7e48b431d2bda331b17ab53f42",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Web/SiteWideUiSystemTests.cs": {
+    "mtime": 1789846233.3542361,
+    "seen": 1789854334.7150824,
+    "ast_hash": "88dc3add056517e81527d99928504a63",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/wwwroot/js/pems-ui.js": {
+    "mtime": 1789851633.681298,
+    "seen": 1789854334.7370825,
+    "ast_hash": "8a3bd67c6c4a28ab9c970d14ad65a7de",
+    "semantic_hash": ""
+  },
+  "dev/null/post-checkout": {
+    "mtime": 1789826875.4767575,
+    "seen": 1789841437.6580896,
+    "ast_hash": "ef678df1e004da305e21cdeead47876f",
+    "semantic_hash": ""
+  },
+  "dev/null/post-commit": {
+    "mtime": 1789826875.4772792,
+    "seen": 1789841437.6580896,
+    "ast_hash": "4d58bc5ca88e7330533771a694429974",
+    "semantic_hash": ""
+  },
+  "dev/null/post-merge": {
+    "mtime": 1789826875.4772792,
+    "seen": 1789841437.6580896,
+    "ast_hash": "675fe1c500a971841ba2e5abc1aeb579",
+    "semantic_hash": ""
+  },
+  "dev/null/pre-push": {
+    "mtime": 1789826875.4767575,
+    "seen": 1789841437.6580896,
+    "ast_hash": "a9399d70a31d576f0435e776cae4934e",
+    "semantic_hash": ""
+  },
+  "docs/design/PEMS_PAGE_INVENTORY.md": {
+    "mtime": 1789853490.23191,
+    "seen": 1789854334.757008,
+    "ast_hash": "0806d3078607f627d4ffe99d38d216fc",
+    "semantic_hash": ""
+  },
+  "docs/design/PEMS_SITE_WIDE_UIUX_REDESIGN_FINAL_REPORT.md": {
+    "mtime": 1789853574.5358503,
+    "seen": 1789854334.757008,
+    "ast_hash": "87a05e54dc042d97558990bc22335932",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Web/LanguagePurityTests.cs": {
+    "mtime": 1789852166.6739376,
+    "seen": 1789854334.7150824,
+    "ast_hash": "c1e7932e3521630b538d373837a84525",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/wwwroot/lib/chartjs/chart-4.4.1.umd.min.js": {
+    "mtime": 1789851949.5330806,
+    "seen": 1789854334.7370825,
+    "ast_hash": "50cf2ab0db25f5d6df90a1046520e68e",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/wwwroot/lib/chartjs/chart-4.4.4.umd.min.js": {
+    "mtime": 1789851983.2777898,
+    "seen": 1789854334.7370825,
+    "ast_hash": "51a1a51ed249f78c0091b93ceb997bc3",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/wwwroot/lib/quill/quill.min.js": {
+    "mtime": 1789851947.1701076,
+    "seen": 1789854334.7370825,
+    "ast_hash": "929349222da793a2128c4d55bebc2adc",
+    "semantic_hash": ""
+  },
+  "PEMS.Web/wwwroot/lib/signalr/signalr-8.0.7.min.js": {
+    "mtime": 1789851950.2146711,
+    "seen": 1789854334.7370825,
+    "ast_hash": "635555b6291452fabbada9b7597449af",
+    "semantic_hash": ""
+  },
+  "docs/design/language-purity-baseline.txt": {
+    "mtime": 1789852238.984249,
+    "seen": 1789854334.757008,
+    "ast_hash": "c43ab45f1903a762402a1e20e214ac09",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260919230148_WorkflowPlatformPhase1Hardening.Designer.cs": {
+    "mtime": 1789858908.8237946,
+    "seen": 1789859919.1327891,
+    "ast_hash": "10b8904234f7b0e0b8d31530205ad17b",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260919230148_WorkflowPlatformPhase1Hardening.cs": {
+    "mtime": 1789858908.8237946,
+    "seen": 1789859919.1327891,
+    "ast_hash": "028d163c9316304b8aee3fcd1208b91d",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Workflow/WorkflowPlatformAdapters.cs": {
+    "mtime": 1789894461.0132751,
+    "seen": 1789896630.4579258,
+    "ast_hash": "04e3ff9e13661c47b2e7847baec88238",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Workflow/WorkflowBindingRuntimeTests.cs": {
+    "mtime": 1789859312.403933,
+    "seen": 1789859919.2150505,
+    "ast_hash": "8ea7ee0c0b2b9b2555bfb12337b41de1",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Workflow/WorkflowLegacyCompatibilityTests.cs": {
+    "mtime": 1789859430.992727,
+    "seen": 1789859919.2150505,
+    "ast_hash": "a3885a389c0dabaca8fe2e89fcc04aa0",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Workflow/WorkflowLifecycleAndValidationTests.cs": {
+    "mtime": 1789859181.1967797,
+    "seen": 1789859919.2150505,
+    "ast_hash": "f86042fc25274c7b7c3281e3f5ed940f",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Workflow/WorkflowPlatformTestBase.cs": {
+    "mtime": 1789859080.9973304,
+    "seen": 1789859919.2150505,
+    "ast_hash": "ebb32b435aca2a4d6681c0c81f11623e",
+    "semantic_hash": ""
+  },
+  "PEMS.WorkflowPlatform/Entities/WorkflowBinding.cs": {
+    "mtime": 1789858241.5420222,
+    "seen": 1789859919.2908504,
+    "ast_hash": "5e59994dc8a310e2113f4754cbe2ab5e",
+    "semantic_hash": ""
+  },
+  "PEMS.WorkflowPlatform/Entities/WorkflowConfigAudit.cs": {
+    "mtime": 1789858241.5658627,
+    "seen": 1789859919.2908504,
+    "ast_hash": "922f1de8ddd1c6fe70376b57082d3bff",
+    "semantic_hash": ""
+  },
+  "PEMS.WorkflowPlatform/Interfaces/WorkflowPlatformContracts.cs": {
+    "mtime": 1789894912.915684,
+    "seen": 1789896630.5877793,
+    "ast_hash": "1e275e3d8c9c1bd3bf32f92a9d1872df",
+    "semantic_hash": ""
+  },
+  "PEMS.WorkflowPlatform/Services/WorkflowActionRegistry.cs": {
+    "mtime": 1789861498.4632337,
+    "seen": 1789863535.6783876,
+    "ast_hash": "254fc3875c7b688b32c48c79f4d7f55a",
+    "semantic_hash": ""
+  },
+  "PEMS.WorkflowPlatform/Services/WorkflowBindingService.cs": {
+    "mtime": 1789858652.5688565,
+    "seen": 1789859919.3064668,
+    "ast_hash": "11faa8236b84bcff9545b43ed517ce5c",
+    "semantic_hash": ""
+  },
+  "PEMS.WorkflowPlatform/Services/WorkflowConditionEvaluator.cs": {
+    "mtime": 1789858506.1293368,
+    "seen": 1789859919.3064668,
+    "ast_hash": "1fc64c4f63a6ee125db7ab0b5836a9c2",
+    "semantic_hash": ""
+  },
+  "PEMS.WorkflowPlatform/Services/WorkflowDefinitionService.cs": {
+    "mtime": 1789861498.4632337,
+    "seen": 1789863535.6783876,
+    "ast_hash": "82de0b9fc4b9366d00f2d96cee5c32e8",
+    "semantic_hash": ""
+  },
+  "PEMS.WorkflowPlatform/Services/WorkflowReadModelService.cs": {
+    "mtime": 1789894912.9096644,
+    "seen": 1789896630.5877793,
+    "ast_hash": "4344b5c8f0fa374b3dfcb0dc37b726a0",
+    "semantic_hash": ""
+  },
+  "PEMS.WorkflowPlatform/Services/WorkflowVersionImmutabilityGuard.cs": {
+    "mtime": 1789858386.8591466,
+    "seen": 1789859919.3064668,
+    "ast_hash": "2bf040d21a18181405cc58a4e94be1ea",
+    "semantic_hash": ""
+  },
+  "PEMS.WorkflowPlatform/Services/WorkflowVersionValidator.cs": {
+    "mtime": 1789861498.4632337,
+    "seen": 1789863535.6783876,
+    "ast_hash": "23d6c66f237c03a4cb95aba389190cc8",
+    "semantic_hash": ""
+  },
+  "docs/workflow/WORKFLOW_PLATFORM_AUDIT.md": {
+    "mtime": 1789855613.3065765,
+    "seen": 1789859919.3534818,
+    "ast_hash": "0cac703eeacb75306c51018c8600861b",
+    "semantic_hash": ""
+  },
+  "docs/workflow/WORKFLOW_PLATFORM_PHASE1.md": {
+    "mtime": 1789859499.0985663,
+    "seen": 1789859919.3534818,
+    "ast_hash": "05b7270d55374b51a7b13ff218fe17ec",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260919234615_WorkflowPlatformPhase2StageBusinessMapping.Designer.cs": {
+    "mtime": 1789861575.419523,
+    "seen": 1789863535.559807,
+    "ast_hash": "d74fa383a8ba7c43235ddc14ecaace04",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260919234615_WorkflowPlatformPhase2StageBusinessMapping.cs": {
+    "mtime": 1789861575.4180398,
+    "seen": 1789863535.559807,
+    "ast_hash": "ed7cb47601ff25159c123add7f461fc3",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Seed/WorkRequestWorkflowSeeder.cs": {
+    "mtime": 1789861953.4268432,
+    "seen": 1789863535.570121,
+    "ast_hash": "0f10e2281239df232225238b388eedc7",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/WorkRequestWorkflowTests.cs": {
+    "mtime": 1789895992.7014306,
+    "seen": 1789896630.474225,
+    "ast_hash": "4ba5badae420ee8669425f2317218859",
+    "semantic_hash": ""
+  },
+  "docs/workflow/WORKFLOW_PLATFORM_PHASE2_WORK_REQUEST.md": {
+    "mtime": 1789896243.519716,
+    "seen": 1789896630.6429956,
+    "ast_hash": "4bad297a6e0e77e47e41e090709d8b18",
     "semantic_hash": ""
   }
 }

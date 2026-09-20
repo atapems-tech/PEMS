@@ -1,19 +1,22 @@
 ﻿@model PEMS.Application.DTOs.CmmsReportDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex flex-wrap gap-2 mb-3">
-    <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-envelope-paper"></i> Correspondence</a>
-    <a asp-action="Engineering" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-text"></i> Engineering Documents</a>
-    <a asp-action="Vdr" class="btn btn-sm btn-outline-secondary"><i class="bi bi-journal-check"></i> VDR</a>
-    <a asp-action="Procurement" class="btn btn-sm btn-outline-secondary"><i class="bi bi-cart-check"></i> Procurement</a>
+    <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-envelope-paper"></i> @Localizer["Correspondence"]</a>
+    <a asp-action="Engineering" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-text"></i> @Localizer["Engineering Documents"]</a>
+    <a asp-action="Vdr" class="btn btn-sm btn-outline-secondary"><i class="bi bi-journal-check"></i> @Localizer["VDR"]</a>
+    <a asp-action="Procurement" class="btn btn-sm btn-outline-secondary"><i class="bi bi-cart-check"></i> @Localizer["Procurement"]</a>
     <a asp-action="Cmms" class="btn btn-sm btn-pems-solid"><i class="bi bi-tools"></i> CMMS</a>
-    <a asp-action="Operations" class="btn btn-sm btn-outline-secondary"><i class="bi bi-clipboard-data"></i> Operations</a>
+    <a asp-action="Operations" class="btn btn-sm btn-outline-secondary"><i class="bi bi-clipboard-data"></i> @Localizer["Operations"]</a>
 </div>
 
 <div class="content-card mb-3">
     <form method="get" class="row g-2">
         <div class="col-md-3">
             <select name="status" class="form-select form-select-sm">
-                <option value="">All Statuses</option>
+                <option value="">@Localizer["All Statuses"]</option>
                 @foreach (var s in new[] { "Open", "Assigned", "InProgress", "Completed", "Closed" })
                 { <option value="@s" selected="@(s == (string)ViewBag.SelectedStatus)">@s</option> }
             </select>
@@ -27,15 +30,15 @@
         </div>
         <div class="col-md-2"><input name="fromDate" type="date" value="@(((DateTime?)ViewBag.FromDate)?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" /></div>
         <div class="col-md-2"><input name="toDate" type="date" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" /></div>
-        <div class="col-md-2"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-funnel"></i> Apply</button></div>
+        <div class="col-md-2"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-funnel"></i> @Localizer["Apply"]</button></div>
     </form>
 </div>
 
 <div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-clipboard-check"></i></div><div><div class="kpi-value">@Model.TotalWorkOrders</div><div class="kpi-label">Total</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-exclamation-circle"></i></div><div><div class="kpi-value">@Model.OpenCount</div><div class="kpi-label">Open</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-hourglass-split"></i></div><div><div class="kpi-value">@Model.InProgressCount</div><div class="kpi-label">In Progress</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div><div><div class="kpi-value">@Model.CompletedCount</div><div class="kpi-label">Completed</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-clipboard-check"></i></div><div><div class="kpi-value">@Model.TotalWorkOrders</div><div class="kpi-label">@Localizer["Total"]</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-exclamation-circle"></i></div><div><div class="kpi-value">@Model.OpenCount</div><div class="kpi-label">@Localizer["Open"]</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-hourglass-split"></i></div><div><div class="kpi-value">@Model.InProgressCount</div><div class="kpi-label">@Localizer["In Progress"]</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div><div><div class="kpi-value">@Model.CompletedCount</div><div class="kpi-label">@Localizer["Completed"]</div></div></div></div>
     <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-stopwatch"></i></div><div><div class="kpi-value">@(Model.AvgCompletionDays.HasValue ? Model.AvgCompletionDays.Value.ToString("0.0") + "d" : "-")</div><div class="kpi-label">Avg. Completion</div></div></div></div>
     <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-teal"><i class="bi bi-currency-dollar"></i></div><div><div class="kpi-value">@Model.TotalSpareCost.ToString("0")</div><div class="kpi-label">Spare Parts Cost</div></div></div></div>
 </div>
@@ -68,13 +71,13 @@
                     <li class="d-flex justify-content-between border-bottom py-1"><span>@e.Equipment</span><span class="text-muted small">@e.Count</span></li>
                 }
             </ul>
-            @if (!Model.TopEquipment.Any()) { <p class="text-muted small">No data.</p> }
+            @if (!Model.TopEquipment.Any()) { <p class="text-muted small">@Localizer["No data."]</p> }
         </div>
     </div>
 </div>
 
 @section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="~/lib/chartjs/chart-4.4.1.umd.min.js"></script>
     <script>
         const volumeLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VolumeByMonth.Select(x => x.Month)));
         const volumeData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VolumeByMonth.Select(x => x.Count)));

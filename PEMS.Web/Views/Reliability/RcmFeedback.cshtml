@@ -1,4 +1,7 @@
 @model List<PEMS.Application.DTOs.RcmReviewRecommendationDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var statusFilter = (string?)ViewBag.StatusFilter;
     var canGenerate = (bool)ViewBag.CanGenerate;
@@ -27,7 +30,7 @@
 
 <div class="d-flex justify-content-end align-items-center mb-2">
     <div>
-        <a asp-action="Intelligence" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clipboard-data-fill"></i> Maintenance Intelligence</a>
+        <a asp-action="Intelligence" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clipboard-data-fill"></i> @Localizer["Maintenance Intelligence"]</a>
         @if (canGenerate)
         {
             <form asp-action="GenerateRcmEvidence" method="post" class="d-inline">
@@ -45,7 +48,7 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-2 align-items-end">
         <div class="col-md-3">
-            <label class="form-label small">Status</label>
+            <label class="form-label small">@Localizer["Status"]</label>
             <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
                 <option value="" selected="@(string.IsNullOrEmpty(statusFilter))">All</option>
                 <option value="PENDING" selected="@(statusFilter == "PENDING")">Pending</option>
@@ -60,7 +63,7 @@
     <table class="table table-enterprise table-sm mb-0">
         <thead>
             <tr>
-                <th>Equipment</th><th>Strategy</th><th>Trigger</th><th>Evidence</th><th>Status</th>
+                <th>@Localizer["Equipment"]</th><th>@Localizer["Strategy"]</th><th>@Localizer["Trigger"]</th><th>Evidence</th><th>@Localizer["Status"]</th>
                 <th>Generated</th><th>Reviewed</th><th></th>
             </tr>
         </thead>

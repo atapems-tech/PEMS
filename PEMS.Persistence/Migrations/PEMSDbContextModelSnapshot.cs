@@ -14788,6 +14788,116 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("PEMS.WorkflowPlatform.Entities.WorkflowBinding", b =>
+                {
+                    b.Property<int>("WorkflowBindingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkflowBindingId"));
+
+                    b.Property<string>("Context")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("CreatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeactivatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EffectiveFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EffectiveTo")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EntityType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Module")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("PinnedVersionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkflowDefinitionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("WorkflowBindingId");
+
+                    b.HasIndex("PinnedVersionId");
+
+                    b.HasIndex("WorkflowDefinitionId");
+
+                    b.HasIndex("Module", "EntityType", "Context", "IsActive");
+
+                    b.ToTable("WorkflowBindings", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.WorkflowPlatform.Entities.WorkflowConfigAudit", b =>
+                {
+                    b.Property<int>("WorkflowConfigAuditId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkflowConfigAuditId"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ActorName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int?>("ActorUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CurrentState")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Details")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreviousState")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("WorkflowBindingId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowDefinitionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowVersionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("WorkflowConfigAuditId");
+
+                    b.HasIndex("WorkflowVersionId");
+
+                    b.HasIndex("WorkflowDefinitionId", "Timestamp");
+
+                    b.ToTable("WorkflowConfigAudits", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.WorkflowPlatform.Entities.WorkflowDefinition", b =>
                 {
                     b.Property<int>("WorkflowDefinitionId")
@@ -14915,6 +15025,10 @@ namespace PEMS.Persistence.Migrations
                     b.Property<int?>("CurrentStageId")
                         .HasColumnType("int");
 
+                    b.Property<string>("EntityKey")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.Property<int?>("InitiatedById")
                         .HasColumnType("int");
 
@@ -14937,12 +15051,17 @@ namespace PEMS.Persistence.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<int?>("WorkflowBindingId")
+                        .HasColumnType("int");
+
                     b.Property<int>("WorkflowVersionId")
                         .HasColumnType("int");
 
                     b.HasKey("WorkflowInstanceId");
 
                     b.HasIndex("CurrentStageId");
+
+                    b.HasIndex("EntityKey");
 
                     b.HasIndex("WorkflowVersionId");
 
@@ -15019,10 +15138,17 @@ namespace PEMS.Persistence.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<string>("BusinessStatus")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EscalationRole")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Icon")
@@ -15047,6 +15173,16 @@ namespace PEMS.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NameFa")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NotificationKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ResponsibleEmployeeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ResponsibleRole")
                         .HasMaxLength(100)
@@ -15089,11 +15225,25 @@ namespace PEMS.Persistence.Migrations
                     b.Property<string>("ConditionExpression")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("ForbidInitiator")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("FromStageId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Label")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("LabelFa")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<int>("Priority")
                         .HasColumnType("int");
+
+                    b.Property<string>("RequiredPermission")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ToStageId")
                         .HasColumnType("int");
@@ -15120,6 +15270,12 @@ namespace PEMS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkflowVersionId"));
 
+                    b.Property<string>("ChangeSummary")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ClonedFromVersionId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("EffectiveDate")
                         .HasColumnType("datetime2");
 
@@ -15129,10 +15285,19 @@ namespace PEMS.Persistence.Migrations
                     b.Property<DateTime?>("PublishedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("RetiredDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<int?>("ValidatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ValidatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("VersionNumber")
                         .HasColumnType("int");
@@ -19346,6 +19511,24 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("ChangedBy");
 
                     b.Navigation("WorkRequest");
+                });
+
+            modelBuilder.Entity("PEMS.WorkflowPlatform.Entities.WorkflowBinding", b =>
+                {
+                    b.HasOne("PEMS.WorkflowPlatform.Entities.WorkflowVersion", "PinnedVersion")
+                        .WithMany()
+                        .HasForeignKey("PinnedVersionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.WorkflowPlatform.Entities.WorkflowDefinition", "Definition")
+                        .WithMany()
+                        .HasForeignKey("WorkflowDefinitionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Definition");
+
+                    b.Navigation("PinnedVersion");
                 });
 
             modelBuilder.Entity("PEMS.WorkflowPlatform.Entities.WorkflowHistory", b =>

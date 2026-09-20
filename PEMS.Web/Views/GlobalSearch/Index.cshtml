@@ -1,9 +1,12 @@
 ﻿@model PEMS.Web.Controllers.GlobalSearchResults
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card mb-3">
     <form asp-action="Index" method="get" class="d-flex gap-2">
         <input type="search" name="q" value="@ViewBag.Query" class="form-control" placeholder="Search documents, equipment, vendors, letters, projects..." autofocus />
-        <button class="btn btn-pems-solid"><i class="bi bi-search"></i> Search</button>
+        <button class="btn btn-pems-solid"><i class="bi bi-search"></i> @Localizer["Search"]</button>
     </form>
 </div>
 

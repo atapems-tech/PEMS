@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.InventoryTransactionRowDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var warehouses = (IEnumerable<dynamic>)ViewBag.Warehouses;
     var types = new[] { "Receipt", "Issue", "Return", "Transfer", "Adjustment", "Reservation", "ReservationRelease" };
@@ -16,27 +19,27 @@
         </select>
         <input type="date" name="fromDate" value="@(((DateTime?)ViewBag.FromDate)?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" style="max-width:160px;" />
         <input type="date" name="toDate" value="@(((DateTime?)ViewBag.ToDate)?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" style="max-width:160px;" />
-        <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-funnel"></i> Filter</button>
-        <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Reset</a>
+        <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-funnel"></i> @Localizer["Filter"]</button>
+        <a asp-action="Index" class="btn btn-sm btn-outline-secondary">@Localizer["Reset"]</a>
     </form>
 
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('InventoryTransaction')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="table-scroll-area pems-grid-scroll" style="max-height:70vh; overflow-y:auto;">
         <table class="table table-enterprise table-sm pems-grid-table" data-grid-key="InventoryTransaction">
             <thead>
                 <tr>
-                    <th data-col-key="date" data-resizable="true" data-min-width="120" data-max-width="200">Date</th>
-                    <th data-col-key="material" data-resizable="true" data-min-width="160" data-max-width="360">Material</th>
-                    <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">Type</th>
-                    <th data-col-key="warehouse" data-resizable="true" data-min-width="80" data-max-width="160">Warehouse</th>
-                    <th data-col-key="qty" data-resizable="true" data-min-width="70" data-max-width="120">Qty</th>
-                    <th data-col-key="reference" data-resizable="true" data-min-width="100" data-max-width="220">Reference</th>
+                    <th data-col-key="date" data-resizable="true" data-min-width="120" data-max-width="200">@Localizer["Date"]</th>
+                    <th data-col-key="material" data-resizable="true" data-min-width="160" data-max-width="360">@Localizer["Material"]</th>
+                    <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Type"]</th>
+                    <th data-col-key="warehouse" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["Warehouse"]</th>
+                    <th data-col-key="qty" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Qty"]</th>
+                    <th data-col-key="reference" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Reference"]</th>
                     <th data-col-key="by" data-resizable="true" data-min-width="100" data-max-width="220">By</th>
-                    <th data-col-key="reason" data-resizable="true" data-min-width="120" data-max-width="320">Reason</th>
+                    <th data-col-key="reason" data-resizable="true" data-min-width="120" data-max-width="320">@Localizer["Reason"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,7 +59,7 @@
             </tbody>
         </table>
     </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">تراکنشی یافت نشد.</p> }
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["تراکنشی یافت نشد."]</p> }
 
     @{
         var qsParts = new List<string>();

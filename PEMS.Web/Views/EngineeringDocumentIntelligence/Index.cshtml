@@ -1,4 +1,7 @@
 ﻿@model List<PEMS.Application.DTOs.DocumentIntelligenceDetailDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var dash = (PEMS.Application.DTOs.DocumentIntelligenceDashboardDto)ViewBag.Dashboard;
 }
@@ -41,7 +44,7 @@
     </p>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
         <table class="table table-enterprise">
-            <thead><tr><th>Doc No</th><th>Title</th><th>Stage</th><th>Pending Classifications</th><th>Pending Tags</th><th></th></tr></thead>
+            <thead><tr><th>@Localizer["Doc No"]</th><th>@Localizer["Title"]</th><th>@Localizer["Stage"]</th><th>Pending Classifications</th><th>@Localizer["Pending Tags"]</th><th></th></tr></thead>
             <tbody>
                 @foreach (var d in Model)
                 {

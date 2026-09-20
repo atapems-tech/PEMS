@@ -1,12 +1,15 @@
 @model PEMS.Application.DTOs.OperationsReportSummaryDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex flex-wrap gap-2 mb-3">
-    <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-envelope-paper"></i> Correspondence</a>
-    <a asp-action="Engineering" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-text"></i> Engineering Documents</a>
-    <a asp-action="Vdr" class="btn btn-sm btn-outline-secondary"><i class="bi bi-journal-check"></i> VDR</a>
-    <a asp-action="Procurement" class="btn btn-sm btn-outline-secondary"><i class="bi bi-cart-check"></i> Procurement</a>
+    <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-envelope-paper"></i> @Localizer["Correspondence"]</a>
+    <a asp-action="Engineering" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-text"></i> @Localizer["Engineering Documents"]</a>
+    <a asp-action="Vdr" class="btn btn-sm btn-outline-secondary"><i class="bi bi-journal-check"></i> @Localizer["VDR"]</a>
+    <a asp-action="Procurement" class="btn btn-sm btn-outline-secondary"><i class="bi bi-cart-check"></i> @Localizer["Procurement"]</a>
     <a asp-action="Cmms" class="btn btn-sm btn-outline-secondary"><i class="bi bi-tools"></i> CMMS</a>
-    <a asp-action="Operations" class="btn btn-sm btn-pems-solid"><i class="bi bi-clipboard-data"></i> Operations</a>
+    <a asp-action="Operations" class="btn btn-sm btn-pems-solid"><i class="bi bi-clipboard-data"></i> @Localizer["Operations"]</a>
 </div>
 
 <div class="content-card mb-3">
@@ -45,7 +48,7 @@
                 }
             </select>
         </div>
-        <div class="col-12"><button class="btn btn-sm btn-pems-solid"><i class="bi bi-funnel"></i> Apply</button></div>
+        <div class="col-12"><button class="btn btn-sm btn-pems-solid"><i class="bi bi-funnel"></i> @Localizer["Apply"]</button></div>
     </form>
 </div>
 
@@ -56,12 +59,12 @@
 </div>
 
 <div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-box-seam"></i></div><div><div class="kpi-value">@Model.TotalOutputQuantity.ToString("N3")</div><div class="kpi-label">Total Output</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-box-seam"></i></div><div><div class="kpi-value">@Model.TotalOutputQuantity.ToString("N3")</div><div class="kpi-label">@Localizer["Total Output"]</div></div></div></div>
     <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div><div><div class="kpi-value">@Model.AcceptedQuantity.ToString("N3")</div><div class="kpi-label">Accepted</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-x-circle"></i></div><div><div class="kpi-value">@Model.RejectedQuantity.ToString("N3")</div><div class="kpi-label">Rejected</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-x-circle"></i></div><div><div class="kpi-value">@Model.RejectedQuantity.ToString("N3")</div><div class="kpi-label">@Localizer["Rejected"]</div></div></div></div>
     <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-hourglass-split"></i></div><div><div class="kpi-value">@Model.PendingQcQuantity.ToString("N3")</div><div class="kpi-label">Awaiting QC</div></div></div></div>
     <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-slash-circle"></i></div><div><div class="kpi-value">@Model.BlockedQuantity.ToString("N3")</div><div class="kpi-label">Blocked</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-teal"><i class="bi bi-dash-circle"></i></div><div><div class="kpi-value">@Model.TotalLossQuantity.ToString("N3")</div><div class="kpi-label">Loss</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-teal"><i class="bi bi-dash-circle"></i></div><div><div class="kpi-value">@Model.TotalLossQuantity.ToString("N3")</div><div class="kpi-label">@Localizer["Loss"]</div></div></div></div>
 </div>
 
 <div class="content-card">
@@ -73,7 +76,7 @@
     else
     {
         <div class="row row-cols-1 row-cols-md-3 g-2">
-            <div class="col"><div class="text-muted small">Target</div><div class="fw-semibold">@Model.TotalTargetQuantity.ToString("N3")</div></div>
+            <div class="col"><div class="text-muted small">@Localizer["Target"]</div><div class="fw-semibold">@Model.TotalTargetQuantity.ToString("N3")</div></div>
             <div class="col"><div class="text-muted small">Actual</div><div class="fw-semibold">@Model.TotalOutputQuantity.ToString("N3")</div></div>
             <div class="col"><div class="text-muted small">Variance</div><div class="fw-semibold @(Model.VarianceQuantity < 0 ? "text-danger" : "text-success")">@Model.VarianceQuantity?.ToString("N3")</div></div>
         </div>

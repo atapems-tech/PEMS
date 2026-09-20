@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.LetterDetailDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var l = Model.Letter;
     var departments = (IEnumerable<dynamic>)ViewBag.Departments;
@@ -38,9 +41,9 @@
             <div class="d-flex flex-wrap gap-3 small meta-item">
                 <span><strong>@(l.LetterType == "Incoming" ? "From" : "To"):</strong> @(l.LetterType == "Incoming" ? l.Sender : l.Receiver)</span>
                 <span><strong>Date:</strong> @l.LetterDate.ToString("yyyy-MM-dd")</span>
-                <span><strong>Priority:</strong> @l.Priority</span>
-                @if (!string.IsNullOrEmpty(l.ProjectName)) { <span><strong>Project:</strong> @l.ProjectName</span> }
-                @if (!string.IsNullOrEmpty(l.DisciplineName)) { <span><strong>Discipline:</strong> @l.DisciplineName</span> }
+                <span><strong>@Localizer["Priority:"]</strong> @l.Priority</span>
+                @if (!string.IsNullOrEmpty(l.ProjectName)) { <span><strong>@Localizer["Project:"]</strong> @l.ProjectName</span> }
+                @if (!string.IsNullOrEmpty(l.DisciplineName)) { <span><strong>@Localizer["Discipline:"]</strong> @l.DisciplineName</span> }
             </div>
         </div>
 
@@ -52,7 +55,7 @@
             {
                 <form asp-action="SubmitForReview" method="post" onsubmit="return confirm('Submit this draft for review?');">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
-                    <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-send"></i> Submit for Review</button>
+                    <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-send"></i> @Localizer["Submit for Review"]</button>
                 </form>
             }
             @if (l.Status == "ReturnedForRevision" && canEditReturned)
@@ -63,10 +66,10 @@
             {
                 <form asp-action="Approve" method="post" class="d-inline" onsubmit="return confirm('Approve this letter?');">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
-                    <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> Approve</button>
+                    <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> @Localizer["Approve"]</button>
                 </form>
                 <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#returnModal"><i class="bi bi-arrow-return-left"></i> Return</button>
-                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal"><i class="bi bi-x-lg"></i> Reject</button>
+                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal"><i class="bi bi-x-lg"></i> @Localizer["Reject"]</button>
             }
             @if (l.Status == "Approved" && canReview)
             {
@@ -158,7 +161,7 @@
 @* طبق بند ۱۴-۲۰: مکالمه/زنجیره‌ی پاسخ - محتوای رسمی به‌طور پیش‌فرض فقط-خواندنی؛ ویرایش فقط
    در حالت‌های مجاز و فقط توسط نویسنده‌ی اصلی، به‌صورت یک فرم صریح و مجزا (نه دکمه‌ی همیشه-حاضر) *@
 <div class="content-card mb-3">
-    <div class="section-title mb-2">Message</div>
+    <div class="section-title mb-2">@Localizer["Message"]</div>
 
     @if (thread != null && thread.Count > 1)
     {
@@ -230,7 +233,7 @@
             <input type="hidden" name="letterId" value="@l.LetterId" />
             <input type="hidden" name="rowVersion" value="@Convert.ToBase64String(l.RowVersion ?? Array.Empty<byte>())" id="rowVersionB64" />
             <div class="mb-2">
-                <label class="form-label small">Subject</label>
+                <label class="form-label small">@Localizer["Subject"]</label>
                 <input type="text" name="subject" class="form-control" value="@l.Subject" required />
             </div>
             <textarea name="body" id="letterBodyEditEditor" class="form-control">@Html.Raw(Model.Body)</textarea>
@@ -238,7 +241,7 @@
                 <button type="submit" class="btn btn-sm btn-pems-solid">@submitLabel</button>
                 @if (!showEditFormByDefault)
                 {
-                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleBodyEdit()">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleBodyEdit()">@Localizer["Cancel"]</button>
                 }
             </div>
         </form>
@@ -311,7 +314,7 @@
                 @if (Model.Recipients.Any())
                 {
                     <table class="table table-sm table-enterprise mb-2">
-                        <thead><tr><th>Type</th><th>Name</th><th>Read</th></tr></thead>
+                        <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Name"]</th><th>@Localizer["Read"]</th></tr></thead>
                         <tbody>
                             @foreach (var r in Model.Recipients)
                             {
@@ -326,7 +329,7 @@
                                             <form asp-action="MarkRecipientRead" method="post" class="d-inline">
                                                 <input type="hidden" name="letterId" value="@l.LetterId" />
                                                 <input type="hidden" name="letterRecipientId" value="@r.LetterRecipientId" />
-                                                <button class="btn btn-sm btn-outline-secondary">Mark Read</button>
+                                                <button class="btn btn-sm btn-outline-secondary">@Localizer["Mark Read"]</button>
                                             </form>
                                         }
                                     </td>
@@ -348,16 +351,16 @@
                     </div>
                     <div class="col-md-4">
                         <select name="employeeId" class="form-select form-select-sm employee-picker">
-                            <option value="">-- Employee --</option>
+                            <option value="">@Localizer["-- Employee --"]</option>
                         </select>
                     </div>
                     <div class="col-md-3">
                         <select name="departmentId" class="form-select form-select-sm">
-                            <option value="">-- or Department --</option>
+                            <option value="">@Localizer["-- or Department --"]</option>
                             @foreach (var d in departments) { <option value="@d.DepartmentId">@d.Name</option> }
                         </select>
                     </div>
-                    <div class="col-md-2"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> Add</button></div>
+                    <div class="col-md-2"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</button></div>
                 </form>
             </div>
         </div>
@@ -386,7 +389,7 @@
                 <form asp-action="UploadAttachment" method="post" enctype="multipart/form-data" class="d-flex gap-2">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
                     <input type="file" name="file" class="form-control form-control-sm" required />
-                    <button class="btn btn-sm btn-outline-primary"><i class="bi bi-upload"></i> Upload</button>
+                    <button class="btn btn-sm btn-outline-primary"><i class="bi bi-upload"></i> @Localizer["Upload"]</button>
                 </form>
             </div>
         </div>
@@ -403,7 +406,7 @@
                 @if (Model.Referrals.Any())
                 {
                     <table class="table table-sm table-enterprise mb-2">
-                        <thead><tr><th>Referred To</th><th>Instructions</th><th>Due</th><th>Status</th><th>Read</th><th>By / When</th><th></th></tr></thead>
+                        <thead><tr><th>Referred To</th><th>@Localizer["Instructions"]</th><th>@Localizer["Due"]</th><th>@Localizer["Status"]</th><th>@Localizer["Read"]</th><th>By / When</th><th></th></tr></thead>
                         <tbody>
                             @foreach (var r in Model.Referrals)
                             {
@@ -416,17 +419,17 @@
                                             var sb = r.Status switch { "Completed" => "bg-success", "InProgress" => "bg-info text-dark", _ => "bg-warning text-dark" };
                                         }
                                         <span class="badge @sb">@r.Status</span>
-                                        @if (r.IsOverdue) { <span class="badge bg-danger">Overdue</span> }
+                                        @if (r.IsOverdue) { <span class="badge bg-danger">@Localizer["Overdue"]</span> }
                                     </td>
                                     <td>
                                         @if (r.IsRead)
-                                        { <span class="text-success"><i class="bi bi-check2-all"></i> Read</span> }
+                                        { <span class="text-success"><i class="bi bi-check2-all"></i> @Localizer["Read"]</span> }
                                         else
                                         {
                                             <form asp-action="MarkReferralRead" method="post" class="d-inline">
                                                 <input type="hidden" name="referralId" value="@r.LetterReferralId" />
                                                 <input type="hidden" name="letterId" value="@l.LetterId" />
-                                                <button class="btn btn-sm btn-outline-secondary">Mark Read</button>
+                                                <button class="btn btn-sm btn-outline-secondary">@Localizer["Mark Read"]</button>
                                             </form>
                                         }
                                     </td>
@@ -437,7 +440,7 @@
                                             <form asp-action="CompleteReferral" method="post" class="d-flex gap-1">
                                                 <input type="hidden" name="referralId" value="@r.LetterReferralId" />
                                                 <input type="hidden" name="letterId" value="@l.LetterId" />
-                                                <input name="responseNote" class="form-control form-control-sm" placeholder="Response" />
+                                                <input name="responseNote" class="form-control form-control-sm" placeholder="@Localizer["Response"]" />
                                                 <button class="btn btn-sm btn-success">Done</button>
                                             </form>
                                         }
@@ -456,16 +459,16 @@
                     <input type="hidden" name="letterId" value="@l.LetterId" />
                     <div class="col-md-3">
                         <select name="referredToEmployeeId" class="form-select form-select-sm employee-picker">
-                            <option value="">-- Employee --</option>
+                            <option value="">@Localizer["-- Employee --"]</option>
                         </select>
                     </div>
                     <div class="col-md-3">
                         <select name="referredToDepartmentId" class="form-select form-select-sm">
-                            <option value="">-- or Department --</option>
+                            <option value="">@Localizer["-- or Department --"]</option>
                             @foreach (var d in departments) { <option value="@d.DepartmentId">@d.Name</option> }
                         </select>
                     </div>
-                    <div class="col-md-3"><input name="instructions" class="form-control form-control-sm" placeholder="Instructions" /></div>
+                    <div class="col-md-3"><input name="instructions" class="form-control form-control-sm" placeholder="@Localizer["Instructions"]" /></div>
                     <div class="col-md-2"><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
                     <div class="col-md-1"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-send"></i></button></div>
                 </form>
@@ -514,14 +517,14 @@
     <div class="modal-dialog">
         <form asp-action="ReturnForRevision" method="post" class="modal-content">
             <input type="hidden" name="letterId" value="@l.LetterId" />
-            <div class="modal-header"><h6 class="modal-title">Return for Revision</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-header"><h6 class="modal-title">@Localizer["Return for Revision"]</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body">
-                <label class="form-label small">Reason (required)</label>
+                <label class="form-label small">@Localizer["Reason (required)"]</label>
                 <textarea name="reason" class="form-control" rows="3" required></textarea>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-warning btn-sm">Return for Revision</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                <button type="submit" class="btn btn-warning btn-sm">@Localizer["Return for Revision"]</button>
             </div>
         </form>
     </div>
@@ -533,12 +536,12 @@
             <input type="hidden" name="letterId" value="@l.LetterId" />
             <div class="modal-header"><h6 class="modal-title">Reject Letter</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body">
-                <label class="form-label small">Reason (required)</label>
+                <label class="form-label small">@Localizer["Reason (required)"]</label>
                 <textarea name="reason" class="form-control" rows="3" required></textarea>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                <button type="submit" class="btn btn-danger btn-sm">@Localizer["Reject"]</button>
             </div>
         </form>
     </div>
@@ -555,7 +558,7 @@
                 <div class="form-text small">Lightweight electronic acknowledgment (typed name + timestamp), not a PKI digital signature.</div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
                 <button type="submit" class="btn btn-pems-solid btn-sm">Sign</button>
             </div>
         </form>

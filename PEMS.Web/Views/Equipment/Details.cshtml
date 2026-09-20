@@ -37,7 +37,7 @@
     <div class="vs-doc-head">
         <div class="vs-doc-identity">
             <div class="d-flex align-items-center gap-2 flex-wrap">
-                <h1 class="vs-doc-number vs-num">@eq.TagNumber</h1>
+                <h2 class="vs-doc-number vs-num">@eq.TagNumber</h2>
                 <span class="vs-pill vs-pill--icon vs-pill--success"><i class="bi bi-check-circle" aria-hidden="true"></i> @eq.Status</span>
                 @if (!string.IsNullOrWhiteSpace(eq.CriticalityClass))
                 {
@@ -64,7 +64,7 @@
             {
                 <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.PIDDocument.DocumentId">@eq.PIDNumber <i class="bi bi-box-arrow-up-right small"></i></a>
             }
-            else if (!string.IsNullOrWhiteSpace(eq.PIDNumber)) { <span title="مدرکی با این شماره پیدا نشد">@eq.PIDNumber</span> }
+            else if (!string.IsNullOrWhiteSpace(eq.PIDNumber)) { <span title="@Localizer["مدرکی با این شماره پیدا نشد"]">@eq.PIDNumber</span> }
             else { <span class="text-muted">N/A</span> }
             </p>
         </div>
@@ -97,9 +97,9 @@
             <div class="modal-header"><h6 class="modal-title">@Localizer["Cm_AssignTitle"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">Functional Location</label>
+                    <label class="form-label small">@Localizer["Functional Location"]</label>
                     <select name="functionalLocationId" class="form-select form-select-sm">
-                        <option value="">-- not linked --</option>
+                        <option value="">@Localizer["-- not linked --"]</option>
                         @foreach (var fl in (List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations)
                         {
                             <option value="@fl.FunctionalLocationId" selected="@(fl.FunctionalLocationId == eq.FunctionalLocationId)">@fl.PathBreadcrumb</option>
@@ -115,7 +115,7 @@
                             .FirstOrDefault(x => x.FunctionalLocationId == eq.FunctionalLocationId);
                         <div class="form-text">Currently: @(currentFl?.PathBreadcrumb ?? NA(eq.FunctionalLocationBreadcrumb))</div>
                     }
-                    <div class="form-text">Real link, distinct from the raw "@NA(eq.Area)" import value. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">Manage list</a></div>
+                    <div class="form-text">Real link, distinct from the raw "@NA(eq.Area)" import value. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</a></div>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">Parent Equipment</label>
@@ -133,8 +133,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">Save</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Save"]</button>
             </div>
         </form>
     </div></div>
@@ -202,7 +202,7 @@
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-inspection" type="button">
             <i class="bi bi-clipboard-pulse"></i> @Localizer["Cm_TabInspections"]
             @if (inspections.Any()) { <span class="badge bg-secondary">@inspections.Count</span> }
-            @if (inspections.Any(x => x.ConditionStatus == "Alert")) { <span class="badge bg-danger">Alert</span> }
+            @if (inspections.Any(x => x.ConditionStatus == "Alert")) { <span class="badge bg-danger">@Localizer["Alert"]</span> }
         </button>
     </li>
     <li class="nav-item" role="presentation">
@@ -245,8 +245,8 @@
                     <span class="small text-muted">See the "Instrument Passport" tab for full details, calibration history and print.</span>
                 </div>
                 <div class="row g-2 small mt-2">
-                    <div class="col-md-3"><strong>Type</strong><div>@NA(inst.InstrumentType)</div></div>
-                    <div class="col-md-3"><strong>Loop No.</strong><div>@NA(inst.LoopNumber)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Type"]</strong><div>@NA(inst.InstrumentType)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Loop No."]</strong><div>@NA(inst.LoopNumber)</div></div>
                     <div class="col-md-3"><strong>System / Signal</strong><div>@NA(inst.System) / @NA(inst.SignalClass)</div></div>
                     <div class="col-md-3"><strong>Next Calibration</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <span class="badge @calBadgeClass">@inst.CalibrationStatus</span></div></div>
                 </div>
@@ -266,28 +266,28 @@
                     </a>
                 </div>
                 <div class="row g-2 small">
-                    <div class="col-md-3"><strong>Instrument Type</strong><div>@NA(inst.InstrumentType)</div></div>
-                    <div class="col-md-3"><strong>Loop No.</strong><div>@NA(inst.LoopNumber)</div></div>
-                    <div class="col-md-3"><strong>System</strong><div>@NA(inst.System)</div></div>
-                    <div class="col-md-3"><strong>Signal Class</strong><div>@NA(inst.SignalClass)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Instrument Type"]</strong><div>@NA(inst.InstrumentType)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Loop No."]</strong><div>@NA(inst.LoopNumber)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["System"]</strong><div>@NA(inst.System)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Signal Class"]</strong><div>@NA(inst.SignalClass)</div></div>
 
-                    <div class="col-md-3"><strong>Process Variable</strong><div>@NA(inst.ProcessVariable)</div></div>
-                    <div class="col-md-3"><strong>Range</strong><div>@(inst.RangeMin?.ToString() ?? "N/A") - @(inst.RangeMax?.ToString() ?? "N/A") @inst.Unit</div></div>
-                    <div class="col-md-3"><strong>Output Signal</strong><div>@NA(inst.OutputSignal)</div></div>
-                    <div class="col-md-3"><strong>Current Status</strong><div>@NA(inst.CurrentStatus)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Process Variable"]</strong><div>@NA(inst.ProcessVariable)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Range"]</strong><div>@(inst.RangeMin?.ToString() ?? "N/A") - @(inst.RangeMax?.ToString() ?? "N/A") @inst.Unit</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Output Signal"]</strong><div>@NA(inst.OutputSignal)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Current Status"]</strong><div>@NA(inst.CurrentStatus)</div></div>
 
-                    <div class="col-md-3"><strong>Hazardous Area</strong><div>@NA(inst.HazardousArea)</div></div>
-                    <div class="col-md-3"><strong>Ex Protection</strong><div>@NA(inst.ExProtection)</div></div>
-                    <div class="col-md-3"><strong>SIL</strong><div>@NA(inst.SIL)</div></div>
-                    <div class="col-md-3"><strong>Calibration Interval</strong><div>@(inst.CalibrationInterval.HasValue ? inst.CalibrationInterval + " days" : "N/A")</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Hazardous Area"]</strong><div>@NA(inst.HazardousArea)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Ex Protection"]</strong><div>@NA(inst.ExProtection)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["SIL"]</strong><div>@NA(inst.SIL)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Calibration Interval"]</strong><div>@(inst.CalibrationInterval.HasValue ? inst.CalibrationInterval + " days" : "N/A")</div></div>
 
-                    <div class="col-md-3"><strong>Junction Box</strong><div>@NA(inst.JunctionBox)</div></div>
-                    <div class="col-md-3"><strong>Marshalling Cabinet</strong><div>@NA(inst.MarshallingCabinet)</div></div>
-                    <div class="col-md-3"><strong>Cable No.</strong><div>@NA(inst.CableNumber)</div></div>
-                    <div class="col-md-3"><strong>I/O Card / Channel</strong><div>@NA(inst.IOCardChannel)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Junction Box"]</strong><div>@NA(inst.JunctionBox)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Marshalling Cabinet"]</strong><div>@NA(inst.MarshallingCabinet)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Cable No."]</strong><div>@NA(inst.CableNumber)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["I/O Card / Channel"]</strong><div>@NA(inst.IOCardChannel)</div></div>
 
-                    <div class="col-md-3"><strong>System Cabinet</strong><div>@NA(inst.SystemCabinet)</div></div>
-                    <div class="col-md-3"><strong>Last Calibration</strong><div>@(inst.LastCalibrationDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
+                    <div class="col-md-3"><strong>@Localizer["System Cabinet"]</strong><div>@NA(inst.SystemCabinet)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Last Calibration"]</strong><div>@(inst.LastCalibrationDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
                     <div class="col-md-3"><strong>Next Calibration Due</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <span class="badge @calBadgeClass">@inst.CalibrationStatus</span></div></div>
                     <div class="col-md-3"><strong>Next Maintenance Due</strong><div>@(inst.NextMaintenanceDue?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
                 </div>
@@ -307,11 +307,11 @@
                     </a>
                 </div>
                 <div class="row g-2 small">
-                    <div class="col-md-3"><strong>Status</strong><div>@NA(asset.Status)</div></div>
-                    <div class="col-md-3"><strong>Criticality</strong><div>@NA(asset.CriticalityClass)</div></div>
-                    <div class="col-md-3"><strong>Maintenance Class</strong><div>@NA(asset.MaintenanceClass)</div></div>
-                    <div class="col-md-3"><strong>Functional Location</strong><div>@NA(asset.FunctionalLocation)</div></div>
-                    <div class="col-md-3"><strong>Commissioning Date</strong><div>@(asset.CommissioningDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Status"]</strong><div>@NA(asset.Status)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Criticality"]</strong><div>@NA(asset.CriticalityClass)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Maintenance Class"]</strong><div>@NA(asset.MaintenanceClass)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Functional Location"]</strong><div>@NA(asset.FunctionalLocation)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Commissioning Date"]</strong><div>@(asset.CommissioningDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
                 </div>
             }
             else
@@ -320,11 +320,11 @@
                 <form asp-controller="Asset" asp-action="Create" method="post" class="row g-2 align-items-end">
                     <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
                     <div class="col-md-4">
-                        <label class="form-label small">Asset Number</label>
+                        <label class="form-label small">@Localizer["Asset Number"]</label>
                         <input name="assetNumber" class="form-control form-control-sm" placeholder="AST-@eq.TagNumber" required />
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label small">Maintenance Class</label>
+                        <label class="form-label small">@Localizer["Maintenance Class"]</label>
                         <input name="maintenanceClass" class="form-control form-control-sm" placeholder="Rotating, Static ..." />
                     </div>
                     <div class="col-md-2">
@@ -416,10 +416,10 @@
                     </a>
                 </div>
                 <div class="row g-2 text-center">
-                    <div class="col-md-3"><div class="small text-muted">MTBF</div><div class="fw-bold">@(reliability.MTBFHours.HasValue ? $"{reliability.MTBFHours.Value:N1} h" : "N/A")</div></div>
-                    <div class="col-md-3"><div class="small text-muted">MTTR</div><div class="fw-bold">@(reliability.MTTRHours.HasValue ? $"{reliability.MTTRHours.Value:N1} h" : "N/A")</div></div>
-                    <div class="col-md-3"><div class="small text-muted">Availability</div><div class="fw-bold">@(reliability.AvailabilityPercent.HasValue ? $"{reliability.AvailabilityPercent.Value:N1}%" : "N/A")</div></div>
-                    <div class="col-md-3"><div class="small text-muted">Failure Count</div><div class="fw-bold">@reliability.FailureCount</div></div>
+                    <div class="col-md-3"><div class="small text-muted">@Localizer["MTBF"]</div><div class="fw-bold">@(reliability.MTBFHours.HasValue ? $"{reliability.MTBFHours.Value:N1} h" : "N/A")</div></div>
+                    <div class="col-md-3"><div class="small text-muted">@Localizer["MTTR"]</div><div class="fw-bold">@(reliability.MTTRHours.HasValue ? $"{reliability.MTTRHours.Value:N1} h" : "N/A")</div></div>
+                    <div class="col-md-3"><div class="small text-muted">@Localizer["Availability"]</div><div class="fw-bold">@(reliability.AvailabilityPercent.HasValue ? $"{reliability.AvailabilityPercent.Value:N1}%" : "N/A")</div></div>
+                    <div class="col-md-3"><div class="small text-muted">@Localizer["Failure Count"]</div><div class="fw-bold">@reliability.FailureCount</div></div>
                 </div>
             </div>
         }
@@ -553,8 +553,8 @@
                             <td class="small">
                                 @switch (i.ConditionStatus)
                                 {
-                                    case "Alert": <span class="badge bg-danger">Alert</span> break;
-                                    case "Normal": <span class="badge bg-success">Normal</span> break;
+                                    case "Alert": <span class="badge bg-danger">@Localizer["Alert"]</span> break;
+                                    case "Normal": <span class="badge bg-success">@Localizer["Normal"]</span> break;
                                     default: <span class="text-muted">N/A</span> break;
                                 }
                             </td>
@@ -562,8 +562,8 @@
                             <td class="small">
                                 @switch (i.DueStatus)
                                 {
-                                    case "Overdue": <span class="badge bg-danger">Overdue</span> break;
-                                    case "DueSoon": <span class="badge bg-warning text-dark">Due Soon</span> break;
+                                    case "Overdue": <span class="badge bg-danger">@Localizer["Overdue"]</span> break;
+                                    case "DueSoon": <span class="badge bg-warning text-dark">@Localizer["Due Soon"]</span> break;
                                     case "OK": <span class="badge bg-success">OK</span> break;
                                     default: <span class="text-muted">N/A</span> break;
                                 }
@@ -594,12 +594,12 @@
                             <input name="inspectionType" class="form-control form-control-sm" placeholder="Vibration, Thickness, Visual..." required /></div>
                         <div class="mb-2"><label class="form-label small">Inspection Date</label>
                             <input name="inspectionDate" type="date" class="form-control form-control-sm" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
-                        <div class="mb-2"><label class="form-label small">Inspector</label>
+                        <div class="mb-2"><label class="form-label small">@Localizer["Inspector"]</label>
                             <input name="inspector" class="form-control form-control-sm" /></div>
                         <div class="row g-2 mb-2">
                             <div class="col-6"><label class="form-label small">Measurement Value</label>
                                 <input name="measurementValue" type="number" step="0.01" class="form-control form-control-sm" /></div>
-                            <div class="col-6"><label class="form-label small">Unit</label>
+                            <div class="col-6"><label class="form-label small">@Localizer["Unit"]</label>
                                 <input name="measurementUnit" class="form-control form-control-sm" placeholder="mm/s, mm, °C..." /></div>
                         </div>
                         <div class="row g-2 mb-2">
@@ -612,12 +612,12 @@
                             <input name="nextInspectionDate" type="date" class="form-control form-control-sm" /></div>
                         <div class="mb-2"><label class="form-label small">Recommendation</label>
                             <textarea name="recommendation" class="form-control form-control-sm" rows="2"></textarea></div>
-                        <div class="mb-2"><label class="form-label small">Description</label>
+                        <div class="mb-2"><label class="form-label small">@Localizer["Description"]</label>
                             <textarea name="description" class="form-control form-control-sm" rows="2"></textarea></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-pems-solid btn-sm">Save</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                        <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Save"]</button>
                     </div>
                 </form>
             </div></div>
@@ -686,15 +686,15 @@
             @if (intel?.EquipmentClassId != null)
             {
                 <div class="row g-2 small">
-                    <div class="col-md-3"><strong>Equipment Class</strong><div>@intel.EquipmentClassName <code>@intel.EquipmentClassCode</code></div></div>
+                    <div class="col-md-3"><strong>@Localizer["Equipment Class"]</strong><div>@intel.EquipmentClassName <code>@intel.EquipmentClassCode</code></div></div>
                     <div class="col-md-3"><strong>Class Hierarchy</strong><div>@string.Join(" ← ", intel.ResolvedClassHierarchy)</div></div>
-                    <div class="col-md-3"><strong>Confidence</strong><div><span class="badge text-bg-info">@intel.ClassificationConfidence</span></div></div>
-                    <div class="col-md-3"><strong>Source</strong><div><span class="badge text-bg-secondary">@intel.ClassificationSource</span></div></div>
+                    <div class="col-md-3"><strong>@Localizer["Confidence"]</strong><div><span class="badge text-bg-info">@intel.ClassificationConfidence</span></div></div>
+                    <div class="col-md-3"><strong>@Localizer["Source"]</strong><div><span class="badge text-bg-secondary">@intel.ClassificationSource</span></div></div>
                 </div>
                 @if (explanation?.MatchedRuleTier != null)
                 {
                     <div class="alert alert-light border small mt-3 mb-0">
-                        <strong>چرا این طبقه‌بندی؟</strong>
+                        <strong>@Localizer["چرا این طبقه‌بندی؟"]</strong>
                         Rule tier: <span class="badge text-bg-light border">@explanation.MatchedRuleTier</span> &middot;
                         Matched on: <code>@explanation.MatchedInput</code> &middot;
                         @explanation.Reason

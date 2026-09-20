@@ -22,6 +22,19 @@ public class WorkflowVersion
     public DateTime? EffectiveDate { get; set; }
     public DateTime? PublishedDate { get; set; }
 
+    // --- Phase 1 Hardening (additive) ---
+    // چرخه‌ی عمر: Draft → Validated → Published → Retired. نسخه‌ی Published/Retired تغییرناپذیر است
+    // (در سرویس و در PEMSDbContext.SaveChanges اعمال می‌شود). «Active» یک وضعیت نسخه نیست؛
+    // با WorkflowBinding (فعال‌سازی/پین) تعیین می‌شود.
+    public DateTime? ValidatedDate { get; set; }
+    public int? ValidatedById { get; set; }
+    public DateTime? RetiredDate { get; set; }
+
+    /// <summary>نسخه‌ی مبدأ وقتی این نسخه با Clone ساخته شده (فقط ساختار کپی می‌شود، نه Instance/History).</summary>
+    public int? ClonedFromVersionId { get; set; }
+
+    public string? ChangeSummary { get; set; }
+
     public int? PublishedById { get; set; }
 
     public ICollection<WorkflowStage> Stages { get; set; } = new List<WorkflowStage>();

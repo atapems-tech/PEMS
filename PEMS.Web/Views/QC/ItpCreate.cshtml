@@ -1,4 +1,7 @@
-﻿<div class="content-card" style="max-width:800px;">
+﻿@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+<div class="content-card" style="max-width:800px;">
     <h6 class="mb-3"><i class="bi bi-clipboard-check"></i> New Inspection &amp; Test Plan</h6>
 
     <form asp-action="ItpCreate" method="post">
@@ -8,14 +11,14 @@
                 <input name="itpNumber" class="form-control" required placeholder="e.g. ITP-P-101-001" />
             </div>
             <div class="col-md-6">
-                <label class="form-label">Project</label>
+                <label class="form-label">@Localizer["Project"]</label>
                 <select name="projectId" class="form-select" required>
                     @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                 </select>
             </div>
 
             <div class="col-md-6">
-                <label class="form-label">QC Discipline</label>
+                <label class="form-label">@Localizer["QC Discipline"]</label>
                 <select name="qcDisciplineId" class="form-select" required>
                     @foreach (var d in (IEnumerable<PEMS.Domain.Entities.QCDiscipline>)ViewBag.QCDisciplines)
                     {
@@ -24,20 +27,20 @@
                 </select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Equipment <span class="text-muted small">(optional)</span></label>
-                <input type="text" class="form-control" placeholder="جستجوی تگ، نام یا سازنده..."
+                <label class="form-label">Equipment <span class="text-muted small">@Localizer["(optional)"]</span></label>
+                <input type="text" class="form-control" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]"
                        data-pems-search data-search-type="Equipment" data-search-hidden="#equipmentIdHidden" autocomplete="off" />
                 <input type="hidden" name="equipmentId" id="equipmentIdHidden" />
             </div>
 
-            <div class="col-12"><label class="form-label">Title</label><input name="title" class="form-control" required /></div>
+            <div class="col-12"><label class="form-label">@Localizer["Title"]</label><input name="title" class="form-control" required /></div>
             <div class="col-md-6"><label class="form-label">Reference Code/Standard</label><input name="referenceCodeStandard" class="form-control" placeholder="e.g. ASME Section IX" /></div>
-            <div class="col-12"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="3"></textarea></div>
+            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="3"></textarea></div>
         </div>
 
         <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">Create</button>
-            <a asp-action="ItpIndex" class="btn btn-outline-secondary">Cancel</a>
+            <button type="submit" class="btn btn-pems-solid">@Localizer["Create"]</button>
+            <a asp-action="ItpIndex" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
         </div>
     </form>
 </div>

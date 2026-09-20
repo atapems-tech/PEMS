@@ -1,3 +1,6 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
     var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
@@ -11,7 +14,7 @@
     <form asp-action="Create" method="post">
         <div class="row g-3">
             <div class="col-md-6">
-                <label class="form-label">Project</label>
+                <label class="form-label">@Localizer["Project"]</label>
                 <select name="projectId" class="form-select" required>
                     @foreach (var p in projects)
                     {
@@ -20,7 +23,7 @@
                 </select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Equipment</label>
+                <label class="form-label">@Localizer["Equipment"]</label>
                 <select name="equipmentId" class="form-select" required>
                     @foreach (var eq in equipments)
                     {
@@ -29,7 +32,7 @@
                 </select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Vendor</label>
+                <label class="form-label">@Localizer["Vendor"]</label>
                 <select name="vendorId" class="form-select" required>
                     @foreach (var v in vendors)
                     {
@@ -38,9 +41,9 @@
                 </select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Purchase Order <span class="text-muted small">(optional)</span></label>
+                <label class="form-label">Purchase Order <span class="text-muted small">@Localizer["(optional)"]</span></label>
                 <select name="poId" class="form-select">
-                    <option value="">-- None --</option>
+                    <option value="">@Localizer["-- None --"]</option>
                     @foreach (var po in pos)
                     {
                         <option value="@po.PoId">@po.PoNumber</option>
@@ -55,7 +58,7 @@
 
         <div class="mt-4">
             <button type="submit" class="btn btn-pems-solid">Create MDB</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
         </div>
     </form>
 </div>

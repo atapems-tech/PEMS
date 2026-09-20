@@ -1,5 +1,8 @@
 @model PEMS.Domain.Entities.Employee
 @using System.Globalization
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var laborRates = (List<PEMS.Domain.Entities.EmployeeLaborRate>)ViewBag.LaborRates;
     var teamHistory = (List<PEMS.Domain.Entities.TeamMember>)ViewBag.TeamHistory;
@@ -439,10 +442,10 @@
                 <div class="mb-2">
                     <label class="form-label small">@L("Proficiency Level", "سطح مهارت")</label>
                     <select name="proficiencyLevel" class="form-select form-select-sm" required>
-                        <option value="Basic">Basic</option>
-                        <option value="Intermediate">Intermediate</option>
-                        <option value="Advanced">Advanced</option>
-                        <option value="Expert">Expert</option>
+                        <option value="Basic">@Localizer["Basic"]</option>
+                        <option value="Intermediate">@Localizer["Intermediate"]</option>
+                        <option value="Advanced">@Localizer["Advanced"]</option>
+                        <option value="Expert">@Localizer["Expert"]</option>
                     </select>
                 </div>
                 <div class="mb-2">

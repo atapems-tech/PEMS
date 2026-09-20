@@ -65,7 +65,7 @@
     @if (canSeeQuickSetup)
     {
         <a class="nav-link @(IsActive("QuickSetup") ? "active" : "")" asp-controller="QuickSetup" asp-action="Index">
-            <i class="bi bi-rocket-takeoff"></i> Quick Setup
+            <i class="bi bi-rocket-takeoff"></i> @Localizer["Quick Setup"]
         </a>
     }
 
@@ -92,7 +92,7 @@
             </a>
 
             <a class="nav-link @(IsActive("Projects") ? "active" : "")" asp-controller="Projects" asp-action="Index">
-                <i class="bi bi-kanban"></i> Projects
+                <i class="bi bi-kanban"></i> @Localizer["Projects"]
             </a>
 
             <a class="nav-link @(IsActive("EngineeringDocuments") ? "active" : "")"
@@ -105,11 +105,11 @@
             </a>
 
             <a class="nav-link @(IsActive("DocumentRevisions") ? "active" : "")" asp-controller="DocumentRevisions" asp-action="Index">
-                <i class="bi bi-clock-history"></i> Document Revision
+                <i class="bi bi-clock-history"></i> @Localizer["Document Revision"]
             </a>
 
             <a class="nav-link @(IsActive("DocumentWorkflow") ? "active" : "")" asp-controller="DocumentWorkflow" asp-action="Index">
-                <i class="bi bi-diagram-2"></i> Document Workflow
+                <i class="bi bi-diagram-2"></i> @Localizer["Document Workflow"]
             </a>
 
             <a class="nav-link @(IsActive("VDR") ? "active" : "")" asp-controller="VDR" asp-action="Index">
@@ -117,11 +117,11 @@
             </a>
 
             <a class="nav-link @(IsActive("Transmittal") ? "active" : "")" asp-controller="Transmittal" asp-action="Index">
-                <i class="bi bi-send"></i> Transmittal
+                <i class="bi bi-send"></i> @Localizer["Transmittal"]
             </a>
 
             <a class="nav-link @(IsActive("MDB") ? "active" : "")" asp-controller="MDB" asp-action="Index">
-                <i class="bi bi-collection"></i> MDB
+                <i class="bi bi-collection"></i> @Localizer["MDB"]
             </a>
 
             <a class="nav-link @(IsActive("ProcurementPackage") ? "active" : "")" asp-controller="ProcurementPackage" asp-action="Index">
@@ -129,11 +129,11 @@
             </a>
 
             <a class="nav-link @(IsActive("MaterialRequisition") ? "active" : "")" asp-controller="MaterialRequisition" asp-action="Index">
-                <i class="bi bi-cart-check"></i> Material Requisition
+                <i class="bi bi-cart-check"></i> @Localizer["Material Requisition"]
             </a>
 
             <a class="nav-link @(IsActive("Discipline") ? "active" : "")" asp-controller="Discipline" asp-action="Index">
-                <i class="bi bi-diagram-3"></i> Disciplines
+                <i class="bi bi-diagram-3"></i> @Localizer["Disciplines"]
             </a>
         </div>
     }
@@ -144,7 +144,7 @@
         var active = ContainsActive(aiControllers);
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-ai" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
             <i class="bi bi-robot nav-section-icon"></i>
-            <span>AI &amp; Knowledge</span>
+            <span>@Localizer["AI & Knowledge"]</span>
             <i class="@ChevronClass(active)"></i>
         </div>
         <div class="@SectionClass(active)" id="sec-ai">
@@ -158,15 +158,15 @@
             </a>
 
             <a class="nav-link @(IsActive("AISearch") ? "active" : "")" asp-controller="AISearch" asp-action="Index">
-                <i class="bi bi-search-heart"></i> AI Search
+                <i class="bi bi-search-heart"></i> @Localizer["AI Search"]
             </a>
 
             <a class="nav-link @(IsActive("ChatAssistant") ? "active" : "")" asp-controller="ChatAssistant" asp-action="Index">
-                <i class="bi bi-chat-dots"></i> Engineering Chat Assistant
+                <i class="bi bi-chat-dots"></i> @Localizer["Engineering Chat Assistant"]
             </a>
 
             <a class="nav-link @(IsActive("AIInsights") ? "active" : "")" asp-controller="AIInsights" asp-action="Index">
-                <i class="bi bi-stars"></i> Engineering Copilot
+                <i class="bi bi-stars"></i> @Localizer["Engineering Copilot"]
             </a>
         </div>
     }
@@ -193,11 +193,11 @@
             </a>
 
             <a class="nav-link @(IsActive("DCC") ? "active" : "")" asp-controller="DCC" asp-action="Index">
-                <i class="bi bi-building-gear"></i> DCC
+                <i class="bi bi-building-gear"></i> @Localizer["DCC"]
             </a>
 
             <a class="nav-link @(IsActive("TechnicalQuery") ? "active" : "")" asp-controller="TechnicalQuery" asp-action="Index">
-                <i class="bi bi-question-circle"></i> TQ / TSR / RFI
+                <i class="bi bi-question-circle"></i> @Localizer["TQ / TSR / RFI"]
             </a>
         </div>
     }
@@ -214,11 +214,11 @@
         <div class="@SectionClass(active)" id="sec-quality">
 
             <a class="nav-link @(IsActive("QC") ? "active" : "")" asp-controller="QC" asp-action="Index">
-                <i class="bi bi-patch-check"></i> QC / QA
+                <i class="bi bi-patch-check"></i> @Localizer["QC / QA"]
             </a>
 
             <a class="nav-link @(IsActive("MOC") ? "active" : "")" asp-controller="MOC" asp-action="Index">
-                <i class="bi bi-arrow-repeat"></i> MOC
+                <i class="bi bi-arrow-repeat"></i> @Localizer["MOC"]
             </a>
         </div>
     }
@@ -243,11 +243,11 @@
             </a>
 
             <a class="nav-link" href="@ComingSoon("Contract Milestones", "Contract Management")">
-                <i class="bi bi-flag"></i> Contract Milestones
+                <i class="bi bi-flag"></i> @Localizer["Contract Milestones"]
             </a>
 
             <a class="nav-link" href="@ComingSoon("Claims", "Contract Management")">
-                <i class="bi bi-exclamation-diamond"></i> Claims
+                <i class="bi bi-exclamation-diamond"></i> @Localizer["Claims"]
             </a>
         </div>
     }
@@ -264,19 +264,19 @@
         <div class="@SectionClass(active)" id="sec-projctrl">
 
             <a class="nav-link @(IsActive("Task") ? "active" : "")" asp-controller="Task" asp-action="Index">
-                <i class="bi bi-check2-square"></i> Tasks
+                <i class="bi bi-check2-square"></i> @Localizer["Tasks"]
             </a>
 
             <a class="nav-link @(IsActive("Meeting") ? "active" : "")" asp-controller="Meeting" asp-action="Index">
-                <i class="bi bi-people"></i> Meetings
+                <i class="bi bi-people"></i> @Localizer["Meetings"]
             </a>
 
             <a class="nav-link @(IsActive("Report") ? "active" : "")" asp-controller="Report" asp-action="Index">
-                <i class="bi bi-graph-up"></i> Reports
+                <i class="bi bi-graph-up"></i> @Localizer["Reports"]
             </a>
 
             <a class="nav-link @(IsActive("Tag") ? "active" : "")" asp-controller="Tag" asp-action="Index">
-                <i class="bi bi-tags"></i> Tags
+                <i class="bi bi-tags"></i> @Localizer["Tags"]
             </a>
         </div>
     }
@@ -297,43 +297,43 @@
             </a>
 
             <a class="nav-link @(IsActive("Instrument") ? "active" : "")" asp-controller="Instrument" asp-action="Index">
-                <i class="bi bi-cpu"></i> Instrument Passport
+                <i class="bi bi-cpu"></i> @Localizer["Instrument Passport"]
             </a>
 
             <a class="nav-link @(IsActive("Asset") ? "active" : "")" asp-controller="Asset" asp-action="Index">
-                <i class="bi bi-diagram-2"></i> Assets
+                <i class="bi bi-diagram-2"></i> @Localizer["Assets"]
             </a>
 
             <a class="nav-link @(IsActive("MaintenanceStrategy") ? "active" : "")" asp-controller="MaintenanceStrategy" asp-action="Index">
-                <i class="bi bi-diagram-2"></i> Maintenance Strategy
+                <i class="bi bi-diagram-2"></i> @Localizer["Maintenance Strategy"]
             </a>
 
             <a class="nav-link @(IsActive("MaintenancePlan") ? "active" : "")" asp-controller="MaintenancePlan" asp-action="Index">
-                <i class="bi bi-calendar-check"></i> Maintenance Plan
+                <i class="bi bi-calendar-check"></i> @Localizer["Maintenance Plan"]
             </a>
 
             <a class="nav-link @(IsActive("JobPlan") ? "active" : "")" asp-controller="JobPlan" asp-action="Index">
-                <i class="bi bi-list-check"></i> Job Plans
+                <i class="bi bi-list-check"></i> @Localizer["Job Plans"]
             </a>
 
             <a class="nav-link @(IsActive("WorkRequest") ? "active" : "")" asp-controller="WorkRequest" asp-action="Index">
-                <i class="bi bi-clipboard-plus"></i> Work Requests
+                <i class="bi bi-clipboard-plus"></i> @Localizer["Work Requests"]
             </a>
 
             <a class="nav-link @(IsActive("WorkOrder") ? "active" : "")" asp-controller="WorkOrder" asp-action="Index">
-                <i class="bi bi-clipboard-check"></i> Work Order
+                <i class="bi bi-clipboard-check"></i> @Localizer["Work Order"]
             </a>
 
             <a class="nav-link @(IsActive("SparePart") ? "active" : "")" asp-controller="SparePart" asp-action="Index">
-                <i class="bi bi-tools"></i> Spare Parts
+                <i class="bi bi-tools"></i> @Localizer["Spare Parts"]
             </a>
 
             <a class="nav-link @(IsActive("Team") ? "active" : "")" asp-controller="Team" asp-action="Index">
-                <i class="bi bi-people"></i> Teams
+                <i class="bi bi-people"></i> @Localizer["Teams"]
             </a>
 
             <a class="nav-link @(IsActive("Crew") ? "active" : "")" asp-controller="Crew" asp-action="Index">
-                <i class="bi bi-people-fill"></i> Crews
+                <i class="bi bi-people-fill"></i> @Localizer["Crews"]
             </a>
 
             @* طبق «PEMS Phase 2C-1 — Navigation Integrity»: ShiftHandoverController یک ماژول واقعی و
@@ -346,61 +346,61 @@
                View/Create/Prepare/Acknowledge/Complete به ShiftHandover دارند - هیچ نقشی لینکی را
                می‌بیند که پشتش Forbid بگیرد. *@
             <a class="nav-link @(IsActive("ShiftHandover") ? "active" : "")" asp-controller="ShiftHandover" asp-action="Index">
-                <i class="bi bi-arrow-left-right"></i> Shift Handovers
+                <i class="bi bi-arrow-left-right"></i> @Localizer["Shift Handovers"]
             </a>
 
             <a class="nav-link @(IsActive("MaintenanceMasterData") ? "active" : "")" asp-controller="MaintenanceMasterData" asp-action="Index">
-                <i class="bi bi-collection"></i> Maintenance Master Data
+                <i class="bi bi-collection"></i> @Localizer["Maintenance Master Data"]
             </a>
 
             <a class="nav-link @(IsActive("EquipmentClassification") ? "active" : "")" asp-controller="EquipmentClassification" asp-action="Index">
-                <i class="bi bi-diagram-3-fill"></i> Equipment Classification
+                <i class="bi bi-diagram-3-fill"></i> @Localizer["Equipment Classification"]
             </a>
 
             <a class="nav-link @(IsActive("CmmsReadiness") ? "active" : "")" asp-controller="CmmsReadiness" asp-action="Index">
-                <i class="bi bi-clipboard-check"></i> CMMS Readiness
+                <i class="bi bi-clipboard-check"></i> @Localizer["CMMS Readiness"]
             </a>
 
             <a class="nav-link @(IsActive("CmmsOperations") ? "active" : "")" asp-controller="CmmsOperations" asp-action="Dashboard">
-                <i class="bi bi-speedometer2"></i> CMMS Operations
+                <i class="bi bi-speedometer2"></i> @Localizer["CMMS Operations"]
             </a>
 
             <a class="nav-link @(IsActive("RcmFmea") ? "active" : "")" asp-controller="RcmFmea" asp-action="Index">
-                <i class="bi bi-clipboard2-pulse"></i> RCM / FMEA
+                <i class="bi bi-clipboard2-pulse"></i> @Localizer["RCM / FMEA"]
             </a>
 
             <a class="nav-link @(IsActive("EquipmentCriticality") ? "active" : "")" asp-controller="EquipmentCriticality" asp-action="Index">
-                <i class="bi bi-shield-exclamation"></i> Criticality Analysis
+                <i class="bi bi-shield-exclamation"></i> @Localizer["Criticality Analysis"]
             </a>
 
             <a class="nav-link @(IsActive("CriticalityAssessment") ? "active" : "")" asp-controller="CriticalityAssessment" asp-action="Dashboard">
-                <i class="bi bi-clipboard2-check"></i> Criticality Assessment
+                <i class="bi bi-clipboard2-check"></i> @Localizer["Criticality Assessment"]
             </a>
 
             <a class="nav-link @(IsActive("Reliability") ? "active" : "")" asp-controller="Reliability" asp-action="Dashboard">
-                <i class="bi bi-graph-up-arrow"></i> Reliability
+                <i class="bi bi-graph-up-arrow"></i> @Localizer["Reliability"]
             </a>
 
             <a class="nav-link @(IsActive("Inspection") ? "active" : "")" asp-controller="Inspection" asp-action="Index">
-                <i class="bi bi-clipboard-pulse"></i> Inspections
+                <i class="bi bi-clipboard-pulse"></i> @Localizer["Inspections"]
             </a>
 
             <a class="nav-link @(IsActive("Kpi") ? "active" : "")" asp-controller="Kpi" asp-action="Index">
-                <i class="bi bi-speedometer2"></i> KPI Dashboard
+                <i class="bi bi-speedometer2"></i> @Localizer["KPI Dashboard"]
             </a>
 
             <a class="nav-link @(IsActive("Permit") ? "active" : "")" asp-controller="Permit" asp-action="Index">
-                <i class="bi bi-shield-check"></i> Permits
+                <i class="bi bi-shield-check"></i> @Localizer["Permits"]
             </a>
 
             <a class="nav-link @(IsActive("FunctionalLocation") ? "active" : "")" asp-controller="FunctionalLocation" asp-action="Index">
-                <i class="bi bi-diagram-3"></i> Functional Locations
+                <i class="bi bi-diagram-3"></i> @Localizer["Functional Locations"]
             </a>
 
             @if (MenuAccess.CanSee(User, MenuAccess.ImportCenter))
             {
                 <a class="nav-link @(IsActive("Barcode") ? "active" : "")" asp-controller="Barcode" asp-action="Index">
-                    <i class="bi bi-upc-scan"></i> Barcode
+                    <i class="bi bi-upc-scan"></i> @Localizer["Barcode"]
                 </a>
             }
         </div>
@@ -421,17 +421,17 @@
         var active = ContainsActive(operationsControllers);
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-operations" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
             <i class="bi bi-diagram-3-fill nav-section-icon"></i>
-            <span>Operations &amp; Production</span>
+            <span>@Localizer["Operations & Production"]</span>
             <i class="@ChevronClass(active)"></i>
         </div>
         <div class="@SectionClass(active)" id="sec-operations">
 
             <a class="nav-link @(IsActive("Production") ? "active" : "")" asp-controller="Production" asp-action="Dashboard">
-                <i class="bi bi-speedometer2"></i> Dashboard
+                <i class="bi bi-speedometer2"></i> @Localizer["Dashboard"]
             </a>
 
             <a class="nav-link @(IsActive("ProductionOrder") ? "active" : "")" asp-controller="ProductionOrder" asp-action="Index">
-                <i class="bi bi-clipboard-data"></i> Production Orders
+                <i class="bi bi-clipboard-data"></i> @Localizer["Production Orders"]
             </a>
         </div>
     }
@@ -442,29 +442,29 @@
         var active = ContainsActive(inventoryControllers);
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-inventory" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
             <i class="bi bi-boxes nav-section-icon"></i>
-            <span>Inventory &amp; Materials</span>
+            <span>@Localizer["Inventory & Materials"]</span>
             <i class="@ChevronClass(active)"></i>
         </div>
         <div class="@SectionClass(active)" id="sec-inventory">
 
             <a class="nav-link @(IsActive("Inventory") ? "active" : "")" asp-controller="Inventory" asp-action="Index">
-                <i class="bi bi-speedometer2"></i> Dashboard
+                <i class="bi bi-speedometer2"></i> @Localizer["Dashboard"]
             </a>
 
             <a class="nav-link @(IsActive("MaterialItem") ? "active" : "")" asp-controller="MaterialItem" asp-action="Index">
-                <i class="bi bi-box-seam"></i> Material Master
+                <i class="bi bi-box-seam"></i> @Localizer["Material Master"]
             </a>
 
             <a class="nav-link @(IsActive("InventoryTransaction") ? "active" : "")" asp-controller="InventoryTransaction" asp-action="Index">
-                <i class="bi bi-list-ul"></i> Transaction Ledger
+                <i class="bi bi-list-ul"></i> @Localizer["Transaction Ledger"]
             </a>
 
             <a class="nav-link @(IsActive("StoreRequisition") ? "active" : "")" asp-controller="StoreRequisition" asp-action="Index">
-                <i class="bi bi-clipboard-check"></i> Store Requisitions
+                <i class="bi bi-clipboard-check"></i> @Localizer["Store Requisitions"]
             </a>
 
             <a class="nav-link @(IsActive("InventoryMasterData") ? "active" : "")" asp-controller="InventoryMasterData" asp-action="Index">
-                <i class="bi bi-collection"></i> Master Data
+                <i class="bi bi-collection"></i> @Localizer["Master Data"]
             </a>
         </div>
     }
@@ -487,12 +487,12 @@
         <div class="@SectionClass(active)" id="sec-admin">
 
             <a class="nav-link @(IsActive("Settings") ? "active" : "")" asp-controller="Settings" asp-action="Index">
-                <i class="bi bi-gear"></i> Settings
+                <i class="bi bi-gear"></i> @Localizer["Settings"]
             </a>
 
             @if (canSeeAdminCore)
             {
-                <div class="nav-subheading">User &amp; Access</div>
+                <div class="nav-subheading">@Localizer["User & Access"]</div>
 
                 <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Users", "Admin") ? "active" : "")"
                    asp-area="Admin" asp-controller="Users" asp-action="Index">
@@ -511,38 +511,38 @@
 
                 <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Help", "Admin") ? "active" : "")"
                    asp-area="Admin" asp-controller="Help" asp-action="Index">
-                    <i class="bi bi-life-preserver"></i> Help Administration
+                    <i class="bi bi-life-preserver"></i> @Localizer["Help Administration"]
                 </a>
 
-                <div class="nav-subheading">Organization</div>
+                <div class="nav-subheading">@Localizer["Organization"]</div>
 
                 <a class="nav-link nav-subitem @(IsActive("Department") ? "active" : "")" asp-controller="Department" asp-action="Index">
-                    <i class="bi bi-building"></i> Departments
+                    <i class="bi bi-building"></i> @Localizer["Departments"]
                 </a>
 
                 <a class="nav-link nav-subitem @(IsActive("Employee") ? "active" : "")" asp-controller="Employee" asp-action="Index">
-                    <i class="bi bi-people"></i> Employees
+                    <i class="bi bi-people"></i> @Localizer["Employees"]
                 </a>
             }
 
             @if (canSeeAdminCore)
             {
-                <div class="nav-subheading">AI Administration</div>
+                <div class="nav-subheading">@Localizer["AI Administration"]</div>
 
                 <a class="nav-link nav-subitem @(IsActive("Intake") ? "active" : "")" asp-controller="Intake" asp-action="Index">
                     <i class="bi bi-inboxes"></i> @Localizer["AIIntakeQueue"]
                 </a>
 
                 <a class="nav-link nav-subitem @(IsActive("OCRProcessing") ? "active" : "")" asp-controller="OCRProcessing" asp-action="Index">
-                    <i class="bi bi-badge-ad"></i> OCR Processing
+                    <i class="bi bi-badge-ad"></i> @Localizer["OCR Processing"]
                 </a>
 
                 <a class="nav-link nav-subitem @(IsActive("AIExtraction") ? "active" : "")" asp-controller="AIExtraction" asp-action="Index">
-                    <i class="bi bi-cpu"></i> AI Extraction
+                    <i class="bi bi-cpu"></i> @Localizer["AI Extraction"]
                 </a>
 
                 <a class="nav-link nav-subitem @(IsActive("TableExtraction") ? "active" : "")" asp-controller="TableExtraction" asp-action="Index">
-                    <i class="bi bi-table"></i> Table Extraction
+                    <i class="bi bi-table"></i> @Localizer["Table Extraction"]
                 </a>
 
                 <a class="nav-link nav-subitem @(IsActive("Relationship") ? "active" : "")" asp-controller="Relationship" asp-action="Index">
@@ -551,10 +551,10 @@
 
                 <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("RoutingRules") ? "active" : "")"
                    asp-area="Admin" asp-controller="RoutingRules" asp-action="Index">
-                    <i class="bi bi-signpost-split"></i> AI Routing Rules
+                    <i class="bi bi-signpost-split"></i> @Localizer["AI Routing Rules"]
                 </a>
 
-                <div class="nav-subheading">System Monitoring</div>
+                <div class="nav-subheading">@Localizer["System Monitoring"]</div>
 
                 <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("AuditLog") ? "active" : "")"
                    asp-area="Admin" asp-controller="AuditLog" asp-action="Index">
@@ -563,16 +563,16 @@
 
                 <a class="nav-link nav-subitem @(IsActive("Performance") ? "active" : "")"
                    asp-controller="Performance" asp-action="Index">
-                   <i class="bi bi-speedometer2"></i> Performance Testing
+                   <i class="bi bi-speedometer2"></i> @Localizer["Performance Testing"]
                 </a>
 
                 <a class="nav-link nav-subitem" href="/hangfire" target="_blank">
-                   <i class="bi bi-hdd-stack"></i> Background Jobs Dashboard
+                   <i class="bi bi-hdd-stack"></i> @Localizer["Background Jobs Dashboard"]
                 </a>
 
                 <a class="nav-link @(InArea("Admin") && IsActive("ProjectIntelligence") ? "active" : "")"
                    asp-area="Admin" asp-controller="ProjectIntelligence" asp-action="Index">
-                   <i class="bi bi-graph-up-arrow"></i> Project Intelligence
+                   <i class="bi bi-graph-up-arrow"></i> @Localizer["Project Intelligence"]
                 </a>
             }
         </div>

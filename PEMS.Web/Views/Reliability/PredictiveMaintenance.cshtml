@@ -1,5 +1,8 @@
 @model List<PEMS.Application.DTOs.PredictiveMaintenanceModelDto>
 @using PEMS.Application.DTOs
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var readiness = (PredictiveMaintenanceReadinessDto)ViewBag.Readiness;
 
@@ -13,7 +16,7 @@
 }
 
 <div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">← Reliability</a>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["← Reliability"]</a>
 </div>
 <p class="text-muted small">
     طبق «PEMS Phase 9» بند ۱۶: هیچ مدلی بدون اعتبارسنجی واقعی «آماده‌ی تولید» اعلام نمی‌شود.
@@ -39,7 +42,7 @@
 <div class="content-card">
     <h6 class="mb-2">Defined Models (@readiness.ModelCount total, @readiness.ValidatedModelCount validated)</h6>
     <table class="table table-enterprise table-sm mb-0">
-        <thead><tr><th>Target</th><th>Algorithm</th><th>Training Data</th><th>Validation</th><th class="text-end">Results</th></tr></thead>
+        <thead><tr><th>@Localizer["Target"]</th><th>Algorithm</th><th>Training Data</th><th>@Localizer["Validation"]</th><th class="text-end">Results</th></tr></thead>
         <tbody>
             @foreach (var m in Model)
             {

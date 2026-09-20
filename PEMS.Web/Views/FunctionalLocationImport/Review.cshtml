@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.FunctionalLocationImportBatchDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     string StatusBadge(string status) => status switch
     {
@@ -12,12 +15,12 @@
 
 <div class="content-card mb-3">
     <div class="row g-3">
-        <div class="col-md-3"><strong>File:</strong> @Model.FileName</div>
+        <div class="col-md-3"><strong>@Localizer["File:"]</strong> @Model.FileName</div>
         <div class="col-md-2"><strong>Source Rows:</strong> @Model.SourceRowCount</div>
         <div class="col-md-2"><strong>Expanded:</strong> @Model.ExpandedLocationCount</div>
         <div class="col-md-2"><strong>New / Existing:</strong> @Model.NewCount / @Model.ExistingCount</div>
         <div class="col-md-1"><strong>Conflicts:</strong> @Model.ConflictCount</div>
-        <div class="col-md-2"><strong>Status:</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
+        <div class="col-md-2"><strong>@Localizer["Status:"]</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
     </div>
 
     @if (Model.Status == "Staging")
@@ -44,7 +47,7 @@
         <table class="table table-enterprise">
             <thead>
                 <tr>
-                    <th>Include</th><th>Src Row</th><th>Code</th><th>Name</th><th>Parent / Area</th><th>Status</th><th>Action</th><th>Note</th>
+                    <th>@Localizer["Include"]</th><th>@Localizer["Src Row"]</th><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>Parent / Area</th><th>@Localizer["Status"]</th><th>@Localizer["Action"]</th><th>@Localizer["Note"]</th>
                 </tr>
             </thead>
             <tbody>

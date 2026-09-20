@@ -1,20 +1,22 @@
 ﻿@model List<PEMS.Application.DTOs.BulkSuggestedLinkItemDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <div>
-        <h5 class="mb-0"><i class="bi bi-check2-all"></i> تایید دسته‌جمعی اتصال‌ها</h5>
         <p class="text-muted small mb-0">
             فقط تطبیق‌های کامل (Exact Match روی شماره‌ی خام ثبت‌شده) این‌جا نشون داده می‌شن -
             همون سطح اطمینانی که برای P&amp;ID استفاده کردیم. با این حال چون تایید هرکدوم یک
             رابطه‌ی دائمی می‌سازه، هنوز یک تایید صریح (هرچند دسته‌جمعی) لازمه.
         </p>
     </div>
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">بازگشت به Explorer</a>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["بازگشت به Explorer"]</a>
 </div>
 
 @if (!Model.Any())
 {
-    <div class="content-card"><p class="text-muted text-center py-4 mb-0">هیچ پیشنهاد تاییدنشده‌ای یافت نشد.</p></div>
+    <div class="content-card"><p class="text-muted text-center py-4 mb-0">@Localizer["هیچ پیشنهاد تاییدنشده‌ای یافت نشد."]</p></div>
 }
 else
 {
@@ -32,7 +34,7 @@ else
         <div class="content-card">
             <table class="table table-enterprise mb-0">
                 <thead>
-                    <tr><th></th><th>Equipment Tag</th><th>نوع</th><th>مقصد</th><th>طبق شماره‌ی خام</th></tr>
+                    <tr><th></th><th>@Localizer["Equipment Tag"]</th><th>@Localizer["نوع"]</th><th>@Localizer["مقصد"]</th><th>@Localizer["طبق شماره‌ی خام"]</th></tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)

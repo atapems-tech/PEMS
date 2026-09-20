@@ -1,4 +1,7 @@
 ﻿@model PEMS.Domain.Entities.TechnicalQuery
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 @{
     var sb = Model.Status switch { "Closed" => "bg-success", "PendingConfirmation" => "bg-info text-dark", "Reopened" => "bg-danger", _ => "bg-warning text-dark" };
@@ -15,39 +18,39 @@
         </div>
         <div class="d-flex align-items-center gap-2">
             <span class="badge @sb fs-6">@Model.Status</span>
-            @if (Model.IsOverdue) { <span class="badge bg-danger fs-6"><i class="bi bi-clock-history"></i> Overdue</span> }
+            @if (Model.IsOverdue) { <span class="badge bg-danger fs-6"><i class="bi bi-clock-history"></i> @Localizer["Overdue"]</span> }
         </div>
     </div>
 </div>
 
 <div class="content-card mb-3">
     <div class="row g-3">
-        <div class="col-md-4"><strong>Priority:</strong> @Model.Priority</div>
-        <div class="col-md-4"><strong>Raised:</strong> @Model.RaisedDate.ToString("yyyy-MM-dd")</div>
+        <div class="col-md-4"><strong>@Localizer["Priority:"]</strong> @Model.Priority</div>
+        <div class="col-md-4"><strong>@Localizer["Raised:"]</strong> @Model.RaisedDate.ToString("yyyy-MM-dd")</div>
         <div class="col-md-4"><strong>Due:</strong> @(Model.RequiredResponseDate?.ToString("yyyy-MM-dd") ?? "-")</div>
         @if (Model.RelatedDocument != null)
         {
             <div class="col-md-6">
-                <strong>Related Document:</strong>
+                <strong>@Localizer["Related Document:"]</strong>
                 <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.RelatedDocumentId">@Model.RelatedDocument.DocumentNo</a>
             </div>
         }
         @if (Model.RelatedEquipment != null)
         {
             <div class="col-md-6">
-                <strong>Related Equipment:</strong>
+                <strong>@Localizer["Related Equipment:"]</strong>
                 <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.RelatedEquipmentId">@Model.RelatedEquipment.TagNumber</a>
             </div>
         }
         <div class="col-12"><strong>Subject:</strong> @Model.Subject</div>
-        <div class="col-12"><strong>Description:</strong> @Model.Description</div>
+        <div class="col-12"><strong>@Localizer["Description:"]</strong> @Model.Description</div>
     </div>
 </div>
 
 @if (!string.IsNullOrEmpty(Model.ResponseText))
 {
     <div class="content-card mb-3 border-info">
-        <h6 class="mb-2"><i class="bi bi-reply"></i> Response</h6>
+        <h6 class="mb-2"><i class="bi bi-reply"></i> @Localizer["Response"]</h6>
         <p class="mb-1">@Model.ResponseText</p>
         <p class="text-muted small mb-0">@(Model.RespondedDate?.ToString("yyyy-MM-dd HH:mm"))</p>
     </div>
@@ -88,7 +91,7 @@
         {
             <form asp-action="Respond" method="post">
                 <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
-                <textarea name="responseText" class="form-control mb-2" rows="3" placeholder="متن پاسخ..." required></textarea>
+                <textarea name="responseText" class="form-control mb-2" rows="3" placeholder="@Localizer["متن پاسخ..."]" required></textarea>
                 <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-reply"></i> ثبت پاسخ</button>
             </form>
         }
@@ -110,11 +113,11 @@
             <div class="modal-dialog"><div class="modal-content">
                 <form asp-action="Reopen" method="post">
                     <input type="hidden" name="technicalQueryId" value="@Model.TechnicalQueryId" />
-                    <div class="modal-header"><h6 class="modal-title">دلیل بازگشت</h6></div>
+                    <div class="modal-header"><h6 class="modal-title">@Localizer["دلیل بازگشت"]</h6></div>
                     <div class="modal-body"><textarea name="reason" class="form-control" rows="3" required></textarea></div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                        <button type="submit" class="btn btn-danger btn-sm">بازگشت به دیسیپلین</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                        <button type="submit" class="btn btn-danger btn-sm">@Localizer["بازگشت به دیسیپلین"]</button>
                     </div>
                 </form>
             </div></div>

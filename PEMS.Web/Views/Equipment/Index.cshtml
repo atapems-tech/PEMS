@@ -1,116 +1,79 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.EquipmentDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var dash = (PEMS.Application.Interfaces.EquipmentDashboardDto)ViewBag.Dashboard;
 }
 
-@* ============================================================
-   جستجوی سریع هوشمند - طبق Global Search Framework؛ همون مثال اصلی: PI، ۱۰۱، PUMP، MCC
-   با انتخاب یک نتیجه، مستقیم به Passport همون تجهیز می‌ره
-   ============================================================ *@
-<div class="content-card mb-3">
-    <label class="form-label small fw-bold"><i class="bi bi-search"></i> جستجوی سریع تجهیز (Tag، نام، سازنده، توضیح)</label>
-    <input type="text" class="form-control" id="equipmentQuickSearch" placeholder="مثلاً PI، 101، PUMP، MCC..."
-           data-pems-search data-search-type="Equipment" autocomplete="off" />
+@* One search (was two: a quick-jump card + a filter box). The single input keeps both behaviours: picking a suggestion opens that
+   equipment's passport, pressing Enter filters the list. KPI cards became a chip strip; New Equipment moved into the toolbar. *@
+<div class="vs-chips">
+    <span class="vs-chip">@Localizer["Eq_Total"] <strong>@dash.TotalCount</strong></span>
+    <span class="vs-chip"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["Eq_Active"] <strong>@dash.ActiveCount</strong></span>
+    <span class="vs-chip"><i class="bi bi-dash-circle" aria-hidden="true"></i> @Localizer["Eq_Inactive"] <strong>@dash.InactiveCount</strong></span>
+    @foreach (var d in dash.ByDiscipline.Take(4))
+    {
+        <span class="vs-chip">@d.Discipline <strong>@d.Count</strong></span>
+    }
 </div>
+
+<form method="get" class="vs-toolbar" role="search">
+    <div class="pems-search-bar">
+        <i class="bi bi-search pems-search-icon" aria-hidden="true"></i>
+        <input name="q" id="equipmentQuickSearch" value="@ViewBag.SearchTerm" class="form-control" placeholder="@Localizer["Eq_SearchPlaceholder"]" aria-label="@Localizer["Eq_SearchPlaceholder"]"
+               data-pems-search data-search-type="Equipment" autocomplete="off" />
+    </div>
+    <select name="projectId" class="form-select form-select-sm" aria-label="@Localizer["Ed_Project"]">
+        <option value="">@Localizer["Eq_AllProjects"]</option>
+        @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == (int?)ViewBag.SelectedProjectId)">@p.ProjectName</option> }
+    </select>
+    <select name="disciplineId" class="form-select form-select-sm" aria-label="@Localizer["Ed_Discipline"]">
+        <option value="">@Localizer["Eq_AllDisciplines"]</option>
+        @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == (int?)ViewBag.SelectedDisciplineId)">@d.Name</option> }
+    </select>
+    <select name="equipmentType" class="form-select form-select-sm" aria-label="@Localizer["Ed_Type"]">
+        <option value="">@Localizer["Eq_AllTypes"]</option>
+        @foreach (var t in (IEnumerable<string>)ViewBag.EquipmentTypes) { <option value="@t" selected="@(t == (string?)ViewBag.SelectedEquipmentType)">@t</option> }
+    </select>
+    <select name="status" class="form-select form-select-sm" aria-label="@Localizer["Ed_Status"]">
+        <option value="">@Localizer["Eq_AllStatuses"]</option>
+        @foreach (var s in (IEnumerable<string>)ViewBag.Statuses) { <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option> }
+    </select>
+    <button type="submit" class="vs-btn vs-btn--sm"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Eq_Apply"]</button>
+    <a asp-action="Index" class="vs-icon-btn" title="@Localizer["Reset"]" aria-label="@Localizer["Reset"]"><i class="bi bi-x-lg" aria-hidden="true"></i></a>
+    <span class="vs-toolbar__end">
+        <button type="button" class="vs-btn vs-btn--primary vs-btn--sm" data-bs-toggle="modal" data-bs-target="#createEquipmentModal">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Eq_NewEquipment"]
+        </button>
+    </span>
+</form>
+
 <script>
     document.getElementById('equipmentQuickSearch').addEventListener('pems:search-select', function (e) {
         if (e.detail && e.detail.url) window.location.href = e.detail.url;
     });
 </script>
 
-@* ============================================================
-   داشبورد تجهیزات - طبق درخواست
-   ============================================================ *@
-<div class="row g-3 mb-3">
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold">@dash.TotalCount</div>
-            <div class="text-muted small">کل تجهیزات</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-success">@dash.ActiveCount</div>
-            <div class="text-muted small">Active</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-secondary">@dash.InactiveCount</div>
-            <div class="text-muted small">غیر Active</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card">
-            <div class="text-muted small mb-1">به تفکیک دیسیپلین</div>
-            @foreach (var d in dash.ByDiscipline.Take(4))
-            {
-                <div class="d-flex justify-content-between small">
-                    <span>@d.Discipline</span><strong>@d.Count</strong>
-                </div>
-            }
-        </div>
-    </div>
-</div>
-
-<div class="content-card mb-3">
-    <form method="get" class="row g-2">
-        <div class="col-md-2">
-            <select name="projectId" class="form-select form-select-sm">
-                <option value="">All Projects</option>
-                @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == (int?)ViewBag.SelectedProjectId)">@p.ProjectName</option> }
-            </select>
-        </div>
-        <div class="col-md-2">
-            <select name="disciplineId" class="form-select form-select-sm">
-                <option value="">All Disciplines</option>
-                @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == (int?)ViewBag.SelectedDisciplineId)">@d.Name</option> }
-            </select>
-        </div>
-        <div class="col-md-2">
-            <select name="equipmentType" class="form-select form-select-sm">
-                <option value="">All Types</option>
-                @foreach (var t in (IEnumerable<string>)ViewBag.EquipmentTypes) { <option value="@t" selected="@(t == (string?)ViewBag.SelectedEquipmentType)">@t</option> }
-            </select>
-        </div>
-        <div class="col-md-2">
-            <select name="status" class="form-select form-select-sm">
-                <option value="">All Statuses</option>
-                @foreach (var s in (IEnumerable<string>)ViewBag.Statuses) { <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option> }
-            </select>
-        </div>
-        <div class="col-md-2"><input name="q" value="@ViewBag.SearchTerm" class="form-control form-control-sm" placeholder="Search tag, name, S/N..." /></div>
-        <div class="col-md-2 d-flex gap-1">
-            <button type="submit" class="btn btn-sm btn-pems-solid flex-fill"><i class="bi bi-funnel"></i></button>
-            <a asp-action="Index" class="btn btn-sm btn-outline-danger" title="Reset"><i class="bi bi-x-lg"></i></a>
-        </div>
-    </form>
-</div>
-
 <div class="content-card">
-    <div class="d-flex justify-content-end mb-3">
-        <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createEquipmentModal">
-            <i class="bi bi-plus-lg"></i> New Equipment
-        </button>
-    </div>
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Equipment')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:65vh; overflow-y:auto;">
         <table class="table table-enterprise pems-grid-table" data-grid-key="Equipment">
             <thead>
                 <tr>
-                    <th data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Tag Number</th>
-                    <th data-col-key="name" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">Name</th>
-                    <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">Type</th>
-                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Project</th>
-                    <th data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Discipline</th>
+                    <th data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Tag Number"]</th>
+                    <th data-col-key="name" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Name"]</th>
+                    <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">@Localizer["Type"]</th>
+                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Project"]</th>
+                    <th data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Discipline"]</th>
                     <th data-col-key="docs" data-resizable="true" data-min-width="70" data-max-width="120" style="width:80px">Docs</th>
-                    <th data-col-key="vdr" data-resizable="true" data-min-width="70" data-max-width="120" style="width:80px">VDR</th>
-                    <th data-col-key="wo" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">Work Orders</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">Status</th>
+                    <th data-col-key="vdr" data-resizable="true" data-min-width="70" data-max-width="120" style="width:80px">@Localizer["VDR"]</th>
+                    <th data-col-key="wo" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">@Localizer["Work Orders"]</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Status"]</th>
                     <th data-col-key="actions" data-resizable="false" style="width:70px"></th>
                 </tr>
             </thead>
@@ -170,30 +133,30 @@
                 <div class="modal-header"><h6 class="modal-title">New Equipment</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-4"><label class="form-label">Tag Number</label><input name="TagNumber" class="form-control" required /></div>
-                        <div class="col-md-4"><label class="form-label">Name</label><input name="Name" class="form-control" required /></div>
-                        <div class="col-md-4"><label class="form-label">Type</label><input name="EquipmentType" class="form-control" placeholder="Pump, Vessel, Motor ..." /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Tag Number"]</label><input name="TagNumber" class="form-control" required /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Name"]</label><input name="Name" class="form-control" required /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Type"]</label><input name="EquipmentType" class="form-control" placeholder="@Localizer["Pump, Vessel, Motor ..."]" /></div>
                         <div class="col-md-6">
-                            <label class="form-label">Project</label>
+                            <label class="form-label">@Localizer["Project"]</label>
                             <select name="ProjectId" class="form-select" required>
                                 @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Discipline</label>
+                            <label class="form-label">@Localizer["Discipline"]</label>
                             <select name="DisciplineId" class="form-select" required>
                                 @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                             </select>
                         </div>
-                        <div class="col-md-4"><label class="form-label">Manufacturer</label><input name="Manufacturer" class="form-control" /></div>
-                        <div class="col-md-4"><label class="form-label">Model</label><input name="Model" class="form-control" /></div>
-                        <div class="col-md-4"><label class="form-label">Serial Number</label><input name="SerialNumber" class="form-control" /></div>
-                        <div class="col-12"><label class="form-label">Description</label><textarea name="Description" class="form-control" rows="2"></textarea></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Manufacturer"]</label><input name="Manufacturer" class="form-control" /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Model"]</label><input name="Model" class="form-control" /></div>
+                        <div class="col-md-4"><label class="form-label">@Localizer["Serial Number"]</label><input name="SerialNumber" class="form-control" /></div>
+                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="Description" class="form-control" rows="2"></textarea></div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-pems-solid">Save</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
                 </div>
             </form>
         </div>

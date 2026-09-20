@@ -250,6 +250,35 @@ public static class HelpContentSeeder
             "پیمایش,منو,نوار بالا,شروع کار",
             new[] { "welcome-to-pems", "help-center-usage" }),
 
+        // طبق «PEMS Site-Wide UI/UX Redesign»: راهنمای یکپارچه‌ی الگوهای رابط کاربری (دوزبانه) - فقط توضیح می‌دهد کاربر
+        // چه چیزی را کجا ببیند؛ هیچ فرایند کسب‌وکاری تغییر نکرده است.
+        new Art("ui-conventions", "general", "Module", null, 3,
+            "Screen layout and status conventions",
+            "How pages, search, filters, statuses and action buttons are laid out consistently across PEMS.",
+            "<p>Every PEMS page follows the same layout. The page title sits in one compact row at the top (with the module name beside it); " +
+            "there is no address bar-style path above it - use the sidebar to move between modules. The sidebar shows icons only and " +
+            "slides open when you move the mouse over it, and closes when you move away.</p>" +
+            "<p>Lists have one search box; extra criteria live behind the Filters button and appear as removable chips once applied. " +
+            "Each page has one main (filled) action; secondary actions are outlined, and destructive actions such as Delete are separated " +
+            "and ask for confirmation.</p>" +
+            "<p>A status is always shown as icon + text + colour - never colour alone: green with a check means approved/completed/active, " +
+            "red with a cross means rejected/critical/overdue, amber with a triangle means attention/on hold, blue means in progress or " +
+            "informational, grey means draft/inactive/cancelled. The same status looks the same in every module. Identifiers such as tag " +
+            "numbers, document numbers, revisions and dates always read left-to-right, even on Persian pages.</p>",
+            "layout,status,colors,search,filters,sidebar,rtl",
+            "چیدمان صفحه‌ها و قراردادهای نمایش وضعیت",
+            "چگونه صفحه‌ها، جستجو، فیلترها، وضعیت‌ها و دکمه‌های عملیات در همه‌ی PEMS یکسان چیده شده‌اند.",
+            "<p>همه‌ی صفحه‌های PEMS چیدمان یکسانی دارند. عنوان صفحه در یک ردیف فشرده در بالا قرار دارد (نام ماژول کنارش) و بالای آن " +
+            "مسیر یا آدرس فنی نمایش داده نمی‌شود - برای جابه‌جایی بین ماژول‌ها از نوار کناری استفاده کنید. نوار کناری فقط آیکون نشان می‌دهد، " +
+            "با رفتن ماوس روی آن باز می‌شود و با دور شدن ماوس بسته می‌شود.</p>" +
+            "<p>هر فهرست یک کادر جستجو دارد؛ معیارهای بیشتر پشت دکمه‌ی «فیلترها» هستند و پس از اعمال به‌شکل چیپ‌های قابل‌حذف دیده می‌شوند. " +
+            "هر صفحه یک عملیات اصلی (پُر) دارد؛ عملیات فرعی به‌صورت خط‌دار و عملیات مخرب مانند حذف جدا شده و تأیید می‌خواهند.</p>" +
+            "<p>وضعیت همیشه با آیکون + متن + رنگ نشان داده می‌شود و هرگز فقط رنگ نیست: سبز با تیک یعنی تأییدشده/تکمیل‌شده/فعال، قرمز با ضربدر یعنی ردشده/بحرانی/" +
+            "عقب‌افتاده، کهربایی با مثلث یعنی نیازمند توجه/متوقف، آبی یعنی در جریان یا اطلاع‌رسانی، خاکستری یعنی پیش‌نویس/غیرفعال/لغوشده. یک وضعیت " +
+            "در همه‌ی ماژول‌ها یکسان دیده می‌شود. شناسه‌هایی مانند شماره‌ی تگ، شماره‌ی مدرک، ویرایش و تاریخ همیشه چپ‌به‌راست خوانده می‌شوند، حتی در صفحه‌های فارسی.</p>",
+            "چیدمان,وضعیت,رنگ,جستجو,فیلتر,نوار کناری",
+            new[] { "help-center-usage" }),
+
         new Art("help-center-usage", "general", "Module", null, 2,
             "Using the Help Center",
             "How to browse, search, and get contextual help while you work.",
@@ -646,6 +675,39 @@ public static class HelpContentSeeder
             "پیشگیرانه مفید است.</p>",
             "درخواست کار,دستور کار,برنامه‌ریزی نگهداری",
             new[] { "cmms-overview" }),
+
+        new Art("work-request-workflow", "cmms", "Workflow", "WorkRequests.Details", 3,
+            "How a Work Request moves through the workflow",
+            "The approval flow of a Work Request is configured in the central Workflow Platform; the page shows whatever stages that configuration defines.",
+            "<p>A Work Request is created as a <strong>Draft</strong>. <em>Submit to Workflow</em> starts a workflow instance using the " +
+            "Work Request workflow that is explicitly bound for new requests. The timeline on the Work Request page lists the stages of that " +
+            "workflow version, highlights the current stage and shows who can act on it.</p>" +
+            "<p>The buttons under <em>Actions</em> are the actions the workflow offers for the current stage. An action that you are not " +
+            "permitted to perform is shown disabled, and the server checks your permission again when you press it. " +
+            "<em>Convert to Work Order</em> is a Work Request business action (it needs a linked equipment and the Planned stage).</p>" +
+            "<p><strong>Versions:</strong> when an administrator publishes a new workflow version (for example one that adds a review stage) " +
+            "and binds it, only Work Requests submitted afterwards use it. Requests already in progress stay on the version they started with " +
+            "and keep showing its stages. Requests that were in progress before the workflow platform was introduced have no workflow instance " +
+            "and are marked as legacy records; they continue with the previous status buttons.</p>" +
+            "<p><strong>History:</strong> <em>Workflow History</em> lists workflow actions; <em>Business Audit</em> lists status changes of the " +
+            "Work Request itself.</p>",
+            "work request,workflow,approval,timeline",
+            "مسیر گردش‌کار درخواست کار",
+            "مسیر تأیید درخواست کار در پلتفرم مرکزی گردش‌کار پیکربندی می‌شود؛ صفحه دقیقاً همان مراحل پیکربندی را نشان می‌دهد.",
+            "<p>درخواست کار ابتدا به‌صورت <strong>پیش‌نویس</strong> ساخته می‌شود. دکمه‌ی <em>ارسال به گردش‌کار</em> یک نمونه‌ی گردش‌کار را با " +
+            "گردش‌کاری که به‌صورت صریح برای درخواست‌های جدید متصل شده شروع می‌کند. نوار مراحل در صفحه‌ی درخواست کار، مراحل همان نسخه‌ی " +
+            "گردش‌کار را فهرست می‌کند، مرحله‌ی جاری را مشخص می‌کند و نشان می‌دهد چه کسانی می‌توانند اقدام کنند.</p>" +
+            "<p>دکمه‌های بخش <em>عملیات</em> همان اقدام‌هایی هستند که گردش‌کار برای مرحله‌ی جاری ارائه می‌دهد. اقدامی که مجوزش را ندارید " +
+            "غیرفعال نمایش داده می‌شود و سرور هنگام زدن دکمه دوباره مجوز شما را بررسی می‌کند. <em>تبدیل به دستور کار</em> یک اقدام کسب‌وکاری " +
+            "درخواست کار است (نیازمند تجهیز مرتبط و مرحله‌ی برنامه‌ریزی‌شده).</p>" +
+            "<p><strong>نسخه‌ها:</strong> وقتی مدیر نسخه‌ی جدیدی از گردش‌کار (مثلاً با یک مرحله‌ی بازبینی اضافه) منتشر و متصل می‌کند، فقط " +
+            "درخواست‌هایی که بعد از آن ارسال می‌شوند از آن استفاده می‌کنند. درخواست‌های در جریان، روی نسخه‌ای که با آن شروع شده‌اند می‌مانند و " +
+            "همان مراحل را نشان می‌دهند. درخواست‌هایی که پیش از معرفی پلتفرم گردش‌کار در جریان بوده‌اند نمونه‌ی گردش‌کار ندارند، به‌عنوان " +
+            "رکورد قدیمی علامت‌گذاری می‌شوند و با دکمه‌های وضعیت قبلی ادامه می‌دهند.</p>" +
+            "<p><strong>تاریخچه:</strong> <em>تاریخچه گردش‌کار</em> اقدام‌های گردش‌کار را فهرست می‌کند و <em>ممیزی کسب‌وکاری</em> تغییر وضعیت خود " +
+            "درخواست کار را.</p>",
+            "درخواست کار,گردش‌کار,تأیید,نوار مراحل",
+            new[] { "work-request-vs-work-order" }),
 
         new Art("maintenance-strategy-overview", "cmms", "Field", "MaintenanceStrategies.Index", 3,
             "Maintenance Strategy",

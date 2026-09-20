@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using PEMS.Application.Interfaces;
@@ -8,6 +8,7 @@ using PEMS.Persistence.Context;
 using PEMS.Persistence.Identity;
 using PEMS.Persistence.Repositories;
 using PEMS.Persistence.Services;
+using PEMS.Persistence.Workflow;
 
 using PEMS.Application.AI.Interfaces;
 using PEMS.Application.AI.OCR;
@@ -238,6 +239,33 @@ builder.Services.AddScoped<
 // ==============================================================================
 builder.Services.AddScoped<IWorkflowDbContext>(sp => sp.GetRequiredService<PEMSDbContext>());
 builder.Services.AddScoped<IWorkflowRuntime, WorkflowRuntimeService>();
+
+// Phase 1 Hardening: نسخه‌بندی/Binding/اعتبارسنجی/رجیستری/مدل خواندنی. IWorkflowRuntime بدون تغییر امضا؛
+// پارامترهای اختیاری سازنده‌ی WorkflowRuntimeService از همین ثبت‌ها پر می‌شوند.
+builder.Services.AddSingleton<IWorkflowActionRegistry>(_ =>
+{
+    var registry = new WorkflowActionRegistry();
+    // اکشن‌های Legacy ماژول‌های موجود (فقط نام؛ بدون اجرای کد) تا Definition های Seed شده معتبر بمانند
+    var legacy = new (string Module, string[] Actions)[]
+    {
+        ("EngineeringDocument", new[] { "Issue" }),
+        ("MOC", new[] { "Assess", "Close" }),
+        ("TechnicalQuery", new[] { "Confirm", "Reopen", "Respond" }),
+        ("VendorDocument", new[] { "AC", "AP", "CO", "NC", "RE", "Issue" }),
+    };
+    foreach (var (module, actions) in legacy)
+        foreach (var a in actions)
+            registry.RegisterModuleAction(module, a, WorkflowActionKind.Outcome, "Legacy module action");
+    return registry;
+});
+builder.Services.AddSingleton<IWorkflowConditionEvaluator, WorkflowConditionEvaluator>();
+builder.Services.AddSingleton<IWorkflowEventSink, NoOpWorkflowEventSink>();
+builder.Services.AddScoped<IWorkflowReferenceCatalog, PemsWorkflowReferenceCatalog>();
+builder.Services.AddScoped<IWorkflowAuthorizationHook, AccessControlWorkflowAuthorizationHook>();
+builder.Services.AddScoped<IWorkflowVersionValidator, WorkflowVersionValidator>();
+builder.Services.AddScoped<IWorkflowBindingService, WorkflowBindingService>();
+builder.Services.AddScoped<IWorkflowDefinitionService, WorkflowDefinitionService>();
+builder.Services.AddScoped<IWorkflowReadModelService, WorkflowReadModelService>();
 
 builder.Services.AddScoped<IVdrWorkflowService, VdrWorkflowService>();
 builder.Services.AddScoped<ITechnicalQueryService, TechnicalQueryService>();
@@ -660,6 +688,9 @@ using (var scope = app.Services.CreateScope())
 
     // طبق درخواست: گردش‌کار بازبینی چند-دیسیپلینه WorkOrder
     await PEMS.Persistence.Seed.WorkOrderReviewWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // Phase 2 (Workflow Platform): گردش‌کار Work Request روی پلتفرم مرکزی + Binding صریح (Idempotent؛ Instance های موجود دست نمی‌خورند)
+    await PEMS.Persistence.Seed.WorkRequestWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق «PEMS Bilingual Help & Knowledge System» - کتابخانه‌ی اولیه‌ی محتوای راهنما (ایدمپوتنت)
     await PEMS.Persistence.Seed.HelpContentSeeder.SeedAsync(scope.ServiceProvider);

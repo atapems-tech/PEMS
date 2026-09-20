@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.HelpVisualAdminEditDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["HidePageTitle"] = true;
     var isEdit = Model.HelpVisualId > 0;
@@ -25,19 +28,19 @@
 
         <div class="row g-3">
             <div class="col-md-4">
-                <label class="form-label">Visual Type</label>
+                <label class="form-label">@Localizer["Visual Type"]</label>
                 <select asp-for="VisualType" class="form-select" onchange="toggleSourceFields(this.value)">
                     @foreach (var t in visualTypes) { <option value="@t">@t</option> }
                 </select>
             </div>
             <div class="col-md-4">
-                <label class="form-label">Display Order</label>
+                <label class="form-label">@Localizer["Display Order"]</label>
                 <input asp-for="DisplayOrder" type="number" class="form-control" />
             </div>
             <div class="col-md-4">
                 <div class="form-check mt-4">
                     <input asp-for="IsPublished" type="checkbox" class="form-check-input" />
-                    <label asp-for="IsPublished" class="form-check-label">Published</label>
+                    <label asp-for="IsPublished" class="form-check-label">@Localizer["Published"]</label>
                 </div>
             </div>
 
@@ -56,8 +59,8 @@
                         <option value="@value" selected="@selected">@s.Module / @s.Category (@s.Name)</option>
                     }
                 </select>
-                <input asp-for="SourceWorkflowModule" class="form-control form-control-sm mb-1" readonly placeholder="Module" />
-                <input asp-for="SourceWorkflowCategory" class="form-control form-control-sm" readonly placeholder="Category" />
+                <input asp-for="SourceWorkflowModule" class="form-control form-control-sm mb-1" readonly placeholder="@Localizer["Module"]" />
+                <input asp-for="SourceWorkflowCategory" class="form-control form-control-sm" readonly placeholder="@Localizer["Category"]" />
             </div>
 
             <div class="col-12" id="manualDefinitionField">
@@ -86,7 +89,7 @@
                 <input asp-for="LegendEn" class="form-control" />
             </div>
             <div class="col-md-6" dir="rtl">
-                <label class="form-label">راهنمای علائم (فارسی، اختیاری)</label>
+                <label class="form-label">@Localizer["راهنمای علائم (فارسی، اختیاری)"]</label>
                 <input asp-for="LegendFa" class="form-control" />
             </div>
 
@@ -107,7 +110,7 @@
         </div>
 
         <div class="mt-3 d-flex gap-2">
-            <button type="submit" class="btn btn-pems-solid">Save</button>
+            <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
             <a asp-action="Edit" asp-route-id="@Model.HelpArticleId" class="btn btn-outline-secondary">Back to article</a>
         </div>
     </form>

@@ -1,5 +1,8 @@
 @model List<PEMS.Application.DTOs.EquipmentReliabilityDto>
 @using PEMS.Application.DTOs
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var classReliability = (List<EquipmentClassReliabilityDto>)ViewBag.ClassReliability;
     var failureModePareto = (List<FailureParetoItemDto>)ViewBag.FailureModePareto;
@@ -13,12 +16,12 @@
 <div class="d-flex justify-content-end align-items-center mb-2">
     <div>
         <a asp-action="Dashboard" class="btn btn-outline-primary btn-sm"><i class="bi bi-speedometer"></i> Enterprise Dashboard</a>
-        <a asp-action="Intelligence" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clipboard-data-fill"></i> Maintenance Intelligence</a>
-        <a asp-action="RcmFeedback" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-repeat"></i> RCM Feedback</a>
+        <a asp-action="Intelligence" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clipboard-data-fill"></i> @Localizer["Maintenance Intelligence"]</a>
+        <a asp-action="RcmFeedback" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-repeat"></i> @Localizer["RCM Feedback"]</a>
         <a asp-action="DataQuality" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clipboard-data"></i> Data Quality</a>
-        <a asp-action="PredictiveMaintenance" class="btn btn-outline-secondary btn-sm"><i class="bi bi-cpu"></i> Predictive</a>
-        <a asp-action="ConditionMonitoring" class="btn btn-outline-secondary btn-sm"><i class="bi bi-activity"></i> Condition Monitoring</a>
-        <a asp-action="AiInsights" class="btn btn-outline-secondary btn-sm"><i class="bi bi-stars"></i> AI Insights</a>
+        <a asp-action="PredictiveMaintenance" class="btn btn-outline-secondary btn-sm"><i class="bi bi-cpu"></i> @Localizer["Predictive"]</a>
+        <a asp-action="ConditionMonitoring" class="btn btn-outline-secondary btn-sm"><i class="bi bi-activity"></i> @Localizer["Condition Monitoring"]</a>
+        <a asp-action="AiInsights" class="btn btn-outline-secondary btn-sm"><i class="bi bi-stars"></i> @Localizer["AI Insights"]</a>
     </div>
 </div>
 <p class="text-muted small">
@@ -31,14 +34,14 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-2 align-items-end">
         <div class="col-md-3">
-            <label class="form-label small">From</label>
+            <label class="form-label small">@Localizer["From"]</label>
             <input type="date" name="from" value="@(from?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" />
         </div>
         <div class="col-md-3">
             <label class="form-label small">To</label>
             <input type="date" name="to" value="@(to?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" />
         </div>
-        <div class="col-md-2"><button type="submit" class="btn btn-sm btn-pems-solid">Apply</button></div>
+        <div class="col-md-2"><button type="submit" class="btn btn-sm btn-pems-solid">@Localizer["Apply"]</button></div>
         <div class="col-md-4 text-muted small">
             Period: @(from?.ToString("yyyy-MM-dd") ?? "all history") → @(to?.ToString("yyyy-MM-dd") ?? "now")
         </div>
@@ -49,8 +52,8 @@
     <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-fleet">Fleet</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-class">By Equipment Class</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-pareto">Failure Pareto</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-badactors">Bad Actors</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-trend">Trend</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-badactors">@Localizer["Bad Actors"]</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-trend">@Localizer["Trend"]</button></li>
 </ul>
 
 <div class="tab-content">
@@ -59,8 +62,8 @@
             <table class="table table-enterprise mb-0">
                 <thead>
                     <tr>
-                        <th>Tag Number</th><th>Type</th><th>Failures</th><th>MTBF</th><th>MTTR</th>
-                        <th>Availability</th><th>Total Downtime</th><th>Last Failure</th><th></th>
+                        <th>@Localizer["Tag Number"]</th><th>@Localizer["Type"]</th><th>@Localizer["Failures"]</th><th>@Localizer["MTBF"]</th><th>@Localizer["MTTR"]</th>
+                        <th>@Localizer["Availability"]</th><th>@Localizer["Total Downtime"]</th><th>Last Failure</th><th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -99,7 +102,7 @@
                 بهره‌برداری) - Sample Size نشان می‌دهد چند تجهیز واقعاً در میانگین سهیم بودند.
             </p>
             <table class="table table-enterprise table-sm mb-0">
-                <thead><tr><th>Class</th><th>Population</th><th>With History</th><th>Failures</th><th>Downtime</th><th>Avg MTBF (n)</th><th>Avg MTTR (n)</th><th>Avg Availability</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Class"]</th><th>@Localizer["Population"]</th><th>@Localizer["With History"]</th><th>@Localizer["Failures"]</th><th>@Localizer["Downtime"]</th><th>Avg MTBF (n)</th><th>Avg MTTR (n)</th><th>Avg Availability</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var c in classReliability)
                     {
@@ -117,7 +120,7 @@
                     }
                 </tbody>
             </table>
-            @if (!classReliability.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ کلاسی داده‌ی خرابی کافی ندارد.</p> }
+            @if (!classReliability.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ کلاسی داده‌ی خرابی کافی ندارد."]</p> }
         </div>
     </div>
 
@@ -127,7 +130,7 @@
                 <div class="content-card h-100">
                     <h6 class="mb-3">Failure Mode Pareto</h6>
                     <table class="table table-enterprise table-sm mb-0">
-                        <thead><tr><th>Failure Mode</th><th class="text-end">Count</th><th class="text-end">Downtime</th><th class="text-end">Cumulative %</th></tr></thead>
+                        <thead><tr><th>@Localizer["Failure Mode"]</th><th class="text-end">@Localizer["Count"]</th><th class="text-end">@Localizer["Downtime"]</th><th class="text-end">@Localizer["Cumulative %"]</th></tr></thead>
                         <tbody>
                             @foreach (var p in failureModePareto)
                             {
@@ -135,14 +138,14 @@
                             }
                         </tbody>
                     </table>
-                    @if (!failureModePareto.Any()) { <p class="text-muted small text-center py-3 mb-0">داده‌ای موجود نیست.</p> }
+                    @if (!failureModePareto.Any()) { <p class="text-muted small text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="content-card h-100">
                     <h6 class="mb-3">Failure Cause Pareto</h6>
                     <table class="table table-enterprise table-sm mb-0">
-                        <thead><tr><th>Failure Cause</th><th class="text-end">Count</th><th class="text-end">Downtime</th><th class="text-end">Cumulative %</th></tr></thead>
+                        <thead><tr><th>Failure Cause</th><th class="text-end">@Localizer["Count"]</th><th class="text-end">@Localizer["Downtime"]</th><th class="text-end">@Localizer["Cumulative %"]</th></tr></thead>
                         <tbody>
                             @foreach (var p in failureCausePareto)
                             {
@@ -150,7 +153,7 @@
                             }
                         </tbody>
                     </table>
-                    @if (!failureCausePareto.Any()) { <p class="text-muted small text-center py-3 mb-0">داده‌ای موجود نیست.</p> }
+                    @if (!failureCausePareto.Any()) { <p class="text-muted small text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
                 </div>
             </div>
         </div>
@@ -160,7 +163,7 @@
         <div class="content-card">
             <p class="text-muted small">هر رتبه با عوامل صریح توضیح داده می‌شود - نه یک امتیاز مبهم.</p>
             <table class="table table-enterprise table-sm mb-0">
-                <thead><tr><th>Tag</th><th>Class</th><th>Criticality</th><th class="text-end">Failures</th><th class="text-end">Repeat</th><th class="text-end">Downtime</th><th class="text-end">MTTR</th><th class="text-end">Maint. Count</th><th>Primary Mode / Cause</th><th>Why Ranked Here</th></tr></thead>
+                <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Class"]</th><th>@Localizer["Criticality"]</th><th class="text-end">@Localizer["Failures"]</th><th class="text-end">@Localizer["Repeat"]</th><th class="text-end">@Localizer["Downtime"]</th><th class="text-end">@Localizer["MTTR"]</th><th class="text-end">Maint. Count</th><th>Primary Mode / Cause</th><th>Why Ranked Here</th></tr></thead>
                 <tbody>
                     @foreach (var b in badActors)
                     {
@@ -179,7 +182,7 @@
                     }
                 </tbody>
             </table>
-            @if (!badActors.Any()) { <p class="text-muted text-center py-4 mb-0">داده‌ای موجود نیست.</p> }
+            @if (!badActors.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>
     </div>
 
@@ -187,7 +190,7 @@
         <div class="content-card">
             <p class="text-muted small">هر نقطه تعداد رویداد واقعی (Observation Count) خودش را نشان می‌دهد - روندهای با نمونه‌ی کوچک باید با احتیاط تفسیر شوند.</p>
             <table class="table table-enterprise table-sm mb-0">
-                <thead><tr><th>Period</th><th class="text-end">Failures (Observations)</th><th class="text-end">Downtime</th></tr></thead>
+                <thead><tr><th>Period</th><th class="text-end">Failures (Observations)</th><th class="text-end">@Localizer["Downtime"]</th></tr></thead>
                 <tbody>
                     @foreach (var t in monthlyTrend)
                     {
@@ -195,7 +198,7 @@
                     }
                 </tbody>
             </table>
-            @if (!monthlyTrend.Any()) { <p class="text-muted text-center py-4 mb-0">داده‌ای موجود نیست.</p> }
+            @if (!monthlyTrend.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>
     </div>
 </div>

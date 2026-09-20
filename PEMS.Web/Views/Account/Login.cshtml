@@ -1,4 +1,7 @@
 ﻿@model PEMS.Web.Models.Account.LoginViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = "Login";
     Layout = "_AuthLayout";
@@ -13,13 +16,13 @@
     <input type="hidden" asp-for="ReturnUrl" />
 
     <div class="mb-3">
-        <label asp-for="UserName" class="form-label">Username</label>
+        <label asp-for="UserName" class="form-label">@Localizer["Username"]</label>
         <input asp-for="UserName" class="form-control" placeholder="e.g. admin" autofocus />
         <span asp-validation-for="UserName" class="text-danger small"></span>
     </div>
 
     <div class="mb-2">
-        <label asp-for="Password" class="form-label">Password</label>
+        <label asp-for="Password" class="form-label">@Localizer["Password"]</label>
         <input asp-for="Password" class="form-control" placeholder="••••••••" />
         <span asp-validation-for="Password" class="text-danger small"></span>
     </div>

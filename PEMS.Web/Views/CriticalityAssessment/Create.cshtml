@@ -1,3 +1,6 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = "New Criticality Assessment";
     int? preselectedEquipmentId = ViewBag.PreselectedEquipmentId;
@@ -13,7 +16,7 @@
 <div class="content-card" style="max-width:600px;">
     <form asp-action="Create" method="post">
         <div class="mb-3">
-            <label class="form-label small">Equipment</label>
+            <label class="form-label small">@Localizer["Equipment"]</label>
             @if (preselectedEquipmentId.HasValue)
             {
                 <input type="hidden" name="equipmentId" value="@preselectedEquipmentId" />
@@ -21,7 +24,7 @@
             }
             else
             {
-                <input type="number" name="equipmentId" class="form-control form-control-sm" required placeholder="Equipment ID" />
+                <input type="number" name="equipmentId" class="form-control form-control-sm" required placeholder="@Localizer["Equipment ID"]" />
                 <div class="form-text">از صفحه‌ی جزئیات تجهیز یا Activation Backlog وارد شوید تا از قبل انتخاب شود.</div>
             }
         </div>

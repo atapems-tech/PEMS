@@ -1,4 +1,7 @@
 @model PEMS.Domain.Entities.TableExtractionBatch
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var rows = Model.Rows.OrderBy(r => r.MatchStatus == "Confirmed" || r.MatchStatus == "Rejected" ? 1 : 0)
         .ThenBy(r => r.TagNumber)
@@ -28,11 +31,11 @@
 
 <div class="content-card mb-3">
     <div class="admin-kpi-grid">
-        <div class="admin-kpi"><div class="admin-kpi-label">Unmatched</div><div class="admin-kpi-value">@Count("Unmatched")</div></div>
+        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Unmatched"]</div><div class="admin-kpi-value">@Count("Unmatched")</div></div>
         <div class="admin-kpi"><div class="admin-kpi-label">Matched - no Instrument yet</div><div class="admin-kpi-value">@Count("MatchedNoInstrument")</div></div>
         <div class="admin-kpi"><div class="admin-kpi-label">Matched - has Instrument</div><div class="admin-kpi-value">@Count("MatchedHasInstrument")</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">Confirmed</div><div class="admin-kpi-value">@Count("Confirmed")</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">Rejected</div><div class="admin-kpi-value">@Count("Rejected")</div></div>
+        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Confirmed"]</div><div class="admin-kpi-value">@Count("Confirmed")</div></div>
+        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Rejected"]</div><div class="admin-kpi-value">@Count("Rejected")</div></div>
     </div>
 </div>
 
@@ -47,12 +50,12 @@
             <input type="search" id="rowSearch" class="form-control" placeholder="Filter by tag..." autocomplete="off" />
         </div>
         <div class="btn-group btn-group-sm" role="group">
-            <button type="button" class="btn btn-outline-secondary status-filter active" data-status="all">All</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Unmatched">Unmatched</button>
+            <button type="button" class="btn btn-outline-secondary status-filter active" data-status="all">@Localizer["All"]</button>
+            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Unmatched">@Localizer["Unmatched"]</button>
             <button type="button" class="btn btn-outline-secondary status-filter" data-status="MatchedNoInstrument">Needs Instrument</button>
             <button type="button" class="btn btn-outline-secondary status-filter" data-status="MatchedHasInstrument">Has Instrument</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Confirmed">Confirmed</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Rejected">Rejected</button>
+            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Confirmed">@Localizer["Confirmed"]</button>
+            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Rejected">@Localizer["Rejected"]</button>
         </div>
         <button type="submit" form="bulkConfirmForm" id="bulkConfirmBtn" class="btn btn-sm btn-pems-solid ms-auto" disabled
                 onclick="return confirm('تعداد ' + document.getElementById('selectedCount').textContent + ' ردیف انتخاب‌شده به Instrument متصل شود؟');">
@@ -67,8 +70,8 @@
             <thead>
                 <tr>
                     <th style="width:30px;"><input type="checkbox" id="selectAllMatched" title="Select all matched rows" /></th>
-                    <th>Tag</th><th>Description</th><th>Junction Box</th><th>Cable No.</th>
-                    <th>DCS Tag</th><th>Status</th><th style="min-width:280px;">Action</th>
+                    <th>@Localizer["Tag"]</th><th>@Localizer["Description"]</th><th>@Localizer["Junction Box"]</th><th>@Localizer["Cable No."]</th>
+                    <th>DCS Tag</th><th>@Localizer["Status"]</th><th style="min-width:280px;">@Localizer["Action"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -111,7 +114,7 @@
                                     <form asp-action="RejectRow" method="post" class="d-inline">
                                         <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
                                         <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
-                                        <button type="submit" class="btn btn-sm btn-outline-secondary">Reject</button>
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary">@Localizer["Reject"]</button>
                                     </form>
                                 </div>
                             }
@@ -140,7 +143,7 @@
 
         @if (!rows.Any())
         {
-            <p class="text-muted text-center py-4">No rows in this batch.</p>
+            <p class="text-muted text-center py-4">@Localizer["No rows in this batch."]</p>
         }
     </div>
 </div>

@@ -14,11 +14,11 @@
 
 <div class="content-card mb-3">
     <div class="row g-3">
-        <div class="col-md-3"><strong>File:</strong> @Model.FileName</div>
-        <div class="col-md-3"><strong>Project:</strong> @Model.ProjectName</div>
-        <div class="col-md-2"><strong>Total:</strong> @Model.RowsTotal</div>
-        <div class="col-md-2"><strong>Duplicates:</strong> @Model.RowsDuplicate</div>
-        <div class="col-md-2"><strong>Status:</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
+        <div class="col-md-3"><strong>@Localizer["File:"]</strong> @Model.FileName</div>
+        <div class="col-md-3"><strong>@Localizer["Project:"]</strong> @Model.ProjectName</div>
+        <div class="col-md-2"><strong>@Localizer["Total:"]</strong> @Model.RowsTotal</div>
+        <div class="col-md-2"><strong>@Localizer["Duplicates:"]</strong> @Model.RowsDuplicate</div>
+        <div class="col-md-2"><strong>@Localizer["Status:"]</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
     </div>
 
     @if (Model.Status == "Staged")
@@ -45,8 +45,8 @@
         <table class="table table-enterprise">
             <thead>
                 <tr>
-                    <th>Include</th><th>#</th><th>Document No</th><th>Vendor</th><th>Type</th>
-                    <th>Discipline</th><th>Revisions</th><th>Validation</th><th>Message</th><th>Duplicate</th>
+                    <th>@Localizer["Include"]</th><th>#</th><th>@Localizer["Document No"]</th><th>@Localizer["Vendor"]</th><th>@Localizer["Type"]</th>
+                    <th>@Localizer["Discipline"]</th><th>@Localizer["Revisions"]</th><th>@Localizer["Validation"]</th><th>@Localizer["Message"]</th><th>@Localizer["Duplicate"]</th>
                 </tr>
             </thead>
             <tbody>

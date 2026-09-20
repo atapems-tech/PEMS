@@ -1,12 +1,14 @@
 @model List<PEMS.Application.DTOs.StorageRouteDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="admin-page-shell">
     <div class="admin-hero">
         <div class="d-flex align-items-center gap-3">
-            <div class="admin-hero-icon"><i class="bi bi-signpost-2-fill"></i></div>
-            <div><h2>Storage Routing</h2><p>Which module / document type is saved to which Storage Provider.</p></div>
+            <div><p>Which module / document type is saved to which Storage Provider.</p></div>
         </div>
-        <a asp-action="Create" class="btn btn-pems-solid"><i class="bi bi-plus-lg me-1"></i> New Route</a>
+        <a asp-action="Create" class="btn btn-pems-solid"><i class="bi bi-plus-lg me-1"></i> @Localizer["New Route"]</a>
     </div>
 
     @if (TempData["Message"] != null) { <div class="alert alert-success">@TempData["Message"]</div> }
@@ -15,7 +17,7 @@
     <div class="content-card">
         <div class="table-responsive">
             <table class="table table-enterprise">
-                <thead><tr><th>Module</th><th>Document Type</th><th>Storage Provider</th><th>Relative Root</th><th>Priority</th><th>Default</th><th>Status</th><th>Actions</th></tr></thead>
+                <thead><tr><th>@Localizer["Module"]</th><th>@Localizer["Document Type"]</th><th>@Localizer["Storage Provider"]</th><th>@Localizer["Relative Root"]</th><th>@Localizer["Priority"]</th><th>@Localizer["Default"]</th><th>@Localizer["Status"]</th><th>@Localizer["Actions"]</th></tr></thead>
                 <tbody>
                 @foreach (var r in Model)
                 {
@@ -26,7 +28,7 @@
                         <td class="text-muted small">@r.RelativeRootPath</td>
                         <td>@r.Priority</td>
                         <td>@if (r.IsDefault) { <i class="bi bi-star-fill text-warning"></i> }</td>
-                        <td>@if (r.IsEnabled) { <span class="badge bg-success-subtle text-success">Enabled</span> } else { <span class="badge bg-secondary-subtle text-secondary">Disabled</span> }</td>
+                        <td>@if (r.IsEnabled) { <span class="badge bg-success-subtle text-success">@Localizer["Enabled"]</span> } else { <span class="badge bg-secondary-subtle text-secondary">@Localizer["Disabled"]</span> }</td>
                         <td>
                             <div class="d-flex gap-1">
                                 <a asp-action="Edit" asp-route-id="@r.StorageRouteId" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>

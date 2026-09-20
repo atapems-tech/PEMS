@@ -1,4 +1,7 @@
 ﻿@model List<PEMS.Application.DTOs.UserDashboardWidgetDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card">
     <p class="text-muted">
@@ -9,7 +12,7 @@
     <form asp-action="Save" method="post">
         <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
         <table class="table table-enterprise">
-            <thead><tr><th>Show</th><th>Widget</th><th>Order</th><th>Size</th></tr></thead>
+            <thead><tr><th>Show</th><th>Widget</th><th>@Localizer["Order"]</th><th>@Localizer["Size"]</th></tr></thead>
             <tbody>
                 @for (int i = 0; i < Model.Count; i++)
                 {
@@ -35,7 +38,7 @@
 
         <div class="d-flex gap-2 mt-3">
             <button type="submit" class="btn btn-pems-solid"><i class="bi bi-check-lg"></i> Save Layout</button>
-            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Back to Dashboard</a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">@Localizer["Back to Dashboard"]</a>
         </div>
     </form>
 

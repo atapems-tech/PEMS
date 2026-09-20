@@ -1,5 +1,8 @@
 @model List<PEMS.Application.DTOs.EquipmentReliabilityDto>
 @using PEMS.Application.DTOs
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var classReliability = (List<EquipmentClassReliabilityDto>)ViewBag.ClassReliability;
     var badActors = (List<BadActorDto>)ViewBag.BadActors;
@@ -28,10 +31,10 @@
 <div class="d-flex justify-content-end align-items-center mb-2">
     <div>
         <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Fleet Reliability</a>
-        <a asp-action="Intelligence" class="btn btn-outline-secondary btn-sm">Maintenance Intelligence</a>
-        <a asp-action="PredictiveMaintenance" class="btn btn-outline-secondary btn-sm">Predictive</a>
-        <a asp-action="ConditionMonitoring" class="btn btn-outline-secondary btn-sm">Condition Monitoring</a>
-        <a asp-action="AiInsights" class="btn btn-outline-secondary btn-sm">AI Insights</a>
+        <a asp-action="Intelligence" class="btn btn-outline-secondary btn-sm">@Localizer["Maintenance Intelligence"]</a>
+        <a asp-action="PredictiveMaintenance" class="btn btn-outline-secondary btn-sm">@Localizer["Predictive"]</a>
+        <a asp-action="ConditionMonitoring" class="btn btn-outline-secondary btn-sm">@Localizer["Condition Monitoring"]</a>
+        <a asp-action="AiInsights" class="btn btn-outline-secondary btn-sm">@Localizer["AI Insights"]</a>
     </div>
 </div>
 <p class="text-muted small">
@@ -45,13 +48,13 @@
     <div class="col-md-2">
         <div class="content-card h-100 text-center">
             <div class="fs-4 fw-bold">@totalEquipmentWithFailures</div>
-            <div class="text-muted small">Equipment with Failure History</div>
+            <div class="text-muted small">@Localizer["Equipment with Failure History"]</div>
         </div>
     </div>
     <div class="col-md-2">
         <div class="content-card h-100 text-center">
             <div class="fs-4 fw-bold">@(pmCompliance.CompliancePercent.HasValue ? $"{pmCompliance.CompliancePercent.Value:N1}%" : "N/A")</div>
-            <div class="text-muted small">PM Compliance</div>
+            <div class="text-muted small">@Localizer["PM Compliance"]</div>
             <span class="badge @StatusBadge(pmCompliance.DataStatus)">@pmCompliance.DataStatus</span>
         </div>
     </div>
@@ -70,7 +73,7 @@
     <div class="col-md-2">
         <div class="content-card h-100 text-center">
             <div class="fs-4 fw-bold">@repeatFailures.Count</div>
-            <div class="text-muted small">Repeat Failure Groups</div>
+            <div class="text-muted small">@Localizer["Repeat Failure Groups"]</div>
         </div>
     </div>
     <div class="col-md-2">
@@ -82,11 +85,11 @@
 </div>
 
 @* ===================== Criticality ===================== *@
-<h6 class="mt-4">Criticality</h6>
+<h6 class="mt-4">@Localizer["Criticality"]</h6>
 <div class="content-card mb-3">
     <div class="table-scroll-area" style="overflow-x:auto;">
     <table class="table table-enterprise table-sm mb-0">
-        <thead><tr><th>Class</th><th class="text-end">Equipment</th><th class="text-end">Failures</th><th class="text-end">Repeat</th><th class="text-end">PM Compliance</th><th class="text-end">Strategy Coverage</th><th class="text-end">RCM Class Coverage</th></tr></thead>
+        <thead><tr><th>@Localizer["Class"]</th><th class="text-end">@Localizer["Equipment"]</th><th class="text-end">@Localizer["Failures"]</th><th class="text-end">@Localizer["Repeat"]</th><th class="text-end">@Localizer["PM Compliance"]</th><th class="text-end">@Localizer["Strategy Coverage"]</th><th class="text-end">RCM Class Coverage</th></tr></thead>
         <tbody>
             @foreach (var row in criticalityMatrix)
             {
@@ -120,12 +123,12 @@
                     }
                 </tbody>
             </table>
-            @if (!pareto.Any()) { <p class="text-muted text-center py-3 mb-0">داده‌ای موجود نیست.</p> }
+            @if (!pareto.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>
     </div>
     <div class="col-md-6">
         <div class="content-card h-100">
-            <h6 class="mb-2">Bad Actors</h6>
+            <h6 class="mb-2">@Localizer["Bad Actors"]</h6>
             <table class="table table-enterprise table-sm mb-0">
                 <tbody>
                     @foreach (var b in badActors)
@@ -138,7 +141,7 @@
                     }
                 </tbody>
             </table>
-            @if (!badActors.Any()) { <p class="text-muted text-center py-3 mb-0">داده‌ای موجود نیست.</p> }
+            @if (!badActors.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>
     </div>
 </div>
@@ -164,7 +167,7 @@
     </div>
     <div class="col-md-4">
         <div class="content-card h-100">
-            <h6 class="mb-2">Condition Monitoring</h6>
+            <h6 class="mb-2">@Localizer["Condition Monitoring"]</h6>
             <div>Foundation: <span class="badge @StatusBadge(conditionMonitoring.FoundationStatus)">@conditionMonitoring.FoundationStatus</span></div>
             <div>Live Telemetry: <span class="badge @StatusBadge(conditionMonitoring.LiveTelemetryStatus)">@conditionMonitoring.LiveTelemetryStatus</span></div>
             <div class="small text-muted mt-1">@conditionMonitoring.MonitoringPointCount points, @conditionMonitoring.ReadingCount readings</div>

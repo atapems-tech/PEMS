@@ -1,4 +1,7 @@
 ﻿@model PEMS.Domain.Entities.NonConformanceReport
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <div>
@@ -11,7 +14,7 @@
 <div class="content-card mb-3">
     <div class="row g-2">
         <div class="col-md-4"><strong>Severity:</strong> @Model.Severity</div>
-        <div class="col-md-4"><strong>Raised:</strong> @Model.RaisedDate.ToString("yyyy-MM-dd")</div>
+        <div class="col-md-4"><strong>@Localizer["Raised:"]</strong> @Model.RaisedDate.ToString("yyyy-MM-dd")</div>
         <div class="col-md-4"><strong>Disposition:</strong> @(Model.Disposition ?? "-")</div>
     </div>
     <hr />
@@ -31,22 +34,22 @@
 @if (Model.Status == "Open" || Model.Status == "UnderReview")
 {
     <div class="content-card mb-3">
-        <h6 class="mb-3">Disposition</h6>
+        <h6 class="mb-3">@Localizer["Disposition"]</h6>
         <form asp-action="NcrDisposition" method="post">
             <input type="hidden" name="id" value="@Model.NonConformanceReportId" />
             <div class="row g-3">
                 <div class="col-md-4">
-                    <label class="form-label small">Disposition</label>
+                    <label class="form-label small">@Localizer["Disposition"]</label>
                     <select name="disposition" class="form-select form-select-sm" required>
                         <option value="RepairAccept">Repair &amp; Accept</option>
                         <option value="ReworkToConform">Rework to Conform</option>
                         <option value="UseAsIs">Use As-Is</option>
-                        <option value="Reject">Reject</option>
+                        <option value="Reject">@Localizer["Reject"]</option>
                         <option value="Scrap">Scrap</option>
                     </select>
                 </div>
-                <div class="col-md-8"><label class="form-label small">Root Cause</label><input name="rootCause" class="form-control form-control-sm" /></div>
-                <div class="col-md-6"><label class="form-label small">Corrective Action</label><textarea name="correctiveAction" class="form-control form-control-sm" rows="2"></textarea></div>
+                <div class="col-md-8"><label class="form-label small">@Localizer["Root Cause"]</label><input name="rootCause" class="form-control form-control-sm" /></div>
+                <div class="col-md-6"><label class="form-label small">@Localizer["Corrective Action"]</label><textarea name="correctiveAction" class="form-control form-control-sm" rows="2"></textarea></div>
                 <div class="col-md-6"><label class="form-label small">Preventive Action</label><textarea name="preventiveAction" class="form-control form-control-sm" rows="2"></textarea></div>
             </div>
             @if (Model.Severity == "Critical")
@@ -82,11 +85,11 @@ else if (Model.Status == "PendingApproval")
                     <input type="hidden" name="decision" value="Reject" />
                     <div class="modal-header"><h6 class="modal-title">رد Disposition</h6></div>
                     <div class="modal-body">
-                        <textarea name="comment" class="form-control form-control-sm" rows="3" placeholder="دلیل رد" required></textarea>
+                        <textarea name="comment" class="form-control form-control-sm" rows="3" placeholder="@Localizer["دلیل رد"]" required></textarea>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                        <button type="submit" class="btn btn-danger btn-sm">رد کن</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                        <button type="submit" class="btn btn-danger btn-sm">@Localizer["رد کن"]</button>
                     </div>
                 </form>
             </div>

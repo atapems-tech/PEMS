@@ -1,16 +1,19 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MaintenanceStrategyListDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card mb-3">
     <div class="row g-2 align-items-end">
         <div class="col-md-5">
-            <label class="form-label small">فیلتر بر اساس تجهیز</label>
+            <label class="form-label small">@Localizer["فیلتر بر اساس تجهیز"]</label>
             <div class="d-flex gap-2">
                 <input type="text" class="form-control form-control-sm" id="strategyFilterSearch"
-                       placeholder="جستجوی تگ، نام یا سازنده..." value="@ViewBag.SelectedEquipmentLabel"
+                       placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]" value="@ViewBag.SelectedEquipmentLabel"
                        data-pems-search data-search-type="Equipment" autocomplete="off" />
                 @if (ViewBag.SelectedEquipmentId != null)
                 {
-                    <a asp-action="Index" class="btn btn-outline-danger btn-sm" title="حذف فیلتر"><i class="bi bi-x-lg"></i></a>
+                    <a asp-action="Index" class="btn btn-outline-danger btn-sm" title="@Localizer["حذف فیلتر"]"><i class="bi bi-x-lg"></i></a>
                 }
             </div>
             <script>
@@ -21,7 +24,7 @@
         </div>
         <div class="col-md-7 text-end">
             <a asp-action="BulkCreate" class="btn btn-sm btn-outline-primary">
-                <i class="bi bi-collection"></i> تعریف دسته‌جمعی برای چند تجهیز
+                <i class="bi bi-collection"></i> @Localizer["تعریف دسته‌جمعی برای چند تجهیز"]
             </a>
             <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#createStrategyModal">
                 <i class="bi bi-plus-lg"></i> New Strategy
@@ -38,18 +41,18 @@
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('MaintenanceStrategy')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:65vh; overflow-y:auto;">
     <table class="table table-enterprise pems-grid-table" data-grid-key="MaintenanceStrategy">
         <thead>
             <tr>
-                <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Equipment</th>
-                <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">Type</th>
-                <th data-col-key="failureMode" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Failure Mode</th>
-                <th data-col-key="consequence" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">پیامد</th>
-                <th data-col-key="justification" data-resizable="true" data-min-width="160" data-max-width="400" style="width:260px">توجیه</th>
+                <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Equipment"]</th>
+                <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">@Localizer["Type"]</th>
+                <th data-col-key="failureMode" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Failure Mode"]</th>
+                <th data-col-key="consequence" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">@Localizer["پیامد"]</th>
+                <th data-col-key="justification" data-resizable="true" data-min-width="160" data-max-width="400" style="width:260px">@Localizer["توجیه"]</th>
                 <th data-col-key="actions" data-resizable="false" style="width:190px"></th>
             </tr>
         </thead>
@@ -114,64 +117,64 @@
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-12">
-                            <label class="form-label">Equipment</label>
-                            <input type="text" class="form-control" placeholder="جستجوی تگ، نام یا سازنده..."
+                            <label class="form-label">@Localizer["Equipment"]</label>
+                            <input type="text" class="form-control" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]"
                                    data-pems-search data-search-type="Equipment" data-search-hidden="#strategyEquipmentIdHidden" autocomplete="off" required />
                             <input type="hidden" name="equipmentId" id="strategyEquipmentIdHidden" />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Strategy Type</label>
+                            <label class="form-label">@Localizer["Strategy Type"]</label>
                             <select name="strategyType" class="form-select" required>
-                                <option>Preventive</option>
-                                <option>Predictive</option>
-                                <option>CBM</option>
-                                <option>Corrective</option>
-                                <option value="RunToFailure">Run-to-Failure</option>
+                                <option>@Localizer["Preventive"]</option>
+                                <option>@Localizer["Predictive"]</option>
+                                <option>@Localizer["CBM"]</option>
+                                <option>@Localizer["Corrective"]</option>
+                                <option value="RunToFailure">@Localizer["Run-to-Failure"]</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Failure Mode (ISO 14224)</label>
+                            <label class="form-label">@Localizer["Failure Mode (ISO 14224)"]</label>
                             <select name="failureModeCode" class="form-select">
-                                <option value="">-- انتخاب --</option>
-                                <option>Leakage</option><option>Fracture</option><option>Vibration</option>
-                                <option>Overheating</option><option>Blockage</option><option>ElectricalFault</option>
-                                <option>Other</option>
+                                <option value="">@Localizer["-- انتخاب --"]</option>
+                                <option>@Localizer["Leakage"]</option><option>@Localizer["Fracture"]</option><option>@Localizer["Vibration"]</option>
+                                <option>@Localizer["Overheating"]</option><option>@Localizer["Blockage"]</option><option>@Localizer["ElectricalFault"]</option>
+                                <option>@Localizer["Other"]</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Consequence Category (RCM)</label>
+                            <label class="form-label">@Localizer["Consequence Category (RCM)"]</label>
                             <select name="consequenceCategory" class="form-select" required>
-                                <option value="Safety">Safety</option>
-                                <option value="Environmental">Environmental</option>
-                                <option value="Operational" selected>Operational</option>
-                                <option value="Economic">Economic</option>
+                                <option value="Safety">@Localizer["Safety"]</option>
+                                <option value="Environmental">@Localizer["Environmental"]</option>
+                                <option value="Operational" selected>@Localizer["Operational"]</option>
+                                <option value="Economic">@Localizer["Economic"]</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Recommended Trigger Type</label>
+                            <label class="form-label">@Localizer["Recommended Trigger Type"]</label>
                             <select name="recommendedTriggerType" class="form-select">
-                                <option value="Calendar">Calendar</option>
-                                <option value="Meter">Meter</option>
-                                <option value="Both">Both</option>
+                                <option value="Calendar">@Localizer["Calendar"]</option>
+                                <option value="Meter">@Localizer["Meter"]</option>
+                                <option value="Both">@Localizer["Both"]</option>
                             </select>
                         </div>
-                        <div class="col-md-6"><label class="form-label">Frequency (راهنما)</label>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Frequency (راهنما)"]</label>
                             <select name="frequency" class="form-select">
-                                <option>Daily</option><option>Weekly</option><option>Monthly</option>
-                                <option>Quarterly</option><option>Yearly</option>
+                                <option>@Localizer["Daily"]</option><option>@Localizer["Weekly"]</option><option>@Localizer["Monthly"]</option>
+                                <option>@Localizer["Quarterly"]</option><option>@Localizer["Yearly"]</option>
                             </select>
                         </div>
-                        <div class="col-md-6"><label class="form-label">Start Date</label><input name="startDate" type="date" class="form-control" /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Start Date"]</label><input name="startDate" type="date" class="form-control" /></div>
                         <div class="col-12">
-                            <label class="form-label">Justification (چرا این استراتژی؟)</label>
+                            <label class="form-label">@Localizer["Justification (چرا این استراتژی؟)"]</label>
                             <textarea name="justification" class="form-control" rows="2" placeholder="طبق RCM: چرا این استراتژی برای این حالت خرابی مناسبه"></textarea>
                         </div>
-                        <div class="col-12"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-pems-solid">Save</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
                 </div>
             </form>
         </div>

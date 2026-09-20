@@ -1,9 +1,12 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MaintenancePlanListDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card">
     <div class="d-flex justify-content-between mb-3">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('MaintenancePlan')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
         <div class="d-flex gap-2">
             <form asp-action="GenerateDueWorkOrders" method="post" class="d-inline" onsubmit="return confirm('برای همه‌ی Plan های سررسیدرسیده (که Work Order فعال ندارند) Work Order ساخته شود؟');">
@@ -17,12 +20,12 @@
             <thead>
                 <tr>
                     <th data-col-key="planNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Plan No</th>
-                    <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Equipment</th>
-                    <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">Title</th>
-                    <th data-col-key="strategy" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">Strategy</th>
-                    <th data-col-key="trigger" data-resizable="true" data-min-width="140" data-max-width="320" style="width:220px">Trigger</th>
+                    <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Equipment"]</th>
+                    <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Title"]</th>
+                    <th data-col-key="strategy" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">@Localizer["Strategy"]</th>
+                    <th data-col-key="trigger" data-resizable="true" data-min-width="140" data-max-width="320" style="width:220px">@Localizer["Trigger"]</th>
                     <th data-col-key="lastDone" data-resizable="true" data-min-width="100" data-max-width="180" style="width:120px">Last Done</th>
-                    <th data-col-key="nextDue" data-resizable="true" data-min-width="100" data-max-width="200" style="width:150px">Next Due</th>
+                    <th data-col-key="nextDue" data-resizable="true" data-min-width="100" data-max-width="200" style="width:150px">@Localizer["Next Due"]</th>
                     <th data-col-key="actions" data-resizable="false" style="width:170px"></th>
                 </tr>
             </thead>
@@ -47,15 +50,15 @@
                                 </div>
                                 <form asp-action="RecordMeterReading" method="post" class="d-flex gap-1 mt-1">
                                     <input type="hidden" name="planId" value="@p.MaintenancePlanId" />
-                                    <input type="number" step="0.01" name="currentReading" class="form-control form-control-sm" style="width:90px;" placeholder="قرائت فعلی" required />
-                                    <button type="submit" class="btn btn-sm btn-outline-info">ثبت</button>
+                                    <input type="number" step="0.01" name="currentReading" class="form-control form-control-sm" style="width:90px;" placeholder="@Localizer["قرائت فعلی"]" required />
+                                    <button type="submit" class="btn btn-sm btn-outline-info">@Localizer["ثبت"]</button>
                                 </form>
                             }
                         </td>
                         <td class="small">@(p.LastExecutionDate?.ToString("yyyy-MM-dd"))</td>
                         <td class="small">
                             @(p.NextDueDate?.ToString("yyyy-MM-dd"))
-                            @if (p.IsOverdue) { <span class="badge bg-danger ms-1">Overdue</span> }
+                            @if (p.IsOverdue) { <span class="badge bg-danger ms-1">@Localizer["Overdue"]</span> }
                         </td>
                         <td class="text-end">
                             <form asp-action="GenerateWorkOrder" method="post" class="d-inline">

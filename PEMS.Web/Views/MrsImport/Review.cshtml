@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.MrsImportBatchDetailDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var rows = Model.Rows;
 }
@@ -30,11 +33,11 @@
 
 <div class="content-card mb-3">
     <div class="admin-kpi-grid">
-        <div class="admin-kpi"><div class="admin-kpi-label">New</div><div class="admin-kpi-value">@Model.Batch.NewCount</div></div>
+        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["New"]</div><div class="admin-kpi-value">@Model.Batch.NewCount</div></div>
         <div class="admin-kpi"><div class="admin-kpi-label">Matched Existing</div><div class="admin-kpi-value">@Model.Batch.MatchedCount</div></div>
         <div class="admin-kpi"><div class="admin-kpi-label">Duplicate In Batch</div><div class="admin-kpi-value">@Model.Batch.DuplicateCount</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">Invalid</div><div class="admin-kpi-value">@Model.Batch.InvalidCount</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">Approved</div><div class="admin-kpi-value">@Model.Batch.ApprovedCount</div></div>
+        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Invalid"]</div><div class="admin-kpi-value">@Model.Batch.InvalidCount</div></div>
+        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Approved"]</div><div class="admin-kpi-value">@Model.Batch.ApprovedCount</div></div>
     </div>
     <p class="text-muted small mt-2 mb-0">فقط ۵۰۰ ردیف اول این Batch نمایش داده می‌شود (برای Batch های بزرگ، فیلتر Match Status را از URL استفاده کن: <code>?matchStatusFilter=New</code>).</p>
 </div>
@@ -53,11 +56,11 @@
             <input type="search" id="rowSearch" class="form-control" placeholder="Filter by description..." autocomplete="off" />
         </div>
         <div class="btn-group btn-group-sm" role="group">
-            <button type="button" class="btn btn-outline-secondary status-filter active" data-status="all">All</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="New">New</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="MatchedExisting">Matched</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="DuplicateInBatch">Duplicate</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Invalid">Invalid</button>
+            <button type="button" class="btn btn-outline-secondary status-filter active" data-status="all">@Localizer["All"]</button>
+            <button type="button" class="btn btn-outline-secondary status-filter" data-status="New">@Localizer["New"]</button>
+            <button type="button" class="btn btn-outline-secondary status-filter" data-status="MatchedExisting">@Localizer["Matched"]</button>
+            <button type="button" class="btn btn-outline-secondary status-filter" data-status="DuplicateInBatch">@Localizer["Duplicate"]</button>
+            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Invalid">@Localizer["Invalid"]</button>
         </div>
         <button type="submit" form="bulkCommitForm" id="bulkCommitBtn" class="btn btn-sm btn-pems-solid ms-auto" disabled
                 onclick="return confirm('تعداد ' + document.getElementById('selectedCount').textContent + ' ردیف انتخاب‌شده تایید و به MaterialItem/InventoryTransaction تبدیل شود؟');">
@@ -76,8 +79,8 @@
             <thead>
                 <tr>
                     <th style="width:30px;"><input type="checkbox" id="selectAllPending" /></th>
-                    <th>MRS No</th><th>Item Code</th><th>Description</th><th>UOM</th><th>Vendor</th><th>PO No</th><th>Qty Recv</th><th>Qty Issued</th>
-                    <th>Warehouse</th><th>Match Status</th><th>Matched Material</th><th>Review</th><th style="width:40px;"></th>
+                    <th>@Localizer["MRS No"]</th><th>Item Code</th><th>@Localizer["Description"]</th><th>@Localizer["UOM"]</th><th>@Localizer["Vendor"]</th><th>PO No</th><th>Qty Recv</th><th>Qty Issued</th>
+                    <th>@Localizer["Warehouse"]</th><th>Match Status</th><th>Matched Material</th><th>@Localizer["Review"]</th><th style="width:40px;"></th>
                 </tr>
             </thead>
             <tbody>
@@ -119,11 +122,11 @@
                             }
                             else if (row.ReviewStatus == "Approved")
                             {
-                                <span class="small text-success"><i class="bi bi-check-circle"></i> Approved</span>
+                                <span class="small text-success"><i class="bi bi-check-circle"></i> @Localizer["Approved"]</span>
                             }
                             else if (row.ReviewStatus == "Rejected")
                             {
-                                <span class="small text-muted"><i class="bi bi-x-circle"></i> Rejected</span>
+                                <span class="small text-muted"><i class="bi bi-x-circle"></i> @Localizer["Rejected"]</span>
                             }
                             else if (row.MatchStatus == "Invalid")
                             {
@@ -131,7 +134,7 @@
                             }
                             else
                             {
-                                <span class="small text-muted">Pending</span>
+                                <span class="small text-muted">@Localizer["Pending"]</span>
                             }
                         </td>
                         <td>
@@ -151,7 +154,7 @@
                                 <div class="p-2 bg-light-subtle border rounded">
                                     <table class="table table-sm table-borderless mb-0">
                                         <thead>
-                                            <tr class="text-muted small"><th>Original Excel Header</th><th>Canonical Field</th><th>Value</th></tr>
+                                            <tr class="text-muted small"><th>Original Excel Header</th><th>Canonical Field</th><th>@Localizer["Value"]</th></tr>
                                         </thead>
                                         <tbody>
                                             @foreach (var m in row.Metadata)
@@ -171,7 +174,7 @@
                 }
             </tbody>
         </table>
-        @if (!rows.Any()) { <p class="text-muted text-center py-4">No rows in this batch.</p> }
+        @if (!rows.Any()) { <p class="text-muted text-center py-4">@Localizer["No rows in this batch."]</p> }
     </div>
 </div>
 

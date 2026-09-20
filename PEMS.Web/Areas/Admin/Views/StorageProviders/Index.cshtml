@@ -1,4 +1,7 @@
 @model List<PEMS.Application.DTOs.StorageProviderDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var total = Model.Count;
     var online = Model.Count(x => x.LastHealthStatus == "Online");
@@ -10,28 +13,27 @@
 <div class="admin-page-shell">
     <div class="admin-hero">
         <div class="d-flex align-items-center gap-3">
-            <div class="admin-hero-icon"><i class="bi bi-hdd-network-fill"></i></div>
-            <div><h2>Storage Providers</h2><p>Admin-configurable Local / Network Share / FTP / SFTP storage destinations.</p></div>
+            <div><p>Admin-configurable Local / Network Share / FTP / SFTP storage destinations.</p></div>
         </div>
-        <a asp-action="Create" class="btn btn-pems-solid"><i class="bi bi-plus-lg me-1"></i> New Provider</a>
+        <a asp-action="Create" class="btn btn-pems-solid"><i class="bi bi-plus-lg me-1"></i> @Localizer["New Provider"]</a>
     </div>
 
     @if (TempData["Message"] != null) { <div class="alert alert-success">@TempData["Message"]</div> }
     @if (TempData["Error"] != null) { <div class="alert alert-danger">@TempData["Error"]</div> }
 
     <div class="row g-3 mb-3">
-        <div class="col-md-2 col-sm-4"><div class="content-card text-center py-3"><div class="fs-4 fw-bold">@total</div><div class="text-muted small">Configured</div></div></div>
-        <div class="col-md-2 col-sm-4"><div class="content-card text-center py-3"><div class="fs-4 fw-bold text-success">@online</div><div class="text-muted small">Online</div></div></div>
-        <div class="col-md-2 col-sm-4"><div class="content-card text-center py-3"><div class="fs-4 fw-bold text-danger">@offline</div><div class="text-muted small">Offline / Failed</div></div></div>
-        <div class="col-md-2 col-sm-4"><div class="content-card text-center py-3"><div class="fs-4 fw-bold">@enabled</div><div class="text-muted small">Enabled</div></div></div>
-        <div class="col-md-2 col-sm-4"><div class="content-card text-center py-3"><div class="fs-4 fw-bold">@Model.Count(x => x.IsDefault)</div><div class="text-muted small">Default</div></div></div>
-        <div class="col-md-2 col-sm-4"><div class="content-card text-center py-3"><div class="fs-4 fw-bold">@totalRoutes</div><div class="text-muted small">Total Routes</div></div></div>
+        <div class="col-md-2 col-sm-4"><div class="content-card text-center py-3"><div class="fs-4 fw-bold">@total</div><div class="text-muted small">@Localizer["Configured"]</div></div></div>
+        <div class="col-md-2 col-sm-4"><div class="content-card text-center py-3"><div class="fs-4 fw-bold text-success">@online</div><div class="text-muted small">@Localizer["Online"]</div></div></div>
+        <div class="col-md-2 col-sm-4"><div class="content-card text-center py-3"><div class="fs-4 fw-bold text-danger">@offline</div><div class="text-muted small">@Localizer["Offline / Failed"]</div></div></div>
+        <div class="col-md-2 col-sm-4"><div class="content-card text-center py-3"><div class="fs-4 fw-bold">@enabled</div><div class="text-muted small">@Localizer["Enabled"]</div></div></div>
+        <div class="col-md-2 col-sm-4"><div class="content-card text-center py-3"><div class="fs-4 fw-bold">@Model.Count(x => x.IsDefault)</div><div class="text-muted small">@Localizer["Default"]</div></div></div>
+        <div class="col-md-2 col-sm-4"><div class="content-card text-center py-3"><div class="fs-4 fw-bold">@totalRoutes</div><div class="text-muted small">@Localizer["Total Routes"]</div></div></div>
     </div>
 
     <div class="content-card">
         <div class="table-responsive">
             <table class="table table-enterprise">
-                <thead><tr><th>Name</th><th>Code</th><th>Type</th><th>Host / Root</th><th>Routes</th><th>Health</th><th>Status</th><th>Default</th><th>Actions</th></tr></thead>
+                <thead><tr><th>@Localizer["Name"]</th><th>@Localizer["Code"]</th><th>@Localizer["Type"]</th><th>@Localizer["Host / Root"]</th><th>@Localizer["Routes"]</th><th>@Localizer["Health"]</th><th>@Localizer["Status"]</th><th>@Localizer["Default"]</th><th>@Localizer["Actions"]</th></tr></thead>
                 <tbody>
                 @foreach (var p in Model)
                 {
@@ -49,9 +51,9 @@
                             @if (p.LastHealthCheckAt.HasValue) { <div class="text-muted" style="font-size:.7rem">@p.LastHealthCheckAt.Value.ToString("yyyy-MM-dd HH:mm")</div> }
                         </td>
                         <td>
-                            @if (p.IsEnabled) { <span class="badge bg-success-subtle text-success">Enabled</span> } else { <span class="badge bg-secondary-subtle text-secondary">Disabled</span> }
+                            @if (p.IsEnabled) { <span class="badge bg-success-subtle text-success">@Localizer["Enabled"]</span> } else { <span class="badge bg-secondary-subtle text-secondary">@Localizer["Disabled"]</span> }
                         </td>
-                        <td>@if (p.IsDefault) { <i class="bi bi-star-fill text-warning" title="Default"></i> }</td>
+                        <td>@if (p.IsDefault) { <i class="bi bi-star-fill text-warning" title="@Localizer["Default"]"></i> }</td>
                         <td>
                             <div class="d-flex gap-1 flex-wrap">
                                 <a asp-action="Edit" asp-route-id="@p.StorageProviderId" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>

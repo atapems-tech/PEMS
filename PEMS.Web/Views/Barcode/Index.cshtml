@@ -1,3 +1,6 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var recent = ViewBag.RecentBarcodes as System.Collections.IEnumerable;
 }
@@ -23,18 +26,18 @@
             <input type="text" name="code" class="form-control" dir="ltr" placeholder="PEMS-BR-..." required autofocus />
         </div>
         <div class="col-md-4">
-            <button type="submit" class="btn btn-pems-solid w-100"><i class="bi bi-search"></i> Resolve</button>
+            <button type="submit" class="btn btn-pems-solid w-100"><i class="bi bi-search"></i> @Localizer["Resolve"]</button>
         </div>
     </form>
 </div>
 
 <div class="content-card">
-    <h6 class="mb-3">Recent Barcodes</h6>
+    <h6 class="mb-3">@Localizer["Recent Barcodes"]</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
     <table class="table table-enterprise">
         <thead>
             <tr>
-                <th>Code</th><th>Symbology</th><th>Target</th><th>Status</th><th class="text-end">Prints</th><th>Created</th>
+                <th>@Localizer["Code"]</th><th>@Localizer["Symbology"]</th><th>@Localizer["Target"]</th><th>@Localizer["Status"]</th><th class="text-end">@Localizer["Prints"]</th><th>@Localizer["Created"]</th>
             </tr>
         </thead>
         <tbody>

@@ -1,4 +1,7 @@
 @model PEMS.Domain.Entities.StoreRequisition
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var materialItems = (IEnumerable<dynamic>)ViewBag.MaterialItems;
     var statusHistory = (List<PEMS.Domain.Entities.StoreRequisitionStatusHistory>)ViewBag.StatusHistory;
@@ -38,11 +41,11 @@
         {
             <form asp-action="Reject" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.StoreRequisitionId" />
-                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('این درخواست رد بشه؟')">Reject</button>
+                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('این درخواست رد بشه؟')">@Localizer["Reject"]</button>
             </form>
             <form asp-action="Cancel" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.StoreRequisitionId" />
-                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این درخواست لغو بشه؟')">Cancel</button>
+                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این درخواست لغو بشه؟')">@Localizer["Cancel"]</button>
             </form>
         }
     </div>
@@ -51,7 +54,7 @@
 <div class="content-card mb-3">
     <h6 class="mb-3">Lines</h6>
     <table class="table table-enterprise table-sm">
-        <thead><tr><th>Material</th><th>Requested</th><th>Approved</th><th>Issued</th></tr></thead>
+        <thead><tr><th>@Localizer["Material"]</th><th>Requested</th><th>@Localizer["Approved"]</th><th>Issued</th></tr></thead>
         <tbody>
             @foreach (var l in Model.Lines)
             {
@@ -64,7 +67,7 @@
             }
         </tbody>
     </table>
-    @if (!Model.Lines.Any()) { <p class="text-muted text-center py-3">هنوز خطی اضافه نشده.</p> }
+    @if (!Model.Lines.Any()) { <p class="text-muted text-center py-3">@Localizer["هنوز خطی اضافه نشده."]</p> }
 
     @if (Model.Status == "Draft")
     {
@@ -75,16 +78,16 @@
                     @foreach (var m in materialItems) { <option value="@m.MaterialItemId">@m.MaterialCode - @m.Description</option> }
                 </select>
             </div>
-            <div class="col-md-3"><input name="requestedQuantity" type="number" step="0.001" class="form-control form-control-sm" placeholder="Quantity" required /></div>
+            <div class="col-md-3"><input name="requestedQuantity" type="number" step="0.001" class="form-control form-control-sm" placeholder="@Localizer["Quantity"]" required /></div>
             <div class="col-md-3"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> Add Line</button></div>
         </form>
     }
 </div>
 
 <div class="content-card">
-    <h6 class="mb-3">Status History</h6>
+    <h6 class="mb-3">@Localizer["Status History"]</h6>
     <table class="table table-enterprise table-sm">
-        <thead><tr><th>From</th><th>To</th><th>By</th><th>Date</th><th>Reason</th></tr></thead>
+        <thead><tr><th>@Localizer["From"]</th><th>To</th><th>By</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
         <tbody>
             @foreach (var h in statusHistory)
             {

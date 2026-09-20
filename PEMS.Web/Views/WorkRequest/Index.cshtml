@@ -1,24 +1,14 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @section Styles {
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
 }
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.WorkRequestListDto>
 
 <div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> New Request</a>
+    <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> @Localizer["New Request"]</a>
 </div>
-<p class="text-muted small">
-    طبق CMMS Production Baseline v1 بند P0-05: مسیر رسمی قبل از ساخت WorkOrder اجرایی -
-    Draft → Submitted → UnderReview → Approved → Planned → WorkOrder.
-</p>
-
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
-}
 
 <div class="content-card mb-3">
     <div class="btn-group btn-group-sm flex-wrap">
@@ -33,20 +23,20 @@
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('WorkRequest')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="pems-grid-scroll">
     <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="WorkRequest">
         <thead>
             <tr>
-                <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">Number</th>
-                <th data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400">Title</th>
-                <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">Equipment</th>
-                <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">Priority</th>
-                <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">Status</th>
-                <th data-col-key="requestedBy" data-resizable="true" data-min-width="120" data-max-width="260">Requested By</th>
-                <th data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160">Date</th>
+                <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Number"]</th>
+                <th data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400">@Localizer["Title"]</th>
+                <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Equipment"]</th>
+                <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Priority"]</th>
+                <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Status"]</th>
+                <th data-col-key="requestedBy" data-resizable="true" data-min-width="120" data-max-width="260">@Localizer["Requested By"]</th>
+                <th data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Date"]</th>
             </tr>
         </thead>
         <tbody>
@@ -78,7 +68,7 @@
         </tbody>
     </table>
     </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">هنوز Work Request ای ثبت نشده.</p> }
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هنوز Work Request ای ثبت نشده."]</p> }
 
     @{
         var qsParts = new List<string>();

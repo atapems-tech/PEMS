@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.CriticalityAssessmentListDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var statusFilter = (string?)ViewBag.StatusFilter;
     var equipmentClassId = (int?)ViewBag.EquipmentClassId;
@@ -16,7 +19,7 @@
 
 <div class="d-flex justify-content-end align-items-center mb-2">
     <div>
-        <a asp-action="Dashboard" class="btn btn-outline-secondary btn-sm">← Dashboard</a>
+        <a asp-action="Dashboard" class="btn btn-outline-secondary btn-sm">@Localizer["← Dashboard"]</a>
         @if (canEdit)
         {
             <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> New Assessment</a>
@@ -30,7 +33,7 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-2 align-items-end">
         <div class="col-md-3">
-            <label class="form-label small">Status</label>
+            <label class="form-label small">@Localizer["Status"]</label>
             <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
                 <option value="" selected="@(string.IsNullOrEmpty(statusFilter))">All</option>
                 <option value="DRAFT" selected="@(statusFilter == "DRAFT")">Draft</option>
@@ -40,9 +43,9 @@
             </select>
         </div>
         <div class="col-md-3">
-            <label class="form-label small">Equipment Class</label>
+            <label class="form-label small">@Localizer["Equipment Class"]</label>
             <select name="equipmentClassId" class="form-select form-select-sm" onchange="this.form.submit()">
-                <option value="">All</option>
+                <option value="">@Localizer["All"]</option>
                 @foreach (var ec in equipmentClasses)
                 {
                     <option value="@ec.EquipmentClassId" selected="@(equipmentClassId == (int)ec.EquipmentClassId)">@ec.Name (@ec.Code)</option>
@@ -57,8 +60,8 @@
     <table class="table table-enterprise table-sm mb-0">
         <thead>
             <tr>
-                <th>Equipment</th><th>Class</th><th>Framework</th><th>Status</th>
-                <th>Proposed</th><th>Prepared By</th><th>Approved By</th><th>Created</th><th></th>
+                <th>@Localizer["Equipment"]</th><th>@Localizer["Class"]</th><th>Framework</th><th>@Localizer["Status"]</th>
+                <th>@Localizer["Proposed"]</th><th>@Localizer["Prepared By"]</th><th>@Localizer["Approved By"]</th><th>@Localizer["Created"]</th><th></th>
             </tr>
         </thead>
         <tbody>
@@ -79,7 +82,7 @@
         </tbody>
     </table>
     </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ ارزیابی‌ای با این فیلتر موجود نیست.</p> }
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ ارزیابی‌ای با این فیلتر موجود نیست."]</p> }
 
     @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
     {

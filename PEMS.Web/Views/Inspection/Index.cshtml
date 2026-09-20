@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.InspectionListItemDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex justify-content-end align-items-center mb-2">
 </div>
@@ -20,20 +23,20 @@
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Inspection')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="pems-grid-scroll">
     <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="Inspection">
         <thead>
             <tr>
-                <th data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="200">Tag Number</th>
-                <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">Type</th>
-                <th data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160">Date</th>
+                <th data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Tag Number"]</th>
+                <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Type"]</th>
+                <th data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Date"]</th>
                 <th data-col-key="measurement" data-resizable="true" data-min-width="100" data-max-width="200">Measurement</th>
                 <th data-col-key="limits" data-resizable="true" data-min-width="100" data-max-width="200">Limits</th>
                 <th data-col-key="condition" data-resizable="true" data-min-width="80" data-max-width="140">Condition</th>
-                <th data-col-key="nextDue" data-resizable="true" data-min-width="90" data-max-width="160">Next Due</th>
+                <th data-col-key="nextDue" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Next Due"]</th>
                 <th data-col-key="dueStatus" data-resizable="true" data-min-width="90" data-max-width="160">Due Status</th>
                 <th></th>
             </tr>
@@ -50,8 +53,8 @@
                     <td class="small">
                         @switch (i.ConditionStatus)
                         {
-                            case "Alert": <span class="badge bg-danger">Alert</span> break;
-                            case "Normal": <span class="badge bg-success">Normal</span> break;
+                            case "Alert": <span class="badge bg-danger">@Localizer["Alert"]</span> break;
+                            case "Normal": <span class="badge bg-success">@Localizer["Normal"]</span> break;
                             default: <span class="text-muted">N/A</span> break;
                         }
                     </td>
@@ -59,8 +62,8 @@
                     <td class="small">
                         @switch (i.DueStatus)
                         {
-                            case "Overdue": <span class="badge bg-danger">Overdue</span> break;
-                            case "DueSoon": <span class="badge bg-warning text-dark">Due Soon</span> break;
+                            case "Overdue": <span class="badge bg-danger">@Localizer["Overdue"]</span> break;
+                            case "DueSoon": <span class="badge bg-warning text-dark">@Localizer["Due Soon"]</span> break;
                             case "OK": <span class="badge bg-success">OK</span> break;
                             default: <span class="text-muted">N/A</span> break;
                         }
@@ -79,7 +82,7 @@
         </tbody>
     </table>
     </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">هنوز هیچ بازرسی‌ای ثبت نشده.</p> }
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هنوز هیچ بازرسی‌ای ثبت نشده."]</p> }
 
     @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
     {

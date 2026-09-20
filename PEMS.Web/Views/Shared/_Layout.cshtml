@@ -9,6 +9,7 @@
 @inject ICurrentUserService CurrentUser
 @{
     var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
+    string LocalizedPageTitle(string? s) { if (string.IsNullOrWhiteSpace(s)) return s ?? ""; var l = Localizer[s]; return l.ResourceNotFound ? s : l.Value; }
     var currentTheme = PEMS.Web.Controllers.ThemeController.Normalize(Context.Request.Cookies[PEMS.Web.Controllers.ThemeController.CookieName]);
     var currentUrl = Context.Request.PathBase + Context.Request.Path + Context.Request.QueryString;
     var isAdminArea = string.Equals(ViewContext.RouteData.Values["area"]?.ToString(), "Admin", StringComparison.OrdinalIgnoreCase);
@@ -27,7 +28,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>@ViewData["Title"] - PEMS</title>
+    <title>@(LocalizedPageTitle(ViewData["Title"]?.ToString())) - PEMS</title>
     <link rel="manifest" href="~/manifest.json" />
     <meta name="theme-color" content="#0d6efd" />
     <script type="importmap"></script>
@@ -41,11 +42,12 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     }
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-global-search.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-data-grid.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
 
     @if (isRtl)
     {
@@ -64,12 +66,12 @@
 <body class="@(isAdminArea ? "admin-area" : "")" data-user-id="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value">
     <header class="pems-topbar">
         <div class="d-flex align-items-center gap-2">
-            <button class="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" aria-label="Toggle menu">
+            <button class="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" aria-label="@Localizer["Shell_ToggleMenu"]">
                 <i class="bi bi-list"></i>
             </button>
             <a class="brand text-decoration-none" asp-controller="Home" asp-action="Index">
                 <span class="brand-icon"><i class="bi bi-diagram-3-fill"></i></span>
-                <span class="d-none d-sm-inline">PEMS</span>
+                <span class="d-none d-sm-inline">@Localizer["PEMS"]</span>
             </a>
         </div>
 
@@ -81,13 +83,13 @@
 
         <div class="d-flex align-items-center gap-3">
             <div class="dropdown">
-                <a href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="Change Theme">
+                <a href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="@Localizer["Shell_ChangeTheme"]">
                     <i class="bi bi-palette-fill fs-5"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     @foreach (var (themeValue, icon, label) in new[] {
-                        ("light", "bi-sun", "Light (Default)"), ("dark", "bi-moon-stars", "Dark"),
-                        ("ocean", "bi-water", "Ocean"), ("warm", "bi-tree", "Warm"), ("midnight", "bi-moon", "Midnight")
+                        ("light", "bi-sun", Localizer["Theme_Light"].Value), ("dark", "bi-moon-stars", Localizer["Theme_Dark"].Value),
+                        ("ocean", "bi-water", Localizer["Theme_Ocean"].Value), ("warm", "bi-tree", Localizer["Theme_Warm"].Value), ("midnight", "bi-moon", Localizer["Theme_Midnight"].Value)
                     })
                     {
                         <li>
@@ -101,7 +103,7 @@
             </div>
 
             <div class="dropdown">
-                <a href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="Language / زبان">
+                <a href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="@Localizer["Shell_Language"]">
                     <i class="bi bi-translate fs-5"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -140,8 +142,8 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><h6 class="dropdown-header">@User.Identity?.Name</h6></li>
-                    <li><a class="dropdown-item" asp-controller="MyProfile" asp-action="Index"><i class="bi bi-person-badge"></i> پروفایل من</a></li>
-                    <li><a class="dropdown-item" asp-controller="Account" asp-action="ManagePasskeys"><i class="bi bi-key"></i> Manage Passkeys</a></li>
+                    <li><a class="dropdown-item" asp-controller="MyProfile" asp-action="Index"><i class="bi bi-person-badge"></i> @Localizer["Shell_MyProfile"]</a></li>
+                    <li><a class="dropdown-item" asp-controller="Account" asp-action="ManagePasskeys"><i class="bi bi-key"></i> @Localizer["Shell_Passkeys"]</a></li>
                     <li><hr class="dropdown-divider" /></li>
                     <li>
                         <form asp-controller="Account" asp-action="Logout" method="post">
@@ -200,8 +202,9 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/pems-global-search.js" asp-append-version="true"></script>
     <script src="~/js/pems-data-grid.js" asp-append-version="true"></script>
+    <script src="~/js/pems-ui.js" asp-append-version="true"></script>
     <script src="~/js/admin.js" asp-append-version="true"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+    <script src="~/lib/signalr/signalr-8.0.7.min.js"></script>
     <script src="~/js/notifications-hub.js" asp-append-version="true"></script>
 
     <script>

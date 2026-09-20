@@ -1,4 +1,7 @@
 @model List<PEMS.Application.DTOs.ShiftHandoverListDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex justify-content-end align-items-center mb-2">
     <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> New Handover</a>
@@ -29,7 +32,7 @@
 
 <div class="content-card">
     <table class="table table-enterprise mb-0">
-        <thead><tr><th>#</th><th>Outgoing</th><th>Incoming</th><th>Shift</th><th>Handover Date</th><th>Status</th><th>Items</th></tr></thead>
+        <thead><tr><th>#</th><th>@Localizer["Outgoing"]</th><th>@Localizer["Incoming"]</th><th>@Localizer["Shift"]</th><th>@Localizer["Handover Date"]</th><th>@Localizer["Status"]</th><th>@Localizer["Items"]</th></tr></thead>
         <tbody>
             @foreach (var h in Model)
             {
@@ -52,5 +55,5 @@
             }
         </tbody>
     </table>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هنوز تحویل شیفتی ثبت نشده.</p> }
+    @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هنوز تحویل شیفتی ثبت نشده."]</p> }
 </div>

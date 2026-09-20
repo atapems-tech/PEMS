@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.StorageRouteUpsertRequest
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var providers = (List<PEMS.Application.DTOs.StorageProviderDto>)ViewBag.Providers;
 }
@@ -14,9 +17,9 @@
             <input asp-for="DocumentType" class="form-control" />
         </div>
         <div class="col-md-4">
-            <label class="form-label">Storage Provider</label>
+            <label class="form-label">@Localizer["Storage Provider"]</label>
             <select asp-for="StorageProviderId" class="form-select" required>
-                <option value="">-- select --</option>
+                <option value="">@Localizer["-- select --"]</option>
                 @foreach (var p in providers) { <option value="@p.StorageProviderId" selected="@(p.StorageProviderId == Model.StorageProviderId)">@p.Name (@p.ProviderType)</option> }
             </select>
         </div>
@@ -29,12 +32,12 @@
             <input asp-for="Priority" type="number" class="form-control" />
         </div>
         <div class="col-md-3">
-            <div class="form-check mt-4"><input asp-for="IsEnabled" class="form-check-input" /><label class="form-check-label" asp-for="IsEnabled">Enabled</label></div>
-            <div class="form-check"><input asp-for="IsDefault" class="form-check-input" /><label class="form-check-label" asp-for="IsDefault">Module Default</label></div>
+            <div class="form-check mt-4"><input asp-for="IsEnabled" class="form-check-input" /><label class="form-check-label" asp-for="IsEnabled">@Localizer["Enabled"]</label></div>
+            <div class="form-check"><input asp-for="IsDefault" class="form-check-input" /><label class="form-check-label" asp-for="IsDefault">@Localizer["Module Default"]</label></div>
         </div>
     </div>
     <div class="mt-4 d-flex gap-2">
-        <button type="submit" class="btn btn-pems-solid"><i class="bi bi-check2 me-1"></i> Save</button>
-        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        <button type="submit" class="btn btn-pems-solid"><i class="bi bi-check2 me-1"></i> @Localizer["Save"]</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
     </div>
 </div>

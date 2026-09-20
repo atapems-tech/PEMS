@@ -1,8 +1,11 @@
 @model List<PEMS.Domain.Entities.Crew>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex justify-content-end align-items-center mb-2">
     <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createCrewModal">
-        <i class="bi bi-plus-lg"></i> Crew جدید
+        <i class="bi bi-plus-lg"></i> @Localizer["Crew جدید"]
     </button>
 </div>
 
@@ -31,7 +34,7 @@
                         }
                         else
                         {
-                            <span class="badge bg-secondary">مستقل / پایدار</span>
+                            <span class="badge bg-secondary">@Localizer["مستقل / پایدار"]</span>
                         }
                     </div>
                 </div>
@@ -58,11 +61,11 @@
                 <form asp-action="AddMember" method="post" class="d-flex gap-1">
                     <input type="hidden" name="crewId" value="@crew.CrewId" />
                     <select name="employeeId" class="form-select form-select-sm" required>
-                        <option value="">کارمند...</option>
+                        <option value="">@Localizer["کارمند..."]</option>
                         @foreach (var e in (IEnumerable<dynamic>)ViewBag.Employees) { <option value="@e.EmployeeId">@e.FullName</option> }
                     </select>
                     <select name="roleId" class="form-select form-select-sm" required>
-                        <option value="">نقش...</option>
+                        <option value="">@Localizer["نقش..."]</option>
                         @foreach (var r in (IEnumerable<dynamic>)ViewBag.MaintenanceRoles) { <option value="@r.MaintenanceRoleId">@r.Name</option> }
                     </select>
                     <button type="submit" class="btn btn-outline-primary btn-sm text-nowrap"><i class="bi bi-plus-lg"></i></button>
@@ -73,33 +76,33 @@
 </div>
 @if (!Model.Any())
 {
-    <div class="content-card"><p class="text-muted text-center py-4 mb-0">هنوز Crew ای ساخته نشده.</p></div>
+    <div class="content-card"><p class="text-muted text-center py-4 mb-0">@Localizer["هنوز Crew ای ساخته نشده."]</p></div>
 }
 
 <div class="modal fade" id="createCrewModal" tabindex="-1">
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="CreateCrew" method="post">
-            <div class="modal-header"><h6 class="modal-title">Crew جدید</h6></div>
+            <div class="modal-header"><h6 class="modal-title">@Localizer["Crew جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">کد</label>
-                    <input name="code" class="form-control form-control-sm" required placeholder="مثلاً PUMP-CREW-1" />
+                    <label class="form-label small">@Localizer["کد"]</label>
+                    <input name="code" class="form-control form-control-sm" required placeholder="@Localizer["مثلاً PUMP-CREW-1"]" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">نام</label>
-                    <input name="name" class="form-control form-control-sm" required placeholder="مثلاً Pump Maintenance Crew" />
+                    <label class="form-label small">@Localizer["نام"]</label>
+                    <input name="name" class="form-control form-control-sm" required placeholder="@Localizer["مثلاً Pump Maintenance Crew"]" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">Work Order اختصاصی (اختیاری)</label>
+                    <label class="form-label small">@Localizer["Work Order اختصاصی (اختیاری)"]</label>
                     <select name="workOrderId" class="form-select form-select-sm">
-                        <option value="">-- مستقل / پایدار --</option>
+                        <option value="">@Localizer["-- مستقل / پایدار --"]</option>
                         @foreach (var w in (IEnumerable<dynamic>)ViewBag.WorkOrders) { <option value="@w.WorkOrderId">@w.WorkOrderNumber</option> }
                     </select>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
             </div>
         </form>
     </div></div>

@@ -19,7 +19,7 @@
                 <input name="transmittalNo" class="form-control" placeholder="e.g. TR-2026-001" required />
             </div>
             <div class="col-md-6">
-                <label class="form-label">Project</label>
+                <label class="form-label">@Localizer["Project"]</label>
                 <select name="projectId" class="form-select" required>
                     @foreach (var p in projects)
                     {
@@ -28,7 +28,7 @@
                 </select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">From</label>
+                <label class="form-label">@Localizer["From"]</label>
                 <input name="from" class="form-control" placeholder="e.g. Engineering Department" required />
             </div>
             <div class="col-md-6">
@@ -36,15 +36,15 @@
                 <input name="to" class="form-control" placeholder="e.g. Contractor XYZ" />
             </div>
             <div class="col-md-6">
-                <label class="form-label">Purpose</label>
+                <label class="form-label">@Localizer["Purpose"]</label>
                 <select name="purpose" class="form-select">
-                    <option value="IFA">IFA - Issued for Approval</option>
-                    <option value="IFR">IFR - Issue for Review and Comments</option>
+                    <option value="IFA">@Localizer["IFA - Issued for Approval"]</option>
+                    <option value="IFR">@Localizer["IFR - Issue for Review and Comments"]</option>
                     <option value="IFI">IFI - Issue for Information</option>
-                    <option value="FI">FI - Final Issue (without comments)</option>
-                    <option value="For Approval">For Approval (legacy)</option>
-                    <option value="For Construction">For Construction (legacy)</option>
-                    <option value="For Information" selected>For Information (legacy)</option>
+                    <option value="FI">@Localizer["FI - Final Issue (without comments)"]</option>
+                    <option value="For Approval">@Localizer["For Approval (legacy)"]</option>
+                    <option value="For Construction">@Localizer["For Construction (legacy)"]</option>
+                    <option value="For Information" selected>@Localizer["For Information (legacy)"]</option>
                     <option value="For Review">For Review (legacy)</option>
                 </select>
             </div>
@@ -56,7 +56,7 @@
                 </div>
             </div>
             <div class="col-12">
-                <label class="form-label">Description</label>
+                <label class="form-label">@Localizer["Description"]</label>
                 <textarea name="description" class="form-control" rows="2"></textarea>
             </div>
 
@@ -85,7 +85,7 @@
                                 <span class="text-muted small">(Rev @d.RevisionNo &middot; @d.DisciplineName &middot; @d.Status)</span>
                                 @if ((bool)d.IsOnHold)
                                 {
-                                    <span class="badge bg-warning text-dark">On Hold</span>
+                                    <span class="badge bg-warning text-dark">@Localizer["On Hold"]</span>
                                 }
                             </label>
                         </div>
@@ -100,23 +100,23 @@
 
         <div class="mt-4">
             <button type="submit" class="btn btn-pems-solid">Create Transmittal</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
         </div>
     </form>
 </div>
 
 <template id="recipientRowTemplate">
     <div class="row g-2 mb-2 recipient-row align-items-center">
-        <div class="col-md-3"><input name="recipientName" class="form-control form-control-sm" placeholder="Name" /></div>
+        <div class="col-md-3"><input name="recipientName" class="form-control form-control-sm" placeholder="@Localizer["Name"]" /></div>
         <div class="col-md-3">
             <select name="recipientType" class="form-select form-select-sm">
                 <option value="External">External</option>
-                <option value="Internal">Internal</option>
-                <option value="Vendor">Vendor</option>
-                <option value="Client">Client</option>
+                <option value="Internal">@Localizer["Internal"]</option>
+                <option value="Vendor">@Localizer["Vendor"]</option>
+                <option value="Client">@Localizer["Client"]</option>
             </select>
         </div>
-        <div class="col-md-3"><input name="recipientOrganization" class="form-control form-control-sm" placeholder="Organization" /></div>
+        <div class="col-md-3"><input name="recipientOrganization" class="form-control form-control-sm" placeholder="@Localizer["Organization"]" /></div>
         <div class="col-md-2 form-check">
             <input type="checkbox" class="form-check-input" name="recipientResponseRequired" value="true" />
             <label class="form-check-label small">Response req.</label>

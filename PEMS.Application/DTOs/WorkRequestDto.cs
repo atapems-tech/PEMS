@@ -44,8 +44,24 @@ public class WorkRequestDetailDto
     public int? LinkedWorkOrderId { get; set; }
     public string? LinkedWorkOrderNumber { get; set; }
 
+    /// <summary>ممیزی کسب‌وکاری Work Request (Append-only، جدا از تاریخچه‌ی گردش‌کار).</summary>
     public List<WorkRequestStatusHistoryDto> StatusHistory { get; set; } = new();
+
+    /// <summary>
+    /// مدل خواندنی مرکزی گردش‌کار (مراحل، مرحله‌ی جاری، اکشن‌های مجاز، شرکت‌کنندگان، تاریخچه). null = رکورد Legacy
+    /// (هنوز Instance ندارد) یا پیش‌نویس (هنوز ارسال نشده). UI ساختار گردش‌کار را فقط از همین می‌خواند.
+    /// </summary>
+    public PEMS.WorkflowPlatform.Interfaces.WorkflowRuntimeViewModel? Workflow { get; set; }
+
+    /// <summary>تصمیم سمت‌سرور: آیا اکشن «تبدیل به WorkOrder» (اکشن کسب‌وکاری) در دسترس کاربر جاری است.</summary>
+    public bool CanConvert { get; set; }
+
+    /// <summary>رکورد قبل از مهاجرت که هنوز Instance گردش‌کار ندارد (مسیر Legacy).</summary>
+    public bool IsLegacyWithoutWorkflow { get; set; }
 }
+
+/// <summary>کاربر اجراکننده: شناسه‌ی کارمند + نقش‌های واقعی. توسط Controller از سشن سمت‌سرور ساخته می‌شود، نه از ورودی کاربر.</summary>
+public sealed record WorkRequestActor(int? EmployeeId, IReadOnlyList<string> Roles);
 
 public class WorkRequestStatusHistoryDto
 {

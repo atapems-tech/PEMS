@@ -1,16 +1,19 @@
 ﻿@model PEMS.Application.DTOs.MRDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 
 <div class="content-card mb-3">
     <div class="row g-3">
         <div class="col-md-3"><strong>MR Number:</strong> @Model.MRNumber</div>
-        <div class="col-md-3"><strong>Project:</strong> @Model.ProjectName</div>
-        <div class="col-md-3"><strong>Discipline:</strong> @Model.DisciplineName</div>
+        <div class="col-md-3"><strong>@Localizer["Project:"]</strong> @Model.ProjectName</div>
+        <div class="col-md-3"><strong>@Localizer["Discipline:"]</strong> @Model.DisciplineName</div>
         <div class="col-md-3"><strong>Equipment Tag:</strong> @Model.EquipmentTagNumber</div>
         <div class="col-md-3"><strong>Required Date:</strong> @(Model.RequiredDate?.ToString("yyyy-MM-dd") ?? "-")</div>
         <div class="col-md-3"><strong>Responsible:</strong> @Model.ResponsibleEngineerName</div>
         <div class="col-md-6">
-            <strong>Status:</strong>
+            <strong>@Localizer["Status:"]</strong>
             <form asp-action="ChangeStatus" method="post" class="d-inline">
                 <input type="hidden" name="mrId" value="@Model.MRId" />
                 <select name="status" class="form-select form-select-sm d-inline w-auto" onchange="this.form.submit()">
@@ -27,10 +30,10 @@
 </div>
 
 <div class="content-card mb-3">
-    <h6 class="mb-3">Items</h6>
+    <h6 class="mb-3">@Localizer["Items"]</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
     <table class="table table-enterprise">
-        <thead><tr><th>Description</th><th>Part No</th><th>Qty</th><th>Unit</th></tr></thead>
+        <thead><tr><th>@Localizer["Description"]</th><th>@Localizer["Part No"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Unit"]</th></tr></thead>
         <tbody>
             @foreach (var i in Model.Items)
             {
@@ -47,8 +50,8 @@
     <table class="table table-enterprise">
         <thead>
             <tr>
-                <th>MRQ No</th><th>Vendor</th><th>Amount</th><th>Quotation Status</th>
-                <th>Technical</th><th>Commercial</th><th>Approval</th><th></th>
+                <th>@Localizer["MRQ No"]</th><th>@Localizer["Vendor"]</th><th>@Localizer["Amount"]</th><th>@Localizer["Quotation Status"]</th>
+                <th>@Localizer["Technical"]</th><th>@Localizer["Commercial"]</th><th>@Localizer["Approval"]</th><th></th>
             </tr>
         </thead>
         <tbody>
@@ -79,7 +82,7 @@
                                 { <option value="@v" selected="@(v == q.ApprovalStatus)">@v</option> }
                             </select>
 
-                            <button type="submit" class="btn btn-sm btn-outline-primary">Save</button>
+                            <button type="submit" class="btn btn-sm btn-outline-primary">@Localizer["Save"]</button>
                         </form>
                     </td>
                 </tr>
@@ -98,12 +101,12 @@
     <h6 class="mb-3">Add New Quotation (MRQ)</h6>
     <form asp-action="AddQuotation" method="post" class="row g-2 align-items-end">
         <input type="hidden" name="mrId" value="@Model.MRId" />
-        <div class="col-md-2"><input name="mrqNumber" class="form-control form-control-sm" placeholder="MRQ No" required /></div>
+        <div class="col-md-2"><input name="mrqNumber" class="form-control form-control-sm" placeholder="@Localizer["MRQ No"]" required /></div>
         <div class="col-md-3"><input name="vendorName" class="form-control form-control-sm" placeholder="Vendor Name" required /></div>
         <div class="col-md-2"><input name="inquiryDate" type="date" class="form-control form-control-sm" /></div>
-        <div class="col-md-2"><input name="quotedAmount" type="number" step="0.01" class="form-control form-control-sm" placeholder="Amount" /></div>
+        <div class="col-md-2"><input name="quotedAmount" type="number" step="0.01" class="form-control form-control-sm" placeholder="@Localizer["Amount"]" /></div>
         <div class="col-md-1"><input name="currency" class="form-control form-control-sm" value="USD" /></div>
-        <div class="col-md-2"><button type="submit" class="btn btn-sm btn-pems-solid w-100">Add</button></div>
+        <div class="col-md-2"><button type="submit" class="btn btn-sm btn-pems-solid w-100">@Localizer["Add"]</button></div>
     </form>
 </div>
 
@@ -118,7 +121,7 @@
         <h6 class="mb-3"><i class="bi bi-envelope-paper"></i> Related Correspondence</h6>
         <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
         <table class="table table-enterprise">
-            <thead><tr><th>Type</th><th>Letter No</th><th>Subject</th><th>Date</th><th>Status</th><th></th></tr></thead>
+            <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Letter No"]</th><th>@Localizer["Subject"]</th><th>@Localizer["Date"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
             <tbody>
                 @foreach (var l in relatedLettersMR)
                 {

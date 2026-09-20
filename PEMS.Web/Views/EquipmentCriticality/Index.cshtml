@@ -1,8 +1,11 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.EquipmentCriticalityListDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex justify-content-end align-items-center mb-2">
     <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#assessModal">
-        <i class="bi bi-plus-lg"></i> ثبت تحلیل جدید
+        <i class="bi bi-plus-lg"></i> @Localizer["ثبت تحلیل جدید"]
     </button>
 </div>
 <p class="text-muted small">
@@ -14,25 +17,25 @@
     <div class="col-md-3">
         <div class="content-card text-center">
             <div class="fs-3 fw-bold text-danger">@ViewBag.ClassACount</div>
-            <div class="text-muted small">کلاس A (بحرانی)</div>
+            <div class="text-muted small">@Localizer["کلاس A (بحرانی)"]</div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="content-card text-center">
             <div class="fs-3 fw-bold text-warning">@ViewBag.ClassBCount</div>
-            <div class="text-muted small">کلاس B (مهم)</div>
+            <div class="text-muted small">@Localizer["کلاس B (مهم)"]</div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="content-card text-center">
             <div class="fs-3 fw-bold text-secondary">@ViewBag.ClassCCount</div>
-            <div class="text-muted small">کلاس C (عادی)</div>
+            <div class="text-muted small">@Localizer["کلاس C (عادی)"]</div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="content-card text-center">
             <div class="fs-3 fw-bold">@ViewBag.UnassessedCount</div>
-            <div class="text-muted small">هنوز تحلیل نشده</div>
+            <div class="text-muted small">@Localizer["هنوز تحلیل نشده"]</div>
         </div>
     </div>
 </div>
@@ -40,19 +43,19 @@
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('EquipmentCriticality')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="pems-grid-scroll">
     <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="EquipmentCriticality">
         <thead>
             <tr>
-                <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="200">Equipment</th>
-                <th data-col-key="class" data-resizable="true" data-min-width="70" data-max-width="120">کلاس</th>
-                <th data-col-key="risk" data-resizable="true" data-min-width="80" data-max-width="140">ریسک</th>
-                <th data-col-key="safety" data-resizable="true" data-min-width="120" data-max-width="280">اثر ایمنی</th>
-                <th data-col-key="production" data-resizable="true" data-min-width="120" data-max-width="280">اثر تولید</th>
-                <th data-col-key="environment" data-resizable="true" data-min-width="120" data-max-width="280">اثر زیست‌محیطی</th>
+                <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Equipment"]</th>
+                <th data-col-key="class" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["کلاس"]</th>
+                <th data-col-key="risk" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["ریسک"]</th>
+                <th data-col-key="safety" data-resizable="true" data-min-width="120" data-max-width="280">@Localizer["اثر ایمنی"]</th>
+                <th data-col-key="production" data-resizable="true" data-min-width="120" data-max-width="280">@Localizer["اثر تولید"]</th>
+                <th data-col-key="environment" data-resizable="true" data-min-width="120" data-max-width="280">@Localizer["اثر زیست‌محیطی"]</th>
             </tr>
         </thead>
         <tbody>
@@ -70,7 +73,7 @@
         </tbody>
     </table>
     </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">هنوز تحلیلی ثبت نشده.</p> }
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هنوز تحلیلی ثبت نشده."]</p> }
 
     @{
         var qsParts = new List<string>();
@@ -99,38 +102,38 @@
 <div class="modal fade" id="assessModal" tabindex="-1">
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="Assess" method="post">
-            <div class="modal-header"><h6 class="modal-title">تحلیل بحرانی‌بودن تجهیز</h6></div>
+            <div class="modal-header"><h6 class="modal-title">@Localizer["تحلیل بحرانی‌بودن تجهیز"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">تجهیز</label>
-                    <input type="text" class="form-control form-control-sm" placeholder="جستجوی تگ، نام..."
+                    <label class="form-label small">@Localizer["تجهیز"]</label>
+                    <input type="text" class="form-control form-control-sm" placeholder="@Localizer["جستجوی تگ، نام..."]"
                            data-pems-search data-search-type="Equipment" data-search-hidden="#criticalityEquipmentIdHidden" autocomplete="off" required />
                     <input type="hidden" name="equipmentId" id="criticalityEquipmentIdHidden" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">کلاس بحرانی‌بودن</label>
+                    <label class="form-label small">@Localizer["کلاس بحرانی‌بودن"]</label>
                     <select name="criticalityClass" class="form-select form-select-sm" required>
-                        <option value="A">A - بحرانی</option>
-                        <option value="B">B - مهم</option>
-                        <option value="C">C - عادی</option>
+                        <option value="A">@Localizer["A - بحرانی"]</option>
+                        <option value="B">@Localizer["B - مهم"]</option>
+                        <option value="C">@Localizer["C - عادی"]</option>
                     </select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">سطح ریسک</label>
+                    <label class="form-label small">@Localizer["سطح ریسک"]</label>
                     <select name="riskLevel" class="form-select form-select-sm">
-                        <option value="Low">Low</option>
-                        <option value="Medium">Medium</option>
-                        <option value="High">High</option>
+                        <option value="Low">@Localizer["Low"]</option>
+                        <option value="Medium">@Localizer["Medium"]</option>
+                        <option value="High">@Localizer["High"]</option>
                     </select>
                 </div>
-                <div class="mb-2"><label class="form-label small">اثر ایمنی</label><input name="safetyImpact" class="form-control form-control-sm" /></div>
-                <div class="mb-2"><label class="form-label small">اثر تولید</label><input name="productionImpact" class="form-control form-control-sm" /></div>
-                <div class="mb-2"><label class="form-label small">اثر زیست‌محیطی</label><input name="environmentImpact" class="form-control form-control-sm" /></div>
-                <div class="mb-2"><label class="form-label small">توضیحات</label><textarea name="description" class="form-control form-control-sm" rows="2"></textarea></div>
+                <div class="mb-2"><label class="form-label small">@Localizer["اثر ایمنی"]</label><input name="safetyImpact" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><label class="form-label small">@Localizer["اثر تولید"]</label><input name="productionImpact" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><label class="form-label small">@Localizer["اثر زیست‌محیطی"]</label><input name="environmentImpact" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><label class="form-label small">@Localizer["توضیحات"]</label><textarea name="description" class="form-control form-control-sm" rows="2"></textarea></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">ثبت</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت"]</button>
             </div>
         </form>
     </div></div>

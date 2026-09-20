@@ -30,13 +30,13 @@
                         <div class="small text-muted mb-3 flex-grow-1">@Localizer["IC_" + e.Key + "_Flow"]</div>
                         @if (e.Mode == ImportCatalog.LaunchMode.Dialog)
                         {
-                            <button type="button" class="btn btn-sm btn-pems-solid align-self-start" data-bs-toggle="modal" data-bs-target="#icModal_@e.Key">
+                            <button type="button" class="btn btn-sm btn-outline-primary align-self-start" data-bs-toggle="modal" data-bs-target="#icModal_@e.Key">
                                 <i class="bi bi-box-arrow-in-right"></i> @Localizer["IC_Import"]
                             </button>
                         }
                         else
                         {
-                            <a asp-controller="@e.Controller" asp-action="@e.Action" class="btn btn-sm btn-pems-solid align-self-start">
+                            <a asp-controller="@e.Controller" asp-action="@e.Action" class="btn btn-sm btn-outline-primary align-self-start">
                                 <i class="bi bi-box-arrow-in-right"></i> @Localizer["IC_Open"]
                             </a>
                         }

@@ -1,4 +1,7 @@
 @model PEMS.Web.Models.BarcodePanelViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @* طبق «PEMS — Enterprise Barcode System» بند «UI»: یک پارتیال مشترک برای تب Barcode - روی هر
    صفحه‌ی Details موجودی که ازش استفاده کند (Equipment/MaterialItem/...) بدون تکرار کد. *@
 
@@ -12,9 +15,9 @@
                 <input type="hidden" name="targetType" value="@Model.TargetType" />
                 <input type="hidden" name="targetId" value="@Model.TargetId" />
                 <div>
-                    <label class="form-label small mb-0">Symbology</label>
+                    <label class="form-label small mb-0">@Localizer["Symbology"]</label>
                     <select name="symbology" class="form-select form-select-sm">
-                        <option value="Code128">Code128</option>
+                        <option value="Code128">@Localizer["Code128"]</option>
                         <option value="QR">QR</option>
                     </select>
                 </div>
@@ -32,10 +35,10 @@
             </div>
             <div class="col-md-9">
                 <div class="row g-2 small mb-2">
-                    <div class="col-md-3"><strong>Symbology</strong><div>@b.Symbology</div></div>
-                    <div class="col-md-3"><strong>Status</strong><div><span class="badge @(b.Status == "Active" ? "bg-success" : "bg-secondary")">@b.Status</span></div></div>
-                    <div class="col-md-3"><strong>Prints</strong><div>@b.PrintCount</div></div>
-                    <div class="col-md-3"><strong>Created</strong><div>@b.CreatedDate.ToString("yyyy-MM-dd")</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Symbology"]</strong><div>@b.Symbology</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Status"]</strong><div><span class="badge @(b.Status == "Active" ? "bg-success" : "bg-secondary")">@b.Status</span></div></div>
+                    <div class="col-md-3"><strong>@Localizer["Prints"]</strong><div>@b.PrintCount</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Created"]</strong><div>@b.CreatedDate.ToString("yyyy-MM-dd")</div></div>
                 </div>
 
                 @if (Model.CanManage)
@@ -52,7 +55,7 @@
                         <form asp-controller="Barcode" asp-action="Revoke" asp-route-id="@b.BarcodeIdentityId" method="post">
                             <input type="hidden" name="targetType" value="@Model.TargetType" />
                             <input type="hidden" name="targetId" value="@Model.TargetId" />
-                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Revoke this barcode? It can never be reactivated.')">Revoke</button>
+                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Revoke this barcode? It can never be reactivated.')">@Localizer["Revoke"]</button>
                         </form>
                         <form asp-controller="Barcode" asp-action="Replace" asp-route-id="@b.BarcodeIdentityId" method="post">
                             <input type="hidden" name="targetType" value="@Model.TargetType" />

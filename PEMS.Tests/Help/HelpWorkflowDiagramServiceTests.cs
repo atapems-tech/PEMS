@@ -59,8 +59,10 @@ public class HelpWorkflowDiagramServiceTests
     public async Task BuildAsync_MultiplePublishedVersions_UsesHighestVersionNumber()
     {
         var ctx = CreateContext(nameof(BuildAsync_MultiplePublishedVersions_UsesHighestVersionNumber));
-        var (def, v1) = await SeedWorkflowAsync(ctx, "TestModule", "TestCategory", 1, "Published");
-        var v2 = new WorkflowVersion { WorkflowDefinitionId = def.WorkflowDefinitionId, VersionNumber = 2, Status = "Published" };
+        // Phase 1 Hardening: نسخه‌ی Published تغییرناپذیر است؛ پس مراحل/گذارها را روی Draft می‌سازیم و بعد منتشر می‌کنیم
+        // (همان ترتیب واقعی چرخه‌ی عمر). ادعاهای تست بدون تغییر است.
+        var (def, v1) = await SeedWorkflowAsync(ctx, "TestModule", "TestCategory", 1, "Draft");
+        var v2 = new WorkflowVersion { WorkflowDefinitionId = def.WorkflowDefinitionId, VersionNumber = 2, Status = "Draft" };
         var v3Draft = new WorkflowVersion { WorkflowDefinitionId = def.WorkflowDefinitionId, VersionNumber = 3, Status = "Draft" };
         ctx.WorkflowVersions.AddRange(v2, v3Draft);
         await ctx.SaveChangesAsync();
@@ -68,6 +70,9 @@ public class HelpWorkflowDiagramServiceTests
         var stageV1 = new WorkflowStage { WorkflowVersionId = v1.WorkflowVersionId, Name = "OldStage", StageOrder = 0 };
         var stageV2 = new WorkflowStage { WorkflowVersionId = v2.WorkflowVersionId, Name = "NewStage", StageOrder = 0 };
         ctx.WorkflowStages.AddRange(stageV1, stageV2);
+        await ctx.SaveChangesAsync();
+        v1.Status = "Published";
+        v2.Status = "Published";
         await ctx.SaveChangesAsync();
 
         var svc = new HelpWorkflowDiagramService(ctx);
@@ -83,7 +88,9 @@ public class HelpWorkflowDiagramServiceTests
     public async Task BuildAsync_ReflectsExactStagesAndTransitions_NoInventedEdges()
     {
         var ctx = CreateContext(nameof(BuildAsync_ReflectsExactStagesAndTransitions_NoInventedEdges));
-        var (_, version) = await SeedWorkflowAsync(ctx, "TestModule", "TestCategory", 1, "Published");
+        // Phase 1 Hardening: نسخه‌ی Published تغییرناپذیر است؛ پس مراحل/گذارها را روی Draft می‌سازیم و بعد منتشر می‌کنیم
+        // (همان ترتیب واقعی چرخه‌ی عمر). ادعاهای تست بدون تغییر است.
+        var (_, version) = await SeedWorkflowAsync(ctx, "TestModule", "TestCategory", 1, "Draft");
 
         var check = new WorkflowStage { WorkflowVersionId = version.WorkflowVersionId, Name = "Check", StageOrder = 0 };
         var approval = new WorkflowStage { WorkflowVersionId = version.WorkflowVersionId, Name = "Approval", StageOrder = 1 };
@@ -112,6 +119,9 @@ public class HelpWorkflowDiagramServiceTests
         });
         await ctx.SaveChangesAsync();
 
+        version.Status = "Published";
+        await ctx.SaveChangesAsync();
+
         var svc = new HelpWorkflowDiagramService(ctx);
         var result = await svc.BuildAsync("TestModule", "TestCategory", "en");
 
@@ -137,12 +147,17 @@ public class HelpWorkflowDiagramServiceTests
     public async Task BuildAsync_PersianLanguage_UsesVerifiedTranslationDictionary_FallsBackToRawNameIfUnknown()
     {
         var ctx = CreateContext(nameof(BuildAsync_PersianLanguage_UsesVerifiedTranslationDictionary_FallsBackToRawNameIfUnknown));
-        var (_, version) = await SeedWorkflowAsync(ctx, "TestModule", "TestCategory", 1, "Published");
+        // Phase 1 Hardening: نسخه‌ی Published تغییرناپذیر است؛ پس مراحل/گذارها را روی Draft می‌سازیم و بعد منتشر می‌کنیم
+        // (همان ترتیب واقعی چرخه‌ی عمر). ادعاهای تست بدون تغییر است.
+        var (_, version) = await SeedWorkflowAsync(ctx, "TestModule", "TestCategory", 1, "Draft");
 
         // "Check" یک نام واقعی‌تاییدشده در دیکشنری است؛ "TotallyMadeUpStageName" نیست
         var known = new WorkflowStage { WorkflowVersionId = version.WorkflowVersionId, Name = "Check", StageOrder = 0 };
         var unknown = new WorkflowStage { WorkflowVersionId = version.WorkflowVersionId, Name = "TotallyMadeUpStageName", StageOrder = 1 };
         ctx.WorkflowStages.AddRange(known, unknown);
+        await ctx.SaveChangesAsync();
+
+        version.Status = "Published";
         await ctx.SaveChangesAsync();
 
         var svc = new HelpWorkflowDiagramService(ctx);

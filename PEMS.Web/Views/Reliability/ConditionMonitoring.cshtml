@@ -1,5 +1,8 @@
 @model List<PEMS.Application.DTOs.ConditionMonitoringPointDto>
 @using PEMS.Application.DTOs
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var foundation = (ConditionMonitoringFoundationStatusDto)ViewBag.Foundation;
     var equipmentId = (int?)ViewBag.EquipmentId;
@@ -15,7 +18,7 @@
 }
 
 <div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">← Reliability</a>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["← Reliability"]</a>
 </div>
 <p class="text-muted small">
     طبق «PEMS Phase 9» بند ۱۵: زیرساخت نرم‌افزاری همیشه آماده است - آنچه به داده‌ی واقعی نیاز
@@ -52,7 +55,7 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-2 align-items-end">
         <div class="col-auto">
-            <label class="form-label small mb-0">Equipment ID</label>
+            <label class="form-label small mb-0">@Localizer["Equipment ID"]</label>
             <input type="number" name="equipmentId" value="@equipmentId" class="form-control form-control-sm" style="width:140px" />
         </div>
         <div class="col-auto"><button type="submit" class="btn btn-sm btn-pems-solid">Load Points</button></div>
@@ -64,7 +67,7 @@
     <div class="content-card mb-3">
         <h6 class="mb-2">Monitoring Points — Equipment #@equipmentId</h6>
         <table class="table table-enterprise table-sm mb-0">
-            <thead><tr><th>Variable</th><th>Tag</th><th>Unit</th><th class="text-end">Alarm Range</th><th class="text-end">Readings</th><th>Last Reading</th></tr></thead>
+            <thead><tr><th>Variable</th><th>@Localizer["Tag"]</th><th>@Localizer["Unit"]</th><th class="text-end">Alarm Range</th><th class="text-end">Readings</th><th>Last Reading</th></tr></thead>
             <tbody>
                 @foreach (var p in Model)
                 {
@@ -79,7 +82,7 @@
                 }
             </tbody>
         </table>
-        @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">هیچ نقطه‌ی پایشی برای این تجهیز تعریف نشده.</p> }
+        @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هیچ نقطه‌ی پایشی برای این تجهیز تعریف نشده."]</p> }
     </div>
 
     <div class="row g-3">
@@ -95,8 +98,8 @@
                             @foreach (var vt in variableTypes) { <option value="@vt">@vt</option> }
                         </select>
                     </div>
-                    <div class="mb-2"><label class="form-label small">Tag</label><input name="tag" class="form-control form-control-sm" required /></div>
-                    <div class="mb-2"><label class="form-label small">Unit</label><input name="unit" class="form-control form-control-sm" /></div>
+                    <div class="mb-2"><label class="form-label small">@Localizer["Tag"]</label><input name="tag" class="form-control form-control-sm" required /></div>
+                    <div class="mb-2"><label class="form-label small">@Localizer["Unit"]</label><input name="unit" class="form-control form-control-sm" /></div>
                     <div class="row g-2 mb-2">
                         <div class="col"><label class="form-label small">Alarm Low</label><input type="number" step="0.01" name="alarmLow" class="form-control form-control-sm" /></div>
                         <div class="col"><label class="form-label small">Alarm High</label><input type="number" step="0.01" name="alarmHigh" class="form-control form-control-sm" /></div>
@@ -118,10 +121,10 @@
                         </select>
                     </div>
                     <div class="row g-2 mb-2">
-                        <div class="col"><label class="form-label small">Date</label><input type="datetime-local" name="readingDate" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" /></div>
-                        <div class="col"><label class="form-label small">Value</label><input type="number" step="0.01" name="value" class="form-control form-control-sm" required /></div>
+                        <div class="col"><label class="form-label small">@Localizer["Date"]</label><input type="datetime-local" name="readingDate" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" /></div>
+                        <div class="col"><label class="form-label small">@Localizer["Value"]</label><input type="number" step="0.01" name="value" class="form-control form-control-sm" required /></div>
                     </div>
-                    <div class="mb-2"><label class="form-label small">Source</label><input name="source" value="Manual" class="form-control form-control-sm" /></div>
+                    <div class="mb-2"><label class="form-label small">@Localizer["Source"]</label><input name="source" value="Manual" class="form-control form-control-sm" /></div>
                     <button type="submit" class="btn btn-sm btn-pems-solid">Record Reading</button>
                 </form>
             </div>

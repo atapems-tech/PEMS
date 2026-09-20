@@ -1,4 +1,7 @@
 ﻿@model List<string>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var existingTags = (List<string>)ViewBag.ExistingTags;
 }
@@ -29,7 +32,7 @@ else
                 <div class="col-md-4">
                     <label class="form-label small">Discipline for all selected tags</label>
                     <select name="disciplineId" class="form-select form-select-sm" required id="scanDisciplineSelect">
-                        <option value="">-- select --</option>
+                        <option value="">@Localizer["-- select --"]</option>
                         @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines)
                         {
                             <option value="@d.DisciplineId">@d.Name</option>

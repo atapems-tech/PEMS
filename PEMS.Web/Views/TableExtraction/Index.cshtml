@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.TableExtractionAttachmentListDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card mb-3">
     <p class="text-muted mb-0">
@@ -11,19 +14,19 @@
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('TableExtraction')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:70vh; overflow-y:auto;">
         <table class="table table-enterprise pems-grid-table" data-grid-key="TableExtraction">
             <thead>
                 <tr>
-                    <th data-col-key="file" data-resizable="true" data-min-width="140" data-max-width="320">File</th>
+                    <th data-col-key="file" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["File"]</th>
                     <th data-col-key="ext" data-resizable="true" data-min-width="80" data-max-width="140">Extension</th>
-                    <th data-col-key="uploaded" data-resizable="true" data-min-width="120" data-max-width="200">Uploaded</th>
-                    <th data-col-key="aiStatus" data-resizable="true" data-min-width="90" data-max-width="180">AI Status</th>
+                    <th data-col-key="uploaded" data-resizable="true" data-min-width="120" data-max-width="200">@Localizer["Uploaded"]</th>
+                    <th data-col-key="aiStatus" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["AI Status"]</th>
                     <th data-col-key="hint" data-resizable="true" data-min-width="200" data-max-width="400" style="min-width:260px;">Document hint (optional)</th>
-                    <th data-col-key="action" data-resizable="false" style="min-width:220px;">Action</th>
+                    <th data-col-key="action" data-resizable="false" style="min-width:220px;">@Localizer["Action"]</th>
                 </tr>
             </thead>
             <tbody>

@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.MaterialItemDetailDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var warehouses = (IEnumerable<dynamic>)ViewBag.Warehouses;
 }
@@ -15,11 +18,11 @@
 <div class="content-card mb-3">
     <div class="d-flex justify-content-between align-items-start">
         <div>
-            <h5 class="mb-1">@Model.MaterialCode @if (Model.IsCritical) { <i class="bi bi-star-fill text-warning" title="Critical"></i> }</h5>
+            <h5 class="mb-1">@Model.MaterialCode @if (Model.IsCritical) { <i class="bi bi-star-fill text-warning" title="@Localizer["Critical"]"></i> }</h5>
             <div class="text-muted">@Model.Description</div>
         </div>
         <div class="d-flex gap-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editMaterialModal"><i class="bi bi-pencil"></i> Edit</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editMaterialModal"><i class="bi bi-pencil"></i> @Localizer["Edit"]</button>
             <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#receiveStockModal"><i class="bi bi-box-arrow-in-down"></i> Receive Stock</button>
             <form asp-action="ToggleActive" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.MaterialItemId" />
@@ -29,14 +32,14 @@
     </div>
     <hr />
     <div class="row g-3">
-        <div class="col-md-3"><div class="text-muted small">Category</div><div>@(Model.CategoryName ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted small">Discipline</div><div>@(Model.DisciplineName ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted small">UOM</div><div>@(Model.UomCode ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted small">Manufacturer</div><div>@(Model.Manufacturer ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted small">Vendor</div><div>@(Model.VendorName ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted small">Model</div><div>@(Model.Model ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted small">Size</div><div>@(Model.Size ?? "-")</div></div>
-        <div class="col-md-3"><div class="text-muted small">Material Grade</div><div>@(Model.MaterialGrade ?? "-")</div></div>
+        <div class="col-md-3"><div class="text-muted small">@Localizer["Category"]</div><div>@(Model.CategoryName ?? "-")</div></div>
+        <div class="col-md-3"><div class="text-muted small">@Localizer["Discipline"]</div><div>@(Model.DisciplineName ?? "-")</div></div>
+        <div class="col-md-3"><div class="text-muted small">@Localizer["UOM"]</div><div>@(Model.UomCode ?? "-")</div></div>
+        <div class="col-md-3"><div class="text-muted small">@Localizer["Manufacturer"]</div><div>@(Model.Manufacturer ?? "-")</div></div>
+        <div class="col-md-3"><div class="text-muted small">@Localizer["Vendor"]</div><div>@(Model.VendorName ?? "-")</div></div>
+        <div class="col-md-3"><div class="text-muted small">@Localizer["Model"]</div><div>@(Model.Model ?? "-")</div></div>
+        <div class="col-md-3"><div class="text-muted small">@Localizer["Size"]</div><div>@(Model.Size ?? "-")</div></div>
+        <div class="col-md-3"><div class="text-muted small">@Localizer["Material Grade"]</div><div>@(Model.MaterialGrade ?? "-")</div></div>
     </div>
 </div>
 
@@ -47,14 +50,14 @@
     {
         <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-source" type="button"><i class="bi bi-file-earmark-excel"></i> Source Imports <span class="badge bg-secondary">@Model.SourceImports.Count</span></button></li>
     }
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-barcode" type="button"><i class="bi bi-upc-scan"></i> Barcode</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-barcode" type="button"><i class="bi bi-upc-scan"></i> @Localizer["Barcode"]</button></li>
 </ul>
 
 <div class="tab-content">
     <div class="tab-pane fade show active" id="tab-stock" role="tabpanel">
         <div class="content-card">
             <table class="table table-enterprise">
-                <thead><tr><th>Warehouse</th><th>Location</th><th>On Hand</th><th>Reserved</th><th>Available</th><th>Reorder Point</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Warehouse"]</th><th>@Localizer["Location"]</th><th>@Localizer["On Hand"]</th><th>Reserved</th><th>@Localizer["Available"]</th><th>@Localizer["Reorder Point"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var s in Model.Stocks)
                     {
@@ -90,7 +93,7 @@
                     جداگانه می‌ماند (رونویسی نمی‌شود).
                 </p>
                 <table class="table table-enterprise">
-                    <thead><tr><th>Source File</th><th>Import Date</th><th>MRS No</th><th>Vendor</th><th>PO No</th><th></th></tr></thead>
+                    <thead><tr><th>Source File</th><th>Import Date</th><th>@Localizer["MRS No"]</th><th>@Localizer["Vendor"]</th><th>PO No</th><th></th></tr></thead>
                     <tbody>
                         @foreach (var s in Model.SourceImports)
                         {
@@ -112,7 +115,7 @@
     <div class="tab-pane fade" id="tab-tx" role="tabpanel">
         <div class="content-card">
             <table class="table table-enterprise">
-                <thead><tr><th>Date</th><th>Type</th><th>Warehouse</th><th>Qty</th><th>Reference</th><th>By</th></tr></thead>
+                <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Type"]</th><th>@Localizer["Warehouse"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Reference"]</th><th>By</th></tr></thead>
                 <tbody>
                     @foreach (var t in Model.RecentTransactions)
                     {
@@ -127,7 +130,7 @@
                     }
                 </tbody>
             </table>
-            @if (!Model.RecentTransactions.Any()) { <p class="text-muted text-center py-4">هنوز تراکنشی ثبت نشده.</p> }
+            @if (!Model.RecentTransactions.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز تراکنشی ثبت نشده."]</p> }
         </div>
     </div>
 
@@ -140,28 +143,28 @@
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="ReceiveStock" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
-            <div class="modal-header"><h6 class="modal-title">دریافت کالا به انبار</h6></div>
+            <div class="modal-header"><h6 class="modal-title">@Localizer["دریافت کالا به انبار"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">اسکن بارکد انبار (اختیاری)</label>
+                    <label class="form-label small">@Localizer["اسکن بارکد انبار (اختیاری)"]</label>
                     <div class="input-group input-group-sm">
                         <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
                         <input type="text" id="receiveWarehouseScanInput" class="form-control" dir="ltr" placeholder="Scan Warehouse barcode..." />
-                        <button type="button" class="btn btn-outline-secondary" id="receiveWarehouseScanBtn">Resolve</button>
+                        <button type="button" class="btn btn-outline-secondary" id="receiveWarehouseScanBtn">@Localizer["Resolve"]</button>
                     </div>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">انبار</label>
+                    <label class="form-label small">@Localizer["انبار"]</label>
                     <select name="warehouseId" id="receiveWarehouseSelect" class="form-select form-select-sm" required>
                         @foreach (var w in warehouses) { <option value="@w.WarehouseId">@w.Code</option> }
                     </select>
                 </div>
-                <div class="mb-2"><label class="form-label small">مقدار</label><input name="quantity" type="number" step="0.001" class="form-control form-control-sm" required /></div>
-                <div class="mb-2"><label class="form-label small">دلیل / مرجع (اختیاری)</label><input name="reason" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><label class="form-label small">@Localizer["مقدار"]</label><input name="quantity" type="number" step="0.001" class="form-control form-control-sm" required /></div>
+                <div class="mb-2"><label class="form-label small">@Localizer["دلیل / مرجع (اختیاری)"]</label><input name="reason" class="form-control form-control-sm" /></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">ثبت</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت"]</button>
             </div>
         </form>
     </div></div>
@@ -174,12 +177,12 @@
             <input type="hidden" name="warehouseId" id="adjustWarehouseId" />
             <div class="modal-header"><h6 class="modal-title">اصلاح موجودی <span id="adjustWarehouseLabel" class="text-muted small"></span></h6></div>
             <div class="modal-body">
-                <div class="mb-2"><label class="form-label small">موجودی جدید (On Hand)</label><input name="newOnHandQuantity" id="adjustNewOnHand" type="number" step="0.001" class="form-control form-control-sm" required /></div>
-                <div class="mb-2"><label class="form-label small">دلیل</label><input name="reason" class="form-control form-control-sm" required /></div>
+                <div class="mb-2"><label class="form-label small">@Localizer["موجودی جدید (On Hand)"]</label><input name="newOnHandQuantity" id="adjustNewOnHand" type="number" step="0.001" class="form-control form-control-sm" required /></div>
+                <div class="mb-2"><label class="form-label small">@Localizer["دلیل"]</label><input name="reason" class="form-control form-control-sm" required /></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">ثبت</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت"]</button>
             </div>
         </form>
     </div></div>
@@ -193,17 +196,17 @@
             <div class="modal-header"><h6 class="modal-title">انتقال بین انبارها <span id="transferFromWarehouseLabel" class="text-muted small"></span></h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">انبار مقصد</label>
+                    <label class="form-label small">@Localizer["انبار مقصد"]</label>
                     <select name="toWarehouseId" class="form-select form-select-sm" required>
                         @foreach (var w in warehouses) { <option value="@w.WarehouseId">@w.Code</option> }
                     </select>
                 </div>
                 <div class="mb-2"><label class="form-label small">مقدار (حداکثر: <span id="transferAvailable"></span>)</label><input name="quantity" type="number" step="0.001" class="form-control form-control-sm" required /></div>
-                <div class="mb-2"><label class="form-label small">دلیل / مرجع (اختیاری)</label><input name="reason" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><label class="form-label small">@Localizer["دلیل / مرجع (اختیاری)"]</label><input name="reason" class="form-control form-control-sm" /></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">ثبت</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت"]</button>
             </div>
         </form>
     </div></div>
@@ -216,28 +219,28 @@
             <div class="modal-header"><h6 class="modal-title">Edit Material</h6></div>
             <div class="modal-body">
                 <div class="row g-3 mb-2">
-                    <div class="col-md-6"><label class="form-label">Material Code</label><input name="materialCode" value="@Model.MaterialCode" class="form-control" required /></div>
-                    <div class="col-md-6"><label class="form-label">Material Type</label><input name="materialType" value="@Model.MaterialType" class="form-control" /></div>
+                    <div class="col-md-6"><label class="form-label">@Localizer["Material Code"]</label><input name="materialCode" value="@Model.MaterialCode" class="form-control" required /></div>
+                    <div class="col-md-6"><label class="form-label">@Localizer["Material Type"]</label><input name="materialType" value="@Model.MaterialType" class="form-control" /></div>
                 </div>
-                <div class="mb-2"><label class="form-label">Description</label><input name="description" value="@Model.Description" class="form-control" required /></div>
-                <div class="mb-2"><label class="form-label">Long Description</label><textarea name="longDescription" class="form-control" rows="2">@Model.LongDescription</textarea></div>
+                <div class="mb-2"><label class="form-label">@Localizer["Description"]</label><input name="description" value="@Model.Description" class="form-control" required /></div>
+                <div class="mb-2"><label class="form-label">@Localizer["Long Description"]</label><textarea name="longDescription" class="form-control" rows="2">@Model.LongDescription</textarea></div>
                 <div class="row g-3 mb-2">
-                    <div class="col-md-6"><label class="form-label">Manufacturer</label><input name="manufacturer" value="@Model.Manufacturer" class="form-control" /></div>
-                    <div class="col-md-6"><label class="form-label">Manufacturer Part No.</label><input name="manufacturerPartNumber" value="@Model.ManufacturerPartNumber" class="form-control" /></div>
+                    <div class="col-md-6"><label class="form-label">@Localizer["Manufacturer"]</label><input name="manufacturer" value="@Model.Manufacturer" class="form-control" /></div>
+                    <div class="col-md-6"><label class="form-label">@Localizer["Manufacturer Part No."]</label><input name="manufacturerPartNumber" value="@Model.ManufacturerPartNumber" class="form-control" /></div>
                 </div>
                 <div class="row g-3 mb-2">
-                    <div class="col-md-4"><label class="form-label">Model</label><input name="model" value="@Model.Model" class="form-control" /></div>
-                    <div class="col-md-4"><label class="form-label">Size</label><input name="size" value="@Model.Size" class="form-control" /></div>
-                    <div class="col-md-4"><label class="form-label">Material Grade</label><input name="materialGrade" value="@Model.MaterialGrade" class="form-control" /></div>
+                    <div class="col-md-4"><label class="form-label">@Localizer["Model"]</label><input name="model" value="@Model.Model" class="form-control" /></div>
+                    <div class="col-md-4"><label class="form-label">@Localizer["Size"]</label><input name="size" value="@Model.Size" class="form-control" /></div>
+                    <div class="col-md-4"><label class="form-label">@Localizer["Material Grade"]</label><input name="materialGrade" value="@Model.MaterialGrade" class="form-control" /></div>
                 </div>
                 <div class="d-flex gap-3">
-                    <div class="form-check"><input class="form-check-input" type="checkbox" name="isStockItem" value="true" checked="@Model.IsStockItem" id="editIsStockItem" /><label class="form-check-label" for="editIsStockItem">Stock Item</label></div>
-                    <div class="form-check"><input class="form-check-input" type="checkbox" name="isCritical" value="true" checked="@Model.IsCritical" id="editIsCritical" /><label class="form-check-label" for="editIsCritical">Critical Spare</label></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" name="isStockItem" value="true" checked="@Model.IsStockItem" id="editIsStockItem" /><label class="form-check-label" for="editIsStockItem">@Localizer["Stock Item"]</label></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" name="isCritical" value="true" checked="@Model.IsCritical" id="editIsCritical" /><label class="form-check-label" for="editIsCritical">@Localizer["Critical Spare"]</label></div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-pems-solid">Save</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
             </div>
         </form>
     </div></div>

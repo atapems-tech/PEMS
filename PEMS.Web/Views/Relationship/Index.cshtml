@@ -1,4 +1,7 @@
 ﻿@model PEMS.Application.DTOs.RelationshipExplorationDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card mb-3">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
@@ -8,16 +11,16 @@
         </p>
         <div class="d-flex gap-2">
             <a asp-action="BulkSuggestions" class="btn btn-outline-warning btn-sm text-nowrap">
-                <i class="bi bi-check2-all"></i> تایید دسته‌جمعی اتصال‌ها
+                <i class="bi bi-check2-all"></i> @Localizer["تایید دسته‌جمعی اتصال‌ها"]
             </a>
             <a asp-action="GapReport" class="btn btn-outline-secondary btn-sm text-nowrap">
-                <i class="bi bi-clipboard-x"></i> گزارش تجهیزات ناقص
+                <i class="bi bi-clipboard-x"></i> @Localizer["گزارش تجهیزات ناقص"]
             </a>
         </div>
     </div>
     <form asp-action="Search" method="get" class="d-flex gap-2 mt-2">
         <input type="text" name="q" value="@ViewBag.Query" class="form-control" placeholder="e.g. P-101, or a vendor name, or a document number" />
-        <button class="btn btn-pems-solid"><i class="bi bi-diagram-3"></i> Explore</button>
+        <button class="btn btn-pems-solid"><i class="bi bi-diagram-3"></i> @Localizer["Explore"]</button>
     </form>
 </div>
 
@@ -81,7 +84,7 @@ else
         <div class="content-card mb-3 border-warning">
             <h6 class="mb-3"><i class="bi bi-lightbulb"></i> پیشنهادهای اتصال (تاییدنشده)</h6>
             <p class="text-muted small">
-                این‌ها از روی شماره‌ی MRQ/PO خام ثبت‌شده روی تجهیز، با داده‌ی <strong>موجود</strong>
+                این‌ها از روی شماره‌ی MRQ/PO خام ثبت‌شده روی تجهیز، با داده‌ی <strong>@Localizer["موجود"]</strong>
                 (نه ساخته‌شده) منطبق شده‌اند. تا تایید نکنی، هیچ رابطه‌ی رسمی برقرار نمی‌شه.
             </p>
             <ul class="list-unstyled mb-0">
@@ -89,7 +92,7 @@ else
                 {
                     <li class="d-flex justify-content-between align-items-center border-bottom py-2">
                         <span>
-                            <span class="badge bg-warning text-dark"><i class="bi bi-robot"></i> پیشنهاد</span>
+                            <span class="badge bg-warning text-dark"><i class="bi bi-robot"></i> @Localizer["پیشنهاد"]</span>
                             @suggestion.Label
                             <span class="text-muted small">@suggestion.SubLabel</span>
                         </span>
@@ -156,7 +159,7 @@ else
 
                                         @if (item.DelayDays.HasValue && item.DelayDays > 0)
                                         {
-                                            <span class="badge bg-danger ms-1" title="روزهای تاخیر"><i class="bi bi-clock-history"></i> @item.DelayDays روز تاخیر</span>
+                                            <span class="badge bg-danger ms-1" title="@Localizer["روزهای تاخیر"]"><i class="bi bi-clock-history"></i> @item.DelayDays روز تاخیر</span>
                                         }
                                         else if (item.PlannedOrDueDate.HasValue)
                                         {
@@ -186,7 +189,7 @@ else
                     }
                     else
                     {
-                        <p class="text-muted small mb-0">None found.</p>
+                        <p class="text-muted small mb-0">@Localizer["None found."]</p>
                     }
                 </div>
             </div>

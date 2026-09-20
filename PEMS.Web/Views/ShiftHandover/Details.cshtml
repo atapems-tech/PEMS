@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.ShiftHandoverDetailDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = "Shift Handover Details";
     var badgeClass = Model.Status switch
@@ -90,9 +93,9 @@
 </div>
 
 <div class="content-card">
-    <h6 class="mb-3">Status History</h6>
+    <h6 class="mb-3">@Localizer["Status History"]</h6>
     <table class="table table-enterprise table-sm mb-0">
-        <thead><tr><th>From</th><th>To</th><th>By</th><th>Date</th><th>Reason</th></tr></thead>
+        <thead><tr><th>@Localizer["From"]</th><th>To</th><th>By</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
         <tbody>
             @foreach (var h in Model.StatusHistory)
             {

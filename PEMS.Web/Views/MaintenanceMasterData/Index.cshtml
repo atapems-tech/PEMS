@@ -1,4 +1,7 @@
 @model List<PEMS.Domain.Entities.MaintenanceGroup>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
     var skills = (List<PEMS.Domain.Entities.Skill>)ViewBag.Skills;
@@ -93,12 +96,12 @@
                     Team ها زیر همین گروه‌ها تعریف می‌شوند.
                 </p>
                 <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createGroupModal">
-                    <i class="bi bi-plus-lg"></i> گروه جدید
+                    <i class="bi bi-plus-lg"></i> @Localizer["گروه جدید"]
                 </button>
             </div>
 
             <table class="table table-enterprise">
-                <thead><tr><th>کد</th><th>نام</th><th>دیسیپلین</th><th>توضیحات</th><th>System Default</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["کد"]</th><th>@Localizer["نام"]</th><th>@Localizer["دیسیپلین"]</th><th>@Localizer["توضیحات"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var g in Model)
                     {
@@ -107,11 +110,11 @@
                             <td>@g.Name</td>
                             <td>@g.Discipline?.Name</td>
                             <td class="small text-muted">@(g.Description ?? "-")</td>
-                            <td>@if (g.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
+                            <td>@if (g.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleGroupActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@g.MaintenanceGroupId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این گروه غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این گروه غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
                                 </form>
                             </td>
                         </tr>
@@ -130,12 +133,12 @@
                     پیش‌نیاز روی یک Work Order ثبت می‌شود.
                 </p>
                 <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createSkillModal">
-                    <i class="bi bi-plus-lg"></i> مهارت جدید
+                    <i class="bi bi-plus-lg"></i> @Localizer["مهارت جدید"]
                 </button>
             </div>
 
             <table class="table table-enterprise">
-                <thead><tr><th>نام</th><th>دیسیپلین</th><th>توضیحات</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["نام"]</th><th>@Localizer["دیسیپلین"]</th><th>@Localizer["توضیحات"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var s in skills)
                     {
@@ -146,14 +149,14 @@
                             <td class="text-end">
                                 <form asp-action="ToggleSkillActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@s.SkillId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این مهارت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این مهارت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
                                 </form>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-            @if (!skills.Any()) { <p class="text-muted text-center py-4">هنوز مهارتی ساخته نشده.</p> }
+            @if (!skills.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز مهارتی ساخته نشده."]</p> }
         </div>
     </div>
 
@@ -164,12 +167,12 @@
                     فهرست مشترک انواع صلاحیت - نمونه‌ی هر کارمند از صفحه‌ی جزئیات همان کارمند ثبت می‌شود.
                 </p>
                 <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createQualificationModal">
-                    <i class="bi bi-plus-lg"></i> صلاحیت جدید
+                    <i class="bi bi-plus-lg"></i> @Localizer["صلاحیت جدید"]
                 </button>
             </div>
 
             <table class="table table-enterprise">
-                <thead><tr><th>نام</th><th>دیسیپلین</th><th>توضیحات</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["نام"]</th><th>@Localizer["دیسیپلین"]</th><th>@Localizer["توضیحات"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var q in qualifications)
                     {
@@ -180,7 +183,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleQualificationActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@q.QualificationId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این صلاحیت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این صلاحیت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
                                 </form>
                             </td>
                         </tr>
@@ -198,12 +201,12 @@
                     فهرست مشترک انواع گواهینامه - شماره‌ی گواهی و تاریخ انقضای هر کارمند از صفحه‌ی جزئیات همان کارمند ثبت می‌شود.
                 </p>
                 <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createCertificationModal">
-                    <i class="bi bi-plus-lg"></i> گواهینامه جدید
+                    <i class="bi bi-plus-lg"></i> @Localizer["گواهینامه جدید"]
                 </button>
             </div>
 
             <table class="table table-enterprise">
-                <thead><tr><th>نام</th><th>دیسیپلین</th><th>توضیحات</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["نام"]</th><th>@Localizer["دیسیپلین"]</th><th>@Localizer["توضیحات"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var c in certifications)
                     {
@@ -214,7 +217,7 @@
                             <td class="text-end">
                                 <form asp-action="ToggleCertificationActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@c.CertificationId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این گواهینامه غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این گواهینامه غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
                                 </form>
                             </td>
                         </tr>
@@ -233,12 +236,12 @@
                     داده‌محور برای Work Order و کاتالوگ Activity، طبق ISO 14224/SMRP.
                 </p>
                 <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createMaintenanceTypeModal">
-                    <i class="bi bi-plus-lg"></i> Maintenance Type جدید
+                    <i class="bi bi-plus-lg"></i> @Localizer["Maintenance Type جدید"]
                 </button>
             </div>
 
             <table class="table table-enterprise">
-                <thead><tr><th>Code</th><th>Name</th><th>نام فارسی</th><th>System Default</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["نام فارسی"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var t in maintenanceTypes)
                     {
@@ -246,11 +249,11 @@
                             <td><code>@t.Code</code></td>
                             <td>@t.Name</td>
                             <td>@(t.NameFa ?? "-")</td>
-                            <td>@if (t.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
+                            <td>@if (t.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleMaintenanceTypeActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.MaintenanceTypeId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این Maintenance Type غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Maintenance Type غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
                                 </form>
                             </td>
                         </tr>
@@ -269,12 +272,12 @@
                     Maintenance Type بالا (که «نوع کار» را طبقه‌بندی می‌کند).
                 </p>
                 <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createStrategyTypeModal">
-                    <i class="bi bi-plus-lg"></i> Strategy Type جدید
+                    <i class="bi bi-plus-lg"></i> @Localizer["Strategy Type جدید"]
                 </button>
             </div>
 
             <table class="table table-enterprise">
-                <thead><tr><th>Code</th><th>Name</th><th>نام فارسی</th><th>System Default</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["نام فارسی"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var t in strategyTypes)
                     {
@@ -282,11 +285,11 @@
                             <td><code>@t.Code</code></td>
                             <td>@t.Name</td>
                             <td>@(t.NameFa ?? "-")</td>
-                            <td>@if (t.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
+                            <td>@if (t.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleMaintenanceStrategyTypeActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.MaintenanceStrategyTypeId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این Strategy Type غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Strategy Type غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
                                 </form>
                             </td>
                         </tr>
@@ -305,12 +308,12 @@
                     خودِ Equipment؛ برای پیوند Activity ↔ تجهیز به‌صورت داده‌محور استفاده می‌شود.
                 </p>
                 <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createEquipmentClassModal">
-                    <i class="bi bi-plus-lg"></i> Equipment Class جدید
+                    <i class="bi bi-plus-lg"></i> @Localizer["Equipment Class جدید"]
                 </button>
             </div>
 
             <table class="table table-enterprise">
-                <thead><tr><th>Code</th><th>Name</th><th>نام فارسی</th><th>System Default</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["نام فارسی"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var t in equipmentClasses)
                     {
@@ -318,11 +321,11 @@
                             <td><code>@t.Code</code></td>
                             <td>@t.Name</td>
                             <td>@(t.NameFa ?? "-")</td>
-                            <td>@if (t.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
+                            <td>@if (t.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleEquipmentClassActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@t.EquipmentClassId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این Equipment Class غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Equipment Class غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
                                 </form>
                             </td>
                         </tr>
@@ -346,7 +349,7 @@
             </div>
 
             <table class="table table-enterprise">
-                <thead><tr><th>Code</th><th>Organization</th><th>Number</th><th>Title</th><th>Category</th><th>System Default</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Organization"]</th><th>@Localizer["Number"]</th><th>@Localizer["Title"]</th><th>@Localizer["Category"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var s in standardReferences)
                     {
@@ -356,11 +359,11 @@
                             <td>@s.StandardNumber</td>
                             <td class="small">@s.Title</td>
                             <td class="small text-muted">@(s.Category ?? "-")</td>
-                            <td>@if (s.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
+                            <td>@if (s.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleStandardReferenceActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@s.StandardReferenceId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این Standard Reference غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Standard Reference غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
                                 </form>
                             </td>
                         </tr>
@@ -384,7 +387,7 @@
             </div>
 
             <table class="table table-enterprise">
-                <thead><tr><th>Code</th><th>Name</th><th>Group</th><th>Type</th><th>System Default</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>Group</th><th>@Localizer["Type"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var a in maintenanceActivities)
                     {
@@ -393,11 +396,11 @@
                             <td>@a.Name</td>
                             <td class="small">@a.MaintenanceGroup?.Name</td>
                             <td class="small text-muted">@(a.MaintenanceType?.Name ?? "-")</td>
-                            <td>@if (a.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
+                            <td>@if (a.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleMaintenanceActivityActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@a.MaintenanceActivityId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این Activity غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Activity غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
                                 </form>
                             </td>
                         </tr>
@@ -416,7 +419,7 @@
                 Cause/Effect/Consequence مرتبط است.
             </p>
             <table class="table table-enterprise">
-                <thead><tr><th>Code</th><th>Name</th><th>Equipment Class</th><th>Effect</th><th>Consequence</th><th>System Default</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["Equipment Class"]</th><th>@Localizer["Effect"]</th><th>@Localizer["Consequence"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var fm in failureModes)
                     {
@@ -426,11 +429,11 @@
                             <td class="small">@(fm.EquipmentClass?.Name ?? "-")</td>
                             <td class="small text-muted">@(fm.FailureEffect?.Name ?? "-")</td>
                             <td class="small text-muted">@(fm.FailureConsequence?.Name ?? "-")</td>
-                            <td>@if (fm.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
+                            <td>@if (fm.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
                             <td class="text-end">
                                 <form asp-action="ToggleFailureModeActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@fm.FailureModeId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این Failure Mode غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Failure Mode غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
                                 </form>
                             </td>
                         </tr>
@@ -449,7 +452,7 @@
                 انسانی/تخصیص JobPlan است.
             </p>
             <table class="table table-enterprise">
-                <thead><tr><th>Code</th><th>Name</th><th>Equipment Class</th><th>Trigger</th><th>Interval</th><th>System Default</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["Equipment Class"]</th><th>@Localizer["Trigger"]</th><th>Interval</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var pt in pmTemplates)
                     {
@@ -459,11 +462,11 @@
                             <td class="small">@(pt.EquipmentClass?.Name ?? "-")</td>
                             <td class="small text-muted">@pt.TriggerType</td>
                             <td class="small text-muted">@(pt.IntervalDays.HasValue ? $"{pt.IntervalDays} روز" : (pt.MeterInterval.HasValue ? $"{pt.MeterInterval} {pt.MeterType}" : "-"))</td>
-                            <td>@if (pt.IsSystemDefault) { <span class="badge text-bg-info">System</span> }</td>
+                            <td>@if (pt.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
                             <td class="text-end">
                                 <form asp-action="TogglePMTemplateActive" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@pt.PMTemplateId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="غیرفعال کردن" onclick="return confirm('این PM Template غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این PM Template غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
                                 </form>
                             </td>
                         </tr>
@@ -478,27 +481,27 @@
 <div class="modal fade" id="createSkillModal" tabindex="-1">
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="CreateSkill" method="post">
-            <div class="modal-header"><h6 class="modal-title">مهارت جدید</h6></div>
+            <div class="modal-header"><h6 class="modal-title">@Localizer["مهارت جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">نام</label>
+                    <label class="form-label small">@Localizer["نام"]</label>
                     <input name="name" class="form-control form-control-sm" required placeholder="مثلاً Pump Alignment" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">دیسیپلین (اختیاری)</label>
+                    <label class="form-label small">@Localizer["دیسیپلین (اختیاری)"]</label>
                     <select name="disciplineId" class="form-select form-select-sm">
-                        <option value="">-- ندارد --</option>
+                        <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                     </select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
                     <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
             </div>
         </form>
     </div></div>
@@ -507,30 +510,30 @@
 <div class="modal fade" id="createGroupModal" tabindex="-1">
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="CreateGroup" method="post">
-            <div class="modal-header"><h6 class="modal-title">گروه تعمیراتی جدید</h6></div>
+            <div class="modal-header"><h6 class="modal-title">@Localizer["گروه تعمیراتی جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">کد</label>
+                    <label class="form-label small">@Localizer["کد"]</label>
                     <input name="code" class="form-control form-control-sm" required placeholder="مثلاً ROT-EQ" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">نام</label>
+                    <label class="form-label small">@Localizer["نام"]</label>
                     <input name="name" class="form-control form-control-sm" required placeholder="مثلاً Rotating Equipment" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">دیسیپلین</label>
+                    <label class="form-label small">@Localizer["دیسیپلین"]</label>
                     <select name="disciplineId" class="form-select form-select-sm" required>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                     </select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
                     <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
             </div>
         </form>
     </div></div>
@@ -539,27 +542,27 @@
 <div class="modal fade" id="createQualificationModal" tabindex="-1">
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="CreateQualification" method="post">
-            <div class="modal-header"><h6 class="modal-title">صلاحیت جدید</h6></div>
+            <div class="modal-header"><h6 class="modal-title">@Localizer["صلاحیت جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">نام</label>
+                    <label class="form-label small">@Localizer["نام"]</label>
                     <input name="name" class="form-control form-control-sm" required placeholder="مثلاً Qualified Pump Maintenance Technician" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">دیسیپلین (اختیاری)</label>
+                    <label class="form-label small">@Localizer["دیسیپلین (اختیاری)"]</label>
                     <select name="disciplineId" class="form-select form-select-sm">
-                        <option value="">-- ندارد --</option>
+                        <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                     </select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
                     <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
             </div>
         </form>
     </div></div>
@@ -568,28 +571,28 @@
 <div class="modal fade" id="createMaintenanceTypeModal" tabindex="-1">
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="CreateMaintenanceType" method="post">
-            <div class="modal-header"><h6 class="modal-title">Maintenance Type جدید</h6></div>
+            <div class="modal-header"><h6 class="modal-title">@Localizer["Maintenance Type جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">Code</label>
+                    <label class="form-label small">@Localizer["Code"]</label>
                     <input name="code" class="form-control form-control-sm" required placeholder="مثلاً CUSTOM_TYPE" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">Name</label>
+                    <label class="form-label small">@Localizer["Name"]</label>
                     <input name="name" class="form-control form-control-sm" required />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">نام فارسی (اختیاری)</label>
+                    <label class="form-label small">@Localizer["نام فارسی (اختیاری)"]</label>
                     <input name="nameFa" class="form-control form-control-sm" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
                     <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
             </div>
         </form>
     </div></div>
@@ -601,25 +604,25 @@
             <div class="modal-header"><h6 class="modal-title">Maintenance Strategy Type جدید</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">Code</label>
+                    <label class="form-label small">@Localizer["Code"]</label>
                     <input name="code" class="form-control form-control-sm" required placeholder="مثلاً CUSTOM_STRATEGY" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">Name</label>
+                    <label class="form-label small">@Localizer["Name"]</label>
                     <input name="name" class="form-control form-control-sm" required />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">نام فارسی (اختیاری)</label>
+                    <label class="form-label small">@Localizer["نام فارسی (اختیاری)"]</label>
                     <input name="nameFa" class="form-control form-control-sm" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
                     <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
             </div>
         </form>
     </div></div>
@@ -628,28 +631,28 @@
 <div class="modal fade" id="createEquipmentClassModal" tabindex="-1">
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="CreateEquipmentClass" method="post">
-            <div class="modal-header"><h6 class="modal-title">Equipment Class جدید</h6></div>
+            <div class="modal-header"><h6 class="modal-title">@Localizer["Equipment Class جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">Code</label>
+                    <label class="form-label small">@Localizer["Code"]</label>
                     <input name="code" class="form-control form-control-sm" required placeholder="مثلاً CUSTOM_CLASS" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">Name</label>
+                    <label class="form-label small">@Localizer["Name"]</label>
                     <input name="name" class="form-control form-control-sm" required placeholder="مثلاً Screw Compressor" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">نام فارسی (اختیاری)</label>
+                    <label class="form-label small">@Localizer["نام فارسی (اختیاری)"]</label>
                     <input name="nameFa" class="form-control form-control-sm" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
                     <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
             </div>
         </form>
     </div></div>
@@ -662,11 +665,11 @@
             <div class="modal-body">
                 <p class="small text-muted">فقط ابرداده - هرگز متن دارای Copyright خودِ استاندارد را این‌جا وارد نکنید.</p>
                 <div class="mb-2">
-                    <label class="form-label small">Code</label>
+                    <label class="form-label small">@Localizer["Code"]</label>
                     <input name="code" class="form-control form-control-sm" required placeholder="مثلاً API-579" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">Organization</label>
+                    <label class="form-label small">@Localizer["Organization"]</label>
                     <input name="organization" class="form-control form-control-sm" required placeholder="مثلاً API" />
                 </div>
                 <div class="mb-2">
@@ -674,7 +677,7 @@
                     <input name="standardNumber" class="form-control form-control-sm" required placeholder="مثلاً 579" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">Title</label>
+                    <label class="form-label small">@Localizer["Title"]</label>
                     <input name="title" class="form-control form-control-sm" required />
                 </div>
                 <div class="mb-2">
@@ -687,8 +690,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
             </div>
         </form>
     </div></div>
@@ -700,15 +703,15 @@
             <div class="modal-header"><h6 class="modal-title">Maintenance Activity جدید</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">Code</label>
+                    <label class="form-label small">@Localizer["Code"]</label>
                     <input name="code" class="form-control form-control-sm" required placeholder="مثلاً ACT_CUSTOM" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">Name</label>
+                    <label class="form-label small">@Localizer["Name"]</label>
                     <input name="name" class="form-control form-control-sm" required />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">نام فارسی (اختیاری)</label>
+                    <label class="form-label small">@Localizer["نام فارسی (اختیاری)"]</label>
                     <input name="nameFa" class="form-control form-control-sm" />
                 </div>
                 <div class="mb-2">
@@ -720,18 +723,18 @@
                 <div class="mb-2">
                     <label class="form-label small">Maintenance Type (اختیاری)</label>
                     <select name="maintenanceTypeId" class="form-select form-select-sm">
-                        <option value="">-- ندارد --</option>
+                        <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var t in maintenanceTypes) { <option value="@t.MaintenanceTypeId">@t.Name</option> }
                     </select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
                     <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
             </div>
         </form>
     </div></div>
@@ -740,27 +743,27 @@
 <div class="modal fade" id="createCertificationModal" tabindex="-1">
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="CreateCertification" method="post">
-            <div class="modal-header"><h6 class="modal-title">گواهینامه جدید</h6></div>
+            <div class="modal-header"><h6 class="modal-title">@Localizer["گواهینامه جدید"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">نام</label>
+                    <label class="form-label small">@Localizer["نام"]</label>
                     <input name="name" class="form-control form-control-sm" required placeholder="مثلاً NDT Level II" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">دیسیپلین (اختیاری)</label>
+                    <label class="form-label small">@Localizer["دیسیپلین (اختیاری)"]</label>
                     <select name="disciplineId" class="form-select form-select-sm">
-                        <option value="">-- ندارد --</option>
+                        <option value="">@Localizer["-- ندارد --"]</option>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                     </select>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label small">توضیحات (اختیاری)</label>
+                    <label class="form-label small">@Localizer["توضیحات (اختیاری)"]</label>
                     <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">ساخت</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
             </div>
         </form>
     </div></div>

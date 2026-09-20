@@ -23,6 +23,8 @@ public interface IWorkflowDbContext
     DbSet<WorkflowInstance> WorkflowInstances { get; }
     DbSet<WorkflowInstanceStage> WorkflowInstanceStages { get; }
     DbSet<WorkflowHistory> WorkflowHistories { get; }
+    DbSet<WorkflowBinding> WorkflowBindings { get; }
+    DbSet<WorkflowConfigAudit> WorkflowConfigAudits { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

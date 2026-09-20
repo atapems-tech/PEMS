@@ -105,6 +105,8 @@ public class WorkflowInstanceConfiguration : IEntityTypeConfiguration<WorkflowIn
 
         // پرکاربردترین کوئری موتور: «Instance فعال این رکورد کسب‌وکاری کدام است؟»
         builder.HasIndex(x => new { x.Module, x.BusinessObjectType, x.BusinessObjectId, x.Status });
+        builder.Property(x => x.EntityKey).HasMaxLength(250);
+        builder.HasIndex(x => x.EntityKey);
 
         builder.HasOne(x => x.Version)
             .WithMany()
@@ -163,5 +165,42 @@ public class WorkflowHistoryConfiguration : IEntityTypeConfiguration<WorkflowHis
         // اجرای واقعی این محدودیت (منع UPDATE/DELETE) در لایه‌ی سرویس (WorkflowRuntimeService)
         // تضمین می‌شود، نه در این پیکربندی؛ محدودیت سطح دیتابیس (مثلاً Trigger) در فاز بعدی
         // قابل افزودن است اگر لازم شود.
+    }
+}
+
+public class WorkflowBindingConfiguration : IEntityTypeConfiguration<WorkflowBinding>
+{
+    public void Configure(EntityTypeBuilder<WorkflowBinding> builder)
+    {
+        builder.ToTable("WorkflowBindings");
+        builder.HasKey(x => x.WorkflowBindingId);
+
+        builder.Property(x => x.Module).HasMaxLength(100).IsRequired();
+        builder.Property(x => x.EntityType).HasMaxLength(100).IsRequired();
+        builder.Property(x => x.Context).HasMaxLength(100).IsRequired();
+
+        builder.HasIndex(x => new { x.Module, x.EntityType, x.Context, x.IsActive });
+
+        builder.HasOne(x => x.Definition).WithMany()
+            .HasForeignKey(x => x.WorkflowDefinitionId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.PinnedVersion).WithMany()
+            .HasForeignKey(x => x.PinnedVersionId).OnDelete(DeleteBehavior.Restrict);
+    }
+}
+
+public class WorkflowConfigAuditConfiguration : IEntityTypeConfiguration<WorkflowConfigAudit>
+{
+    public void Configure(EntityTypeBuilder<WorkflowConfigAudit> builder)
+    {
+        builder.ToTable("WorkflowConfigAudits");
+        builder.HasKey(x => x.WorkflowConfigAuditId);
+
+        builder.Property(x => x.Action).HasMaxLength(50).IsRequired();
+        builder.Property(x => x.ActorName).HasMaxLength(200);
+        builder.Property(x => x.PreviousState).HasMaxLength(2000);
+        builder.Property(x => x.CurrentState).HasMaxLength(2000);
+
+        builder.HasIndex(x => new { x.WorkflowDefinitionId, x.Timestamp });
+        builder.HasIndex(x => x.WorkflowVersionId);
     }
 }

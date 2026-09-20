@@ -5,6 +5,7 @@ using PEMS.Domain.Entities;
 using PEMS.Persistence.Identity;
 using PEMS.WorkflowPlatform.Entities;
 using PEMS.WorkflowPlatform.Interfaces;
+using PEMS.WorkflowPlatform.Services;
 
 namespace PEMS.Persistence.Context;
 
@@ -357,6 +358,8 @@ public class PEMSDbContext
     public DbSet<WorkflowInstance> WorkflowInstances { get; set; }
     public DbSet<WorkflowInstanceStage> WorkflowInstanceStages { get; set; }
     public DbSet<WorkflowHistory> WorkflowHistories { get; set; }
+    public DbSet<WorkflowBinding> WorkflowBindings { get; set; }
+    public DbSet<WorkflowConfigAudit> WorkflowConfigAudits { get; set; }
 
     public DbSet<EquipmentImportBatch> EquipmentImportBatches { get; set; }
     public DbSet<EquipmentImportRow> EquipmentImportRows { get; set; }
@@ -397,6 +400,9 @@ public class PEMSDbContext
 
     public override int SaveChanges()
     {
+        // Phase 1 Hardening: نسخه‌ی Published/Retired گردش‌کار تغییرناپذیر است (ساختار، مراحل، گذارها)
+        WorkflowVersionImmutabilityGuard.Enforce(this);
+
         ApplyCreatedDate();
 
         var pending = PrepareAuditEntries();
@@ -415,6 +421,8 @@ public class PEMSDbContext
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
+        await WorkflowVersionImmutabilityGuard.EnforceAsync(this, cancellationToken);
+
         ApplyCreatedDate();
 
         var pending = PrepareAuditEntries();

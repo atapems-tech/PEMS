@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
     var ncrPatterns = (List<PEMS.Application.DTOs.RecurringNcrPatternDto>)ViewBag.NcrPatterns;
     var delay = (PEMS.Application.DTOs.DelayRootCauseAnalysisDto)ViewBag.DelayAnalysis;
 }
@@ -12,13 +15,13 @@
 </p>
 
 <div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-arrow-repeat"></i> الگوهای تکراری NCR - پیشنهاد بررسی MOC</h6>
+    <h6 class="mb-3"><i class="bi bi-arrow-repeat"></i> @Localizer["الگوهای تکراری NCR - پیشنهاد بررسی MOC"]</h6>
     <p class="text-muted small">تجهیزاتی که در ۱۸۰ روز اخیر حداقل ۳ بار NCR گرفتن.</p>
 
     @if (ncrPatterns.Any())
     {
         <table class="table table-enterprise mb-0">
-            <thead><tr><th>Equipment</th><th>تعداد NCR</th><th>دیسیپلین غالب</th><th>وضعیت MOC</th><th>پیشنهاد</th><th></th></tr></thead>
+            <thead><tr><th>@Localizer["Equipment"]</th><th>@Localizer["تعداد NCR"]</th><th>@Localizer["دیسیپلین غالب"]</th><th>@Localizer["وضعیت MOC"]</th><th>@Localizer["پیشنهاد"]</th><th></th></tr></thead>
             <tbody>
                 @foreach (var p in ncrPatterns)
                 {
@@ -29,11 +32,11 @@
                         <td>
                             @if (p.HasOpenMOC)
                             {
-                                <span class="badge bg-info text-dark">MOC باز دارد</span>
+                                <span class="badge bg-info text-dark">@Localizer["MOC باز دارد"]</span>
                             }
                             else
                             {
-                                <span class="badge bg-warning text-dark">بدون MOC</span>
+                                <span class="badge bg-warning text-dark">@Localizer["بدون MOC"]</span>
                             }
                         </td>
                         <td class="small">@p.Suggestion</td>
@@ -52,24 +55,24 @@
     }
     else
     {
-        <p class="text-muted text-center py-3 mb-0">الگوی تکراری قابل‌توجهی پیدا نشد.</p>
+        <p class="text-muted text-center py-3 mb-0">@Localizer["الگوی تکراری قابل‌توجهی پیدا نشد."]</p>
     }
 </div>
 
 <div class="content-card">
-    <h6 class="mb-3"><i class="bi bi-graph-down-arrow"></i> تحلیل ریشه‌ای تاخیر مدارک</h6>
+    <h6 class="mb-3"><i class="bi bi-graph-down-arrow"></i> @Localizer["تحلیل ریشه‌ای تاخیر مدارک"]</h6>
 
     <div class="row g-3 mb-3">
         <div class="col-md-6">
             <div class="text-center border rounded p-2">
                 <div class="fs-3 fw-bold">@delay.TotalDelayedDocuments</div>
-                <div class="text-muted small">کل مدارک با تاخیر</div>
+                <div class="text-muted small">@Localizer["کل مدارک با تاخیر"]</div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="text-center border rounded p-2">
                 <div class="fs-3 fw-bold text-danger">@delay.AverageDelayDays</div>
-                <div class="text-muted small">میانگین روز تاخیر</div>
+                <div class="text-muted small">@Localizer["میانگین روز تاخیر"]</div>
             </div>
         </div>
     </div>
@@ -89,9 +92,9 @@
     {
         <div class="row g-3">
             <div class="col-md-4">
-                <h6 class="small fw-bold">به تفکیک دیسیپلین</h6>
+                <h6 class="small fw-bold">@Localizer["به تفکیک دیسیپلین"]</h6>
                 <table class="table table-sm">
-                    <thead><tr><th>دیسیپلین</th><th>تعداد</th><th>میانگین</th></tr></thead>
+                    <thead><tr><th>@Localizer["دیسیپلین"]</th><th>@Localizer["تعداد"]</th><th>@Localizer["میانگین"]</th></tr></thead>
                     <tbody>
                         @foreach (var d in delay.ByDiscipline)
                         {
@@ -101,9 +104,9 @@
                 </table>
             </div>
             <div class="col-md-4">
-                <h6 class="small fw-bold">به تفکیک وضعیت</h6>
+                <h6 class="small fw-bold">@Localizer["به تفکیک وضعیت"]</h6>
                 <table class="table table-sm">
-                    <thead><tr><th>وضعیت</th><th>تعداد</th><th>میانگین</th></tr></thead>
+                    <thead><tr><th>@Localizer["وضعیت"]</th><th>@Localizer["تعداد"]</th><th>@Localizer["میانگین"]</th></tr></thead>
                     <tbody>
                         @foreach (var d in delay.ByStage)
                         {
@@ -117,7 +120,7 @@
                 @if (delay.ByVendor.Any())
                 {
                     <table class="table table-sm">
-                        <thead><tr><th>وندور</th><th>تعداد</th><th>میانگین</th></tr></thead>
+                        <thead><tr><th>@Localizer["وندور"]</th><th>@Localizer["تعداد"]</th><th>@Localizer["میانگین"]</th></tr></thead>
                         <tbody>
                             @foreach (var d in delay.ByVendor)
                             {
@@ -128,7 +131,7 @@
                 }
                 else
                 {
-                    <p class="text-muted small">موردی نیست.</p>
+                    <p class="text-muted small">@Localizer["موردی نیست."]</p>
                 }
             </div>
         </div>

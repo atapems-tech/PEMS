@@ -1,4 +1,7 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.DocumentWorkflowPendingItemDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var history = (List<PEMS.Domain.Entities.DocumentWorkflow>)ViewBag.History;
     string? selectedStatus = ViewBag.SelectedStatus;
@@ -10,7 +13,7 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h6 class="mb-0">Pending Approval Queue</h6>
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('DocumentWorkflow')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
 
@@ -18,12 +21,12 @@
         <table class="table table-enterprise pems-grid-table" data-grid-key="DocumentWorkflow">
             <thead>
                 <tr>
-                    <th data-col-key="docNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">Document No</th>
-                    <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">Title</th>
-                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Project</th>
-                    <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px">Discipline</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">Status</th>
-                    <th data-col-key="rev" data-resizable="true" data-min-width="60" data-max-width="100" style="width:70px">Rev</th>
+                    <th data-col-key="docNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["Document No"]</th>
+                    <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Title"]</th>
+                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Project"]</th>
+                    <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px">@Localizer["Discipline"]</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">@Localizer["Status"]</th>
+                    <th data-col-key="rev" data-resizable="true" data-min-width="60" data-max-width="100" style="width:70px">@Localizer["Rev"]</th>
                     <th data-col-key="actions" data-resizable="false" style="width:170px"></th>
                 </tr>
             </thead>
@@ -46,18 +49,18 @@
                                 </form>
                                 <form asp-action="Reject" method="post" class="d-inline">
                                     <input type="hidden" name="documentId" value="@d.DocumentId" />
-                                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i> Reject</button>
+                                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i> @Localizer["Reject"]</button>
                                 </form>
                             }
                             else if (d.Status == "Checked")
                             {
                                 <form asp-action="Approve" method="post" class="d-inline">
                                     <input type="hidden" name="documentId" value="@d.DocumentId" />
-                                    <button class="btn btn-sm btn-success"><i class="bi bi-check-lg"></i> Approve</button>
+                                    <button class="btn btn-sm btn-success"><i class="bi bi-check-lg"></i> @Localizer["Approve"]</button>
                                 </form>
                                 <form asp-action="Reject" method="post" class="d-inline">
                                     <input type="hidden" name="documentId" value="@d.DocumentId" />
-                                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i> Reject</button>
+                                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i> @Localizer["Reject"]</button>
                                 </form>
                             }
                             <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId"
@@ -101,13 +104,13 @@
         <table class="table table-enterprise">
             <thead>
                 <tr>
-                    <th>Document</th>
-                    <th>From</th>
+                    <th>@Localizer["Document"]</th>
+                    <th>@Localizer["From"]</th>
                     <th>To</th>
-                    <th>Action</th>
+                    <th>@Localizer["Action"]</th>
                     <th>By</th>
-                    <th>Comment</th>
-                    <th>Date</th>
+                    <th>@Localizer["Comment"]</th>
+                    <th>@Localizer["Date"]</th>
                 </tr>
             </thead>
             <tbody>

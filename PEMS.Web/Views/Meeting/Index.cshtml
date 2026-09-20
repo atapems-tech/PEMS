@@ -1,27 +1,30 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MeetingDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 
 <div class="content-card">
     <div class="d-flex justify-content-between mb-3">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Meeting')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
         <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createMeetingModal">
-            <i class="bi bi-plus-lg"></i> Schedule Meeting
+            <i class="bi bi-plus-lg"></i> @Localizer["Schedule Meeting"]
         </button>
     </div>
     <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
     <table class="table table-enterprise pems-grid-table" data-grid-key="Meeting">
         <thead>
             <tr>
-                <th data-col-key="title" data-resizable="true" data-min-width="120" data-max-width="320" style="width:200px">Title</th>
-                <th data-col-key="date" data-resizable="true" data-min-width="100" data-max-width="180" style="width:150px">Date</th>
-                <th data-col-key="location" data-resizable="true" data-min-width="80" data-max-width="200" style="width:130px">Location</th>
-                <th data-col-key="organizer" data-resizable="true" data-min-width="80" data-max-width="200" style="width:130px">Organizer</th>
-                <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Project</th>
-                <th data-col-key="attendees" data-resizable="true" data-min-width="70" data-max-width="120" style="width:90px">Attendees</th>
-                <th data-col-key="actionItems" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">Action Items</th>
-                <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">Status</th>
+                <th data-col-key="title" data-resizable="true" data-min-width="120" data-max-width="320" style="width:200px">@Localizer["Title"]</th>
+                <th data-col-key="date" data-resizable="true" data-min-width="100" data-max-width="180" style="width:150px">@Localizer["Date"]</th>
+                <th data-col-key="location" data-resizable="true" data-min-width="80" data-max-width="200" style="width:130px">@Localizer["Location"]</th>
+                <th data-col-key="organizer" data-resizable="true" data-min-width="80" data-max-width="200" style="width:130px">@Localizer["Organizer"]</th>
+                <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Project"]</th>
+                <th data-col-key="attendees" data-resizable="true" data-min-width="70" data-max-width="120" style="width:90px">@Localizer["Attendees"]</th>
+                <th data-col-key="actionItems" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">@Localizer["Action Items"]</th>
+                <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">@Localizer["Status"]</th>
                 <th data-col-key="actions" data-resizable="false" style="width:60px"></th>
             </tr>
         </thead>
@@ -69,26 +72,26 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form asp-controller="Meeting" asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">Schedule Meeting</h6></div>
+                <div class="modal-header"><h6 class="modal-title">@Localizer["Schedule Meeting"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-6"><label class="form-label">Title</label><input name="title" class="form-control" required /></div>
-                        <div class="col-md-6"><label class="form-label">Date &amp; Time</label><input name="meetingDate" type="datetime-local" class="form-control" required /></div>
-                        <div class="col-md-6"><label class="form-label">Location</label><input name="location" class="form-control" /></div>
-                        <div class="col-md-6"><label class="form-label">Organizer</label><input name="organizerName" class="form-control" /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Title"]</label><input name="title" class="form-control" required /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Date & Time"]</label><input name="meetingDate" type="datetime-local" class="form-control" required /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Location"]</label><input name="location" class="form-control" /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Organizer"]</label><input name="organizerName" class="form-control" /></div>
                         <div class="col-md-6">
-                            <label class="form-label">Related Project</label>
+                            <label class="form-label">@Localizer["Related Project"]</label>
                             <select name="projectId" class="form-select">
-                                <option value="">-- none --</option>
+                                <option value="">@Localizer["-- none --"]</option>
                                 @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                             </select>
                         </div>
-                        <div class="col-12"><label class="form-label">Agenda</label><textarea name="agenda" class="form-control" rows="4"></textarea></div>
+                        <div class="col-12"><label class="form-label">@Localizer["Agenda"]</label><textarea name="agenda" class="form-control" rows="4"></textarea></div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-pems-solid">Save</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
                 </div>
             </form>
         </div>

@@ -1,4 +1,7 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.IntakeQueueItemDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var stages = (string[])ViewBag.Stages;
     var qs = string.IsNullOrEmpty((string?)ViewBag.SelectedStage) ? "" : $"stage={ViewBag.SelectedStage}";
@@ -18,7 +21,7 @@
         }
         @if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStage))
         {
-            <a asp-action="Index" class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i> Reset</a>
+            <a asp-action="Index" class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i> @Localizer["Reset"]</a>
         }
     </div>
 </div>
@@ -26,22 +29,22 @@
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Intake')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:65vh; overflow-y:auto;">
         <table class="table table-enterprise pems-grid-table" data-grid-key="Intake">
             <thead>
                 <tr>
-                    <th data-col-key="file" data-resizable="true" data-min-width="140" data-max-width="360">File</th>
-                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="240">Project</th>
+                    <th data-col-key="file" data-resizable="true" data-min-width="140" data-max-width="360">@Localizer["File"]</th>
+                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="240">@Localizer["Project"]</th>
                     <th data-col-key="category" data-resizable="true" data-min-width="120" data-max-width="260">Predicted Category</th>
                     <th data-col-key="module" data-resizable="true" data-min-width="100" data-max-width="200">Suggested Module</th>
-                    <th data-col-key="confidence" data-resizable="true" data-min-width="80" data-max-width="140">Confidence</th>
-                    <th data-col-key="aiStatus" data-resizable="true" data-min-width="90" data-max-width="180">AI Status</th>
-                    <th data-col-key="stage" data-resizable="true" data-min-width="100" data-max-width="220">Stage</th>
-                    <th data-col-key="routed" data-resizable="true" data-min-width="90" data-max-width="180">Routed</th>
-                    <th data-col-key="uploaded" data-resizable="true" data-min-width="120" data-max-width="200">Uploaded</th>
+                    <th data-col-key="confidence" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Confidence"]</th>
+                    <th data-col-key="aiStatus" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["AI Status"]</th>
+                    <th data-col-key="stage" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Stage"]</th>
+                    <th data-col-key="routed" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Routed"]</th>
+                    <th data-col-key="uploaded" data-resizable="true" data-min-width="120" data-max-width="200">@Localizer["Uploaded"]</th>
                     <th data-col-key="actions" data-resizable="false" style="width:90px"></th>
                 </tr>
             </thead>

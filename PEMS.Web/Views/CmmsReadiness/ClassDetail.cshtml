@@ -1,5 +1,8 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.EquipmentReadinessRowDto>
 @using PEMS.Domain.Entities
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var equipmentClass = (EquipmentClass)ViewBag.EquipmentClass;
 
@@ -17,11 +20,11 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0"><i class="bi bi-clipboard-check"></i> Readiness — @equipmentClass.Name <code class="small">@equipmentClass.Code</code></h5>
     <div>
-        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">← Backlog</a>
-        <a asp-controller="MaintenanceStrategy" asp-action="BulkCreate" class="btn btn-outline-primary btn-sm"><i class="bi bi-diagram-3"></i> Define Strategy</a>
-        <a asp-controller="JobPlan" asp-action="Index" class="btn btn-outline-primary btn-sm"><i class="bi bi-list-check"></i> Job Plans</a>
-        <a asp-controller="EquipmentCriticality" asp-action="Index" class="btn btn-outline-primary btn-sm"><i class="bi bi-shield-exclamation"></i> Criticality</a>
-        <a asp-controller="CriticalityAssessment" asp-action="Index" asp-route-equipmentClassId="@equipmentClass.EquipmentClassId" class="btn btn-outline-primary btn-sm"><i class="bi bi-clipboard2-check"></i> Assessments</a>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["← Backlog"]</a>
+        <a asp-controller="MaintenanceStrategy" asp-action="BulkCreate" class="btn btn-outline-primary btn-sm"><i class="bi bi-diagram-3"></i> @Localizer["Define Strategy"]</a>
+        <a asp-controller="JobPlan" asp-action="Index" class="btn btn-outline-primary btn-sm"><i class="bi bi-list-check"></i> @Localizer["Job Plans"]</a>
+        <a asp-controller="EquipmentCriticality" asp-action="Index" class="btn btn-outline-primary btn-sm"><i class="bi bi-shield-exclamation"></i> @Localizer["Criticality"]</a>
+        <a asp-controller="CriticalityAssessment" asp-action="Index" asp-route-equipmentClassId="@equipmentClass.EquipmentClassId" class="btn btn-outline-primary btn-sm"><i class="bi bi-clipboard2-check"></i> @Localizer["Assessments"]</a>
     </div>
 </div>
 
@@ -30,14 +33,14 @@
     <table class="table table-enterprise table-sm mb-0">
         <thead>
             <tr>
-                <th>Tag</th>
-                <th>Classification</th>
-                <th>Criticality</th>
-                <th>Strategy</th>
-                <th>PM Plan</th>
-                <th>Job Plan</th>
-                <th>Safety</th>
-                <th>Execution</th>
+                <th>@Localizer["Tag"]</th>
+                <th>@Localizer["Classification"]</th>
+                <th>@Localizer["Criticality"]</th>
+                <th>@Localizer["Strategy"]</th>
+                <th>@Localizer["PM Plan"]</th>
+                <th>@Localizer["Job Plan"]</th>
+                <th>@Localizer["Safety"]</th>
+                <th>@Localizer["Execution"]</th>
             </tr>
         </thead>
         <tbody>
@@ -60,7 +63,7 @@
                     <td>
                         @if (r.ExecutionReady)
                         {
-                            <span class="badge text-bg-success"><i class="bi bi-check-lg"></i> Ready</span>
+                            <span class="badge text-bg-success"><i class="bi bi-check-lg"></i> @Localizer["Ready"]</span>
                         }
                         else
                         {
@@ -72,7 +75,7 @@
         </tbody>
     </table>
     </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ تجهیزی در این کلاس نیست.</p> }
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ تجهیزی در این کلاس نیست."]</p> }
 
     @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
     {

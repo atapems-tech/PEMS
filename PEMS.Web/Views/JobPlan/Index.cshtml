@@ -1,11 +1,14 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.JobPlanListDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var equipmentClasses = (IEnumerable<dynamic>)ViewBag.EquipmentClasses;
 }
 
 <div class="d-flex justify-content-end align-items-center mb-2">
     <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createJobPlanModal">
-        <i class="bi bi-plus-lg"></i> New Job Plan
+        <i class="bi bi-plus-lg"></i> @Localizer["New Job Plan"]
     </button>
 </div>
 <p class="text-muted small">
@@ -25,19 +28,19 @@
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('JobPlan')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="pems-grid-scroll">
     <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="JobPlan">
         <thead>
             <tr>
-                <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">Number</th>
-                <th data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400">Title</th>
+                <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Number"]</th>
+                <th data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400">@Localizer["Title"]</th>
                 <th data-col-key="duration" data-resizable="true" data-min-width="100" data-max-width="160">Est. Duration</th>
-                <th data-col-key="tasks" data-resizable="true" data-min-width="70" data-max-width="120">Tasks</th>
+                <th data-col-key="tasks" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Tasks"]</th>
                 <th data-col-key="usage" data-resizable="true" data-min-width="90" data-max-width="150">Used by Plans</th>
-                <th data-col-key="safety" data-resizable="true" data-min-width="100" data-max-width="180">Safety</th>
+                <th data-col-key="safety" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Safety"]</th>
                 <th></th>
             </tr>
         </thead>
@@ -51,7 +54,7 @@
                     <td class="small">@jp.TaskCount</td>
                     <td class="small">@jp.PlanUsageCount</td>
                     <td class="small">
-                        @if (jp.PermitRequired) { <span class="badge text-bg-warning">Permit</span> }
+                        @if (jp.PermitRequired) { <span class="badge text-bg-warning">@Localizer["Permit"]</span> }
                         @if (jp.LOTORequired) { <span class="badge text-bg-warning">LOTO</span> }
                         @if (!jp.PermitRequired && !jp.LOTORequired) { <span class="text-muted">-</span> }
                     </td>
@@ -61,7 +64,7 @@
         </tbody>
     </table>
     </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">هنوز Job Plan ای ثبت نشده.</p> }
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هنوز Job Plan ای ثبت نشده."]</p> }
 
     @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
     {
@@ -78,16 +81,16 @@
 <div class="modal fade" id="createJobPlanModal" tabindex="-1">
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="Create" method="post">
-            <div class="modal-header"><h6 class="modal-title">New Job Plan</h6></div>
+            <div class="modal-header"><h6 class="modal-title">@Localizer["New Job Plan"]</h6></div>
             <div class="modal-body">
-                <div class="mb-2"><label class="form-label small">Title</label><input name="title" class="form-control form-control-sm" required /></div>
-                <div class="mb-2"><label class="form-label small">Scope</label><textarea name="scope" class="form-control form-control-sm" rows="2"></textarea></div>
-                <div class="mb-2"><label class="form-label small">Estimated Duration (hours)</label><input name="estimatedDurationHours" type="number" step="0.1" class="form-control form-control-sm" /></div>
-                <div class="mb-2"><label class="form-label small">Safety Requirements</label><textarea name="safetyRequirements" class="form-control form-control-sm" rows="2"></textarea></div>
+                <div class="mb-2"><label class="form-label small">@Localizer["Title"]</label><input name="title" class="form-control form-control-sm" required /></div>
+                <div class="mb-2"><label class="form-label small">@Localizer["Scope"]</label><textarea name="scope" class="form-control form-control-sm" rows="2"></textarea></div>
+                <div class="mb-2"><label class="form-label small">@Localizer["Estimated Duration (hours)"]</label><input name="estimatedDurationHours" type="number" step="0.1" class="form-control form-control-sm" /></div>
+                <div class="mb-2"><label class="form-label small">@Localizer["Safety Requirements"]</label><textarea name="safetyRequirements" class="form-control form-control-sm" rows="2"></textarea></div>
                 <div class="mb-2">
-                    <label class="form-label small">Equipment Class</label>
+                    <label class="form-label small">@Localizer["Equipment Class"]</label>
                     <select name="equipmentClassId" class="form-select form-select-sm">
-                        <option value="">Not linked...</option>
+                        <option value="">@Localizer["Not linked..."]</option>
                         @foreach (var ec in equipmentClasses)
                         {
                             <option value="@ec.EquipmentClassId">@ec.Name (@ec.Code)</option>
@@ -96,16 +99,16 @@
                 </div>
                 <div class="form-check">
                     <input type="checkbox" name="permitRequired" value="true" class="form-check-input" id="createPermitRequired" />
-                    <label class="form-check-label small" for="createPermitRequired">Permit Required for execution</label>
+                    <label class="form-check-label small" for="createPermitRequired">@Localizer["Permit Required for execution"]</label>
                 </div>
                 <div class="form-check">
                     <input type="checkbox" name="lotoRequired" value="true" class="form-check-input" id="createLotoRequired" />
-                    <label class="form-check-label small" for="createLotoRequired">LOTO (Isolation) Required for execution</label>
+                    <label class="form-check-label small" for="createLotoRequired">@Localizer["LOTO (Isolation) Required for execution"]</label>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">Create</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Create"]</button>
             </div>
         </form>
     </div></div>

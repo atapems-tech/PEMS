@@ -1,4 +1,7 @@
 ﻿@model PEMS.Domain.Entities.EngineeringDocument
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = "Edit Document";
 
@@ -45,33 +48,33 @@
                 <h6 class="mb-3">Basic Information</h6>
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label">Document No</label>
+                        <label class="form-label">@Localizer["Document No"]</label>
                         <input asp-for="DocumentNo" class="form-control" required />
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Document Type</label>
+                        <label class="form-label">@Localizer["Document Type"]</label>
                         <input asp-for="DocumentType" class="form-control" required />
                     </div>
                     <div class="col-12">
-                        <label class="form-label">Title</label>
+                        <label class="form-label">@Localizer["Title"]</label>
                         <input asp-for="Title" class="form-control" required />
                     </div>
                     <div class="col-12">
-                        <label class="form-label">Description</label>
+                        <label class="form-label">@Localizer["Description"]</label>
                         <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Project</label>
+                        <label class="form-label">@Localizer["Project"]</label>
                         <select asp-for="ProjectId" asp-items="ViewBag.Projects" class="form-select"></select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Discipline</label>
+                        <label class="form-label">@Localizer["Discipline"]</label>
                         <select asp-for="DisciplineId" asp-items="ViewBag.Disciplines" class="form-select">
                             <option value="">-- Unassigned --</option>
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Area</label>
+                        <label class="form-label">@Localizer["Area"]</label>
                         <input asp-for="Area" class="form-control" />
                     </div>
                 </div>
@@ -83,31 +86,31 @@
                 <h6 class="mb-3">Engineering Information</h6>
                 <div class="row g-3">
                     <div class="col-12">
-                        <label class="form-label">Issue Purpose</label>
+                        <label class="form-label">@Localizer["Issue Purpose"]</label>
                         @* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۶.۱: کدهای رسمی IFA/IFR/IFI/FI
                            به‌همراه مقادیر قدیمی این فیلد (برای سازگاری با داده‌ی موجود) - همین لیست دقیقاً در
                            VDR/Details.cshtml (فرم SubmitForReview) هم تکرار شده؛ اگر این‌جا تغییر داد آن‌جا را هم به‌روزرسانی کنید. *@
                         <select asp-for="IssuePurpose" class="form-select">
                             <option value="">-- Select --</option>
-                            <option value="IFA">IFA - Issued for Approval</option>
-                            <option value="IFR">IFR - Issue for Review and Comments</option>
+                            <option value="IFA">@Localizer["IFA - Issued for Approval"]</option>
+                            <option value="IFR">@Localizer["IFR - Issue for Review and Comments"]</option>
                             <option value="IFI">IFI - Issue for Information</option>
-                            <option value="FI">FI - Final Issue (without comments)</option>
-                            <option value="For Approval">For Approval (legacy)</option>
-                            <option value="For Construction">For Construction (legacy)</option>
-                            <option value="For Information">For Information (legacy)</option>
+                            <option value="FI">@Localizer["FI - Final Issue (without comments)"]</option>
+                            <option value="For Approval">@Localizer["For Approval (legacy)"]</option>
+                            <option value="For Construction">@Localizer["For Construction (legacy)"]</option>
+                            <option value="For Information">@Localizer["For Information (legacy)"]</option>
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">Prepared By</label>
+                        <label class="form-label">@Localizer["Prepared By"]</label>
                         <input asp-for="PreparedBy" class="form-control" />
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">Checked By</label>
+                        <label class="form-label">@Localizer["Checked By"]</label>
                         <input asp-for="CheckedBy" class="form-control" />
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">Approved By</label>
+                        <label class="form-label">@Localizer["Approved By"]</label>
                         <input asp-for="ApprovedBy" class="form-control" />
                     </div>
                 </div>
@@ -115,21 +118,21 @@
                 <h6 class="mb-3 mt-4">Traceability</h6>
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label">Related Equipment <span class="text-muted small">(optional)</span></label>
+                        <label class="form-label">Related Equipment <span class="text-muted small">@Localizer["(optional)"]</span></label>
                         <select asp-for="EquipmentId" asp-items="ViewBag.Equipments" class="form-select">
-                            <option value="">-- None --</option>
+                            <option value="">@Localizer["-- None --"]</option>
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Related Contract <span class="text-muted small">(optional)</span></label>
+                        <label class="form-label">Related Contract <span class="text-muted small">@Localizer["(optional)"]</span></label>
                         <select asp-for="ContractId" asp-items="ViewBag.Contracts" class="form-select">
-                            <option value="">-- None --</option>
+                            <option value="">@Localizer["-- None --"]</option>
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Related MR <span class="text-muted small">(optional)</span></label>
+                        <label class="form-label">Related MR <span class="text-muted small">@Localizer["(optional)"]</span></label>
                         <select asp-for="RelatedMRId" asp-items="ViewBag.MaterialRequisitions" class="form-select">
-                            <option value="">-- None --</option>
+                            <option value="">@Localizer["-- None --"]</option>
                         </select>
                     </div>
                 </div>

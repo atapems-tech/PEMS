@@ -1,10 +1,13 @@
 ﻿@model List<PEMS.Application.DTOs.LetterDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card">
     <h6 class="mb-3">Letters Referred to Me</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
     <table class="table table-enterprise">
-        <thead><tr><th>Type</th><th>Letter No</th><th>Subject</th><th>Date</th><th>Status</th><th></th></tr></thead>
+        <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Letter No"]</th><th>@Localizer["Subject"]</th><th>@Localizer["Date"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
         <tbody>
             @foreach (var l in Model)
             {
