@@ -4938,9 +4938,9 @@
     "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/IWorkRequestService.cs": {
-    "mtime": 1789861891.2035298,
-    "seen": 1789863535.4938653,
-    "ast_hash": "0f602cff8a81b7eb08832f1ab64839ad",
+    "mtime": 1789893667.384325,
+    "seen": 1789896630.3200717,
+    "ast_hash": "152cd08d12530c7c3f826b3700491aaa",
     "semantic_hash": ""
   },
   "PEMS.Domain/Entities/WorkRequest.cs": {
@@ -4968,15 +4968,15 @@
     "semantic_hash": "cea2907be6bd2f5c867e02fcd2365377"
   },
   "PEMS.Persistence/Servises/WorkRequestService.cs": {
-    "mtime": 1789862355.337814,
-    "seen": 1789863535.5905197,
-    "ast_hash": "a84d1fd69bccf9ad00171e66fe5f2695",
+    "mtime": 1789894461.0132751,
+    "seen": 1789896630.4579258,
+    "ast_hash": "2c516153dfb0c7da20e120705385d5b9",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/WorkRequestController.cs": {
-    "mtime": 1789862456.9107838,
-    "seen": 1789863535.6405075,
-    "ast_hash": "39cce8d2ce901f67bfea955854d2eabd",
+    "mtime": 1789894884.320381,
+    "seen": 1789896630.521109,
+    "ast_hash": "abb5d4c7ae409d9762e5efa55d624d0d",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/WorkRequest/Create.cshtml": {
@@ -4986,15 +4986,15 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/WorkRequest/Details.cshtml": {
-    "mtime": 1789862095.83736,
-    "seen": 1789863535.6783876,
-    "ast_hash": "57b78a5ff13dfa8f40c9d61cb74d3bf8",
+    "mtime": 1789895879.9581454,
+    "seen": 1789896630.5780375,
+    "ast_hash": "650b753be73c312f94416f2c9a17fa21",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/WorkRequest/Index.cshtml": {
-    "mtime": 1789851197.46068,
-    "seen": 1789854334.7360847,
-    "ast_hash": "6765769c5f7faaeba050545b6d378052",
+    "mtime": 1789895931.2628007,
+    "seen": 1789896630.5780375,
+    "ast_hash": "2d8846a6777170448693e6652e87b6b8",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Migrations/20260815040001_RequiredSkillPlannedHours.Designer.cs": {
@@ -13134,9 +13134,9 @@
     "semantic_hash": ""
   },
   "PEMS.Persistence/Workflow/WorkflowPlatformAdapters.cs": {
-    "mtime": 1789858816.428109,
-    "seen": 1789859919.1801915,
-    "ast_hash": "ba6c431af559f0c2c7d23834b06349d0",
+    "mtime": 1789894461.0132751,
+    "seen": 1789896630.4579258,
+    "ast_hash": "04e3ff9e13661c47b2e7847baec88238",
     "semantic_hash": ""
   },
   "PEMS.Tests/Workflow/WorkflowBindingRuntimeTests.cs": {
@@ -13176,9 +13176,9 @@
     "semantic_hash": ""
   },
   "PEMS.WorkflowPlatform/Interfaces/WorkflowPlatformContracts.cs": {
-    "mtime": 1789861498.4632337,
-    "seen": 1789863535.6783876,
-    "ast_hash": "e6bfb7682a7dfaaa0eea049bc6fbdda1",
+    "mtime": 1789894912.915684,
+    "seen": 1789896630.5877793,
+    "ast_hash": "1e275e3d8c9c1bd3bf32f92a9d1872df",
     "semantic_hash": ""
   },
   "PEMS.WorkflowPlatform/Services/WorkflowActionRegistry.cs": {
@@ -13206,9 +13206,9 @@
     "semantic_hash": ""
   },
   "PEMS.WorkflowPlatform/Services/WorkflowReadModelService.cs": {
-    "mtime": 1789861498.4632337,
-    "seen": 1789863535.6783876,
-    "ast_hash": "cec645e202e21719b59acaf8ac28b8ed",
+    "mtime": 1789894912.9096644,
+    "seen": 1789896630.5877793,
+    "ast_hash": "4344b5c8f0fa374b3dfcb0dc37b726a0",
     "semantic_hash": ""
   },
   "PEMS.WorkflowPlatform/Services/WorkflowVersionImmutabilityGuard.cs": {
@@ -13254,15 +13254,15 @@
     "semantic_hash": ""
   },
   "PEMS.Tests/Cmms/WorkRequestWorkflowTests.cs": {
-    "mtime": 1789862355.3422055,
-    "seen": 1789863535.6109388,
-    "ast_hash": "dd7e4183c130c0d1f14b6cef3e78a663",
+    "mtime": 1789895992.7014306,
+    "seen": 1789896630.474225,
+    "ast_hash": "4ba5badae420ee8669425f2317218859",
     "semantic_hash": ""
   },
   "docs/workflow/WORKFLOW_PLATFORM_PHASE2_WORK_REQUEST.md": {
-    "mtime": 1789862550.737509,
-    "seen": 1789863535.7484508,
-    "ast_hash": "cac2ee7477164b64086f22ed064cb792",
+    "mtime": 1789896243.519716,
+    "seen": 1789896630.6429956,
+    "ast_hash": "4bad297a6e0e77e47e41e090709d8b18",
     "semantic_hash": ""
   }
 }

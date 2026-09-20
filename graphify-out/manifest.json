@@ -846,10 +846,10 @@
     "semantic_hash": "6152f229de11efbc75ec910790f31467"
   },
   "PEMS.Domain/Entities/Department.cs": {
-    "mtime": 1788350902.61829,
-    "seen": 1788613735.6703675,
-    "ast_hash": "c2987ceac7752a4b95afb37c049a2518",
-    "semantic_hash": "c2987ceac7752a4b95afb37c049a2518"
+    "mtime": 1789910469.6144676,
+    "seen": 1789922980.7772005,
+    "ast_hash": "d7362268a4595a49b4be3e3dc09bac92",
+    "semantic_hash": ""
   },
   "PEMS.Domain/Entities/Discipline.cs": {
     "mtime": 1788350902.6339219,
@@ -1350,9 +1350,9 @@
     "semantic_hash": "1770a2dcae2117a21b25dc639009f1e9"
   },
   "PEMS.Domain/Entities/WorkOrder.cs": {
-    "mtime": 1788990251.5212438,
-    "seen": 1788992897.472015,
-    "ast_hash": "81f6ce2e3407ac3b8ea50e4d1462eee1",
+    "mtime": 1789910469.6144676,
+    "seen": 1789922980.8028412,
+    "ast_hash": "30c92fb4f0e0b18d238522ccbcf7608a",
     "semantic_hash": ""
   },
   "PEMS.Domain/Entities/WorkOrderDisciplineFinding.cs": {
@@ -1578,9 +1578,9 @@
     "semantic_hash": "5809af8d8afaa80014e62788179b6dd4"
   },
   "PEMS.Persistence/Migrations/PEMSDbContextModelSnapshot.cs": {
-    "mtime": 1789861575.4208221,
-    "seen": 1789863535.559807,
-    "ast_hash": "4a962a04f437d323d38fae4e9bce5be5",
+    "mtime": 1789911463.9241266,
+    "seen": 1789922980.835393,
+    "ast_hash": "2226b7c9bee776b5414b74a82966728e",
     "semantic_hash": ""
   },
   "PEMS.Persistence/PEMS.Persistence.csproj": {
@@ -1620,10 +1620,10 @@
     "semantic_hash": "f8c339979cc376503f21511c21e86952"
   },
   "PEMS.Persistence/Seed/MaintenanceRoleSeeder.cs": {
-    "mtime": 1788350904.2033758,
-    "seen": 1788613735.670535,
-    "ast_hash": "04a1d07bdd65ab63744a9a865336eeeb",
-    "semantic_hash": "04a1d07bdd65ab63744a9a865336eeeb"
+    "mtime": 1789910996.5579967,
+    "seen": 1789922980.8510275,
+    "ast_hash": "23f8571e74d01b517cc9c071d6f18b83",
+    "semantic_hash": ""
   },
   "PEMS.Persistence/Seed/NcrApprovalWorkflowSeeder.cs": {
     "mtime": 1788350904.2307734,
@@ -2088,10 +2088,10 @@
     "semantic_hash": "60c28e0af6b83e6c1bd67c6f8386a6c8"
   },
   "PEMS.Persistence/Servises/WorkOrderReviewService.cs": {
-    "mtime": 1788350904.6741297,
-    "seen": 1788613735.670535,
-    "ast_hash": "a2ae80119cf2dbe935a8e9636eb5e5f6",
-    "semantic_hash": "a2ae80119cf2dbe935a8e9636eb5e5f6"
+    "mtime": 1789910960.0727222,
+    "seen": 1789922980.8730955,
+    "ast_hash": "350a927efaaeb8340088dcd0078b1037",
+    "semantic_hash": ""
   },
   "PEMS.Shared/PEMS.Shared.csproj": {
     "mtime": 1788350904.7841868,
@@ -2424,9 +2424,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/MaintenancePlanController.cs": {
-    "mtime": 1789687512.1473117,
-    "seen": 1789826033.5971777,
-    "ast_hash": "3942ee6c7c0d99981672516cb64fcb9d",
+    "mtime": 1789911258.7243528,
+    "seen": 1789922980.947419,
+    "ast_hash": "1f2affcca12904f30087ec82dcfc0099",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/MaintenanceStrategyController.cs": {
@@ -2568,9 +2568,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/WorkOrderController.cs": {
-    "mtime": 1789687488.062676,
-    "seen": 1789826033.5971777,
-    "ast_hash": "be3aeb32b542766a43fba194feb7d721",
+    "mtime": 1789920995.1316016,
+    "seen": 1789922980.9484642,
+    "ast_hash": "97b22f8376e387594611e9f0e96420c7",
     "semantic_hash": ""
   },
   "PEMS.Web/DATA/ApplicationDbContext.cs": {
@@ -2682,9 +2682,9 @@
     "semantic_hash": "ab7e34a2113cfa2a4d952bac4edc6cb4"
   },
   "PEMS.Web/Program.cs": {
-    "mtime": 1789861960.834347,
-    "seen": 1789863535.6465378,
-    "ast_hash": "2df8e93b96d528d178003f78ae10f698",
+    "mtime": 1789910996.5579967,
+    "seen": 1789922980.9484642,
+    "ast_hash": "02564cfbda48e95093ac50079bc55102",
     "semantic_hash": ""
   },
   "PEMS.Web/Properties/launchSettings.json": {
@@ -3534,9 +3534,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/WorkOrder/Details.cshtml": {
-    "mtime": 1789852323.324964,
-    "seen": 1789854334.7360847,
-    "ast_hash": "abe3143a638087f9d2d0748b3ec49243",
+    "mtime": 1789911428.422759,
+    "seen": 1789922980.9945507,
+    "ast_hash": "e654258ca30c91f88a7f29f66cda8efd",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/WorkOrder/Index.cshtml": {
@@ -3582,9 +3582,9 @@
     "semantic_hash": ""
   },
   "PEMS.WorkflowPlatform/Configurations/WorkflowConfigurations.cs": {
-    "mtime": 1789858255.076421,
-    "seen": 1789859919.2908504,
-    "ast_hash": "d2f4542ac3ef6a49cbc507461a1b7cc7",
+    "mtime": 1789901467.2621496,
+    "seen": 1789922980.9998894,
+    "ast_hash": "5788bfc0b7430f9b70ee7574dd4b9899",
     "semantic_hash": ""
   },
   "PEMS.WorkflowPlatform/Dtos/WorkflowDtos.cs": {
@@ -3654,9 +3654,9 @@
     "semantic_hash": "51a16dd470b289a34be53e70d490b4fd"
   },
   "PEMS.WorkflowPlatform/Services/WorkflowRuntimeService.cs": {
-    "mtime": 1789861498.4632337,
-    "seen": 1789863535.6783876,
-    "ast_hash": "a79d3ebefc1d94c46913df483124f330",
+    "mtime": 1789910494.081239,
+    "seen": 1789922981.0001395,
+    "ast_hash": "0611c67b9fde5f54f82eee9c6357d370",
     "semantic_hash": ""
   },
   "PEMS.slnx": {
@@ -3900,9 +3900,9 @@
     "semantic_hash": "0465d8982f96e5c2179bfb86f86519a0"
   },
   "PEMS.Web/Controllers/InstrumentController.cs": {
-    "mtime": 1789813963.2032971,
-    "seen": 1789826033.5971777,
-    "ast_hash": "97a7ff06eda91d1ef77494f89a028d01",
+    "mtime": 1789911258.7243528,
+    "seen": 1789922980.935087,
+    "ast_hash": "771709146d16a6269d60452082f983cb",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Instrument/Edit.cshtml": {
@@ -4098,10 +4098,10 @@
     "semantic_hash": "0bd6faee1b392ae86ca9c04a865bdcf9"
   },
   "PEMS.Application/Interfaces/IWorkOrderLifecycleService.cs": {
-    "mtime": 1788350902.4771533,
-    "seen": 1788613735.6693618,
-    "ast_hash": "3996bf1ae20f7a3beb54a170c2428b98",
-    "semantic_hash": "3996bf1ae20f7a3beb54a170c2428b98"
+    "mtime": 1789911181.8665445,
+    "seen": 1789922980.7615526,
+    "ast_hash": "55bb4a1c796dc57fd4e7f9565297f341",
+    "semantic_hash": ""
   },
   "PEMS.Domain/Entities/WorkOrderStatusHistory.cs": {
     "mtime": 1788350903.3308125,
@@ -4140,9 +4140,9 @@
     "semantic_hash": "f95a4ae50cdd0c49db4f8227a2061ed9"
   },
   "PEMS.Persistence/Servises/WorkOrderLifecycleService.cs": {
-    "mtime": 1788985394.31335,
-    "seen": 1788987303.4566495,
-    "ast_hash": "be6ddc3b969fa9fa3ad11aae5134d309",
+    "mtime": 1789919279.4395018,
+    "seen": 1789922980.8730955,
+    "ast_hash": "a12841d0914b57ae8481899f82f2b0ce",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/AssetController.cs": {
@@ -4968,9 +4968,9 @@
     "semantic_hash": "cea2907be6bd2f5c867e02fcd2365377"
   },
   "PEMS.Persistence/Servises/WorkRequestService.cs": {
-    "mtime": 1789894461.0132751,
-    "seen": 1789896630.4579258,
-    "ast_hash": "2c516153dfb0c7da20e120705385d5b9",
+    "mtime": 1789919279.4395018,
+    "seen": 1789922980.8730955,
+    "ast_hash": "1b6cb88a77576a1c3dcb6f46058ea6b1",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/WorkRequestController.cs": {
@@ -12264,9 +12264,9 @@
     "semantic_hash": ""
   },
   "PEMS.Persistence/Seed/HelpContentSeeder.cs": {
-    "mtime": 1789862456.9107838,
-    "seen": 1789863535.559807,
-    "ast_hash": "5bef301649e5cc04095cf85ef60b59ef",
+    "mtime": 1789922571.2029023,
+    "seen": 1789922980.8510275,
+    "ast_hash": "b41ddd65ee347e5a50dd172f06f5ce4b",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Seed/HelpKnowledgeSeeder.cs": {
@@ -12366,9 +12366,9 @@
     "semantic_hash": ""
   },
   "PEMS.Tests/Help/HelpContentSeederTests.cs": {
-    "mtime": 1789862456.9107838,
-    "seen": 1789863535.6109388,
-    "ast_hash": "e43c3800b98e6f0f041c5845a39bee71",
+    "mtime": 1789922571.2029023,
+    "seen": 1789922980.9188297,
+    "ast_hash": "4ec505e6492f63db41c86a9f2926e337",
     "semantic_hash": ""
   },
   "PEMS.Tests/Help/HelpKnowledgeSeederTests.cs": {
@@ -13176,9 +13176,9 @@
     "semantic_hash": ""
   },
   "PEMS.WorkflowPlatform/Interfaces/WorkflowPlatformContracts.cs": {
-    "mtime": 1789894912.915684,
-    "seen": 1789896630.5877793,
-    "ast_hash": "1e275e3d8c9c1bd3bf32f92a9d1872df",
+    "mtime": 1789910494.081239,
+    "seen": 1789922981.0001395,
+    "ast_hash": "58c0a4c2902597b432aa76df11a31047",
     "semantic_hash": ""
   },
   "PEMS.WorkflowPlatform/Services/WorkflowActionRegistry.cs": {
@@ -13263,6 +13263,108 @@
     "mtime": 1789896243.519716,
     "seen": 1789896630.6429956,
     "ast_hash": "4bad297a6e0e77e47e41e090709d8b18",
+    "semantic_hash": ""
+  },
+  "PEMS.Application/DTOs/WorkOrderGovernanceDtos.cs": {
+    "mtime": 1789910789.2900207,
+    "seen": 1789922980.7470396,
+    "ast_hash": "78841746763626fb594825e24ee61aba",
+    "semantic_hash": ""
+  },
+  "PEMS.Domain/Common/OrganizationDomains.cs": {
+    "mtime": 1789910469.6144676,
+    "seen": 1789922980.7615526,
+    "ast_hash": "ca7d4be327fb2e1de9a5f0a8f3c74d8a",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260920105149_WorkflowInstanceRunningUniquePerEntity.Designer.cs": {
+    "mtime": 1789901509.5014842,
+    "seen": 1789922980.835393,
+    "ast_hash": "38d70bb11d276187b9b972bde80b536e",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260920105149_WorkflowInstanceRunningUniquePerEntity.cs": {
+    "mtime": 1789901509.5014842,
+    "seen": 1789922980.835393,
+    "ast_hash": "bb1e0ca921a28a737a65347ef30d6164",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260920133743_WorkOrderGovernanceOrigin.Designer.cs": {
+    "mtime": 1789911463.9241266,
+    "seen": 1789922980.835393,
+    "ast_hash": "a69e8fa22da6ac460d4d108b2149f73c",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Migrations/20260920133743_WorkOrderGovernanceOrigin.cs": {
+    "mtime": 1789911463.9241266,
+    "seen": 1789922980.835393,
+    "ast_hash": "c90b684fd3a9e4b135a5a399dc0345e6",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Seed/WorkOrderGovernanceSeeder.cs": {
+    "mtime": 1789912828.7290459,
+    "seen": 1789922980.8510275,
+    "ast_hash": "52d4203bbb329e7302dc6dbd295286cd",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Seed/WorkOrderLifecycleWorkflowSeeder.cs": {
+    "mtime": 1789910760.3370092,
+    "seen": 1789922980.8510275,
+    "ast_hash": "149c9ff49135e4a0906ed3c9711a0c07",
+    "semantic_hash": ""
+  },
+  "PEMS.Persistence/Workflow/WorkOrderWorkflow.cs": {
+    "mtime": 1789910960.0727222,
+    "seen": 1789922980.8730955,
+    "ast_hash": "22706f8f23a2ade1b864f916913694de",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/WorkOrderConcurrencyGateTests.cs": {
+    "mtime": 1789919333.3152318,
+    "seen": 1789922980.8948338,
+    "ast_hash": "2e1c8f6ddb7b81a6c12d03d85ebef2e3",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/WorkOrderGovernanceTestBase.cs": {
+    "mtime": 1789911580.4126508,
+    "seen": 1789922980.8948338,
+    "ast_hash": "67e92d9fe8add99974101531deb2e687",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/WorkOrderGovernanceTests.cs": {
+    "mtime": 1789912031.3853848,
+    "seen": 1789922980.8948338,
+    "ast_hash": "5b015e5f631a7a1b4d73c3aeb51f08d7",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Cmms/WorkRequestConcurrencyGateTests.cs": {
+    "mtime": 1789901808.3352554,
+    "seen": 1789922980.8948338,
+    "ast_hash": "05f0070e9c073f7bc5f44616d9428835",
+    "semantic_hash": ""
+  },
+  "docs/workflow/WORKFLOW_PLATFORM_PHASE2_CLOSURE_AUDIT.md": {
+    "mtime": 1789897133.9521136,
+    "seen": 1789922981.048697,
+    "ast_hash": "74e2492c159e80d9c8fe3fa8bed036fd",
+    "semantic_hash": ""
+  },
+  "docs/workflow/WORKFLOW_PLATFORM_PHASE3A_WORK_ORDER_GOVERNANCE.md": {
+    "mtime": 1789906863.0017633,
+    "seen": 1789922981.048697,
+    "ast_hash": "6656234fe8c58b570b49235b17519d5e",
+    "semantic_hash": ""
+  },
+  "docs/workflow/WORKFLOW_PLATFORM_PHASE3_WORK_ORDER_AUDIT.md": {
+    "mtime": 1789904664.718926,
+    "seen": 1789922981.048697,
+    "ast_hash": "ff074ec8602971c4578a8a7c3e648992",
+    "semantic_hash": ""
+  },
+  "docs/workflow/WORK_REQUEST_CONCURRENCY_GATE.md": {
+    "mtime": 1789902993.0127435,
+    "seen": 1789922981.048697,
+    "ast_hash": "92104aae5337d1035c83f3cfa8c51b9b",
     "semantic_hash": ""
   }
 }
