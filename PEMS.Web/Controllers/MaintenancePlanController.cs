@@ -21,10 +21,13 @@ public class MaintenancePlanController : Controller
     private readonly ICurrentUserService _currentUser;
     private readonly IPermissionService _permissionService;
 
+    private readonly IWorkOrderLifecycleService? _workOrderLifecycle;
+
     public MaintenancePlanController(PEMSDbContext context, INumberingService numberingService,
         IMaintenancePlanService maintenancePlanService, IPMGenerationService pmGenerationService,
-        ICurrentUserService currentUser, IPermissionService permissionService)
+        ICurrentUserService currentUser, IPermissionService permissionService, IWorkOrderLifecycleService? workOrderLifecycle = null)
     {
+        _workOrderLifecycle = workOrderLifecycle;
         _context = context;
         _numberingService = numberingService;
         _maintenancePlanService = maintenancePlanService;
@@ -170,6 +173,7 @@ public class MaintenancePlanController : Controller
             return RedirectToAction(nameof(Index));
         }
 
+        await GovernGeneratedAsync();
         var workOrderId = await _context.WorkOrders
             .Where(x => x.WorkOrderNumber == workOrderNumber)
             .Select(x => x.WorkOrderId)
@@ -190,9 +194,21 @@ public class MaintenancePlanController : Controller
             return Forbid();
 
         var result = await _pmGenerationService.GenerateDueWorkOrdersAsync();
+        await GovernGeneratedAsync();
 
         TempData["Message"] = $"{result.WorkOrdersGenerated} Work Order جدید ساخته شد؛ {result.PlansSkippedAlreadyHasOpenWorkOrder} مورد به‌دلیل داشتن Work Order فعال از قبل، رد شد.";
         return RedirectToAction(nameof(Index));
+    }
+
+
+    // Phase 3B: Work Order تولیدشده باید حاکمیتی شود (Snapshot مبدأ از کاربر اجراکننده + شروع چرخه‌عمر)؛ بدون Binding بی‌اثر است.
+    private async Task GovernGeneratedAsync()
+    {
+        if (_workOrderLifecycle == null) return;
+        var employeeId = _currentUser.UserId.HasValue
+            ? await _context.Users.Where(u => u.Id == _currentUser.UserId.Value).Select(u => u.EmployeeId).FirstOrDefaultAsync() : null;
+        var (ok, error, _) = await _workOrderLifecycle.GovernPendingNewAsync(new PEMS.Application.DTOs.WorkOrderActor(employeeId, _currentUser.Roles));
+        if (!ok) TempData["Error"] = error;
     }
 
     [HttpPost]

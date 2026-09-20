@@ -34,4 +34,5 @@
 <data name="Advance to"><value>انتقال به</value></data><data name="Running"><value>در جریان</value></data>
 <data name="To"><value>به</value></data>
 <data name="New Request"><value>درخواست جدید</value></data>
+<data name="Originating Discipline"><value>دیسیپلین مبدأ</value></data><data name="Responsible Maintenance Discipline"><value>دیسیپلین مسئول نگهداری</value></data><data name="Completion data"><value>اطلاعات تکمیل</value></data><data name="Failure Cause"><value>علت خرابی</value></data><data name="Downtime Hours"><value>ساعت توقف</value></data><data name="Failure Effect"><value>اثر خرابی</value></data><data name="Contractor"><value>پیمانکار</value></data><data name="Contractor Cost"><value>هزینه پیمانکار</value></data><data name="Team"><value>تیم</value></data><data name="Executor"><value>مجری</value></data><data name="Assign"><value>تخصیص</value></data>
 </root>

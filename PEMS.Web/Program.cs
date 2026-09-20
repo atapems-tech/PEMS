@@ -256,6 +256,7 @@ builder.Services.AddSingleton<IWorkflowActionRegistry>(_ =>
     foreach (var (module, actions) in legacy)
         foreach (var a in actions)
             registry.RegisterModuleAction(module, a, WorkflowActionKind.Outcome, "Legacy module action");
+    PEMS.Persistence.Workflow.WorkOrderWorkflow.Register(registry);   // Phase 3B: اکشن‌های ماژول WorkOrder (Hold, Comment)
     return registry;
 });
 builder.Services.AddSingleton<IWorkflowConditionEvaluator, WorkflowConditionEvaluator>();
@@ -691,6 +692,11 @@ using (var scope = app.Services.CreateScope())
 
     // Phase 2 (Workflow Platform): گردش‌کار Work Request روی پلتفرم مرکزی + Binding صریح (Idempotent؛ Instance های موجود دست نمی‌خورند)
     await PEMS.Persistence.Seed.WorkRequestWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // Phase 3B (Work Order): پایه‌ی حاکمیت (نقش‌ها/مجوزها/دامنه‌ی سازمانی، یک‌بار) سپس تعریف چرخه‌عمر + Binding های صریح (Idempotent).
+    // Work Order های Legacy و Instance های موجود دست نمی‌خورند.
+    await PEMS.Persistence.Seed.WorkOrderGovernanceSeeder.SeedAsync(scope.ServiceProvider);
+    await PEMS.Persistence.Seed.WorkOrderLifecycleWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق «PEMS Bilingual Help & Knowledge System» - کتابخانه‌ی اولیه‌ی محتوای راهنما (ایدمپوتنت)
     await PEMS.Persistence.Seed.HelpContentSeeder.SeedAsync(scope.ServiceProvider);

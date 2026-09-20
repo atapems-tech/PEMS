@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
@@ -165,6 +165,11 @@ public class WorkRequestService : IWorkRequestService
             // Instance + History + تغییر Status/ممیزی کسب‌وکاری در یک SaveChanges اتمیک ذخیره می‌شوند
             await _runtime.StartInstanceAsync(WorkflowModule, WorkflowEntityType, workRequestId, WorkflowContext, null, actor.EmployeeId);
             return (true, null);
+        }
+        catch (WorkflowConcurrencyConflictException)
+        {
+            _context.ChangeTracker.Clear();
+            return (false, T("این درخواست هم‌زمان توسط کاربر دیگری ارسال شد؛ صفحه را دوباره بارگذاری کنید.", "This request was submitted at the same time by another user; reload the page."));
         }
         catch (Exception ex) when (ex is InvalidOperationException or UnauthorizedAccessException or DbUpdateConcurrencyException)
         {
@@ -461,6 +466,22 @@ public class WorkRequestService : IWorkRequestService
             CreatedDate = DateTime.Now
         };
 
+        // Phase 3B: اگر گردش‌کار چرخه‌عمر Work Order با Binding فعال است، Work Order «حاکمیتی» ساخته می‌شود: مبدأ (سازمان + دیسیپلین
+        // + درخواست‌دهنده) از Work Request Snapshot می‌شود (قبلاً فقط SourceWorkRequestId کپی می‌شد) و Instance چرخه‌عمر شروع می‌شود.
+        // بدون Binding (مثلاً محیط‌های قدیمی/تست) رفتار قبلی Legacy عیناً حفظ می‌شود.
+        bool governedWo;
+        try { governedWo = await _bindings.ResolveAsync(PEMS.Persistence.Workflow.WorkOrderWorkflow.Module, PEMS.Persistence.Workflow.WorkOrderWorkflow.LifecycleEntityType, PEMS.Persistence.Workflow.WorkOrderWorkflow.LifecycleContext) != null; }
+        catch (WorkflowBindingAmbiguousException ex) { return (false, ex.Message, null); }
+        if (governedWo)
+        {
+            var (org, disc) = await PEMS.Persistence.Workflow.WorkOrderWorkflow.ResolveEmployeeAsync(_context, wr.RequestedById);
+            if (org == null || !disc.HasValue)
+                return (false, T("دامنه‌ی سازمانی/دیسیپلین درخواست‌دهنده مشخص نیست؛ دیسیپلین مبدأ Work Order ثبت نمی‌شود.", "The requester's organization domain / discipline is not defined; the originating discipline of the Work Order cannot be recorded."), null);
+            workOrder.OriginatingOrganization = org;
+            workOrder.OriginatingDisciplineId = disc;
+            workOrder.OriginatingRequestedById = wr.RequestedById;
+        }
+
         var fromStatus = wr.Status;
         // از navigation property به جای FK خام استفاده شد چون workOrder هنوز Id واقعی ندارد -
         // EF Core موقع SaveChanges به‌صورت خودکار FK را از روی object reference پر می‌کند (fixup).
@@ -480,20 +501,38 @@ public class WorkRequestService : IWorkRequestService
             ChangedDate = DateTime.Now
         });
 
+        return await _context.Database.CreateExecutionStrategy().ExecuteAsync<(bool Success, string? Error, int? WorkOrderId)>(async () =>
+        {
+        Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction? tx = null;
         try
         {
+            if (governedWo)
+            {
+                // Work Order + Instance چرخه‌عمر (+ تکمیل گردش‌کار Work Request) در یک تراکنش؛ Id واقعی WorkOrder لازم است
+                if (_context.Database.IsRelational() && _context.Database.CurrentTransaction == null) tx = await _context.Database.BeginTransactionAsync();
+                _context.WorkOrderStatusHistories.Add(new WorkOrderStatusHistory { WorkOrder = workOrder, FromStatus = "", ToStatus = "Open", ChangedById = actor?.EmployeeId, ChangedDate = DateTime.Now, Reason = $"Created from {wr.RequestNumber}" });
+                await _context.SaveChangesAsync();
+                await _runtime.StartInstanceAsync(PEMS.Persistence.Workflow.WorkOrderWorkflow.Module, PEMS.Persistence.Workflow.WorkOrderWorkflow.LifecycleEntityType,
+                    workOrder.WorkOrderId, PEMS.Persistence.Workflow.WorkOrderWorkflow.LifecycleContext, null, actor?.EmployeeId);
+            }
+
             if (instance != null)
                 // WorkOrder + Status + ممیزی + اجرای «Complete» گردش‌کار: یک SaveChanges اتمیک در Runtime
                 await _runtime.ExecuteActionAsync(instance.WorkflowInstanceId, "Complete", actor!.EmployeeId, actorRoles!, workOrderNumber, null, null);
-            else
+            else if (!governedWo)
                 await _context.SaveChangesAsync();
-        }
-        catch (Exception ex) when (instance != null && ex is InvalidOperationException or UnauthorizedAccessException)
-        {
-            _context.ChangeTracker.Clear();
-            return (false, ex.Message, null);
-        }
 
-        return (true, null, workOrder.WorkOrderId);
+            if (tx != null) await tx.CommitAsync();
+            return (true, null, workOrder.WorkOrderId);
+        }
+        catch (Exception ex) when ((instance != null || governedWo) && (ex is InvalidOperationException or UnauthorizedAccessException or DbUpdateException))
+        {
+            if (tx != null) await tx.RollbackAsync();
+            _context.ChangeTracker.Clear();
+            return (false, ex is DbUpdateConcurrencyException or WorkflowConcurrencyConflictException
+                ? T("این درخواست هم‌زمان توسط کاربر دیگری تغییر کرد؛ صفحه را دوباره بارگذاری کنید.", "This request was changed by another user at the same time; reload the page.") : ex.Message, null);
+        }
+        finally { if (tx != null) await tx.DisposeAsync(); }
+        });
     }
 }

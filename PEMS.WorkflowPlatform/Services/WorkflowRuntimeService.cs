@@ -5,7 +5,7 @@ using PEMS.WorkflowPlatform.Interfaces;
 
 namespace PEMS.WorkflowPlatform.Services;
 
-public class WorkflowRuntimeService : IWorkflowRuntime
+public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
 {
     private readonly IWorkflowDbContext _db;
     private readonly IWorkflowBindingService _bindings;
@@ -131,6 +131,28 @@ public class WorkflowRuntimeService : IWorkflowRuntime
     private static bool RoleMatches(string? assignedToRole, IReadOnlyList<string> actorRoles)
         => assignedToRole != null && SplitRoles(assignedToRole).Any(actorRoles.Contains);
 
+    public async Task<bool> CancelInstanceAsync(int workflowInstanceId, int? actorEmployeeId, string? reason, CancellationToken ct = default)
+    {
+        var instance = await _db.WorkflowInstances.FirstOrDefaultAsync(i => i.WorkflowInstanceId == workflowInstanceId, ct);
+        if (instance == null || instance.Status != "Running") return false;
+
+        var pending = await _db.WorkflowInstanceStages.Where(x => x.WorkflowInstanceId == workflowInstanceId && x.Status == "Pending").ToListAsync(ct);
+        foreach (var p in pending) { p.Status = "Cancelled"; p.Decision = "Cancel"; p.ActionDate = DateTime.Now; }
+
+        var from = instance.CurrentStageId;
+        instance.Status = "Cancelled";
+        instance.CurrentStageId = null;
+        instance.CompletionDate = DateTime.Now;
+
+        _db.WorkflowHistories.Add(new WorkflowHistory
+        {
+            WorkflowInstanceId = workflowInstanceId, FromStageId = from, ToStageId = null, ActionType = "Cancel",
+            Decision = "Cancel", Comment = reason, UserId = actorEmployeeId, ActionDate = DateTime.Now
+        });
+        await _db.SaveChangesAsync(ct);
+        return true;
+    }
+
     public async Task<int> StartInstanceAsync(
         string module,
         string businessObjectType,
@@ -231,7 +253,20 @@ public class WorkflowRuntimeService : IWorkflowRuntime
 
         await TryAutoSkipEmptyStageAsync(instance, firstStage, firstStageParticipantRoles);
 
-        await _db.SaveChangesAsync();
+        try
+        {
+            await _db.SaveChangesAsync();
+        }
+        catch (DbUpdateException) when (resolution != null)
+        {
+            // شروع هم‌زمان دوم برای همان موجودیت: Index یکتای Instance های Running (Binding-started) رد کرده است.
+            // بدون وابستگی به Provider، با بررسی مجدد به یک خطای قطعی و قابل‌فهم تبدیل می‌شود؛ خطای دیگر همان‌طور Throw می‌شود.
+            var key = $"{module}|{businessObjectType}|{businessObjectId}";
+            if (await _db.WorkflowInstances.AsNoTracking().AnyAsync(i => i.EntityKey == key && i.Status == "Running" && i.WorkflowBindingId != null))
+                throw new WorkflowConcurrencyConflictException(
+                    $"برای «{businessObjectType}» شماره‌ی {businessObjectId} هم‌زمان یک گردش‌کار در حال اجرا ایجاد شد.");
+            throw;
+        }
 
         await EmitAsync("StageEntered", instance, firstStage, "Start", initiatedByEmployeeId);
         return instance.WorkflowInstanceId;

@@ -108,6 +108,14 @@ public class WorkflowInstanceConfiguration : IEntityTypeConfiguration<WorkflowIn
         builder.Property(x => x.EntityKey).HasMaxLength(250);
         builder.HasIndex(x => x.EntityKey);
 
+        // Concurrency Gate: «حداکثر یک Instance در حال اجرا برای هر موجودیت» برای Instance هایی که با Binding صریح شروع شده‌اند
+        // (همان قاعده‌ای که Runtime در سطح برنامه دارد) به‌صورت فیزیکی در دیتابیس تضمین می‌شود، نه فقط با زمان‌بندی/RowVersion موجودیت.
+        // Instance های Legacy (بدون Binding یا بدون EntityKey) و Instance های پایان‌یافته در این Index نیستند؛ رفتار ماژول‌های
+        // مهاجرت‌نشده تغییری نمی‌کند.
+        builder.HasIndex(x => x.EntityKey, "UX_WorkflowInstances_Binding_EntityKey_Running")
+            .IsUnique()
+            .HasFilter("[EntityKey] IS NOT NULL AND [WorkflowBindingId] IS NOT NULL AND [Status] = N'Running'");
+
         builder.HasOne(x => x.Version)
             .WithMany()
             .HasForeignKey(x => x.WorkflowVersionId)

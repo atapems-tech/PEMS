@@ -1,6 +1,8 @@
 ﻿@model PEMS.Domain.Entities.WorkOrder
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Models
+@using PEMS.WorkflowPlatform.Interfaces
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var sparesUsed = (List<PEMS.Domain.Entities.MaintenanceSpareUsage>)ViewBag.SparesUsed;
@@ -19,11 +21,47 @@
     };
 
     var hasPendingReview = (bool)(ViewBag.HasPendingReview ?? false);
+
+    // Phase 3B: Work Order حاکمیتی → ساختار/اقدام‌ها/شرکت‌کنندگان/تاریخچه از مدل خواندنی مرکزی. Legacy (بدون Instance) → مسیر قدیمی.
+    var wf = ViewBag.Workflow as WorkflowRuntimeViewModel;
+    var isLegacy = wf == null;
+    var fa = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
+    var employeeNames = (Dictionary<int, string>?)ViewBag.EmployeeNames ?? new Dictionary<int, string>();
+    string StageName(WorkflowStageView st) => fa && !string.IsNullOrWhiteSpace(st.NameFa) ? st.NameFa! : st.Name;
+    string ActionLabel(WorkflowAvailableAction a) => (fa && !string.IsNullOrWhiteSpace(a.LabelFa)) ? a.LabelFa! : (!string.IsNullOrWhiteSpace(a.Label) ? a.Label! : a.ActionType);
+    string StageByName(string? n) => string.IsNullOrEmpty(n) ? "-" : (fa ? (wf?.Stages.FirstOrDefault(x => x.Name == n)?.NameFa ?? n) : n);
+    string Who(int? id) => id.HasValue && employeeNames.TryGetValue(id.Value, out var nm) ? nm : (id.HasValue ? "#" + id.Value : "-");
+    string ActionText(string a) { var t = Localizer[a]; return t.ResourceNotFound ? a : t.Value; }
+    string Participant(WorkflowParticipantView pt) => (pt.Role ?? "").Contains("Permission:")
+        ? Localizer["Permission"] + ": \u2066" + (pt.Role ?? "").Replace("Permission:", "").Replace(",", " / ") + "\u2069" : (pt.Role ?? "");
+    var diagram = new StageDiagramViewModel();
+    if (wf != null)
+        foreach (var st in wf.Stages.OrderBy(x => x.Order))
+            diagram.Stages.Add(new StageDiagramItem
+            {
+                Label = StageName(st), IconCssClass = "bi-circle",
+                RoleLabel = st.Status == "Current" ? string.Join(", ", st.Participants.Where(x => x.Status == "Pending").Select(Participant).Distinct()) : null,
+                State = st.Status switch { "Current" => StageItemState.Current, "Completed" or "Skipped" => StageItemState.Done, "Rejected" or "Cancelled" => StageItemState.Rejected, _ => StageItemState.Pending }
+            });
+    var actions = wf?.AvailableActions ?? new List<WorkflowAvailableAction>();
 }
 
+@if (wf != null)
+{
+    <div class="content-card mb-3">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h6 class="mb-0">@Localizer["Workflow"] <span class="text-muted small">@wf.WorkflowName · @Localizer["Version"] @wf.VersionNumber · @Localizer[wf.Status]</span></h6>
+            @foreach (var w in wf.Warnings) { <span class="small text-warning"><i class="bi bi-exclamation-triangle"></i> @w</span> }
+        </div>
+        <partial name="_PemsStageDiagram" model="diagram" />
+    </div>
+}
+else
+{
 <div class="content-card mb-3">
     <partial name="_WorkOrderStagesDiagram" model="@(( Model.Status, hasPendingReview ))" />
 </div>
+}
 
 <div class="content-card mb-3">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
@@ -33,6 +71,8 @@
             <span class="badge @(Model.Priority == "Critical" ? "bg-danger" : "bg-secondary")">@Model.Priority</span>
             <span class="badge bg-secondary">@Model.WorkOrderType</span>
         </div>
+        @if (isLegacy)
+        {
         <div>
             @if (nextStatus != null)
             {
@@ -165,7 +205,16 @@
                 </form>
             }
         </div>
+        }
     </div>
+
+    @if (!isLegacy)
+    {
+        <div class="small mt-2 d-flex flex-wrap gap-3">
+            <span><strong>@Localizer["Originating Discipline"]:</strong> <bdi>@(Model.OriginatingOrganization) / @(ViewBag.OriginatingDisciplineName ?? "-")</bdi></span>
+            <span><strong>@Localizer["Responsible Maintenance Discipline"]:</strong> <bdi>@(ViewBag.ResponsibleDisciplineName != null ? Model.ResponsibleOrganization + " / " + ViewBag.ResponsibleDisciplineName : "-")</bdi></span>
+        </div>
+    }
 
     @if (Model.SourceWorkRequestId.HasValue)
     {
@@ -211,6 +260,118 @@
     </div>
 </div>
 
+@if (!isLegacy)
+{
+    <div class="content-card mb-3">
+        <h6 class="mb-3">@Localizer["Actions"]</h6>
+        <div class="d-flex flex-wrap gap-2 align-items-start">
+            @if (actions.Count > 0)
+            {
+                <form asp-action="WorkflowAction" method="post" class="d-flex flex-column gap-2 w-100">
+                    <input type="hidden" name="id" value="@Model.WorkOrderId" />
+                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                        <input type="text" name="comment" class="form-control form-control-sm" placeholder="@Localizer["Comment (optional)"]" style="width:220px;" />
+                        @foreach (var a in actions)
+                        {
+                            var cls = a.ActionType == "Approve" ? "btn-pems-solid" : a.ActionType is "Reject" or "Cancel" ? "btn-outline-danger" : "btn-outline-primary";
+                            <button type="submit" name="actionType" value="@a.ActionType" class="btn btn-sm @cls" disabled="@(!a.IsAllowed)" title="@(a.IsAllowed ? "" : a.DeniedReason)"
+                                    onclick="@(a.ActionType is "Reject" or "Cancel" ? "return confirm('" + Localizer["Are you sure?"] + "');" : "")">
+                                @ActionLabel(a)@if (!string.IsNullOrWhiteSpace(a.ToStageName)) { <span class="opacity-75"> → @StageByName(a.ToStageName)</span> }
+                            </button>
+                        }
+                    </div>
+                    @if (Model.Status == "InProgress")
+                    {
+                        @* داده‌های تکمیل (قواعد دامنه‌ی Work Order؛ اعتبارسنجی نهایی سمت سرور) *@
+                        <details class="small">
+                            <summary>@Localizer["Completion data"]</summary>
+                            <div class="row g-2 mt-1">
+                                @if (Model.WorkOrderType is "Corrective" or "Emergency")
+                                {
+                                    <div class="col-md-3"><label class="form-label small">@Localizer["Failure Mode"]</label><input name="failureModeCode" class="form-control form-control-sm" /></div>
+                                    <div class="col-md-3"><label class="form-label small">@Localizer["Failure Cause"]</label><input name="failureCauseCode" class="form-control form-control-sm" /></div>
+                                    <div class="col-md-3"><label class="form-label small">@Localizer["Root Cause"]</label><input name="rootCause" class="form-control form-control-sm" /></div>
+                                    <div class="col-md-3"><label class="form-label small">@Localizer["Downtime Hours"]</label><input name="downtimeHours" type="number" step="0.1" class="form-control form-control-sm" /></div>
+                                    <div class="col-md-6"><label class="form-label small">@Localizer["Failure Effect"]</label><input name="failureEffect" class="form-control form-control-sm" /></div>
+                                    <div class="col-md-6"><label class="form-label small">@Localizer["Corrective Action"]</label><input name="correctiveAction" class="form-control form-control-sm" /></div>
+                                }
+                                <div class="col-md-6"><label class="form-label small">@Localizer["Contractor"]</label><input name="contractorName" class="form-control form-control-sm" /></div>
+                                <div class="col-md-6"><label class="form-label small">@Localizer["Contractor Cost"]</label><input name="contractorCost" type="number" step="0.01" class="form-control form-control-sm" /></div>
+                            </div>
+                        </details>
+                    }
+                </form>
+                @foreach (var denied in actions.Where(a => !a.IsAllowed && !string.IsNullOrWhiteSpace(a.DeniedReason)))
+                {
+                    <div class="small text-muted w-100"><i class="bi bi-lock"></i> @ActionLabel(denied): @denied.DeniedReason</div>
+                }
+            }
+            else
+            {
+                <span class="text-muted small">@Localizer["No further actions available."]</span>
+            }
+        </div>
+
+        @if (Model.Status is "Open" or "Assigned")
+        {
+            @* برنامه‌ریزی/تخصیص: داده‌های دامنه‌ی Work Order؛ مجوز، سازمان و دیسیپلین سمت سرور اعمال می‌شود *@
+            <hr class="my-3" />
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <form asp-action="SetPlanning" method="post" class="d-flex gap-2 align-items-end flex-wrap">
+                        <input type="hidden" name="id" value="@Model.WorkOrderId" />
+                        <div><label class="form-label small mb-1">@Localizer["Responsible Maintenance Discipline"]</label>
+                            <select name="responsibleDisciplineId" class="form-select form-select-sm" required>
+                                <option value="">--</option>
+                                @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId" selected="@(Model.ResponsibleDisciplineId == (int)d.DisciplineId)">@d.Name</option> }
+                            </select></div>
+                        <button type="submit" class="btn btn-outline-primary btn-sm">@Localizer["Save"]</button>
+                    </form>
+                </div>
+                @if (Model.Status == "Assigned")
+                {
+                    <div class="col-md-6">
+                        <form asp-action="AssignExecutor" method="post" class="d-flex gap-2 align-items-end flex-wrap">
+                            <input type="hidden" name="id" value="@Model.WorkOrderId" />
+                            <div><label class="form-label small mb-1">@Localizer["Team"]</label>
+                                <select name="teamId" class="form-select form-select-sm"><option value="">--</option>
+                                    @foreach (var c in (IEnumerable<dynamic>)ViewBag.Teams) { <option value="@c.TeamId">@c.Name</option> }
+                                </select></div>
+                            <div><label class="form-label small mb-1">@Localizer["Executor"]</label>
+                                <select name="employeeId" class="form-select form-select-sm"><option value="">--</option>
+                                    @foreach (var e in (IEnumerable<dynamic>)ViewBag.Employees) { <option value="@e.EmployeeId">@e.FullName</option> }
+                                </select></div>
+                            <button type="submit" class="btn btn-outline-primary btn-sm">@Localizer["Assign"]</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="content-card mb-3">
+        <h6 class="mb-3">@Localizer["Workflow History"]</h6>
+        <div class="table-responsive">
+        <table class="table table-enterprise table-sm mb-0">
+            <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Action"]</th><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["By"]</th><th>@Localizer["Reason"]</th></tr></thead>
+            <tbody>
+                @foreach (var h in wf!.HistorySummary.OrderByDescending(x => x.ActionDate))
+                {
+                    <tr>
+                        <td class="small"><bdi dir="ltr">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</bdi></td>
+                        <td class="small">@ActionText(h.ActionType)</td>
+                        <td class="small">@StageByName(h.FromStageName)</td>
+                        <td class="small">@StageByName(h.ToStageName)</td>
+                        <td class="small">@Who(h.UserId)</td>
+                        <td class="small text-muted">@h.Comment</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+    </div>
+}
+
 @{
     var reviewStatus = (IEnumerable<PEMS.Application.Interfaces.VdrReviewStatusItemDto>)(ViewBag.ReviewStatus ?? new List<PEMS.Application.Interfaces.VdrReviewStatusItemDto>());
     var findings = (List<PEMS.Domain.Entities.WorkOrderDisciplineFinding>)(ViewBag.Findings ?? new List<PEMS.Domain.Entities.WorkOrderDisciplineFinding>());
@@ -221,7 +382,7 @@
 @if (statusHistory.Any())
 {
     <div class="content-card mb-3">
-        <h6 class="mb-3"><i class="bi bi-clock-history"></i> @Localizer["Status History"]</h6>
+        <h6 class="mb-3"><i class="bi bi-clock-history"></i> @(isLegacy ? Localizer["Status History"] : Localizer["Business Audit"])</h6>
         <ul class="list-unstyled mb-0">
             @foreach (var h in statusHistory)
             {

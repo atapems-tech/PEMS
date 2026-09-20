@@ -112,6 +112,23 @@ public class WorkflowBindingAmbiguousException : InvalidOperationException
     public WorkflowBindingAmbiguousException(string message) : base(message) { }
 }
 
+/// <summary>شروع هم‌زمان دوم برای موجودیتی که همین الان یک Instance در حال اجرا دارد (رد شده توسط Index یکتای دیتابیس).</summary>
+public class WorkflowConcurrencyConflictException : InvalidOperationException
+{
+    public WorkflowConcurrencyConflictException(string message) : base(message) { }
+}
+
+/// <summary>
+/// کنترل اداری Instance (جدا از IWorkflowRuntime تا امضای آن دست‌نخورده بماند): لغو یک Instance در حال اجرا بدون نیاز به
+/// تطابق شرکت‌کننده - برای وقتی که فرآیند والد (مثلاً لغو Work Order) باید فرآیند وابسته‌ی باز (بازبینی چند-دیسیپلینه) را ببندد.
+/// وضعیت Instance = Cancelled، مراحل در انتظار = Cancelled، و یک رکورد WorkflowHistory (ActionType=Cancel) با کاربر و دلیل ثبت می‌شود.
+/// </summary>
+public interface IWorkflowInstanceControl
+{
+    /// <returns>true اگر Instance در حال اجرا بود و لغو شد؛ false اگر Running نبود.</returns>
+    Task<bool> CancelInstanceAsync(int workflowInstanceId, int? actorEmployeeId, string? reason, CancellationToken ct = default);
+}
+
 public interface IWorkflowBindingService
 {
     Task<WorkflowBinding> CreateAsync(string module, string entityType, string context, int definitionId, int? pinnedVersionId,

@@ -36,4 +36,5 @@
 <data name="Advance to"><value>Advance to</value></data><data name="Running"><value>Running</value></data>
 <data name="To"><value>To</value></data>
 <data name="New Request"><value>New Request</value></data>
+<data name="Originating Discipline"><value>Originating Discipline</value></data><data name="Responsible Maintenance Discipline"><value>Responsible Maintenance Discipline</value></data><data name="Completion data"><value>Completion data</value></data><data name="Failure Mode"><value>Failure Mode</value></data><data name="Failure Cause"><value>Failure Cause</value></data><data name="Root Cause"><value>Root Cause</value></data><data name="Downtime Hours"><value>Downtime Hours</value></data><data name="Failure Effect"><value>Failure Effect</value></data><data name="Corrective Action"><value>Corrective Action</value></data><data name="Contractor"><value>Contractor</value></data><data name="Contractor Cost"><value>Contractor Cost</value></data><data name="Team"><value>Team</value></data><data name="Executor"><value>Executor</value></data><data name="Assign"><value>Assign</value></data>
 </root>

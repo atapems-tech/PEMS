@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
@@ -708,6 +708,44 @@ public static class HelpContentSeeder
             "درخواست کار را.</p>",
             "درخواست کار,گردش‌کار,تأیید,نوار مراحل",
             new[] { "work-request-vs-work-order" }),
+
+        new Art("work-order-lifecycle", "cmms", "Workflow", "WorkOrders.Lifecycle", 4,
+            "How a Work Order moves through its lifecycle",
+            "A Work Order is governed by the central Workflow Platform: planning, preparation, Operations release, execution, completion, verification by the originating discipline, final approval and closure.",
+            "<p>New Work Orders start a lifecycle workflow that is explicitly bound and version-pinned. The timeline on the Work Order page shows " +
+            "the stages of that version: <em>Created → Maintenance Planning → Preparation / Assignment → Operations Issue / Release → In Execution → " +
+            "Completion → Originating-Discipline Verification → Final Approval → Closed</em>. <em>On Hold</em>, <em>Cancelled</em> and <em>Rejected</em> are " +
+            "workflow transitions. The Work Order status you see in lists is a projection of the current stage.</p>" +
+            "<p><strong>Who does what.</strong> Maintenance plans, prepares and executes the work; Operations issues / releases it for execution; " +
+            "Engineering appears only as the <em>originating discipline</em> when the request came from Engineering, and verifies and finally approves the " +
+            "result. Warehouse has no workflow authority. The originating discipline (who asked for the work) and the responsible maintenance " +
+            "discipline (who does it) are recorded separately; Engineering / Mechanical is not the same as Maintenance / Mechanical.</p>" +
+            "<p><strong>Separation of duties.</strong> The server enforces: the planner cannot execute, the Operations issuer cannot execute, the executor " +
+            "cannot verify, the verifier cannot give final approval and the creator cannot close. Creator and executor may be the same person. " +
+            "Managers and deputies may cancel or reject, but cannot final-approve work they executed or verified. Emergency Work Orders follow the " +
+            "same path - there is no bypass.</p>" +
+            "<p><strong>Actions.</strong> The buttons under <em>Actions</em> come from the workflow for the current stage; an action you cannot perform is " +
+            "shown disabled with the reason, and the server re-checks it. A running multi-discipline review is a separate process: it blocks completion, and " +
+            "cancelling the Work Order cancels it. Work Orders that existed before the workflow platform are <em>legacy</em> records and keep the previous status buttons.</p>" +
+            "<p><strong>Versions.</strong> If an administrator publishes and binds a new version (for example adding a review stage), only Work Orders created afterwards " +
+            "use it; existing Work Orders stay on the version they started with.</p>",
+            "work order,lifecycle,workflow,separation of duties,originating discipline",
+            "مسیر چرخه‌عمر دستور کار",
+            "دستور کار توسط پلتفرم مرکزی گردش‌کار اداره می‌شود: برنامه‌ریزی، آماده‌سازی، صدور توسط عملیات، اجرا، تکمیل، تأیید دیسیپلین مبدأ، تصویب نهایی و بسته‌شدن.",
+            "<p>دستور کار جدید یک گردش‌کار چرخه‌عمر را شروع می‌کند که به‌صورت صریح متصل و روی یک نسخه ثابت شده است. نوار مراحل صفحه‌ی دستور کار مراحل همان نسخه را " +
+            "نشان می‌دهد: <em>ایجادشده ← برنامه‌ریزی نگهداری ← آماده‌سازی / تخصیص ← صدور / آزادسازی توسط عملیات ← در حال اجرا ← تکمیل ← تأیید دیسیپلین مبدأ ← تصویب نهایی ← " +
+            "بسته‌شده</em>. <em>متوقف</em>، <em>لغو</em> و <em>رد</em> گذارهای گردش‌کار هستند. وضعیت دستور کار در فهرست‌ها نمایشی از مرحله‌ی جاری است.</p>" +
+            "<p><strong>چه کسی چه کاری می‌کند.</strong> نگهداری برنامه‌ریزی، آماده‌سازی و اجرا را انجام می‌دهد؛ عملیات کار را برای اجرا صادر / آزاد می‌کند؛ مهندسی فقط زمانی " +
+            "به‌عنوان <em>دیسیپلین مبدأ</em> ظاهر می‌شود که درخواست از مهندسی آمده باشد و نتیجه را تأیید و تصویب نهایی می‌کند. انبار اختیار گردش‌کاری ندارد. دیسیپلین مبدأ (درخواست‌دهنده) و " +
+            "دیسیپلین مسئول نگهداری (اجراکننده) جداگانه ثبت می‌شوند؛ مهندسی / مکانیک با نگهداری / مکانیک یکسان نیست.</p>" +
+            "<p><strong>تفکیک وظایف.</strong> سرور این موارد را اعمال می‌کند: برنامه‌ریز نمی‌تواند اجرا کند، صادرکننده‌ی عملیات نمی‌تواند اجرا کند، مجری نمی‌تواند تأیید کند، تأییدکننده نمی‌تواند تصویب نهایی کند و " +
+            "ایجادکننده نمی‌تواند ببندد. ایجادکننده و مجری می‌توانند یک نفر باشند. مدیر و معاون می‌توانند لغو یا رد کنند اما نمی‌توانند کاری را که خودشان اجرا یا تأیید کرده‌اند تصویب نهایی کنند. " +
+            "دستور کار اضطراری همین مسیر را می‌رود؛ میان‌بری وجود ندارد.</p>" +
+            "<p><strong>اقدام‌ها.</strong> دکمه‌های بخش <em>عملیات</em> از گردش‌کار مرحله‌ی جاری می‌آیند؛ اقدامی که مجاز نیستید همراه با دلیل غیرفعال نمایش داده می‌شود و سرور دوباره آن را بررسی می‌کند. " +
+            "بازبینی چند-دیسیپلینه‌ی در جریان یک فرآیند جداست: تکمیل را مسدود می‌کند و لغو دستور کار آن را هم لغو می‌کند. دستور کارهای پیش از پلتفرم گردش‌کار، رکورد <em>قدیمی</em> هستند و با دکمه‌های وضعیت قبلی ادامه می‌دهند.</p>" +
+            "<p><strong>نسخه‌ها.</strong> اگر مدیر نسخه‌ی جدیدی (مثلاً با یک مرحله‌ی بازبینی اضافه) منتشر و متصل کند، فقط دستور کارهای ایجادشده بعد از آن از آن استفاده می‌کنند؛ دستور کارهای موجود روی نسخه‌ی خودشان می‌مانند.</p>",
+            "دستور کار,چرخه‌عمر,گردش‌کار,تفکیک وظایف,دیسیپلین مبدأ",
+            new[] { "work-request-workflow", "work-request-vs-work-order" }),
 
         new Art("maintenance-strategy-overview", "cmms", "Field", "MaintenanceStrategies.Index", 3,
             "Maintenance Strategy",

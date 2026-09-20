@@ -190,32 +190,22 @@ public class WorkOrderController : Controller
             return RedirectToAction(nameof(Create));
         }
 
-        // طبق CMMS Production Baseline v1 بند P0-04: شماره‌گذاری از NumberingService (اتمیک،
-        // بدون Race) گرفته می‌شود - نه با Count() محلی + Retry Loop دستی روی خطای Unique.
+        // Phase 3B: Work Order جدید همیشه حاکمیتی است (Snapshot دیسیپلین/دامنه‌ی مبدأ + Instance چرخه‌عمر با Binding صریح، یک تراکنش).
+        // شماره‌گذاری از NumberingService (اتمیک، P0-04).
         var workOrderNumber = await _numberingService.GetNextNumberAsync("WorkOrder");
-
-        var workOrder = new WorkOrder
+        var (created, createError, newId) = await _lifecycleService.CreateGovernedAsync(new WorkOrderCreateRequest
         {
-            EquipmentId = equipmentId,
-            WorkOrderNumber = workOrderNumber,
-            WorkOrderType = workOrderType,
-            Priority = priority,
-            Status = "Open",
-            Description = description,
-            AssignedTeamId = assignedTeamId,
-            AssignedEmployeeId = assignedEmployeeId,
-            // طبق PEMS_CMMS_ARCHITECTURE.md بخش ۹: متن آزاد نباید هم‌زمان با تخصیص رابطه‌ای
-            // ذخیره شود - فقط وقتی هیچ Team/Employee انتخاب نشده، به‌عنوان یادداشت جایگزین می‌ماند
-            AssignedTo = (assignedTeamId == null && assignedEmployeeId == null) ? assignedTo : null,
-            IsActive = true,
-            CreatedDate = DateTime.Now
-        };
+            WorkOrderNumber = workOrderNumber, EquipmentId = equipmentId, WorkOrderType = workOrderType, Priority = priority, Description = description
+        }, await BuildActorAsync());
 
-        await _context.WorkOrders.AddAsync(workOrder);
-        await _context.SaveChangesAsync();
+        if (!created)
+        {
+            TempData["Error"] = createError;
+            return RedirectToAction(nameof(Create));
+        }
 
-        TempData["Message"] = $"Work order {workOrder.WorkOrderNumber} created";
-        return RedirectToAction(nameof(Details), new { id = workOrder.WorkOrderId });
+        TempData["Message"] = L($"Work Order {workOrderNumber} ایجاد شد", $"Work order {workOrderNumber} created");
+        return RedirectToAction(nameof(Details), new { id = newId });
     }
 
     public async Task<IActionResult> Details(int id)
@@ -242,7 +232,18 @@ public class WorkOrderController : Controller
             .Where(x => x.WorkOrderId == id && x.IsActive).ToListAsync();
         ViewBag.MaterialItems = await _context.MaterialItems.Where(x => x.IsActive && x.IsStockItem)
             .Select(x => new { x.MaterialItemId, x.MaterialCode, x.Description }).ToListAsync();
-        ViewBag.NextStatus = GetNextStatus(workOrder.Status);
+        // Phase 3B: ساختار گردش‌کار/اقدام‌ها/شرکت‌کنندگان/تاریخچه از مدل خواندنی مرکزی؛ فقط Work Order Legacy از مسیر قدیمی نمایش داده می‌شود
+        var actor = await BuildActorAsync();
+        ViewBag.Workflow = await _lifecycleService.GetWorkflowViewAsync(id, actor);
+        ViewBag.IsLegacy = ViewBag.Workflow == null;
+        var historyUserIds = ((PEMS.WorkflowPlatform.Interfaces.WorkflowRuntimeViewModel?)ViewBag.Workflow)?.HistorySummary.Where(h => h.UserId.HasValue).Select(h => h.UserId!.Value).Distinct().ToList() ?? new List<int>();
+        ViewBag.EmployeeNames = historyUserIds.Count == 0 ? new Dictionary<int, string>()
+            : await _context.Employees.Where(e => historyUserIds.Contains(e.EmployeeId)).ToDictionaryAsync(e => e.EmployeeId, e => e.FirstName + " " + e.LastName);
+        ViewBag.OriginatingDisciplineName = workOrder.OriginatingDisciplineId.HasValue
+            ? await _context.Disciplines.Where(d => d.DisciplineId == workOrder.OriginatingDisciplineId).Select(d => d.Name).FirstOrDefaultAsync() : null;
+        ViewBag.ResponsibleDisciplineName = workOrder.ResponsibleDisciplineId.HasValue
+            ? await _context.Disciplines.Where(d => d.DisciplineId == workOrder.ResponsibleDisciplineId).Select(d => d.Name).FirstOrDefaultAsync() : null;
+        ViewBag.NextStatus = ViewBag.IsLegacy ? GetNextStatus(workOrder.Status) : null;
         ViewBag.LaborEntries = await _context.WorkOrderLabors.Include(x => x.Employee).Include(x => x.Team)
             .Where(x => x.WorkOrderId == id && x.IsActive).OrderByDescending(x => x.WorkDate).ToListAsync();
         ViewBag.TotalLaborCost = await _laborService.GetTotalLaborCostAsync(id);
@@ -356,6 +357,48 @@ public class WorkOrderController : Controller
     // که قبلاً اصلاً در دسترس نبودند - AdvanceStatus فقط مسیر خطی رو به جلو رو پوشش می‌ده.
     // اعتبارسنجی واقعی گذار مجاز/غیرمجاز داخل WorkOrderLifecycleService انجام می‌شه.
     // ==============================================================================
+
+    /// <summary>
+    /// اجرای اکشن گردش‌کار (مرحله‌ی جاری از مدل مرکزی). actionType از کاربر می‌آید ولی «مجاز بودن» را سرور (Runtime + هوک Work Order:
+    /// مجوز، سازمان، دیسیپلین، SoD) تعیین می‌کند؛ دکمه‌ی مخفی/غیرفعال هیچ‌گاه مرجع امنیت نیست.
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> WorkflowAction(int id, string actionType, string? comment,
+        string? failureModeCode, string? failureCauseCode, string? rootCause, decimal? downtimeHours,
+        string? failureEffect, string? correctiveAction, decimal? contractorCost, string? contractorName)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
+
+        var (success, error) = await _lifecycleService.ExecuteWorkflowActionAsync(id, actionType, comment, await BuildActorAsync(),
+            new WorkOrderCompletionData
+            {
+                FailureModeCode = failureModeCode, FailureCauseCode = failureCauseCode, RootCause = rootCause, DowntimeHours = downtimeHours,
+                FailureEffect = failureEffect, CorrectiveAction = correctiveAction, ContractorCost = contractorCost, ContractorName = contractorName
+            });
+        TempData[success ? "Message" : "Error"] = success ? L("اقدام با موفقیت انجام شد.", "The action was completed.") : error;
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetPlanning(int id, int responsibleDisciplineId)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
+        var (success, error) = await _lifecycleService.SetPlanningAsync(id, responsibleDisciplineId, await BuildActorAsync());
+        TempData[success ? "Message" : "Error"] = success ? L("دیسیپلین مسئول نگهداری ثبت شد.", "Responsible maintenance discipline saved.") : error;
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AssignExecutor(int id, int? teamId, int? employeeId)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
+        var (success, error) = await _lifecycleService.AssignExecutorAsync(id, teamId, employeeId, await BuildActorAsync());
+        TempData[success ? "Message" : "Error"] = success ? L("مجری تخصیص داده شد.", "Executor assigned.") : error;
+        return RedirectToAction(nameof(Details), new { id });
+    }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -666,6 +709,11 @@ public class WorkOrderController : Controller
 
     private string? GetClientIp() => HttpContext.Connection.RemoteIpAddress?.ToString();
     private string? GetUserAgent() => Request.Headers["User-Agent"].ToString();
+
+    private static string L(string fa, string en)
+        => System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa" ? fa : en;
+
+    private async Task<WorkOrderActor> BuildActorAsync() => new(await GetCurrentEmployeeIdAsync(), _currentUser.Roles);
 
     private static string? GetNextStatus(string current)
     {

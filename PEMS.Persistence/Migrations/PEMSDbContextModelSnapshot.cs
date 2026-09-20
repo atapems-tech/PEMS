@@ -1479,6 +1479,10 @@ namespace PEMS.Persistence.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<string>("OrganizationDomain")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
                     b.Property<int?>("ParentDepartmentId")
                         .HasColumnType("int");
 
@@ -14197,9 +14201,26 @@ namespace PEMS.Persistence.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("OriginatingDisciplineId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OriginatingOrganization")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int?>("OriginatingRequestedById")
+                        .HasColumnType("int");
+
                     b.Property<string>("Priority")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ResponsibleDisciplineId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ResponsibleOrganization")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("RootCause")
                         .HasColumnType("nvarchar(max)");
@@ -14243,6 +14264,10 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("FailureModeId");
 
                     b.HasIndex("MaintenancePlanId");
+
+                    b.HasIndex("OriginatingDisciplineId");
+
+                    b.HasIndex("ResponsibleDisciplineId");
 
                     b.HasIndex("SourceWorkRequestId");
 
@@ -15066,6 +15091,10 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("WorkflowVersionId");
 
                     b.HasIndex("Module", "BusinessObjectType", "BusinessObjectId", "Status");
+
+                    b.HasIndex(new[] { "EntityKey" }, "UX_WorkflowInstances_Binding_EntityKey_Running")
+                        .IsUnique()
+                        .HasFilter("[EntityKey] IS NOT NULL AND [WorkflowBindingId] IS NOT NULL AND [Status] = N'Running'");
 
                     b.ToTable("WorkflowInstances", (string)null);
                 });
@@ -19297,6 +19326,14 @@ namespace PEMS.Persistence.Migrations
                         .HasForeignKey("MaintenancePlanId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("PEMS.Domain.Entities.Discipline", "OriginatingDiscipline")
+                        .WithMany()
+                        .HasForeignKey("OriginatingDisciplineId");
+
+                    b.HasOne("PEMS.Domain.Entities.Discipline", "ResponsibleDiscipline")
+                        .WithMany()
+                        .HasForeignKey("ResponsibleDisciplineId");
+
                     b.HasOne("PEMS.Domain.Entities.WorkRequest", "SourceWorkRequest")
                         .WithMany()
                         .HasForeignKey("SourceWorkRequestId")
@@ -19313,6 +19350,10 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("FailureModeRef");
 
                     b.Navigation("MaintenancePlan");
+
+                    b.Navigation("OriginatingDiscipline");
+
+                    b.Navigation("ResponsibleDiscipline");
 
                     b.Navigation("SourceWorkRequest");
                 });
