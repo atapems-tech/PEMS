@@ -1,6 +1,7 @@
 using System.Globalization;
 using ClosedXML.Excel;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Common;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
@@ -269,7 +270,7 @@ public class MrsImportService : IMrsImportService
         return result;
     }
 
-    public async Task<MrsImportBatchDetailDto?> GetBatchDetailAsync(int batchId, string? matchStatusFilter = null)
+    public async Task<MrsImportBatchDetailDto?> GetBatchDetailAsync(int batchId, string? matchStatusFilter = null, int page = 1, int pageSize = 50)
     {
         var batch = await _context.MrsImportBatches.FirstOrDefaultAsync(x => x.MrsImportBatchId == batchId);
         if (batch == null) return null;
@@ -279,7 +280,17 @@ public class MrsImportService : IMrsImportService
 
         if (!string.IsNullOrWhiteSpace(matchStatusFilter)) query = query.Where(x => x.MatchStatus == matchStatusFilter);
 
-        var rows = await query.OrderBy(x => x.MrsImportRowId).Take(500).ToListAsync();
+        // طبق ممیزی «Global 500-Row Batch Limitation Remediation»: TotalCount از روی همون فیلتر
+        // (نه کل Batch) محاسبه می‌شود - Take(500) قبلی حذف شد، اینجا صفحه‌بندی واقعی است، نه
+        // یک سقف بی‌صدا؛ همه‌ی ردیف‌های یک Batch بزرگ، صرف‌نظر از تعداد، قابل‌دسترسی می‌مانند.
+        var totalCount = await query.CountAsync();
+        var normalizedPage = page < 1 ? 1 : page;
+        var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
+
+        var rows = await query.OrderBy(x => x.MrsImportRowId)
+            .Skip((normalizedPage - 1) * normalizedPageSize)
+            .Take(normalizedPageSize)
+            .ToListAsync();
 
         var summaries = await GetBatchesAsync();
         var summary = summaries.First(x => x.MrsImportBatchId == batchId);
@@ -287,52 +298,89 @@ public class MrsImportService : IMrsImportService
         return new MrsImportBatchDetailDto
         {
             Batch = summary,
-            Rows = rows.Select(x => new MrsImportRowDto
+            Rows = new PagedResult<MrsImportRowDto>
             {
-                MrsImportRowId = x.MrsImportRowId,
-                RawMrsNo = x.RawMrsNo,
-                RawItemCode = x.RawItemCode,
-                RawSupplier = x.RawSupplier,
-                RawPoNo = x.RawPoNo,
-                RawPackingNo = x.RawPackingNo,
-                RawDescription = x.RawDescription,
-                RawUom = x.RawUom,
-                RawQtyReceived = x.RawQtyReceived,
-                RawQtyIssued = x.RawQtyIssued,
-                RawInventory = x.RawInventory,
-                RawDateReceived = x.RawDateReceived,
-                RawMivNo = x.RawMivNo,
-                RawMrvNo = x.RawMrvNo,
-                RawLocation = x.RawLocation,
-                RawDiscipline = x.RawDiscipline,
-                RawSize = x.RawSize,
-                RawEquipmentTag = x.RawEquipmentTag,
-                ResolvedWarehouseCode = x.ResolvedWarehouseCode,
-                MatchStatus = x.MatchStatus,
-                MatchedMaterialCode = x.MatchedMaterialItem?.MaterialCode,
-                MatchedMaterialDescription = x.MatchedMaterialItem?.Description,
-                ReviewStatus = x.ReviewStatus,
-                ErrorMessage = x.ErrorMessage,
-                Metadata = x.Metadata
-                    .OrderBy(m => m.ColumnIndex)
-                    .Select(m => new MrsImportRowMetadataDto
-                    {
-                        OriginalHeader = m.OriginalHeader,
-                        CanonicalField = m.CanonicalField,
-                        Value = m.Value
-                    }).ToList()
-            }).ToList()
+                Page = normalizedPage,
+                PageSize = normalizedPageSize,
+                TotalCount = totalCount,
+                Items = rows.Select(x => new MrsImportRowDto
+                {
+                    MrsImportRowId = x.MrsImportRowId,
+                    RawMrsNo = x.RawMrsNo,
+                    RawItemCode = x.RawItemCode,
+                    RawSupplier = x.RawSupplier,
+                    RawPoNo = x.RawPoNo,
+                    RawPackingNo = x.RawPackingNo,
+                    RawDescription = x.RawDescription,
+                    RawUom = x.RawUom,
+                    RawQtyReceived = x.RawQtyReceived,
+                    RawQtyIssued = x.RawQtyIssued,
+                    RawInventory = x.RawInventory,
+                    RawDateReceived = x.RawDateReceived,
+                    RawMivNo = x.RawMivNo,
+                    RawMrvNo = x.RawMrvNo,
+                    RawLocation = x.RawLocation,
+                    RawDiscipline = x.RawDiscipline,
+                    RawSize = x.RawSize,
+                    RawEquipmentTag = x.RawEquipmentTag,
+                    ResolvedWarehouseCode = x.ResolvedWarehouseCode,
+                    MatchStatus = x.MatchStatus,
+                    MatchedMaterialCode = x.MatchedMaterialItem?.MaterialCode,
+                    MatchedMaterialDescription = x.MatchedMaterialItem?.Description,
+                    ReviewStatus = x.ReviewStatus,
+                    ErrorMessage = x.ErrorMessage,
+                    Metadata = x.Metadata
+                        .OrderBy(m => m.ColumnIndex)
+                        .Select(m => new MrsImportRowMetadataDto
+                        {
+                            OriginalHeader = m.OriginalHeader,
+                            CanonicalField = m.CanonicalField,
+                            Value = m.Value
+                        }).ToList()
+                }).ToList()
+            }
         };
     }
 
-    public async Task<(bool Success, string? Error, int Committed, int Skipped)> CommitAsync(
+    private static readonly string[] KnownMatchStatuses = { "New", "MatchedExisting", "DuplicateInBatch", "Invalid" };
+
+    // باید با HasMaxLength(100) روی MaterialItem.MaterialCode در
+    // PEMS.Persistence/Configurations/MaterialMasterConfigurations.cs هماهنگ بماند.
+    private const int MaterialCodeMaxLength = 100;
+
+    public Task<(bool Success, string? Error, int Committed, int Skipped)> CommitAsync(
         int batchId, List<int> rowIds, int? reviewedById)
+        => CommitCoreAsync(batchId, reviewedById, x => rowIds.Contains(x.MrsImportRowId));
+
+    // طبق ممیزی «PEMS Import Center — Global 500-Row Batch Limitation Remediation» بند ۳/۴/۶:
+    // این متد کل ردیف‌های Pending یک دسته‌ی Match Status را در سراسر Batch پردازش می‌کند - نه
+    // فقط ردیف‌های صفحه‌ی جاری. کاربر همچنان باید یک دسته‌ی مشخص (New/MatchedExisting/
+    // DuplicateInBatch) را صریحاً انتخاب کند (بررسی انسانی حفظ می‌شود، طبق طراحی اصلی این
+    // Import که در کامنت بالای فایل مستند است) - فقط دیوار مصنوعی ۵۰۰ ردیف حذف شده، نه قضاوت
+    // ردیف‌به‌ردیف کاربر.
+    public async Task<(bool Success, string? Error, int Committed, int Skipped)> CommitByStatusAsync(
+        int batchId, string matchStatusFilter, int? reviewedById)
+    {
+        if (string.IsNullOrWhiteSpace(matchStatusFilter) || !KnownMatchStatuses.Contains(matchStatusFilter))
+            return (false, "یک دسته‌ی Match Status مشخص (New / MatchedExisting / DuplicateInBatch) انتخاب کنید.", 0, 0);
+        if (matchStatusFilter == "Invalid")
+            return (false, "ردیف‌های Invalid قابل Commit نیستند - فقط قابل Reject هستند.", 0, 0);
+
+        return await CommitCoreAsync(batchId, reviewedById, x => x.MatchStatus == matchStatusFilter);
+    }
+
+    private async Task<(bool Success, string? Error, int Committed, int Skipped)> CommitCoreAsync(
+        int batchId, int? reviewedById, System.Linq.Expressions.Expression<Func<MrsImportRow, bool>> rowSelector)
     {
         var batch = await _context.MrsImportBatches.FirstOrDefaultAsync(x => x.MrsImportBatchId == batchId);
         if (batch == null) return (false, "Batch پیدا نشد.", 0, 0);
 
+        // طبق ممیزی: قبلاً این‌جا Take(500) روی صفحه‌ی نمایشی بود که Commit را هم عملاً به همون
+        // سقف محدود می‌کرد (چون Checkbox فقط برای ردیف‌های رندرشده وجود داشت). اینجا هیچ Take/Skip
+        // ای روی مجموعه‌ی واقعی Commit نیست - کل ردیف‌های منطبق، در همین یک عملیات پردازش می‌شوند.
         var rows = await _context.MrsImportRows
-            .Where(x => x.MrsImportBatchId == batchId && rowIds.Contains(x.MrsImportRowId) && x.ReviewStatus == "Pending")
+            .Where(x => x.MrsImportBatchId == batchId && x.ReviewStatus == "Pending")
+            .Where(rowSelector)
             .ToListAsync();
 
         var uoms = await _context.MaterialUOMs.Where(x => x.IsActive).ToListAsync();
@@ -349,25 +397,67 @@ public class MrsImportService : IMrsImportService
             await _context.MaterialItems.Select(x => x.MaterialCode).ToListAsync(),
             StringComparer.OrdinalIgnoreCase);
 
+        // اندازه‌گیری واقعی نشان داد Commit روی SQL Server واقعی رشد نمایی داشت (۱۵۰۰ ردیف=۱۱ ثانیه،
+        // ۵۰۰۰ ردیف=۱۲۴ ثانیه - نسبت ۱۱x برای ۳.۳x حجم، دقیقاً منطبق با رشد n^2). علت: کوئری بالا
+        // (rows) به‌صورت پیش‌فرض همه‌ی n ردیف را در ChangeTracker ردیابی‌شده نگه می‌دارد، و چون batch
+        // هم ردیابی‌شده و رابطه‌ی Collection به MrsImportRows دارد، هر SaveChangesAsync در همون بلوک
+        // اول باید Relationship Fixup را روی کل n ردیف انجام دهد (نه فقط اندازه‌ی بلوک) - هزینه‌ای
+        // که با مربع n رشد می‌کند. چون هر ردیف به‌صورت جداگانه و امن دوباره در حلقه‌ی زیر Attach
+        // می‌شود، همین‌جا با خیال راحت از ردیابی خارج می‌شوند تا بلوک اول هم فقط اندازه‌ی بلوک را
+        // ردیابی کند - نه کل Batch را.
+        _context.ChangeTracker.Clear();
+
         int committed = 0, skipped = 0;
 
-        foreach (var row in rows)
+        // طبق ممیزی «Global 500-Row Batch Limitation Remediation» بند ۴/۶/۱۱ (Chunking داخلی
+        // نامرئی به کاربر + شواهد واقعیِ کارایی، نه فرض): اندازه‌گیری واقعی (هم InMemory هم SQL
+        // Server واقعی) نشان داد پردازش یک-SaveChangesAsync-به‌ازای-هر-ردیف برای Batch های بزرگ
+        // (۱۵۰۰ ردیف) چند دقیقه طول می‌کشد - هزینه‌ی واقعی هزاران Round-trip شبکه‌ی جداگانه به SQL
+        // Server، نه فقط رشد ChangeTracker. الان ردیف‌ها در بلوک‌های CommitChunkSize تایی پردازش
+        // می‌شوند: درج MaterialItem های جدید یک‌جا (یک SaveChanges برای کل بلوک)، با بازگشت امن
+        // به همون منطق یکی‌یکیِ قبلی (Retry روی برخورد Unique Index) فقط اگر همون یک SaveChanges
+        // دسته‌ای برخورد کرد - نتیجه/تضمین‌های Commit کاملاً یکسان می‌ماند، فقط تعداد Round-trip
+        // کم می‌شود.
+        const int chunkSize = 100;
+
+        foreach (var chunk in rows.Chunk(chunkSize))
         {
-            if (row.MatchStatus == "Invalid") { skipped++; continue; }
+            var pendingNew = new List<(MrsImportRow Row, MaterialItem Item)>();
+            var resolved = new List<(MrsImportRow Row, int MaterialItemId)>();
+            // طبق ممیزی: اگر دو ردیف با همون شرح‌نرمال‌شده هر دو در همین بلوک تازه ساخته می‌شوند
+            // (مثلاً یک ردیف New + برادرِ DuplicateInBatch آن، در یک Commit ترکیبی با هم انتخاب
+            // شده باشند - همون سناریویی که createdInThisCommit اصلاً برایش طراحی شده بود)، دومی
+            // باید صبر کند تا Item واقعی اولی بعد از Save ساخته شود - نه این‌که یک ID موقتِ ۰
+            // بگیرد.
+            var sameAsPendingInChunk = new List<(MrsImportRow Row, string NormalizedDescription)>();
 
-            int materialItemId;
+            foreach (var row in chunk)
+            {
+                if (_context.Entry(row).State == EntityState.Detached)
+                    _context.MrsImportRows.Attach(row);
 
-            if (row.MatchStatus == "MatchedExisting" && row.MatchedMaterialItemId.HasValue)
-            {
-                materialItemId = row.MatchedMaterialItemId.Value;
-            }
-            else if (!string.IsNullOrWhiteSpace(row.NormalizedDescription)
-                && createdInThisCommit.TryGetValue(row.NormalizedDescription, out var existingNewId))
-            {
-                materialItemId = existingNewId;
-            }
-            else
-            {
+                if (row.MatchStatus == "Invalid") { skipped++; continue; }
+
+                if (row.MatchStatus == "MatchedExisting" && row.MatchedMaterialItemId.HasValue)
+                {
+                    resolved.Add((row, row.MatchedMaterialItemId.Value));
+                    continue;
+                }
+
+                if (!string.IsNullOrWhiteSpace(row.NormalizedDescription)
+                    && createdInThisCommit.TryGetValue(row.NormalizedDescription, out var existingNewId))
+                {
+                    resolved.Add((row, existingNewId));
+                    continue;
+                }
+
+                if (!string.IsNullOrWhiteSpace(row.NormalizedDescription)
+                    && pendingNew.Any(p => string.Equals(p.Row.NormalizedDescription, row.NormalizedDescription, StringComparison.OrdinalIgnoreCase)))
+                {
+                    sameAsPendingInChunk.Add((row, row.NormalizedDescription));
+                    continue;
+                }
+
                 var uom = uoms.FirstOrDefault(u => !string.IsNullOrWhiteSpace(row.RawUom)
                     && (u.Code.Equals(row.RawUom, StringComparison.OrdinalIgnoreCase)
                         || u.Name.Equals(row.RawUom, StringComparison.OrdinalIgnoreCase)));
@@ -376,12 +466,28 @@ public class MrsImportService : IMrsImportService
                 var materialCode = !string.IsNullOrWhiteSpace(row.RawItemCode) && !usedMaterialCodes.Contains(row.RawItemCode.Trim())
                     ? row.RawItemCode!.Trim()
                     : $"MRS-{row.ResolvedWarehouseCode ?? "GEN"}-{row.MrsImportRowId}";
+
+                // طبق ممیزی «MaterialItems.Description String-Length Integrity» بخش ۳ (ممیزی کامل
+                // نگاشت‌های رشته‌ای MRS→MaterialItems، نه فقط Description): MaterialCode بر خلاف
+                // Description یک شناسه‌ی کسب‌وکار واقعی است (Unique Index دارد، طبیعتاً کوتاه) - سقف
+                // ۱۰۰ کاراکتری‌اش یک قاعده‌ی واقعی می‌ماند، نه یک محدودیت تصادفی مثل Description.
+                // داده‌ی واقعی MRS نشان داد ۲ ردیف واقعی Item Code بیش از ۱۰۰ کاراکتر دارند - اگر
+                // بدون بررسی به SaveChanges می‌رسید، همون کلاس Exception (String or binary data would
+                // be truncated) را روی ستون MaterialCode می‌داد. به‌جای Truncate یا crash، این‌جا
+                // همون مکانیزم موجود ردیف Invalid/Skipped استفاده می‌شود - مقدار اصلی دست‌نخورده در
+                // ErrorMessage/RawItemCode می‌ماند تا کاربر تصمیم بگیرد (اصلاح کد یا Reject).
+                if (materialCode.Length > MaterialCodeMaxLength)
+                {
+                    row.MatchStatus = "Invalid";
+                    row.ErrorMessage = $"کد متریال «{materialCode}» به {materialCode.Length} کاراکتر می‌رسد - بیش از سقف مجاز {MaterialCodeMaxLength} کاراکتری. این ردیف Commit نشد؛ کد را در فایل اصلاح کنید یا ردیف را Reject کنید.";
+                    skipped++;
+                    continue;
+                }
+
                 usedMaterialCodes.Add(materialCode);
 
                 // طبق سند Metadata Extraction بخش ۳ + کامنت طراحی خودِ MaterialItem.cs («Manufacturer
-                // و Supplier یکی نیستند - Supplier به Vendor واقعی وصل می‌شود»): قبلاً این‌جا
-                // RawSupplier به‌اشتباه در Manufacturer (رشته‌ی آزاد) می‌نشست - نه در VendorId
-                // (که از قبل روی MaterialItem وجود داشت ولی استفاده نمی‌شد). حالا Vendor واقعی
+                // و Supplier یکی نیستند - Supplier به Vendor واقعی وصل می‌شود»): Vendor واقعی
                 // پیدا/ساخته می‌شود (همان IVendorService.FindOrCreateByNameAsync که در ماژول VDR
                 // استفاده می‌شود)، نه فقط متن آزاد.
                 int? vendorId = null;
@@ -401,113 +507,166 @@ public class MrsImportService : IMrsImportService
                     CreatedDate = DateTime.Now,
                     CreatedBy = "MrsImport"
                 };
-
-                // usedMaterialCodes یک اسنپ‌شات در ابتدای Commit است - اگر هم‌زمان یک Commit
-                // دیگر (یا دو کلیک/دو تب کاربر) دقیقاً همین کد را زودتر درج کرده باشد، Unique
-                // Index دیتابیس (IX_MaterialItems_MaterialCode) جلوی درج تکراری را می‌گیرد؛
-                // به‌جای کرش کل عملیات Commit روی همین یک ردیف، کد جایگزین امن تولید و
-                // دوباره تلاش می‌شود.
-                const int maxCodeAttempts = 5;
-                for (var attempt = 1; ; attempt++)
-                {
-                    await _context.MaterialItems.AddAsync(newItem);
-                    try
-                    {
-                        await _context.SaveChangesAsync();
-                        break;
-                    }
-                    catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex) && attempt < maxCodeAttempts)
-                    {
-                        _context.Entry(newItem).State = EntityState.Detached;
-                        materialCode = $"MRS-{row.ResolvedWarehouseCode ?? "GEN"}-{row.MrsImportRowId}-{attempt}";
-                        usedMaterialCodes.Add(materialCode);
-                        newItem.MaterialCode = materialCode;
-                    }
-                }
-
-                materialItemId = newItem.MaterialItemId;
-                if (!string.IsNullOrWhiteSpace(row.NormalizedDescription))
-                    createdInThisCommit[row.NormalizedDescription] = materialItemId;
+                _context.MaterialItems.Add(newItem);
+                pendingNew.Add((row, newItem));
             }
 
-            InventoryTransaction? lastTransaction = null;
-
-            if (row.ResolvedWarehouseId.HasValue)
+            if (pendingNew.Count > 0)
             {
-                var stock = await _context.MaterialStocks.FirstOrDefaultAsync(x =>
-                    x.MaterialItemId == materialItemId && x.WarehouseId == row.ResolvedWarehouseId.Value && x.StorageLocationId == null);
-
-                if (stock == null)
+                try
                 {
-                    stock = new MaterialStock
+                    await _context.SaveChangesAsync();
+                    foreach (var (row, item) in pendingNew) resolved.Add((row, item.MaterialItemId));
+                }
+                catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
+                {
+                    // طبق ممیزی: برخورد Unique Index روی MaterialCode در کل بلوک نادر است (چون
+                    // usedMaterialCodes از قبل تکراری‌های شناخته‌شده را رد می‌کند - این مسیر فقط
+                    // برای رقابت هم‌زمان بین دو Commit مستقل رخ می‌دهد). به‌جای شکست کل بلوک، همون
+                    // منطق ایمنِ یکی‌یکیِ قبلی (Retry با کد جایگزین) فقط برای همین بلوک اجرا می‌شود.
+                    foreach (var (_, item) in pendingNew)
+                        _context.Entry(item).State = EntityState.Detached;
+
+                    foreach (var (row, item) in pendingNew)
                     {
-                        MaterialItemId = materialItemId,
-                        WarehouseId = row.ResolvedWarehouseId.Value,
-                        OnHandQuantity = 0,
-                        ReservedQuantity = 0,
-                        IsActive = true,
-                        CreatedDate = DateTime.Now
-                    };
-                    await _context.MaterialStocks.AddAsync(stock);
+                        const int maxCodeAttempts = 5;
+                        for (var attempt = 1; ; attempt++)
+                        {
+                            _context.MaterialItems.Add(item);
+                            try
+                            {
+                                await _context.SaveChangesAsync();
+                                break;
+                            }
+                            catch (DbUpdateException retryEx) when (IsUniqueConstraintViolation(retryEx) && attempt < maxCodeAttempts)
+                            {
+                                _context.Entry(item).State = EntityState.Detached;
+                                var altCode = $"MRS-{row.ResolvedWarehouseCode ?? "GEN"}-{row.MrsImportRowId}-{attempt}";
+                                usedMaterialCodes.Add(altCode);
+                                item.MaterialCode = altCode;
+                            }
+                        }
+                        resolved.Add((row, item.MaterialItemId));
+                    }
                 }
 
-                if (row.RawQtyReceived is > 0)
-                {
-                    lastTransaction = new InventoryTransaction
-                    {
-                        MaterialItemId = materialItemId,
-                        WarehouseId = row.ResolvedWarehouseId.Value,
-                        TransactionType = "Receipt",
-                        Quantity = row.RawQtyReceived.Value,
-                        ReferenceType = "MrsImport",
-                        ReferenceId = batchId,
-                        TransactionDate = row.RawDateReceived ?? batch.ImportDate,
-                        Reason = $"MRS Import - {row.RawMrsNo}"
-                    };
-                    await _context.InventoryTransactions.AddAsync(lastTransaction);
-                    stock.OnHandQuantity += row.RawQtyReceived.Value;
-                }
+                foreach (var (row, item) in pendingNew)
+                    if (!string.IsNullOrWhiteSpace(row.NormalizedDescription))
+                        createdInThisCommit[row.NormalizedDescription] = item.MaterialItemId;
 
-                if (row.RawQtyIssued is > 0)
-                {
-                    lastTransaction = new InventoryTransaction
-                    {
-                        MaterialItemId = materialItemId,
-                        WarehouseId = row.ResolvedWarehouseId.Value,
-                        TransactionType = "Issue",
-                        Quantity = row.RawQtyIssued.Value,
-                        ReferenceType = "MrsImport",
-                        ReferenceId = batchId,
-                        TransactionDate = row.RawDateIssued ?? batch.ImportDate,
-                        Reason = $"MRS Import - {row.RawMrsNo}"
-                    };
-                    await _context.InventoryTransactions.AddAsync(lastTransaction);
-                    stock.OnHandQuantity -= row.RawQtyIssued.Value;
-                }
-
-                stock.LastUpdated = DateTime.Now;
+                // ردیف‌های هم‌شرح که در همین بلوک منتظر مانده بودند، حالا به Item واقعیِ
+                // هم‌بلوکی‌شان (نه یک ID موقت) وصل می‌شوند.
+                foreach (var (row, desc) in sameAsPendingInChunk)
+                    resolved.Add((row, createdInThisCommit[desc]));
             }
-            else
+
+            // پیش‌بارگذاری یک‌جای موجودی‌های فعلی برای کل بلوک - به‌جای یک Query جدا برای هر ردیف
+            var materialItemIdsInChunk = resolved.Select(r => r.MaterialItemId).Distinct().ToList();
+            var existingStocks = materialItemIdsInChunk.Count == 0
+                ? new List<MaterialStock>()
+                : await _context.MaterialStocks
+                    .Where(x => materialItemIdsInChunk.Contains(x.MaterialItemId) && x.StorageLocationId == null)
+                    .ToListAsync();
+
+            var pendingTransactions = new List<(MrsImportRow Row, InventoryTransaction Tx)>();
+
+            foreach (var (row, materialItemId) in resolved)
             {
-                // MaterialItem ساخته شد ولی چون انبار از روی MRS NO تشخیص داده نشد، هیچ
-                // MaterialStock/InventoryTransaction ای ثبت نشد - این‌جا شفاف اعلام می‌شود
-                // تا کاربر بی‌صدا فکر نکنه موجودی درست ثبت شده.
-                row.ErrorMessage = $"انبار از روی «{row.RawMrsNo}» تشخیص داده نشد - متریال ساخته شد ولی موجودی/تراکنشی ثبت نشد.";
+                InventoryTransaction? lastTransaction = null;
+
+                if (row.ResolvedWarehouseId.HasValue)
+                {
+                    var stock = existingStocks.FirstOrDefault(x => x.MaterialItemId == materialItemId && x.WarehouseId == row.ResolvedWarehouseId.Value);
+
+                    if (stock == null)
+                    {
+                        stock = new MaterialStock
+                        {
+                            MaterialItemId = materialItemId,
+                            WarehouseId = row.ResolvedWarehouseId.Value,
+                            OnHandQuantity = 0,
+                            ReservedQuantity = 0,
+                            IsActive = true,
+                            CreatedDate = DateTime.Now
+                        };
+                        _context.MaterialStocks.Add(stock);
+                        existingStocks.Add(stock);
+                    }
+
+                    if (row.RawQtyReceived is > 0)
+                    {
+                        lastTransaction = new InventoryTransaction
+                        {
+                            MaterialItemId = materialItemId,
+                            WarehouseId = row.ResolvedWarehouseId.Value,
+                            TransactionType = "Receipt",
+                            Quantity = row.RawQtyReceived.Value,
+                            ReferenceType = "MrsImport",
+                            ReferenceId = batchId,
+                            TransactionDate = row.RawDateReceived ?? batch.ImportDate,
+                            Reason = $"MRS Import - {row.RawMrsNo}"
+                        };
+                        _context.InventoryTransactions.Add(lastTransaction);
+                        stock.OnHandQuantity += row.RawQtyReceived.Value;
+                    }
+
+                    if (row.RawQtyIssued is > 0)
+                    {
+                        lastTransaction = new InventoryTransaction
+                        {
+                            MaterialItemId = materialItemId,
+                            WarehouseId = row.ResolvedWarehouseId.Value,
+                            TransactionType = "Issue",
+                            Quantity = row.RawQtyIssued.Value,
+                            ReferenceType = "MrsImport",
+                            ReferenceId = batchId,
+                            TransactionDate = row.RawDateIssued ?? batch.ImportDate,
+                            Reason = $"MRS Import - {row.RawMrsNo}"
+                        };
+                        _context.InventoryTransactions.Add(lastTransaction);
+                        stock.OnHandQuantity -= row.RawQtyIssued.Value;
+                    }
+
+                    stock.LastUpdated = DateTime.Now;
+                }
+                else
+                {
+                    // MaterialItem ساخته شد ولی چون انبار از روی MRS NO تشخیص داده نشد، هیچ
+                    // MaterialStock/InventoryTransaction ای ثبت نشد - این‌جا شفاف اعلام می‌شود
+                    // تا کاربر بی‌صدا فکر نکنه موجودی درست ثبت شده.
+                    row.ErrorMessage = $"انبار از روی «{row.RawMrsNo}» تشخیص داده نشد - متریال ساخته شد ولی موجودی/تراکنشی ثبت نشد.";
+                }
+
+                row.ResultMaterialItemId = materialItemId;
+                row.ReviewStatus = "Approved";
+                row.ReviewedById = reviewedById;
+                row.ReviewedDate = DateTime.Now;
+
+                if (lastTransaction != null) pendingTransactions.Add((row, lastTransaction));
+                committed++;
             }
 
-            row.ResultMaterialItemId = materialItemId;
-            row.ReviewStatus = "Approved";
-            row.ReviewedById = reviewedById;
-            row.ReviewedDate = DateTime.Now;
-
+            // یک Flush برای کل بلوک: وضعیت ردیف‌ها + Stock/Transaction های جدید
             await _context.SaveChangesAsync();
-            if (lastTransaction != null) row.ResultInventoryTransactionId = lastTransaction.InventoryTransactionId;
 
-            committed++;
+            // InventoryTransactionId فقط بعد از Save بالا (Identity) در دسترس است - یک Flush کوچک
+            // دوم فقط همین فیلد را برای کل بلوک ثبت می‌کند.
+            if (pendingTransactions.Count > 0)
+            {
+                foreach (var (row, tx) in pendingTransactions) row.ResultInventoryTransactionId = tx.InventoryTransactionId;
+                await _context.SaveChangesAsync();
+            }
+
+            // پاک‌سازی دوره‌ای ChangeTracker به‌ازای هر بلوک - جلوی رشد نامحدود Entity های
+            // ردیابی‌شده‌ی قبلی (Add/Save شده) را در Batch های خیلی بزرگ می‌گیرد.
+            _context.ChangeTracker.Clear();
         }
 
+        // batch ممکن است بالا Clear شده باشد (Detached) - دوباره واقعی و ردیابی‌شده خوانده می‌شود
+        // تا تغییر Status واقعاً Persist شود.
+        var freshBatch = await _context.MrsImportBatches.FirstAsync(x => x.MrsImportBatchId == batchId);
         var remainingPending = await _context.MrsImportRows.CountAsync(x => x.MrsImportBatchId == batchId && x.ReviewStatus == "Pending");
-        batch.Status = remainingPending == 0 ? "Committed" : "InReview";
+        freshBatch.Status = remainingPending == 0 ? "Committed" : "InReview";
 
         await _context.SaveChangesAsync();
         return (true, null, committed, skipped);
@@ -521,8 +680,26 @@ public class MrsImportService : IMrsImportService
 
     public async Task<(bool Success, string? Error)> RejectRowsAsync(int batchId, List<int> rowIds, int? reviewedById)
     {
+        var (success, error, _) = await RejectCoreAsync(batchId, reviewedById, x => rowIds.Contains(x.MrsImportRowId));
+        return (success, error);
+    }
+
+    // طبق همون ممیزی: نسخه‌ی سراسر-Batch از Reject - برای مثال رد کردن همه‌ی ردیف‌های Invalid
+    // در یک فایل ۵۰۰۰ ردیفی، بدون نیاز به صفحه‌به‌صفحه Checkbox زدن.
+    public async Task<(bool Success, string? Error, int Count)> RejectByStatusAsync(int batchId, string matchStatusFilter, int? reviewedById)
+    {
+        if (string.IsNullOrWhiteSpace(matchStatusFilter) || !KnownMatchStatuses.Contains(matchStatusFilter))
+            return (false, "یک دسته‌ی Match Status مشخص انتخاب کنید.", 0);
+
+        return await RejectCoreAsync(batchId, reviewedById, x => x.MatchStatus == matchStatusFilter);
+    }
+
+    private async Task<(bool Success, string? Error, int Count)> RejectCoreAsync(
+        int batchId, int? reviewedById, System.Linq.Expressions.Expression<Func<MrsImportRow, bool>> rowSelector)
+    {
         var rows = await _context.MrsImportRows
-            .Where(x => x.MrsImportBatchId == batchId && rowIds.Contains(x.MrsImportRowId) && x.ReviewStatus == "Pending")
+            .Where(x => x.MrsImportBatchId == batchId && x.ReviewStatus == "Pending")
+            .Where(rowSelector)
             .ToListAsync();
 
         foreach (var row in rows)
@@ -533,7 +710,7 @@ public class MrsImportService : IMrsImportService
         }
 
         await _context.SaveChangesAsync();
-        return (true, null);
+        return (true, null, rows.Count);
     }
 
     private static string NormalizeDescription(string? raw)

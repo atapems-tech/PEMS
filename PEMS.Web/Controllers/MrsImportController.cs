@@ -109,7 +109,7 @@ public class MrsImportController : Controller
         return attachment.AttachmentId;
     }
 
-    public async Task<IActionResult> Review(int batchId, string? matchStatusFilter)
+    public async Task<IActionResult> Review(int batchId, string? matchStatusFilter, int page = 1, int? pageSize = null)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MrsImport", "View"))
             return Forbid();
@@ -117,7 +117,10 @@ public class MrsImportController : Controller
         ViewData["Title"] = "MRS Import Review";
         ViewData["Section"] = "Inventory & Materials";
 
-        var detail = await _service.GetBatchDetailAsync(batchId, matchStatusFilter);
+        // طبق ممیزی «Global 500-Row Batch Limitation Remediation»: صفحه‌بندی واقعی سمت سرور به‌جای
+        // یک سقف ۵۰۰ ردیفی ثابت که ردیف‌های بعدی را برای همیشه نامرئی/غیرقابل‌عمل می‌کرد.
+        var normalizedPageSize = PEMS.Application.Common.DataGridPageSize.Normalize(pageSize);
+        var detail = await _service.GetBatchDetailAsync(batchId, matchStatusFilter, page, normalizedPageSize);
         if (detail == null) return NotFound();
 
         ViewBag.MatchStatusFilter = matchStatusFilter;
@@ -163,6 +166,40 @@ public class MrsImportController : Controller
         await _service.RejectRowsAsync(batchId, selectedRowIds, await GetCurrentEmployeeIdAsync());
         TempData["Message"] = $"{selectedRowIds.Count} ردیف رد شد.";
         return RedirectToAction(nameof(Review), new { batchId });
+    }
+
+    // طبق ممیزی «Global 500-Row Batch Limitation Remediation»: Commit یک دسته‌ی کامل (مثلاً همه‌ی
+    // ردیف‌های New) در سراسر Batch - نه فقط ردیف‌های صفحه‌ی جاری - با یک اقدام صریح. کاربر باید
+    // یک فیلتر مشخص انتخاب کرده باشد (بررسی انسانی حفظ می‌شود)؛ خودِ Commit همچنان از همون منطق
+    // تطبیق/ساخت Vendor/MaterialItem استفاده می‌کند که BulkCommit استفاده می‌کند.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CommitByStatus(int batchId, string matchStatusFilter)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MrsImport", "Approve"))
+            return Forbid();
+
+        var (success, error, committed, skipped) = await _service.CommitByStatusAsync(batchId, matchStatusFilter, await GetCurrentEmployeeIdAsync());
+
+        if (!success) { TempData["Error"] = error; return RedirectToAction(nameof(Review), new { batchId, matchStatusFilter }); }
+
+        TempData["Message"] = $"{committed} ردیف («{matchStatusFilter}»، سراسر Batch) تایید و به MaterialItem/InventoryTransaction تبدیل شد." + (skipped > 0 ? $" ({skipped} ردیف نامعتبر رد شد)" : "");
+        return RedirectToAction(nameof(Review), new { batchId, matchStatusFilter });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> RejectByStatus(int batchId, string matchStatusFilter)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MrsImport", "Create"))
+            return Forbid();
+
+        var (success, error, count) = await _service.RejectByStatusAsync(batchId, matchStatusFilter, await GetCurrentEmployeeIdAsync());
+
+        if (!success) { TempData["Error"] = error; return RedirectToAction(nameof(Review), new { batchId, matchStatusFilter }); }
+
+        TempData["Message"] = $"{count} ردیف («{matchStatusFilter}»، سراسر Batch) رد شد.";
+        return RedirectToAction(nameof(Review), new { batchId, matchStatusFilter });
     }
 
     private async Task<int?> GetCurrentEmployeeIdAsync()

@@ -1078,7 +1078,16 @@ public static class HelpContentSeeder
             "later by a human, through the Relationship Explorer.</p>" +
             "<p><strong>Verified difference:</strong> the MRS/Material importer uses a slightly different reviewer " +
             "flow - rows carry a match-status filter and are committed or rejected in bulk by explicit selection, " +
-            "rather than the per-row include/exclude-then-single-commit pattern the other importers use.</p>",
+            "rather than the per-row include/exclude-then-single-commit pattern the other importers use. The review " +
+            "grid is paginated (like every large PEMS list) so uploading a large file never requires splitting it " +
+            "manually - use the Match Status filter (New / Matched / Duplicate / Invalid) and its \"Commit ALL ... in " +
+            "entire batch\" / \"Reject ALL ... in entire batch\" buttons to act on every row of that category across " +
+            "the whole file in one action, or select rows individually on the current page for finer-grained review.</p>" +
+            "<p><strong>VDR import - Vendor master-data conflict:</strong> a VDR row's Vendor is resolved by name only " +
+            "(trimmed, case-insensitive), the same identity rule used everywhere else Vendors are auto-matched in PEMS. " +
+            "If more than one existing Vendor record already shares that name, the importer does not guess which one to " +
+            "use - that row is skipped and its Validation column shows a Vendor master-data conflict message naming the " +
+            "duplicate Vendor IDs. Resolve the duplicate Vendor records first, then re-import.</p>",
             "import,staging,batch,commit,discard,mdr import,vdr import,equipment import",
             "واردات مرحله‌ای چگونه کار می‌کند",
             "الگوی جهانیِ Batch مرحله‌ای که هر Import‌کننده‌ی اکسل/داده در PEMS به اشتراک می‌گذارد: آپلود، بازبینی، سپس Commit یا Discard.",
@@ -1098,7 +1107,16 @@ public static class HelpContentSeeder
             "از طریق کاوشگر روابط، ساخته می‌شوند.</p>" +
             "<p><strong>تفاوت تاییدشده:</strong> Import‌کننده‌ی MRS/مواد یک روند بازبینیِ کمی متفاوت استفاده می‌کند - " +
             "ردیف‌ها یک فیلتر وضعیت تطابق دارند و به‌صورت گروهی با انتخاب صریح Commit یا رد می‌شوند، نه الگوی " +
-            "شامل/مستثنی-به‌ازای-هر-ردیف-سپس-یک-Commit که بقیه‌ی Import‌کننده‌ها استفاده می‌کنند.</p>",
+            "شامل/مستثنی-به‌ازای-هر-ردیف-سپس-یک-Commit که بقیه‌ی Import‌کننده‌ها استفاده می‌کنند. جدول بازبینی " +
+            "صفحه‌بندی‌شده است (مثل هر فهرست بزرگ دیگر در PEMS)، پس آپلود یک فایل بزرگ هرگز نیازمند تقسیم دستی نیست - " +
+            "از فیلتر Match Status (New / Matched / Duplicate / Invalid) و دکمه‌های «Commit ALL ... in entire batch» / " +
+            "«Reject ALL ... in entire batch» آن برای اقدام روی همه‌ی ردیف‌های آن دسته در کل فایل با یک اقدام استفاده " +
+            "کنید، یا برای بازبینی دقیق‌تر، ردیف‌ها را تک‌تک در همان صفحه انتخاب کنید.</p>" +
+            "<p><strong>Import VDR - تعارض داده‌ی مرجع Vendor:</strong> Vendor هر ردیف VDR فقط از روی نام تطبیق داده " +
+            "می‌شود (بعد از Trim، بی‌تفاوت به بزرگی/کوچکی حروف) - همان قاعده‌ی هویتی که در همه‌جای دیگر PEMS برای " +
+            "تطبیق خودکار Vendor استفاده می‌شود. اگر بیش از یک رکورد Vendor موجود با همان نام باشد، Import‌کننده حدس " +
+            "نمی‌زند کدام را استفاده کند - آن ردیف Skip می‌شود و ستون Validation پیام تعارض داده‌ی مرجع Vendor را با " +
+            "شناسه‌ی رکوردهای تکراری نشان می‌دهد. ابتدا رکوردهای تکراری Vendor را برطرف کنید، سپس دوباره Import بزنید.</p>",
             "ایمپورت,مرحله بندی,batch,commit,discard,ایمپورت mdr,ایمپورت vdr,ایمپورت تجهیز",
             null),
 

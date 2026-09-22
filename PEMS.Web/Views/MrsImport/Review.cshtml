@@ -3,7 +3,17 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 @{
-    var rows = Model.Rows;
+    var rows = Model.Rows.Items;
+    var matchStatusFilter = (string?)ViewBag.MatchStatusFilter;
+    var filterOptions = new[] { "New", "MatchedExisting", "DuplicateInBatch", "Invalid" };
+    string FilterLabel(string s) => s switch
+    {
+        "New" => Localizer["New"].Value,
+        "MatchedExisting" => "Matched",
+        "DuplicateInBatch" => "Duplicate",
+        "Invalid" => Localizer["Invalid"].Value,
+        _ => s
+    };
 }
 
 <div class="content-card mb-3">
@@ -39,7 +49,7 @@
         <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Invalid"]</div><div class="admin-kpi-value">@Model.Batch.InvalidCount</div></div>
         <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Approved"]</div><div class="admin-kpi-value">@Model.Batch.ApprovedCount</div></div>
     </div>
-    <p class="text-muted small mt-2 mb-0">فقط ۵۰۰ ردیف اول این Batch نمایش داده می‌شود (برای Batch های بزرگ، فیلتر Match Status را از URL استفاده کن: <code>?matchStatusFilter=New</code>).</p>
+    <p class="text-muted small mt-2 mb-0">فایل کامل را آپلود کنید - PEMS فایل‌های بزرگ را داخلی و خودکار پردازش می‌کند. این صفحه برای بازبینی، صفحه‌بندی شده است (@Model.Rows.TotalCount ردیف در این فیلتر)؛ همه‌ی ردیف‌ها - نه فقط صفحه‌ی جاری - از طریق فیلتر Match Status زیر و دکمه‌ی «Commit/Reject سراسر Batch» قابل‌دسترسی و قابل‌عمل‌اند.</p>
 </div>
 
 <form id="bulkCommitForm" asp-action="BulkCommit" method="post">
@@ -49,25 +59,53 @@
     <input type="hidden" name="batchId" value="@Model.Batch.MrsImportBatchId" />
 </form>
 
+<div class="pems-filter-bar content-card mb-3">
+    <span class="pems-filter-label">@Localizer["Filter"]</span>
+    <a asp-action="Review" asp-route-batchId="@Model.Batch.MrsImportBatchId"
+       class="btn btn-sm @(matchStatusFilter == null ? "btn-pems-solid" : "btn-outline-secondary")">@Localizer["All"]</a>
+    @foreach (var s in filterOptions)
+    {
+        <a asp-action="Review" asp-route-batchId="@Model.Batch.MrsImportBatchId" asp-route-matchStatusFilter="@s"
+           class="btn btn-sm @(matchStatusFilter == s ? "btn-pems-solid" : "btn-outline-secondary")">@FilterLabel(s)</a>
+    }
+    @if (!string.IsNullOrEmpty(matchStatusFilter))
+    {
+        <span class="pems-command-bar-spacer"></span>
+        @if (matchStatusFilter != "Invalid")
+        {
+            <form asp-action="CommitByStatus" method="post" class="d-inline">
+                <input type="hidden" name="batchId" value="@Model.Batch.MrsImportBatchId" />
+                <input type="hidden" name="matchStatusFilter" value="@matchStatusFilter" />
+                <button type="submit" class="btn btn-sm btn-pems-solid"
+                        onclick="return confirm('همه‌ی ردیف‌های Pending با وضعیت «@FilterLabel(matchStatusFilter)» در کل این Batch (نه فقط این صفحه) تایید و به MaterialItem/InventoryTransaction تبدیل شوند؟');">
+                    <i class="bi bi-check2-all"></i> Commit ALL "@FilterLabel(matchStatusFilter)" in entire batch
+                </button>
+            </form>
+        }
+        <form asp-action="RejectByStatus" method="post" class="d-inline">
+            <input type="hidden" name="batchId" value="@Model.Batch.MrsImportBatchId" />
+            <input type="hidden" name="matchStatusFilter" value="@matchStatusFilter" />
+            <button type="submit" class="btn btn-sm btn-outline-danger"
+                    onclick="return confirm('همه‌ی ردیف‌های Pending با وضعیت «@FilterLabel(matchStatusFilter)» در کل این Batch رد شوند؟');">
+                <i class="bi bi-x-circle"></i> Reject ALL "@FilterLabel(matchStatusFilter)" in entire batch
+            </button>
+        </form>
+    }
+</div>
+
 <div class="content-card mb-3">
     <div class="d-flex gap-2 flex-wrap align-items-center">
         <div class="input-group admin-search" style="max-width:280px;">
             <span class="input-group-text"><i class="bi bi-search"></i></span>
-            <input type="search" id="rowSearch" class="form-control" placeholder="Filter by description..." autocomplete="off" />
+            <input type="search" id="rowSearch" class="form-control" placeholder="Filter this page by description..." autocomplete="off" />
         </div>
-        <div class="btn-group btn-group-sm" role="group">
-            <button type="button" class="btn btn-outline-secondary status-filter active" data-status="all">@Localizer["All"]</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="New">@Localizer["New"]</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="MatchedExisting">@Localizer["Matched"]</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="DuplicateInBatch">@Localizer["Duplicate"]</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Invalid">@Localizer["Invalid"]</button>
-        </div>
+        <span class="text-muted small">Manual selection below applies to this page only (@rows.Count of @Model.Rows.TotalCount rows in this filter) - use the batch-wide Commit/Reject buttons above to act on every matching row.</span>
         <button type="submit" form="bulkCommitForm" id="bulkCommitBtn" class="btn btn-sm btn-pems-solid ms-auto" disabled
-                onclick="return confirm('تعداد ' + document.getElementById('selectedCount').textContent + ' ردیف انتخاب‌شده تایید و به MaterialItem/InventoryTransaction تبدیل شود؟');">
+                onclick="return confirm('تعداد ' + document.getElementById('selectedCount').textContent + ' ردیف انتخاب‌شده (این صفحه) تایید و به MaterialItem/InventoryTransaction تبدیل شود؟');">
             <i class="bi bi-check2-circle"></i> Commit Selected (<span id="selectedCount">0</span>)
         </button>
         <button type="submit" form="bulkRejectForm" id="bulkRejectBtn" class="btn btn-sm btn-outline-danger" disabled
-                onclick="return confirm('ردیف‌های انتخاب‌شده رد شوند؟');">
+                onclick="return confirm('ردیف‌های انتخاب‌شده (این صفحه) رد شوند؟');">
             <i class="bi bi-x-circle"></i> Reject Selected
         </button>
     </div>
@@ -176,34 +214,42 @@
         </table>
         @if (!rows.Any()) { <p class="text-muted text-center py-4">@Localizer["No rows in this batch."]</p> }
     </div>
+
+    @{
+        var qsParts = new List<string>();
+        if (!string.IsNullOrEmpty(matchStatusFilter)) qsParts.Add($"matchStatusFilter={Uri.EscapeDataString(matchStatusFilter)}");
+        qsParts.Add($"batchId={Model.Batch.MrsImportBatchId}");
+    }
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Rows.Page,
+        TotalPages = Model.Rows.TotalPages,
+        TotalCount = Model.Rows.TotalCount,
+        PageSize = Model.Rows.PageSize,
+        GridKey = "MrsImport",
+        BaseUrl = Url.Action("Review") ?? "",
+        ExistingQueryString = string.Join("&", qsParts)
+    })
 </div>
 
 @section Scripts {
 <script>
 (function () {
+    // طبق ممیزی «Global 500-Row Batch Limitation Remediation»: فیلتر Match Status حالا سمت سرور
+    // است (لینک‌های ?matchStatusFilter= بالا) و روی کل Batch اعمال می‌شود، نه فقط ردیف‌های همین
+    // صفحه - این جستجو فقط داخل توضیح ردیف‌های همین صفحه‌ی رندرشده فیلتر می‌کند.
     var searchInput = document.getElementById('rowSearch');
-    var statusButtons = [].slice.call(document.querySelectorAll('.status-filter'));
     var rows = [].slice.call(document.querySelectorAll('.row-item'));
-    var activeStatus = 'all';
 
     function applyFilters() {
         var q = (searchInput.value || '').trim().toLowerCase();
         rows.forEach(function (r) {
-            var statusOk = activeStatus === 'all' || r.getAttribute('data-status') === activeStatus;
             var descOk = !q || r.getAttribute('data-desc').indexOf(q) !== -1;
-            r.style.display = (statusOk && descOk) ? '' : 'none';
+            r.style.display = descOk ? '' : 'none';
         });
     }
 
     searchInput.addEventListener('input', applyFilters);
-    statusButtons.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            statusButtons.forEach(function (b) { b.classList.remove('active'); });
-            btn.classList.add('active');
-            activeStatus = btn.getAttribute('data-status');
-            applyFilters();
-        });
-    });
 })();
 
 (function () {
