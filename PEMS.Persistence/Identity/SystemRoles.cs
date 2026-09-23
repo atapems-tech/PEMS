@@ -16,6 +16,13 @@ public static class SystemRoles
     public const string QAManager = "QAManager";
     public const string Viewer = "Viewer";
 
+    // طبق ممیزی Package Procurement Contract Finalization (§F): سه نقش تازه، صرفاً برای پوشش‌دادن
+    // رشته‌های نام‌برده‌شده‌ی صریح در بازبینی چند-رشته‌ای قرارداد (Legal/Finance/HSE) که پیش از این
+    // هیچ نقشی برایشان وجود نداشت. هیچ ساختار سازمانی دیگری اختراع نشده.
+    public const string Legal = "Legal";
+    public const string Finance = "Finance";
+    public const string HSE = "HSE";
+
     public static readonly string[] All =
     {
         SystemAdmin,
@@ -26,7 +33,10 @@ public static class SystemRoles
         MaintenanceEngineer,
         ContractManager,
         QAManager,
-        Viewer
+        Viewer,
+        Legal,
+        Finance,
+        HSE
     };
 
     public static readonly Dictionary<string, string> DisplayNames = new()
@@ -39,6 +49,9 @@ public static class SystemRoles
         [MaintenanceEngineer] = "Maintenance Engineer",
         [ContractManager] = "Contract Manager",
         [QAManager] = "QA Manager",
-        [Viewer] = "Viewer"
+        [Viewer] = "Viewer",
+        [Legal] = "Legal",
+        [Finance] = "Finance",
+        [HSE] = "HSE"
     };
 }

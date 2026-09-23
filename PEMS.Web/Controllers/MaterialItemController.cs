@@ -130,6 +130,13 @@ public class MaterialItemController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ReceiveStock(int materialItemId, int warehouseId, decimal quantity, string? reason)
     {
+        // طبق ممیزی Material Management Step 1 (یافته امنیتی) + Step 3 بخش ۱۴: این مسیر مستقیماً
+        // OnHandQuantity را بدون هیچ QC/Disposition ای افزایش می‌دهد - یعنی می‌تواند گیت جدید IRN
+        // را کاملاً دور بزند. حداقل مرز امنیتی لازم همین است؛ AdjustStock/TransferStock (اصلاح/
+        // جابجایی، نه دریافت مادی جدید) عمداً این‌جا دست‌نخورده مانده‌اند.
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaterialItem", "Create"))
+            return Forbid();
+
         var (success, error) = await _materialStockService.ReceiveAsync(
             materialItemId, warehouseId, null, quantity, reason, await GetCurrentEmployeeIdAsync());
 

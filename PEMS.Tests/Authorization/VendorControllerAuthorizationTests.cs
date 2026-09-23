@@ -81,7 +81,8 @@ public class VendorControllerAuthorizationTests
         var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
 
         var vendorService = new SpyVendorService();
-        var controller = new VendorController(vendorService, new ThrowingVendorRiskService(), permissionService, currentUser).WithTempData();
+        var qualificationService = new VendorQualificationService(ctx);
+        var controller = new VendorController(vendorService, new ThrowingVendorRiskService(), qualificationService, permissionService, currentUser, ctx).WithTempData();
 
         return (controller, vendorService);
     }

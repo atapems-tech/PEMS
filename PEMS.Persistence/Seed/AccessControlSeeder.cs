@@ -87,7 +87,14 @@ public static class AccessControlSeeder
             // WorkOrder.Create/Close - کسی که سفارش/بچ تولید را ایجاد یا ویرایش کرده، نمی‌تواند
             // همان رکورد را خودش Release/Complete/Close یا از نظر کیفیت Release/Reject کند.
             new { FirstResource = "Production", FirstAction = "Create", SecondResource = "Production", SecondAction = "Approve", Description = "کاربر نمی‌تواند سفارش/بچ تولیدی را که خودش ایجاد کرده، خودش Release/تایید کیفیت کند." },
-            new { FirstResource = "Production", FirstAction = "Edit", SecondResource = "Production", SecondAction = "Approve", Description = "کاربر نمی‌تواند سفارش تولیدی را که خودش برنامه‌ریزی (Plan) کرده، خودش Release/Close کند." }
+            new { FirstResource = "Production", FirstAction = "Edit", SecondResource = "Production", SecondAction = "Approve", Description = "کاربر نمی‌تواند سفارش تولیدی را که خودش برنامه‌ریزی (Plan) کرده، خودش Release/Close کند." },
+            // طبق ممیزی Package Procurement Contract Finalization (§F، قاعده‌ی کسب‌وکار ۶):
+            // ContractManager هم‌زمان Create+Edit+Approve روی Contracts/ProcurementPackage دارد -
+            // این دو ردیف همان شکاف زنده‌ی SoD را می‌بندد (داده کافی نیست، §F کنترلرهایی که این
+            // مجوز را واقعاً چک می‌کنند هم باید مسیر AuthorizeAsync آگاه-از-کاربر را صدا بزنند).
+            new { FirstResource = "Contracts", FirstAction = "Create", SecondResource = "Contracts", SecondAction = "Approve", Description = "کاربر نمی‌تواند قراردادی را که خودش ایجاد کرده، خودش تایید کند." },
+            new { FirstResource = "Contracts", FirstAction = "Edit", SecondResource = "Contracts", SecondAction = "Approve", Description = "کاربر نمی‌تواند قراردادی را که خودش ویرایش کرده، خودش تایید کند." },
+            new { FirstResource = "ProcurementPackage", FirstAction = "Create", SecondResource = "ProcurementPackage", SecondAction = "Approve", Description = "کاربر نمی‌تواند Procurement Package ای را که خودش ایجاد کرده، خودش تایید کند." }
         };
 
         foreach (var policy in defaultPolicies)

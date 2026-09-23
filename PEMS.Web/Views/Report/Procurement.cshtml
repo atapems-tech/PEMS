@@ -5,6 +5,7 @@
 @{
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
     var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
+    var pipeline = (PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.ProcurementPipelineRowDto>)ViewBag.Pipeline;
 }
 
 <div class="d-flex flex-wrap gap-2 mb-3">
@@ -44,6 +45,14 @@
     <div class="col-md-3 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div><div><div class="kpi-value">@Model.ClosedCount</div><div class="kpi-label">@Localizer["Closed"]</div></div></div></div>
 </div>
 
+<div class="row g-3 mb-3">
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-blue"><i class="bi bi-clipboard-check"></i></div><div><div class="kpi-value">@Model.TotalTenders</div><div class="kpi-label">@Localizer["Tenders"]</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-cash-coin"></i></div><div><div class="kpi-value">@Model.TotalBids</div><div class="kpi-label">@Localizer["Bids"]</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-file-earmark-ruled"></i></div><div><div class="kpi-value">@Model.TotalContracts</div><div class="kpi-label">Contracts</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-receipt"></i></div><div><div class="kpi-value">@Model.TotalPurchaseOrders</div><div class="kpi-label">@Localizer["Purchase Orders"]</div></div></div></div>
+    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-flag"></i></div><div><div class="kpi-value">@Model.TotalNTPsIssued</div><div class="kpi-label">@Localizer["Notice to Proceed (NTP)"]</div></div></div></div>
+</div>
+
 <div class="row g-3">
     <div class="col-lg-8">
         <div class="content-card mb-3">
@@ -75,6 +84,55 @@
             @if (!Model.ByVendor.Any()) { <p class="text-muted small">@Localizer["No data."]</p> }
         </div>
     </div>
+</div>
+
+<div class="content-card mt-3">
+    <h6 class="mb-3">@Localizer["Tender-to-Contract Pipeline"]</h6>
+    <div class="table-responsive">
+        <table class="table table-enterprise table-sm">
+            <thead><tr>
+                <th>@Localizer["Package"]</th><th>@Localizer["Tender No"]</th><th>@Localizer["Status"]</th>
+                <th>@Localizer["Vendor"]</th><th>@Localizer["Technical"]</th><th>@Localizer["Commercial"]</th>
+                <th>@Localizer["Contract No"]</th><th>@Localizer["Status"]</th><th>@Localizer["Value"]</th>
+                <th>PO</th><th>NTP</th><th>@Localizer["Kick-off"]</th>
+            </tr></thead>
+            <tbody>
+                @foreach (var row in pipeline.Items)
+                {
+                    <tr>
+                        <td>@row.PackageNumber</td>
+                        <td>@row.TenderNumber</td>
+                        <td><span class="badge bg-secondary">@row.TenderStatus</span></td>
+                        <td>@row.WinnerVendorName</td>
+                        <td>@row.TechnicalEvaluationStatus</td>
+                        <td>@row.CommercialEvaluationStatus</td>
+                        <td>@row.ContractNo</td>
+                        <td>@row.ContractStatus</td>
+                        <td>@row.ContractValue?.ToString("N0")</td>
+                        <td>@row.PoNumber</td>
+                        <td>@row.NtpStatus</td>
+                        <td>@row.KickoffStatus</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (pipeline.Items.Count == 0)
+    {
+        <p class="text-muted small">@Localizer["No data."]</p>
+    }
+    @if (pipeline.TotalCount > pipeline.PageSize)
+    {
+        var totalPages = (int)Math.Ceiling(pipeline.TotalCount / (double)pipeline.PageSize);
+        <nav class="mt-2"><ul class="pagination pagination-sm mb-0">
+            @for (var p = 1; p <= totalPages; p++)
+            {
+                <li class="page-item @(p == pipeline.Page ? "active" : "")">
+                    <a class="page-link" asp-action="Procurement" asp-route-projectId="@ViewBag.SelectedProjectId" asp-route-disciplineId="@ViewBag.SelectedDisciplineId" asp-route-fromDate="@ViewBag.FromDate" asp-route-toDate="@ViewBag.ToDate" asp-route-page="@p">@p</a>
+                </li>
+            }
+        </ul></nav>
+    }
 </div>
 
 @section Scripts {

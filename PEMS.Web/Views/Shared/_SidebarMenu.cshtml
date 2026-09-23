@@ -38,20 +38,20 @@
     // Maintenance History/MRS/Document Upload) از بخش‌های دامنه حذف و زیر ورودی واحد «Import Center» جمع شدند
     // (ImportCatalog). Import همچنان قابلیتِ متعلق به ماژول خودش است: Controller/Action/مسیر/مجوز/گردش‌کار
     // هیچ‌کدام تغییر نکرد - فقط ناوبری متمرکز شد. شرط دیدن هر Import همان شرط قبلی لینک پراکنده‌ی آن است.
-    var engineeringControllers = new[] { "EngineeringDashboard", "Projects", "EngineeringDocuments", "DocumentRegister", "DocumentRevisions", "DocumentWorkflow", "VDR", "Transmittal", "MDB", "ProcurementPackage", "MaterialRequisition", "Discipline" };
+    var engineeringControllers = new[] { "EngineeringDashboard", "Projects", "EngineeringDocuments", "DocumentRegister", "DocumentRevisions", "DocumentWorkflow", "VDR", "Transmittal", "MDB", "ProcurementPackage", "Tender", "MaterialRequisition", "Discipline" };
     var aiControllers = new[] { "EngineeringDocumentIntelligence", "KnowledgeBase", "AISearch", "ChatAssistant", "AIInsights" };
     var correspondenceControllers = new[] { "Letter", "DCC", "TechnicalQuery" };
     var qualityControllers = new[] { "QC", "MOC" };
-    var contractControllers = new[] { "Contract", "Vendor" };
+    var contractControllers = new[] { "Contract", "Vendor", "PurchaseOrder" };
     var projectControlControllers = new[] { "Task", "Tag", "Report", "Meeting" };
     var cmmsControllers = new[] { "Equipment", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "Barcode", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
-    var inventoryControllers = new[] { "Inventory", "MaterialItem", "InventoryMasterData", "InventoryTransaction", "StoreRequisition" };
+    var inventoryControllers = new[] { "Inventory", "MaterialItem", "IrnReceipt", "InventoryMasterData", "InventoryTransaction", "StoreRequisition" };
     // طبق «PEMS Operations CMMS Boundary Correction»: Operations دیگر زیرمجموعه‌ی CMMS Integration
     // نیست - بخش سایدباری کاملاً مستقل خودش را دارد (دقیقاً هم‌الگو با جدایی Inventory & Materials
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
     var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
-    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "Department", "Employee" };
+    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "ContractApprovalAuthority", "Department", "Employee" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
 }
@@ -126,6 +126,10 @@
 
             <a class="nav-link @(IsActive("ProcurementPackage") ? "active" : "")" asp-controller="ProcurementPackage" asp-action="Index">
                 <i class="bi bi-folder2-open"></i> @Localizer["ProcurementPackage"]
+            </a>
+
+            <a class="nav-link @(IsActive("Tender") ? "active" : "")" asp-controller="Tender" asp-action="Index">
+                <i class="bi bi-clipboard-check"></i> @Localizer["Tender"]
             </a>
 
             <a class="nav-link @(IsActive("MaterialRequisition") ? "active" : "")" asp-controller="MaterialRequisition" asp-action="Index">
@@ -240,6 +244,10 @@
 
             <a class="nav-link @(IsActive("Vendor") ? "active" : "")" asp-controller="Vendor" asp-action="Index">
                 <i class="bi bi-folder2-open"></i> @Localizer["Vendors"]
+            </a>
+
+            <a class="nav-link @(IsActive("PurchaseOrder") ? "active" : "")" asp-controller="PurchaseOrder" asp-action="Index">
+                <i class="bi bi-receipt"></i> @Localizer["Purchase Orders"]
             </a>
 
             <a class="nav-link" href="@ComingSoon("Contract Milestones", "Contract Management")">
@@ -455,6 +463,10 @@
                 <i class="bi bi-box-seam"></i> @Localizer["Material Master"]
             </a>
 
+            <a class="nav-link @(IsActive("IrnReceipt") ? "active" : "")" asp-controller="IrnReceipt" asp-action="Index">
+                <i class="bi bi-truck"></i> @Localizer["Incoming Receipts (IRN)"]
+            </a>
+
             <a class="nav-link @(IsActive("InventoryTransaction") ? "active" : "")" asp-controller="InventoryTransaction" asp-action="Index">
                 <i class="bi bi-list-ul"></i> @Localizer["Transaction Ledger"]
             </a>
@@ -556,6 +568,11 @@
                 <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("RoutingRules") ? "active" : "")"
                    asp-area="Admin" asp-controller="RoutingRules" asp-action="Index">
                     <i class="bi bi-signpost-split"></i> @Localizer["AI Routing Rules"]
+                </a>
+
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("ContractApprovalAuthority") ? "active" : "")"
+                   asp-area="Admin" asp-controller="ContractApprovalAuthority" asp-action="Index">
+                    <i class="bi bi-shield-check"></i> @Localizer["Contract Approval Authority"]
                 </a>
 
                 <div class="nav-subheading">@Localizer["System Monitoring"]</div>

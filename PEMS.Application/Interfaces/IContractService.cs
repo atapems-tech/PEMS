@@ -12,6 +12,6 @@ public interface IContractService
     Task<PagedResult<ContractDto>> GetPagedAsync(int page, int pageSize);
     Task<ContractDto?> GetByIdAsync(int id);
     Task<int> CreateAsync(string contractNo, int projectId, int vendorId, string? scope,
-        decimal? value, DateTime? startDate, DateTime? endDate);
+        decimal? value, DateTime? startDate, DateTime? endDate, bool requiresInspection = false);
     Task ChangeStatusAsync(int contractId, string status);
 }

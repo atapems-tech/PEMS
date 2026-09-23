@@ -26,6 +26,10 @@
             <div class="col-md-6"><label class="form-label">@Localizer["Start Date"]</label><input name="startDate" type="date" class="form-control" /></div>
             <div class="col-md-6"><label class="form-label">@Localizer["End Date"]</label><input name="endDate" type="date" class="form-control" /></div>
             <div class="col-12"><label class="form-label">@Localizer["Scope of Work"]</label><textarea name="scope" class="form-control" rows="3"></textarea></div>
+            <div class="col-12 form-check">
+                <input type="checkbox" name="requiresInspection" value="true" class="form-check-input" id="reqInspection" />
+                <label class="form-check-label" for="reqInspection">@Localizer["Requires Inspection"]</label>
+            </div>
         </div>
         <div class="mt-4">
             <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>

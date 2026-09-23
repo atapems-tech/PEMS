@@ -29,7 +29,22 @@ public class PermissionService : IPermissionService
         // طبق «PEMS Operations & Production Architecture Spec v1» فاز ۱: ماژول مستقل جدید -
         // نامش عمداً "Production" است نه "Warehouse" (که با InventoryMasterData/Inventory موجود
         // تداخل معنایی می‌داشت - طبق سوال باز AQ-7 سند معماری).
-        "Production"
+        "Production",
+        // طبق ممیزی Material Management (Gap A) + Step 2: نام ماژول عمداً "IRN" (تمام‌بزرگ) -
+        // هم‌الگو با اختصار موجود "VDR"، نه "Irn"/"IrnReceipt".
+        "IRN",
+        // طبق ممیزی Material Management Step 1 (یافته: MaterialItemController هیچ بررسی مجوزی
+        // نداشت) + Step 3 بخش ۱۴: فقط چون این مسیر می‌تواند گیت QC/Disposition جدید IRN را دور
+        // بزند (ReceiveStock مستقیماً OnHandQuantity را بدون هیچ بازرسی افزایش می‌دهد) - نه یک
+        // بازطراحی امنیتی گسترده‌ی کل Controller.
+        "MaterialItem",
+        // طبق ممیزی Package Procurement Contract Finalization (§C): ماژول مستقل برای چرخه‌ی
+        // Tender/Bid - جدا از "ProcurementPackage" (که سرصفحه‌ی بسته می‌ماند) و "Contracts"
+        // (که نتیجه‌ی نهایی این چرخه است)
+        "Tender",
+        // طبق ممیزی §H (Phase 7.5): PurchaseOrder Entity/Service/DTO از قبل کامل بود ولی هیچ
+        // Controller/View/مجوزی نداشت
+        "PurchaseOrder"
     };
 
     public PermissionService(PEMSDbContext context, IAccessControlService accessControlService)
@@ -277,7 +292,16 @@ public class PermissionService : IPermissionService
         await SeedMissingRolesAsync("Contracts", new List<RolePermission>
         {
             New(SystemRoles.ContractManager, "Contracts", create: true, edit: true, approve: true),
-            New(SystemRoles.EngineeringManager, "Contracts", approve: true)
+            New(SystemRoles.EngineeringManager, "Contracts", approve: true),
+            // طبق ممیزی Package Procurement Contract Finalization (§F، Phase 2.6): هر رشته‌ی
+            // بازبینی چند-رشته‌ای فقط Edit می‌گیرد (نه Approve) - می‌تواند تصمیم رشته‌ی خودش را در
+            // ContractDisciplineReview ثبت کند (کنترل دقیق‌تر داخل ContractWorkflowService.
+            // RecordDisciplineReviewAsync انجام می‌شود: هر کاربر فقط رشته‌ی نقش خودش را می‌تواند
+            // ثبت کند). Legal/Finance/HSE نقش‌های تازه‌ای هستند که پیش از این هیچ مجوزی نداشتند.
+            New(SystemRoles.QAManager, "Contracts", edit: true),
+            New(SystemRoles.Legal, "Contracts", edit: true),
+            New(SystemRoles.Finance, "Contracts", edit: true),
+            New(SystemRoles.HSE, "Contracts", edit: true)
         });
 
         await SeedMissingRolesAsync("Vendors", new List<RolePermission>
@@ -436,6 +460,26 @@ public class PermissionService : IPermissionService
             New(SystemRoles.Viewer, "ProcurementPackage")
         });
 
+        // طبق ممیزی Package Procurement Contract Finalization (§C/§F، Phase 3): همون نقش‌های
+        // زنجیره‌ی ProcurementPackage/Contracts - چون Tender ادامه‌ی مستقیم همان جریان است
+        await SeedMissingRolesAsync("Tender", new List<RolePermission>
+        {
+            New(SystemRoles.DisciplineEngineer, "Tender", create: true, edit: true),
+            New(SystemRoles.ContractManager, "Tender", create: true, edit: true, approve: true),
+            New(SystemRoles.EngineeringManager, "Tender", edit: true),
+            New(SystemRoles.QAManager, "Tender", edit: true),
+            New(SystemRoles.Finance, "Tender", edit: true),
+            New(SystemRoles.Viewer, "Tender")
+        });
+
+        // طبق ممیزی §H (Phase 7.5): همون نقش‌های Contracts - PurchaseOrder نتیجه‌ی مستقیم همون
+        // مسئولیت است، نه یک حوزه‌ی مجوز جدا
+        await SeedMissingRolesAsync("PurchaseOrder", new List<RolePermission>
+        {
+            New(SystemRoles.ContractManager, "PurchaseOrder", create: true, edit: true),
+            New(SystemRoles.Viewer, "PurchaseOrder")
+        });
+
         // ==============================================================================
         // طبق «PEMS — Global Engineering Management UI/UX, Navigation &amp; RBAC Hardening»
         // بند ۹-۱۲/۴۳: MDRImportController/EquipmentImportController/MrsImportController
@@ -499,6 +543,45 @@ public class PermissionService : IPermissionService
             New(SystemRoles.MaintenanceEngineer, "MrsImport", create: true, del: true, approve: true),
             New(SystemRoles.EngineeringManager, "MrsImport", create: true, del: true, approve: true),
             New(SystemRoles.Viewer, "MrsImport")
+        });
+
+        // طبق ممیزی Material Management (Gap A) + Step 2: همون دو نقشی که به MrsImport
+        // (نزدیک‌ترین ماژول موجود از نظر دامنه - دریافت مادی) اعتماد شده، بدون "approve" - چون
+        // در Step 2 هیچ گیت QC/Disposition ای وجود ندارد که نیاز به یک ردیف تصمیم مجزا داشته
+        // باشد (Submit اینجا دقیقاً هم‌رده‌ی گذار غیر-Approval-Gated «Draft→Submitted» در
+        // StoreRequisitionController است، نه یک تصمیم پرریسک). Approve به‌صراحت به Step 3 (طراحی
+        // گیت Disposition) موکول شده تا SoD از همون ابتدا درست طراحی شود - نه بعداً روی هم
+        // نقشی که Create دارد اضافه شود (طبق درسِ یافته‌ی G9 در ممیزی Step 1).
+        await SeedMissingRolesAsync("IRN", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "IRN", create: true),
+            New(SystemRoles.EngineeringManager, "IRN", create: true),
+            New(SystemRoles.Viewer, "IRN"),
+            // طبق ممیزی Material Management (Gap B) + Step 3: طبق شواهد (هیچ نقش اختصاصی
+            // Inspector/Warehouse در سیستم نیست؛ QAManager تنها نقش کیفیت-محور موجود است، همون
+            // نقشی که NCR/Inspection از قبل به آن اعتماد کرده‌اند)، Edit (ثبت Disposition) و
+            // Approve (تایید مستقل QA که مقدار Accepted را به موجودی Post می‌کند) فقط به
+            // QAManager داده می‌شود - عمداً نه به EngineeringManager (که "Approve" عمومی مدیریتی
+            // در بقیه‌ی ماژول‌ها دارد، نه تصمیم کیفیت). این هم‌پوشانی Edit+Approve روی همون یک نقش
+            // دقیقاً همون محدودیت مستندشده‌ی موجود در NCR است (هیچ‌جای کدبیس فعلی قفل خود-تاییدی
+            // ندارد) - نه یک نقص جدید، یک الگوی از‌پیش‌پذیرفته‌شده.
+            New(SystemRoles.QAManager, "IRN", edit: true, approve: true)
+        });
+
+        // طبق ممیزی Material Management Step 1 (یافته امنیتی: MaterialItemController.ReceiveStock/
+        // AdjustStock/TransferStock هیچ بررسی مجوزی نداشتند - هر کاربر واردشده می‌توانست مستقیماً
+        // OnHandQuantity را تغییر دهد) + Step 3 بخش ۱۴: فقط ReceiveStock این‌جا گیت می‌شود، چون
+        // این تنها مسیری است که می‌تواند گیت QC/Disposition جدید IRN را دور بزند (دریافت مستقیم
+        // مادی بدون QC). AdjustStock/TransferStock اصلاح/جابجایی موجودی موجود هستند، نه دریافت
+        // مادی جدید از بیرون - رفع آن‌ها به یک تغییر امنیتی جدا و کنترل‌شده موکول شده (طبق دستور
+        // صریح: بدون بازطراحی امنیتی گسترده در این Step). نقش‌ها هم‌الگو با "InventoryMasterData"
+        // موجود (نزدیک‌ترین ماژول قابل‌مقایسه از نظر ریسک مستقیم-موجودی).
+        await SeedMissingRolesAsync("MaterialItem", new List<RolePermission>
+        {
+            New(SystemRoles.MaintenanceEngineer, "MaterialItem", create: true, edit: true),
+            New(SystemRoles.EngineeringSupervisor, "MaterialItem", create: true, edit: true),
+            New(SystemRoles.EngineeringManager, "MaterialItem", create: true, edit: true),
+            New(SystemRoles.Viewer, "MaterialItem")
         });
 
         // ==============================================================================

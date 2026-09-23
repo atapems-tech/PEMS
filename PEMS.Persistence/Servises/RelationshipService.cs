@@ -153,6 +153,34 @@ public class RelationshipService : IRelationshipService
         foreach (var p in pos)
             AddUnique(result.PurchaseOrders, "PurchaseOrder", p.PoId, p.PoNumber, p.Status);
 
+        // طبق گزارش سخت‌افزاری نهایی (Gap ۴): مناقصه‌هایی که این Vendor به آن‌ها دعوت شده
+        var invitedTenders = await _context.TenderInvitedVendors
+            .Include(x => x.Tender)
+            .Where(x => x.VendorId == vendorId && x.Tender != null)
+            .Select(x => x.Tender!)
+            .ToListAsync();
+        foreach (var t in invitedTenders)
+            AddUnique(result.Tenders, "Tender", t.TenderId, t.TenderNumber, t.Status);
+
+        // پیشنهادهایی که این Vendor واقعاً ثبت کرده
+        var bids = await _context.Bids.Where(x => x.VendorId == vendorId).ToListAsync();
+        foreach (var b in bids)
+            AddUnique(result.Bids, "Bid", b.BidId, b.BidNumber, b.Status);
+
+        // اخطارهای شروع به کار صادرشده روی قراردادهای همین Vendor
+        var ntps = await _context.ContractNTPs
+            .Where(x => contracts.Select(c => c.ContractId).Contains(x.ContractId))
+            .ToListAsync();
+        foreach (var n in ntps)
+            AddUnique(result.ContractNTPs, "ContractNTP", n.ContractNTPId, n.NTPNumber, n.Status);
+
+        // جلسات Kick-off همان قراردادها - از همان زیرساخت Meeting موجود
+        var kickoffs = await _context.Meetings
+            .Where(x => x.MeetingType == "KickOff" && x.ContractId != null && contracts.Select(c => c.ContractId).Contains(x.ContractId!.Value))
+            .ToListAsync();
+        foreach (var m in kickoffs)
+            AddUnique(result.KickoffMeetings, "Meeting", m.MeetingId, m.Title, m.Status);
+
         var quotations = await _context.MaterialRequisitionQuotations
             .Where(x => x.VendorName == vendor.Name)
             .ToListAsync();

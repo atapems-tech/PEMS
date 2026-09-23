@@ -1,6 +1,6 @@
 ﻿# PEMS Project Intelligence Report
 
-Generated: 2026-09-20T18:14:21.9792925Z - Branch: `feat/cmms-passport-global-page-header` - Last commit: `eceb9f9 2026-09-20 feat(workflow): platform hardening (Phase 1), Work Request migration (Phase 2) + closure audit; site-wide UI/UX phases`
+Generated: 2026-09-20T18:14:48.1178754Z - Branch: `feat/cmms-passport-global-page-header` - Last commit: `5983bd1 2026-09-20 chore(graphify): refresh knowledge graph`
 
 This report is generated evidence, not a manual estimate. Each module below is a
 controller found in the repository; each signal is checked directly against source,
@@ -63,7 +63,7 @@ either way (never treat Unknown as Missing).
 | Roles | Admin | 56% | 5/9 | 0 | 4 | 2 | yes | no | no | 2026-09-18 |
 | RoutingRules | Admin | 67% | 6/9 | 0 | 3 | 1 | yes | no | no | 2026-09-05 |
 | Settings (redirect shim) | Admin | 33% | 3/9 | 0 | 1 | 0 | yes | no | no | 2026-09-05 |
-| WorkOrder | - | 67% | 6/9 | 0 | 24 | 3 | yes | yes | no | 2026-09-18 |
+| WorkOrder | - | 67% | 6/9 | 0 | 24 | 3 | yes | yes | no | 2026-09-20 |
 | Tag | - | 67% | 6/9 | 1 | 3 | 1 | yes | yes | no | 2026-09-05 |
 | Task | - | 67% | 6/9 | 0 | 3 | 1 | yes | yes | no | 2026-09-05 |
 | Team | - | 67% | 6/9 | 0 | 6 | 1 | yes | yes | no | 2026-09-08 |
@@ -960,7 +960,7 @@ either way (never treat Unknown as Missing).
 - Controller: `PEMS.Web/Controllers/WorkOrderController.cs`
 - Injected services: IWorkOrderReviewService, ICurrentUserService, IPermissionService, IWorkOrderLaborService, IWorkOrderLifecycleService, ICrewService, INumberingService, IMaterialStockService
 - Views path checked: `PEMS.Web/Views/WorkOrder` (3 .cshtml files)
-- Git: last touched 2026-09-18, 5 commit(s) touching this file
+- Git: last touched 2026-09-20, 6 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |

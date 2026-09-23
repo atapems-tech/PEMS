@@ -57,6 +57,15 @@ public class NumberingService : INumberingService
         ["ProductionOrder"] = new("PRO", 4, true, () => DateTime.Now.Year.ToString()),
         ["ProductionRun"] = new("PRN", 3, true, () => "GEN"),
         ["ProductionBatch"] = new("PB", 5, true, () => DateTime.Now.Year.ToString()),
+        // طبق ممیزی Material Management (Gap A) + Step 2: هم‌الگو با WorkOrder/StoreRequisition
+        // (سالانه) - نه یک الگوی جدید اختراعی.
+        ["IRN"] = new("IRN", 4, true, () => DateTime.Now.Year.ToString()),
+        // طبق ممیزی Package Procurement Contract Finalization (§C) - هم‌الگو با بالا (سالانه)
+        ["Tender"] = new("TND", 4, true, () => DateTime.Now.Year.ToString()),
+        ["Bid"] = new("BID", 4, true, () => DateTime.Now.Year.ToString()),
+        // عمداً «NTP» نه «IRN» - طبق §K ریسک ۹ ممیزی: پرهیز از برخورد نام با
+        // IrnReceipt (Incoming Receipt Note) موجود در ماژول Material Management
+        ["NTP"] = new("NTP", 4, true, () => DateTime.Now.Year.ToString()),
     };
 
     public NumberingService(PEMSDbContext context)

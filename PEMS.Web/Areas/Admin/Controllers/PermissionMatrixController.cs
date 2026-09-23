@@ -45,7 +45,15 @@ public class PermissionMatrixController : Controller
             "MDRImport", "EquipmentImport", "MrsImport",
             "AIExtraction", "TableExtraction", "Relationship", "OCRProcessing",
             "Team", "Crew", "InventoryMasterData", "MaintenanceMasterData",
-            "Setup"
+            "Setup",
+            // طبق ممیزی Material Management (Gap A) + Step 2.
+            "IRN",
+            // طبق ممیزی Material Management Step 1/3 (یافته امنیتی).
+            "MaterialItem",
+            // طبق ممیزی Package Procurement Contract Finalization (§C).
+            "Tender",
+            // طبق ممیزی Package Procurement Contract Finalization (§H، Phase 7.5).
+            "PurchaseOrder"
         };
 
         return View(matrix);

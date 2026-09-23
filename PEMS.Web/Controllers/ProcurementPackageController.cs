@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
+using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
 using PEMS.Web.Security;
@@ -18,14 +19,16 @@ public class ProcurementPackageController : Controller
     private readonly PEMSDbContext _context;
     private readonly ICurrentUserService _currentUser;
     private readonly IPermissionService _permissionService;
+    private readonly IAccessControlService _accessControlService;
 
     public ProcurementPackageController(IProcurementPackageService service, PEMSDbContext context,
-        ICurrentUserService currentUser, IPermissionService permissionService)
+        ICurrentUserService currentUser, IPermissionService permissionService, IAccessControlService accessControlService)
     {
         _service = service;
         _context = context;
         _currentUser = currentUser;
         _permissionService = permissionService;
+        _accessControlService = accessControlService;
     }
 
     // طبق «PEMS — Final Global Repository Audit» بند ۱۹ (P0): این کنترلر هیچ بررسی مجوزی نداشت -
@@ -99,6 +102,22 @@ public class ProcurementPackageController : Controller
             return Forbid();
 
         var id = await _service.CreateAsync(packageNumber, projectId, disciplineId, title, description);
+
+        // طبق ممیزی Package Procurement Contract Finalization (§F): ثبت Allow در
+        // AuthorizationAuditLog تا اگر همین کاربر بعداً بخواهد همین Package را خودش تایید کند،
+        // بررسی SoD در AddApproval زیر آن را مسدود کند.
+        if (_currentUser.UserId.HasValue)
+        {
+            await _accessControlService.AuthorizeAsync(new AccessControlRequest
+            {
+                UserId = _currentUser.UserId.Value,
+                ResourceName = "ProcurementPackage",
+                ActionName = "Create",
+                ResourceId = id.ToString(),
+                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString()
+            });
+        }
+
         TempData["Message"] = "Procurement Package created";
         return RedirectToAction(nameof(Details), new { id });
     }
@@ -166,6 +185,27 @@ public class ProcurementPackageController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "ProcurementPackage", "Approve"))
             return Forbid();
 
+        // طبق ممیزی §F (قاعده‌ی کسب‌وکار ۶): کاربری که خودش این Package را ایجاد/ویرایش کرده
+        // نباید بتواند خودش آن را تایید کند - پیش از این ممیزی، این کنترلر اصلاً مسیر SoD-آگاه
+        // (AuthorizeAsync) را صدا نمی‌زد و فقط از HasPermissionAsync (فقط-نقش) استفاده می‌کرد.
+        if (_currentUser.UserId.HasValue)
+        {
+            var sodDecision = await _accessControlService.AuthorizeAsync(new AccessControlRequest
+            {
+                UserId = _currentUser.UserId.Value,
+                ResourceName = "ProcurementPackage",
+                ActionName = "Approve",
+                ResourceId = packageId.ToString(),
+                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString()
+            });
+
+            if (!sodDecision.Allowed && sodDecision.Reason == AccessDecisionReason.DeniedBySoD)
+            {
+                TempData["Error"] = "طبق سیاست تفکیک وظایف، شما نمی‌توانید Package ای را که خودتان ایجاد/ویرایش کرده‌اید تایید کنید.";
+                return RedirectToAction(nameof(Details), new { id = packageId });
+            }
+        }
+
         await _service.AddApprovalAsync(packageId, _currentUser.FullName ?? "Unknown", decision, comment);
         TempData["Message"] = $"Approval recorded: {decision}";
         return RedirectToAction(nameof(Details), new { id = packageId });
@@ -178,8 +218,17 @@ public class ProcurementPackageController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "ProcurementPackage", "Approve"))
             return Forbid();
 
-        await _service.CloseoutAsync(packageId);
-        TempData["Message"] = "Package closed out";
+        try
+        {
+            await _service.CloseoutAsync(packageId);
+            TempData["Message"] = "Package closed out";
+        }
+        catch (InvalidOperationException ex)
+        {
+            // طبق §D/§I قاعده‌ی ۱۱: گیت بازرسی الزامی - پیام خطای دوستانه به‌جای خطای سرور
+            TempData["Error"] = ex.Message;
+        }
+
         return RedirectToAction(nameof(Details), new { id = packageId });
     }
 }

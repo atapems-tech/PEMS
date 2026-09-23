@@ -41,6 +41,16 @@ public class InspectionTestPlanConfiguration : IEntityTypeConfiguration<Inspecti
             .HasForeignKey(x => x.EquipmentId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.HasOne(x => x.ProcurementPackage)
+            .WithMany()
+            .HasForeignKey(x => x.ProcurementPackageId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.Contract)
+            .WithMany()
+            .HasForeignKey(x => x.ContractId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         builder.HasMany(x => x.LineItems)
             .WithOne(x => x.InspectionTestPlan)
             .HasForeignKey(x => x.InspectionTestPlanId)

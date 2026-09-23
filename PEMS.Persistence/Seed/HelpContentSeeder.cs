@@ -611,6 +611,61 @@ public static class HelpContentSeeder
             "بازنگری,بازنگری مدرک,تاریخچه",
             new[] { "document-workflow" }),
 
+        new Art("tender-and-contract-finalization", "engineering", "Workflow", "Tender.Index", 18,
+            "Tender, Bid Evaluation and Contract Finalization",
+            "How a Procurement Package moves from tender through winner selection to an effective, signed contract.",
+            "<p>A <strong>Tender</strong> belongs to a Procurement Package and adds a formal, multi-vendor bidding stage " +
+            "that a single Procurement Package/MRQ inquiry does not provide. Vendors must be invited before they can " +
+            "bid; if the tender is marked <strong>Requires Vendor Qualification</strong>, only vendors whose " +
+            "qualification was confirmed <em>at the moment of invitation</em> can be invited or bid - qualifying a " +
+            "vendor afterward does not retroactively unlock an existing tender.</p>" +
+            "<p>Once opened, invited vendors submit a <strong>Bid</strong>. The original submitted value is never " +
+            "overwritten: a later negotiation records its own row with a previous/negotiated value pair, and only the " +
+            "bid's separate \"negotiated value\" field is updated - the original stays intact for audit. " +
+            "<strong>Technical</strong> and <strong>Commercial</strong> evaluation are always independent: a bid needs " +
+            "a Passed decision on <em>both</em>, recorded separately, before it can be selected as the winner - one " +
+            "passing evaluation never substitutes for the other.</p>" +
+            "<p>Selecting a winner creates a <strong>Contract</strong> in Draft status pre-filled with the winning " +
+            "bid's vendor and final value. From there the contract moves through a real, enforced lifecycle - " +
+            "<strong>Draft → Under Review → Approved → Signed → Effective</strong> - each transition gated by " +
+            "permission and, for the review stage, by every required discipline (Engineering, Technical Inspection, " +
+            "Legal, Finance, Procurement, HSE) independently recording Approve or Reject before the package can move to " +
+            "final approval. A user who created or edited a contract cannot approve that same contract - this is " +
+            "enforced server-side by the Separation-of-Duties check, not just hidden in the UI.</p>" +
+            "<p>Two actions are only available once a contract reaches Signed or Effective: issuing an <strong>NTP " +
+            "(Notice to Proceed)</strong>, and scheduling the <strong>Kick-off meeting</strong> (which reuses the " +
+            "same Meeting feature used elsewhere in PEMS, not a separate entity). Neither can be recorded against a " +
+            "contract that hasn't reached that state yet. Value changes after signing (variations/change orders) are " +
+            "requested and approved separately - the contract's original value is preserved and only its \"current " +
+            "value\" is updated once a change is approved.</p>",
+            "tender,bid,evaluation,negotiation,winner selection,contract,ntp,kick-off,vendor qualification",
+            "مناقصه، ارزیابی پیشنهاد و نهایی‌سازی قرارداد",
+            "چگونه یک Procurement Package از مناقصه تا انتخاب برنده و رسیدن به یک قرارداد امضاشده و اثربخش پیش می‌رود.",
+            "<p>یک <strong>مناقصه (Tender)</strong> متعلق به یک Procurement Package است و یک مرحله‌ی رسمی و چند-فروشنده‌ای " +
+            "به آن اضافه می‌کند که یک استعلام تک-فروشنده‌ی Procurement Package/MRQ آن را ندارد. فروشندگان باید پیش از " +
+            "پیشنهاد دادن دعوت شوند؛ اگر مناقصه <strong>نیازمند صلاحیت فروشنده</strong> علامت‌گذاری شده باشد، فقط " +
+            "فروشندگانی که صلاحیتشان <em>در لحظه‌ی دعوت</em> تایید شده بود می‌توانند دعوت شوند یا پیشنهاد بدهند - " +
+            "صلاحیت‌سنجی بعدیِ یک فروشنده، مناقصه‌ی از قبل موجود را بازگشایی نمی‌کند.</p>" +
+            "<p>پس از باز شدن، فروشندگان دعوت‌شده یک <strong>پیشنهاد (Bid)</strong> ثبت می‌کنند. مقدار اصلی ثبت‌شده هرگز " +
+            "بازنویسی نمی‌شود: یک مذاکره‌ی بعدی ردیف مستقل خودش را با جفت مقدار قبلی/مذاکره‌شده ثبت می‌کند، و فقط فیلد " +
+            "جداگانه‌ی «مقدار مذاکره‌شده» روی پیشنهاد به‌روز می‌شود - مقدار اصلی برای ممیزی دست‌نخورده می‌ماند. ارزیابی " +
+            "<strong>فنی</strong> و <strong>تجاری</strong> همیشه مستقل‌اند: یک پیشنهاد باید تصمیم Passed را روی " +
+            "<em>هر دو</em>، جداگانه ثبت‌شده، داشته باشد پیش از این‌که به‌عنوان برنده انتخاب شود - یک ارزیابی موفق هرگز " +
+            "جای دیگری را نمی‌گیرد.</p>" +
+            "<p>انتخاب برنده یک <strong>قرارداد (Contract)</strong> در وضعیت Draft می‌سازد که از قبل با فروشنده و ارزش " +
+            "نهاییِ پیشنهاد برنده پر شده. از آن‌جا قرارداد یک چرخه‌ی واقعی و اجراشونده را طی می‌کند - " +
+            "<strong>Draft → Under Review → Approved → Signed → Effective</strong> - هر گذار با مجوز، و برای مرحله‌ی " +
+            "بازبینی، با ثبت مستقل Approve یا Reject توسط هر رشته‌ی الزامی (مهندسی، بازرسی فنی، حقوقی، مالی، تدارکات، " +
+            "HSE) پیش از رسیدن به تایید نهایی، کنترل می‌شود. کاربری که قرارداد را ایجاد یا ویرایش کرده نمی‌تواند همان " +
+            "قرارداد را تایید کند - این توسط بررسی تفکیک وظایف سمت-سرور اجرا می‌شود، نه فقط پنهان‌شده در رابط کاربری.</p>" +
+            "<p>دو اقدام فقط پس از رسیدن قرارداد به Signed یا Effective در دسترس‌اند: صدور <strong>NTP (اخطار شروع به " +
+            "کار)</strong>، و برنامه‌ریزی <strong>جلسه‌ی Kick-off</strong> (که از همان قابلیت Meeting موجود در جاهای " +
+            "دیگر PEMS استفاده می‌کند، نه یک Entity جدا). هیچ‌کدام برای قراردادی که هنوز به آن وضعیت نرسیده قابل ثبت " +
+            "نیستند. تغییرات ارزش پس از امضا (Variation/Change Order) جداگانه درخواست و تایید می‌شوند - ارزش اصلی " +
+            "قرارداد حفظ می‌شود و فقط «ارزش جاری» آن پس از تایید یک تغییر به‌روز می‌شود.</p>",
+            "مناقصه,پیشنهاد,ارزیابی,مذاکره,انتخاب برنده,قرارداد,ntp,kick-off,صلاحیت فروشنده",
+            new[] { "contracts-overview", "vendors-overview" }),
+
         // ============================= CMMS =============================
         new Art("cmms-overview", "cmms", "Module", null, 0,
             "CMMS Overview",
@@ -1119,6 +1174,50 @@ public static class HelpContentSeeder
             "شناسه‌ی رکوردهای تکراری نشان می‌دهد. ابتدا رکوردهای تکراری Vendor را برطرف کنید، سپس دوباره Import بزنید.</p>",
             "ایمپورت,مرحله بندی,batch,commit,discard,ایمپورت mdr,ایمپورت vdr,ایمپورت تجهیز",
             null),
+
+        // ============================= MATERIAL MANAGEMENT AUDIT — STEP 2/3: IRN + DISPOSITION =============================
+        new Art("irn-receiving-and-disposition", "cmms", "Workflow", "IrnReceipt.Index", 28,
+            "IRN — Incoming Receipt & Disposition",
+            "Why receiving material and making it available stock are two separate, gated steps - not the same event.",
+            "<p>An <strong>IRN (Incoming Receipt Note)</strong> is the formal record that material physically arrived - " +
+            "it is not the same as MRS (a separate, existing Excel-staging import for material receiving); both exist " +
+            "side by side. Creating an IRN and adding its received-quantity lines only records that a delivery arrived; " +
+            "it does not, by itself, create any stock or inventory transaction.</p>" +
+            "<p><strong>Verified rule - Received ≠ Available:</strong> a received quantity only becomes usable stock " +
+            "after two further, separate steps. First, an inspector records a <strong>Disposition</strong> for every " +
+            "line - splitting the received quantity into <strong>Accepted</strong>, <strong>Rejected</strong>, and " +
+            "<strong>Hold</strong> amounts that must sum exactly to what was received. Recording a disposition starts " +
+            "an independent QA approval step (the same approval engine used for Critical Non-Conformance Reports) - " +
+            "it does not itself post anything to stock. Second, only once a QA approver actually <strong>approves</strong> " +
+            "that disposition does the <strong>Accepted</strong> quantity become a real Inventory Transaction and " +
+            "raise on-hand stock - Rejected and Hold quantities are never posted to stock, by any approval outcome. " +
+            "If the QA approver rejects the disposition instead, the IRN returns to its pre-disposition state so the " +
+            "inspector can record it again; nothing is posted either way.</p>" +
+            "<p><strong>Who does what:</strong> receiving/creating and submitting an IRN, and recording its " +
+            "disposition, are permission-gated separately from the independent QA approval that actually releases " +
+            "stock - the same person recording a disposition is not automatically the one who can approve it.</p>",
+            "irn,incoming receipt,disposition,accepted,rejected,hold,received not available,qa approval",
+            "IRN - دریافت و تعیین‌تکلیف مادی ورودی",
+            "این‌که چرا دریافت مادی و در‌دسترس‌شدن آن به‌عنوان موجودی، دو گام جدا و دارای گیت هستند - نه یک رویداد.",
+            "<p><strong>IRN (Incoming Receipt Note)</strong> سند رسمی این است که مادی فیزیکاً رسیده - این با MRS (یک " +
+            "Import مرحله‌بندی‌شده‌ی اکسل موجود و جدا، برای دریافت مادی) یکی نیست؛ هر دو کنار هم وجود دارند. ساخت یک " +
+            "IRN و اضافه‌کردن خطوط مقدار دریافتی‌اش فقط ثبت می‌کند که یک محموله رسیده؛ به‌تنهایی هیچ موجودی یا " +
+            "تراکنش موجودی‌ای نمی‌سازد.</p>" +
+            "<p><strong>قاعده‌ی تاییدشده - دریافت‌شده ≠ در‌دسترس:</strong> یک مقدار دریافتی فقط بعد از دو گام جدای " +
+            "دیگر به موجودی قابل‌استفاده تبدیل می‌شود. اول، یک بازرس برای هر خط یک <strong>Disposition</strong> ثبت " +
+            "می‌کند - مقدار دریافتی را به مقادیر <strong>Accepted (پذیرفته)</strong>، <strong>Rejected (رد‌شده)</strong>، " +
+            "و <strong>Hold (بلوکه)</strong> تقسیم می‌کند که باید دقیقاً برابر مقدار دریافتی باشند. ثبت Disposition یک " +
+            "گام تایید مستقل QA را شروع می‌کند (همان موتور تاییدی که برای NCR های بحرانی استفاده می‌شود) - خودش چیزی " +
+            "به موجودی Post نمی‌کند. دوم، فقط وقتی یک تاییدکننده‌ی QA واقعاً آن Disposition را <strong>تایید</strong> " +
+            "کند، مقدار <strong>Accepted</strong> به یک تراکنش موجودی واقعی تبدیل می‌شود و موجودی در دست را بالا " +
+            "می‌برد - مقادیر Rejected و Hold، با هر نتیجه‌ی تاییدی، هرگز به موجودی Post نمی‌شوند. اگر تاییدکننده‌ی QA " +
+            "به‌جای آن Disposition را رد کند، IRN به وضعیت پیش از Disposition برمی‌گردد تا بازرس دوباره آن را ثبت کند؛ " +
+            "در هیچ‌کدام چیزی Post نمی‌شود.</p>" +
+            "<p><strong>چه‌کسی چه‌کاری می‌کند:</strong> دریافت/ساخت و Submit یک IRN، و ثبت Disposition آن، جدا از " +
+            "تایید مستقل QA که واقعاً موجودی را آزاد می‌کند، از نظر مجوز گیت می‌شوند - کسی که Disposition را ثبت " +
+            "می‌کند به‌طور خودکار همان کسی نیست که می‌تواند آن را تایید کند.</p>",
+            "irn,رسید دریافت,disposition,پذیرفته,رد شده,بلوکه,دریافت نه در دسترس,تایید qa",
+            new[] { "material-items-overview" }),
 
         // ============================= PHASE 4 INCREMENT 3B: RELIABILITY =============================
         new Art("reliability-overview", "cmms", "Workflow", "Reliability.Overview", 27,

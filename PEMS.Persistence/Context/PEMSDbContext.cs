@@ -131,6 +131,13 @@ public class PEMSDbContext
     public DbSet<MrsImportRowMetadata> MrsImportRowMetadata { get; set; }
     public DbSet<NumberingSequence> NumberingSequences { get; set; }
 
+    // طبق ممیزی Material Management (Gap A) + Step 1/Step 2: IRN - سند رسمی دریافت مادی،
+    // جدا از MrsImportBatch/Row (که مکانیزم Import اکسل است).
+    public DbSet<IrnReceipt> IrnReceipts { get; set; }
+    public DbSet<IrnReceiptLine> IrnReceiptLines { get; set; }
+    public DbSet<IrnReceiptStatusHistory> IrnReceiptStatusHistories { get; set; }
+    public DbSet<IrnDispositionRecord> IrnDispositionRecords { get; set; }
+
     // طبق «PEMS Operations & Production Architecture Spec v1» فاز ۱ (Production Core) - همه‌ی
     // موجودیت‌های جدید، بدون تغییر در جدول‌های بالا (Warehouse/StorageLocation/MaterialStock/
     // InventoryTransaction دست‌نخورده می‌مانند - طبق قاعده‌ی REUSE > EXTEND > CREATE).
@@ -392,7 +399,20 @@ public class PEMSDbContext
 
     public DbSet<ProcurementPackage> ProcurementPackages { get; set; }
     public DbSet<ProcurementCommunication> ProcurementCommunications { get; set; }
+    public DbSet<ProcurementCommunicationResponse> ProcurementCommunicationResponses { get; set; }
     public DbSet<ProcurementApproval> ProcurementApprovals { get; set; }
+
+    // Package Procurement Contract Finalization (Phase 1 — Domain/Data Foundation)
+    public DbSet<VendorQualificationHistory> VendorQualificationHistories { get; set; }
+    public DbSet<ContractRevision> ContractRevisions { get; set; }
+    public DbSet<ContractDisciplineReview> ContractDisciplineReviews { get; set; }
+    public DbSet<Tender> Tenders { get; set; }
+    public DbSet<TenderInvitedVendor> TenderInvitedVendors { get; set; }
+    public DbSet<Bid> Bids { get; set; }
+    public DbSet<BidEvaluation> BidEvaluations { get; set; }
+    public DbSet<BidNegotiation> BidNegotiations { get; set; }
+    public DbSet<ContractNTP> ContractNTPs { get; set; }
+    public DbSet<ContractApprovalAuthorityRule> ContractApprovalAuthorityRules { get; set; }
 
     public DbSet<DisciplineTask> DisciplineTasks { get; set; }
 

@@ -230,6 +230,26 @@ builder.Services.AddScoped<
     IDocumentWorkflowService,
     DocumentWorkflowService>();
 
+// طبق ممیزی Package Procurement Contract Finalization (§D، Phase 2.1)
+builder.Services.AddScoped<
+    PEMS.Application.Interfaces.IContractWorkflowService,
+    PEMS.Persistence.Services.ContractWorkflowService>();
+
+// طبق ممیزی Package Procurement Contract Finalization (§C/§D، Phase 3)
+builder.Services.AddScoped<
+    PEMS.Application.Interfaces.ITenderService,
+    PEMS.Persistence.Services.TenderService>();
+
+// طبق ممیزی Package Procurement Contract Finalization (§C/§E، Phase 1.1 + Phase 3)
+builder.Services.AddScoped<
+    PEMS.Application.Interfaces.IVendorQualificationService,
+    PEMS.Persistence.Services.VendorQualificationService>();
+
+// طبق گزارش سخت‌افزاری نهایی Package Procurement (Gap ۳)
+builder.Services.AddScoped<
+    PEMS.Application.Interfaces.IContractApprovalAuthorityRuleService,
+    PEMS.Persistence.Services.ContractApprovalAuthorityRuleService>();
+
 
 // ==============================================================================
 // Workflow Platform (فاز A) - موتور عمومی گردش‌کار، طبق سند Baseline مستقل از هر ماژول.
@@ -288,6 +308,7 @@ builder.Services.AddScoped<IWorkOrderLifecycleService, WorkOrderLifecycleService
 builder.Services.AddScoped<IPMGenerationService, PMGenerationService>();
 builder.Services.AddScoped<IRcmOperationalBridgeService, RcmOperationalBridgeService>();
 builder.Services.AddScoped<IStoreRequisitionLifecycleService, StoreRequisitionLifecycleService>();
+builder.Services.AddScoped<IIrnReceiptService, IrnReceiptService>();
 builder.Services.AddScoped<IReliabilityService, ReliabilityService>();
 builder.Services.AddScoped<IInspectionService, InspectionService>();
 builder.Services.AddScoped<IKpiService, KpiService>();
@@ -712,6 +733,12 @@ using (var scope = app.Services.CreateScope())
     // بخش QC/QA - دیسیپلین‌های استاندارد بازرسی
     await PEMS.Persistence.Seed.QCDisciplineSeeder.SeedAsync(scope.ServiceProvider);
     await PEMS.Persistence.Seed.NcrApprovalWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // طبق ممیزی Material Management (Gap B) + Step 3: زنجیره‌ی تایید Disposition دریافت مادی (IRN)
+    await PEMS.Persistence.Seed.IrnDispositionWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // طبق ممیزی Package Procurement Contract Finalization §D: گردش‌کار نهایی‌سازی قرارداد
+    await PEMS.Persistence.Seed.ContractWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق CMMS-10b: زنجیره‌ی تایید Permit to Work
     await PEMS.Persistence.Seed.PermitApprovalWorkflowSeeder.SeedAsync(scope.ServiceProvider);

@@ -22,7 +22,11 @@ public class PermissionSeedHardeningTests
         // Viewer به VDR اضافه شد تا لینک VDR Import زیر Administration > Import Center برای این
         // نقش (که روی MDR/EquipmentImport/MrsImport از قبل دید فقط‌خواندنی دارد) به 403 ختم نشود.
         { "VDR", new[] { SystemRoles.EngineeringManager, SystemRoles.DocumentController, SystemRoles.DisciplineEngineer, SystemRoles.Viewer } },
-        { "Contracts", new[] { SystemRoles.ContractManager, SystemRoles.EngineeringManager } },
+        // طبق ممیزی Package Procurement Contract Finalization (§F، Phase 2.6): QAManager/Legal/
+        // Finance/HSE اضافه شدند تا هر رشته بتواند تصمیم بازبینی چند-رشته‌ای خودش را در
+        // ContractDisciplineReview ثبت کند (کنترل دقیق‌تر این‌که هر کاربر فقط رشته‌ی خودش را
+        // می‌تواند ثبت کند، داخل ContractWorkflowService.RecordDisciplineReviewAsync است).
+        { "Contracts", new[] { SystemRoles.ContractManager, SystemRoles.EngineeringManager, SystemRoles.QAManager, SystemRoles.Legal, SystemRoles.Finance, SystemRoles.HSE } },
         { "Vendors", new[] { SystemRoles.ContractManager } },
         { "MaterialRequisition", new[] { SystemRoles.EngineeringManager, SystemRoles.DisciplineEngineer } },
         { "Equipment", new[] { SystemRoles.MaintenanceEngineer } },

@@ -230,8 +230,31 @@ public class ProcurementPackageService : IProcurementPackageService
         await _context.SaveChangesAsync();
     }
 
+    // طبق ممیزی Package Procurement Contract Finalization (§D/§I قاعده‌ی ۱۱، Phase 5.4): پیش از
+    // این، Closeout هیچ وابستگی‌ای به وضعیت بازرسی نداشت - یک بسته‌ی نیازمند بازرسی می‌توانست با
+    // صفر رکورد بازرسی بسته شود. این گیت سمت-سرور است (نه فقط UI) - دقیقاً هم‌الگو با سایر
+    // گیت‌های این پروژه (مثلاً IrnDispositionService).
     public async Task CloseoutAsync(int packageId)
     {
+        var package = await _context.ProcurementPackages.FirstOrDefaultAsync(x => x.ProcurementPackageId == packageId);
+        if (package == null) throw new Exception("Package یافت نشد");
+
+        if (package.RequiresInspection)
+        {
+            var linkedItps = await _context.InspectionTestPlans
+                .Where(x => x.ProcurementPackageId == packageId)
+                .ToListAsync();
+
+            if (linkedItps.Count == 0)
+                throw new InvalidOperationException(
+                    "این بسته نیازمند کنترل‌های بازرسی الزامی است ولی هیچ ITP ای برایش تعریف نشده - Closeout مسدود است.");
+
+            var incomplete = linkedItps.Where(x => x.Status != "Closed").ToList();
+            if (incomplete.Count > 0)
+                throw new InvalidOperationException(
+                    $"{incomplete.Count} ITP این بسته هنوز به وضعیت Closed نرسیده‌اند - Closeout مسدود است تا همه‌ی بازرسی‌های الزامی کامل شوند.");
+        }
+
         await AdvanceStageAsync(packageId, "Closeout");
     }
 
@@ -246,11 +269,12 @@ public class ProcurementPackageService : IProcurementPackageService
     }
 
     public async Task<int> AddCommunicationAsync(int packageId, string type, string subject, string body,
-        int? vendorId, string? raisedByName, int? attachmentId)
+        int? vendorId, string? raisedByName, int? attachmentId, int? tenderId = null)
     {
         var communication = new ProcurementCommunication
         {
             ProcurementPackageId = packageId,
+            TenderId = tenderId,
             Type = type,
             Subject = subject,
             Body = body,
@@ -294,6 +318,17 @@ public class ProcurementPackageService : IProcurementPackageService
             .FirstOrDefaultAsync(x => x.ProcurementCommunicationId == communicationId && x.ProcurementPackageId == packageId);
 
         if (communication == null) return;
+
+        // طبق گزارش سخت‌افزاری نهایی (Gap ۲): پیش از این، پاسخ قبلی این‌جا بدون اثر بازنویسی
+        // می‌شد - اکنون هر پاسخ یک ردیف تازه‌ی append-only در Responses ثبت می‌کند، و فیلدهای
+        // هم‌نام روی خودِ رکورد فقط Cache آخرین پاسخ‌اند (دقیقاً الگوی Document/DocumentRevision)
+        _context.ProcurementCommunicationResponses.Add(new ProcurementCommunicationResponse
+        {
+            ProcurementCommunicationId = communicationId,
+            ResponseText = responseText,
+            RespondedByName = respondedByName,
+            ResponseDate = DateTime.Now
+        });
 
         communication.ResponseText = responseText;
         communication.RespondedByName = respondedByName;
