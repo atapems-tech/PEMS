@@ -73,14 +73,14 @@
             <button class="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" aria-label="@Localizer["Shell_ToggleMenu"]">
                 <i class="bi bi-list"></i>
             </button>
-            <a class="brand text-decoration-none" asp-controller="Home" asp-action="Index">
+            <a class="brand text-decoration-none" asp-controller="Home" asp-action="Index" asp-area="">
                 <span class="brand-icon"><i class="bi bi-diagram-3-fill"></i></span>
                 <span class="d-none d-sm-inline">@Localizer["PEMS"]</span>
             </a>
         </div>
 
         <div class="pems-search d-none d-md-block">
-            <form class="d-flex" role="search" asp-controller="GlobalSearch" asp-action="Index" method="get">
+            <form class="d-flex" role="search" asp-controller="GlobalSearch" asp-action="Index" asp-area="" method="get">
                 <input type="search" name="q" class="form-control" placeholder="@Localizer["Search"]" />
             </form>
         </div>
@@ -101,7 +101,7 @@
                     {
                         <li>
                             <a class="dropdown-item theme-switch @(currentTheme == themeValue ? "active" : "")"
-                               href="@Url.Action("SetTheme", "Theme", new { theme = themeValue, returnUrl = currentUrl })">
+                               href="@Url.Action("SetTheme", "Theme", new { area = "", theme = themeValue, returnUrl = currentUrl })">
                                 <i class="bi @icon me-2"></i> @label
                             </a>
                         </li>
@@ -115,17 +115,17 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <a class="dropdown-item @(!isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { culture = "en", returnUrl = currentUrl })">English</a>
+                        <a class="dropdown-item @(!isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "en", returnUrl = currentUrl })">English</a>
                     </li>
                     <li>
-                        <a class="dropdown-item @(isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { culture = "fa", returnUrl = currentUrl })">فارسی</a>
+                        <a class="dropdown-item @(isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "fa", returnUrl = currentUrl })">فارسی</a>
                     </li>
                 </ul>
             </div>
 
             @await Html.PartialAsync("_ContextualHelpDrawer")
 
-            <a asp-controller="Help" asp-action="Index" class="text-secondary" title="@(isRtl ? "مرکز راهنما" : "Help Center")">
+            <a asp-controller="Help" asp-action="Index" asp-area="" class="text-secondary" title="@(isRtl ? "مرکز راهنما" : "Help Center")">
                 <i class="bi bi-question-circle fs-5"></i>
             </a>
 
@@ -149,11 +149,11 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><h6 class="dropdown-header">@User.Identity?.Name</h6></li>
-                    <li><a class="dropdown-item" asp-controller="MyProfile" asp-action="Index"><i class="bi bi-person-badge"></i> @Localizer["Shell_MyProfile"]</a></li>
-                    <li><a class="dropdown-item" asp-controller="Account" asp-action="ManagePasskeys"><i class="bi bi-key"></i> @Localizer["Shell_Passkeys"]</a></li>
+                    <li><a class="dropdown-item" asp-controller="MyProfile" asp-action="Index" asp-area=""><i class="bi bi-person-badge"></i> @Localizer["Shell_MyProfile"]</a></li>
+                    <li><a class="dropdown-item" asp-controller="Account" asp-action="ManagePasskeys" asp-area=""><i class="bi bi-key"></i> @Localizer["Shell_Passkeys"]</a></li>
                     <li><hr class="dropdown-divider" /></li>
                     <li>
-                        <form asp-controller="Account" asp-action="Logout" method="post">
+                        <form asp-controller="Account" asp-action="Logout" asp-area="" method="post">
                             <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> @Localizer["Logout"]</button>
                         </form>
                     </li>

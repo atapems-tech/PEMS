@@ -11,7 +11,7 @@
         <p class="text-muted small">No active barcode for this record yet.</p>
         @if (Model.CanManage)
         {
-            <form asp-controller="Barcode" asp-action="Generate" method="post" class="d-flex gap-2 align-items-end">
+            <form asp-controller="Barcode" asp-action="Generate" asp-area="" method="post" class="d-flex gap-2 align-items-end">
                 <input type="hidden" name="targetType" value="@Model.TargetType" />
                 <input type="hidden" name="targetId" value="@Model.TargetId" />
                 <div>
@@ -30,7 +30,7 @@
         var b = Model.ActiveBarcode;
         <div class="row g-3 align-items-center">
             <div class="col-md-3 text-center">
-                <img src="@Url.Action("Svg", "Barcode", new { id = b.BarcodeIdentityId })" alt="barcode" style="max-width:100%;" />
+                <img src="@Url.Action("Svg", "Barcode", new { area = "", id = b.BarcodeIdentityId })" alt="barcode" style="max-width:100%;" />
                 <div class="small mt-1" dir="ltr"><code>@b.Code</code></div>
             </div>
             <div class="col-md-9">
@@ -44,20 +44,20 @@
                 @if (Model.CanManage)
                 {
                     <div class="d-flex flex-wrap gap-2">
-                        <form asp-controller="Barcode" asp-action="Print" asp-route-id="@b.BarcodeIdentityId" method="post">
+                        <form asp-controller="Barcode" asp-action="Print" asp-area="" asp-route-id="@b.BarcodeIdentityId" method="post">
                             <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-printer"></i> Print Label</button>
                         </form>
-                        <form asp-controller="Barcode" asp-action="Disable" asp-route-id="@b.BarcodeIdentityId" method="post">
+                        <form asp-controller="Barcode" asp-action="Disable" asp-area="" asp-route-id="@b.BarcodeIdentityId" method="post">
                             <input type="hidden" name="targetType" value="@Model.TargetType" />
                             <input type="hidden" name="targetId" value="@Model.TargetId" />
                             <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('Disable this barcode?')">Disable</button>
                         </form>
-                        <form asp-controller="Barcode" asp-action="Revoke" asp-route-id="@b.BarcodeIdentityId" method="post">
+                        <form asp-controller="Barcode" asp-action="Revoke" asp-area="" asp-route-id="@b.BarcodeIdentityId" method="post">
                             <input type="hidden" name="targetType" value="@Model.TargetType" />
                             <input type="hidden" name="targetId" value="@Model.TargetId" />
                             <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Revoke this barcode? It can never be reactivated.')">@Localizer["Revoke"]</button>
                         </form>
-                        <form asp-controller="Barcode" asp-action="Replace" asp-route-id="@b.BarcodeIdentityId" method="post">
+                        <form asp-controller="Barcode" asp-action="Replace" asp-area="" asp-route-id="@b.BarcodeIdentityId" method="post">
                             <input type="hidden" name="targetType" value="@Model.TargetType" />
                             <input type="hidden" name="targetId" value="@Model.TargetId" />
                             <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return confirm('Revoke this barcode and generate a new one for the same record?')">Replace</button>

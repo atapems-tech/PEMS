@@ -44,13 +44,13 @@
             var body = document.getElementById('pemsHelpDrawerBody');
             body.innerHTML = '<p class="text-muted small text-center py-4">@L("Loading...", "در حال بارگذاری...")</p>';
 
-            fetch('@Url.Action("Context", "Help")?key=' + encodeURIComponent(helpKey))
+            fetch('@Url.Action("Context", "Help", new { area = "" })?key=' + encodeURIComponent(helpKey))
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
                     loadedForKey = helpKey;
                     if (!data.found) {
                         body.innerHTML = '<p class="text-muted small text-center py-4">@L("No Help content yet for this page.", "هنوز محتوای راهنمایی برای این صفحه ثبت نشده.")</p>'
-                            + '<a class="btn btn-sm btn-outline-secondary w-100" href="@Url.Action("Index", "Help")">@L("Browse Help Center", "مرور مرکز راهنما")</a>';
+                            + '<a class="btn btn-sm btn-outline-secondary w-100" href="@Url.Action("Index", "Help", new { area = "" })">@L("Browse Help Center", "مرور مرکز راهنما")</a>';
                         return;
                     }
                     var related = (data.relatedArticles || []).map(function (r) {
