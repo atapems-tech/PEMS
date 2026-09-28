@@ -106,8 +106,69 @@ public static class HelpContentSeeder
         // اجرای دوباره هیچ تغییری اضافه نمی‌کند چون متن قدیمی دیگر پیدا نمی‌شود.
         await PatchReliabilityOverviewGapCaveatsAsync(db);
 
+        // طبق ممیزی نهایی Ownership/Traceability (§22): این مقاله پیش از Gap ۱ (تکمیل/فسخ) و پیش
+        // از افزودن بخش «خاستگاه تدارکات» نوشته شده بود - همان الگوی ایدمپوتنت PatchReliability...
+        // را دنبال می‌کند: فقط اگر متن دقیقِ نسخه‌ی قبلی هنوز دست‌نخورده باشد جایگزین می‌شود.
+        await PatchTenderContractFinalizationLifecycleAsync(db);
+
         // پیوندهای «مقاله‌ی مرتبط» - بعد از این‌که همه‌ی مقالات (چه تازه‌ساخته چه قبلاً موجود) شناسه دارند
         await LinkRelatedArticlesAsync(db, articles);
+    }
+
+    private static async Task PatchTenderContractFinalizationLifecycleAsync(PEMSDbContext db)
+    {
+        var article = await db.HelpArticles
+            .Include(x => x.Translations)
+            .FirstOrDefaultAsync(x => x.Code == "tender-and-contract-finalization");
+        if (article == null) return;
+
+        var en = article.Translations.FirstOrDefault(t => t.LanguageCode == "en");
+        if (en != null)
+        {
+            const string oldTailEn = "value\" is updated once a change is approved.</p>";
+            const string newTailEn = "value\" is updated once a change is approved.</p>" +
+                "<p>From Effective, a contract ends one of two ways. <strong>Completed</strong> closes it out normally - if " +
+                "the contract is marked <strong>Requires Inspection</strong>, this is blocked until at least one linked " +
+                "Inspection &amp; Test Plan (ITP) exists and every one of its line items has closed; a contract with no " +
+                "inspection requirement can complete without one. <strong>Terminated</strong> ends it early with a reason, " +
+                "and is only possible while the contract has not already reached Completed or Terminated. The Contract " +
+                "Details page shows its <strong>Procurement Origin</strong> (the Package, Tender and winning Bid it traces " +
+                "back to) and its execution items (NTP, Kick-off, linked ITPs) together, and the Relationship Explorer can " +
+                "be opened directly from either a Procurement Package or a Contract to see the same Package → Tender → " +
+                "Bid → Contract → NTP → Kick-off → ITP chain.</p>";
+
+            if (en.Content.EndsWith(oldTailEn, StringComparison.Ordinal))
+                en.Content = en.Content[..^oldTailEn.Length] + newTailEn;
+
+            const string oldKeywordsEn = "tender,bid,evaluation,negotiation,winner selection,contract,ntp,kick-off,vendor qualification";
+            if (en.SearchKeywords == oldKeywordsEn)
+                en.SearchKeywords = oldKeywordsEn + ",completed,terminated,inspection,itp,procurement origin";
+        }
+
+        var fa = article.Translations.FirstOrDefault(t => t.LanguageCode == "fa");
+        if (fa != null)
+        {
+            const string oldTailFa = "قرارداد حفظ می‌شود و فقط «ارزش جاری» آن پس از تایید یک تغییر به‌روز می‌شود.</p>";
+            const string newTailFa = "قرارداد حفظ می‌شود و فقط «ارزش جاری» آن پس از تایید یک تغییر به‌روز می‌شود.</p>" +
+                "<p>از وضعیت Effective، قرارداد به یکی از دو شکل پایان می‌یابد. <strong>تکمیل‌شده (Completed)</strong> آن را " +
+                "به‌صورت عادی می‌بندد - اگر قرارداد <strong>نیازمند بازرسی</strong> علامت‌گذاری شده باشد، این کار تا زمانی " +
+                "که حداقل یک برنامه‌ی بازرسی و آزمون (ITP) وصل‌شده وجود نداشته باشد و همه‌ی ردیف‌های آن بسته نشده باشند، " +
+                "مسدود می‌ماند؛ قراردادی که نیاز به بازرسی ندارد بدون آن هم می‌تواند تکمیل شود. <strong>فسخ‌شده " +
+                "(Terminated)</strong> آن را زودتر با ذکر دلیل پایان می‌دهد و فقط تا پیش از رسیدن قرارداد به Completed یا " +
+                "Terminated ممکن است. صفحه‌ی جزئیات قرارداد <strong>خاستگاه تدارکات</strong> آن (Package، مناقصه و پیشنهاد " +
+                "برنده‌ای که از آن‌ها ریشه می‌گیرد) را همراه با اقلام اجرایی‌اش (NTP، جلسه‌ی Kick-off، ITP های وصل‌شده) نشان " +
+                "می‌دهد، و کاوشگر روابط (Relationship Explorer) را می‌توان مستقیماً از یک Procurement Package یا یک قرارداد " +
+                "باز کرد تا همان زنجیره‌ی Package ← مناقصه ← پیشنهاد ← قرارداد ← NTP ← Kick-off ← ITP دیده شود.</p>";
+
+            if (fa.Content.EndsWith(oldTailFa, StringComparison.Ordinal))
+                fa.Content = fa.Content[..^oldTailFa.Length] + newTailFa;
+
+            const string oldKeywordsFa = "مناقصه,پیشنهاد,ارزیابی,مذاکره,انتخاب برنده,قرارداد,ntp,kick-off,صلاحیت فروشنده";
+            if (fa.SearchKeywords == oldKeywordsFa)
+                fa.SearchKeywords = oldKeywordsFa + ",تکمیل,فسخ,بازرسی,itp,خاستگاه تدارکات";
+        }
+
+        await db.SaveChangesAsync();
     }
 
     private static async Task PatchReliabilityOverviewGapCaveatsAsync(PEMSDbContext db)
@@ -637,8 +698,17 @@ public static class HelpContentSeeder
             "same Meeting feature used elsewhere in PEMS, not a separate entity). Neither can be recorded against a " +
             "contract that hasn't reached that state yet. Value changes after signing (variations/change orders) are " +
             "requested and approved separately - the contract's original value is preserved and only its \"current " +
-            "value\" is updated once a change is approved.</p>",
-            "tender,bid,evaluation,negotiation,winner selection,contract,ntp,kick-off,vendor qualification",
+            "value\" is updated once a change is approved.</p>" +
+            "<p>From Effective, a contract ends one of two ways. <strong>Completed</strong> closes it out normally - if " +
+            "the contract is marked <strong>Requires Inspection</strong>, this is blocked until at least one linked " +
+            "Inspection &amp; Test Plan (ITP) exists and every one of its line items has closed; a contract with no " +
+            "inspection requirement can complete without one. <strong>Terminated</strong> ends it early with a reason, " +
+            "and is only possible while the contract has not already reached Completed or Terminated. The Contract " +
+            "Details page shows its <strong>Procurement Origin</strong> (the Package, Tender and winning Bid it traces " +
+            "back to) and its execution items (NTP, Kick-off, linked ITPs) together, and the Relationship Explorer can " +
+            "be opened directly from either a Procurement Package or a Contract to see the same Package → Tender → " +
+            "Bid → Contract → NTP → Kick-off → ITP chain.</p>",
+            "tender,bid,evaluation,negotiation,winner selection,contract,ntp,kick-off,vendor qualification,completed,terminated,inspection,itp,procurement origin",
             "مناقصه، ارزیابی پیشنهاد و نهایی‌سازی قرارداد",
             "چگونه یک Procurement Package از مناقصه تا انتخاب برنده و رسیدن به یک قرارداد امضاشده و اثربخش پیش می‌رود.",
             "<p>یک <strong>مناقصه (Tender)</strong> متعلق به یک Procurement Package است و یک مرحله‌ی رسمی و چند-فروشنده‌ای " +
@@ -662,8 +732,17 @@ public static class HelpContentSeeder
             "کار)</strong>، و برنامه‌ریزی <strong>جلسه‌ی Kick-off</strong> (که از همان قابلیت Meeting موجود در جاهای " +
             "دیگر PEMS استفاده می‌کند، نه یک Entity جدا). هیچ‌کدام برای قراردادی که هنوز به آن وضعیت نرسیده قابل ثبت " +
             "نیستند. تغییرات ارزش پس از امضا (Variation/Change Order) جداگانه درخواست و تایید می‌شوند - ارزش اصلی " +
-            "قرارداد حفظ می‌شود و فقط «ارزش جاری» آن پس از تایید یک تغییر به‌روز می‌شود.</p>",
-            "مناقصه,پیشنهاد,ارزیابی,مذاکره,انتخاب برنده,قرارداد,ntp,kick-off,صلاحیت فروشنده",
+            "قرارداد حفظ می‌شود و فقط «ارزش جاری» آن پس از تایید یک تغییر به‌روز می‌شود.</p>" +
+            "<p>از وضعیت Effective، قرارداد به یکی از دو شکل پایان می‌یابد. <strong>تکمیل‌شده (Completed)</strong> آن را " +
+            "به‌صورت عادی می‌بندد - اگر قرارداد <strong>نیازمند بازرسی</strong> علامت‌گذاری شده باشد، این کار تا زمانی " +
+            "که حداقل یک برنامه‌ی بازرسی و آزمون (ITP) وصل‌شده وجود نداشته باشد و همه‌ی ردیف‌های آن بسته نشده باشند، " +
+            "مسدود می‌ماند؛ قراردادی که نیاز به بازرسی ندارد بدون آن هم می‌تواند تکمیل شود. <strong>فسخ‌شده " +
+            "(Terminated)</strong> آن را زودتر با ذکر دلیل پایان می‌دهد و فقط تا پیش از رسیدن قرارداد به Completed یا " +
+            "Terminated ممکن است. صفحه‌ی جزئیات قرارداد <strong>خاستگاه تدارکات</strong> آن (Package، مناقصه و پیشنهاد " +
+            "برنده‌ای که از آن‌ها ریشه می‌گیرد) را همراه با اقلام اجرایی‌اش (NTP، جلسه‌ی Kick-off، ITP های وصل‌شده) نشان " +
+            "می‌دهد، و کاوشگر روابط (Relationship Explorer) را می‌توان مستقیماً از یک Procurement Package یا یک قرارداد " +
+            "باز کرد تا همان زنجیره‌ی Package ← مناقصه ← پیشنهاد ← قرارداد ← NTP ← Kick-off ← ITP دیده شود.</p>",
+            "مناقصه,پیشنهاد,ارزیابی,مذاکره,انتخاب برنده,قرارداد,ntp,kick-off,صلاحیت فروشنده,تکمیل,فسخ,بازرسی,itp,خاستگاه تدارکات",
             new[] { "contracts-overview", "vendors-overview" }),
 
         // ============================= CMMS =============================

@@ -361,7 +361,14 @@ return await InStrategyAsync<(bool, string?)>(async () =>
                 return (false, T("مجری باید عضو دیسیپلین مسئول نگهداری (سازمان نگهداری) باشد.", "The executor must belong to the responsible maintenance discipline (Maintenance organization)."));
             wo.AssignedEmployeeId = employeeId;
         }
-        if (teamId.HasValue) wo.AssignedTeamId = teamId;
+        if (teamId.HasValue)
+        {
+            var teamDisciplineId = await _context.Teams.Where(t => t.TeamId == teamId.Value)
+                .Select(t => (int?)t.MaintenanceGroup!.DisciplineId).FirstOrDefaultAsync();
+            if (teamDisciplineId != wo.ResponsibleDisciplineId)
+                return (false, T("گروه کاری باید متعلق به دیسیپلین مسئول نگهداری باشد.", "The team must belong to the responsible maintenance discipline."));
+            wo.AssignedTeamId = teamId;
+        }
         try { await _context.SaveChangesAsync(); return (true, null); }
         catch (DbUpdateConcurrencyException) { _context.ChangeTracker.Clear(); return (false, ConflictMessage()); }
     }

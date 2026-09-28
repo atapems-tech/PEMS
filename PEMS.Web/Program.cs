@@ -300,6 +300,9 @@ builder.Services.AddScoped<IWorkOrderReviewService, WorkOrderReviewService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IWorkOrderLaborService, WorkOrderLaborService>();
 
+// طبق «PEMS Dynamic Maintenance Organization»
+builder.Services.AddScoped<IOrganizationStructureService, OrganizationStructureService>();
+
 // طبق «PEMS Phase 6 — CMMS Operational Excellence & Maintenance Execution»: باید قبل از
 // WorkOrderLifecycleService ثبت شود چون آن سرویس به IWorkOrderReleaseGateService وابسته است
 // (ترتیب ثبت DI مهم نیست چون Scoped/Constructor Injection است، ولی همین‌جا برای خوانایی کنار هم آمدند)
@@ -629,6 +632,13 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     await IdentitySeeder.SeedAsync(scope.ServiceProvider);
+
+    // طبق «PEMS Phase 6B Closure Validation» بند ۳: مکانیزم Development-only برای بازنشانی
+    // رمز کاربر admin به مقدار پیش‌فرض مستندشده - فقط وقتی IsDevelopment() و
+    // PEMS_DEV_RESET_ADMIN_PASSWORD=true هر دو برقرار باشند (پیش‌فرض خاموش). جزئیات/دروازه‌های
+    // ایمنی در DevAdminPasswordReset مستند شده.
+    await DevAdminPasswordReset.ResetIfRequestedAsync(
+        scope.ServiceProvider, app.Environment, app.Logger);
 
     // دپارتمان‌های پیش‌فرض
     await PEMS.Persistence.Seed.DepartmentSeeder.SeedAsync(scope.ServiceProvider);

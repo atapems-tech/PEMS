@@ -88,9 +88,12 @@
     --pems-accent: #f59e0b;
 }
 
-    /* Override های مشترک برای تمام تم‌های تاریک */
+    /* Override های مشترک برای تمام تم‌های تاریک - طبق «PEMS Global Three-Theme Design System»:
+       turquoise هم یک تم تیره است (پایه گرافیت/زغالی)، پس دقیقاً همین Override های مشترک را
+       لازم دارد - نه یک بلوک جدای تکراری. */
     [data-theme="dark"] body,
-    [data-theme="midnight"] body {
+    [data-theme="midnight"] body,
+    [data-theme="turquoise"] body {
         color: var(--pems-text);
     }
 
@@ -99,13 +102,17 @@
     [data-theme="dark"] .table th,
     [data-theme="midnight"] .table,
     [data-theme="midnight"] .table td,
-    [data-theme="midnight"] .table th {
+    [data-theme="midnight"] .table th,
+    [data-theme="turquoise"] .table,
+    [data-theme="turquoise"] .table td,
+    [data-theme="turquoise"] .table th {
         color: var(--pems-text);
         background-color: var(--pems-surface);
     }
 
     [data-theme="dark"] .table,
-    [data-theme="midnight"] .table {
+    [data-theme="midnight"] .table,
+    [data-theme="turquoise"] .table {
         --bs-table-bg: var(--pems-surface);
         --bs-table-color: var(--pems-text);
         --bs-table-striped-bg: rgba(255, 255, 255, 0.03);
@@ -116,7 +123,8 @@
     }
 
     [data-theme="dark"] .table-enterprise thead th,
-    [data-theme="midnight"] .table-enterprise thead th {
+    [data-theme="midnight"] .table-enterprise thead th,
+    [data-theme="turquoise"] .table-enterprise thead th {
         background: var(--pems-table-header-bg);
         color: var(--pems-text);
     }
@@ -124,7 +132,9 @@
     [data-theme="dark"] .form-control,
     [data-theme="dark"] .form-select,
     [data-theme="midnight"] .form-control,
-    [data-theme="midnight"] .form-select {
+    [data-theme="midnight"] .form-select,
+    [data-theme="turquoise"] .form-control,
+    [data-theme="turquoise"] .form-select {
         background-color: var(--pems-surface);
         border-color: var(--pems-surface-border);
         color: var(--pems-text);
@@ -133,7 +143,9 @@
     [data-theme="dark"] .modal-content,
     [data-theme="dark"] .dropdown-menu,
     [data-theme="midnight"] .modal-content,
-    [data-theme="midnight"] .dropdown-menu {
+    [data-theme="midnight"] .dropdown-menu,
+    [data-theme="turquoise"] .modal-content,
+    [data-theme="turquoise"] .dropdown-menu {
         background-color: var(--pems-surface);
         color: var(--pems-text);
     }
@@ -168,7 +180,7 @@ body {
         align-items: center;
         gap: 10px;
         font-weight: 700;
-        color: var(--pems-navy);
+        color: var(--pems-primary);
         font-size: 18px;
     }
 
@@ -201,7 +213,7 @@ body {
     gap: 8px;
     border: none;
     background: transparent;
-    color: var(--pems-navy);
+    color: var(--pems-primary);
     font-size: 13px;
 }
 
@@ -375,7 +387,7 @@ body {
 .pems-page-title {
     font-size: 22px;
     font-weight: 700;
-    color: var(--pems-navy);
+    color: var(--pems-primary);
     margin-bottom: 18px;
 }
 
@@ -400,7 +412,7 @@ body {
     font-size: 0.95rem;
     font-weight: 700;
     letter-spacing: 0.02em;
-    color: var(--pems-navy);
+    color: var(--pems-primary);
 }
 
 .section-subtitle {
@@ -443,7 +455,7 @@ body {
 .kpi-value {
     font-size: 22px;
     font-weight: 700;
-    color: var(--pems-navy);
+    color: var(--pems-primary);
     line-height: 1.1;
 }
 
@@ -584,7 +596,7 @@ body {
     border: none;
     background: transparent;
     font-size: 20px;
-    color: var(--pems-navy);
+    color: var(--pems-primary);
     cursor: pointer;
     width: 36px;
     height: 36px;

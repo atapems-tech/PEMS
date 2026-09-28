@@ -6,6 +6,7 @@
     var s = Model.Summary;
     var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
     var unlinkedMRs = (IEnumerable<dynamic>)ViewBag.UnlinkedMRs;
+    var tenders = (IEnumerable<PEMS.Domain.Entities.Tender>)(ViewBag.Tenders ?? Array.Empty<PEMS.Domain.Entities.Tender>());
     var stages = new[] { "MR", "VendorInquiry", "TechnicalClarification", "MRQ", "Response", "Approval", "Closeout" };
 }
 
@@ -16,9 +17,39 @@
             <h5 class="mb-0">@s.PackageNumber &mdash; @s.Title</h5>
             <span class="text-muted small">@s.ProjectName @(s.DisciplineName != null ? " | " + s.DisciplineName : "")</span>
         </div>
-        <span class="badge @(s.Status == "Closed" ? "bg-success" : "bg-warning text-dark") fs-6">@s.Status</span>
+        <div class="d-flex align-items-center gap-2">
+            <a asp-controller="Relationship" asp-action="ProcurementPackage" asp-route-id="@s.ProcurementPackageId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-diagram-3"></i> @Localizer["Cm_Relationships"]</a>
+            <span class="badge @(s.Status == "Closed" ? "bg-success" : "bg-warning text-dark") fs-6">@s.Status</span>
+        </div>
     </div>
 
+    @* طبق ممیزی نهایی §7: چرخه‌ی Package→Tender→Award→Contract مستقیماً این‌جا دیده می‌شود *@
+    @if (tenders.Any())
+    {
+        <div class="mt-3">
+            <div class="small text-muted mb-1">@Localizer["Tenders"]</div>
+            <div class="d-flex flex-wrap gap-2">
+                @foreach (var t in tenders)
+                {
+                    <span class="btn-group">
+                        <a asp-controller="Tender" asp-action="Details" asp-route-id="@t.TenderId" class="btn btn-sm btn-outline-secondary">
+                            @t.TenderNumber <span class="badge bg-secondary">@t.Status</span>
+                            @if (t.AwardedBid != null)
+                            {
+                                <text> — @Localizer["Awarded"]: @t.AwardedBid.Vendor?.Name</text>
+                            }
+                        </a>
+                        @if (t.ContractId != null)
+                        {
+                            <a asp-controller="Contract" asp-action="Details" asp-route-id="@t.ContractId" class="btn btn-sm btn-outline-success">
+                                <i class="bi bi-arrow-right-short"></i> @Localizer["Contract"]
+                            </a>
+                        }
+                    </span>
+                }
+            </div>
+        </div>
+    }
     <div class="mt-2">
         <a asp-controller="Tender" asp-action="Index" asp-route-procurementPackageId="@s.ProcurementPackageId" class="btn btn-sm btn-outline-primary">@Localizer["Tenders"]</a>
         <a asp-controller="Tender" asp-action="Create" asp-route-procurementPackageId="@s.ProcurementPackageId" class="btn btn-sm btn-outline-primary">@Localizer["New Tender"]</a>

@@ -29,35 +29,10 @@
                     <option value="Critical">@Localizer["Critical"]</option>
                 </select>
             </div>
-            <div class="col-md-6">
-                <label class="form-label">Maintenance Crew</label>
-                <select name="assignedTeamId" id="assignedTeamSelect" class="form-select" onchange="pemsLoadTeamMembers(this.value)">
-                    <option value="">@Localizer["-- انتخاب گروه کاری --"]</option>
-                    @foreach (var c in (IEnumerable<dynamic>)ViewBag.Teams) { <option value="@c.TeamId">@c.Name</option> }
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Assigned Employee <span class="text-muted small">@Localizer["(بعد از انتخاب گروه)"]</span></label>
-                <select name="assignedEmployeeId" id="assignedEmployeeSelect" class="form-select">
-                    <option value="">@Localizer["-- ابتدا گروه کاری رو انتخاب کن --"]</option>
-                </select>
-            </div>
-            <div class="col-12">
-                <label class="form-label small">@Localizer["یادداشت آزاد (اختیاری)"]</label>
-                <input name="assignedTo" class="form-control form-control-sm" placeholder="@Localizer["مثلاً جزئیات اضافه درباره‌ی تخصیص"]" />
-            </div>
-            <script>
-                async function pemsLoadTeamMembers(teamId) {
-                    var sel = document.getElementById('assignedEmployeeSelect');
-                    sel.innerHTML = '<option value="">در حال بارگذاری...</option>';
-                    if (!teamId) { sel.innerHTML = '<option value="">-- ابتدا گروه کاری رو انتخاب کن --</option>'; return; }
-                    var res = await fetch('/Team/GetTeamMembers?teamId=' + teamId);
-                    var members = await res.json();
-                    sel.innerHTML = '<option value="">-- بدون عضو مشخص --</option>' +
-                        members.map(m => `<option value="${m.employeeId}">${m.name} (${m.role})</option>`).join('');
-                }
-            </script>
             <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="3" required></textarea></div>
+            <div class="col-12">
+                <div class="alert alert-info small mb-0">@Localizer["تخصیص گروه کاری / مجری پس از برنامه‌ریزی و در مرحله‌ی «تخصیص مجری» انجام می‌شود."]</div>
+            </div>
         </div>
         <div class="mt-4">
             <button type="submit" class="btn btn-pems-solid">Create Work Order</button>

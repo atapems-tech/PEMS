@@ -1,0 +1,100 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    // طبق «PEMS Dynamic Maintenance Organization — Phase 6A»: این View فقط Shell صفحه است.
+    // درخت سازمانی از IOrganizationStructureService.GetOrganizationTreeAsync() از طریق همان
+    // اکشن JSON موجود (Team/OrganizationTree) با fetch سمت کلاینت خوانده می‌شود - هیچ EF Core
+    // مستقیم این‌جا نیست (بند ۲ سند).
+    var selectedDisciplineId = ViewBag.SelectedDisciplineId as int?;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-org-chart.css" asp-append-version="true" />
+}
+
+<div class="pems-orgchart-page" id="pemsOrgChartRoot"
+     data-tree-url="@Url.Action("OrganizationTree", "Team")"
+     data-details-url-template="@Url.Action("TeamDetails", "Team")"
+     data-empty-text="@Localizer["هیچ ساختار سازمانی تعمیرونگهداری هنوز پیکربندی نشده."]"
+     data-error-text="@Localizer["بارگذاری نمودار سازمانی با خطا مواجه شد. دوباره تلاش کنید."]"
+     data-loading-text="@Localizer["در حال بارگذاری نمودار سازمانی..."]"
+     data-vacant-text="@Localizer["خالی (Vacant)"]"
+     data-positions-text="@Localizer["سمت‌ها"]"
+     data-members-text="@Localizer["اعضا"]"
+     data-view-details-text="@Localizer["مشاهده‌ی جزئیات تیم"]">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-return-@(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "right" : "left")"></i>
+                @Localizer["بازگشت به تیم‌ها"]
+            </a>
+            <select id="orgChartDisciplineFilter" class="form-select form-select-sm" style="min-width:200px">
+                <option value="">@Localizer["همه‌ی دیسیپلین‌ها"]</option>
+                @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines)
+                {
+                    <option value="@d.DisciplineId" selected="@(selectedDisciplineId == (int)d.DisciplineId)">@d.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="d-flex align-items-center gap-1" role="toolbar" aria-label="@Localizer["ابزار نمودار سازمانی"]">
+            <button type="button" id="orgChartExpandAll" class="btn btn-outline-secondary btn-sm" title="@Localizer["باز کردن همه"]">
+                <i class="bi bi-arrows-expand"></i>
+            </button>
+            <button type="button" id="orgChartCollapseAll" class="btn btn-outline-secondary btn-sm" title="@Localizer["بستن همه"]">
+                <i class="bi bi-arrows-collapse"></i>
+            </button>
+            <div class="vr mx-1"></div>
+            <button type="button" id="orgChartZoomOut" class="btn btn-outline-secondary btn-sm" title="@Localizer["کوچک‌نمایی"]">
+                <i class="bi bi-zoom-out"></i>
+            </button>
+            <button type="button" id="orgChartZoomIn" class="btn btn-outline-secondary btn-sm" title="@Localizer["بزرگ‌نمایی"]">
+                <i class="bi bi-zoom-in"></i>
+            </button>
+            <button type="button" id="orgChartFit" class="btn btn-outline-secondary btn-sm" title="@Localizer["تناسب با صفحه"]">
+                <i class="bi bi-aspect-ratio"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-12 col-xl-9">
+            <div class="content-card pems-orgchart-card">
+                <div id="orgChartLoading" class="pems-orgchart-state">
+                    <div class="spinner-border spinner-border-sm text-secondary" role="status" aria-hidden="true"></div>
+                    <span>@Localizer["در حال بارگذاری نمودار سازمانی..."]</span>
+                </div>
+                <div id="orgChartError" class="pems-orgchart-state text-danger" hidden>
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <span id="orgChartErrorText"></span>
+                    <button type="button" id="orgChartRetry" class="btn btn-sm btn-outline-danger ms-2">@Localizer["تلاش دوباره"]</button>
+                </div>
+                <div id="orgChartEmpty" class="pems-orgchart-state" hidden>
+                    <i class="bi bi-diagram-3"></i>
+                    <span id="orgChartEmptyText"></span>
+                </div>
+
+                <div id="orgChartViewport" class="pems-orgchart-viewport" hidden tabindex="0"
+                     role="tree" aria-label="@Localizer["نمودار سازمانی تعمیرونگهداری"]">
+                    <div id="orgChartCanvas" class="pems-orgchart-canvas"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-3">
+            <div class="content-card pems-orgchart-detail" id="orgChartDetailPanel">
+                <div class="pems-orgchart-state" id="orgChartNoSelection">
+                    <i class="bi bi-cursor"></i>
+                    <span>@Localizer["روی یک گره کلیک کنید تا جزئیاتش را ببینید."]</span>
+                </div>
+                <div id="orgChartDetailContent" hidden></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/pems-org-chart.js" asp-append-version="true"></script>
+}

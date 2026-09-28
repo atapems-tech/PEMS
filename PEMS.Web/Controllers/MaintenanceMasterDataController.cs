@@ -23,13 +23,15 @@ public class MaintenanceMasterDataController : Controller
     private readonly PEMSDbContext _context;
     private readonly ICurrentUserService _currentUser;
     private readonly IPermissionService _permissionService;
+    private readonly IOrganizationStructureService _organizationService;
 
     public MaintenanceMasterDataController(PEMSDbContext context, ICurrentUserService currentUser,
-        IPermissionService permissionService)
+        IPermissionService permissionService, IOrganizationStructureService organizationService)
     {
         _context = context;
         _currentUser = currentUser;
         _permissionService = permissionService;
+        _organizationService = organizationService;
     }
 
     public async Task<IActionResult> Index()
@@ -176,6 +178,48 @@ public class MaintenanceMasterDataController : Controller
         await _context.SaveChangesAsync();
 
         TempData["Message"] = "وضعیت گروه تعمیراتی به‌روزرسانی شد.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    // طبق «PEMS Dynamic Maintenance Organization» بخش ۹/۲۳: تودرتویی دلخواه گروه‌های تعمیراتی
+    // (مثلاً Mechanical Maintenance ⊃ Rotating Equipment) - هم‌الگوی دقیق مجوز CreateGroup بالا.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateSubGroup(string code, string name, int disciplineId, int parentMaintenanceGroupId, string? description)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Create"))
+            return Forbid();
+
+        try
+        {
+            await _organizationService.CreateGroupAsync(code, name, disciplineId, parentMaintenanceGroupId, description);
+            TempData["Message"] = "زیرگروه تعمیراتی ساخته شد.";
+        }
+        catch (Exception ex)
+        {
+            TempData["Error"] = ex.Message;
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> MoveGroup(int maintenanceGroupId, int? newParentMaintenanceGroupId)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Edit"))
+            return Forbid();
+
+        try
+        {
+            await _organizationService.MoveGroupAsync(maintenanceGroupId, newParentMaintenanceGroupId);
+            TempData["Message"] = "گروه تعمیراتی جابه‌جا شد.";
+        }
+        catch (Exception ex)
+        {
+            TempData["Error"] = ex.Message;
+        }
+
         return RedirectToAction(nameof(Index));
     }
 

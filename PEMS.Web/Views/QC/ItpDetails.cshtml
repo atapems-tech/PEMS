@@ -25,6 +25,14 @@
         <div class="col-md-4"><strong>Reference:</strong> @Model.ReferenceCodeStandard</div>
         <div class="col-md-4"><strong>Revision:</strong> @Model.Revision</div>
         <div class="col-md-4"><strong>Approved:</strong> @(Model.ApprovedDate?.ToString("yyyy-MM-dd") ?? "-")</div>
+        @if (Model.ProcurementPackage != null)
+        {
+            <div class="col-md-4 mt-2"><strong>@Localizer["Package"]:</strong> <a asp-controller="ProcurementPackage" asp-action="Details" asp-route-id="@Model.ProcurementPackageId">@Model.ProcurementPackage.PackageNumber</a></div>
+        }
+        @if (Model.Contract != null)
+        {
+            <div class="col-md-4 mt-2"><strong>@Localizer["Contract"]:</strong> <a asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Model.Contract.ContractNo</a></div>
+        }
     </div>
     @if (!string.IsNullOrWhiteSpace(Model.Description))
     {

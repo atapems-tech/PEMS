@@ -88,6 +88,29 @@ public class ContractController : Controller
 
         ViewBag.RequiredDisciplines = ContractWorkflowService.RequiredDisciplines;
 
+        // طبق ممیزی نهایی Ownership/Traceability (§2/§6): Contract هیچ FK مستقیمی به سمت
+        // ProcurementPackage/Tender ندارد - Tender.ContractId تنها منبع حقیقت این رابطه است
+        // (طبق Phase 3). این‌جا فقط همان رابطه‌ی موجود را در جهت معکوس می‌خوانیم تا در UI دیده
+        // شود - نه یک FK تازه‌ی افزونه که با Tender.ContractId ناسازگار می‌شد.
+        ViewBag.OriginatingTender = await _context.Tenders
+            .Include(x => x.ProcurementPackage)
+            .Include(x => x.AwardedBid)
+            .FirstOrDefaultAsync(x => x.ContractId == id);
+
+        ViewBag.ContractNTPs = await _context.ContractNTPs
+            .Where(x => x.ContractId == id)
+            .OrderByDescending(x => x.IssuedDate)
+            .ToListAsync();
+
+        ViewBag.KickoffMeetings = await _context.Meetings
+            .Where(x => x.ContractId == id && x.MeetingType == "KickOff")
+            .OrderByDescending(x => x.MeetingDate)
+            .ToListAsync();
+
+        ViewBag.LinkedItps = await _context.InspectionTestPlans
+            .Where(x => x.ContractId == id)
+            .ToListAsync();
+
         return View(contract);
     }
 

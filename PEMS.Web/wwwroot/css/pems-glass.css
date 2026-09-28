@@ -1,0 +1,473 @@
+/* =========================================================================================
+   PEMS Premium Glass / Persian Geometry System
+   طبق «PEMS — Premium Three-Theme UI/UX Redesign»: این فایل، نه یک سیستم طراحی موازی، بلکه
+   لایه‌ی تکمیلی روی همون توکن‌های موجود (site.css: --pems-*) است - طبق قاعده‌ی صریح سند («سیستم
+   رقیب نساز»). فقط اجزای این فایل را به کلاس‌های Markup موجود اضافه می‌کند (content-card،
+   kpi-card، pems-sidebar، pems-topbar، form-control، table-enterprise، btn-*) - هیچ Markup/
+   Controller/Route ای تغییر نکرده.
+
+   طبق UI/UX Pro Max (اجرا شد، نه فقط ادعا):
+     python .claude/skills/ui-ux-pro-max/scripts/search.py "glassmorphism dark enterprise" --domain style
+       → backdrop-blur 10-20px، سطح نیمه‌شفاف، حاشیه‌ی نازک روشن، بهترین‌کاربرد: "financial
+         dashboards, high-end corporate" - دقیقاً موقعیت PEMS.
+     python .claude/skills/ui-ux-pro-max/scripts/search.py "enterprise dashboard SaaS admin" --domain product
+       → "Smart Home/IoT Dashboard": Glassmorphism + Dark Mode (OLED) برای dashboard های
+         Real-Time Monitoring - تایید مستقیم مسیر Glass برای این محصول.
+     python .claude/skills/ui-ux-pro-max/scripts/search.py "dark mode text contrast scrim glass" --domain ux
+       → کنتراست حداقل ۴.۵:۱، حلقه‌ی فوکوس outline 2px + offset 2px (AAA-grade) - همه‌جای این
+         فایل رعایت شده (بند «Accessibility» پایین فایل).
+     python .claude/skills/ui-ux-pro-max/scripts/search.py "elevation shadow consistent navigation active state" --domain ux
+       → وضعیت فعال ناوبری باید با رنگ/خط مشخص شود؛ مقیاس Elevation ثابت (نه سایه‌ی دلبخواه).
+
+   قاعده‌ی سخت‌گیرانه‌ی سند (بند ۳۱/۳۲): فیروزه فقط لهجه (خط نازک، نقطه‌ی وضعیت، حلقه‌ی فوکوس،
+   حاشیه‌ی هاور/انتخاب) - هرگز سطح بزرگ. شیشه فقط روی ناوبری/هدر/کارت شناور/مودال - جدول‌های
+   متراکم عمداً Opaque می‌مانند (بند ۸/۱۸: خوانایی داده همیشه برنده است).
+   ========================================================================================= */
+
+/* =========================================================================================
+   PEMS Persian Geometry — یک زبان بصری اصیل (نه کپی از یک اثر تاریخی خاص)، بر پایه‌ی منطق
+   هندسی Girih ایرانی: ستاره‌ی هشت‌پر (دو مربع هم‌پوشان با چرخش ۴۵ درجه) داخل یک قاب هشت‌ضلعی -
+   ساخت هندسی، نه تصویر. دو مقیاس: fine (بافت متراکم سایدبار) و hero (نسخه‌ی بزرگ‌تر برای
+   پس‌زمینه‌ی صفحه‌ی ورود/حالت خالی/بخش قهرمان داشبورد).
+   ========================================================================================= */
+:root {
+    --pems-pattern-fine: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cg fill='none' stroke='%230ea5a6' stroke-width='1'%3E%3Ccircle cx='42' cy='42' r='30' /%3E%3Crect x='16' y='16' width='52' height='52' transform='rotate(45 42 42)'/%3E%3Crect x='16' y='16' width='52' height='52'/%3E%3Ccircle cx='42' cy='42' r='4'/%3E%3C/g%3E%3C/svg%3E");
+    --pems-pattern-hero: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cg fill='none' stroke='%230ea5a6' stroke-width='1'%3E%3Ccircle cx='120' cy='120' r='96'/%3E%3Ccircle cx='120' cy='120' r='64'/%3E%3Crect x='56' y='56' width='128' height='128' transform='rotate(45 120 120)'/%3E%3Crect x='56' y='56' width='128' height='128'/%3E%3Cpath d='M120 24 L120 216 M24 120 L216 120'/%3E%3Ccircle cx='120' cy='120' r='6'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.pems-persian-bg {
+    background-image: var(--pems-pattern-fine);
+    background-repeat: repeat;
+    background-size: 84px 84px;
+}
+
+.pems-persian-bg--hero {
+    background-image: var(--pems-pattern-hero);
+    background-repeat: no-repeat;
+    background-size: 480px 480px;
+}
+
+/* =========================================================================================
+   Glass primitives - قابل‌استفاده در هر جایی که «سطح شناور» لازم است. طبق قاعده‌ی بند ۳۲:
+   فقط برای ناوبری/هدر/کارت/مودال - هرگز خودِ جدول متراکم.
+   ========================================================================================= */
+.pems-glass {
+    background: var(--pems-glass-bg, var(--pems-surface));
+    border: 1px solid var(--pems-glass-border, var(--pems-surface-border));
+    box-shadow: 0 8px 28px rgba(0,0,0,.28), inset 0 1px 0 var(--pems-glass-highlight, transparent);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    .pems-glass {
+        backdrop-filter: blur(var(--pems-glass-blur, 14px));
+        -webkit-backdrop-filter: blur(var(--pems-glass-blur, 14px));
+    }
+}
+
+.pems-glass-strong {
+    background: var(--pems-glass-bg-strong, var(--pems-surface));
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    .pems-glass-strong {
+        backdrop-filter: blur(var(--pems-glass-blur-strong, 20px));
+        -webkit-backdrop-filter: blur(var(--pems-glass-blur-strong, 20px));
+    }
+}
+
+/* =========================================================================================
+   PERSIAN TURQUOISE — component redesign (scoped; Light/Dark untouched by this block)
+   ========================================================================================= */
+
+/* --- Atmosphere: پایه‌ی سیاه‌غالب با یک لایه‌ی نور بسیار کم‌رنگ، نه گرادیان روشن/رنگی --- */
+[data-theme="turquoise"] body {
+    background:
+        radial-gradient(1100px 520px at 14% -8%, rgba(14,165,166,.05), transparent 60%),
+        radial-gradient(900px 480px at 100% 0%, rgba(28,63,118,.07), transparent 55%),
+        var(--pems-bg);
+}
+
+/* --- Sidebar: شیشه‌ی تیره + الگوی هندسی بسیار کم‌رنگ + سلسله‌مراتب واضح --- */
+[data-theme="turquoise"] .pems-sidebar {
+    position: relative;
+    background: var(--pems-glass-bg-strong);
+    border-right: 1px solid var(--pems-glass-border);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    [data-theme="turquoise"] .pems-sidebar {
+        backdrop-filter: blur(var(--pems-glass-blur-strong));
+        -webkit-backdrop-filter: blur(var(--pems-glass-blur-strong));
+    }
+}
+
+[data-theme="turquoise"] .pems-sidebar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: .045;
+    background-image: var(--pems-pattern-fine);
+    background-repeat: repeat;
+    background-size: 84px 84px;
+}
+
+[data-theme="turquoise"] .pems-sidebar > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* هاور: شیشه‌ی کمی روشن‌تر، نه رنگ */
+[data-theme="turquoise"] .pems-sidebar .nav-link:hover {
+    background: rgba(255,255,255,.045);
+    color: #fff;
+}
+
+/* فعال: لبه‌ی نازک فیروزه‌ای + درخشش بسیار محدود + نقطه‌ی وضعیت - نه یک بلوک توپر فیروزه‌ای */
+[data-theme="turquoise"] .pems-sidebar .nav-link.active {
+    background: linear-gradient(90deg, rgba(14,165,166,.14), rgba(14,165,166,.02) 70%);
+    color: #fff;
+    border-left-color: var(--pems-turquoise);
+    box-shadow: inset 2px 0 0 var(--pems-turquoise), var(--pems-accent-glow);
+    position: relative;
+}
+
+html[dir="rtl"] [data-theme="turquoise"] .pems-sidebar .nav-link.active {
+    border-right-color: var(--pems-turquoise);
+    box-shadow: inset -2px 0 0 var(--pems-turquoise), var(--pems-accent-glow);
+}
+
+[data-theme="turquoise"] .pems-sidebar .nav-link.active::after {
+    content: "";
+    position: absolute;
+    inset-inline-end: 14px;
+    top: 50%;
+    width: 5px;
+    height: 5px;
+    margin-top: -2.5px;
+    border-radius: 50%;
+    background: var(--pems-turquoise);
+    box-shadow: 0 0 6px 1px rgba(45,212,213,.7);
+}
+
+/* --- Header: شیشه‌ی نازک + خط لهجه‌ی هندسی ظریف - نه هدر بزرگ --- */
+[data-theme="turquoise"] .pems-topbar {
+    border-bottom: 1px solid var(--pems-topbar-border);
+    background-color: var(--pems-topbar-bg);
+    background-image: linear-gradient(90deg, var(--pems-turquoise) 0%, var(--pems-lapis) 55%, var(--pems-copper) 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 2px;
+    background-position: bottom;
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    [data-theme="turquoise"] .pems-topbar {
+        backdrop-filter: blur(var(--pems-glass-blur));
+        -webkit-backdrop-filter: blur(var(--pems-glass-blur));
+    }
+}
+
+/* --- Cards: سطح شیشه‌ای لایه‌ای، جزئیات کوچک فیروزه‌ای فقط روی هاور --- */
+[data-theme="turquoise"] .content-card {
+    background: var(--pems-glass-bg);
+    border: 1px solid var(--pems-glass-border);
+    box-shadow: 0 10px 30px rgba(0,0,0,.32), inset 0 1px 0 var(--pems-glass-highlight);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    [data-theme="turquoise"] .content-card {
+        backdrop-filter: blur(var(--pems-glass-blur));
+        -webkit-backdrop-filter: blur(var(--pems-glass-blur));
+    }
+}
+
+/* --- KPI cards: کنترل‌اتاق صنعتی - عدد بزرگ خوانا، لهجه فقط روی هاور --- */
+[data-theme="turquoise"] .kpi-card {
+    background: var(--pems-glass-bg);
+    border: 1px solid var(--pems-glass-border);
+    box-shadow: 0 8px 22px rgba(0,0,0,.3);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    [data-theme="turquoise"] .kpi-card {
+        backdrop-filter: blur(var(--pems-glass-blur));
+        -webkit-backdrop-filter: blur(var(--pems-glass-blur));
+    }
+}
+
+[data-theme="turquoise"] .kpi-card:hover {
+    border-color: var(--pems-glass-border-accent);
+    box-shadow: var(--pems-accent-glow), 0 10px 24px rgba(0,0,0,.34);
+    transform: translateY(-2px);
+}
+
+[data-theme="turquoise"] .kpi-value {
+    font-variant-numeric: tabular-nums;
+    font-family: "Cascadia Code", "Consolas", ui-monospace, monospace;
+}
+
+/* --- Tables: عمداً Opaque (نه شیشه) طبق بند ۸/۱۸ - خوانایی داده اولویت مطلق --- */
+[data-theme="turquoise"] .table-enterprise,
+[data-theme="turquoise"] .table {
+    background: var(--pems-elev-1);
+}
+
+[data-theme="turquoise"] .table-enterprise thead th {
+    background: var(--pems-table-header-bg);
+}
+
+[data-theme="turquoise"] .table-enterprise tbody tr:hover {
+    background: var(--pems-row-hover);
+}
+
+/* ردیف انتخاب‌شده - طبق بند ۱۸: فیروزه فقط این‌جا، به شکل لبه‌ی نازک، نه پرشدن کل ردیف */
+[data-theme="turquoise"] .table-enterprise tbody tr.selected,
+[data-theme="turquoise"] .table-enterprise tbody tr[aria-selected="true"] {
+    background: rgba(14,165,166,.09);
+    box-shadow: inset 2px 0 0 var(--pems-turquoise);
+}
+
+/* --- Forms: فوکوس ظریف فیروزه‌ای - نه ورودی سایان روشن --- */
+[data-theme="turquoise"] .form-control,
+[data-theme="turquoise"] .form-select {
+    background-color: var(--pems-elev-1);
+}
+
+[data-theme="turquoise"] .form-control:focus,
+[data-theme="turquoise"] .form-select:focus {
+    background-color: var(--pems-elev-1);
+    border-color: var(--pems-turquoise);
+    box-shadow: 0 0 0 3px rgba(14,165,166,.16);
+    color: var(--pems-text);
+}
+
+/* --- Buttons: فیروزه فقط برای حلقه‌ی فوکوس/حاشیه‌ی ثانویه - CTA اصلی همچنان مس (btn-pems-solid،
+   از قبل روی --pems-accent سوار است) طبق بند ۲۰: «هر دکمه‌ای را فیروزه‌ای نکن» --- */
+[data-theme="turquoise"] .btn-outline-primary {
+    color: var(--pems-turquoise);
+    border-color: rgba(14,165,166,.45);
+}
+
+[data-theme="turquoise"] .btn-outline-primary:hover {
+    background: rgba(14,165,166,.12);
+    border-color: var(--pems-turquoise);
+    color: #fff;
+}
+
+[data-theme="turquoise"] .btn-outline-secondary {
+    background: rgba(255,255,255,.02);
+    border-color: var(--pems-surface-border);
+    color: var(--pems-text-muted);
+}
+
+[data-theme="turquoise"] .btn-outline-secondary:hover {
+    background: rgba(255,255,255,.05);
+    color: var(--pems-text);
+    border-color: rgba(255,255,255,.18);
+}
+
+/* --- Modals / dropdowns: شیشه‌ی قوی‌تر (لایه‌ی بالاتر) --- */
+[data-theme="turquoise"] .modal-content,
+[data-theme="turquoise"] .dropdown-menu {
+    background: var(--pems-glass-bg-strong);
+    border: 1px solid var(--pems-glass-border);
+    box-shadow: 0 20px 48px rgba(0,0,0,.45);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    [data-theme="turquoise"] .modal-content,
+    [data-theme="turquoise"] .dropdown-menu {
+        backdrop-filter: blur(var(--pems-glass-blur-strong));
+        -webkit-backdrop-filter: blur(var(--pems-glass-blur-strong));
+    }
+}
+
+[data-theme="turquoise"] .dropdown-item:hover,
+[data-theme="turquoise"] .dropdown-item:focus {
+    background: rgba(14,165,166,.10);
+    color: #fff;
+}
+
+/* =========================================================================================
+   PEMS Loading Experience — طبق بند ۲۳-۲۷ سند: یک نشانه‌ی گرافیکی قابل‌شناسایی به‌جای اسپینر
+   عمومی Bootstrap. یک نماد هندسی ایرانی که خط فیروزه‌ای مسیرش را «می‌کشد» - فنی، مینیمال،
+   سریع. هر سه تم را پوشش می‌دهد (پس‌زمینه از توکن‌های موجود گرفته می‌شود)، ولی هویتش
+   بیشترین معنا را در Turquoise دارد. طبق حرکت‌شناسی ui-ux-pro-max (motion-consistency،
+   reduced-motion): مدت‌زمان‌های مشترک، غیرمسدودکننده، و کاملاً غیرفعال زیر
+   prefers-reduced-motion.
+   ========================================================================================= */
+.pems-loading-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, var(--pems-bg, #0a0d12) 88%, transparent);
+}
+
+/* طبق قاعده‌ی UA Stylesheet: display:flex بالا با اولویت یکسان روی [hidden] پیش‌فرض مرورگر
+   برنده می‌شد (چون Author Style همیشه روی UA Style برنده است) - این‌جا صراحتاً override
+   می‌شود تا ویژگی hidden واقعاً کار کند. */
+.pems-loading-overlay[hidden] {
+    display: none;
+}
+
+@supports (backdrop-filter: blur(1px)) {
+    .pems-loading-overlay { backdrop-filter: blur(6px); }
+}
+
+.pems-loading-emblem {
+    width: 76px;
+    height: 76px;
+}
+
+.pems-loading-emblem .pems-le-grid {
+    stroke: var(--pems-surface-border, #334155);
+    stroke-width: 1;
+    fill: none;
+    opacity: .5;
+}
+
+.pems-loading-emblem .pems-le-trace {
+    stroke: var(--pems-turquoise, var(--pems-primary, #0ea5a6));
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: pems-trace 1.4s ease-in-out infinite;
+}
+
+.pems-loading-emblem .pems-le-core {
+    fill: var(--pems-turquoise, var(--pems-primary, #0ea5a6));
+    animation: pems-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pems-trace {
+    0%   { stroke-dashoffset: 100; opacity: .35; }
+    55%  { stroke-dashoffset: 0; opacity: 1; }
+    100% { stroke-dashoffset: -100; opacity: .35; }
+}
+
+@keyframes pems-pulse {
+    0%, 100% { opacity: .55; r: 3; }
+    50%      { opacity: 1; r: 4; }
+}
+
+.pems-loading-label {
+    margin-top: 14px;
+    font-size: 12.5px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--pems-text-muted, #8ea0a5);
+    text-align: center;
+}
+
+/* --- Skeleton loaders: کارت/جدول/داشبورد - طبق بند ۲۷: بدون Shimmer سایان روشن --- */
+.pems-skeleton {
+    position: relative;
+    overflow: hidden;
+    background: var(--pems-surface-border, #e4e8ee);
+    border-radius: 6px;
+}
+
+.pems-skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent);
+    animation: pems-shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes pems-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.pems-skeleton-text { height: 12px; margin-bottom: 8px; width: 100%; }
+.pems-skeleton-text.w-60 { width: 60%; }
+.pems-skeleton-text.w-40 { width: 40%; }
+.pems-skeleton-title { height: 20px; width: 45%; margin-bottom: 14px; }
+
+.pems-skeleton-card {
+    padding: 18px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--pems-surface-border);
+    background: var(--pems-surface);
+}
+
+.pems-skeleton-kpi { display: flex; align-items: center; gap: 14px; padding: 18px 20px; border-radius: 12px; border: 1px solid var(--pems-surface-border); background: var(--pems-surface); }
+.pems-skeleton-kpi .pems-skeleton { width: 46px; height: 46px; border-radius: 10px; flex-shrink: 0; }
+
+.pems-skeleton-row { display: flex; gap: 16px; padding: 10px 12px; border-bottom: 1px solid var(--pems-surface-border); }
+.pems-skeleton-row .pems-skeleton { height: 13px; flex: 1; }
+
+.pems-inline-progress {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--pems-text-muted);
+}
+
+.pems-inline-progress .pems-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--pems-primary, #0ea5a6);
+    animation: pems-dot-bounce 1s ease-in-out infinite;
+}
+
+.pems-inline-progress .pems-dot:nth-child(2) { animation-delay: .15s; }
+.pems-inline-progress .pems-dot:nth-child(3) { animation-delay: .3s; }
+
+@keyframes pems-dot-bounce {
+    0%, 80%, 100% { opacity: .3; transform: translateY(0); }
+    40%           { opacity: 1; transform: translateY(-3px); }
+}
+
+/* =========================================================================================
+   Micro-interactions - محدود و حرفه‌ای (طبق بند ۲۲: بدون پرش/درخشش مداوم)
+   ========================================================================================= */
+.content-card,
+.kpi-card {
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+[data-theme="turquoise"] .pems-sidebar .nav-link {
+    transition: background .15s ease, color .15s ease, box-shadow .2s ease;
+}
+
+/* =========================================================================================
+   Accessibility - طبق ui-ux-pro-max (focus-appearance، WCAG 2.2 AAA-grade): حلقه‌ی فوکوس
+   قابل‌مشاهده روی هر عنصر تعاملی - نه فقط روی تم Turquoise.
+   ========================================================================================= */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+.form-control:focus-visible,
+.nav-link:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--pems-focus, #2563eb);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pems-loading-emblem .pems-le-trace,
+    .pems-loading-emblem .pems-le-core,
+    .pems-skeleton::after,
+    .pems-inline-progress .pems-dot {
+        animation: none !important;
+    }
+    .content-card,
+    .kpi-card,
+    [data-theme="turquoise"] .pems-sidebar .nav-link {
+        transition: none !important;
+    }
+}
+
+/* =========================================================================================
+   Performance - طبق بند ۴۳: Blur فقط روی چند سطح محدود (ناوبری/هدر/کارت شناور/مودال) اعمال
+   می‌شود، هرگز روی ردیف‌های جدول یا لیست‌های طولانی (که می‌توانست صدها/هزاران گره DOM را
+   Blur کند) - همون دلیلی که جدول‌ها Opaque نگه داشته شدند، نه فقط برای خوانایی.
+   ========================================================================================= */

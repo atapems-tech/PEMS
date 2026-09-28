@@ -137,13 +137,14 @@
 
 @section Scripts {
     <script src="~/lib/chartjs/chart-4.4.1.umd.min.js"></script>
+    <script src="~/js/pems-charts.js"></script>
     <script>
         const volumeLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VolumeByMonth.Select(x => x.Month)));
         const volumeData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VolumeByMonth.Select(x => x.Count)));
 
         new Chart(document.getElementById('volumeChart'), {
             type: 'bar',
-            data: { labels: volumeLabels, datasets: [{ label: 'Packages', data: volumeData, backgroundColor: '#3b82f6' }] },
+            data: { labels: volumeLabels, datasets: [{ label: 'Packages', data: volumeData, backgroundColor: PemsChartColors.primary }] },
             options: { responsive: true, plugins: { legend: { display: false } } }
         });
 
@@ -152,7 +153,7 @@
 
         new Chart(document.getElementById('statusChart'), {
             type: 'doughnut',
-            data: { labels: statusLabels, datasets: [{ data: statusData, backgroundColor: ['#94a3b8','#f59e0b','#22c55e','#ef4444'] }] },
+            data: { labels: statusLabels, datasets: [{ data: statusData, backgroundColor: [PemsChartColors.neutral, PemsChartColors.warning, PemsChartColors.positive, PemsChartColors.negative] }] },
             options: { plugins: { legend: { position: 'bottom' } } }
         });
 
@@ -161,7 +162,7 @@
 
         new Chart(document.getElementById('disciplineChart'), {
             type: 'bar',
-            data: { labels: discLabels, datasets: [{ label: 'Packages', data: discData, backgroundColor: '#d98c2b' }] },
+            data: { labels: discLabels, datasets: [{ label: 'Packages', data: discData, backgroundColor: PemsChartColors.accent }] },
             options: { indexAxis: 'y', plugins: { legend: { display: false } } }
         });
     </script>

@@ -190,6 +190,142 @@ public class RelationshipService : IRelationshipService
         return result;
     }
 
+    // ==============================================================================
+    // طبق ممیزی نهایی Ownership/Traceability (§16): زنجیره‌ی Package→Tender→Bid→Award→Contract→
+    // NTP→Kickoff تا این‌جا هیچ نقطه‌ی ورود مستقلی نداشت - فقط از طریق Vendor به‌صورت جزئی دیده
+    // می‌شد. هیچ FK/جدول تازه‌ای لازم نیست؛ فقط همان روابط موجود (Tender.ProcurementPackageId،
+    // Tender.ContractId، Contract.VendorId، ContractNTP.ContractId، Meeting.ContractId) خوانده
+    // می‌شوند.
+    // ==============================================================================
+    public async Task<RelationshipExplorationDto?> ExploreFromProcurementPackageAsync(int procurementPackageId)
+    {
+        var package = await _context.ProcurementPackages
+            .Include(x => x.MaterialRequisitions)
+            .Include(x => x.Quotations)
+            .FirstOrDefaultAsync(x => x.ProcurementPackageId == procurementPackageId);
+        if (package == null) return null;
+
+        var result = new RelationshipExplorationDto
+        {
+            RootType = "ProcurementPackage",
+            RootId = package.ProcurementPackageId,
+            RootLabel = $"{package.PackageNumber} - {package.Title}",
+            RootIsActive = package.IsActive
+        };
+
+        foreach (var mr in package.MaterialRequisitions)
+            AddUnique(result.MaterialRequisitions, "MR", mr.MRId, mr.MRNumber, mr.Status);
+
+        foreach (var q in package.Quotations)
+            AddUnique(result.Quotations, "MRQ", q.MRQId, q.MRQNumber, q.QuotationStatus);
+
+        var packageItps = await _context.InspectionTestPlans.Where(x => x.ProcurementPackageId == procurementPackageId).ToListAsync();
+        foreach (var i in packageItps)
+            AddUnique(result.InspectionTestPlans, "InspectionTestPlan", i.InspectionTestPlanId, i.ITPNumber, i.Status);
+
+        var tenders = await _context.Tenders
+            .Include(x => x.AwardedBid)!.ThenInclude(b => b!.Vendor)
+            .Include(x => x.Contract)
+            .Where(x => x.ProcurementPackageId == procurementPackageId)
+            .ToListAsync();
+
+        foreach (var t in tenders)
+        {
+            AddUnique(result.Tenders, "Tender", t.TenderId, t.TenderNumber, t.Status);
+
+            var bids = await _context.Bids.Include(x => x.Vendor).Where(x => x.TenderId == t.TenderId).ToListAsync();
+            foreach (var b in bids)
+            {
+                AddUnique(result.Bids, "Bid", b.BidId, b.BidNumber, b.Status);
+                if (b.Vendor != null)
+                    AddUnique(result.Vendors, "Vendor", b.Vendor.VendorId, b.Vendor.Name, b.Vendor.RiskLevel);
+            }
+
+            if (t.Contract != null)
+            {
+                AddUnique(result.Contracts, "Contract", t.Contract.ContractId, t.Contract.ContractNo, t.Contract.Status);
+
+                var ntps = await _context.ContractNTPs.Where(x => x.ContractId == t.Contract.ContractId).ToListAsync();
+                foreach (var n in ntps)
+                    AddUnique(result.ContractNTPs, "ContractNTP", n.ContractNTPId, n.NTPNumber, n.Status);
+
+                var kickoffs = await _context.Meetings
+                    .Where(x => x.MeetingType == "KickOff" && x.ContractId == t.Contract.ContractId)
+                    .ToListAsync();
+                foreach (var m in kickoffs)
+                    AddUnique(result.KickoffMeetings, "Meeting", m.MeetingId, m.Title, m.Status);
+
+                var pos = await _context.PurchaseOrders.Where(x => x.ContractId == t.Contract.ContractId).ToListAsync();
+                foreach (var p in pos)
+                    AddUnique(result.PurchaseOrders, "PurchaseOrder", p.PoId, p.PoNumber, p.Status);
+
+                var contractItps = await _context.InspectionTestPlans.Where(x => x.ContractId == t.Contract.ContractId).ToListAsync();
+                foreach (var i in contractItps)
+                    AddUnique(result.InspectionTestPlans, "InspectionTestPlan", i.InspectionTestPlanId, i.ITPNumber, i.Status);
+            }
+        }
+
+        return result;
+    }
+
+    public async Task<RelationshipExplorationDto?> ExploreFromContractAsync(int contractId)
+    {
+        var contract = await _context.Contracts.Include(x => x.Vendor).FirstOrDefaultAsync(x => x.ContractId == contractId);
+        if (contract == null) return null;
+
+        var result = new RelationshipExplorationDto
+        {
+            RootType = "Contract",
+            RootId = contract.ContractId,
+            RootLabel = $"{contract.ContractNo}"
+        };
+
+        if (contract.Vendor != null)
+            AddUnique(result.Vendors, "Vendor", contract.Vendor.VendorId, contract.Vendor.Name, contract.Vendor.RiskLevel);
+
+        // طبق ممیزی (§6): تنها منبع حقیقت رابطه‌ی Contract→Tender، Tender.ContractId است -
+        // نه یک FK تازه‌ی روی Contract که با Phase 3 ناسازگار می‌شد.
+        var originatingTender = await _context.Tenders
+            .Include(x => x.ProcurementPackage)
+            .Include(x => x.AwardedBid)!.ThenInclude(b => b!.Vendor)
+            .FirstOrDefaultAsync(x => x.ContractId == contractId);
+
+        if (originatingTender != null)
+        {
+            AddUnique(result.Tenders, "Tender", originatingTender.TenderId, originatingTender.TenderNumber, originatingTender.Status);
+
+            if (originatingTender.ProcurementPackage != null)
+            {
+                var pkg = originatingTender.ProcurementPackage;
+                AddUnique(result.ProcurementPackages, "ProcurementPackage", pkg.ProcurementPackageId, pkg.PackageNumber, pkg.Title);
+            }
+
+            var bids = await _context.Bids.Include(x => x.Vendor).Where(x => x.TenderId == originatingTender.TenderId).ToListAsync();
+            foreach (var b in bids)
+                AddUnique(result.Bids, "Bid", b.BidId, b.BidNumber, b.Status);
+        }
+
+        var ntps = await _context.ContractNTPs.Where(x => x.ContractId == contractId).ToListAsync();
+        foreach (var n in ntps)
+            AddUnique(result.ContractNTPs, "ContractNTP", n.ContractNTPId, n.NTPNumber, n.Status);
+
+        var kickoffs = await _context.Meetings
+            .Where(x => x.MeetingType == "KickOff" && x.ContractId == contractId)
+            .ToListAsync();
+        foreach (var m in kickoffs)
+            AddUnique(result.KickoffMeetings, "Meeting", m.MeetingId, m.Title, m.Status);
+
+        var pos = await _context.PurchaseOrders.Where(x => x.ContractId == contractId).ToListAsync();
+        foreach (var p in pos)
+            AddUnique(result.PurchaseOrders, "PurchaseOrder", p.PoId, p.PoNumber, p.Status);
+
+        var itps = await _context.InspectionTestPlans.Where(x => x.ContractId == contractId).ToListAsync();
+        foreach (var i in itps)
+            AddUnique(result.InspectionTestPlans, "InspectionTestPlan", i.InspectionTestPlanId, i.ITPNumber, i.Status);
+
+        return result;
+    }
+
     public async Task<RelationshipExplorationDto?> ExploreByFreeTextAsync(string text)
     {
         if (string.IsNullOrWhiteSpace(text)) return null;

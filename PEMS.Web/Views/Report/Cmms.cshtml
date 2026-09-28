@@ -78,13 +78,14 @@
 
 @section Scripts {
     <script src="~/lib/chartjs/chart-4.4.1.umd.min.js"></script>
+    <script src="~/js/pems-charts.js"></script>
     <script>
         const volumeLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VolumeByMonth.Select(x => x.Month)));
         const volumeData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VolumeByMonth.Select(x => x.Count)));
 
         new Chart(document.getElementById('volumeChart'), {
             type: 'bar',
-            data: { labels: volumeLabels, datasets: [{ label: 'Work Orders', data: volumeData, backgroundColor: '#3b82f6' }] },
+            data: { labels: volumeLabels, datasets: [{ label: 'Work Orders', data: volumeData, backgroundColor: PemsChartColors.primary }] },
             options: { responsive: true, plugins: { legend: { display: false } } }
         });
 
@@ -93,7 +94,7 @@
 
         new Chart(document.getElementById('priorityChart'), {
             type: 'doughnut',
-            data: { labels: priorityLabels, datasets: [{ data: priorityData, backgroundColor: ['#94a3b8','#3b82f6','#f59e0b','#ef4444'] }] },
+            data: { labels: priorityLabels, datasets: [{ data: priorityData, backgroundColor: [PemsChartColors.neutral, PemsChartColors.primary, PemsChartColors.warning, PemsChartColors.negative] }] },
             options: { plugins: { legend: { position: 'bottom' } } }
         });
 
@@ -102,7 +103,7 @@
 
         new Chart(document.getElementById('typeChart'), {
             type: 'bar',
-            data: { labels: typeLabels, datasets: [{ label: 'Work Orders', data: typeData, backgroundColor: '#d98c2b' }] },
+            data: { labels: typeLabels, datasets: [{ label: 'Work Orders', data: typeData, backgroundColor: PemsChartColors.accent }] },
             options: { indexAxis: 'y', plugins: { legend: { display: false } } }
         });
     </script>

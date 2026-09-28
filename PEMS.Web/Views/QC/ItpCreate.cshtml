@@ -33,6 +33,29 @@
                 <input type="hidden" name="equipmentId" id="equipmentIdHidden" />
             </div>
 
+            @* طبق ممیزی نهایی §13: بازرسی می‌تواند به یک Procurement Package یا Contract هم وصل
+               باشد - نه فقط تجهیز - این دو فیلد پیش از این جلسه در دسترس نبودند *@
+            <div class="col-md-6">
+                <label class="form-label">@Localizer["Package"] <span class="text-muted small">@Localizer["(optional)"]</span></label>
+                <select name="procurementPackageId" class="form-select">
+                    <option value="">@Localizer["-- none --"]</option>
+                    @foreach (var p in (IEnumerable<dynamic>)ViewBag.ProcurementPackages)
+                    {
+                        <option value="@p.ProcurementPackageId" selected="@(ViewBag.PrefillPackageId != null && (int)ViewBag.PrefillPackageId == (int)p.ProcurementPackageId)">@p.PackageNumber</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">@Localizer["Contract"] <span class="text-muted small">@Localizer["(optional)"]</span></label>
+                <select name="contractId" class="form-select">
+                    <option value="">@Localizer["-- none --"]</option>
+                    @foreach (var c in (IEnumerable<dynamic>)ViewBag.Contracts)
+                    {
+                        <option value="@c.ContractId" selected="@(ViewBag.PrefillContractId != null && (int)ViewBag.PrefillContractId == (int)c.ContractId)">@c.ContractNo</option>
+                    }
+                </select>
+            </div>
+
             <div class="col-12"><label class="form-label">@Localizer["Title"]</label><input name="title" class="form-control" required /></div>
             <div class="col-md-6"><label class="form-label">Reference Code/Standard</label><input name="referenceCodeStandard" class="form-control" placeholder="e.g. ASME Section IX" /></div>
             <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="3"></textarea></div>

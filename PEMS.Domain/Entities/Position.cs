@@ -18,7 +18,19 @@ public class Position
     public int? DepartmentId { get; set; }
     public Department? Department { get; set; }
 
+    // طبق «PEMS Dynamic Maintenance Organization» بخش ۱۴-۱۶: یک سمت (Position) معمولاً جای
+    // مشخصی در سلسله‌مراتب تعمیرونگهداری دارد (مثلاً «سرگروه» زیر یک Team، «سرشیفت» زیر یک
+    // Team از نوع شیفت). Null یعنی سمت عمومی/سطح دپارتمان (رفتار امروز، دست‌نخورده) - این ستون
+    // فقط اضافه شده، DepartmentId جایگزین نشده.
+    public int? TeamId { get; set; }
+    public Team? Team { get; set; }
+
+    // ترتیب نمایش در نمودار سازمانی/جزئیات تیم - پیش‌فرض صفر یعنی بدون ترتیب خاص
+    public int SortOrder { get; set; }
+
     public bool IsActive { get; set; } = true;
 
     public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+    public ICollection<EmployeeAssignment> Assignments { get; set; } = new List<EmployeeAssignment>();
 }

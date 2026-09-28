@@ -254,7 +254,7 @@ public class EnterpriseMaintenanceMasterDataTests
         AccessControlSeeder.SeedFromLegacyAsync(BuildProvider(ctx)).GetAwaiter().GetResult();
 
         var currentUser = new FakeCurrentUserService { Roles = new List<string> { role } };
-        return new MaintenanceMasterDataController(ctx, currentUser, permissionService).WithTempData();
+        return new MaintenanceMasterDataController(ctx, currentUser, permissionService, new OrganizationStructureService(ctx)).WithTempData();
     }
 
     [Fact]

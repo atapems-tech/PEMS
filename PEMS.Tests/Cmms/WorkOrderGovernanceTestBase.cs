@@ -152,4 +152,16 @@ public abstract class WorkOrderGovernanceTestBase : IDisposable
         w.OriginatingOrganization = OrganizationDomains.Engineering; w.OriginatingDisciplineId = Mech;
         await Ctx.SaveChangesAsync();
     }
+
+    /// <summary>یک Team فعال زیر یک MaintenanceGroup تازه در دیسیپلین داده‌شده می‌سازد (برای تست اسکوپ دیسیپلین در AssignExecutorAsync/AddLaborEntryAsync).</summary>
+    protected int AddTeam(int disciplineId, string name = "Team")
+    {
+        var g = new MaintenanceGroup { Code = "G" + Guid.NewGuid().ToString("N")[..6], Name = name + "-Group", DisciplineId = disciplineId, IsActive = true };
+        Ctx.MaintenanceGroups.Add(g);
+        Ctx.SaveChanges();
+        var t = new Team { Code = "T" + Guid.NewGuid().ToString("N")[..6], Name = name, MaintenanceGroupId = g.MaintenanceGroupId, IsActive = true };
+        Ctx.Teams.Add(t);
+        Ctx.SaveChanges();
+        return t.TeamId;
+    }
 }

@@ -1,0 +1,20 @@
+@*
+    طبق «PEMS Premium Three-Theme UI/UX Redesign» (بند ۲۳-۲۶): نشانه‌ی گرافیکی Loading اختصاصی
+    PEMS - یک ساخت هندسی ایرانی که خط فیروزه‌ای مسیرش را می‌کشد، به‌جای اسپینر عمومی Bootstrap.
+    این Partial فقط CSS/SVG را می‌دهد - هیچ صفحه‌ای به‌صورت خودکار مجبور به نمایشش نیست
+    (پنهان با hidden، فقط با pems-loading.js یا JS محلی یک صفحه فعال می‌شود) تا هیچ رفتار
+    موجودی را نشکند. برای نمایش سراسری اختیاری: <partial name="_PemsLoadingOverlay" /> را در
+    یک Layout قرار بده و id="pemsGlobalLoading" را با window.PemsLoading.show()/hide() کنترل کن.
+*@
+<div class="pems-loading-overlay" id="pemsGlobalLoading" hidden role="status" aria-live="polite" aria-label="@(ViewData["LoadingLabel"] ?? "Loading")">
+    <div class="text-center">
+        <svg class="pems-loading-emblem" viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="pems-le-grid" cx="50" cy="50" r="36" />
+            <rect class="pems-le-grid" x="26" y="26" width="48" height="48" transform="rotate(45 50 50)" />
+            <path class="pems-le-trace" pathLength="100"
+                  d="M50 14 L79.3 32 L79.3 68 L50 86 L20.7 68 L20.7 32 Z" />
+            <circle class="pems-le-core" cx="50" cy="50" r="3.5" />
+        </svg>
+        <div class="pems-loading-label">PEMS</div>
+    </div>
+</div>

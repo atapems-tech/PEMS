@@ -85,5 +85,14 @@ public class PositionConfiguration : IEntityTypeConfiguration<Position>
             .WithMany()
             .HasForeignKey(x => x.DepartmentId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        // طبق «PEMS Dynamic Maintenance Organization» بخش ۱۴-۱۶: یک سمت معمولاً جای مشخصی در
+        // سلسله‌مراتب تعمیرونگهداری دارد (مثلاً «سرگروه»/«سرشیفت» زیر یک Team). Null یعنی سمت
+        // عمومی/سطح دپارتمان (رفتار امروز، دست‌نخورده) - این فقط یک ستون اضافه است، جایگزین
+        // DepartmentId نیست.
+        builder.HasOne(x => x.Team)
+            .WithMany(x => x.Positions)
+            .HasForeignKey(x => x.TeamId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

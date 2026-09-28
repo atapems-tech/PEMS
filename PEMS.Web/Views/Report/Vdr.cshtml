@@ -80,13 +80,14 @@
 
 @section Scripts {
     <script src="~/lib/chartjs/chart-4.4.1.umd.min.js"></script>
+    <script src="~/js/pems-charts.js"></script>
     <script>
         const volumeLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.SubmissionsByMonth.Select(x => x.Month)));
         const volumeData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.SubmissionsByMonth.Select(x => x.Count)));
 
         new Chart(document.getElementById('volumeChart'), {
             type: 'bar',
-            data: { labels: volumeLabels, datasets: [{ label: 'Submissions', data: volumeData, backgroundColor: '#3b82f6' }] },
+            data: { labels: volumeLabels, datasets: [{ label: 'Submissions', data: volumeData, backgroundColor: PemsChartColors.primary }] },
             options: { responsive: true, plugins: { legend: { display: false } } }
         });
 
@@ -95,7 +96,7 @@
 
         new Chart(document.getElementById('statusChart'), {
             type: 'doughnut',
-            data: { labels: statusLabels, datasets: [{ data: statusData, backgroundColor: ['#94a3b8','#f59e0b','#22c55e','#ef4444','#3b82f6'] }] },
+            data: { labels: statusLabels, datasets: [{ data: statusData, backgroundColor: PemsChartColors.categorical }] },
             options: { plugins: { legend: { position: 'bottom' } } }
         });
 
@@ -104,7 +105,7 @@
 
         new Chart(document.getElementById('categoryChart'), {
             type: 'bar',
-            data: { labels: catLabels, datasets: [{ label: 'Submissions', data: catData, backgroundColor: '#d98c2b' }] },
+            data: { labels: catLabels, datasets: [{ label: 'Submissions', data: catData, backgroundColor: PemsChartColors.accent }] },
             options: { indexAxis: 'y', plugins: { legend: { display: false } } }
         });
     </script>

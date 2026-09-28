@@ -1,0 +1,228 @@
+/* PEMS Dynamic Maintenance Organization — Phase 6A: Graphical Organization Chart.
+   طبق سند: فقط از توکن‌های رنگ موجود (--pems-*) استفاده می‌شود تا سه تم (Light/Dark/Iranian)
+   بدون هیچ رنگ ثابتی به‌درستی کار کنند. لایوت با CSS خالص (بدون کتابخانه‌ی نمودار جدید) -
+   الگوی شناخته‌شده‌ی "CSS Org Chart" (فهرست‌های تودرتو + خط‌رابط با ::before/::after)، نه
+   محاسبه‌ی مختصات با جاوااسکریپت. Zoom/Pan با transform روی یک Canvas Wrapper. */
+
+.pems-orgchart-card {
+    padding: 12px;
+    min-height: 420px;
+    position: relative;
+    overflow: hidden;
+}
+
+.pems-orgchart-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 380px;
+    color: var(--pems-text-muted);
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.pems-orgchart-state i {
+    font-size: 1.4rem;
+}
+
+.pems-orgchart-viewport {
+    width: 100%;
+    height: 70vh;
+    min-height: 420px;
+    overflow: auto;
+    cursor: grab;
+    border-radius: 10px;
+    background:
+        linear-gradient(90deg, var(--pems-surface-border) 1px, transparent 1px) 0 0 / 24px 24px,
+        linear-gradient(0deg, var(--pems-surface-border) 1px, transparent 1px) 0 0 / 24px 24px;
+    background-color: var(--pems-bg);
+}
+
+.pems-orgchart-viewport:active {
+    cursor: grabbing;
+}
+
+.pems-orgchart-viewport.pems-orgchart-panning {
+    cursor: grabbing;
+}
+
+.pems-orgchart-canvas {
+    display: inline-block;
+    padding: 40px;
+    transform-origin: top center;
+    transition: transform .12s ease-out;
+}
+
+html[dir="rtl"] .pems-orgchart-canvas {
+    transform-origin: top center;
+}
+
+/* ---- Classic CSS org-chart tree (nested lists + connector lines) ---- */
+
+.pems-org-tree, .pems-org-tree ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.pems-org-tree ul {
+    display: flex;
+    padding-top: 28px;
+    position: relative;
+}
+
+.pems-org-tree li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 12px;
+    position: relative;
+}
+
+/* vertical connector from a node down to its children row */
+.pems-org-tree li > ul::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 28px;
+    background: var(--pems-steel);
+    opacity: .45;
+}
+
+/* horizontal connector across siblings */
+.pems-org-tree li ul li::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--pems-steel);
+    opacity: .45;
+}
+
+.pems-org-tree li ul li:first-child::before { left: 50%; width: 50%; }
+.pems-org-tree li ul li:last-child::before { width: 50%; }
+.pems-org-tree li ul li:only-child::before { display: none; }
+
+/* stub connecting each child up to the horizontal bar */
+.pems-org-tree li ul li::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 14px;
+    background: var(--pems-steel);
+    opacity: .45;
+}
+
+.pems-org-node {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    min-width: 168px;
+    max-width: 230px;
+    margin-top: 14px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--pems-surface-border);
+    background: var(--pems-surface);
+    box-shadow: 0 2px 8px var(--pems-shadow);
+    cursor: pointer;
+    text-align: start;
+    transition: box-shadow .12s ease, border-color .12s ease, transform .12s ease;
+}
+
+.pems-org-node:hover {
+    box-shadow: 0 6px 18px var(--pems-shadow);
+    transform: translateY(-1px);
+}
+
+.pems-org-node:focus-visible,
+.pems-org-node.pems-org-node-selected {
+    outline: none;
+    border-color: var(--pems-primary);
+    box-shadow: 0 0 0 2px var(--pems-selection);
+}
+
+.pems-org-node-kind {
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: var(--pems-text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pems-org-node-kind i { font-size: .85rem; }
+
+.pems-org-node-name {
+    font-size: .88rem;
+    font-weight: 650;
+    color: var(--pems-text);
+    line-height: 1.25;
+}
+
+.pems-org-node-meta {
+    font-size: .74rem;
+    color: var(--pems-text-muted);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.pems-org-node-meta .pems-org-badge-vacant {
+    color: var(--pems-chart-warning);
+    font-weight: 650;
+}
+
+/* Node-kind accent bar (color communicated alongside text/icon, never color alone) */
+.pems-org-node[data-kind="Group"] { border-inline-start: 3px solid var(--pems-chart-primary); }
+.pems-org-node[data-kind="Team"] { border-inline-start: 3px solid var(--pems-chart-secondary); }
+.pems-org-node[data-kind="Shift"],
+.pems-org-node[data-kind="SubTeam"],
+.pems-org-node[data-kind="Unit"] { border-inline-start: 3px solid var(--pems-chart-tertiary); }
+.pems-org-node[data-kind="Position-Occupied"] { border-inline-start: 3px solid var(--pems-chart-positive); }
+.pems-org-node[data-kind="Position-Vacant"] { border-inline-start: 3px dashed var(--pems-chart-warning); }
+.pems-org-node[data-inactive="true"] { opacity: .55; }
+
+/* Expand/collapse toggle sits above the node, centered on the connector */
+.pems-org-toggle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--pems-surface-border);
+    background: var(--pems-surface);
+    color: var(--pems-text-muted);
+    font-size: .7rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+.pems-org-toggle:hover { color: var(--pems-primary); border-color: var(--pems-primary); }
+
+.pems-org-children-hidden > ul { display: none; }
+
+/* ---- Detail side panel ---- */
+
+.pems-orgchart-detail { padding: 14px; min-height: 380px; }
+
+.pems-orgchart-detail dl { margin: 0; }
+.pems-orgchart-detail dt { font-size: .74rem; color: var(--pems-text-muted); margin-top: 8px; }
+.pems-orgchart-detail dd { font-size: .92rem; color: var(--pems-text); margin: 0; }
+
+@media (max-width: 991.98px) {
+    .pems-orgchart-viewport { height: 55vh; }
+}

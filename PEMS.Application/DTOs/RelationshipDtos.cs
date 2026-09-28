@@ -64,6 +64,14 @@ public class RelationshipExplorationDto
     public List<RelationshipNodeDto> ContractNTPs { get; set; } = new();
     public List<RelationshipNodeDto> KickoffMeetings { get; set; } = new();
 
+    // طبق ممیزی نهایی Ownership/Traceability (§16): وقتی کاوش از Contract شروع می‌شود، باید
+    // Package مبدا هم دیده شود - نه به‌زور داخل لیست MaterialRequisitions که معنایش چیز دیگری‌ست
+    public List<RelationshipNodeDto> ProcurementPackages { get; set; } = new();
+
+    // طبق ممیزی نهایی §13: ITP های وصل‌شده به Contract/Package باید با لینک درست (QC/ItpDetails)
+    // دیده شوند - نه داخل «نگهداری/دستور کار» که کنترلر متفاوتی دارد
+    public List<RelationshipNodeDto> InspectionTestPlans { get; set; } = new();
+
     // ==============================================================================
     // پیشنهادهای بازبینی‌نشده (IsAIProposed=true) - از روی MRNumberRaw/PONumberRaw تجهیز با
     // MR/VDRItem های موجود (نه ساخته‌شده) منطبق شده‌اند. تا کاربر تایید نکند

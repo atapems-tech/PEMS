@@ -331,6 +331,9 @@ public class PEMSDbContext
     public DbSet<Crew> Crews { get; set; }
     public DbSet<CrewMember> CrewMembers { get; set; }
 
+    // طبق «PEMS Dynamic Maintenance Organization»
+    public DbSet<EmployeeAssignment> EmployeeAssignments { get; set; }
+
     // طبق PEMS_CMMS_MAINTENANCE_ORGANIZATION_BLUEPRINT.md: مهارت‌ها
     public DbSet<Skill> Skills { get; set; }
     public DbSet<EmployeeSkill> EmployeeSkills { get; set; }

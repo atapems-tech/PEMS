@@ -48,6 +48,10 @@
     <link rel="stylesheet" href="~/css/pems-data-grid.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    @* طبق «PEMS Premium Three-Theme UI/UX Redesign»: لایه‌ی Glass/Persian Geometry/Loading -
+       بعد از همه‌ی فایل‌های دیگر بارگذاری می‌شود تا بتواند override های محدود و هدفمند خودش
+       را (فقط روی Turquoise + کلاس‌های Loading/Skeleton سراسری) اعمال کند. *@
+    <link rel="stylesheet" href="~/css/pems-glass.css" asp-append-version="true" />
 
     @if (isRtl)
     {
@@ -87,9 +91,12 @@
                     <i class="bi bi-palette-fill fs-5"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
+                    @* طبق «PEMS Global Three-Theme Design System»: محصول دقیقاً سه تم قابل‌انتخاب دارد -
+                       ocean/warm/midnight از این منو حذف شدند (نه از CSS - همان‌جا دست‌نخورده مانده تا
+                       چیزی نشکند)؛ turquoise (فیروزه‌ای ایرانی) امضای بصری اختصاصی PEMS است. *@
                     @foreach (var (themeValue, icon, label) in new[] {
                         ("light", "bi-sun", Localizer["Theme_Light"].Value), ("dark", "bi-moon-stars", Localizer["Theme_Dark"].Value),
-                        ("ocean", "bi-water", Localizer["Theme_Ocean"].Value), ("warm", "bi-tree", Localizer["Theme_Warm"].Value), ("midnight", "bi-moon", Localizer["Theme_Midnight"].Value)
+                        ("turquoise", "bi-gem", Localizer["Theme_Turquoise"].Value)
                     })
                     {
                         <li>
@@ -197,12 +204,15 @@
         <div id="liveToastArea"></div>
     </div>
 
+    <partial name="_PemsLoadingOverlay" />
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/pems-global-search.js" asp-append-version="true"></script>
     <script src="~/js/pems-data-grid.js" asp-append-version="true"></script>
     <script src="~/js/pems-ui.js" asp-append-version="true"></script>
+    <script src="~/js/pems-loading.js" asp-append-version="true"></script>
     <script src="~/js/admin.js" asp-append-version="true"></script>
     <script src="~/lib/signalr/signalr-8.0.7.min.js"></script>
     <script src="~/js/notifications-hub.js" asp-append-version="true"></script>

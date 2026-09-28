@@ -312,12 +312,25 @@
                 <i class="bi bi-diagram-2"></i> @Localizer["Assets"]
             </a>
 
-            <a class="nav-link @(IsActive("MaintenanceStrategy") ? "active" : "")" asp-controller="MaintenanceStrategy" asp-action="Index">
+            @* طبق «PEMS CMMS Sidebar Refactoring — Maintenance Planning»: سه آیتم زیر (که از قبل هر سه
+               در همین بخش تخت وجود داشتند/یا به‌کلی هیچ لینک سایدباری نداشتند) بر اساس مسئولیت واقعی‌شان
+               (تعیین سیاست/فرکانس نگهداری، برنامه‌ی زنده‌ی PM با NextDueDate، و Backlog نگهداری) زیرگروه
+               شدند - دقیقاً با همون الگوی nav-subheading که پیش‌تر فقط در بخش Administration استفاده
+               می‌شد (بدون هیچ مکانیزم Collapse/Route/مجوز تازه). هیچ Controller/Route/مجوزی تغییر نکرد؛
+               CmmsOperations/Backlog از قبل در ریپازیتوری وجود داشت ولی هیچ ورودی سایدباری نداشت. *@
+            <div class="nav-subheading">@Localizer["Maintenance Planning"]</div>
+
+            <a class="nav-link nav-subitem @(IsActive("MaintenanceStrategy") ? "active" : "")" asp-controller="MaintenanceStrategy" asp-action="Index">
                 <i class="bi bi-diagram-2"></i> @Localizer["Maintenance Strategy"]
             </a>
 
-            <a class="nav-link @(IsActive("MaintenancePlan") ? "active" : "")" asp-controller="MaintenancePlan" asp-action="Index">
+            <a class="nav-link nav-subitem @(IsActive("MaintenancePlan") ? "active" : "")" asp-controller="MaintenancePlan" asp-action="Index">
                 <i class="bi bi-calendar-check"></i> @Localizer["Maintenance Plan"]
+            </a>
+
+            <a class="nav-link nav-subitem @(IsActive("CmmsOperations") && ViewContext.RouteData.Values["action"]!.ToString() == "Backlog" ? "active" : "")"
+               asp-controller="CmmsOperations" asp-action="Backlog">
+                <i class="bi bi-hourglass-split"></i> @Localizer["Maintenance Backlog"]
             </a>
 
             <a class="nav-link @(IsActive("JobPlan") ? "active" : "")" asp-controller="JobPlan" asp-action="Index">
@@ -369,7 +382,7 @@
                 <i class="bi bi-clipboard-check"></i> @Localizer["CMMS Readiness"]
             </a>
 
-            <a class="nav-link @(IsActive("CmmsOperations") ? "active" : "")" asp-controller="CmmsOperations" asp-action="Dashboard">
+            <a class="nav-link @(IsActive("CmmsOperations") && ViewContext.RouteData.Values["action"]!.ToString() != "Backlog" ? "active" : "")" asp-controller="CmmsOperations" asp-action="Dashboard">
                 <i class="bi bi-speedometer2"></i> @Localizer["CMMS Operations"]
             </a>
 

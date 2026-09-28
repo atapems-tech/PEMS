@@ -35,6 +35,23 @@ public class WorkOrderLaborService : IWorkOrderLaborService
         if (!employee.IsActive)
             throw new Exception("این کارمند غیرفعال است.");
 
+        // مطابق قاعده‌ی دیسیپلین در AssignExecutorAsync: ثبت ساعت کار فقط برای کارمند/گروه کاری
+        // متعلق به دیسیپلین مسئولِ نگهداریِ همان WorkOrder مجاز است (بدون این چک، ساعت کار برای هر
+        // کارمند/گروهِ هر دیسیپلینی روی هر WorkOrder ثبت می‌شد - ناسازگار با تخصیص مجری).
+        if (!workOrder.ResponsibleDisciplineId.HasValue)
+            throw new Exception("دیسیپلین مسئول نگهداری این WorkOrder هنوز تعیین نشده است.");
+
+        if (employee.DisciplineId != workOrder.ResponsibleDisciplineId)
+            throw new Exception("کارمند باید عضو دیسیپلین مسئول نگهداری این WorkOrder باشد.");
+
+        if (teamId.HasValue)
+        {
+            var teamDisciplineId = await _context.Teams.Where(t => t.TeamId == teamId.Value)
+                .Select(t => (int?)t.MaintenanceGroup!.DisciplineId).FirstOrDefaultAsync();
+            if (teamDisciplineId != workOrder.ResponsibleDisciplineId)
+                throw new Exception("گروه کاری باید متعلق به دیسیپلین مسئول نگهداری این WorkOrder باشد.");
+        }
+
         var (regularRate, overtimeRate) = await GetEffectiveRatesAsync(employeeId, workDate);
 
         // Rule 8: LaborCost همیشه در سرور محاسبه می‌شود، هرگز از ورودی Client گرفته نمی‌شود

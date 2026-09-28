@@ -100,6 +100,36 @@ public class RelationshipController : Controller
         return View("Index", result);
     }
 
+    // طبق ممیزی نهایی Ownership/Traceability (§16): زنجیره‌ی Package→Tender→Bid→Contract→NTP→
+    // Kickoff→ITP باید از خود Package هم قابل کاوش باشد - نه فقط از Vendor
+    public async Task<IActionResult> ProcurementPackage(int id)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Relationship", "View"))
+            return Forbid();
+
+        ViewData["Title"] = "Engineering Relationship Explorer";
+        ViewData["Section"] = "AI Engineering Intelligence";
+
+        var result = await _service.ExploreFromProcurementPackageAsync(id);
+        if (result == null) return NotFound();
+
+        return View("Index", result);
+    }
+
+    public async Task<IActionResult> Contract(int id)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Relationship", "View"))
+            return Forbid();
+
+        ViewData["Title"] = "Engineering Relationship Explorer";
+        ViewData["Section"] = "AI Engineering Intelligence";
+
+        var result = await _service.ExploreFromContractAsync(id);
+        if (result == null) return NotFound();
+
+        return View("Index", result);
+    }
+
 
     // طبق ممیزی: پرریسک‌ترین اکشن این Controller - رابطه‌ی واقعی/FK بین Equipment و MR/VDR
     // برقرار می‌کند. نیازمند "Approve".

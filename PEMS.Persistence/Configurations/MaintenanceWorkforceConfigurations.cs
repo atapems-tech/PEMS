@@ -42,6 +42,15 @@ public class MaintenanceGroupConfiguration : IEntityTypeConfiguration<Maintenanc
             .WithMany()
             .HasForeignKey(x => x.DisciplineId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        // طبق «PEMS Dynamic Maintenance Organization» بخش ۵/۹: تودرتویی دلخواه گروه‌های
+        // تعمیراتی (مثلاً Mechanical Maintenance ⊃ Rotating Equipment) - خودارجاع، هم‌الگوی
+        // Department.ParentDepartmentId. گروه‌های امروز (بدون این ستون) به‌طور پیش‌فرض ریشه
+        // می‌مانند.
+        builder.HasOne(x => x.ParentMaintenanceGroup)
+            .WithMany(x => x.Children)
+            .HasForeignKey(x => x.ParentMaintenanceGroupId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 
@@ -55,6 +64,10 @@ public class TeamConfiguration : IEntityTypeConfiguration<Team>
 
         builder.Property(x => x.Code).HasMaxLength(30).IsRequired();
         builder.Property(x => x.Name).HasMaxLength(150).IsRequired();
+        // طبق «PEMS Dynamic Maintenance Organization»: HasDefaultValue صریح چون فقط CLR-Default
+        // (initializer) روی رکوردهای امروز که ستون تازه‌ای می‌گیرند اعمال نمی‌شود؛ Migration
+        // بدون این خط مقدار خالی "" را برای تیم‌های موجود می‌نشاند، نه "Team".
+        builder.Property(x => x.NodeKind).HasMaxLength(30).IsRequired().HasDefaultValue("Team");
 
         builder.HasIndex(x => x.Code).IsUnique();
         builder.HasIndex(x => x.Name).IsUnique();
@@ -72,6 +85,14 @@ public class TeamConfiguration : IEntityTypeConfiguration<Team>
         builder.HasMany(x => x.Members)
             .WithOne(x => x.Team)
             .HasForeignKey(x => x.TeamId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // طبق «PEMS Dynamic Maintenance Organization» بخش ۲/۱۳: تودرتویی دلخواه زیر یک Team
+        // (زیرتیم، شیفت به‌عنوان گره - Shift A/B/C، واحد عملیاتی) - خودارجاع. NodeKind فقط
+        // برچسب نمایشی است؛ هیچ رفتاری بر اساس آن مشروط نشده.
+        builder.HasOne(x => x.ParentTeam)
+            .WithMany(x => x.Children)
+            .HasForeignKey(x => x.ParentTeamId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

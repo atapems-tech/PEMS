@@ -43,7 +43,7 @@ public class MaintenanceMasterDataOrderingTests
 
         var currentUser = new FakeCurrentUserService { Roles = new List<string> { SystemRoles.MaintenanceEngineer } };
 
-        return new MaintenanceMasterDataController(ctx, currentUser, permissionService);
+        return new MaintenanceMasterDataController(ctx, currentUser, permissionService, new OrganizationStructureService(ctx));
     }
 
     private static int _nextId = 1;

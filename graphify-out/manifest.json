@@ -324,9 +324,9 @@
     "semantic_hash": "dc3dc687349ae7de7ec45e16350e8206"
   },
   "PEMS.Application/DTOs/RelationshipDtos.cs": {
-    "mtime": 1790173048.7990234,
-    "seen": 1790177687.65477,
-    "ast_hash": "e570f2281e3a3408d1223476193ec928",
+    "mtime": 1790186033.3125763,
+    "seen": 1790191015.4432476,
+    "ast_hash": "24ebdf34e5b6c386ce9cc1fef9304588",
     "semantic_hash": ""
   },
   "PEMS.Application/DTOs/RolePermissionDto.cs": {
@@ -630,10 +630,10 @@
     "semantic_hash": "bef342376f0930934d0c75f33afecdc5"
   },
   "PEMS.Application/Interfaces/IRelationshipService.cs": {
-    "mtime": 1788350902.3677378,
-    "seen": 1788613735.6693618,
-    "ast_hash": "44e8be03b6d78e5fc1e8c90cc6ff6c14",
-    "semantic_hash": "44e8be03b6d78e5fc1e8c90cc6ff6c14"
+    "mtime": 1790185966.132858,
+    "seen": 1790191015.4931185,
+    "ast_hash": "dd766e686ed288720d83e4b452762f96",
+    "semantic_hash": ""
   },
   "PEMS.Application/Interfaces/IRichTextSanitizerService.cs": {
     "mtime": 1788350902.3677378,
@@ -1866,9 +1866,9 @@
     "semantic_hash": "bc0bafe8576c805b7487b17d39e06662"
   },
   "PEMS.Persistence/Servises/RelationshipService.cs": {
-    "mtime": 1790173059.8487966,
-    "seen": 1790177687.8074763,
-    "ast_hash": "3d3973e7093d957e97c580e155213c86",
+    "mtime": 1790186053.4906442,
+    "seen": 1790191015.7066882,
+    "ast_hash": "dae9bf3b6c4b07aef99b131a15170b4f",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Servises/RichTextSanitizerService.cs": {
@@ -2286,9 +2286,9 @@
     "semantic_hash": "77b75c9b03f5e1de40cb370500390121"
   },
   "PEMS.Web/Controllers/ContractController.cs": {
-    "mtime": 1790171815.4600103,
-    "seen": 1790177687.85995,
-    "ast_hash": "28eaa911383faff8b53bd601787b02a3",
+    "mtime": 1790185316.5387752,
+    "seen": 1790191015.8020208,
+    "ast_hash": "2a91c48743ee6c2d0823b4d307582748",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/CultureController.cs": {
@@ -2466,9 +2466,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/ProcurementPackageController.cs": {
-    "mtime": 1790155574.857893,
-    "seen": 1790177687.8697617,
-    "ast_hash": "b1956c3c46816a3fa85544ad620e50e4",
+    "mtime": 1790185563.882446,
+    "seen": 1790191015.818044,
+    "ast_hash": "1e1cc723e5e155bfd88460a59f8b5f3f",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/ProjectsController.cs": {
@@ -2478,15 +2478,15 @@
     "semantic_hash": "3312487011e51823c24745f47051b2d2"
   },
   "PEMS.Web/Controllers/QCController.cs": {
-    "mtime": 1789699309.1143584,
-    "seen": 1789826033.5971777,
-    "ast_hash": "a9d4fdb10adadb589778cfdb99f3867f",
+    "mtime": 1790185670.838236,
+    "seen": 1790191015.818044,
+    "ast_hash": "a7b9ecc73ce59f8929c10c23cadde18a",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/RelationshipController.cs": {
-    "mtime": 1788854461.9857063,
-    "seen": 1788857049.9077785,
-    "ast_hash": "9f12423d77b7b79dd6dd39f8e85a6d0c",
+    "mtime": 1790186069.5502822,
+    "seen": 1790191015.818044,
+    "ast_hash": "fabab9839ae190dd6dc6b0f0a816aa36",
     "semantic_hash": ""
   },
   "PEMS.Web/Controllers/ReportController.cs": {
@@ -2868,9 +2868,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Contract/Details.cshtml": {
-    "mtime": 1790171836.858661,
-    "seen": 1790177687.8863409,
-    "ast_hash": "05ef1ad3ac4baae1652fe659e5feca3b",
+    "mtime": 1790186097.2542226,
+    "seen": 1790191015.8578556,
+    "ast_hash": "5303f7d124d72d2e59766c7397eb992c",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Contract/Index.cshtml": {
@@ -3234,9 +3234,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/ProcurementPackage/Details.cshtml": {
-    "mtime": 1790166876.901064,
-    "seen": 1790177687.9077873,
-    "ast_hash": "ec2551c16e2dc520c68316967f19ccf7",
+    "mtime": 1790186089.1802843,
+    "seen": 1790191015.8822231,
+    "ast_hash": "2bcb13b9fadfb768cfd9e454fa227da8",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/ProcurementPackage/Index.cshtml": {
@@ -3270,15 +3270,15 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/QC/ItpCreate.cshtml": {
-    "mtime": 1789850496.704968,
-    "seen": 1789854334.7340822,
-    "ast_hash": "e177b68d486ff5429100f169c2277a0d",
+    "mtime": 1790185684.8471365,
+    "seen": 1790191015.8924868,
+    "ast_hash": "d5b80c0ecc79b7ce6edabc5074697c28",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/QC/ItpDetails.cshtml": {
-    "mtime": 1789850496.704968,
-    "seen": 1789854334.7340822,
-    "ast_hash": "5846917e75f1fac08ec29e6b87ccd35c",
+    "mtime": 1790185698.2089343,
+    "seen": 1790191015.8924868,
+    "ast_hash": "a56bf39df1ef52983cd29bd712b15739",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/QC/ItpIndex.cshtml": {
@@ -3324,9 +3324,9 @@
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Relationship/Index.cshtml": {
-    "mtime": 1790173082.4760096,
-    "seen": 1790177687.9133728,
-    "ast_hash": "4784f403d1ec00430e84a290c4676a8e",
+    "mtime": 1790186060.7952125,
+    "seen": 1790191015.8924868,
+    "ast_hash": "ade4071bbc5f10fd296bd3a5a0f7f1ad",
     "semantic_hash": ""
   },
   "PEMS.Web/Views/Report/Cmms.cshtml": {
@@ -9312,9 +9312,9 @@
     "semantic_hash": ""
   },
   "PEMS.Tests/Authorization/AIPipelineAuthorizationTests.cs": {
-    "mtime": 1788854547.8381922,
-    "seen": 1788857049.8612115,
-    "ast_hash": "3a10e54fb34283e7571e49e63396044f",
+    "mtime": 1790186233.4935236,
+    "seen": 1790191015.7308211,
+    "ast_hash": "f74694b61410986eae4de1a35cba260d",
     "semantic_hash": ""
   },
   "PEMS.Tests/Authorization/OrganizationMasterDataAuthorizationTests.cs": {
@@ -12264,9 +12264,9 @@
     "semantic_hash": ""
   },
   "PEMS.Persistence/Seed/HelpContentSeeder.cs": {
-    "mtime": 1790167424.7281883,
-    "seen": 1790177687.7862995,
-    "ast_hash": "43dec62a7a6dfe812ef35d720c6bb1a6",
+    "mtime": 1790186356.1727886,
+    "seen": 1790191015.6735559,
+    "ast_hash": "78e091d670d532d4c27cf909376eb84c",
     "semantic_hash": ""
   },
   "PEMS.Persistence/Seed/HelpKnowledgeSeeder.cs": {
@@ -14235,6 +14235,18 @@
     "mtime": 1789937833.100137,
     "seen": 1790177687.970759,
     "ast_hash": "a312720e14fa94201d4e4e4bebb66fe5",
+    "semantic_hash": ""
+  },
+  "PEMS.Tests/Authorization/RelationshipServiceOwnershipTests.cs": {
+    "mtime": 1790186282.3953624,
+    "seen": 1790191015.7388432,
+    "ast_hash": "bc876944ece2271bbdf632f0b86dfeb1",
+    "semantic_hash": ""
+  },
+  "docs/audits/PEMS_PROCUREMENT_CONTRACT_FINAL_OWNERSHIP_UI_CLOSURE_AUDIT.md": {
+    "mtime": 1790190375.7874682,
+    "seen": 1790191015.9978006,
+    "ast_hash": "97a00c814c0cba76b3ef69a4ef951f07",
     "semantic_hash": ""
   }
 }

@@ -32,7 +32,9 @@
         <label asp-for="RememberMe" class="form-check-label small">Remember Me</label>
     </div>
 
-    <button type="submit" class="btn btn-pems">Sign In</button>
+    <button type="submit" class="btn btn-pems" id="loginSubmitBtn">
+        <span id="loginSubmitLabel">Sign In</span>
+    </button>
 
     <div class="auth-links">
         <a asp-action="ForgotPassword">Forgot Password?</a>
@@ -42,4 +44,22 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        // طبق «PEMS Premium Three-Theme UI/UX Redesign» (بند ۲۳/۲۸): نمونه‌ی محدود و کم‌ریسک
+        // از سیستم Loading تازه - فقط روی همین فرم، بدون دست‌زدن به رفتار Submit یا اعتبارسنجی
+        // موجود (طبق بند ۹ (touch/loading-buttons) اسکیل ui-ux-pro-max: دکمه باید حین کار
+        // async غیرفعال شود و بازخورد بدهد).
+        (function () {
+            var form = document.querySelector('form[action*="Login"], form');
+            var btn = document.getElementById('loginSubmitBtn');
+            var label = document.getElementById('loginSubmitLabel');
+            if (!form || !btn || !label) return;
+            form.addEventListener('submit', function () {
+                if (!form.checkValidity || form.checkValidity()) {
+                    btn.disabled = true;
+                    label.innerHTML = '<span class="pems-inline-progress" style="color:#fff"><span class="pems-dot"></span><span class="pems-dot"></span><span class="pems-dot"></span></span> Signing in…';
+                }
+            });
+        })();
+    </script>
 }

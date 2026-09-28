@@ -144,10 +144,6 @@ public class WorkOrderController : Controller
         ViewData["Section"] = "CMMS Integration";
 
         ViewBag.PreselectedEquipmentId = equipmentId;
-        ViewBag.Teams = await _context.Teams
-            .Where(x => x.IsActive)
-            .Select(x => new { x.TeamId, x.Name })
-            .ToListAsync();
 
         if (equipmentId.HasValue)
         {
@@ -163,7 +159,7 @@ public class WorkOrderController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(int equipmentId, string workOrderType, string priority,
-        string? description, int? assignedTeamId, int? assignedEmployeeId, string? assignedTo)
+        string? description)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Create"))
             return Forbid();
@@ -226,8 +222,17 @@ public class WorkOrderController : Controller
 
         if (workOrder == null) return NotFound();
 
-        ViewBag.Teams = await _context.Teams.Where(x => x.IsActive)
-            .Select(x => new { x.TeamId, x.Name }).ToListAsync();
+        // طبق قاعده‌ی دیسیپلین در AssignExecutorAsync/AddLaborEntryAsync (Phase 6D): وقتی دیسیپلین مسئول
+        // مشخص است، فقط تیم/کارمند همان دیسیپلین نمایش داده می‌شود تا انتخابگر با قاعده‌ی واقعی سرور
+        // هم‌خوان باشد (پیش از این هر تیم/کارمند فعالی نمایش داده می‌شد و فقط بعد از Submit رد می‌شد).
+        var teamsQuery = _context.Teams.Where(x => x.IsActive);
+        var employeesQuery = _context.Employees.Where(x => x.IsActive);
+        if (workOrder.ResponsibleDisciplineId.HasValue)
+        {
+            teamsQuery = teamsQuery.Where(x => x.MaintenanceGroup!.DisciplineId == workOrder.ResponsibleDisciplineId);
+            employeesQuery = employeesQuery.Where(x => x.DisciplineId == workOrder.ResponsibleDisciplineId);
+        }
+        ViewBag.Teams = await teamsQuery.Select(x => new { x.TeamId, x.Name }).ToListAsync();
         ViewBag.SparesUsed = await _context.MaintenanceSpareUsages.Include(x => x.MaterialItem)
             .Where(x => x.WorkOrderId == id && x.IsActive).ToListAsync();
         ViewBag.MaterialItems = await _context.MaterialItems.Where(x => x.IsActive && x.IsStockItem)
@@ -249,7 +254,7 @@ public class WorkOrderController : Controller
         ViewBag.TotalLaborCost = await _laborService.GetTotalLaborCostAsync(id);
         ViewBag.SpareCost = (await _context.MaintenanceSpareUsages.Where(x => x.WorkOrderId == id && x.IsActive)
             .ToListAsync()).Sum(x => x.TotalCost ?? 0);
-        ViewBag.Employees = await _context.Employees.Where(x => x.IsActive)
+        ViewBag.Employees = await employeesQuery
             .Select(x => new { x.EmployeeId, FullName = x.FirstName + " " + x.LastName }).ToListAsync();
         ViewBag.ReviewStatus = await _reviewService.GetDisciplineReviewStatusAsync(id);
         ViewBag.HasPendingReview = await _reviewService.HasPendingDisciplineReviewAsync(id);

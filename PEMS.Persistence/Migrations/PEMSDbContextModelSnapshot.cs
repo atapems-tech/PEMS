@@ -3455,6 +3455,62 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("EmployeeAreaScopes");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.EmployeeAssignment", b =>
+                {
+                    b.Property<int>("EmployeeAssignmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeAssignmentId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("PositionId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeeAssignmentId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("PositionId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_EmployeeAssignments_PositionId_ActiveOnly")
+                        .HasFilter("[IsActive] = 1");
+
+                    b.ToTable("EmployeeAssignments", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.EmployeeCertification", b =>
                 {
                     b.Property<int>("EmployeeCertificationId")
@@ -7804,6 +7860,9 @@ namespace PEMS.Persistence.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<int?>("ParentMaintenanceGroupId")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -7821,6 +7880,8 @@ namespace PEMS.Persistence.Migrations
 
                     b.HasIndex("Name")
                         .IsUnique();
+
+                    b.HasIndex("ParentMaintenanceGroupId");
 
                     b.ToTable("MaintenanceGroups", (string)null);
                 });
@@ -10235,6 +10296,12 @@ namespace PEMS.Persistence.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TeamId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(150)
@@ -10243,6 +10310,8 @@ namespace PEMS.Persistence.Migrations
                     b.HasKey("PositionId");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("TeamId");
 
                     b.ToTable("Positions", (string)null);
                 });
@@ -13377,6 +13446,16 @@ namespace PEMS.Persistence.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<string>("NodeKind")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasDefaultValue("Team");
+
+                    b.Property<int?>("ParentTeamId")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -13400,6 +13479,8 @@ namespace PEMS.Persistence.Migrations
 
                     b.HasIndex("Name")
                         .IsUnique();
+
+                    b.HasIndex("ParentTeamId");
 
                     b.HasIndex("SupervisorEmployeeId");
 
@@ -17501,6 +17582,25 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.EmployeeAssignment", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.Position", "Position")
+                        .WithMany("Assignments")
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Position");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.EmployeeCertification", b =>
                 {
                     b.HasOne("PEMS.Domain.Entities.Certification", "Certification")
@@ -18838,7 +18938,14 @@ namespace PEMS.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("PEMS.Domain.Entities.MaintenanceGroup", "ParentMaintenanceGroup")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentMaintenanceGroupId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Discipline");
+
+                    b.Navigation("ParentMaintenanceGroup");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.MaintenanceHistory", b =>
@@ -19497,7 +19604,14 @@ namespace PEMS.Persistence.Migrations
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("PEMS.Domain.Entities.Team", "Team")
+                        .WithMany("Positions")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Department");
+
+                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.PredictiveMaintenanceResult", b =>
@@ -20461,12 +20575,19 @@ namespace PEMS.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("PEMS.Domain.Entities.Team", "ParentTeam")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentTeamId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("PEMS.Domain.Entities.Employee", "SupervisorEmployee")
                         .WithMany()
                         .HasForeignKey("SupervisorEmployeeId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("MaintenanceGroup");
+
+                    b.Navigation("ParentTeam");
 
                     b.Navigation("SupervisorEmployee");
                 });
@@ -21454,6 +21575,11 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("ApplicableStrategyTypes");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.MaintenanceGroup", b =>
+                {
+                    b.Navigation("Children");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.MaintenanceHistoryImportBatch", b =>
                 {
                     b.Navigation("Rows");
@@ -21491,6 +21617,11 @@ namespace PEMS.Persistence.Migrations
             modelBuilder.Entity("PEMS.Domain.Entities.MrsImportRow", b =>
                 {
                     b.Navigation("Metadata");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.Position", b =>
+                {
+                    b.Navigation("Assignments");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.PredictiveMaintenanceModel", b =>
@@ -21574,7 +21705,11 @@ namespace PEMS.Persistence.Migrations
 
             modelBuilder.Entity("PEMS.Domain.Entities.Team", b =>
                 {
+                    b.Navigation("Children");
+
                     b.Navigation("Members");
+
+                    b.Navigation("Positions");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.TechnicalQuery", b =>

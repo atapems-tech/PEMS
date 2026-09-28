@@ -73,6 +73,16 @@ public class ProcurementPackageController : Controller
             .Where(x => x.ProcurementPackageId == null)
             .Select(x => new { x.MRId, x.MRNumber }).ToListAsync();
 
+        // طبق ممیزی نهایی Ownership/UI (§7): این‌جا باید چرخه‌ی Package→Tender→Award→Contract
+        // مستقیماً دیده شود - نه این‌که کاربر برای دیدن نتیجه‌ی یک Tender مجبور به کلیک به صفحه‌ی
+        // جدا شود. از همان رابطه‌ی موجود Tender.ProcurementPackageId/AwardedBid/ContractId
+        // می‌خوانیم - هیچ FK تازه‌ای لازم نیست.
+        ViewBag.Tenders = await _context.Tenders
+            .Include(x => x.AwardedBid).ThenInclude(x => x!.Vendor)
+            .Where(x => x.ProcurementPackageId == id)
+            .OrderByDescending(x => x.TenderId)
+            .ToListAsync();
+
         return View(detail);
     }
 
