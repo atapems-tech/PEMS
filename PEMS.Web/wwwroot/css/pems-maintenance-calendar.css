@@ -1,0 +1,62 @@
+/* PEMS — Maintenance Scheduling Calendar. طبق سند: فقط از توکن‌های رنگ موجود (--pems-*) استفاده
+   می‌شود تا هر سه تم (Light/Dark/Iranian) و RTL بدون هیچ رنگ ثابتی به‌درستی کار کنند - دقیقاً
+   هم‌الگو با pems-org-chart.css/pems-team-details.css. */
+
+.pems-cal-month { display: flex; flex-direction: column; gap: 4px; border: 1px solid var(--pems-surface-border); border-radius: 8px; overflow: hidden; }
+.pems-cal-month-row { display: grid; grid-template-columns: repeat(7, 1fr); }
+.pems-cal-month-cell {
+    min-height: 96px;
+    padding: 6px;
+    border: 1px solid var(--pems-surface-border);
+    color: var(--pems-text);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: background-color .15s ease;
+}
+.pems-cal-month-cell:hover { background-color: var(--pems-surface-border); }
+.pems-cal-month-cell.pems-cal-dim { color: var(--pems-text-muted); opacity: .55; }
+.pems-cal-month-cell.pems-cal-today { border: 2px solid var(--pems-primary); }
+.pems-cal-daynum { font-weight: 600; font-size: .85rem; }
+.pems-cal-summary { display: flex; flex-wrap: wrap; gap: 4px; }
+.pems-cal-chip { font-size: .7rem; padding: 1px 6px; border-radius: 4px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.pems-cal-week-cell { vertical-align: top; min-width: 140px; padding: 4px !important; }
+.pems-cal-card {
+    display: block;
+    padding: 4px 6px;
+    margin-bottom: 4px;
+    border-radius: 6px;
+    color: #fff;
+    text-decoration: none;
+    cursor: grab;
+}
+.pems-cal-card:hover { opacity: .9; color: #fff; }
+.pems-cal-card.pems-cal-conflict { outline: 2px solid var(--bs-danger, #dc3545); }
+.pems-cal-week-cell.pems-cal-dragover { background-color: var(--pems-surface-border); outline: 2px dashed var(--pems-primary); }
+
+.pems-cal-day-timeline { display: flex; flex-direction: column; gap: 8px; }
+.pems-cal-day-card {
+    display: flex;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 8px;
+    border-inline-start: 4px solid transparent;
+    background-color: var(--pems-surface-border);
+    color: var(--pems-text);
+    text-decoration: none;
+}
+.pems-cal-day-card:hover { color: var(--pems-text); filter: brightness(0.97); }
+.pems-cal-day-card.pems-cal-conflict { outline: 2px solid var(--bs-danger, #dc3545); }
+.pems-cal-day-time { min-width: 110px; font-weight: 600; font-size: .85rem; }
+.pems-cal-day-body { flex: 1; }
+
+.pems-cal-unscheduled-card {
+    padding: 8px;
+    border: 1px dashed var(--pems-surface-border);
+    border-radius: 8px;
+    color: var(--pems-text);
+}
+.pems-cal-unscheduled-card:hover { background-color: var(--pems-surface-border); }
+
+.bg-purple { background-color: #7c3aed; color: #fff; }

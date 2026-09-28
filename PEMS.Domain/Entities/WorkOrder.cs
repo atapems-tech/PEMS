@@ -106,11 +106,21 @@ public class WorkOrder : BaseEntity
     public decimal? ContractorCost { get; set; }
     public string? ContractorName { get; set; }
 
-    // تاریخ شروع
+    // تاریخ شروع (واقعی - وقتی کار واقعاً شروع می‌شود، نه زمان‌بندی‌شده)
     public DateTime? StartDate { get; set; }
 
-    // تاریخ پایان
+    // تاریخ پایان (واقعی)
     public DateTime? CompletionDate { get; set; }
+
+    // ==============================================================================
+    // طبق «PEMS — Work Request/Work Order Scheduling & Maintenance Calendar»: زمان‌بندی
+    // برنامه‌ریزی‌شده - جدا از StartDate/CompletionDate (که زمان واقعی اجرا را ثبت می‌کنند،
+    // نه زمان برنامه‌ریزی‌شده). فقط توسط WorkOrderLifecycleService.ScheduleWorkOrderAsync در
+    // مرحله‌ی «آماده‌سازی/تخصیص» تنظیم می‌شود، دقیقاً هم‌الگو با AssignedTeamId/AssignedEmployeeId.
+    // مدت‌زمان از تفاضل این دو محاسبه می‌شود، نه فیلد جداگانه‌ای - برای جلوگیری از ناسازگاری.
+    // ==============================================================================
+    public DateTime? PlannedStart { get; set; }
+    public DateTime? PlannedFinish { get; set; }
 
     // شرح فعالیت
     public string? Description { get; set; }

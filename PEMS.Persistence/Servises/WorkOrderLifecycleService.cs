@@ -373,6 +373,34 @@ return await InStrategyAsync<(bool, string?)>(async () =>
         catch (DbUpdateConcurrencyException) { _context.ChangeTracker.Clear(); return (false, ConflictMessage()); }
     }
 
+    // طبق «PEMS — Work Request/Work Order Scheduling & Maintenance Calendar»: دقیقاً هم‌الگو با
+    // AssignExecutorAsync (همان مرحله، همان مجوز Perm.Assign، همان اسکوپ دیسیپلین) چون زمان‌بندی
+    // مفهوماً بخشی از همان مسئولیت «آماده‌سازی/تخصیص» است - نه یک گذار گردش‌کار تازه. مستقل از
+    // AssignExecutorAsync فراخوانی می‌شود (ترتیب تعیین تیم/کارمند در برابر تاریخ الزامی نیست).
+    // PlannedStart/PlannedFinish فیلدهای واقعی WorkOrder را تغییر می‌دهند - Audit خودکار از همان
+    // Interceptor سراسری PEMSDbContext.SaveChangesAsync می‌آید، بدون کد Audit تازه.
+    public async Task<(bool Success, string? Error)> ScheduleWorkOrderAsync(int workOrderId, DateTime plannedStart, DateTime plannedFinish, WorkOrderActor actor)
+    {
+        if (plannedFinish <= plannedStart) return (false, T("پایان برنامه‌ریزی‌شده باید بعد از شروع باشد.", "Planned finish must be after planned start."));
+        var wo = await _context.WorkOrders.FirstOrDefaultAsync(x => x.WorkOrderId == workOrderId);
+        if (wo == null) return (false, T("Work Order یافت نشد.", "Work Order not found."));
+        var instance = await LifecycleInstanceAsync(workOrderId);
+        if (instance == null || instance.Status != "Running") return (false, T("Work Order تحت گردش‌کار فعال نیست.", "The Work Order is not under an active workflow."));
+        if (wo.Status != "Assigned") return (false, T("زمان‌بندی فقط در مرحله‌ی آماده‌سازی/تخصیص مجاز است.", "Scheduling is only allowed during Preparation / Assignment."));
+        if (!wo.ResponsibleDisciplineId.HasValue) return (false, T("دیسیپلین مسئول هنوز تعیین نشده است.", "The responsible discipline has not been set."));
+
+        var roles = await ExpandRolesAsync(_access, actor.Roles);
+        if (!roles.Contains(ParticipantPrefix + Perm.Assign)) return (false, T("شما اختیار زمان‌بندی ندارید.", "You do not have scheduling authority."));
+        var (org, disc) = await ResolveEmployeeAsync(_context, actor.EmployeeId);
+        if (org != OrganizationDomains.Maintenance || disc != wo.ResponsibleDisciplineId)
+            return (false, T("زمان‌بندی فقط توسط سرگروه/معاون دیسیپلین مسئول نگهداری مجاز است.", "Scheduling is restricted to the head/deputy of the responsible maintenance discipline."));
+
+        wo.PlannedStart = plannedStart;
+        wo.PlannedFinish = plannedFinish;
+        try { await _context.SaveChangesAsync(); return (true, null); }
+        catch (DbUpdateConcurrencyException) { _context.ChangeTracker.Clear(); return (false, ConflictMessage()); }
+    }
+
     public async Task<(bool Success, string? Error)> AdvanceStatusAsync(
         int workOrderId, string nextStatus, string? reason, int? changedByEmployeeId,
         int? assignedTeamId, int? assignedEmployeeId,

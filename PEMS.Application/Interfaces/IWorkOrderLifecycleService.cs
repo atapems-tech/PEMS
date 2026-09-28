@@ -30,6 +30,9 @@ public interface IWorkOrderLifecycleService
     /// <summary>تخصیص مجری (تیم/کارمند) توسط سرگروه/معاون همان دیسیپلین مسئول.</summary>
     Task<(bool Success, string? Error)> AssignExecutorAsync(int workOrderId, int? teamId, int? employeeId, WorkOrderActor actor);
 
+    /// <summary>زمان‌بندی برنامه‌ریزی‌شده (PlannedStart/PlannedFinish) برای تقویم نگهداری - همان مرحله/مجوز/اسکوپ دیسیپلینِ AssignExecutorAsync.</summary>
+    Task<(bool Success, string? Error)> ScheduleWorkOrderAsync(int workOrderId, DateTime plannedStart, DateTime plannedFinish, WorkOrderActor actor);
+
     /// <summary>مدل خواندنی مرکزی؛ null برای Work Order Legacy (بدون Instance چرخه‌عمر).</summary>
     Task<PEMS.WorkflowPlatform.Interfaces.WorkflowRuntimeViewModel?> GetWorkflowViewAsync(int workOrderId, WorkOrderActor actor);
 

@@ -250,6 +250,17 @@ else
                 <span class="text-muted">@Model.AssignedTo</span>
             }
         </div>
+        <div class="col-md-3">
+            <strong>@Localizer["Planned"]:</strong>
+            @if (Model.PlannedStart.HasValue && Model.PlannedFinish.HasValue)
+            {
+                <span dir="ltr">@Model.PlannedStart.Value.ToString("yyyy-MM-dd HH:mm") &rarr; @Model.PlannedFinish.Value.ToString("HH:mm")</span>
+            }
+            else
+            {
+                <span class="text-muted">@Localizer["Unscheduled"]</span>
+            }
+        </div>
         <div class="col-md-3"><strong>Started:</strong> @(Model.StartDate?.ToString("yyyy-MM-dd"))</div>
         <div class="col-md-3"><strong>Completed:</strong> @(Model.CompletionDate?.ToString("yyyy-MM-dd"))</div>
         @if (Model.MaintenancePlan != null)
@@ -342,6 +353,20 @@ else
                                     @foreach (var e in (IEnumerable<dynamic>)ViewBag.Employees) { <option value="@e.EmployeeId">@e.FullName</option> }
                                 </select></div>
                             <button type="submit" class="btn btn-outline-primary btn-sm">@Localizer["Assign"]</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        @* طبق «PEMS — Work Request/Work Order Scheduling & Maintenance Calendar»: زمان‌بندی مستقل از
+                           تخصیص تیم/کارمند است (ترتیب الزامی نیست) - همان مرحله/مجوز، فرم جدا. *@
+                        <form asp-action="SetSchedule" method="post" class="d-flex gap-2 align-items-end flex-wrap">
+                            <input type="hidden" name="id" value="@Model.WorkOrderId" />
+                            <div><label class="form-label small mb-1">@Localizer["Planned Start"]</label>
+                                <input type="datetime-local" name="plannedStart" class="form-control form-control-sm"
+                                       value="@(Model.PlannedStart?.ToString("yyyy-MM-ddTHH:mm"))" required /></div>
+                            <div><label class="form-label small mb-1">@Localizer["Planned Finish"]</label>
+                                <input type="datetime-local" name="plannedFinish" class="form-control form-control-sm"
+                                       value="@(Model.PlannedFinish?.ToString("yyyy-MM-ddTHH:mm"))" required /></div>
+                            <button type="submit" class="btn btn-outline-primary btn-sm">@Localizer["Save Schedule"]</button>
                         </form>
                     </div>
                 }

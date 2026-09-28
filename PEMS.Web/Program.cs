@@ -539,6 +539,7 @@ builder.Services.AddScoped<ICriticalityAssessmentService, CriticalityAssessmentS
 
 // طبق «PEMS Phase 8 — Operational Maintenance & Reliability Data Activation» بند ۲۱/۲۲
 builder.Services.AddScoped<ICmmsOperationsService, CmmsOperationsService>();
+builder.Services.AddScoped<ICmmsCalendarService, CmmsCalendarService>();
 
 // طبق «PEMS Phase 9 — Enterprise Reliability, RAM & Predictive Maintenance Intelligence»
 builder.Services.AddScoped<IRamWeibullService, RamWeibullService>();

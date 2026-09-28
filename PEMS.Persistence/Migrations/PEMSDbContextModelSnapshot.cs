@@ -15372,6 +15372,12 @@ namespace PEMS.Persistence.Migrations
                     b.Property<int?>("OriginatingRequestedById")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("PlannedFinish")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("PlannedStart")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Priority")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -15434,6 +15440,9 @@ namespace PEMS.Persistence.Migrations
 
                     b.HasIndex("WorkOrderNumber")
                         .IsUnique();
+
+                    b.HasIndex("PlannedStart", "PlannedFinish")
+                        .HasDatabaseName("IX_WorkOrders_PlannedStart_PlannedFinish");
 
                     b.HasIndex("Status", "CompletionDate")
                         .HasDatabaseName("IX_WorkOrders_Status_CompletionDate");
