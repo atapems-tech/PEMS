@@ -317,6 +317,11 @@ builder.Services.AddScoped<IInspectionService, InspectionService>();
 builder.Services.AddScoped<IKpiService, KpiService>();
 builder.Services.AddScoped<IPermitService, PermitService>();
 builder.Services.AddScoped<IAccessControlService, AccessControlService>();
+// طبق سند «PEMS Phase 6 — User Module & Navigation Visibility Architecture»: Resolver عمداً
+// Scoped و بدون Interface است (Web-only composition، نه یک سرویس Application/Persistence) -
+// فقط توسط _SidebarMenu.cshtml و کنترلرهای Admin مربوط به Visibility مصرف می‌شود
+builder.Services.AddScoped<PEMS.Application.Interfaces.INavigationVisibilityOverrideService, PEMS.Persistence.Services.NavigationVisibilityOverrideService>();
+builder.Services.AddScoped<PEMS.Web.Security.NavigationVisibilityResolver>();
 builder.Services.AddScoped<IRoleModuleActionService, RoleModuleActionService>();
 builder.Services.AddScoped<IIsolationService, IsolationService>();
 builder.Services.AddScoped<IGasTestService, GasTestService>();

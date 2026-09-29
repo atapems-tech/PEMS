@@ -9421,6 +9421,56 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("MrsImportRowMetadata", (string)null);
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.NavigationVisibilityOverride", b =>
+                {
+                    b.Property<int>("NavigationVisibilityOverrideId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NavigationVisibilityOverrideId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsVisible")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ItemKey")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModuleKey")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Reason")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("NavigationVisibilityOverrideId");
+
+                    b.HasIndex("RoleId", "ModuleKey", "ItemKey")
+                        .IsUnique()
+                        .HasFilter("[ItemKey] IS NOT NULL");
+
+                    b.ToTable("NavigationVisibilityOverrides", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.NonConformanceReport", b =>
                 {
                     b.Property<int>("NonConformanceReportId")
@@ -19421,6 +19471,15 @@ namespace PEMS.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Row");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.NavigationVisibilityOverride", b =>
+                {
+                    b.HasOne("PEMS.Persistence.Identity.ApplicationRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.NonConformanceReport", b =>

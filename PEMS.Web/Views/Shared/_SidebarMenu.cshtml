@@ -5,6 +5,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @inject IPermissionService PermissionService
 @inject ICurrentUserService CurrentUserService
+@inject PEMS.Web.Security.NavigationVisibilityResolver NavigationVisibilityResolver
 @{
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
     var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
@@ -19,6 +20,19 @@
     // قبلاً حداقل یک لینک Import پراکنده می‌دید، این ورودی را می‌بیند و برعکس. مجوز دقیق هر Import در خودِ صفحه‌ی مرکز
     // Import و - مرجع نهایی - در Controller همان Import اعمال می‌شود.
     var canSeeImportCenter = ImportCatalog.VisibleByRole(User).Any();
+
+    // طبق سند «PEMS Phase 6 — User Module & Navigation Visibility Architecture»: تنها نقطه‌ی
+    // محاسبه‌ی Visibility این صفحه - یک‌بار در بالا، بقیه‌ی فایل فقط navVisibility.IsModuleVisible/
+    // IsCmmsItemVisible را می‌خواند. تمام Override_های دستی مدیر همین‌جا روی پیش‌فرض‌های موجود
+    // (MenuAccess/canSeeQuickSetup/canSeeImportCenter) اعمال می‌شوند - هیچ‌کدام از این پیش‌فرض‌ها
+    // حذف نشدند، فقط قابل‌بازنویسی شدند.
+    var navVisibility = await NavigationVisibilityResolver.ResolveAsync(CurrentUserService.Roles, new Dictionary<string, bool>
+    {
+        ["QuickSetup"] = canSeeQuickSetup,
+        ["ImportCenter"] = canSeeImportCenter
+    });
+    canSeeQuickSetup = navVisibility.IsModuleVisible("QuickSetup");
+    canSeeImportCenter = navVisibility.IsModuleVisible("ImportCenter");
 
     bool IsActive(string controller, string area = "") =>
         currentController.Equals(controller, StringComparison.OrdinalIgnoreCase) &&
@@ -52,7 +66,7 @@
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
     var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
-    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "ContractApprovalAuthority", "Department", "Employee", "Authorization", "SoDPolicy", "AuthorizationAudit" };
+    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "ContractApprovalAuthority", "Department", "Employee", "Authorization", "SoDPolicy", "AuthorizationAudit", "NavigationVisibility" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
 }
@@ -78,7 +92,7 @@
     }
 
 
-    @if (MenuAccess.CanSee(User, MenuAccess.EngineeringManagement))
+    @if (navVisibility.IsModuleVisible("EngineeringManagement"))
     {
         var active = ContainsActive(engineeringControllers);
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-eng" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
@@ -144,7 +158,7 @@
     }
 
 
-    @if (MenuAccess.CanSee(User, MenuAccess.AIIntelligence))
+    @if (navVisibility.IsModuleVisible("AIIntelligence"))
     {
         var active = ContainsActive(aiControllers);
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-ai" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
@@ -177,7 +191,7 @@
     }
 
 
-    @if (MenuAccess.CanSee(User, MenuAccess.CorrespondenceDocControl))
+    @if (navVisibility.IsModuleVisible("CorrespondenceDocControl"))
     {
         var active = ContainsActive(correspondenceControllers);
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-correspondence" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
@@ -208,7 +222,7 @@
     }
 
 
-    @if (MenuAccess.CanSee(User, MenuAccess.QualityControl))
+    @if (navVisibility.IsModuleVisible("QualityControl"))
     {
         var active = ContainsActive(qualityControllers);
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-quality" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
@@ -229,7 +243,7 @@
     }
 
 
-    @if (MenuAccess.CanSee(User, MenuAccess.ContractManagement))
+    @if (navVisibility.IsModuleVisible("ContractManagement"))
     {
         var active = ContainsActive(contractControllers);
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-contract" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
@@ -262,7 +276,7 @@
     }
 
 
-    @if (MenuAccess.CanSee(User, MenuAccess.ProjectControls))
+    @if (navVisibility.IsModuleVisible("ProjectControls"))
     {
         var active = ContainsActive(projectControlControllers);
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-projctrl" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
@@ -291,7 +305,7 @@
     }
 
 
-    @if (MenuAccess.CanSee(User, MenuAccess.CmmsIntegration))
+    @if (navVisibility.IsModuleVisible("CmmsIntegration"))
     {
         var active = ContainsActive(cmmsControllers);
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-cmms" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
@@ -301,129 +315,211 @@
         </div>
         <div class="@SectionClass(active)" id="sec-cmms">
 
-            <a class="nav-link @(IsActive("Equipment") ? "active" : "")" asp-controller="Equipment" asp-action="Index" asp-area="">
-                <i class="bi bi-gear"></i> @Localizer["Equipment"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("Equipment"))
+            {
+                <a class="nav-link @(IsActive("Equipment") ? "active" : "")" asp-controller="Equipment" asp-action="Index" asp-area="">
+                    <i class="bi bi-gear"></i> @Localizer["Equipment"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("Instrument") ? "active" : "")" asp-controller="Instrument" asp-action="Index" asp-area="">
-                <i class="bi bi-cpu"></i> @Localizer["Instrument Passport"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("Instrument"))
+            {
+                <a class="nav-link @(IsActive("Instrument") ? "active" : "")" asp-controller="Instrument" asp-action="Index" asp-area="">
+                    <i class="bi bi-cpu"></i> @Localizer["Instrument Passport"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("Asset") ? "active" : "")" asp-controller="Asset" asp-action="Index" asp-area="">
-                <i class="bi bi-diagram-2"></i> @Localizer["Assets"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("Asset"))
+            {
+                <a class="nav-link @(IsActive("Asset") ? "active" : "")" asp-controller="Asset" asp-action="Index" asp-area="">
+                    <i class="bi bi-diagram-2"></i> @Localizer["Assets"]
+                </a>
+            }
 
             @* طبق «PEMS CMMS Sidebar Refactoring — Maintenance Planning»: سه آیتم زیر (که از قبل هر سه
                در همین بخش تخت وجود داشتند/یا به‌کلی هیچ لینک سایدباری نداشتند) بر اساس مسئولیت واقعی‌شان
                (تعیین سیاست/فرکانس نگهداری، برنامه‌ی زنده‌ی PM با NextDueDate، و Backlog نگهداری) زیرگروه
                شدند - دقیقاً با همون الگوی nav-subheading که پیش‌تر فقط در بخش Administration استفاده
                می‌شد (بدون هیچ مکانیزم Collapse/Route/مجوز تازه). هیچ Controller/Route/مجوزی تغییر نکرد؛
-               CmmsOperations/Backlog از قبل در ریپازیتوری وجود داشت ولی هیچ ورودی سایدباری نداشت. *@
-            <div class="nav-subheading">@Localizer["Maintenance Planning"]</div>
+               CmmsOperations/Backlog از قبل در ریپازیتوری وجود داشت ولی هیچ ورودی سایدباری نداشت.
+               طبق فاز ۶ (سرکوب زیرگروه خالی): اگر هر چهار آیتم زیر برای این کاربر مخفی باشند، خودِ
+               تیتر «Maintenance Planning» هم رندر نمی‌شود - یک تیتر بدون هیچ آیتمی زیر آن گمراه‌کننده است. *@
+            @if (navVisibility.AnyCmmsItemVisible("MaintenanceStrategy", "MaintenancePlan", "CmmsOperations", "MaintenanceCalendar"))
+            {
+                <div class="nav-subheading">@Localizer["Maintenance Planning"]</div>
 
-            <a class="nav-link nav-subitem @(IsActive("MaintenanceStrategy") ? "active" : "")" asp-controller="MaintenanceStrategy" asp-action="Index" asp-area="">
-                <i class="bi bi-diagram-2"></i> @Localizer["Maintenance Strategy"]
-            </a>
+                @if (navVisibility.IsCmmsItemVisible("MaintenanceStrategy"))
+                {
+                    <a class="nav-link nav-subitem @(IsActive("MaintenanceStrategy") ? "active" : "")" asp-controller="MaintenanceStrategy" asp-action="Index" asp-area="">
+                        <i class="bi bi-diagram-2"></i> @Localizer["Maintenance Strategy"]
+                    </a>
+                }
 
-            <a class="nav-link nav-subitem @(IsActive("MaintenancePlan") ? "active" : "")" asp-controller="MaintenancePlan" asp-action="Index" asp-area="">
-                <i class="bi bi-calendar-check"></i> @Localizer["Maintenance Plan"]
-            </a>
+                @if (navVisibility.IsCmmsItemVisible("MaintenancePlan"))
+                {
+                    <a class="nav-link nav-subitem @(IsActive("MaintenancePlan") ? "active" : "")" asp-controller="MaintenancePlan" asp-action="Index" asp-area="">
+                        <i class="bi bi-calendar-check"></i> @Localizer["Maintenance Plan"]
+                    </a>
+                }
 
-            <a class="nav-link nav-subitem @(IsActive("CmmsOperations") && ViewContext.RouteData.Values["action"]!.ToString() == "Backlog" ? "active" : "")"
-               asp-controller="CmmsOperations" asp-action="Backlog" asp-area="">
-                <i class="bi bi-hourglass-split"></i> @Localizer["Maintenance Backlog"]
-            </a>
+                @if (navVisibility.IsCmmsItemVisible("CmmsOperations"))
+                {
+                    <a class="nav-link nav-subitem @(IsActive("CmmsOperations") && ViewContext.RouteData.Values["action"]!.ToString() == "Backlog" ? "active" : "")"
+                       asp-controller="CmmsOperations" asp-action="Backlog" asp-area="">
+                        <i class="bi bi-hourglass-split"></i> @Localizer["Maintenance Backlog"]
+                    </a>
+                }
 
-            <a class="nav-link nav-subitem @(IsActive("MaintenanceCalendar") ? "active" : "")" asp-controller="MaintenanceCalendar" asp-action="Index" asp-area="">
-                <i class="bi bi-calendar3-week"></i> @Localizer["Maintenance Calendar"]
-            </a>
+                @if (navVisibility.IsCmmsItemVisible("MaintenanceCalendar"))
+                {
+                    <a class="nav-link nav-subitem @(IsActive("MaintenanceCalendar") ? "active" : "")" asp-controller="MaintenanceCalendar" asp-action="Index" asp-area="">
+                        <i class="bi bi-calendar3-week"></i> @Localizer["Maintenance Calendar"]
+                    </a>
+                }
+            }
 
-            <a class="nav-link @(IsActive("JobPlan") ? "active" : "")" asp-controller="JobPlan" asp-action="Index" asp-area="">
-                <i class="bi bi-list-check"></i> @Localizer["Job Plans"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("JobPlan"))
+            {
+                <a class="nav-link @(IsActive("JobPlan") ? "active" : "")" asp-controller="JobPlan" asp-action="Index" asp-area="">
+                    <i class="bi bi-list-check"></i> @Localizer["Job Plans"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("WorkRequest") ? "active" : "")" asp-controller="WorkRequest" asp-action="Index" asp-area="">
-                <i class="bi bi-clipboard-plus"></i> @Localizer["Work Requests"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("WorkRequest"))
+            {
+                <a class="nav-link @(IsActive("WorkRequest") ? "active" : "")" asp-controller="WorkRequest" asp-action="Index" asp-area="">
+                    <i class="bi bi-clipboard-plus"></i> @Localizer["Work Requests"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("WorkOrder") ? "active" : "")" asp-controller="WorkOrder" asp-action="Index" asp-area="">
-                <i class="bi bi-clipboard-check"></i> @Localizer["Work Order"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("WorkOrder"))
+            {
+                <a class="nav-link @(IsActive("WorkOrder") ? "active" : "")" asp-controller="WorkOrder" asp-action="Index" asp-area="">
+                    <i class="bi bi-clipboard-check"></i> @Localizer["Work Order"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("SparePart") ? "active" : "")" asp-controller="SparePart" asp-action="Index" asp-area="">
-                <i class="bi bi-tools"></i> @Localizer["Spare Parts"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("SparePart"))
+            {
+                <a class="nav-link @(IsActive("SparePart") ? "active" : "")" asp-controller="SparePart" asp-action="Index" asp-area="">
+                    <i class="bi bi-tools"></i> @Localizer["Spare Parts"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("Team") ? "active" : "")" asp-controller="Team" asp-action="Index" asp-area="">
-                <i class="bi bi-people"></i> @Localizer["Teams"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("Team"))
+            {
+                <a class="nav-link @(IsActive("Team") ? "active" : "")" asp-controller="Team" asp-action="Index" asp-area="">
+                    <i class="bi bi-people"></i> @Localizer["Teams"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("Crew") ? "active" : "")" asp-controller="Crew" asp-action="Index" asp-area="">
-                <i class="bi bi-people-fill"></i> @Localizer["Crews"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("Crew"))
+            {
+                <a class="nav-link @(IsActive("Crew") ? "active" : "")" asp-controller="Crew" asp-action="Index" asp-area="">
+                    <i class="bi bi-people-fill"></i> @Localizer["Crews"]
+                </a>
+            }
 
             @* طبق «PEMS Phase 2C-1 — Navigation Integrity»: ShiftHandoverController یک ماژول واقعی و
                کاملاً مجوزدار بود (RoleModuleActionService، ماژول "ShiftHandover") ولی هیچ ورودی
                سایدباری نداشت - کاربر فقط با URL مستقیم یا از یک لینک متقاطع درون Permit/Details
-               (فقط وقتی یک Permit به یک Handover خاص لینک شده) به آن می‌رسید. گیت این لینک از همان
-               MenuAccess.CmmsIntegration سطح‌بخش استفاده می‌کند (بدون مجوز/سیاست جدید) - نقش‌هایی
-               که این بخش را می‌بینند (SystemAdmin/EngineeringManager/EngineeringSupervisor/
-               MaintenanceEngineer) همگی طبق Seed واقعی RoleModuleActionService دسترسی کامل
-               View/Create/Prepare/Acknowledge/Complete به ShiftHandover دارند - هیچ نقشی لینکی را
-               می‌بیند که پشتش Forbid بگیرد. *@
-            <a class="nav-link @(IsActive("ShiftHandover") ? "active" : "")" asp-controller="ShiftHandover" asp-action="Index" asp-area="">
-                <i class="bi bi-arrow-left-right"></i> @Localizer["Shift Handovers"]
-            </a>
+               (فقط وقتی یک Permit به یک Handover خاص لینک شده) به آن می‌رسید. طبق فاز ۶، پیش‌فرض این
+               آیتم اکنون مجوزمحور است (Resource "ShiftHandover")، نه فقط گیت سطح‌بخش. *@
+            @if (navVisibility.IsCmmsItemVisible("ShiftHandover"))
+            {
+                <a class="nav-link @(IsActive("ShiftHandover") ? "active" : "")" asp-controller="ShiftHandover" asp-action="Index" asp-area="">
+                    <i class="bi bi-arrow-left-right"></i> @Localizer["Shift Handovers"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("MaintenanceMasterData") ? "active" : "")" asp-controller="MaintenanceMasterData" asp-action="Index" asp-area="">
-                <i class="bi bi-collection"></i> @Localizer["Maintenance Master Data"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("MaintenanceMasterData"))
+            {
+                <a class="nav-link @(IsActive("MaintenanceMasterData") ? "active" : "")" asp-controller="MaintenanceMasterData" asp-action="Index" asp-area="">
+                    <i class="bi bi-collection"></i> @Localizer["Maintenance Master Data"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("EquipmentClassification") ? "active" : "")" asp-controller="EquipmentClassification" asp-action="Index" asp-area="">
-                <i class="bi bi-diagram-3-fill"></i> @Localizer["Equipment Classification"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("EquipmentClassification"))
+            {
+                <a class="nav-link @(IsActive("EquipmentClassification") ? "active" : "")" asp-controller="EquipmentClassification" asp-action="Index" asp-area="">
+                    <i class="bi bi-diagram-3-fill"></i> @Localizer["Equipment Classification"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("CmmsReadiness") ? "active" : "")" asp-controller="CmmsReadiness" asp-action="Index" asp-area="">
-                <i class="bi bi-clipboard-check"></i> @Localizer["CMMS Readiness"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("CmmsReadiness"))
+            {
+                <a class="nav-link @(IsActive("CmmsReadiness") ? "active" : "")" asp-controller="CmmsReadiness" asp-action="Index" asp-area="">
+                    <i class="bi bi-clipboard-check"></i> @Localizer["CMMS Readiness"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("CmmsOperations") && ViewContext.RouteData.Values["action"]!.ToString() != "Backlog" ? "active" : "")" asp-controller="CmmsOperations" asp-action="Dashboard" asp-area="">
-                <i class="bi bi-speedometer2"></i> @Localizer["CMMS Operations"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("CmmsOperations"))
+            {
+                <a class="nav-link @(IsActive("CmmsOperations") && ViewContext.RouteData.Values["action"]!.ToString() != "Backlog" ? "active" : "")" asp-controller="CmmsOperations" asp-action="Dashboard" asp-area="">
+                    <i class="bi bi-speedometer2"></i> @Localizer["CMMS Operations"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("RcmFmea") ? "active" : "")" asp-controller="RcmFmea" asp-action="Index" asp-area="">
-                <i class="bi bi-clipboard2-pulse"></i> @Localizer["RCM / FMEA"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("RcmFmea"))
+            {
+                <a class="nav-link @(IsActive("RcmFmea") ? "active" : "")" asp-controller="RcmFmea" asp-action="Index" asp-area="">
+                    <i class="bi bi-clipboard2-pulse"></i> @Localizer["RCM / FMEA"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("EquipmentCriticality") ? "active" : "")" asp-controller="EquipmentCriticality" asp-action="Index" asp-area="">
-                <i class="bi bi-shield-exclamation"></i> @Localizer["Criticality Analysis"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("EquipmentCriticality"))
+            {
+                <a class="nav-link @(IsActive("EquipmentCriticality") ? "active" : "")" asp-controller="EquipmentCriticality" asp-action="Index" asp-area="">
+                    <i class="bi bi-shield-exclamation"></i> @Localizer["Criticality Analysis"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("CriticalityAssessment") ? "active" : "")" asp-controller="CriticalityAssessment" asp-action="Dashboard" asp-area="">
-                <i class="bi bi-clipboard2-check"></i> @Localizer["Criticality Assessment"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("CriticalityAssessment"))
+            {
+                <a class="nav-link @(IsActive("CriticalityAssessment") ? "active" : "")" asp-controller="CriticalityAssessment" asp-action="Dashboard" asp-area="">
+                    <i class="bi bi-clipboard2-check"></i> @Localizer["Criticality Assessment"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("Reliability") ? "active" : "")" asp-controller="Reliability" asp-action="Dashboard" asp-area="">
-                <i class="bi bi-graph-up-arrow"></i> @Localizer["Reliability"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("Reliability"))
+            {
+                <a class="nav-link @(IsActive("Reliability") ? "active" : "")" asp-controller="Reliability" asp-action="Dashboard" asp-area="">
+                    <i class="bi bi-graph-up-arrow"></i> @Localizer["Reliability"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("Inspection") ? "active" : "")" asp-controller="Inspection" asp-action="Index" asp-area="">
-                <i class="bi bi-clipboard-pulse"></i> @Localizer["Inspections"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("Inspection"))
+            {
+                <a class="nav-link @(IsActive("Inspection") ? "active" : "")" asp-controller="Inspection" asp-action="Index" asp-area="">
+                    <i class="bi bi-clipboard-pulse"></i> @Localizer["Inspections"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("Kpi") ? "active" : "")" asp-controller="Kpi" asp-action="Index" asp-area="">
-                <i class="bi bi-speedometer2"></i> @Localizer["KPI Dashboard"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("Kpi"))
+            {
+                <a class="nav-link @(IsActive("Kpi") ? "active" : "")" asp-controller="Kpi" asp-action="Index" asp-area="">
+                    <i class="bi bi-speedometer2"></i> @Localizer["KPI Dashboard"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("Permit") ? "active" : "")" asp-controller="Permit" asp-action="Index" asp-area="">
-                <i class="bi bi-shield-check"></i> @Localizer["Permits"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("Permit"))
+            {
+                <a class="nav-link @(IsActive("Permit") ? "active" : "")" asp-controller="Permit" asp-action="Index" asp-area="">
+                    <i class="bi bi-shield-check"></i> @Localizer["Permits"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("FunctionalLocation") ? "active" : "")" asp-controller="FunctionalLocation" asp-action="Index" asp-area="">
-                <i class="bi bi-diagram-3"></i> @Localizer["Functional Locations"]
-            </a>
+            @if (navVisibility.IsCmmsItemVisible("FunctionalLocation"))
+            {
+                <a class="nav-link @(IsActive("FunctionalLocation") ? "active" : "")" asp-controller="FunctionalLocation" asp-action="Index" asp-area="">
+                    <i class="bi bi-diagram-3"></i> @Localizer["Functional Locations"]
+                </a>
+            }
 
-            @if (MenuAccess.CanSee(User, MenuAccess.ImportCenter))
+            @* طبق فاز ۶: پیش‌فرض این آیتم اکنون از Resource واقعی "Barcode" (همان BarcodeController)
+               می‌آید، نه دیگر مستقیماً MenuAccess.ImportCenter - چون این آیتم درون Drill-down سطح-آیتم
+               CmmsIntegration قرار گرفت (دقیقاً هم‌الگو با بقیه‌ی آیتم‌های این بخش). *@
+            @if (navVisibility.IsCmmsItemVisible("Barcode"))
             {
                 <a class="nav-link @(IsActive("Barcode") ? "active" : "")" asp-controller="Barcode" asp-action="Index" asp-area="">
                     <i class="bi bi-upc-scan"></i> @Localizer["Barcode"]
@@ -442,7 +538,7 @@
        طبق دستور صریح «Do not invent routes»: نه ProductionRun و نه ProductionBatch صفحه‌ی Index
        مستقلی ندارند (فقط از داخل Details سفارش/اجرا قابل‌دسترسی‌اند) و گزارش‌گیری Operations هنوز
        پیاده‌سازی نشده - هیچ‌کدام این‌جا لینک نشدند. *@
-    @if (MenuAccess.CanSee(User, MenuAccess.Operations))
+    @if (navVisibility.IsModuleVisible("Operations"))
     {
         var active = ContainsActive(operationsControllers);
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-operations" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
@@ -463,7 +559,7 @@
     }
 
 
-    @if (MenuAccess.CanSee(User, MenuAccess.CmmsIntegration))
+    @if (navVisibility.IsModuleVisible("Inventory"))
     {
         var active = ContainsActive(inventoryControllers);
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-inventory" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
@@ -504,7 +600,7 @@
         // طبق «PEMS — Centralized Import Center»: Importها زیر ورودی سطح‌بالای «Import Center» هستند (نه زیر
         // Administration و نه پراکنده در بخش‌ها). Administration فقط برای SystemAdmin است - هر زیربخش (User & Access/
         // Organization/AI Administration/System Monitoring) دسترسی خودش را کنترل می‌کند.
-        var canSeeAdminCore = MenuAccess.CanSee(User, MenuAccess.Administration);
+        var canSeeAdminCore = navVisibility.IsModuleVisible("Administration");
     }
     @if (canSeeAdminCore)
     {
@@ -552,6 +648,11 @@
                 <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("SoDPolicy", "Admin") ? "active" : "")"
                    asp-area="Admin" asp-controller="SoDPolicy" asp-action="Index">
                     <i class="bi bi-shuffle"></i> @Localizer["Separation of Duties"]
+                </a>
+
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("NavigationVisibility", "Admin") ? "active" : "")"
+                   asp-area="Admin" asp-controller="NavigationVisibility" asp-action="Index">
+                    <i class="bi bi-layout-sidebar"></i> @Localizer["Navigation Visibility"]
                 </a>
 
                 <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("WorkflowManagement", "Admin") ? "active" : "")"

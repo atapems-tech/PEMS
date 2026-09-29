@@ -40,6 +40,10 @@ public class PEMSDbContext
     public DbSet<Position> Positions { get; set; }
     public DbSet<SoDPolicy> SoDPolicies { get; set; }
 
+    // طبق سند «PEMS Phase 6 — User Module & Navigation Visibility Architecture»: تنها Entity
+    // تازه‌ی این فاز - استثنای دستیِ Visibility، عمداً جدا از مدل داده‌ی Authorization بالا
+    public DbSet<NavigationVisibilityOverride> NavigationVisibilityOverrides { get; set; }
+
     public DbSet<AIDocumentClassification> AIDocumentClassifications { get; set; }
     public DbSet<DocumentTagLink> DocumentTagLinks { get; set; }
     public DbSet<DocumentComment> DocumentComments { get; set; }
