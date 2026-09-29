@@ -44,6 +44,16 @@ public class RolesController : Controller
             .ToListAsync())
             .ToDictionary(x => x.RoleId, x => x.Count);
 
+        // طبق «PEMS Authorization Architecture Completion» فاز ۴ بند ۹/۱۴: شمارش RolePermissionGrant
+        // فعال به‌ازای هر نقش - منبع واقعی زمان اجرا (نه RolePermission قدیمی)، تا مدیر بتواند نقشی
+        // که «هنوز پیکربندی نشده» را از نقشی که واقعاً مجوز دارد تشخیص دهد.
+        var grantCountByRoleId = (await _context.RolePermissionGrants
+            .Where(g => g.IsActive)
+            .GroupBy(g => g.RoleId)
+            .Select(g => new { RoleId = g.Key, Count = g.Count() })
+            .ToListAsync())
+            .ToDictionary(x => x.RoleId, x => x.Count);
+
         var list = roles.Select(role => new RoleListItemViewModel
         {
             Id = role.Id,
@@ -51,7 +61,10 @@ public class RolesController : Controller
             DisplayName = role.DisplayName,
             Description = role.Description,
             UserCount = userCountByRoleId.TryGetValue(role.Id, out var count) ? count : 0,
-            IsSystemRole = SystemRoles.All.Contains(role.Name)
+            IsSystemRole = SystemRoles.All.Contains(role.Name),
+            PermissionCount = role.Name == SystemRoles.SystemAdmin
+                ? -1 // نامحدود (Bypass عمومی) - نه صفر، تا با «پیکربندی‌نشده» اشتباه گرفته نشود
+                : grantCountByRoleId.TryGetValue(role.Id, out var g) ? g : 0
         }).ToList();
 
         return View(list.OrderBy(x => x.Name).ToList());
@@ -101,9 +114,14 @@ public class RolesController : Controller
 
         await _roleManager.CreateAsync(role);
 
-        TempData["Message"] = "Role created successfully";
+        // طبق «PEMS Authorization Architecture Completion» فاز ۴ بند ۱۰: نقش تازه هنوز
+        // Default-Deny کامل است (هیچ RolePermissionGrant/RolePermission ای خودکار نوشته نمی‌شود
+        // - نه از روی نام نقش، نه با کپی از SystemAdmin) - مدیر باید صریحاً پیکربندی کند. برای
+        // این‌که این مرحله‌ی بعدی گم نشود، مستقیماً به همان بخش نقش تازه در Permission Matrix
+        // هدایت می‌شویم، نه فقط به فهرست نقش‌ها.
+        TempData["Message"] = "Role created. Configure its permissions below before assigning it to users.";
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction("Index", "PermissionMatrix", new { area = "Admin" }, $"role-{role.Name}");
     }
 
 

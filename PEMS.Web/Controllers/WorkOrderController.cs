@@ -473,7 +473,7 @@ public class WorkOrderController : Controller
         decimal regularHours, decimal overtimeHours, string? notes)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
-        try { await _laborService.AddLaborEntryAsync(workOrderId, employeeId, teamId, workDate, regularHours, overtimeHours, notes); TempData["Message"] = "ساعت کار ثبت شد."; }
+        try { await _laborService.AddLaborEntryAsync(workOrderId, employeeId, teamId, workDate, regularHours, overtimeHours, notes, await BuildActorAsync()); TempData["Message"] = "ساعت کار ثبت شد."; }
         catch (Exception ex) { TempData["Error"] = ex.Message; }
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }

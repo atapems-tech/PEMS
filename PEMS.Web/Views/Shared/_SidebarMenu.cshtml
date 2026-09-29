@@ -7,6 +7,7 @@
 @inject ICurrentUserService CurrentUserService
 @{
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
     var currentArea = ViewContext.RouteData.Values["area"]?.ToString() ?? "";
 
     // طبق «PEMS — Quick Setup & Domain Import Architecture Refactoring» بند ۱۰: Quick Setup یک
@@ -51,7 +52,7 @@
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
     var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
-    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "ContractApprovalAuthority", "Department", "Employee" };
+    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "ContractApprovalAuthority", "Department", "Employee", "Authorization", "SoDPolicy", "AuthorizationAudit" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
 }
@@ -538,6 +539,21 @@
                     <i class="bi bi-sliders"></i> @Localizer["PermissionMatrix"]
                 </a>
 
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Authorization", "Admin") && currentAction == "EffectiveRole" ? "active" : "")"
+                   asp-area="Admin" asp-controller="Authorization" asp-action="EffectiveRole">
+                    <i class="bi bi-eye"></i> @Localizer["Effective Permissions"]
+                </a>
+
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Authorization", "Admin") && currentAction == "Simulate" ? "active" : "")"
+                   asp-area="Admin" asp-controller="Authorization" asp-action="Simulate">
+                    <i class="bi bi-play-circle"></i> @Localizer["Permission Simulator"]
+                </a>
+
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("SoDPolicy", "Admin") ? "active" : "")"
+                   asp-area="Admin" asp-controller="SoDPolicy" asp-action="Index">
+                    <i class="bi bi-shuffle"></i> @Localizer["Separation of Duties"]
+                </a>
+
                 <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("WorkflowManagement", "Admin") ? "active" : "")"
                    asp-area="Admin" asp-controller="WorkflowManagement" asp-action="Index">
                     <i class="bi bi-diagram-3"></i> @Localizer["Workflow Management"]
@@ -597,6 +613,11 @@
                 <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("AuditLog") ? "active" : "")"
                    asp-area="Admin" asp-controller="AuditLog" asp-action="Index">
                     <i class="bi bi-clock-history"></i> @Localizer["AuditLog"]
+                </a>
+
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("AuthorizationAudit", "Admin") ? "active" : "")"
+                   asp-area="Admin" asp-controller="AuthorizationAudit" asp-action="Index">
+                    <i class="bi bi-journal-check"></i> @Localizer["Authorization Audit"]
                 </a>
 
                 <a class="nav-link nav-subitem @(IsActive("Performance") ? "active" : "")"

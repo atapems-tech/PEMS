@@ -249,13 +249,20 @@ return await InStrategyAsync<(bool, string?, int?)>(async () =>
         if (perm == Perm.Prepare && actionType == "Approve" && wo.AssignedTeamId == null && wo.AssignedEmployeeId == null)
             return (false, T("قبل از درخواست صدور، تیم یا مجری باید تخصیص داده شود.", "A team or executor must be assigned before requesting issue."));
 
+        // طبق «PEMS — Work Order Governance Remediation» F2: Issue/Release فقط اختیار Operations را
+        // اعمال و گیت آزادسازی (Permit/LOTO/GasTest) را بررسی می‌کند - StartDate دیگر این‌جا ست
+        // نمی‌شود؛ آن رویداد جداگانه («شروع واقعی کار») به مرحله‌ی Start Work (پایین) منتقل شده.
         if (perm == Perm.Issue && actionType == "Approve")
         {
             var gate = await _releaseGate.EvaluateAsync(workOrderId);
             if (!gate.CanRelease)
                 return (false, T("آزادسازی ممکن نیست: ", "Cannot release: ") + string.Join(" | ", gate.Reasons));
-            if (!wo.StartDate.HasValue) wo.StartDate = DateTime.Now;
         }
+
+        // طبق F2: این‌جا دقیقاً همان لحظه‌ای است که مجری نگهداری واقعاً کار را شروع می‌کند - جدا از
+        // تصمیم آزادسازی Operations. StartDate فقط یک‌بار ست می‌شود (اگر از قبل مقداردهی نشده).
+        if (perm == Perm.Start && actionType == "Approve" && !wo.StartDate.HasValue)
+            wo.StartDate = DateTime.Now;
 
         var recordsCompletion = perm == Perm.Execute && actionType == "Approve" && fromStatus == "InProgress";
         if (recordsCompletion)

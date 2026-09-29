@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.DTOs;
+using PEMS.Application.Interfaces;
 using PEMS.Domain.Common;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
@@ -21,6 +22,7 @@ namespace PEMS.Tests.Cmms;
 public abstract class WorkOrderGovernanceTestBase : IDisposable
 {
     protected readonly PEMSDbContext Ctx = PemsDbContextFactory.CreateInMemory("wo-gov-" + Guid.NewGuid());
+    protected readonly IAccessControlService AccessControl;
     protected readonly WorkOrderLifecycleService Svc;
     protected int Mech, Elec, Instr, Civil, EquipmentId;
     protected int DeptMaint, DeptEng, DeptOps;
@@ -63,6 +65,9 @@ public abstract class WorkOrderGovernanceTestBase : IDisposable
             WorkOrderReviewWorkflowSeeder.SeedAsync(sp).GetAwaiter().GetResult();      // تعریف قدیمی بازبینی (Legacy)
             WorkOrderGovernanceSeeder.SeedAsync(sp).GetAwaiter().GetResult();
             WorkOrderLifecycleWorkflowSeeder.SeedAsync(sp).GetAwaiter().GetResult();
+            // طبق «PEMS — Work Order Governance Remediation» F2: نسخه‌ی ۲ (جداسازی Issue/Release از
+            // Start Work) - همه‌ی تست‌های این پایه از این پس رفتار واقعی v2 را می‌بینند.
+            WorkOrderLifecycleWorkflowV2Seeder.SeedAsync(sp).GetAwaiter().GetResult();
         }
 
         // سازمان‌ها/بازیگران
@@ -79,7 +84,8 @@ public abstract class WorkOrderGovernanceTestBase : IDisposable
         EngManager = Actor(DeptEng, Mech, SystemRoles.EngineeringManager);
         ElecExecutor = Actor(DeptMaint, Elec, "MNT.Expert");
 
-        Svc = new WorkOrderLifecycleService(Ctx, new WorkOrderReleaseGateService(Ctx));
+        AccessControl = new AccessControlService(Ctx);
+        Svc = new WorkOrderLifecycleService(Ctx, new WorkOrderReleaseGateService(Ctx), AccessControl);
     }
 
     public void Dispose() => Ctx.Dispose();
@@ -132,7 +138,15 @@ public abstract class WorkOrderGovernanceTestBase : IDisposable
     {
         var (ok, err) = await Svc.AssignExecutorAsync(id, null, (exec ?? Executor).EmployeeId, DisciplineHead); Assert.True(ok, err);
         await Do(id, "Approve", Planner);                                             // Request Issue
-        await Do(id, "Approve", Ops);                                                 // Issue / Release → Execution
+        await Do(id, "Approve", Ops);                                                 // Issue / Release → Released/Execution Authorized (F2)
+        await Do(id, "Approve", exec ?? Executor);                                    // Start Work → Execution (F2) - همان مجری تخصیص‌یافته
+    }
+
+    /// <summary>Plan → Assign/Issue/Start؛ اسم واضح برای تست‌هایی که فقط لازم دارند به InProgress برسند.</summary>
+    protected async Task RunToInProgressAsync(int id, WorkOrderActor? exec = null)
+    {
+        await PlanAsync(id);
+        await PrepareAndIssueAsync(id, exec);
     }
 
     protected static WorkOrderCompletionData Data(string? mode = "Leakage") => new() { FailureModeCode = mode, FailureCauseCode = "Wear", RootCause = "seal", DowntimeHours = 2 };

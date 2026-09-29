@@ -22,6 +22,13 @@ public static class WorkOrderWorkflow
     public const string LegacyReviewEntityType = "WorkOrder";     // Instance های قبل از Phase 3B (بدون Binding)
     public const string LifecycleDefinitionName = "Work Order Lifecycle";
     public const string ParticipantPrefix = "Permission:";
+    // طبق «PEMS Authorization Architecture Completion» فاز ۳ بند ۶: این یک استثنای کسب‌وکاری
+    // تک‌منظوره است (نه الگوی رو به گسترش) - فقط در دقیقاً یک شاخه (استثنای Verify/FinalApprove
+    // برای مدیر نگهداری روی WO هایی که سازمان مبدأشان خودِ Maintenance است، خط ۱۹۷ همین فایل)
+    // مصرف می‌شود. جایگزینی آن با یک Permission/Scope عمومی به یک لایه‌ی Policy تازه نیاز داشت
+    // بدون اینکه مشکل واقعی‌ای حل کند - طبق دستور صریح: «Do not create a generic Policy Engine
+    // merely to remove one string constant». هیچ ماژول دیگری امروز به همین مفهوم «Override مدیر»
+    // نیاز ندارد؛ اگر ماژول دومی همین الگو را خواست، آن‌جا دلیل کافی برای تعمیم خواهد بود.
     public const string ManagerRole = "MNT.Manager";
 
     public static string LifecycleKey(int workOrderId) => $"{Module}|{LifecycleEntityType}|{workOrderId}";
@@ -35,6 +42,10 @@ public static class WorkOrderWorkflow
         public const string Prepare = "WorkOrder.Prepare";
         public const string Assign = "WorkOrder.Assign";
         public const string Issue = "WorkOrder.Issue";
+        // طبق «PEMS — Work Order Governance Remediation» F2: Issue/Release (اختیار Operations) و شروع
+        // واقعی کار (اختیار مجری نگهداری) دو رویداد جدا با دو صاحب‌اختیار جدا هستند - قبلاً یک کلیک
+        // (Issue، Approve) هر دو را هم‌زمان انجام می‌داد و StartDate را هم ست می‌کرد.
+        public const string Start = "WorkOrder.Start";
         public const string Execute = "WorkOrder.Execute";
         public const string Hold = "WorkOrder.Hold";
         public const string Verify = "WorkOrder.Verify";
@@ -44,7 +55,7 @@ public static class WorkOrderWorkflow
         public const string CancelExecution = "WorkOrder.CancelExecution";
 
         public static readonly string[] Workflow =
-            { Create, Plan, Prepare, Assign, Issue, Execute, Hold, Verify, FinalApprove, Reject, CancelPreIssue, CancelExecution };
+            { Create, Plan, Prepare, Assign, Issue, Start, Execute, Hold, Verify, FinalApprove, Reject, CancelPreIssue, CancelExecution };
     }
 
     /// <summary>رجیستری اکشن‌ها: اکشن‌های هسته + «Hold» و «Comment» به‌عنوان اکشن ماژول WorkOrder (فقط نام؛ هیچ کدی اجرا نمی‌شود).</summary>
@@ -175,6 +186,7 @@ public class WorkOrderAuthorizationHook : IWorkflowAuthorizationHook
             case WorkOrderWorkflow.Perm.Create:
                 break; // ایجاد/ارسال: هر دامنه‌ی معتبر با مجوز Create؛ دامنه‌ی مبدأ از خودِ ایجادکننده می‌آید
             case WorkOrderWorkflow.Perm.Hold:
+            case WorkOrderWorkflow.Perm.Start:
             case WorkOrderWorkflow.Perm.Execute:
                 if (org != OrganizationDomains.Maintenance) return Deny("این اقدام فقط برای سازمان نگهداری و تعمیرات مجاز است.", "This action is restricted to the Maintenance organization.");
                 if (!wo.ResponsibleDisciplineId.HasValue) return Deny("دیسیپلین مسئول نگهداری هنوز تعیین نشده است.", "The responsible maintenance discipline has not been set.");
@@ -201,11 +213,14 @@ public class WorkOrderAuthorizationHook : IWorkflowAuthorizationHook
         HashSet<int> Actors(params string[] perms) => perms.SelectMany(p => prior.GetValueOrDefault(p) ?? new HashSet<int>()).ToHashSet();
         var planners = Actors(WorkOrderWorkflow.Perm.Plan, WorkOrderWorkflow.Perm.Prepare);
         var issuers = Actors(WorkOrderWorkflow.Perm.Issue);
-        var executors = Actors(WorkOrderWorkflow.Perm.Execute);
+        // طبق F2: Start Work هم بخشی از «اجرا» محسوب می‌شود - کسی که کار را شروع کرده، دقیقاً مثل
+        // کسی که آن را اجرا/تکمیل کرده، نباید بعداً تأیید/تصویب کار خودش را انجام دهد.
+        var executors = Actors(WorkOrderWorkflow.Perm.Execute, WorkOrderWorkflow.Perm.Start);
         var verifiers = Actors(WorkOrderWorkflow.Perm.Verify);
 
         switch (perm)
         {
+            case WorkOrderWorkflow.Perm.Start:
             case WorkOrderWorkflow.Perm.Execute:
                 if (planners.Contains(actor)) return Deny("تفکیک وظایف: برنامه‌ریز نمی‌تواند مجری همان Work Order باشد.", "Separation of duties: the planner cannot execute the same Work Order.");
                 if (issuers.Contains(actor)) return Deny("تفکیک وظایف: صادرکننده (Operations) نمی‌تواند مجری همان Work Order باشد.", "Separation of duties: the Operations issuer cannot execute the same Work Order.");

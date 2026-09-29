@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Identity;
@@ -11,10 +13,12 @@ namespace PEMS.Web.Areas.Admin.Controllers;
 public class PermissionMatrixController : Controller
 {
     private readonly IPermissionService _service;
+    private readonly RoleManager<ApplicationRole> _roleManager;
 
-    public PermissionMatrixController(IPermissionService service)
+    public PermissionMatrixController(IPermissionService service, RoleManager<ApplicationRole> roleManager)
     {
         _service = service;
+        _roleManager = roleManager;
     }
 
     public async Task<IActionResult> Index()
@@ -25,7 +29,11 @@ public class PermissionMatrixController : Controller
 
         var matrix = await _service.GetMatrixAsync();
 
-        ViewBag.Roles = SystemRoles.All;
+        // طبق «PEMS Authorization Architecture Completion» فاز ۴ بند ۸/۱۱: نقش‌های واقعیِ دیتابیس
+        // (System/Seeded/Custom - هرچه از طریق Admin/Roles یا یک Seeder ساخته شده)، نه لیست ثابت
+        // SystemRoles.All - وگرنه نقش‌های سفارشی (مثل «maintenance planning») و نقش‌های حاکمیتیِ
+        // Seed‌شده (OPS.IssueAuthority/MNT.*) هرگز روی همین صفحه دیده/ویرایش نمی‌شدند.
+        ViewBag.Roles = await _roleManager.Roles.Select(r => r.Name!).OrderBy(n => n).ToArrayAsync();
         // طبق «PEMS — Global Engineering Management UI/UX, Navigation & RBAC Hardening» بند ۲۰:
         // Inspection/Transmittal قبلاً از این آرایه غایب بودند با اینکه هر دو واقعاً از طریق
         // HasPermissionAsync در InspectionController/TransmittalController گیت می‌شوند و در

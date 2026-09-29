@@ -6,6 +6,10 @@ namespace PEMS.Tests.Cmms;
 /// Phase 6D: AssignExecutorAsync قبلاً فقط Employee را در برابر ResponsibleDisciplineId چک می‌کرد؛
 /// شاخه‌ی teamId هیچ چکی نداشت (هر تیم فعالی از هر دیسیپلینی قابل تخصیص بود). همین‌طور
 /// AddLaborEntryAsync اصلاً هیچ چک دیسیپلینی‌ای نداشت. این تست‌ها رفع این دو خلأ را پوشش می‌دهند.
+/// طبق «PEMS — Work Order Governance Remediation» F3: از این پس AddLaborEntryAsync یک actor هم
+/// می‌گیرد (کاربر واقعاً واردشده) و فقط در وضعیت InProgress مجاز است - تست‌های زیر با Executor به
+/// عنوان actor (که خودش هم واجد شرایط دیسیپلین Mech است) به‌روزرسانی شدند تا فقط همان چیزی که
+/// قصد تست دارند (دیسیپلین کارمند/تیمِ هدف) را بسنجند، نه چک‌های تازه‌ی F3 را.
 /// </summary>
 public class WorkOrderDisciplineScopeTests : WorkOrderGovernanceTestBase
 {
@@ -48,12 +52,11 @@ public class WorkOrderDisciplineScopeTests : WorkOrderGovernanceTestBase
     public async Task AddLaborEntryAsync_rejects_employee_from_a_different_discipline_than_ResponsibleDisciplineId()
     {
         var id = await CreateAsync();
-        await PlanAsync(id);
-        await PrepareAndIssueAsync(id);
+        await RunToInProgressAsync(id);
 
-        var labor = new WorkOrderLaborService(Ctx);
+        var labor = new WorkOrderLaborService(Ctx, AccessControl);
         var ex = await Assert.ThrowsAsync<Exception>(() =>
-            labor.AddLaborEntryAsync(id, ElecExecutor.EmployeeId!.Value, null, DateTime.Today, 4, 0, null));
+            labor.AddLaborEntryAsync(id, ElecExecutor.EmployeeId!.Value, null, DateTime.Today, 4, 0, null, Executor));
         Assert.Contains("دیسیپلین", ex.Message);
     }
 
@@ -61,13 +64,12 @@ public class WorkOrderDisciplineScopeTests : WorkOrderGovernanceTestBase
     public async Task AddLaborEntryAsync_rejects_team_from_a_different_discipline_than_ResponsibleDisciplineId()
     {
         var id = await CreateAsync();
-        await PlanAsync(id);
-        await PrepareAndIssueAsync(id);
+        await RunToInProgressAsync(id);
 
         var elecTeamId = AddTeam(Elec, "ElecCrew2");
-        var labor = new WorkOrderLaborService(Ctx);
+        var labor = new WorkOrderLaborService(Ctx, AccessControl);
         var ex = await Assert.ThrowsAsync<Exception>(() =>
-            labor.AddLaborEntryAsync(id, Executor.EmployeeId!.Value, elecTeamId, DateTime.Today, 4, 0, null));
+            labor.AddLaborEntryAsync(id, Executor.EmployeeId!.Value, elecTeamId, DateTime.Today, 4, 0, null, Executor));
         Assert.Contains("دیسیپلین", ex.Message);
     }
 
@@ -75,23 +77,25 @@ public class WorkOrderDisciplineScopeTests : WorkOrderGovernanceTestBase
     public async Task AddLaborEntryAsync_accepts_employee_and_team_from_the_same_discipline()
     {
         var id = await CreateAsync();
-        await PlanAsync(id);
-        await PrepareAndIssueAsync(id);
+        await RunToInProgressAsync(id);
 
         var mechTeamId = AddTeam(Mech, "MechCrew2");
-        var labor = new WorkOrderLaborService(Ctx);
-        var laborId = await labor.AddLaborEntryAsync(id, Executor.EmployeeId!.Value, mechTeamId, DateTime.Today, 4, 0, null);
+        var labor = new WorkOrderLaborService(Ctx, AccessControl);
+        var laborId = await labor.AddLaborEntryAsync(id, Executor.EmployeeId!.Value, mechTeamId, DateTime.Today, 4, 0, null, Executor);
         Assert.True(laborId > 0);
     }
 
+    // طبق F3: قبل از Start Work (یعنی هنوز InProgress نشده)، ثبت ساعت کار واقعی رد می‌شود - حالا
+    // این اولین دلیل رد است (نه فقط دیسیپلین)، چون بدون رسیدن به InProgress اصلاً امکان ندارد
+    // ResponsibleDisciplineId خالی بماند (در Plan تنظیم می‌شود، قبل از InProgress).
     [Fact]
-    public async Task AddLaborEntryAsync_rejects_when_ResponsibleDisciplineId_not_yet_set()
+    public async Task AddLaborEntryAsync_rejects_before_execution_status_is_reached()
     {
         var id = await CreateAsync();
 
-        var labor = new WorkOrderLaborService(Ctx);
+        var labor = new WorkOrderLaborService(Ctx, AccessControl);
         var ex = await Assert.ThrowsAsync<Exception>(() =>
-            labor.AddLaborEntryAsync(id, Executor.EmployeeId!.Value, null, DateTime.Today, 4, 0, null));
-        Assert.Contains("دیسیپلین", ex.Message);
+            labor.AddLaborEntryAsync(id, Executor.EmployeeId!.Value, null, DateTime.Today, 4, 0, null, Executor));
+        Assert.Contains("در حال اجرا", ex.Message);
     }
 }

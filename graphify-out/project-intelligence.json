@@ -1,14 +1,14 @@
 ﻿{
-    "generatedAtUtc":  "2026-09-20T18:14:48.1178754Z",
+    "generatedAtUtc":  "2026-09-28T18:39:47.4373896Z",
     "repoRoot":  "D:\\PEMS\\03-SOURCE\\PEMS-cmms-edit-empoleeys-master\\PEMS-cmms-edit-empoleeys-master",
     "branch":  "feat/cmms-passport-global-page-header",
-    "lastCommit":  "5983bd1 2026-09-20 chore(graphify): refresh knowledge graph",
-    "totalCommits":  47,
-    "moduleCount":  110,
+    "lastCommit":  "501fca7 2026-09-28 feat(cmms): Work Order scheduling and Maintenance Calendar",
+    "totalCommits":  55,
+    "moduleCount":  116,
     "stubShimCount":  11,
     "noUiCount":  8,
     "notInNavCount":  24,
-    "noTestCount":  21,
+    "noTestCount":  22,
     "modules":  [
                     {
                         "module":  "Account",
@@ -400,19 +400,23 @@
                         "module":  "Contract",
                         "area":  "",
                         "controllerPath":  "PEMS.Web/Controllers/ContractController.cs",
-                        "actionCount":  5,
-                        "postActionCount":  2,
+                        "actionCount":  18,
+                        "postActionCount":  15,
                         "isRedirectShim":  false,
                         "injectedServices":  [
-                                                 "IContractService"
+                                                 "IContractService",
+                                                 "IContractWorkflowService",
+                                                 "IAccessControlService",
+                                                 "IPermissionService",
+                                                 "ICurrentUserService"
                                              ],
                         "viewsPath":  "PEMS.Web/Views/Contract",
                         "viewCount":  3,
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-19",
-                        "gitCommitCount":  3,
+                        "gitLastTouched":  "2026-09-28",
+                        "gitCommitCount":  5,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -1525,8 +1529,8 @@
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-19",
-                        "gitCommitCount":  3,
+                        "gitLastTouched":  "2026-09-20",
+                        "gitCommitCount":  4,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -1681,6 +1685,43 @@
                         "evidenceUnknown":  0,
                         "evidenceTotal":  9,
                         "evidenceCoveragePct":  56
+                    },
+                    {
+                        "module":  "IrnReceipt",
+                        "area":  "",
+                        "controllerPath":  "PEMS.Web/Controllers/IrnReceiptController.cs",
+                        "actionCount":  8,
+                        "postActionCount":  6,
+                        "isRedirectShim":  false,
+                        "injectedServices":  [
+                                                 "IIrnReceiptService",
+                                                 "ICurrentUserService",
+                                                 "IPermissionService",
+                                                 "INumberingService"
+                                             ],
+                        "viewsPath":  "PEMS.Web/Views/IrnReceipt",
+                        "viewCount":  2,
+                        "inSidebarNav":  true,
+                        "inTests":  true,
+                        "inDocs":  false,
+                        "gitLastTouched":  "2026-09-23",
+                        "gitCommitCount":  1,
+                        "graphConnectivity":  0,
+                        "evidence":  {
+                                         "Controller":  "Present",
+                                         "ServiceLayer":  "Present",
+                                         "EntityOrDbSet":  "Present",
+                                         "MigrationBacked":  "Yes",
+                                         "RazorViews":  "Present",
+                                         "SidebarReachable":  "Present",
+                                         "ExplicitAuthZ":  "GlobalPolicyOnly",
+                                         "TestCoverage":  "Present",
+                                         "Documented":  "Missing"
+                                     },
+                        "evidencePresent":  6,
+                        "evidenceUnknown":  0,
+                        "evidenceTotal":  9,
+                        "evidenceCoveragePct":  67
                     },
                     {
                         "module":  "Isolation",
@@ -1869,6 +1910,43 @@
                         "evidenceCoveragePct":  67
                     },
                     {
+                        "module":  "MaintenanceCalendar",
+                        "area":  "",
+                        "controllerPath":  "PEMS.Web/Controllers/MaintenanceCalendarController.cs",
+                        "actionCount":  3,
+                        "postActionCount":  1,
+                        "isRedirectShim":  false,
+                        "injectedServices":  [
+                                                 "ICmmsCalendarService",
+                                                 "IWorkOrderLifecycleService",
+                                                 "ICurrentUserService",
+                                                 "IPermissionService"
+                                             ],
+                        "viewsPath":  "PEMS.Web/Views/MaintenanceCalendar",
+                        "viewCount":  2,
+                        "inSidebarNav":  true,
+                        "inTests":  true,
+                        "inDocs":  false,
+                        "gitLastTouched":  "2026-09-28",
+                        "gitCommitCount":  1,
+                        "graphConnectivity":  0,
+                        "evidence":  {
+                                         "Controller":  "Present",
+                                         "ServiceLayer":  "Present",
+                                         "EntityOrDbSet":  "Missing",
+                                         "MigrationBacked":  "Unknown",
+                                         "RazorViews":  "Present",
+                                         "SidebarReachable":  "Present",
+                                         "ExplicitAuthZ":  "GlobalPolicyOnly",
+                                         "TestCoverage":  "Present",
+                                         "Documented":  "Missing"
+                                     },
+                        "evidencePresent":  5,
+                        "evidenceUnknown":  1,
+                        "evidenceTotal":  9,
+                        "evidenceCoveragePct":  56
+                    },
+                    {
                         "module":  "MaintenanceHistoryImport",
                         "area":  "",
                         "controllerPath":  "PEMS.Web/Controllers/MaintenanceHistoryImportController.cs",
@@ -1908,20 +1986,21 @@
                         "module":  "MaintenanceMasterData",
                         "area":  "",
                         "controllerPath":  "PEMS.Web/Controllers/MaintenanceMasterDataController.cs",
-                        "actionCount":  21,
-                        "postActionCount":  20,
+                        "actionCount":  23,
+                        "postActionCount":  22,
                         "isRedirectShim":  false,
                         "injectedServices":  [
                                                  "ICurrentUserService",
-                                                 "IPermissionService"
+                                                 "IPermissionService",
+                                                 "IOrganizationStructureService"
                                              ],
                         "viewsPath":  "PEMS.Web/Views/MaintenanceMasterData",
                         "viewCount":  1,
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-09",
-                        "gitCommitCount":  4,
+                        "gitLastTouched":  "2026-09-28",
+                        "gitCommitCount":  5,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -1958,8 +2037,8 @@
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-18",
-                        "gitCommitCount":  4,
+                        "gitLastTouched":  "2026-09-20",
+                        "gitCommitCount":  5,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -2033,8 +2112,8 @@
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-18",
-                        "gitCommitCount":  3,
+                        "gitLastTouched":  "2026-09-23",
+                        "gitCommitCount":  4,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -2234,8 +2313,8 @@
                         "module":  "MrsImport",
                         "area":  "",
                         "controllerPath":  "PEMS.Web/Controllers/MrsImportController.cs",
-                        "actionCount":  5,
-                        "postActionCount":  3,
+                        "actionCount":  7,
+                        "postActionCount":  5,
                         "isRedirectShim":  false,
                         "injectedServices":  [
                                                  "IMrsImportService",
@@ -2248,8 +2327,8 @@
                         "inSidebarNav":  false,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-19",
-                        "gitCommitCount":  4,
+                        "gitLastTouched":  "2026-09-22",
+                        "gitCommitCount":  5,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -2457,15 +2536,16 @@
                         "injectedServices":  [
                                                  "IProcurementPackageService",
                                                  "ICurrentUserService",
-                                                 "IPermissionService"
+                                                 "IPermissionService",
+                                                 "IAccessControlService"
                                              ],
                         "viewsPath":  "PEMS.Web/Views/ProcurementPackage",
                         "viewCount":  3,
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-06",
-                        "gitCommitCount":  3,
+                        "gitLastTouched":  "2026-09-28",
+                        "gitCommitCount":  5,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -2628,6 +2708,42 @@
                         "evidenceCoveragePct":  56
                     },
                     {
+                        "module":  "PurchaseOrder",
+                        "area":  "",
+                        "controllerPath":  "PEMS.Web/Controllers/PurchaseOrderController.cs",
+                        "actionCount":  4,
+                        "postActionCount":  1,
+                        "isRedirectShim":  false,
+                        "injectedServices":  [
+                                                 "IPurchaseOrderService",
+                                                 "IPermissionService",
+                                                 "ICurrentUserService"
+                                             ],
+                        "viewsPath":  "PEMS.Web/Views/PurchaseOrder",
+                        "viewCount":  3,
+                        "inSidebarNav":  true,
+                        "inTests":  true,
+                        "inDocs":  false,
+                        "gitLastTouched":  "2026-09-23",
+                        "gitCommitCount":  1,
+                        "graphConnectivity":  0,
+                        "evidence":  {
+                                         "Controller":  "Present",
+                                         "ServiceLayer":  "Present",
+                                         "EntityOrDbSet":  "Present",
+                                         "MigrationBacked":  "Yes",
+                                         "RazorViews":  "Present",
+                                         "SidebarReachable":  "Present",
+                                         "ExplicitAuthZ":  "GlobalPolicyOnly",
+                                         "TestCoverage":  "Present",
+                                         "Documented":  "Missing"
+                                     },
+                        "evidencePresent":  6,
+                        "evidenceUnknown":  0,
+                        "evidenceTotal":  9,
+                        "evidenceCoveragePct":  67
+                    },
+                    {
                         "module":  "QC",
                         "area":  "",
                         "controllerPath":  "PEMS.Web/Controllers/QCController.cs",
@@ -2642,8 +2758,8 @@
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-19",
-                        "gitCommitCount":  2,
+                        "gitLastTouched":  "2026-09-28",
+                        "gitCommitCount":  3,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -2740,7 +2856,7 @@
                         "module":  "Relationship",
                         "area":  "",
                         "controllerPath":  "PEMS.Web/Controllers/RelationshipController.cs",
-                        "actionCount":  9,
+                        "actionCount":  11,
                         "postActionCount":  2,
                         "isRedirectShim":  false,
                         "injectedServices":  [
@@ -2753,8 +2869,8 @@
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-08",
-                        "gitCommitCount":  2,
+                        "gitLastTouched":  "2026-09-28",
+                        "gitCommitCount":  3,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -2839,8 +2955,8 @@
                         "inSidebarNav":  true,
                         "inTests":  false,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-16",
-                        "gitCommitCount":  2,
+                        "gitLastTouched":  "2026-09-23",
+                        "gitCommitCount":  3,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -3182,21 +3298,22 @@
                         "module":  "Team",
                         "area":  "",
                         "controllerPath":  "PEMS.Web/Controllers/TeamController.cs",
-                        "actionCount":  6,
-                        "postActionCount":  4,
+                        "actionCount":  20,
+                        "postActionCount":  14,
                         "isRedirectShim":  false,
                         "injectedServices":  [
                                                  "ITeamService",
+                                                 "IOrganizationStructureService",
                                                  "ICurrentUserService",
                                                  "IPermissionService"
                                              ],
                         "viewsPath":  "PEMS.Web/Views/Team",
-                        "viewCount":  1,
+                        "viewCount":  3,
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-08",
-                        "gitCommitCount":  2,
+                        "gitLastTouched":  "2026-09-28",
+                        "gitCommitCount":  3,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -3251,6 +3368,43 @@
                         "evidenceCoveragePct":  67
                     },
                     {
+                        "module":  "Tender",
+                        "area":  "",
+                        "controllerPath":  "PEMS.Web/Controllers/TenderController.cs",
+                        "actionCount":  15,
+                        "postActionCount":  12,
+                        "isRedirectShim":  false,
+                        "injectedServices":  [
+                                                 "ITenderService",
+                                                 "IProcurementPackageService",
+                                                 "IPermissionService",
+                                                 "ICurrentUserService"
+                                             ],
+                        "viewsPath":  "PEMS.Web/Views/Tender",
+                        "viewCount":  3,
+                        "inSidebarNav":  true,
+                        "inTests":  true,
+                        "inDocs":  false,
+                        "gitLastTouched":  "2026-09-23",
+                        "gitCommitCount":  1,
+                        "graphConnectivity":  0,
+                        "evidence":  {
+                                         "Controller":  "Present",
+                                         "ServiceLayer":  "Present",
+                                         "EntityOrDbSet":  "Present",
+                                         "MigrationBacked":  "Yes",
+                                         "RazorViews":  "Present",
+                                         "SidebarReachable":  "Present",
+                                         "ExplicitAuthZ":  "GlobalPolicyOnly",
+                                         "TestCoverage":  "Present",
+                                         "Documented":  "Missing"
+                                     },
+                        "evidencePresent":  6,
+                        "evidenceUnknown":  0,
+                        "evidenceTotal":  9,
+                        "evidenceCoveragePct":  67
+                    },
+                    {
                         "module":  "Theme",
                         "area":  "",
                         "controllerPath":  "PEMS.Web/Controllers/ThemeController.cs",
@@ -3263,10 +3417,10 @@
                         "viewsPath":  "PEMS.Web/Views/Theme",
                         "viewCount":  0,
                         "inSidebarNav":  false,
-                        "inTests":  false,
+                        "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-14",
-                        "gitCommitCount":  2,
+                        "gitLastTouched":  "2026-09-28",
+                        "gitCommitCount":  3,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -3276,13 +3430,13 @@
                                          "RazorViews":  "Missing",
                                          "SidebarReachable":  "Missing",
                                          "ExplicitAuthZ":  "GlobalPolicyOnly",
-                                         "TestCoverage":  "Missing",
+                                         "TestCoverage":  "Present",
                                          "Documented":  "Missing"
                                      },
-                        "evidencePresent":  1,
+                        "evidencePresent":  2,
                         "evidenceUnknown":  1,
                         "evidenceTotal":  9,
-                        "evidenceCoveragePct":  11
+                        "evidenceCoveragePct":  22
                     },
                     {
                         "module":  "Transmittal",
@@ -3402,12 +3556,13 @@
                         "module":  "Vendor",
                         "area":  "",
                         "controllerPath":  "PEMS.Web/Controllers/VendorController.cs",
-                        "actionCount":  8,
-                        "postActionCount":  4,
+                        "actionCount":  9,
+                        "postActionCount":  5,
                         "isRedirectShim":  false,
                         "injectedServices":  [
                                                  "IVendorService",
                                                  "IVendorRiskService",
+                                                 "IVendorQualificationService",
                                                  "IPermissionService",
                                                  "ICurrentUserService"
                                              ],
@@ -3416,8 +3571,8 @@
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-19",
-                        "gitCommitCount":  4,
+                        "gitLastTouched":  "2026-09-23",
+                        "gitCommitCount":  5,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -3474,8 +3629,8 @@
                         "module":  "WorkOrder",
                         "area":  "",
                         "controllerPath":  "PEMS.Web/Controllers/WorkOrderController.cs",
-                        "actionCount":  24,
-                        "postActionCount":  21,
+                        "actionCount":  25,
+                        "postActionCount":  22,
                         "isRedirectShim":  false,
                         "injectedServices":  [
                                                  "IWorkOrderReviewService",
@@ -3492,8 +3647,8 @@
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-20",
-                        "gitCommitCount":  6,
+                        "gitLastTouched":  "2026-09-28",
+                        "gitCommitCount":  8,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -3575,6 +3730,40 @@
                                          "SidebarReachable":  "Present",
                                          "ExplicitAuthZ":  "Present",
                                          "TestCoverage":  "Present",
+                                         "Documented":  "Missing"
+                                     },
+                        "evidencePresent":  6,
+                        "evidenceUnknown":  0,
+                        "evidenceTotal":  9,
+                        "evidenceCoveragePct":  67
+                    },
+                    {
+                        "module":  "ContractApprovalAuthority",
+                        "area":  "Admin",
+                        "controllerPath":  "PEMS.Web/Areas/Admin/Controllers/ContractApprovalAuthorityController.cs",
+                        "actionCount":  4,
+                        "postActionCount":  3,
+                        "isRedirectShim":  false,
+                        "injectedServices":  [
+                                                 "IContractApprovalAuthorityRuleService"
+                                             ],
+                        "viewsPath":  "PEMS.Web/Areas/Admin/Views/ContractApprovalAuthority",
+                        "viewCount":  1,
+                        "inSidebarNav":  true,
+                        "inTests":  false,
+                        "inDocs":  false,
+                        "gitLastTouched":  "2026-09-23",
+                        "gitCommitCount":  1,
+                        "graphConnectivity":  0,
+                        "evidence":  {
+                                         "Controller":  "Present",
+                                         "ServiceLayer":  "Present",
+                                         "EntityOrDbSet":  "Present",
+                                         "MigrationBacked":  "Yes",
+                                         "RazorViews":  "Present",
+                                         "SidebarReachable":  "Present",
+                                         "ExplicitAuthZ":  "Present",
+                                         "TestCoverage":  "Missing",
                                          "Documented":  "Missing"
                                      },
                         "evidencePresent":  6,
@@ -3702,8 +3891,8 @@
                         "inSidebarNav":  true,
                         "inTests":  true,
                         "inDocs":  false,
-                        "gitLastTouched":  "2026-09-18",
-                        "gitCommitCount":  8,
+                        "gitLastTouched":  "2026-09-23",
+                        "gitCommitCount":  9,
                         "graphConnectivity":  0,
                         "evidence":  {
                                          "Controller":  "Present",
@@ -3959,6 +4148,40 @@
                         "evidenceUnknown":  0,
                         "evidenceTotal":  9,
                         "evidenceCoveragePct":  67
+                    },
+                    {
+                        "module":  "WorkflowManagement",
+                        "area":  "Admin",
+                        "controllerPath":  "PEMS.Web/Areas/Admin/Controllers/WorkflowManagementController.cs",
+                        "actionCount":  18,
+                        "postActionCount":  0,
+                        "isRedirectShim":  false,
+                        "injectedServices":  [
+                                                 "IWorkflowAdministrationService"
+                                             ],
+                        "viewsPath":  "PEMS.Web/Areas/Admin/Views/WorkflowManagement",
+                        "viewCount":  6,
+                        "inSidebarNav":  true,
+                        "inTests":  false,
+                        "inDocs":  false,
+                        "gitLastTouched":  "2026-09-21",
+                        "gitCommitCount":  1,
+                        "graphConnectivity":  0,
+                        "evidence":  {
+                                         "Controller":  "Present",
+                                         "ServiceLayer":  "Present",
+                                         "EntityOrDbSet":  "Missing",
+                                         "MigrationBacked":  "Unknown",
+                                         "RazorViews":  "Present",
+                                         "SidebarReachable":  "Present",
+                                         "ExplicitAuthZ":  "Present",
+                                         "TestCoverage":  "Missing",
+                                         "Documented":  "Missing"
+                                     },
+                        "evidencePresent":  5,
+                        "evidenceUnknown":  1,
+                        "evidenceTotal":  9,
+                        "evidenceCoveragePct":  56
                     }
                 ]
 }

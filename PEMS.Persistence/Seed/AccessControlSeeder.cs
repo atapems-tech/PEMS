@@ -57,14 +57,22 @@ public static class AccessControlSeeder
             PEMS.Persistence.Identity.SystemRoles.EngineeringSupervisor,
             PEMS.Persistence.Identity.SystemRoles.DocumentController
         })
-            await GrantIfTrueAsync(db, cache, roleName, "EngineeringDocuments", "ViewAllDisciplines", true);
+            await SyncGrantAsync(db, cache, roleName, "EngineeringDocuments", "ViewAllDisciplines", true);
 
         foreach (var roleName in new[]
         {
             PEMS.Persistence.Identity.SystemRoles.EngineeringManager,
             PEMS.Persistence.Identity.SystemRoles.DocumentController
         })
-            await GrantIfTrueAsync(db, cache, roleName, "Document", "RecordClientResponse", true);
+            await SyncGrantAsync(db, cache, roleName, "Document", "RecordClientResponse", true);
+
+        // طبق «PEMS Authorization Architecture Completion» فاز ۳: جایگزین دقیق بخش تایید-دیسیپلین
+        // در EngineeringDocumentsController.CanApproveDocumentDisciplineAsync - «مدیر مهندسی می‌تواند
+        // هر دیسیپلینی را تایید کند؛ سرپرست فقط دیسیپلین خودش را» (طبق کامنت موجود همان متد). عمداً
+        // از ViewAllDisciplines استفاده نشد - آن مجوز به سرپرست هم داده شده و استفاده‌ی مجدد از آن
+        // این‌جا دامنه‌ی تایید سرپرست را (که طبق قاعده‌ی صریح موجود باید محدود به دیسیپلین خودش بماند)
+        // به اشتباه گسترش می‌داد.
+        await SyncGrantAsync(db, cache, PEMS.Persistence.Identity.SystemRoles.EngineeringManager, "EngineeringDocuments", "ApproveAllDisciplines", true);
     }
 
     /// <summary>
@@ -122,23 +130,44 @@ public static class AccessControlSeeder
         await db.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// طبق «PEMS Authorization Architecture Completion» فاز ۴ بند ۱۳: هم‌گام‌سازی فوریِ یک نقش
+    /// (نه هر ۲۰ نقش) بلافاصله بعد از این‌که PermissionService.SetPermissionsAsync ردیف‌های
+    /// RolePermission را ذخیره کرد - از همان تابع SyncGrantAsync که SeedFromLegacyAsync در
+    /// Startup مصرف می‌کند (نه یک مسیر نوشتن یا یک مکانیزم هم‌گام‌سازیِ تازه). این‌طوری تغییر
+    /// مجوز از طریق Admin/PermissionMatrix همان درخواست بعدی زمان اجرا را می‌بیند - شکاف «یک
+    /// چرخه‌ی Restart» که ممیزی قبلی مستند کرده بود، برای این مسیر خاص بسته می‌شود؛ Restart
+    /// برای بقیه‌ی منابع (RoleModuleAction, Phase3 Permissions) هنوز idempotent/بی‌خطر است.
+    /// </summary>
+    public static async Task SyncRoleFromRolePermissionsAsync(PEMSDbContext db, string roleName)
+    {
+        var cache = new Dictionary<string, Permission>(StringComparer.Ordinal);
+        var rows = await db.RolePermissions.Where(x => x.RoleName == roleName).ToListAsync();
+
+        foreach (var row in rows)
+            await SyncRowAsync(db, cache, row);
+    }
+
     private static async Task SeedFromRolePermissionsAsync(PEMSDbContext db, Dictionary<string, Permission> cache)
     {
         var rows = await db.RolePermissions.ToListAsync();
 
         foreach (var row in rows)
-        {
-            await GrantIfTrueAsync(db, cache, row.RoleName, row.ModuleName, "View", row.CanView);
-            await GrantIfTrueAsync(db, cache, row.RoleName, row.ModuleName, "Create", row.CanCreate);
-            await GrantIfTrueAsync(db, cache, row.RoleName, row.ModuleName, "Edit", row.CanEdit);
-            await GrantIfTrueAsync(db, cache, row.RoleName, row.ModuleName, "Delete", row.CanDelete);
-            await GrantIfTrueAsync(db, cache, row.RoleName, row.ModuleName, "Approve", row.CanApprove);
-            await GrantIfTrueAsync(db, cache, row.RoleName, row.ModuleName, "ManualNumber", row.CanManualNumber);
-            await GrantIfTrueAsync(db, cache, row.RoleName, row.ModuleName, "Freeze", row.CanFreeze);
-            await GrantIfTrueAsync(db, cache, row.RoleName, row.ModuleName, "Unfreeze", row.CanUnfreeze);
-            await GrantIfTrueAsync(db, cache, row.RoleName, row.ModuleName, "Hold", row.CanHold);
-            await GrantIfTrueAsync(db, cache, row.RoleName, row.ModuleName, "ReleaseHold", row.CanReleaseHold);
-        }
+            await SyncRowAsync(db, cache, row);
+    }
+
+    private static async Task SyncRowAsync(PEMSDbContext db, Dictionary<string, Permission> cache, RolePermission row)
+    {
+        await SyncGrantAsync(db, cache, row.RoleName, row.ModuleName, "View", row.CanView);
+        await SyncGrantAsync(db, cache, row.RoleName, row.ModuleName, "Create", row.CanCreate);
+        await SyncGrantAsync(db, cache, row.RoleName, row.ModuleName, "Edit", row.CanEdit);
+        await SyncGrantAsync(db, cache, row.RoleName, row.ModuleName, "Delete", row.CanDelete);
+        await SyncGrantAsync(db, cache, row.RoleName, row.ModuleName, "Approve", row.CanApprove);
+        await SyncGrantAsync(db, cache, row.RoleName, row.ModuleName, "ManualNumber", row.CanManualNumber);
+        await SyncGrantAsync(db, cache, row.RoleName, row.ModuleName, "Freeze", row.CanFreeze);
+        await SyncGrantAsync(db, cache, row.RoleName, row.ModuleName, "Unfreeze", row.CanUnfreeze);
+        await SyncGrantAsync(db, cache, row.RoleName, row.ModuleName, "Hold", row.CanHold);
+        await SyncGrantAsync(db, cache, row.RoleName, row.ModuleName, "ReleaseHold", row.CanReleaseHold);
     }
 
     private static async Task SeedFromRoleModuleActionsAsync(PEMSDbContext db, Dictionary<string, Permission> cache)
@@ -146,31 +175,46 @@ public static class AccessControlSeeder
         var rows = await db.RoleModuleActions.ToListAsync();
 
         foreach (var row in rows)
-            await GrantIfTrueAsync(db, cache, row.RoleName, row.Module, row.Action, true);
+            await SyncGrantAsync(db, cache, row.RoleName, row.Module, row.Action, true);
     }
 
-    private static async Task GrantIfTrueAsync(
+    /// <summary>
+    /// طبق «PEMS Authorization Architecture Completion» فاز ۴ بند ۱۳: برخلاف GrantIfTrueAsync
+    /// قدیمی (که فقط اضافه می‌کرد، هرگز لغو نمی‌کرد)، این نسخه وقتی granted=false و یک Grant فعال
+    /// از قبل موجود است، آن را غیرفعال می‌کند (IsActive=false، نه حذف - همان الگوی موجود
+    /// WorkOrderGovernanceSeeder برای «مجوزهای قدیمی که پرچمشان False شد»، صرفاً این‌جا تعمیم داده
+    /// شده). بدون این، غیرفعال‌کردن یک Checkbox در Permission Matrix هرگز به RolePermissionGrant
+    /// (منبع واقعی تصمیم AccessControlService) نمی‌رسید - Grant قدیمی برای همیشه فعال می‌ماند.
+    /// </summary>
+    private static async Task SyncGrantAsync(
         PEMSDbContext db, Dictionary<string, Permission> cache, string roleName, string resourceName, string actionName, bool granted)
     {
-        if (!granted) return;
-
         var permission = await GetOrCreatePermissionAsync(db, cache, resourceName, actionName);
 
         var roleId = await db.Roles.Where(r => r.Name == roleName).Select(r => (int?)r.Id).FirstOrDefaultAsync();
-        if (roleId == null) return; // نقش هنوز در AspNetRoles وجود ندارد - چیزی برای Grant نیست
+        if (roleId == null) return; // نقش هنوز در AspNetRoles وجود ندارد - چیزی برای هم‌گام‌سازی نیست
 
-        var exists = await db.RolePermissionGrants
-            .AnyAsync(g => g.RoleId == roleId.Value && g.PermissionId == permission.PermissionId);
-        if (exists) return;
+        var existing = await db.RolePermissionGrants
+            .FirstOrDefaultAsync(g => g.RoleId == roleId.Value && g.PermissionId == permission.PermissionId);
 
-        db.RolePermissionGrants.Add(new RolePermissionGrant
+        if (granted)
         {
-            RoleId = roleId.Value,
-            PermissionId = permission.PermissionId,
-            IsActive = true,
-            CreatedDate = DateTime.Now
-        });
-        await db.SaveChangesAsync();
+            if (existing == null)
+            {
+                db.RolePermissionGrants.Add(new RolePermissionGrant { RoleId = roleId.Value, PermissionId = permission.PermissionId, IsActive = true, CreatedDate = DateTime.Now });
+                await db.SaveChangesAsync();
+            }
+            else if (!existing.IsActive)
+            {
+                existing.IsActive = true;
+                await db.SaveChangesAsync();
+            }
+        }
+        else if (existing is { IsActive: true })
+        {
+            existing.IsActive = false;
+            await db.SaveChangesAsync();
+        }
     }
 
     private static async Task<Permission> GetOrCreatePermissionAsync(

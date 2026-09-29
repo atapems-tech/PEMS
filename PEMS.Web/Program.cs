@@ -730,6 +730,16 @@ using (var scope = app.Services.CreateScope())
     // Work Order های Legacy و Instance های موجود دست نمی‌خورند.
     await PEMS.Persistence.Seed.WorkOrderGovernanceSeeder.SeedAsync(scope.ServiceProvider);
     await PEMS.Persistence.Seed.WorkOrderLifecycleWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // طبق «PEMS — Work Order Governance Remediation» F1: ممیزی زنده نشان داد هیچ Department ای با
+    // OrganizationDomain='Operations' وجود ندارد - بدون این، گذار Operations Issue/Release برای هیچ
+    // کاربری قابل اجرا نیست. Idempotent؛ هیچ Employee واقعی تخصیص داده نمی‌شود.
+    await PEMS.Persistence.Seed.OperationsOrganizationSeeder.SeedAsync(scope.ServiceProvider);
+
+    // طبق «PEMS — Work Order Governance Remediation» F2: نسخه‌ی دوم گردش‌کار Work Order که Issue/
+    // Release را از Start Work جدا می‌کند (Instance های در حال اجرا روی نسخه‌ی قبلی دست‌نخورده می‌مانند).
+    await PEMS.Persistence.Seed.WorkOrderLifecycleWorkflowV2Seeder.SeedAsync(scope.ServiceProvider);
+
     await PEMS.Persistence.Seed.WorkflowManagementSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق «PEMS Bilingual Help & Knowledge System» - کتابخانه‌ی اولیه‌ی محتوای راهنما (ایدمپوتنت)

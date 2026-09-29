@@ -21,14 +21,20 @@ public class WorkOrderWorkflowStructureTests : WorkOrderGovernanceTestBase
         var sp = new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddSingleton(Ctx).BuildServiceProvider();
         await WorkOrderLifecycleWorkflowSeeder.SeedAsync(sp);
         await WorkOrderGovernanceSeeder.SeedAsync(sp);
+        // طبق F2: نسخه‌ی ۲ (Released/Execution Authorized) از قبل توسط پایه‌ی تست Seed شده - این فراخوانی
+        // دوباره فقط Idempotency خودِ V2 Seeder را هم تأیید می‌کند.
+        await WorkOrderLifecycleWorkflowV2Seeder.SeedAsync(sp);
 
         var def = await Ctx.WorkflowDefinitions.SingleAsync(d => d.Name == WorkOrderWorkflow.LifecycleDefinitionName);
-        var v = await Ctx.WorkflowVersions.SingleAsync(x => x.WorkflowDefinitionId == def.WorkflowDefinitionId);
+        // طبق F2: از این پس دو نسخه وجود دارد (v1 Published قدیمی برای Instance های موجود، v2 Published تازه
+        // که Binding روی آن Pin شده) - آخرین/Pin‌شده همان v2 است.
+        var v = await Ctx.WorkflowVersions.Where(x => x.WorkflowDefinitionId == def.WorkflowDefinitionId).OrderByDescending(x => x.VersionNumber).FirstAsync();
         Assert.Equal("Published", v.Status);
+        Assert.Equal(2, await Ctx.WorkflowVersions.CountAsync(x => x.WorkflowDefinitionId == def.WorkflowDefinitionId));
         var b = await Ctx.WorkflowBindings.SingleAsync(x => x.EntityType == WorkOrderWorkflow.LifecycleEntityType);
         Assert.Equal(v.WorkflowVersionId, b.PinnedVersionId);
         Assert.True(b.IsActive);
-        Assert.Equal(new[] { "Created", "Maintenance Planning", "Preparation / Assignment", "Operations Issue / Release", "In Execution", "On Hold", "Completion", "Originating-Discipline Verification", "Final Approval" },
+        Assert.Equal(new[] { "Created", "Maintenance Planning", "Preparation / Assignment", "Operations Issue / Release", "Released / Execution Authorized", "In Execution", "On Hold", "Completion", "Originating-Discipline Verification", "Final Approval" },
             (await Ctx.WorkflowStages.Where(s => s.WorkflowVersionId == v.WorkflowVersionId).OrderBy(s => s.StageOrder).Select(s => s.Name).ToListAsync()).ToArray());
         // بازبینی: Binding صریح با هویت جدا
         var rb = await Ctx.WorkflowBindings.SingleAsync(x => x.EntityType == WorkOrderWorkflow.ReviewEntityType);
@@ -39,7 +45,10 @@ public class WorkOrderWorkflowStructureTests : WorkOrderGovernanceTestBase
     [Fact]
     public async Task Published_lifecycle_version_is_immutable()
     {
-        var v = await Ctx.WorkflowVersions.Include(x => x.Definition).SingleAsync(x => x.Definition!.Name == WorkOrderWorkflow.LifecycleDefinitionName);
+        // طبق F2: از این پس دو نسخه‌ی Published وجود دارد (v1 قدیمی + v2 Pin‌شده) - این تست دقیقاً
+        // خودِ نسخه‌ی جاری/Pin‌شده (v2) را می‌سنجد، نه فرض «فقط یک نسخه هست».
+        var v = await Ctx.WorkflowVersions.Include(x => x.Definition).Where(x => x.Definition!.Name == WorkOrderWorkflow.LifecycleDefinitionName)
+            .OrderByDescending(x => x.VersionNumber).FirstAsync();
         var defs = new WorkflowDefinitionService(Ctx, new WorkflowVersionValidator(Ctx, WorkOrderWorkflow.CreateRegistry(), new WorkflowConditionEvaluator(), new PemsWorkflowReferenceCatalog(Ctx)));
         await Assert.ThrowsAsync<WorkflowImmutableVersionException>(() => defs.AddStageAsync(v.WorkflowVersionId, new WorkflowStageInput { Name = "X", StageOrder = 99, ResponsibleRole = "Permission:WorkOrder.Plan" }, new WorkflowActor(1)));
     }
@@ -47,11 +56,24 @@ public class WorkOrderWorkflowStructureTests : WorkOrderGovernanceTestBase
     [Fact]
     public async Task Every_transition_requires_exactly_one_known_task_permission_and_the_validator_accepts_the_definition()
     {
-        var v = await Ctx.WorkflowVersions.Include(x => x.Definition).SingleAsync(x => x.Definition!.Name == WorkOrderWorkflow.LifecycleDefinitionName);
-        var trs = await Ctx.WorkflowTransitions.Where(t => t.WorkflowVersionId == v.WorkflowVersionId && t.FromStageId != null).ToListAsync();
-        Assert.All(trs, t => Assert.Contains(t.RequiredPermission, WorkOrderWorkflow.Perm.Workflow));
-        var r = await new WorkflowVersionValidator(Ctx, WorkOrderWorkflow.CreateRegistry(), new WorkflowConditionEvaluator(), new PemsWorkflowReferenceCatalog(Ctx)).ValidateAsync(v.WorkflowVersionId);
-        Assert.True(r.IsValid, string.Join(",", r.Errors.Select(e => e.Code)));
+        // طبق F2: باید روی هر دو نسخه‌ی Published (v1 قدیمی که Instance های در حال اجرا هنوز
+        // رویش هستند + v2 Pin‌شده) این پایانامه برقرار بماند - نه فقط جدیدترین.
+        var versions = await Ctx.WorkflowVersions.Include(x => x.Definition)
+            .Where(x => x.Definition!.Name == WorkOrderWorkflow.LifecycleDefinitionName).ToListAsync();
+        Assert.NotEmpty(versions);
+        foreach (var v in versions)
+        {
+            var trs = await Ctx.WorkflowTransitions.Where(t => t.WorkflowVersionId == v.WorkflowVersionId && t.FromStageId != null).ToListAsync();
+            Assert.All(trs, t => Assert.Contains(t.RequiredPermission, WorkOrderWorkflow.Perm.Workflow));
+            // طبق «PEMS Authorization Architecture Completion» فاز ۵ بند ۲۶: علاوه بر عضویت در
+            // آرایه‌ی C#، باید یک ردیف Permission واقعی در کاتالوگ هم برایش موجود باشد - وگرنه
+            // گذار به‌خاموشی برای همه غیرقابل‌استفاده می‌شود (هیچ RolePermissionGrant ای هرگز
+            // نمی‌تواند به یک Permission ناموجود اشاره کند).
+            var permissionNames = await Ctx.Permissions.Select(p => p.Name).ToListAsync();
+            Assert.All(trs, t => Assert.Contains(t.RequiredPermission, permissionNames));
+            var r = await new WorkflowVersionValidator(Ctx, WorkOrderWorkflow.CreateRegistry(), new WorkflowConditionEvaluator(), new PemsWorkflowReferenceCatalog(Ctx)).ValidateAsync(v.WorkflowVersionId);
+            Assert.True(r.IsValid, $"v{v.VersionNumber}: " + string.Join(",", r.Errors.Select(e => e.Code)));
+        }
     }
 
     [Fact]
@@ -156,13 +178,14 @@ public class WorkOrderCreationAndLifecycleTests : WorkOrderGovernanceTestBase
             await Do(id, "Approve", Planner); await Snap();                                            // → Preparation
             Assert.True((await Svc.AssignExecutorAsync(id, null, Executor.EmployeeId, DisciplineHead)).Success);
             await Do(id, "Approve", Planner); await Snap();                                            // → Issue
-            await Do(id, "Approve", Ops); await Snap();                                                // → Execution
+            await Do(id, "Approve", Ops); await Snap();                                                // → Released / Execution Authorized (F2)
+            await Do(id, "Approve", DisciplineHead); await Snap();                                      // → Start Work → Execution (F2)
             await Do(id, "Approve", Executor, null, Data()); await Snap();                              // → Completion
             await Do(id, "Approve", Executor); await Snap();                                           // → Verification
             await Do(id, "Approve", Verifier); await Snap();                                           // → Final Approval
             await Do(id, "Approve", Approver); await Snap();                                           // → Closed
 
-            Assert.Equal(new[] { "Open", "Open", "Assigned", "Assigned", "InProgress", "Completed", "Completed", "Completed", "Closed" }, statuses.ToArray());
+            Assert.Equal(new[] { "Open", "Open", "Assigned", "Assigned", "Assigned", "InProgress", "Completed", "Completed", "Completed", "Closed" }, statuses.ToArray());
             var inst = await Ctx.WorkflowInstances.SingleAsync(i => i.EntityKey == WorkOrderWorkflow.LifecycleKey(id));
             Assert.Equal("Completed", inst.Status);
             var wo = await Wo(id);
@@ -219,7 +242,15 @@ public class WorkOrderCreationAndLifecycleTests : WorkOrderGovernanceTestBase
         Ctx.Permits.Add(new Permit { PermitNumber = "PT-1", PermitType = "Hot", Title = "p", WorkOrderId = id.Value, Status = "Active", RequestedByEmployeeId = Ops.EmployeeId!.Value });
         await Ctx.SaveChangesAsync();
         await Do(id.Value, "Approve", Ops);
+        // طبق F2: Issue/Release دیگر خودش InProgress نمی‌شود - فقط تا Released/Execution Authorized
+        // می‌رود؛ StartDate هم هنوز ست نشده.
+        Assert.Equal("Assigned", (await Wo(id.Value)).Status);
+        Assert.Null((await Wo(id.Value)).StartDate);
+        Assert.Equal("Released / Execution Authorized", (await Svc.GetWorkflowViewAsync(id.Value, DisciplineHead))!.CurrentStageName);
+
+        await Do(id.Value, "Approve", DisciplineHead);                                                // Start Work
         Assert.Equal("InProgress", (await Wo(id.Value)).Status);
+        Assert.NotNull((await Wo(id.Value)).StartDate);
     }
 
     [Fact]
@@ -347,6 +378,7 @@ public class WorkOrderAuthorizationAndSodTests : WorkOrderGovernanceTestBase
         await Do(id, "Approve", Planner);
         Assert.True((await Svc.AssignExecutorAsync(id, null, creatorExec.EmployeeId, DisciplineHead)).Success);
         await Do(id, "Approve", Planner); await Do(id, "Approve", Ops);
+        await Do(id, "Approve", creatorExec);                            // Start Work (F2) - همان فرد Create+Execute
         await Do(id, "Approve", creatorExec, null, Data(null));         // Creator ≠ Executor اجباری نیست
         Assert.Equal("Completed", (await Wo(id)).Status);
     }
@@ -362,7 +394,11 @@ public class WorkOrderAuthorizationAndSodTests : WorkOrderGovernanceTestBase
         Assert.True((await Svc.AssignExecutorAsync(id, null, Executor.EmployeeId, DisciplineHead)).Success);
         await Do(id, "Approve", planner);
         await Do(id, "Approve", Ops);
-        Assert.Matches("برنامه‌ریز|planner", await Fail(id, "Approve", planner, Data()));                   // Planner ≠ Executor
+        Assert.Matches("برنامه‌ریز|planner", await Fail(id, "Approve", planner));                            // Planner ≠ Start Work (F2: همان SoD روی Start هم اعمال می‌شود)
+        Assert.Equal("Assigned", (await Wo(id)).Status);
+        await Do(id, "Approve", DisciplineHead);                                                            // Start Work توسط شخص ثالث بی‌طرف
+        Assert.Equal("InProgress", (await Wo(id)).Status);
+        Assert.Matches("برنامه‌ریز|planner", await Fail(id, "Approve", planner, Data()));                   // Planner ≠ Executor برای تکمیل هم
         Assert.Equal("InProgress", (await Wo(id)).Status);
 
         // Issuer ≠ Executor: صادرکننده بعداً به Maintenance منتقل شود و مجوز Execute بگیرد
@@ -413,6 +449,7 @@ public class WorkOrderAuthorizationAndSodTests : WorkOrderGovernanceTestBase
         // Manager در Maintenance/Electrical است؛ Execute نیازمند دیسیپلین مسئول (Mechanical) است
         var mgrMech = new WorkOrderActor(Manager.EmployeeId, mgrExec.Roles);
         var mgrEmp = await Ctx.Employees.FirstAsync(e => e.EmployeeId == Manager.EmployeeId); mgrEmp.DisciplineId = Mech; await Ctx.SaveChangesAsync();
+        await Do(id, "Approve", mgrMech);                                                                            // Start Work (F2)
         await Do(id, "Approve", mgrMech, null, Data(null)); await Do(id, "Approve", mgrMech);                       // Manager اجرا کرد
         await Do(id, "Approve", Verifier);
         Assert.Matches("مجری|executor", await Fail(id, "Approve", mgrMech));                                        // نمی‌تواند تصویب نهایی کند
@@ -440,6 +477,11 @@ public class WorkOrderAuthorizationAndSodTests : WorkOrderGovernanceTestBase
         await Do(id, "Approve", Planner);
         await Fail(id, "Approve", Executor, Data());                                                                  // هنوز صادر نشده (Operations)
         await Do(id, "Approve", Ops);
+        // طبق F2: بلافاصله بعد از Issue/Release هنوز InProgress نیست - Execute (تکمیل) هنوز در
+        // دسترس نیست؛ فقط Start Work (F2) در دسترس است.
+        Assert.Equal("Assigned", (await Wo(id)).Status);
+        await Do(id, "Approve", Executor);                                                                            // Start Work
+        Assert.Equal("InProgress", (await Wo(id)).Status);
         await Fail(id, "Approve", Executor, new WorkOrderCompletionData());                                           // ISO 14224 برای Emergency الزامی
         await Do(id, "Approve", Executor, null, Data());
     }
@@ -639,8 +681,12 @@ public class WorkOrderConversionAndDynamicProofTests : WorkOrderGovernanceTestBa
     public async Task Reliability_Review_added_by_configuration_appears_for_new_work_orders_only_without_code_changes()
     {
         var old = await CreateAsync();
-        await Do(old, "Approve", Creator);                                                                         // v1: Planning
-        var v1 = await Ctx.WorkflowVersions.Include(v => v.Definition).SingleAsync(v => v.Definition!.Name == WorkOrderWorkflow.LifecycleDefinitionName);
+        await Do(old, "Approve", Creator);                                                                         // نسخه‌ی جاری (F2: v2 که Released/Execution Authorized دارد): Planning
+        // طبق F2: پایه‌ی تست از قبل v2 را Seed/Pin کرده - "قدیمی‌ترین نسخه‌ی این تست" همان نسخه‌ی
+        // در حال حاضر Pin‌شده است، نه لزوماً v1 خام.
+        var v1 = await Ctx.WorkflowVersions.Include(v => v.Definition).Where(v => v.Definition!.Name == WorkOrderWorkflow.LifecycleDefinitionName)
+            .OrderByDescending(v => v.VersionNumber).FirstAsync();
+        var oldVersionNumber = v1.VersionNumber;
 
         var defs = new WorkflowDefinitionService(Ctx, new WorkflowVersionValidator(Ctx, WorkOrderWorkflow.CreateRegistry(), new WorkflowConditionEvaluator(), new PemsWorkflowReferenceCatalog(Ctx)));
         var admin = new WorkflowActor(99, "admin");
@@ -667,7 +713,7 @@ public class WorkOrderConversionAndDynamicProofTests : WorkOrderGovernanceTestBa
         var viewOld = (await Svc.GetWorkflowViewAsync(old, Planner))!;
         Assert.Contains("Reliability Review", viewNew.Stages.Select(s => s.Name));
         Assert.DoesNotContain("Reliability Review", viewOld.Stages.Select(s => s.Name));
-        Assert.Equal(1, viewOld.VersionNumber); Assert.Equal(2, viewNew.VersionNumber);
+        Assert.Equal(oldVersionNumber, viewOld.VersionNumber); Assert.Equal(oldVersionNumber + 1, viewNew.VersionNumber);
         Assert.Equal("Reliability Review", viewNew.AvailableActions.Single(a => a.ActionType == "Approve").ToStageName);
         Assert.True((await Svc.SetPlanningAsync(fresh, Mech, Planner)).Success);
         await Do(fresh, "Approve", Planner);

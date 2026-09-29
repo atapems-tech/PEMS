@@ -106,6 +106,11 @@ public class PermissionService : IPermissionService
         }
 
         await _context.SaveChangesAsync();
+
+        // طبق «PEMS Authorization Architecture Completion» فاز ۴ بند ۱۳: بدون این، تغییر Checkbox
+        // این‌جا فقط RolePermission (ورودی Legacy) را به‌روزرسانی می‌کرد و تا Restart بعدی برنامه
+        // به RolePermissionGrant (منبعی که AccessControlService واقعاً می‌خواند) نمی‌رسید.
+        await PEMS.Persistence.Seed.AccessControlSeeder.SyncRoleFromRolePermissionsAsync(_context, roleName);
     }
 
     public async Task<bool> HasPermissionAsync(IEnumerable<string> userRoles, string moduleName, string action)

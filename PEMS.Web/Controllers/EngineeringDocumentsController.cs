@@ -188,14 +188,19 @@ public class EngineeringDocumentsController : Controller
     // طبق بررسی چرخه‌ی مدرک: دیدن مدارک و اجازه‌ی تایید دو چیز جدا هستند. مدیر مهندسی و ادمین
     // سیستم می‌توانند هر دیسیپلینی را تایید کنند؛ سرپرست فقط دیسیپلین خودش را (نه یک تاییدکننده‌ی
     // عمومی برای همه‌چیز) - این دقیقاً همان چیزی است که در پروژه‌های بزرگ EPC واقعی هم رعایت می‌شود.
+    // طبق «PEMS Authorization Architecture Completion» فاز ۳: جایگزین داده‌محور سه نقش ثابت قبلی
+    // (SystemAdmin/EngineeringManager/EngineeringSupervisor) - رفتار عیناً یکسان، اثبات‌شده با
+    // این‌که RolePermission همین دو نقش غیر-Admin را از قبل با CanApprove=true داشت (SystemAdmin
+    // از طریق Bypass عمومی AccessControlService عبور می‌کند، دقیقاً مثل قبل). «هر دیسیپلینی»
+    // اکنون یک مجوز جدا (EngineeringDocuments.ApproveAllDisciplines، فقط برای Manager) است - نه
+    // بازاستفاده از ViewAllDisciplines (که به سرپرست هم داده شده و دامنه‌ی تایید را غلط می‌گستراند).
     private async Task<bool> CanApproveDocumentDisciplineAsync(int? documentDisciplineId)
     {
-        if (_currentUser.Roles.Contains(PEMS.Persistence.Identity.SystemRoles.SystemAdmin) ||
-            _currentUser.Roles.Contains(PEMS.Persistence.Identity.SystemRoles.EngineeringManager))
-            return true;
-
-        if (!_currentUser.Roles.Contains(PEMS.Persistence.Identity.SystemRoles.EngineeringSupervisor))
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EngineeringDocuments", "Approve"))
             return false;
+
+        var unrestricted = await _accessControlService.AuthorizeForRolesAsync(_currentUser.Roles, "EngineeringDocuments", "ApproveAllDisciplines");
+        if (unrestricted.Allowed) return true;
 
         if (!documentDisciplineId.HasValue) return true; // مدرک بدون دیسیپلین مشخص، محدودیتی ندارد
 

@@ -14,7 +14,7 @@
         <div class="admin-toolbar"><div class="admin-toolbar-main"><span class="text-body-secondary small"><strong>@Model.Count</strong> roles configured</span></div></div>
         <div class="table-responsive">
             <table class="table table-enterprise">
-                <thead><tr><th>@Localizer["Role"]</th><th>@Localizer["Description"]</th><th>@Localizer["Users"]</th><th>@Localizer["Type"]</th><th class="text-end">@Localizer["Actions"]</th></tr></thead>
+                <thead><tr><th>@Localizer["Role"]</th><th>@Localizer["Description"]</th><th>@Localizer["Users"]</th><th>@Localizer["Authorization"]</th><th>@Localizer["Type"]</th><th class="text-end">@Localizer["Actions"]</th></tr></thead>
                 <tbody>
                 @foreach (var r in Model)
                 {
@@ -22,6 +22,22 @@
                         <td><div class="row-primary">@r.DisplayName</div><div class="row-secondary">@r.Name</div></td>
                         <td>@r.Description</td>
                         <td><span class="admin-role-badge"><i class="bi bi-people me-1"></i>@r.UserCount</span></td>
+                        <td>
+                            @* طبق «PEMS Authorization Architecture Completion» فاز ۴ بند ۹/۱۴: وضعیت پیکربندی مجوز -
+                               نه رنگ‌فقط (آیکون + متن)، و صفر به‌صراحت «پیکربندی‌نشده» است، نه یک خطا. *@
+                            @if (r.PermissionCount < 0)
+                            {
+                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" })" class="admin-status active" title="@Localizer["SystemAdmin bypasses the permission matrix by design"]"><i class="bi bi-infinity"></i> @Localizer["Unrestricted"]</a>
+                            }
+                            else if (r.PermissionCount == 0)
+                            {
+                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" }, $"role-{r.Name}")" class="admin-status inactive" title="@Localizer["No permissions configured for this role yet - every action is denied by default"]"><i class="bi bi-exclamation-triangle"></i> @Localizer["Not configured"]</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Index", "PermissionMatrix", new { area = "Admin" }, $"role-{r.Name}")" class="admin-status active"><i class="bi bi-check2-circle"></i> @r.PermissionCount @Localizer["permissions"]</a>
+                            }
+                        </td>
                         <td>@if(r.IsSystemRole){<span class="admin-status active"><i class="bi bi-shield-check"></i> @Localizer["System"]</span>}else{<span class="admin-status inactive">Custom</span>}</td>
                         <td><div class="admin-actions">
                             @if (!r.IsSystemRole){<form asp-action="Delete" asp-route-id="@r.Id" method="post" class="d-inline" onsubmit="return confirm('Delete this role?')"><button class="btn btn-sm btn-outline-danger" title="@Localizer["Delete"]"><i class="bi bi-trash"></i></button></form>}
