@@ -382,8 +382,19 @@ body {
     }
 
     /* Overlay: عرض واقعی نوار تغییر می‌کند ولی چون position:fixed است، هیچ محتوایی
-       فشرده/جابه‌جا نمی‌شود - فقط روی محتوای موجود قرار می‌گیرد (طبق بند Overlay Behavior). */
-    .pems-sidebar:hover,
+       فشرده/جابه‌جا نمی‌شود - فقط روی محتوای موجود قرار می‌گیرد (طبق بند Overlay Behavior).
+
+       طبق باگ گزارش‌شده: بدون تأخیر، صرفِ عبور لحظه‌ای ماوس از روی نوار باریک (که دقیقاً روی
+       لبه‌ی چپ محتوا نشسته) باز شدن کامل Overlay را فعال می‌کرد و همان لحظه ستون اول جدول
+       (مثلاً Document No) را می‌پوشاند - یک الگوی شناخته‌شده‌ی اشتباه در ناوبری‌های Hover-Expand.
+       راه‌حل استاندارد «Hover Intent»: فقط Hover واقعیِ ماوس (نه Focus صفحه‌کلید) یک تأخیر کوچک
+       می‌گیرد تا عبور تصادفی باز نشود؛ بسته‌شدن و ناوبری با Tab/Focus همچنان فوری می‌مانند. */
+    .pems-sidebar:hover {
+        width: var(--sidebar-width) !important;
+        box-shadow: 6px 0 24px rgba(0,0,0,0.18);
+        transition: width 200ms ease 220ms, box-shadow 200ms ease 220ms;
+    }
+
     .pems-sidebar:focus-within {
         width: var(--sidebar-width) !important;
         box-shadow: 6px 0 24px rgba(0,0,0,0.18);
