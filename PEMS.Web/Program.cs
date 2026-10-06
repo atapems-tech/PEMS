@@ -322,6 +322,9 @@ builder.Services.AddScoped<IAccessControlService, AccessControlService>();
 // فقط توسط _SidebarMenu.cshtml و کنترلرهای Admin مربوط به Visibility مصرف می‌شود
 builder.Services.AddScoped<PEMS.Application.Interfaces.INavigationVisibilityOverrideService, PEMS.Persistence.Services.NavigationVisibilityOverrideService>();
 builder.Services.AddScoped<PEMS.Web.Security.NavigationVisibilityResolver>();
+// طبق «PEMS — Enterprise User-Centric Authorization Workspace Consolidation»: تنها سرویس تازه‌ی این
+// فاز - هم Admin/Authorization موجود، هم Admin/Users/Details تازه، از همین یک سرویس می‌خوانند
+builder.Services.AddScoped<PEMS.Application.Interfaces.IUserAuthorizationSummaryService, PEMS.Persistence.Services.UserAuthorizationSummaryService>();
 builder.Services.AddScoped<IRoleModuleActionService, RoleModuleActionService>();
 builder.Services.AddScoped<IIsolationService, IsolationService>();
 builder.Services.AddScoped<IGasTestService, GasTestService>();
@@ -506,6 +509,8 @@ builder.Services.AddScoped<IEquipmentService, EquipmentService>();
 builder.Services.AddScoped<IAssetService, AssetService>();
 
 builder.Services.AddScoped<IInstrumentService, InstrumentService>();
+builder.Services.AddScoped<IMechanicalEquipmentService, MechanicalEquipmentService>();
+builder.Services.AddScoped<IConditionReadingImportService, ConditionReadingImportService>();
 
 builder.Services.AddScoped<ISparePartService, SparePartService>();
 
@@ -704,6 +709,7 @@ using (var scope = app.Services.CreateScope())
     await PEMS.Persistence.Seed.MaintenanceStrategyTypeSeeder.SeedAsync(scope.ServiceProvider);
     await PEMS.Persistence.Seed.EquipmentClassSeeder.SeedAsync(scope.ServiceProvider);
     await PEMS.Persistence.Seed.StandardReferenceSeeder.SeedAsync(scope.ServiceProvider);
+    await PEMS.Persistence.Seed.ConditionPriorityMappingSeeder.SeedAsync(scope.ServiceProvider);
     await PEMS.Persistence.Seed.MaintenanceActivitySeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق «PEMS Phase 2 — Equipment Classification + ISO 14224 Failure Taxonomy + PM/Job Plan

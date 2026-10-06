@@ -44,7 +44,13 @@ public class PermissionService : IPermissionService
         "Tender",
         // طبق ممیزی §H (Phase 7.5): PurchaseOrder Entity/Service/DTO از قبل کامل بود ولی هیچ
         // Controller/View/مجوزی نداشت
-        "PurchaseOrder"
+        "PurchaseOrder",
+        // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۶/۹:
+        // بدون این دو خط، FindingController/ConditionReadingImportController فقط برای SystemAdmin
+        // کار می‌کردند (از طریق Bypass عمومی AccessControlService) - هیچ نقش دیگری نمی‌توانست
+        // این دو ماژول را از طریق Permission Matrix دریافت کند، چون اصلاً در این فهرست نبودند.
+        "CMFinding",
+        "ConditionReadingImport"
     };
 
     public PermissionService(PEMSDbContext context, IAccessControlService accessControlService)

@@ -63,6 +63,7 @@
                         </td>
                         <td class="row-secondary">@(u.LastLoginDate?.ToString("yyyy-MM-dd HH:mm") ?? "Never")</td>
                         <td><div class="admin-actions">
+                            <a asp-action="Details" asp-route-id="@u.Id" class="btn btn-sm btn-outline-secondary" title="@Localizer["Access & Authorization"]" aria-label="View @u.UserName"><i class="bi bi-shield-lock"></i></a>
                             <a asp-action="Edit" asp-route-id="@u.Id" class="btn btn-sm btn-outline-secondary" title="@Localizer["Edit"]" aria-label="Edit @u.UserName"><i class="bi bi-pencil"></i></a>
                             <form asp-action="ToggleActive" asp-route-id="@u.Id" method="post" class="d-inline" onsubmit="return confirm('@(u.IsActive ? "Deactivate" : "Activate") user @u.UserName?')"><button class="btn btn-sm btn-outline-warning" title="Activate / Deactivate" aria-label="Toggle active status for @u.UserName"><i class="bi bi-power"></i></button></form>
                         </div></td>

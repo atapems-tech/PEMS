@@ -44,6 +44,17 @@ public class MaintenanceStrategy : BaseEntity
     // ==============================================================================
     public string? FailureModeCode { get; set; }
 
+    // ==============================================================================
+    // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۴:
+    // بدون این پیوند، یک استراتژی با StrategyType="CBM" صرفاً یک برچسب متنی بود - هیچ اتصال
+    // واقعی به داده‌ی پایش وضعیت نداشت. این FK اختیاری (فقط برای CBM معنا دارد؛ برای
+    // Preventive/Predictive/Corrective/RunToFailure همیشه Null می‌ماند) دقیقاً همون نقطه‌ی
+    // پایشی را مشخص می‌کند که این استراتژی برای پاسخ به آن تعریف شده - بدون ساخت یک Entity
+    // «CM Plan» جدید (طبق بند ۲۷ سند: MaintenanceStrategy+MaintenancePlan+PMTemplate موجود کافی است).
+    // ==============================================================================
+    public int? ConditionMonitoringPointId { get; set; }
+    public ConditionMonitoringPoint? ConditionMonitoringPoint { get; set; }
+
     // طبق RCM Decision Logic: Safety, Environmental, Operational, Economic - تعیین می‌کنه
     // که آیا اصلاً باید فعالانه جلوی این خرابی گرفته بشه یا Run-to-Failure قابل‌قبوله
     public string ConsequenceCategory { get; set; } = "Operational";

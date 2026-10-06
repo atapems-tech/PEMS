@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
+using PEMS.Application.Interfaces;
 using PEMS.Persistence.Identity;
 using PEMS.Web.Areas.Admin.Models;
 using PEMS.Web.Helpers;
+using PEMS.Web.Security;
 
 namespace PEMS.Web.Areas.Admin.Controllers;
 
@@ -18,21 +20,36 @@ public class UsersController : Controller
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly PEMS.Persistence.Context.PEMSDbContext _context;
+    private readonly IUserAuthorizationSummaryService _summaryService;
+    private readonly IPermissionService _permissionService;
+    private readonly IAccessControlService _accessControlService;
+    private readonly NavigationVisibilityResolver _navigationResolver;
 
     // طبق سند «PEMS — Global Data Grid Standard» بند ۶: Export هم باید یک سقف امن داشته باشد
     // (همون الگوی DocumentRegisterController.MaxExportRows) - نه واقعاً نامحدود. تعداد کاربران
     // امروز خیلی کمتر از این سقف است؛ این فقط از رشد بی‌کنترل آینده جلوگیری می‌کند.
     private const int MaxExportRows = 20000;
 
+    // طبق بند «Audit» صفحه‌ی Access & Authorization: فقط آخرین چند ردیف - برای فهرست کامل با
+    // فیلتر، لینک به Admin/AuthorizationAudit?userId= (صفحه‌ی موجود، تکرار نشده)
+    private const int RecentAuditLogCount = 20;
 
     public UsersController(
         UserManager<ApplicationUser> userManager,
         RoleManager<ApplicationRole> roleManager,
-        PEMS.Persistence.Context.PEMSDbContext context)
+        PEMS.Persistence.Context.PEMSDbContext context,
+        IUserAuthorizationSummaryService summaryService,
+        IPermissionService permissionService,
+        IAccessControlService accessControlService,
+        NavigationVisibilityResolver navigationResolver)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _context = context;
+        _summaryService = summaryService;
+        _permissionService = permissionService;
+        _accessControlService = accessControlService;
+        _navigationResolver = navigationResolver;
     }
 
     private async Task<int> CreateEmployeeFromModelAsync(UserFormViewModel model)
@@ -395,5 +412,147 @@ public class UsersController : Controller
         return File(stream.ToArray(),
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             $"Users_{DateTime.Now:yyyyMMdd}.xlsx");
+    }
+
+
+    // طبق «PEMS — Enterprise User-Centric Authorization Workspace Consolidation»: صفحه‌ی تازه -
+    // Users → [User] → Access & Authorization. فقط نمایش (Read-only) - Edit موجود بدون تغییر
+    // باقی می‌ماند و همچنان تنها مسیر ویرایش است. هر پنج دیدگاه (Effective/Matrix/Simulator/SoD/
+    // Navigation) از همان سرویس‌های واقعیِ موجود می‌آیند - هیچ موتور مجوزدهی/SoD/ناوبری تازه‌ای
+    // این‌جا نوشته نشده.
+    public async Task<IActionResult> Details(int id)
+    {
+        var vm = await BuildWorkspaceVmAsync(id);
+        if (vm == null) return NotFound();
+
+        ViewData["Title"] = "User";
+        ViewData["Section"] = "Administration";
+
+        return View(vm);
+    }
+
+    // طبق بند «Simulator must remain a simulation tool... must never mutate real authorization
+    // state»: عیناً همان AccessControlService.AuthorizeAsync که Admin/Authorization/Simulate
+    // موجود صدا می‌زند - نه یک ارزیاب دوم. فقط صفحه‌ی تازه دوباره با نتیجه رندر می‌شود، هیچ‌چیز
+    // نوشته نمی‌شود.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Simulate(int id, string resourceName, string actionName, string? resourceId)
+    {
+        var vm = await BuildWorkspaceVmAsync(id);
+        if (vm == null) return NotFound();
+
+        vm.Simulator.ResourceName = resourceName;
+        vm.Simulator.ActionName = actionName;
+        vm.Simulator.ResourceId = resourceId;
+
+        if (!string.IsNullOrWhiteSpace(resourceName) && !string.IsNullOrWhiteSpace(actionName))
+        {
+            var decision = await _accessControlService.AuthorizeAsync(new AccessControlRequest
+            {
+                UserId = id,
+                ResourceName = resourceName.Trim(),
+                ActionName = actionName.Trim(),
+                ResourceId = string.IsNullOrWhiteSpace(resourceId) ? null : resourceId.Trim(),
+                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString()
+            });
+
+            vm.Simulator.Result = new SimulateResultVm
+            {
+                Allowed = decision.Allowed,
+                Reason = decision.Reason.ToString(),
+                Detail = decision.Detail,
+                MatchedRoleName = decision.MatchedRoleName,
+                MatchedScopeType = decision.MatchedScopeType,
+                MatchedScopeValue = decision.MatchedScopeValue
+            };
+        }
+
+        ViewData["Title"] = "User";
+        ViewData["Section"] = "Administration";
+        ViewData["ActiveAccessTab"] = "simulator";
+
+        return View("Details", vm);
+    }
+
+    private async Task<UserWorkspaceVm?> BuildWorkspaceVmAsync(int id)
+    {
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
+        if (user == null) return null;
+
+        var roleNames = (await _userManager.GetRolesAsync(user)).OrderBy(r => r).ToList();
+
+        var employee = user.EmployeeId.HasValue
+            ? await _context.Employees
+                .Where(e => e.EmployeeId == user.EmployeeId.Value)
+                .Select(e => new { e.Position, e.DepartmentId, e.DisciplineId })
+                .FirstOrDefaultAsync()
+            : null;
+
+        string? departmentName = null;
+        string? disciplineName = null;
+        if (employee != null)
+        {
+            if (employee.DepartmentId != 0)
+                departmentName = await _context.Departments.Where(d => d.DepartmentId == employee.DepartmentId).Select(d => d.Name).FirstOrDefaultAsync();
+            if (employee.DisciplineId != 0)
+                disciplineName = await _context.Disciplines.Where(d => d.DisciplineId == employee.DisciplineId).Select(d => d.Name).FirstOrDefaultAsync();
+        }
+
+        var effectivePermissions = await _summaryService.GetEffectivePermissionsForRolesAsync(roleNames);
+        var sodExposure = await _summaryService.GetSoDExposureForRolesAsync(roleNames);
+
+        var fullMatrix = await _permissionService.GetMatrixAsync();
+        var matrixRows = fullMatrix.Where(r => roleNames.Contains(r.RoleName)).ToList();
+
+        var navSnapshot = await _navigationResolver.ResolveAsync(roleNames);
+        var navigationTree = NavigationVisibilityTreeBuilder.BuildUserTree(navSnapshot);
+
+        var recentAudit = await _context.AuthorizationAuditLogs
+            .Where(a => a.UserId == id)
+            .OrderByDescending(a => a.Timestamp)
+            .Take(RecentAuditLogCount)
+            .Select(a => new UserAuditLogRowVm
+            {
+                Timestamp = a.Timestamp,
+                ResourceName = a.ResourceName,
+                ActionName = a.ActionName,
+                ResourceId = a.ResourceId,
+                Decision = a.Decision,
+                Reason = a.Reason
+            })
+            .ToListAsync();
+
+        var allUsers = await _userManager.Users
+            .Select(u => new { u.Id, u.UserName, u.FullName })
+            .OrderBy(u => u.UserName)
+            .ToListAsync();
+
+        return new UserWorkspaceVm
+        {
+            UserId = user.Id,
+            UserName = user.UserName ?? "",
+            FullName = user.FullName,
+            Email = user.Email,
+            IsActive = user.IsActive,
+            LockedOut = user.LockoutEnd.HasValue && user.LockoutEnd.Value > DateTimeOffset.UtcNow,
+            LastLoginDate = user.LastLoginDate,
+            DepartmentName = departmentName,
+            DisciplineName = disciplineName,
+            Position = employee?.Position,
+            HasLinkedEmployee = user.EmployeeId.HasValue,
+            RoleNames = roleNames,
+            EffectivePermissions = effectivePermissions,
+            MatrixRows = matrixRows,
+            SoDExposure = sodExposure,
+            NavigationTree = navigationTree,
+            RecentAuditLogs = recentAudit,
+            Simulator = new SimulateFormVm
+            {
+                UserId = id,
+                AllUsers = allUsers.Select(u => (u.Id, string.IsNullOrWhiteSpace(u.FullName) ? u.UserName! : $"{u.FullName} ({u.UserName})")).ToList(),
+                AllPermissionNames = effectivePermissions.Select(p => p.PermissionName).ToList()
+            }
+        };
     }
 }

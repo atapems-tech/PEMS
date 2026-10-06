@@ -307,6 +307,14 @@ public class PEMSDbContext
     public DbSet<PredictiveMaintenanceResult> PredictiveMaintenanceResults { get; set; }
     public DbSet<AIReliabilityInsight> AIReliabilityInsights { get; set; }
 
+    // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۱
+    public DbSet<EvaluationProfile> EvaluationProfiles { get; set; }
+    public DbSet<EvaluationLimit> EvaluationLimits { get; set; }
+    public DbSet<Finding> Findings { get; set; }
+
+    // طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §3.7
+    public DbSet<ConditionPriorityMapping> ConditionPriorityMappings { get; set; }
+
     // طبق «Functional Location Master Data Import»
     public DbSet<FunctionalLocationImportBatch> FunctionalLocationImportBatches { get; set; }
     public DbSet<FunctionalLocationImportRow> FunctionalLocationImportRows { get; set; }
@@ -321,6 +329,10 @@ public class PEMSDbContext
     // بالا - برای رکورد تاریخچه‌ی نگهداری/تعمیر (MaintenanceHistory، Append-only).
     public DbSet<MaintenanceHistoryImportBatch> MaintenanceHistoryImportBatches { get; set; }
     public DbSet<MaintenanceHistoryImportRow> MaintenanceHistoryImportRows { get; set; }
+
+    // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۹
+    public DbSet<ConditionReadingImportBatch> ConditionReadingImportBatches { get; set; }
+    public DbSet<ConditionReadingImportRow> ConditionReadingImportRows { get; set; }
 
     // طبق «PEMS — Enterprise Barcode System»: یک جدول هویت مشترک برای کل PEMS - نه یک جدول
     // جدا به‌ازای هر ماژول (Equipment/Material/Warehouse/StorageLocation).
@@ -1735,7 +1747,12 @@ public class PEMSDbContext
             .Property(x => x.OperatingTemperature)
             .HasPrecision(18, 3);
 
-
+        // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۳:
+        // دقیقاً همون الگوی Instrument (HasIndex(x => x.EquipmentId).IsUnique() پایین‌تر در همین
+        // فایل) - یک Equipment حداکثر یک پروفایل Mechanical Equipment دارد. چون EquipmentId
+        // Nullable است، این ایندکس فقط روی مقادیر غیر-NULL اعمال می‌شود (رفتار پیش‌فرض SQL Server) -
+        // چند رکورد با EquipmentId=NULL هنوز مجازند، دقیقاً همون زنجیره‌ی اختیاری موجود.
+        modelBuilder.Entity<MechanicalEquipment>().HasIndex(x => x.EquipmentId).IsUnique();
 
 
         // ==============================
@@ -1757,7 +1774,9 @@ public class PEMSDbContext
             .Property(x => x.PowerKW)
             .HasPrecision(18, 3);
 
-
+        // طبق فاز ۳: یک MechanicalEquipment حداکثر یک زیررده‌ی Rotating دارد (XOR با Static در
+        // سطح Controller اعمال می‌شود؛ این ایندکس فقط از تکرار تصادفی همان زیررده جلوگیری می‌کند).
+        modelBuilder.Entity<RotatingEquipment>().HasIndex(x => x.MechanicalEquipmentId).IsUnique();
 
 
         // ==============================
@@ -1779,6 +1798,7 @@ public class PEMSDbContext
             .Property(x => x.Volume)
             .HasPrecision(18, 3);
 
+        modelBuilder.Entity<StaticEquipment>().HasIndex(x => x.MechanicalEquipmentId).IsUnique();
 
 
 

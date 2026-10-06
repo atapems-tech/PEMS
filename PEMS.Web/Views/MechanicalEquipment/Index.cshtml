@@ -1,0 +1,163 @@
+@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MechanicalEquipmentListDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var equipmentOptions = (IEnumerable<dynamic>)ViewBag.Equipments;
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+}
+
+<div class="content-card mb-3">
+    <div class="row g-3 text-center">
+        <div class="col-md-3"><div class="border rounded p-3"><div class="text-muted small">@Localizer["Total Mechanical Equipment"]</div><div class="fs-4 fw-bold">@ViewBag.TotalCount</div></div></div>
+        <div class="col-md-2"><div class="border rounded p-3"><div class="text-muted small">@Localizer["Rotating"]</div><div class="fs-4 fw-bold text-primary">@ViewBag.RotatingCount</div></div></div>
+        <div class="col-md-2"><div class="border rounded p-3"><div class="text-muted small">@Localizer["Static"]</div><div class="fs-4 fw-bold text-info">@ViewBag.StaticCount</div></div></div>
+        <div class="col-md-2"><div class="border rounded p-3"><div class="text-muted small">@Localizer["Unclassified"]</div><div class="fs-4 fw-bold text-secondary">@ViewBag.UnclassifiedCount</div></div></div>
+        <div class="col-md-3">
+            <div class="border rounded p-3 d-flex flex-column gap-2 h-100 justify-content-center">
+                <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createMechanicalModal">
+                    <i class="bi bi-plus-lg"></i> @Localizer["New Mechanical Equipment"]
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-card">
+    <form method="get" class="d-flex flex-wrap gap-2 mb-3">
+        <input type="search" name="q" value="@ViewBag.SearchTerm" class="form-control form-control-sm" style="max-width:260px;" placeholder="@Localizer["Search tag / manufacturer..."]" />
+        <select name="subType" class="form-select form-select-sm" style="max-width:180px;">
+            <option value="">@Localizer["All types"]</option>
+            @foreach (var s in new[] { "Rotating", "Static", "Unclassified" })
+            {
+                <option value="@s" selected="@(s == (string?)ViewBag.SelectedSubType)">@s</option>
+            }
+        </select>
+        <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-funnel"></i> @Localizer["Filter"]</button>
+        <a asp-action="Index" class="btn btn-sm btn-outline-secondary">@Localizer["Reset"]</a>
+    </form>
+
+    <div class="d-flex justify-content-end mb-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('MechanicalEquipment')">
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
+        </button>
+    </div>
+    <div class="table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
+        <table class="table table-enterprise pems-grid-table" data-grid-key="MechanicalEquipment">
+            <thead>
+                <tr>
+                    <th data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Tag"]</th>
+                    <th data-col-key="mfr" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Manufacturer / Model"]</th>
+                    <th data-col-key="type" data-resizable="true" data-min-width="80" data-max-width="180" style="width:110px">@Localizer["Type"]</th>
+                    <th data-col-key="subtype" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Sub-Type"]</th>
+                    <th data-col-key="actions" data-resizable="false" style="width:90px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model.Items)
+                {
+                    var badgeClass = m.SubType switch { "Rotating" => "bg-primary", "Static" => "bg-info text-dark", _ => "bg-secondary" };
+                    <tr>
+                        <td><a asp-action="Passport" asp-route-id="@m.MechanicalEquipmentId">@m.TagNumber</a></td>
+                        <td class="small">@m.Manufacturer / @m.Model</td>
+                        <td>@m.EquipmentType</td>
+                        <td><span class="badge @badgeClass">@m.SubType</span></td>
+                        <td class="text-end">
+                            <a asp-action="Passport" asp-route-id="@m.MechanicalEquipmentId" class="btn btn-sm btn-outline-secondary" title="@Localizer["Passport"]"><i class="bi bi-card-text"></i></a>
+                            <a asp-action="Edit" asp-route-id="@m.MechanicalEquipmentId" class="btn btn-sm btn-outline-secondary" title="@Localizer["Edit"]"><i class="bi bi-pencil"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["No mechanical equipment found."]</p> }
+
+    @{
+        var qsParts = new List<string>();
+        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedSubType)) qsParts.Add($"subType={Uri.EscapeDataString((string)ViewBag.SelectedSubType)}");
+        if (!string.IsNullOrEmpty((string?)ViewBag.SearchTerm)) qsParts.Add($"q={Uri.EscapeDataString((string)ViewBag.SearchTerm)}");
+    }
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "MechanicalEquipment",
+        BaseUrl = Url.Action("Index") ?? "",
+        ExistingQueryString = string.Join("&", qsParts)
+    })
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PemsDataGrid.initColumnResize('MechanicalEquipment');
+        });
+    </script>
+}
+
+<div class="modal fade" id="createMechanicalModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form asp-action="Create" method="post">
+                <div class="modal-header"><h6 class="modal-title">@Localizer["New Mechanical Equipment"]</h6></div>
+                <div class="modal-body">
+                    <p class="text-muted small">
+                        @Localizer["Equipment link is optional - only fill it when this mechanical record represents an existing Equipment tag. Rotating/Static sub-type details are added afterwards from the Passport page."]
+                    </p>
+                    <div class="mb-3">
+                        <label class="form-label">@Localizer["Equipment (اختیاری)"]</label>
+                        <select name="equipmentId" class="form-select">
+                            <option value="">@Localizer["-- ندارد --"]</option>
+                            @foreach (var e in equipmentOptions)
+                            {
+                                <option value="@e.EquipmentId">@e.Label</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">@Localizer["Tag Number"]</label>
+                            <input name="tagNumber" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">@Localizer["Equipment Type"]</label>
+                            <input name="equipmentType" class="form-control" required placeholder="@Localizer["Pump, Compressor, Vessel, Tank, Heat Exchanger ..."]" />
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">@Localizer["Manufacturer"]</label>
+                            <input name="manufacturer" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">@Localizer["Model"]</label>
+                            <input name="model" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">@Localizer["توضیحات (اختیاری)"]</label>
+                        <textarea name="description" class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                    <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

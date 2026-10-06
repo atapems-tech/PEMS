@@ -61,7 +61,14 @@ public class PermissionMatrixController : Controller
             // طبق ممیزی Package Procurement Contract Finalization (§C).
             "Tender",
             // طبق ممیزی Package Procurement Contract Finalization (§H، Phase 7.5).
-            "PurchaseOrder"
+            "PurchaseOrder",
+            // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring»
+            // فاز ۶/۹: FindingController/ConditionReadingImportController از ابتدا از طریق
+            // HasPermissionAsync گیت می‌شوند، اما تا این خط هیچ نقشی جز SystemAdmin (از طریق
+            // Bypass عمومی AccessControlService) نمی‌توانست این دو ماژول را از همین صفحه ببیند
+            // یا دریافت کند - عیناً همون کلاس باگی که بند ۲۰ بالا درباره‌ی Inspection/Transmittal توضیح داد.
+            "CMFinding",
+            "ConditionReadingImport"
         };
 
         return View(matrix);

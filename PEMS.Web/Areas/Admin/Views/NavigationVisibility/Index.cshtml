@@ -47,7 +47,7 @@
                     @if (!module.HasDrillDown)
                     {
                         var visibleCount = module.RoleAccess.Count(r => r.EffectiveVisible);
-                        <span class="badge @(visibleCount > 0 ? "text-bg-success" : "text-bg-secondary") ms-2">@visibleCount / @module.RoleAccess.Count @Localizer["roles"]</span>
+                        <span class="badge @(visibleCount > 0 ? "text-bg-success" : "text-bg-secondary") ms-2">@visibleCount / @module.RoleAccess.Count @Localizer["Roles"]</span>
                     }
                 </summary>
 
@@ -98,7 +98,7 @@
                             <details class="navvis-item" id="node-@(module.ModuleKey)-@(item.ItemKey)">
                                 <summary class="navvis-item-summary">
                                     <span class="navvis-item-name">@Localizer[item.DisplayLocalizationKey]</span>
-                                    <span class="badge @(item.AnyRoleVisible ? "text-bg-success" : "text-bg-secondary")">@item.RoleAccess.Count(r => r.EffectiveVisible) / @item.RoleAccess.Count @Localizer["roles"]</span>
+                                    <span class="badge @(item.AnyRoleVisible ? "text-bg-success" : "text-bg-secondary")">@item.RoleAccess.Count(r => r.EffectiveVisible) / @item.RoleAccess.Count @Localizer["Roles"]</span>
                                     <span class="navvis-capability">@Localizer["Capability"]: @(item.Capability ?? Localizer["None - not permission-gated"].Value)</span>
                                 </summary>
                                 <div class="navvis-role-grid">
@@ -152,7 +152,7 @@
                                         <details class="navvis-item" id="node-@(module.ModuleKey)-@(item.ItemKey)">
                                             <summary class="navvis-item-summary">
                                                 <span class="navvis-item-name">@Localizer[item.DisplayLocalizationKey]</span>
-                                                <span class="badge @(item.AnyRoleVisible ? "text-bg-success" : "text-bg-secondary")">@item.RoleAccess.Count(r => r.EffectiveVisible) / @item.RoleAccess.Count @Localizer["roles"]</span>
+                                                <span class="badge @(item.AnyRoleVisible ? "text-bg-success" : "text-bg-secondary")">@item.RoleAccess.Count(r => r.EffectiveVisible) / @item.RoleAccess.Count @Localizer["Roles"]</span>
                                                 <span class="navvis-capability">@Localizer["Capability"]: @(item.Capability ?? Localizer["None - not permission-gated"].Value)</span>
                                             </summary>
                                             <div class="navvis-role-grid">

@@ -25,17 +25,20 @@ public class AuthorizationController : Controller
 {
     private readonly PEMSDbContext _context;
     private readonly IAccessControlService _accessControlService;
+    private readonly IUserAuthorizationSummaryService _summaryService;
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly UserManager<ApplicationUser> _userManager;
 
     public AuthorizationController(
         PEMSDbContext context,
         IAccessControlService accessControlService,
+        IUserAuthorizationSummaryService summaryService,
         RoleManager<ApplicationRole> roleManager,
         UserManager<ApplicationUser> userManager)
     {
         _context = context;
         _accessControlService = accessControlService;
+        _summaryService = summaryService;
         _roleManager = roleManager;
         _userManager = userManager;
     }
@@ -105,27 +108,23 @@ public class AuthorizationController : Controller
         return View(vm);
     }
 
+    /// <summary>
+    /// طبق «PEMS — Enterprise User-Centric Authorization Workspace Consolidation»: منطق قبلاً
+    /// این‌جا خصوصی بود (BuildRoleRowsAsync) - حالا به IUserAuthorizationSummaryService منتقل شده
+    /// تا Admin/Users/Details تازه هم بتواند از همان یک منبع بخواند (بدون تکرار منطق). رفتار این
+    /// صفحه کاملاً بدون تغییر می‌ماند - فقط نگاشت DTO مشترک به همین ViewModel محلی.
+    /// </summary>
     private async Task<List<EffectivePermissionRowVm>> BuildRoleRowsAsync(string[] roles)
     {
-        var permissions = await _context.Permissions
-            .Where(p => p.IsActive)
-            .OrderBy(p => p.ResourceName).ThenBy(p => p.ActionName)
-            .ToListAsync();
-
-        var rows = new List<EffectivePermissionRowVm>(permissions.Count);
-        foreach (var p in permissions)
+        var dtos = await _summaryService.GetEffectivePermissionsForRolesAsync(roles);
+        return dtos.Select(d => new EffectivePermissionRowVm
         {
-            var decision = await _accessControlService.AuthorizeForRolesAsync(roles, p.ResourceName, p.ActionName);
-            rows.Add(new EffectivePermissionRowVm
-            {
-                ResourceName = p.ResourceName,
-                ActionName = p.ActionName,
-                Allowed = decision.Allowed,
-                IsDestructive = p.IsDestructive,
-                Detail = decision.Detail
-            });
-        }
-        return rows;
+            ResourceName = d.ResourceName,
+            ActionName = d.ActionName,
+            Allowed = d.Allowed,
+            IsDestructive = d.IsDestructive,
+            Detail = d.Detail
+        }).ToList();
     }
 
     public async Task<IActionResult> Simulate()

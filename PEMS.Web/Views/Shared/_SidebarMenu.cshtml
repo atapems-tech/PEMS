@@ -630,30 +630,15 @@
                     <i class="bi bi-shield-check"></i> @Localizer["Roles"]
                 </a>
 
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("PermissionMatrix") ? "active" : "")"
-                   asp-area="Admin" asp-controller="PermissionMatrix" asp-action="Index">
-                    <i class="bi bi-sliders"></i> @Localizer["PermissionMatrix"]
-                </a>
-
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Authorization", "Admin") && currentAction == "EffectiveRole" ? "active" : "")"
-                   asp-area="Admin" asp-controller="Authorization" asp-action="EffectiveRole">
-                    <i class="bi bi-eye"></i> @Localizer["Effective Permissions"]
-                </a>
-
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Authorization", "Admin") && currentAction == "Simulate" ? "active" : "")"
-                   asp-area="Admin" asp-controller="Authorization" asp-action="Simulate">
-                    <i class="bi bi-play-circle"></i> @Localizer["Permission Simulator"]
-                </a>
-
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("SoDPolicy", "Admin") ? "active" : "")"
-                   asp-area="Admin" asp-controller="SoDPolicy" asp-action="Index">
-                    <i class="bi bi-shuffle"></i> @Localizer["Separation of Duties"]
-                </a>
-
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("NavigationVisibility", "Admin") ? "active" : "")"
-                   asp-area="Admin" asp-controller="NavigationVisibility" asp-action="Index">
-                    <i class="bi bi-layout-sidebar"></i> @Localizer["Navigation Visibility"]
-                </a>
+                @* طبق «PEMS — Enterprise User-Centric Authorization Workspace Consolidation»: چهار
+                   لینک مستقل قبلی (Permission Matrix/Effective Permissions/Permission Simulator/
+                   Separation of Duties/Navigation Visibility) از این‌جا حذف شدند - همگی اکنون زیر
+                   Context یک کاربر مشخص، در Users → [User] → Access & Authorization در دسترسند
+                   (لینک «Access & Authorization» کنار هر ردیف در Admin/Users/Index). خودِ
+                   Controller/Route/View های قدیمی حذف نشدند - فقط از این ورودی مستقل سایدبار
+                   کنار رفتند (طبق قانون سازگاری با گذشته - Permission Matrix همچنان مقصد Redirect
+                   واقعیِ RolesController.Create است). Roles دست‌نخورده می‌ماند - نقش یک سازه‌ی
+                   مستقل و قابل‌استفاده‌ی مجدد است، نه بخشی از این تجمیع. *@
 
                 <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("WorkflowManagement", "Admin") ? "active" : "")"
                    asp-area="Admin" asp-controller="WorkflowManagement" asp-action="Index">

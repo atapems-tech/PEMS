@@ -30,6 +30,13 @@ public class ConditionMonitoringPoint : BaseEntity
     public decimal? AlarmThresholdLow { get; set; }
     public decimal? AlarmThresholdHigh { get; set; }
 
+    // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» بند ۲۴:
+    // پیوند اختیاری به پروفایل ارزیابی نسخه‌دار - AlarmThresholdLow/High بالا دست‌نخورده می‌مانند
+    // (مصرف‌کننده‌های موجود RecordReadingAsync را نمی‌شکند)؛ وقتی این پروفایل تنظیم شده باشد،
+    // ارزیابی چندسطحی (Normal/Warning/Alarm/Critical) به‌جای فقط دو-سطحیِ IsAlarm محاسبه می‌شود.
+    public int? EvaluationProfileId { get; set; }
+    public EvaluationProfile? EvaluationProfile { get; set; }
+
     public string? Description { get; set; }
 
     public bool IsActive { get; set; } = true;
@@ -64,9 +71,26 @@ public class ConditionReading
 
     public bool IsAlarm { get; set; }
 
+    // طبق بند ۲۶ سند (Versioning of Evaluation Profiles): این سه فیلد در لحظه‌ی ثبت منجمد
+    // می‌شوند و هرگز بعداً بازمحاسبه نمی‌شوند - حتی اگر پروفایل بعداً نسخه‌ی تازه‌ای بگیرد یا
+    // تغییر کند، تفسیر این قرائتِ خاصِ تاریخی همان می‌ماند که در لحظه‌ی ثبت بوده. NotEvaluated
+    // یعنی هیچ پروفایلی در دسترس نبوده - هرگز به‌صورت خاموش Normal فرض نمی‌شود (بند ۲۹).
+    public int? EvaluationProfileId { get; set; }
+    public int? EvaluationProfileVersion { get; set; }
+
+    // Normal, Warning, Alarm, Critical, NotEvaluated
+    public string EvaluationStatus { get; set; } = "NotEvaluated";
+
     public string? Notes { get; set; }
 
     public string? RecordedBy { get; set; }
+
+    // طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §3.3: اختیاری - کدام ابزار واقعی
+    // این قرائت را گرفته (برای ردیابی اینکه آیا یک ابزار با کالیبراسیون منقضی‌شده قرائت‌هایی
+    // تولید کرده). اختیاری و Nullable می‌ماند چون بیشتر قرائت‌های دستی/قدیمی هرگز ابزار مشخصی
+    // ثبت نکرده‌اند - این یک زنجیره‌ی اختیاری تازه است، نه یک فیلد اجباری تازه روی داده‌ی موجود.
+    public int? InstrumentId { get; set; }
+    public Instrument? Instrument { get; set; }
 
     public DateTime CreatedDate { get; set; } = DateTime.Now;
 }

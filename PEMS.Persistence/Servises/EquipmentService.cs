@@ -551,6 +551,107 @@ public class EquipmentService : IEquipmentService
             };
         }
 
+        // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۳:
+        // دقیقاً همون الگوی Instrument بالا. EquipmentId روی MechanicalEquipment اختیاری است (زنجیره‌ی
+        // Nullable موجود که باید حفظ شود) - پس این‌جا هنوز با FirstOrDefaultAsync پیدا می‌شود، نه Include.
+        var mechanical = await _context.MechanicalEquipments.FirstOrDefaultAsync(m => m.EquipmentId == equipmentId && m.IsActive);
+        if (mechanical != null)
+        {
+            var rotating = await _context.RotatingEquipments.FirstOrDefaultAsync(r => r.MechanicalEquipmentId == mechanical.MechanicalEquipmentId && r.IsActive);
+            var staticEq = rotating == null
+                ? await _context.StaticEquipments.FirstOrDefaultAsync(s => s.MechanicalEquipmentId == mechanical.MechanicalEquipmentId && s.IsActive)
+                : null;
+
+            passport.MechanicalEquipment = new MechanicalEquipmentPassportSummaryDto
+            {
+                MechanicalEquipmentId = mechanical.MechanicalEquipmentId,
+                TagNumber = mechanical.TagNumber,
+                EquipmentType = mechanical.EquipmentType,
+                DesignPressure = mechanical.DesignPressure,
+                DesignTemperature = mechanical.DesignTemperature,
+                OperatingPressure = mechanical.OperatingPressure,
+                OperatingTemperature = mechanical.OperatingTemperature,
+                Material = mechanical.Material,
+                Manufacturer = mechanical.Manufacturer,
+                Model = mechanical.Model,
+                SubType = rotating != null ? "Rotating" : staticEq != null ? "Static" : "Unclassified",
+                FlowRate = rotating?.FlowRate,
+                Head = rotating?.Head,
+                SpeedRPM = rotating?.SpeedRPM,
+                RotatingPowerKW = rotating?.PowerKW,
+                DriverType = rotating?.DriverType,
+                Volume = staticEq?.Volume,
+                Orientation = staticEq?.Orientation,
+                CodeStandard = staticEq?.CodeStandard
+            };
+        }
+
+        // طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §2/§5-1: پایش وضعیت باید
+        // همین‌جا هم خلاصه دیده شود - جزئیات کامل همچنان روی Reliability/ConditionMonitoring
+        // و Finding/Index می‌مانند. هیچ منطق ارزیابی/محاسبه‌ی تازه‌ای این‌جا نیست - فقط همون
+        // Query هایی که ConditionMonitoringService/FindingController از قبل دارند.
+        var cmPoints = await _context.ConditionMonitoringPoints
+            .Where(x => x.EquipmentId == equipmentId && x.IsActive)
+            .Include(x => x.EvaluationProfile)
+            .ToListAsync();
+
+        if (cmPoints.Count > 0)
+        {
+            var pointIds = cmPoints.Select(p => p.ConditionMonitoringPointId).ToList();
+            var lastReadings = await _context.ConditionReadings
+                .Where(x => pointIds.Contains(x.ConditionMonitoringPointId))
+                .GroupBy(x => x.ConditionMonitoringPointId)
+                .Select(g => new { PointId = g.Key, Count = g.Count(), Last = g.OrderByDescending(x => x.ReadingDate).First() })
+                .ToListAsync();
+
+            var cbmStrategy = await _context.MaintenanceStrategies
+                .Where(x => x.EquipmentId == equipmentId && x.IsActive && x.ConditionMonitoringPointId != null && pointIds.Contains(x.ConditionMonitoringPointId!.Value))
+                .FirstOrDefaultAsync();
+
+            DateTime? nextDue = null;
+            if (cbmStrategy != null)
+            {
+                nextDue = await _context.MaintenancePlans
+                    .Where(x => x.MaintenanceStrategyId == cbmStrategy.MaintenanceStrategyId && x.IsActive)
+                    .OrderBy(x => x.NextDueDate)
+                    .Select(x => x.NextDueDate)
+                    .FirstOrDefaultAsync();
+            }
+
+            var openFindingCount = await _context.Findings
+                .CountAsync(x => x.EquipmentId == equipmentId && x.IsActive && x.Status == "Open");
+
+            passport.ConditionMonitoring = new ConditionMonitoringPassportSummaryDto
+            {
+                PointCount = cmPoints.Count,
+                OpenFindingCount = openFindingCount,
+                HasCbmStrategy = cbmStrategy != null,
+                NextDueDate = nextDue,
+                Points = cmPoints.Select(p =>
+                {
+                    var last = lastReadings.FirstOrDefault(x => x.PointId == p.ConditionMonitoringPointId);
+                    return new ConditionMonitoringPointDto
+                    {
+                        ConditionMonitoringPointId = p.ConditionMonitoringPointId,
+                        EquipmentId = p.EquipmentId,
+                        VariableType = p.VariableType,
+                        Tag = p.Tag,
+                        Unit = p.Unit,
+                        AlarmThresholdLow = p.AlarmThresholdLow,
+                        AlarmThresholdHigh = p.AlarmThresholdHigh,
+                        ReadingCount = last?.Count ?? 0,
+                        LastReadingDate = last?.Last.ReadingDate,
+                        LastValue = last?.Last.Value,
+                        LastReadingIsAlarm = last?.Last.IsAlarm ?? false,
+                        LastReadingId = last?.Last.ConditionReadingId,
+                        EvaluationProfileId = p.EvaluationProfileId,
+                        EvaluationProfileCode = p.EvaluationProfile?.Code,
+                        LastReadingEvaluationStatus = last?.Last.EvaluationStatus ?? "NotEvaluated"
+                    };
+                }).ToList()
+            };
+        }
+
         // طبق PEMS_CMMS_ARCHITECTURE.md: چرخه‌عمر CMMS این تجهیز (در صورت وجود) - همان الگوی
         // Instrument بالا. اهمیت (Criticality) عمداً از خودِ EquipmentCriticality خوانده
         // می‌شود، نه از فیلد قدیمی/تکراری روی Asset.

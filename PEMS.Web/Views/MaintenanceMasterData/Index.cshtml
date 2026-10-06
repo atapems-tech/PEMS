@@ -18,6 +18,12 @@
     // طبق «PEMS Phase 2 — Equipment Classification + ISO 14224 Failure Taxonomy + PM/Job Plan Intelligence»
     var failureModes = (List<PEMS.Domain.Entities.FailureMode>)ViewBag.FailureModes;
     var pmTemplates = (List<PEMS.Domain.Entities.PMTemplate>)ViewBag.PMTemplates;
+
+    // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۲
+    var evaluationProfiles = (List<PEMS.Domain.Entities.EvaluationProfile>)ViewBag.EvaluationProfiles;
+
+    // طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §3.7
+    var conditionPriorityMappings = (List<PEMS.Domain.Entities.ConditionPriorityMapping>)ViewBag.ConditionPriorityMappings;
 }
 
 @if (TempData["Message"] != null)
@@ -83,6 +89,16 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-pm-templates" type="button">
             <i class="bi bi-calendar-check"></i> PM Templates <span class="badge bg-secondary">@pmTemplates.Count</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-evaluation-profiles" type="button">
+            <i class="bi bi-sliders"></i> Evaluation Profiles <span class="badge bg-secondary">@evaluationProfiles.Count</span>
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-priority-mappings" type="button">
+            <i class="bi bi-flag"></i> @Localizer["Priority Mapping"] <span class="badge bg-secondary">@conditionPriorityMappings.Count</span>
         </button>
     </li>
 </ul>
@@ -476,6 +492,134 @@
             @if (!pmTemplates.Any()) { <p class="text-muted text-center py-4">هنوز PM Template ای Seed نشده.</p> }
         </div>
     </div>
+
+    <div class="tab-pane fade" id="tab-evaluation-profiles" role="tabpanel">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="text-muted small mb-0">
+                    پروفایل ارزیابی نسخه‌دار برای نقاط پایش وضعیت (Condition Monitoring) - آستانه‌ها
+                    (Normal/Warning/Alarm/Critical) جداگانه و فقط با مقدار واقعی مهندسی ثبت می‌شوند؛
+                    نبودِ یک ردیف Limit یعنی «هنوز پیکربندی نشده»، نه صفر/عادی فرضی.
+                </p>
+                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createEvaluationProfileModal">
+                    <i class="bi bi-plus-lg"></i> @Localizer["Evaluation Profile جدید"]
+                </button>
+            </div>
+
+            <table class="table table-enterprise">
+                <thead><tr><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>@Localizer["Variable Type"]</th><th>@Localizer["Equipment Class"]</th><th>@Localizer["Standard"]</th><th>@Localizer["Version"]</th><th>@Localizer["Limits"]</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var p in evaluationProfiles)
+                    {
+                        <tr>
+                            <td><code>@p.Code</code></td>
+                            <td>@p.Name</td>
+                            <td><span class="badge text-bg-secondary">@p.VariableType</span></td>
+                            <td class="small text-muted">@(p.EquipmentClass?.Name ?? "عمومی")</td>
+                            <td class="small text-muted">@(p.StandardReference?.Code ?? "-")</td>
+                            <td class="small">v@(p.Version)</td>
+                            <td class="small">
+                                @if (p.Limits.Any(l => l.IsActive))
+                                {
+                                    foreach (var l in p.Limits.Where(l => l.IsActive))
+                                    {
+                                        <span class="badge text-bg-light border me-1" title="@l.Status">
+                                            @l.Status: @(l.LowValue?.ToString() ?? "−") … @(l.HighValue?.ToString() ?? "−")
+                                        </span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-warning-subtle text-warning-emphasis">@Localizer["پیکربندی نشده"]</span>
+                                }
+                            </td>
+                            <td class="text-end text-nowrap">
+                                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addLimitModal" data-profile-id="@p.EvaluationProfileId" data-profile-code="@p.Code" title="@Localizer["Add Limit"]">
+                                    <i class="bi bi-plus-circle"></i>
+                                </button>
+                                <form asp-action="ToggleEvaluationProfileActive" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@p.EvaluationProfileId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این Evaluation Profile غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!evaluationProfiles.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز Evaluation Profile ای ساخته نشده."]</p> }
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-priority-mappings" role="tabpanel">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="text-muted small mb-0">
+                    @Localizer["این نگاشت تعیین می‌کند که یافتن یک وضعیت (Condition) چه اولویتی (Priority) برای Work Request نتیجه‌شده دارد - قبلاً این نگاشت مستقیم در کد برنامه نوشته شده بود؛ حالا اینجا قابل‌مشاهده و قابل‌ویرایش است."]
+                </p>
+                <button type="button" class="btn btn-pems-solid btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#createPriorityMappingModal">
+                    <i class="bi bi-plus-lg"></i> @Localizer["نگاشت جدید"]
+                </button>
+            </div>
+
+            <table class="table table-enterprise">
+                <thead><tr><th>@Localizer["Condition"]</th><th>@Localizer["Priority"]</th><th>@Localizer["System Default"]</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var m in conditionPriorityMappings)
+                    {
+                        <tr>
+                            <td><code>@m.Condition</code></td>
+                            <td>
+                                <form asp-action="UpdateConditionPriorityMapping" method="post" class="d-flex gap-1 align-items-center">
+                                    <input type="hidden" name="id" value="@m.ConditionPriorityMappingId" />
+                                    <select name="priority" class="form-select form-select-sm" style="max-width:140px;" onchange="this.form.submit()">
+                                        @foreach (var p in new[] { "Low", "Medium", "High", "Critical" })
+                                        {
+                                            <option value="@p" selected="@(p == m.Priority)">@p</option>
+                                        }
+                                    </select>
+                                </form>
+                            </td>
+                            <td>@if (m.IsSystemDefault) { <span class="badge text-bg-info">@Localizer["System"]</span> }</td>
+                            <td class="text-end">
+                                <form asp-action="ToggleConditionPriorityMappingActive" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@m.ConditionPriorityMappingId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["غیرفعال کردن"]" onclick="return confirm('این نگاشت غیرفعال بشه؟')"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (!conditionPriorityMappings.Any()) { <p class="text-muted text-center py-4">@Localizer["هنوز نگاشتی ساخته نشده."]</p> }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createPriorityMappingModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="CreateConditionPriorityMapping" method="post">
+            <div class="modal-header"><h6 class="modal-title">@Localizer["نگاشت جدید"]</h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">@Localizer["Condition"]</label>
+                    <input name="condition" class="form-control form-control-sm" required placeholder="مثلاً RequiresEngineeringReview" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">@Localizer["Priority"]</label>
+                    <select name="priority" class="form-select form-select-sm">
+                        @foreach (var p in new[] { "Low", "Medium", "High", "Critical" })
+                        {
+                            <option value="@p">@p</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
+            </div>
+        </form>
+    </div></div>
 </div>
 
 <div class="modal fade" id="createSkillModal" tabindex="-1">
@@ -768,3 +912,114 @@
         </form>
     </div></div>
 </div>
+
+<div class="modal fade" id="createEvaluationProfileModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="CreateEvaluationProfile" method="post">
+            <div class="modal-header"><h6 class="modal-title">@Localizer["Evaluation Profile جدید"]</h6></div>
+            <div class="modal-body">
+                <p class="small text-muted">@Localizer["فقط تعریف پروفایل - آستانه‌های واقعی را بعداً از دکمه‌ی «Add Limit» هر ردیف وارد کنید."]</p>
+                <div class="mb-2">
+                    <label class="form-label small">@Localizer["Code"]</label>
+                    <input name="code" class="form-control form-control-sm" required placeholder="@Localizer["مثلاً VIB-PUMP-ISO20816"]" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">@Localizer["Name"]</label>
+                    <input name="name" class="form-control form-control-sm" required />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">@Localizer["نام فارسی (اختیاری)"]</label>
+                    <input name="nameFa" class="form-control form-control-sm" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">@Localizer["Variable Type"]</label>
+                    <select name="variableType" class="form-select form-select-sm" required>
+                        @foreach (var vt in new[] { "Vibration", "Temperature", "Pressure", "Flow", "Current", "Voltage", "Lubrication", "OilAnalysis", "Thermography", "Acoustic", "ProcessDeviation" })
+                        {
+                            <option value="@vt">@vt</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">@Localizer["Equipment Class (اختیاری - خالی یعنی عمومی)"]</label>
+                    <select name="equipmentClassId" class="form-select form-select-sm">
+                        <option value="">@Localizer["-- ندارد --"]</option>
+                        @foreach (var ec in equipmentClasses) { <option value="@ec.EquipmentClassId">@ec.Name</option> }
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">@Localizer["Standard Reference (اختیاری)"]</label>
+                    <select name="standardReferenceId" class="form-select form-select-sm">
+                        <option value="">@Localizer["-- ندارد --"]</option>
+                        @foreach (var sr in standardReferences) { <option value="@sr.StandardReferenceId">@sr.Code — @sr.Title</option> }
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">@Localizer["Operating Condition (اختیاری)"]</label>
+                    <input name="operatingCondition" class="form-control form-control-sm" placeholder="@Localizer["مثلاً Normal Load"]" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">@Localizer["Effective From"]</label>
+                    <input type="date" name="effectiveFrom" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
+            </div>
+        </form>
+    </div></div>
+</div>
+
+<div class="modal fade" id="addLimitModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <form asp-action="AddEvaluationLimit" method="post">
+            <div class="modal-header"><h6 class="modal-title">@Localizer["Add Limit"] — <span id="addLimitProfileLabel"></span></h6></div>
+            <div class="modal-body">
+                <p class="small text-muted">@Localizer["فقط مقدار واقعی مهندسی وارد کنید - هیچ مقداری حدس زده نمی‌شود؛ خالی گذاشتن هر دو فیلد رد می‌شود."]</p>
+                <input type="hidden" name="evaluationProfileId" id="addLimitProfileId" />
+                <div class="mb-2">
+                    <label class="form-label small">@Localizer["Status"]</label>
+                    <select name="status" class="form-select form-select-sm" required>
+                        @foreach (var st in new[] { "Normal", "Warning", "Alarm", "Critical" })
+                        {
+                            <option value="@st">@st</option>
+                        }
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="col-6 mb-2">
+                        <label class="form-label small">@Localizer["Low Value (اختیاری)"]</label>
+                        <input type="number" step="any" name="lowValue" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-6 mb-2">
+                        <label class="form-label small">@Localizer["High Value (اختیاری)"]</label>
+                        <input type="number" step="any" name="highValue" class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 mb-2 form-check ms-1">
+                        <input type="checkbox" name="lowInclusive" value="true" class="form-check-input" id="lowInclusiveCheck" checked />
+                        <label class="form-check-label small" for="lowInclusiveCheck">@Localizer["Low Inclusive"]</label>
+                    </div>
+                    <div class="col-6 mb-2 form-check ms-1">
+                        <input type="checkbox" name="highInclusive" value="true" class="form-check-input" id="highInclusiveCheck" checked />
+                        <label class="form-check-label small" for="highInclusiveCheck">@Localizer["High Inclusive"]</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت"]</button>
+            </div>
+        </form>
+    </div></div>
+</div>
+
+<script>
+    document.getElementById('addLimitModal')?.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        document.getElementById('addLimitProfileId').value = button.getAttribute('data-profile-id');
+        document.getElementById('addLimitProfileLabel').textContent = button.getAttribute('data-profile-code');
+    });
+</script>

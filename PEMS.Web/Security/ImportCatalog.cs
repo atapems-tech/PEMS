@@ -65,6 +65,9 @@ public static class ImportCatalog
             Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-signpost-split"),
         new("MaintenanceHistory", Category.Cmms, "MaintenanceHistoryImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "MaintenanceHistoryImport",
             Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-clock-history"),
+        // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۹
+        new("ConditionReading", Category.Cmms, "ConditionReadingImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "ConditionReadingImport",
+            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-graph-up-arrow"),
         // Direct import (no staging): the existing POST Instrument/Import, launched from the Import Center dialog.
         // The controller has no module permission - it enforces the same role gate as this card (ImportCatalog.CanUse).
         new("Instrument", Category.Cmms, "Instrument", "Import", LaunchMode.Dialog, ".xlsx", ".xlsx", false, Workflow.Direct, null,
