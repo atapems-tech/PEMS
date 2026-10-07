@@ -58,4 +58,9 @@
     <ProjectReference Include="..\PEMS.WorkflowPlatform\PEMS.WorkflowPlatform.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- قالب چاپ فرم INWH-PLA-FO-001 (Rev.3) - داخل Assembly تا به مسیر Deploy وابسته نباشد -->
+    <EmbeddedResource Include="Templates\PartCatalogue\INWH-PLA-FO-001.xlsx" LogicalName="PEMS.Templates.INWH-PLA-FO-001.xlsx" />
+  </ItemGroup>
+
 </Project>

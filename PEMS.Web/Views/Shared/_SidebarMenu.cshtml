@@ -4,6 +4,7 @@
 @using PEMS.Application.Interfaces
 @inject IStringLocalizer<SharedResource> Localizer
 @inject IPermissionService PermissionService
+@inject IRoleModuleActionService RoleActions
 @inject ICurrentUserService CurrentUserService
 @inject PEMS.Web.Security.NavigationVisibilityResolver NavigationVisibilityResolver
 @{
@@ -14,6 +15,13 @@
     // طبق «PEMS — Quick Setup & Domain Import Architecture Refactoring» بند ۱۰: Quick Setup یک
     // قابلیت مجوزمحور است (Setup/View)، نه یک آیتم منوی نقش-محور مثل بقیه‌ی سایدبار - به همین
     // دلیل، برخلاف بقیه‌ی این فایل، مستقیماً از IPermissionService استفاده می‌کند.
+    // کاتالوگ قطعه: درخواست‌دهنده‌ها نقش‌های Inventory/CMMS ندارند؛ دیدن بخش Warehouse برای آن‌ها مجوزمحور است.
+    var pcActions = new Dictionary<string, bool>();
+    foreach (var a in new[] { "Create", "Review", "Approve", "Admin" })
+        pcActions[a] = await RoleActions.HasActionAsync(CurrentUserService.Roles, "PartCatalogue", a);
+    var canSeePartCatalogue = pcActions.Values.Any(v => v);
+    var canAdminPartCatalogue = pcActions["Admin"];
+
     var canSeeQuickSetup = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "Setup", "View");
 
     // مرکز Import: ورودی واحد سایدبار برای همه‌ی Importها (ImportCatalog). فقط نقش را (بدون DB) می‌سنجد؛ کاربری که
@@ -69,6 +77,8 @@
     var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "ContractApprovalAuthority", "Department", "Employee", "Authorization", "SoDPolicy", "AuthorizationAudit", "NavigationVisibility" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
+    // Warehouse یک Area مستقل است؛ کنترلرهای هم‌نام در Areaهای دیگر نباید بخش را فعال کنند
+    bool ContainsActiveInArea(string area, string[] controllers) => InArea(area) && ContainsActive(controllers);
 }
 
 <nav class="pems-sidebar" id="pemsSidebar">
@@ -559,39 +569,56 @@
     }
 
 
-    @if (navVisibility.IsModuleVisible("Inventory"))
+    @if (navVisibility.IsModuleVisible("Inventory") || canSeePartCatalogue)
     {
-        var active = ContainsActive(inventoryControllers);
+        var inventoryVisible = navVisibility.IsModuleVisible("Inventory");
+        var active = ContainsActiveInArea("Warehouse", inventoryControllers.Concat(new[] { "PartCatalogueRequest", "PartCatalogueAdmin" }).ToArray());
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-inventory" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
             <i class="bi bi-boxes nav-section-icon"></i>
-            <span>@Localizer["Inventory & Materials"]</span>
+            <span>@Localizer["Warehouse"]</span>
             <i class="@ChevronClass(active)"></i>
         </div>
         <div class="@SectionClass(active)" id="sec-inventory">
 
-            <a class="nav-link @(IsActive("Inventory") ? "active" : "")" asp-controller="Inventory" asp-action="Index" asp-area="">
+            @if (inventoryVisible)
+            {
+            <a class="nav-link @(IsActive("Inventory", "Warehouse") ? "active" : "")" asp-controller="Inventory" asp-action="Index" asp-area="Warehouse">
                 <i class="bi bi-speedometer2"></i> @Localizer["Dashboard"]
             </a>
 
-            <a class="nav-link @(IsActive("MaterialItem") ? "active" : "")" asp-controller="MaterialItem" asp-action="Index" asp-area="">
+            <a class="nav-link @(IsActive("MaterialItem", "Warehouse") ? "active" : "")" asp-controller="MaterialItem" asp-action="Index" asp-area="Warehouse">
                 <i class="bi bi-box-seam"></i> @Localizer["Material Master"]
             </a>
 
-            <a class="nav-link @(IsActive("IrnReceipt") ? "active" : "")" asp-controller="IrnReceipt" asp-action="Index" asp-area="">
+            <a class="nav-link @(IsActive("IrnReceipt", "Warehouse") ? "active" : "")" asp-controller="IrnReceipt" asp-action="Index" asp-area="Warehouse">
                 <i class="bi bi-truck"></i> @Localizer["Incoming Receipts (IRN)"]
             </a>
 
-            <a class="nav-link @(IsActive("InventoryTransaction") ? "active" : "")" asp-controller="InventoryTransaction" asp-action="Index" asp-area="">
+            <a class="nav-link @(IsActive("InventoryTransaction", "Warehouse") ? "active" : "")" asp-controller="InventoryTransaction" asp-action="Index" asp-area="Warehouse">
                 <i class="bi bi-list-ul"></i> @Localizer["Transaction Ledger"]
             </a>
 
-            <a class="nav-link @(IsActive("StoreRequisition") ? "active" : "")" asp-controller="StoreRequisition" asp-action="Index" asp-area="">
+            <a class="nav-link @(IsActive("StoreRequisition", "Warehouse") ? "active" : "")" asp-controller="StoreRequisition" asp-action="Index" asp-area="Warehouse">
                 <i class="bi bi-clipboard-check"></i> @Localizer["Store Requisitions"]
             </a>
 
-            <a class="nav-link @(IsActive("InventoryMasterData") ? "active" : "")" asp-controller="InventoryMasterData" asp-action="Index" asp-area="">
+            <a class="nav-link @(IsActive("InventoryMasterData", "Warehouse") ? "active" : "")" asp-controller="InventoryMasterData" asp-action="Index" asp-area="Warehouse">
                 <i class="bi bi-collection"></i> @Localizer["Master Data"]
             </a>
+            }
+
+            @if (canSeePartCatalogue)
+            {
+                <a class="nav-link @(IsActive("PartCatalogueRequest", "Warehouse") ? "active" : "")" asp-controller="PartCatalogueRequest" asp-action="Index" asp-area="Warehouse">
+                    <i class="bi bi-journal-plus"></i> @Localizer["Pc_Menu"]
+                </a>
+            }
+            @if (canAdminPartCatalogue)
+            {
+                <a class="nav-link @(IsActive("PartCatalogueAdmin", "Warehouse") ? "active" : "")" asp-controller="PartCatalogueAdmin" asp-action="Index" asp-area="Warehouse">
+                    <i class="bi bi-sliders"></i> @Localizer["Pc_Title_Admin"]
+                </a>
+            }
         </div>
     }
 

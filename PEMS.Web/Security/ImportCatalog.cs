@@ -35,6 +35,7 @@ public static class ImportCatalog
 
     /// <param name="Key">شناسه‌ی پایدار (Localization: IC_{Key}_Title / _Desc / _Flow / _Hint).</param>
     /// <param name="Controller">Controller موجود؛ مسیر و Action تغییر نکرده‌اند.</param>
+    /// <param name="Area">Area صاحب Controller ("" = بدون Area؛ مثلاً MRS Import در Warehouse است).</param>
     /// <param name="Action">Page: Action صفحه‌ی Import (Index). Dialog: Action POST موجود (Import) که فرم مرکز Import به آن Post می‌کند.</param>
     /// <param name="FileTypes">فرمت‌های واقعیِ پذیرفته‌شده (نمایشی).</param>
     /// <param name="Accept">attribute accept فرم Dialog (فقط Mode=Dialog).</param>
@@ -43,7 +44,7 @@ public static class ImportCatalog
     public sealed record ImportEntry(
         string Key, string Category, string Controller, string Action, LaunchMode Mode,
         string FileTypes, string? Accept, bool Staged, string WorkflowType, string? PermissionModule,
-        IReadOnlyList<string[]> RequiredRoleSets, string Icon);
+        IReadOnlyList<string[]> RequiredRoleSets, string Icon, string Area = "");
 
     private static string[][] Sets(params string[][] s) => s;
 
@@ -75,7 +76,7 @@ public static class ImportCatalog
 
         // ---- Inventory
         new("Mrs", Category.Inventory, "MrsImport", "Index", LaunchMode.Page, ".xlsx, .xlsm", null, true, Workflow.StagedReview, "MrsImport",
-            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-file-earmark-excel"),
+            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-file-earmark-excel", "Warehouse"),
 
         // ---- Organization: direct imports (existing POST Department/Import, Employee/Import); controllers carry
         // [Authorize(Roles=SystemAdmin,EngineeringManager)], the card keeps the narrower legacy sidebar exposure (SystemAdmin).

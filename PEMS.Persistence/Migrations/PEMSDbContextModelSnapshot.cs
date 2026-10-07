@@ -9969,6 +9969,9 @@ namespace PEMS.Persistence.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DismissedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
@@ -10009,6 +10012,8 @@ namespace PEMS.Persistence.Migrations
                     b.HasKey("NotificationId");
 
                     b.HasIndex("UserId", "IsRead");
+
+                    b.HasIndex("UserId", "DismissedDate", "CreatedDate");
 
                     b.ToTable("Notifications");
                 });
@@ -10213,6 +10218,1257 @@ namespace PEMS.Persistence.Migrations
                     b.HasKey("PanelId");
 
                     b.ToTable("Panels");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueApproverAssignment", b =>
+                {
+                    b.Property<int>("ApproverAssignmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ApproverAssignmentId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("StepKey")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ApproverAssignmentId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("StepKey", "EmployeeId")
+                        .IsUnique();
+
+                    b.ToTable("PartCatalogueApproverAssignments", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueCommodityGroup", b =>
+                {
+                    b.Property<int>("CommodityGroupId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommodityGroupId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("NeedsConfirmation")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CommodityGroupId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("PartCatalogueCommodityGroups", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueCommodityGroupChild", b =>
+                {
+                    b.Property<int>("CommodityGroupChildId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommodityGroupChildId"));
+
+                    b.Property<int>("ChildGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("NeedsConfirmation")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ParentGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CommodityGroupChildId");
+
+                    b.HasIndex("ChildGroupId");
+
+                    b.HasIndex("ParentGroupId", "ChildGroupId")
+                        .IsUnique();
+
+                    b.ToTable("PartCatalogueCommodityGroupChildren", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueCurrency", b =>
+                {
+                    b.Property<int>("CurrencyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CurrencyId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("NameFa")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CurrencyId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("PartCatalogueCurrencies", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueManufacturer", b =>
+                {
+                    b.Property<int>("ManufacturerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ManufacturerId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsLocal")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsWrong")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NormalizedName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ManufacturerId");
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("NormalizedName");
+
+                    b.ToTable("PartCatalogueManufacturers", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueOrgLink", b =>
+                {
+                    b.Property<int>("OrgLinkId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrgLinkId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ManagerEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrgLinkId");
+
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
+
+                    b.HasIndex("ManagerEmployeeId");
+
+                    b.ToTable("PartCatalogueOrgLinks", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCataloguePlanningMethod", b =>
+                {
+                    b.Property<int>("PlanningMethodId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlanningMethodId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlanningMethodId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("PartCataloguePlanningMethods", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueProductFamily", b =>
+                {
+                    b.Property<int>("ProductFamilyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductFamilyId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductFamilyId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("PartCatalogueProductFamilies", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequest", b =>
+                {
+                    b.Property<int>("PartCatalogueRequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PartCatalogueRequestId"));
+
+                    b.Property<string>("AssetType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("AssignedPartNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool?>("ChangesMatchInventory")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("CommodityGroup1Id")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CommodityGroup2Id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CompletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CurrencyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CurrentStepKey")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("DocumentNo")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("EquipmentSerialNo")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ExistingPartNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal?>("FirstPurchaseQuantity")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsCapital")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsCritical")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsNewEquipment")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsNewManufacturer")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRd")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("IssuedQty")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("ManufacturerDrawingNo")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("ManufacturerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ManufacturerPartNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal?>("MaxConsumptionRate")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal?>("MinimumStock")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewManufacturerName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("OldManufacturerName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("OldManufacturerPartNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal?>("PartPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("PlanningMethodId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("PrimaryIssuedRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ProductFamilyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RequestNumber")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<string>("RequestType")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<int>("RequesterEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("SectionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SparePartSerialNo")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int?>("StockGradeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StorageVolume")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("SubmittedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("SupplierId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SupplierPartNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("TechnicalClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TypeDesignationId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UnitOfMeasureId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Urgent")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("WantedReceiptDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("PartCatalogueRequestId");
+
+                    b.HasIndex("CommodityGroup1Id");
+
+                    b.HasIndex("CommodityGroup2Id");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.HasIndex("CurrentStepKey");
+
+                    b.HasIndex("ExistingPartNumber");
+
+                    b.HasIndex("ManufacturerId");
+
+                    b.HasIndex("PlanningMethodId");
+
+                    b.HasIndex("ProductFamilyId");
+
+                    b.HasIndex("RequestNumber")
+                        .IsUnique()
+                        .HasFilter("[RequestNumber] IS NOT NULL");
+
+                    b.HasIndex("RequesterEmployeeId");
+
+                    b.HasIndex("SectionId");
+
+                    b.HasIndex("StockGradeId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.HasIndex("TechnicalClassId");
+
+                    b.HasIndex("TypeDesignationId");
+
+                    b.HasIndex("UnitOfMeasureId");
+
+                    b.HasIndex("Status", "Urgent", "CreatedDate");
+
+                    b.ToTable("PartCatalogueRequests", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequestApproval", b =>
+                {
+                    b.Property<int>("RequestApprovalId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestApprovalId"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime>("ActionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ActorEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FromStatus")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PartCatalogueRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("StepKey")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ToStatus")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("RequestApprovalId");
+
+                    b.HasIndex("ActorEmployeeId");
+
+                    b.HasIndex("PartCatalogueRequestId");
+
+                    b.ToTable("PartCatalogueRequestApprovals", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequestAttachment", b =>
+                {
+                    b.Property<int>("RequestAttachmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestAttachmentId"));
+
+                    b.Property<string>("ContentType")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileHash")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(260)
+                        .HasColumnType("nvarchar(260)");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PartCatalogueRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("StorageKey")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UploadedByEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UploadedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("RequestAttachmentId");
+
+                    b.HasIndex("PartCatalogueRequestId");
+
+                    b.ToTable("PartCatalogueRequestAttachments", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequestAttribute", b =>
+                {
+                    b.Property<int>("RequestAttributeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestAttributeId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("PartCatalogueRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RequestAttributeId");
+
+                    b.HasIndex("PartCatalogueRequestId", "Name");
+
+                    b.ToTable("PartCatalogueRequestAttributes", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequestEquipment", b =>
+                {
+                    b.Property<int>("RequestEquipmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestEquipmentId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EquipmentText")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<decimal>("InstalledQuantity")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PartCatalogueRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RequestEquipmentId");
+
+                    b.HasIndex("EquipmentId");
+
+                    b.HasIndex("PartCatalogueRequestId");
+
+                    b.ToTable("PartCatalogueRequestEquipment", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequestNote", b =>
+                {
+                    b.Property<int>("RequestNoteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestNoteId"));
+
+                    b.Property<int>("AuthorEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PartCatalogueRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("StepKey")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.HasKey("RequestNoteId");
+
+                    b.HasIndex("AuthorEmployeeId");
+
+                    b.HasIndex("PartCatalogueRequestId");
+
+                    b.ToTable("PartCatalogueRequestNotes", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequestStep", b =>
+                {
+                    b.Property<int>("RequestStepId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestStepId"));
+
+                    b.Property<DateTime?>("ActivatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("AssignedEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DecidedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PartCatalogueRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("SkipReason")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("StepKey")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("StepOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RequestStepId");
+
+                    b.HasIndex("PartCatalogueRequestId", "StepOrder");
+
+                    b.HasIndex("Status", "StepKey", "AssignedEmployeeId");
+
+                    b.ToTable("PartCatalogueRequestSteps", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueSection", b =>
+                {
+                    b.Property<int>("SectionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SectionId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameFa")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("RequiresSparePartsReview")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("RoutingNeedsConfirmation")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SectionId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("PartCatalogueSections", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueSectionCommodityGroup", b =>
+                {
+                    b.Property<int>("SectionCommodityGroupId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SectionCommodityGroupId"));
+
+                    b.Property<int>("CommodityGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("NeedsConfirmation")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("SectionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SectionCommodityGroupId");
+
+                    b.HasIndex("CommodityGroupId");
+
+                    b.HasIndex("SectionId", "CommodityGroupId")
+                        .IsUnique();
+
+                    b.ToTable("PartCatalogueSectionCommodityGroups", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueStockGrade", b =>
+                {
+                    b.Property<int>("StockGradeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StockGradeId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("DescriptionFa")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<int>("Grade")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StockGradeId");
+
+                    b.HasIndex("Grade")
+                        .IsUnique();
+
+                    b.ToTable("PartCatalogueStockGrades", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueSupplier", b =>
+                {
+                    b.Property<int>("SupplierId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SupplierId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("NormalizedName")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SupplierId");
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("NormalizedName");
+
+                    b.ToTable("PartCatalogueSuppliers", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueTechnicalClass", b =>
+                {
+                    b.Property<int>("TechnicalClassId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TechnicalClassId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LongDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TechnicalClassId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("Description");
+
+                    b.ToTable("PartCatalogueTechnicalClasses", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueTypeDesignation", b =>
+                {
+                    b.Property<int>("TypeDesignationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TypeDesignationId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsCapital")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsCritical")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TypeDesignationId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("PartCatalogueTypeDesignations", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueWorkflowStep", b =>
+                {
+                    b.Property<int>("WorkflowStepId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkflowStepId"));
+
+                    b.Property<string>("ApproverSource")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("ConditionKey")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("NameFa")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("NeedsConfirmation")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("StepKey")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("StepOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("WorkflowStepId");
+
+                    b.HasIndex("StepKey")
+                        .IsUnique();
+
+                    b.HasIndex("StepOrder");
+
+                    b.ToTable("PartCatalogueWorkflowSteps", (string)null);
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.Permission", b =>
@@ -16322,6 +17578,9 @@ namespace PEMS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -16332,6 +17591,12 @@ namespace PEMS.Persistence.Migrations
                     b.Property<string>("DisplayName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Domain")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSystemRole")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -16339,6 +17604,9 @@ namespace PEMS.Persistence.Migrations
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -20083,6 +21351,258 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("StandardReference");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueApproverAssignment", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueCommodityGroupChild", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueCommodityGroup", "ChildGroup")
+                        .WithMany()
+                        .HasForeignKey("ChildGroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueCommodityGroup", "ParentGroup")
+                        .WithMany()
+                        .HasForeignKey("ParentGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChildGroup");
+
+                    b.Navigation("ParentGroup");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueOrgLink", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.Employee", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerEmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Manager");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequest", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueCommodityGroup", "CommodityGroup1")
+                        .WithMany()
+                        .HasForeignKey("CommodityGroup1Id")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueCommodityGroup", "CommodityGroup2")
+                        .WithMany()
+                        .HasForeignKey("CommodityGroup2Id")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueCurrency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueManufacturer", "Manufacturer")
+                        .WithMany()
+                        .HasForeignKey("ManufacturerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.PartCataloguePlanningMethod", "PlanningMethod")
+                        .WithMany()
+                        .HasForeignKey("PlanningMethodId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueProductFamily", "ProductFamily")
+                        .WithMany()
+                        .HasForeignKey("ProductFamilyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.Employee", "Requester")
+                        .WithMany()
+                        .HasForeignKey("RequesterEmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueSection", "Section")
+                        .WithMany()
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueStockGrade", "StockGrade")
+                        .WithMany()
+                        .HasForeignKey("StockGradeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueSupplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueTechnicalClass", "TechnicalClass")
+                        .WithMany()
+                        .HasForeignKey("TechnicalClassId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueTypeDesignation", "TypeDesignation")
+                        .WithMany()
+                        .HasForeignKey("TypeDesignationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.MaterialUOM", "UnitOfMeasure")
+                        .WithMany()
+                        .HasForeignKey("UnitOfMeasureId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CommodityGroup1");
+
+                    b.Navigation("CommodityGroup2");
+
+                    b.Navigation("Currency");
+
+                    b.Navigation("Manufacturer");
+
+                    b.Navigation("PlanningMethod");
+
+                    b.Navigation("ProductFamily");
+
+                    b.Navigation("Requester");
+
+                    b.Navigation("Section");
+
+                    b.Navigation("StockGrade");
+
+                    b.Navigation("Supplier");
+
+                    b.Navigation("TechnicalClass");
+
+                    b.Navigation("TypeDesignation");
+
+                    b.Navigation("UnitOfMeasure");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequestApproval", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Employee", "Actor")
+                        .WithMany()
+                        .HasForeignKey("ActorEmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueRequest", "Request")
+                        .WithMany("Approvals")
+                        .HasForeignKey("PartCatalogueRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Actor");
+
+                    b.Navigation("Request");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequestAttachment", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueRequest", "Request")
+                        .WithMany("Attachments")
+                        .HasForeignKey("PartCatalogueRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Request");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequestAttribute", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueRequest", "Request")
+                        .WithMany("Attributes")
+                        .HasForeignKey("PartCatalogueRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Request");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequestEquipment", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueRequest", "Request")
+                        .WithMany("Equipment")
+                        .HasForeignKey("PartCatalogueRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("Request");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequestNote", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Employee", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorEmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueRequest", "Request")
+                        .WithMany("Notes")
+                        .HasForeignKey("PartCatalogueRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Request");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequestStep", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueRequest", "Request")
+                        .WithMany("Steps")
+                        .HasForeignKey("PartCatalogueRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Request");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueSectionCommodityGroup", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueCommodityGroup", "CommodityGroup")
+                        .WithMany()
+                        .HasForeignKey("CommodityGroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueSection", "Section")
+                        .WithMany()
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CommodityGroup");
+
+                    b.Navigation("Section");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Permit", b =>
                 {
                     b.HasOne("PEMS.Domain.Entities.Equipment", "Equipment")
@@ -22218,6 +23738,21 @@ namespace PEMS.Persistence.Migrations
             modelBuilder.Entity("PEMS.Domain.Entities.MrsImportRow", b =>
                 {
                     b.Navigation("Metadata");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequest", b =>
+                {
+                    b.Navigation("Approvals");
+
+                    b.Navigation("Attachments");
+
+                    b.Navigation("Attributes");
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("Notes");
+
+                    b.Navigation("Steps");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.Position", b =>

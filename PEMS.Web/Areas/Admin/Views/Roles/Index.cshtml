@@ -2,6 +2,21 @@
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
+@{
+    // نام/توضیح بومی‌سازی‌شده از کاتالوگ؛ نقش سفارشی (کلید ندارد) به DisplayName/Name برمی‌گردد
+    string Loc(string key, string? fallback) { var l = Localizer[key]; return l.ResourceNotFound ? (fallback ?? "") : l.Value; }
+    // فقط نقش‌های دقیقاً-کاتالوگی بومی‌سازی می‌شوند؛ نقش سفارشی با نامی مثل «MNT_Manager» (که کلید منبع را تقلید می‌کند)
+    // هرگز نام/توضیح یک نقش پایه را قرض نمی‌گیرد.
+    bool IsCatalog(PEMS.Web.Areas.Admin.Models.RoleListItemViewModel r) => PEMS.Persistence.Identity.RoleCatalog.Find(r.Name) != null;
+    string RoleName(PEMS.Web.Areas.Admin.Models.RoleListItemViewModel r)
+    {
+        var fb = string.IsNullOrWhiteSpace(r.DisplayName) ? r.Name : r.DisplayName;
+        return IsCatalog(r) ? Loc("Role_" + r.Name.Replace('.', '_') + "_Name", fb) : fb;
+    }
+    string RoleDesc(PEMS.Web.Areas.Admin.Models.RoleListItemViewModel r) =>
+        IsCatalog(r) ? Loc("Role_" + r.Name.Replace('.', '_') + "_Desc", r.Description) : (r.Description ?? "");
+    var duplicates = (List<(string Custom, string Baseline)>?)ViewBag.PossibleDuplicates ?? new();
+}
 
 <div class="admin-page-shell">
     <div class="admin-hero">
@@ -10,17 +25,26 @@
         </div>
         <a asp-action="Create" class="btn btn-pems-solid"><i class="bi bi-plus-lg me-1"></i> @Localizer["New Role"]</a>
     </div>
+    @if (duplicates.Any())
+    {
+        <div class="alert alert-warning small" role="alert">
+            <strong>@Localizer["Role_PossibleDuplicates"]</strong>
+            @foreach (var d in duplicates) { <div>@d.Custom &rarr; @d.Baseline</div> }
+        </div>
+    }
     <div class="content-card">
         <div class="admin-toolbar"><div class="admin-toolbar-main"><span class="text-body-secondary small"><strong>@Model.Count</strong> roles configured</span></div></div>
         <div class="table-responsive">
             <table class="table table-enterprise">
-                <thead><tr><th>@Localizer["Role"]</th><th>@Localizer["Description"]</th><th>@Localizer["Users"]</th><th>@Localizer["Authorization"]</th><th>@Localizer["Type"]</th><th class="text-end">@Localizer["Actions"]</th></tr></thead>
+                <thead><tr><th>@Localizer["Role"]</th><th>@Localizer["Role_Domain"]</th><th>@Localizer["Role_Category"]</th><th>@Localizer["Description"]</th><th>@Localizer["Users"]</th><th>@Localizer["Authorization"]</th><th>@Localizer["Type"]</th><th class="text-end">@Localizer["Actions"]</th></tr></thead>
                 <tbody>
                 @foreach (var r in Model)
                 {
                     <tr>
-                        <td><div class="row-primary">@r.DisplayName</div><div class="row-secondary">@r.Name</div></td>
-                        <td>@r.Description</td>
+                        <td><div class="row-primary">@RoleName(r)</div><div class="row-secondary">@r.Name</div></td>
+                        <td>@(string.IsNullOrEmpty(r.Domain) ? "" : Loc("RoleDomain_" + r.Domain, r.Domain))</td>
+                        <td>@(string.IsNullOrEmpty(r.Category) ? "" : Loc("RoleCategory_" + r.Category, r.Category))</td>
+                        <td>@RoleDesc(r)</td>
                         <td><span class="admin-role-badge"><i class="bi bi-people me-1"></i>@r.UserCount</span></td>
                         <td>
                             @* طبق «PEMS Authorization Architecture Completion» فاز ۴ بند ۹/۱۴: وضعیت پیکربندی مجوز -

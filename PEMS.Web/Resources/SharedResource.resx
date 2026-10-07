@@ -45,4 +45,301 @@
   <data name="Maintenance Planning"><value>Maintenance Planning</value></data><data name="Maintenance Backlog"><value>Maintenance Backlog</value></data>
   <data name="Day"><value>Day</value></data><data name="Week"><value>Week</value></data><data name="Month"><value>Month</value></data><data name="Today"><value>Today</value></data><data name="All Teams"><value>All Teams</value></data><data name="Maintenance Team"><value>Maintenance Team</value></data><data name="High/Critical"><value>High/Critical</value></data><data name="Overdue"><value>Overdue</value></data><data name="Conflict"><value>Conflict</value></data><data name="Unassigned Team"><value>Unassigned Team</value></data><data name="No scheduled work this week."><value>No scheduled work this week.</value></data><data name="No scheduled work this day."><value>No scheduled work this day.</value></data><data name="Unscheduled Work"><value>Unscheduled Work</value></data><data name="No team"><value>No team</value></data><data name="more"><value>more</value></data><data name="My Work"><value>My Work</value></data><data name="No work scheduled for you on this day."><value>No work scheduled for you on this day.</value></data><data name="Planned"><value>Planned</value></data><data name="Unscheduled"><value>Unscheduled</value></data><data name="Planned Start"><value>Planned Start</value></data><data name="Planned Finish"><value>Planned Finish</value></data><data name="Save Schedule"><value>Save Schedule</value></data><data name="Work Type"><value>Work Type</value></data><data name="Maintenance Calendar"><value>Maintenance Calendar</value></data>
   <data name="Active"><value>Active</value></data><data name="Allowed"><value>Allowed</value></data><data name="Always"><value>Always</value></data><data name="Apply filters"><value>Apply filters</value></data><data name="Authorization"><value>Authorization</value></data><data name="By Role"><value>By Role</value></data><data name="By User"><value>By User</value></data><data name="Cannot follow"><value>Cannot follow</value></data><data name="Choose a role above"><value>Choose a role above</value></data><data name="Choose a user above"><value>Choose a user above</value></data><data name="Conflicts with"><value>Conflicts with</value></data><data name="Decision"><value>Decision</value></data><data name="Destructive"><value>Destructive</value></data><data name="Detail"><value>Detail</value></data><data name="Disable"><value>Disable</value></data><data name="Disabled"><value>Disabled</value></data><data name="Effective"><value>Effective</value></data><data name="Enable"><value>Enable</value></data><data name="First permission"><value>First permission</value></data><data name="From"><value>From</value></data><data name="Matched Role"><value>Matched Role</value></data><data name="Matched Scope"><value>Matched Scope</value></data><data name="New Policy"><value>New Policy</value></data><data name="New Role"><value>New Role</value></data><data name="No SoD policies configured"><value>No SoD policies configured</value></data><data name="No authorization events found"><value>No authorization events found</value></data><data name="No permissions configured"><value>No permissions configured</value></data><data name="No roles assigned"><value>No roles assigned</value></data><data name="Not configured"><value>Not configured</value></data><data name="Not granted"><value>Not granted</value></data><data name="Reason"><value>Reason</value></data><data name="Resource"><value>Resource</value></data><data name="Resource ID"><value>Resource ID</value></data><data name="Role"><value>Role</value></data><data name="Roles and scope"><value>Roles and scope</value></data><data name="Run"><value>Run</value></data><data name="Scope"><value>Scope</value></data><data name="Show not-granted permissions"><value>Show not-granted permissions</value></data><data name="System"><value>System</value></data><data name="Time"><value>Time</value></data><data name="Unrestricted"><value>Unrestricted</value></data><data name="User"><value>User</value></data><data name="Why"><value>Why</value></data><data name="With"><value>With</value></data><data name="Yes"><value>Yes</value></data><data name="open"><value>open</value></data><data name="permissions"><value>permissions</value></data><data name="A user who does the first action on a record cannot also do the second on the same record."><value>A user who does the first action on a record cannot also do the second on the same record.</value></data><data name="Every authorization decision - who, what, why."><value>Every authorization decision - who, what, why.</value></data><data name="No permissions configured for this role yet - every action is denied by default"><value>No permissions configured for this role yet - every action is denied by default</value></data><data name="Run a real authorization decision for a hypothetical user and action."><value>Run a real authorization decision for a hypothetical user and action.</value></data><data name="See what a Role can do, read live from the authorization engine."><value>See what a Role can do, read live from the authorization engine.</value></data><data name="See what a User can do, and which Role/Scope grants it."><value>See what a User can do, and which Role/Scope grants it.</value></data><data name="SystemAdmin bypasses the permission matrix by design"><value>SystemAdmin bypasses the permission matrix by design</value></data><data name="SystemAdmin bypasses this matrix by design."><value>SystemAdmin bypasses this matrix by design.</value></data><data name="This user holds SystemAdmin and bypasses the permission matrix by design."><value>This user holds SystemAdmin and bypasses the permission matrix by design.</value></data><data name="This was recorded in the Authorization Audit log."><value>This was recorded in the Authorization Audit log.</value></data><data name="modules configured"><value>modules configured</value></data><data name="permissions allowed"><value>permissions allowed</value></data><data name="permissions allowed, via role membership"><value>permissions allowed, via role membership</value></data><data name="— select a role —"><value>— select a role —</value></data><data name="— select a user —"><value>— select a user —</value></data><data name="— select —"><value>— select —</value></data><data name="Effective Permissions"><value>Effective Permissions</value></data><data name="Permission Simulator"><value>Permission Simulator</value></data><data name="Separation of Duties"><value>Separation of Duties</value></data><data name="Authorization Audit"><value>Authorization Audit</value></data><data name="ALLOW"><value>ALLOW</value></data><data name="DENY"><value>DENY</value></data><data name="Choose which sidebar sections a Role sees. This never changes what a Role is allowed to do - only what it sees by default."><value>Choose which sidebar sections a Role sees. This never changes what a Role is allowed to do - only what it sees by default.</value></data><data name="manual overrides"><value>manual overrides</value></data><data name="Module / Item"><value>Module / Item</value></data><data name="Default"><value>Default</value></data><data name="Source"><value>Source</value></data><data name="Override"><value>Override</value></data><data name="Visible"><value>Visible</value></data><data name="Hidden"><value>Hidden</value></data><data name="Forced visible"><value>Forced visible</value></data><data name="Forced hidden"><value>Forced hidden</value></data><data name="Force visible for this role"><value>Force visible for this role</value></data><data name="Force hidden for this role"><value>Force hidden for this role</value></data><data name="Clear override - back to default"><value>Clear override - back to default</value></data><data name="See exactly what a specific user's sidebar looks like right now - a read-only preview, never a real sign-in as that user."><value>See exactly what a specific user's sidebar looks like right now - a read-only preview, never a real sign-in as that user.</value></data><data name="Preview"><value>Preview</value></data><data name="This is a visualization only - it does not sign in as this user, and hidden items may still be reachable by direct URL if the user is actually authorized (Hidden is not the same as Unauthorized)."><value>This is a visualization only - it does not sign in as this user, and hidden items may still be reachable by direct URL if the user is actually authorized (Hidden is not the same as Unauthorized).</value></data><data name="Visible sidebar sections"><value>Visible sidebar sections</value></data><data name="CMMS Integration items"><value>CMMS Integration items</value></data><data name="Navigation Visibility"><value>Navigation Visibility</value></data><data name="View"><value>View</value></data><data name="Capability"><value>Capability</value></data><data name="Manual override"><value>Manual override</value></data><data name="None - not permission-gated"><value>None - not permission-gated</value></data><data name="This tree mirrors the real sidebar. Expand a section to see its items; expand an item to see which roles see it and why."><value>This tree mirrors the real sidebar. Expand a section to see its items; expand an item to see which roles see it and why.</value></data><data name="Inactive"><value>Inactive</value></data><data name="Employee link"><value>Employee link</value></data><data name="Organization"><value>Organization</value></data><data name="Username"><value>Username</value></data><data name="Full Name"><value>Full Name</value></data><data name="Email"><value>Email</value></data><data name="Department"><value>Department</value></data><data name="Position / Title"><value>Position / Title</value></data><data name="Module"><value>Module</value></data><data name="Locked"><value>Locked</value></data><data name="N/A"><value>N/A</value></data><data name="Potential SoD conflicts"><value>Potential SoD conflicts</value></data><data name="Linked"><value>Linked</value></data><data name="Not linked"><value>Not linked</value></data><data name="Last Login"><value>Last Login</value></data><data name="Never"><value>Never</value></data><data name="Overview"><value>Overview</value></data><data name="Access &amp; Authorization"><value>Access &amp; Authorization</value></data><data name="Audit"><value>Audit</value></data><data name="Role assignment itself is changed from the Edit page."><value>Role assignment itself is changed from the Edit page.</value></data><data name="No matrix rows for this user's roles"><value>No matrix rows for this user's roles</value></data><data name="Rows for this user's own role(s) only, from the same matrix maintained on the full Permission Matrix page."><value>Rows for this user's own role(s) only, from the same matrix maintained on the full Permission Matrix page.</value></data><data name="Open full matrix"><value>Open full matrix</value></data><data name="Resource ID (optional)"><value>Resource ID (optional)</value></data><data name="This runs the real authorization engine for this user - it never writes or changes any permission."><value>This runs the real authorization engine for this user - it never writes or changes any permission.</value></data><data name="Separation of Duties in PEMS is checked dynamically, per record, at the moment of a real action - not as a standing status. The rows below show structural exposure only: this user's roles grant both permissions of an active policy. This is not the same as an actual violation, which can only happen on a specific record."><value>Separation of Duties in PEMS is checked dynamically, per record, at the moment of a real action - not as a standing status. The rows below show structural exposure only: this user's roles grant both permissions of an active policy. This is not the same as an actual violation, which can only happen on a specific record.</value></data><data name="No active SoD policies apply to this user's permissions"><value>No active SoD policies apply to this user's permissions</value></data><data name="Permission A"><value>Permission A</value></data><data name="Permission B"><value>Permission B</value></data><data name="Potential exposure"><value>Potential exposure</value></data><data name="Not exposed"><value>Not exposed</value></data><data name="Manage SoD policies"><value>Manage SoD policies</value></data><data name="Manage navigation visibility by role"><value>Manage navigation visibility by role</value></data><data name="No authorization decisions recorded yet"><value>No authorization decisions recorded yet</value></data><data name="Timestamp"><value>Timestamp</value></data><data name="Open full audit log for this user"><value>Open full audit log for this user</value></data><data name="IC_ConditionReading_Title"><value>Condition Reading Import</value></data><data name="IC_ConditionReading_Desc"><value>Import historical condition monitoring readings from Excel.</value></data><data name="IC_ConditionReading_Flow"><value>Upload → Review (paged) → Commit / Discard.</value></data>
+<data name="Notif_MarkAllRead"><value>Mark all as read</value></data><data name="Notif_Dismiss"><value>Dismiss</value></data><data name="Notif_DismissAll"><value>Dismiss all</value></data><data name="Notif_ViewAll"><value>View all notifications</value></data><data name="Notif_NoNew"><value>No notifications</value></data><data name="Notif_Empty"><value>No notifications.</value></data><data name="Notif_All"><value>All</value></data><data name="Notif_Unread"><value>Unread</value></data><data name="Notif_Read"><value>Read</value></data><data name="Notif_Dismissed"><value>Dismissed</value></data>
+<data name="Role_SystemAdmin_Name"><value>System Admin</value></data><data name="Role_SystemAdmin_Desc"><value>Platform administration: users, roles, permissions and configuration. Bypasses the permission matrix by design.</value></data><data name="Role_EngineeringManager_Name"><value>Engineering Manager</value></data><data name="Role_EngineeringManager_Desc"><value>Leads Engineering: document approval, cross-discipline review and final approval of Work Orders originating in Engineering.</value></data><data name="Role_EngineeringSupervisor_Name"><value>Engineering Supervisor</value></data><data name="Role_EngineeringSupervisor_Desc"><value>Supervises Engineering work: document checks, work request approval and Work Order final approval.</value></data><data name="Role_DisciplineEngineer_Name"><value>Discipline Engineer</value></data><data name="Role_DisciplineEngineer_Desc"><value>Engineering discipline specialist: prepares documents and verifies completed work for the originating discipline.</value></data><data name="Role_DocumentController_Name"><value>Document Controller</value></data><data name="Role_DocumentController_Desc"><value>Controls engineering documents and correspondence: issue, transmittals and client responses.</value></data><data name="Role_MaintenanceEngineer_Name"><value>Maintenance Engineer</value></data><data name="Role_MaintenanceEngineer_Desc"><value>Maintenance engineering: equipment, plans, strategies, inspections and condition monitoring.</value></data><data name="Role_ContractManager_Name"><value>Contract Manager</value></data><data name="Role_ContractManager_Desc"><value>Manages contracts, procurement packages and tenders, including their approval.</value></data><data name="Role_QAManager_Name"><value>QA Manager</value></data><data name="Role_QAManager_Desc"><value>Quality assurance: IRN disposition, NCR, MOC closure and permit health/safety review.</value></data><data name="Role_Viewer_Name"><value>Viewer</value></data><data name="Role_Viewer_Desc"><value>Read-only access to Engineering, CMMS and import status information. Cannot change data.</value></data><data name="Role_Legal_Name"><value>Legal</value></data><data name="Role_Legal_Desc"><value>Legal review participant in multi-discipline contract review.</value></data><data name="Role_Finance_Name"><value>Finance</value></data><data name="Role_Finance_Desc"><value>Finance review participant in multi-discipline contract review.</value></data><data name="Role_HSE_Name"><value>HSE</value></data><data name="Role_HSE_Desc"><value>Health, safety and environment review participant in multi-discipline contract review.</value></data><data name="Role_MNT_Manager_Name"><value>Maintenance Manager</value></data><data name="Role_MNT_Manager_Desc"><value>Heads Maintenance: rejects or cancels Work Orders and gives final approval for Work Orders originating in Maintenance.</value></data><data name="Role_MNT_PlanningHead_Name"><value>Maintenance Planning Head</value></data><data name="Role_MNT_PlanningHead_Desc"><value>Leads maintenance planning: creates, plans and prepares Work Orders and approves work requests.</value></data><data name="Role_MNT_PlanningExpert_Name"><value>Maintenance Planning Expert</value></data><data name="Role_MNT_PlanningExpert_Desc"><value>Maintenance planner: creates, plans and prepares Work Orders.</value></data><data name="Role_MNT_DisciplineHead_Name"><value>Maintenance Discipline Head</value></data><data name="Role_MNT_DisciplineHead_Desc"><value>Leads a maintenance discipline: assigns executors, starts and executes work, verifies and gives final approval.</value></data><data name="Role_MNT_SeniorExpert_Name"><value>Maintenance Senior Expert</value></data><data name="Role_MNT_SeniorExpert_Desc"><value>Senior maintenance technician: executes and verifies work within the responsible discipline.</value></data><data name="Role_MNT_Expert_Name"><value>Maintenance Expert</value></data><data name="Role_MNT_Expert_Desc"><value>Maintenance technician: executes assigned work within the responsible discipline.</value></data><data name="Role_OPS_IssueAuthority_Name"><value>Operations Issue Authority</value></data><data name="Role_OPS_IssueAuthority_Desc"><value>Operations authority that issues (releases) Work Orders after permit/isolation/gas-test gates and verifies completed work.</value></data><data name="Role_WH_Manager_Name"><value>Warehouse Manager</value></data><data name="Role_WH_Manager_Desc"><value>Heads the warehouse: approves store requisitions. Separate from the storekeeper who creates them; cannot approve IRN quality dispositions.</value></data><data name="Role_WH_Storekeeper_Name"><value>Storekeeper</value></data><data name="Role_WH_Storekeeper_Desc"><value>Warehouse operator: creates store requisitions, records receipts and maintains stock master data. Cannot approve requisitions or IRN quality dispositions.</value></data><data name="RoleDomain_Platform"><value>Platform</value></data><data name="RoleDomain_Engineering"><value>Engineering</value></data><data name="RoleDomain_DocumentControl"><value>Document Control</value></data><data name="RoleDomain_Maintenance"><value>Maintenance</value></data><data name="RoleDomain_Operations"><value>Operations</value></data><data name="RoleDomain_Warehouse"><value>Warehouse</value></data><data name="RoleDomain_Contracts"><value>Contracts</value></data><data name="RoleDomain_Quality"><value>Quality</value></data><data name="RoleDomain_HSE"><value>HSE</value></data><data name="RoleDomain_Finance"><value>Finance</value></data><data name="RoleDomain_Legal"><value>Legal</value></data><data name="RoleDomain_General"><value>General</value></data><data name="RoleCategory_Platform"><value>Platform</value></data><data name="RoleCategory_Domain"><value>Domain</value></data><data name="RoleCategory_Functional"><value>Functional</value></data><data name="RoleCategory_ReadOnly"><value>Read-only</value></data><data name="Role_Domain"><value>Domain</value></data><data name="Role_Category"><value>Category</value></data><data name="Role_PossibleDuplicates"><value>Possible duplicates of baseline roles (not merged — review manually):</value></data>
+  <data name="Pc_Menu" xml:space="preserve"><value>Part Catalogue</value></data>
+  <data name="Pc_Title_Admin" xml:space="preserve"><value>Part Catalogue Administration</value></data>
+  <data name="Pc_Title_Edit" xml:space="preserve"><value>Part Catalogue Request</value></data>
+  <data name="Pc_Search_Placeholder" xml:space="preserve"><value>Search number, class, requester, part number...</value></data>
+  <data name="Pc_Urgent" xml:space="preserve"><value>Urgent</value></data>
+  <data name="Pc_Yes" xml:space="preserve"><value>Yes</value></data>
+  <data name="Pc_No" xml:space="preserve"><value>No</value></data>
+  <data name="Pc_F_RequestNumber" xml:space="preserve"><value>Request Number</value></data>
+  <data name="Pc_F_Urgent" xml:space="preserve"><value>Urgent</value></data>
+  <data name="Pc_F_SectionId" xml:space="preserve"><value>Section</value></data>
+  <data name="Pc_F_Requester" xml:space="preserve"><value>Requester</value></data>
+  <data name="Pc_F_RequestType" xml:space="preserve"><value>Request Type</value></data>
+  <data name="Pc_F_IsNewEquipment" xml:space="preserve"><value>New Equipment</value></data>
+  <data name="Pc_F_TechnicalClassId" xml:space="preserve"><value>Technical Class</value></data>
+  <data name="Pc_F_Attributes" xml:space="preserve"><value>Technical Attributes</value></data>
+  <data name="Pc_F_AttributeName" xml:space="preserve"><value>Attribute</value></data>
+  <data name="Pc_F_AttributeValue" xml:space="preserve"><value>Value</value></data>
+  <data name="Pc_F_FreeFormatText" xml:space="preserve"><value>FREE FORMAT TEXT</value></data>
+  <data name="Pc_F_AssetType" xml:space="preserve"><value>Asset Type</value></data>
+  <data name="Pc_F_CommodityGroup1Id" xml:space="preserve"><value>Commodity Group 1</value></data>
+  <data name="Pc_F_CommodityGroup2Id" xml:space="preserve"><value>Commodity Group 2</value></data>
+  <data name="Pc_F_ProductFamilyId" xml:space="preserve"><value>Product Family</value></data>
+  <data name="Pc_F_UnitOfMeasureId" xml:space="preserve"><value>Unit of Measure</value></data>
+  <data name="Pc_F_ManufacturerId" xml:space="preserve"><value>Manufacturer</value></data>
+  <data name="Pc_F_IsNewManufacturer" xml:space="preserve"><value>New Manufacturer</value></data>
+  <data name="Pc_F_NewManufacturerName" xml:space="preserve"><value>New Manufacturer Name</value></data>
+  <data name="Pc_F_ManufacturerPartNumber" xml:space="preserve"><value>Manufacturer Part Number</value></data>
+  <data name="Pc_F_SupplierId" xml:space="preserve"><value>Supplier</value></data>
+  <data name="Pc_F_SupplierPartNumber" xml:space="preserve"><value>Supplier Part Number</value></data>
+  <data name="Pc_F_PartPrice" xml:space="preserve"><value>Part Price</value></data>
+  <data name="Pc_F_CurrencyId" xml:space="preserve"><value>Currency</value></data>
+  <data name="Pc_F_TypeDesignationId" xml:space="preserve"><value>Type Designation</value></data>
+  <data name="Pc_F_IsCritical" xml:space="preserve"><value>Critical</value></data>
+  <data name="Pc_F_IsCapital" xml:space="preserve"><value>Capital</value></data>
+  <data name="Pc_F_SparePartSerialNo" xml:space="preserve"><value>Spare Part Serial No</value></data>
+  <data name="Pc_F_EquipmentSerialNo" xml:space="preserve"><value>Equipment Serial No</value></data>
+  <data name="Pc_F_ManufacturerDrawingNo" xml:space="preserve"><value>Manufacturer Drawing No</value></data>
+  <data name="Pc_F_DocumentNo" xml:space="preserve"><value>Document No</value></data>
+  <data name="Pc_F_MinimumStock" xml:space="preserve"><value>Minimum Stock</value></data>
+  <data name="Pc_F_MaxConsumptionRate" xml:space="preserve"><value>Max Consumption Rate</value></data>
+  <data name="Pc_F_FirstPurchaseQuantity" xml:space="preserve"><value>First Purchase Quantity</value></data>
+  <data name="Pc_F_PlanningMethodId" xml:space="preserve"><value>Planning Method</value></data>
+  <data name="Pc_F_PrimaryIssuedRequired" xml:space="preserve"><value>Primary Issued Required</value></data>
+  <data name="Pc_F_IssuedQty" xml:space="preserve"><value>Issued Quantity</value></data>
+  <data name="Pc_F_StockGradeId" xml:space="preserve"><value>Stock Grade</value></data>
+  <data name="Pc_F_WantedReceiptDate" xml:space="preserve"><value>Wanted Receipt Date</value></data>
+  <data name="Pc_F_StorageVolume" xml:space="preserve"><value>Storage Volume</value></data>
+  <data name="Pc_F_IsRd" xml:space="preserve"><value>R&amp;D</value></data>
+  <data name="Pc_F_ExistingPartNumber" xml:space="preserve"><value>Existing Part Number</value></data>
+  <data name="Pc_F_ChangesMatchInventory" xml:space="preserve"><value>Changes match inventory</value></data>
+  <data name="Pc_F_OldManufacturerName" xml:space="preserve"><value>Old Manufacturer Name</value></data>
+  <data name="Pc_F_OldManufacturerPartNumber" xml:space="preserve"><value>Old Manufacturer Part Number</value></data>
+  <data name="Pc_F_Attachments" xml:space="preserve"><value>Attachments</value></data>
+  <data name="Pc_F_AttachmentKind" xml:space="preserve"><value>Attachment Type</value></data>
+  <data name="Pc_F_File" xml:space="preserve"><value>File</value></data>
+  <data name="Pc_F_Notes" xml:space="preserve"><value>Notes</value></data>
+  <data name="Pc_F_Text" xml:space="preserve"><value>Text</value></data>
+  <data name="Pc_F_Comment" xml:space="preserve"><value>Comment</value></data>
+  <data name="Pc_F_Equipment" xml:space="preserve"><value>Equipment</value></data>
+  <data name="Pc_F_EquipmentId" xml:space="preserve"><value>Equipment</value></data>
+  <data name="Pc_F_EquipmentText" xml:space="preserve"><value>Equipment (text)</value></data>
+  <data name="Pc_F_InstalledQuantity" xml:space="preserve"><value>Installed Quantity</value></data>
+  <data name="Pc_F_PartNumber" xml:space="preserve"><value>Part Number</value></data>
+  <data name="Pc_F_Order" xml:space="preserve"><value>Order</value></data>
+  <data name="Pc_F_ConditionKey" xml:space="preserve"><value>Condition</value></data>
+  <data name="Pc_F_ManagerEmployeeId" xml:space="preserve"><value>Direct Manager</value></data>
+  <data name="Pc_Sec_PartInfo" xml:space="preserve"><value>Request Information</value></data>
+  <data name="Pc_Sec_Equipment" xml:space="preserve"><value>Equipment</value></data>
+  <data name="Pc_Sec_ClassInfo" xml:space="preserve"><value>Technical Class</value></data>
+  <data name="Pc_Sec_Classification" xml:space="preserve"><value>Part Classification</value></data>
+  <data name="Pc_Sec_OtherInfo" xml:space="preserve"><value>Other Information</value></data>
+  <data name="Pc_Sec_Planning" xml:space="preserve"><value>Inventory Planning</value></data>
+  <data name="Pc_Btn_AddAttribute" xml:space="preserve"><value>Add attribute</value></data>
+  <data name="Pc_Btn_AddEquipment" xml:space="preserve"><value>Add equipment</value></data>
+  <data name="Pc_Btn_AddGroup" xml:space="preserve"><value>Add</value></data>
+  <data name="Pc_Btn_AddNote" xml:space="preserve"><value>Add note</value></data>
+  <data name="Pc_Btn_Approve" xml:space="preserve"><value>Approve</value></data>
+  <data name="Pc_Btn_Back" xml:space="preserve"><value>Back</value></data>
+  <data name="Pc_Btn_Cancel" xml:space="preserve"><value>Cancel request</value></data>
+  <data name="Pc_Btn_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Pc_Btn_Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Pc_Btn_Export_Pdf" xml:space="preserve"><value>PDF</value></data>
+  <data name="Pc_Btn_Export_Xlsx" xml:space="preserve"><value>Excel</value></data>
+  <data name="Pc_Btn_GenerateNumber" xml:space="preserve"><value>Generate request number</value></data>
+  <data name="Pc_Btn_Load" xml:space="preserve"><value>Load</value></data>
+  <data name="Pc_Btn_NewAdd" xml:space="preserve"><value>New Add request</value></data>
+  <data name="Pc_Btn_NewChange" xml:space="preserve"><value>New Change request</value></data>
+  <data name="Pc_Btn_Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="Pc_Btn_Return" xml:space="preserve"><value>Return</value></data>
+  <data name="Pc_Btn_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Pc_Btn_SaveSubmit" xml:space="preserve"><value>Save and submit</value></data>
+  <data name="Pc_Btn_Upload" xml:space="preserve"><value>Upload</value></data>
+  <data name="Pc_Status_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Pc_Status_InApproval" xml:space="preserve"><value>In approval</value></data>
+  <data name="Pc_Status_Returned" xml:space="preserve"><value>Returned</value></data>
+  <data name="Pc_Status_Completed" xml:space="preserve"><value>Completed</value></data>
+  <data name="Pc_Status_Cancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Pc_Type_Add" xml:space="preserve"><value>Add</value></data>
+  <data name="Pc_Type_Change" xml:space="preserve"><value>Change</value></data>
+  <data name="Pc_Kind_Document" xml:space="preserve"><value>Document</value></data>
+  <data name="Pc_Kind_Drawing" xml:space="preserve"><value>Drawing</value></data>
+  <data name="Pc_Kind_Support" xml:space="preserve"><value>Supporting document</value></data>
+  <data name="Pc_Kind_Review" xml:space="preserve"><value>Review</value></data>
+  <data name="Pc_Kind_Approval" xml:space="preserve"><value>Approval</value></data>
+  <data name="Pc_Kind_Registration" xml:space="preserve"><value>Registration</value></data>
+  <data name="Pc_Asset_None" xml:space="preserve"><value>None</value></data>
+  <data name="Pc_Asset_FixedAsset" xml:space="preserve"><value>Fixed Asset</value></data>
+  <data name="Pc_Asset_LowValueAsset" xml:space="preserve"><value>Low Value Asset</value></data>
+  <data name="Pc_Action_Submit" xml:space="preserve"><value>Submitted</value></data>
+  <data name="Pc_Action_Resubmit" xml:space="preserve"><value>Resubmitted</value></data>
+  <data name="Pc_Action_Approve" xml:space="preserve"><value>Approved</value></data>
+  <data name="Pc_Action_Return" xml:space="preserve"><value>Returned</value></data>
+  <data name="Pc_Action_Cancel" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Pc_Action_Skip" xml:space="preserve"><value>Skipped</value></data>
+  <data name="Pc_Action_RegisterPartNumber" xml:space="preserve"><value>Part number registered</value></data>
+  <data name="Pc_Action_AdminOverride" xml:space="preserve"><value>Admin override</value></data>
+  <data name="Pc_StepStatus_Pending" xml:space="preserve"><value>Pending</value></data>
+  <data name="Pc_StepStatus_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Pc_StepStatus_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Pc_StepStatus_Skipped" xml:space="preserve"><value>Skipped</value></data>
+  <data name="Pc_StepStatus_Returned" xml:space="preserve"><value>Returned</value></data>
+  <data name="Pc_StepStatus_Cancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Pc_Step_DirectManager" xml:space="preserve"><value>Direct manager</value></data>
+  <data name="Pc_Step_SuperiorManager" xml:space="preserve"><value>Superior manager</value></data>
+  <data name="Pc_Step_MaintenanceSupervisor" xml:space="preserve"><value>Maintenance supervisor</value></data>
+  <data name="Pc_Step_SparePartsSpecialist" xml:space="preserve"><value>Spare parts specialist</value></data>
+  <data name="Pc_Step_SourcingUnit" xml:space="preserve"><value>Sourcing unit</value></data>
+  <data name="Pc_Step_CommodityGroupReview" xml:space="preserve"><value>Commodity group review</value></data>
+  <data name="Pc_Step_PartCataloguer" xml:space="preserve"><value>Part cataloguer</value></data>
+  <data name="Pc_Step_InventoryControl" xml:space="preserve"><value>Inventory control</value></data>
+  <data name="Pc_Src_DirectManager" xml:space="preserve"><value>Direct manager of requester</value></data>
+  <data name="Pc_Src_SuperiorManager" xml:space="preserve"><value>Manager of direct manager</value></data>
+  <data name="Pc_Src_AssignedPool" xml:space="preserve"><value>Assigned people</value></data>
+  <data name="Pc_Cond_Always" xml:space="preserve"><value>Always</value></data>
+  <data name="Pc_Cond_CriticalOrCapital" xml:space="preserve"><value>Critical or Capital</value></data>
+  <data name="Pc_Cond_SectionNeedsSpareReview" xml:space="preserve"><value>Section requires spare-parts review</value></data>
+  <data name="Pc_Cond_NewManufacturer" xml:space="preserve"><value>New manufacturer</value></data>
+  <data name="Pc_Cond_PlanningMethodNotA" xml:space="preserve"><value>Planning method is not A</value></data>
+  <data name="Pc_Skip_RequesterIsCEO" xml:space="preserve"><value>Requester is the CEO</value></data>
+  <data name="Pc_Skip_DirectManagerIsCEO" xml:space="preserve"><value>Direct manager is the CEO</value></data>
+  <data name="Pc_Skip_SuperiorIsCEO" xml:space="preserve"><value>Superior manager is the CEO</value></data>
+  <data name="Pc_Skip_NoSuperiorManager" xml:space="preserve"><value>No superior manager defined</value></data>
+  <data name="Pc_Skip_SelfApprover" xml:space="preserve"><value>Approver is the requester</value></data>
+  <data name="Pc_Skip_NoDirectManager" xml:space="preserve"><value>No direct manager defined</value></data>
+  <data name="Pc_Skip_NoApprover" xml:space="preserve"><value>No approver assigned</value></data>
+  <data name="Pc_Skip_Condition_CriticalOrCapital" xml:space="preserve"><value>Not Critical/Capital</value></data>
+  <data name="Pc_Skip_Condition_SectionNeedsSpareReview" xml:space="preserve"><value>Section does not need spare-parts review</value></data>
+  <data name="Pc_Skip_Condition_NewManufacturer" xml:space="preserve"><value>Manufacturer is not new</value></data>
+  <data name="Pc_Skip_Condition_PlanningMethodNotA" xml:space="preserve"><value>Planning method is A</value></data>
+  <data name="Pc_Skip_Condition_Always" xml:space="preserve"><value>Condition not met</value></data>
+  <data name="Pc_Route_NoApprover" xml:space="preserve"><value>No approver is assigned to step</value></data>
+  <data name="Pc_Route_NoDirectManager" xml:space="preserve"><value>Direct manager is not defined for the requester</value></data>
+  <data name="Pc_Route_UnknownCondition" xml:space="preserve"><value>Unknown condition on step</value></data>
+  <data name="Pc_Route_UnknownSource" xml:space="preserve"><value>Unknown approver source on step</value></data>
+  <data name="Pc_Err_AlreadyExists" xml:space="preserve"><value>Already exists.</value></data>
+  <data name="Pc_Err_ChangePartNotFound" xml:space="preserve"><value>The existing part number was not found.</value></data>
+  <data name="Pc_Err_ChangeSupportDocs" xml:space="preserve"><value>A Change request needs a supporting document attachment.</value></data>
+  <data name="Pc_Err_ChangeUomLocked" xml:space="preserve"><value>Unit of Measure cannot be changed on a Change request.</value></data>
+  <data name="Pc_Err_CommentRequired" xml:space="preserve"><value>A comment is required.</value></data>
+  <data name="Pc_Err_Concurrency" xml:space="preserve"><value>The request was changed by someone else. Reload and retry.</value></data>
+  <data name="Pc_Err_FileTooLarge" xml:space="preserve"><value>The file is too large.</value></data>
+  <data name="Pc_Err_FileType" xml:space="preserve"><value>File type is not allowed:</value></data>
+  <data name="Pc_Err_FreeFormatRequired" xml:space="preserve"><value>FREE FORMAT TEXT is required.</value></data>
+  <data name="Pc_Err_FreeFormatSingleLine" xml:space="preserve"><value>FREE FORMAT TEXT must be a single line.</value></data>
+  <data name="Pc_Err_Group1NotAllowed" xml:space="preserve"><value>This Commodity Group 1 is not allowed for the selected Section.</value></data>
+  <data name="Pc_Err_Group2NotAllowed" xml:space="preserve"><value>This Commodity Group 2 is not allowed for the selected Group 1.</value></data>
+  <data name="Pc_Err_ImportFile" xml:space="preserve"><value>Select a valid .xlsx file (max 15 MB).</value></data>
+  <data name="Pc_Err_InvalidReference" xml:space="preserve"><value>Invalid selection.</value></data>
+  <data name="Pc_Err_LowValueThreshold" xml:space="preserve"><value>Low Value Asset applies only below the configured price threshold.</value></data>
+  <data name="Pc_Err_ManufacturerExists" xml:space="preserve"><value>This manufacturer already exists:</value></data>
+  <data name="Pc_Err_ManufacturerWrong" xml:space="preserve"><value>This manufacturer is marked (wrong) and cannot be used.</value></data>
+  <data name="Pc_Err_Negative" xml:space="preserve"><value>Value cannot be negative.</value></data>
+  <data name="Pc_Err_NewEquipmentText" xml:space="preserve"><value>For a new equipment, enter at least one equipment line as text.</value></data>
+  <data name="Pc_Err_NewManufacturerLatin" xml:space="preserve"><value>New manufacturer name must be Latin uppercase.</value></data>
+  <data name="Pc_Err_NewManufacturerName" xml:space="preserve"><value>Enter the new manufacturer name.</value></data>
+  <data name="Pc_Err_NoEmployee" xml:space="preserve"><value>Your user account is not linked to an employee record.</value></data>
+  <data name="Pc_Err_NotActionable" xml:space="preserve"><value>This request has no step you can act on.</value></data>
+  <data name="Pc_Err_NotAuthorized" xml:space="preserve"><value>You are not authorized for this action.</value></data>
+  <data name="Pc_Err_NotChangeRequest" xml:space="preserve"><value>This is not a Change request.</value></data>
+  <data name="Pc_Err_NotEditable" xml:space="preserve"><value>The request cannot be edited in its current status.</value></data>
+  <data name="Pc_Err_NotFound" xml:space="preserve"><value>Request not found.</value></data>
+  <data name="Pc_Err_NumberConflict" xml:space="preserve"><value>Request number conflict. Try again.</value></data>
+  <data name="Pc_Err_NumberExists" xml:space="preserve"><value>A request number was already generated.</value></data>
+  <data name="Pc_Err_NumberRequired" xml:space="preserve"><value>Generate the request number first.</value></data>
+  <data name="Pc_Err_OrgCycle" xml:space="preserve"><value>This link would create a cycle in the manager chain.</value></data>
+  <data name="Pc_Err_PartNumberRequired" xml:space="preserve"><value>Part number is required.</value></data>
+  <data name="Pc_Err_PartNumberTooLong" xml:space="preserve"><value>Part number is too long.</value></data>
+  <data name="Pc_Err_PartNumberUsed" xml:space="preserve"><value>This part number is already used.</value></data>
+  <data name="Pc_Err_PosItemNeedsAttachment" xml:space="preserve"><value>A Pos/Item reference needs a drawing or document attachment.</value></data>
+  <data name="Pc_Err_PriceNeedsCurrency" xml:space="preserve"><value>Select a currency for the price.</value></data>
+  <data name="Pc_Err_Required" xml:space="preserve"><value>This field is required.</value></data>
+  <data name="Pc_Err_SelfApproval" xml:space="preserve"><value>You cannot act on your own request.</value></data>
+  <data name="Pc_Err_SelfManager" xml:space="preserve"><value>An employee cannot be their own manager.</value></data>
+  <data name="Pc_Err_TooLong" xml:space="preserve"><value>Text is too long.</value></data>
+  <data name="Pc_Err_TooManyFiles" xml:space="preserve"><value>Too many attachments.</value></data>
+  <data name="Pc_Err_UnknownAction" xml:space="preserve"><value>Unknown action.</value></data>
+  <data name="Pc_Warn_FreeFormatVendor" xml:space="preserve"><value>FREE FORMAT TEXT looks like it contains vendor information; keep it technical.</value></data>
+  <data name="Pc_Warn_LowValueNotComparable" xml:space="preserve"><value>The price currency cannot be compared with the Low Value threshold.</value></data>
+  <data name="Pc_Warn_ManufacturerSimilar" xml:space="preserve"><value>Similar manufacturers exist:</value></data>
+  <data name="Pc_Msg_Approved" xml:space="preserve"><value>Step approved.</value></data>
+  <data name="Pc_Msg_AttachmentAdded" xml:space="preserve"><value>Attachment added.</value></data>
+  <data name="Pc_Msg_Cancelled" xml:space="preserve"><value>Request cancelled.</value></data>
+  <data name="Pc_Msg_FixErrors" xml:space="preserve"><value>Please fix the errors below.</value></data>
+  <data name="Pc_Msg_Imported" xml:space="preserve"><value>Import {0}: added {1}, updated {2}, unchanged {3}, skipped {4}.</value></data>
+  <data name="Pc_Msg_NoteAdded" xml:space="preserve"><value>Note added.</value></data>
+  <data name="Pc_Msg_NumberGenerated" xml:space="preserve"><value>Request number generated.</value></data>
+  <data name="Pc_Msg_PartLoaded" xml:space="preserve"><value>Existing part loaded.</value></data>
+  <data name="Pc_Msg_Returned" xml:space="preserve"><value>Request returned for correction.</value></data>
+  <data name="Pc_Msg_Saved" xml:space="preserve"><value>Saved.</value></data>
+  <data name="Pc_Msg_Submitted" xml:space="preserve"><value>Request submitted for approval.</value></data>
+  <data name="Pc_Hint_ChangesMatch" xml:space="preserve"><value>Answer whether the requested changes match what is currently in inventory.</value></data>
+  <data name="Pc_Hint_CommentRequired" xml:space="preserve"><value>A comment is required when returning, using admin override, or cancelling someone else's request.</value></data>
+  <data name="Pc_Hint_FreeFormat" xml:space="preserve"><value>FREE FORMAT TEXT is mandatory and must be a single line.</value></data>
+  <data name="Pc_Hint_Load" xml:space="preserve"><value>Enter the existing part number and load its data.</value></data>
+  <data name="Pc_Hint_LocalPartNo" xml:space="preserve"><value>Manufacturer LOCAL: the part number is fixed to NO_PART_NR.</value></data>
+  <data name="Pc_Hint_LowValue" xml:space="preserve"><value>Low Value Asset is allowed only under the configured price threshold.</value></data>
+  <data name="Pc_Hint_NewEquipment" xml:space="preserve"><value>For a new equipment enter the equipment name as text.</value></data>
+  <data name="Pc_Hint_NewManufacturer" xml:space="preserve"><value>Latin uppercase name</value></data>
+  <data name="Pc_Hint_NoteReply" xml:space="preserve"><value>Write a note or reply...</value></data>
+  <data name="Pc_Hint_NumberFirst" xml:space="preserve"><value>Generate the request number before submitting.</value></data>
+  <data name="Pc_Hint_PartNumber" xml:space="preserve"><value>Part number assigned in IFS (required at the registration step).</value></data>
+  <data name="Pc_Hint_Planning" xml:space="preserve"><value>Planning method A sets Minimum Stock and Max Consumption Rate to 0.</value></data>
+  <data name="Pc_Hint_PosItem" xml:space="preserve"><value>If Pos/Item is mentioned, attach the related drawing or document.</value></data>
+  <data name="Pc_Hint_UomLocked" xml:space="preserve"><value>Unit of Measure is locked on a Change request.</value></data>
+  <data name="Pc_Confirm_Cancel" xml:space="preserve"><value>Cancel this request? This cannot be undone.</value></data>
+  <data name="Pc_Col_Number" xml:space="preserve"><value>Request No</value></data>
+  <data name="Pc_Col_Type" xml:space="preserve"><value>Type</value></data>
+  <data name="Pc_Col_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Pc_Col_Stage" xml:space="preserve"><value>Stage</value></data>
+  <data name="Pc_Col_Requester" xml:space="preserve"><value>Requester</value></data>
+  <data name="Pc_Col_PartNo" xml:space="preserve"><value>Part No</value></data>
+  <data name="Pc_Col_Created" xml:space="preserve"><value>Created</value></data>
+  <data name="Pc_Col_Submitted" xml:space="preserve"><value>Submitted</value></data>
+  <data name="Pc_Col_Action" xml:space="preserve"><value>Action</value></data>
+  <data name="Pc_Col_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Pc_Col_Condition" xml:space="preserve"><value>Condition</value></data>
+  <data name="Pc_Col_Date" xml:space="preserve"><value>Date</value></data>
+  <data name="Pc_Col_Kind" xml:space="preserve"><value>Kind</value></data>
+  <data name="Pc_Col_Order" xml:space="preserve"><value>Order</value></data>
+  <data name="Pc_Col_Person" xml:space="preserve"><value>Person</value></data>
+  <data name="Pc_Col_Source" xml:space="preserve"><value>Approver source</value></data>
+  <data name="Pc_Col_Step" xml:space="preserve"><value>Step</value></data>
+  <data name="Pc_Chip_Total" xml:space="preserve"><value>Total</value></data>
+  <data name="Pc_Tab_All" xml:space="preserve"><value>All</value></data>
+  <data name="Pc_Tab_Mine" xml:space="preserve"><value>My requests</value></data>
+  <data name="Pc_Tab_Awaiting" xml:space="preserve"><value>Awaiting my action</value></data>
+  <data name="Pc_Filters" xml:space="preserve"><value>Filters</value></data>
+  <data name="Pc_Filter_All" xml:space="preserve"><value>All</value></data>
+  <data name="Pc_Filter_Apply" xml:space="preserve"><value>Apply</value></data>
+  <data name="Pc_Filter_Reset" xml:space="preserve"><value>Reset</value></data>
+  <data name="Pc_Filter_From" xml:space="preserve"><value>From</value></data>
+  <data name="Pc_Filter_To" xml:space="preserve"><value>To</value></data>
+  <data name="Pc_Empty" xml:space="preserve"><value>No requests found.</value></data>
+  <data name="Pc_Empty_Attachments" xml:space="preserve"><value>No attachments.</value></data>
+  <data name="Pc_Empty_Equipment" xml:space="preserve"><value>No equipment lines.</value></data>
+  <data name="Pc_Empty_History" xml:space="preserve"><value>No history yet.</value></data>
+  <data name="Pc_Empty_Notes" xml:space="preserve"><value>No notes.</value></data>
+  <data name="Pc_Empty_OrgLinks" xml:space="preserve"><value>No manager links defined.</value></data>
+  <data name="Pc_Lookup_NoResults" xml:space="preserve"><value>No results</value></data>
+  <data name="Pc_Lookup_Search" xml:space="preserve"><value>Type to search...</value></data>
+  <data name="Pc_Det_ActionPanel" xml:space="preserve"><value>Your action</value></data>
+  <data name="Pc_Det_AdminOverride" xml:space="preserve"><value>You are acting as administrator override on a step not assigned to you. A comment is required and the action is audited.</value></data>
+  <data name="Pc_Det_History" xml:space="preserve"><value>Approval history</value></data>
+  <data name="Pc_Det_NoRoute" xml:space="preserve"><value>The approval route is created when the request is submitted.</value></data>
+  <data name="Pc_Det_Route" xml:space="preserve"><value>Approval route</value></data>
+  <data name="Pc_Adm_AllGroups" xml:space="preserve"><value>All groups (no restriction)</value></data>
+  <data name="Pc_Adm_AllowedGroups" xml:space="preserve"><value>Allowed Commodity Group 1</value></data>
+  <data name="Pc_Adm_Approvers" xml:space="preserve"><value>Step approvers</value></data>
+  <data name="Pc_Adm_ApproversHint" xml:space="preserve"><value>People who may act on each step. Review/Approve permission is also required.</value></data>
+  <data name="Pc_Adm_Ceo" xml:space="preserve"><value>CEO</value></data>
+  <data name="Pc_Adm_CeoHint" xml:space="preserve"><value>Used by the skip-CEO rule of the manager steps.</value></data>
+  <data name="Pc_Adm_Employee" xml:space="preserve"><value>Employee</value></data>
+  <data name="Pc_Adm_Group2Hint" xml:space="preserve"><value>Allowed Commodity Group 2 for each Group 1. No row = all groups.</value></data>
+  <data name="Pc_Adm_Group2Maps" xml:space="preserve"><value>Group 1 → Group 2 mapping</value></data>
+  <data name="Pc_Adm_Import" xml:space="preserve"><value>Import reference data</value></data>
+  <data name="Pc_Adm_ImportBtn" xml:space="preserve"><value>Import</value></data>
+  <data name="Pc_Adm_ImportHint" xml:space="preserve"><value>Upload an IFS .xlsx file. Rows are matched by code: new rows are added, existing rows updated; nothing is deleted.</value></data>
+  <data name="Pc_Adm_Manager" xml:space="preserve"><value>Direct manager</value></data>
+  <data name="Pc_Adm_NeedsConfirmation" xml:space="preserve"><value>Needs confirmation by the business owner</value></data>
+  <data name="Pc_Adm_NeedsConfirmationShort" xml:space="preserve"><value>to confirm</value></data>
+  <data name="Pc_Adm_NoApprovers" xml:space="preserve"><value>No approver assigned</value></data>
+  <data name="Pc_Adm_OrgHint" xml:space="preserve"><value>Employee → direct manager. The superior manager is the manager of the direct manager.</value></data>
+  <data name="Pc_Adm_OrgLinks" xml:space="preserve"><value>Manager chain</value></data>
+  <data name="Pc_Adm_Sections" xml:space="preserve"><value>Section mapping</value></data>
+  <data name="Pc_Adm_SectionsHint" xml:space="preserve"><value>Restrict Commodity Group 1 per Section and mark Sections that need spare-parts review.</value></data>
+  <data name="Pc_Adm_SpareReview" xml:space="preserve"><value>Spare-parts review</value></data>
+  <data name="Pc_Adm_Steps" xml:space="preserve"><value>Workflow steps</value></data>
+  <data name="Pc_Imp_TechnicalClass" xml:space="preserve"><value>Technical Classes</value></data>
+  <data name="Pc_Imp_CommodityGroup" xml:space="preserve"><value>Commodity Groups</value></data>
+  <data name="Pc_Imp_ProductFamily" xml:space="preserve"><value>Product Families</value></data>
+  <data name="Pc_Imp_Manufacturer" xml:space="preserve"><value>Manufacturers</value></data>
+  <data name="Pc_Imp_Supplier" xml:space="preserve"><value>Suppliers</value></data>
+  <data name="Part Catalogue Requests" xml:space="preserve"><value>Part Catalogue Requests</value></data>
+  <data name="Part Catalogue Request" xml:space="preserve"><value>Part Catalogue Request</value></data>
+  <data name="Part Catalogue Administration" xml:space="preserve"><value>Part Catalogue Administration</value></data>
 </root>

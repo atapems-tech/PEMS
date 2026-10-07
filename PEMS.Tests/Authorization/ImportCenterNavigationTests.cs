@@ -49,13 +49,19 @@ public class ImportCenterNavigationTests
         Assert.Equal(ImportCatalog.All.Count, ImportCatalog.All.Select(e => e.Key).Distinct().Count());
     }
 
+    // MRS Import و مشابه‌ها در Area (مثلاً Warehouse) هستند؛ Namespace از Area کاتالوگ ساخته می‌شود
+    private static Type? ControllerType(System.Reflection.Assembly asm, ImportCatalog.ImportEntry e) =>
+        asm.GetType(string.IsNullOrEmpty(e.Area)
+            ? $"PEMS.Web.Controllers.{e.Controller}Controller"
+            : $"PEMS.Web.Areas.{e.Area}.Controllers.{e.Controller}Controller");
+
     [Fact]
     public void EveryCatalogEntry_PointsToAnExistingControllerAction()
     {
         var asm = typeof(ImportCenterController).Assembly;
         foreach (var e in ImportCatalog.All)
         {
-            var type = asm.GetType($"PEMS.Web.Controllers.{e.Controller}Controller");
+            var type = ControllerType(asm, e);
             Assert.True(type != null, $"Controller {e.Controller}Controller not found for import '{e.Key}'");
             Assert.True(type!.GetMethods(BindingFlags.Public | BindingFlags.Instance).Any(m => m.Name == e.Action),
                 $"Action {e.Controller}.{e.Action} not found for import '{e.Key}'");
@@ -74,6 +80,8 @@ public class ImportCenterNavigationTests
         ["TechnicalQuery"] = "TQ attachments",
         ["MyProfile"] = "profile photo",
         ["VDR"] = "comment sheet / reply sheet / FTP upload on an existing VDR item",
+        ["PartCatalogueRequest"] = "request attachments (drawings/documents)",
+        ["PartCatalogueAdmin"] = "IFS reference-data upsert (gated by PartCatalogue.Admin on its own admin page, not role-set based)",
     };
 
     [Fact]
@@ -249,7 +257,7 @@ public class ImportCenterNavigationTests
         {
             Assert.Equal("Import", e.Action);
             Assert.False(string.IsNullOrEmpty(e.Accept));
-            var type = typeof(ImportCenterController).Assembly.GetType($"PEMS.Web.Controllers.{e.Controller}Controller")!;
+            var type = ControllerType(typeof(ImportCenterController).Assembly, e)!;
             var post = type.GetMethods().Single(m => m.Name == "Import" && m.GetCustomAttributes<HttpPostAttribute>().Any());
             Assert.Contains(post.GetParameters(), p => p.ParameterType == typeof(IFormFile));
         }

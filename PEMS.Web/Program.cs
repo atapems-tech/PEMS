@@ -6,6 +6,7 @@ using PEMS.Application.Services;
 
 using PEMS.Persistence.Context;
 using PEMS.Persistence.Identity;
+using PEMS.Web.Routing;
 using PEMS.Persistence.Repositories;
 using PEMS.Persistence.Services;
 using PEMS.Persistence.Workflow;
@@ -376,6 +377,7 @@ builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.ContractSearchProvider>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.DocumentRevisionSearchProvider>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.TechnicalQuerySearchProvider>();
+builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.PartCatalogueRequestSearchProvider>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.MOCSearchProvider>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.SparePartSearchProvider>();
 
@@ -451,6 +453,12 @@ builder.Services.AddScoped<IDocumentHoldService, DocumentHoldService>();
 // طبق CMMS Production Baseline v1 بند P0-04: سرویس شماره‌گذاری مرکزی و اتمیک -
 // جایگزین الگوهای Count()+1 پراکنده در WorkOrder/MaintenancePlan/Instrument/StoreRequisition.
 builder.Services.AddScoped<INumberingService, NumberingService>();
+
+// Warehouse / Part Catalogue Request (درخواست کاتالوگ قطعه): تنظیمات + سرویس‌ها
+builder.Services.AddSingleton(builder.Configuration.GetSection(PartCatalogueOptions.SectionName).Get<PartCatalogueOptions>() ?? new PartCatalogueOptions());
+builder.Services.AddScoped<IPartCatalogueLookupService, PartCatalogueLookupService>();
+builder.Services.AddScoped<IPartCatalogueService, PartCatalogueService>();
+builder.Services.AddScoped<IPartCatalogueAdminService, PartCatalogueAdminService>();
 
 // طبق CMMS Production Baseline v1 بند ۶ (CMMS-01: Asset Foundation)
 builder.Services.AddScoped<IFunctionalLocationService, FunctionalLocationService>();
@@ -665,6 +673,12 @@ using (var scope = app.Services.CreateScope())
     var roleModuleActionService = scope.ServiceProvider.GetRequiredService<IRoleModuleActionService>();
     await roleModuleActionService.SeedDefaultsAsync();
 
+    // Role Catalog: نقش‌های پایه + متادیتا (فقط افزودنی، Idempotent) - باید قبل از SeedFromLegacyAsync
+    // اجرا شود تا RolePermission های نقش‌های تازه‌ساخته‌شده به Grant همگام شوند.
+    var roleCatalogResult = await PEMS.Persistence.Seed.RoleCatalogSeeder.SeedAsync(scope.ServiceProvider);
+    foreach (var (custom, baseline) in roleCatalogResult.PossibleDuplicates)
+        app.Logger.LogWarning("Role Catalog: custom role '{Custom}' looks like baseline role '{Baseline}' (not merged).", custom, baseline);
+
     // طبق سند RBAC-ABAC Authorization Architecture (فاز ۱): داده‌ی RolePermission/
     // RoleModuleAction/AspNetUserRoles بالا را به مدل عمومی جدید (Permission/RolePermissionGrant/
     // RoleAssignment) کپی می‌کند - باید بعد از دو Seed بالا اجرا شود
@@ -677,6 +691,9 @@ using (var scope = app.Services.CreateScope())
     // طبق فاز ۵ (Governance): سیاست‌های SoD پیش‌فرض برای چند مسیر حساس ساخته می‌شوند تا
     // خودتاییدی و Close/Approve در همان رکورد تا حداقل از سطح داده‌ای جلوگیری شود.
     await PEMS.Persistence.Seed.AccessControlSeeder.SeedPhase5GovernanceAsync(scope.ServiceProvider);
+
+    // Warehouse / Part Catalogue: داده‌های مرجع و گام‌های مسیر (Idempotent، فقط-افزودنی)
+    await PEMS.Persistence.Seed.PartCatalogueSeeder.SeedAsync(scope.ServiceProvider);
 
     var routingRuleService = scope.ServiceProvider.GetRequiredService<IRoutingRuleService>();
     await routingRuleService.SeedDefaultsAsync();
@@ -921,6 +938,9 @@ app.UseHangfireDashboard("/hangfire", new DashboardOptions
     Authorization = new[] { new HangfireDashboardAuthFilter() }
 });
 
+
+// آدرس‌های قدیمی انبار/مواد → Area «Warehouse» (باید قبل از Routeهای کنترلری ثبت شود)
+app.MapWarehouseLegacyRedirects();
 
 app.MapControllerRoute(
     name: "areas",

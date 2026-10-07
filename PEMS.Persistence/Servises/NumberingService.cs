@@ -32,6 +32,8 @@ public class NumberingService : INumberingService
         ["JobPlan"] = new("JP", 4, false, () => "GLOBAL"),
         // طبق CMMS-03 بند P0-05: Work Request سالانه، هم‌الگو با WorkOrder.
         ["WorkRequest"] = new("WR", 4, true, () => DateTime.Now.Year.ToString()),
+        // Warehouse / Part Catalogue Request - سالانه، مثل WorkRequest (PCR-2026-0001)
+        ["PartCatalogueRequest"] = new("PCR", 4, true, () => DateTime.Now.Year.ToString()),
         // طبق CMMS-10a: Permit to Work سالانه، هم‌الگو با WorkOrder/WorkRequest.
         ["Permit"] = new("PTW", 4, true, () => DateTime.Now.Year.ToString()),
         // طبق Phase E-01 (رفع P0 ممیزی شماره‌گذاری مدارک مهندسی): این‌جا فقط برای گرفتن توالی

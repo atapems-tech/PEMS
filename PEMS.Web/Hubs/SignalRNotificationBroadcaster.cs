@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR;
+using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 
 namespace PEMS.Web.Hubs;
@@ -16,9 +17,25 @@ public class SignalRNotificationBroadcaster : INotificationBroadcaster
         _hubContext = hubContext;
     }
 
-    public async Task BroadcastToUserAsync(int userId, string title, string? linkUrl)
+    public async Task BroadcastNotificationAsync(int userId, NotificationDto notification, int unreadCount)
     {
-        await _hubContext.Clients.Group($"user-{userId}")
-            .SendAsync("ReceiveNotification", title, linkUrl);
+        await _hubContext.Clients.Group(NotificationHub.GroupFor(userId))
+            .SendAsync("ReceiveNotification", new
+            {
+                notification.NotificationId,
+                notification.Title,
+                notification.Message,
+                notification.LinkUrl,
+                notification.RelatedType,
+                notification.RelatedId,
+                notification.CreatedDate,
+                notification.IsRead
+            }, unreadCount);
+    }
+
+    public async Task BroadcastUnreadCountAsync(int userId, int unreadCount)
+    {
+        await _hubContext.Clients.Group(NotificationHub.GroupFor(userId))
+            .SendAsync("UnreadCountChanged", unreadCount);
     }
 }

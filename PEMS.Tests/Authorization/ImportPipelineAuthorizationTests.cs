@@ -1,3 +1,4 @@
+using PEMS.Web.Areas.Warehouse.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.DTOs;

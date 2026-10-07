@@ -92,7 +92,7 @@ public static class NavigationCatalog
             ["ContractManagement"] = "ContractManagement",
             ["ProjectControls"] = "ProjectControls",
             ["CmmsIntegration"] = "CmmsIntegration",
-            ["Inventory"] = "Inventory & Materials",
+            ["Inventory"] = "Warehouse",
             ["Operations"] = "Operations & Production",
             ["Administration"] = "Administration",
             ["QuickSetup"] = "Quick Setup",

@@ -127,6 +127,30 @@ public class PEMSDbContext
     public DbSet<InventoryTransaction> InventoryTransactions { get; set; }
     public DbSet<MaterialReservation> MaterialReservations { get; set; }
     public DbSet<StoreRequisition> StoreRequisitions { get; set; }
+
+    // ---- Warehouse: درخواست کاتالوگ قطعه (Part Catalogue Request)
+    public DbSet<PartCatalogueTechnicalClass> PartCatalogueTechnicalClasses { get; set; }
+    public DbSet<PartCatalogueCommodityGroup> PartCatalogueCommodityGroups { get; set; }
+    public DbSet<PartCatalogueProductFamily> PartCatalogueProductFamilies { get; set; }
+    public DbSet<PartCatalogueSection> PartCatalogueSections { get; set; }
+    public DbSet<PartCatalogueManufacturer> PartCatalogueManufacturers { get; set; }
+    public DbSet<PartCatalogueSupplier> PartCatalogueSuppliers { get; set; }
+    public DbSet<PartCatalogueCurrency> PartCatalogueCurrencies { get; set; }
+    public DbSet<PartCatalogueStockGrade> PartCatalogueStockGrades { get; set; }
+    public DbSet<PartCataloguePlanningMethod> PartCataloguePlanningMethods { get; set; }
+    public DbSet<PartCatalogueTypeDesignation> PartCatalogueTypeDesignations { get; set; }
+    public DbSet<PartCatalogueSectionCommodityGroup> PartCatalogueSectionCommodityGroups { get; set; }
+    public DbSet<PartCatalogueCommodityGroupChild> PartCatalogueCommodityGroupChildren { get; set; }
+    public DbSet<PartCatalogueWorkflowStep> PartCatalogueWorkflowSteps { get; set; }
+    public DbSet<PartCatalogueApproverAssignment> PartCatalogueApproverAssignments { get; set; }
+    public DbSet<PartCatalogueOrgLink> PartCatalogueOrgLinks { get; set; }
+    public DbSet<PartCatalogueRequest> PartCatalogueRequests { get; set; }
+    public DbSet<PartCatalogueRequestEquipment> PartCatalogueRequestEquipment { get; set; }
+    public DbSet<PartCatalogueRequestAttribute> PartCatalogueRequestAttributes { get; set; }
+    public DbSet<PartCatalogueRequestNote> PartCatalogueRequestNotes { get; set; }
+    public DbSet<PartCatalogueRequestAttachment> PartCatalogueRequestAttachments { get; set; }
+    public DbSet<PartCatalogueRequestStep> PartCatalogueRequestSteps { get; set; }
+    public DbSet<PartCatalogueRequestApproval> PartCatalogueRequestApprovals { get; set; }
     public DbSet<StoreRequisitionLine> StoreRequisitionLines { get; set; }
     public DbSet<StoreRequisitionStatusHistory> StoreRequisitionStatusHistories { get; set; }
     public DbSet<WorkOrderMaterial> WorkOrderMaterials { get; set; }

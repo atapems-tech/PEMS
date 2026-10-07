@@ -595,4 +595,301 @@
   <data name="Maintenance Planning"><value>برنامه‌ریزی تعمیرات</value></data>
   <data name="Day"><value>روز</value></data><data name="Week"><value>هفته</value></data><data name="Month"><value>ماه</value></data><data name="Today"><value>امروز</value></data><data name="All Teams"><value>همه‌ی تیم‌ها</value></data><data name="Maintenance Team"><value>تیم تعمیرونگهداری</value></data><data name="High/Critical"><value>بالا/بحرانی</value></data><data name="Conflict"><value>تداخل</value></data><data name="Unassigned Team"><value>بدون تیم</value></data><data name="No scheduled work this week."><value>این هفته کار زمان‌بندی‌شده‌ای نیست.</value></data><data name="No scheduled work this day."><value>این روز کار زمان‌بندی‌شده‌ای نیست.</value></data><data name="Unscheduled Work"><value>کارهای زمان‌بندی‌نشده</value></data><data name="No team"><value>بدون تیم</value></data><data name="more"><value>بیشتر</value></data><data name="No work scheduled for you on this day."><value>برای شما در این روز کاری زمان‌بندی نشده.</value></data><data name="Planned"><value>زمان‌بندی‌شده</value></data><data name="Unscheduled"><value>زمان‌بندی‌نشده</value></data><data name="Save Schedule"><value>ذخیره‌ی زمان‌بندی</value></data><data name="Work Type"><value>نوع کار</value></data><data name="Maintenance Calendar"><value>تقویم تعمیرونگهداری</value></data>
   <data name="Allowed"><value>مجاز</value></data><data name="Always"><value>همیشه</value></data><data name="Authorization"><value>مجوزدهی</value></data><data name="By Role"><value>بر اساس نقش</value></data><data name="By User"><value>بر اساس کاربر</value></data><data name="Cannot follow"><value>نمی‌تواند دنبال شود</value></data><data name="Choose a role above"><value>یک نقش از بالا انتخاب کنید</value></data><data name="Choose a user above"><value>یک کاربر از بالا انتخاب کنید</value></data><data name="Conflicts with"><value>در تعارض با</value></data><data name="Destructive"><value>مخرب</value></data><data name="Disable"><value>غیرفعال‌سازی</value></data><data name="Effective"><value>مؤثر</value></data><data name="Enable"><value>فعال‌سازی</value></data><data name="First permission"><value>مجوز اول</value></data><data name="Matched Role"><value>نقش منطبق</value></data><data name="Matched Scope"><value>دامنه‌ی منطبق</value></data><data name="New Policy"><value>سیاست جدید</value></data><data name="No SoD policies configured"><value>هیچ سیاست تفکیک وظایفی تنظیم نشده است</value></data><data name="No authorization events found"><value>هیچ رخداد مجوزدهی‌ای یافت نشد</value></data><data name="No permissions configured"><value>هیچ مجوزی تنظیم نشده است</value></data><data name="No roles assigned"><value>هیچ نقشی تخصیص نیافته است</value></data><data name="Not configured"><value>پیکربندی‌نشده</value></data><data name="Not granted"><value>اعطا نشده</value></data><data name="Resource"><value>منبع</value></data><data name="Resource ID"><value>شناسه‌ی منبع</value></data><data name="Roles and scope"><value>نقش‌ها و دامنه</value></data><data name="Run"><value>اجرا</value></data><data name="Show not-granted permissions"><value>نمایش مجوزهای اعطانشده</value></data><data name="Unrestricted"><value>نامحدود</value></data><data name="Why"><value>دلیل</value></data><data name="With"><value>با</value></data><data name="permissions"><value>مجوزها</value></data><data name="A user who does the first action on a record cannot also do the second on the same record."><value>کاربری که اقدام اول را روی یک رکورد انجام می‌دهد، نمی‌تواند اقدام دوم را هم روی همان رکورد انجام دهد.</value></data><data name="Every authorization decision - who, what, why."><value>هر تصمیم مجوزدهی - چه کسی، چه چیزی، چرا.</value></data><data name="No permissions configured for this role yet - every action is denied by default"><value>هنوز هیچ مجوزی برای این نقش تنظیم نشده - طبق پیش‌فرض هر اقدامی رد می‌شود</value></data><data name="Run a real authorization decision for a hypothetical user and action."><value>یک تصمیم واقعی مجوزدهی را برای یک کاربر و اقدام فرضی اجرا کنید.</value></data><data name="See what a Role can do, read live from the authorization engine."><value>ببینید یک نقش چه کارهایی می‌تواند انجام دهد - مستقیماً از موتور مجوزدهی.</value></data><data name="See what a User can do, and which Role/Scope grants it."><value>ببینید یک کاربر چه کارهایی می‌تواند انجام دهد و کدام نقش/دامنه آن را اعطا می‌کند.</value></data><data name="SystemAdmin bypasses the permission matrix by design"><value>SystemAdmin طبق طراحی از ماتریس مجوزها عبور می‌کند</value></data><data name="SystemAdmin bypasses this matrix by design."><value>SystemAdmin طبق طراحی از این ماتریس عبور می‌کند.</value></data><data name="This user holds SystemAdmin and bypasses the permission matrix by design."><value>این کاربر نقش SystemAdmin را دارد و طبق طراحی از ماتریس مجوزها عبور می‌کند.</value></data><data name="This was recorded in the Authorization Audit log."><value>این رخداد در گزارش مجوزدهی ثبت شد.</value></data><data name="modules configured"><value>ماژول پیکربندی‌شده</value></data><data name="permissions allowed"><value>مجوز مجاز</value></data><data name="permissions allowed, via role membership"><value>مجوز مجاز، از طریق عضویت در نقش</value></data><data name="— select a role —"><value>— یک نقش انتخاب کنید —</value></data><data name="— select a user —"><value>— یک کاربر انتخاب کنید —</value></data><data name="— select —"><value>— انتخاب کنید —</value></data><data name="Effective Permissions"><value>مجوزهای مؤثر</value></data><data name="Permission Simulator"><value>شبیه‌ساز مجوز</value></data><data name="Separation of Duties"><value>تفکیک وظایف</value></data><data name="Authorization Audit"><value>گزارش مجوزدهی</value></data><data name="open"><value>باز</value></data><data name="ALLOW"><value>مجاز</value></data><data name="DENY"><value>غیرمجاز</value></data><data name="Choose which sidebar sections a Role sees. This never changes what a Role is allowed to do - only what it sees by default."><value>انتخاب کنید کدام بخش‌های سایدبار برای یک نقش نمایان باشد. این هرگز کاری که نقش مجاز به انجام آن است را تغییر نمی‌دهد - فقط چیزی که به‌طور پیش‌فرض می‌بیند.</value></data><data name="manual overrides"><value>استثنای دستی</value></data><data name="Module / Item"><value>ماژول / آیتم</value></data><data name="Override"><value>استثنا</value></data><data name="Visible"><value>نمایان</value></data><data name="Hidden"><value>مخفی</value></data><data name="Forced visible"><value>اجباراً نمایان</value></data><data name="Forced hidden"><value>اجباراً مخفی</value></data><data name="Force visible for this role"><value>برای این نقش اجباراً نمایان کن</value></data><data name="Force hidden for this role"><value>برای این نقش اجباراً مخفی کن</value></data><data name="Clear override - back to default"><value>حذف استثنا - بازگشت به پیش‌فرض</value></data><data name="See exactly what a specific user's sidebar looks like right now - a read-only preview, never a real sign-in as that user."><value>دقیقاً ببینید سایدبار یک کاربر خاص همین الان چه شکلی است - فقط یک پیش‌نمایش فقط‌خواندنی، هرگز ورود واقعی به‌جای آن کاربر نیست.</value></data><data name="Preview"><value>پیش‌نمایش</value></data><data name="This is a visualization only - it does not sign in as this user, and hidden items may still be reachable by direct URL if the user is actually authorized (Hidden is not the same as Unauthorized)."><value>این فقط یک نمایش بصری است - به‌جای این کاربر وارد نمی‌شود؛ آیتم‌های مخفی ممکن است همچنان از طریق URL مستقیم در دسترس باشند اگر کاربر واقعاً مجاز باشد (مخفی با غیرمجاز یکی نیست).</value></data><data name="Visible sidebar sections"><value>بخش‌های نمایان سایدبار</value></data><data name="CMMS Integration items"><value>آیتم‌های یکپارچه‌سازی CMMS</value></data><data name="Navigation Visibility"><value>نمایانی ناوبری</value></data><data name="Capability"><value>قابلیت</value></data><data name="Manual override"><value>استثنای دستی</value></data><data name="None - not permission-gated"><value>ندارد - مجوزمحور نیست</value></data><data name="This tree mirrors the real sidebar. Expand a section to see its items; expand an item to see which roles see it and why."><value>این درخت عیناً سایدبار واقعی را بازتاب می‌دهد. یک بخش را باز کنید تا آیتم‌هایش را ببینید؛ یک آیتم را باز کنید تا ببینید کدام نقش‌ها آن را می‌بینند و چرا.</value></data><data name="Locked"><value>قفل‌شده</value></data><data name="N/A"><value>N/A</value></data><data name="Potential SoD conflicts"><value>تعارض‌های احتمالی تفکیک وظایف</value></data><data name="Linked"><value>متصل</value></data><data name="Not linked"><value>متصل‌نشده</value></data><data name="Never"><value>هرگز</value></data><data name="Overview"><value>نمای کلی</value></data><data name="Access &amp; Authorization"><value>دسترسی و مجوزدهی</value></data><data name="Audit"><value>ممیزی</value></data><data name="Role assignment itself is changed from the Edit page."><value>خودِ تخصیص نقش از صفحه‌ی ویرایش تغییر می‌کند.</value></data><data name="No matrix rows for this user's roles"><value>هیچ ردیف ماتریسی برای نقش‌های این کاربر وجود ندارد</value></data><data name="Rows for this user's own role(s) only, from the same matrix maintained on the full Permission Matrix page."><value>ردیف‌ها فقط برای نقش(های) خودِ این کاربر، از همان ماتریسی که در صفحه‌ی کامل Permission Matrix نگهداری می‌شود.</value></data><data name="Open full matrix"><value>باز کردن ماتریس کامل</value></data><data name="Resource ID (optional)"><value>شناسه‌ی رکورد (اختیاری)</value></data><data name="This runs the real authorization engine for this user - it never writes or changes any permission."><value>این، موتور واقعی مجوزدهی را برای این کاربر اجرا می‌کند - هرگز هیچ مجوزی را نمی‌نویسد یا تغییر نمی‌دهد.</value></data><data name="Separation of Duties in PEMS is checked dynamically, per record, at the moment of a real action - not as a standing status. The rows below show structural exposure only: this user's roles grant both permissions of an active policy. This is not the same as an actual violation, which can only happen on a specific record."><value>تفکیک وظایف در PEMS همیشه به‌صورت پویا، روی یک رکورد مشخص، در لحظه‌ی یک اقدام واقعی بررسی می‌شود - نه به‌عنوان یک وضعیت ایستا. ردیف‌های زیر فقط «قرارگرفتن در معرض ساختاری» را نشان می‌دهند: نقش‌های این کاربر هر دو مجوز یک سیاست فعال را همزمان دارند. این هرگز به معنای رخ‌دادن واقعی یک تخلف نیست - آن فقط روی یک رکورد مشخص قابل‌تشخیص است.</value></data><data name="No active SoD policies apply to this user's permissions"><value>هیچ سیاست فعال تفکیک وظایفی روی مجوزهای این کاربر اعمال نمی‌شود</value></data><data name="Permission A"><value>مجوز A</value></data><data name="Permission B"><value>مجوز B</value></data><data name="Potential exposure"><value>قرارگرفتن در معرض احتمالی</value></data><data name="Not exposed"><value>در معرض نیست</value></data><data name="Manage SoD policies"><value>مدیریت سیاست‌های تفکیک وظایف</value></data><data name="Manage navigation visibility by role"><value>مدیریت نمایانی ناوبری بر اساس نقش</value></data><data name="No authorization decisions recorded yet"><value>هنوز هیچ تصمیم مجوزدهی‌ای ثبت نشده است</value></data><data name="Timestamp"><value>زمان</value></data><data name="Open full audit log for this user"><value>باز کردن گزارش کامل ممیزی این کاربر</value></data><data name="Print"><value>چاپ</value></data><data name="Rotating Equipment"><value>تجهیز دوار</value></data><data name="Flow Rate"><value>دبی</value></data><data name="Head"><value>هد</value></data><data name="Speed (RPM)"><value>سرعت (دور بر دقیقه)</value></data><data name="Power (kW)"><value>توان (کیلووات)</value></data><data name="Driver Type"><value>نوع محرک</value></data><data name="Bearing Type"><value>نوع بلبرینگ</value></data><data name="Lubrication"><value>روانکاری</value></data><data name="Classify as Rotating"><value>طبقه‌بندی به‌عنوان دوار</value></data><data name="Static Equipment"><value>تجهیز ثابت</value></data><data name="Volume"><value>حجم</value></data><data name="Orientation"><value>جهت‌گیری</value></data><data name="Code Standard"><value>استاندارد طراحی</value></data><data name="Classify as Static"><value>طبقه‌بندی به‌عنوان ثابت</value></data><data name="Classify as Rotating Equipment"><value>طبقه‌بندی به‌عنوان تجهیز دوار</value></data><data name="Classify as Static Equipment"><value>طبقه‌بندی به‌عنوان تجهیز ثابت</value></data><data name="Total Mechanical Equipment"><value>کل تجهیزات مکانیکی</value></data><data name="Rotating"><value>دوار</value></data><data name="Static"><value>ثابت</value></data><data name="Unclassified"><value>طبقه‌بندی‌نشده</value></data><data name="No mechanical equipment found."><value>هیچ تجهیز مکانیکی‌ای یافت نشد.</value></data><data name="Failure Mode / Cause"><value>حالت/علت خرابی</value></data><data name="Observed"><value>مشاهده‌شده</value></data><data name="CM Reading"><value>قرائت پایش وضعیت</value></data><data name="Inspection"><value>بازرسی</value></data><data name="Raise Work Request"><value>ثبت درخواست کار</value></data><data name="Close"><value>بستن</value></data><data name="Variable"><value>متغیر</value></data><data name="Alarm Range"><value>بازه‌ی آلارم</value></data><data name="Readings"><value>قرائت‌ها</value></data><data name="Last Reading"><value>آخرین قرائت</value></data><data name="Evaluation"><value>ارزیابی</value></data><data name="CBM Strategy"><value>استراتژی CBM</value></data><data name="Raise Finding"><value>ثبت یافته</value></data><data name="Mark for Engineering Review"><value>علامت‌گذاری برای بازبینی مهندسی</value></data><data name="Assign evaluation profile"><value>تخصیص پروفایل ارزیابی</value></data><data name="Last"><value>آخرین</value></data><data name="days"><value>روز</value></data><data name="Custom"><value>سفارشی</value></data><data name="Variable Type"><value>نوع متغیر</value></data><data name="Standard"><value>استاندارد</value></data><data name="Limits"><value>آستانه‌ها</value></data><data name="Add Limit"><value>افزودن آستانه</value></data><data name="Effective From"><value>تاریخ اعتبار از</value></data><data name="Low Inclusive"><value>شامل حد پایین</value></data><data name="High Inclusive"><value>شامل حد بالا</value></data><data name="Mechanical Passport"><value>شناسنامه مکانیکال</value></data><data name="Full Mechanical Passport"><value>شناسنامه کامل مکانیکال</value></data><data name="Sub-Type"><value>زیررده</value></data><data name="Design Pressure"><value>فشار طراحی</value></data><data name="Design Temperature"><value>دمای طراحی</value></data><data name="Operating Pressure"><value>فشار عملیاتی</value></data><data name="Operating Temperature"><value>دمای عملیاتی</value></data><data name="Pump, Compressor, Fan, Blower ..."><value>پمپ، کمپرسور، فن، بلوور ...</value></data><data name="Motor, Turbine, Engine"><value>موتور، توربین، انجین</value></data><data name="Vessel, Tank, Column, Heat Exchanger, Filter ..."><value>ظرف، تانک، برج، مبدل حرارتی، فیلتر ...</value></data><data name="Vertical, Horizontal"><value>عمودی، افقی</value></data><data name="ASME, API"><value>ASME, API</value></data><data name="Search tag / manufacturer..."><value>جستجوی تگ / سازنده...</value></data><data name="Pump, Compressor, Vessel, Tank, Heat Exchanger ..."><value>پمپ، کمپرسور، ظرف، تانک، مبدل حرارتی ...</value></data><data name="Recommended Action (اختیاری)"><value>Recommended Action (اختیاری)</value></data><data name="Instrument (اختیاری)"><value>Instrument (اختیاری)</value></data><data name="Failure Mode (ISO 14224، اختیاری)"><value>Failure Mode (ISO 14224، اختیاری)</value></data><data name="Failure Cause (اختیاری)"><value>Failure Cause (اختیاری)</value></data><data name="-- profile --"><value>-- پروفایل --</value></data><data name="Low Value (اختیاری)"><value>Low Value (اختیاری)</value></data><data name="High Value (اختیاری)"><value>High Value (اختیاری)</value></data><data name="Equipment Class (اختیاری - خالی یعنی عمومی)"><value>Equipment Class (اختیاری - خالی یعنی عمومی)</value></data><data name="Standard Reference (اختیاری)"><value>Standard Reference (اختیاری)</value></data><data name="Operating Condition (اختیاری)"><value>Operating Condition (اختیاری)</value></data><data name="هنوز به‌عنوان Rotating طبقه‌بندی نشده."><value>هنوز به‌عنوان Rotating طبقه‌بندی نشده.</value></data><data name="این تجهیز به‌عنوان Static طبقه‌بندی شده - یک تجهیز نمی‌تواند هم Rotating هم Static باشد."><value>این تجهیز به‌عنوان Static طبقه‌بندی شده - یک تجهیز نمی‌تواند هم Rotating هم Static باشد.</value></data><data name="هنوز به‌عنوان Static طبقه‌بندی نشده."><value>هنوز به‌عنوان Static طبقه‌بندی نشده.</value></data><data name="این تجهیز به‌عنوان Rotating طبقه‌بندی شده - یک تجهیز نمی‌تواند هم Rotating هم Static باشد."><value>این تجهیز به‌عنوان Rotating طبقه‌بندی شده - یک تجهیز نمی‌تواند هم Rotating هم Static باشد.</value></data><data name="هیچ یافته‌ای ثبت نشده."><value>هیچ یافته‌ای ثبت نشده.</value></data><data name="ساخت استراتژی CBM برای این نقطه‌ی پایش"><value>ساخت استراتژی CBM برای این نقطه‌ی پایش</value></data><data name="هیچ قرائتی در این بازه ثبت نشده."><value>هیچ قرائتی در این بازه ثبت نشده.</value></data><data name="Evaluation Profile جدید"><value>Evaluation Profile جدید</value></data><data name="پیکربندی نشده"><value>پیکربندی نشده</value></data><data name="هنوز Evaluation Profile ای ساخته نشده."><value>هنوز Evaluation Profile ای ساخته نشده.</value></data><data name="فقط تعریف پروفایل - آستانه‌های واقعی را بعداً از دکمه‌ی «Add Limit» هر ردیف وارد کنید."><value>فقط تعریف پروفایل - آستانه‌های واقعی را بعداً از دکمه‌ی «Add Limit» هر ردیف وارد کنید.</value></data><data name="فقط مقدار واقعی مهندسی وارد کنید - هیچ مقداری حدس زده نمی‌شود؛ خالی گذاشتن هر دو فیلد رد می‌شود."><value>فقط مقدار واقعی مهندسی وارد کنید - هیچ مقداری حدس زده نمی‌شود؛ خالی گذاشتن هر دو فیلد رد می‌شود.</value></data><data name="مثلاً VIB-PUMP-ISO20816"><value>مثلاً VIB-PUMP-ISO20816</value></data><data name="مثلاً Normal Load"><value>مثلاً Normal Load</value></data><data name="Equipment link is optional - only fill it when this mechanical record represents an existing Equipment tag. Rotating/Static sub-type details are added afterwards from the Passport page."><value>پیوند به Equipment اختیاری است - فقط وقتی پر کنید که این رکورد مکانیکال معادل یک تگ Equipment موجود باشد. جزئیات زیررده Rotating/Static بعداً از صفحه‌ی Passport اضافه می‌شوند.</value></data><data name="IC_ConditionReading_Title"><value>ایمپورت قرائت‌های پایش وضعیت</value></data><data name="IC_ConditionReading_Desc"><value>ایمپورت سوابق تاریخی قرائت‌های پایش وضعیت از اکسل.</value></data><data name="IC_ConditionReading_Flow"><value>آپلود ← بازبینی (صفحه‌بندی‌شده) ← ثبت نهایی / دور انداختن.</value></data><data name="← Condition Monitoring"><value>← پایش وضعیت</value></data><data name="Upload an Excel file with Equipment Tag / Point Tag / Reading Date / Value columns (optional Source, Notes). Records are append-only - nothing is written to the live Condition Readings table until you review the staged rows and click Commit. A row whose monitoring point/reading-date combination already matches an existing reading is flagged as a duplicate and is never committed twice."><value>فایل اکسلی با ستون‌های Equipment Tag / Point Tag / Reading Date / Value (اختیاری: Source، Notes) بارگذاری کنید. رکوردها Append-only هستند - هیچ‌چیز روی جدول واقعی Condition Readings نوشته نمی‌شود تا وقتی ردیف‌های Staging را بازبینی و روی Commit کلیک کنید. ردیفی که ترکیب نقطه‌ی پایش/تاریخ قرائت آن از قبل با یک قرائت موجود مطابقت دارد، تکراری علامت‌گذاری می‌شود و هرگز دوباره ثبت نمی‌شود.</value></data><data name="Condition Reading Excel File"><value>فایل اکسل قرائت پایش وضعیت</value></data><data name="No Condition Reading import batches yet."><value>هنوز هیچ Batch ایمپورت قرائت پایش وضعیتی وجود ندارد.</value></data><data name="New record"><value>رکورد جدید</value></data><data name="Duplicate (already exists)"><value>تکراری (از قبل وجود دارد)</value></data><data name="Monitoring point not found"><value>نقطه‌ی پایش پیدا نشد</value></data><data name="Duplicate point match"><value>تطبیق تکراری نقطه‌ی پایش</value></data><data name="Validation error"><value>خطای اعتبارسنجی</value></data><data name="Commit Approved Rows"><value>ثبت ردیف‌های تاییدشده</value></data><data name="Discard Batch"><value>دور انداختن Batch</value></data><data name="Clear All"><value>پاک کردن همه</value></data><data name="Point Tag"><value>Point Tag</value></data><data name="Reading Date"><value>تاریخ قرائت</value></data><data name="Approved - click to exclude"><value>تاییدشده - برای حذف کلیک کنید</value></data><data name="Excluded - click to approve"><value>حذف‌شده - برای تایید کلیک کنید</value></data><data name="Reading Created"><value>قرائت ایجاد شد</value></data><data name="Condition Reading Import"><value>ایمپورت قرائت پایش وضعیت</value></data><data name="Review Condition Reading Import"><value>بازبینی ایمپورت قرائت پایش وضعیت</value></data><data name="No readings yet"><value>هنوز قرائتی ثبت نشده</value></data><data name="NotEvaluated"><value>ارزیابی‌نشده</value></data><data name="Monitoring Points"><value>نقاط پایش</value></data><data name="Full Condition Monitoring"><value>پایش وضعیت کامل</value></data><data name="Priority Mapping"><value>نگاشت اولویت</value></data><data name="نگاشت جدید"><value>نگاشت جدید</value></data><data name="هنوز نگاشتی ساخته نشده."><value>هنوز نگاشتی ساخته نشده.</value></data><data name="این نگاشت تعیین می‌کند که یافتن یک وضعیت (Condition) چه اولویتی (Priority) برای Work Request نتیجه‌شده دارد - قبلاً این نگاشت مستقیم در کد برنامه نوشته شده بود؛ حالا اینجا قابل‌مشاهده و قابل‌ویرایش است."><value>این نگاشت تعیین می‌کند که یافتن یک وضعیت (Condition) چه اولویتی (Priority) برای Work Request نتیجه‌شده دارد - قبلاً این نگاشت مستقیم در کد برنامه نوشته شده بود؛ حالا اینجا قابل‌مشاهده و قابل‌ویرایش است.</value></data>
+<data name="Notif_MarkAllRead"><value>علامت‌گذاری همه به‌عنوان خوانده‌شده</value></data><data name="Notif_Dismiss"><value>حذف از صندوق</value></data><data name="Notif_DismissAll"><value>حذف همه</value></data><data name="Notif_ViewAll"><value>مشاهده‌ی همه‌ی اعلان‌ها</value></data><data name="Notif_NoNew"><value>اعلانی وجود ندارد</value></data><data name="Notif_Empty"><value>اعلانی وجود ندارد.</value></data><data name="Notif_All"><value>همه</value></data><data name="Notif_Unread"><value>خوانده‌نشده</value></data><data name="Notif_Read"><value>خوانده‌شده</value></data><data name="Notif_Dismissed"><value>حذف‌شده</value></data>
+<data name="Role_SystemAdmin_Name"><value>مدیر سیستم</value></data><data name="Role_SystemAdmin_Desc"><value>مدیریت پلتفرم: کاربران، نقش‌ها، مجوزها و تنظیمات؛ طبق طراحی ماتریس مجوز را دور می‌زند.</value></data><data name="Role_EngineeringManager_Name"><value>مدیر مهندسی</value></data><data name="Role_EngineeringManager_Desc"><value>مدیر واحد مهندسی: تأیید مدارک، بازبینی بین‌دیسیپلینی و تصویب نهایی دستور کارهایی که مبدأ آن‌ها مهندسی است.</value></data><data name="Role_EngineeringSupervisor_Name"><value>سرپرست مهندسی</value></data><data name="Role_EngineeringSupervisor_Desc"><value>سرپرست کارهای مهندسی: بررسی مدارک، تأیید درخواست کار و تصویب نهایی دستور کار.</value></data><data name="Role_DisciplineEngineer_Name"><value>مهندس دیسیپلین</value></data><data name="Role_DisciplineEngineer_Desc"><value>متخصص دیسیپلین مهندسی: تهیه مدارک و تأیید انجام کار برای دیسیپلین مبدأ.</value></data><data name="Role_DocumentController_Name"><value>کنترل مدارک</value></data><data name="Role_DocumentController_Desc"><value>کنترل مدارک مهندسی و مکاتبات: صدور، ترنسمیتال و ثبت پاسخ کارفرما.</value></data><data name="Role_MaintenanceEngineer_Name"><value>مهندس تعمیرات</value></data><data name="Role_MaintenanceEngineer_Desc"><value>مهندسی تعمیرات: تجهیزات، برنامه‌ها، راهبردها، بازرسی و پایش وضعیت.</value></data><data name="Role_ContractManager_Name"><value>مدیر قراردادها</value></data><data name="Role_ContractManager_Desc"><value>مدیریت قراردادها، بسته‌های تدارکات و مناقصه‌ها از جمله تأیید آن‌ها.</value></data><data name="Role_QAManager_Name"><value>مدیر تضمین کیفیت</value></data><data name="Role_QAManager_Desc"><value>تضمین کیفیت: تعیین تکلیف IRN، NCR، بستن MOC و بازبینی ایمنی/بهداشت مجوز کار.</value></data><data name="Role_Viewer_Name"><value>بیننده</value></data><data name="Role_Viewer_Desc"><value>دسترسی فقط‌خواندنی به اطلاعات مهندسی، CMMS و وضعیت ورود داده؛ امکان تغییر داده ندارد.</value></data><data name="Role_Legal_Name"><value>حقوقی</value></data><data name="Role_Legal_Desc"><value>شرکت‌کننده‌ی بازبینی حقوقی در بازبینی چنددیسیپلینی قرارداد.</value></data><data name="Role_Finance_Name"><value>مالی</value></data><data name="Role_Finance_Desc"><value>شرکت‌کننده‌ی بازبینی مالی در بازبینی چنددیسیپلینی قرارداد.</value></data><data name="Role_HSE_Name"><value>ایمنی، بهداشت و محیط زیست</value></data><data name="Role_HSE_Desc"><value>شرکت‌کننده‌ی بازبینی ایمنی، بهداشت و محیط زیست در بازبینی چنددیسیپلینی قرارداد.</value></data><data name="Role_MNT_Manager_Name"><value>مدیر تعمیرات</value></data><data name="Role_MNT_Manager_Desc"><value>مدیر واحد تعمیرات: رد یا لغو دستور کار و تصویب نهایی دستور کارهایی که مبدأ آن‌ها تعمیرات است.</value></data><data name="Role_MNT_PlanningHead_Name"><value>رئیس برنامه‌ریزی تعمیرات</value></data><data name="Role_MNT_PlanningHead_Desc"><value>سرپرست برنامه‌ریزی تعمیرات: ایجاد، برنامه‌ریزی و آماده‌سازی دستور کار و تأیید درخواست کار.</value></data><data name="Role_MNT_PlanningExpert_Name"><value>کارشناس برنامه‌ریزی تعمیرات</value></data><data name="Role_MNT_PlanningExpert_Desc"><value>برنامه‌ریز تعمیرات: ایجاد، برنامه‌ریزی و آماده‌سازی دستور کار.</value></data><data name="Role_MNT_DisciplineHead_Name"><value>رئیس دیسیپلین تعمیرات</value></data><data name="Role_MNT_DisciplineHead_Desc"><value>سرپرست یک دیسیپلین تعمیرات: تخصیص مجری، شروع و اجرای کار، تأیید و تصویب نهایی.</value></data><data name="Role_MNT_SeniorExpert_Name"><value>کارشناس ارشد تعمیرات</value></data><data name="Role_MNT_SeniorExpert_Desc"><value>تکنسین ارشد تعمیرات: اجرا و تأیید کار در دیسیپلین مسئول.</value></data><data name="Role_MNT_Expert_Name"><value>کارشناس تعمیرات</value></data><data name="Role_MNT_Expert_Desc"><value>تکنسین تعمیرات: اجرای کار محول‌شده در دیسیپلین مسئول.</value></data><data name="Role_OPS_IssueAuthority_Name"><value>مرجع صدور بهره‌برداری</value></data><data name="Role_OPS_IssueAuthority_Desc"><value>مرجع بهره‌برداری که پس از عبور از دروازه‌های مجوز کار/ایزولاسیون/تست گاز دستور کار را صادر (آزاد) می‌کند و انجام کار را تأیید می‌کند.</value></data><data name="Role_WH_Manager_Name"><value>مدیر انبار</value></data><data name="Role_WH_Manager_Desc"><value>مدیر انبار: تأیید درخواست‌های انبار. جدا از انباردارِ ایجادکننده؛ نمی‌تواند تعیین تکلیف کیفی IRN را تأیید کند.</value></data><data name="Role_WH_Storekeeper_Name"><value>انباردار</value></data><data name="Role_WH_Storekeeper_Desc"><value>متصدی انبار: ایجاد درخواست انبار، ثبت رسید و نگهداری اطلاعات پایه موجودی. نمی‌تواند درخواست انبار یا تعیین تکلیف کیفی IRN را تأیید کند.</value></data><data name="RoleDomain_Platform"><value>پلتفرم</value></data><data name="RoleDomain_Engineering"><value>مهندسی</value></data><data name="RoleDomain_DocumentControl"><value>کنترل مدارک</value></data><data name="RoleDomain_Maintenance"><value>تعمیرات</value></data><data name="RoleDomain_Operations"><value>بهره‌برداری</value></data><data name="RoleDomain_Warehouse"><value>انبار</value></data><data name="RoleDomain_Contracts"><value>قراردادها</value></data><data name="RoleDomain_Quality"><value>کیفیت</value></data><data name="RoleDomain_HSE"><value>ایمنی و محیط زیست</value></data><data name="RoleDomain_Finance"><value>مالی</value></data><data name="RoleDomain_Legal"><value>حقوقی</value></data><data name="RoleDomain_General"><value>عمومی</value></data><data name="RoleCategory_Platform"><value>پلتفرم</value></data><data name="RoleCategory_Domain"><value>مدیریت دامنه</value></data><data name="RoleCategory_Functional"><value>عملیاتی</value></data><data name="RoleCategory_ReadOnly"><value>فقط مشاهده</value></data><data name="Role_Domain"><value>دامنه</value></data><data name="Role_Category"><value>دسته</value></data><data name="Role_PossibleDuplicates"><value>نقش‌های احتمالاً تکراریِ نقش‌های پایه (ادغام نشده‌اند — به‌صورت دستی بررسی شود):</value></data>
+  <data name="Pc_Menu" xml:space="preserve"><value>کاتالوگ قطعه</value></data>
+  <data name="Pc_Title_Admin" xml:space="preserve"><value>مدیریت کاتالوگ قطعه</value></data>
+  <data name="Pc_Title_Edit" xml:space="preserve"><value>درخواست کاتالوگ قطعه</value></data>
+  <data name="Pc_Search_Placeholder" xml:space="preserve"><value>جستجوی شماره، کلاس، درخواست‌دهنده، شماره قطعه...</value></data>
+  <data name="Pc_Urgent" xml:space="preserve"><value>فوری</value></data>
+  <data name="Pc_Yes" xml:space="preserve"><value>بله</value></data>
+  <data name="Pc_No" xml:space="preserve"><value>خیر</value></data>
+  <data name="Pc_F_RequestNumber" xml:space="preserve"><value>شماره درخواست (Request Number)</value></data>
+  <data name="Pc_F_Urgent" xml:space="preserve"><value>فوری (Urgent)</value></data>
+  <data name="Pc_F_SectionId" xml:space="preserve"><value>بخش (Section)</value></data>
+  <data name="Pc_F_Requester" xml:space="preserve"><value>درخواست‌دهنده (Requester)</value></data>
+  <data name="Pc_F_RequestType" xml:space="preserve"><value>نوع درخواست (Request Type)</value></data>
+  <data name="Pc_F_IsNewEquipment" xml:space="preserve"><value>تجهیز جدید (New Equipment)</value></data>
+  <data name="Pc_F_TechnicalClassId" xml:space="preserve"><value>کلاس فنی (Technical Class)</value></data>
+  <data name="Pc_F_Attributes" xml:space="preserve"><value>مشخصات فنی (Technical Attributes)</value></data>
+  <data name="Pc_F_AttributeName" xml:space="preserve"><value>مشخصه (Attribute)</value></data>
+  <data name="Pc_F_AttributeValue" xml:space="preserve"><value>مقدار (Value)</value></data>
+  <data name="Pc_F_FreeFormatText" xml:space="preserve"><value>FREE FORMAT TEXT</value></data>
+  <data name="Pc_F_AssetType" xml:space="preserve"><value>نوع دارایی (Asset Type)</value></data>
+  <data name="Pc_F_CommodityGroup1Id" xml:space="preserve"><value>گروه کالایی ۱ (Commodity Group 1)</value></data>
+  <data name="Pc_F_CommodityGroup2Id" xml:space="preserve"><value>گروه کالایی ۲ (Commodity Group 2)</value></data>
+  <data name="Pc_F_ProductFamilyId" xml:space="preserve"><value>خانواده محصول (Product Family)</value></data>
+  <data name="Pc_F_UnitOfMeasureId" xml:space="preserve"><value>واحد اندازه‌گیری (Unit of Measure)</value></data>
+  <data name="Pc_F_ManufacturerId" xml:space="preserve"><value>سازنده (Manufacturer)</value></data>
+  <data name="Pc_F_IsNewManufacturer" xml:space="preserve"><value>سازنده جدید (New Manufacturer)</value></data>
+  <data name="Pc_F_NewManufacturerName" xml:space="preserve"><value>نام سازنده جدید (New Manufacturer Name)</value></data>
+  <data name="Pc_F_ManufacturerPartNumber" xml:space="preserve"><value>شماره قطعه سازنده (Manufacturer Part Number)</value></data>
+  <data name="Pc_F_SupplierId" xml:space="preserve"><value>تأمین‌کننده (Supplier)</value></data>
+  <data name="Pc_F_SupplierPartNumber" xml:space="preserve"><value>شماره قطعه تأمین‌کننده (Supplier Part Number)</value></data>
+  <data name="Pc_F_PartPrice" xml:space="preserve"><value>قیمت قطعه (Part Price)</value></data>
+  <data name="Pc_F_CurrencyId" xml:space="preserve"><value>ارز (Currency)</value></data>
+  <data name="Pc_F_TypeDesignationId" xml:space="preserve"><value>نوع تعیین‌شده (Type Designation)</value></data>
+  <data name="Pc_F_IsCritical" xml:space="preserve"><value>حیاتی (Critical)</value></data>
+  <data name="Pc_F_IsCapital" xml:space="preserve"><value>سرمایه‌ای (Capital)</value></data>
+  <data name="Pc_F_SparePartSerialNo" xml:space="preserve"><value>شماره سریال قطعه یدکی (Spare Part Serial No)</value></data>
+  <data name="Pc_F_EquipmentSerialNo" xml:space="preserve"><value>شماره سریال تجهیز (Equipment Serial No)</value></data>
+  <data name="Pc_F_ManufacturerDrawingNo" xml:space="preserve"><value>شماره نقشه سازنده (Manufacturer Drawing No)</value></data>
+  <data name="Pc_F_DocumentNo" xml:space="preserve"><value>شماره سند (Document No)</value></data>
+  <data name="Pc_F_MinimumStock" xml:space="preserve"><value>حداقل موجودی (Minimum Stock)</value></data>
+  <data name="Pc_F_MaxConsumptionRate" xml:space="preserve"><value>حداکثر نرخ مصرف (Max Consumption Rate)</value></data>
+  <data name="Pc_F_FirstPurchaseQuantity" xml:space="preserve"><value>مقدار خرید اولیه (First Purchase Quantity)</value></data>
+  <data name="Pc_F_PlanningMethodId" xml:space="preserve"><value>روش برنامه‌ریزی (Planning Method)</value></data>
+  <data name="Pc_F_PrimaryIssuedRequired" xml:space="preserve"><value>نیاز به تحویل اولیه (Primary Issued Required)</value></data>
+  <data name="Pc_F_IssuedQty" xml:space="preserve"><value>مقدار تحویل‌شده (Issued Quantity)</value></data>
+  <data name="Pc_F_StockGradeId" xml:space="preserve"><value>درجه موجودی (Stock Grade)</value></data>
+  <data name="Pc_F_WantedReceiptDate" xml:space="preserve"><value>تاریخ مورد نیاز دریافت (Wanted Receipt Date)</value></data>
+  <data name="Pc_F_StorageVolume" xml:space="preserve"><value>حجم انبارش (Storage Volume)</value></data>
+  <data name="Pc_F_IsRd" xml:space="preserve"><value>تحقیق و توسعه (R&amp;D)</value></data>
+  <data name="Pc_F_ExistingPartNumber" xml:space="preserve"><value>شماره قطعه موجود (Existing Part Number)</value></data>
+  <data name="Pc_F_ChangesMatchInventory" xml:space="preserve"><value>تغییرات با موجودی انبار منطبق است (Changes match inventory)</value></data>
+  <data name="Pc_F_OldManufacturerName" xml:space="preserve"><value>نام سازنده قبلی (Old Manufacturer Name)</value></data>
+  <data name="Pc_F_OldManufacturerPartNumber" xml:space="preserve"><value>شماره قطعه سازنده قبلی (Old Manufacturer Part Number)</value></data>
+  <data name="Pc_F_Attachments" xml:space="preserve"><value>پیوست‌ها (Attachments)</value></data>
+  <data name="Pc_F_AttachmentKind" xml:space="preserve"><value>نوع پیوست (Attachment Type)</value></data>
+  <data name="Pc_F_File" xml:space="preserve"><value>فایل (File)</value></data>
+  <data name="Pc_F_Notes" xml:space="preserve"><value>یادداشت‌ها (Notes)</value></data>
+  <data name="Pc_F_Text" xml:space="preserve"><value>متن (Text)</value></data>
+  <data name="Pc_F_Comment" xml:space="preserve"><value>توضیح (Comment)</value></data>
+  <data name="Pc_F_Equipment" xml:space="preserve"><value>تجهیز (Equipment)</value></data>
+  <data name="Pc_F_EquipmentId" xml:space="preserve"><value>تجهیز (Equipment)</value></data>
+  <data name="Pc_F_EquipmentText" xml:space="preserve"><value>تجهیز (متن) (Equipment (text))</value></data>
+  <data name="Pc_F_InstalledQuantity" xml:space="preserve"><value>تعداد نصب‌شده (Installed Quantity)</value></data>
+  <data name="Pc_F_PartNumber" xml:space="preserve"><value>شماره قطعه (Part Number)</value></data>
+  <data name="Pc_F_Order" xml:space="preserve"><value>ترتیب (Order)</value></data>
+  <data name="Pc_F_ConditionKey" xml:space="preserve"><value>شرط (Condition)</value></data>
+  <data name="Pc_F_ManagerEmployeeId" xml:space="preserve"><value>مدیر مستقیم (Direct Manager)</value></data>
+  <data name="Pc_Sec_PartInfo" xml:space="preserve"><value>اطلاعات درخواست</value></data>
+  <data name="Pc_Sec_Equipment" xml:space="preserve"><value>تجهیزات</value></data>
+  <data name="Pc_Sec_ClassInfo" xml:space="preserve"><value>کلاس فنی</value></data>
+  <data name="Pc_Sec_Classification" xml:space="preserve"><value>طبقه‌بندی قطعه</value></data>
+  <data name="Pc_Sec_OtherInfo" xml:space="preserve"><value>سایر اطلاعات</value></data>
+  <data name="Pc_Sec_Planning" xml:space="preserve"><value>برنامه‌ریزی موجودی</value></data>
+  <data name="Pc_Btn_AddAttribute" xml:space="preserve"><value>افزودن مشخصه</value></data>
+  <data name="Pc_Btn_AddEquipment" xml:space="preserve"><value>افزودن تجهیز</value></data>
+  <data name="Pc_Btn_AddGroup" xml:space="preserve"><value>افزودن</value></data>
+  <data name="Pc_Btn_AddNote" xml:space="preserve"><value>افزودن یادداشت</value></data>
+  <data name="Pc_Btn_Approve" xml:space="preserve"><value>تأیید</value></data>
+  <data name="Pc_Btn_Back" xml:space="preserve"><value>بازگشت</value></data>
+  <data name="Pc_Btn_Cancel" xml:space="preserve"><value>لغو درخواست</value></data>
+  <data name="Pc_Btn_Close" xml:space="preserve"><value>بستن</value></data>
+  <data name="Pc_Btn_Edit" xml:space="preserve"><value>ویرایش</value></data>
+  <data name="Pc_Btn_Export_Pdf" xml:space="preserve"><value>PDF</value></data>
+  <data name="Pc_Btn_Export_Xlsx" xml:space="preserve"><value>اکسل</value></data>
+  <data name="Pc_Btn_GenerateNumber" xml:space="preserve"><value>تولید شماره درخواست</value></data>
+  <data name="Pc_Btn_Load" xml:space="preserve"><value>بارگذاری</value></data>
+  <data name="Pc_Btn_NewAdd" xml:space="preserve"><value>درخواست جدید (Add)</value></data>
+  <data name="Pc_Btn_NewChange" xml:space="preserve"><value>درخواست جدید (Change)</value></data>
+  <data name="Pc_Btn_Remove" xml:space="preserve"><value>حذف</value></data>
+  <data name="Pc_Btn_Return" xml:space="preserve"><value>بازگشت برای اصلاح</value></data>
+  <data name="Pc_Btn_Save" xml:space="preserve"><value>ذخیره</value></data>
+  <data name="Pc_Btn_SaveSubmit" xml:space="preserve"><value>ذخیره و ارسال</value></data>
+  <data name="Pc_Btn_Upload" xml:space="preserve"><value>بارگذاری فایل</value></data>
+  <data name="Pc_Status_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="Pc_Status_InApproval" xml:space="preserve"><value>در حال تأیید</value></data>
+  <data name="Pc_Status_Returned" xml:space="preserve"><value>بازگشتی</value></data>
+  <data name="Pc_Status_Completed" xml:space="preserve"><value>تکمیل‌شده</value></data>
+  <data name="Pc_Status_Cancelled" xml:space="preserve"><value>لغوشده</value></data>
+  <data name="Pc_Type_Add" xml:space="preserve"><value>افزودن (Add)</value></data>
+  <data name="Pc_Type_Change" xml:space="preserve"><value>تغییر (Change)</value></data>
+  <data name="Pc_Kind_Document" xml:space="preserve"><value>سند</value></data>
+  <data name="Pc_Kind_Drawing" xml:space="preserve"><value>نقشه</value></data>
+  <data name="Pc_Kind_Support" xml:space="preserve"><value>مستند پشتیبان</value></data>
+  <data name="Pc_Kind_Review" xml:space="preserve"><value>بررسی</value></data>
+  <data name="Pc_Kind_Approval" xml:space="preserve"><value>تأیید</value></data>
+  <data name="Pc_Kind_Registration" xml:space="preserve"><value>ثبت</value></data>
+  <data name="Pc_Asset_None" xml:space="preserve"><value>ندارد</value></data>
+  <data name="Pc_Asset_FixedAsset" xml:space="preserve"><value>دارایی ثابت</value></data>
+  <data name="Pc_Asset_LowValueAsset" xml:space="preserve"><value>دارایی کم‌ارزش</value></data>
+  <data name="Pc_Action_Submit" xml:space="preserve"><value>ارسال</value></data>
+  <data name="Pc_Action_Resubmit" xml:space="preserve"><value>ارسال مجدد</value></data>
+  <data name="Pc_Action_Approve" xml:space="preserve"><value>تأیید</value></data>
+  <data name="Pc_Action_Return" xml:space="preserve"><value>بازگشت برای اصلاح</value></data>
+  <data name="Pc_Action_Cancel" xml:space="preserve"><value>لغو</value></data>
+  <data name="Pc_Action_Skip" xml:space="preserve"><value>رد شد (Skip)</value></data>
+  <data name="Pc_Action_RegisterPartNumber" xml:space="preserve"><value>ثبت شماره قطعه</value></data>
+  <data name="Pc_Action_AdminOverride" xml:space="preserve"><value>اقدام اضطراری مدیر</value></data>
+  <data name="Pc_StepStatus_Pending" xml:space="preserve"><value>در انتظار</value></data>
+  <data name="Pc_StepStatus_Active" xml:space="preserve"><value>فعال</value></data>
+  <data name="Pc_StepStatus_Approved" xml:space="preserve"><value>تأییدشده</value></data>
+  <data name="Pc_StepStatus_Skipped" xml:space="preserve"><value>ردشده</value></data>
+  <data name="Pc_StepStatus_Returned" xml:space="preserve"><value>بازگشتی</value></data>
+  <data name="Pc_StepStatus_Cancelled" xml:space="preserve"><value>لغوشده</value></data>
+  <data name="Pc_Step_DirectManager" xml:space="preserve"><value>مدیر مستقیم</value></data>
+  <data name="Pc_Step_SuperiorManager" xml:space="preserve"><value>مدیر مافوق</value></data>
+  <data name="Pc_Step_MaintenanceSupervisor" xml:space="preserve"><value>سرپرست تعمیرات</value></data>
+  <data name="Pc_Step_SparePartsSpecialist" xml:space="preserve"><value>کارشناس قطعات</value></data>
+  <data name="Pc_Step_SourcingUnit" xml:space="preserve"><value>واحد سورسینگ</value></data>
+  <data name="Pc_Step_CommodityGroupReview" xml:space="preserve"><value>بررسی گروه کالایی</value></data>
+  <data name="Pc_Step_PartCataloguer" xml:space="preserve"><value>کاتالوگ‌کننده قطعه</value></data>
+  <data name="Pc_Step_InventoryControl" xml:space="preserve"><value>کنترل موجودی</value></data>
+  <data name="Pc_Src_DirectManager" xml:space="preserve"><value>مدیر مستقیم درخواست‌دهنده</value></data>
+  <data name="Pc_Src_SuperiorManager" xml:space="preserve"><value>مدیر مافوق</value></data>
+  <data name="Pc_Src_AssignedPool" xml:space="preserve"><value>افراد تعیین‌شده</value></data>
+  <data name="Pc_Cond_Always" xml:space="preserve"><value>همیشه</value></data>
+  <data name="Pc_Cond_CriticalOrCapital" xml:space="preserve"><value>Critical یا Capital</value></data>
+  <data name="Pc_Cond_SectionNeedsSpareReview" xml:space="preserve"><value>بخش نیازمند بررسی قطعات است</value></data>
+  <data name="Pc_Cond_NewManufacturer" xml:space="preserve"><value>سازنده جدید</value></data>
+  <data name="Pc_Cond_PlanningMethodNotA" xml:space="preserve"><value>روش برنامه‌ریزی A نیست</value></data>
+  <data name="Pc_Skip_RequesterIsCEO" xml:space="preserve"><value>درخواست‌دهنده مدیرعامل است</value></data>
+  <data name="Pc_Skip_DirectManagerIsCEO" xml:space="preserve"><value>مدیر مستقیم مدیرعامل است</value></data>
+  <data name="Pc_Skip_SuperiorIsCEO" xml:space="preserve"><value>مدیر مافوق مدیرعامل است</value></data>
+  <data name="Pc_Skip_NoSuperiorManager" xml:space="preserve"><value>مدیر مافوق تعریف نشده است</value></data>
+  <data name="Pc_Skip_SelfApprover" xml:space="preserve"><value>تأییدکننده خود درخواست‌دهنده است</value></data>
+  <data name="Pc_Skip_NoDirectManager" xml:space="preserve"><value>مدیر مستقیم تعریف نشده است</value></data>
+  <data name="Pc_Skip_NoApprover" xml:space="preserve"><value>تأییدکننده‌ای تعیین نشده است</value></data>
+  <data name="Pc_Skip_Condition_CriticalOrCapital" xml:space="preserve"><value>Critical/Capital نیست</value></data>
+  <data name="Pc_Skip_Condition_SectionNeedsSpareReview" xml:space="preserve"><value>بخش نیاز به بررسی قطعات ندارد</value></data>
+  <data name="Pc_Skip_Condition_NewManufacturer" xml:space="preserve"><value>سازنده جدید نیست</value></data>
+  <data name="Pc_Skip_Condition_PlanningMethodNotA" xml:space="preserve"><value>روش برنامه‌ریزی A است</value></data>
+  <data name="Pc_Skip_Condition_Always" xml:space="preserve"><value>شرط برقرار نیست</value></data>
+  <data name="Pc_Route_NoApprover" xml:space="preserve"><value>برای گام زیر تأییدکننده‌ای تعیین نشده:</value></data>
+  <data name="Pc_Route_NoDirectManager" xml:space="preserve"><value>مدیر مستقیم درخواست‌دهنده تعریف نشده است</value></data>
+  <data name="Pc_Route_UnknownCondition" xml:space="preserve"><value>شرط ناشناخته در گام:</value></data>
+  <data name="Pc_Route_UnknownSource" xml:space="preserve"><value>منبع تأییدکننده ناشناخته در گام:</value></data>
+  <data name="Pc_Err_AlreadyExists" xml:space="preserve"><value>قبلاً ثبت شده است.</value></data>
+  <data name="Pc_Err_ChangePartNotFound" xml:space="preserve"><value>شماره قطعه موجود یافت نشد.</value></data>
+  <data name="Pc_Err_ChangeSupportDocs" xml:space="preserve"><value>درخواست Change نیازمند پیوست مستند پشتیبان است.</value></data>
+  <data name="Pc_Err_ChangeUomLocked" xml:space="preserve"><value>واحد اندازه‌گیری در درخواست Change قابل تغییر نیست.</value></data>
+  <data name="Pc_Err_CommentRequired" xml:space="preserve"><value>توضیح الزامی است.</value></data>
+  <data name="Pc_Err_Concurrency" xml:space="preserve"><value>درخواست توسط شخص دیگری تغییر کرده است. صفحه را دوباره بارگذاری کنید.</value></data>
+  <data name="Pc_Err_FileTooLarge" xml:space="preserve"><value>حجم فایل بیش از حد مجاز است.</value></data>
+  <data name="Pc_Err_FileType" xml:space="preserve"><value>نوع فایل مجاز نیست:</value></data>
+  <data name="Pc_Err_FreeFormatRequired" xml:space="preserve"><value>FREE FORMAT TEXT الزامی است.</value></data>
+  <data name="Pc_Err_FreeFormatSingleLine" xml:space="preserve"><value>FREE FORMAT TEXT باید تک‌خطی باشد.</value></data>
+  <data name="Pc_Err_Group1NotAllowed" xml:space="preserve"><value>این گروه کالایی ۱ برای بخش انتخاب‌شده مجاز نیست.</value></data>
+  <data name="Pc_Err_Group2NotAllowed" xml:space="preserve"><value>این گروه کالایی ۲ برای گروه ۱ انتخاب‌شده مجاز نیست.</value></data>
+  <data name="Pc_Err_ImportFile" xml:space="preserve"><value>یک فایل .xlsx معتبر (حداکثر ۱۵ مگابایت) انتخاب کنید.</value></data>
+  <data name="Pc_Err_InvalidReference" xml:space="preserve"><value>انتخاب نامعتبر است.</value></data>
+  <data name="Pc_Err_LowValueThreshold" xml:space="preserve"><value>دارایی کم‌ارزش فقط زیر آستانه قیمتی تنظیم‌شده مجاز است.</value></data>
+  <data name="Pc_Err_ManufacturerExists" xml:space="preserve"><value>این سازنده قبلاً وجود دارد:</value></data>
+  <data name="Pc_Err_ManufacturerWrong" xml:space="preserve"><value>این سازنده با برچسب (wrong) علامت‌گذاری شده و قابل استفاده نیست.</value></data>
+  <data name="Pc_Err_Negative" xml:space="preserve"><value>مقدار نمی‌تواند منفی باشد.</value></data>
+  <data name="Pc_Err_NewEquipmentText" xml:space="preserve"><value>برای تجهیز جدید حداقل یک ردیف تجهیز متنی وارد کنید.</value></data>
+  <data name="Pc_Err_NewManufacturerLatin" xml:space="preserve"><value>نام سازنده جدید باید با حروف بزرگ لاتین باشد.</value></data>
+  <data name="Pc_Err_NewManufacturerName" xml:space="preserve"><value>نام سازنده جدید را وارد کنید.</value></data>
+  <data name="Pc_Err_NoEmployee" xml:space="preserve"><value>حساب کاربری شما به پرونده کارمند متصل نیست.</value></data>
+  <data name="Pc_Err_NotActionable" xml:space="preserve"><value>این درخواست گامی ندارد که شما بتوانید روی آن اقدام کنید.</value></data>
+  <data name="Pc_Err_NotAuthorized" xml:space="preserve"><value>برای این اقدام مجوز ندارید.</value></data>
+  <data name="Pc_Err_NotChangeRequest" xml:space="preserve"><value>این درخواست از نوع Change نیست.</value></data>
+  <data name="Pc_Err_NotEditable" xml:space="preserve"><value>درخواست در وضعیت فعلی قابل ویرایش نیست.</value></data>
+  <data name="Pc_Err_NotFound" xml:space="preserve"><value>درخواست یافت نشد.</value></data>
+  <data name="Pc_Err_NumberConflict" xml:space="preserve"><value>تداخل در شماره درخواست. دوباره تلاش کنید.</value></data>
+  <data name="Pc_Err_NumberExists" xml:space="preserve"><value>شماره درخواست قبلاً تولید شده است.</value></data>
+  <data name="Pc_Err_NumberRequired" xml:space="preserve"><value>ابتدا شماره درخواست را تولید کنید.</value></data>
+  <data name="Pc_Err_OrgCycle" xml:space="preserve"><value>این پیوند در زنجیره مدیران ایجاد حلقه می‌کند.</value></data>
+  <data name="Pc_Err_PartNumberRequired" xml:space="preserve"><value>شماره قطعه الزامی است.</value></data>
+  <data name="Pc_Err_PartNumberTooLong" xml:space="preserve"><value>شماره قطعه بیش از حد طولانی است.</value></data>
+  <data name="Pc_Err_PartNumberUsed" xml:space="preserve"><value>این شماره قطعه قبلاً استفاده شده است.</value></data>
+  <data name="Pc_Err_PosItemNeedsAttachment" xml:space="preserve"><value>ارجاع Pos/Item نیازمند پیوست نقشه یا سند است.</value></data>
+  <data name="Pc_Err_PriceNeedsCurrency" xml:space="preserve"><value>برای قیمت یک ارز انتخاب کنید.</value></data>
+  <data name="Pc_Err_Required" xml:space="preserve"><value>این فیلد الزامی است.</value></data>
+  <data name="Pc_Err_SelfApproval" xml:space="preserve"><value>شما نمی‌توانید روی درخواست خودتان اقدام کنید.</value></data>
+  <data name="Pc_Err_SelfManager" xml:space="preserve"><value>کارمند نمی‌تواند مدیر خودش باشد.</value></data>
+  <data name="Pc_Err_TooLong" xml:space="preserve"><value>متن بیش از حد طولانی است.</value></data>
+  <data name="Pc_Err_TooManyFiles" xml:space="preserve"><value>تعداد پیوست‌ها بیش از حد مجاز است.</value></data>
+  <data name="Pc_Err_UnknownAction" xml:space="preserve"><value>اقدام ناشناخته.</value></data>
+  <data name="Pc_Warn_FreeFormatVendor" xml:space="preserve"><value>به نظر می‌رسد FREE FORMAT TEXT شامل اطلاعات تأمین‌کننده است؛ فقط مشخصات فنی بنویسید.</value></data>
+  <data name="Pc_Warn_LowValueNotComparable" xml:space="preserve"><value>ارز قیمت با آستانه دارایی کم‌ارزش قابل مقایسه نیست.</value></data>
+  <data name="Pc_Warn_ManufacturerSimilar" xml:space="preserve"><value>سازنده‌های مشابه موجود است:</value></data>
+  <data name="Pc_Msg_Approved" xml:space="preserve"><value>گام تأیید شد.</value></data>
+  <data name="Pc_Msg_AttachmentAdded" xml:space="preserve"><value>پیوست افزوده شد.</value></data>
+  <data name="Pc_Msg_Cancelled" xml:space="preserve"><value>درخواست لغو شد.</value></data>
+  <data name="Pc_Msg_FixErrors" xml:space="preserve"><value>لطفاً خطاهای زیر را اصلاح کنید.</value></data>
+  <data name="Pc_Msg_Imported" xml:space="preserve"><value>Import {0}: افزوده {1}، به‌روزرسانی {2}، بدون تغییر {3}، ردشده {4}.</value></data>
+  <data name="Pc_Msg_NoteAdded" xml:space="preserve"><value>یادداشت افزوده شد.</value></data>
+  <data name="Pc_Msg_NumberGenerated" xml:space="preserve"><value>شماره درخواست تولید شد.</value></data>
+  <data name="Pc_Msg_PartLoaded" xml:space="preserve"><value>قطعه موجود بارگذاری شد.</value></data>
+  <data name="Pc_Msg_Returned" xml:space="preserve"><value>درخواست برای اصلاح برگشت داده شد.</value></data>
+  <data name="Pc_Msg_Saved" xml:space="preserve"><value>ذخیره شد.</value></data>
+  <data name="Pc_Msg_Submitted" xml:space="preserve"><value>درخواست برای تأیید ارسال شد.</value></data>
+  <data name="Pc_Hint_ChangesMatch" xml:space="preserve"><value>مشخص کنید تغییرات درخواستی با موجودی فعلی انبار منطبق است یا خیر.</value></data>
+  <data name="Pc_Hint_CommentRequired" xml:space="preserve"><value>برای بازگشت، اقدام اضطراری مدیر یا لغو درخواستِ دیگران، توضیح الزامی است.</value></data>
+  <data name="Pc_Hint_FreeFormat" xml:space="preserve"><value>FREE FORMAT TEXT الزامی و باید تک‌خطی باشد.</value></data>
+  <data name="Pc_Hint_Load" xml:space="preserve"><value>شماره قطعه موجود را وارد و اطلاعات آن را بارگذاری کنید.</value></data>
+  <data name="Pc_Hint_LocalPartNo" xml:space="preserve"><value>سازنده LOCAL: شماره قطعه ثابت و برابر NO_PART_NR است.</value></data>
+  <data name="Pc_Hint_LowValue" xml:space="preserve"><value>دارایی کم‌ارزش فقط زیر آستانه قیمتی تنظیم‌شده مجاز است.</value></data>
+  <data name="Pc_Hint_NewEquipment" xml:space="preserve"><value>برای تجهیز جدید نام تجهیز را به‌صورت متن وارد کنید.</value></data>
+  <data name="Pc_Hint_NewManufacturer" xml:space="preserve"><value>نام با حروف بزرگ لاتین</value></data>
+  <data name="Pc_Hint_NoteReply" xml:space="preserve"><value>یادداشت یا پاسخ بنویسید...</value></data>
+  <data name="Pc_Hint_NumberFirst" xml:space="preserve"><value>پیش از ارسال، شماره درخواست را تولید کنید.</value></data>
+  <data name="Pc_Hint_PartNumber" xml:space="preserve"><value>شماره قطعه ثبت‌شده در IFS (در گام ثبت الزامی است).</value></data>
+  <data name="Pc_Hint_Planning" xml:space="preserve"><value>روش برنامه‌ریزی A مقدار حداقل موجودی و حداکثر نرخ مصرف را صفر می‌کند.</value></data>
+  <data name="Pc_Hint_PosItem" xml:space="preserve"><value>در صورت ذکر Pos/Item، نقشه یا سند مربوطه را پیوست کنید.</value></data>
+  <data name="Pc_Hint_UomLocked" xml:space="preserve"><value>واحد اندازه‌گیری در درخواست Change قفل است.</value></data>
+  <data name="Pc_Confirm_Cancel" xml:space="preserve"><value>این درخواست لغو شود؟ این کار قابل بازگشت نیست.</value></data>
+  <data name="Pc_Col_Number" xml:space="preserve"><value>شماره درخواست</value></data>
+  <data name="Pc_Col_Type" xml:space="preserve"><value>نوع</value></data>
+  <data name="Pc_Col_Status" xml:space="preserve"><value>وضعیت</value></data>
+  <data name="Pc_Col_Stage" xml:space="preserve"><value>مرحله</value></data>
+  <data name="Pc_Col_Requester" xml:space="preserve"><value>درخواست‌دهنده</value></data>
+  <data name="Pc_Col_PartNo" xml:space="preserve"><value>شماره قطعه</value></data>
+  <data name="Pc_Col_Created" xml:space="preserve"><value>ایجاد</value></data>
+  <data name="Pc_Col_Submitted" xml:space="preserve"><value>ارسال</value></data>
+  <data name="Pc_Col_Action" xml:space="preserve"><value>اقدام</value></data>
+  <data name="Pc_Col_Active" xml:space="preserve"><value>فعال</value></data>
+  <data name="Pc_Col_Condition" xml:space="preserve"><value>شرط</value></data>
+  <data name="Pc_Col_Date" xml:space="preserve"><value>تاریخ</value></data>
+  <data name="Pc_Col_Kind" xml:space="preserve"><value>نوع گام</value></data>
+  <data name="Pc_Col_Order" xml:space="preserve"><value>ترتیب</value></data>
+  <data name="Pc_Col_Person" xml:space="preserve"><value>شخص</value></data>
+  <data name="Pc_Col_Source" xml:space="preserve"><value>منبع تأییدکننده</value></data>
+  <data name="Pc_Col_Step" xml:space="preserve"><value>گام</value></data>
+  <data name="Pc_Chip_Total" xml:space="preserve"><value>کل</value></data>
+  <data name="Pc_Tab_All" xml:space="preserve"><value>همه</value></data>
+  <data name="Pc_Tab_Mine" xml:space="preserve"><value>درخواست‌های من</value></data>
+  <data name="Pc_Tab_Awaiting" xml:space="preserve"><value>در انتظار اقدام من</value></data>
+  <data name="Pc_Filters" xml:space="preserve"><value>فیلترها</value></data>
+  <data name="Pc_Filter_All" xml:space="preserve"><value>همه</value></data>
+  <data name="Pc_Filter_Apply" xml:space="preserve"><value>اعمال</value></data>
+  <data name="Pc_Filter_Reset" xml:space="preserve"><value>بازنشانی</value></data>
+  <data name="Pc_Filter_From" xml:space="preserve"><value>از تاریخ</value></data>
+  <data name="Pc_Filter_To" xml:space="preserve"><value>تا تاریخ</value></data>
+  <data name="Pc_Empty" xml:space="preserve"><value>درخواستی یافت نشد.</value></data>
+  <data name="Pc_Empty_Attachments" xml:space="preserve"><value>پیوستی وجود ندارد.</value></data>
+  <data name="Pc_Empty_Equipment" xml:space="preserve"><value>ردیف تجهیزی وجود ندارد.</value></data>
+  <data name="Pc_Empty_History" xml:space="preserve"><value>هنوز سابقه‌ای ثبت نشده است.</value></data>
+  <data name="Pc_Empty_Notes" xml:space="preserve"><value>یادداشتی وجود ندارد.</value></data>
+  <data name="Pc_Empty_OrgLinks" xml:space="preserve"><value>پیوند مدیری تعریف نشده است.</value></data>
+  <data name="Pc_Lookup_NoResults" xml:space="preserve"><value>نتیجه‌ای یافت نشد</value></data>
+  <data name="Pc_Lookup_Search" xml:space="preserve"><value>برای جستجو تایپ کنید...</value></data>
+  <data name="Pc_Det_ActionPanel" xml:space="preserve"><value>اقدام شما</value></data>
+  <data name="Pc_Det_AdminOverride" xml:space="preserve"><value>شما با دسترسی اضطراری مدیر روی گامی اقدام می‌کنید که به شما محول نشده است. توضیح الزامی است و اقدام ثبت می‌شود.</value></data>
+  <data name="Pc_Det_History" xml:space="preserve"><value>سابقه تأیید</value></data>
+  <data name="Pc_Det_NoRoute" xml:space="preserve"><value>مسیر تأیید هنگام ارسال درخواست ساخته می‌شود.</value></data>
+  <data name="Pc_Det_Route" xml:space="preserve"><value>مسیر تأیید</value></data>
+  <data name="Pc_Adm_AllGroups" xml:space="preserve"><value>همه گروه‌ها (بدون محدودیت)</value></data>
+  <data name="Pc_Adm_AllowedGroups" xml:space="preserve"><value>گروه کالایی ۱ مجاز</value></data>
+  <data name="Pc_Adm_Approvers" xml:space="preserve"><value>تأییدکنندگان گام‌ها</value></data>
+  <data name="Pc_Adm_ApproversHint" xml:space="preserve"><value>افرادی که می‌توانند روی هر گام اقدام کنند. مجوز Review/Approve نیز لازم است.</value></data>
+  <data name="Pc_Adm_Ceo" xml:space="preserve"><value>مدیرعامل</value></data>
+  <data name="Pc_Adm_CeoHint" xml:space="preserve"><value>برای قاعده حذف گام مدیریتی در صورت مدیرعامل بودن استفاده می‌شود.</value></data>
+  <data name="Pc_Adm_Employee" xml:space="preserve"><value>کارمند</value></data>
+  <data name="Pc_Adm_Group2Hint" xml:space="preserve"><value>گروه کالایی ۲ مجاز برای هر گروه ۱. بدون ردیف = همه گروه‌ها.</value></data>
+  <data name="Pc_Adm_Group2Maps" xml:space="preserve"><value>نگاشت گروه ۱ ← گروه ۲</value></data>
+  <data name="Pc_Adm_Import" xml:space="preserve"><value>Import داده‌های مرجع</value></data>
+  <data name="Pc_Adm_ImportBtn" xml:space="preserve"><value>ایمپورت</value></data>
+  <data name="Pc_Adm_ImportHint" xml:space="preserve"><value>فایل .xlsx مرجع IFS را بارگذاری کنید. ردیف‌ها بر اساس کد تطبیق می‌شوند: جدیدها افزوده و موجودها به‌روز می‌شوند؛ چیزی حذف نمی‌شود.</value></data>
+  <data name="Pc_Adm_Manager" xml:space="preserve"><value>مدیر مستقیم</value></data>
+  <data name="Pc_Adm_NeedsConfirmation" xml:space="preserve"><value>نیازمند تأیید مالک فرآیند</value></data>
+  <data name="Pc_Adm_NeedsConfirmationShort" xml:space="preserve"><value>نیازمند تأیید</value></data>
+  <data name="Pc_Adm_NoApprovers" xml:space="preserve"><value>تأییدکننده‌ای تعیین نشده</value></data>
+  <data name="Pc_Adm_OrgHint" xml:space="preserve"><value>کارمند ← مدیر مستقیم. مدیر مافوق، مدیرِ مدیر مستقیم است.</value></data>
+  <data name="Pc_Adm_OrgLinks" xml:space="preserve"><value>زنجیره مدیران</value></data>
+  <data name="Pc_Adm_Sections" xml:space="preserve"><value>نگاشت بخش‌ها</value></data>
+  <data name="Pc_Adm_SectionsHint" xml:space="preserve"><value>گروه کالایی ۱ هر بخش را محدود کنید و بخش‌های نیازمند بررسی قطعات را علامت بزنید.</value></data>
+  <data name="Pc_Adm_SpareReview" xml:space="preserve"><value>بررسی کارشناس قطعات</value></data>
+  <data name="Pc_Adm_Steps" xml:space="preserve"><value>گام‌های گردش‌کار</value></data>
+  <data name="Pc_Imp_TechnicalClass" xml:space="preserve"><value>کلاس‌های فنی</value></data>
+  <data name="Pc_Imp_CommodityGroup" xml:space="preserve"><value>گروه‌های کالایی</value></data>
+  <data name="Pc_Imp_ProductFamily" xml:space="preserve"><value>خانواده‌های محصول</value></data>
+  <data name="Pc_Imp_Manufacturer" xml:space="preserve"><value>سازنده‌ها</value></data>
+  <data name="Pc_Imp_Supplier" xml:space="preserve"><value>تأمین‌کنندگان</value></data>
+  <data name="Part Catalogue Requests" xml:space="preserve"><value>درخواست‌های کاتالوگ قطعه</value></data>
+  <data name="Part Catalogue Request" xml:space="preserve"><value>درخواست کاتالوگ قطعه</value></data>
+  <data name="Part Catalogue Administration" xml:space="preserve"><value>مدیریت کاتالوگ قطعه</value></data>
 </root>

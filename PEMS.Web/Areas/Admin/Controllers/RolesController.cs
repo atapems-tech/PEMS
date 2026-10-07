@@ -61,13 +61,19 @@ public class RolesController : Controller
             DisplayName = role.DisplayName,
             Description = role.Description,
             UserCount = userCountByRoleId.TryGetValue(role.Id, out var count) ? count : 0,
-            IsSystemRole = SystemRoles.All.Contains(role.Name),
+            IsSystemRole = role.IsSystemRole || SystemRoles.All.Contains(role.Name),
+            Domain = role.Domain,
+            Category = role.Category,
+            SortOrder = role.SortOrder,
             PermissionCount = role.Name == SystemRoles.SystemAdmin
                 ? -1 // نامحدود (Bypass عمومی) - نه صفر، تا با «پیکربندی‌نشده» اشتباه گرفته نشود
                 : grantCountByRoleId.TryGetValue(role.Id, out var g) ? g : 0
         }).ToList();
 
-        return View(list.OrderBy(x => x.Name).ToList());
+        // نقش سفارشیِ هم‌معنا با نقش پایه فقط گزارش می‌شود - هرگز خودکار ادغام/تغییر نمی‌کند
+        ViewBag.PossibleDuplicates = RoleCatalog.FindPossibleDuplicates(roles.Select(r => (r.Name ?? "", r.DisplayName)));
+
+        return View(list.OrderBy(x => x.SortOrder == 0 ? int.MaxValue : x.SortOrder).ThenBy(x => x.Name).ToList());
     }
 
 
@@ -135,7 +141,7 @@ public class RolesController : Controller
         if (role == null)
             return NotFound();
 
-        if (SystemRoles.All.Contains(role.Name))
+        if (role.IsSystemRole || SystemRoles.All.Contains(role.Name))
         {
             TempData["Error"] = "System roles cannot be deleted.";
 

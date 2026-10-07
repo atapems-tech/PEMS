@@ -1,11 +1,12 @@
-﻿namespace PEMS.Application.Interfaces;
+using PEMS.Application.DTOs;
 
-/// <summary>
-/// انتزاع پخش اعلان زنده (SignalR) - طبق معماری Clean Architecture، لایه‌ی Persistence نباید
-/// مستقیم به PEMS.Web (جایی که Hub واقعی تعریف شده) وابسته باشد؛ این Interface اینجا تعریف
-/// می‌شود و پیاده‌سازی واقعی‌اش در PEMS.Web است.
-/// </summary>
+namespace PEMS.Application.Interfaces;
+
 public interface INotificationBroadcaster
 {
-    Task BroadcastToUserAsync(int userId, string title, string? linkUrl);
+    /// <summary>اعلان جدید (با شناسه‌ی رکورد) + شمارنده‌ی نخوانده‌ی مرجع از دیتابیس.</summary>
+    Task BroadcastNotificationAsync(int userId, NotificationDto notification, int unreadCount);
+
+    /// <summary>همگام‌سازی شمارنده در همه‌ی تب‌های همان کاربر (Read/Dismiss/MarkAll).</summary>
+    Task BroadcastUnreadCountAsync(int userId, int unreadCount);
 }

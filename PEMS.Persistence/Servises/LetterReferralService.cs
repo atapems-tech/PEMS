@@ -154,6 +154,10 @@ public class LetterReferralService : ILetterReferralService
             referral.Status = "InProgress";
 
         await _context.SaveChangesAsync();
+
+        // گیرنده نامه را دید → اعلان مرتبطِ خودِ او Read می‌شود (نه Dismiss)
+        if (_notificationService != null)
+            await _notificationService.MarkRelatedReadAsync(applicationUserId, "Letter", referral.LetterId);
     }
 
     public async Task CompleteAsync(int referralId, string? responseNote)
@@ -166,5 +170,26 @@ public class LetterReferralService : ILetterReferralService
         referral.CompletedDate = DateTime.Now;
 
         await _context.SaveChangesAsync();
+
+        // ارجاعِ این گیرنده انجام شد → اعلان نامه Resolve می‌شود، مگر ارجاع باز دیگری از همین نامه
+        // برای همین کارمند باقی مانده باشد (اعلان نامه به ارجاع وابسته است، نه شناسه‌ی ارجاع)
+        if (_notificationService != null && referral.ReferredToEmployeeId.HasValue)
+        {
+            var employeeId = referral.ReferredToEmployeeId.Value;
+            var otherOpen = await _context.LetterReferrals.AnyAsync(x =>
+                x.LetterId == referral.LetterId && x.ReferredToEmployeeId == employeeId
+                && x.LetterReferralId != referral.LetterReferralId && x.Status != "Completed");
+
+            if (!otherOpen)
+            {
+                var userId = await _context.Users
+                    .Where(x => x.EmployeeId == employeeId)
+                    .Select(x => (int?)x.Id)
+                    .FirstOrDefaultAsync();
+
+                if (userId.HasValue)
+                    await _notificationService.ResolveRelatedAsync(userId.Value, "Letter", referral.LetterId);
+            }
+        }
     }
 }

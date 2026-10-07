@@ -16,6 +16,12 @@ public class RoleListItemViewModel
 
     public bool IsSystemRole { get; set; }
 
+    public string? Domain { get; set; }
+
+    public string? Category { get; set; }
+
+    public int SortOrder { get; set; }
+
     // طبق «PEMS Authorization Architecture Completion» فاز ۴ بند ۹/۱۴: شمارش مجوزهای فعالِ
     // این نقش (RolePermissionGrant، منبع واقعی زمان اجرا) - نه یک وضعیت جدید (Draft/Active/...)،
     // صرفاً دید‌پذیری. صفر یعنی «هنوز پیکربندی نشده»، نه یک خطا یا حالت نامعتبر.

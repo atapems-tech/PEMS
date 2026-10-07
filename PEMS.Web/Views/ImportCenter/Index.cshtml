@@ -36,7 +36,7 @@
                         }
                         else
                         {
-                            <a asp-controller="@e.Controller" asp-action="@e.Action" class="btn btn-sm btn-outline-primary align-self-start">
+                            <a asp-area="@e.Area" asp-controller="@e.Controller" asp-action="@e.Action" class="btn btn-sm btn-outline-primary align-self-start">
                                 <i class="bi bi-box-arrow-in-right"></i> @Localizer["IC_Open"]
                             </a>
                         }
@@ -53,7 +53,7 @@
     <div class="modal fade" id="icModal_@e.Key" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form asp-controller="@e.Controller" asp-action="@e.Action" method="post" enctype="multipart/form-data">
+                <form asp-area="@e.Area" asp-controller="@e.Controller" asp-action="@e.Action" method="post" enctype="multipart/form-data">
                     <div class="modal-header"><h6 class="modal-title">@Localizer["IC_" + e.Key + "_Title"]</h6></div>
                     <div class="modal-body">
                         <p class="text-muted small">@Localizer["IC_" + e.Key + "_Hint"]</p>
