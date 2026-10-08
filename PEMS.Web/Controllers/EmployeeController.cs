@@ -104,6 +104,15 @@ public class EmployeeController : Controller
         ViewBag.AllCertifications = await _context.Certifications.Where(x => x.IsActive)
             .OrderBy(x => x.Name).Select(x => new { x.CertificationId, x.Name }).ToListAsync();
 
+        // Employee is the personnel master; authentication/roles belong to the linked ApplicationUser.
+        // Expose the link here so administrators can see the account state without creating a second
+        // role-management surface inside Employees.
+        var linkedUser = await _context.Users.FirstOrDefaultAsync(x => x.EmployeeId == id);
+        ViewBag.LinkedUser = linkedUser;
+        ViewBag.LinkedUserRoles = linkedUser == null
+            ? new List<string>()
+            : (await _userManager.GetRolesAsync(linkedUser)).OrderBy(x => x).ToList();
+
         return View(employee);
     }
 
