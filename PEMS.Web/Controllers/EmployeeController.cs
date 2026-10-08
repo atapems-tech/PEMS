@@ -629,7 +629,7 @@ public class EmployeeController : Controller
             var dept = departments.FirstOrDefault(d => d.Name.Equals(deptName, StringComparison.OrdinalIgnoreCase));
             var disc = disciplines.FirstOrDefault(d => d.Name.Equals(discName, StringComparison.OrdinalIgnoreCase));
 
-            if (dept == null)
+            if (dept == null || disc == null)
             {
                 skippedInvalid++;
                 continue;
@@ -644,7 +644,7 @@ public class EmployeeController : Controller
                 Email = sheet.Cell(r, 5).GetString().Trim(),
                 Phone = sheet.Cell(r, 6).GetString().Trim(),
                 DepartmentId = dept.DepartmentId,
-                DisciplineId = disc?.DisciplineId ?? 0,
+                DisciplineId = disc.DisciplineId,
                 IsActive = true,
                 CreatedDate = DateTime.Now
             });
