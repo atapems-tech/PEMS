@@ -46,7 +46,7 @@ public class UsersController : Controller
             Position = model.Position,
             Email = model.Email,
             DepartmentId = model.DepartmentId!.Value,
-            DisciplineId = model.DisciplineId ?? 0,
+            DisciplineId = model.DisciplineId!.Value,
             IsActive = true,
             CreatedDate = DateTime.Now
         };
@@ -183,6 +183,9 @@ public class UsersController : Controller
         if (!model.ExistingEmployeeId.HasValue && !model.DepartmentId.HasValue)
             ModelState.AddModelError(nameof(model.DepartmentId), "Select an existing employee or specify a department to create one.");
 
+        if (!model.ExistingEmployeeId.HasValue && !model.DisciplineId.HasValue)
+            ModelState.AddModelError(nameof(model.DisciplineId), "Select a discipline when creating the employee from this form.");
+
         if (!ModelState.IsValid)
         {
             ViewData["Title"] = "New User";
@@ -224,7 +227,17 @@ public class UsersController : Controller
         }
 
         if (model.SelectedRoles.Any())
-            await _userManager.AddToRolesAsync(user, model.SelectedRoles);
+        {
+            var roleResult = await _userManager.AddToRolesAsync(user, model.SelectedRoles);
+            if (!roleResult.Succeeded)
+            {
+                foreach (var error in roleResult.Errors)
+                    ModelState.AddModelError(string.Empty, error.Description);
+                return View(model);
+            }
+        }
+
+        await SyncRoleAssignmentsAsync(user.Id);
 
         TempData["Message"] = "User created successfully";
 
@@ -320,8 +333,17 @@ public class UsersController : Controller
             await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
 
         if (rolesToAdd.Any())
-            await _userManager.AddToRolesAsync(user, rolesToAdd);
+        {
+            var roleResult = await _userManager.AddToRolesAsync(user, rolesToAdd);
+            if (!roleResult.Succeeded)
+            {
+                TempData["Error"] = "User updated, but some role assignments failed: "
+                    + string.Join(", ", roleResult.Errors.Select(e => e.Description));
+                return RedirectToAction(nameof(Index));
+            }
+        }
 
+        await SyncRoleAssignmentsAsync(user.Id);
 
         TempData["Message"] = "User updated successfully";
 
@@ -329,6 +351,47 @@ public class UsersController : Controller
     }
 
 
+
+    /// <summary>
+    /// Keeps the live RoleAssignments authorization projection aligned with Identity's direct
+    /// global role membership. Delegated/emergency assignments are intentionally untouched.
+    /// </summary>
+    private async Task SyncRoleAssignmentsAsync(int userId)
+    {
+        var roleIds = await _context.UserRoles
+            .Where(x => x.UserId == userId)
+            .Select(x => x.RoleId)
+            .ToListAsync();
+
+        var assignments = await _context.RoleAssignments
+            .Where(x => x.UserId == userId && x.AssignmentType == "Direct" && x.ScopeType == "Global")
+            .ToListAsync();
+
+        foreach (var assignment in assignments)
+            assignment.IsActive = roleIds.Contains(assignment.RoleId);
+
+        foreach (var roleId in roleIds)
+        {
+            var existing = assignments.FirstOrDefault(x => x.RoleId == roleId);
+            if (existing != null)
+            {
+                existing.IsActive = true;
+                continue;
+            }
+
+            await _context.RoleAssignments.AddAsync(new PEMS.Domain.Entities.RoleAssignment
+            {
+                UserId = userId,
+                RoleId = roleId,
+                ScopeType = "Global",
+                AssignmentType = "Direct",
+                IsActive = true,
+                CreatedDate = DateTime.Now
+            });
+        }
+
+        await _context.SaveChangesAsync();
+    }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
