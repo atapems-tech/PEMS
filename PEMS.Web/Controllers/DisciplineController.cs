@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
+using PEMS.Domain.Entities;
 using PEMS.Web.Security;
 
 namespace PEMS.Web.Controllers;
@@ -37,6 +38,7 @@ public class DisciplineController : Controller
         _permissionService = permissionService;
     }
 
+    [HttpGet]
     public async Task<IActionResult> Index()
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "DisciplineWorkspace", "View"))
@@ -69,6 +71,85 @@ public class DisciplineController : Controller
         ViewBag.SelectedProjectId = projectId;
 
         return View(workspace);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(string code, string name, string? description, string? importAliases, string? transmittalCode)
+    {
+        if (string.IsNullOrWhiteSpace(code) || string.IsNullOrWhiteSpace(name))
+        {
+            TempData["Error"] = "Discipline code and name are required.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        var trimmedCode = code.Trim();
+        var trimmedName = name.Trim();
+        var duplicate = await _context.Disciplines.AnyAsync(x =>
+            x.Code.ToLower() == trimmedCode.ToLower() || x.Name.ToLower() == trimmedName.ToLower());
+        if (duplicate)
+        {
+            TempData["Error"] = "A discipline with the same code or name already exists.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        await _context.Disciplines.AddAsync(new Discipline
+        {
+            Code = trimmedCode,
+            Name = trimmedName,
+            Description = string.IsNullOrWhiteSpace(description) ? null : description.Trim(),
+            ImportAliases = string.IsNullOrWhiteSpace(importAliases) ? null : importAliases.Trim(),
+            TransmittalCode = string.IsNullOrWhiteSpace(transmittalCode) ? null : transmittalCode.Trim(),
+            IsActive = true,
+            CreatedDate = DateTime.Now
+        });
+        await _context.SaveChangesAsync();
+        TempData["Message"] = "Discipline created.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int disciplineId, string code, string name, string? description, string? importAliases, string? transmittalCode)
+    {
+        var discipline = await _context.Disciplines.FirstOrDefaultAsync(x => x.DisciplineId == disciplineId);
+        if (discipline == null) return NotFound();
+        if (string.IsNullOrWhiteSpace(code) || string.IsNullOrWhiteSpace(name))
+        {
+            TempData["Error"] = "Discipline code and name are required.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        var trimmedCode = code.Trim();
+        var trimmedName = name.Trim();
+        var duplicate = await _context.Disciplines.AnyAsync(x => x.DisciplineId != disciplineId &&
+            (x.Code.ToLower() == trimmedCode.ToLower() || x.Name.ToLower() == trimmedName.ToLower()));
+        if (duplicate)
+        {
+            TempData["Error"] = "A discipline with the same code or name already exists.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        discipline.Code = trimmedCode;
+        discipline.Name = trimmedName;
+        discipline.Description = string.IsNullOrWhiteSpace(description) ? null : description.Trim();
+        discipline.ImportAliases = string.IsNullOrWhiteSpace(importAliases) ? null : importAliases.Trim();
+        discipline.TransmittalCode = string.IsNullOrWhiteSpace(transmittalCode) ? null : transmittalCode.Trim();
+        await _context.SaveChangesAsync();
+        TempData["Message"] = "Discipline updated.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ToggleActive(int disciplineId)
+    {
+        var discipline = await _context.Disciplines.FirstOrDefaultAsync(x => x.DisciplineId == disciplineId);
+        if (discipline == null) return NotFound();
+        discipline.IsActive = !discipline.IsActive;
+        await _context.SaveChangesAsync();
+        TempData["Message"] = discipline.IsActive ? "Discipline reactivated." : "Discipline deactivated.";
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
