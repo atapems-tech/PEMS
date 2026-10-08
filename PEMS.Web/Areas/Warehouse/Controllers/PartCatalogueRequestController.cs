@@ -231,6 +231,17 @@ public class PartCatalogueRequestController : Controller
         return RedirectToAction(nameof(Details), new { id });
     }
 
+    /// <summary>تلاش مجدد مسیریابی پس از اصلاح ساختار سازمانی. هیچ ApproverId/ManagerId/PositionId از مرورگر پذیرفته نمی‌شود؛ فقط Resolver مرکزی.</summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> RetryRouting(int id, byte[]? rowVersion)
+    {
+        var actor = Actor;
+        if (actor == null) return NoEmployee();
+        Flash(await _service.RetryRoutingAsync(id, rowVersion, actor), "Pc_Msg_RoutingRetried");
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddNote(int id, string text, string? returnTo)

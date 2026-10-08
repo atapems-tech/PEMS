@@ -166,6 +166,7 @@ public interface IPartCatalogueService
     Task<PcResult> GenerateNumberAsync(int id, byte[]? rowVersion, PcActor actor);
     Task<PcResult> LoadExistingPartAsync(int id, string partNumber, PcActor actor);
     Task<PcResult> SubmitAsync(int id, byte[]? rowVersion, PcActor actor);
+    Task<PcResult> RetryRoutingAsync(int id, byte[]? rowVersion, PcActor actor);
 
     /// <summary>action: Approve | Return | Cancel | (RegisterPartNumber = Approve روی گام Registration با partNumber).</summary>
     Task<PcResult> ExecuteAsync(int id, string action, string? comment, string? partNumber, byte[]? rowVersion, PcActor actor);
@@ -201,10 +202,16 @@ public interface IPartCatalogueAdminService
     Task<PcResult> UpdateStepAsync(int stepId, int order, bool isActive, string conditionKey, PcActor actor);
     Task<PcResult> AddApproverAsync(string stepKey, int employeeId, PcActor actor);
     Task<PcResult> RemoveApproverAsync(int assignmentId, PcActor actor);
-    Task<PcResult> SetOrgLinkAsync(int employeeId, int managerEmployeeId, PcActor actor);
-    Task<PcResult> RemoveOrgLinkAsync(int linkId, PcActor actor);
 
     Task<List<PcLookupItem>> SearchEmployeesAsync(string? q, int take = 20);
+
+    // ---- Enterprise Actor Resolution (مسئولیت‌ها، نگاشت Commodity، تشخیص)
+    Task<PcResult> SaveResponsibilityAsync(PcResponsibilityInput input, PcActor actor);
+    Task<PcResult> AddCommodityResponsibleAsync(string responsibilityKey, int commodityGroupId, int? positionId, int? employeeId, int priority, PcActor actor);
+    Task<PcResult> RemoveCommodityResponsibleAsync(int id, PcActor actor);
+
+    /// <summary>پیش‌نمایش تشخیصی Resolver (چه کسی واجد شرایط است و چه کسی/چرا حذف شد). فقط PartCatalogue.Admin.</summary>
+    Task<PEMS.Application.ActorResolution.ActorResolutionResult?> PreviewResolutionAsync(string responsibilityKey, int requesterEmployeeId, int? commodityGroupId, PcActor actor);
 }
 
 /// <summary>Overview با کنترل مجوز؛ Overview=null یعنی دسترسی ندارد.</summary>

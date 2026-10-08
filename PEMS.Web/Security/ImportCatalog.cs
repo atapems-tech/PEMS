@@ -84,6 +84,10 @@ public static class ImportCatalog
             Sets(MenuAccess.Administration), "bi-building"),
         new("Employee", Category.Organization, "Employee", "Import", LaunchMode.Dialog, ".xlsx", ".xlsx", false, Workflow.Direct, null,
             Sets(MenuAccess.Administration), "bi-people"),
+        // Organization hierarchy (Positions / ParentPosition / holders / effective dates): validate-then-commit, all-or-nothing.
+        // The controller is [Authorize(SystemAdmin)] and also enforces this card's role gate.
+        new("OrganizationStructure", Category.Organization, "OrganizationImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, null,
+            Sets(MenuAccess.Administration), "bi-diagram-3", "Admin"),
 
         // ---- AI intake: multi-file upload into the AI pipeline (page Index + POST Upload); same role gate enforced in the controller.
         new("DocumentUpload", Category.Ai, "DocumentUpload", "Index", LaunchMode.Page, ".pdf, .docx, .xlsx, images", null, false, Workflow.Intake, null,

@@ -80,6 +80,11 @@ public class PositionConfiguration : IEntityTypeConfiguration<Position>
 
         builder.Property(x => x.Title).HasMaxLength(150).IsRequired();
         builder.Property(x => x.Description).HasMaxLength(500);
+        builder.Property(x => x.PositionCode).HasMaxLength(50);
+
+        builder.HasIndex(x => x.PositionCode).IsUnique().HasFilter("[PositionCode] IS NOT NULL");
+        builder.HasOne(x => x.ParentPosition).WithMany(x => x.ChildPositions).HasForeignKey(x => x.ParentPositionId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasIndex(x => x.ParentPositionId);
 
         builder.HasOne(x => x.Department)
             .WithMany()

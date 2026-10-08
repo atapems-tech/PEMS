@@ -35,6 +35,14 @@ public class InventoryTransaction
     public int? WorkOrderId { get; set; }
     public WorkOrder? WorkOrder { get; set; }
 
+    /// <summary>ردیابی مستقیم تراکنش ← خط درخواست ← درخواست ← دستور کار (فقط برای تراکنش‌های StoreRequisition؛ سایرین null).</summary>
+    public int? StoreRequisitionLineId { get; set; }
+    public StoreRequisitionLine? StoreRequisitionLine { get; set; }
+
+    /// <summary>رزروی که این تراکنش (رزرو/تحویل/آزادسازی) روی آن اثر گذاشته.</summary>
+    public int? MaterialReservationId { get; set; }
+    public MaterialReservation? MaterialReservation { get; set; }
+
     public int? EmployeeId { get; set; }
     public Employee? Employee { get; set; }
 

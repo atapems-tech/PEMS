@@ -3,7 +3,12 @@ using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
+using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
+using PEMS.Persistence.Workflow;
+using PEMS.WorkflowPlatform.Interfaces;
+using PEMS.WorkflowPlatform.Services;
+using Microsoft.AspNetCore.Identity;
 using PEMS.Persistence.Services;
 using PEMS.Persistence.Services.SearchProviders;
 using PEMS.Tests.TestSupport;
@@ -20,8 +25,21 @@ public class PartCatalogueServiceTests
         public HashSet<string> Allowed { get; } = new() { "Create", "Review", "Approve", "Admin", "View" };
         public Task<bool> HasActionAsync(IEnumerable<string> userRoles, string module, string action) =>
             Task.FromResult(module == "PartCatalogue"
-                && ((userRoles.Contains("PC") && Allowed.Contains(action)) || (userRoles.Contains("PCV") && action == "View")));
+                && ((userRoles.Contains("PC") && Allowed.Contains(action)) || (userRoles.Contains("PCV") && action == "View")
+                    || (userRoles.Contains("PCC") && action == "Create")));
         public Task SeedDefaultsAsync() => Task.CompletedTask;
+    }
+
+    private sealed class FakeAuthHook : IWorkflowAuthorizationHook
+    {
+        private readonly FakeActions _actions;
+        public FakeAuthHook(FakeActions actions) => _actions = actions;
+        public async Task<WorkflowAuthorizationResult> AuthorizeAsync(WorkflowAuthorizationContext c, CancellationToken ct = default)
+        {
+            var p = c.Transition.RequiredPermission!;
+            var dot = p.IndexOf('.');
+            return await _actions.HasActionAsync(c.ActorRoles, p[..dot], p[(dot + 1)..]) ? WorkflowAuthorizationResult.Allow() : WorkflowAuthorizationResult.Deny("denied");
+        }
     }
 
     private sealed class FakeNotifications : INotificationService
@@ -65,9 +83,23 @@ public class PartCatalogueServiceTests
     {
         var db = PemsDbContextFactory.CreateInMemory("pc_" + Guid.NewGuid().ToString("N"));
         await PartCatalogueSeeder.SeedAsync(db, importExcel: false);
+        await PartCatalogueWorkflowSeeder.SeedAsync(db);
 
-        foreach (var (id, n) in new[] { (1, "Req"), (2, "Direct"), (3, "Superior"), (10, "Pool"), (20, "Outsider") })
+        foreach (var (id, n) in new[] { (1, "Req"), (2, "Direct"), (3, "Superior"), (10, "Pool"), (11, "Pool2"), (20, "Outsider") })
             db.Employees.Add(new Employee { EmployeeId = id, FirstName = n, LastName = "T" });
+
+        // هر کارمند یک حساب کاربری با نقش «PC» دارد (Resolver مجوز را از نقش‌های حساب کاربری کارمند می‌سنجد)
+        var pcRole = new ApplicationRole("PC") { NormalizedName = "PC" };
+        db.Roles.Add(pcRole);
+        await db.SaveChangesAsync();
+        foreach (var id in new[] { 1, 2, 3, 10, 11, 20 })
+        {
+            var u = new ApplicationUser { UserName = "u" + id, NormalizedUserName = "U" + id, EmployeeId = id, FullName = "u" + id };
+            db.Users.Add(u);
+            await db.SaveChangesAsync();
+            db.UserRoles.Add(new IdentityUserRole<int> { UserId = u.Id, RoleId = pcRole.Id });
+        }
+        await db.SaveChangesAsync();
 
         var tc = new PartCatalogueTechnicalClass { Code = "V-1", Description = "VALVE" };
         var g1 = new PartCatalogueCommodityGroup { Code = "100", Description = "G1" };
@@ -77,16 +109,19 @@ public class PartCatalogueServiceTests
         var mfr = new PartCatalogueManufacturer { Name = "SIEMENS", NormalizedName = "SIEMENS" };
         db.AddRange(tc, g1, g2, pf, uom, mfr);
 
-        db.PartCatalogueOrgLinks.AddRange(
-            new PartCatalogueOrgLink { EmployeeId = Requester, ManagerEmployeeId = DirectMgr },
-            new PartCatalogueOrgLink { EmployeeId = DirectMgr, ManagerEmployeeId = Superior });
+        await OrgSeed.ChainAsync(db, Requester, DirectMgr, Superior);   // سلسله‌مراتب سازمانی مرکزی (نه جدول محلی ماژول)
         foreach (var key in new[] { "MaintenanceSupervisor", "SparePartsSpecialist", "SourcingUnit", "CommodityGroupReview", "PartCataloguer", "InventoryControl" })
             db.PartCatalogueApproverAssignments.Add(new PartCatalogueApproverAssignment { StepKey = key, EmployeeId = Pool });
         await db.SaveChangesAsync();
 
         var notes = new FakeNotifications();
         var actions = new FakeActions();
-        var svc = new PartCatalogueService(db, new FakeNumberingService(), notes, new FakeFiles(), actions, new PartCatalogueOptions());
+        var resolver = new EnterpriseActorResolver(db, actions);
+        var bindings = new WorkflowBindingService(db);
+        var runtime = new WorkflowRuntimeService(db, bindings, new WorkflowConditionEvaluator(PartCatalogueWorkflow.Fields), new FakeAuthHook(actions),
+            null, null, new ActorResolutionWorkflowHook(resolver), new IWorkflowBusinessContextProvider[] { new PartCatalogueWorkflowContextProvider(db) });
+        var svc = new PartCatalogueService(db, new FakeNumberingService(), notes, new FakeFiles(), actions, new PartCatalogueOptions(),
+            runtime, runtime, bindings, resolver);
         return new Env
         {
             Db = db, Svc = svc, Notes = notes, Actions = actions,
@@ -234,18 +269,59 @@ public class PartCatalogueServiceTests
     }
 
     [Fact]
-    public async Task MissingDirectManager_BlocksSubmit()
+    public async Task MissingDirectManager_IsReceivedAsOrganizationResolutionRequired_ThenRepairedRetriedAndApproved()
     {
         var e = await NewEnvAsync();
-        e.Db.PartCatalogueOrgLinks.RemoveRange(e.Db.PartCatalogueOrgLinks);
+        // ساختار ناقص: سمت درخواست‌دهنده ریشه می‌شود (مدیر مستقیم ندارد). هیچ Admin/CEO/Department جایگزین نمی‌شود.
+        var reqPos = await e.Db.EmployeeAssignments.Where(a => a.EmployeeId == Requester).Select(a => a.PositionId).SingleAsync();
+        var original = (await e.Db.Positions.FindAsync(reqPos))!.ParentPositionId;
+        (await e.Db.Positions.FindAsync(reqPos))!.ParentPositionId = null;
         await e.Db.SaveChangesAsync();
 
-        var id = await e.Svc.CreateDraftAsync("Add", e.Actor(Requester));
-        Assert.True((await e.Svc.SaveAsync(Form(e, id), e.Actor(Requester))).Success);
-        await e.Svc.GenerateNumberAsync(id, null, e.Actor(Requester));
+        var id = await DraftWithNumberAsync(e);
         var r = await e.Svc.SubmitAsync(id, null, e.Actor(Requester));
-        Assert.False(r.Success);
-        Assert.Equal("Draft", await StatusAsync(e, id));
+        Assert.True(r.Success);                                   // درخواست رد/نابود نشد
+        Assert.Equal("OrgResolution", await StatusAsync(e, id));
+        var req = await e.Db.PartCatalogueRequests.AsNoTracking().SingleAsync(x => x.PartCatalogueRequestId == id);
+        Assert.Equal("ROOT_POSITION_NO_PARENT", req.RoutingBlockReason);
+        Assert.Null(req.WorkflowInstanceId);                       // موتور گردش‌کار شروع نشده؛ تأیید خودکار هم نیست
+        Assert.Contains(await e.Db.PartCatalogueRequestApprovals.AsNoTracking().ToListAsync(), a => a.Action == "OrgResolutionRequired");
+
+        // تا قبل از اصلاح: Retry هنوز مسدود، هیچ‌کس نمی‌تواند تأیید کند (حتی Admin/Pool)
+        Assert.False((await e.Svc.RetryRoutingAsync(id, null, e.Actor(Requester))).Success);
+        Assert.False((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(DirectMgr))).Success);
+        Assert.False((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(Pool))).Success);
+        Assert.Equal("OrgResolution", await StatusAsync(e, id));
+        // فقط درخواست‌دهنده/Admin ماژول می‌توانند Retry کنند
+        Assert.False((await e.Svc.RetryRoutingAsync(id, null, e.Actor(Outsider))).Success);
+
+        // مدیر سازمان ساختار را اصلاح می‌کند
+        (await e.Db.Positions.FindAsync(reqPos))!.ParentPositionId = original;
+        await e.Db.SaveChangesAsync();
+
+        Assert.True((await e.Svc.RetryRoutingAsync(id, null, e.Actor(Requester))).Success);
+        Assert.Equal("InApproval", await StatusAsync(e, id));
+        var after = await e.Db.PartCatalogueRequests.AsNoTracking().SingleAsync(x => x.PartCatalogueRequestId == id);
+        Assert.NotNull(after.WorkflowInstanceId);
+        Assert.Null(after.RoutingBlockReason);
+        Assert.Contains(await e.Db.PartCatalogueRequestApprovals.AsNoTracking().ToListAsync(), a => a.Action == "RetryRouting");
+
+        // احراز اختیار عادی همچنان برقرار است: فقط مدیر مستقیم (حل‌شده) می‌تواند تأیید کند
+        Assert.False((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(Outsider))).Success);
+        Assert.True((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(DirectMgr))).Success);
+    }
+
+    [Fact]
+    public async Task OrganizationResolutionRequired_RequestCanBeCancelledByRequester()
+    {
+        var e = await NewEnvAsync();
+        e.Db.EmployeeAssignments.RemoveRange(e.Db.EmployeeAssignments.Where(a => a.EmployeeId == Requester));
+        await e.Db.SaveChangesAsync();
+        var id = await DraftWithNumberAsync(e);
+        Assert.True((await e.Svc.SubmitAsync(id, null, e.Actor(Requester))).Success);
+        Assert.Equal("OrgResolution", await StatusAsync(e, id));
+        Assert.True((await e.Svc.ExecuteAsync(id, "Cancel", "not needed", null, null, e.Actor(Requester))).Success);
+        Assert.Equal("Cancelled", await StatusAsync(e, id));
     }
 
     [Fact]
@@ -298,5 +374,150 @@ public class PartCatalogueServiceTests
         Assert.Equal(1, await Count(Requester, "PCV"));  // View + مالک
         Assert.Equal(0, await Count(Outsider, "PCV"));   // View ولی نه مالک و نه گیرنده
         Assert.Equal(1, await Count(DirectMgr, "PCV"));  // View + گیرنده‌ی گام
+    }
+
+    // ------------------------------------------------------------------ Enterprise Actor Resolution / Workflow integration
+
+    private async Task<int> DraftWithNumberAsync(Env e)
+    {
+        var id = await e.Svc.CreateDraftAsync("Add", e.Actor(Requester));
+        Assert.True((await e.Svc.SaveAsync(Form(e, id), e.Actor(Requester))).Success);
+        Assert.True((await e.Svc.GenerateNumberAsync(id, null, e.Actor(Requester))).Success);
+        return id;
+    }
+
+    [Fact]
+    public async Task RequesterOnlyPool_IsDiagnosed_SafeMessageForUsers_DetailedStateForAdmins()
+    {
+        var e = await NewEnvAsync();
+        e.Db.PartCatalogueApproverAssignments.RemoveRange(e.Db.PartCatalogueApproverAssignments.Where(a => a.StepKey == "CommodityGroupReview"));
+        e.Db.PartCatalogueApproverAssignments.Add(new PartCatalogueApproverAssignment { StepKey = "CommodityGroupReview", EmployeeId = Requester });
+        await e.Db.SaveChangesAsync();
+        var id = await DraftWithNumberAsync(e);
+
+        var user = await e.Svc.SubmitAsync(id, null, new PcActor(Requester, 101, new[] { "PCC" }));      // فقط Create
+        var userMsg = Assert.Single(user.Errors);
+        Assert.Equal("Pc_Route_NoEligibleApprover", userMsg.Key);
+        Assert.Equal("Pc_Step_CommodityGroupReview", userMsg.Arg);
+
+        var admin = await e.Svc.SubmitAsync(id, null, e.Actor(Requester));                                   // Admin
+        Assert.Equal("Pc_Route_State_REQUESTER_ONLY", Assert.Single(admin.Errors).Key);
+        Assert.Equal("Draft", await StatusAsync(e, id));
+        Assert.Empty(await e.Db.WorkflowInstances.ToListAsync());
+    }
+
+    [Fact]
+    public async Task CommodityGroupReview_ResolvesByCommodityMapping_WrongCommodityReviewerIsDenied()
+    {
+        var e = await NewEnvAsync();
+        var posA = new Position { Title = "Reviewer for G1", IsActive = true };
+        var posB = new Position { Title = "Reviewer for G2", IsActive = true };
+        e.Db.Positions.AddRange(posA, posB);
+        await e.Db.SaveChangesAsync();
+        e.Db.EmployeeAssignments.AddRange(
+            new EmployeeAssignment { PositionId = posA.PositionId, EmployeeId = Pool, IsActive = true, StartDate = DateTime.Now.AddDays(-1) },
+            new EmployeeAssignment { PositionId = posB.PositionId, EmployeeId = Outsider, IsActive = true, StartDate = DateTime.Now.AddDays(-1) });
+        e.Db.CommodityGroupResponsibles.AddRange(
+            new CommodityGroupResponsible { ResponsibilityKey = "CommodityGroupReview", CommodityGroupId = e.G1, PositionId = posA.PositionId },
+            new CommodityGroupResponsible { ResponsibilityKey = "CommodityGroupReview", CommodityGroupId = e.G2, PositionId = posB.PositionId });
+        var resp = await e.Db.WorkflowActorResponsibilities.SingleAsync(r => r.ResponsibilityKey == "CommodityGroupReview");
+        resp.Kind = ActorResponsibilityKinds.CommodityPosition;
+        await e.Db.SaveChangesAsync();
+
+        var id = await DraftWithNumberAsync(e);                // Group1 = G1
+        Assert.True((await e.Svc.SubmitAsync(id, null, e.Actor(Requester))).Success);
+        Assert.True((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(DirectMgr))).Success);
+        Assert.True((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(Superior))).Success);
+
+        // مرحله‌ی CommodityGroupReview: فقط مسئول G1
+        Assert.False((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(Outsider))).Success);   // مسئول G2 (Commodity اشتباه)
+        Assert.False((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(11))).Success);          // نقش درست ولی بی‌ارتباط
+        Assert.True((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(Pool))).Success);
+    }
+
+    [Fact]
+    public async Task EligibleActors_AreSnapshotted_AtStageEntry_LaterReassignmentDoesNotChangeWhoMayApprove()
+    {
+        var e = await NewEnvAsync();
+        var id = await DraftWithNumberAsync(e);
+        Assert.True((await e.Svc.SubmitAsync(id, null, e.Actor(Requester))).Success);
+
+        // پس از ثبت، مدیر مستقیم عوض می‌شود - مرحله‌ی جاری همچنان فقط برای مدیر زمان ورود است
+        var directPos = await e.Db.EmployeeAssignments.Where(a => a.EmployeeId == DirectMgr).Select(a => a.PositionId).SingleAsync();
+        var direct = await e.Db.EmployeeAssignments.SingleAsync(a => a.EmployeeId == DirectMgr);
+        direct.IsActive = false; direct.EndDate = DateTime.Now;
+        e.Db.EmployeeAssignments.Add(new EmployeeAssignment { PositionId = directPos, EmployeeId = Outsider, IsActive = true, IsPrimary = true, StartDate = DateTime.Now.AddDays(-1) });
+        await e.Db.SaveChangesAsync();
+
+        Assert.False((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(Outsider))).Success);
+        Assert.True((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(DirectMgr))).Success);
+
+        var snapshot = await e.Db.WorkflowInstanceStageCandidates.AsNoTracking().Where(c => c.InstanceStage!.Status == "Approve").ToListAsync();
+        Assert.Equal(DirectMgr, Assert.Single(snapshot).EmployeeId);   // تاریخچه‌ی مجاز بودن تغییر نمی‌کند
+        Assert.Contains("DirectManager", (await e.Db.WorkflowInstanceStages.AsNoTracking().Include(x => x.Candidates).FirstAsync()).Candidates.Single().Reason);
+    }
+
+    [Fact]
+    public async Task SecondApprovalOnAnAlreadyDecidedStage_IsRejected_NoDoubleAdvance()
+    {
+        var e = await NewEnvAsync();
+        e.Db.PartCatalogueApproverAssignments.Add(new PartCatalogueApproverAssignment { StepKey = "CommodityGroupReview", EmployeeId = 11 });
+        await e.Db.SaveChangesAsync();
+        var id = await DraftWithNumberAsync(e);
+        Assert.True((await e.Svc.SubmitAsync(id, null, e.Actor(Requester))).Success);
+        Assert.True((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(DirectMgr))).Success);
+        Assert.True((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(Superior))).Success);
+
+        // هر دو در صف CommodityGroupReview هستند؛ اولی تأیید می‌کند، دومی نباید مرحله‌ی بعدی را دوباره جلو ببرد
+        Assert.True((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(Pool))).Success);
+        var second = await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(11));
+        Assert.False(second.Success);
+        Assert.Equal("PartCataloguer", (await e.Db.PartCatalogueRequests.AsNoTracking().SingleAsync()).CurrentStepKey);
+        Assert.Equal(1, await e.Db.WorkflowInstanceStages.CountAsync(s => s.Status == "Approve" && s.Stage!.Name == "CommodityGroupReview"));
+    }
+
+    [Fact]
+    public async Task Return_EndsWorkflowInstance_AndResubmitStartsANewOne()
+    {
+        var e = await NewEnvAsync();
+        var id = await SubmittedAsync(e);
+        var first = (await e.Db.PartCatalogueRequests.AsNoTracking().SingleAsync()).WorkflowInstanceId;
+        Assert.True((await e.Svc.ExecuteAsync(id, "Return", "fix", null, null, e.Actor(DirectMgr))).Success);
+        Assert.Equal("Returned", (await e.Db.WorkflowInstances.AsNoTracking().SingleAsync()).Status);
+
+        Assert.True((await e.Svc.SaveAsync(Form(e, id), e.Actor(Requester))).Success);
+        Assert.True((await e.Svc.SubmitAsync(id, null, e.Actor(Requester))).Success);
+        var second = (await e.Db.PartCatalogueRequests.AsNoTracking().SingleAsync()).WorkflowInstanceId;
+        Assert.NotEqual(first, second);
+        Assert.Equal(2, await e.Db.WorkflowInstances.CountAsync());
+    }
+
+    [Fact]
+    public async Task ApprovalHistory_RecordsActor_AndWorkflowHistoryIsWritten()
+    {
+        var e = await NewEnvAsync();
+        var id = await SubmittedAsync(e);
+        Assert.True((await e.Svc.ExecuteAsync(id, "Approve", "ok", null, null, e.Actor(DirectMgr))).Success);
+
+        var approval = await e.Db.PartCatalogueRequestApprovals.AsNoTracking().OrderBy(a => a.RequestApprovalId).LastAsync();
+        Assert.Equal(DirectMgr, approval.ActorEmployeeId);
+        Assert.Equal("DirectManager", approval.StepKey);
+        Assert.Contains(await e.Db.WorkflowHistories.AsNoTracking().ToListAsync(), h => h.ActionType == "Approve" && h.UserId == DirectMgr && h.Comment == "ok");
+    }
+
+    [Fact]
+    public async Task WorkflowAndResponsibilitiesAreSeeded_Structurally_WithoutFakePeople()
+    {
+        var e = await NewEnvAsync();
+        Assert.Equal(1, await e.Db.WorkflowDefinitions.CountAsync(d => d.Module == "PartCatalogue"));
+        Assert.Equal(8, await e.Db.WorkflowActorResponsibilities.CountAsync());
+        // فقط همان سه سمتِ زنجیره‌ی تست (OrgSeed) وجود دارد؛ Seeder هیچ سمت/تخصیص/کارمندی نمی‌سازد
+        Assert.Equal(3, await e.Db.Positions.CountAsync());
+        Assert.Equal(3, await e.Db.EmployeeAssignments.CountAsync());
+
+        await PartCatalogueWorkflowSeeder.SeedAsync(e.Db);        // Idempotent
+        Assert.Equal(1, await e.Db.WorkflowDefinitions.CountAsync(d => d.Module == "PartCatalogue"));
+        Assert.Equal(8, await e.Db.WorkflowActorResponsibilities.CountAsync());
+        Assert.All(await e.Db.WorkflowStages.Where(st => st.ResponsibilityKey != null).ToListAsync(), st => Assert.Equal(st.Name, st.ResponsibilityKey));
     }
 }

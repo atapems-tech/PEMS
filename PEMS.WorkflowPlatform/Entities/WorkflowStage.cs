@@ -60,6 +60,19 @@ public class WorkflowStage
     [System.ComponentModel.DataAnnotations.MaxLength(50)]
     public string? BusinessStatus { get; set; }
 
+    // --- Enterprise Actor Resolution (additive) ---
+    /// <summary>
+    /// کلید «مسئولیت» کسب‌وکاری (مثلاً MaintenanceSupervisor). اگر تنظیم شود، بازیگران مجاز هنگام ورود به مرحله توسط
+    /// IWorkflowActorResolutionHook (Enterprise Actor Resolver) از Position/Role/Scope/Commodity حل و Snapshot می‌شوند؛
+    /// ResponsibleRole در این حالت نادیده گرفته می‌شود. این فیلد نقش (Identity Role) نیست.
+    /// </summary>
+    [System.ComponentModel.DataAnnotations.MaxLength(100)]
+    public string? ResponsibilityKey { get; set; }
+
+    /// <summary>شرط ورود به مرحله (گرامر IWorkflowConditionEvaluator با Factهای ماژول). false ⇒ مرحله خودکار Skip می‌شود. خالی = همیشه.</summary>
+    [System.ComponentModel.DataAnnotations.MaxLength(500)]
+    public string? EntryCondition { get; set; }
+
     public ICollection<WorkflowTransition> OutgoingTransitions { get; set; } = new List<WorkflowTransition>();
     public ICollection<WorkflowTransition> IncomingTransitions { get; set; } = new List<WorkflowTransition>();
 }

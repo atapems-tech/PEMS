@@ -47,7 +47,8 @@ public class PartCatalogueRequestSearchProvider : ISearchableEntityProvider
             var pool = await _context.PartCatalogueApproverAssignments
                 .Where(a => a.EmployeeId == me && a.IsActive).Select(a => a.StepKey).ToListAsync();
             q = q.Where(r => r.RequesterEmployeeId == me
-                             || r.Steps.Any(s => s.AssignedEmployeeId == me || pool.Contains(s.StepKey)));
+                             || (r.WorkflowInstanceId == null && r.Steps.Any(s => s.AssignedEmployeeId == me || pool.Contains(s.StepKey)))
+                             || (r.WorkflowInstanceId != null && _context.WorkflowInstanceStageCandidates.Any(c => c.EmployeeId == me && c.InstanceStage!.WorkflowInstanceId == r.WorkflowInstanceId)));
         }
 
         q = q.Where(r => (r.RequestNumber != null && r.RequestNumber.Contains(query))

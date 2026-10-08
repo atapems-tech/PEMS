@@ -109,14 +109,9 @@ public static class WorkOrderWorkflow
     }
 
     /// <summary>هویت سازمانی کارمند = (دامنه از سلسله‌مراتب Department، دیسیپلین). null اگر کارمند/دامنه نامشخص باشد.</summary>
-    public static async Task<(string? Domain, int? DisciplineId)> ResolveEmployeeAsync(PEMSDbContext db, int? employeeId)
-    {
-        if (!employeeId.HasValue) return (null, null);
-        var e = await db.Employees.AsNoTracking().Where(x => x.EmployeeId == employeeId.Value)
-            .Select(x => new { x.DepartmentId, x.DisciplineId }).FirstOrDefaultAsync();
-        if (e == null) return (null, null);
-        return (await ResolveDepartmentDomainAsync(db, e.DepartmentId), e.DisciplineId);
-    }
+    public static Task<(string? Domain, int? DisciplineId)> ResolveEmployeeAsync(PEMSDbContext db, int? employeeId) =>
+        // از مرز مرکزی IOrganizationResolver عبور می‌کند (رفتار دقیقاً همان؛ اثبات: OrganizationResolverFacadeTests.Characterization_*).
+        new PEMS.Persistence.Services.OrganizationResolver(db).GetDomainAndDisciplineAsync(employeeId);
 
     /// <summary>پیوند «Permission:X» برای هر مجوز گردش‌کار که این نقش‌ها دارند (همان الگوی Work Request).</summary>
     public static async Task<List<string>> ExpandRolesAsync(IAccessControlService access, IReadOnlyList<string> roles)

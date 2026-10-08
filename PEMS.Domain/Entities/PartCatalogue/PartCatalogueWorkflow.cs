@@ -81,6 +81,9 @@ public class PartCatalogueApproverAssignment : BaseEntity
 }
 
 /// <summary>پیوند «مدیر مستقیم» هر کارمند (Employee.ManagerId در PEMS وجود ندارد). مدیر مافوق = مدیر مستقیمِ مدیر مستقیم.</summary>
+// DEPRECATED (Organization Hierarchy Phase 1): این جدول دیگر مرجع «مدیر مستقیم» نیست و هیچ Resolver/سرویسی آن را نمی‌خواند یا نمی‌نویسد.
+// مرجع قطعی: Position.ParentPositionId + EmployeeAssignment (IOrganizationValidationService / EnterpriseActorResolver).
+// جدول و داده‌ی موجود غیرمخرب نگه‌داشته شده تا تصمیم مالک داده درباره‌ی انتقال/حذف.
 public class PartCatalogueOrgLink : BaseEntity
 {
     public int OrgLinkId { get; set; }

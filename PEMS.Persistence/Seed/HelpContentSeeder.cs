@@ -1402,20 +1402,60 @@ public static class HelpContentSeeder
             "What the Employee Details page shows, and which fields are backed by real data today.",
             "<p>An employee's profile brings together: employment details (role, department, discipline, personnel type - " +
             "Internal/Contractor/External/Temporary), their current team membership (with the team's supervisor shown as " +
-            "\"Manager\"), contact information, and skills/qualifications/certifications/labor rate history.</p>" +
-            "<p>An employee's \"Manager\" is not a separate stored field - it is derived from their current active team " +
-            "membership's team supervisor, so it always reflects the real organizational assignment rather than a " +
-            "manually-entered value that could drift out of date.</p>",
-            "employee,profile,manager,team,personnel type",
+            "\"Team Supervisor\"), the Direct Manager resolved from the organization hierarchy, contact information, and " +
+            "skills/qualifications/certifications/labor rate history.</p>" +
+            "<p>The <strong>Team Supervisor</strong> is an operational team role, derived from the employee's current active " +
+            "team membership. It is NOT the Direct Manager. The <strong>Direct Manager</strong> comes only from the " +
+            "organization structure (see the Organization Structure article): the holder of the parent of the employee's " +
+            "primary position. When it cannot be determined, the profile says why instead of guessing.</p>",
+            "employee,profile,team supervisor,direct manager,team,personnel type",
             "پروفایل کارمند",
             "صفحه‌ی جزئیات کارمند چه چیزهایی نشان می‌دهد، و کدام فیلدها امروز داده‌ی واقعی پشت خود دارند.",
             "<p>پروفایل کارمند این موارد را کنار هم می‌آورد: جزئیات استخدام (نقش، دپارتمان، دیسیپلین، نوع پرسنل - " +
-            "Internal/Contractor/External/Temporary)، عضویت فعلی در تیم (با سرپرست تیم که به‌عنوان «مدیر» نمایش داده " +
-            "می‌شود)، اطلاعات تماس، و تاریخچه‌ی مهارت‌ها/صلاحیت‌ها/گواهینامه‌ها/نرخ دستمزد.</p>" +
-            "<p>«مدیر» یک کارمند فیلد ذخیره‌شده‌ی جداگانه‌ای نیست - از سرپرستِ تیمِ عضویتِ فعالِ فعلیِ او مشتق می‌شود، پس " +
-            "همیشه انتساب سازمانی واقعی را نشان می‌دهد، نه یک مقدار دستی که ممکن است از واقعیت عقب بماند.</p>",
-            "کارمند,پروفایل,مدیر,تیم,نوع پرسنل",
+            "Internal/Contractor/External/Temporary)، عضویت فعلی در تیم (با سرپرست تیم که به‌عنوان «سرپرست تیم» نمایش " +
+            "داده می‌شود)، «مدیر مستقیم» که از سلسله‌مراتب سازمانی تعیین می‌شود، اطلاعات تماس، و تاریخچه‌ی " +
+            "مهارت‌ها/صلاحیت‌ها/گواهینامه‌ها/نرخ دستمزد.</p>" +
+            "<p><strong>سرپرست تیم</strong> یک نقش عملیاتی است و از عضویت فعال فعلی کارمند در تیم مشتق می‌شود؛ «مدیر " +
+            "مستقیم» نیست. <strong>مدیر مستقیم</strong> فقط از ساختار سازمانی می‌آید (مقاله‌ی «ساختار سازمانی»): دارنده‌ی " +
+            "سمتِ مافوقِ سمت اصلی کارمند. وقتی قابل‌تعیین نباشد، پروفایل دلیل را نشان می‌دهد و حدس نمی‌زند.</p>",
+            "کارمند,پروفایل,سرپرست تیم,مدیر مستقیم,تیم,نوع پرسنل",
             null),
+
+        new Art("organization-hierarchy-direct-manager", "administration", "Page", "Admin.Organization.Index", 1,
+            "Organization Structure and Direct Manager",
+            "How positions, the managerial hierarchy and holders decide who a workflow sends your request to - and how to repair it.",
+            "<p><strong>Position.</strong> A position (for example \"Maintenance Engineer\") is separate from the person and from " +
+            "roles/permissions. Each position can have a <em>parent position</em> (the position it reports to). A person holds a " +
+            "position through an assignment with effective dates; exactly one effective assignment is the person's " +
+            "<em>primary</em> position. A position can be vacant without breaking the structure.</p>" +
+            "<p><strong>Direct Manager.</strong> The system resolves it only as: Employee &rarr; Primary Position &rarr; Parent " +
+            "Position &rarr; the holder of that parent position. The <em>Superior Manager</em> is the holder of the parent's " +
+            "parent. A <strong>Team Supervisor</strong> (a team's operational lead) is NOT the Direct Manager, a department is " +
+            "not a source of managers, and no administrator, CEO or \"first available manager\" is ever substituted.</p>" +
+            "<p><strong>Organization Resolution Required.</strong> If the chain is incomplete (no primary position, root position, " +
+            "inactive or vacant parent, expired assignment, inactive holder, cycle, multiple primaries) the request is NOT " +
+            "rejected and NOT auto-approved: it waits in the status <em>Organization Resolution Required</em> with the reason code. " +
+            "An organization administrator repairs the structure in <em>Organization Structure</em> (or via Organization Import in the " +
+            "Import Center) and checks <em>Organization Diagnostics</em>; then the requester (or the module administrator) presses " +
+            "<em>Retry routing</em> and the central resolver decides. Approvers are never picked by hand, and open requests keep " +
+            "the approvers they were resolved with.</p>",
+            "organization,position,parent position,direct manager,superior manager,team supervisor,organization resolution required",
+            "ساختار سازمانی و مدیر مستقیم",
+            "سمت‌ها، سلسله‌مراتب مدیریتی و دارندگان چگونه تعیین می‌کنند درخواست شما برای چه کسی ارسال شود - و چگونه اصلاح می‌شود.",
+            "<p><strong>سمت.</strong> سمت (مثلاً «مهندس نگهداری») از شخص و از نقش/مجوز جداست. هر سمت می‌تواند <em>سمت مافوق</em> " +
+            "داشته باشد (سمتی که به آن گزارش می‌دهد). شخص از طریق یک تخصیص با تاریخ اعتبار سمت را در اختیار دارد؛ دقیقاً یک " +
+            "تخصیص معتبر، <em>سمت اصلی</em> شخص است. سمت می‌تواند خالی باشد بی‌آن‌که ساختار از بین برود.</p>" +
+            "<p><strong>مدیر مستقیم.</strong> سیستم آن را فقط چنین تعیین می‌کند: کارمند &larr; سمت اصلی &larr; سمت مافوق &larr; دارنده‌ی " +
+            "آن سمت مافوق. <em>مدیر ارشد</em> دارنده‌ی سمتِ مافوقِ مافوق است. <strong>سرپرست تیم</strong> (راهبر عملیاتی تیم) " +
+            "«مدیر مستقیم» نیست، دپارتمان منبع مدیر نیست، و هرگز مدیر سیستم، مدیرعامل یا «اولین مدیر موجود» جایگزین نمی‌شود.</p>" +
+            "<p><strong>نیازمند تکمیل ساختار سازمانی.</strong> اگر زنجیره ناقص باشد (نبود سمت اصلی، سمت ریشه، مافوق غیرفعال یا " +
+            "خالی، تخصیص منقضی، دارنده‌ی غیرفعال، دور، چند سمت اصلی) درخواست رد یا خودکار تأیید <strong>نمی‌شود</strong>؛ با " +
+            "وضعیت <em>نیازمند تکمیل ساختار سازمانی</em> و کد دلیل منتظر می‌ماند. مدیر سازمان ساختار را در «ساختار سازمانی» (یا " +
+            "با ایمپورت ساختار سازمانی در مرکز ایمپورت) اصلاح می‌کند و «عیب‌یابی ساختار سازمانی» را بررسی می‌کند؛ سپس " +
+            "درخواست‌دهنده (یا مدیر ماژول) «تلاش مجدد مسیریابی» را می‌زند و Resolver مرکزی تصمیم می‌گیرد. تأییدکننده هرگز دستی " +
+            "انتخاب نمی‌شود و درخواست‌های باز همان تأییدکنندگانی را نگه می‌دارند که با آن‌ها تعیین شده‌اند.</p>",
+            "سازمان,سمت,سمت مافوق,مدیر مستقیم,مدیر ارشد,سرپرست تیم,نیازمند تکمیل ساختار سازمانی",
+            new[] { "employee-profile-overview" }),
 
         // ============================= ADMINISTRATION =============================
         new Art("users-roles-permissions-overview", "administration", "Module", null, 0,

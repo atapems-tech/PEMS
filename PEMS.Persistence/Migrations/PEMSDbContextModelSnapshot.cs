@@ -1227,6 +1227,74 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("ChatMessages");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.CommodityGroupResponsible", b =>
+                {
+                    b.Property<int>("CommodityGroupResponsibleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommodityGroupResponsibleId"));
+
+                    b.Property<int>("CommodityGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("PositionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ResponsibilityKey")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ValidFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ValidTo")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("CommodityGroupResponsibleId");
+
+                    b.HasIndex("CommodityGroupId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("PositionId");
+
+                    b.HasIndex("ResponsibilityKey", "CommodityGroupId");
+
+                    b.ToTable("CommodityGroupResponsibles", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.ConditionMonitoringPoint", b =>
                 {
                     b.Property<int>("ConditionMonitoringPointId")
@@ -3615,6 +3683,11 @@ namespace PEMS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeAssignmentId"));
 
+                    b.Property<string>("AssignmentType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -3628,6 +3701,9 @@ namespace PEMS.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPrimary")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModifiedBy")
@@ -3653,12 +3729,17 @@ namespace PEMS.Persistence.Migrations
 
                     b.HasKey("EmployeeAssignmentId");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_EmployeeAssignments_EmployeeId_ActivePrimary")
+                        .HasFilter("[IsActive] = 1 AND [IsPrimary] = 1");
 
                     b.HasIndex("PositionId")
                         .IsUnique()
                         .HasDatabaseName("IX_EmployeeAssignments_PositionId_ActiveOnly")
                         .HasFilter("[IsActive] = 1");
+
+                    b.HasIndex(new[] { "EmployeeId" }, "IX_EmployeeAssignments_EmployeeId");
 
                     b.ToTable("EmployeeAssignments", (string)null);
                 });
@@ -6772,6 +6853,9 @@ namespace PEMS.Persistence.Migrations
                     b.Property<int>("MaterialItemId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("MaterialReservationId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ProductionBatchId")
                         .HasColumnType("int");
 
@@ -6790,6 +6874,9 @@ namespace PEMS.Persistence.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<int?>("StorageLocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StoreRequisitionLineId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("TransactionDate")
@@ -6813,9 +6900,13 @@ namespace PEMS.Persistence.Migrations
 
                     b.HasIndex("EmployeeId");
 
+                    b.HasIndex("MaterialReservationId");
+
                     b.HasIndex("ProductionBatchId");
 
                     b.HasIndex("StorageLocationId");
+
+                    b.HasIndex("StoreRequisitionLineId");
 
                     b.HasIndex("UomId");
 
@@ -9243,6 +9334,9 @@ namespace PEMS.Persistence.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<decimal>("IssuedQuantity")
+                        .HasColumnType("decimal(18,3)");
+
                     b.Property<int?>("MaintenancePlanId")
                         .HasColumnType("int");
 
@@ -9274,6 +9368,9 @@ namespace PEMS.Persistence.Migrations
                     b.Property<int?>("StoreRequisitionId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("StoreRequisitionLineId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("TenantId")
                         .HasColumnType("int");
 
@@ -9290,6 +9387,8 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("ReservedById");
 
                     b.HasIndex("StoreRequisitionId");
+
+                    b.HasIndex("StoreRequisitionLineId");
 
                     b.HasIndex("WarehouseId");
 
@@ -10707,6 +10806,10 @@ namespace PEMS.Persistence.Migrations
                     b.Property<int>("RequesterEmployeeId")
                         .HasColumnType("int");
 
+                    b.Property<string>("RoutingBlockReason")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -10759,6 +10862,9 @@ namespace PEMS.Persistence.Migrations
                     b.Property<DateTime?>("WantedReceiptDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("WorkflowInstanceId")
+                        .HasColumnType("int");
+
                     b.HasKey("PartCatalogueRequestId");
 
                     b.HasIndex("CommodityGroup1Id");
@@ -10794,6 +10900,8 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("TypeDesignationId");
 
                     b.HasIndex("UnitOfMeasureId");
+
+                    b.HasIndex("WorkflowInstanceId");
 
                     b.HasIndex("Status", "Urgent", "CreatedDate");
 
@@ -11978,6 +12086,13 @@ namespace PEMS.Persistence.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("ParentPositionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PositionCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<int>("SortOrder")
                         .HasColumnType("int");
 
@@ -11992,6 +12107,12 @@ namespace PEMS.Persistence.Migrations
                     b.HasKey("PositionId");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("ParentPositionId");
+
+                    b.HasIndex("PositionCode")
+                        .IsUnique()
+                        .HasFilter("[PositionCode] IS NOT NULL");
 
                     b.HasIndex("TeamId");
 
@@ -14843,6 +14964,10 @@ namespace PEMS.Persistence.Migrations
                     b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RequestKey")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
                     b.Property<int>("StoreRequisitionId")
                         .HasColumnType("int");
 
@@ -14855,7 +14980,9 @@ namespace PEMS.Persistence.Migrations
 
                     b.HasIndex("ChangedById");
 
-                    b.HasIndex("StoreRequisitionId");
+                    b.HasIndex("StoreRequisitionId", "RequestKey")
+                        .IsUnique()
+                        .HasFilter("[RequestKey] IS NOT NULL");
 
                     b.ToTable("StoreRequisitionStatusHistories", (string)null);
                 });
@@ -17570,6 +17697,118 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("WorkRequestStatusHistories");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.WorkflowActorResponsibility", b =>
+                {
+                    b.Property<int>("WorkflowActorResponsibilityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkflowActorResponsibilityId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("DisplayNameFa")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int?>("ManagerLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RequiredAction")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("RequiredModule")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("ResponsibilityKey")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RoleName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("ScopeType")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("ScopeValue")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("SelectionStrategy")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("WorkflowActorResponsibilityId");
+
+                    b.HasIndex("ResponsibilityKey")
+                        .IsUnique();
+
+                    b.ToTable("WorkflowActorResponsibilities", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.WorkflowActorResponsibilityPosition", b =>
+                {
+                    b.Property<int>("WorkflowActorResponsibilityPositionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkflowActorResponsibilityPositionId"));
+
+                    b.Property<int>("PositionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkflowActorResponsibilityId")
+                        .HasColumnType("int");
+
+                    b.HasKey("WorkflowActorResponsibilityPositionId");
+
+                    b.HasIndex("PositionId");
+
+                    b.HasIndex("WorkflowActorResponsibilityId", "PositionId")
+                        .IsUnique();
+
+                    b.ToTable("WorkflowActorResponsibilityPositions", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.Persistence.Identity.ApplicationRole", b =>
                 {
                     b.Property<int>("Id")
@@ -18025,6 +18264,16 @@ namespace PEMS.Persistence.Migrations
                     b.Property<string>("Decision")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ResolutionDetails")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResolutionState")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("ResolvedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .IsRequired()
@@ -18053,6 +18302,40 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("WorkflowInstanceStages", (string)null);
                 });
 
+            modelBuilder.Entity("PEMS.WorkflowPlatform.Entities.WorkflowInstanceStageCandidate", b =>
+                {
+                    b.Property<int>("WorkflowInstanceStageCandidateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkflowInstanceStageCandidateId"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsSelected")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Reason")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("WorkflowInstanceStageId")
+                        .HasColumnType("int");
+
+                    b.HasKey("WorkflowInstanceStageCandidateId");
+
+                    b.HasIndex("EmployeeId", "IsSelected");
+
+                    b.HasIndex("WorkflowInstanceStageId", "EmployeeId")
+                        .IsUnique();
+
+                    b.ToTable("WorkflowInstanceStageCandidates", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.WorkflowPlatform.Entities.WorkflowStage", b =>
                 {
                     b.Property<int>("WorkflowStageId")
@@ -18075,6 +18358,10 @@ namespace PEMS.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EntryCondition")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("EscalationRole")
                         .HasColumnType("nvarchar(max)");
@@ -18108,6 +18395,10 @@ namespace PEMS.Persistence.Migrations
 
                     b.Property<string>("NotificationKey")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResponsibilityKey")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int?>("ResponsibleEmployeeId")
                         .HasColumnType("int");
@@ -18763,6 +19054,31 @@ namespace PEMS.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Discipline");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.CommodityGroupResponsible", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueCommodityGroup", "CommodityGroup")
+                        .WithMany()
+                        .HasForeignKey("CommodityGroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.Position", "Position")
+                        .WithMany()
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CommodityGroup");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Position");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.ConditionMonitoringPoint", b =>
@@ -20184,6 +20500,11 @@ namespace PEMS.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("PEMS.Domain.Entities.MaterialReservation", "MaterialReservation")
+                        .WithMany()
+                        .HasForeignKey("MaterialReservationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("PEMS.Domain.Entities.ProductionBatch", "ProductionBatch")
                         .WithMany()
                         .HasForeignKey("ProductionBatchId")
@@ -20192,6 +20513,11 @@ namespace PEMS.Persistence.Migrations
                     b.HasOne("PEMS.Domain.Entities.StorageLocation", "StorageLocation")
                         .WithMany()
                         .HasForeignKey("StorageLocationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.StoreRequisitionLine", "StoreRequisitionLine")
+                        .WithMany()
+                        .HasForeignKey("StoreRequisitionLineId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("PEMS.Domain.Entities.MaterialUOM", "Uom")
@@ -20214,9 +20540,13 @@ namespace PEMS.Persistence.Migrations
 
                     b.Navigation("MaterialItem");
 
+                    b.Navigation("MaterialReservation");
+
                     b.Navigation("ProductionBatch");
 
                     b.Navigation("StorageLocation");
+
+                    b.Navigation("StoreRequisitionLine");
 
                     b.Navigation("Uom");
 
@@ -21090,6 +21420,11 @@ namespace PEMS.Persistence.Migrations
                         .HasForeignKey("StoreRequisitionId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("PEMS.Domain.Entities.StoreRequisitionLine", "StoreRequisitionLine")
+                        .WithMany()
+                        .HasForeignKey("StoreRequisitionLineId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("PEMS.Domain.Entities.Warehouse", "Warehouse")
                         .WithMany()
                         .HasForeignKey("WarehouseId")
@@ -21107,6 +21442,8 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("ReservedBy");
 
                     b.Navigation("StoreRequisition");
+
+                    b.Navigation("StoreRequisitionLine");
 
                     b.Navigation("Warehouse");
 
@@ -21715,12 +22052,19 @@ namespace PEMS.Persistence.Migrations
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("PEMS.Domain.Entities.Position", "ParentPosition")
+                        .WithMany("ChildPositions")
+                        .HasForeignKey("ParentPositionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("PEMS.Domain.Entities.Team", "Team")
                         .WithMany("Positions")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Department");
+
+                    b.Navigation("ParentPosition");
 
                     b.Navigation("Team");
                 });
@@ -23254,6 +23598,25 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("WorkRequest");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.WorkflowActorResponsibilityPosition", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Position", "Position")
+                        .WithMany()
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.WorkflowActorResponsibility", "Responsibility")
+                        .WithMany("Positions")
+                        .HasForeignKey("WorkflowActorResponsibilityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Position");
+
+                    b.Navigation("Responsibility");
+                });
+
             modelBuilder.Entity("PEMS.WorkflowPlatform.Entities.WorkflowBinding", b =>
                 {
                     b.HasOne("PEMS.WorkflowPlatform.Entities.WorkflowVersion", "PinnedVersion")
@@ -23318,6 +23681,17 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Instance");
 
                     b.Navigation("Stage");
+                });
+
+            modelBuilder.Entity("PEMS.WorkflowPlatform.Entities.WorkflowInstanceStageCandidate", b =>
+                {
+                    b.HasOne("PEMS.WorkflowPlatform.Entities.WorkflowInstanceStage", "InstanceStage")
+                        .WithMany("Candidates")
+                        .HasForeignKey("WorkflowInstanceStageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InstanceStage");
                 });
 
             modelBuilder.Entity("PEMS.WorkflowPlatform.Entities.WorkflowStage", b =>
@@ -23758,6 +24132,8 @@ namespace PEMS.Persistence.Migrations
             modelBuilder.Entity("PEMS.Domain.Entities.Position", b =>
                 {
                     b.Navigation("Assignments");
+
+                    b.Navigation("ChildPositions");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.PredictiveMaintenanceModel", b =>
@@ -23893,6 +24269,11 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("LaborEntries");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.WorkflowActorResponsibility", b =>
+                {
+                    b.Navigation("Positions");
+                });
+
             modelBuilder.Entity("PEMS.WorkflowPlatform.Entities.WorkflowDefinition", b =>
                 {
                     b.Navigation("Versions");
@@ -23903,6 +24284,11 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("History");
 
                     b.Navigation("InstanceStages");
+                });
+
+            modelBuilder.Entity("PEMS.WorkflowPlatform.Entities.WorkflowInstanceStage", b =>
+                {
+                    b.Navigation("Candidates");
                 });
 
             modelBuilder.Entity("PEMS.WorkflowPlatform.Entities.WorkflowStage", b =>

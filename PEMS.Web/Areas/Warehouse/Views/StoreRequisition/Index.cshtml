@@ -4,7 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var warehouses = (IEnumerable<dynamic>)ViewBag.Warehouses;
-    var statuses = new[] { "Draft", "Submitted", "Approved", "Reserved", "Issued", "Closed", "Rejected", "Cancelled" };
+    var statuses = new[] { "Draft", "Submitted", "Approved", "Reserved", "PartiallyIssued", "Issued", "Closed", "Rejected", "Cancelled" };
 }
 
 @if (TempData["Message"] != null)

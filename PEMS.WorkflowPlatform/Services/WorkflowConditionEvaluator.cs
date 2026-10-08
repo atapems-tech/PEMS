@@ -16,7 +16,14 @@ namespace PEMS.WorkflowPlatform.Services;
 /// </summary>
 public class WorkflowConditionEvaluator : IWorkflowConditionEvaluator
 {
-    private static readonly string[] Fields = { "Priority", "ProjectId", "Module", "BusinessObjectType", "BusinessObjectId", "StageName" };
+    private static readonly string[] CoreFields = { "Priority", "ProjectId", "Module", "BusinessObjectType", "BusinessObjectId", "StageName" };
+    private readonly string[] Fields;
+
+    /// <param name="extraFields">فیلدهای Fact ماژول‌ها (از IWorkflowBusinessContextProvider)؛ بدون آن فقط فیلدهای هسته مجازند.</param>
+    public WorkflowConditionEvaluator(IEnumerable<string>? extraFields = null)
+    {
+        Fields = CoreFields.Concat(extraFields ?? Array.Empty<string>()).Distinct(StringComparer.Ordinal).ToArray();
+    }
     private static readonly Regex Token = new(
         @"\G\s*(?:(?<str>'(?:[^']|'')*')|(?<op>==|!=|>=|<=|>|<)|(?<lp>\()|(?<rp>\))|(?<comma>,)|(?<word>[A-Za-z_][A-Za-z0-9_]*)|(?<num>-?\d+(?:\.\d+)?))",
         RegexOptions.Compiled | RegexOptions.CultureInvariant);
@@ -60,7 +67,7 @@ public class WorkflowConditionEvaluator : IWorkflowConditionEvaluator
             ? x == y
             : string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
 
-    private static List<List<Clause>>? Parse(string text, List<string> errors)
+    private List<List<Clause>>? Parse(string text, List<string> errors)
     {
         var toks = new List<(string Kind, string Text)>();
         var pos = 0;

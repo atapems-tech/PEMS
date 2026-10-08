@@ -29,6 +29,7 @@ public class StoreRequisitionController : Controller
         ["Submitted"] = "Approved",
         ["Approved"] = "Reserved",
         ["Reserved"] = "Issued",
+        ["PartiallyIssued"] = "Issued",
         ["Issued"] = "Closed",
     };
 
@@ -150,6 +151,13 @@ public class StoreRequisitionController : Controller
 
         ViewBag.NextStatus = NextStatusMap.TryGetValue(requisition.Status, out var next) ? next : null;
 
+        // فقط برای نمایش/پنهان‌سازی دکمه‌ها؛ اجرا همیشه دوباره در سرویس بررسی می‌شود
+        var actor = await GetActorAsync();
+        var can = new Dictionary<string, bool>();
+        foreach (var a in StoreRequisitionActions.Sensitive) can[a] = await _lifecycleService.IsAllowedAsync(actor, a);
+        ViewBag.Can = can;
+        ViewBag.IsRequester = actor.EmployeeId.HasValue && actor.EmployeeId == requisition.RequestedById;
+
         return View(requisition);
     }
 
@@ -190,7 +198,7 @@ public class StoreRequisitionController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AdvanceStatus(int id, string? reason)
+    public async Task<IActionResult> AdvanceStatus(int id, string? reason, string? requestKey)
     {
         var requisition = await _context.StoreRequisitions.FirstOrDefaultAsync(x => x.StoreRequisitionId == id);
         if (requisition == null) return NotFound();
@@ -201,13 +209,41 @@ public class StoreRequisitionController : Controller
             return RedirectToAction(nameof(Details), new { id });
         }
 
-        var requiredAction = ApprovalGatedTransitions.Contains(next) ? "Approve" : "Create";
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "StoreRequisition", requiredAction))
-            return Forbid();
-
-        var (success, error) = await _lifecycleService.AdvanceStatusAsync(id, next, reason, await GetCurrentEmployeeIdAsync());
+        // مجوز/هویت/SoD/جدول گذار همگی در سرویس اعمال می‌شوند (Controller فقط نمایش و مسیردهی است)
+        var (success, error) = await _lifecycleService.AdvanceStatusAsync(id, next, reason, await GetActorAsync(), requestKey);
 
         TempData[success ? "Message" : "Error"] = success ? $"وضعیت به {next} تغییر کرد." : error;
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    /// <summary>تعیین مقدار تأییدشده‌ی هر خط (فقط Submitted، مجوز Approve)؛ قواعد در سرویس اعمال می‌شود.</summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetApprovedQuantities(int id, Dictionary<int, decimal> approved, string? requestKey)
+    {
+        var (success, error) = await _lifecycleService.SetApprovedQuantitiesAsync(id, approved ?? new(), await GetActorAsync(), requestKey);
+        TempData[success ? "Message" : "Error"] = success ? "مقدار تأییدشده ثبت شد." : error;
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    /// <summary>تحویل کامل یا بخشی (مجوز Approve، همان گیت قبلیِ Issued). qty خالی = تحویل تمام باقی‌مانده‌ی رزرو.</summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Issue(int id, Dictionary<int, decimal> qty, string? reason, string? requestKey)
+    {
+        var lines = (qty ?? new()).Where(kv => kv.Value > 0).ToDictionary(kv => kv.Key, kv => kv.Value);
+        var (success, error) = await _lifecycleService.IssueAsync(id, lines.Count == 0 ? null : lines, reason, await GetActorAsync(), requestKey);
+        TempData[success ? "Message" : "Error"] = success ? "تحویل ثبت شد." : error;
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    /// <summary>بستن با کسری پس از تحویل بخشی: باقی‌مانده‌ی رزرو آزاد می‌شود.</summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CloseShort(int id, string? reason)
+    {
+        var (success, error) = await _lifecycleService.AdvanceStatusAsync(id, "Closed", reason, await GetActorAsync());
+        TempData[success ? "Message" : "Error"] = success ? "درخواست با کسری بسته شد." : error;
         return RedirectToAction(nameof(Details), new { id });
     }
 
@@ -215,10 +251,7 @@ public class StoreRequisitionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Reject(int id, string? reason)
     {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "StoreRequisition", "Approve"))
-            return Forbid();
-
-        var (success, error) = await _lifecycleService.AdvanceStatusAsync(id, "Rejected", reason, await GetCurrentEmployeeIdAsync());
+        var (success, error) = await _lifecycleService.AdvanceStatusAsync(id, "Rejected", reason, await GetActorAsync());
         TempData[success ? "Message" : "Error"] = success ? "درخواست رد شد." : error;
         return RedirectToAction(nameof(Details), new { id });
     }
@@ -227,13 +260,13 @@ public class StoreRequisitionController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Cancel(int id, string? reason)
     {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "StoreRequisition", "Approve"))
-            return Forbid();
-
-        var (success, error) = await _lifecycleService.AdvanceStatusAsync(id, "Cancelled", reason, await GetCurrentEmployeeIdAsync());
+        var (success, error) = await _lifecycleService.AdvanceStatusAsync(id, "Cancelled", reason, await GetActorAsync());
         TempData[success ? "Message" : "Error"] = success ? "درخواست لغو شد." : error;
         return RedirectToAction(nameof(Details), new { id });
     }
+
+    private async Task<StoreRequisitionActor> GetActorAsync() =>
+        new(await GetCurrentEmployeeIdAsync(), (_currentUser.Roles ?? new List<string>()).ToList());
 
     private async Task<int?> GetCurrentEmployeeIdAsync()
     {

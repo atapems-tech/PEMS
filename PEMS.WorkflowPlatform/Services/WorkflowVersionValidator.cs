@@ -113,7 +113,7 @@ public class WorkflowVersionValidator : IWorkflowVersionValidator
         foreach (var s in stages)
         {
             var roles = (s.ResponsibleRole ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-            if (roles.Length == 0 && s.ResponsibleEmployeeId == null)
+            if (roles.Length == 0 && s.ResponsibleEmployeeId == null && string.IsNullOrWhiteSpace(s.ResponsibilityKey))
                 r.Issues.Add(Warn("STAGE_NO_PARTICIPANT", $"مرحله‌ی «{s.Name}» نقش/کارمند ثابت ندارد (فقط با شرکت‌کننده‌ی پویا در زمان اجرا قابل استفاده است؛ در غیر این‌صورت Auto-skip می‌شود).", s.WorkflowStageId));
 
             if (_catalog == null) continue;
@@ -182,6 +182,10 @@ public class WorkflowVersionValidator : IWorkflowVersionValidator
                 r.Issues.Add(Err("SLA_INVALID", $"مهلت (SLA) مرحله‌ی «{s.Name}» باید مثبت باشد.", s.WorkflowStageId));
             if (s.IsEscalatable && string.IsNullOrWhiteSpace(s.EscalationRole))
                 r.Issues.Add(Warn("ESCALATION_NO_ROLE", $"مرحله‌ی «{s.Name}» Escalation‌پذیر است ولی نقش Escalation ندارد (اجرای خودکار Escalation هم در Phase 1 وجود ندارد).", s.WorkflowStageId));
+            if (!string.IsNullOrWhiteSpace(s.EntryCondition) && string.IsNullOrWhiteSpace(s.ResponsibilityKey))
+                r.Issues.Add(Warn("ENTRY_CONDITION_NO_RESPONSIBILITY", $"شرط ورود مرحله‌ی «{s.Name}» فقط برای مراحل مبتنی بر مسئولیت اعمال می‌شود.", s.WorkflowStageId));
+            foreach (var e in _conditions.Validate(s.EntryCondition))
+                r.Issues.Add(Err("ENTRY_CONDITION_INVALID", $"شرط ورود مرحله‌ی «{s.Name}» نامعتبر است: {e}", s.WorkflowStageId));
             if (s.IsEscalatable && s.TimeoutHours == null)
                 r.Issues.Add(Warn("ESCALATION_NO_SLA", $"مرحله‌ی «{s.Name}» Escalation‌پذیر است ولی مهلتی ندارد.", s.WorkflowStageId));
         }

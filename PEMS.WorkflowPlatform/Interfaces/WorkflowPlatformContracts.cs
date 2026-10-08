@@ -53,6 +53,8 @@ public sealed class WorkflowStageInput
     public string? Description { get; set; }
     public string? NameFa { get; set; }
     public string? BusinessStatus { get; set; }
+    public string? ResponsibilityKey { get; set; }
+    public string? EntryCondition { get; set; }
 }
 
 public sealed class WorkflowTransitionInput
@@ -206,6 +208,58 @@ public interface IWorkflowReferenceCatalog
     Task<bool> RoleExistsAsync(string role, CancellationToken ct = default);
     Task<bool> EmployeeExistsAsync(int employeeId, CancellationToken ct = default);
     Task<bool> PermissionExistsAsync(string permissionName, CancellationToken ct = default);
+}
+
+// ---------------------------------------------------------------------------
+// Enterprise Actor Resolution (additive extension points; the platform stays module-neutral)
+// ---------------------------------------------------------------------------
+
+/// <summary>یک بازیگر واجد شرایط مرحله (Snapshot هنگام ورود به مرحله).</summary>
+public sealed record WorkflowActorCandidate(int EmployeeId, string? Reason, bool IsSelected = true);
+
+public enum WorkflowActorResolutionKind { Resolved, Skipped, Failed }
+
+/// <summary>
+/// نتیجه‌ی حل بازیگران یک مرحله. Resolved ⇒ کاندیدها Snapshot می‌شوند؛ Skipped ⇒ مرحله خودکار رد می‌شود
+/// (مثلاً مدیر مستقیم، مدیرعامل است)؛ Failed ⇒ ورود به مرحله رد می‌شود (Fail-closed) با State تشخیصی.
+/// </summary>
+public sealed record WorkflowActorResolutionOutcome(
+    WorkflowActorResolutionKind Kind, string State, IReadOnlyList<WorkflowActorCandidate> Candidates,
+    string? SkipReason = null, string? DetailsJson = null);
+
+public sealed record WorkflowActorResolutionContext(
+    WorkflowInstance Instance, WorkflowStage Stage, IReadOnlyDictionary<string, string?> Facts, int? InitiatedByEmployeeId);
+
+/// <summary>اتصال به Enterprise Actor Resolver (پیاده‌سازی در Persistence). پلتفرم خودش بازیگر حل نمی‌کند.</summary>
+public interface IWorkflowActorResolutionHook
+{
+    Task<WorkflowActorResolutionOutcome> ResolveAsync(WorkflowActorResolutionContext context, CancellationToken ct = default);
+}
+
+public class WorkflowActorResolutionException : InvalidOperationException
+{
+    public string State { get; }
+    public string? DetailsJson { get; }
+    public string? StageName { get; }
+
+    public WorkflowActorResolutionException(string state, string? stageName, string? detailsJson)
+        : base($"Actor resolution failed ({state}) for stage '{stageName}'.")
+    {
+        State = state;
+        StageName = stageName;
+        DetailsJson = detailsJson;
+    }
+}
+
+/// <summary>
+/// تأمین Fact های کسب‌وکاری یک موجودیت برای شرط‌های مرحله/گذار (مثلاً IsNewManufacturer). فیلدهای اعلام‌شده
+/// به گرامر ارزیاب شرط افزوده می‌شوند؛ مقدارها به‌صورت رشته ("true"/"false"/عدد/متن) برگردانده می‌شوند.
+/// </summary>
+public interface IWorkflowBusinessContextProvider
+{
+    IReadOnlyCollection<string> SupportedFields { get; }
+    bool Supports(string module, string businessObjectType);
+    Task<IReadOnlyDictionary<string, string?>> GetFactsAsync(string module, string businessObjectType, int businessObjectId, CancellationToken ct = default);
 }
 
 public sealed record WorkflowRuntimeEvent(

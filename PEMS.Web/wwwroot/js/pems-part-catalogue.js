@@ -310,4 +310,33 @@
     document.querySelectorAll('[data-pc-confirm]').forEach(function (b) {
         b.addEventListener('click', function (e) { if (!confirm(b.dataset.pcConfirm)) e.preventDefault(); });
     });
+
+    /* ------------------------------------------------------------------ Admin: positions multi-select -> CSV (option order) */
+    document.querySelectorAll('select[data-pc-pos-target]').forEach(function (sel) {
+        var hid = document.getElementById(sel.dataset.pcPosTarget);
+        if (!hid) return;
+        sel.addEventListener('change', function () {
+            hid.value = Array.prototype.map.call(sel.selectedOptions, function (o) { return o.value; }).join(',');
+        });
+    });
+
+    /* ------------------------------------------------------------------ Admin: resolver diagnostics (server-rendered partial) */
+    var prevOut = document.getElementById('pcPreviewOut');
+    if (prevOut) {
+        var runPreview = function (key) {
+            var keySel = document.getElementById('pcPrevKey');
+            if (key && keySel) keySel.value = key;
+            var req = document.querySelector('#pcPrevReqHost input[type=hidden]');
+            var grp = document.querySelector('#pcPrevGrpHost input[type=hidden]');
+            var url = '/Warehouse/PartCatalogueAdmin/Preview?key=' + encodeURIComponent(keySel.value)
+                + '&requesterEmployeeId=' + encodeURIComponent((req && req.value) || '0')
+                + (grp && grp.value ? '&commodityGroupId=' + encodeURIComponent(grp.value) : '');
+            fetch(url, { credentials: 'same-origin' })
+                .then(function (r) { return r.ok ? r.text() : ''; })
+                .then(function (html) { prevOut.innerHTML = html; });   // HTML comes from our own server-encoded partial
+        };
+        document.querySelectorAll('[data-pc-preview]').forEach(function (b) {
+            b.addEventListener('click', function () { runPreview(b.dataset.pcPreview); });
+        });
+    }
 })();

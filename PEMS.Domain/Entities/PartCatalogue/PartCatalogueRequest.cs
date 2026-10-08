@@ -10,6 +10,8 @@ public static class PartCatalogueRequestTypes
 
 public static class PartCatalogueStatuses
 {
+    /// <summary>ثبت‌شده ولی مدیر مستقیم از ساختار سازمانی قابل‌تعیین نیست («Organization Resolution Required»)؛ پس از اصلاح ساختار با «تلاش مجدد مسیریابی» ادامه می‌یابد.</summary>
+    public const string OrganizationResolutionRequired = "OrgResolution";
     public const string Draft = "Draft";
 
     /// <summary>در جریان تأیید (گام جاری در CurrentStepKey).</summary>
@@ -45,6 +47,15 @@ public class PartCatalogueRequest : BaseEntity
     public string RequestType { get; set; } = PartCatalogueRequestTypes.Add;
     public string Status { get; set; } = PartCatalogueStatuses.Draft;
     public string? CurrentStepKey { get; set; }
+
+    /// <summary>
+    /// WorkflowInstance جاری/آخر در PEMS.WorkflowPlatform (مرجع نهایی مسیر تأیید). null = درخواست Legacy که با مسیریاب قدیمی
+    /// ماژول (PartCatalogueRoutingPlanner) ثبت شده؛ Steps/Approvals فقط Projection خواندنی برای UI/چاپ هستند.
+    /// </summary>
+    public int? WorkflowInstanceId { get; set; }
+
+    /// <summary>دلیل توقف مسیریابی (کد تشخیصی سازمانی) وقتی Status = OrgResolution؛ در غیر این‌صورت null.</summary>
+    public string? RoutingBlockReason { get; set; }
 
     /// <summary>۲ - Urgent (فوری ⇒ برجسته و مرتب‌شده در ابتدای صف‌ها).</summary>
     public bool Urgent { get; set; }
@@ -262,4 +273,8 @@ public static class PartCatalogueActions
     public const string Skip = "Skip";
     public const string RegisterPartNumber = "RegisterPartNumber";
     public const string AdminOverride = "AdminOverride";
+    /// <summary>ثبت شد ولی مدیر مستقیم از ساختار سازمانی قابل‌تعیین نیست (Comment = کد مشکل).</summary>
+    public const string OrgResolutionRequired = "OrgResolutionRequired";
+    /// <summary>تلاش مجدد مسیریابی پس از اصلاح ساختار سازمانی.</summary>
+    public const string RetryRouting = "RetryRouting";
 }

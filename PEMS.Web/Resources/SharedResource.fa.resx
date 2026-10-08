@@ -892,4 +892,205 @@
   <data name="Part Catalogue Requests" xml:space="preserve"><value>درخواست‌های کاتالوگ قطعه</value></data>
   <data name="Part Catalogue Request" xml:space="preserve"><value>درخواست کاتالوگ قطعه</value></data>
   <data name="Part Catalogue Administration" xml:space="preserve"><value>مدیریت کاتالوگ قطعه</value></data>
+  <data name="Pc_Route_NoEligibleApprover" xml:space="preserve"><value>برای این مرحله‌ی تأیید، تأییدکننده‌ی واجد شرایطی تعریف نشده است. لطفاً با مدیریت زنجیره تأمین تماس بگیرید. مرحله:</value></data>
+  <data name="Pc_Err_WorkflowNotConfigured" xml:space="preserve"><value>گردش‌کار تأیید کاتالوگ قطعه پیکربندی نشده است. لطفاً با مدیر سیستم تماس بگیرید.</value></data>
+  <data name="Pc_Route_State_NO_CONFIGURATION" xml:space="preserve"><value>پیکربندی مسئولیت برای مرحله وجود ندارد:</value></data>
+  <data name="Pc_Route_State_NO_ELIGIBLE_ACTOR" xml:space="preserve"><value>هیچ‌کس واجد شرایط اقدام روی مرحله نیست:</value></data>
+  <data name="Pc_Route_State_REQUESTER_ONLY" xml:space="preserve"><value>فقط خود درخواست‌دهنده برای مرحله تعریف شده (تفکیک وظایف مانع است):</value></data>
+  <data name="Pc_Route_State_INACTIVE_ACTOR" xml:space="preserve"><value>همه‌ی افراد تعریف‌شده غیرفعال‌اند یا تخصیصشان منقضی شده، مرحله:</value></data>
+  <data name="Pc_Route_State_WRONG_ORGANIZATION_SCOPE" xml:space="preserve"><value>افراد تعریف‌شده خارج از محدوده‌ی سازمانی لازم‌اند، مرحله:</value></data>
+  <data name="Pc_Route_State_WRONG_COMMODITY_SCOPE" xml:space="preserve"><value>هیچ مسئولی برای این گروه کالایی تعریف نشده، مرحله:</value></data>
+  <data name="Pc_Route_State_MISSING_PERMISSION" xml:space="preserve"><value>افراد تعریف‌شده مجوز/نقش لازم را ندارند، مرحله:</value></data>
+  <data name="Pc_Route_State_RESOLVED" xml:space="preserve"><value>حل‌شده (بدون مشکل)، مرحله:</value></data>
+  <data name="Pc_Route_State_MULTIPLE_ELIGIBLE_ACTORS" xml:space="preserve"><value>چند بازیگر واجد شرایط، مرحله:</value></data>
+  <data name="Pc_Route_State_NOT_APPLICABLE" xml:space="preserve"><value>مرحله کاربرد ندارد:</value></data>
+  <data name="Pc_Adm_StepsHint" xml:space="preserve"><value>مراحل در موتور مشترک گردش‌کار (PEMS.WorkflowPlatform) تعریف شده‌اند. مراحل و شرط‌های ورود را در طراح گردش‌کار ویرایش کنید.</value></data>
+  <data name="Pc_Adm_OpenWorkflowDesigner" xml:space="preserve"><value>باز کردن طراح گردش‌کار</value></data>
+  <data name="Pc_Adm_Responsibility" xml:space="preserve"><value>مسئولیت</value></data>
+  <data name="Pc_Adm_NoWorkflow" xml:space="preserve"><value>گردش‌کار تأیید ثبت نشده است.</value></data>
+  <data name="Pc_Adm_DataQuality" xml:space="preserve"><value>کیفیت داده‌ی پیکربندی</value></data>
+  <data name="Pc_Adm_Severity" xml:space="preserve"><value>شدت</value></data>
+  <data name="Pc_Adm_Finding" xml:space="preserve"><value>یافته</value></data>
+  <data name="Pc_Adm_NoFindings" xml:space="preserve"><value>مشکلی در پیکربندی یافت نشد.</value></data>
+  <data name="Pc_Adm_Responsibilities" xml:space="preserve"><value>مسئولیت‌های تأیید</value></data>
+  <data name="Pc_Adm_ResponsibilitiesHint" xml:space="preserve"><value>هر مرحله‌ی گردش‌کار تأییدکنندگانش را از یک مسئولیت حل می‌کند: سمت(ها)، نقش اختیاری، محدوده‌ی سازمانی و (برای بازبینی گروه کالایی) نگاشت گروه کالایی. هیچ فردی ثابت‌نویسی نشده است.</value></data>
+  <data name="Pc_Adm_Kind" xml:space="preserve"><value>منبع</value></data>
+  <data name="Pc_Adm_RequiredAction" xml:space="preserve"><value>مجوز لازم</value></data>
+  <data name="Pc_Adm_Positions" xml:space="preserve"><value>سمت‌ها</value></data>
+  <data name="Pc_Adm_PositionsHint" xml:space="preserve"><value>برای انتخاب چندتایی Ctrl را نگه دارید؛ ترتیب، اولویت در حالت تک‌بازیگر است.</value></data>
+  <data name="Pc_Adm_Role" xml:space="preserve"><value>نقش (اختیاری)</value></data>
+  <data name="Pc_Adm_ManagerLevel" xml:space="preserve"><value>سطح مدیر</value></data>
+  <data name="Pc_Adm_ScopeType" xml:space="preserve"><value>نوع محدوده</value></data>
+  <data name="Pc_Adm_ScopeValue" xml:space="preserve"><value>شناسه‌های محدوده</value></data>
+  <data name="Pc_Adm_ScopeValueHint" xml:space="preserve"><value>شناسه‌ها با کاما</value></data>
+  <data name="Pc_Adm_Strategy" xml:space="preserve"><value>راهبرد انتخاب</value></data>
+  <data name="Pc_Adm_Diagnose" xml:space="preserve"><value>تشخیص</value></data>
+  <data name="Pc_Adm_CommodityResp" xml:space="preserve"><value>مسئولیت گروه کالایی</value></data>
+  <data name="Pc_Adm_CommodityRespHint" xml:space="preserve"><value>یک گروه کالایی را به سمت (ترجیحی) یا به‌عنوان Override قابل‌ممیزی به یک کارمند نگاشت کنید. فقط برای مسئولیت‌های با منبع «مسئول گروه کالایی».</value></data>
+  <data name="Pc_Adm_NoCommodityResp" xml:space="preserve"><value>هنوز نگاشتی برای مسئولیت گروه کالایی ثبت نشده است.</value></data>
+  <data name="Pc_Adm_Position" xml:space="preserve"><value>سمت</value></data>
+  <data name="Pc_Adm_EmployeeOverride" xml:space="preserve"><value>Override کارمند</value></data>
+  <data name="Pc_Adm_Legacy" xml:space="preserve"><value>منبع قدیمی</value></data>
+  <data name="Pc_Adm_ResolutionState" xml:space="preserve"><value>وضعیت حل</value></data>
+  <data name="Pc_Adm_Eligible" xml:space="preserve"><value>واجد شرایط</value></data>
+  <data name="Pc_Adm_Excluded" xml:space="preserve"><value>حذف‌شده</value></data>
+  <data name="Pc_ResKind_AssignmentPool" xml:space="preserve"><value>فهرست صریح (قدیمی)</value></data>
+  <data name="Pc_ResKind_PositionScope" xml:space="preserve"><value>سمت / نقش / محدوده</value></data>
+  <data name="Pc_ResKind_RequesterManager" xml:space="preserve"><value>زنجیره‌ی مدیر درخواست‌دهنده</value></data>
+  <data name="Pc_ResKind_CommodityPosition" xml:space="preserve"><value>مسئول گروه کالایی</value></data>
+  <data name="Pc_Scope_None" xml:space="preserve"><value>بدون محدوده</value></data>
+  <data name="Pc_Scope_Department" xml:space="preserve"><value>واحد سازمانی</value></data>
+  <data name="Pc_Scope_Discipline" xml:space="preserve"><value>دیسیپلین</value></data>
+  <data name="Pc_Scope_MaintenanceGroup" xml:space="preserve"><value>گروه تعمیرات</value></data>
+  <data name="Pc_Scope_Team" xml:space="preserve"><value>تیم</value></data>
+  <data name="Pc_Strategy_Queue" xml:space="preserve"><value>صف (هر واجد شرایط)</value></data>
+  <data name="Pc_Strategy_SingleActor" xml:space="preserve"><value>تک‌بازیگر</value></data>
+  <data name="SR_Remaining" xml:space="preserve"><value>باقی‌مانده</value></data>
+  <data name="SR_IssueNow" xml:space="preserve"><value>تحویل در این مرحله</value></data>
+  <data name="SR_IssuePartialOrFull" xml:space="preserve"><value>تحویل (کامل یا بخشی)</value></data>
+  <data name="SR_IssueHint" xml:space="preserve"><value>اگر همه‌ی خانه‌ها خالی باشد، تمام باقی‌مانده‌ی رزرو تحویل می‌شود.</value></data>
+  <data name="SR_CloseShort" xml:space="preserve"><value>بستن با کسری</value></data>
+  <data name="SR_AdvanceTo" xml:space="preserve"><value>ارتقا به</value></data>
+  <data name="Pc_Status_OrgResolution" xml:space="preserve"><value>نیازمند تکمیل ساختار سازمانی</value></data>
+  <data name="Pc_Route_State_ORGANIZATION_RESOLUTION_REQUIRED" xml:space="preserve"><value>مدیر مستقیم از ساختار سازمانی قابل‌تعیین نیست (کد دلیل):</value></data>
+  <data name="Pc_Org_Blocked_Title" xml:space="preserve"><value>نیازمند تکمیل ساختار سازمانی</value></data>
+  <data name="Pc_Org_Blocked_Body" xml:space="preserve"><value>درخواست دریافت شد ولی مدیر مستقیم شما از ساختار سازمانی قابل‌تعیین نیست. درخواست نه رد شده و نه تأیید. مدیر سازمان باید ساختار را تکمیل کند؛ سپس می‌توان مسیریابی را دوباره انجام داد.</value></data>
+  <data name="Pc_Org_Blocked_Hint" xml:space="preserve"><value>تأییدکننده هرگز دستی انتخاب نمی‌شود: پس از اصلاح ساختار، Resolver مرکزی تصمیم می‌گیرد.</value></data>
+  <data name="Pc_Btn_RetryRouting" xml:space="preserve"><value>تلاش مجدد مسیریابی</value></data>
+  <data name="Pc_Msg_RoutingRetried" xml:space="preserve"><value>مسیر تعیین شد و درخواست در جریان تأیید است.</value></data>
+  <data name="Pc_Action_OrgResolutionRequired" xml:space="preserve"><value>نیازمند تکمیل ساختار سازمانی</value></data>
+  <data name="Pc_Action_RetryRouting" xml:space="preserve"><value>تلاش مجدد مسیریابی</value></data>
+  <data name="Org_Issue_SELF_PARENT" xml:space="preserve"><value>سمتی والد خودش تعریف شده است.</value></data>
+  <data name="Org_Issue_HIERARCHY_CYCLE" xml:space="preserve"><value>سلسله‌مراتب مدیریتی دور دارد.</value></data>
+  <data name="Org_Issue_PARENT_POSITION_INACTIVE" xml:space="preserve"><value>سمت مافوق غیرفعال است.</value></data>
+  <data name="Org_Issue_PARENT_POSITION_VACANT" xml:space="preserve"><value>سمت مافوق دارنده‌ی فعلی ندارد.</value></data>
+  <data name="Org_Issue_HOLDER_EMPLOYEE_INACTIVE" xml:space="preserve"><value>دارنده‌ی سمت مدیر غیرفعال است.</value></data>
+  <data name="Org_Issue_EMPLOYEE_NO_PRIMARY_POSITION" xml:space="preserve"><value>درخواست‌دهنده سمت اصلیِ معتبر ندارد.</value></data>
+  <data name="Org_Issue_MULTIPLE_PRIMARY_POSITIONS" xml:space="preserve"><value>درخواست‌دهنده بیش از یک سمت اصلیِ معتبر دارد.</value></data>
+  <data name="Org_Issue_PRIMARY_POSITION_INACTIVE" xml:space="preserve"><value>سمت اصلی درخواست‌دهنده غیرفعال است.</value></data>
+  <data name="Org_Issue_ASSIGNMENT_EXPIRED" xml:space="preserve"><value>تخصیص مدیر خارج از بازه‌ی اعتبار است.</value></data>
+  <data name="Org_Issue_ASSIGNMENT_NOT_YET_EFFECTIVE" xml:space="preserve"><value>تخصیص هنوز شروع نشده است.</value></data>
+  <data name="Org_Issue_ROOT_POSITION_NO_PARENT" xml:space="preserve"><value>سمت درخواست‌دهنده سمت ریشه و بدون مافوق است (مدیر مستقیم ندارد).</value></data>
+  <data name="Org_Issue_POSITION_WITHOUT_DEPARTMENT" xml:space="preserve"><value>سمت، دپارتمان یا تیم ندارد.</value></data>
+  <data name="Org_Issue_POSITION_DEPARTMENT_INACTIVE" xml:space="preserve"><value>دپارتمان سمت غیرفعال است.</value></data>
+  <data name="Org_Issue_HOLDER_IS_REQUESTER" xml:space="preserve"><value>دارنده‌ی سمت مدیر خود درخواست‌دهنده است.</value></data>
+  <data name="Org_Issue_ORGANIZATION_RESOLUTION_REQUIRED" xml:space="preserve"><value>ساختار سازمانی ناقص است.</value></data>
+  <data name="IC_OrganizationStructure_Title" xml:space="preserve"><value>ایمپورت ساختار سازمانی</value></data>
+  <data name="IC_OrganizationStructure_Desc" xml:space="preserve"><value>ایمپورت سمت‌ها، سلسله‌مراتب مدیریتی (سمت مافوق)، دارندگان و تاریخ‌های اعتبار از اکسل.</value></data>
+  <data name="IC_OrganizationStructure_Flow" xml:space="preserve"><value>آپلود ← اعتبارسنجی کل فایل ← تأیید (همه یا هیچ). هیچ چیز حدس زده یا پر نمی‌شود.</value></data>
+  <data name="Org_Title" xml:space="preserve"><value>ساختار سازمانی</value></data>
+  <data name="Org_Intro" xml:space="preserve"><value>سمت‌ها، سلسله‌مراتب مدیریتی (سمت مافوق)، دارندگان و تاریخ‌های اعتبار. مدیر مستقیم گردش‌کارها فقط از همین ساختار تعیین می‌شود: کارمند ← سمت اصلی ← سمت مافوق ← دارنده‌ی سمت.</value></data>
+  <data name="Org_Team_Not_Manager" xml:space="preserve"><value>سرپرست تیم یک نقش عملیاتی است و «مدیر مستقیم» نیست. با رفتن یک نفر، سمت خالی (Vacant) می‌ماند و ساختار از بین نمی‌رود.</value></data>
+  <data name="Org_Tab_Positions" xml:space="preserve"><value>سمت‌ها</value></data>
+  <data name="Org_Tab_Tree" xml:space="preserve"><value>سلسله‌مراتب</value></data>
+  <data name="Org_Col_Position" xml:space="preserve"><value>سمت</value></data>
+  <data name="Org_Col_Department" xml:space="preserve"><value>دپارتمان</value></data>
+  <data name="Org_Col_Code" xml:space="preserve"><value>کد</value></data>
+  <data name="Org_Col_Parent" xml:space="preserve"><value>سمت مافوق</value></data>
+  <data name="Org_Col_Holder" xml:space="preserve"><value>دارنده</value></data>
+  <data name="Org_Inactive" xml:space="preserve"><value>غیرفعال</value></data>
+  <data name="Org_Vacant" xml:space="preserve"><value>خالی</value></data>
+  <data name="Org_Primary" xml:space="preserve"><value>اصلی</value></data>
+  <data name="Org_EffectiveFrom" xml:space="preserve"><value>اعتبار از</value></data>
+  <data name="Org_EffectiveTo" xml:space="preserve"><value>اعتبار تا</value></data>
+  <data name="Org_NoParent_Root" xml:space="preserve"><value>— ندارد (سمت ریشه) —</value></data>
+  <data name="Org_SelectEmployee" xml:space="preserve"><value>انتخاب کارمند…</value></data>
+  <data name="Org_Empty" xml:space="preserve"><value>هنوز سمتی ثبت نشده است.</value></data>
+  <data name="Org_Btn_Save" xml:space="preserve"><value>ذخیره</value></data>
+  <data name="Org_Btn_Assign" xml:space="preserve"><value>تخصیص</value></data>
+  <data name="Org_Btn_End" xml:space="preserve"><value>پایان تخصیص</value></data>
+  <data name="Org_Confirm_End" xml:space="preserve"><value>این تخصیص پایان یابد؟ سمت خالی می‌شود و تاریخچه حفظ می‌ماند.</value></data>
+  <data name="Org_Msg_HierarchySaved" xml:space="preserve"><value>سلسله‌مراتب سمت ذخیره شد.</value></data>
+  <data name="Org_Msg_Assigned" xml:space="preserve"><value>کارمند تخصیص یافت.</value></data>
+  <data name="Org_Msg_AssignmentUpdated" xml:space="preserve"><value>تخصیص به‌روز شد.</value></data>
+  <data name="Org_Msg_AssignmentEnded" xml:space="preserve"><value>تخصیص پایان یافت.</value></data>
+  <data name="Org_Err_Generic" xml:space="preserve"><value>تغییر پذیرفته نشد.</value></data>
+  <data name="Org_Err_PositionNotFound" xml:space="preserve"><value>سمت یافت نشد.</value></data>
+  <data name="Org_Err_CodeTooLong" xml:space="preserve"><value>کد سمت بیش از حد طولانی است.</value></data>
+  <data name="Org_Err_DuplicatePositionCode" xml:space="preserve"><value>سمت دیگری از این کد استفاده می‌کند:</value></data>
+  <data name="Org_Err_Concurrency" xml:space="preserve"><value>رکورد توسط شخص دیگری تغییر کرده؛ صفحه را تازه کنید.</value></data>
+  <data name="Org_Err_PositionInactive" xml:space="preserve"><value>سمت غیرفعال است.</value></data>
+  <data name="Org_Err_EmployeeNotFound" xml:space="preserve"><value>کارمند یافت نشد.</value></data>
+  <data name="Org_Err_EmployeeInactive" xml:space="preserve"><value>کارمند غیرفعال است.</value></data>
+  <data name="Org_Err_InvalidDates" xml:space="preserve"><value>تاریخ پایان نباید قبل از تاریخ شروع باشد.</value></data>
+  <data name="Org_Err_PositionOccupied" xml:space="preserve"><value>سمت هم‌اکنون دارنده دارد؛ ابتدا آن تخصیص را پایان دهید.</value></data>
+  <data name="Org_Err_DuplicatePrimary" xml:space="preserve"><value>کارمند هم‌اکنون یک سمت اصلیِ فعال دارد.</value></data>
+  <data name="Org_Err_AssignmentNotFound" xml:space="preserve"><value>تخصیص یافت نشد.</value></data>
+  <data name="Org_Err_AssignmentClosed" xml:space="preserve"><value>تخصیص قبلاً بسته شده است.</value></data>
+  <data name="Org_Diag_Title" xml:space="preserve"><value>عیب‌یابی ساختار سازمانی</value></data>
+  <data name="Org_Diag_Intro" xml:space="preserve"><value>مشکلات ساختاری که مانع تعیین مدیر مستقیم می‌شوند و درخواست‌هایی که منتظر تکمیل ساختارند. P1 مانع تعیین است، P2 هشدار و P3 اطلاعاتی.</value></data>
+  <data name="Org_Diag_Blocked" xml:space="preserve"><value>درخواست‌های منتظر تکمیل ساختار سازمانی</value></data>
+  <data name="Org_Diag_NoBlocked" xml:space="preserve"><value>هیچ درخواستی منتظر نیست.</value></data>
+  <data name="Org_Diag_Request" xml:space="preserve"><value>درخواست</value></data>
+  <data name="Org_Diag_Requester" xml:space="preserve"><value>درخواست‌دهنده</value></data>
+  <data name="Org_Diag_Reason" xml:space="preserve"><value>دلیل</value></data>
+  <data name="Org_Diag_Open" xml:space="preserve"><value>باز کردن</value></data>
+  <data name="Org_Diag_Issues" xml:space="preserve"><value>مشکلات ساختار</value></data>
+  <data name="Org_Diag_NoIssues" xml:space="preserve"><value>مشکل ساختاری یافت نشد.</value></data>
+  <data name="Org_Diag_Code" xml:space="preserve"><value>کد</value></data>
+  <data name="Org_Diag_Subject" xml:space="preserve"><value>موضوع</value></data>
+  <data name="Org_Diag_Message" xml:space="preserve"><value>جزئیات</value></data>
+  <data name="Org_Imp_Title" xml:space="preserve"><value>ایمپورت ساختار سازمانی</value></data>
+  <data name="Org_Imp_Intro" xml:space="preserve"><value>ایمپورت کنترل‌شده‌ی ساختار سازمانی. کل فایل ابتدا اعتبارسنجی می‌شود؛ هر خطا یعنی هیچ چیز ذخیره نمی‌شود. هیچ مدیر، دپارتمان یا کارمندی حدس زده یا ساخته نمی‌شود.</value></data>
+  <data name="Org_Imp_Columns" xml:space="preserve"><value>ستون‌های الزامی: Department، PositionCode و PositionTitle (یا Position). اختیاری: ParentPositionCode، EmployeePersonnelCode، IsPrimary، AssignmentType (Primary/Secondary)، EffectiveFrom، EffectiveTo.</value></data>
+  <data name="Org_Imp_Rules" xml:space="preserve"><value>رد می‌شود: مافوق/کارمند/دپارتمان ناشناخته، کد تکراری، والدِ خود، دور، دارنده‌ی غیرفعال، تاریخ نامعتبر، سمت اصلیِ تکراری، سمتی که دارنده‌ی دیگری دارد.</value></data>
+  <data name="Org_Imp_Validate" xml:space="preserve"><value>اعتبارسنجی فایل</value></data>
+  <data name="Org_Imp_Template" xml:space="preserve"><value>دانلود قالب</value></data>
+  <data name="Org_Imp_NoFile" xml:space="preserve"><value>فایلی انتخاب نشده.</value></data>
+  <data name="Org_Imp_BadFile" xml:space="preserve"><value>فقط فایل .xlsx تا ۵ مگابایت پذیرفته می‌شود.</value></data>
+  <data name="Org_Imp_Expired" xml:space="preserve"><value>فایل اعتبارسنجی‌شده منقضی شد؛ دوباره آپلود کنید.</value></data>
+  <data name="Org_Imp_Committed" xml:space="preserve"><value>ایمپورت ذخیره شد.</value></data>
+  <data name="Org_Imp_Rejected" xml:space="preserve"><value>فایل رد شد. هیچ چیز ذخیره نشد.</value></data>
+  <data name="Org_Imp_ValidOk" xml:space="preserve"><value>فایل معتبر است. هنوز چیزی ذخیره نشده؛ تعداد تغییرات را بررسی و تأیید کنید.</value></data>
+  <data name="Org_Imp_PosCreated" xml:space="preserve"><value>سمت‌های ایجادشده</value></data>
+  <data name="Org_Imp_PosUpdated" xml:space="preserve"><value>سمت‌های به‌روزشده</value></data>
+  <data name="Org_Imp_AsgCreated" xml:space="preserve"><value>تخصیص‌های ایجادشده</value></data>
+  <data name="Org_Imp_AsgUpdated" xml:space="preserve"><value>تخصیص‌های به‌روزشده</value></data>
+  <data name="Org_Imp_Unchanged" xml:space="preserve"><value>بدون تغییر</value></data>
+  <data name="Org_Imp_Errors" xml:space="preserve"><value>خطاها</value></data>
+  <data name="Org_Imp_Warnings" xml:space="preserve"><value>هشدارها</value></data>
+  <data name="Org_Imp_Confirm" xml:space="preserve"><value>تأیید و ذخیره</value></data>
+  <data name="Org_Imp_ConfirmPrompt" xml:space="preserve"><value>ساختار سازمانی اعتبارسنجی‌شده ذخیره شود؟</value></data>
+  <data name="Pc_Adm_OrgHierarchyTitle" xml:space="preserve"><value>مدیر مستقیم</value></data>
+  <data name="Pc_Adm_OrgHierarchyBody" xml:space="preserve"><value>مدیر مستقیم و مدیر ارشد این ماژول فقط از سلسله‌مراتب سازمانی مرکزی (کارمند ← سمت اصلی ← سمت مافوق ← دارنده‌ی سمت) تعیین می‌شود. لینک‌های مدیرِ محلی ماژول منسوخ شده و دیگر استفاده نمی‌شوند.</value></data>
+  <data name="Org_Issue_MULTIPLE_ACTIVE_HOLDERS" xml:space="preserve"><value>سمت بیش از یک دارنده‌ی هم‌زمانِ معتبر دارد.</value></data>
+  <data name="Org_Ready_Title" xml:space="preserve"><value>آمادگی داده‌ی پایه‌ی سازمانی</value></data>
+  <data name="Org_Ready_Note" xml:space="preserve"><value>فقط شمارش. خطوط گزارش‌دهی باید از منبع مجازِ کسب‌وکاری (صفحه‌ی مدیریت یا ایمپورت ساختار سازمانی) تأمین شود؛ هیچ چیز از دپارتمان، تیم، نقش یا عنوان حدس زده نمی‌شود.</value></data>
+  <data name="Org_Ready_ActivePositions" xml:space="preserve"><value>سمت‌های فعال</value></data>
+  <data name="Org_Ready_WithParent" xml:space="preserve"><value>سمت‌های دارای سمت مافوق</value></data>
+  <data name="Org_Ready_Roots" xml:space="preserve"><value>سمت‌های ریشه (بدون مافوق)</value></data>
+  <data name="Org_Ready_Vacant" xml:space="preserve"><value>سمت‌های فعالِ خالی</value></data>
+  <data name="Org_Ready_NoDept" xml:space="preserve"><value>سمت‌های فعال بدون دپارتمان</value></data>
+  <data name="Org_Ready_ActiveEmployees" xml:space="preserve"><value>کارمندان فعال</value></data>
+  <data name="Org_Ready_WithPrimary" xml:space="preserve"><value>کارمندان فعال با سمت اصلیِ معتبر</value></data>
+  <data name="Org_Ready_NoPersonnelCode" xml:space="preserve"><value>کارمندان فعال بدون کد پرسنلی (در ایمپورت ساختار سازمانی قابل تطبیق نیستند)</value></data>
+  <data name="Org_Ready_UsersNoPrimary" xml:space="preserve"><value>کاربران فعال بدون سمت اصلیِ معتبر</value></data>
+  <data name="Org_Chart_Title" xml:space="preserve"><value>نمودار سازمانی</value></data>
+  <data name="Org_Chart_Intro" xml:space="preserve"><value>نمای فقط‌خواندنی سلسله‌مراتب سمت‌ها: هر کادر یک سمت است و کارمند دارنده‌ی فعلی آن. سمت‌های خالی نمایش داده می‌شوند. نمودار همان ساختاری را نشان می‌دهد که قاعده‌ی مدیر مستقیم گردش‌کار استفاده می‌کند؛ چیزی حدس زده نمی‌شود.</value></data>
+  <data name="Org_Chart_Container" xml:space="preserve"><value>ریشه‌های سازمان</value></data>
+  <data name="Org_Chart_Secondary" xml:space="preserve"><value>فرعی</value></data>
+  <data name="Org_Chart_Assignment" xml:space="preserve"><value>تخصیص</value></data>
+  <data name="Org_Chart_Team" xml:space="preserve"><value>تیم</value></data>
+  <data name="Org_Chart_Reports" xml:space="preserve"><value>زیردستان مستقیم</value></data>
+  <data name="Org_Chart_Manage" xml:space="preserve"><value>مدیریت در ساختار سازمانی</value></data>
+  <data name="Org_Chart_ValidRoot" xml:space="preserve"><value>سمت ریشه</value></data>
+  <data name="Org_Chart_Orphan" xml:space="preserve"><value>مافوق نامعتبر</value></data>
+  <data name="Org_Chart_Cycle" xml:space="preserve"><value>دور در سلسله‌مراتب</value></data>
+  <data name="Org_Chart_Issue" xml:space="preserve"><value>مشکل</value></data>
+  <data name="Org_Chart_Select" xml:space="preserve"><value>برای دیدن جزئیات، یک سمت را انتخاب کنید.</value></data>
+  <data name="Org_Chart_Loading" xml:space="preserve"><value>در حال بارگذاری نمودار سازمانی…</value></data>
+  <data name="Org_Chart_Error" xml:space="preserve"><value>بارگذاری نمودار سازمانی ناموفق بود. دوباره تلاش کنید.</value></data>
+  <data name="Org_Chart_Fit" xml:space="preserve"><value>تنظیم روی صفحه</value></data>
+  <data name="Org_Chart_ZoomIn" xml:space="preserve"><value>بزرگ‌نمایی</value></data>
+  <data name="Org_Chart_ZoomOut" xml:space="preserve"><value>کوچک‌نمایی</value></data>
+  <data name="Org_Chart_ExpandAll" xml:space="preserve"><value>باز کردن همه</value></data>
+  <data name="Org_Chart_CollapseAll" xml:space="preserve"><value>بستن همه</value></data>
+  <data name="Org_Chart_Search" xml:space="preserve"><value>جستجوی سمت / کارمند (Enter)</value></data>
+  <data name="Org_Cons_Title" xml:space="preserve"><value>سازگاری کارمند / سمت</value></data>
+  <data name="Org_Cons_Note" xml:space="preserve"><value>فقط‌خواندنی. دپارتمان کارمند را با دپارتمان سمتِ اصلیِ فعالش مقایسه می‌کند. تعارض‌ها فقط گزارش می‌شوند و هرگز خودکار اصلاح نمی‌شوند.</value></data>
+  <data name="Org_Cons_None" xml:space="preserve"><value>هنوز هیچ کارمندی سمت اصلیِ معتبر ندارد.</value></data>
+  <data name="Org_Cons_EmpDept" xml:space="preserve"><value>دپارتمان کارمند</value></data>
+  <data name="Org_Cons_PosDept" xml:space="preserve"><value>دپارتمان سمت</value></data>
+  <data name="Org_Cons_Legacy" xml:space="preserve"><value>Employee.PositionId میراثی در برابر تخصیص اصلیِ فعال</value></data>
+  <data name="Org_Cons_LegacyNone" xml:space="preserve"><value>هیچ کارمندی از پیوند سمتِ میراثی استفاده نمی‌کند</value></data>
 </root>

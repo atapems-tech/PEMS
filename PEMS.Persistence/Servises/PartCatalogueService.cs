@@ -1,10 +1,15 @@
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.ActorResolution;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Application.PartCatalogue;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
+using PEMS.Persistence.Workflow;
+using PEMS.WorkflowPlatform.Entities;
+using PEMS.WorkflowPlatform.Interfaces;
+using PEMS.WorkflowPlatform.Services;
 
 namespace PEMS.Persistence.Services;
 
@@ -23,10 +28,19 @@ public class PartCatalogueService : IPartCatalogueService
     private readonly IFileStorageService _files;
     private readonly IRoleModuleActionService _actions;
     private readonly PartCatalogueOptions _options;
+    private readonly IWorkflowRuntime _runtime;
+    private readonly IWorkflowInstanceControl _control;
+    private readonly IWorkflowBindingService _bindings;
+    private readonly IEnterpriseActorResolver _resolver;
 
     public PartCatalogueService(PEMSDbContext ctx, INumberingService numbering, INotificationService notifications,
-        IFileStorageService files, IRoleModuleActionService actions, PartCatalogueOptions options)
+        IFileStorageService files, IRoleModuleActionService actions, PartCatalogueOptions options,
+        IWorkflowRuntime runtime, IWorkflowInstanceControl control, IWorkflowBindingService bindings, IEnterpriseActorResolver resolver)
     {
+        _runtime = runtime;
+        _control = control;
+        _bindings = bindings;
+        _resolver = resolver;
         _ctx = ctx;
         _numbering = numbering;
         _notifications = notifications;
@@ -59,6 +73,9 @@ public class PartCatalogueService : IPartCatalogueService
         if (!await HasAsync(a, "View") && !await HasAsync(a, "Review") && !await HasAsync(a, "Approve") && !await HasAsync(a, "Admin"))
             return false;
         if (await CanSeeAllAsync(a)) return true;
+
+        if (r.WorkflowInstanceId.HasValue)
+            return await _ctx.WorkflowInstanceStageCandidates.AsNoTracking().AnyAsync(c => c.EmployeeId == a.EmployeeId && c.InstanceStage!.WorkflowInstanceId == r.WorkflowInstanceId);
 
         var pool = await MyPoolKeysAsync(a.EmployeeId);
         return await _ctx.PartCatalogueRequestSteps.AnyAsync(s =>
@@ -476,77 +493,112 @@ public class PartCatalogueService : IPartCatalogueService
         var validation = PartCatalogueValidator.Validate(form, ctx, forSubmit: true);
         if (!validation.Success) return validation;
 
-        // ---- مسیر (داده‌محور)
-        var defs = await _ctx.PartCatalogueWorkflowSteps.Where(s => s.IsActive).OrderBy(s => s.StepOrder).ToListAsync();
-        var section = e.SectionId.HasValue
-            ? await _ctx.PartCatalogueSections.Where(s => s.SectionId == e.SectionId).Select(s => new { s.RequiresSparePartsReview }).FirstOrDefaultAsync()
-            : null;
+        if (rowVersion is { Length: > 0 }) _ctx.Entry(e).Property(x => x.RowVersion).OriginalValue = rowVersion;
+        var started = await StartRoutingAsync(e, actor, validation);
+        return started;
+    }
 
-        var ceo = (await _ctx.PartCatalogueApproverAssignments.Where(a => a.IsActive && a.StepKey == PartCatalogueApproverAssignment.CeoKey)
-            .Select(a => a.EmployeeId).ToListAsync()).ToHashSet();
-
-        var links = await LoadManagerChainAsync(e.RequesterEmployeeId);
-        var pools = (await _ctx.PartCatalogueApproverAssignments.Where(a => a.IsActive && a.StepKey != PartCatalogueApproverAssignment.CeoKey)
-            .Select(a => new { a.StepKey, a.EmployeeId }).ToListAsync())
-            .GroupBy(a => a.StepKey).ToDictionary(g => g.Key, g => (IReadOnlyList<int>)g.Select(x => x.EmployeeId).ToList());
-
-        var routing = PartCatalogueRoutingPlanner.Plan(
-            defs.Select(d => new RoutingStepDef(d.StepKey, d.StepOrder, d.Kind, d.ApproverSource, d.ConditionKey)),
-            new RoutingContext(
-                e.RequesterEmployeeId, e.IsCritical, e.IsCapital,
-                section?.RequiresSparePartsReview ?? true, e.IsNewManufacturer, ctx.PlanningMethodCode,
-                emp => links.TryGetValue(emp, out var m) ? m : null, ceo,
-                key => pools.TryGetValue(key, out var p) ? p : Array.Empty<int>()));
-
-        if (!routing.IsValid)
-        {
-            var bad = new PcResult();
-            foreach (var (key, stepKey) in routing.Errors) bad.Errors.Add(new PcMessage("Route", key, stepKey));
-            return bad;
-        }
+    /// <summary>
+    /// تلاش مجدد مسیریابی پس از اصلاح ساختار سازمانی (وضعیت OrgResolution). فقط درخواست‌دهنده یا Admin ماژول؛ مدیر هرگز
+    /// تأییدکننده/مدیر را انتخاب نمی‌کند، فقط Resolver مرکزی دوباره اجرا می‌شود. بازیگر Workflow همچنان درخواست‌دهنده‌ی اصلی است.
+    /// </summary>
+    public async Task<PcResult> RetryRoutingAsync(int id, byte[]? rowVersion, PcActor actor)
+    {
+        var e = await LoadTrackedAsync(id, withSteps: true);
+        if (e == null) return PcResult.Fail("Id", "Pc_Err_NotFound");
+        if (e.Status != PartCatalogueStatuses.OrganizationResolutionRequired) return PcResult.Fail("Id", "Pc_Err_NotActionable");
+        var isOwner = e.RequesterEmployeeId == actor.EmployeeId;
+        if (!(isOwner || await HasAsync(actor, "Admin"))) return PcResult.Fail("Id", "Pc_Err_NotAuthorized");
 
         if (rowVersion is { Length: > 0 }) _ctx.Entry(e).Property(x => x.RowVersion).OriginalValue = rowVersion;
+        return await StartRoutingAsync(e, actor, PcResult.Ok());
+    }
 
+    /// <summary>مسیریابی مشترک Submit/Retry. خطای صرفاً سازمانی ⇒ درخواست حفظ و به OrgResolution می‌رود؛ سایر خطاهای پیکربندی ⇒ رد.</summary>
+    private async Task<PcResult> StartRoutingAsync(PartCatalogueRequest e, PcActor actor, PcResult validation)
+    {
         var fromStatus = e.Status;
-        var isResubmit = e.Status == PartCatalogueStatuses.Returned;
+        var isResubmit = fromStatus == PartCatalogueStatuses.Returned;
+        var isRetry = fromStatus == PartCatalogueStatuses.OrganizationResolutionRequired;
 
-        // Snapshot مسیر: گام‌های قبلی (مثلاً قبل از Return) جایگزین می‌شوند؛ تاریخچه در Approval ها می‌ماند
-        _ctx.PartCatalogueRequestSteps.RemoveRange(e.Steps.ToList());
-        e.Steps.Clear();
-        foreach (var p in routing.Steps)
-            e.Steps.Add(new PartCatalogueRequestStep
-            {
-                StepKey = p.StepKey, StepOrder = p.Order, Status = p.Skipped ? PartCatalogueRequestStep.Skipped : PartCatalogueRequestStep.Pending,
-                SkipReason = p.SkipReason, AssignedEmployeeId = p.AssignedEmployeeId
-            });
+        var (route, orgIssue) = await PreviewRouteAsync(e, actor);
+        if (!route.Success) return route;
+
+        if (orgIssue != null)
+        {
+            return await BlockForOrganizationAsync(e, actor, fromStatus, orgIssue, isRetry, validation);
+        }
 
         e.SubmittedDate ??= DateTime.Now;
-        var first = ActivateNext(e);
-        e.Status = first != null ? PartCatalogueStatuses.InApproval : PartCatalogueStatuses.Completed;
-        if (first == null) e.CompletedDate = DateTime.Now;
-        e.CurrentStepKey = first?.StepKey;
+        e.Status = PartCatalogueStatuses.InApproval;   // با ذخیره‌ی Instance (همان DbContext) اتمیک ثبت می‌شود
+        e.RoutingBlockReason = null;
+
+        int instanceId;
+        try
+        {
+            instanceId = await _runtime.StartInstanceAsync(PartCatalogueWorkflow.Module, PartCatalogueWorkflow.EntityType, e.PartCatalogueRequestId,
+                PartCatalogueWorkflow.Context, null, e.RequesterEmployeeId);
+        }
+        catch (WorkflowActorResolutionException ex)
+        {
+            e.Status = fromStatus;
+            if (ex.State == ActorResolutionStates.OrganizationResolutionRequired)
+                return await BlockForOrganizationAsync(e, actor, fromStatus, ex.State, isRetry, validation);
+            var r = new PcResult();
+            r.Errors.Add(new PcMessage("Route", RouteKey(ex.State, await HasAsync(actor, "Admin")), "Pc_Step_" + ex.StageName));
+            return r;
+        }
+        catch (DbUpdateConcurrencyException) { _ctx.ChangeTracker.Clear(); return PcResult.Fail("RowVersion", "Pc_Err_Concurrency"); }
+        catch (InvalidOperationException)
+        {
+            e.Status = fromStatus;
+            return PcResult.Fail("Route", "Pc_Err_WorkflowNotConfigured");
+        }
+
+        e.WorkflowInstanceId = instanceId;
+        var inst = await LatestInstanceAsync(e.PartCatalogueRequestId);
+        e.Status = StatusFromInstance(inst?.Status ?? "Running", PartCatalogueStatuses.InApproval);
+        if (e.Status == PartCatalogueStatuses.Completed) e.CompletedDate = DateTime.Now;
+        await SyncProjectionAsync(e);
 
         e.Approvals.Add(new PartCatalogueRequestApproval
         {
-            StepKey = null, Action = isResubmit ? PartCatalogueActions.Resubmit : PartCatalogueActions.Submit,
+            StepKey = null, Action = isRetry ? PartCatalogueActions.RetryRouting : isResubmit ? PartCatalogueActions.Resubmit : PartCatalogueActions.Submit,
             ActorEmployeeId = actor.EmployeeId, FromStatus = fromStatus, ToStatus = e.Status
         });
 
         try { await _ctx.SaveChangesAsync(); }
         catch (DbUpdateConcurrencyException) { _ctx.ChangeTracker.Clear(); return PcResult.Fail("RowVersion", "Pc_Err_Concurrency"); }
 
-        await NotifyAfterTransitionAsync(e, first, actor.EmployeeId);
+        await NotifyAfterTransitionAsync(e, e.Steps.FirstOrDefault(s => s.Status == PartCatalogueRequestStep.Active), actor.EmployeeId);
         return validation;
     }
 
-    private async Task<Dictionary<int, int?>> LoadManagerChainAsync(int requesterId)
+    private async Task<PcResult> BlockForOrganizationAsync(PartCatalogueRequest e, PcActor actor, string fromStatus, string issue, bool isRetry, PcResult validation)
     {
-        var result = new Dictionary<int, int?>();
-        var link1 = await _ctx.PartCatalogueOrgLinks.Where(l => l.EmployeeId == requesterId).Select(l => (int?)l.ManagerEmployeeId).FirstOrDefaultAsync();
-        result[requesterId] = link1;
-        if (link1.HasValue)
-            result[link1.Value] = await _ctx.PartCatalogueOrgLinks.Where(l => l.EmployeeId == link1.Value).Select(l => (int?)l.ManagerEmployeeId).FirstOrDefaultAsync();
-        return result;
+        if (isRetry)
+        {
+            // هنوز حل نشده: وضعیت و سابقه‌ی قبلی بدون تغییر؛ دلیل فعلی به‌روز و پیام روشن برگردانده می‌شود
+            e.RoutingBlockReason = issue;
+            try { await _ctx.SaveChangesAsync(); }
+            catch (DbUpdateConcurrencyException) { _ctx.ChangeTracker.Clear(); return PcResult.Fail("RowVersion", "Pc_Err_Concurrency"); }
+            var again = new PcResult();
+            again.Errors.Add(new PcMessage("Route", "Pc_Route_State_" + ActorResolutionStates.OrganizationResolutionRequired, issue));
+            return again;
+        }
+
+        e.SubmittedDate ??= DateTime.Now;
+        e.Status = PartCatalogueStatuses.OrganizationResolutionRequired;
+        e.RoutingBlockReason = issue;
+        e.Approvals.Add(new PartCatalogueRequestApproval
+        {
+            StepKey = null, Action = PartCatalogueActions.OrgResolutionRequired, Comment = issue,
+            ActorEmployeeId = actor.EmployeeId, FromStatus = fromStatus, ToStatus = e.Status
+        });
+        try { await _ctx.SaveChangesAsync(); }
+        catch (DbUpdateConcurrencyException) { _ctx.ChangeTracker.Clear(); return PcResult.Fail("RowVersion", "Pc_Err_Concurrency"); }
+        validation.Warnings.Add(new PcMessage("Route", "Pc_Route_State_" + ActorResolutionStates.OrganizationResolutionRequired, issue));
+        return validation;
     }
 
     /// <summary>اولین گام Pending را Active می‌کند (null = مسیر تمام است).</summary>
@@ -557,6 +609,209 @@ public class PartCatalogueService : IPartCatalogueService
         return next;
     }
 
+
+    // ====================================================================== مسیر تأیید روی PEMS.WorkflowPlatform
+    // مرجع نهایی مسیر: IWorkflowRuntime. جدول‌های PartCatalogueRequestStep/Approval فقط Projection خواندنی برای UI و چاپ هستند.
+    // مسیر قدیمی (PartCatalogueRoutingPlanner + ExecuteLegacy...) فقط برای درخواست‌های Legacy (WorkflowInstanceId = null) باقی مانده و DEPRECATED است.
+
+    private static string RouteKey(string state, bool admin) => admin ? "Pc_Route_State_" + state : "Pc_Route_NoEligibleApprover";
+
+    private Task<WorkflowInstance?> LatestInstanceAsync(int requestId) =>
+        _ctx.WorkflowInstances.AsNoTracking()
+            .Where(i => i.Module == PartCatalogueWorkflow.Module && i.BusinessObjectType == PartCatalogueWorkflow.EntityType && i.BusinessObjectId == requestId)
+            .OrderByDescending(i => i.WorkflowInstanceId).FirstOrDefaultAsync();
+
+    private Task<bool> IsCandidateAsync(int instanceId, int employeeId) =>
+        _ctx.WorkflowInstanceStages.AsNoTracking().AnyAsync(s => s.WorkflowInstanceId == instanceId && s.Status == "Pending"
+            && s.Candidates.Any(c => c.IsSelected && c.EmployeeId == employeeId));
+
+    /// <summary>پیش‌بینی مسیر قبل از Submit: همه‌ی مراحل قابل‌اجرا باید بازیگر واجد شرایط داشته باشند، وگرنه Submit با دلیل تشخیصی رد می‌شود.</summary>
+    private async Task<(PcResult Errors, string? OrgIssue)> PreviewRouteAsync(PartCatalogueRequest e, PcActor actor)
+    {
+        var errors = new PcResult();
+        string? orgIssue = null;
+        var binding = await _bindings.ResolveAsync(PartCatalogueWorkflow.Module, PartCatalogueWorkflow.EntityType, PartCatalogueWorkflow.Context);
+        if (binding == null) { errors.Errors.Add(new PcMessage("Route", "Pc_Err_WorkflowNotConfigured")); return (errors, null); }
+
+        var stages = await _ctx.WorkflowStages.AsNoTracking().Where(s => s.WorkflowVersionId == binding.Version.WorkflowVersionId).OrderBy(s => s.StageOrder).ToListAsync();
+        var facts = new Dictionary<string, string?>(await new PartCatalogueWorkflowContextProvider(_ctx)
+            .GetFactsAsync(PartCatalogueWorkflow.Module, PartCatalogueWorkflow.EntityType, e.PartCatalogueRequestId), StringComparer.Ordinal);
+        var conditions = new WorkflowConditionEvaluator(PartCatalogueWorkflow.Fields);
+        var admin = await HasAsync(actor, "Admin");
+
+        foreach (var st in stages.Where(s => !string.IsNullOrWhiteSpace(s.ResponsibilityKey)))
+        {
+            if (!string.IsNullOrWhiteSpace(st.EntryCondition) && !conditions.Evaluate(st.EntryCondition, facts)) continue;
+            var r = await _resolver.ResolveAsync(new ActorResolutionRequest(st.ResponsibilityKey!, e.RequesterEmployeeId, facts));
+            if (r.State == ActorResolutionStates.OrganizationResolutionRequired) { orgIssue ??= r.OrganizationIssue ?? r.State; continue; }
+            if (!r.IsUsable && r.State != ActorResolutionStates.NotApplicable)
+                errors.Errors.Add(new PcMessage("Route", RouteKey(r.State, admin), "Pc_Step_" + st.Name));
+        }
+        return (errors, orgIssue);
+    }
+
+    /// <summary>Projection: وضعیت گام‌ها را از Instance/InstanceStage/History موتور گردش‌کار به PartCatalogueRequestStep منتقل می‌کند.</summary>
+    private async Task SyncProjectionAsync(PartCatalogueRequest e)
+    {
+        var inst = await LatestInstanceAsync(e.PartCatalogueRequestId);
+        if (inst == null) return;
+
+        var stages = await _ctx.WorkflowStages.AsNoTracking().Where(s => s.WorkflowVersionId == inst.WorkflowVersionId).OrderBy(s => s.StageOrder).ToListAsync();
+        var instStages = await _ctx.WorkflowInstanceStages.AsNoTracking().Include(x => x.Candidates).Where(x => x.WorkflowInstanceId == inst.WorkflowInstanceId).ToListAsync();
+        var skips = await _ctx.WorkflowHistories.AsNoTracking().Where(h => h.WorkflowInstanceId == inst.WorkflowInstanceId && h.ActionType == "AutoSkip").ToListAsync();
+        var conds = await _ctx.PartCatalogueWorkflowSteps.AsNoTracking().ToDictionaryAsync(s => s.StepKey, s => s.ConditionKey);
+
+        // پیش‌نمایش شرط‌ها: مراحل هنوز واردنشده با EntryCondition نادرست از همین حالا «Skipped» نمایش داده می‌شوند (اجرای واقعی Skip هنگام ورود به مرحله است)
+        var facts = new Dictionary<string, string?>(await new PartCatalogueWorkflowContextProvider(_ctx)
+            .GetFactsAsync(PartCatalogueWorkflow.Module, PartCatalogueWorkflow.EntityType, e.PartCatalogueRequestId), StringComparer.Ordinal);
+        var evaluator = new WorkflowConditionEvaluator(PartCatalogueWorkflow.Fields);
+
+        _ctx.PartCatalogueRequestSteps.RemoveRange(e.Steps.ToList());
+        e.Steps.Clear();
+
+        foreach (var st in stages)
+        {
+            var step = new PartCatalogueRequestStep { StepKey = st.Name, StepOrder = st.StageOrder, Status = PartCatalogueRequestStep.Pending };
+            var instStage = instStages.Where(x => x.WorkflowStageId == st.WorkflowStageId).OrderByDescending(x => x.WorkflowInstanceStageId).FirstOrDefault();
+            var skip = skips.FirstOrDefault(h => h.FromStageId == st.WorkflowStageId);
+
+            if (inst.Status == "Running" && inst.CurrentStageId == st.WorkflowStageId)
+            {
+                step.Status = PartCatalogueRequestStep.Active;
+                step.ActivatedDate = instStage?.AssignedDate;
+            }
+            else if (instStage != null && instStage.Status == "Approve")
+            {
+                step.Status = PartCatalogueRequestStep.Approved;
+                step.DecidedDate = instStage.ActionDate;
+            }
+            else if (skip != null)
+            {
+                step.Status = PartCatalogueRequestStep.Skipped;
+                step.SkipReason = skip.Comment == "EntryCondition"
+                    ? "Condition:" + (conds.TryGetValue(st.Name, out var ck) ? ck : "Always")
+                    : skip.Comment;
+            }
+            else if (instStage == null && !string.IsNullOrWhiteSpace(st.EntryCondition) && !evaluator.Evaluate(st.EntryCondition, facts))
+            {
+                step.Status = PartCatalogueRequestStep.Skipped;
+                step.SkipReason = "Condition:" + (conds.TryGetValue(st.Name, out var ck2) ? ck2 : "Always");
+            }
+
+            var selected = instStage?.Candidates.Where(c => c.IsSelected).Select(c => c.EmployeeId).ToList();
+            if (selected is { Count: 1 }) step.AssignedEmployeeId = selected[0];
+            e.Steps.Add(step);
+        }
+
+        e.CurrentStepKey = inst.Status == "Running" ? stages.FirstOrDefault(s => s.WorkflowStageId == inst.CurrentStageId)?.Name : null;
+    }
+
+    private static string StatusFromInstance(string instanceStatus, string current) => instanceStatus switch
+    {
+        "Running" => PartCatalogueStatuses.InApproval,
+        "Completed" => PartCatalogueStatuses.Completed,
+        "Returned" => PartCatalogueStatuses.Returned,
+        "Cancelled" => PartCatalogueStatuses.Cancelled,
+        "Rejected" => PartCatalogueStatuses.Cancelled,
+        _ => current
+    };
+
+    private async Task<PcResult> ExecuteRuntimeAsync(PartCatalogueRequest e, string action, string? comment, string? partNumber, PcActor actor)
+    {
+        var fromStatus = e.Status;
+        var isAdmin = await HasAsync(actor, "Admin");
+        var inst = await LatestInstanceAsync(e.PartCatalogueRequestId);
+        var running = inst is { Status: "Running" };
+        var activeKey = e.CurrentStepKey;
+
+        if (string.Equals(action, "Cancel", StringComparison.OrdinalIgnoreCase))
+        {
+            if (e.Status == PartCatalogueStatuses.Completed || e.Status == PartCatalogueStatuses.Cancelled)
+                return PcResult.Fail("Id", "Pc_Err_NotActionable");
+
+            var byRequester = e.RequesterEmployeeId == actor.EmployeeId;
+            var eligible = running && await IsCandidateAsync(inst!.WorkflowInstanceId, actor.EmployeeId);
+            if (!byRequester && !eligible && !isAdmin) return PcResult.Fail("Id", "Pc_Err_NotAuthorized");
+            if (!byRequester && comment == null) return PcResult.Fail("Comment", "Pc_Err_CommentRequired");
+
+            if (running) await _control.CancelInstanceAsync(inst!.WorkflowInstanceId, actor.EmployeeId, comment ?? "Cancelled by requester");
+
+            e.Status = PartCatalogueStatuses.Cancelled;
+            e.CompletedDate = DateTime.Now;
+            var overrideUsed = !byRequester && !eligible;
+            AddApproval(e, activeKey, overrideUsed ? PartCatalogueActions.AdminOverride : PartCatalogueActions.Cancel, actor, comment, fromStatus, e.Status, overrideUsed ? "Cancel" : null);
+            await SyncProjectionAsync(e);
+            e.CurrentStepKey = null;
+        }
+        else
+        {
+            if (e.Status != PartCatalogueStatuses.InApproval || !running || inst!.CurrentStageId == null)
+                return PcResult.Fail("Id", "Pc_Err_NotActionable");
+            if (e.RequesterEmployeeId == actor.EmployeeId) return PcResult.Fail("Id", "Pc_Err_SelfApproval");
+            if (!await IsCandidateAsync(inst.WorkflowInstanceId, actor.EmployeeId)) return PcResult.Fail("Id", "Pc_Err_NotAuthorized");
+
+            var isReturn = string.Equals(action, "Return", StringComparison.OrdinalIgnoreCase);
+            var isApprove = string.Equals(action, "Approve", StringComparison.OrdinalIgnoreCase);
+            if (!isReturn && !isApprove) return PcResult.Fail("Id", "Pc_Err_UnknownAction");
+            if (isReturn && comment == null) return PcResult.Fail("Comment", "Pc_Err_CommentRequired");
+
+            var stageName = await _ctx.WorkflowStages.AsNoTracking().Where(s => s.WorkflowStageId == inst.CurrentStageId).Select(s => s.Name).FirstAsync();
+            var kind = await _ctx.PartCatalogueWorkflowSteps.AsNoTracking().Where(s => s.StepKey == stageName).Select(s => s.Kind).FirstOrDefaultAsync() ?? PartCatalogueStepKinds.Review;
+            var oldPartNumber = e.AssignedPartNumber;
+
+            if (isApprove && kind == PartCatalogueStepKinds.Registration)
+            {
+                var pn = Trim(partNumber) ?? (e.RequestType == PartCatalogueRequestTypes.Change ? e.ExistingPartNumber : null);
+                if (pn == null) return PcResult.Fail("PartNumber", "Pc_Err_PartNumberRequired");
+                if (pn.Length > 50) return PcResult.Fail("PartNumber", "Pc_Err_PartNumberTooLong");
+                if (e.RequestType == PartCatalogueRequestTypes.Add
+                    && await _ctx.PartCatalogueRequests.AnyAsync(r => r.PartCatalogueRequestId != e.PartCatalogueRequestId
+                        && r.IsActive && r.Status != PartCatalogueStatuses.Cancelled && r.AssignedPartNumber == pn))
+                    return PcResult.Fail("PartNumber", "Pc_Err_PartNumberUsed");
+                e.AssignedPartNumber = pn;   // با ذخیره‌ی خودِ موتور (همان DbContext) هم‌زمان ثبت می‌شود
+            }
+
+            try
+            {
+                await _runtime.ExecuteActionAsync(inst.WorkflowInstanceId, isReturn ? "Return" : "Approve", actor.EmployeeId, actor.Roles, comment, null, null);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                e.AssignedPartNumber = oldPartNumber;
+                return PcResult.Fail("Id", "Pc_Err_NotAuthorized");
+            }
+            catch (WorkflowActorResolutionException ex)
+            {
+                e.AssignedPartNumber = oldPartNumber;
+                var r = new PcResult();
+                r.Errors.Add(new PcMessage("Route", RouteKey(ex.State, isAdmin), "Pc_Step_" + ex.StageName));
+                return r;
+            }
+            catch (InvalidOperationException)
+            {
+                e.AssignedPartNumber = oldPartNumber;
+                _ctx.ChangeTracker.Clear();
+                return PcResult.Fail("RowVersion", "Pc_Err_Concurrency");
+            }
+
+            var after = await LatestInstanceAsync(e.PartCatalogueRequestId);
+            e.Status = StatusFromInstance(after?.Status ?? "Running", e.Status);
+            if (e.Status == PartCatalogueStatuses.Completed) e.CompletedDate = DateTime.Now;
+
+            AddApproval(e, stageName, isReturn ? PartCatalogueActions.Return : kind == PartCatalogueStepKinds.Registration ? PartCatalogueActions.RegisterPartNumber : PartCatalogueActions.Approve,
+                actor, comment, fromStatus, e.Status, null);
+            if (isReturn) e.Notes.Add(new PartCatalogueRequestNote { Text = comment!, AuthorEmployeeId = actor.EmployeeId, StepKey = stageName });
+            await SyncProjectionAsync(e);
+        }
+
+        try { await _ctx.SaveChangesAsync(); }
+        catch (DbUpdateConcurrencyException) { _ctx.ChangeTracker.Clear(); return PcResult.Fail("RowVersion", "Pc_Err_Concurrency"); }
+
+        var nextActive = e.Steps.FirstOrDefault(s => s.Status == PartCatalogueRequestStep.Active);
+        await NotifyAfterTransitionAsync(e, nextActive, actor.EmployeeId);
+        return PcResult.Ok();
+    }
+
     // ------------------------------------------------------------------ Approve / Return / Cancel
 
     public async Task<PcResult> ExecuteAsync(int id, string action, string? comment, string? partNumber, byte[]? rowVersion, PcActor actor)
@@ -565,6 +820,10 @@ public class PartCatalogueService : IPartCatalogueService
         if (e == null) return PcResult.Fail("Id", "Pc_Err_NotFound");
 
         comment = Trim(comment);
+        if (rowVersion is { Length: > 0 }) _ctx.Entry(e).Property(x => x.RowVersion).OriginalValue = rowVersion;
+        if (e.WorkflowInstanceId.HasValue) return await ExecuteRuntimeAsync(e, action, comment, partNumber, actor);
+
+        // ---- Legacy (DEPRECATED): درخواست‌های قدیمی که قبل از انتقال به موتور گردش‌کار ثبت شده‌اند
         var isAdmin = await HasAsync(actor, "Admin");
         var active = e.Steps.FirstOrDefault(s => s.Status == PartCatalogueRequestStep.Active);
         var fromStatus = e.Status;
@@ -699,7 +958,7 @@ public class PartCatalogueService : IPartCatalogueService
 
             if (e.Status == PartCatalogueStatuses.InApproval && nextActive != null)
             {
-                var recipients = await ResolveRecipientsAsync(nextActive);
+                var recipients = await ResolveRecipientsAsync(e, nextActive);
                 foreach (var uid in await UserIdsOfAsync(recipients.Where(r => r != actorEmployeeId)))
                     await _notifications.CreateAsync(uid, "درخواست کاتالوگ قطعه - نیازمند اقدام / Part catalogue request - action required",
                         label, link, "PartCatalogueRequest", e.PartCatalogueRequestId);
@@ -731,8 +990,17 @@ public class PartCatalogueService : IPartCatalogueService
         }
     }
 
-    private async Task<List<int>> ResolveRecipientsAsync(PartCatalogueRequestStep step)
+    private async Task<List<int>> ResolveRecipientsAsync(PartCatalogueRequest e, PartCatalogueRequestStep step)
     {
+        if (e.WorkflowInstanceId.HasValue)
+        {
+            var inst = await LatestInstanceAsync(e.PartCatalogueRequestId);
+            if (inst == null) return new List<int>();
+            return await _ctx.WorkflowInstanceStageCandidates.AsNoTracking()
+                .Where(c => c.IsSelected && c.InstanceStage!.WorkflowInstanceId == inst.WorkflowInstanceId && c.InstanceStage.Status == "Pending")
+                .Select(c => c.EmployeeId).Distinct().ToListAsync();
+        }
+
         if (step.AssignedEmployeeId.HasValue) return new List<int> { step.AssignedEmployeeId.Value };
         return await _ctx.PartCatalogueApproverAssignments.Where(a => a.IsActive && a.StepKey == step.StepKey).Select(a => a.EmployeeId).ToListAsync();
     }
@@ -938,6 +1206,20 @@ public class PartCatalogueService : IPartCatalogueService
         }).ToList();
         var kinds = await _ctx.PartCatalogueWorkflowSteps.AsNoTracking().ToDictionaryAsync(s => s.StepKey, s => s.Kind);
         foreach (var s in dto.Steps) s.Kind = kinds.TryGetValue(s.StepKey, out var k) ? k : "";
+
+        if (e.WorkflowInstanceId.HasValue && e.Status == PartCatalogueStatuses.InApproval)
+        {
+            var activeView = dto.Steps.FirstOrDefault(x => x.Status == PartCatalogueRequestStep.Active);
+            var inst = await LatestInstanceAsync(e.PartCatalogueRequestId);
+            if (activeView != null && inst != null)
+            {
+                var ids = await _ctx.WorkflowInstanceStageCandidates.AsNoTracking()
+                    .Where(c => c.IsSelected && c.InstanceStage!.WorkflowInstanceId == inst.WorkflowInstanceId && c.InstanceStage.Status == "Pending")
+                    .Select(c => c.EmployeeId).ToListAsync();
+                var nm = await EmployeeNamesAsync(ids);
+                activeView.AssignedName = string.Join(", ", ids.Select(i => EmpName(i, nm)));
+            }
+        }
         dto.Approvals = e.Approvals.OrderBy(a => a.ActionDate).ThenBy(a => a.RequestApprovalId).Select(a => new PartCatalogueApprovalView
         {
             StepKey = a.StepKey, Action = a.Action, ActorName = EmpName(a.ActorEmployeeId, names), Comment = a.Comment,
@@ -956,10 +1238,30 @@ public class PartCatalogueService : IPartCatalogueService
         s.CanEdit = isOwner && canCreate && Editable(e);
         s.CanGenerateNumber = s.CanEdit && string.IsNullOrEmpty(e.RequestNumber);
         s.CanSubmit = s.CanEdit && !string.IsNullOrEmpty(e.RequestNumber);
+        s.IsOrganizationBlocked = e.Status == PartCatalogueStatuses.OrganizationResolutionRequired;
+        s.OrganizationBlockReason = s.IsOrganizationBlocked ? e.RoutingBlockReason : null;
+        s.CanRetryRouting = s.IsOrganizationBlocked && (isOwner || await HasAsync(actor, "Admin"));
 
         var active = e.Steps.FirstOrDefault(x => x.Status == PartCatalogueRequestStep.Active);
         s.ActiveStepKey = active?.StepKey;
         var live = e.Status == PartCatalogueStatuses.InApproval && active != null;
+
+        if (e.WorkflowInstanceId.HasValue)
+        {
+            // مسیر موتور گردش‌کار: فقط کاندیدهای Snapshot (بدون Bypass مدیر برای تأیید/بازگشت؛ مدیر فقط می‌تواند لغو کند)
+            if (live && !isOwner)
+            {
+                var inst = await LatestInstanceAsync(e.PartCatalogueRequestId);
+                var cand = inst != null && await IsCandidateAsync(inst.WorkflowInstanceId, actor.EmployeeId);
+                s.CanApprove = cand;
+                s.CanReturn = cand;
+                s.CanCancel = cand || await HasAsync(actor, "Admin");
+                s.RequiresPartNumber = cand && kinds.TryGetValue(active!.StepKey, out var rk) && rk == PartCatalogueStepKinds.Registration && e.RequestType == PartCatalogueRequestTypes.Add;
+            }
+            if (isOwner && (Editable(e) || e.Status == PartCatalogueStatuses.InApproval || s.IsOrganizationBlocked)) s.CanCancel = true;
+            return s;
+        }
+
         if (live && !isOwner)
         {
             var eligible = await IsEligibleAsync(active!, actor);
@@ -971,7 +1273,7 @@ public class PartCatalogueService : IPartCatalogueService
             s.RequiresPartNumber = live && kinds.TryGetValue(active!.StepKey, out var kind) && kind == PartCatalogueStepKinds.Registration
                                    && e.RequestType == PartCatalogueRequestTypes.Add;
         }
-        if (isOwner && (Editable(e) || e.Status == PartCatalogueStatuses.InApproval)) s.CanCancel = true;
+        if (isOwner && (Editable(e) || e.Status == PartCatalogueStatuses.InApproval || s.IsOrganizationBlocked)) s.CanCancel = true;
         return s;
     }
 
@@ -998,8 +1300,10 @@ public class PartCatalogueService : IPartCatalogueService
         if (f.View == "mine") q = q.Where(r => r.RequesterEmployeeId == actor.EmployeeId);
         else if (f.View == "awaiting")
             q = q.Where(r => r.RequesterEmployeeId != actor.EmployeeId && r.Status == PartCatalogueStatuses.InApproval
-                && r.Steps.Any(st => st.Status == PartCatalogueRequestStep.Active
-                    && (st.AssignedEmployeeId == actor.EmployeeId || pool.Contains(st.StepKey))));
+                && ((r.WorkflowInstanceId == null && r.Steps.Any(st => st.Status == PartCatalogueRequestStep.Active
+                        && (st.AssignedEmployeeId == actor.EmployeeId || pool.Contains(st.StepKey))))
+                    || (r.WorkflowInstanceId != null && _ctx.WorkflowInstanceStageCandidates.Any(c => c.EmployeeId == actor.EmployeeId && c.IsSelected
+                        && c.InstanceStage!.Status == "Pending" && c.InstanceStage.WorkflowInstanceId == r.WorkflowInstanceId))));
 
         var page = f.Page < 1 ? 1 : f.Page;
         var size = PEMS.Application.Common.DataGridPageSize.Normalize(f.PageSize);
@@ -1029,7 +1333,8 @@ public class PartCatalogueService : IPartCatalogueService
         var q = _ctx.PartCatalogueRequests.AsNoTracking().Where(r => r.IsActive);
         if (seeAll) return q;
         return q.Where(r => r.RequesterEmployeeId == actor.EmployeeId
-                            || r.Steps.Any(st => st.AssignedEmployeeId == actor.EmployeeId || pool.Contains(st.StepKey)));
+                            || (r.WorkflowInstanceId == null && r.Steps.Any(st => st.AssignedEmployeeId == actor.EmployeeId || pool.Contains(st.StepKey)))
+                            || (r.WorkflowInstanceId != null && _ctx.WorkflowInstanceStageCandidates.Any(c => c.EmployeeId == actor.EmployeeId && c.InstanceStage!.WorkflowInstanceId == r.WorkflowInstanceId)));
     }
 
     public async Task<PartCatalogueSummaryDto> GetSummaryAsync(PcActor actor)
@@ -1046,7 +1351,9 @@ public class PartCatalogueService : IPartCatalogueService
             Urgent = await q.CountAsync(r => r.Urgent && (r.Status == PartCatalogueStatuses.InApproval || r.Status == PartCatalogueStatuses.Returned || r.Status == PartCatalogueStatuses.Draft)),
             AwaitingMe = await _ctx.PartCatalogueRequests.AsNoTracking().CountAsync(r => r.IsActive && r.Status == PartCatalogueStatuses.InApproval
                 && r.RequesterEmployeeId != actor.EmployeeId
-                && r.Steps.Any(st => st.Status == PartCatalogueRequestStep.Active && (st.AssignedEmployeeId == actor.EmployeeId || pool.Contains(st.StepKey))))
+                && ((r.WorkflowInstanceId == null && r.Steps.Any(st => st.Status == PartCatalogueRequestStep.Active && (st.AssignedEmployeeId == actor.EmployeeId || pool.Contains(st.StepKey))))
+                    || (r.WorkflowInstanceId != null && _ctx.WorkflowInstanceStageCandidates.Any(c => c.EmployeeId == actor.EmployeeId && c.IsSelected
+                        && c.InstanceStage!.Status == "Pending" && c.InstanceStage.WorkflowInstanceId == r.WorkflowInstanceId))))
         };
     }
 

@@ -179,6 +179,11 @@ public sealed class PartCatalogueActionState
     public bool RequiresPartNumber { get; set; }
     public bool IsAdminOverride { get; set; }
     public string? ActiveStepKey { get; set; }
+
+    /// <summary>درخواست ثبت شده ولی مدیر مستقیم از ساختار سازمانی قابل‌تعیین نیست (Organization Resolution Required).</summary>
+    public bool IsOrganizationBlocked { get; set; }
+    public string? OrganizationBlockReason { get; set; }
+    public bool CanRetryRouting { get; set; }
 }
 
 public sealed class PcImportResult
@@ -223,12 +228,56 @@ public sealed class PcAdminStepRow
     public List<PcAdminApprover> Approvers { get; set; } = new();
 }
 
+public sealed record PcAdminPositionRef(int PositionId, string Title, int Priority);
+
+public sealed class PcAdminResponsibilityRow
+{
+    public int Id { get; set; }
+    public string Key { get; set; } = string.Empty;
+    public string DisplayName { get; set; } = string.Empty;
+    public string? DisplayNameFa { get; set; }
+    public string Kind { get; set; } = string.Empty;
+    public string? RequiredAction { get; set; }
+    public string? RoleName { get; set; }
+    public string ScopeType { get; set; } = "None";
+    public string? ScopeValue { get; set; }
+    public int? ManagerLevel { get; set; }
+    public string Strategy { get; set; } = "Queue";
+    public bool IsActive { get; set; }
+    public List<PcAdminPositionRef> Positions { get; set; } = new();
+}
+
+public sealed record PcAdminCommodityResponsible(int Id, string ResponsibilityKey, string GroupText, string? PositionTitle, string? EmployeeName, int Priority, bool IsActive);
+public sealed record PcAdminWorkflowStage(string Name, int Order, string? ResponsibilityKey, string? EntryCondition);
+public sealed record PcAdminFinding(string Severity, string Code, string ResponsibilityKey, string Message);
+
+public sealed class PcResponsibilityInput
+{
+    public int Id { get; set; }
+    public string Kind { get; set; } = "PositionScope";
+    public string? RequiredAction { get; set; }
+    public string? RoleName { get; set; }
+    public string ScopeType { get; set; } = "None";
+    public string? ScopeValue { get; set; }
+    public int? ManagerLevel { get; set; }
+    public string SelectionStrategy { get; set; } = "Queue";
+    public bool IsActive { get; set; } = true;
+
+    /// <summary>فهرست Idهای Position با کاما؛ ترتیب = اولویت (اولی بالاترین).</summary>
+    public string? PositionIds { get; set; }
+}
+
 public sealed class PcAdminOverview
 {
+    public List<PcAdminResponsibilityRow> Responsibilities { get; set; } = new();
+    public List<PcAdminCommodityResponsible> CommodityResponsibles { get; set; } = new();
+    public List<PcLookupItem> Positions { get; set; } = new();
+    public List<string> Roles { get; set; } = new();
+    public List<PcAdminWorkflowStage> WorkflowStages { get; set; } = new();
+    public List<PcAdminFinding> Findings { get; set; } = new();
+
     public List<PcAdminSectionRow> Sections { get; set; } = new();
     public List<PcAdminStepRow> Steps { get; set; } = new();
-    public List<PcAdminApprover> Ceo { get; set; } = new();
-    public List<(int Id, string Employee, string Manager)> OrgLinks { get; set; } = new();
     public List<(int Id, string Parent, string Child, bool NeedsConfirmation)> Group2Maps { get; set; } = new();
     public Dictionary<string, int> Counts { get; set; } = new();
 }

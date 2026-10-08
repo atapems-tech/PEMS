@@ -20,6 +20,7 @@
         "Draft" => "vs-pill--neutral",
         "InApproval" => "vs-pill--info",
         "Returned" => "vs-pill--warning",
+        "OrgResolution" => "vs-pill--warning",
         "Completed" => "vs-pill--success",
         _ => "vs-pill--danger"
     };
@@ -69,6 +70,28 @@
             <a asp-action="ExportPdf" asp-route-id="@d.Id" class="vs-btn vs-btn--sm"><i class="bi bi-file-earmark-pdf"></i> @Localizer["Pc_Btn_Export_Pdf"]</a>
         </div>
     </div>
+
+    @* ---------------------------------------------------- Organization Resolution Required *@
+    @if (a.IsOrganizationBlocked)
+    {
+        <section class="vs-panel pc-card border-warning" role="alert">
+            <h2 class="vs-section__title"><i class="bi bi-diagram-3"></i> @Localizer["Pc_Org_Blocked_Title"]</h2>
+            <p class="mb-1">@Localizer["Pc_Org_Blocked_Body"]</p>
+            @if (!string.IsNullOrEmpty(a.OrganizationBlockReason))
+            {
+                <p class="small text-muted mb-2"><strong>@a.OrganizationBlockReason</strong> — @Localizer["Org_Issue_" + a.OrganizationBlockReason]</p>
+            }
+            @if (a.CanRetryRouting)
+            {
+                <form asp-action="RetryRouting" method="post" class="d-inline">
+                    <input type="hidden" name="id" value="@d.Id" />
+                    @if (rowVersion != null) { <input type="hidden" name="rowVersion" value="@rowVersion" /> }
+                    <button type="submit" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-arrow-repeat"></i> @Localizer["Pc_Btn_RetryRouting"]</button>
+                </form>
+            }
+            <div class="form-text">@Localizer["Pc_Org_Blocked_Hint"]</div>
+        </section>
+    }
 
     @* ---------------------------------------------------- اقدام گام جاری *@
     @if (a.CanApprove || a.CanReturn || a.CanCancel && d.Status == "InApproval")

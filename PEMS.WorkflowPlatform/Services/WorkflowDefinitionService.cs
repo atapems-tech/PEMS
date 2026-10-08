@@ -124,7 +124,8 @@ public class WorkflowDefinitionService : IWorkflowDefinitionService
                 ApprovalStrategy = s.ApprovalStrategy, MinimumApprovalCount = s.MinimumApprovalCount, IsMandatory = s.IsMandatory,
                 IsSkippable = s.IsSkippable, IsDelegatable = s.IsDelegatable, IsEscalatable = s.IsEscalatable, TimeoutHours = s.TimeoutHours,
                 Color = s.Color, Icon = s.Icon, Description = s.Description, ResponsibleEmployeeId = s.ResponsibleEmployeeId,
-                EscalationRole = s.EscalationRole, NotificationKey = s.NotificationKey, NameFa = s.NameFa, BusinessStatus = s.BusinessStatus
+                EscalationRole = s.EscalationRole, NotificationKey = s.NotificationKey, NameFa = s.NameFa, BusinessStatus = s.BusinessStatus,
+                ResponsibilityKey = s.ResponsibilityKey, EntryCondition = s.EntryCondition
             };
             map[s.WorkflowStageId] = ns;
             _db.WorkflowStages.Add(ns);
@@ -193,6 +194,8 @@ public class WorkflowDefinitionService : IWorkflowDefinitionService
         s.ResponsibleEmployeeId = i.ResponsibleEmployeeId; s.ApprovalStrategy = i.ApprovalStrategy; s.MinimumApprovalCount = i.MinimumApprovalCount;
         s.IsMandatory = i.IsMandatory; s.IsSkippable = i.IsSkippable; s.IsDelegatable = i.IsDelegatable; s.IsEscalatable = i.IsEscalatable;
         s.TimeoutHours = i.TimeoutHours; s.EscalationRole = i.EscalationRole; s.NotificationKey = i.NotificationKey; s.Description = i.Description; s.NameFa = i.NameFa; s.BusinessStatus = i.BusinessStatus;
+        s.ResponsibilityKey = string.IsNullOrWhiteSpace(i.ResponsibilityKey) ? null : i.ResponsibilityKey.Trim();
+        s.EntryCondition = string.IsNullOrWhiteSpace(i.EntryCondition) ? null : i.EntryCondition.Trim();
     }
 
     public async Task<WorkflowStage> AddStageAsync(int versionId, WorkflowStageInput input, WorkflowActor actor, CancellationToken ct = default, byte[]? expectedRowVersion = null)

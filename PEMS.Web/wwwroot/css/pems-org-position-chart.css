@@ -1,0 +1,37 @@
+/* Organization Chart (Position hierarchy) - visual layer only; layout/zoom/pan come from the vendored d3-org-chart library.
+   Colors come only from the PEMS --pems-* tokens so Light / Dark / Iranian themes and RTL work without hard-coded colors. */
+.pems-opc-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 12px; }
+@media (max-width: 991.98px) { .pems-opc-layout { grid-template-columns: minmax(0, 1fr); } }
+
+.pems-opc-card { position: relative; background: var(--pems-surface); border: 1px solid var(--pems-surface-border); border-radius: 10px; min-height: 480px; overflow: hidden; }
+.pems-opc-canvas { width: 100%; height: 70vh; min-height: 480px; }
+.pems-opc-state { display: flex; align-items: center; justify-content: center; min-height: 380px; color: var(--pems-text-muted); gap: 8px; text-align: center; padding: 16px; }
+.pems-opc-toolbar { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+.pems-opc-toolbar .form-control { max-width: 240px; }
+
+.pems-opc-node { box-sizing: border-box; height: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--pems-surface-border); background: var(--pems-surface);
+    color: var(--pems-text); box-shadow: var(--pems-shadow, 0 1px 3px rgba(0,0,0,.12)); display: flex; flex-direction: column; justify-content: space-between; text-align: start; padding-bottom: 16px; }
+.pems-opc-node.is-selected { outline: 2px solid var(--pems-primary); }
+.pems-opc-node.is-vacant { border-style: dashed; }
+.pems-opc-node.kind-orphan, .pems-opc-node.kind-cycle { border-color: var(--pems-chart-warning); }
+.pems-opc-node.kind-container { align-items: center; justify-content: center; color: var(--pems-text-muted); font-size: .8rem; }
+.pems-opc-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .04em; color: var(--pems-text-muted); }
+.pems-opc-title { font-weight: 600; font-size: .9rem; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.pems-opc-emp { font-size: .82rem; }
+.pems-opc-vacant { font-size: .78rem; font-weight: 700; color: var(--pems-chart-warning); letter-spacing: .06em; }
+.pems-opc-unit { font-size: .72rem; color: var(--pems-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pems-opc-badge { font-size: .65rem; color: var(--pems-chart-warning); }
+.pems-opc-btn { border: 1px solid var(--pems-surface-border); border-radius: 12px; padding: 1px 8px; font-size: .72rem; background: var(--pems-surface); color: var(--pems-text); }
+
+.pems-opc-panel { background: var(--pems-surface); border: 1px solid var(--pems-surface-border); border-radius: 10px; padding: 12px; align-self: start; }
+.pems-opc-panel dl { margin: 0; font-size: .85rem; }
+.pems-opc-panel dt { color: var(--pems-text-muted); font-weight: 500; font-size: .72rem; text-transform: uppercase; margin-top: 8px; }
+.pems-opc-panel dd { margin: 0; }
+.pems-opc-panel ul { padding-inline-start: 18px; margin: 0; }
+
+/* theme-safe text/inputs (Bootstrap defaults are not theme tokens) */
+.pems-opc-panel { color: var(--pems-text); }
+.pems-opc-panel .text-muted, .pems-opc-card .text-muted { color: var(--pems-text-muted) !important; }
+.pems-opc-toolbar .form-control { background: var(--pems-surface); color: var(--pems-text); border-color: var(--pems-surface-border); }
+.pems-opc-toolbar .form-control::placeholder { color: var(--pems-text-muted); }
+.pems-opc-canvas svg .link { stroke: var(--pems-surface-border); }

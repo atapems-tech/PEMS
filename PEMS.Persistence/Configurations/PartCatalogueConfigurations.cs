@@ -206,6 +206,8 @@ public class PartCatalogueRequestConfiguration : IEntityTypeConfiguration<PartCa
         b.Property(x => x.RequestType).HasMaxLength(10).IsRequired();
         b.Property(x => x.Status).HasMaxLength(20).IsRequired();
         b.Property(x => x.CurrentStepKey).HasMaxLength(50);
+        b.HasIndex(x => x.WorkflowInstanceId);
+        b.Property(x => x.RoutingBlockReason).HasMaxLength(100);
         b.Property(x => x.AssetType).HasMaxLength(20).IsRequired();
         b.Property(x => x.NewManufacturerName).HasMaxLength(200);
         b.Property(x => x.ManufacturerPartNumber).HasMaxLength(100);
@@ -336,5 +338,53 @@ public class PartCatalogueRequestApprovalConfiguration : IEntityTypeConfiguratio
         b.HasOne(x => x.Request).WithMany(r => r.Approvals).HasForeignKey(x => x.PartCatalogueRequestId).OnDelete(DeleteBehavior.Cascade);
         b.HasOne(x => x.Actor).WithMany().HasForeignKey(x => x.ActorEmployeeId).OnDelete(DeleteBehavior.Restrict);
         b.HasIndex(x => x.PartCatalogueRequestId);
+    }
+}
+
+public class WorkflowActorResponsibilityConfiguration : IEntityTypeConfiguration<WorkflowActorResponsibility>
+{
+    public void Configure(EntityTypeBuilder<WorkflowActorResponsibility> b)
+    {
+        b.ToTable("WorkflowActorResponsibilities");
+        b.HasKey(x => x.WorkflowActorResponsibilityId);
+        b.Property(x => x.ResponsibilityKey).HasMaxLength(100).IsRequired();
+        b.Property(x => x.DisplayName).HasMaxLength(200).IsRequired();
+        b.Property(x => x.DisplayNameFa).HasMaxLength(200);
+        b.Property(x => x.Description).HasMaxLength(500);
+        b.Property(x => x.Kind).HasMaxLength(30).IsRequired();
+        b.Property(x => x.RequiredModule).HasMaxLength(60);
+        b.Property(x => x.RequiredAction).HasMaxLength(60);
+        b.Property(x => x.RoleName).HasMaxLength(100);
+        b.Property(x => x.ScopeType).HasMaxLength(30).IsRequired();
+        b.Property(x => x.ScopeValue).HasMaxLength(200);
+        b.Property(x => x.SelectionStrategy).HasMaxLength(20).IsRequired();
+        b.HasIndex(x => x.ResponsibilityKey).IsUnique();
+    }
+}
+
+public class WorkflowActorResponsibilityPositionConfiguration : IEntityTypeConfiguration<WorkflowActorResponsibilityPosition>
+{
+    public void Configure(EntityTypeBuilder<WorkflowActorResponsibilityPosition> b)
+    {
+        b.ToTable("WorkflowActorResponsibilityPositions");
+        b.HasKey(x => x.WorkflowActorResponsibilityPositionId);
+        b.HasOne(x => x.Responsibility).WithMany(x => x.Positions).HasForeignKey(x => x.WorkflowActorResponsibilityId).OnDelete(DeleteBehavior.Cascade);
+        b.HasOne(x => x.Position).WithMany().HasForeignKey(x => x.PositionId).OnDelete(DeleteBehavior.Restrict);
+        b.HasIndex(x => new { x.WorkflowActorResponsibilityId, x.PositionId }).IsUnique();
+    }
+}
+
+public class CommodityGroupResponsibleConfiguration : IEntityTypeConfiguration<CommodityGroupResponsible>
+{
+    public void Configure(EntityTypeBuilder<CommodityGroupResponsible> b)
+    {
+        b.ToTable("CommodityGroupResponsibles");
+        b.HasKey(x => x.CommodityGroupResponsibleId);
+        b.Property(x => x.ResponsibilityKey).HasMaxLength(100).IsRequired();
+        b.Property(x => x.Notes).HasMaxLength(500);
+        b.HasOne(x => x.CommodityGroup).WithMany().HasForeignKey(x => x.CommodityGroupId).OnDelete(DeleteBehavior.Restrict);
+        b.HasOne(x => x.Position).WithMany().HasForeignKey(x => x.PositionId).OnDelete(DeleteBehavior.Restrict);
+        b.HasOne(x => x.Employee).WithMany().HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+        b.HasIndex(x => new { x.ResponsibilityKey, x.CommodityGroupId });
     }
 }

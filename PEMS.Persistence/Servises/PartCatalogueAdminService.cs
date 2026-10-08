@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using ClosedXML.Excel;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.ActorResolution;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Application.PartCatalogue;
@@ -20,12 +21,14 @@ public class PartCatalogueAdminService : IPartCatalogueAdminService
 
     private readonly PEMSDbContext _ctx;
     private readonly IRoleModuleActionService? _actions;
+    private readonly IEnterpriseActorResolver? _resolver;
 
     /// <param name="actions">null فقط برای Seed داخلی (بدون Actor)؛ در DI همیشه مقدار دارد.</param>
-    public PartCatalogueAdminService(PEMSDbContext ctx, IRoleModuleActionService? actions = null)
+    public PartCatalogueAdminService(PEMSDbContext ctx, IRoleModuleActionService? actions = null, IEnterpriseActorResolver? resolver = null)
     {
         _ctx = ctx;
         _actions = actions;
+        _resolver = resolver;
     }
 
     private async Task<bool> IsAdminAsync(PcActor actor) =>
@@ -249,8 +252,46 @@ public class PartCatalogueAdminService : IPartCatalogueAdminService
         var maps = await _ctx.PartCatalogueSectionCommodityGroups.AsNoTracking().ToListAsync();
         var assigns = await _ctx.PartCatalogueApproverAssignments.AsNoTracking().Where(a => a.IsActive).ToListAsync();
 
+        var positions = await _ctx.Positions.AsNoTracking().Where(p => p.IsActive)
+            .Select(p => new { p.PositionId, p.Title, Team = p.Team != null ? p.Team.Name : null }).OrderBy(p => p.Title).ToListAsync();
+        var posTitle = positions.ToDictionary(p => p.PositionId, p => p.Title + (p.Team != null ? " (" + p.Team + ")" : ""));
+        var respRows = await _ctx.WorkflowActorResponsibilities.AsNoTracking().Include(r => r.Positions).OrderBy(r => r.WorkflowActorResponsibilityId).ToListAsync();
+        var cgr = await _ctx.CommodityGroupResponsibles.AsNoTracking().OrderBy(x => x.ResponsibilityKey).ThenBy(x => x.CommodityGroupId).ToListAsync();
+
+        var binding = await _ctx.WorkflowBindings.AsNoTracking()
+            .FirstOrDefaultAsync(b => b.Module == "PartCatalogue" && b.EntityType == "PartCatalogueRequest" && b.Context == "Approval");
+        var stageRows = new List<PcAdminWorkflowStage>();
+        if (binding != null)
+        {
+            var versionId = binding.PinnedVersionId ?? await _ctx.WorkflowVersions.AsNoTracking()
+                .Where(v => v.WorkflowDefinitionId == binding.WorkflowDefinitionId && v.Status == "Published").OrderByDescending(v => v.VersionNumber)
+                .Select(v => (int?)v.WorkflowVersionId).FirstOrDefaultAsync();
+            if (versionId.HasValue)
+                stageRows = (await _ctx.WorkflowStages.AsNoTracking().Where(s => s.WorkflowVersionId == versionId).OrderBy(s => s.StageOrder).ToListAsync())
+                    .Select(s => new PcAdminWorkflowStage(s.Name, s.StageOrder, s.ResponsibilityKey, s.EntryCondition)).ToList();
+        }
+
+        var findings = _resolver == null ? new List<PcAdminFinding>()
+            : (await _resolver.GetDataQualityAsync()).Select(f => new PcAdminFinding(f.Severity, f.Code, f.ResponsibilityKey, f.Message)).ToList();
+
         var ov = new PcAdminOverview
         {
+            Responsibilities = respRows.Select(r => new PcAdminResponsibilityRow
+            {
+                Id = r.WorkflowActorResponsibilityId, Key = r.ResponsibilityKey, DisplayName = r.DisplayName, DisplayNameFa = r.DisplayNameFa, Kind = r.Kind,
+                RequiredAction = r.RequiredAction, RoleName = r.RoleName, ScopeType = r.ScopeType, ScopeValue = r.ScopeValue, ManagerLevel = r.ManagerLevel,
+                Strategy = r.SelectionStrategy, IsActive = r.IsActive,
+                Positions = r.Positions.OrderBy(p => p.Priority).ThenBy(p => p.PositionId)
+                    .Select(p => new PcAdminPositionRef(p.PositionId, posTitle.TryGetValue(p.PositionId, out var t) ? t : "#" + p.PositionId, p.Priority)).ToList()
+            }).ToList(),
+            CommodityResponsibles = cgr.Select(x => new PcAdminCommodityResponsible(x.CommodityGroupResponsibleId, x.ResponsibilityKey,
+                groups.TryGetValue(x.CommodityGroupId, out var gtxt) ? gtxt : "?",
+                x.PositionId.HasValue && posTitle.TryGetValue(x.PositionId.Value, out var pt) ? pt : null,
+                x.EmployeeId.HasValue ? Emp(x.EmployeeId.Value) : null, x.Priority, x.IsActive)).ToList(),
+            Positions = positions.Select(p => new PcLookupItem { Id = p.PositionId, Code = p.Title, Text = posTitle[p.PositionId] }).ToList(),
+            Roles = await _ctx.Roles.AsNoTracking().OrderBy(r => r.Name).Select(r => r.Name!).ToListAsync(),
+            WorkflowStages = stageRows,
+            Findings = findings,
             Sections = (await _ctx.PartCatalogueSections.AsNoTracking().OrderBy(x => x.SortOrder).ToListAsync()).Select(x => new PcAdminSectionRow
             {
                 SectionId = x.SectionId, Code = x.Code, NameFa = x.NameFa, RequiresSparePartsReview = x.RequiresSparePartsReview,
@@ -264,10 +305,6 @@ public class PartCatalogueAdminService : IPartCatalogueAdminService
                 Source = x.ApproverSource, Condition = x.ConditionKey, IsActive = x.IsActive, NeedsConfirmation = x.NeedsConfirmation,
                 Approvers = assigns.Where(a => a.StepKey == x.StepKey).Select(a => new PcAdminApprover(a.ApproverAssignmentId, Emp(a.EmployeeId))).ToList()
             }).ToList(),
-            Ceo = assigns.Where(a => a.StepKey == PartCatalogueApproverAssignment.CeoKey)
-                .Select(a => new PcAdminApprover(a.ApproverAssignmentId, Emp(a.EmployeeId))).ToList(),
-            OrgLinks = (await _ctx.PartCatalogueOrgLinks.AsNoTracking().ToListAsync())
-                .Select(l => (l.OrgLinkId, Emp(l.EmployeeId), Emp(l.ManagerEmployeeId))).OrderBy(l => l.Item2).ToList(),
             Group2Maps = (await _ctx.PartCatalogueCommodityGroupChildren.AsNoTracking().ToListAsync())
                 .Select(m => (m.CommodityGroupChildId,
                     groups.TryGetValue(m.ParentGroupId, out var pg) ? pg : "?", groups.TryGetValue(m.ChildGroupId, out var cg) ? cg : "?", m.NeedsConfirmation)).ToList(),
@@ -359,8 +396,7 @@ public class PartCatalogueAdminService : IPartCatalogueAdminService
     public async Task<PcResult> AddApproverAsync(string stepKey, int employeeId, PcActor actor)
     {
         if (!await IsAdminAsync(actor)) return PcResult.Fail("Id", "Pc_Err_NotAuthorized");
-        var validKey = stepKey == PartCatalogueApproverAssignment.CeoKey
-                       || await _ctx.PartCatalogueWorkflowSteps.AnyAsync(x => x.StepKey == stepKey && x.ApproverSource == PartCatalogueApproverSources.AssignedPool);
+        var validKey = await _ctx.PartCatalogueWorkflowSteps.AnyAsync(x => x.StepKey == stepKey && x.ApproverSource == PartCatalogueApproverSources.AssignedPool);
         if (!validKey || !await _ctx.Employees.AnyAsync(e => e.EmployeeId == employeeId)) return PcResult.Fail("Id", "Pc_Err_InvalidReference");
 
         var existing = await _ctx.PartCatalogueApproverAssignments.FirstOrDefaultAsync(a => a.StepKey == stepKey && a.EmployeeId == employeeId);
@@ -385,40 +421,6 @@ public class PartCatalogueAdminService : IPartCatalogueAdminService
         return PcResult.Ok();
     }
 
-    public async Task<PcResult> SetOrgLinkAsync(int employeeId, int managerEmployeeId, PcActor actor)
-    {
-        if (!await IsAdminAsync(actor)) return PcResult.Fail("Id", "Pc_Err_NotAuthorized");
-        if (employeeId == managerEmployeeId) return PcResult.Fail("ManagerEmployeeId", "Pc_Err_SelfManager");
-        if (!await _ctx.Employees.AnyAsync(e => e.EmployeeId == employeeId) || !await _ctx.Employees.AnyAsync(e => e.EmployeeId == managerEmployeeId))
-            return PcResult.Fail("Id", "Pc_Err_InvalidReference");
-
-        // جلوگیری از حلقه: مدیر نباید (مستقیم/غیرمستقیم) زیردستِ همین کارمند باشد
-        var cursor = (int?)managerEmployeeId;
-        for (var hops = 0; cursor.HasValue && hops < 50; hops++)
-        {
-            if (cursor.Value == employeeId) return PcResult.Fail("ManagerEmployeeId", "Pc_Err_OrgCycle");
-            var current = cursor.Value;
-            cursor = await _ctx.PartCatalogueOrgLinks.Where(l => l.EmployeeId == current).Select(l => (int?)l.ManagerEmployeeId).FirstOrDefaultAsync();
-        }
-
-        var link = await _ctx.PartCatalogueOrgLinks.FirstOrDefaultAsync(l => l.EmployeeId == employeeId);
-        if (link == null) _ctx.PartCatalogueOrgLinks.Add(new PartCatalogueOrgLink { EmployeeId = employeeId, ManagerEmployeeId = managerEmployeeId });
-        else link.ManagerEmployeeId = managerEmployeeId;
-
-        await _ctx.SaveChangesAsync();
-        return PcResult.Ok();
-    }
-
-    public async Task<PcResult> RemoveOrgLinkAsync(int linkId, PcActor actor)
-    {
-        if (!await IsAdminAsync(actor)) return PcResult.Fail("Id", "Pc_Err_NotAuthorized");
-        var l = await _ctx.PartCatalogueOrgLinks.FirstOrDefaultAsync(x => x.OrgLinkId == linkId);
-        if (l == null) return PcResult.Fail("Id", "Pc_Err_NotFound");
-        _ctx.PartCatalogueOrgLinks.Remove(l);
-        await _ctx.SaveChangesAsync();
-        return PcResult.Ok();
-    }
-
     public async Task<List<PcLookupItem>> SearchEmployeesAsync(string? q, int take = 20)
     {
         q = q?.Trim();
@@ -433,5 +435,93 @@ public class PartCatalogueAdminService : IPartCatalogueAdminService
             Id = e.EmployeeId, Code = e.PersonnelCode ?? "",
             Text = (e.FirstName + " " + e.LastName).Trim() + (e.PersonnelCode != null ? " (" + e.PersonnelCode + ")" : "")
         }).ToList();
+    }
+
+    // ------------------------------------------------------------------ Enterprise Actor Resolution (فقط PartCatalogue.Admin)
+
+    public async Task<PcResult> SaveResponsibilityAsync(PcResponsibilityInput i, PcActor actor)
+    {
+        if (!await IsAdminAsync(actor)) return PcResult.Fail("Id", "Pc_Err_NotAuthorized");
+
+        var r = await _ctx.WorkflowActorResponsibilities.Include(x => x.Positions).FirstOrDefaultAsync(x => x.WorkflowActorResponsibilityId == i.Id);
+        if (r == null) return PcResult.Fail("Id", "Pc_Err_NotFound");
+
+        if (!Domain.Entities.ActorResponsibilityKinds.All.Contains(i.Kind)) return PcResult.Fail("Kind", "Pc_Err_InvalidReference");
+        if (!Domain.Entities.ActorResponsibilityScopes.All.Contains(i.ScopeType)) return PcResult.Fail("ScopeType", "Pc_Err_InvalidReference");
+        if (i.SelectionStrategy is not (Domain.Entities.ActorSelectionStrategies.Queue or Domain.Entities.ActorSelectionStrategies.SingleActor))
+            return PcResult.Fail("SelectionStrategy", "Pc_Err_InvalidReference");
+
+        var scopeIds = i.ScopeType == Domain.Entities.ActorResponsibilityScopes.None ? new HashSet<int>() : PEMS.Persistence.Services.EnterpriseActorResolver.ParseIds(i.ScopeValue);
+        if (i.ScopeType != Domain.Entities.ActorResponsibilityScopes.None && scopeIds.Count == 0) return PcResult.Fail("ScopeValue", "Pc_Err_Required");
+
+        var roleName = string.IsNullOrWhiteSpace(i.RoleName) ? null : i.RoleName.Trim();
+        if (roleName != null && !await _ctx.Roles.AnyAsync(x => x.Name == roleName)) return PcResult.Fail("RoleName", "Pc_Err_InvalidReference");
+
+        var posIds = (i.PositionIds ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(x => int.TryParse(x, out var n) ? n : 0).Where(n => n > 0).Distinct().ToList();
+        if (posIds.Count > 0 && await _ctx.Positions.CountAsync(p => posIds.Contains(p.PositionId)) != posIds.Count)
+            return PcResult.Fail("PositionIds", "Pc_Err_InvalidReference");
+        if (i.Kind == Domain.Entities.ActorResponsibilityKinds.RequesterManager && i.ManagerLevel is not (1 or 2))
+            return PcResult.Fail("ManagerLevel", "Pc_Err_InvalidReference");
+
+        r.Kind = i.Kind;
+        r.RequiredModule = string.IsNullOrWhiteSpace(i.RequiredAction) ? null : "PartCatalogue";
+        r.RequiredAction = string.IsNullOrWhiteSpace(i.RequiredAction) ? null : i.RequiredAction.Trim();
+        r.RoleName = roleName;
+        r.ScopeType = i.ScopeType;
+        r.ScopeValue = i.ScopeType == Domain.Entities.ActorResponsibilityScopes.None ? null : string.Join(",", scopeIds.OrderBy(x => x));
+        r.ManagerLevel = i.Kind == Domain.Entities.ActorResponsibilityKinds.RequesterManager ? i.ManagerLevel : null;
+        r.SelectionStrategy = i.SelectionStrategy;
+        r.IsActive = i.IsActive;
+
+        _ctx.WorkflowActorResponsibilityPositions.RemoveRange(r.Positions.ToList());
+        r.Positions.Clear();
+        for (var n = 0; n < posIds.Count; n++)
+            r.Positions.Add(new Domain.Entities.WorkflowActorResponsibilityPosition { PositionId = posIds[n], Priority = n + 1 });
+
+        await _ctx.SaveChangesAsync();
+        return PcResult.Ok();
+    }
+
+    public async Task<PcResult> AddCommodityResponsibleAsync(string responsibilityKey, int commodityGroupId, int? positionId, int? employeeId, int priority, PcActor actor)
+    {
+        if (!await IsAdminAsync(actor)) return PcResult.Fail("Id", "Pc_Err_NotAuthorized");
+        if (!positionId.HasValue && !employeeId.HasValue) return PcResult.Fail("PositionId", "Pc_Err_Required");
+        if (!await _ctx.WorkflowActorResponsibilities.AnyAsync(x => x.ResponsibilityKey == responsibilityKey && x.Kind == Domain.Entities.ActorResponsibilityKinds.CommodityPosition))
+            return PcResult.Fail("Id", "Pc_Err_InvalidReference");
+        if (!await _ctx.PartCatalogueCommodityGroups.AnyAsync(x => x.CommodityGroupId == commodityGroupId)) return PcResult.Fail("CommodityGroupId", "Pc_Err_InvalidReference");
+        if (positionId.HasValue && !await _ctx.Positions.AnyAsync(x => x.PositionId == positionId)) return PcResult.Fail("PositionId", "Pc_Err_InvalidReference");
+        if (employeeId.HasValue && !await _ctx.Employees.AnyAsync(x => x.EmployeeId == employeeId)) return PcResult.Fail("EmployeeId", "Pc_Err_InvalidReference");
+
+        var dup = await _ctx.CommodityGroupResponsibles.FirstOrDefaultAsync(x => x.ResponsibilityKey == responsibilityKey && x.CommodityGroupId == commodityGroupId
+            && x.PositionId == positionId && x.EmployeeId == employeeId);
+        if (dup != null) { dup.IsActive = true; dup.Priority = priority; }
+        else
+            _ctx.CommodityGroupResponsibles.Add(new Domain.Entities.CommodityGroupResponsible
+            { ResponsibilityKey = responsibilityKey, CommodityGroupId = commodityGroupId, PositionId = positionId, EmployeeId = employeeId, Priority = priority });
+        await _ctx.SaveChangesAsync();
+        return PcResult.Ok();
+    }
+
+    /// <summary>حذف نرم (IsActive=false): سابقه‌ی پیکربندی برای ممیزی حفظ می‌شود.</summary>
+    public async Task<PcResult> RemoveCommodityResponsibleAsync(int id, PcActor actor)
+    {
+        if (!await IsAdminAsync(actor)) return PcResult.Fail("Id", "Pc_Err_NotAuthorized");
+        var row = await _ctx.CommodityGroupResponsibles.FirstOrDefaultAsync(x => x.CommodityGroupResponsibleId == id);
+        if (row == null) return PcResult.Fail("Id", "Pc_Err_NotFound");
+        row.IsActive = false;
+        await _ctx.SaveChangesAsync();
+        return PcResult.Ok();
+    }
+
+    public async Task<ActorResolutionResult?> PreviewResolutionAsync(string responsibilityKey, int requesterEmployeeId, int? commodityGroupId, PcActor actor)
+    {
+        if (_resolver == null || !await IsAdminAsync(actor)) return null;
+        var ctx = new Dictionary<string, string?>
+        {
+            [ActorContextKeys.CommodityGroup1Id] = commodityGroupId?.ToString(),
+            [ActorContextKeys.CommodityGroup2Id] = null
+        };
+        return await _resolver.ResolveAsync(new ActorResolutionRequest(responsibilityKey, requesterEmployeeId, ctx));
     }
 }

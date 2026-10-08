@@ -3,6 +3,7 @@
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
+@inject PEMS.Application.Organization.IOrganizationHierarchyService OrgHierarchy
 @{
     var laborRates = (List<PEMS.Domain.Entities.EmployeeLaborRate>)ViewBag.LaborRates;
     var teamHistory = (List<PEMS.Domain.Entities.TeamMember>)ViewBag.TeamHistory;
@@ -27,7 +28,8 @@
     // طبق سند معماری Employee/Team: Employee فیلد Manager مستقل ندارد - از سرپرست تیمِ فعلی
     // (عضویت IsActive) مشتق می‌شود، نه یک فیلد تکراری
     var currentMembership = teamHistory.FirstOrDefault(x => x.IsActive);
-    var manager = currentMembership?.Team?.SupervisorEmployee;
+    var manager = currentMembership?.Team?.SupervisorEmployee;   // سرپرست تیم (عملیاتی) - «مدیر مستقیم» نیست
+    var directManager = await OrgHierarchy.GetDirectManagerAsync(Model.EmployeeId);
 
     string Initials(string? first, string? last)
     {
@@ -113,7 +115,7 @@
                     <p class="mb-0 fw-semibold">@Dash(Model.Discipline?.Name)</p>
                 </div>
                 <div class="col-sm-6">
-                    <p class="text-uppercase text-muted small mb-1">@L("Manager", "مدیر")</p>
+                    <p class="text-uppercase text-muted small mb-1">@L("Team Supervisor", "سرپرست تیم")</p>
                     @if (manager != null)
                     {
                         <div class="d-flex align-items-center gap-2">
@@ -126,6 +128,21 @@
                     else
                     {
                         <p class="mb-0 fw-semibold">—</p>
+                    }
+                </div>
+                <div class="col-sm-6">
+                    <p class="text-uppercase text-muted small mb-1">@L("Direct Manager", "مدیر مستقیم")</p>
+                    @if (directManager.IssueCode == null && directManager.Managers.Count > 0)
+                    {
+                        @foreach (var dm in directManager.Managers)
+                        {
+                            <a asp-action="Details" asp-route-id="@dm.EmployeeId" class="fw-semibold text-decoration-none d-block">@dm.Name</a>
+                        }
+                    }
+                    else
+                    {
+                        <p class="mb-0 fw-semibold">—</p>
+                        <p class="small text-muted mb-0" title="@directManager.IssueCode">@(directManager.IssueCode == null ? "" : Localizer["Org_Issue_" + directManager.IssueCode].Value)</p>
                     }
                 </div>
                 <div class="col-sm-6">

@@ -27,7 +27,22 @@ public class EmployeeAssignment : BaseEntity
 
     public bool IsActive { get; set; } = true;
 
+    /// <summary>
+    /// سمت اصلی سازمانی کارمند: برای تعیین مدیر مستقیم فقط تخصیص «اصلی» فعالِ معتبر (طبق تاریخ‌ها) ملاک است. حداکثر یک تخصیص اصلیِ فعال
+    /// برای هر کارمند (ایندکس یکتا). تخصیص‌های Secondary مدیر را تعیین نمی‌کنند.
+    /// </summary>
+    public bool IsPrimary { get; set; } = true;
+
+    /// <summary>Primary | Secondary (فاز ۱). Acting/Temporary/Delegated عمداً به فاز بعدی موکول شده (مدل داده آماده‌ی افزودنِ آن‌هاست).</summary>
+    public string AssignmentType { get; set; } = EmployeeAssignmentTypes.Primary;
+
     public string? Notes { get; set; }
 
     public DateTime CreatedDate { get; set; } = DateTime.Now;
+}
+
+public static class EmployeeAssignmentTypes
+{
+    public const string Primary = "Primary";
+    public const string Secondary = "Secondary";
 }

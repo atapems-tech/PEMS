@@ -279,12 +279,17 @@ public class OrganizationStructureService : IOrganizationStructureService
         if (alreadyOccupied)
             throw new Exception("این سمت هم‌اکنون اشغال شده است؛ ابتدا تخصیص فعلی را پایان دهید یا از جابه‌جایی استفاده کنید.");
 
+        // سمت اصلی قطعی: اولین تخصیص فعالِ کارمند اصلی است؛ تخصیص‌های بعدی Secondary (مدیر مستقیم را تعیین نمی‌کنند).
+        var hasPrimary = await _context.EmployeeAssignments.AnyAsync(x => x.EmployeeId == employeeId && x.IsActive && x.IsPrimary);
+
         var assignment = new EmployeeAssignment
         {
             PositionId = positionId,
             EmployeeId = employeeId,
             StartDate = DateTime.Now,
             IsActive = true,
+            IsPrimary = !hasPrimary,
+            AssignmentType = hasPrimary ? EmployeeAssignmentTypes.Secondary : EmployeeAssignmentTypes.Primary,
             Notes = notes,
             CreatedDate = DateTime.Now
         };

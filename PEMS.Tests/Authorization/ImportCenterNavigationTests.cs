@@ -41,11 +41,12 @@ public class ImportCenterNavigationTests
     // ---------- (1) catalog integrity ----------
 
     [Fact]
-    public void Catalog_HasTwelve_UniqueImports()
+    public void Catalog_HasThirteen_UniqueImports()
     {
         // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۹:
         // یک ورودی تازه («ConditionReading») به کاتالوگ اضافه شد - ۱۱ → ۱۲.
-        Assert.Equal(12, ImportCatalog.All.Count);
+        // Organization Hierarchy Phase 1: «OrganizationStructure» اضافه شد - ۱۲ → ۱۳.
+        Assert.Equal(13, ImportCatalog.All.Count);
         Assert.Equal(ImportCatalog.All.Count, ImportCatalog.All.Select(e => e.Key).Distinct().Count());
     }
 
@@ -112,7 +113,7 @@ public class ImportCenterNavigationTests
     // طبق فاز ۹: «ConditionReading» دقیقاً همون Sets(CmmsIntegration, ImportCenter) را دارد که
     // MaintenanceHistory دارد - پس هر جا MaintenanceHistory دیده می‌شد، حالا این‌جا هم دیده می‌شود.
     [Theory]
-    [InlineData(SystemRoles.SystemAdmin, 12)]
+    [InlineData(SystemRoles.SystemAdmin, 13)]
     [InlineData(SystemRoles.EngineeringManager, 10)]
     [InlineData(SystemRoles.Viewer, 2)]
     [InlineData(SystemRoles.DocumentController, 3)]
@@ -178,7 +179,7 @@ public class ImportCenterNavigationTests
         var view = Assert.IsType<ViewResult>(await controller.Index());
         var model = Assert.IsAssignableFrom<IReadOnlyList<ImportCatalog.ImportEntry>>(view.Model);
 
-        Assert.Equal(11, model.Count);
+        Assert.Equal(12, model.Count);
         Assert.DoesNotContain(model, e => e.Key == "Mrs");
     }
 

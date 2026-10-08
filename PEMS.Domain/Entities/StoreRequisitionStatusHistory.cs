@@ -18,4 +18,7 @@ public class StoreRequisitionStatusHistory
     public DateTime ChangedDate { get; set; } = DateTime.Now;
 
     public string? Reason { get; set; }
+
+    /// <summary>کلید Idempotency درخواست (اختیاری): تلاش مجدد با همان کلید دوباره اجرا نمی‌شود. یکتا به‌ازای هر درخواست.</summary>
+    public string? RequestKey { get; set; }
 }

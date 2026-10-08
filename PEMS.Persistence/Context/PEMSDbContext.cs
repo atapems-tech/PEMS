@@ -407,6 +407,10 @@ public class PEMSDbContext
     public DbSet<WorkflowTransition> WorkflowTransitions { get; set; }
     public DbSet<WorkflowInstance> WorkflowInstances { get; set; }
     public DbSet<WorkflowInstanceStage> WorkflowInstanceStages { get; set; }
+    public DbSet<WorkflowInstanceStageCandidate> WorkflowInstanceStageCandidates { get; set; }
+    public DbSet<WorkflowActorResponsibility> WorkflowActorResponsibilities { get; set; }
+    public DbSet<WorkflowActorResponsibilityPosition> WorkflowActorResponsibilityPositions { get; set; }
+    public DbSet<CommodityGroupResponsible> CommodityGroupResponsibles { get; set; }
     public DbSet<WorkflowHistory> WorkflowHistories { get; set; }
     public DbSet<WorkflowBinding> WorkflowBindings { get; set; }
     public DbSet<WorkflowConfigAudit> WorkflowConfigAudits { get; set; }

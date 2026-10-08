@@ -155,17 +155,33 @@ public class PartCatalogueAdminController : Controller
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> SetOrgLink(int employeeId, int managerEmployeeId)
+    public async Task<IActionResult> SaveResponsibility(PcResponsibilityInput input)
     {
         var a = await AdminActorAsync(); if (a == null) return Forbid();
-        return Back(await _admin.SetOrgLinkAsync(employeeId, managerEmployeeId, a));
+        return Back(await _admin.SaveResponsibilityAsync(input, a));
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> RemoveOrgLink(int linkId)
+    public async Task<IActionResult> AddCommodityResponsible(string responsibilityKey, int commodityGroupId, int? positionId, int? employeeId, int priority = 1)
     {
         var a = await AdminActorAsync(); if (a == null) return Forbid();
-        return Back(await _admin.RemoveOrgLinkAsync(linkId, a));
+        return Back(await _admin.AddCommodityResponsibleAsync(responsibilityKey, commodityGroupId, positionId, employeeId, priority, a));
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> RemoveCommodityResponsible(int id)
+    {
+        var a = await AdminActorAsync(); if (a == null) return Forbid();
+        return Back(await _admin.RemoveCommodityResponsibleAsync(id, a));
+    }
+
+    /// <summary>تشخیص: چه کسی برای این مسئولیت (و این درخواست‌دهنده/Commodity) واجد شرایط است و چه کسی/چرا حذف شده.</summary>
+    [HttpGet]
+    public async Task<IActionResult> Preview(string key, int requesterEmployeeId, int? commodityGroupId)
+    {
+        var a = await AdminActorAsync(); if (a == null) return Forbid();
+        var result = await _admin.PreviewResolutionAsync(key, requesterEmployeeId, commodityGroupId, a);
+        return result == null ? NotFound() : PartialView("_ResolutionPreview", result);
     }
 
     [HttpGet]

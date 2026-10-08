@@ -260,6 +260,11 @@ builder.Services.AddScoped<
 // ==============================================================================
 builder.Services.AddScoped<IWorkflowDbContext>(sp => sp.GetRequiredService<PEMSDbContext>());
 builder.Services.AddScoped<IWorkflowRuntime, WorkflowRuntimeService>();
+builder.Services.AddScoped<IWorkflowInstanceControl>(sp => (IWorkflowInstanceControl)sp.GetRequiredService<IWorkflowRuntime>());
+// Enterprise Actor Resolution (مشترک بین گردش‌کارها) + اتصال به موتور گردش‌کار
+builder.Services.AddScoped<PEMS.Application.ActorResolution.IEnterpriseActorResolver, PEMS.Persistence.Services.EnterpriseActorResolver>();
+builder.Services.AddScoped<IWorkflowActorResolutionHook, PEMS.Persistence.Workflow.ActorResolutionWorkflowHook>();
+builder.Services.AddScoped<IWorkflowBusinessContextProvider, PEMS.Persistence.Workflow.PartCatalogueWorkflowContextProvider>();
 
 // Phase 1 Hardening: نسخه‌بندی/Binding/اعتبارسنجی/رجیستری/مدل خواندنی. IWorkflowRuntime بدون تغییر امضا؛
 // پارامترهای اختیاری سازنده‌ی WorkflowRuntimeService از همین ثبت‌ها پر می‌شوند.
@@ -280,7 +285,8 @@ builder.Services.AddSingleton<IWorkflowActionRegistry>(_ =>
     PEMS.Persistence.Workflow.WorkOrderWorkflow.Register(registry);   // Phase 3B: اکشن‌های ماژول WorkOrder (Hold, Comment)
     return registry;
 });
-builder.Services.AddSingleton<IWorkflowConditionEvaluator, WorkflowConditionEvaluator>();
+// فیلدهای Fact ماژول‌ها (مثلاً Part Catalogue) به گرامر شرط‌ها اضافه می‌شود
+builder.Services.AddSingleton<IWorkflowConditionEvaluator>(_ => new WorkflowConditionEvaluator(PEMS.Persistence.Workflow.PartCatalogueWorkflow.Fields));
 builder.Services.AddSingleton<IWorkflowEventSink, NoOpWorkflowEventSink>();
 builder.Services.AddScoped<IWorkflowReferenceCatalog, PemsWorkflowReferenceCatalog>();
 builder.Services.AddScoped<IWorkflowAuthorizationHook, AccessControlWorkflowAuthorizationHook>();
@@ -303,6 +309,11 @@ builder.Services.AddScoped<IWorkOrderLaborService, WorkOrderLaborService>();
 
 // طبق «PEMS Dynamic Maintenance Organization»
 builder.Services.AddScoped<IOrganizationStructureService, OrganizationStructureService>();
+builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationValidationService, OrganizationValidationService>();
+builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationHierarchyService, OrganizationHierarchyService>();
+builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationImportService, OrganizationImportService>();
+builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationResolver, OrganizationResolver>();
+builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationConsistencyService, OrganizationConsistencyService>();
 
 // طبق «PEMS Phase 6 — CMMS Operational Excellence & Maintenance Execution»: باید قبل از
 // WorkOrderLifecycleService ثبت شود چون آن سرویس به IWorkOrderReleaseGateService وابسته است
@@ -694,6 +705,8 @@ using (var scope = app.Services.CreateScope())
 
     // Warehouse / Part Catalogue: داده‌های مرجع و گام‌های مسیر (Idempotent، فقط-افزودنی)
     await PEMS.Persistence.Seed.PartCatalogueSeeder.SeedAsync(scope.ServiceProvider);
+    // گردش‌کار تأیید کاتالوگ قطعه روی PEMS.WorkflowPlatform + مسئولیت‌های ساختاری (بدون کارمند/Position جعلی)
+    await PEMS.Persistence.Seed.PartCatalogueWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 
     var routingRuleService = scope.ServiceProvider.GetRequiredService<IRoutingRuleService>();
     await routingRuleService.SeedDefaultsAsync();

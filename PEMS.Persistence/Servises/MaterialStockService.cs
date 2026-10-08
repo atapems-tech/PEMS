@@ -84,6 +84,8 @@ public class MaterialStockService : IMaterialStockService
         var stock = await GetOrCreateStockAsync(materialItemId, warehouseId, storageLocationId);
         var delta = newOnHandQuantity - stock.OnHandQuantity;
         if (delta == 0) return (true, null);
+        if (newOnHandQuantity < stock.ReservedQuantity)
+            return (false, "موجودی نمی‌تواند از مقدار رزروشده (" + stock.ReservedQuantity + ") کمتر شود؛ ابتدا رزروها را آزاد کنید.");
 
         stock.OnHandQuantity = newOnHandQuantity;
         stock.LastUpdated = DateTime.Now;

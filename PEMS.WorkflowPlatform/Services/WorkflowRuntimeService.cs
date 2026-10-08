@@ -13,6 +13,8 @@ public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
     private readonly IWorkflowAuthorizationHook? _authHook;
     private readonly IWorkflowEventSink _events;
     private readonly IWorkflowActionRegistry _registry;
+    private readonly IWorkflowActorResolutionHook? _actorHook;
+    private readonly IReadOnlyList<IWorkflowBusinessContextProvider> _providers;
 
     // پارامترهای اختیاری: new WorkflowRuntimeService(ctx) مثل قبل کار می‌کند (Phase 1 افزایشی است).
     public WorkflowRuntimeService(
@@ -21,7 +23,9 @@ public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
         IWorkflowConditionEvaluator? conditions = null,
         IWorkflowAuthorizationHook? authorizationHook = null,
         IWorkflowEventSink? eventSink = null,
-        IWorkflowActionRegistry? actionRegistry = null)
+        IWorkflowActionRegistry? actionRegistry = null,
+        IWorkflowActorResolutionHook? actorResolutionHook = null,
+        IEnumerable<IWorkflowBusinessContextProvider>? contextProviders = null)
     {
         _db = db;
         _bindings = bindings ?? new WorkflowBindingService(db);
@@ -29,6 +33,8 @@ public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
         _authHook = authorizationHook;
         _events = eventSink ?? new NoOpWorkflowEventSink();
         _registry = actionRegistry ?? new WorkflowActionRegistry();
+        _actorHook = actorResolutionHook;
+        _providers = (contextProviders ?? Array.Empty<IWorkflowBusinessContextProvider>()).ToList();
     }
 
     internal static Dictionary<string, string?> Facts(WorkflowInstance i, WorkflowStage? stage) => new()
@@ -36,6 +42,16 @@ public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
         ["Priority"] = i.Priority, ["ProjectId"] = i.ProjectId?.ToString(), ["Module"] = i.Module,
         ["BusinessObjectType"] = i.BusinessObjectType, ["BusinessObjectId"] = i.BusinessObjectId.ToString(), ["StageName"] = stage?.Name
     };
+
+    /// <summary>Factهای هسته + Factهای کسب‌وکاری ماژول (IWorkflowBusinessContextProvider).</summary>
+    private async Task<Dictionary<string, string?>> BuildFactsAsync(WorkflowInstance i, WorkflowStage? stage)
+    {
+        var facts = Facts(i, stage);
+        foreach (var p in _providers.Where(p => p.Supports(i.Module, i.BusinessObjectType)))
+            foreach (var kv in await p.GetFactsAsync(i.Module, i.BusinessObjectType, i.BusinessObjectId))
+                facts[kv.Key] = kv.Value;
+        return facts;
+    }
 
     /// <summary>
     /// انتخاب قطعی گذار: بر اساس Priority صعودی، اولین گذاری که شرطش (در صورت وجود) برقرار است.
@@ -46,7 +62,7 @@ public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
         var candidates = await _db.WorkflowTransitions
             .Where(t => t.WorkflowVersionId == instance.WorkflowVersionId && t.FromStageId == fromStageId && t.ActionType == actionType)
             .OrderBy(t => t.Priority).ToListAsync();
-        var facts = Facts(instance, stage);
+        var facts = await BuildFactsAsync(instance, stage);
         return candidates.FirstOrDefault(t => _conditions.Evaluate(t.ConditionExpression, facts));
     }
 
@@ -239,8 +255,6 @@ public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
 
         _db.WorkflowInstances.Add(instance);
 
-        CreateInstanceStages(_db, instance, firstStage, firstStageParticipantRoles);
-
         _db.WorkflowHistories.Add(new WorkflowHistory
         {
             Instance = instance,
@@ -251,7 +265,7 @@ public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
             ActionDate = DateTime.Now
         });
 
-        await TryAutoSkipEmptyStageAsync(instance, firstStage, firstStageParticipantRoles);
+        await EnterStageAsync(instance, firstStage, firstStageParticipantRoles);
 
         try
         {
@@ -306,12 +320,25 @@ public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
         // مکانیزمی است که از Race Condition در بازبینی موازی جلوگیری می‌کند: هر نقش رکورد
         // مستقل خودش را دارد و فقط همان رکورد به‌روزرسانی می‌شود.
         // ==============================================================================
-        var myInstanceStage = (await _db.WorkflowInstanceStages
+        var pendingForStage = await _db.WorkflowInstanceStages
+            .Include(x => x.Candidates)
             .Where(x => x.WorkflowInstanceId == workflowInstanceId
                         && x.WorkflowStageId == currentStage.WorkflowStageId
                         && x.Status == "Pending")
-            .ToListAsync())
-            .FirstOrDefault(x => RoleMatches(x.AssignedToRole, actorRoles));
+            .ToListAsync();
+
+        WorkflowInstanceStage? myInstanceStage;
+        if (!string.IsNullOrWhiteSpace(currentStage.ResponsibilityKey))
+        {
+            // مرحله‌ی مبتنی بر مسئولیت: مجوز اقدام فقط از Snapshot کاندیدها (نه نقش، نه داده‌ی زنده‌ی سازمان) و بدون Bypass.
+            if (!actorEmployeeId.HasValue)
+                throw new UnauthorizedAccessException("برای اقدام روی این مرحله باید کارمند شناخته‌شده باشید.");
+            if (actorEmployeeId == instance.InitiatedById)
+                throw new UnauthorizedAccessException("تفکیک وظایف: آغازکننده‌ی گردش‌کار نمی‌تواند روی مراحل تأیید آن اقدام کند.");
+            myInstanceStage = pendingForStage.FirstOrDefault(x => x.Candidates.Any(c => c.IsSelected && c.EmployeeId == actorEmployeeId.Value));
+        }
+        else
+            myInstanceStage = pendingForStage.FirstOrDefault(x => RoleMatches(x.AssignedToRole, actorRoles));
 
         if (myInstanceStage == null)
             throw new UnauthorizedAccessException(
@@ -392,7 +419,7 @@ public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
         {
             // پایان گردش‌کار
             instance.CurrentStageId = null;
-            instance.Status = stageOutcome == "Reject" ? "Rejected" : stageOutcome == "Cancel" ? "Cancelled" : "Completed";
+            instance.Status = stageOutcome == "Reject" ? "Rejected" : stageOutcome == "Cancel" ? "Cancelled" : stageOutcome == "Return" ? "Returned" : "Completed";
             instance.CompletionDate = DateTime.Now;
         }
         else
@@ -405,9 +432,7 @@ public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
 
             instance.CurrentStageId = nextStage.WorkflowStageId;
 
-            CreateInstanceStages(_db, instance, nextStage, nextStageParticipantRoles);
-
-            await TryAutoSkipEmptyStageAsync(instance, nextStage, nextStageParticipantRoles);
+            await EnterStageAsync(instance, nextStage, nextStageParticipantRoles);
         }
 
         _db.WorkflowHistories.Add(new WorkflowHistory
@@ -440,6 +465,92 @@ public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
         else if (instance.Status == "Rejected") await EmitAsync("InstanceRejected", instance, currentStage, actionType, actorEmployeeId);
         else if (instance.CurrentStageId != previousStageId)
             await EmitAsync("StageEntered", instance, await _db.WorkflowStages.FirstOrDefaultAsync(x => x.WorkflowStageId == instance.CurrentStageId), actionType, actorEmployeeId);
+    }
+
+
+    // ==============================================================================
+    // ورود به مرحله. مراحل بدون ResponsibilityKey دقیقاً مثل قبل (نقش/شرکت‌کننده‌ی صریح) عمل می‌کنند.
+    // مراحل مبتنی بر مسئولیت: ۱) شرط ورود (EntryCondition) ۲) حل بازیگران از طریق IWorkflowActorResolutionHook
+    // ۳) Snapshot کاندیدها. نتیجه‌ی Skipped یا شرط نادرست ⇒ Skip خودکار (زنجیره‌ای تا مرحله‌ی بعدیِ قابل‌اجرا).
+    // نتیجه‌ی Failed ⇒ WorkflowActorResolutionException و هیچ تغییری ذخیره نمی‌شود (Fail-closed).
+    // ==============================================================================
+    private async Task EnterStageAsync(WorkflowInstance instance, WorkflowStage stage, IReadOnlyList<string>? explicitParticipants)
+    {
+        for (var guard = 0; guard < 100; guard++)
+        {
+            if (string.IsNullOrWhiteSpace(stage.ResponsibilityKey) || explicitParticipants != null)
+            {
+                CreateInstanceStages(_db, instance, stage, explicitParticipants);
+                await TryAutoSkipEmptyStageAsync(instance, stage, explicitParticipants);
+                return;
+            }
+
+            if (_actorHook == null)
+                throw new InvalidOperationException(
+                    $"مرحله‌ی «{stage.Name}» مبتنی بر مسئولیت است ولی Actor Resolver پیکربندی نشده است (Fail-closed).");
+
+            var facts = await BuildFactsAsync(instance, stage);
+            string? skipReason = null;
+
+            if (!string.IsNullOrWhiteSpace(stage.EntryCondition) && !_conditions.Evaluate(stage.EntryCondition, facts))
+                skipReason = "EntryCondition";
+            else
+            {
+                var outcome = await _actorHook.ResolveAsync(new WorkflowActorResolutionContext(instance, stage, facts, instance.InitiatedById));
+                if (outcome.Kind == WorkflowActorResolutionKind.Failed)
+                    throw new WorkflowActorResolutionException(outcome.State, stage.Name, outcome.DetailsJson);
+
+                if (outcome.Kind == WorkflowActorResolutionKind.Skipped)
+                    skipReason = outcome.SkipReason ?? "NotApplicable";
+                else
+                {
+                    var selected = outcome.Candidates.Where(c => c.IsSelected).ToList();
+                    var instStage = new WorkflowInstanceStage
+                    {
+                        Instance = instance,
+                        WorkflowStageId = stage.WorkflowStageId,
+                        AssignedToEmployeeId = selected.Count == 1 ? selected[0].EmployeeId : null,
+                        Status = "Pending",
+                        AssignedDate = DateTime.Now,
+                        ResolutionState = outcome.State,
+                        ResolutionDetails = outcome.DetailsJson,
+                        ResolvedDate = DateTime.Now
+                    };
+                    foreach (var c in outcome.Candidates)
+                        instStage.Candidates.Add(new WorkflowInstanceStageCandidate { EmployeeId = c.EmployeeId, IsSelected = c.IsSelected, Reason = c.Reason });
+                    _db.WorkflowInstanceStages.Add(instStage);
+                    return;
+                }
+            }
+
+            // ---- Skip خودکار
+            var skipTransition = await SelectTransitionAsync(instance, stage.WorkflowStageId, "Approve", stage);
+            _db.WorkflowHistories.Add(new WorkflowHistory
+            {
+                Instance = instance,
+                FromStageId = stage.WorkflowStageId,
+                ToStageId = skipTransition?.ToStageId,
+                ActionType = "AutoSkip",
+                Comment = skipReason,
+                ActionDate = DateTime.Now
+            });
+
+            if (skipTransition?.ToStageId == null)
+            {
+                instance.CurrentStageId = null;
+                instance.Status = "Completed";
+                instance.CompletionDate = DateTime.Now;
+                return;
+            }
+
+            var next = await _db.WorkflowStages.FirstOrDefaultAsync(s => s.WorkflowStageId == skipTransition.ToStageId);
+            if (next == null) throw new InvalidOperationException("مرحله‌ی بعدی گردش‌کار یافت نشد.");
+            instance.CurrentStageId = next.WorkflowStageId;
+            stage = next;
+            explicitParticipants = null;
+        }
+
+        throw new InvalidOperationException("حلقه‌ی Skip خودکار مراحل گردش‌کار از حد مجاز گذشت.");
     }
 
 
@@ -649,9 +760,30 @@ public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
             }
         ).ToListAsync();
 
-        return candidates
+        var byRole = candidates
             .Where(x => RoleMatches(x.AssignedToRole, actorRoles))
             .Select(x => x.Task)
             .ToList();
+
+        // مراحل مبتنی بر مسئولیت: فقط کاندیدهای Snapshot شده
+        var byCandidate = await (
+            from cand in _db.WorkflowInstanceStageCandidates
+            join instStage in _db.WorkflowInstanceStages on cand.WorkflowInstanceStageId equals instStage.WorkflowInstanceStageId
+            join instance in _db.WorkflowInstances on instStage.WorkflowInstanceId equals instance.WorkflowInstanceId
+            join stage in _db.WorkflowStages on instStage.WorkflowStageId equals stage.WorkflowStageId
+            where cand.EmployeeId == employeeId && cand.IsSelected && instStage.Status == "Pending" && instance.Status == "Running"
+                  && instance.InitiatedById != employeeId
+            select new PendingTaskDto
+            {
+                WorkflowInstanceId = instance.WorkflowInstanceId,
+                WorkflowInstanceStageId = instStage.WorkflowInstanceStageId,
+                Module = instance.Module,
+                BusinessObjectType = instance.BusinessObjectType,
+                BusinessObjectId = instance.BusinessObjectId,
+                StageName = stage.Name,
+                AssignedDate = instStage.AssignedDate
+            }).ToListAsync();
+
+        return byRole.Concat(byCandidate).ToList();
     }
 }

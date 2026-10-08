@@ -121,6 +121,36 @@ public class RoleModuleActionService : IRoleModuleActionService
             Add(SystemRoles.Viewer, "View");
         });
 
+        // StoreRequisition (Indent داخلی): مجوزهای ریزدانه‌ی چرخه‌ی عمر (Submit/Approve/Reject/SetApprovedQuantity/Reserve/Issue/Close/CloseShort/Cancel)
+        // که سرویس چرخه‌ی عمر سمت سرور اعمال می‌کند. پیش‌فرض‌ها از ماتریس قدیمی RolePermission همین ماژول مشتق می‌شود تا رفتار فعلی
+        // حفظ شود (CanCreate ⇒ Create+Submit؛ CanApprove ⇒ بقیه‌ی عمل‌های تصمیم‌گیری) + دو نقش انبار. یک‌بار اجرا (Idempotent)؛ بعد از آن
+        // مدیر از ماتریس مجوز-عمل تغییر می‌دهد.
+        if (!await _context.RoleModuleActions.AnyAsync(x => x.Module == "StoreRequisition"))
+        {
+            var srRows = new List<RoleModuleAction>();
+            void Grant(string role, params string[] actions)
+            {
+                foreach (var a in actions)
+                    if (!srRows.Any(r => r.RoleName == role && r.Action == a))
+                        srRows.Add(new RoleModuleAction { RoleName = role, Module = "StoreRequisition", Action = a, CreatedDate = DateTime.Now });
+            }
+            var decide = new[] { "Approve", "Reject", "SetApprovedQuantity", "Reserve", "Issue", "Close", "CloseShort", "Cancel" };
+
+            foreach (var rp in await _context.RolePermissions.AsNoTracking().Where(x => x.ModuleName == "StoreRequisition").ToListAsync())
+            {
+                if (rp.CanView) Grant(rp.RoleName, "View");
+                if (rp.CanCreate) Grant(rp.RoleName, "Create", "Submit");
+                if (rp.CanApprove) Grant(rp.RoleName, decide);
+            }
+
+            Grant(RoleCatalog.WarehouseManager, "View", "Create", "Submit");
+            Grant(RoleCatalog.WarehouseManager, decide);
+            Grant(RoleCatalog.WarehouseStorekeeper, "View", "Create", "Submit", "Reserve", "Issue", "Close");
+
+            await _context.RoleModuleActions.AddRangeAsync(srRows);
+            await _context.SaveChangesAsync();
+        }
+
         // Warehouse / Part Catalogue Request - مجوز Create/Review/Approve/Admin (Review/Admin در ماتریس ده‌اکشنی قدیمی نیست؛
         // به همین دلیل از همین مسیر RoleModuleAction می‌آید - همان الگوی Permit). نام ماژول «PartCatalogue» (بدون نقطه)
         // تا Permission.Name = "PartCatalogue.Review" توسط Parserهای نام-مجوز درست شکسته شود.

@@ -40,40 +40,166 @@
         </div>
     </section>
 
-    @* ---------------------------------------------------- Workflow steps *@
+    @* ---------------------------------------------------- Workflow (PEMS.WorkflowPlatform) *@
     <section class="vs-panel pc-card mt-3">
         <h2 class="vs-section__title"><i class="bi bi-signpost-split"></i> @Localizer["Pc_Adm_Steps"]</h2>
+        <p class="small text-muted">@Localizer["Pc_Adm_StepsHint"] <a asp-area="Admin" asp-controller="WorkflowManagement" asp-action="Index">@Localizer["Pc_Adm_OpenWorkflowDesigner"]</a></p>
         <div class="pc-table-scroll">
             <table class="table table-sm table-enterprise vs-dense mb-0">
-                <thead><tr><th>@Localizer["Pc_Col_Order"]</th><th>@Localizer["Pc_Col_Step"]</th><th>@Localizer["Pc_Col_Kind"]</th><th>@Localizer["Pc_Col_Source"]</th><th>@Localizer["Pc_Col_Condition"]</th><th>@Localizer["Pc_Col_Active"]</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Pc_Col_Order"]</th><th>@Localizer["Pc_Col_Step"]</th><th>@Localizer["Pc_Adm_Responsibility"]</th><th>@Localizer["Pc_Col_Condition"]</th></tr></thead>
                 <tbody>
-                @foreach (var st in ov.Steps)
+                @foreach (var st in ov.WorkflowStages)
                 {
-                    var fid = "stepForm" + st.StepId;
                     <tr>
-                        <td style="width:90px"><input form="@fid" name="order" type="number" min="1" max="1000" value="@st.Order" class="form-control form-control-sm" aria-label="@Localizer["Pc_Col_Order"]" /></td>
-                        <td>@Localizer["Pc_Step_" + st.StepKey] @if (st.NeedsConfirmation) { <span class="vs-pill vs-pill--warning" title="@Localizer["Pc_Adm_NeedsConfirmation"]">@Localizer["Pc_Adm_NeedsConfirmationShort"]</span> }</td>
-                        <td>@Localizer["Pc_Kind_" + st.Kind]</td>
-                        <td>@Localizer["Pc_Src_" + st.Source]</td>
-                        <td>
-                            <select form="@fid" name="conditionKey" class="form-select form-select-sm" aria-label="@Localizer["Pc_Col_Condition"]">
-                                @foreach (var ck in allConds) { <option value="@ck" selected="@(st.Condition == ck)">@Localizer["Pc_Cond_" + ck]</option> }
-                            </select>
-                        </td>
-                        <td><input form="@fid" type="checkbox" name="isActive" value="true" checked="@st.IsActive" aria-label="@Localizer["Pc_Col_Active"]" /><input form="@fid" type="hidden" name="isActive" value="false" /></td>
-                        <td>
-                            <form id="@fid" asp-action="UpdateStep" method="post"><input type="hidden" name="stepId" value="@st.StepId" /><button class="vs-btn vs-btn--sm"><i class="bi bi-save"></i> @Localizer["Pc_Btn_Save"]</button></form>
-                        </td>
+                        <td class="vs-num">@st.Order</td>
+                        <td>@Localizer["Pc_Step_" + st.Name]</td>
+                        <td><code>@st.ResponsibilityKey</code></td>
+                        <td>@(string.IsNullOrEmpty(st.EntryCondition) ? Localizer["Pc_Cond_Always"].Value : st.EntryCondition)</td>
                     </tr>
                 }
                 </tbody>
             </table>
+            @if (!ov.WorkflowStages.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Adm_NoWorkflow"]</div> }
+        </div>
+    </section>
+
+    @* ---------------------------------------------------- Data quality *@
+    <section class="vs-panel pc-card mt-3">
+        <h2 class="vs-section__title"><i class="bi bi-clipboard2-pulse"></i> @Localizer["Pc_Adm_DataQuality"]</h2>
+        <div class="pc-table-scroll">
+            <table class="table table-sm table-enterprise vs-dense mb-0">
+                <thead><tr><th>@Localizer["Pc_Adm_Severity"]</th><th>@Localizer["Pc_Adm_Responsibility"]</th><th>@Localizer["Pc_Adm_Finding"]</th></tr></thead>
+                <tbody>
+                @foreach (var f in ov.Findings.OrderBy(x => x.Severity).ThenBy(x => x.ResponsibilityKey))
+                {
+                    <tr>
+                        <td><span class="vs-pill @(f.Severity == "P1" ? "vs-pill--danger" : f.Severity == "P2" ? "vs-pill--warning" : "vs-pill--neutral")">@f.Severity</span></td>
+                        <td><code>@f.ResponsibilityKey</code></td>
+                        <td>@f.Message <span class="text-muted small">(@f.Code)</span></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            @if (!ov.Findings.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Adm_NoFindings"]</div> }
+        </div>
+    </section>
+
+    @* ---------------------------------------------------- Responsibilities *@
+    <section class="vs-panel pc-card mt-3">
+        <h2 class="vs-section__title"><i class="bi bi-person-badge"></i> @Localizer["Pc_Adm_Responsibilities"]</h2>
+        <p class="small text-muted">@Localizer["Pc_Adm_ResponsibilitiesHint"]</p>
+        <div class="row g-3">
+        @foreach (var r in ov.Responsibilities)
+        {
+            var fid = "respForm" + r.Id;
+            <div class="col-xl-6">
+                <form id="@fid" asp-action="SaveResponsibility" method="post" class="border rounded p-2 h-100">
+                    <input type="hidden" name="Id" value="@r.Id" />
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <strong>@Localizer["Pc_Step_" + r.Key] <code class="ms-1">@r.Key</code></strong>
+                        <label class="small"><input type="checkbox" name="IsActive" value="true" checked="@r.IsActive" /> @Localizer["Pc_Col_Active"]<input type="hidden" name="IsActive" value="false" /></label>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <label class="form-label small mb-0" for="@(fid)_kind">@Localizer["Pc_Adm_Kind"]</label>
+                            <select id="@(fid)_kind" name="Kind" class="form-select form-select-sm">
+                                @foreach (var k in new[] { "AssignmentPool", "PositionScope", "RequesterManager", "CommodityPosition" }) { <option value="@k" selected="@(r.Kind == k)">@Localizer["Pc_ResKind_" + k]</option> }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small mb-0" for="@(fid)_act">@Localizer["Pc_Adm_RequiredAction"]</label>
+                            <select id="@(fid)_act" name="RequiredAction" class="form-select form-select-sm">
+                                <option value="" selected="@string.IsNullOrEmpty(r.RequiredAction)"></option>
+                                @foreach (var a in new[] { "Review", "Approve" }) { <option value="@a" selected="@(r.RequiredAction == a)">@a</option> }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small mb-0" for="@(fid)_pos">@Localizer["Pc_Adm_Positions"]</label>
+                            <select id="@(fid)_pos" multiple size="4" class="form-select form-select-sm" data-pc-pos-target="@(fid)_posIds">
+                                @foreach (var p in ov.Positions) { <option value="@p.Id" selected="@(r.Positions.Any(x => x.PositionId == p.Id))">@p.Text</option> }
+                            </select>
+                            <input type="hidden" name="PositionIds" id="@(fid)_posIds" value="@string.Join(",", r.Positions.Select(x => x.PositionId))" />
+                            <div class="form-text">@Localizer["Pc_Adm_PositionsHint"]</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small mb-0" for="@(fid)_role">@Localizer["Pc_Adm_Role"]</label>
+                            <select id="@(fid)_role" name="RoleName" class="form-select form-select-sm">
+                                <option value="" selected="@string.IsNullOrEmpty(r.RoleName)"></option>
+                                @foreach (var role in ov.Roles) { <option value="@role" selected="@(string.Equals(r.RoleName, role, StringComparison.OrdinalIgnoreCase))">@role</option> }
+                            </select>
+                            <label class="form-label small mb-0 mt-1" for="@(fid)_ml">@Localizer["Pc_Adm_ManagerLevel"]</label>
+                            <select id="@(fid)_ml" name="ManagerLevel" class="form-select form-select-sm">
+                                <option value=""></option>
+                                <option value="1" selected="@(r.ManagerLevel == 1)">1</option><option value="2" selected="@(r.ManagerLevel == 2)">2</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small mb-0" for="@(fid)_st">@Localizer["Pc_Adm_ScopeType"]</label>
+                            <select id="@(fid)_st" name="ScopeType" class="form-select form-select-sm">
+                                @foreach (var st in new[] { "None", "Department", "Discipline", "MaintenanceGroup", "Team" }) { <option value="@st" selected="@(r.ScopeType == st)">@Localizer["Pc_Scope_" + st]</option> }
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small mb-0" for="@(fid)_sv">@Localizer["Pc_Adm_ScopeValue"]</label>
+                            <input id="@(fid)_sv" name="ScopeValue" value="@r.ScopeValue" class="form-control form-control-sm" placeholder="@Localizer["Pc_Adm_ScopeValueHint"]" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small mb-0" for="@(fid)_sel">@Localizer["Pc_Adm_Strategy"]</label>
+                            <select id="@(fid)_sel" name="SelectionStrategy" class="form-select form-select-sm">
+                                @foreach (var st in new[] { "Queue", "SingleActor" }) { <option value="@st" selected="@(r.Strategy == st)">@Localizer["Pc_Strategy_" + st]</option> }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2 mt-2">
+                        <button type="submit" class="vs-btn vs-btn--sm vs-btn--primary"><i class="bi bi-save"></i> @Localizer["Pc_Btn_Save"]</button>
+                        <button type="button" class="vs-btn vs-btn--sm" data-pc-preview="@r.Key"><i class="bi bi-search"></i> @Localizer["Pc_Adm_Diagnose"]</button>
+                    </div>
+                </form>
+            </div>
+        }
+        </div>
+
+        <h3 class="h6 mt-3">@Localizer["Pc_Adm_Diagnose"]</h3>
+        <div class="row g-2 align-items-start">
+            <div class="col-md-4"><label class="form-label small mb-0" for="pcPrevKey">@Localizer["Pc_Adm_Responsibility"]</label>
+                <select id="pcPrevKey" class="form-select form-select-sm">@foreach (var r in ov.Responsibilities) { <option value="@r.Key">@Localizer["Pc_Step_" + r.Key]</option> }</select></div>
+            <div class="col-md-4"><label class="form-label small mb-0" for="pcPrevReq_text">@Localizer["Pc_F_Requester"]</label><div class="pc-lookup" data-url="@empUrl" data-name="requesterEmployeeId" data-input-id="pcPrevReq_text" data-form="pcNoForm" id="pcPrevReqHost"></div></div>
+            <div class="col-md-4"><label class="form-label small mb-0" for="pcPrevGrp_text">@Localizer["Pc_F_CommodityGroup1Id"]</label><div class="pc-lookup" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="commodityGroupId" data-input-id="pcPrevGrp_text" data-form="pcNoForm" id="pcPrevGrpHost"></div></div>
+        </div>
+        <div id="pcPreviewOut" class="mt-2" aria-live="polite"></div>
+    </section>
+
+    @* ---------------------------------------------------- Commodity responsibility *@
+    <section class="vs-panel pc-card mt-3">
+        <h2 class="vs-section__title"><i class="bi bi-boxes"></i> @Localizer["Pc_Adm_CommodityResp"]</h2>
+        <p class="small text-muted">@Localizer["Pc_Adm_CommodityRespHint"]</p>
+        <form asp-action="AddCommodityResponsible" method="post" class="row g-2 align-items-start mb-2">
+            <div class="col-md-3"><label class="form-label small mb-0" for="cr_key">@Localizer["Pc_Adm_Responsibility"]</label>
+                <select id="cr_key" name="responsibilityKey" class="form-select form-select-sm">@foreach (var r in ov.Responsibilities.Where(x => x.Kind == "CommodityPosition")) { <option value="@r.Key">@Localizer["Pc_Step_" + r.Key]</option> }</select></div>
+            <div class="col-md-3"><label class="form-label small mb-0" for="cr_grp_text">@Localizer["Pc_F_CommodityGroup1Id"]</label><div class="pc-lookup" data-url="/Warehouse/PartCatalogueAdmin/CommodityGroups" data-name="commodityGroupId" data-input-id="cr_grp_text"></div></div>
+            <div class="col-md-3"><label class="form-label small mb-0" for="cr_pos">@Localizer["Pc_Adm_Position"]</label>
+                <select id="cr_pos" name="positionId" class="form-select form-select-sm"><option value=""></option>@foreach (var p in ov.Positions) { <option value="@p.Id">@p.Text</option> }</select></div>
+            <div class="col-md-3"><label class="form-label small mb-0" for="cr_emp_text">@Localizer["Pc_Adm_EmployeeOverride"]</label><div class="pc-lookup" data-url="@empUrl" data-name="employeeId" data-input-id="cr_emp_text"></div></div>
+            <div class="col-12"><button class="vs-btn vs-btn--sm vs-btn--primary"><i class="bi bi-plus-lg"></i> @Localizer["Pc_Btn_AddGroup"]</button></div>
+        </form>
+        <div class="pc-table-scroll">
+            <table class="table table-sm table-enterprise vs-dense mb-0">
+                <thead><tr><th>@Localizer["Pc_Adm_Responsibility"]</th><th>@Localizer["Pc_F_CommodityGroup1Id"]</th><th>@Localizer["Pc_Adm_Position"]</th><th>@Localizer["Pc_Adm_EmployeeOverride"]</th><th></th></tr></thead>
+                <tbody>
+                @foreach (var c in ov.CommodityResponsibles.Where(x => x.IsActive))
+                {
+                    <tr><td><code>@c.ResponsibilityKey</code></td><td>@c.GroupText</td><td>@c.PositionTitle</td><td>@c.EmployeeName</td>
+                        <td class="text-end"><form asp-action="RemoveCommodityResponsible" method="post" class="d-inline"><input type="hidden" name="id" value="@c.Id" /><button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><i class="bi bi-trash"></i></button></form></td></tr>
+                }
+                </tbody>
+            </table>
+            @if (!ov.CommodityResponsibles.Any(x => x.IsActive)) { <div class="vs-empty py-2">@Localizer["Pc_Adm_NoCommodityResp"]</div> }
         </div>
     </section>
 
     @* ---------------------------------------------------- Approvers *@
     <section class="vs-panel pc-card mt-3">
-        <h2 class="vs-section__title"><i class="bi bi-people"></i> @Localizer["Pc_Adm_Approvers"]</h2>
+        <h2 class="vs-section__title"><i class="bi bi-people"></i> @Localizer["Pc_Adm_Approvers"] <span class="vs-pill vs-pill--neutral">@Localizer["Pc_Adm_Legacy"]</span></h2>
         <p class="small text-muted">@Localizer["Pc_Adm_ApproversHint"]</p>
         <div class="row g-3">
             @foreach (var st in poolSteps)
@@ -98,50 +224,15 @@
                     </div>
                 </div>
             }
-            <div class="col-md-6 col-xl-4">
-                <div class="border rounded p-2 h-100">
-                    <strong>@Localizer["Pc_Adm_Ceo"]</strong>
-                    <p class="small text-muted mb-1">@Localizer["Pc_Adm_CeoHint"]</p>
-                    <ul class="list-unstyled small my-2">
-                        @foreach (var ap in ov.Ceo)
-                        {
-                            <li class="d-flex justify-content-between align-items-center">@ap.EmployeeName
-                                <form asp-action="RemoveApprover" method="post" class="d-inline"><input type="hidden" name="assignmentId" value="@ap.Id" /><button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><i class="bi bi-x-lg"></i></button></form>
-                            </li>
-                        }
-                    </ul>
-                    <form asp-action="AddApprover" method="post" class="d-flex gap-2 align-items-start">
-                        <input type="hidden" name="stepKey" value="CEO" />
-                        <div class="pc-lookup flex-grow-1" data-url="@empUrl" data-name="employeeId" data-input-id="emp_ceo"></div>
-                        <button class="vs-btn vs-btn--sm"><i class="bi bi-plus-lg"></i></button>
-                    </form>
-                </div>
-            </div>
         </div>
     </section>
 
-    @* ---------------------------------------------------- Org links *@
+    @* ---------------------------------------------------- Direct Manager = Organization hierarchy (not module-local) *@
     <section class="vs-panel pc-card mt-3">
-        <h2 class="vs-section__title"><i class="bi bi-diagram-2"></i> @Localizer["Pc_Adm_OrgLinks"]</h2>
-        <p class="small text-muted">@Localizer["Pc_Adm_OrgHint"]</p>
-        <form asp-action="SetOrgLink" method="post" class="row g-2 align-items-start mb-2">
-            <div class="col-md-5"><label class="form-label" for="org_emp_text">@Localizer["Pc_Adm_Employee"]</label><div class="pc-lookup" data-url="@empUrl" data-name="employeeId" data-input-id="org_emp_text"></div></div>
-            <div class="col-md-5"><label class="form-label" for="org_mgr_text">@Localizer["Pc_Adm_Manager"]</label><div class="pc-lookup" data-url="@empUrl" data-name="managerEmployeeId" data-input-id="org_mgr_text"></div></div>
-            <div class="col-md-2 pt-4"><button class="vs-btn vs-btn--sm vs-btn--primary"><i class="bi bi-save"></i> @Localizer["Pc_Btn_Save"]</button></div>
-        </form>
-        <div class="pc-table-scroll">
-            <table class="table table-sm table-enterprise vs-dense mb-0">
-                <thead><tr><th>@Localizer["Pc_Adm_Employee"]</th><th>@Localizer["Pc_Adm_Manager"]</th><th></th></tr></thead>
-                <tbody>
-                @foreach (var l in ov.OrgLinks)
-                {
-                    <tr><td>@l.Employee</td><td>@l.Manager</td>
-                        <td class="text-end"><form asp-action="RemoveOrgLink" method="post" class="d-inline"><input type="hidden" name="linkId" value="@l.Id" /><button class="vs-icon-btn" title="@Localizer["Pc_Btn_Remove"]" aria-label="@Localizer["Pc_Btn_Remove"]"><i class="bi bi-trash"></i></button></form></td></tr>
-                }
-                </tbody>
-            </table>
-            @if (!ov.OrgLinks.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Empty_OrgLinks"]</div> }
-        </div>
+        <h2 class="vs-section__title"><i class="bi bi-diagram-2"></i> @Localizer["Pc_Adm_OrgHierarchyTitle"]</h2>
+        <p class="small text-muted mb-2">@Localizer["Pc_Adm_OrgHierarchyBody"]</p>
+        <a class="vs-btn vs-btn--sm" asp-area="Admin" asp-controller="Organization" asp-action="Index"><i class="bi bi-diagram-3"></i> @Localizer["Org_Title"]</a>
+        <a class="vs-btn vs-btn--sm" asp-area="Admin" asp-controller="Organization" asp-action="Diagnostics"><i class="bi bi-heart-pulse"></i> @Localizer["Org_Diag_Title"]</a>
     </section>
 
     @* ---------------------------------------------------- Sections *@
@@ -204,6 +295,8 @@
         </div>
     </section>
 </div>
+
+<form id="pcNoForm" onsubmit="return false"></form>
 
 @section Scripts {
     <script src="~/js/pems-part-catalogue.js" asp-append-version="true"></script>

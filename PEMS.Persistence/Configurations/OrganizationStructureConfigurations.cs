@@ -17,6 +17,13 @@ public class EmployeeAssignmentConfiguration : IEntityTypeConfiguration<Employee
         builder.HasKey(x => x.EmployeeAssignmentId);
 
         builder.Property(x => x.Notes).HasMaxLength(500);
+        builder.Property(x => x.AssignmentType).HasMaxLength(20).IsRequired();
+
+        builder.HasIndex(x => x.EmployeeId, "IX_EmployeeAssignments_EmployeeId");   // جست‌وجوی تخصیص‌های کارمند (همان Index قبلی)
+
+        // حداکثر یک تخصیص اصلیِ فعال برای هر کارمند (سمت اصلی قطعی)
+        builder.HasIndex(x => x.EmployeeId).IsUnique().HasFilter("[IsActive] = 1 AND [IsPrimary] = 1")
+            .HasDatabaseName("IX_EmployeeAssignments_EmployeeId_ActivePrimary");
 
         // طبق بخش ۴ سند: یک Position در هر لحظه حداکثر یک اشغال‌کننده‌ی فعال دارد (همان سمت،
         // نه همان کارمند) - تلاش برای دو تخصیص فعال هم‌زمان روی یک Position رد می‌شود.

@@ -74,7 +74,7 @@
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
     var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
-    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "ContractApprovalAuthority", "Department", "Employee", "Authorization", "SoDPolicy", "AuthorizationAudit", "NavigationVisibility" };
+    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "ContractApprovalAuthority", "Department", "Employee", "Authorization", "SoDPolicy", "AuthorizationAudit", "NavigationVisibility", "Organization", "OrganizationImport" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
     // Warehouse یک Area مستقل است؛ کنترلرهای هم‌نام در Areaهای دیگر نباید بخش را فعال کنند
@@ -684,6 +684,11 @@
 
                 <a class="nav-link nav-subitem @(IsActive("Employee") ? "active" : "")" asp-controller="Employee" asp-action="Index" asp-area="">
                     <i class="bi bi-people"></i> @Localizer["Employees"]
+                </a>
+
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Organization") ? "active" : "")"
+                   asp-area="Admin" asp-controller="Organization" asp-action="Index">
+                    <i class="bi bi-diagram-3"></i> @Localizer["Org_Title"]
                 </a>
             }
 
