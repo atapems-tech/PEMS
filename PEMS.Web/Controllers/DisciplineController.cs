@@ -77,6 +77,7 @@ public class DisciplineController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(string code, string name, string? description, string? importAliases, string? transmittalCode)
     {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "DisciplineWorkspace", "Create")) return Forbid();
         if (string.IsNullOrWhiteSpace(code) || string.IsNullOrWhiteSpace(name))
         {
             TempData["Error"] = "Discipline code and name are required.";
@@ -112,7 +113,8 @@ public class DisciplineController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int disciplineId, string code, string name, string? description, string? importAliases, string? transmittalCode)
     {
-        var discipline = await _context.Disciplines.FirstOrDefaultAsync(x => x.DisciplineId == disciplineId);
+
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "DisciplineWorkspace", "Edit")) return Forbid();        var discipline = await _context.Disciplines.FirstOrDefaultAsync(x => x.DisciplineId == disciplineId);
         if (discipline == null) return NotFound();
         if (string.IsNullOrWhiteSpace(code) || string.IsNullOrWhiteSpace(name))
         {
@@ -144,7 +146,8 @@ public class DisciplineController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleActive(int disciplineId)
     {
-        var discipline = await _context.Disciplines.FirstOrDefaultAsync(x => x.DisciplineId == disciplineId);
+
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "DisciplineWorkspace", "Edit")) return Forbid();        var discipline = await _context.Disciplines.FirstOrDefaultAsync(x => x.DisciplineId == disciplineId);
         if (discipline == null) return NotFound();
         discipline.IsActive = !discipline.IsActive;
         await _context.SaveChangesAsync();
