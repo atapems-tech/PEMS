@@ -13,6 +13,8 @@
     var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
     var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
     var personnelTypes = new[] { "Internal", "Contractor", "External", "Temporary" };
+    var linkedUser = ViewBag.LinkedUser as PEMS.Persistence.Identity.ApplicationUser;
+    var linkedUserRoles = (IEnumerable<string>)(ViewBag.LinkedUserRoles ?? Array.Empty<string>());
 
     // طبق «Employee Details — Stitch UI Redesign» بخش ۶: به‌جای نمایش هم‌زمان EN+FA (که
     // معماری فعلی PEMS ندارد)، برچسب‌ها بر اساس فرهنگ جاری (همان کوکی/سوییچر موجود در
@@ -86,6 +88,27 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Account & Authorization -->
+<div class="content-card mb-3">
+    <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
+        <i class="bi bi-shield-lock text-warning"></i>
+        <span>@L("System Account & Authorization", "حساب کاربری و دسترسی")</span>
+    </h6>
+    @if (linkedUser != null)
+    {
+        <div class="row g-3 align-items-center">
+            <div class="col-lg-3"><span class="text-muted small d-block">@L("Username", "نام کاربری")</span><strong>@linkedUser.UserName</strong></div>
+            <div class="col-lg-2"><span class="text-muted small d-block">@L("Status", "وضعیت")</span><span class="badge @(linkedUser.IsActive ? "bg-success" : "bg-secondary")">@(linkedUser.IsActive ? "Active" : "Inactive")</span></div>
+            <div class="col-lg-5"><span class="text-muted small d-block">@L("Roles", "نقش‌ها")</span>@if (linkedUserRoles.Any()) { foreach (var role in linkedUserRoles) { <span class="badge bg-secondary me-1">@role</span> } } else { <span class="text-muted">—</span> }</div>
+            <div class="col-lg-2 text-lg-end"><a asp-area="Admin" asp-controller="Users" asp-action="Edit" asp-route-id="@linkedUser.Id" class="btn btn-sm btn-outline-primary"><i class="bi bi-person-gear"></i> @L("Manage access", "مدیریت دسترسی")</a></div>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex justify-content-between align-items-center gap-3"><p class="text-muted mb-0">@L("No login account is linked to this employee.", "برای این کارمند حساب ورود به سامانه متصل نشده است.")</p><a asp-area="Admin" asp-controller="Users" asp-action="Create" class="btn btn-sm btn-pems-solid">@L("Create user", "ایجاد کاربر")</a></div>
+    }
 </div>
 
 <!-- Row 1: Employment Details (large) + Current Team (compact) -->
