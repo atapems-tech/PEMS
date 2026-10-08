@@ -231,9 +231,9 @@ public class UsersController : Controller
             var roleResult = await _userManager.AddToRolesAsync(user, model.SelectedRoles);
             if (!roleResult.Succeeded)
             {
-                foreach (var error in roleResult.Errors)
-                    ModelState.AddModelError(string.Empty, error.Description);
-                return View(model);
+                TempData["Error"] = "User was created, but some role assignments failed: "
+                    + string.Join(", ", roleResult.Errors.Select(e => e.Description));
+                return RedirectToAction(nameof(Index));
             }
         }
 
