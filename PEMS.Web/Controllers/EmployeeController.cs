@@ -422,8 +422,16 @@ public class EmployeeController : Controller
                     selectedRoles = selectedRoles.Where(r => r != SystemRoles.SystemAdmin).ToList();
 
                 if (selectedRoles.Any())
-                    await _userManager.AddToRolesAsync(newUser, selectedRoles);
+                    var roleResult = await _userManager.AddToRolesAsync(newUser, selectedRoles);
+                    if (!roleResult.Succeeded)
+                    {
+                        TempData["Error"] = "کارمند و یوزر ساخته شد، اما تخصیص برخی نقش‌ها ناموفق بود: "
+                            + string.Join(", ", roleResult.Errors.Select(e => e.Description));
+                        return RedirectToAction(nameof(Index));
+                    }
             }
+
+            await SyncRoleAssignmentsAsync(newUser.Id);
 
             TempData["Message"] = $"کارمند و یوزر «{userName}» ساخته شد (رمز پیش‌فرض: {DefaultNewUserPassword} - باید در اولین ورود عوض بشه).";
         }
@@ -640,6 +648,49 @@ public class EmployeeController : Controller
 
         TempData["Message"] = $"ایمپورت تمام شد: {added} اضافه شد، {skippedDuplicate} تکراری رد شد، {skippedInvalid} نامعتبر رد شد.";
         return RedirectToAction(nameof(Index));
+    }
+
+    /// <summary>
+    /// Identity roles are the legacy/runtime membership surface; RoleAssignments is the live
+    /// authorization projection. Keep direct global assignments synchronized so a role removal
+    /// cannot leave stale authorization in AccessControlService.
+    /// </summary>
+    private async Task SyncRoleAssignmentsAsync(int userId)
+    {
+        var roleIds = await _context.UserRoles
+            .Where(x => x.UserId == userId)
+            .Select(x => x.RoleId)
+            .ToListAsync();
+
+        var assignments = await _context.RoleAssignments
+            .Where(x => x.UserId == userId && x.AssignmentType == "Direct" && x.ScopeType == "Global")
+            .ToListAsync();
+
+        foreach (var assignment in assignments)
+            assignment.IsActive = roleIds.Contains(assignment.RoleId);
+
+        foreach (var roleId in roleIds)
+        {
+            if (assignments.Any(x => x.RoleId == roleId))
+            {
+                var existing = assignments.First(x => x.RoleId == roleId);
+                existing.IsActive = true;
+                continue;
+            }
+
+            await _context.RoleAssignments.AddAsync(new RoleAssignment
+            {
+                UserId = userId,
+                RoleId = roleId,
+                ScopeType = "Global",
+                ScopeValue = null,
+                AssignmentType = "Direct",
+                IsActive = true,
+                CreatedDate = DateTime.Now
+            });
+        }
+
+        await _context.SaveChangesAsync();
     }
 
     private async Task LoadDropdownsAsync()
