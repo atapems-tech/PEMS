@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Fake systemctl: unit states come from $FAKE_STATE/units ("unit=enabled|disabled|masked" per line). Only `is-enabled` is supported.
+S=${FAKE_STATE:?}
+echo "systemctl $*" >> "$S/calls.log"
+[ "${1:-}" = is-enabled ] || { echo "fake systemctl: unsupported: $*" >&2; exit 99; }
+v=$(awk -F= -v u="$2" '$1==u{print $2; exit}' "$S/units" 2>/dev/null)
+[ -n "$v" ] && { echo "$v"; [ "$v" = enabled ] && exit 0 || exit 1; } || { echo "not-found"; exit 4; }

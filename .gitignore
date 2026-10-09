@@ -367,3 +367,7 @@ MigrationBackup/
 FodyWeavers.xsd
 # Zaemit AI tool config (auto-generated)
 .mcp.json
+
+# --- Linux VM deployment (deploy/) ---
+deploy/targets.local.json
+deploy/artifacts/

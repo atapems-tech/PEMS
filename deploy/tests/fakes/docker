@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# Fake `docker` for testing deploy/remote/pems-docker.sh WITHOUT a Docker daemon. State lives in $FAKE_STATE (files); every call is logged.
+# Knobs (env): FAKE_BUILD_FAIL=1  FAKE_SMOKE_FAIL=1  FAKE_SQL_STATE=healthy|unhealthy|absent
+set -u
+S=${FAKE_STATE:?FAKE_STATE not set}
+echo "docker $*" >> "$S/calls.log"
+mkdir -p "$S"; touch "$S/images" "$S/containers" "$S/volumes" "$S/networks"
+
+# containers file format: name|tag|id|status|project
+cget() { awk -F'|' -v n="$1" '$1==n{print; exit}' "$S/containers"; }
+cset() { grep -v "^$1|" "$S/containers" > "$S/containers.tmp" || true; echo "$1|$2|$3|$4|$5" >> "$S/containers.tmp"; mv "$S/containers.tmp" "$S/containers"; }
+cdel() { grep -v "^$1|" "$S/containers" > "$S/containers.tmp" || true; mv "$S/containers.tmp" "$S/containers"; }
+image_of() { awk -v t="$1" '$1==t||$2==t{print $2; exit}' "$S/images"; }
+field() { echo "$1" | cut -d'|' -f"$2"; }
+
+case "${1:-}" in
+  info)
+    case "$*" in *ServerVersion*) echo 29.8.2;; *DockerRootDir*) echo /var/lib/docker;; esac;;
+  compose)
+    case "$2" in
+      version) echo v5.6.0;;
+      -p)   # compose -p P -f F up -d --no-deps --no-build --force-recreate pems-web
+        [ "${PEMS_WEB_IMAGE:-}" ] || { echo "PEMS_WEB_IMAGE missing" >&2; exit 1; }
+        id=$(image_of "$PEMS_WEB_IMAGE"); [ -n "$id" ] || { echo "image $PEMS_WEB_IMAGE not found" >&2; exit 1; }
+        cur=$(cget pems-web)
+        if [ -n "$cur" ] && [ -z "$(field "$cur" 5)" ]; then echo "container name pems-web already in use by a non-compose container" >&2; exit 1; fi
+        tag=$PEMS_WEB_IMAGE; case "$tag" in sha256:*) tag=$(awk -v i="$tag" '$2==i{print $1; exit}' "$S/images");; esac
+        cset pems-web "$tag" "$id" running pems-cmms-edit-empoleeys-master;;
+    esac;;
+  image)
+    case "$2" in
+      inspect)
+        case "$*" in
+          *"range .Config.Env"*) cat "$S/image_env.base" 2>/dev/null || true;;
+          *) ref=${@: -1}; id=$(image_of "$ref"); [ -n "$id" ] && echo "$id" || exit 1;;
+        esac;;
+    esac;;
+  container)
+    case "$2" in
+      inspect)
+        name=${@: -1}; row=$(cget "$name")
+        case "$*" in
+          *RestartPolicy*) echo "${FAKE_RESTART_POLICY:-unless-stopped}";;
+          *RestartCount*) echo "${FAKE_RESTART_COUNT:-0}";;
+          *StartedAt*) echo "2026-10-09T12:00:00.000000000Z";;
+          *"if .State.Health"*) if [ "$name" = pems-sqlserver ]; then st=${FAKE_SQL_STATE:-healthy}; [ "$st" = absent ] && exit 1; echo "$st"; elif [ "$name" = pems-caddy ]; then echo n/a; else echo "${FAKE_WEB_HEALTH:-healthy}"; fi;;
+          *State.Health*) if [ "$name" = pems-sqlserver ]; then st=${FAKE_SQL_STATE:-healthy}; [ "$st" = absent ] && exit 1; echo "$st"; else [ -n "$row" ] && field "$row" 4 || exit 1; fi;;
+          *State.Status*) [ -n "$row" ] && field "$row" 4 || exit 1;;
+          *Config.Image*) [ -n "$row" ] && field "$row" 2 || exit 1;;
+          *"{{.Image}}"*) [ -n "$row" ] && field "$row" 3 || exit 1;;
+          *Labels*) [ -n "$row" ] && field "$row" 5 || exit 1;;
+          *"range .Config.Env"*) cat "$S/container_env.$name" 2>/dev/null || true;;
+        esac;;
+    esac;;
+  volume)
+    case "$2" in
+      inspect) grep -qx "$3" "$S/volumes" || exit 1;;
+      create)  grep -qx "$3" "$S/volumes" || echo "$3" >> "$S/volumes"; echo "$3";;
+    esac;;
+  network) grep -qx "$3" "$S/networks" || exit 1;;
+  build)
+    [ "${FAKE_BUILD_FAIL:-0}" = 1 ] && { echo "build failed" >&2; exit 1; }
+    tag=""; prev=""; for a in "$@"; do [ "$prev" = "-t" ] && tag=$a; prev=$a; done
+    echo "$tag sha256:$(echo "$tag$RANDOM" | sha256sum | cut -c1-64)" >> "$S/images"; echo "built $tag";;
+  run)
+    all="$*"
+    case "$all" in
+      *"test -f /app/PEMS.Web.dll"*) [ "${FAKE_SMOKE_FAIL:-0}" = 1 ] && exit 1 || exit 0;;
+      *"ls /k"*) cat "$S/dpkeys.list" 2>/dev/null || true;;
+      *"find /app/filestore"*|*"find /dst"*) echo "${FAKE_FILESTORE_FILES:-0}";;
+      *"for f in /src/"*) for a in "$@"; do case "$a" in *:/src:ro) dir=${a%:/src:ro}; ls "$dir"/*.xml 2>/dev/null | xargs -n1 basename >> "$S/dpkeys.list";; esac; done; sort -u -o "$S/dpkeys.list" "$S/dpkeys.list";;
+    esac;;
+  stop)   row=$(cget "$2"); [ -n "$row" ] && cset "$2" "$(field "$row" 2)" "$(field "$row" 3)" exited "$(field "$row" 5)";;
+  start)  row=$(cget "$2"); [ -n "$row" ] && cset "$2" "$(field "$row" 2)" "$(field "$row" 3)" running "$(field "$row" 5)";;
+  rename) row=$(cget "$2"); [ -n "$row" ] || exit 1; cdel "$2"; cset "$3" "$(field "$row" 2)" "$(field "$row" 3)" "$(field "$row" 4)" "$(field "$row" 5)";;
+  logs)   echo "app log line (Password=Secret123 must be redacted by the caller)"; [ "${FAKE_LOG_BAD:-0}" = 1 ] && echo "Microsoft.Data.SqlClient.SqlException: Cannot open database"; true;;
+  port)   echo "8080/tcp -> ${FAKE_PORT_BIND:-127.0.0.1:8080}";;
+  exec)   case "$*" in *__EFMigrationsHistory*) echo "${FAKE_SQL_MIGRATIONS-103}";; esac;;
+  cp) ;;
+  *) echo "fake docker: unsupported command: $*" >&2; exit 99;;
+esac
+exit 0
