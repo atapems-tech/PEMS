@@ -32,6 +32,10 @@
     function fire(el) { el.dispatchEvent(new Event('change', { bubbles: true })); }
 
     /* ------------------------------------------------------------------ server-side searchable dropdown */
+    // The option list is rendered in <body> with position:fixed ("portal") and positioned from the input's viewport rect.
+    // Reason: every card is .vs-panel (overflow:hidden) and some fields live in .modal-body / .pc-table-scroll (overflow:auto),
+    // so an absolutely positioned child list was clipped to the card ("half-open dropdown"). z-index (1056) only wins over the
+    // Bootstrap modal (1055) once the list is no longer inside the clipping ancestor. Flips upward when there is no room below.
     function initLookup(host) {
         if (host.dataset.pcReady) return;
         host.dataset.pcReady = '1';
@@ -60,18 +64,63 @@
 
         var list = document.createElement('ul');
         list.id = listId;
-        list.className = 'pc-lookup-list list-unstyled';
+        list.className = 'pc-lookup-list pc-lookup-portal list-unstyled';
         list.setAttribute('role', 'listbox');
         list.hidden = true;
 
         host.appendChild(input);
         host.appendChild(hidden);
-        host.appendChild(list);
+        document.body.appendChild(list);
 
-        var items = [], active = -1;
+        var items = [], active = -1, candidates = [], seq = 0, isOpen = false;
 
-        function close() { list.hidden = true; input.setAttribute('aria-expanded', 'false'); active = -1; }
-        function open() { list.hidden = false; input.setAttribute('aria-expanded', 'true'); }
+        function place() {
+            var r = input.getBoundingClientRect();
+            if (r.bottom < 0 || r.top > window.innerHeight) { close(); return; }   // input scrolled out of view
+            var vh = window.innerHeight, vw = window.innerWidth, gap = 2, margin = 8;
+            var below = vh - r.bottom - margin, above = r.top - margin;
+            var up = below < 160 && above > below;
+            var avail = Math.max(120, Math.min(320, up ? above : below)) - gap;
+            var width = Math.min(Math.max(r.width, 220), vw - 2 * margin);
+            var rtl = getComputedStyle(input).direction === 'rtl';
+            var left = rtl ? r.right - width : r.left;                              // align to the inline-start edge
+            left = Math.min(Math.max(margin, left), vw - width - margin);
+            list.dir = rtl ? 'rtl' : 'ltr';
+            list.style.width = width + 'px';
+            list.style.left = left + 'px';
+            list.style.maxHeight = avail + 'px';
+            if (up) { list.style.top = 'auto'; list.style.bottom = (vh - r.top + gap) + 'px'; }
+            else { list.style.bottom = 'auto'; list.style.top = (r.bottom + gap) + 'px'; }
+        }
+        function onViewport(e) { if (e && e.target === list) return; if (isOpen) place(); }
+
+        function close() {
+            list.hidden = true; isOpen = false; active = -1;
+            input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant');
+            window.removeEventListener('resize', onViewport);
+            window.removeEventListener('scroll', onViewport, true);
+        }
+        function open() {
+            list.hidden = false;
+            if (!isOpen) {
+                isOpen = true;
+                window.addEventListener('resize', onViewport);
+                window.addEventListener('scroll', onViewport, true);
+            }
+            input.setAttribute('aria-expanded', 'true');
+            place();
+        }
+
+        function highlight(i, scroll) {
+            var nodes = list.querySelectorAll('.pc-lookup-item');
+            if (active >= 0 && nodes[active]) nodes[active].classList.remove('active');
+            active = i;
+            if (active >= 0 && nodes[active]) {
+                nodes[active].classList.add('active');
+                input.setAttribute('aria-activedescendant', nodes[active].id);
+                if (scroll) nodes[active].scrollIntoView({ block: 'nearest' });
+            } else input.removeAttribute('aria-activedescendant');
+        }
 
         function render() {
             list.innerHTML = '';
@@ -83,47 +132,71 @@
             }
             items.forEach(function (it, i) {
                 var li = document.createElement('li');
+                li.id = listId + '_o' + i;
                 li.setAttribute('role', 'option');
-                li.className = 'pc-lookup-item' + (i === active ? ' active' : '');
+                li.className = 'pc-lookup-item';
                 li.textContent = it.text;
-                li.addEventListener('mousedown', function (e) { e.preventDefault(); pick(it); });
+                li.addEventListener('mousedown', function (e) { e.preventDefault(); pick(it, 'manual'); });
+                li.addEventListener('mousemove', function () { if (active !== i) highlight(i, false); });
                 list.appendChild(li);
             });
+            active = -1;
             open();
         }
 
-        function pick(it) {
+        function setValue(it, source) {
             hidden.value = it.id;
             input.value = it.text;
             hidden.dataset.extra = it.extra || '';
+            hidden.dataset.source = source || 'manual';
+            candidates = [];
             close();
             fire(hidden);
         }
+        function pick(it, source) { setValue(it, source); }
+
+        function clearValue() {
+            hidden.value = ''; input.value = ''; hidden.dataset.extra = ''; hidden.dataset.source = '';
+            fire(hidden);
+        }
+
+        // programmatic API used by FREE FORMAT TEXT resolution (same hidden field, same change event as a manual pick)
+        host.pcSetValue = function (it, source) { setValue(it, source); };
+        host.pcClear = clearValue;
+        host.pcSetCandidates = function (arr) { candidates = Array.isArray(arr) ? arr : []; };
 
         var search = debounce(function () {
             var q = input.value.trim();
+            var my = ++seq;
             getJson(host.dataset.url + '?q=' + encodeURIComponent(q)).then(function (res) {
+                if (my !== seq) return;                                              // a newer query superseded this answer
                 items = Array.isArray(res) ? res : [];
-                active = -1;
                 render();
             });
         }, 250);
 
         input.addEventListener('input', function () {
-            if (hidden.value) { hidden.value = ''; fire(hidden); }
+            candidates = [];
+            if (hidden.value) { hidden.value = ''; hidden.dataset.source = ''; fire(hidden); }
             search();
         });
-        input.addEventListener('focus', function () { if (!hidden.value) search(); });
+        input.addEventListener('focus', function () {
+            if (hidden.value) return;
+            if (candidates.length) { seq++; items = candidates.slice(); render(); }   // ambiguous FREE FORMAT resolution: offer the candidates first
+            else search();
+        });
         input.addEventListener('blur', function () {
             setTimeout(close, 120);
             if (!hidden.value) input.value = '';
         });
         input.addEventListener('keydown', function (e) {
-            if (list.hidden && (e.key === 'ArrowDown')) { search(); return; }
-            if (e.key === 'ArrowDown') { active = Math.min(items.length - 1, active + 1); render(); e.preventDefault(); }
-            else if (e.key === 'ArrowUp') { active = Math.max(0, active - 1); render(); e.preventDefault(); }
-            else if (e.key === 'Enter' && !list.hidden && active >= 0) { pick(items[active]); e.preventDefault(); }
-            else if (e.key === 'Escape') { close(); }
+            if (list.hidden && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) { search(); e.preventDefault(); return; }
+            if (e.key === 'ArrowDown') { highlight(Math.min(items.length - 1, active + 1), true); e.preventDefault(); }
+            else if (e.key === 'ArrowUp') { highlight(Math.max(0, active - 1), true); e.preventDefault(); }
+            else if (e.key === 'Home' && !list.hidden && items.length) { highlight(0, true); e.preventDefault(); }
+            else if (e.key === 'End' && !list.hidden && items.length) { highlight(items.length - 1, true); e.preventDefault(); }
+            else if (e.key === 'Enter' && !list.hidden && active >= 0) { pick(items[active], 'manual'); e.preventDefault(); }
+            else if (e.key === 'Escape' && !list.hidden) { close(); e.stopPropagation(); }   // do not let Escape also dismiss a parent modal
         });
     }
 
@@ -280,13 +353,78 @@
     }
     if (planSel) { planSel.addEventListener('change', applyPlanning); applyPlanning(); }
 
-    /* ------------------------------------------------------------------ FREE FORMAT TEXT is single line */
+    /* ------------------------------------------------------------------ FREE FORMAT TEXT is single line + Technical Class suggestion */
     var fft = document.getElementById('pc_FreeFormatText');
     if (fft) {
         var normalize = function () { fft.value = fft.value.replace(/[\r\n\t]+/g, ' '); };
         fft.addEventListener('input', normalize);
-        fft.addEventListener('paste', function () { setTimeout(normalize, 0); });
+        // A text <input> silently drops line breaks on paste ("LINE ONE\nLINE TWO" -> "LINE ONELINE TWO"), gluing words together and defeating
+        // the Technical Class match. Insert pasted multi-line text with the breaks turned into single spaces instead.
+        fft.addEventListener('paste', function (e) {
+            var cd = e.clipboardData || window.clipboardData;
+            var text = cd ? cd.getData('text') : '';
+            if (text && /[\r\n\t]/.test(text)) {
+                e.preventDefault();
+                var flat = text.replace(/\s*[\r\n\t]+\s*/g, ' ');
+                var s = fft.selectionStart, en = fft.selectionEnd;
+                fft.setRangeText(flat, s == null ? fft.value.length : s, en == null ? fft.value.length : en, 'end');
+                fft.dispatchEvent(new Event('input', { bubbles: true }));
+            } else {
+                setTimeout(normalize, 0);
+            }
+        });
         fft.addEventListener('keydown', function (e) { if (e.key === 'Enter') e.preventDefault(); });
+
+        // The server proposes a class (exact code / name-prefix); the browser never decides. A class the user picked by hand is never
+        // overwritten. A class this feature set automatically is cleared again when the text no longer supports it.
+        var tcHost = document.querySelector('.pc-lookup[data-name="TechnicalClassId"]');
+        var tcStatus = document.getElementById('pc_TcResolveStatus');
+        if (tcHost && tcHidden && tcStatus) {
+            var seqR = 0;
+            var say = function (kind, text) { tcStatus.className = 'form-text pc-tc-status pc-tc-status--' + kind; tcStatus.textContent = text || ''; };
+            var isAuto = function () { return tcHidden.dataset.source === 'auto'; };
+            var showCandidates = function (cands) {
+                cands.forEach(function (c) {
+                    var b = document.createElement('button');
+                    b.type = 'button'; b.className = 'pc-tc-cand'; b.textContent = c.text;
+                    b.addEventListener('click', function () { tcHost.pcSetValue(c, 'manual'); say('ok', tcStatus.dataset.txtPicked || ''); });
+                    tcStatus.appendChild(b);
+                });
+            };
+            var apply = function (res) {
+                tcHost.pcSetCandidates([]);
+                if (res.status === 'resolved' && res.resolved) {
+                    if (!tcHidden.value || isAuto()) {
+                        tcHost.pcSetValue(res.resolved, 'auto');
+                        say('ok', (tcStatus.dataset.txtResolved || '') + ' ' + res.resolved.text);
+                    } else if (String(res.resolved.id) === String(tcHidden.value)) {
+                        say('ok', (tcStatus.dataset.txtResolved || '') + ' ' + res.resolved.text);
+                    } else {
+                        say('warn', (tcStatus.dataset.txtMismatch || '') + ' ' + res.resolved.text);
+                    }
+                    return;
+                }
+                if (isAuto()) tcHost.pcClear();                                       // stale automatic resolution
+                if (res.status === 'ambiguous' && res.candidates && res.candidates.length) {
+                    tcHost.pcSetCandidates(res.candidates);
+                    say('warn', tcStatus.dataset.txtAmbiguous || '');
+                    showCandidates(res.candidates);
+                } else {
+                    say('muted', tcHidden.value ? '' : (tcStatus.dataset.txtNone || ''));
+                }
+            };
+            var resolveNow = debounce(function () {
+                var text = fft.value.trim();
+                var my = ++seqR;
+                if (!text) { if (isAuto()) tcHost.pcClear(); say('muted', ''); return; }
+                fetch(lookupBase + '/ResolveTechnicalClass?text=' + encodeURIComponent(text.slice(0, 1000)),
+                      { credentials: 'same-origin', headers: { 'Accept': 'application/json' } })
+                    .then(function (r) { return r.ok ? r.json() : null; })
+                    .then(function (res) { if (my !== seqR || !res) return; apply(res); })     // drop answers for superseded text
+                    .catch(function () { });
+            }, 450);
+            fft.addEventListener('input', resolveNow);
+        }
     }
 
     /* ------------------------------------------------------------------ dynamic attribute rows */

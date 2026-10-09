@@ -448,6 +448,11 @@ return await InStrategyAsync<(bool, string?)>(async () =>
                 return (false, "Cannot release Work Order.\n" + string.Join("\n", gate.Reasons.Select(r => $"Reason: {r}")));
         }
 
+        // ISO 14224 (قاعده‌ی پروژه): برای Corrective/Emergency حالت خرابی هنگام تکمیل الزامی است؛ مسیر حاکمیتی همین را اعمال می‌کند
+        // (ExecuteWorkflowActionAsync) و مسیر Legacy نباید ضعیف‌تر باشد.
+        if (nextStatus == "Completed" && workOrder.WorkOrderType is "Corrective" or "Emergency" && string.IsNullOrWhiteSpace(failureModeCode))
+            return (false, T("برای کار اصلاحی/اضطراری حالت خرابی (ISO 14224) الزامی است.", "The failure mode (ISO 14224) is required for Corrective/Emergency Work Orders."));
+
         if (nextStatus == "Assigned")
         {
             if (assignedTeamId.HasValue) workOrder.AssignedTeamId = assignedTeamId;
@@ -493,7 +498,8 @@ return await InStrategyAsync<(bool, string?)>(async () =>
             Reason = reason
         });
 
-        await _context.SaveChangesAsync();
+        try { await _context.SaveChangesAsync(); }
+        catch (DbUpdateConcurrencyException) { _context.ChangeTracker.Clear(); return (false, ConflictMessage()); }
         return (true, null);
     }
 

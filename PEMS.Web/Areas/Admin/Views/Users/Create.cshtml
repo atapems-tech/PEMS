@@ -66,7 +66,7 @@
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Discipline"]</label>
                 <select name="DisciplineId" class="form-select">
-                    <option value="">@Localizer["-- none --"]</option>
+                    <option value="">@Localizer["-- select --"]</option>
                     @foreach (var d in Model.AllDisciplines)
                     {
                         <option value="@d.Id" selected="@(Model.DisciplineId == d.Id)">@d.Name</option>
@@ -74,8 +74,15 @@
                 </select>
             </div>
             <div class="col-12">
-                <label class="form-label">@Localizer["Position / Title"]</label>
-                <input name="Position" value="@Model.Position" class="form-control" placeholder="e.g. Piping Engineer" />
+                <label class="form-label">@Localizer["Organizational position"]</label>
+                <select name="PositionId" class="form-select">
+                    <option value="">@Localizer["-- none (assign later) --"]</option>
+                    @foreach (var p in Model.AllPositions)
+                    {
+                        <option value="@p.Id" selected="@(Model.PositionId == p.Id)">@p.Name</option>
+                    }
+                </select>
+                <div class="form-text">@Localizer["Only vacant active positions are listed. The assignment is created through the organization structure."]</div>
             </div>
         </div>
 

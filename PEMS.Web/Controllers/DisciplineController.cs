@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using PEMS.Persistence.Identity;
+using PEMS.Web.Resources;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
@@ -27,14 +31,72 @@ public class DisciplineController : Controller
     private readonly PEMSDbContext _context;
     private readonly ICurrentUserService _currentUser;
     private readonly IPermissionService _permissionService;
+    private readonly IDisciplineMasterService _master;
+    private readonly IStringLocalizer<SharedResource>? _l;
 
     public DisciplineController(IDisciplineWorkspaceService service, PEMSDbContext context,
-        ICurrentUserService currentUser, IPermissionService permissionService)
+        ICurrentUserService currentUser, IPermissionService permissionService,
+        IDisciplineMasterService? master = null, IStringLocalizer<SharedResource>? localizer = null)
     {
         _service = service;
         _context = context;
         _currentUser = currentUser;
         _permissionService = permissionService;
+        _master = master ?? new PEMS.Persistence.Services.DisciplineMasterService(context);
+        _l = localizer;
+    }
+
+    // ------------------------------------------------------------------ Master data (کد/نام/توضیح/Alias/کد ترانسمیتال/فعال‌سازی) - فقط نقش‌های مدیریت داده‌ی پایه‌ی سازمانی (هم‌الگو با Department/Employee)
+    // مجوز «DisciplineMaster» (View/Create/Edit) از همان IPermissionService/ماتریس مجوز؛ بدون نام نقش در کد. SystemAdmin بایپس موجود را دارد.
+    private const string MasterModule = "DisciplineMaster";
+    private Task<bool> CanMaster(string action) => _permissionService.HasPermissionAsync(_currentUser.Roles, MasterModule, action);
+
+    private void Flash(DisciplineOpResult r, string okMessage)
+    {
+        if (r.Success) TempData["Message"] = okMessage;
+        else TempData["Error"] = _l != null ? _l[r.ErrorKey ?? "Disc_Err_Generic"].Value : (r.ErrorKey ?? "Rejected");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Manage(string? q, string? status)
+    {
+        if (!await CanMaster("View")) return Forbid();
+        ViewData["Title"] = "Discipline Master Data";
+        ViewData["Section"] = "Administration";
+        var rows = await _master.GetAllAsync();
+        if (!string.IsNullOrWhiteSpace(q))
+        {
+            var t = q.Trim();
+            rows = rows.Where(r => r.Code.Contains(t, StringComparison.OrdinalIgnoreCase) || r.Name.Contains(t, StringComparison.OrdinalIgnoreCase)
+                                   || (r.ImportAliases ?? "").Contains(t, StringComparison.OrdinalIgnoreCase) || (r.Description ?? "").Contains(t, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        rows = status switch { "active" => rows.Where(r => r.IsActive).ToList(), "inactive" => rows.Where(r => !r.IsActive).ToList(), _ => rows };
+        ViewBag.Query = q; ViewBag.Status = status ?? "";
+        return View(rows);
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateDiscipline(string code, string name, string? description, string? importAliases, string? transmittalCode)
+    {
+        if (!await CanMaster("Create")) return Forbid();
+        Flash(await _master.CreateAsync(code, name, description, importAliases, transmittalCode), "Discipline created");
+        return RedirectToAction(nameof(Manage));
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> EditDiscipline(int disciplineId, string code, string name, string? description, string? importAliases, string? transmittalCode)
+    {
+        if (!await CanMaster("Edit")) return Forbid();
+        Flash(await _master.UpdateAsync(disciplineId, code, name, description, importAliases, transmittalCode), "Discipline updated");
+        return RedirectToAction(nameof(Manage));
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetDisciplineActive(int disciplineId, bool isActive)
+    {
+        if (!await CanMaster("Edit")) return Forbid();
+        Flash(await _master.SetActiveAsync(disciplineId, isActive), isActive ? "Discipline reactivated" : "Discipline deactivated");
+        return RedirectToAction(nameof(Manage));
     }
 
     public async Task<IActionResult> Index()
@@ -45,6 +107,7 @@ public class DisciplineController : Controller
         ViewData["Title"] = "Discipline Workspaces";
         ViewData["Section"] = "Administration";
 
+        ViewBag.CanManageMaster = await CanMaster("View");
         var summary = await _service.GetSummaryListAsync();
         return View(summary);
     }

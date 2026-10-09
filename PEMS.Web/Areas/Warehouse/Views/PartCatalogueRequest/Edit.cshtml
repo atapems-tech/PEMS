@@ -35,7 +35,7 @@
 
     <div class="vs-doc-head">
         <div class="d-flex flex-wrap align-items-center gap-2">
-            <h1 class="pems-page-title mb-0">@Localizer["Pc_Title_Edit"]</h1>
+            <h2 class="pems-page-title mb-0">@Localizer["Pc_Title_Edit"]</h2>
             <span class="vs-pill vs-pill--info">@Localizer["Pc_Type_" + d.RequestType]</span>
             <span class="vs-pill vs-pill--neutral">@Localizer["Pc_Status_" + d.Status]</span>
             @if (!string.IsNullOrEmpty(d.RequestNumber)) { <span class="vs-num vs-num--strong">@d.RequestNumber</span> }
@@ -205,6 +205,9 @@
                     <div class="pc-lookup" data-url="@lookupBase/TechnicalClasses" data-detail-url="@lookupBase/TechnicalClass" data-name="TechnicalClassId" data-form="pcForm"
                          data-id="@f.TechnicalClassId" data-text="@Label("TechnicalClassId")" data-input-id="pc_TechnicalClassId_text"></div>
                     <div class="form-text pc-tc-long" id="pc_TechnicalClassLong">@d.TechnicalClassLongDescription</div>
+                    <div class="form-text pc-tc-status" id="pc_TcResolveStatus" role="status" aria-live="polite"
+                         data-txt-resolved="@Localizer["Pc_Tc_Resolved"]" data-txt-ambiguous="@Localizer["Pc_Tc_Ambiguous"]" data-txt-none="@Localizer["Pc_Tc_None"]"
+                         data-txt-mismatch="@Localizer["Pc_Tc_Mismatch"]" data-txt-picked="@Localizer["Pc_Tc_Picked"]"></div>
                 </div>
 
                 <label class="form-label">@L("Attributes") <span class="pc-req" aria-hidden="true">*</span></label>

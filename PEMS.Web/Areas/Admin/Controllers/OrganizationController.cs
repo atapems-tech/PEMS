@@ -75,6 +75,47 @@ public class OrganizationController : Controller
         return View(await _validation.ValidateAllAsync());
     }
 
+    // ------------------------------------------------------------------ Positions master data (همان Position موجود؛ بدون موجودیت دوم)
+    [HttpGet]
+    public async Task<IActionResult> Positions(string? q, string? status)
+    {
+        ViewData["Title"] = "Positions";
+        ViewData["HelpKey"] = "Admin.Organization.Index";
+        ViewData["Section"] = "Administration";
+        var rows = await _hierarchy.GetPositionRowsAsync();
+        if (!string.IsNullOrWhiteSpace(q))
+        {
+            var t = q.Trim();
+            rows = rows.Where(r => r.Title.Contains(t, StringComparison.OrdinalIgnoreCase) || (r.PositionCode ?? "").Contains(t, StringComparison.OrdinalIgnoreCase)
+                                   || (r.DepartmentName ?? "").Contains(t, StringComparison.OrdinalIgnoreCase) || (r.HolderName ?? "").Contains(t, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        rows = status switch { "active" => rows.Where(r => r.IsActive).ToList(), "inactive" => rows.Where(r => !r.IsActive).ToList(), "vacant" => rows.Where(r => r.IsActive && r.IsVacant).ToList(), _ => rows };
+        ViewBag.Departments = await _hierarchy.GetActiveDepartmentsAsync();
+        ViewBag.Query = q; ViewBag.Status = status;
+        return View(rows);
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreatePosition(string title, string? positionCode, int? departmentId, string? description, int? parentPositionId)
+    {
+        Flash(await _hierarchy.CreatePositionAsync(title, positionCode, departmentId, description, parentPositionId), "Org_Msg_PositionCreated");
+        return RedirectToAction(nameof(Positions));
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> EditPosition(int positionId, string title, string? positionCode, int? departmentId, string? description)
+    {
+        Flash(await _hierarchy.UpdatePositionAsync(positionId, title, positionCode, departmentId, description), "Org_Msg_PositionUpdated");
+        return RedirectToAction(nameof(Positions));
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetPositionActive(int positionId, bool isActive)
+    {
+        Flash(await _hierarchy.SetPositionActiveAsync(positionId, isActive), isActive ? "Org_Msg_PositionReactivated" : "Org_Msg_PositionDeactivated");
+        return RedirectToAction(nameof(Positions));
+    }
+
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> SetHierarchy(int positionId, string? positionCode, int? parentPositionId)
     {

@@ -1,3 +1,4 @@
+using ClosedXML.Excel;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Organization;
 using PEMS.Domain.Entities;
@@ -181,5 +182,69 @@ public class OrganizationMasterDataReadinessTests
         Assert.Equal(1, r.ActivePositions); Assert.Equal(0, r.PositionsWithParent); Assert.Equal(1, r.RootPositions);
         Assert.Equal(2, r.ActiveEmployees); Assert.Equal(1, r.ActiveEmployeesWithPrimaryPosition);
         Assert.Equal(1, r.ActiveEmployeesWithoutPersonnelCode); Assert.Equal(1, r.ActiveUsersWithoutPrimaryPosition);
+    }
+
+    // ------------------------------------------------------------------ Department optional + the supplied petrochemical file
+
+    [Fact]
+    public async Task Import_BlankDepartment_IsAllowed_ButAnUnknownDepartmentStillRejected_AndBlankNeverClearsExisting()
+    {
+        var db = Db();
+        db.Departments.Add(new Department { DepartmentId = 1, Name = "Ops", IsActive = true }); await db.SaveChangesAsync();
+        var svc = new OrganizationImportService(db);
+        MemoryStream X(params string[][] rows)
+        {
+            var wb = new XLWorkbook(); var ws = wb.AddWorksheet("Org");
+            var h = new[] { "Department", "PositionCode", "PositionTitle", "ParentPositionCode" };
+            for (var c = 0; c < h.Length; c++) ws.Cell(1, c + 1).Value = h[c];
+            for (var r = 0; r < rows.Length; r++) for (var c = 0; c < rows[r].Length; c++) ws.Cell(r + 2, c + 1).Value = rows[r][c];
+            var ms = new MemoryStream(); wb.SaveAs(ms); ms.Position = 0; return ms;
+        }
+
+        Assert.NotEmpty((await svc.ImportAsync(X(new[] { "CEO", "TOP", "Top", "" }), false)).Errors);                           // 'CEO' is not a department
+        var ok = await svc.ImportAsync(X(new[] { "", "TOP", "Top", "" }, new[] { "Ops", "MID", "Mid", "TOP" }), true);
+        Assert.Empty(ok.Errors); Assert.True(ok.Committed);
+        Assert.Null((await db.Positions.SingleAsync(p => p.PositionCode == "TOP")).DepartmentId);
+        Assert.Equal(1, (await db.Positions.SingleAsync(p => p.PositionCode == "MID")).DepartmentId);
+
+        await svc.ImportAsync(X(new[] { "", "MID", "Mid", "TOP" }), true);                                                     // blank = unspecified, never clears
+        Assert.Equal(1, (await db.Positions.SingleAsync(p => p.PositionCode == "MID")).DepartmentId);
+    }
+
+    [Fact]
+    public async Task PetrochemicalCompletedFile_PassesImportPreview_AgainstTheRealDepartmentNames()
+    {
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir != null && !File.Exists(Path.Combine(dir.FullName, "docs", "OrganizationStructure_Petrochemical1_Completed.xlsx"))) dir = dir.Parent;
+        Assert.NotNull(dir);
+        var db = Db();
+        foreach (var (name, i) in new[] { "Construction", "Document Control", "Engineering", "Finance", "HSE", "Human Resources", "IT", "Maintenance", "Operations", "Planning & Control", "Procurement", "Project Management", "QA/QC", "WAREHOUSE" }.Select((n, i) => (n, i)))
+            db.Departments.Add(new Department { DepartmentId = i + 1, Code = "D" + i, Name = name, IsActive = true });
+        await db.SaveChangesAsync();
+
+        var path = Path.Combine(dir!.FullName, "docs", "OrganizationStructure_Petrochemical1_Completed.xlsx");
+        // the only department the owner may reference beyond the 14 real ones is the CEO's (row 2); it is optional (blank) or must be created first
+        string? ceoDept;
+        using (var wb = new XLWorkbook(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))) ceoDept = wb.Worksheet("Organization").Cell(2, 1).GetString().Trim();
+
+        await using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+        {
+            var preview = await new OrganizationImportService(db).ImportAsync(fs, commit: false);
+            if (string.IsNullOrEmpty(ceoDept) || db.Departments.Any(d => d.Name == ceoDept))
+                Assert.Empty(preview.Errors);
+            else
+                Assert.Equal(new[] { $"Row 2: Unknown department '{ceoDept}'." }, preview.Errors);       // exactly one error: the department must exist (never auto-created)
+            Assert.Equal(0, await db.Positions.CountAsync());                                           // preview never saves
+        }
+
+        // once that department exists the whole file is clean
+        if (!string.IsNullOrEmpty(ceoDept) && !db.Departments.Any(d => d.Name == ceoDept))
+        {
+            db.Departments.Add(new Department { DepartmentId = 99, Code = "EXEC", Name = ceoDept, IsActive = true }); await db.SaveChangesAsync();
+        }
+        await using var fs2 = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        var clean = await new OrganizationImportService(db).ImportAsync(fs2, commit: false);
+        Assert.Empty(clean.Errors);
+        Assert.Equal(246, clean.PositionsCreated);
     }
 }

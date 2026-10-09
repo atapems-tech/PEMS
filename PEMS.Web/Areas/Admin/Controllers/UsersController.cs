@@ -24,6 +24,8 @@ public class UsersController : Controller
     private readonly IPermissionService _permissionService;
     private readonly IAccessControlService _accessControlService;
     private readonly NavigationVisibilityResolver _navigationResolver;
+    private readonly IUserRoleAssignmentSynchronizer _roleSync;
+    private readonly PEMS.Application.Organization.IOrganizationHierarchyService? _hierarchy;
 
     // طبق سند «PEMS — Global Data Grid Standard» بند ۶: Export هم باید یک سقف امن داشته باشد
     // (همون الگوی DocumentRegisterController.MaxExportRows) - نه واقعاً نامحدود. تعداد کاربران
@@ -41,7 +43,9 @@ public class UsersController : Controller
         IUserAuthorizationSummaryService summaryService,
         IPermissionService permissionService,
         IAccessControlService accessControlService,
-        NavigationVisibilityResolver navigationResolver)
+        NavigationVisibilityResolver navigationResolver,
+        IUserRoleAssignmentSynchronizer? roleSync = null,
+        PEMS.Application.Organization.IOrganizationHierarchyService? hierarchy = null)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -50,20 +54,28 @@ public class UsersController : Controller
         _permissionService = permissionService;
         _accessControlService = accessControlService;
         _navigationResolver = navigationResolver;
+        _roleSync = roleSync ?? new PEMS.Persistence.Services.UserRoleAssignmentSynchronizer(context);
+        _hierarchy = hierarchy;
     }
 
     private async Task<int> CreateEmployeeFromModelAsync(UserFormViewModel model)
     {
         var nameParts = model.FullName.Trim().Split(' ', 2);
 
+        // Position متن آزاد دیگر منبع حقیقت نیست: اگر سمت سازمانی انتخاب شده باشد، عنوانش فقط به‌عنوان متن نمایشی (میراثی) ثبت می‌شود
+        // و سمت واقعی از طریق EmployeeAssignment اصلی اعمال می‌شود. DisciplineId/DepartmentId پیش‌تر اعتبارسنجی شده‌اند (هیچ مقدار جادویی/0 وجود ندارد).
+        string? displayTitle = null;
+        if (model.PositionId.HasValue)
+            displayTitle = await _context.Positions.Where(p => p.PositionId == model.PositionId.Value).Select(p => p.Title).FirstOrDefaultAsync();
+
         var newEmployee = new PEMS.Domain.Entities.Employee
         {
             FirstName = nameParts.Length > 0 ? nameParts[0] : model.FullName,
             LastName = nameParts.Length > 1 ? nameParts[1] : "",
-            Position = model.Position,
+            Position = displayTitle,
             Email = model.Email,
             DepartmentId = model.DepartmentId!.Value,
-            DisciplineId = model.DisciplineId ?? 0,
+            DisciplineId = model.DisciplineId!.Value,
             IsActive = true,
             CreatedDate = DateTime.Now
         };
@@ -71,7 +83,44 @@ public class UsersController : Controller
         await _context.Employees.AddAsync(newEmployee);
         await _context.SaveChangesAsync();
 
+        if (model.PositionId.HasValue && _hierarchy != null)
+        {
+            // از همان سرویس سازمانی موجود: سمت فعال/خالی، یک سمت اصلیِ فعال برای هر کارمند، بدون مکانیزم تخصیص دوم
+            var assigned = await _hierarchy.AssignAsync(new PEMS.Application.Organization.OrganizationAssignmentRequest(
+                model.PositionId.Value, newEmployee.EmployeeId, true, DateTime.Now, null, "Created from Administration/Users"));
+            if (!assigned.Success) TempData["Warning"] = "Employee created, but the position could not be assigned (" + assigned.ErrorKey + ").";
+        }
+
         return newEmployee.EmployeeId;
+    }
+
+    /// <summary>اعتبارسنجی پیوند/ساخت کارمند (مشترک Create/Edit). خطاها به ModelState اضافه می‌شوند؛ هیچ FK نامعتبر یا مقدار جادویی ذخیره نمی‌شود.</summary>
+    private async Task ValidateEmployeeLinkAsync(UserFormViewModel model, int? currentUserId)
+    {
+        if (model.ExistingEmployeeId.HasValue)
+        {
+            var emp = await _context.Employees.AsNoTracking().Where(e => e.EmployeeId == model.ExistingEmployeeId.Value)
+                .Select(e => new { e.EmployeeId, e.IsActive }).FirstOrDefaultAsync();
+            if (emp == null) { ModelState.AddModelError(nameof(model.ExistingEmployeeId), "The selected employee does not exist."); return; }
+            if (!emp.IsActive) ModelState.AddModelError(nameof(model.ExistingEmployeeId), "The selected employee is inactive.");
+            var linkedElsewhere = await _context.Users.AnyAsync(u => u.EmployeeId == emp.EmployeeId && (currentUserId == null || u.Id != currentUserId));
+            if (linkedElsewhere) ModelState.AddModelError(nameof(model.ExistingEmployeeId), "This employee is already linked to another user account.");
+            return;
+        }
+
+        if (!model.DepartmentId.HasValue) return;   // (Create) the "select employee or department" rule is enforced by the caller
+
+        if (!await _context.Departments.AnyAsync(d => d.DepartmentId == model.DepartmentId.Value && d.IsActive))
+            ModelState.AddModelError(nameof(model.DepartmentId), "Select a valid, active department.");
+        if (!model.DisciplineId.HasValue || !await _context.Disciplines.AnyAsync(d => d.DisciplineId == model.DisciplineId.Value && d.IsActive))
+            ModelState.AddModelError(nameof(model.DisciplineId), "A valid, active discipline is required to create an employee.");
+        if (model.PositionId.HasValue)
+        {
+            var pos = await _context.Positions.AsNoTracking().Where(p => p.PositionId == model.PositionId.Value).Select(p => new { p.IsActive }).FirstOrDefaultAsync();
+            if (pos == null || !pos.IsActive) ModelState.AddModelError(nameof(model.PositionId), "Select a valid, active position.");
+            else if (await _context.EmployeeAssignments.AnyAsync(a => a.PositionId == model.PositionId.Value && a.IsActive))
+                ModelState.AddModelError(nameof(model.PositionId), "This position already has a holder.");
+        }
     }
 
     private async Task LoadEmployeeDropdownsAsync(UserFormViewModel model)
@@ -90,6 +139,12 @@ public class UsersController : Controller
             .Select(x => new { x.DisciplineId, x.Name })
             .ToListAsync();
         model.AllDisciplines = disciplines.Select(x => (x.DisciplineId, x.Name)).ToList();
+
+        // فقط سمت‌های فعال و «خالی» (بدون دارنده‌ی فعال) قابل انتخاب‌اند
+        var occupied = _context.EmployeeAssignments.Where(a => a.IsActive).Select(a => a.PositionId);
+        var positions = await _context.Positions.Where(p => p.IsActive && !occupied.Contains(p.PositionId))
+            .OrderBy(p => p.Title).Select(p => new { p.PositionId, p.Title, p.PositionCode }).ToListAsync();
+        model.AllPositions = positions.Select(p => (p.PositionId, string.IsNullOrWhiteSpace(p.PositionCode) ? p.Title : p.Title + " [" + p.PositionCode + "]")).ToList();
     }
 
 
@@ -200,6 +255,8 @@ public class UsersController : Controller
         if (!model.ExistingEmployeeId.HasValue && !model.DepartmentId.HasValue)
             ModelState.AddModelError(nameof(model.DepartmentId), "Select an existing employee or specify a department to create one.");
 
+        await ValidateEmployeeLinkAsync(model, null);
+
         if (!ModelState.IsValid)
         {
             ViewData["Title"] = "New User";
@@ -242,6 +299,8 @@ public class UsersController : Controller
 
         if (model.SelectedRoles.Any())
             await _userManager.AddToRolesAsync(user, model.SelectedRoles);
+
+        await _roleSync.SyncAsync(user.Id);
 
         TempData["Message"] = "User created successfully";
 
@@ -286,6 +345,8 @@ public class UsersController : Controller
     public async Task<IActionResult> Edit(UserFormViewModel model)
     {
         model.AllRoles = _roleManager.Roles.Select(x => x.Name!).ToList();
+
+        await ValidateEmployeeLinkAsync(model, model.Id);
 
         if (!ModelState.IsValid)
         {
@@ -339,6 +400,8 @@ public class UsersController : Controller
         if (rolesToAdd.Any())
             await _userManager.AddToRolesAsync(user, rolesToAdd);
 
+        // نقش حذف‌شده نباید از طریق RoleAssignment آینه‌ایِ باقی‌مانده همچنان دسترسی بدهد؛ Scoped/Delegated/Emergency/Temporary دست‌نخورده می‌مانند
+        await _roleSync.SyncAsync(user.Id);
 
         TempData["Message"] = "User updated successfully";
 

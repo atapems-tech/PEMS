@@ -80,7 +80,8 @@ public class NavigationVisibilityResolver
                     {
                         // بدون Resource نگاشته‌شده (Instrument/Asset/SparePart) = بدون سیگنال مجوزی واقعی -
                         // پیش‌فرض «نمایان» (همون رفتار قبل از فاز ۶، فقط دروازه‌ی سطح ماژول حاکم بود)
-                        if (resource == null) return true;
+                        // (نقش‌هایی که ماژول را فقط با Override کاتالوگ/مدیر می‌بینند و MenuAccess ندارند، آیتم‌های بدون سیگنال مجوزی را نمی‌بینند - لینک مرده نمی‌شود)
+                        if (resource == null) return remaining.Any(MenuAccess.CmmsIntegration.Contains);
                         if (remaining.Count == 0) return false;
                         var decision = await _accessControl.AuthorizeForRolesAsync(remaining, resource, "View");
                         return decision.Allowed;
@@ -173,8 +174,8 @@ public class NavigationVisibilityResolver
                 string source;
                 if (resource == null)
                 {
-                    defaultVisible = true;
-                    source = "No permission signal (always visible)";
+                    defaultVisible = MenuAccess.CmmsIntegration.Contains(roleName);
+                    source = "No permission signal (visible only for MenuAccess CMMS roles)";
                 }
                 else
                 {

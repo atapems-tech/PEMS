@@ -371,3 +371,18 @@ html[dir="rtl"] .pems-folder-link.active { box-shadow: inset -3px 0 0 var(--pems
 .pems-topbar > :first-child, .pems-topbar > :last-child { flex: 0 0 auto; }
 .pems-topbar .pems-search { flex: 1 1 0; min-width: 0; width: auto; margin-inline: 12px; }
 @media (max-width: 1199.98px) { .pems-topbar .pems-search { max-width: 240px; } }
+
+/* ------------------------------------------------------------------------------------------------------------------------------
+   Dropdown menus (shared; pairs with the Popper `strategy:'fixed'` default in pems-ui.js - see docs/design/PEMS_UI_ENGINEERING_STANDARD.md).
+   With `fixed` a menu is sized against the viewport instead of its narrow container, so (1) a wide menu (discipline filter: ~585px) could
+   be wider than a phone and (2) the Notifications menu (no width of its own) grew to ~583px and left the screen at 600-768px.
+   - every menu is capped to the viewport;
+   - the Notifications menu has a defined width;
+   - topbar menus below the tablet breakpoint open as a full-width sheet under the topbar (never partly off-screen, LTR and RTL). */
+.dropdown-menu { max-width: calc(100vw - 16px); }
+#notifDropdownBody { width: min(360px, calc(100vw - 16px)); }
+@media (max-width: 575.98px) { .dropdown-menu { overflow-x: auto; } }
+@media (max-width: 767.98px) {
+    .pems-topbar .dropdown-menu.show { position: fixed !important; top: var(--topbar-height, 56px) !important; left: 8px !important; right: 8px !important;
+        width: auto !important; max-width: none !important; transform: none !important; }
+}

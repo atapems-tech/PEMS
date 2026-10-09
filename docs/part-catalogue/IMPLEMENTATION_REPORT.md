@@ -53,3 +53,19 @@ New: `/Warehouse/PartCatalogueRequest` (list/edit/details/exports), `/Warehouse/
 - Manufacturer/Supplier Excel import expects a single name column; there is no fuzzy-merge UI.
 - Lookup endpoints rely on controller-level authorization (no per-field permission).
 - Full-suite regression result is recorded in the session report; `MrsImportBatchCapacityTests` is a known timing-sensitive test (passes alone, can fail under CPU contention).
+
+## 9. Searchable-dropdown clipping and FREE FORMAT TEXT -> Technical Class (2026-10-09)
+
+- **Root cause of "half-open" dropdowns:** every card is `.vs-panel` (`overflow:hidden`) and some lookups live in `.modal-body`/`.pc-table-scroll`;
+  the option list was an absolutely positioned child of the field, so it was clipped to the card (measured: 72 % of the Technical Class list and 40 % of an
+  Admin lookup visible). Keyboard Arrow keys also rebuilt the list, resetting its scroll, and Escape on an open list also closed the parent modal.
+  Fix (single shared component `initLookup`, `pems-part-catalogue.js`): the list is rendered in `<body>` (`position:fixed`), positioned from the input's
+  viewport rect (flips upward / limits height when there is no room, follows scroll and resize, RTL-aware); active option scrolls into view; stale search
+  responses are discarded; Escape only closes the list.
+- **Other Warehouse screens:** Inventory, Material Item and Inventory Master Data use native `<select>` only (no custom searchable dropdown), so they are not affected.
+- **FREE FORMAT TEXT -> Technical Class:** `GET /Warehouse/PartCatalogueLookup/ResolveTechnicalClass?text=` (same PartCatalogue permission as the other lookups)
+  runs `TechnicalClassMatcher` (Application layer, deterministic, no scores). Order: explicit code (`IR#####` anywhere; any reference code in parentheses, e.g. `ELBOW GENERIC(IR25749)`)
+  -> class name at the start of the text (comma = space; longest name wins; duplicates or a half-written sub-class => ambiguous) -> keyword candidates (suggestions only).
+  Only an unambiguous code/name is applied automatically, and never over a class the user picked by hand; ambiguous results show explicit candidates (also at the top of the dropdown).
+  The server still validates `TechnicalClassId` (exists + active) on save; nothing is imported or migrated (reference data = the existing seeded `PartCatalogueTechnicalClass` table).
+- Validation: `TechnicalClassMatcherTests` replays all 4161 classes of `TECHNICAL CLASSESS-2026-08-29.xlsx` (code form always resolves to itself; name-only text resolves 4143, 18 duplicate-description classes need an explicit choice, never a different class).

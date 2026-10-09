@@ -177,6 +177,46 @@ public class PartCatalogueServiceTests
     }
 
     [Fact]
+    public async Task Save_RejectsNonexistentAndInactiveTechnicalClass_ServerSide()
+    {
+        // نتیجه‌ی تطبیق در مرورگر فقط پیشنهاد است؛ شناسه‌ی ارسالی باید سمت سرور موجود و فعال باشد
+        var e = await NewEnvAsync();
+        var id = await e.Svc.CreateDraftAsync("Add", e.Actor(Requester));
+
+        var form = Form(e, id);
+        form.TechnicalClassId = 987654;
+        var missing = await e.Svc.SaveAsync(form, e.Actor(Requester));
+        Assert.False(missing.Success);
+        Assert.Contains(missing.Result.Errors, x => x.Field == nameof(form.TechnicalClassId));
+
+        var inactive = new PartCatalogueTechnicalClass { Code = "IR-OLD", Description = "RETIRED CLASS", IsActive = false };
+        e.Db.PartCatalogueTechnicalClasses.Add(inactive);
+        await e.Db.SaveChangesAsync();
+        form.TechnicalClassId = inactive.TechnicalClassId;
+        var off = await e.Svc.SaveAsync(form, e.Actor(Requester));
+        Assert.False(off.Success);
+        Assert.Contains(off.Result.Errors, x => x.Field == nameof(form.TechnicalClassId));
+        Assert.Null((await e.Db.PartCatalogueRequests.AsNoTracking().FirstAsync(r => r.PartCatalogueRequestId == id)).TechnicalClassId);   // nothing persisted
+    }
+
+    [Fact]
+    public async Task Save_KeepsOriginalFreeFormatText_AndTheSelectedTechnicalClass_ForLaterRetrieval()
+    {
+        var e = await NewEnvAsync();
+        var id = await e.Svc.CreateDraftAsync("Add", e.Actor(Requester));
+        var form = Form(e, id);
+        form.Attributes.Clear();
+        const string original = "VALVE,BALL, 2 IN, 150#, A105 (original pasted description)";
+        form.Attributes.Add(new PartCatalogueAttributeDto { Name = "FREE FORMAT TEXT", Value = original });
+        Assert.True((await e.Svc.SaveAsync(form, e.Actor(Requester))).Success);
+
+        var row = await e.Db.PartCatalogueRequests.AsNoTracking().FirstAsync(r => r.PartCatalogueRequestId == id);
+        Assert.Equal(e.Tc, row.TechnicalClassId);
+        var fft = await e.Db.PartCatalogueRequestAttributes.AsNoTracking().SingleAsync(a => a.PartCatalogueRequestId == id && a.Name == "FREE FORMAT TEXT");
+        Assert.Equal(original, fft.Value);                                                  // the description is never rewritten by the classification
+    }
+
+    [Fact]
     public async Task Submit_RequiresRequestNumber_AndOnlyOwnerCanSave()
     {
         var e = await NewEnvAsync();

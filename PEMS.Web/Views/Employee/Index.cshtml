@@ -124,7 +124,7 @@
                         <div class="col-md-4"><label class="form-label">@Localizer["Personnel Code"]</label><input name="personnelCode" class="form-control" /></div>
                         <div class="col-md-4"><label class="form-label">@Localizer["First Name"]</label><input name="firstName" class="form-control" required /></div>
                         <div class="col-md-4"><label class="form-label">@Localizer["Last Name"]</label><input name="lastName" class="form-control" required /></div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Position / Title"]</label><input name="position" class="form-control" /></div>
+                        <div class="col-md-6"><partial name="_PositionSelect" model="(int?)null" /></div>
                         <div class="col-md-6"><label class="form-label">@Localizer["Email"]</label><input name="email" type="email" class="form-control" /></div>
                         <div class="col-md-6"><label class="form-label">@Localizer["Phone"]</label><input name="phone" class="form-control" /></div>
                         <div class="col-md-3">
@@ -217,19 +217,21 @@
                             <div class="col-md-4"><label class="form-label">@Localizer["Personnel Code"]</label><input name="personnelCode" value="@e.PersonnelCode" class="form-control" /></div>
                             <div class="col-md-4"><label class="form-label">@Localizer["First Name"]</label><input name="firstName" value="@e.FirstName" class="form-control" required /></div>
                             <div class="col-md-4"><label class="form-label">@Localizer["Last Name"]</label><input name="lastName" value="@e.LastName" class="form-control" required /></div>
-                            <div class="col-md-6"><label class="form-label">@Localizer["Position / Title"]</label><input name="position" value="@e.Position" class="form-control" /></div>
+                            <div class="col-md-6"><partial name="_PositionSelect" model="(int?)e.EmployeeId" /></div>
                             <div class="col-md-6"><label class="form-label">@Localizer["Email"]</label><input name="email" value="@e.Email" type="email" class="form-control" /></div>
                             <div class="col-md-6"><label class="form-label">@Localizer["Phone"]</label><input name="phone" value="@e.Phone" class="form-control" /></div>
                             <div class="col-md-3">
                                 <label class="form-label">@Localizer["Department"]</label>
                                 <select name="departmentId" class="form-select" required>
                                     @foreach (var d in departments) { <option value="@d.DepartmentId" selected="@(d.DepartmentId == e.DepartmentId)">@d.Name</option> }
+                                    @if (!((IEnumerable<dynamic>)departments).Any(x => x.DepartmentId == e.DepartmentId)) { <option value="@e.DepartmentId" selected>@e.DepartmentName (@Localizer["Org_Inactive"])</option> }
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">@Localizer["Discipline"]</label>
                                 <select name="disciplineId" class="form-select" required>
                                     @foreach (var d in disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == e.DisciplineId)">@d.Name</option> }
+                                    @if (!((IEnumerable<dynamic>)disciplines).Any(x => x.DisciplineId == e.DisciplineId)) { <option value="@e.DisciplineId" selected>@e.DisciplineName (@Localizer["Org_Inactive"])</option> }
                                 </select>
                             </div>
                             <div class="col-md-3">

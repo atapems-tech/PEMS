@@ -101,9 +101,12 @@ public class OrganizationImportService : IOrganizationImportService
             defs[key] = r;
             if (posByCode.TryGetValue(key, out var inDb) && !inDb.IsActive) Err(r, $"Position '{r.Code}' exists but is inactive.");
             if (r.Title.Length == 0) Err(r, "Position title is required.");
-            if (r.Department.Length == 0) Err(r, "Department is required.");
-            else if (!deptByName.TryGetValue(r.Department.ToUpperInvariant(), out var d)) Err(r, $"Unknown department '{r.Department}'.");
-            else if (!d.IsActive) Err(r, $"Department '{r.Department}' is inactive.");
+            // Department اختیاری است (Position.DepartmentId nullable: مثلاً مدیرعامل/سطح اجرایی). خالی = «تعیین نشده»؛ اگر پر باشد باید موجود و فعال باشد (هرگز ساخته نمی‌شود).
+            if (r.Department.Length > 0)
+            {
+                if (!deptByName.TryGetValue(r.Department.ToUpperInvariant(), out var d)) Err(r, $"Unknown department '{r.Department}'.");
+                else if (!d.IsActive) Err(r, $"Department '{r.Department}' is inactive.");
+            }
         }
 
         // ---- ۲) والدها + دور (گراف نهایی = DB با override فایل)
@@ -206,15 +209,15 @@ public class OrganizationImportService : IOrganizationImportService
         foreach (var kv in defs)
         {
             var r = kv.Value;
-            var deptId = deptByName[r.Department.ToUpperInvariant()];
+            int? deptId = r.Department.Length == 0 ? null : deptByName[r.Department.ToUpperInvariant()];
             if (posByCode.TryGetValue(kv.Key, out var existing))
             {
                 entity[kv.Key] = existing;
                 var oldParentCode = existing.ParentPositionId.HasValue ? codeById.GetValueOrDefault(existing.ParentPositionId.Value)?.ToUpperInvariant() : null;
                 var newParentCode = r.ParentCode.Length > 0 ? r.ParentCode.ToUpperInvariant() : null;
-                var changed = existing.Title != r.Title || existing.DepartmentId != deptId || oldParentCode != newParentCode
+                var changed = existing.Title != r.Title || (deptId.HasValue && existing.DepartmentId != deptId) || oldParentCode != newParentCode
                              ;
-                if (changed) { result.PositionsUpdated++; if (apply) { existing.Title = r.Title; existing.DepartmentId = deptId; } }
+                if (changed) { result.PositionsUpdated++; if (apply) { existing.Title = r.Title; if (deptId.HasValue) existing.DepartmentId = deptId; } }
                 else result.Unchanged++;
             }
             else
@@ -275,7 +278,7 @@ public class OrganizationImportService : IOrganizationImportService
                 var h = ws.Cell(1, c).GetString().Trim();
                 if (h.Length > 0 && !map.TryAdd(h, c)) result.Errors.Add($"Duplicate column header '{h}'.");
             }
-            foreach (var required in new[] { "Department", "PositionCode" })
+            foreach (var required in new[] { "PositionCode" })
                 if (!map.ContainsKey(required)) result.Errors.Add($"Missing required column '{required}'.");
             if (!map.ContainsKey("PositionTitle") && !map.ContainsKey("Position")) result.Errors.Add("Missing required column 'PositionTitle' (or 'Position').");
             foreach (var h in map.Keys.Where(h => !Columns.Contains(h, StringComparer.OrdinalIgnoreCase)))

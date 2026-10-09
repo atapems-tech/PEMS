@@ -41,10 +41,23 @@
 
 /* server-side searchable dropdown */
 .pc-lookup { position: relative; }
-.pc-lookup-list { position: absolute; inset-inline: 0; inset-block-start: 100%; z-index: 1056; max-block-size: 260px; overflow: auto; margin: 2px 0 0;
+/* The list is moved to <body> by pems-part-catalogue.js and placed with fixed coordinates (left/top|bottom/width/max-height are set
+   inline from the input's viewport rect) so no overflow:hidden/auto ancestor (.vs-panel, .modal-body, .pc-table-scroll) can clip it.
+   z-index 1056 sits above Bootstrap modals (1055). */
+.pc-lookup-list { position: fixed; z-index: 1056; box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain; margin: 0; list-style: none;
     padding: 2px; background: var(--pems-surface); border: 1px solid var(--vs-border); border-radius: 6px; box-shadow: 0 6px 20px rgba(0, 0, 0, .18); }
 .pc-lookup-list[hidden] { display: none; }
 .pc-lookup-item, .pc-lookup-empty { padding: 5px 10px; font-size: 13px; cursor: pointer; border-radius: 4px; color: var(--pems-text); }
 .pc-lookup-item:hover, .pc-lookup-item.active { background: var(--pems-row-hover, rgba(31, 78, 120, .08)); outline: 1px solid var(--vs-accent); }
 .pc-lookup-empty { cursor: default; color: var(--vs-muted); }
 .pc-lookup-sm input { min-inline-size: 180px; }
+
+/* FREE FORMAT TEXT -> Technical Class suggestion status */
+.pc-tc-status { min-block-size: 1.2em; }
+.pc-tc-status--ok { color: var(--bs-success, #198754); }
+.pc-tc-status--warn { color: var(--bs-warning-text-emphasis, #8a5a00); }
+.pc-tc-status--muted { color: var(--vs-muted); }
+.pc-tc-cand { display: inline-block; margin: 4px 6px 0 0; padding: 2px 8px; font-size: 12px; border: 1px solid var(--vs-accent); border-radius: 12px;
+    background: transparent; color: var(--pems-text); cursor: pointer; }
+.pc-tc-cand:hover, .pc-tc-cand:focus-visible { background: var(--pems-row-hover, rgba(31, 78, 120, .08)); }
+[dir="rtl"] .pc-tc-cand { margin: 4px 0 0 6px; }

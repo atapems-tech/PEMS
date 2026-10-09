@@ -31,7 +31,7 @@ public class OrganizationHierarchyService : IOrganizationHierarchyService
             var a = assigns.Where(x => x.PositionId == p.PositionId).OrderByDescending(x => OrganizationValidationService.IsEffective(x, now)).ThenBy(x => x.EmployeeAssignmentId).FirstOrDefault();
             return new OrganizationPositionRow
             {
-                PositionId = p.PositionId, PositionCode = p.PositionCode, Title = p.Title,
+                PositionId = p.PositionId, PositionCode = p.PositionCode, Title = p.Title, Description = p.Description,
                 DepartmentId = p.DepartmentId, DepartmentName = p.Department?.Name,
                 ParentPositionId = p.ParentPositionId,
                 ParentLabel = p.ParentPositionId.HasValue && byId.TryGetValue(p.ParentPositionId.Value, out var par) ? Label(par) : null,
@@ -182,6 +182,129 @@ public class OrganizationHierarchyService : IOrganizationHierarchyService
         var list = await _ctx.Employees.AsNoTracking().Where(e => e.IsActive).OrderBy(e => e.LastName).ThenBy(e => e.FirstName)
             .Select(e => new { e.EmployeeId, e.FirstName, e.LastName, e.PersonnelCode }).ToListAsync(ct);
         return list.Select(e => (e.EmployeeId, ((e.FirstName + " " + e.LastName).Trim() + (string.IsNullOrEmpty(e.PersonnelCode) ? "" : " · " + e.PersonnelCode)))).ToList();
+    }
+
+    private static string? Clean(string? v) => string.IsNullOrWhiteSpace(v) ? null : v.Trim();
+
+    private async Task<OrgOpResult?> ValidatePositionFieldsAsync(string title, string? code, int? departmentId, int? selfId, CancellationToken ct)
+    {
+        if (string.IsNullOrWhiteSpace(title)) return OrgOpResult.Fail("Org_Err_TitleRequired");
+        if (title.Trim().Length > 150) return OrgOpResult.Fail("Org_Err_TitleTooLong");
+        var c = Clean(code);
+        if (c != null && c.Length > 50) return OrgOpResult.Fail("Org_Err_CodeTooLong");
+        if (c != null && await _ctx.Positions.AnyAsync(p => p.PositionCode == c && (selfId == null || p.PositionId != selfId), ct))
+            return OrgOpResult.Fail("Org_Err_DuplicatePositionCode", c);
+        if (departmentId.HasValue && !await _ctx.Departments.AnyAsync(d => d.DepartmentId == departmentId.Value && d.IsActive, ct))
+            return OrgOpResult.Fail("Org_Err_DepartmentInvalid");
+        return null;
+    }
+
+    public async Task<OrgOpResult> CreatePositionAsync(string title, string? positionCode, int? departmentId, string? description, int? parentPositionId, CancellationToken ct = default)
+    {
+        var invalid = await ValidatePositionFieldsAsync(title, positionCode, departmentId, null, ct);
+        if (invalid != null) return invalid;
+        if (parentPositionId.HasValue && !await _ctx.Positions.AnyAsync(p => p.PositionId == parentPositionId.Value && p.IsActive, ct))
+            return OrgOpResult.Fail("Org_Issue_PARENT_POSITION_INACTIVE");
+
+        _ctx.Positions.Add(new Position
+        {
+            Title = title.Trim(), PositionCode = Clean(positionCode), DepartmentId = departmentId, Description = Clean(description),
+            ParentPositionId = parentPositionId, IsActive = true, CreatedDate = DateTime.Now
+        });
+        try { await _ctx.SaveChangesAsync(ct); }
+        catch (DbUpdateException) { return OrgOpResult.Fail("Org_Err_DuplicatePositionCode"); }
+        return OrgOpResult.Ok();
+    }
+
+    public async Task<OrgOpResult> UpdatePositionAsync(int positionId, string title, string? positionCode, int? departmentId, string? description, CancellationToken ct = default)
+    {
+        var pos = await _ctx.Positions.FirstOrDefaultAsync(p => p.PositionId == positionId, ct);
+        if (pos == null) return OrgOpResult.Fail("Org_Err_PositionNotFound");
+        // دپارتمان فعلیِ غیرفعال بدون تغییر مجاز است
+        var dept = departmentId.HasValue && departmentId == pos.DepartmentId ? null : departmentId;
+        var invalid = await ValidatePositionFieldsAsync(title, positionCode, dept, positionId, ct);
+        if (invalid != null) return invalid;
+
+        pos.Title = title.Trim(); pos.PositionCode = Clean(positionCode); pos.DepartmentId = departmentId; pos.Description = Clean(description);
+        try { await _ctx.SaveChangesAsync(ct); }
+        catch (DbUpdateConcurrencyException) { return OrgOpResult.Fail("Org_Err_Concurrency"); }
+        catch (DbUpdateException) { return OrgOpResult.Fail("Org_Err_DuplicatePositionCode"); }
+        return OrgOpResult.Ok();
+    }
+
+    public async Task<OrgOpResult> SetPositionActiveAsync(int positionId, bool isActive, CancellationToken ct = default)
+    {
+        var pos = await _ctx.Positions.FirstOrDefaultAsync(p => p.PositionId == positionId, ct);
+        if (pos == null) return OrgOpResult.Fail("Org_Err_PositionNotFound");
+        if (!isActive && await _ctx.EmployeeAssignments.AnyAsync(a => a.PositionId == positionId && a.IsActive, ct))
+            return OrgOpResult.Fail("Org_Err_PositionHasHolder");
+        pos.IsActive = isActive;
+        await _ctx.SaveChangesAsync(ct);
+        return OrgOpResult.Ok();
+    }
+
+    public async Task<List<(int DepartmentId, string Name)>> GetActiveDepartmentsAsync(CancellationToken ct = default) =>
+        (await _ctx.Departments.AsNoTracking().Where(d => d.IsActive).OrderBy(d => d.Name).Select(d => new { d.DepartmentId, d.Name }).ToListAsync(ct))
+            .Select(d => (d.DepartmentId, d.Name)).ToList();
+
+    private static string PosLabel(string title, string? code) => string.IsNullOrWhiteSpace(code) ? title : title + " [" + code + "]";
+
+    public async Task<List<(int PositionId, string Label)>> GetVacantPositionsAsync(CancellationToken ct = default)
+    {
+        var occupied = _ctx.EmployeeAssignments.Where(a => a.IsActive).Select(a => a.PositionId);
+        var rows = await _ctx.Positions.AsNoTracking().Where(p => p.IsActive && !occupied.Contains(p.PositionId))
+            .OrderBy(p => p.Title).Select(p => new { p.PositionId, p.Title, p.PositionCode }).ToListAsync(ct);
+        return rows.Select(p => (p.PositionId, PosLabel(p.Title, p.PositionCode))).ToList();
+    }
+
+    public async Task<Dictionary<int, (int PositionId, string Label)>> GetPrimaryPositionsAsync(IEnumerable<int> employeeIds, CancellationToken ct = default)
+    {
+        var ids = employeeIds.Distinct().ToList();
+        var now = DateTime.Now;
+        var rows = (await (from a in _ctx.EmployeeAssignments.AsNoTracking()
+                           join p in _ctx.Positions.AsNoTracking() on a.PositionId equals p.PositionId
+                           where a.IsActive && a.IsPrimary && ids.Contains(a.EmployeeId)
+                           select new { a.EmployeeId, a.StartDate, a.EndDate, p.PositionId, p.Title, p.PositionCode }).ToListAsync(ct))
+            .Where(a => a.StartDate <= now && (!a.EndDate.HasValue || a.EndDate.Value >= now));
+        return rows.GroupBy(a => a.EmployeeId).Where(g => g.Count() == 1).ToDictionary(g => g.Key, g => (g.First().PositionId, PosLabel(g.First().Title, g.First().PositionCode)));
+    }
+
+    public async Task<OrgOpResult> SetPrimaryPositionAsync(int employeeId, int? positionId, CancellationToken ct = default)
+    {
+        var emp = await _ctx.Employees.AsNoTracking().Where(e => e.EmployeeId == employeeId).Select(e => new { e.IsActive }).FirstOrDefaultAsync(ct);
+        if (emp == null) return OrgOpResult.Fail("Org_Err_EmployeeNotFound");
+
+        var current = await _ctx.EmployeeAssignments.Where(a => a.EmployeeId == employeeId && a.IsActive && a.IsPrimary).ToListAsync(ct);
+        if (positionId.HasValue && current.Count == 1 && current[0].PositionId == positionId.Value) return OrgOpResult.Ok();   // no change
+
+        if (positionId.HasValue)
+        {
+            // پیش‌اعتبارسنجی تا سمت فعلی بدون جایگزین بسته نشود
+            var pos = await _ctx.Positions.AsNoTracking().Where(p => p.PositionId == positionId.Value).Select(p => new { p.IsActive }).FirstOrDefaultAsync(ct);
+            if (pos == null) return OrgOpResult.Fail("Org_Err_PositionNotFound");
+            if (!pos.IsActive) return OrgOpResult.Fail("Org_Err_PositionInactive");
+            if (!emp.IsActive) return OrgOpResult.Fail("Org_Err_EmployeeInactive");
+            if (await _ctx.EmployeeAssignments.AnyAsync(a => a.PositionId == positionId.Value && a.IsActive, ct)) return OrgOpResult.Fail("Org_Err_PositionOccupied");
+        }
+
+        // پایان سمت قبلی + تخصیص سمت جدید یک واحد اتمیک است؛ اگر تخصیص شکست بخورد (مثلاً رقابت هم‌زمان)، کارمند بدون سمت اصلی نمی‌ماند
+        // SqlServerRetryingExecutionStrategy تراکنش کاربر را فقط داخل strategy.ExecuteAsync می‌پذیرد
+        var ownsTx = _ctx.Database.IsRelational() && _ctx.Database.CurrentTransaction == null;
+        var strategy = _ctx.Database.CreateExecutionStrategy();
+        return await strategy.ExecuteAsync(async () =>
+        {
+            var tx = ownsTx ? await _ctx.Database.BeginTransactionAsync(ct) : null;
+            try
+            {
+                foreach (var a in current) { var ended = await EndAssignmentAsync(a.EmployeeAssignmentId, "Position changed", ct); if (!ended.Success) { if (tx != null) await tx.RollbackAsync(ct); return ended; } }
+                if (!positionId.HasValue) { if (tx != null) await tx.CommitAsync(ct); return OrgOpResult.Ok(); }
+                var assigned = await AssignAsync(new OrganizationAssignmentRequest(positionId.Value, employeeId, true, DateTime.Now, null, "Position assignment"), ct);
+                if (tx != null) { if (assigned.Success) await tx.CommitAsync(ct); else { await tx.RollbackAsync(ct); _ctx.ChangeTracker.Clear(); } }
+                return assigned;
+            }
+            catch { if (tx != null) await tx.RollbackAsync(ct); throw; }
+            finally { if (tx != null) await tx.DisposeAsync(); }
+        });
     }
 
     public async Task<OrgOpResult> SetPositionHierarchyAsync(int positionId, string? positionCode, int? parentPositionId, CancellationToken ct = default)

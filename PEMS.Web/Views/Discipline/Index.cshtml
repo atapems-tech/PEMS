@@ -4,6 +4,10 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card">
+    @if (ViewBag.CanManageMaster == true)
+    {
+        <div class="mb-3"><a asp-action="Manage" class="btn btn-sm btn-outline-secondary"><i class="bi bi-sliders"></i> @Localizer["Manage disciplines"]</a></div>
+    }
     <p class="text-muted">
         هر دیسیپلین یک Workspace اختصاصی دارد (Equipment, Documents, VDR, MR/MRQ, Tasks, KPI) —
         دیتابیس مشترک است، فقط نما فیلترشده است.

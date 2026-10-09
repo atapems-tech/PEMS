@@ -43,11 +43,16 @@ public class MyWorkSummary
     public bool ShowDocumentReviews { get; set; }
     public int PendingDocumentReviewsCount { get; set; }
 
-    public bool HasAnyCategory => ShowPermitApprovals || ShowWorkOrders || ShowReferrals || ShowDocumentReviews;
+    // سایر تأییدهای گردش‌کار (همه‌ی ماژول‌ها به‌جز Permit/مدارک مهندسی) - فقط وقتی کاربر واقعاً کاری منتظر اقدام دارد نمایش داده می‌شود
+    public bool ShowOtherApprovals { get; set; }
+    public int OtherApprovalsCount { get; set; }
+
+    public bool HasAnyCategory => ShowPermitApprovals || ShowWorkOrders || ShowReferrals || ShowDocumentReviews || ShowOtherApprovals;
 
     public bool HasAnyActionable =>
         (ShowPermitApprovals && PendingPermitApprovals > 0) ||
         (ShowWorkOrders && MyWorkOrdersCount > 0) ||
         (ShowReferrals && MyReferralsCount > 0) ||
-        (ShowDocumentReviews && PendingDocumentReviewsCount > 0);
+        (ShowDocumentReviews && PendingDocumentReviewsCount > 0) ||
+        (ShowOtherApprovals && OtherApprovalsCount > 0);
 }

@@ -168,6 +168,18 @@ public sealed class PcLookupItem
     public string? Extra { get; set; }
 }
 
+/// <summary>
+/// نتیجه‌ی تطبیق FREE FORMAT TEXT با Technical Class برای UI. Status: "resolved" | "ambiguous" | "none".
+/// فقط پیشنهاد است؛ سرور هنگام ذخیره TechnicalClassId را مستقلاً (وجود/فعال‌بودن) اعتبارسنجی می‌کند.
+/// </summary>
+public sealed class PcTechnicalClassResolution
+{
+    public string Status { get; set; } = "none";
+    public string Reason { get; set; } = "None";
+    public PcLookupItem? Resolved { get; set; }
+    public List<PcLookupItem> Candidates { get; set; } = new();
+}
+
 public sealed class PartCatalogueActionState
 {
     public bool CanEdit { get; set; }

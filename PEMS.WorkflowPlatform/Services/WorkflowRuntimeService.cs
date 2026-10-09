@@ -737,33 +737,47 @@ public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
     }
 
 
+    /// <summary>
+    /// کارتابل: مراحل Pending که کاربر مجاز به اقدام روی آن‌هاست. دو منبع (دقیقاً هم‌قاعده با ExecuteActionAsync):
+    /// ۱) مراحل مبتنی بر نقش (AssignedToRole) ۲) مراحل مبتنی بر مسئولیت (فقط Snapshot کاندیدهای انتخاب‌شده، بدون آغازکننده).
+    /// شاخه‌ی نقش قبلاً «همه‌ی» مراحل Pending سیستم را در حافظه می‌آورد و بعد فیلتر می‌کرد؛ حالا یک پیش‌فیلتر SQL
+    /// (شامل بودن نام نقش در رشته‌ی CSV) تعداد ردیف‌ها را کم می‌کند و تطبیق دقیق همچنان در حافظه (RoleMatches) انجام می‌شود،
+    /// پس نتیجه عیناً همان است.
+    /// </summary>
     public async Task<IReadOnlyList<PendingTaskDto>> GetPendingTasksAsync(int employeeId, IReadOnlyList<string> actorRoles)
     {
-        var candidates = await (
-            from instStage in _db.WorkflowInstanceStages
-            join instance in _db.WorkflowInstances on instStage.WorkflowInstanceId equals instance.WorkflowInstanceId
-            join stage in _db.WorkflowStages on instStage.WorkflowStageId equals stage.WorkflowStageId
-            where instStage.Status == "Pending" && instance.Status == "Running"
-            select new
-            {
-                instStage.AssignedToRole,
-                Task = new PendingTaskDto
-                {
-                    WorkflowInstanceId = instance.WorkflowInstanceId,
-                    WorkflowInstanceStageId = instStage.WorkflowInstanceStageId,
-                    Module = instance.Module,
-                    BusinessObjectType = instance.BusinessObjectType,
-                    BusinessObjectId = instance.BusinessObjectId,
-                    StageName = stage.Name,
-                    AssignedDate = instStage.AssignedDate
-                }
-            }
-        ).ToListAsync();
+        var now = DateTime.Now;
+        var byRole = new List<PendingTaskDto>();
+        var roles = (actorRoles ?? Array.Empty<string>()).Where(r => !string.IsNullOrWhiteSpace(r)).Distinct().ToList();
 
-        var byRole = candidates
-            .Where(x => RoleMatches(x.AssignedToRole, actorRoles))
-            .Select(x => x.Task)
-            .ToList();
+        if (roles.Count > 0)
+        {
+            var roleFilter = AssignedToRoleContainsAny(roles);
+            var candidates = await (
+                from instStage in _db.WorkflowInstanceStages.Where(roleFilter)
+                join instance in _db.WorkflowInstances on instStage.WorkflowInstanceId equals instance.WorkflowInstanceId
+                join stage in _db.WorkflowStages on instStage.WorkflowStageId equals stage.WorkflowStageId
+                where instStage.Status == "Pending" && instance.Status == "Running"
+                select new
+                {
+                    instStage.AssignedToRole,
+                    Task = new PendingTaskDto
+                    {
+                        WorkflowInstanceId = instance.WorkflowInstanceId,
+                        WorkflowInstanceStageId = instStage.WorkflowInstanceStageId,
+                        Module = instance.Module,
+                        BusinessObjectType = instance.BusinessObjectType,
+                        BusinessObjectId = instance.BusinessObjectId,
+                        StageName = stage.Name,
+                        StageNameFa = stage.NameFa,
+                        AssignedDate = instStage.AssignedDate,
+                        TimeoutHours = stage.TimeoutHours
+                    }
+                }
+            ).ToListAsync();
+
+            byRole = candidates.Where(x => RoleMatches(x.AssignedToRole, roles)).Select(x => x.Task).ToList();
+        }
 
         // مراحل مبتنی بر مسئولیت: فقط کاندیدهای Snapshot شده
         var byCandidate = await (
@@ -781,9 +795,36 @@ public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
                 BusinessObjectType = instance.BusinessObjectType,
                 BusinessObjectId = instance.BusinessObjectId,
                 StageName = stage.Name,
-                AssignedDate = instStage.AssignedDate
+                StageNameFa = stage.NameFa,
+                AssignedDate = instStage.AssignedDate,
+                TimeoutHours = stage.TimeoutHours,
+                IsPersonal = true
             }).ToListAsync();
 
-        return byRole.Concat(byCandidate).ToList();
+        var all = byRole.Concat(byCandidate).ToList();
+        foreach (var t in all)
+        {
+            if (!t.TimeoutHours.HasValue) continue;
+            t.DueDate = t.AssignedDate.AddHours(t.TimeoutHours.Value);
+            t.IsOverdue = t.DueDate.Value < now;
+        }
+        return all;
+    }
+
+    // (x.AssignedToRole != null && (x.AssignedToRole.Contains(r1) || x.AssignedToRole.Contains(r2) ...)) - فقط پیش‌فیلتر؛ تطبیق دقیق: RoleMatches
+    private static System.Linq.Expressions.Expression<Func<WorkflowInstanceStage, bool>> AssignedToRoleContainsAny(IReadOnlyList<string> roles)
+    {
+        var x = System.Linq.Expressions.Expression.Parameter(typeof(WorkflowInstanceStage), "x");
+        var prop = System.Linq.Expressions.Expression.Property(x, nameof(WorkflowInstanceStage.AssignedToRole));
+        var contains = typeof(string).GetMethod(nameof(string.Contains), new[] { typeof(string) })!;
+        System.Linq.Expressions.Expression? any = null;
+        foreach (var r in roles)
+        {
+            var call = System.Linq.Expressions.Expression.Call(prop, contains, System.Linq.Expressions.Expression.Constant(r));
+            any = any == null ? call : System.Linq.Expressions.Expression.OrElse(any, call);
+        }
+        var notNull = System.Linq.Expressions.Expression.NotEqual(prop, System.Linq.Expressions.Expression.Constant(null, typeof(string)));
+        return System.Linq.Expressions.Expression.Lambda<Func<WorkflowInstanceStage, bool>>(
+            System.Linq.Expressions.Expression.AndAlso(notNull, any!), x);
     }
 }

@@ -123,7 +123,7 @@
                 </ul>
             </div>
 
-            @await Html.PartialAsync("_ContextualHelpDrawer")
+            @await Html.PartialAsync("_ContextualHelpButton")
 
             <a asp-controller="Help" asp-action="Index" asp-area="" class="text-secondary" title="@(isRtl ? "مرکز راهنما" : "Help Center")">
                 <i class="bi bi-question-circle fs-5"></i>
@@ -142,7 +142,7 @@
             <div class="dropdown pems-user-menu">
                 <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="pems-user-avatar">@(string.IsNullOrEmpty(User.Identity?.Name) ? "?" : User.Identity!.Name!.Substring(0, 1).ToUpper())</span>
-                    <span class="d-none d-sm-flex flex-column text-start">
+                    <span class="d-none d-md-flex flex-column text-start">
                         <span class="fw-semibold">@(User.FindFirst("FullName")?.Value ?? User.Identity?.Name)</span>
                         <span class="text-muted" style="font-size:11px;">@(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value)</span>
                     </span>
@@ -161,6 +161,9 @@
             </div>
         </div>
     </header>
+
+    @* پنل راهنما باید بیرون از <header> باشد (Stacking Context هدر z-index:1030 است؛ در RTL پنل زیر نوار کناری می‌رفت) *@
+    @await Html.PartialAsync("_ContextualHelpDrawer")
 
     <div class="pems-shell">
         <partial name="_SidebarMenu" />

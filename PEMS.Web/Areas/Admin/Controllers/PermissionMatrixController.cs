@@ -46,7 +46,7 @@ public class PermissionMatrixController : Controller
         ViewBag.Modules = new[]
         {
             "EngineeringDocuments", "VDR", "Contracts", "Vendors",
-            "MaterialRequisition", "Equipment", "DisciplineWorkspace", "Correspondence",
+            "MaterialRequisition", "Equipment", "DisciplineWorkspace", "DisciplineMaster", "Correspondence",
             "WorkOrder", "StoreRequisition", "WorkRequest", "Inspection", "Transmittal",
             "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan",
             "ProcurementPackage",

@@ -94,6 +94,20 @@
                         </a>
                     </div>
                 }
+                @if (myWork.ShowOtherApprovals)
+                {
+                    <div class="col-md-4">
+                        <a asp-controller="MyWork" asp-action="Index"
+                           class="d-flex align-items-center gap-3 p-2 rounded text-decoration-none"
+                           aria-label="@myWork.OtherApprovalsCount @Localizer["MyWork_Card_Other"]">
+                            <div class="kpi-icon bg-icon-teal"><i class="bi bi-list-check"></i></div>
+                            <div>
+                                <div class="kpi-value">@myWork.OtherApprovalsCount</div>
+                                <div class="small text-muted">@Localizer["MyWork_Card_Other"]</div>
+                            </div>
+                        </a>
+                    </div>
+                }
                 @if (myWork.ShowDocumentReviews)
                 {
                     <div class="col-md-4">

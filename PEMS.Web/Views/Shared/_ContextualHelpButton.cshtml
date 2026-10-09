@@ -1,0 +1,16 @@
+@using System.Globalization
+@{
+    var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
+    string L(string en, string fa) => isRtl ? fa : en;
+    var helpKey = ViewData["HelpKey"] as string;
+}
+
+@* دکمه‌ی راهنمای زمینه‌ای (داخل هدر می‌ماند). خودِ پنل (offcanvas) در _ContextualHelpDrawer و «بیرون از <header>» رندر می‌شود:
+   offcanvas داخل .pems-topbar (z-index:1030) یک Stacking Context می‌گیرد و در RTL زیر نوار کناری (1035) می‌ماند. *@
+@if (!string.IsNullOrEmpty(helpKey))
+{
+    <button type="button" class="btn btn-sm btn-outline-secondary pems-contextual-help-btn" data-bs-toggle="offcanvas" data-bs-target="#pemsHelpDrawer"
+            data-help-key="@helpKey" title="@L("Help for this page", "راهنمای این صفحه")">
+        <i class="bi bi-question-circle"></i> @L("Help", "راهنما")
+    </button>
+}

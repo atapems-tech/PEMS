@@ -17,7 +17,7 @@ namespace PEMS.Web.Controllers
         private readonly PEMS.Application.Interfaces.IPermissionService _permissionService;
         private readonly PEMS.Application.Interfaces.ISetupService _setupService;
         private readonly PEMS.Application.Interfaces.IAccessControlService _accessControlService;
-        private readonly IWorkflowRuntime _runtime;
+        private readonly PEMS.Application.Interfaces.IMyWorkService _myWork;
 
 
         public HomeController(PEMSDbContext context, ILogger<HomeController> logger,
@@ -27,7 +27,7 @@ namespace PEMS.Web.Controllers
             PEMS.Application.Interfaces.IPermissionService permissionService,
             PEMS.Application.Interfaces.ISetupService setupService,
             PEMS.Application.Interfaces.IAccessControlService accessControlService,
-            IWorkflowRuntime runtime)
+            PEMS.Application.Interfaces.IMyWorkService myWork)
         {
             _context = context;
             _logger = logger;
@@ -37,7 +37,7 @@ namespace PEMS.Web.Controllers
             _permissionService = permissionService;
             _setupService = setupService;
             _accessControlService = accessControlService;
-            _runtime = runtime;
+            _myWork = myWork;
         }
 
 
@@ -159,13 +159,23 @@ namespace PEMS.Web.Controllers
                     {
                         var summary = new MyWorkSummary();
 
+                        // کارتابل مشترک گردش‌کار (همان منبعی که موتور هنگام اقدام اعمال می‌کند) - یک‌بار خوانده می‌شود و هم برای Permit
+                        // هم برای «سایر تأییدها» استفاده می‌شود؛ شمارش Permit عیناً مثل قبل است (Module == "Permit").
+                        PEMS.Application.DTOs.MyApprovalsSummaryDto approvals;
+                        try { approvals = await _myWork.GetSummaryAsync(employeeId.Value, _currentUser.Roles); }
+                        catch (Exception ex)
+                        {
+                            // شکست کارتابل نباید بقیه‌ی دسته‌های My Work (Work Order/Referral/مدارک) را از بین ببرد
+                            _logger.LogWarning(ex, "خواندن کارتابل گردش‌کار برای My Work ناموفق بود");
+                            approvals = new PEMS.Application.DTOs.MyApprovalsSummaryDto();
+                        }
+
                         var canApprovePermits = await _roleModuleActionService.HasActionAsync(_currentUser.Roles, "Permit", "Approve")
                             || await _roleModuleActionService.HasActionAsync(_currentUser.Roles, "Permit", "Reject");
                         if (canApprovePermits)
                         {
                             summary.ShowPermitApprovals = true;
-                            var pendingTasks = await _runtime.GetPendingTasksAsync(employeeId.Value, _currentUser.Roles);
-                            summary.PendingPermitApprovals = pendingTasks.Count(t => t.BusinessObjectType == "Permit");
+                            summary.PendingPermitApprovals = approvals.ByModule.GetValueOrDefault("Permit");
                         }
 
                         if (await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View"))
@@ -203,6 +213,12 @@ namespace PEMS.Web.Controllers
                             summary.PendingDocumentReviewsCount = await _context.EngineeringDocuments.CountAsync(x =>
                                 x.IsActive && x.Status == "IDC Review" && (x.DisciplineId == myDisciplineId || x.DisciplineId == null));
                         }
+
+                        // سایر ماژول‌های دارای گردش‌کار (کاتالوگ قطعات، MOC، پرسش فنی، VDR، قرارداد، NCR، IRN، دستور کار ...) که قبلاً در My Work دیده نمی‌شدند.
+                        // Permit و مدارک مهندسی کارت اختصاصی خودشان را دارند و اینجا دوباره شمرده نمی‌شوند.
+                        var otherModules = approvals.ByModule.Where(kv => kv.Key != "Permit" && kv.Key != "EngineeringDocument").ToList();
+                        summary.OtherApprovalsCount = otherModules.Sum(kv => kv.Value);
+                        summary.ShowOtherApprovals = summary.OtherApprovalsCount > 0;
 
                         ViewBag.MyWork = summary;
                     }

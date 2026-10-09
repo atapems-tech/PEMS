@@ -17,7 +17,7 @@ public class PermissionService : IPermissionService
     private static readonly string[] Modules =
     {
         "EngineeringDocuments", "VDR", "Contracts", "Vendors",
-        "MaterialRequisition", "Equipment", "DisciplineWorkspace", "Correspondence", "WorkOrder",
+        "MaterialRequisition", "Equipment", "DisciplineWorkspace", "DisciplineMaster", "Correspondence", "WorkOrder",
         "StoreRequisition", "WorkRequest", "Inspection", "Transmittal",
         "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan",
         "ProcurementPackage",
@@ -345,6 +345,13 @@ public class PermissionService : IPermissionService
             New(SystemRoles.EngineeringManager, "DisciplineWorkspace", create: true, edit: true),
             New(SystemRoles.DocumentController, "DisciplineWorkspace"),
             New(SystemRoles.Viewer, "DisciplineWorkspace")
+        });
+
+        // Discipline Master Data (کد/نام/Alias/ترانسمیتال/فعال‌سازی) - مجوز مستقل از DisciplineWorkspace (Task سطح دیسیپلین)؛ نقش‌های Task-محور
+        // (DisciplineEngineer/EngineeringSupervisor/...) نباید داده‌ی پایه را ویرایش کنند. فقط EngineeringManager؛ SystemAdmin بایپس دارد.
+        await SeedMissingRolesAsync("DisciplineMaster", new List<RolePermission>
+        {
+            New(SystemRoles.EngineeringManager, "DisciplineMaster", create: true, edit: true)
         });
 
         // Correspondence (مکاتبات رسمی)

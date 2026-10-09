@@ -11,13 +11,7 @@
    ViewData["HelpKey"] را ست کرده باشد رندر می‌شود - طبق بخش ۱۸ (Performance): محتوا فقط با
    درخواست واقعی کاربر (کلیک) از /Help/Context بارگذاری می‌شود، نه در هر بار رندر صفحه.
    ============================================================================== *@
-@if (!string.IsNullOrEmpty(helpKey))
-{
-    <button type="button" class="btn btn-sm btn-outline-secondary pems-contextual-help-btn" data-bs-toggle="offcanvas" data-bs-target="#pemsHelpDrawer"
-            data-help-key="@helpKey" title="@L("Help for this page", "راهنمای این صفحه")">
-        <i class="bi bi-question-circle"></i> @L("Help", "راهنما")
-    </button>
-}
+@* دکمه‌ی فراخوان در _ContextualHelpButton است؛ این Partial باید «بیرون از <header>» (مثلاً بعد از آن) رندر شود تا z-index پنل (1045) در Stacking Context هدر (1030) گیر نکند. *@
 
 <div class="offcanvas @(isRtl ? "offcanvas-start" : "offcanvas-end")" tabindex="-1" id="pemsHelpDrawer" aria-labelledby="pemsHelpDrawerLabel">
     <div class="offcanvas-header border-bottom">

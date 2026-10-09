@@ -61,6 +61,7 @@ public sealed class OrganizationPositionRow
     public int PositionId { get; init; }
     public string? PositionCode { get; init; }
     public string Title { get; init; } = string.Empty;
+    public string? Description { get; init; }
     public int? DepartmentId { get; init; }
     public string? DepartmentName { get; init; }
     public int? ParentPositionId { get; init; }
@@ -100,6 +101,24 @@ public interface IOrganizationHierarchyService
 
     /// <summary>فهرست کارمندان فعال برای انتخاب دارنده (Id، نام، کد پرسنلی).</summary>
     Task<List<(int EmployeeId, string Label)>> GetActiveEmployeesAsync(CancellationToken ct = default);
+
+    /// <summary>سمت جدید (Master-data). Department/Parent اختیاری؛ در صورت وجود باید فعال باشند. هرگز سمت ساختگی از متن آزاد ساخته نمی‌شود.</summary>
+    Task<OrgOpResult> CreatePositionAsync(string title, string? positionCode, int? departmentId, string? description, int? parentPositionId, CancellationToken ct = default);
+
+    /// <summary>ویرایش عنوان/کد/دپارتمان/توضیح. تغییر مافوق از SetPositionHierarchyAsync (اعتبارسنجی دور/خودارجاع) انجام می‌شود.</summary>
+    Task<OrgOpResult> UpdatePositionAsync(int positionId, string title, string? positionCode, int? departmentId, string? description, CancellationToken ct = default);
+
+    /// <summary>غیرفعال‌سازی فقط وقتی دارنده‌ی فعال ندارد (تخصیص بی‌صدا بسته نمی‌شود)؛ فعال‌سازی مجدد آزاد است. حذف فیزیکی وجود ندارد.</summary>
+    Task<OrgOpResult> SetPositionActiveAsync(int positionId, bool isActive, CancellationToken ct = default);
+
+    Task<List<(int DepartmentId, string Name)>> GetActiveDepartmentsAsync(CancellationToken ct = default);
+
+    /// <summary>سمت‌های فعالِ بدون دارنده (قابل انتخاب برای تخصیص) + سمت اصلیِ فعلی هر کارمند (برای فرم‌ها).</summary>
+    Task<List<(int PositionId, string Label)>> GetVacantPositionsAsync(CancellationToken ct = default);
+    Task<Dictionary<int, (int PositionId, string Label)>> GetPrimaryPositionsAsync(IEnumerable<int> employeeIds, CancellationToken ct = default);
+
+    /// <summary>تعیین سمت اصلیِ کارمند (تغییر/پایان). سمت فعلی (در صورت وجود) پایان می‌یابد و سمت جدید با همان قوانین AssignAsync تخصیص می‌یابد؛ null = فقط پایان سمت اصلی.</summary>
+    Task<OrgOpResult> SetPrimaryPositionAsync(int employeeId, int? positionId, CancellationToken ct = default);
 
     /// <summary>تعیین کد سمت و سمت مافوق. ParentPositionId=null یعنی سمت ریشه. Self/Cycle/Inactive رد می‌شود.</summary>
     Task<OrgOpResult> SetPositionHierarchyAsync(int positionId, string? positionCode, int? parentPositionId, CancellationToken ct = default);

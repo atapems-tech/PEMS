@@ -48,7 +48,7 @@
 <div class="vs-page pc-page">
     <div class="vs-doc-head">
         <div class="d-flex flex-wrap align-items-center gap-2">
-            <h1 class="pems-page-title mb-0">@(string.IsNullOrEmpty(d.RequestNumber) ? "#" + d.Id : d.RequestNumber)</h1>
+            <h2 class="pems-page-title mb-0">@(string.IsNullOrEmpty(d.RequestNumber) ? "#" + d.Id : d.RequestNumber)</h2>
             <span class="vs-pill vs-pill--info">@Localizer["Pc_Type_" + d.RequestType]</span>
             <span class="vs-pill vs-pill--icon @StatusPill(d.Status)">@Localizer["Pc_Status_" + d.Status]</span>
             @if (f.Urgent) { <span class="vs-pill vs-pill--danger vs-pill--icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Pc_Urgent"]</span> }

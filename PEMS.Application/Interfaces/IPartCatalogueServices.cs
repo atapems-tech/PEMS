@@ -138,6 +138,9 @@ public interface IPartCatalogueLookupService
 {
     Task<List<PcLookupItem>> SearchTechnicalClassesAsync(string? q, int take = 30);
     Task<PcLookupItem?> GetTechnicalClassAsync(int id);
+
+    /// <summary>تطبیق قطعی متن FREE FORMAT TEXT با Technical Classهای فعال (TechnicalClassMatcher)؛ هیچ داده‌ای نمی‌نویسد.</summary>
+    Task<PcTechnicalClassResolution> ResolveTechnicalClassAsync(string? freeFormatText);
     Task<List<PcLookupItem>> SearchManufacturersAsync(string? q, int take = 30);
     Task<List<PcLookupItem>> SearchSuppliersAsync(string? q, int take = 30);
     Task<List<PcLookupItem>> SearchCommodityGroupsAsync(string? q, int take = 30);

@@ -23,6 +23,8 @@
     var canAdminPartCatalogue = pcActions["Admin"];
 
     var canSeeQuickSetup = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "Setup", "View");
+    // Discipline Master Data: مجوزمحور (ماژول DisciplineMaster)، نه نقش-محور؛ بدون دادن بخش Administration کامل به نقش‌های غیرادمین
+    var canSeeDisciplineMaster = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "DisciplineMaster", "View");
 
     // مرکز Import: ورودی واحد سایدبار برای همه‌ی Importها (ImportCatalog). فقط نقش را (بدون DB) می‌سنجد؛ کاربری که
     // قبلاً حداقل یک لینک Import پراکنده می‌دید، این ورودی را می‌بیند و برعکس. مجوز دقیق هر Import در خودِ صفحه‌ی مرکز
@@ -85,6 +87,10 @@
 
     <a class="nav-link @(IsActive("Home") ? "active" : "")" asp-controller="Home" asp-action="Index" asp-area="">
         <i class="bi bi-speedometer2"></i> @Localizer["Dashboard"]
+    </a>
+
+    <a class="nav-link @(IsActive("MyWork") ? "active" : "")" asp-controller="MyWork" asp-action="Index" asp-area="">
+        <i class="bi bi-list-check"></i> @Localizer["My Work"]
     </a>
 
     @if (canSeeQuickSetup)
@@ -629,6 +635,22 @@
         // Organization/AI Administration/System Monitoring) دسترسی خودش را کنترل می‌کند.
         var canSeeAdminCore = navVisibility.IsModuleVisible("Administration");
     }
+    @if (!canSeeAdminCore && canSeeDisciplineMaster)
+    {
+        var activeOrg = IsActive("Discipline") && currentAction == "Manage";
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-admin-org" role="button" tabindex="0" aria-expanded="@activeOrg.ToString().ToLower()">
+            <i class="bi bi-gear nav-section-icon"></i>
+            <span>@Localizer["Administration"]</span>
+            <i class="@ChevronClass(activeOrg)"></i>
+        </div>
+        <div class="@SectionClass(activeOrg)" id="sec-admin-org">
+            <div class="nav-subheading">@Localizer["Organization"]</div>
+            <a class="nav-link nav-subitem @(activeOrg ? "active" : "")" asp-controller="Discipline" asp-action="Manage" asp-area="">
+                <i class="bi bi-sliders"></i> @Localizer["Disc_Master_Nav"]
+            </a>
+        </div>
+    }
+
     @if (canSeeAdminCore)
     {
         var active = ContainsActive(adminControllers) || ContainsActive(aiAdminControllers) || InArea("Admin");
@@ -686,7 +708,16 @@
                     <i class="bi bi-people"></i> @Localizer["Employees"]
                 </a>
 
-                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Organization") ? "active" : "")"
+                <a class="nav-link nav-subitem @(IsActive("Discipline") && currentAction == "Manage" ? "active" : "")" asp-controller="Discipline" asp-action="Manage" asp-area="">
+                    <i class="bi bi-sliders"></i> @Localizer["Disc_Master_Nav"]
+                </a>
+
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Organization") && currentAction == "Positions" ? "active" : "")"
+                   asp-area="Admin" asp-controller="Organization" asp-action="Positions">
+                    <i class="bi bi-person-badge"></i> @Localizer["Org_Positions_Nav"]
+                </a>
+
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("Organization") && currentAction != "Positions" ? "active" : "")"
                    asp-area="Admin" asp-controller="Organization" asp-action="Index">
                     <i class="bi bi-diagram-3"></i> @Localizer["Org_Title"]
                 </a>

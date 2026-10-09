@@ -43,6 +43,23 @@ public class PartCatalogueLookupService : IPartCatalogueLookupService
         return x == null ? null : new PcLookupItem { Id = x.TechnicalClassId, Code = x.Code, Text = $"{x.Code} - {x.Description}", Extra = x.LongDescription };
     }
 
+    public async Task<PcTechnicalClassResolution> ResolveTechnicalClassAsync(string? freeFormatText)
+    {
+        var classes = await _ctx.PartCatalogueTechnicalClasses.AsNoTracking().Where(x => x.IsActive)
+            .Select(x => new TechnicalClassRef(x.TechnicalClassId, x.Code, x.Description)).ToListAsync();
+        var r = new TechnicalClassMatcher(classes).Resolve(freeFormatText);
+
+        static PcLookupItem Item(TechnicalClassRef c) => new() { Id = c.Id, Code = c.Code, Text = $"{c.Code} - {c.Description}" };
+        var dto = new PcTechnicalClassResolution
+        {
+            Status = r.Status switch { TechnicalClassResolutionStatus.Resolved => "resolved", TechnicalClassResolutionStatus.Ambiguous => "ambiguous", _ => "none" },
+            Reason = r.Reason,
+            Candidates = r.Candidates.Select(Item).ToList()
+        };
+        if (r.Resolved != null) dto.Resolved = await GetTechnicalClassAsync(r.Resolved.Id);   // شامل LongDescription (Extra)
+        return dto;
+    }
+
     public async Task<List<PcLookupItem>> SearchManufacturersAsync(string? q, int take = 30)
     {
         q = q?.Trim();

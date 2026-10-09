@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
+using PEMS.Application.PartCatalogue;
 
 namespace PEMS.Web.Areas.Warehouse.Controllers;
 
@@ -38,6 +39,9 @@ public class PartCatalogueLookupController : Controller
 
     [HttpGet] public Task<IActionResult> TechnicalClasses(string? q) => Run(() => _lookups.SearchTechnicalClassesAsync(q));
     [HttpGet] public Task<IActionResult> TechnicalClass(int id) => Run(() => _lookups.GetTechnicalClassAsync(id));
+    /// <summary>پیشنهاد Technical Class از متن FREE FORMAT TEXT (فقط خواندنی؛ مجوز همان Lookupها). متن بیش از حد مجاز کوتاه می‌شود.</summary>
+    [HttpGet] public Task<IActionResult> ResolveTechnicalClass(string? text) => Run(() => _lookups.ResolveTechnicalClassAsync(
+        text != null && text.Length > TechnicalClassMatcher.MaxTextLength ? text[..TechnicalClassMatcher.MaxTextLength] : text));
     [HttpGet] public Task<IActionResult> Manufacturers(string? q) => Run(() => _lookups.SearchManufacturersAsync(q));
     [HttpGet] public Task<IActionResult> Suppliers(string? q) => Run(() => _lookups.SearchSuppliersAsync(q));
     [HttpGet] public Task<IActionResult> Equipment(string? q) => Run(() => _lookups.SearchEquipmentAsync(q));

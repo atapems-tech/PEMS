@@ -71,13 +71,13 @@ public static class RoleCatalog
         new(SystemRoles.Finance, "Finance", "Finance review participant in multi-discipline contract review.", Domains.Finance, Categories.Functional, 110),
         new(SystemRoles.HSE, "HSE", "Health, safety and environment review participant in multi-discipline contract review.", Domains.Hse, Categories.Functional, 120),
 
-        new("MNT.Manager", "Maintenance Manager", "Heads Maintenance: rejects or cancels Work Orders and gives final approval for Work Orders originating in Maintenance.", Domains.Maintenance, Categories.Domain, 200),
-        new("MNT.PlanningHead", "Maintenance Planning Head", "Leads maintenance planning: creates, plans and prepares Work Orders and approves work requests.", Domains.Maintenance, Categories.Domain, 210),
-        new("MNT.PlanningExpert", "Maintenance Planning Expert", "Maintenance planner: creates, plans and prepares Work Orders.", Domains.Maintenance, Categories.Functional, 220),
-        new("MNT.DisciplineHead", "Maintenance Discipline Head", "Leads a maintenance discipline: assigns executors, starts and executes work, verifies and gives final approval.", Domains.Maintenance, Categories.Domain, 230),
-        new("MNT.SeniorExpert", "Maintenance Senior Expert", "Senior maintenance technician: executes and verifies work within the responsible discipline.", Domains.Maintenance, Categories.Functional, 240),
-        new("MNT.Expert", "Maintenance Expert", "Maintenance technician: executes assigned work within the responsible discipline.", Domains.Maintenance, Categories.Functional, 250),
-        new("OPS.IssueAuthority", "Operations Issue Authority", "Operations authority that issues (releases) Work Orders after permit/isolation/gas-test gates and verifies completed work.", Domains.Operations, Categories.Functional, 300),
+        new("MNT.Manager", "Maintenance Manager", "Heads Maintenance: rejects or cancels Work Orders and gives final approval for Work Orders originating in Maintenance.", Domains.Maintenance, Categories.Domain, 200, VisibleModules: new[] { "CmmsIntegration" }),
+        new("MNT.PlanningHead", "Maintenance Planning Head", "Leads maintenance planning: creates, plans and prepares Work Orders and approves work requests.", Domains.Maintenance, Categories.Domain, 210, VisibleModules: new[] { "CmmsIntegration" }),
+        new("MNT.PlanningExpert", "Maintenance Planning Expert", "Maintenance planner: creates, plans and prepares Work Orders.", Domains.Maintenance, Categories.Functional, 220, VisibleModules: new[] { "CmmsIntegration" }),
+        new("MNT.DisciplineHead", "Maintenance Discipline Head", "Leads a maintenance discipline: assigns executors, starts and executes work, verifies and gives final approval.", Domains.Maintenance, Categories.Domain, 230, VisibleModules: new[] { "CmmsIntegration" }),
+        new("MNT.SeniorExpert", "Maintenance Senior Expert", "Senior maintenance technician: executes and verifies work within the responsible discipline.", Domains.Maintenance, Categories.Functional, 240, VisibleModules: new[] { "CmmsIntegration" }),
+        new("MNT.Expert", "Maintenance Expert", "Maintenance technician: executes assigned work within the responsible discipline.", Domains.Maintenance, Categories.Functional, 250, VisibleModules: new[] { "CmmsIntegration" }),
+        new("OPS.IssueAuthority", "Operations Issue Authority", "Operations authority that issues (releases) Work Orders after permit/isolation/gas-test gates and verifies completed work.", Domains.Operations, Categories.Functional, 300, VisibleModules: new[] { "CmmsIntegration" }),
 
         new(WarehouseManager, "Warehouse Manager", "Heads the warehouse: approves store requisitions. Separate from the storekeeper who creates them; cannot approve IRN quality dispositions.", Domains.Warehouse, Categories.Domain, 400,
             DefaultPermissions: new[]
