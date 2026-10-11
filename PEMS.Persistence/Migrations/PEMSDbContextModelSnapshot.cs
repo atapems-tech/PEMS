@@ -9463,6 +9463,11 @@ namespace PEMS.Persistence.Migrations
 
                     b.HasIndex("WarehouseId");
 
+                    b.HasIndex("MaterialItemId", "WarehouseId")
+                        .IsUnique()
+                        .HasDatabaseName("UX_MaterialStocks_Item_Warehouse_NoLocation")
+                        .HasFilter("[StorageLocationId] IS NULL");
+
                     b.HasIndex("MaterialItemId", "WarehouseId", "StorageLocationId")
                         .IsUnique()
                         .HasFilter("[StorageLocationId] IS NOT NULL");
@@ -9944,6 +9949,99 @@ namespace PEMS.Persistence.Migrations
                         .HasFilter("[ItemKey] IS NOT NULL");
 
                     b.ToTable("NavigationVisibilityOverrides", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.NetDemandRun", b =>
+                {
+                    b.Property<int>("NetDemandRunId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NetDemandRunId"));
+
+                    b.Property<int>("AutoReopened")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CalculatorVersion")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Closed")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Created")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FailureMessage")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NotComparableNoWarehouse")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NotDefinitive")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NotDefinitiveSummary")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<string>("RequestKey")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int?>("RequestedByEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ResultsEvaluated")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("ScopeMaterialItemIds")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("ScopeWarehouseIds")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<DateTime>("StartedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Unchanged")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Updated")
+                        .HasColumnType("int");
+
+                    b.HasKey("NetDemandRunId");
+
+                    b.HasIndex("RequestKey")
+                        .IsUnique()
+                        .HasDatabaseName("UX_NetDemandRuns_RequestKey")
+                        .HasFilter("[RequestKey] IS NOT NULL");
+
+                    b.ToTable("NetDemandRuns", (string)null);
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.NonConformanceReport", b =>
@@ -13564,6 +13662,254 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("RCMDecisionId");
 
                     b.ToTable("RcmReviewRecommendations");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ReplenishmentRecommendation", b =>
+                {
+                    b.Property<int>("ReplenishmentRecommendationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReplenishmentRecommendationId"));
+
+                    b.Property<string>("BlockingIssueCodes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("ClosedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ClosedReason")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("CoveredByReservations")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DemandLastChangedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DismissedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DismissedByEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DismissedReason")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<decimal?>("DismissedShortageQuantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<string>("DismissedSourceKeys")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<DateTime>("FirstDetectedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FirstRunId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("GrossEligibleDemand")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<string>("InputFingerprint")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<bool>("IsCurrentlyDefinitive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastEvaluatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LastRunId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaterialItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NoticeCodes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<decimal>("OnHandQuantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<decimal>("RecommendedQuantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<decimal>("ReservedQuantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<int>("Revision")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<decimal>("ShortageQuantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime?>("StockLastUpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnreservedDemand")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<int?>("UomId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UsableQuantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReplenishmentRecommendationId");
+
+                    b.HasIndex("FirstRunId");
+
+                    b.HasIndex("LastRunId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.HasIndex("MaterialItemId", "WarehouseId")
+                        .IsUnique()
+                        .HasDatabaseName("UX_ReplenishmentRecommendations_Live")
+                        .HasFilter("[Status] IN (N'Open', N'Dismissed')");
+
+                    b.ToTable("ReplenishmentRecommendations", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ReplenishmentRecommendationHistory", b =>
+                {
+                    b.Property<int>("ReplenishmentRecommendationHistoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReplenishmentRecommendationHistoryId"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int?>("ActorEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FromStatus")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("InputFingerprint")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("OccurredAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ReplenishmentRecommendationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Revision")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RunId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ShortageQuantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<string>("ToStatus")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<decimal>("UnreservedDemand")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<decimal>("UsableQuantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.HasKey("ReplenishmentRecommendationHistoryId");
+
+                    b.HasIndex("ReplenishmentRecommendationId", "Revision", "ReplenishmentRecommendationHistoryId");
+
+                    b.ToTable("ReplenishmentRecommendationHistories", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ReplenishmentRecommendationSource", b =>
+                {
+                    b.Property<int>("ReplenishmentRecommendationSourceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReplenishmentRecommendationSourceId"));
+
+                    b.Property<decimal>("CoveredByReservation")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<decimal>("GrossRemainingQuantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<int>("ReplenishmentRecommendationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Revision")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SourceType")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StoreRequisitionLineId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnreservedQuantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<int?>("WorkOrderMaterialId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReplenishmentRecommendationSourceId");
+
+                    b.HasIndex("StoreRequisitionLineId")
+                        .HasFilter("[StoreRequisitionLineId] IS NOT NULL");
+
+                    b.HasIndex("WorkOrderMaterialId")
+                        .HasFilter("[WorkOrderMaterialId] IS NOT NULL");
+
+                    b.HasIndex("ReplenishmentRecommendationId", "Revision");
+
+                    b.ToTable("ReplenishmentRecommendationSources", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_ReplenishmentRecommendationSources_OneSource", "([SourceType] = 1 AND [StoreRequisitionLineId] IS NOT NULL AND [WorkOrderMaterialId] IS NULL) OR ([SourceType] = 2 AND [WorkOrderMaterialId] IS NOT NULL AND [StoreRequisitionLineId] IS NULL)");
+                        });
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.RequiredSkill", b =>
@@ -22635,6 +22981,59 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("RCMDecision");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.ReplenishmentRecommendation", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.NetDemandRun", null)
+                        .WithMany()
+                        .HasForeignKey("FirstRunId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.NetDemandRun", null)
+                        .WithMany()
+                        .HasForeignKey("LastRunId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.MaterialItem", "MaterialItem")
+                        .WithMany()
+                        .HasForeignKey("MaterialItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("MaterialItem");
+
+                    b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ReplenishmentRecommendationHistory", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.ReplenishmentRecommendation", "Recommendation")
+                        .WithMany("History")
+                        .HasForeignKey("ReplenishmentRecommendationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Recommendation");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ReplenishmentRecommendationSource", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.ReplenishmentRecommendation", "Recommendation")
+                        .WithMany("Sources")
+                        .HasForeignKey("ReplenishmentRecommendationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Recommendation");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.RequiredSkill", b =>
                 {
                     b.HasOne("PEMS.Domain.Entities.Skill", "Skill")
@@ -24188,6 +24587,13 @@ namespace PEMS.Persistence.Migrations
             modelBuilder.Entity("PEMS.Domain.Entities.RCMAnalysis", b =>
                 {
                     b.Navigation("Decisions");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ReplenishmentRecommendation", b =>
+                {
+                    b.Navigation("History");
+
+                    b.Navigation("Sources");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.ShiftHandover", b =>

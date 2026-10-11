@@ -207,25 +207,28 @@ public class ProcurementPackageService : IProcurementPackageService
         return package.ProcurementPackageId;
     }
 
+    /// <summary>
+    /// جلو/عقب بردن مرحله‌ی کاری Package (MR … Approval). مرحله‌ی «Closeout» عمداً از این مسیر
+    /// قابل‌دسترس نیست: بستن Package باید فقط از <see cref="CloseoutAsync"/> عبور کند تا گیت بازرسی
+    /// (و در لایه‌ی Controller مجوز Approve و SoD) دور زده نشود. Package بسته‌شده یا لغوشده نیز
+    /// دیگر با این مسیر «احیا» نمی‌شود.
+    /// </summary>
     public async Task AdvanceStageAsync(int packageId, string newStage)
     {
         if (!StageOrder.Contains(newStage))
-            throw new Exception($"مرحله‌ی نامعتبر: {newStage}");
+            throw new InvalidOperationException($"مرحله‌ی نامعتبر: {newStage}");
+
+        if (newStage == CloseoutStage)
+            throw new InvalidOperationException(
+                "مرحله‌ی Closeout از مسیر تغییر مرحله‌ی عمومی قابل‌انجام نیست؛ از عملیات «Closeout» (نیازمند مجوز Approve و گیت بازرسی) استفاده کنید.");
 
         var package = await _context.ProcurementPackages.FirstOrDefaultAsync(x => x.ProcurementPackageId == packageId);
         if (package == null) throw new Exception("Package یافت نشد");
 
-        package.Stage = newStage;
+        EnsureNotTerminal(package);
 
-        if (newStage == "Closeout")
-        {
-            package.Status = "Closed";
-            package.ClosedDate = DateTime.Now;
-        }
-        else
-        {
-            package.Status = "InProgress";
-        }
+        package.Stage = newStage;
+        package.Status = "InProgress";
 
         await _context.SaveChangesAsync();
     }
@@ -234,10 +237,15 @@ public class ProcurementPackageService : IProcurementPackageService
     // این، Closeout هیچ وابستگی‌ای به وضعیت بازرسی نداشت - یک بسته‌ی نیازمند بازرسی می‌توانست با
     // صفر رکورد بازرسی بسته شود. این گیت سمت-سرور است (نه فقط UI) - دقیقاً هم‌الگو با سایر
     // گیت‌های این پروژه (مثلاً IrnDispositionService).
+    // تنها نقطه‌ی ورود به Stage=Closeout / Status=Closed است (AdvanceStageAsync آن را رد می‌کند).
+    // سیاست: در حال حاضر قاعده‌ای که «ثبت تاییدیه‌ی Approval پیش از Closeout» را الزامی کند در
+    // دامنه تعریف نشده و اختراع نشده است - این یک شکاف سیاستی مستند است، نه رفتار پیاده‌شده.
     public async Task CloseoutAsync(int packageId)
     {
         var package = await _context.ProcurementPackages.FirstOrDefaultAsync(x => x.ProcurementPackageId == packageId);
         if (package == null) throw new Exception("Package یافت نشد");
+
+        EnsureNotTerminal(package);
 
         if (package.RequiresInspection)
         {
@@ -255,7 +263,20 @@ public class ProcurementPackageService : IProcurementPackageService
                     $"{incomplete.Count} ITP این بسته هنوز به وضعیت Closed نرسیده‌اند - Closeout مسدود است تا همه‌ی بازرسی‌های الزامی کامل شوند.");
         }
 
-        await AdvanceStageAsync(packageId, "Closeout");
+        package.Stage = CloseoutStage;
+        package.Status = "Closed";
+        package.ClosedDate = DateTime.Now;
+
+        await _context.SaveChangesAsync();
+    }
+
+    private const string CloseoutStage = "Closeout";
+
+    private static void EnsureNotTerminal(ProcurementPackage package)
+    {
+        if (package.Status == "Closed" || package.Status == "Cancelled")
+            throw new InvalidOperationException(
+                $"Package در وضعیت {package.Status} است و مرحله‌ی آن دیگر قابل‌تغییر نیست.");
     }
 
     public async Task LinkExistingMRAsync(int packageId, int mrId)

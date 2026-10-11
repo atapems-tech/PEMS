@@ -1,6 +1,6 @@
 ﻿# PEMS Project Intelligence Report
 
-Generated: 2026-09-28T18:39:47.4373896Z - Branch: `feat/cmms-passport-global-page-header` - Last commit: `501fca7 2026-09-28 feat(cmms): Work Order scheduling and Maintenance Calendar`
+Generated: 2026-10-11T13:12:13.5525067Z - Branch: `feat/cmms-passport-global-page-header` - Last commit: `6bee674 2026-10-10 feat: My Work inbox, UI repair program and organization/part-catalogue work`
 
 This report is generated evidence, not a manual estimate. Each module below is a
 controller found in the repository; each signal is checked directly against source,
@@ -12,161 +12,156 @@ either way (never treat Unknown as Missing).
 
 ## Summary
 
-- Controllers scanned (candidate modules): **116**
+- Controllers scanned (candidate modules): **131**
 - Redirect-shim controllers (no real logic, forward elsewhere): **11**
-- Controllers with zero Razor views found: **8** (may be legitimate JSON/API controllers - verify before assuming broken)
-- Controllers not linked from the sidebar menu: **24** (may be reachable via deep link, drilldown, or another page)
+- Controllers with zero Razor views found: **10** (may be legitimate JSON/API controllers - verify before assuming broken)
+- Controllers not linked from the sidebar menu: **33** (may be reachable via deep link, drilldown, or another page)
 - Controllers with no reference found in PEMS.Tests: **22**
 
 ## Modules (sorted by evidence coverage, lowest first)
 
 | Module | Area | Coverage | Present/Total | Unknown | Actions | Views | Nav | Tests | Docs | Last touched |
 |---|---|---|---|---|---|---|---|---|---|---|
-| QuickSetup | - | 67% | 6/9 | 1 | 1 | 1 | yes | yes | no | 2026-09-08 |
-| RcmFmea | - | 67% | 6/9 | 0 | 16 | 2 | yes | yes | no | 2026-09-19 |
-| Relationship | - | 67% | 6/9 | 0 | 11 | 3 | yes | yes | no | 2026-09-28 |
-| QC | - | 56% | 5/9 | 2 | 17 | 8 | yes | yes | no | 2026-09-28 |
-| ProductionRun | - | 56% | 5/9 | 0 | 20 | 3 | no | yes | no | 2026-09-16 |
-| Projects | - | 56% | 5/9 | 0 | 6 | 3 | yes | no | no | 2026-09-05 |
-| PurchaseOrder | - | 67% | 6/9 | 0 | 4 | 3 | yes | yes | no | 2026-09-23 |
-| ShiftHandover | - | 67% | 6/9 | 0 | 7 | 3 | yes | yes | no | 2026-09-05 |
+| Task | - | 67% | 6/9 | 0 | 3 | 1 | yes | yes | no | 2026-09-05 |
+| Tag | - | 67% | 6/9 | 1 | 3 | 1 | yes | yes | no | 2026-09-05 |
+| TechnicalQuery | - | 67% | 6/9 | 0 | 8 | 3 | yes | yes | no | 2026-09-19 |
+| Team | - | 67% | 6/9 | 0 | 20 | 3 | yes | yes | no | 2026-09-28 |
 | Simops | - | 44% | 4/9 | 0 | 4 | 0 | no | yes | no | 2026-09-05 |
+| ShiftHandover | - | 67% | 6/9 | 0 | 7 | 3 | yes | yes | no | 2026-09-05 |
+| TableExtraction | - | 67% | 6/9 | 0 | 9 | 3 | yes | yes | no | 2026-09-08 |
 | SparePart | - | 67% | 6/9 | 0 | 4 | 1 | yes | yes | no | 2026-09-19 |
-| Settings | - | 56% | 5/9 | 1 | 1 | 1 | yes | yes | no | 2026-09-05 |
-| Reliability | - | 67% | 6/9 | 0 | 20 | 14 | yes | yes | no | 2026-09-19 |
-| Report | - | 56% | 5/9 | 0 | 6 | 6 | yes | no | no | 2026-09-23 |
-| SearchApi | - | 22% | 2/9 | 1 | 2 | 0 | no | no | no | 2026-09-05 |
+| Vendor | - | 67% | 6/9 | 0 | 9 | 4 | yes | yes | no | 2026-09-23 |
+| VDRImport | - | 56% | 5/9 | 0 | 6 | 2 | no | yes | no | 2026-09-19 |
+| WorkOrder | - | 67% | 6/9 | 0 | 25 | 3 | yes | yes | no | 2026-09-29 |
+| WebAuthn | - | 56% | 5/9 | 0 | 3 | 0 | no | yes | no | 2026-09-05 |
+| Theme | - | 22% | 2/9 | 1 | 1 | 0 | no | yes | no | 2026-09-28 |
+| Tender | - | 67% | 6/9 | 0 | 15 | 3 | yes | yes | no | 2026-09-23 |
+| VDR | - | 67% | 6/9 | 1 | 16 | 3 | yes | yes | no | 2026-09-18 |
+| Transmittal | - | 67% | 6/9 | 0 | 9 | 3 | yes | yes | no | 2026-09-18 |
+| ProductionRun | - | 56% | 5/9 | 0 | 20 | 3 | no | yes | no | 2026-09-16 |
 | ProductionOrder | - | 67% | 6/9 | 0 | 11 | 3 | yes | yes | no | 2026-09-16 |
-| Meeting | - | 67% | 6/9 | 0 | 8 | 3 | yes | yes | no | 2026-09-06 |
-| MOC | - | 67% | 6/9 | 1 | 12 | 3 | yes | yes | no | 2026-09-19 |
-| MrsImport | - | 56% | 5/9 | 0 | 7 | 2 | no | yes | no | 2026-09-22 |
-| MDRImport | - | 56% | 5/9 | 0 | 8 | 2 | no | yes | no | 2026-09-19 |
-| MaterialItem | - | 67% | 6/9 | 0 | 8 | 2 | yes | yes | no | 2026-09-23 |
-| MaterialRequisition | - | 67% | 6/9 | 0 | 8 | 4 | yes | yes | no | 2026-09-18 |
-| MDB | - | 56% | 5/9 | 1 | 10 | 3 | yes | no | no | 2026-09-06 |
+| PurchaseOrder | - | 67% | 6/9 | 0 | 5 | 3 | yes | yes | no | 2026-09-23 |
+| Projects | - | 56% | 5/9 | 0 | 6 | 3 | yes | no | no | 2026-09-05 |
 | Permit | - | 67% | 6/9 | 0 | 12 | 3 | yes | yes | no | 2026-09-19 |
-| ProcurementPackage | - | 67% | 6/9 | 0 | 11 | 3 | yes | yes | no | 2026-09-28 |
-| Production | - | 67% | 6/9 | 0 | 1 | 1 | yes | yes | no | 2026-09-19 |
 | Performance | - | 44% | 4/9 | 0 | 1 | 1 | yes | no | no | 2026-09-05 |
-| MyProfile | - | 44% | 4/9 | 2 | 3 | 1 | no | yes | no | 2026-09-05 |
-| Notification | - | 56% | 5/9 | 0 | 4 | 2 | no | yes | no | 2026-09-05 |
-| OCRProcessing (redirect shim) | - | 56% | 5/9 | 1 | 2 | 1 | yes | yes | no | 2026-09-08 |
-| Help | Admin | 78% | 7/9 | 0 | 21 | 8 | yes | yes | no | 2026-09-19 |
-| PermissionMatrix (redirect shim) | Admin | 67% | 6/9 | 1 | 2 | 1 | yes | yes | no | 2026-09-23 |
-| ProjectIntelligence (redirect shim) | Admin | 44% | 4/9 | 1 | 2 | 1 | yes | no | no | 2026-09-05 |
+| Production | - | 67% | 6/9 | 0 | 1 | 1 | yes | yes | no | 2026-09-19 |
+| ProcurementPackage | - | 67% | 6/9 | 0 | 11 | 3 | yes | yes | no | 2026-09-28 |
+| Report | - | 56% | 5/9 | 0 | 6 | 6 | yes | no | no | 2026-09-23 |
+| Reliability | - | 67% | 6/9 | 0 | 26 | 16 | yes | yes | no | 2026-10-06 |
+| Settings | - | 56% | 5/9 | 1 | 1 | 1 | yes | yes | no | 2026-09-05 |
+| SearchApi | - | 22% | 2/9 | 1 | 2 | 0 | no | no | no | 2026-09-05 |
+| QuickSetup | - | 67% | 6/9 | 1 | 1 | 1 | yes | yes | no | 2026-09-08 |
+| QC | - | 56% | 5/9 | 2 | 17 | 8 | yes | yes | no | 2026-09-28 |
+| Relationship | - | 67% | 6/9 | 0 | 11 | 3 | yes | yes | no | 2026-09-28 |
+| RcmFmea | - | 67% | 6/9 | 0 | 16 | 2 | yes | yes | no | 2026-09-19 |
+| WorkRequest | - | 67% | 6/9 | 0 | 10 | 3 | yes | yes | no | 2026-09-20 |
+| InventoryMasterData | Warehouse | 56% | 5/9 | 1 | 8 | 1 | yes | yes | no | 2026-10-07 |
+| Inventory | Warehouse | 67% | 6/9 | 0 | 1 | 1 | yes | yes | no | 2026-10-07 |
+| IrnReceipt | Warehouse | 67% | 6/9 | 0 | 8 | 2 | yes | yes | no | 2026-10-07 |
+| InventoryTransaction | Warehouse | 56% | 5/9 | 0 | 1 | 1 | yes | no | no | 2026-10-07 |
+| StorageRouting | Admin | 44% | 4/9 | 1 | 6 | 4 | no | no | no | 2026-09-11 |
+| StorageProviders | Admin | 56% | 5/9 | 0 | 9 | 4 | no | no | no | 2026-09-11 |
+| WorkflowManagement | Admin | 56% | 5/9 | 1 | 18 | 6 | yes | no | no | 2026-09-21 |
+| Users | Admin | 78% | 7/9 | 0 | 9 | 5 | yes | yes | no | 2026-10-10 |
+| PartCatalogueRequest | Warehouse | 67% | 6/9 | 0 | 17 | 3 | yes | yes | no | 2026-10-08 |
+| PartCatalogueLookup | Warehouse | 33% | 3/9 | 1 | 1 | 0 | no | yes | no | 2026-10-10 |
+| StoreRequisition | Warehouse | 67% | 6/9 | 0 | 10 | 2 | yes | yes | no | 2026-10-08 |
+| Replenishment | Warehouse | 67% | 6/9 | 0 | 5 | 2 | yes | yes | no | - |
+| MrsImport | Warehouse | 56% | 5/9 | 0 | 7 | 2 | no | yes | no | 2026-10-07 |
+| MaterialItem | Warehouse | 67% | 6/9 | 0 | 8 | 2 | yes | yes | no | 2026-10-07 |
+| PartCatalogueDedup | Warehouse | 33% | 3/9 | 1 | 2 | 0 | no | yes | no | - |
+| PartCatalogueAdmin | Warehouse | 56% | 5/9 | 1 | 16 | 2 | yes | yes | no | 2026-10-08 |
 | Employee (redirect shim) | Admin | 56% | 5/9 | 0 | 1 | 0 | yes | yes | no | 2026-09-05 |
+| Department (redirect shim) | Admin | 56% | 5/9 | 0 | 1 | 0 | yes | yes | no | 2026-09-05 |
+| NavigationVisibility | Admin | 67% | 6/9 | 0 | 4 | 2 | no | yes | no | 2026-09-29 |
+| Help | Admin | 78% | 7/9 | 0 | 21 | 8 | yes | yes | no | 2026-09-19 |
+| AuthorizationAudit | Admin | 56% | 5/9 | 0 | 1 | 1 | yes | no | no | 2026-09-29 |
 | AuditLog | Admin | 67% | 6/9 | 0 | 1 | 1 | yes | yes | no | 2026-09-18 |
 | ContractApprovalAuthority | Admin | 67% | 6/9 | 0 | 4 | 1 | yes | no | no | 2026-09-23 |
-| Department (redirect shim) | Admin | 56% | 5/9 | 0 | 1 | 0 | yes | yes | no | 2026-09-05 |
-| StorageRouting | Admin | 44% | 4/9 | 1 | 6 | 4 | no | no | no | 2026-09-11 |
-| Users | Admin | 67% | 6/9 | 0 | 7 | 4 | yes | yes | no | 2026-09-18 |
-| WorkflowManagement | Admin | 56% | 5/9 | 1 | 18 | 6 | yes | no | no | 2026-09-21 |
-| StorageProviders | Admin | 56% | 5/9 | 0 | 9 | 4 | no | no | no | 2026-09-11 |
-| Roles | Admin | 56% | 5/9 | 0 | 4 | 2 | yes | no | no | 2026-09-18 |
+| Authorization | Admin | 67% | 6/9 | 0 | 4 | 3 | no | yes | no | 2026-10-06 |
 | RoutingRules | Admin | 67% | 6/9 | 0 | 3 | 1 | yes | no | no | 2026-09-05 |
+| Roles | Admin | 67% | 6/9 | 0 | 4 | 2 | yes | yes | no | 2026-10-07 |
+| SoDPolicy | Admin | 56% | 5/9 | 0 | 4 | 2 | no | yes | no | 2026-09-29 |
 | Settings (redirect shim) | Admin | 33% | 3/9 | 0 | 1 | 0 | yes | no | no | 2026-09-05 |
-| WorkRequest | - | 67% | 6/9 | 0 | 10 | 3 | yes | yes | no | 2026-09-20 |
-| Team | - | 67% | 6/9 | 0 | 20 | 3 | yes | yes | no | 2026-09-28 |
-| TechnicalQuery | - | 67% | 6/9 | 0 | 8 | 3 | yes | yes | no | 2026-09-19 |
-| Tender | - | 67% | 6/9 | 0 | 15 | 3 | yes | yes | no | 2026-09-23 |
-| Task | - | 67% | 6/9 | 0 | 3 | 1 | yes | yes | no | 2026-09-05 |
-| StoreRequisition | - | 67% | 6/9 | 0 | 7 | 2 | yes | yes | no | 2026-09-19 |
-| TableExtraction | - | 67% | 6/9 | 0 | 9 | 3 | yes | yes | no | 2026-09-08 |
-| Tag | - | 67% | 6/9 | 1 | 3 | 1 | yes | yes | no | 2026-09-05 |
-| Vendor | - | 67% | 6/9 | 0 | 9 | 4 | yes | yes | no | 2026-09-23 |
-| WebAuthn | - | 56% | 5/9 | 0 | 3 | 0 | no | yes | no | 2026-09-05 |
-| WorkOrder | - | 67% | 6/9 | 0 | 25 | 3 | yes | yes | no | 2026-09-28 |
-| VDRImport | - | 56% | 5/9 | 0 | 6 | 2 | no | yes | no | 2026-09-19 |
-| Theme | - | 22% | 2/9 | 1 | 1 | 0 | no | yes | no | 2026-09-28 |
-| Transmittal | - | 67% | 6/9 | 0 | 9 | 3 | yes | yes | no | 2026-09-18 |
-| VDR | - | 67% | 6/9 | 1 | 16 | 3 | yes | yes | no | 2026-09-18 |
-| DocumentRegister | - | 56% | 5/9 | 1 | 5 | 1 | yes | yes | no | 2026-09-18 |
+| OrganizationImport | Admin | 56% | 5/9 | 1 | 4 | 2 | no | yes | no | 2026-10-08 |
+| Organization | Admin | 67% | 6/9 | 0 | 12 | 4 | yes | yes | no | 2026-10-10 |
+| ProjectIntelligence (redirect shim) | Admin | 44% | 4/9 | 1 | 2 | 1 | yes | no | no | 2026-09-05 |
+| PermissionMatrix (redirect shim) | Admin | 56% | 5/9 | 1 | 2 | 1 | no | yes | no | 2026-10-10 |
+| OCRProcessing (redirect shim) | - | 56% | 5/9 | 1 | 2 | 1 | yes | yes | no | 2026-09-08 |
 | DocumentRevisions (redirect shim) | - | 44% | 4/9 | 0 | 2 | 2 | yes | no | no | 2026-09-19 |
-| DocumentUpload (redirect shim) | - | 44% | 4/9 | 1 | 2 | 1 | no | yes | no | 2026-09-19 |
-| Discipline | - | 67% | 6/9 | 0 | 4 | 2 | yes | yes | no | 2026-09-08 |
-| DashboardSettings | - | 44% | 4/9 | 1 | 3 | 1 | no | yes | no | 2026-09-05 |
-| DCC | - | 56% | 5/9 | 1 | 3 | 2 | yes | yes | no | 2026-09-05 |
-| Department | - | 67% | 6/9 | 0 | 6 | 1 | yes | yes | no | 2026-09-18 |
-| EngineeringDocuments | - | 67% | 6/9 | 0 | 29 | 5 | yes | yes | no | 2026-09-19 |
-| EquipmentClassification | - | 67% | 6/9 | 0 | 5 | 3 | yes | yes | no | 2026-09-09 |
-| Equipment | - | 67% | 6/9 | 0 | 5 | 3 | yes | yes | no | 2026-09-19 |
-| EngineeringDocumentIntelligence | - | 56% | 5/9 | 1 | 10 | 2 | yes | yes | no | 2026-09-08 |
+| DocumentRegister | - | 56% | 5/9 | 1 | 5 | 1 | yes | yes | no | 2026-09-18 |
 | DocumentWorkflow | - | 67% | 6/9 | 0 | 4 | 1 | yes | yes | no | 2026-09-12 |
-| Employee | - | 67% | 6/9 | 0 | 14 | 2 | yes | yes | no | 2026-09-18 |
-| EngineeringDashboard | - | 44% | 4/9 | 2 | 1 | 1 | yes | yes | no | 2026-09-05 |
-| Culture | - | 11% | 1/9 | 1 | 1 | 0 | no | no | no | 2026-09-05 |
-| AISearch | - | 33% | 3/9 | 2 | 1 | 1 | yes | no | no | 2026-09-05 |
-| Asset | - | 67% | 6/9 | 0 | 5 | 2 | yes | yes | no | 2026-09-05 |
-| Barcode | - | 67% | 6/9 | 0 | 15 | 4 | yes | yes | no | 2026-09-16 |
-| AIInsights | - | 44% | 4/9 | 1 | 1 | 1 | yes | no | no | 2026-09-05 |
-| Account | - | 44% | 4/9 | 0 | 9 | 5 | no | no | no | 2026-09-05 |
-| AI | - | 33% | 3/9 | 2 | 1 | 0 | no | yes | no | 2026-09-05 |
-| AIExtraction | - | 56% | 5/9 | 1 | 6 | 2 | yes | yes | no | 2026-09-08 |
-| Contract | - | 67% | 6/9 | 0 | 18 | 3 | yes | yes | no | 2026-09-28 |
-| Crew | - | 67% | 6/9 | 0 | 4 | 1 | yes | yes | no | 2026-09-08 |
-| CriticalityAssessment | - | 67% | 6/9 | 0 | 10 | 4 | yes | yes | no | 2026-09-19 |
-| ComingSoon | - | 22% | 2/9 | 1 | 1 | 1 | no | no | no | 2026-09-05 |
-| ChatAssistant | - | 56% | 5/9 | 1 | 3 | 1 | yes | yes | no | 2026-09-05 |
-| CmmsOperations | - | 56% | 5/9 | 1 | 2 | 2 | yes | yes | no | 2026-09-11 |
-| CmmsReadiness | - | 56% | 5/9 | 1 | 2 | 2 | yes | yes | no | 2026-09-10 |
-| Isolation | - | 44% | 4/9 | 0 | 5 | 0 | no | yes | no | 2026-09-05 |
-| JobPlan | - | 67% | 6/9 | 0 | 10 | 2 | yes | yes | no | 2026-09-19 |
-| KnowledgeBase | - | 67% | 6/9 | 0 | 1 | 1 | yes | yes | no | 2026-09-05 |
-| IrnReceipt | - | 67% | 6/9 | 0 | 8 | 2 | yes | yes | no | 2026-09-23 |
-| Inventory | - | 56% | 5/9 | 0 | 1 | 1 | yes | no | no | 2026-09-05 |
-| InventoryMasterData | - | 56% | 5/9 | 1 | 8 | 1 | yes | yes | no | 2026-09-08 |
-| InventoryTransaction | - | 56% | 5/9 | 0 | 1 | 1 | yes | no | no | 2026-09-05 |
-| MaintenanceMasterData | - | 56% | 5/9 | 0 | 23 | 1 | yes | yes | no | 2026-09-28 |
-| MaintenancePlan | - | 67% | 6/9 | 0 | 7 | 2 | yes | yes | no | 2026-09-20 |
-| MaintenanceStrategy | - | 67% | 6/9 | 0 | 5 | 2 | yes | yes | no | 2026-09-18 |
-| MaintenanceHistoryImport | - | 56% | 5/9 | 0 | 6 | 2 | no | yes | no | 2026-09-19 |
-| Kpi | - | 56% | 5/9 | 1 | 1 | 1 | yes | yes | no | 2026-09-11 |
-| Letter | - | 67% | 6/9 | 0 | 28 | 5 | yes | yes | no | 2026-09-19 |
-| MaintenanceCalendar | - | 56% | 5/9 | 1 | 3 | 2 | yes | yes | no | 2026-09-28 |
-| Intake | - | 56% | 5/9 | 0 | 4 | 2 | yes | yes | no | 2026-09-05 |
-| Files | - | 33% | 3/9 | 0 | 1 | 0 | no | yes | no | 2026-09-05 |
-| FunctionalLocation | - | 67% | 6/9 | 0 | 3 | 1 | yes | yes | no | 2026-09-18 |
-| FunctionalLocationImport | - | 56% | 5/9 | 0 | 6 | 2 | no | yes | no | 2026-09-19 |
-| ExecutionGate (redirect shim) | - | 44% | 4/9 | 0 | 2 | 0 | no | yes | no | 2026-09-05 |
-| EquipmentCriticality (redirect shim) | - | 67% | 6/9 | 0 | 2 | 1 | yes | yes | no | 2026-09-06 |
+| DocumentUpload (redirect shim) | - | 44% | 4/9 | 1 | 2 | 1 | no | yes | no | 2026-09-19 |
+| DCC | - | 56% | 5/9 | 1 | 3 | 2 | yes | yes | no | 2026-09-05 |
+| DashboardSettings | - | 44% | 4/9 | 1 | 3 | 1 | no | yes | no | 2026-09-05 |
+| Discipline | - | 67% | 6/9 | 0 | 8 | 3 | yes | yes | no | 2026-10-10 |
+| Department | - | 67% | 6/9 | 0 | 6 | 1 | yes | yes | no | 2026-09-18 |
+| Equipment | - | 67% | 6/9 | 0 | 5 | 3 | yes | yes | no | 2026-09-19 |
+| EquipmentClassification | - | 67% | 6/9 | 0 | 5 | 3 | yes | yes | no | 2026-09-09 |
 | EquipmentFunctionalLocationAssignment | - | 56% | 5/9 | 0 | 7 | 2 | no | yes | no | 2026-09-14 |
+| EquipmentCriticality (redirect shim) | - | 67% | 6/9 | 0 | 2 | 1 | yes | yes | no | 2026-09-06 |
+| EngineeringDashboard | - | 44% | 4/9 | 2 | 1 | 1 | yes | yes | no | 2026-09-05 |
+| Employee | - | 67% | 6/9 | 0 | 14 | 3 | yes | yes | no | 2026-10-10 |
+| EngineeringDocuments | - | 67% | 6/9 | 0 | 29 | 5 | yes | yes | no | 2026-09-29 |
+| EngineeringDocumentIntelligence | - | 56% | 5/9 | 1 | 10 | 2 | yes | yes | no | 2026-09-08 |
+| Asset | - | 67% | 6/9 | 0 | 5 | 2 | yes | yes | no | 2026-09-05 |
+| AISearch | - | 33% | 3/9 | 2 | 1 | 1 | yes | no | no | 2026-09-05 |
+| ChatAssistant | - | 56% | 5/9 | 1 | 3 | 1 | yes | yes | no | 2026-09-05 |
+| Barcode | - | 67% | 6/9 | 0 | 15 | 4 | yes | yes | no | 2026-09-16 |
+| AI | - | 33% | 3/9 | 2 | 1 | 0 | no | yes | no | 2026-09-05 |
+| Account | - | 44% | 4/9 | 0 | 9 | 5 | no | no | no | 2026-09-05 |
+| AIInsights | - | 44% | 4/9 | 1 | 1 | 1 | yes | no | no | 2026-09-05 |
+| AIExtraction | - | 56% | 5/9 | 1 | 6 | 2 | yes | yes | no | 2026-09-08 |
+| Crew | - | 67% | 6/9 | 0 | 4 | 1 | yes | yes | no | 2026-09-08 |
+| Contract | - | 67% | 6/9 | 0 | 18 | 3 | yes | yes | no | 2026-09-28 |
+| Culture | - | 11% | 1/9 | 1 | 1 | 0 | no | no | no | 2026-09-05 |
+| CriticalityAssessment | - | 67% | 6/9 | 0 | 10 | 4 | yes | yes | no | 2026-09-19 |
+| CmmsReadiness | - | 56% | 5/9 | 1 | 2 | 2 | yes | yes | no | 2026-09-10 |
+| CmmsOperations | - | 56% | 5/9 | 1 | 2 | 2 | yes | yes | no | 2026-09-11 |
+| ConditionReadingImport | - | 56% | 5/9 | 0 | 6 | 2 | no | yes | no | 2026-10-06 |
+| ComingSoon | - | 22% | 2/9 | 1 | 1 | 1 | no | no | no | 2026-09-05 |
 | EquipmentImport | - | 56% | 5/9 | 0 | 8 | 3 | no | yes | no | 2026-09-19 |
-| ImportCenter | - | 56% | 5/9 | 1 | 1 | 1 | yes | yes | no | 2026-09-19 |
-| Inspection | - | 67% | 6/9 | 0 | 3 | 1 | yes | yes | no | 2026-09-18 |
-| Instrument | - | 67% | 6/9 | 0 | 14 | 3 | yes | yes | no | 2026-09-20 |
-| Home | - | 33% | 3/9 | 0 | 3 | 2 | yes | no | no | 2026-09-14 |
+| MaintenancePlan | - | 67% | 6/9 | 0 | 7 | 2 | yes | yes | no | 2026-09-20 |
+| MaintenanceMasterData | - | 56% | 5/9 | 0 | 30 | 1 | yes | yes | no | 2026-10-06 |
+| MaterialRequisition | - | 67% | 6/9 | 0 | 8 | 4 | yes | yes | no | 2026-09-18 |
+| MaintenanceStrategy | - | 67% | 6/9 | 0 | 5 | 2 | yes | yes | no | 2026-09-18 |
+| Letter | - | 67% | 6/9 | 0 | 28 | 5 | yes | yes | no | 2026-10-07 |
+| Kpi | - | 56% | 5/9 | 1 | 1 | 1 | yes | yes | no | 2026-09-11 |
+| MaintenanceHistoryImport | - | 56% | 5/9 | 0 | 6 | 2 | no | yes | no | 2026-09-19 |
+| MaintenanceCalendar | - | 56% | 5/9 | 1 | 3 | 2 | yes | yes | no | 2026-09-28 |
+| MyProfile | - | 44% | 4/9 | 2 | 3 | 1 | no | yes | no | 2026-09-05 |
+| MOC | - | 67% | 6/9 | 1 | 12 | 3 | yes | yes | no | 2026-09-19 |
+| Notification | - | 56% | 5/9 | 0 | 8 | 2 | no | yes | no | 2026-10-07 |
+| MyWork | - | 56% | 5/9 | 1 | 1 | 1 | yes | yes | no | 2026-10-10 |
+| MDRImport | - | 56% | 5/9 | 0 | 8 | 2 | no | yes | no | 2026-09-19 |
+| MDB | - | 56% | 5/9 | 1 | 10 | 3 | yes | no | no | 2026-09-06 |
+| Meeting | - | 67% | 6/9 | 0 | 8 | 3 | yes | yes | no | 2026-09-06 |
+| MechanicalEquipment | - | 44% | 4/9 | 0 | 8 | 3 | no | no | no | 2026-10-06 |
 | GasTest (redirect shim) | - | 44% | 4/9 | 0 | 2 | 0 | no | yes | no | 2026-09-05 |
-| GlobalSearch | - | 44% | 4/9 | 1 | 1 | 1 | no | yes | no | 2026-09-18 |
+| FunctionalLocationImport | - | 56% | 5/9 | 0 | 6 | 2 | no | yes | no | 2026-09-19 |
 | Help | - | 78% | 7/9 | 0 | 6 | 3 | yes | yes | no | 2026-09-19 |
+| GlobalSearch | - | 44% | 4/9 | 1 | 1 | 1 | no | yes | no | 2026-09-18 |
+| Files | - | 44% | 4/9 | 0 | 1 | 0 | no | yes | no | 2026-09-05 |
+| ExecutionGate (redirect shim) | - | 44% | 4/9 | 0 | 2 | 0 | no | yes | no | 2026-09-05 |
+| FunctionalLocation | - | 67% | 6/9 | 0 | 3 | 1 | yes | yes | no | 2026-09-18 |
+| Finding | - | 56% | 5/9 | 0 | 5 | 1 | no | yes | no | 2026-10-06 |
+| Isolation | - | 44% | 4/9 | 0 | 5 | 0 | no | yes | no | 2026-09-05 |
+| Intake | - | 56% | 5/9 | 0 | 4 | 2 | yes | yes | no | 2026-09-05 |
+| KnowledgeBase | - | 67% | 6/9 | 0 | 1 | 1 | yes | yes | no | 2026-09-05 |
+| JobPlan | - | 67% | 6/9 | 0 | 10 | 2 | yes | yes | no | 2026-09-19 |
+| ImportCenter | - | 56% | 5/9 | 1 | 1 | 1 | yes | yes | no | 2026-09-19 |
+| Home | - | 33% | 3/9 | 0 | 3 | 2 | yes | no | no | 2026-10-10 |
+| Instrument | - | 67% | 6/9 | 0 | 14 | 3 | yes | yes | no | 2026-09-20 |
+| Inspection | - | 67% | 6/9 | 0 | 3 | 1 | yes | yes | no | 2026-09-18 |
 
 ## Detailed evidence checklist per module
 
-### QuickSetup 
+### Task 
 
-- Controller: `PEMS.Web/Controllers/QuickSetupController.cs`
-- Injected services: ISetupService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/QuickSetup` (1 .cshtml files)
-- Git: last touched 2026-09-08, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Missing |
-| MigrationBacked | Unknown |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | Present |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### RcmFmea 
-
-- Controller: `PEMS.Web/Controllers/RcmFmeaController.cs`
-- Injected services: IRcmFmeaReadinessService, IFMEAService, IRCMService, IRcmOperationalBridgeService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/RcmFmea` (2 .cshtml files)
-- Git: last touched 2026-09-19, 3 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/TaskController.cs`
+- Injected services: ITaskService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/Task` (1 .cshtml files)
+- Git: last touched 2026-09-05, 2 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -181,71 +176,11 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### Relationship 
+### Tag 
 
-- Controller: `PEMS.Web/Controllers/RelationshipController.cs`
-- Injected services: IRelationshipService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/Relationship` (3 .cshtml files)
-- Git: last touched 2026-09-28, 3 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### QC 
-
-- Controller: `PEMS.Web/Controllers/QCController.cs`
-- Injected services: ICurrentUserService
-- Views path checked: `PEMS.Web/Views/QC` (8 .cshtml files)
-- Git: last touched 2026-09-28, 3 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Unknown |
-| EntityOrDbSet | Present |
-| MigrationBacked | Unknown |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### ProductionRun 
-
-- Controller: `PEMS.Web/Controllers/ProductionRunController.cs`
-- Injected services: IProductionRunService, ICurrentUserService, IPermissionService, IAccessControlService
-- Views path checked: `PEMS.Web/Views/ProductionRun` (3 .cshtml files)
-- Git: last touched 2026-09-16, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Missing |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### Projects 
-
-- Controller: `PEMS.Web/Controllers/ProjectsController.cs`
-- Injected services: IProjectService
-- Views path checked: `PEMS.Web/Views/Projects` (3 .cshtml files)
+- Controller: `PEMS.Web/Controllers/TagController.cs`
+- Injected services: ITagService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/Tag` (1 .cshtml files)
 - Git: last touched 2026-09-05, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
@@ -254,19 +189,19 @@ either way (never treat Unknown as Missing).
 | Controller | Present |
 | ServiceLayer | Present |
 | EntityOrDbSet | Present |
-| MigrationBacked | Yes |
+| MigrationBacked | Unknown |
 | RazorViews | Present |
 | SidebarReachable | Present |
 | ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Missing |
+| TestCoverage | Present |
 | Documented | Missing |
 
-### PurchaseOrder 
+### TechnicalQuery 
 
-- Controller: `PEMS.Web/Controllers/PurchaseOrderController.cs`
-- Injected services: IPurchaseOrderService, IPermissionService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/PurchaseOrder` (3 .cshtml files)
-- Git: last touched 2026-09-23, 1 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/TechnicalQueryController.cs`
+- Injected services: ITechnicalQueryService, ICurrentUserService, IFileStorageService
+- Views path checked: `PEMS.Web/Views/TechnicalQuery` (3 .cshtml files)
+- Git: last touched 2026-09-19, 2 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -281,12 +216,12 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### ShiftHandover 
+### Team 
 
-- Controller: `PEMS.Web/Controllers/ShiftHandoverController.cs`
-- Injected services: IShiftHandoverService, IRoleModuleActionService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/ShiftHandover` (3 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/TeamController.cs`
+- Injected services: ITeamService, IOrganizationStructureService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/Team` (3 .cshtml files)
+- Git: last touched 2026-09-28, 3 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -321,6 +256,46 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
+### ShiftHandover 
+
+- Controller: `PEMS.Web/Controllers/ShiftHandoverController.cs`
+- Injected services: IShiftHandoverService, IRoleModuleActionService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/ShiftHandover` (3 .cshtml files)
+- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### TableExtraction 
+
+- Controller: `PEMS.Web/Controllers/TableExtractionController.cs`
+- Injected services: IDocumentAIService, ITableExtractionImportService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/TableExtraction` (3 .cshtml files)
+- Git: last touched 2026-09-08, 2 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
 ### SparePart 
 
 - Controller: `PEMS.Web/Controllers/SparePartController.cs`
@@ -341,32 +316,12 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### Settings 
+### Vendor 
 
-- Controller: `PEMS.Web/Controllers/SettingsController.cs`
-- Injected services: ICurrentUserService
-- Views path checked: `PEMS.Web/Views/Settings` (1 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Unknown |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### Reliability 
-
-- Controller: `PEMS.Web/Controllers/ReliabilityController.cs`
-- Injected services: IReliabilityService, IReliabilityAnalyticsService, IReliabilityDataQualityService, IReliabilityIntelligenceService, IRcmFeedbackService, ICurrentUserService, IPermissionService, IRamWeibullService, IReliabilitySimulationService, IConditionMonitoringService, IPredictiveMaintenanceService, IAIReliabilityInsightService, IClassIntelligenceService, IEquipmentIntelligenceService
-- Views path checked: `PEMS.Web/Views/Reliability` (14 .cshtml files)
-- Git: last touched 2026-09-19, 5 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/VendorController.cs`
+- Injected services: IVendorService, IVendorRiskService, IVendorQualificationService, IPermissionService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/Vendor` (4 .cshtml files)
+- Git: last touched 2026-09-23, 5 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -381,12 +336,32 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### Report 
+### VDRImport 
 
-- Controller: `PEMS.Web/Controllers/ReportController.cs`
-- Injected services: ICorrespondenceReportService, IEngineeringReportService, IVDRReportService, ICmmsReportService, IProcurementReportService, IOperationsReportService
-- Views path checked: `PEMS.Web/Views/Report` (6 .cshtml files)
-- Git: last touched 2026-09-23, 3 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/VDRImportController.cs`
+- Injected services: IVDRImportService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/VDRImport` (2 .cshtml files)
+- Git: last touched 2026-09-19, 4 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### WorkOrder 
+
+- Controller: `PEMS.Web/Controllers/WorkOrderController.cs`
+- Injected services: IWorkOrderReviewService, ICurrentUserService, IPermissionService, IWorkOrderLaborService, IWorkOrderLifecycleService, ICrewService, INumberingService, IMaterialStockService
+- Views path checked: `PEMS.Web/Views/WorkOrder` (3 .cshtml files)
+- Git: last touched 2026-09-29, 9 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -398,14 +373,14 @@ either way (never treat Unknown as Missing).
 | RazorViews | Present |
 | SidebarReachable | Present |
 | ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Missing |
+| TestCoverage | Present |
 | Documented | Missing |
 
-### SearchApi 
+### WebAuthn 
 
-- Controller: `PEMS.Web/Controllers/SearchApiController.cs`
-- Injected services: IGlobalSearchService
-- Views path checked: `PEMS.Web/Views/SearchApi` (0 .cshtml files)
+- Controller: `PEMS.Web/Controllers/WebAuthnController.cs`
+- Injected services: IWebAuthnService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/WebAuthn` (0 .cshtml files)
 - Git: last touched 2026-09-05, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
@@ -413,12 +388,112 @@ either way (never treat Unknown as Missing).
 |---|---|
 | Controller | Present |
 | ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Missing |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | Present |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### Theme 
+
+- Controller: `PEMS.Web/Controllers/ThemeController.cs`
+- Injected services: (none detected)
+- Views path checked: `PEMS.Web/Views/Theme` (0 .cshtml files)
+- Git: last touched 2026-09-28, 3 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Missing |
 | EntityOrDbSet | Missing |
 | MigrationBacked | Unknown |
 | RazorViews | Missing |
 | SidebarReachable | Missing |
 | ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Missing |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### Tender 
+
+- Controller: `PEMS.Web/Controllers/TenderController.cs`
+- Injected services: ITenderService, IProcurementPackageService, IPermissionService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/Tender` (3 .cshtml files)
+- Git: last touched 2026-09-23, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### VDR 
+
+- Controller: `PEMS.Web/Controllers/VDRController.cs`
+- Injected services: IVDRService, IDocumentCommentService, IVdrWorkflowService, ILetterService, ICurrentUserService, IVdrDocumentNumberingService, IFtpUploadService, IFileStorageService, IPermissionService
+- Views path checked: `PEMS.Web/Views/VDR` (3 .cshtml files)
+- Git: last touched 2026-09-18, 3 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Unknown |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### Transmittal 
+
+- Controller: `PEMS.Web/Controllers/TransmittalController.cs`
+- Injected services: ITransmittalService, IPermissionService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/Transmittal` (3 .cshtml files)
+- Git: last touched 2026-09-18, 4 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### ProductionRun 
+
+- Controller: `PEMS.Web/Controllers/ProductionRunController.cs`
+- Injected services: IProductionRunService, ICurrentUserService, IPermissionService, IAccessControlService
+- Views path checked: `PEMS.Web/Views/ProductionRun` (3 .cshtml files)
+- Git: last touched 2026-09-16, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
 | Documented | Missing |
 
 ### ProductionOrder 
@@ -441,12 +516,12 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### Meeting 
+### PurchaseOrder 
 
-- Controller: `PEMS.Web/Controllers/MeetingController.cs`
-- Injected services: IMeetingService, ITaskService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/Meeting` (3 .cshtml files)
-- Git: last touched 2026-09-06, 2 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/PurchaseOrderController.cs`
+- Injected services: IPurchaseOrderService, IPermissionService, ICurrentUserService, IAccessControlService
+- Views path checked: `PEMS.Web/Views/PurchaseOrder` (3 .cshtml files)
+- Git: last touched 2026-09-23, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -461,32 +536,12 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### MOC 
+### Projects 
 
-- Controller: `PEMS.Web/Controllers/MOCController.cs`
-- Injected services: IMOCService, ICurrentUserService, IFileStorageService
-- Views path checked: `PEMS.Web/Views/MOC` (3 .cshtml files)
-- Git: last touched 2026-09-19, 2 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Unknown |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### MrsImport 
-
-- Controller: `PEMS.Web/Controllers/MrsImportController.cs`
-- Injected services: IMrsImportService, ICurrentUserService, IFileStorageService, IPermissionService
-- Views path checked: `PEMS.Web/Views/MrsImport` (2 .cshtml files)
-- Git: last touched 2026-09-22, 5 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/ProjectsController.cs`
+- Injected services: IProjectService
+- Views path checked: `PEMS.Web/Views/Projects` (3 .cshtml files)
+- Git: last touched 2026-09-05, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -495,86 +550,6 @@ either way (never treat Unknown as Missing).
 | ServiceLayer | Present |
 | EntityOrDbSet | Present |
 | MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Missing |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### MDRImport 
-
-- Controller: `PEMS.Web/Controllers/MDRImportController.cs`
-- Injected services: IMDRImportService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/MDRImport` (2 .cshtml files)
-- Git: last touched 2026-09-19, 4 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Missing |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### MaterialItem 
-
-- Controller: `PEMS.Web/Controllers/MaterialItemController.cs`
-- Injected services: IMaterialItemService, IMaterialStockService, ICurrentUserService, IPermissionService, IBarcodeService
-- Views path checked: `PEMS.Web/Views/MaterialItem` (2 .cshtml files)
-- Git: last touched 2026-09-23, 4 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### MaterialRequisition 
-
-- Controller: `PEMS.Web/Controllers/MaterialRequisitionController.cs`
-- Injected services: IMaterialRequisitionService, IPermissionService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/MaterialRequisition` (4 .cshtml files)
-- Git: last touched 2026-09-18, 3 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### MDB 
-
-- Controller: `PEMS.Web/Controllers/MDBController.cs`
-- Injected services: IManufacturerDataBookService
-- Views path checked: `PEMS.Web/Views/MDB` (3 .cshtml files)
-- Git: last touched 2026-09-06, 2 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Unknown |
 | RazorViews | Present |
 | SidebarReachable | Present |
 | ExplicitAuthZ | GlobalPolicyOnly |
@@ -587,46 +562,6 @@ either way (never treat Unknown as Missing).
 - Injected services: IPermitService, IRoleModuleActionService, ICurrentUserService, IFunctionalLocationService, IIsolationService, IGasTestService, ISimopsService, IExecutionGateService, IPermitAuthorityService
 - Views path checked: `PEMS.Web/Views/Permit` (3 .cshtml files)
 - Git: last touched 2026-09-19, 4 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### ProcurementPackage 
-
-- Controller: `PEMS.Web/Controllers/ProcurementPackageController.cs`
-- Injected services: IProcurementPackageService, ICurrentUserService, IPermissionService, IAccessControlService
-- Views path checked: `PEMS.Web/Views/ProcurementPackage` (3 .cshtml files)
-- Git: last touched 2026-09-28, 5 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### Production 
-
-- Controller: `PEMS.Web/Controllers/ProductionController.cs`
-- Injected services: IProductionOrderService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/Production` (1 .cshtml files)
-- Git: last touched 2026-09-19, 2 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -661,11 +596,91 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Missing |
 | Documented | Missing |
 
-### MyProfile 
+### Production 
 
-- Controller: `PEMS.Web/Controllers/MyProfileController.cs`
+- Controller: `PEMS.Web/Controllers/ProductionController.cs`
+- Injected services: IProductionOrderService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/Production` (1 .cshtml files)
+- Git: last touched 2026-09-19, 2 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### ProcurementPackage 
+
+- Controller: `PEMS.Web/Controllers/ProcurementPackageController.cs`
+- Injected services: IProcurementPackageService, ICurrentUserService, IPermissionService, IAccessControlService
+- Views path checked: `PEMS.Web/Views/ProcurementPackage` (3 .cshtml files)
+- Git: last touched 2026-09-28, 5 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### Report 
+
+- Controller: `PEMS.Web/Controllers/ReportController.cs`
+- Injected services: ICorrespondenceReportService, IEngineeringReportService, IVDRReportService, ICmmsReportService, IProcurementReportService, IOperationsReportService
+- Views path checked: `PEMS.Web/Views/Report` (6 .cshtml files)
+- Git: last touched 2026-09-23, 3 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Missing |
+| Documented | Missing |
+
+### Reliability 
+
+- Controller: `PEMS.Web/Controllers/ReliabilityController.cs`
+- Injected services: IReliabilityService, IReliabilityAnalyticsService, IReliabilityDataQualityService, IReliabilityIntelligenceService, IRcmFeedbackService, ICurrentUserService, IPermissionService, IRamWeibullService, IReliabilitySimulationService, IConditionMonitoringService, IPredictiveMaintenanceService, IAIReliabilityInsightService, IClassIntelligenceService, IEquipmentIntelligenceService
+- Views path checked: `PEMS.Web/Views/Reliability` (16 .cshtml files)
+- Git: last touched 2026-10-06, 6 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### Settings 
+
+- Controller: `PEMS.Web/Controllers/SettingsController.cs`
 - Injected services: ICurrentUserService
-- Views path checked: `PEMS.Web/Views/MyProfile` (1 .cshtml files)
+- Views path checked: `PEMS.Web/Views/Settings` (1 .cshtml files)
 - Git: last touched 2026-09-05, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
@@ -673,20 +688,380 @@ either way (never treat Unknown as Missing).
 |---|---|
 | Controller | Present |
 | ServiceLayer | Unknown |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### SearchApi 
+
+- Controller: `PEMS.Web/Controllers/SearchApiController.cs`
+- Injected services: IGlobalSearchService
+- Views path checked: `PEMS.Web/Views/SearchApi` (0 .cshtml files)
+- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Missing |
+| MigrationBacked | Unknown |
+| RazorViews | Missing |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Missing |
+| Documented | Missing |
+
+### QuickSetup 
+
+- Controller: `PEMS.Web/Controllers/QuickSetupController.cs`
+- Injected services: ISetupService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/QuickSetup` (1 .cshtml files)
+- Git: last touched 2026-09-08, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Missing |
+| MigrationBacked | Unknown |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | Present |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### QC 
+
+- Controller: `PEMS.Web/Controllers/QCController.cs`
+- Injected services: ICurrentUserService
+- Views path checked: `PEMS.Web/Views/QC` (8 .cshtml files)
+- Git: last touched 2026-09-28, 3 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Unknown |
+| EntityOrDbSet | Present |
+| MigrationBacked | Unknown |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### Relationship 
+
+- Controller: `PEMS.Web/Controllers/RelationshipController.cs`
+- Injected services: IRelationshipService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/Relationship` (3 .cshtml files)
+- Git: last touched 2026-09-28, 3 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### RcmFmea 
+
+- Controller: `PEMS.Web/Controllers/RcmFmeaController.cs`
+- Injected services: IRcmFmeaReadinessService, IFMEAService, IRCMService, IRcmOperationalBridgeService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/RcmFmea` (2 .cshtml files)
+- Git: last touched 2026-09-19, 3 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### WorkRequest 
+
+- Controller: `PEMS.Web/Controllers/WorkRequestController.cs`
+- Injected services: IWorkRequestService, IPermissionService, ICurrentUserService, IFunctionalLocationService
+- Views path checked: `PEMS.Web/Views/WorkRequest` (3 .cshtml files)
+- Git: last touched 2026-09-20, 4 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### InventoryMasterData (Area: Warehouse)
+
+- Controller: `PEMS.Web/Areas/Warehouse/Controllers/InventoryMasterDataController.cs`
+- Injected services: ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Areas/Warehouse/Views/InventoryMasterData` (1 .cshtml files)
+- Git: last touched 2026-10-07, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Missing |
+| MigrationBacked | Unknown |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### Inventory (Area: Warehouse)
+
+- Controller: `PEMS.Web/Areas/Warehouse/Controllers/InventoryController.cs`
+- Injected services: IMaterialStockService
+- Views path checked: `PEMS.Web/Areas/Warehouse/Views/Inventory` (1 .cshtml files)
+- Git: last touched 2026-10-07, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### IrnReceipt (Area: Warehouse)
+
+- Controller: `PEMS.Web/Areas/Warehouse/Controllers/IrnReceiptController.cs`
+- Injected services: IIrnReceiptService, ICurrentUserService, IPermissionService, INumberingService
+- Views path checked: `PEMS.Web/Areas/Warehouse/Views/IrnReceipt` (2 .cshtml files)
+- Git: last touched 2026-10-07, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### InventoryTransaction (Area: Warehouse)
+
+- Controller: `PEMS.Web/Areas/Warehouse/Controllers/InventoryTransactionController.cs`
+- Injected services: IInventoryTransactionService
+- Views path checked: `PEMS.Web/Areas/Warehouse/Views/InventoryTransaction` (1 .cshtml files)
+- Git: last touched 2026-10-07, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Missing |
+| Documented | Missing |
+
+### StorageRouting (Area: Admin)
+
+- Controller: `PEMS.Web/Areas/Admin/Controllers/StorageRoutingController.cs`
+- Injected services: IStorageRouteService, IStorageProviderService
+- Views path checked: `PEMS.Web/Areas/Admin/Views/StorageRouting` (4 .cshtml files)
+- Git: last touched 2026-09-11, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
 | EntityOrDbSet | Missing |
 | MigrationBacked | Unknown |
 | RazorViews | Present |
 | SidebarReachable | Missing |
 | ExplicitAuthZ | Present |
+| TestCoverage | Missing |
+| Documented | Missing |
+
+### StorageProviders (Area: Admin)
+
+- Controller: `PEMS.Web/Areas/Admin/Controllers/StorageProvidersController.cs`
+- Injected services: IStorageProviderService
+- Views path checked: `PEMS.Web/Areas/Admin/Views/StorageProviders` (4 .cshtml files)
+- Git: last touched 2026-09-11, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | Present |
+| TestCoverage | Missing |
+| Documented | Missing |
+
+### WorkflowManagement (Area: Admin)
+
+- Controller: `PEMS.Web/Areas/Admin/Controllers/WorkflowManagementController.cs`
+- Injected services: IWorkflowAdministrationService
+- Views path checked: `PEMS.Web/Areas/Admin/Views/WorkflowManagement` (6 .cshtml files)
+- Git: last touched 2026-09-21, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Missing |
+| MigrationBacked | Unknown |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | Present |
+| TestCoverage | Missing |
+| Documented | Missing |
+
+### Users (Area: Admin)
+
+- Controller: `PEMS.Web/Areas/Admin/Controllers/UsersController.cs`
+- Injected services: IUserAuthorizationSummaryService, IPermissionService, IAccessControlService
+- Views path checked: `PEMS.Web/Areas/Admin/Views/Users` (5 .cshtml files)
+- Git: last touched 2026-10-10, 4 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | Present |
 | TestCoverage | Present |
 | Documented | Missing |
 
-### Notification 
+### PartCatalogueRequest (Area: Warehouse)
 
-- Controller: `PEMS.Web/Controllers/NotificationController.cs`
-- Injected services: INotificationService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/Notification` (2 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Controller: `PEMS.Web/Areas/Warehouse/Controllers/PartCatalogueRequestController.cs`
+- Injected services: IPartCatalogueService, IPartCatalogueLookupService, IRoleModuleActionService
+- Views path checked: `PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest` (3 .cshtml files)
+- Git: last touched 2026-10-08, 2 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### PartCatalogueLookup (Area: Warehouse)
+
+- Controller: `PEMS.Web/Areas/Warehouse/Controllers/PartCatalogueLookupController.cs`
+- Injected services: IPartCatalogueLookupService, IRoleModuleActionService
+- Views path checked: `PEMS.Web/Areas/Warehouse/Views/PartCatalogueLookup` (0 .cshtml files)
+- Git: last touched 2026-10-10, 2 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Missing |
+| MigrationBacked | Unknown |
+| RazorViews | Missing |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### StoreRequisition (Area: Warehouse)
+
+- Controller: `PEMS.Web/Areas/Warehouse/Controllers/StoreRequisitionController.cs`
+- Injected services: IStoreRequisitionLifecycleService, ICurrentUserService, IPermissionService, INumberingService
+- Views path checked: `PEMS.Web/Areas/Warehouse/Views/StoreRequisition` (2 .cshtml files)
+- Git: last touched 2026-10-08, 2 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### Replenishment (Area: Warehouse)
+
+- Controller: `PEMS.Web/Areas/Warehouse/Controllers/ReplenishmentController.cs`
+- Injected services: IReplenishmentRecommendationService, IPermissionService, IAccessControlService, ICurrentUserService
+- Views path checked: `PEMS.Web/Areas/Warehouse/Views/Replenishment` (2 .cshtml files)
+- Git: last touched unknown, 0 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### MrsImport (Area: Warehouse)
+
+- Controller: `PEMS.Web/Areas/Warehouse/Controllers/MrsImportController.cs`
+- Injected services: IMrsImportService, ICurrentUserService, IFileStorageService, IPermissionService
+- Views path checked: `PEMS.Web/Areas/Warehouse/Views/MrsImport` (2 .cshtml files)
+- Git: last touched 2026-10-07, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -701,12 +1076,52 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### OCRProcessing 
+### MaterialItem (Area: Warehouse)
 
-- Controller: `PEMS.Web/Controllers/OCRProcessingController.cs`
-- Injected services: ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/OCRProcessing` (1 .cshtml files)
-- Git: last touched 2026-09-08, 2 commit(s) touching this file
+- Controller: `PEMS.Web/Areas/Warehouse/Controllers/MaterialItemController.cs`
+- Injected services: IMaterialItemService, IMaterialStockService, ICurrentUserService, IPermissionService, IBarcodeService
+- Views path checked: `PEMS.Web/Areas/Warehouse/Views/MaterialItem` (2 .cshtml files)
+- Git: last touched 2026-10-07, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### PartCatalogueDedup (Area: Warehouse)
+
+- Controller: `PEMS.Web/Areas/Warehouse/Controllers/PartCatalogueDedupController.cs`
+- Injected services: IPartCatalogueDuplicateService, IRoleModuleActionService
+- Views path checked: `PEMS.Web/Areas/Warehouse/Views/PartCatalogueDedup` (0 .cshtml files)
+- Git: last touched unknown, 0 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Missing |
+| MigrationBacked | Unknown |
+| RazorViews | Missing |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### PartCatalogueAdmin (Area: Warehouse)
+
+- Controller: `PEMS.Web/Areas/Warehouse/Controllers/PartCatalogueAdminController.cs`
+- Injected services: IPartCatalogueAdminService, IPartCatalogueLookupService, IRoleModuleActionService
+- Views path checked: `PEMS.Web/Areas/Warehouse/Views/PartCatalogueAdmin` (2 .cshtml files)
+- Git: last touched 2026-10-08, 2 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -718,6 +1133,66 @@ either way (never treat Unknown as Missing).
 | RazorViews | Present |
 | SidebarReachable | Present |
 | ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### Employee (Area: Admin)
+
+- Controller: `PEMS.Web/Areas/Admin/Controllers/EmployeeController.cs`
+- Injected services: (none detected)
+- Views path checked: `PEMS.Web/Areas/Admin/Views/Employee` (0 .cshtml files)
+- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Missing |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Missing |
+| SidebarReachable | Present |
+| ExplicitAuthZ | Present |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### Department (Area: Admin)
+
+- Controller: `PEMS.Web/Areas/Admin/Controllers/DepartmentController.cs`
+- Injected services: (none detected)
+- Views path checked: `PEMS.Web/Areas/Admin/Views/Department` (0 .cshtml files)
+- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Missing |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Missing |
+| SidebarReachable | Present |
+| ExplicitAuthZ | Present |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### NavigationVisibility (Area: Admin)
+
+- Controller: `PEMS.Web/Areas/Admin/Controllers/NavigationVisibilityController.cs`
+- Injected services: INavigationVisibilityOverrideService
+- Views path checked: `PEMS.Web/Areas/Admin/Views/NavigationVisibility` (2 .cshtml files)
+- Git: last touched 2026-09-29, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | Present |
 | TestCoverage | Present |
 | Documented | Missing |
 
@@ -741,52 +1216,12 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### PermissionMatrix (Area: Admin)
+### AuthorizationAudit (Area: Admin)
 
-- Controller: `PEMS.Web/Areas/Admin/Controllers/PermissionMatrixController.cs`
-- Injected services: IPermissionService
-- Views path checked: `PEMS.Web/Areas/Admin/Views/PermissionMatrix` (1 .cshtml files)
-- Git: last touched 2026-09-23, 9 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Missing |
-| MigrationBacked | Unknown |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | Present |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### ProjectIntelligence (Area: Admin)
-
-- Controller: `PEMS.Web/Areas/Admin/Controllers/ProjectIntelligenceController.cs`
+- Controller: `PEMS.Web/Areas/Admin/Controllers/AuthorizationAuditController.cs`
 - Injected services: (none detected)
-- Views path checked: `PEMS.Web/Areas/Admin/Views/ProjectIntelligence` (1 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Missing |
-| EntityOrDbSet | Missing |
-| MigrationBacked | Unknown |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | Present |
-| TestCoverage | Missing |
-| Documented | Missing |
-
-### Employee (Area: Admin)
-
-- Controller: `PEMS.Web/Areas/Admin/Controllers/EmployeeController.cs`
-- Injected services: (none detected)
-- Views path checked: `PEMS.Web/Areas/Admin/Views/Employee` (0 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Views path checked: `PEMS.Web/Areas/Admin/Views/AuthorizationAudit` (1 .cshtml files)
+- Git: last touched 2026-09-29, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -795,10 +1230,10 @@ either way (never treat Unknown as Missing).
 | ServiceLayer | Missing |
 | EntityOrDbSet | Present |
 | MigrationBacked | Yes |
-| RazorViews | Missing |
+| RazorViews | Present |
 | SidebarReachable | Present |
 | ExplicitAuthZ | Present |
-| TestCoverage | Present |
+| TestCoverage | Missing |
 | Documented | Missing |
 
 ### AuditLog (Area: Admin)
@@ -841,92 +1276,12 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Missing |
 | Documented | Missing |
 
-### Department (Area: Admin)
+### Authorization (Area: Admin)
 
-- Controller: `PEMS.Web/Areas/Admin/Controllers/DepartmentController.cs`
-- Injected services: (none detected)
-- Views path checked: `PEMS.Web/Areas/Admin/Views/Department` (0 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Missing |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Missing |
-| SidebarReachable | Present |
-| ExplicitAuthZ | Present |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### StorageRouting (Area: Admin)
-
-- Controller: `PEMS.Web/Areas/Admin/Controllers/StorageRoutingController.cs`
-- Injected services: IStorageRouteService, IStorageProviderService
-- Views path checked: `PEMS.Web/Areas/Admin/Views/StorageRouting` (4 .cshtml files)
-- Git: last touched 2026-09-11, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Missing |
-| MigrationBacked | Unknown |
-| RazorViews | Present |
-| SidebarReachable | Missing |
-| ExplicitAuthZ | Present |
-| TestCoverage | Missing |
-| Documented | Missing |
-
-### Users (Area: Admin)
-
-- Controller: `PEMS.Web/Areas/Admin/Controllers/UsersController.cs`
-- Injected services: (none detected)
-- Views path checked: `PEMS.Web/Areas/Admin/Views/Users` (4 .cshtml files)
-- Git: last touched 2026-09-18, 2 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Missing |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | Present |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### WorkflowManagement (Area: Admin)
-
-- Controller: `PEMS.Web/Areas/Admin/Controllers/WorkflowManagementController.cs`
-- Injected services: IWorkflowAdministrationService
-- Views path checked: `PEMS.Web/Areas/Admin/Views/WorkflowManagement` (6 .cshtml files)
-- Git: last touched 2026-09-21, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Missing |
-| MigrationBacked | Unknown |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | Present |
-| TestCoverage | Missing |
-| Documented | Missing |
-
-### StorageProviders (Area: Admin)
-
-- Controller: `PEMS.Web/Areas/Admin/Controllers/StorageProvidersController.cs`
-- Injected services: IStorageProviderService
-- Views path checked: `PEMS.Web/Areas/Admin/Views/StorageProviders` (4 .cshtml files)
-- Git: last touched 2026-09-11, 1 commit(s) touching this file
+- Controller: `PEMS.Web/Areas/Admin/Controllers/AuthorizationController.cs`
+- Injected services: IAccessControlService, IUserAuthorizationSummaryService
+- Views path checked: `PEMS.Web/Areas/Admin/Views/Authorization` (3 .cshtml files)
+- Git: last touched 2026-10-06, 2 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -938,27 +1293,7 @@ either way (never treat Unknown as Missing).
 | RazorViews | Present |
 | SidebarReachable | Missing |
 | ExplicitAuthZ | Present |
-| TestCoverage | Missing |
-| Documented | Missing |
-
-### Roles (Area: Admin)
-
-- Controller: `PEMS.Web/Areas/Admin/Controllers/RolesController.cs`
-- Injected services: (none detected)
-- Views path checked: `PEMS.Web/Areas/Admin/Views/Roles` (2 .cshtml files)
-- Git: last touched 2026-09-18, 2 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Missing |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | Present |
-| TestCoverage | Missing |
+| TestCoverage | Present |
 | Documented | Missing |
 
 ### RoutingRules (Area: Admin)
@@ -981,6 +1316,46 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Missing |
 | Documented | Missing |
 
+### Roles (Area: Admin)
+
+- Controller: `PEMS.Web/Areas/Admin/Controllers/RolesController.cs`
+- Injected services: (none detected)
+- Views path checked: `PEMS.Web/Areas/Admin/Views/Roles` (2 .cshtml files)
+- Git: last touched 2026-10-07, 4 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Missing |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | Present |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### SoDPolicy (Area: Admin)
+
+- Controller: `PEMS.Web/Areas/Admin/Controllers/SoDPolicyController.cs`
+- Injected services: (none detected)
+- Views path checked: `PEMS.Web/Areas/Admin/Views/SoDPolicy` (2 .cshtml files)
+- Git: last touched 2026-09-29, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Missing |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | Present |
+| TestCoverage | Present |
+| Documented | Missing |
+
 ### Settings (Area: Admin)
 
 - Controller: `PEMS.Web/Areas/Admin/Controllers/SettingsController.cs`
@@ -1001,252 +1376,52 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Missing |
 | Documented | Missing |
 
-### WorkRequest 
+### OrganizationImport (Area: Admin)
 
-- Controller: `PEMS.Web/Controllers/WorkRequestController.cs`
-- Injected services: IWorkRequestService, IPermissionService, ICurrentUserService, IFunctionalLocationService
-- Views path checked: `PEMS.Web/Views/WorkRequest` (3 .cshtml files)
-- Git: last touched 2026-09-20, 4 commit(s) touching this file
+- Controller: `PEMS.Web/Areas/Admin/Controllers/OrganizationImportController.cs`
+- Injected services: IOrganizationImportService
+- Views path checked: `PEMS.Web/Areas/Admin/Views/OrganizationImport` (2 .cshtml files)
+- Git: last touched 2026-10-08, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
 |---|---|
 | Controller | Present |
 | ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### Team 
-
-- Controller: `PEMS.Web/Controllers/TeamController.cs`
-- Injected services: ITeamService, IOrganizationStructureService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/Team` (3 .cshtml files)
-- Git: last touched 2026-09-28, 3 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### TechnicalQuery 
-
-- Controller: `PEMS.Web/Controllers/TechnicalQueryController.cs`
-- Injected services: ITechnicalQueryService, ICurrentUserService, IFileStorageService
-- Views path checked: `PEMS.Web/Views/TechnicalQuery` (3 .cshtml files)
-- Git: last touched 2026-09-19, 2 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### Tender 
-
-- Controller: `PEMS.Web/Controllers/TenderController.cs`
-- Injected services: ITenderService, IProcurementPackageService, IPermissionService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/Tender` (3 .cshtml files)
-- Git: last touched 2026-09-23, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### Task 
-
-- Controller: `PEMS.Web/Controllers/TaskController.cs`
-- Injected services: ITaskService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/Task` (1 .cshtml files)
-- Git: last touched 2026-09-05, 2 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### StoreRequisition 
-
-- Controller: `PEMS.Web/Controllers/StoreRequisitionController.cs`
-- Injected services: IStoreRequisitionLifecycleService, ICurrentUserService, IPermissionService, INumberingService
-- Views path checked: `PEMS.Web/Views/StoreRequisition` (2 .cshtml files)
-- Git: last touched 2026-09-19, 2 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### TableExtraction 
-
-- Controller: `PEMS.Web/Controllers/TableExtractionController.cs`
-- Injected services: IDocumentAIService, ITableExtractionImportService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/TableExtraction` (3 .cshtml files)
-- Git: last touched 2026-09-08, 2 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### Tag 
-
-- Controller: `PEMS.Web/Controllers/TagController.cs`
-- Injected services: ITagService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/Tag` (1 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
+| EntityOrDbSet | Missing |
 | MigrationBacked | Unknown |
 | RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### Vendor 
-
-- Controller: `PEMS.Web/Controllers/VendorController.cs`
-- Injected services: IVendorService, IVendorRiskService, IVendorQualificationService, IPermissionService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/Vendor` (4 .cshtml files)
-- Git: last touched 2026-09-23, 5 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### WebAuthn 
-
-- Controller: `PEMS.Web/Controllers/WebAuthnController.cs`
-- Injected services: IWebAuthnService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/WebAuthn` (0 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Missing |
 | SidebarReachable | Missing |
 | ExplicitAuthZ | Present |
 | TestCoverage | Present |
 | Documented | Missing |
 
-### WorkOrder 
+### Organization (Area: Admin)
 
-- Controller: `PEMS.Web/Controllers/WorkOrderController.cs`
-- Injected services: IWorkOrderReviewService, ICurrentUserService, IPermissionService, IWorkOrderLaborService, IWorkOrderLifecycleService, ICrewService, INumberingService, IMaterialStockService
-- Views path checked: `PEMS.Web/Views/WorkOrder` (3 .cshtml files)
-- Git: last touched 2026-09-28, 8 commit(s) touching this file
+- Controller: `PEMS.Web/Areas/Admin/Controllers/OrganizationController.cs`
+- Injected services: IOrganizationHierarchyService, IOrganizationValidationService, IOrganizationConsistencyService
+- Views path checked: `PEMS.Web/Areas/Admin/Views/Organization` (4 .cshtml files)
+- Git: last touched 2026-10-10, 2 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
 |---|---|
 | Controller | Present |
 | ServiceLayer | Present |
-| EntityOrDbSet | Present |
+| EntityOrDbSet | Missing |
 | MigrationBacked | Yes |
 | RazorViews | Present |
 | SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
+| ExplicitAuthZ | Present |
 | TestCoverage | Present |
 | Documented | Missing |
 
-### VDRImport 
+### ProjectIntelligence (Area: Admin)
 
-- Controller: `PEMS.Web/Controllers/VDRImportController.cs`
-- Injected services: IVDRImportService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/VDRImport` (2 .cshtml files)
-- Git: last touched 2026-09-19, 4 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Missing |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### Theme 
-
-- Controller: `PEMS.Web/Controllers/ThemeController.cs`
+- Controller: `PEMS.Web/Areas/Admin/Controllers/ProjectIntelligenceController.cs`
 - Injected services: (none detected)
-- Views path checked: `PEMS.Web/Views/Theme` (0 .cshtml files)
-- Git: last touched 2026-09-28, 3 commit(s) touching this file
+- Views path checked: `PEMS.Web/Areas/Admin/Views/ProjectIntelligence` (1 .cshtml files)
+- Git: last touched 2026-09-05, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -1255,58 +1430,38 @@ either way (never treat Unknown as Missing).
 | ServiceLayer | Missing |
 | EntityOrDbSet | Missing |
 | MigrationBacked | Unknown |
-| RazorViews | Missing |
-| SidebarReachable | Missing |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### Transmittal 
-
-- Controller: `PEMS.Web/Controllers/TransmittalController.cs`
-- Injected services: ITransmittalService, IPermissionService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/Transmittal` (3 .cshtml files)
-- Git: last touched 2026-09-18, 4 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
 | RazorViews | Present |
 | SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
+| ExplicitAuthZ | Present |
+| TestCoverage | Missing |
 | Documented | Missing |
 
-### VDR 
+### PermissionMatrix (Area: Admin)
 
-- Controller: `PEMS.Web/Controllers/VDRController.cs`
-- Injected services: IVDRService, IDocumentCommentService, IVdrWorkflowService, ILetterService, ICurrentUserService, IVdrDocumentNumberingService, IFtpUploadService, IFileStorageService, IPermissionService
-- Views path checked: `PEMS.Web/Views/VDR` (3 .cshtml files)
-- Git: last touched 2026-09-18, 3 commit(s) touching this file
+- Controller: `PEMS.Web/Areas/Admin/Controllers/PermissionMatrixController.cs`
+- Injected services: IPermissionService
+- Views path checked: `PEMS.Web/Areas/Admin/Views/PermissionMatrix` (1 .cshtml files)
+- Git: last touched 2026-10-10, 12 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
 |---|---|
 | Controller | Present |
 | ServiceLayer | Present |
-| EntityOrDbSet | Present |
+| EntityOrDbSet | Missing |
 | MigrationBacked | Unknown |
 | RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | Present |
 | TestCoverage | Present |
 | Documented | Missing |
 
-### DocumentRegister 
+### OCRProcessing 
 
-- Controller: `PEMS.Web/Controllers/DocumentRegisterController.cs`
-- Injected services: IEngineeringDocumentService, IExcelExportService, ISavedFilterService, ICurrentUserService, IAccessControlService
-- Views path checked: `PEMS.Web/Views/DocumentRegister` (1 .cshtml files)
-- Git: last touched 2026-09-18, 2 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/OCRProcessingController.cs`
+- Injected services: ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/OCRProcessing` (1 .cshtml files)
+- Git: last touched 2026-09-08, 2 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -1341,12 +1496,12 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Missing |
 | Documented | Missing |
 
-### DocumentUpload 
+### DocumentRegister 
 
-- Controller: `PEMS.Web/Controllers/DocumentUploadController.cs`
-- Injected services: IIntakeService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/DocumentUpload` (1 .cshtml files)
-- Git: last touched 2026-09-19, 2 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/DocumentRegisterController.cs`
+- Injected services: IEngineeringDocumentService, IExcelExportService, ISavedFilterService, ICurrentUserService, IAccessControlService
+- Views path checked: `PEMS.Web/Views/DocumentRegister` (1 .cshtml files)
+- Git: last touched 2026-09-18, 2 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -1356,17 +1511,17 @@ either way (never treat Unknown as Missing).
 | EntityOrDbSet | Missing |
 | MigrationBacked | Unknown |
 | RazorViews | Present |
-| SidebarReachable | Missing |
+| SidebarReachable | Present |
 | ExplicitAuthZ | GlobalPolicyOnly |
 | TestCoverage | Present |
 | Documented | Missing |
 
-### Discipline 
+### DocumentWorkflow 
 
-- Controller: `PEMS.Web/Controllers/DisciplineController.cs`
-- Injected services: IDisciplineWorkspaceService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/Discipline` (2 .cshtml files)
-- Git: last touched 2026-09-08, 2 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/DocumentWorkflowController.cs`
+- Injected services: IDocumentWorkflowService, ICurrentUserService, IPermissionService, IAccessControlService
+- Views path checked: `PEMS.Web/Views/DocumentWorkflow` (1 .cshtml files)
+- Git: last touched 2026-09-12, 3 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -1381,12 +1536,12 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### DashboardSettings 
+### DocumentUpload 
 
-- Controller: `PEMS.Web/Controllers/DashboardSettingsController.cs`
-- Injected services: IUserDashboardService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/DashboardSettings` (1 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/DocumentUploadController.cs`
+- Injected services: IIntakeService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/DocumentUpload` (1 .cshtml files)
+- Git: last touched 2026-09-19, 2 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -1421,6 +1576,46 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
+### DashboardSettings 
+
+- Controller: `PEMS.Web/Controllers/DashboardSettingsController.cs`
+- Injected services: IUserDashboardService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/DashboardSettings` (1 .cshtml files)
+- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Missing |
+| MigrationBacked | Unknown |
+| RazorViews | Present |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### Discipline 
+
+- Controller: `PEMS.Web/Controllers/DisciplineController.cs`
+- Injected services: IDisciplineWorkspaceService, ICurrentUserService, IPermissionService, IDisciplineMasterService
+- Views path checked: `PEMS.Web/Views/Discipline` (3 .cshtml files)
+- Git: last touched 2026-10-10, 3 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
 ### Department 
 
 - Controller: `PEMS.Web/Controllers/DepartmentController.cs`
@@ -1441,11 +1636,11 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### EngineeringDocuments 
+### Equipment 
 
-- Controller: `PEMS.Web/Controllers/EngineeringDocumentsController.cs`
-- Injected services: IEngineeringDocumentService, IDocumentWorkflowService
-- Views path checked: `PEMS.Web/Views/EngineeringDocuments` (5 .cshtml files)
+- Controller: `PEMS.Web/Controllers/EquipmentController.cs`
+- Injected services: IEquipmentService, IFunctionalLocationService, ICurrentUserService, IReliabilityService, IInspectionService, IEquipmentClassificationService, IMaintenanceIntelligenceService, IPermissionService, IBarcodeService
+- Views path checked: `PEMS.Web/Views/Equipment` (3 .cshtml files)
 - Git: last touched 2026-09-19, 7 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
@@ -1481,12 +1676,92 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### Equipment 
+### EquipmentFunctionalLocationAssignment 
 
-- Controller: `PEMS.Web/Controllers/EquipmentController.cs`
-- Injected services: IEquipmentService, IFunctionalLocationService, ICurrentUserService, IReliabilityService, IInspectionService, IEquipmentClassificationService, IMaintenanceIntelligenceService, IPermissionService, IBarcodeService
-- Views path checked: `PEMS.Web/Views/Equipment` (3 .cshtml files)
-- Git: last touched 2026-09-19, 7 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/EquipmentFunctionalLocationAssignmentController.cs`
+- Injected services: IEquipmentFunctionalLocationAssignmentService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/EquipmentFunctionalLocationAssignment` (2 .cshtml files)
+- Git: last touched 2026-09-14, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### EquipmentCriticality 
+
+- Controller: `PEMS.Web/Controllers/EquipmentCriticalityController.cs`
+- Injected services: IPermissionService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/EquipmentCriticality` (1 .cshtml files)
+- Git: last touched 2026-09-06, 3 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### EngineeringDashboard 
+
+- Controller: `PEMS.Web/Controllers/EngineeringDashboardController.cs`
+- Injected services: IEngineeringDocumentService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/EngineeringDashboard` (1 .cshtml files)
+- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Unknown |
+| EntityOrDbSet | Missing |
+| MigrationBacked | Unknown |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### Employee 
+
+- Controller: `PEMS.Web/Controllers/EmployeeController.cs`
+- Injected services: (none detected)
+- Views path checked: `PEMS.Web/Views/Employee` (3 .cshtml files)
+- Git: last touched 2026-10-10, 4 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Missing |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | Present |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### EngineeringDocuments 
+
+- Controller: `PEMS.Web/Controllers/EngineeringDocumentsController.cs`
+- Injected services: IEngineeringDocumentService, IDocumentWorkflowService
+- Views path checked: `PEMS.Web/Views/EngineeringDocuments` (5 .cshtml files)
+- Git: last touched 2026-09-29, 8 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -1521,12 +1796,12 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### DocumentWorkflow 
+### Asset 
 
-- Controller: `PEMS.Web/Controllers/DocumentWorkflowController.cs`
-- Injected services: IDocumentWorkflowService, ICurrentUserService, IPermissionService, IAccessControlService
-- Views path checked: `PEMS.Web/Views/DocumentWorkflow` (1 .cshtml files)
-- Git: last touched 2026-09-12, 3 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/AssetController.cs`
+- Injected services: IAssetService, ICurrentUserService, IFunctionalLocationService
+- Views path checked: `PEMS.Web/Views/Asset` (2 .cshtml files)
+- Git: last touched 2026-09-05, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -1539,66 +1814,6 @@ either way (never treat Unknown as Missing).
 | SidebarReachable | Present |
 | ExplicitAuthZ | GlobalPolicyOnly |
 | TestCoverage | Present |
-| Documented | Missing |
-
-### Employee 
-
-- Controller: `PEMS.Web/Controllers/EmployeeController.cs`
-- Injected services: (none detected)
-- Views path checked: `PEMS.Web/Views/Employee` (2 .cshtml files)
-- Git: last touched 2026-09-18, 3 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Missing |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | Present |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### EngineeringDashboard 
-
-- Controller: `PEMS.Web/Controllers/EngineeringDashboardController.cs`
-- Injected services: IEngineeringDocumentService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/EngineeringDashboard` (1 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Unknown |
-| EntityOrDbSet | Missing |
-| MigrationBacked | Unknown |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### Culture 
-
-- Controller: `PEMS.Web/Controllers/CultureController.cs`
-- Injected services: (none detected)
-- Views path checked: `PEMS.Web/Views/Culture` (0 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Missing |
-| EntityOrDbSet | Missing |
-| MigrationBacked | Unknown |
-| RazorViews | Missing |
-| SidebarReachable | Missing |
-| ExplicitAuthZ | AllowAnonymous |
-| TestCoverage | Missing |
 | Documented | Missing |
 
 ### AISearch 
@@ -1621,11 +1836,11 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Missing |
 | Documented | Missing |
 
-### Asset 
+### ChatAssistant 
 
-- Controller: `PEMS.Web/Controllers/AssetController.cs`
-- Injected services: IAssetService, ICurrentUserService, IFunctionalLocationService
-- Views path checked: `PEMS.Web/Views/Asset` (2 .cshtml files)
+- Controller: `PEMS.Web/Controllers/ChatAssistantController.cs`
+- Injected services: IChatAssistantService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/ChatAssistant` (1 .cshtml files)
 - Git: last touched 2026-09-05, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
@@ -1633,8 +1848,8 @@ either way (never treat Unknown as Missing).
 |---|---|
 | Controller | Present |
 | ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
+| EntityOrDbSet | Missing |
+| MigrationBacked | Unknown |
 | RazorViews | Present |
 | SidebarReachable | Present |
 | ExplicitAuthZ | GlobalPolicyOnly |
@@ -1661,24 +1876,24 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### AIInsights 
+### AI 
 
-- Controller: `PEMS.Web/Controllers/AIInsightsController.cs`
-- Injected services: IEngineeringCopilotService
-- Views path checked: `PEMS.Web/Views/AIInsights` (1 .cshtml files)
+- Controller: `PEMS.Web/Controllers/AIController.cs`
+- Injected services: IOllamaService
+- Views path checked: `PEMS.Web/Views/AI` (0 .cshtml files)
 - Git: last touched 2026-09-05, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
 |---|---|
 | Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Missing |
+| ServiceLayer | Unknown |
+| EntityOrDbSet | Present |
 | MigrationBacked | Unknown |
-| RazorViews | Present |
-| SidebarReachable | Present |
+| RazorViews | Missing |
+| SidebarReachable | Missing |
 | ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Missing |
+| TestCoverage | Present |
 | Documented | Missing |
 
 ### Account 
@@ -1701,24 +1916,24 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Missing |
 | Documented | Missing |
 
-### AI 
+### AIInsights 
 
-- Controller: `PEMS.Web/Controllers/AIController.cs`
-- Injected services: IOllamaService
-- Views path checked: `PEMS.Web/Views/AI` (0 .cshtml files)
+- Controller: `PEMS.Web/Controllers/AIInsightsController.cs`
+- Injected services: IEngineeringCopilotService
+- Views path checked: `PEMS.Web/Views/AIInsights` (1 .cshtml files)
 - Git: last touched 2026-09-05, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
 |---|---|
 | Controller | Present |
-| ServiceLayer | Unknown |
-| EntityOrDbSet | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Missing |
 | MigrationBacked | Unknown |
-| RazorViews | Missing |
-| SidebarReachable | Missing |
+| RazorViews | Present |
+| SidebarReachable | Present |
 | ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
+| TestCoverage | Missing |
 | Documented | Missing |
 
 ### AIExtraction 
@@ -1735,26 +1950,6 @@ either way (never treat Unknown as Missing).
 | ServiceLayer | Present |
 | EntityOrDbSet | Missing |
 | MigrationBacked | Unknown |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### Contract 
-
-- Controller: `PEMS.Web/Controllers/ContractController.cs`
-- Injected services: IContractService, IContractWorkflowService, IAccessControlService, IPermissionService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/Contract` (3 .cshtml files)
-- Git: last touched 2026-09-28, 5 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
 | RazorViews | Present |
 | SidebarReachable | Present |
 | ExplicitAuthZ | GlobalPolicyOnly |
@@ -1781,6 +1976,46 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
+### Contract 
+
+- Controller: `PEMS.Web/Controllers/ContractController.cs`
+- Injected services: IContractService, IContractWorkflowService, IAccessControlService, IPermissionService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/Contract` (3 .cshtml files)
+- Git: last touched 2026-09-28, 5 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### Culture 
+
+- Controller: `PEMS.Web/Controllers/CultureController.cs`
+- Injected services: (none detected)
+- Views path checked: `PEMS.Web/Views/Culture` (0 .cshtml files)
+- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Missing |
+| EntityOrDbSet | Missing |
+| MigrationBacked | Unknown |
+| RazorViews | Missing |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | AllowAnonymous |
+| TestCoverage | Missing |
+| Documented | Missing |
+
 ### CriticalityAssessment 
 
 - Controller: `PEMS.Web/Controllers/CriticalityAssessmentController.cs`
@@ -1801,32 +2036,12 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### ComingSoon 
+### CmmsReadiness 
 
-- Controller: `PEMS.Web/Controllers/ComingSoonController.cs`
-- Injected services: (none detected)
-- Views path checked: `PEMS.Web/Views/ComingSoon` (1 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Missing |
-| EntityOrDbSet | Missing |
-| MigrationBacked | Unknown |
-| RazorViews | Present |
-| SidebarReachable | Missing |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Missing |
-| Documented | Missing |
-
-### ChatAssistant 
-
-- Controller: `PEMS.Web/Controllers/ChatAssistantController.cs`
-- Injected services: IChatAssistantService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/ChatAssistant` (1 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/CmmsReadinessController.cs`
+- Injected services: IEquipmentReadinessService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/CmmsReadiness` (2 .cshtml files)
+- Git: last touched 2026-09-10, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -1861,32 +2076,12 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### CmmsReadiness 
+### ConditionReadingImport 
 
-- Controller: `PEMS.Web/Controllers/CmmsReadinessController.cs`
-- Injected services: IEquipmentReadinessService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/CmmsReadiness` (2 .cshtml files)
-- Git: last touched 2026-09-10, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Missing |
-| MigrationBacked | Unknown |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### Isolation 
-
-- Controller: `PEMS.Web/Controllers/IsolationController.cs`
-- Injected services: IIsolationService, IRoleModuleActionService, ICurrentUserService, IPermitAuthorityService
-- Views path checked: `PEMS.Web/Views/Isolation` (0 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/ConditionReadingImportController.cs`
+- Injected services: IConditionReadingImportService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/ConditionReadingImport` (2 .cshtml files)
+- Git: last touched 2026-10-06, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -1895,118 +2090,38 @@ either way (never treat Unknown as Missing).
 | ServiceLayer | Present |
 | EntityOrDbSet | Present |
 | MigrationBacked | Yes |
-| RazorViews | Missing |
+| RazorViews | Present |
 | SidebarReachable | Missing |
 | ExplicitAuthZ | GlobalPolicyOnly |
 | TestCoverage | Present |
 | Documented | Missing |
 
-### JobPlan 
+### ComingSoon 
 
-- Controller: `PEMS.Web/Controllers/JobPlanController.cs`
-- Injected services: IJobPlanService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/JobPlan` (2 .cshtml files)
-- Git: last touched 2026-09-19, 5 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### KnowledgeBase 
-
-- Controller: `PEMS.Web/Controllers/KnowledgeBaseController.cs`
-- Injected services: IKnowledgeBaseService
-- Views path checked: `PEMS.Web/Views/KnowledgeBase` (1 .cshtml files)
+- Controller: `PEMS.Web/Controllers/ComingSoonController.cs`
+- Injected services: (none detected)
+- Views path checked: `PEMS.Web/Views/ComingSoon` (1 .cshtml files)
 - Git: last touched 2026-09-05, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
 |---|---|
 | Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### IrnReceipt 
-
-- Controller: `PEMS.Web/Controllers/IrnReceiptController.cs`
-- Injected services: IIrnReceiptService, ICurrentUserService, IPermissionService, INumberingService
-- Views path checked: `PEMS.Web/Views/IrnReceipt` (2 .cshtml files)
-- Git: last touched 2026-09-23, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### Inventory 
-
-- Controller: `PEMS.Web/Controllers/InventoryController.cs`
-- Injected services: IMaterialStockService
-- Views path checked: `PEMS.Web/Views/Inventory` (1 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Missing |
-| Documented | Missing |
-
-### InventoryMasterData 
-
-- Controller: `PEMS.Web/Controllers/InventoryMasterDataController.cs`
-- Injected services: ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/InventoryMasterData` (1 .cshtml files)
-- Git: last touched 2026-09-08, 2 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
+| ServiceLayer | Missing |
 | EntityOrDbSet | Missing |
 | MigrationBacked | Unknown |
 | RazorViews | Present |
-| SidebarReachable | Present |
+| SidebarReachable | Missing |
 | ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
+| TestCoverage | Missing |
 | Documented | Missing |
 
-### InventoryTransaction 
+### EquipmentImport 
 
-- Controller: `PEMS.Web/Controllers/InventoryTransactionController.cs`
-- Injected services: IInventoryTransactionService
-- Views path checked: `PEMS.Web/Views/InventoryTransaction` (1 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/EquipmentImportController.cs`
+- Injected services: IEquipmentImportService, IEquipmentPdfScanService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/EquipmentImport` (3 .cshtml files)
+- Git: last touched 2026-09-19, 4 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -2016,27 +2131,7 @@ either way (never treat Unknown as Missing).
 | EntityOrDbSet | Present |
 | MigrationBacked | Yes |
 | RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Missing |
-| Documented | Missing |
-
-### MaintenanceMasterData 
-
-- Controller: `PEMS.Web/Controllers/MaintenanceMasterDataController.cs`
-- Injected services: ICurrentUserService, IPermissionService, IOrganizationStructureService
-- Views path checked: `PEMS.Web/Views/MaintenanceMasterData` (1 .cshtml files)
-- Git: last touched 2026-09-28, 5 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Missing |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
+| SidebarReachable | Missing |
 | ExplicitAuthZ | GlobalPolicyOnly |
 | TestCoverage | Present |
 | Documented | Missing |
@@ -2047,6 +2142,46 @@ either way (never treat Unknown as Missing).
 - Injected services: INumberingService, IMaintenancePlanService, IPMGenerationService, ICurrentUserService, IPermissionService
 - Views path checked: `PEMS.Web/Views/MaintenancePlan` (2 .cshtml files)
 - Git: last touched 2026-09-20, 5 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### MaintenanceMasterData 
+
+- Controller: `PEMS.Web/Controllers/MaintenanceMasterDataController.cs`
+- Injected services: ICurrentUserService, IPermissionService, IOrganizationStructureService
+- Views path checked: `PEMS.Web/Views/MaintenanceMasterData` (1 .cshtml files)
+- Git: last touched 2026-10-06, 6 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Missing |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### MaterialRequisition 
+
+- Controller: `PEMS.Web/Controllers/MaterialRequisitionController.cs`
+- Injected services: IMaterialRequisitionService, IPermissionService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/MaterialRequisition` (4 .cshtml files)
+- Git: last touched 2026-09-18, 3 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -2081,12 +2216,12 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### MaintenanceHistoryImport 
+### Letter 
 
-- Controller: `PEMS.Web/Controllers/MaintenanceHistoryImportController.cs`
-- Injected services: IMaintenanceHistoryImportService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/MaintenanceHistoryImport` (2 .cshtml files)
-- Git: last touched 2026-09-19, 2 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/LetterController.cs`
+- Injected services: ILetterService, ILetterReferralService, ICurrentUserService, IPermissionService, ITagService, IRichTextSanitizerService, ICacheService, ILetterNumberingService, IFileStorageService, INotificationService
+- Views path checked: `PEMS.Web/Views/Letter` (5 .cshtml files)
+- Git: last touched 2026-10-07, 4 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -2096,7 +2231,7 @@ either way (never treat Unknown as Missing).
 | EntityOrDbSet | Present |
 | MigrationBacked | Yes |
 | RazorViews | Present |
-| SidebarReachable | Missing |
+| SidebarReachable | Present |
 | ExplicitAuthZ | GlobalPolicyOnly |
 | TestCoverage | Present |
 | Documented | Missing |
@@ -2121,12 +2256,12 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### Letter 
+### MaintenanceHistoryImport 
 
-- Controller: `PEMS.Web/Controllers/LetterController.cs`
-- Injected services: ILetterService, ILetterReferralService, ICurrentUserService, IPermissionService, ITagService, IRichTextSanitizerService, ICacheService, ILetterNumberingService, IFileStorageService
-- Views path checked: `PEMS.Web/Views/Letter` (5 .cshtml files)
-- Git: last touched 2026-09-19, 3 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/MaintenanceHistoryImportController.cs`
+- Injected services: IMaintenanceHistoryImportService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/MaintenanceHistoryImport` (2 .cshtml files)
+- Git: last touched 2026-09-19, 2 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -2136,7 +2271,7 @@ either way (never treat Unknown as Missing).
 | EntityOrDbSet | Present |
 | MigrationBacked | Yes |
 | RazorViews | Present |
-| SidebarReachable | Present |
+| SidebarReachable | Missing |
 | ExplicitAuthZ | GlobalPolicyOnly |
 | TestCoverage | Present |
 | Documented | Missing |
@@ -2161,12 +2296,72 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### Intake 
+### MyProfile 
 
-- Controller: `PEMS.Web/Controllers/IntakeController.cs`
-- Injected services: IIntakeService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/Intake` (2 .cshtml files)
+- Controller: `PEMS.Web/Controllers/MyProfileController.cs`
+- Injected services: ICurrentUserService
+- Views path checked: `PEMS.Web/Views/MyProfile` (1 .cshtml files)
 - Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Unknown |
+| EntityOrDbSet | Missing |
+| MigrationBacked | Unknown |
+| RazorViews | Present |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | Present |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### MOC 
+
+- Controller: `PEMS.Web/Controllers/MOCController.cs`
+- Injected services: IMOCService, ICurrentUserService, IFileStorageService
+- Views path checked: `PEMS.Web/Views/MOC` (3 .cshtml files)
+- Git: last touched 2026-09-19, 2 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Unknown |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### Notification 
+
+- Controller: `PEMS.Web/Controllers/NotificationController.cs`
+- Injected services: INotificationService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/Notification` (2 .cshtml files)
+- Git: last touched 2026-10-07, 2 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### MyWork 
+
+- Controller: `PEMS.Web/Controllers/MyWorkController.cs`
+- Injected services: IMyWorkService, INotificationService, ITaskService
+- Views path checked: `PEMS.Web/Views/MyWork` (1 .cshtml files)
+- Git: last touched 2026-10-10, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -2174,9 +2369,169 @@ either way (never treat Unknown as Missing).
 | Controller | Present |
 | ServiceLayer | Present |
 | EntityOrDbSet | Missing |
+| MigrationBacked | Unknown |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### MDRImport 
+
+- Controller: `PEMS.Web/Controllers/MDRImportController.cs`
+- Injected services: IMDRImportService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/MDRImport` (2 .cshtml files)
+- Git: last touched 2026-09-19, 4 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### MDB 
+
+- Controller: `PEMS.Web/Controllers/MDBController.cs`
+- Injected services: IManufacturerDataBookService
+- Views path checked: `PEMS.Web/Views/MDB` (3 .cshtml files)
+- Git: last touched 2026-09-06, 2 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Unknown |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Missing |
+| Documented | Missing |
+
+### Meeting 
+
+- Controller: `PEMS.Web/Controllers/MeetingController.cs`
+- Injected services: IMeetingService, ITaskService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/Meeting` (3 .cshtml files)
+- Git: last touched 2026-09-06, 2 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
 | MigrationBacked | Yes |
 | RazorViews | Present |
 | SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### MechanicalEquipment 
+
+- Controller: `PEMS.Web/Controllers/MechanicalEquipmentController.cs`
+- Injected services: IMechanicalEquipmentService
+- Views path checked: `PEMS.Web/Views/MechanicalEquipment` (3 .cshtml files)
+- Git: last touched 2026-10-06, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Missing |
+| Documented | Missing |
+
+### GasTest 
+
+- Controller: `PEMS.Web/Controllers/GasTestController.cs`
+- Injected services: IGasTestService, IRoleModuleActionService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/GasTest` (0 .cshtml files)
+- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Missing |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### FunctionalLocationImport 
+
+- Controller: `PEMS.Web/Controllers/FunctionalLocationImportController.cs`
+- Injected services: IFunctionalLocationImportService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/FunctionalLocationImport` (2 .cshtml files)
+- Git: last touched 2026-09-19, 2 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### Help 
+
+- Controller: `PEMS.Web/Controllers/HelpController.cs`
+- Injected services: IHelpService, IHelpAiExplainerService, IHelpVisualService, IHelpStandardReferenceService
+- Views path checked: `PEMS.Web/Views/Help` (3 .cshtml files)
+- Git: last touched 2026-09-19, 2 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | Present |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### GlobalSearch 
+
+- Controller: `PEMS.Web/Controllers/GlobalSearchController.cs`
+- Injected services: IHelpService
+- Views path checked: `PEMS.Web/Views/GlobalSearch` (1 .cshtml files)
+- Git: last touched 2026-09-18, 2 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Missing |
+| MigrationBacked | Unknown |
+| RazorViews | Present |
+| SidebarReachable | Missing |
 | ExplicitAuthZ | GlobalPolicyOnly |
 | TestCoverage | Present |
 | Documented | Missing |
@@ -2193,7 +2548,27 @@ either way (never treat Unknown as Missing).
 |---|---|
 | Controller | Present |
 | ServiceLayer | Present |
-| EntityOrDbSet | Missing |
+| EntityOrDbSet | Present |
+| MigrationBacked | Yes |
+| RazorViews | Missing |
+| SidebarReachable | Missing |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### ExecutionGate 
+
+- Controller: `PEMS.Web/Controllers/ExecutionGateController.cs`
+- Injected services: IExecutionGateService, IRoleModuleActionService, ICurrentUserService, IPermitAuthorityService
+- Views path checked: `PEMS.Web/Views/ExecutionGate` (0 .cshtml files)
+- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Present |
 | MigrationBacked | Yes |
 | RazorViews | Missing |
 | SidebarReachable | Missing |
@@ -2221,12 +2596,12 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### FunctionalLocationImport 
+### Finding 
 
-- Controller: `PEMS.Web/Controllers/FunctionalLocationImportController.cs`
-- Injected services: IFunctionalLocationImportService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/FunctionalLocationImport` (2 .cshtml files)
-- Git: last touched 2026-09-19, 2 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/FindingController.cs`
+- Injected services: ICurrentUserService, IPermissionService, IWorkRequestService
+- Views path checked: `PEMS.Web/Views/Finding` (1 .cshtml files)
+- Git: last touched 2026-10-06, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -2241,11 +2616,11 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### ExecutionGate 
+### Isolation 
 
-- Controller: `PEMS.Web/Controllers/ExecutionGateController.cs`
-- Injected services: IExecutionGateService, IRoleModuleActionService, ICurrentUserService, IPermitAuthorityService
-- Views path checked: `PEMS.Web/Views/ExecutionGate` (0 .cshtml files)
+- Controller: `PEMS.Web/Controllers/IsolationController.cs`
+- Injected services: IIsolationService, IRoleModuleActionService, ICurrentUserService, IPermitAuthorityService
+- Views path checked: `PEMS.Web/Views/Isolation` (0 .cshtml files)
 - Git: last touched 2026-09-05, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
@@ -2261,12 +2636,32 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### EquipmentCriticality 
+### Intake 
 
-- Controller: `PEMS.Web/Controllers/EquipmentCriticalityController.cs`
-- Injected services: IPermissionService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/EquipmentCriticality` (1 .cshtml files)
-- Git: last touched 2026-09-06, 3 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/IntakeController.cs`
+- Injected services: IIntakeService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/Intake` (2 .cshtml files)
+- Git: last touched 2026-09-05, 1 commit(s) touching this file
+- Graphify connectivity (edges touching this file in the graph): 0
+
+| Signal | Result |
+|---|---|
+| Controller | Present |
+| ServiceLayer | Present |
+| EntityOrDbSet | Missing |
+| MigrationBacked | Yes |
+| RazorViews | Present |
+| SidebarReachable | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
+| TestCoverage | Present |
+| Documented | Missing |
+
+### KnowledgeBase 
+
+- Controller: `PEMS.Web/Controllers/KnowledgeBaseController.cs`
+- Injected services: IKnowledgeBaseService
+- Views path checked: `PEMS.Web/Views/KnowledgeBase` (1 .cshtml files)
+- Git: last touched 2026-09-05, 1 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -2281,12 +2676,12 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### EquipmentFunctionalLocationAssignment 
+### JobPlan 
 
-- Controller: `PEMS.Web/Controllers/EquipmentFunctionalLocationAssignmentController.cs`
-- Injected services: IEquipmentFunctionalLocationAssignmentService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/EquipmentFunctionalLocationAssignment` (2 .cshtml files)
-- Git: last touched 2026-09-14, 1 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/JobPlanController.cs`
+- Injected services: IJobPlanService, ICurrentUserService, IPermissionService
+- Views path checked: `PEMS.Web/Views/JobPlan` (2 .cshtml files)
+- Git: last touched 2026-09-19, 5 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
@@ -2296,27 +2691,7 @@ either way (never treat Unknown as Missing).
 | EntityOrDbSet | Present |
 | MigrationBacked | Yes |
 | RazorViews | Present |
-| SidebarReachable | Missing |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### EquipmentImport 
-
-- Controller: `PEMS.Web/Controllers/EquipmentImportController.cs`
-- Injected services: IEquipmentImportService, IEquipmentPdfScanService, ICurrentUserService, IPermissionService
-- Views path checked: `PEMS.Web/Views/EquipmentImport` (3 .cshtml files)
-- Git: last touched 2026-09-19, 4 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Missing |
+| SidebarReachable | Present |
 | ExplicitAuthZ | GlobalPolicyOnly |
 | TestCoverage | Present |
 | Documented | Missing |
@@ -2341,24 +2716,24 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### Inspection 
+### Home 
 
-- Controller: `PEMS.Web/Controllers/InspectionController.cs`
-- Injected services: IInspectionService, IWorkRequestService, IPermissionService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/Inspection` (1 .cshtml files)
-- Git: last touched 2026-09-18, 2 commit(s) touching this file
+- Controller: `PEMS.Web/Controllers/HomeController.cs`
+- Injected services: (none detected)
+- Views path checked: `PEMS.Web/Views/Home` (2 .cshtml files)
+- Git: last touched 2026-10-10, 4 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
 | Signal | Result |
 |---|---|
 | Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
+| ServiceLayer | Missing |
+| EntityOrDbSet | Missing |
 | MigrationBacked | Yes |
 | RazorViews | Present |
 | SidebarReachable | Present |
 | ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
+| TestCoverage | Missing |
 | Documented | Missing |
 
 ### Instrument 
@@ -2381,51 +2756,11 @@ either way (never treat Unknown as Missing).
 | TestCoverage | Present |
 | Documented | Missing |
 
-### Home 
+### Inspection 
 
-- Controller: `PEMS.Web/Controllers/HomeController.cs`
-- Injected services: (none detected)
-- Views path checked: `PEMS.Web/Views/Home` (2 .cshtml files)
-- Git: last touched 2026-09-14, 3 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Missing |
-| EntityOrDbSet | Missing |
-| MigrationBacked | Yes |
-| RazorViews | Present |
-| SidebarReachable | Present |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Missing |
-| Documented | Missing |
-
-### GasTest 
-
-- Controller: `PEMS.Web/Controllers/GasTestController.cs`
-- Injected services: IGasTestService, IRoleModuleActionService, ICurrentUserService
-- Views path checked: `PEMS.Web/Views/GasTest` (0 .cshtml files)
-- Git: last touched 2026-09-05, 1 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
-| EntityOrDbSet | Present |
-| MigrationBacked | Yes |
-| RazorViews | Missing |
-| SidebarReachable | Missing |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### GlobalSearch 
-
-- Controller: `PEMS.Web/Controllers/GlobalSearchController.cs`
-- Injected services: IHelpService
-- Views path checked: `PEMS.Web/Views/GlobalSearch` (1 .cshtml files)
+- Controller: `PEMS.Web/Controllers/InspectionController.cs`
+- Injected services: IInspectionService, IWorkRequestService, IPermissionService, ICurrentUserService
+- Views path checked: `PEMS.Web/Views/Inspection` (1 .cshtml files)
 - Git: last touched 2026-09-18, 2 commit(s) touching this file
 - Graphify connectivity (edges touching this file in the graph): 0
 
@@ -2433,31 +2768,11 @@ either way (never treat Unknown as Missing).
 |---|---|
 | Controller | Present |
 | ServiceLayer | Present |
-| EntityOrDbSet | Missing |
-| MigrationBacked | Unknown |
-| RazorViews | Present |
-| SidebarReachable | Missing |
-| ExplicitAuthZ | GlobalPolicyOnly |
-| TestCoverage | Present |
-| Documented | Missing |
-
-### Help 
-
-- Controller: `PEMS.Web/Controllers/HelpController.cs`
-- Injected services: IHelpService, IHelpAiExplainerService, IHelpVisualService, IHelpStandardReferenceService
-- Views path checked: `PEMS.Web/Views/Help` (3 .cshtml files)
-- Git: last touched 2026-09-19, 2 commit(s) touching this file
-- Graphify connectivity (edges touching this file in the graph): 0
-
-| Signal | Result |
-|---|---|
-| Controller | Present |
-| ServiceLayer | Present |
 | EntityOrDbSet | Present |
 | MigrationBacked | Yes |
 | RazorViews | Present |
 | SidebarReachable | Present |
-| ExplicitAuthZ | Present |
+| ExplicitAuthZ | GlobalPolicyOnly |
 | TestCoverage | Present |
 | Documented | Missing |
 

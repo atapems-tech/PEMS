@@ -180,25 +180,29 @@ public class IrnReceiptService : IIrnReceiptService
 
         if (approved)
         {
+            // Phase 2 / P4: ابتدا (قبل از هر تغییر) همه‌ی ردیف‌های موجودی لازم با کلید کامل (متریال، انبار، محل) پیدا یا - در صورت نبود -
+            // به‌صورت ایدمپوتنت و هم‌زمانی-امن ساخته می‌شوند. ردیف‌های مبهم (چند ردیف برای یک کلید) ⇒ توقف بدون هیچ اثر؛ دو خط هم‌کلید در
+            // یک IRN هم دیگر دو ردیف تکراری نمی‌سازند (قبلاً ردیفِ ساخته‌نشده‌ی هنوز ذخیره‌نشده پیدا نمی‌شد).
+            var stocksByLine = new Dictionary<int, MaterialStock>();
+
+            // گذر اول فقط‌خواندنی: هر ردیف مبهم، قبل از ساخت هر ردیف جدید برای خط‌های سالم، کل عملیات را متوقف می‌کند
             foreach (var line in receipt.Lines.Where(l => l.AcceptedQuantity is > 0))
             {
-                var stock = await _context.MaterialStocks.FirstOrDefaultAsync(s =>
-                    s.MaterialItemId == line.MaterialItemId && s.WarehouseId == receipt.WarehouseId && s.StorageLocationId == line.StorageLocationId);
+                var probe = await StockRowResolver.FindExactAsync(_context, line.MaterialItemId, receipt.WarehouseId, line.StorageLocationId, activeOnly: false);
+                if (probe.IsAmbiguous)
+                    return (false, StockRowResolver.AmbiguousMessage(line.MaterialItemId, receipt.WarehouseId, line.StorageLocationId, probe.CandidateIds));
+            }
 
-                if (stock == null)
-                {
-                    stock = new MaterialStock
-                    {
-                        MaterialItemId = line.MaterialItemId,
-                        WarehouseId = receipt.WarehouseId,
-                        StorageLocationId = line.StorageLocationId,
-                        OnHandQuantity = 0,
-                        ReservedQuantity = 0,
-                        IsActive = true,
-                        CreatedDate = DateTime.Now
-                    };
-                    await _context.MaterialStocks.AddAsync(stock);
-                }
+            foreach (var line in receipt.Lines.Where(l => l.AcceptedQuantity is > 0))
+            {
+                var (resolved, stockError) = await StockRowResolver.GetOrCreateAsync(_context, line.MaterialItemId, receipt.WarehouseId, line.StorageLocationId);
+                if (resolved == null) return (false, stockError);
+                stocksByLine[line.IrnReceiptLineId] = resolved;
+            }
+
+            foreach (var line in receipt.Lines.Where(l => l.AcceptedQuantity is > 0))
+            {
+                var stock = stocksByLine[line.IrnReceiptLineId];
 
                 stock.OnHandQuantity += line.AcceptedQuantity!.Value;
                 stock.LastUpdated = DateTime.Now;

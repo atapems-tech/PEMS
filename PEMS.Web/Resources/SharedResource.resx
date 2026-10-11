@@ -619,4 +619,57 @@
   <data name="MyWork_Personal" xml:space="preserve"><value>Assigned to me</value></data>
   <data name="MyWork_Queue" xml:space="preserve"><value>Role queue</value></data>
   <data name="MyWork_NoSla" xml:space="preserve"><value>No time limit (SLA) is configured for these stages, so due dates and overdue status are not shown.</value></data>
+  <data name="Repl_Menu" xml:space="preserve"><value>Replenishment</value></data>
+  <data name="Repl_StockOnlyNote" xml:space="preserve"><value>Stock-only shortage estimate: incoming purchase supply (purchase orders) is not modeled, so a recommendation may overstate what still has to be bought. Recommendations are advisory and never create requisitions, orders or reservations.</value></data>
+  <data name="Repl_SearchPlaceholder" xml:space="preserve"><value>Material / warehouse</value></data>
+  <data name="Repl_DefinitiveOnly" xml:space="preserve"><value>Definitive only</value></data>
+  <data name="Repl_Run" xml:space="preserve"><value>Run calculation</value></data>
+  <data name="Repl_LastRun" xml:space="preserve"><value>Last run</value></data>
+  <data name="Repl_Evaluated" xml:space="preserve"><value>Evaluated</value></data>
+  <data name="Repl_New" xml:space="preserve"><value>new</value></data>
+  <data name="Repl_Updated" xml:space="preserve"><value>updated</value></data>
+  <data name="Repl_ClosedCount" xml:space="preserve"><value>closed</value></data>
+  <data name="Repl_NotDefinitiveCount" xml:space="preserve"><value>not definitive</value></data>
+  <data name="Repl_NotRecommended" xml:space="preserve"><value>Not recommended (and why)</value></data>
+  <data name="Repl_Material" xml:space="preserve"><value>Material</value></data>
+  <data name="Repl_Usable" xml:space="preserve"><value>Usable stock</value></data>
+  <data name="Repl_UnreservedDemand" xml:space="preserve"><value>Unreserved demand</value></data>
+  <data name="Repl_Shortage" xml:space="preserve"><value>Shortage</value></data>
+  <data name="Repl_NotDefinitive" xml:space="preserve"><value>Not definitive</value></data>
+  <data name="Repl_NotDefinitiveHint" xml:space="preserve"><value>The latest calculation could not give a definitive result (ambiguous or multi-location stock, incompatible units or unattributable demand); the figures shown are from an earlier run.</value></data>
+  <data name="Repl_NoItems" xml:space="preserve"><value>No recommendations.</value></data>
+  <data name="Repl_Revision" xml:space="preserve"><value>Revision</value></data>
+  <data name="Repl_FirstDetected" xml:space="preserve"><value>First detected</value></data>
+  <data name="Repl_GrossDemand" xml:space="preserve"><value>Eligible demand</value></data>
+  <data name="Repl_Covered" xml:space="preserve"><value>Covered by reservations</value></data>
+  <data name="Repl_Notices" xml:space="preserve"><value>Notices</value></data>
+  <data name="Repl_DismissedAt" xml:space="preserve"><value>Dismissed on</value></data>
+  <data name="Repl_ShortageAtDismissal" xml:space="preserve"><value>shortage at dismissal</value></data>
+  <data name="Repl_ClosedReason" xml:space="preserve"><value>Closed because</value></data>
+  <data name="Repl_Reason" xml:space="preserve"><value>Reason</value></data>
+  <data name="Repl_Dismiss" xml:space="preserve"><value>Dismiss</value></data>
+  <data name="Repl_Reopen" xml:space="preserve"><value>Reopen</value></data>
+  <data name="Repl_Note" xml:space="preserve"><value>Note</value></data>
+  <data name="Repl_Sources" xml:space="preserve"><value>Demand sources (current revision)</value></data>
+  <data name="Repl_SourceType" xml:space="preserve"><value>Type</value></data>
+  <data name="Repl_SourceNumber" xml:space="preserve"><value>Document</value></data>
+  <data name="Repl_SourceSr" xml:space="preserve"><value>Store requisition</value></data>
+  <data name="Repl_SourceWo" xml:space="preserve"><value>Work order</value></data>
+  <data name="Repl_Restricted" xml:space="preserve"><value>Restricted (quantity is counted)</value></data>
+  <data name="Repl_NoSources" xml:space="preserve"><value>No demand sources.</value></data>
+  <data name="Repl_History" xml:space="preserve"><value>History</value></data>
+  <data name="Repl_Action" xml:space="preserve"><value>Action</value></data>
+  <data name="Repl_By" xml:space="preserve"><value>By</value></data>
+  <data name="Repl_System" xml:space="preserve"><value>System</value></data>
+  <data name="Repl_Back" xml:space="preserve"><value>Back to list</value></data>
+  <data name="Repl_OnHand" xml:space="preserve"><value>on hand</value></data>
+  <data name="Repl_Reserved" xml:space="preserve"><value>reserved</value></data>
+  <data name="Repl_CalculatedAt" xml:space="preserve"><value>Calculated</value></data>
+  <data name="Repl_Freshness" xml:space="preserve"><value>Input freshness</value></data>
+  <data name="Repl_StockUpdated" xml:space="preserve"><value>stock last updated</value></data>
+  <data name="Repl_DemandChanged" xml:space="preserve"><value>demand last changed</value></data>
+  <data name="Repl_Unknown" xml:space="preserve"><value>unknown</value></data>
+  <data name="Repl_FreshnessDisclaimer" xml:space="preserve"><value>Inputs are read one after another without snapshot isolation, so this does not establish that the figures are current. "Unknown" means the timestamp is not recorded for at least one input.</value></data>
+  <data name="Repl_RequiresAttribution" xml:space="preserve"><value>Requires warehouse attribution</value></data>
+  <data name="Repl_RequiresAttributionHelp" xml:space="preserve"><value>Work Order material demand has no warehouse and is never assigned to one by inference. Until a verified warehouse attribution exists, the affected materials are reported here and no recommendation is created for them.</value></data>
 </root>

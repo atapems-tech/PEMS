@@ -27,4 +27,11 @@ public interface IAccessControlService
     /// نه UserId.
     /// </summary>
     Task<AccessDecision> AuthorizeForRolesAsync(IEnumerable<string> roles, string resourceName, string actionName);
+
+    /// <summary>
+    /// ثبت یک تلاش «ردشده» که پیش از رسیدن به AuthorizeAsync متوقف شده (رد فقط-نقش، هویت نامشخص) در همان جدول
+    /// AuthorizationAuditLog. Default Interface Method تا پیاده‌سازی‌های دیگر/Fake ها نشکنند؛ تصمیم را تغییر نمی‌دهد.
+    /// </summary>
+    Task RecordDenialAsync(int? userId, string resourceName, string actionName, string? resourceId, string? ipAddress,
+        AccessDecisionReason reason, string detail) => Task.CompletedTask;
 }

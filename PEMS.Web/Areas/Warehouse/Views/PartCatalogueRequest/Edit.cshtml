@@ -344,6 +344,25 @@
 
         @* ------------------------------------------------ Other Info *@
         <div class="col-lg-4">
+            <section class="vs-panel pc-card mb-3" id="pcDedup"
+                     data-url-existing="/Warehouse/PartCatalogueDedup/ExistingParts"
+                     data-url-duplicates="/Warehouse/PartCatalogueDedup/DuplicateCandidates"
+                     data-request-id="@d.Id"
+                     data-txt-none="@Localizer["Pc_Dedup_None"]"
+                     data-txt-ambiguous="@Localizer["Pc_Dedup_Ambiguous"]"
+                     data-txt-inflight="@Localizer["Pc_Dedup_InFlight"]"
+                     data-txt-error="@Localizer["Pc_Dedup_Error"]">
+                <h2 class="vs-section__title"><i class="bi bi-search"></i> @Localizer["Pc_Dedup_Title"]</h2>
+                <p class="form-text">@Localizer["Pc_Dedup_Hint"]</p>
+                <label class="form-label" for="pcDedupQuery">@Localizer["Pc_Dedup_SearchLabel"]</label>
+                <div class="input-group input-group-sm mb-2">
+                    <input id="pcDedupQuery" type="search" class="form-control" maxlength="100" autocomplete="off" />
+                    <button type="button" class="vs-btn vs-btn--sm" id="pcDedupSearch">@Localizer["Pc_Dedup_Search"]</button>
+                </div>
+                <button type="button" class="vs-btn vs-btn--sm mb-2" id="pcDedupCheck">@Localizer["Pc_Dedup_Check"]</button>
+                <div id="pcDedupResult" role="status" aria-live="polite" class="small"></div>
+            </section>
+
             <section class="vs-panel pc-card">
                 <h2 class="vs-section__title"><i class="bi bi-paperclip"></i> @Localizer["Pc_Sec_OtherInfo"]</h2>
                 <div class="mb-2"><label class="form-label" for="pc_SparePartSerialNo">@L("SparePartSerialNo")</label><input id="pc_SparePartSerialNo" form="pcForm" name="SparePartSerialNo" value="@f.SparePartSerialNo" class="form-control form-control-sm" maxlength="100" /></div>
@@ -512,4 +531,5 @@
 
 @section Scripts {
     <script src="~/js/pems-part-catalogue.js" asp-append-version="true"></script>
+    <script src="~/js/pems-part-catalogue-dedup.js" asp-append-version="true"></script>
 }

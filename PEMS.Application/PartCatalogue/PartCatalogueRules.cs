@@ -23,6 +23,31 @@ public static class PartCatalogueRules
     public static string NormalizeName(string? s) =>
         new string((s ?? string.Empty).Where(char.IsLetterOrDigit).ToArray()).ToUpperInvariant();
 
+    // مقادیری که «شماره‌ی قطعه‌ی واقعی» نیستند (NO_PART_NR در دستورالعمل + داده‌ی واقعی)؛ هیچ‌گاه برای تطبیق تکراری استفاده نمی‌شوند
+    private static readonly HashSet<string> PlaceholderPartNumbers =
+        new(StringComparer.Ordinal) { "NOPARTNR", "NOPARTNUMBER", "NA", "NONE", "TBD", "UNKNOWN", "NOTAVAILABLE" };
+
+    /// <summary>حداقل طول نرمال‌شده برای تطبیق شماره‌ی قطعه (کوتاه‌تر از آن به‌شدت مبهم است).</summary>
+    public const int MinMatchablePartNumberLength = 3;
+
+    /// <summary>
+    /// نرمال‌سازی شماره‌ی قطعه (MPN/Supplier PN/Part Number) برای مقایسه: فقط حروف/ارقام، حروف بزرگ؛ فاصله و
+    /// - _ / . حذف می‌شوند ("ab-123 / x" ≡ "AB123X"). فقط برای مقایسه است؛ مقدار ذخیره‌شده تغییر نمی‌کند.
+    /// </summary>
+    public static string NormalizePartNumber(string? s) => NormalizeName(s);
+
+    /// <summary>آیا این شماره‌ی قطعه برای تشخیص تکرار قابل‌استفاده است (Placeholder یا بسیار کوتاه نباشد).</summary>
+    public static bool IsMatchablePartNumber(string? s)
+    {
+        var n = NormalizePartNumber(s);
+        return n.Length >= MinMatchablePartNumberLength && !PlaceholderPartNumbers.Contains(n);
+    }
+
+    /// <summary>برابری کد Material Master با شماره‌ی قطعه‌ی تخصیص‌یافته (فقط فاصله‌ی دو سر و حروف بزرگ/کوچک نادیده؛ ساختار کد دست‌نخورده).</summary>
+    public static bool CodesMatch(string? materialCode, string? assignedPartNumber) =>
+        !string.IsNullOrWhiteSpace(materialCode) && !string.IsNullOrWhiteSpace(assignedPartNumber)
+        && string.Equals(materialCode.Trim(), assignedPartNumber.Trim(), StringComparison.OrdinalIgnoreCase);
+
     /// <summary>سازنده‌هایی که انتهای نامشان «(wrong)» است نباید انتخاب شوند (فیلد ۱۳).</summary>
     public static bool IsWrongName(string? name) =>
         (name ?? string.Empty).TrimEnd().EndsWith("(wrong)", StringComparison.OrdinalIgnoreCase);

@@ -139,7 +139,17 @@ public class ProcurementPackageController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "ProcurementPackage", "Edit"))
             return Forbid();
 
-        await _service.AdvanceStageAsync(packageId, newStage);
+        try
+        {
+            await _service.AdvanceStageAsync(packageId, newStage);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Closeout از این مسیر مجاز نیست (فقط از عملیات Closeout با Approve + گیت بازرسی)،
+            // و Package بسته/لغوشده قابل‌احیا نیست - پیام دوستانه به‌جای خطای سرور
+            TempData["Error"] = ex.Message;
+        }
+
         return RedirectToAction(nameof(Details), new { id = packageId });
     }
 
@@ -192,29 +202,16 @@ public class ProcurementPackageController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddApproval(int packageId, string decision, string? comment)
     {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "ProcurementPackage", "Approve"))
-            return Forbid();
-
-        // طبق ممیزی §F (قاعده‌ی کسب‌وکار ۶): کاربری که خودش این Package را ایجاد/ویرایش کرده
-        // نباید بتواند خودش آن را تایید کند - پیش از این ممیزی، این کنترلر اصلاً مسیر SoD-آگاه
-        // (AuthorizeAsync) را صدا نمی‌زد و فقط از HasPermissionAsync (فقط-نقش) استفاده می‌کرد.
-        if (_currentUser.UserId.HasValue)
+        // طبق ممیزی §F (قاعده‌ی کسب‌وکار ۶) + Phase 1 hardening: گارد مشترک Fail-Closed - مجوز نقش، هویت کاربر،
+        // AuthorizeAsync آگاه-از-کاربر (Scope + SoD + Audit)؛ فقط Allowed صریح عبور می‌دهد و هر رد دیگر Forbid است.
+        var outcome = await ProtectedActionGuard.EvaluateAsync(
+            HttpContext, _permissionService, _accessControlService, _currentUser, "ProcurementPackage", "Approve", packageId.ToString());
+        if (outcome == ProtectedActionOutcome.DeniedBySoD)
         {
-            var sodDecision = await _accessControlService.AuthorizeAsync(new AccessControlRequest
-            {
-                UserId = _currentUser.UserId.Value,
-                ResourceName = "ProcurementPackage",
-                ActionName = "Approve",
-                ResourceId = packageId.ToString(),
-                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString()
-            });
-
-            if (!sodDecision.Allowed && sodDecision.Reason == AccessDecisionReason.DeniedBySoD)
-            {
-                TempData["Error"] = "طبق سیاست تفکیک وظایف، شما نمی‌توانید Package ای را که خودتان ایجاد/ویرایش کرده‌اید تایید کنید.";
-                return RedirectToAction(nameof(Details), new { id = packageId });
-            }
+            TempData["Error"] = "طبق سیاست تفکیک وظایف، شما نمی‌توانید Package ای را که خودتان ایجاد کرده‌اید تایید کنید.";
+            return RedirectToAction(nameof(Details), new { id = packageId });
         }
+        if (outcome != ProtectedActionOutcome.Allowed) return Forbid();
 
         await _service.AddApprovalAsync(packageId, _currentUser.FullName ?? "Unknown", decision, comment);
         TempData["Message"] = $"Approval recorded: {decision}";
@@ -225,8 +222,16 @@ public class ProcurementPackageController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Closeout(int packageId)
     {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "ProcurementPackage", "Approve"))
-            return Forbid();
+        // Closeout عملاً «تایید نهایی» است و با همان مجوز Approve محافظت می‌شود: همان گارد مشترک Fail-Closed
+        // (نقش + هویت + Scope + SoD + Audit؛ فقط Allowed صریح) پیش از هر تغییر وضعیت.
+        var outcome = await ProtectedActionGuard.EvaluateAsync(
+            HttpContext, _permissionService, _accessControlService, _currentUser, "ProcurementPackage", "Approve", packageId.ToString());
+        if (outcome == ProtectedActionOutcome.DeniedBySoD)
+        {
+            TempData["Error"] = "طبق سیاست تفکیک وظایف، شما نمی‌توانید Package ای را که خودتان ایجاد کرده‌اید ببندید.";
+            return RedirectToAction(nameof(Details), new { id = packageId });
+        }
+        if (outcome != ProtectedActionOutcome.Allowed) return Forbid();
 
         try
         {

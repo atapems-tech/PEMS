@@ -68,7 +68,10 @@ public class PermissionMatrixController : Controller
             // Bypass عمومی AccessControlService) نمی‌توانست این دو ماژول را از همین صفحه ببیند
             // یا دریافت کند - عیناً همون کلاس باگی که بند ۲۰ بالا درباره‌ی Inspection/Transmittal توضیح داد.
             "CMFinding",
-            "ConditionReadingImport"
+            "ConditionReadingImport",
+            // Phase 2 / P5: توصیه‌های تأمین. فقط برای دیده‌شدن/تخصیص در ماتریس فهرست شده؛ هیچ مجوزی به هیچ نقشی خودکار داده نمی‌شود
+            // (View = مشاهده، Create = اجرای محاسبه، Edit = رد/بازگشایی). تخصیص نقش‌ها در انتظار تأیید مالک است.
+            "ReplenishmentRecommendation"
         };
 
         return View(matrix);

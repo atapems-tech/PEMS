@@ -293,3 +293,52 @@ public sealed class PcAdminOverview
     public List<(int Id, string Parent, string Child, bool NeedsConfirmation)> Group2Maps { get; set; } = new();
     public Dictionary<string, int> Counts { get; set; } = new();
 }
+
+// ---------------------------------------------------------------- جستجوی قطعه‌ی موجود / کاندیدهای تکراری (فقط‌خواندنی، بدون تغییر Schema)
+
+/// <summary>یک قطعه‌ی موجود (درخواست تکمیل‌شده‌ی کاتالوگ یا ردیف Material Master) که با جستجو/کاندید تکراری مطابقت دارد.</summary>
+public sealed class PcExistingPartHit
+{
+    /// <summary>"CatalogueRequest" | "MaterialItem".</summary>
+    public string Source { get; set; } = string.Empty;
+    public int SourceId { get; set; }
+    public string PartNumber { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public string? ManufacturerName { get; set; }
+    public string? ManufacturerPartNumber { get; set; }
+    public string? SupplierPartNumber { get; set; }
+
+    /// <summary>فیلدی که مطابقت داده شد: PartNumber | ManufacturerPartNumber | SupplierPartNumber | OldManufacturerPartNumber | Description.</summary>
+    public string MatchedOn { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Exact = مقدار نرمال‌شده برابر؛ Partial = شامل جستجو. برای کاندید تکراری: SameMpnSameManufacturer (قوی) |
+    /// SameMpnOtherManufacturer | SameMpnManufacturerUnknown | SameSupplierPartNumber.
+    /// </summary>
+    public string MatchKind { get; set; } = string.Empty;
+}
+
+public sealed class PcDuplicateProbe
+{
+    public string? ManufacturerPartNumber { get; set; }
+    public string? SupplierPartNumber { get; set; }
+    public int? ManufacturerId { get; set; }
+    public string? NewManufacturerName { get; set; }
+
+    /// <summary>خودِ درخواست در حال ویرایش از نتیجه حذف می‌شود.</summary>
+    public int? ExcludeRequestId { get; set; }
+}
+
+public sealed class PcDuplicateResult
+{
+    public List<PcExistingPartHit> Candidates { get; set; } = new();
+
+    /// <summary>بیش از یک قطعه‌ی تأییدشده با MPN و سازنده‌ی یکسان ⇒ انتخاب خودکار ممنوع؛ تصمیم با انسان.</summary>
+    public bool IsAmbiguous { get; set; }
+
+    /// <summary>تعداد درخواست‌های «در جریان» دیگر با همان MPN (جزئیات عمداً فاش نمی‌شود).</summary>
+    public int InFlightRequestsWithSameMpn { get; set; }
+
+    /// <summary>همیشه false: این سامانه هیچ ادغام خودکاری انجام نمی‌دهد.</summary>
+    public bool AutoMergeAllowed => false;
+}

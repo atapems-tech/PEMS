@@ -1,0 +1,117 @@
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using PEMS.Application.DTOs;
+using PEMS.Application.Interfaces;
+using PEMS.Domain.Entities;
+using PEMS.Persistence.Context;
+using PEMS.Persistence.Services;
+using PEMS.Tests.TestSupport;
+
+namespace PEMS.Tests.PartCatalogue;
+
+/// <summary>
+/// Phase 1 verification gate: همان رفتار سرویس‌های ردیابی روی SQL Server واقعی (دیتابیس ایزوله‌ی یک‌بارمصرف با
+/// MigrateAsync کامل، نه PEMSDB مشترک) تا CHECK/FK/NO ACTION واقعاً توسط موتور دیتابیس اعمال و ثابت شوند.
+/// </summary>
+public class PartCatalogueTraceabilitySqlTests : IAsyncLifetime
+{
+    private readonly string _dbName = "PEMS_TEST_PCTRACE_" + Guid.NewGuid().ToString("N")[..12];
+    private string _connection = "";
+
+    private sealed class Actions : IRoleModuleActionService
+    {
+        public Task<bool> HasActionAsync(IEnumerable<string> userRoles, string module, string action) => Task.FromResult(true);
+        public Task SeedDefaultsAsync() => Task.CompletedTask;
+    }
+
+    public async Task InitializeAsync()
+    {
+        _connection = new SqlConnectionStringBuilder(PemsDbContextFactory.ConnectionString) { InitialCatalog = _dbName }.ConnectionString;
+        await using var ctx = NewCtx();
+        await ctx.Database.MigrateAsync();
+    }
+
+    public async Task DisposeAsync()
+    {
+        SqlConnection.ClearAllPools();
+        var master = new SqlConnectionStringBuilder(_connection) { InitialCatalog = "master" }.ConnectionString;
+        await using var c = new SqlConnection(master);
+        await c.OpenAsync();
+        await using var cmd = c.CreateCommand();
+        cmd.CommandText = $"IF DB_ID('{_dbName}') IS NOT NULL BEGIN ALTER DATABASE [{_dbName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [{_dbName}]; END";
+        await cmd.ExecuteNonQueryAsync();
+    }
+
+    private PEMSDbContext NewCtx() => new(new DbContextOptionsBuilder<PEMSDbContext>().UseSqlServer(_connection).Options);
+
+    [Fact]
+    public async Task Service_SwitchesOriginAndLinks_OnRealSql_AndTheDatabaseRejectsTwoOrigins()
+    {
+        await using var ctx = NewCtx();
+        var dep = new Department { Code = "D1", Name = "Dept" };
+        var disc = new Discipline { Code = "X1", Name = "Disc" };
+        ctx.AddRange(dep, disc);
+        await ctx.SaveChangesAsync();
+        var emp = new Employee { FirstName = "A", LastName = "Req", DepartmentId = dep.DepartmentId, DisciplineId = disc.DisciplineId };
+        var project = new Project { ProjectCode = "PX", ProjectName = "Proj", Status = "Active" };
+        var wh = new Warehouse { Code = "W1", Name = "WH" };
+        ctx.AddRange(emp, project, wh);
+        await ctx.SaveChangesAsync();
+        var eq = new Equipment { TagNumber = "EQ-1", Name = "Pump", EquipmentType = "Pump", ProjectId = project.ProjectId, DisciplineId = disc.DisciplineId, Status = "Active" };
+        ctx.Equipments.Add(eq);
+        await ctx.SaveChangesAsync();
+        var wo = new WorkOrder { EquipmentId = eq.EquipmentId, WorkOrderNumber = "WO-1", WorkOrderType = "Corrective", Priority = "Low", Status = "Open" };
+        var sr = new StoreRequisition { RequisitionNumber = "SR-1", Status = StoreRequisitionStatuses.Approved, WarehouseId = wh.WarehouseId, RequestedById = emp.EmployeeId, RequestedDate = DateTime.Now };
+        var mr = new MaterialRequisition { MRNumber = "MR-1", ProjectId = project.ProjectId, DisciplineId = disc.DisciplineId, Description = "d", Status = "Submitted" };
+        var item = new MaterialItem { MaterialCode = "PN-9000", Description = "item" };
+        ctx.AddRange(wo, sr, mr, item);
+        var draft = new PartCatalogueRequest { RequesterEmployeeId = emp.EmployeeId, Status = PartCatalogueStatuses.Draft };
+        var done = new PartCatalogueRequest { RequesterEmployeeId = emp.EmployeeId, Status = PartCatalogueStatuses.Completed, AssignedPartNumber = "pn-9000" };
+        ctx.PartCatalogueRequests.AddRange(draft, done);
+        await ctx.SaveChangesAsync();
+
+        var actor = new PcActor(emp.EmployeeId, 1, new[] { "ANY" });
+        var trace = new PartCatalogueTraceabilityService(ctx, new Actions());
+
+        // سوییچ پشت‌سرهم بین سه منشأ: هر کدام یک UPDATE تکی است و CHECK دیتابیس نباید نقض شود
+        Assert.True((await trace.SetDemandOriginAsync(draft.PartCatalogueRequestId, new PcDemandOriginInput { Type = "WorkOrder", Id = wo.WorkOrderId }, actor)).Success);
+        Assert.True((await trace.SetDemandOriginAsync(draft.PartCatalogueRequestId, new PcDemandOriginInput { Type = "StoreRequisition", Id = sr.StoreRequisitionId }, actor)).Success);
+        Assert.True((await trace.SetDemandOriginAsync(draft.PartCatalogueRequestId, new PcDemandOriginInput { Type = "MaterialRequisition", Id = mr.MRId }, actor)).Success);
+        await using (var check = NewCtx())
+        {
+            var r = await check.PartCatalogueRequests.AsNoTracking().SingleAsync(x => x.PartCatalogueRequestId == draft.PartCatalogueRequestId);
+            Assert.Null(r.SourceWorkOrderId);
+            Assert.Null(r.SourceStoreRequisitionId);
+            Assert.Equal(mr.MRId, r.SourceMaterialRequisitionId);
+        }
+
+        // پیوند صریح روی SQL واقعی (مقایسه‌ی بدون حساسیت به حروف: "pn-9000" ≡ "PN-9000")
+        Assert.True((await trace.LinkMaterialItemAsync(done.PartCatalogueRequestId, item.MaterialItemId, actor)).Success);
+
+        // دیتابیس مستقل از سرویس باید دو منشأ هم‌زمان و ارجاع ناموجود را رد کند
+        await using var raw = NewCtx();
+        var twoOrigins = await Assert.ThrowsAsync<SqlException>(() => raw.Database.ExecuteSqlRawAsync(
+            "UPDATE PartCatalogueRequests SET SourceWorkOrderId = {0}, SourceStoreRequisitionId = {1} WHERE PartCatalogueRequestId = {2}",
+            wo.WorkOrderId, sr.StoreRequisitionId, draft.PartCatalogueRequestId));
+        Assert.Contains("CK_PartCatalogueRequests_SingleDemandOrigin", twoOrigins.Message);
+
+        var missing = await Assert.ThrowsAsync<SqlException>(() => raw.Database.ExecuteSqlRawAsync(
+            "UPDATE PartCatalogueRequests SET SourceMaterialRequisitionId = NULL, SourceWorkOrderId = 987654 WHERE PartCatalogueRequestId = {0}", draft.PartCatalogueRequestId));
+        Assert.Contains("FK_PartCatalogueRequests_WorkOrders_SourceWorkOrderId", missing.Message);
+
+        // NO ACTION: MaterialItem / MR پیوندخورده حذف نمی‌شوند
+        var delItem = await Assert.ThrowsAsync<SqlException>(() => raw.Database.ExecuteSqlRawAsync("DELETE FROM MaterialItems WHERE MaterialItemId = {0}", item.MaterialItemId));
+        Assert.Contains("FK_PartCatalogueRequests_MaterialItems_MaterialItemId", delItem.Message);
+        var delMr = await Assert.ThrowsAsync<SqlException>(() => raw.Database.ExecuteSqlRawAsync("DELETE FROM MaterialRequisitions WHERE MRId = {0}", mr.MRId));
+        Assert.Contains("SourceMaterialRequisitionId", delMr.Message);
+
+        // MaterialCode یکتا و بدون حساسیت به حروف (Collation دیتابیس) ⇒ «چند MaterialItem با یک کد» در عمل ممکن نیست
+        var dup = await Assert.ThrowsAsync<DbUpdateException>(async () =>
+        {
+            await using var c2 = NewCtx();
+            c2.MaterialItems.Add(new MaterialItem { MaterialCode = "pn-9000", Description = "dup" });
+            await c2.SaveChangesAsync();
+        });
+        Assert.NotNull(dup.InnerException);
+    }
+}

@@ -1,0 +1,168 @@
+using Microsoft.EntityFrameworkCore;
+using PEMS.Application.DTOs;
+using PEMS.Application.Interfaces;
+using PEMS.Application.PartCatalogue;
+using PEMS.Domain.Entities;
+using PEMS.Persistence.Context;
+
+namespace PEMS.Persistence.Services;
+
+/// <summary>
+/// پیوند صریح و قابل‌ردیابی «درخواست تکمیل‌شده ↔ Material Master» و ثبت «منشأ تقاضا» با FKهای تایپ‌دار.
+/// قواعد: (۱) پیوند فقط وقتی MaterialCode دقیقاً با AssignedPartNumber برابر است (MaterialCode یکتاست) و هیچ
+/// بازنویسی/ادغام خودکاری وجود ندارد؛ (۲) هر پیوند در تاریخچه‌ی Append-only (PartCatalogueRequestApproval) ثبت می‌شود؛
+/// (۳) منشأ تقاضا: نوع از فهرست بسته، وجود، چرخه‌ی‌حیات و مجوز View ماژول مبدأ بررسی می‌شود و بیش از یک منشأ ممکن نیست.
+/// Roles از PcActor می‌آید (همان مرز امنیتی سایر عملیات این ماژول).
+/// </summary>
+public class PartCatalogueTraceabilityService : IPartCatalogueTraceabilityService
+{
+    private readonly PEMSDbContext _ctx;
+    private readonly IRoleModuleActionService _actions;
+
+    public PartCatalogueTraceabilityService(PEMSDbContext ctx, IRoleModuleActionService actions)
+    {
+        _ctx = ctx;
+        _actions = actions;
+    }
+
+    private Task<bool> HasAsync(PcActor a, string module, string action) => _actions.HasActionAsync(a.Roles, module, action);
+
+    /// <summary>پیوند Material Master = اقدام کاتالوگ‌نویس (Review) یا مدیر ماژول (Admin).</summary>
+    private async Task<bool> CanLinkAsync(PcActor a) =>
+        await HasAsync(a, PartCatalogueService.Module, "Admin") || await HasAsync(a, PartCatalogueService.Module, "Review");
+
+    // ------------------------------------------------------------------ پیوند Material Master
+
+    public async Task<PcLookupItem?> FindLinkCandidateAsync(int requestId, PcActor actor)
+    {
+        if (!await CanLinkAsync(actor)) return null;
+
+        var e = await _ctx.PartCatalogueRequests.AsNoTracking().FirstOrDefaultAsync(r => r.PartCatalogueRequestId == requestId);
+        if (e == null || e.Status != PartCatalogueStatuses.Completed || string.IsNullOrWhiteSpace(e.AssignedPartNumber)) return null;
+
+        var code = e.AssignedPartNumber.Trim();
+        var matches = await _ctx.MaterialItems.AsNoTracking()
+            .Where(m => m.IsActive && m.MaterialCode.ToUpper() == code.ToUpper())
+            .Select(m => new { m.MaterialItemId, m.MaterialCode, m.Description })
+            .Take(2).ToListAsync();
+
+        // ابهام (بیش از یک) هرگز کاندید نمی‌شود؛ MaterialCode یکتا است ولی دفاعی بررسی می‌شود
+        if (matches.Count != 1) return null;
+        var m1 = matches[0];
+        return new PcLookupItem { Id = m1.MaterialItemId, Code = m1.MaterialCode, Text = $"{m1.MaterialCode} - {m1.Description}" };
+    }
+
+    public async Task<PcResult> LinkMaterialItemAsync(int requestId, int materialItemId, PcActor actor)
+    {
+        if (!await CanLinkAsync(actor)) return PcResult.Fail("Id", "Pc_Err_NotAuthorized");
+
+        var e = await _ctx.PartCatalogueRequests.FirstOrDefaultAsync(r => r.PartCatalogueRequestId == requestId);
+        if (e == null || !e.IsActive) return PcResult.Fail("Id", "Pc_Err_NotFound");
+        if (e.Status != PartCatalogueStatuses.Completed || string.IsNullOrWhiteSpace(e.AssignedPartNumber))
+            return PcResult.Fail("Id", "Pc_Err_LinkNotCompleted");
+
+        var item = await _ctx.MaterialItems.AsNoTracking()
+            .Where(m => m.MaterialItemId == materialItemId)
+            .Select(m => new { m.MaterialItemId, m.MaterialCode, m.IsActive }).FirstOrDefaultAsync();
+        if (item == null || !item.IsActive) return PcResult.Fail("MaterialItemId", "Pc_Err_InvalidReference");
+
+        if (!PartCatalogueRules.CodesMatch(item.MaterialCode, e.AssignedPartNumber))
+            return PcResult.Fail("MaterialItemId", "Pc_Err_LinkCodeMismatch");
+
+        if (e.MaterialItemId == item.MaterialItemId) return PcResult.Ok();   // Idempotent
+        if (e.MaterialItemId.HasValue) return PcResult.Fail("MaterialItemId", "Pc_Err_AlreadyLinked");   // بدون جایگزینی بی‌صدا
+
+        e.MaterialItemId = item.MaterialItemId;
+        e.Approvals.Add(new PartCatalogueRequestApproval
+        {
+            StepKey = null,
+            Action = PartCatalogueActions.LinkMaterialItem,
+            ActorEmployeeId = actor.EmployeeId,
+            Comment = $"MaterialItem #{item.MaterialItemId} ({item.MaterialCode})",
+            FromStatus = e.Status,
+            ToStatus = e.Status,
+            ActionDate = DateTime.Now
+        });
+
+        try { await _ctx.SaveChangesAsync(); }
+        catch (DbUpdateConcurrencyException) { _ctx.ChangeTracker.Clear(); return PcResult.Fail("RowVersion", "Pc_Err_Concurrency"); }
+        return PcResult.Ok();
+    }
+
+    // ------------------------------------------------------------------ منشأ تقاضا
+
+    public async Task<PcResult> SetDemandOriginAsync(int requestId, PcDemandOriginInput? input, PcActor actor)
+    {
+        var e = await _ctx.PartCatalogueRequests.FirstOrDefaultAsync(r => r.PartCatalogueRequestId == requestId);
+        if (e == null || !e.IsActive) return PcResult.Fail("Id", "Pc_Err_NotFound");
+
+        // همان مرز ویرایش SaveAsync: فقط درخواست‌دهنده، فقط Draft/Returned، با مجوز Create
+        var editable = e.Status == PartCatalogueStatuses.Draft || e.Status == PartCatalogueStatuses.Returned;
+        if (e.RequesterEmployeeId != actor.EmployeeId || !editable || !await HasAsync(actor, PartCatalogueService.Module, "Create"))
+            return PcResult.Fail("Id", "Pc_Err_NotEditable");
+
+        if (input == null || string.IsNullOrWhiteSpace(input.Type))
+        {
+            ClearOrigin(e);
+            return await SaveAsync();
+        }
+
+        var type = PartCatalogueDemandOriginTypes.All.FirstOrDefault(t => string.Equals(t, input.Type.Trim(), StringComparison.OrdinalIgnoreCase));
+        if (type == null) return PcResult.Fail("Type", "Pc_Err_OriginTypeInvalid");
+        if (input.Id <= 0) return PcResult.Fail("Id", "Pc_Err_InvalidReference");
+
+        // وجود + چرخه‌ی‌حیات (مبدأ بسته/لغوشده/ردشده منشأ تقاضای جدید نیست) + مجوز View ماژول مبدأ
+        switch (type)
+        {
+            case PartCatalogueDemandOriginTypes.WorkOrder:
+            {
+                var wo = await _ctx.WorkOrders.AsNoTracking().Where(x => x.WorkOrderId == input.Id).Select(x => new { x.Status }).FirstOrDefaultAsync();
+                if (wo == null) return PcResult.Fail("Id", "Pc_Err_InvalidReference");
+                if (wo.Status is "Closed" or "Cancelled") return PcResult.Fail("Id", "Pc_Err_OriginClosed");
+                if (!await HasAsync(actor, "WorkOrder", "View")) return PcResult.Fail("Id", "Pc_Err_OriginNotAuthorized");
+                ClearOrigin(e);
+                e.SourceWorkOrderId = input.Id;
+                break;
+            }
+            case PartCatalogueDemandOriginTypes.StoreRequisition:
+            {
+                var sr = await _ctx.StoreRequisitions.AsNoTracking()
+                    .Where(x => x.StoreRequisitionId == input.Id).Select(x => new { x.Status, x.IsActive }).FirstOrDefaultAsync();
+                if (sr == null || !sr.IsActive) return PcResult.Fail("Id", "Pc_Err_InvalidReference");
+                if (sr.Status is StoreRequisitionStatuses.Closed or StoreRequisitionStatuses.Cancelled or StoreRequisitionStatuses.Rejected)
+                    return PcResult.Fail("Id", "Pc_Err_OriginClosed");
+                if (!await HasAsync(actor, "StoreRequisition", "View")) return PcResult.Fail("Id", "Pc_Err_OriginNotAuthorized");
+                ClearOrigin(e);
+                e.SourceStoreRequisitionId = input.Id;
+                break;
+            }
+            default:   // MaterialRequisition
+            {
+                var mr = await _ctx.MaterialRequisitions.AsNoTracking()
+                    .Where(x => x.MRId == input.Id).Select(x => new { x.Status, x.IsActive }).FirstOrDefaultAsync();
+                if (mr == null || !mr.IsActive) return PcResult.Fail("Id", "Pc_Err_InvalidReference");
+                if (mr.Status is "Closed" or "Cancelled") return PcResult.Fail("Id", "Pc_Err_OriginClosed");
+                if (!await HasAsync(actor, "MaterialRequisition", "View")) return PcResult.Fail("Id", "Pc_Err_OriginNotAuthorized");
+                ClearOrigin(e);
+                e.SourceMaterialRequisitionId = input.Id;
+                break;
+            }
+        }
+
+        return await SaveAsync();
+    }
+
+    private static void ClearOrigin(PartCatalogueRequest e)
+    {
+        e.SourceWorkOrderId = null;
+        e.SourceStoreRequisitionId = null;
+        e.SourceMaterialRequisitionId = null;
+    }
+
+    private async Task<PcResult> SaveAsync()
+    {
+        try { await _ctx.SaveChangesAsync(); }
+        catch (DbUpdateConcurrencyException) { _ctx.ChangeTracker.Clear(); return PcResult.Fail("RowVersion", "Pc_Err_Concurrency"); }
+        return PcResult.Ok();
+    }
+}

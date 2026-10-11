@@ -102,7 +102,10 @@ public static class AccessControlSeeder
             // مجوز را واقعاً چک می‌کنند هم باید مسیر AuthorizeAsync آگاه-از-کاربر را صدا بزنند).
             new { FirstResource = "Contracts", FirstAction = "Create", SecondResource = "Contracts", SecondAction = "Approve", Description = "کاربر نمی‌تواند قراردادی را که خودش ایجاد کرده، خودش تایید کند." },
             new { FirstResource = "Contracts", FirstAction = "Edit", SecondResource = "Contracts", SecondAction = "Approve", Description = "کاربر نمی‌تواند قراردادی را که خودش ویرایش کرده، خودش تایید کند." },
-            new { FirstResource = "ProcurementPackage", FirstAction = "Create", SecondResource = "ProcurementPackage", SecondAction = "Approve", Description = "کاربر نمی‌تواند Procurement Package ای را که خودش ایجاد کرده، خودش تایید کند." }
+            new { FirstResource = "ProcurementPackage", FirstAction = "Create", SecondResource = "ProcurementPackage", SecondAction = "Approve", Description = "کاربر نمی‌تواند Procurement Package ای را که خودش ایجاد کرده، خودش تایید کند." },
+            // Procurement Lifecycle WP-B: PO دستی با Draft ساخته می‌شود و صدور آن مجوز Approve می‌خواهد؛
+            // سازنده‌ی PO نباید خودش آن را صادر کند.
+            new { FirstResource = "PurchaseOrder", FirstAction = "Create", SecondResource = "PurchaseOrder", SecondAction = "Approve", Description = "کاربر نمی‌تواند Purchase Order ای را که خودش ایجاد کرده، خودش صادر (Issue) کند." }
         };
 
         foreach (var policy in defaultPolicies)

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
 using PEMS.Web.Security;
@@ -16,14 +17,16 @@ public class PurchaseOrderController : Controller
     private readonly IPermissionService _permissionService;
     private readonly ICurrentUserService _currentUser;
     private readonly PEMSDbContext _context;
+    private readonly IAccessControlService _accessControlService;
 
     public PurchaseOrderController(IPurchaseOrderService service, IPermissionService permissionService,
-        ICurrentUserService currentUser, PEMSDbContext context)
+        ICurrentUserService currentUser, PEMSDbContext context, IAccessControlService accessControlService)
     {
         _service = service;
         _permissionService = permissionService;
         _currentUser = currentUser;
         _context = context;
+        _accessControlService = accessControlService;
     }
 
     public async Task<IActionResult> Index()
@@ -48,6 +51,10 @@ public class PurchaseOrderController : Controller
 
         var po = await _service.GetByIdAsync(id);
         if (po == null) return NotFound();
+
+        // دکمه‌ی صدور فقط برای Draft و فقط برای دارنده‌ی Approve (نمایش؛ اجرای واقعی در Issue بررسی می‌شود)
+        ViewBag.CanIssue = po.Status == PEMS.Domain.Entities.PurchaseOrderStatuses.Draft
+            && await _permissionService.HasPermissionAsync(_currentUser.Roles, "PurchaseOrder", "Approve");
         return View(po);
     }
 
@@ -79,7 +86,54 @@ public class PurchaseOrderController : Controller
             return Forbid();
 
         var id = await _service.CreateAsync(poNumber, projectId, vendorId, contractId, description, value);
-        TempData["Message"] = "Purchase Order created";
+
+        // ثبت Allow در AuthorizationAuditLog تا سیاست SoD «Create ↔ Approve» بتواند صادرکننده را
+        // با سازنده‌ی همان PO مقایسه کند (همان الگوی ProcurementPackage)
+        if (_currentUser.UserId.HasValue)
+        {
+            await _accessControlService.AuthorizeAsync(new AccessControlRequest
+            {
+                UserId = _currentUser.UserId.Value,
+                ResourceName = "PurchaseOrder",
+                ActionName = "Create",
+                ResourceId = id.ToString(),
+                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString()
+            });
+        }
+
+        TempData["Message"] = "Purchase Order created as Draft";
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    /// <summary>
+    /// صدور PO (Draft → Issued). مجوز PurchaseOrder.Approve + SoD (سازنده‌ی PO نمی‌تواند خودش
+    /// آن را صادر کند). این مجوز در حال حاضر به هیچ نقشی داده نشده و SystemAdmin هم بای‌پس
+    /// ندارد (AccessControlService.RequiresExplicitGrant) - تا زمانی که سیاست سازمانی تعیین و
+    /// Grant صریح داده نشود، صدور PO جدید عمداً Fail-Closed است.
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Issue(int id)
+    {
+        var outcome = await ProtectedActionGuard.EvaluateAsync(
+            HttpContext, _permissionService, _accessControlService, _currentUser, "PurchaseOrder", "Approve", id.ToString());
+        if (outcome == ProtectedActionOutcome.DeniedBySoD)
+        {
+            TempData["Error"] = "طبق سیاست تفکیک وظایف، شما نمی‌توانید Purchase Order ای را که خودتان ایجاد کرده‌اید صادر کنید.";
+            return RedirectToAction(nameof(Details), new { id });
+        }
+        if (outcome != ProtectedActionOutcome.Allowed) return Forbid();
+
+        try
+        {
+            await _service.IssueAsync(id);
+            TempData["Message"] = "Purchase Order issued";
+        }
+        catch (InvalidOperationException ex)
+        {
+            TempData["Error"] = ex.Message;
+        }
+
         return RedirectToAction(nameof(Details), new { id });
     }
 }

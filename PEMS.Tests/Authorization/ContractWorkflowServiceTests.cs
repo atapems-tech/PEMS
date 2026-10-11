@@ -516,4 +516,51 @@ public class ContractWorkflowServiceTests
 
         Assert.True(result.Success);
     }
+
+    // ================= Procurement Lifecycle WP-B: SystemAdmin must not silently substitute =================
+
+    [Fact]
+    public async Task RecordDisciplineReview_BySystemAdmin_WithoutTheDisciplineRole_IsRejected()
+    {
+        var (ctx, workflow, _, contractId) = await CreateAsync(nameof(RecordDisciplineReview_BySystemAdmin_WithoutTheDisciplineRole_IsRejected));
+        await workflow.SubmitForReviewAsync(contractId, null, 1, new[] { SystemRoles.ContractManager });
+
+        var result = await workflow.RecordDisciplineReviewAsync(
+            contractId, "Legal", "Approve", null, 2, new[] { SystemRoles.SystemAdmin });
+
+        Assert.False(result.Success);
+        Assert.Equal("Pending", ctx.ContractDisciplineReviews.Single(x => x.ContractId == contractId && x.DisciplineRole == "Legal").Decision);
+    }
+
+    [Fact]
+    public async Task Approve_BySystemAdmin_WithConfiguredAuthorityRule_IsBlocked_WithoutTheRequiredRole()
+    {
+        var (ctx, workflow, _, contractId) = await CreateAsync(nameof(Approve_BySystemAdmin_WithConfiguredAuthorityRule_IsBlocked_WithoutTheRequiredRole));
+        ctx.ContractApprovalAuthorityRules.Add(new ContractApprovalAuthorityRule
+        {
+            MinValue = null, MaxValue = null, RequiredApproverRole = SystemRoles.ContractManager, IsActive = true, Priority = 0
+        });
+        await ctx.SaveChangesAsync();
+        await GetToUnderReviewFullyApprovedAsync(ctx, workflow, contractId);
+        var admin = await CreateUserWithRoleAsync(ctx, SystemRoles.SystemAdmin);
+
+        var result = await workflow.ApproveAsync(contractId, null, admin, 1, new[] { SystemRoles.SystemAdmin }, null);
+
+        Assert.False(result.Success);
+        Assert.NotEqual("Approved", ctx.Contracts.Single().Status);
+    }
+
+    [Fact]
+    public async Task Approve_BySystemAdmin_WithoutConfiguredRules_IsNotApproved_ByTheWorkflowRoleGate()
+    {
+        var (ctx, workflow, _, contractId) = await CreateAsync(nameof(Approve_BySystemAdmin_WithoutConfiguredRules_IsNotApproved_ByTheWorkflowRoleGate));
+        await GetToUnderReviewFullyApprovedAsync(ctx, workflow, contractId);
+        var admin = await CreateUserWithRoleAsync(ctx, SystemRoles.SystemAdmin);
+
+        // موتور گردش‌کار نقش مرحله‌ی FinalApproval را اجباری می‌کند و SystemAdmin جانشین آن نیست
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(
+            () => workflow.ApproveAsync(contractId, null, admin, 1, new[] { SystemRoles.SystemAdmin }, null));
+
+        Assert.NotEqual("Approved", ctx.Contracts.Single().Status);
+    }
 }

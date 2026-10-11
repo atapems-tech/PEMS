@@ -419,45 +419,66 @@ public class ProductionRunService : IProductionRunService
         return (true, null);
     }
 
-    public async Task<(bool Success, string? Error)> PostInputToInventoryAsync(
+    public Task<(bool Success, string? Error)> PostInputToInventoryAsync(
+        int productionInputId, int warehouseId, int? storageLocationId, int? actorEmployeeId)
+        // Phase 2 / P4: قفل سند + خواندن بعد از قفل؛ دو کلیک هم‌زمان روی همین سند فقط یک‌بار ثبت می‌شوند (جزئیات: PostingScope)
+        => PostingScope.RunAsync(_context, $"ProductionInput:{productionInputId}", () => PostInputCoreAsync(productionInputId, warehouseId, storageLocationId, actorEmployeeId));
+
+    private async Task<(bool Success, string? Error, bool Commit)> PostInputCoreAsync(
         int productionInputId, int warehouseId, int? storageLocationId, int? actorEmployeeId)
     {
         var input = await _context.ProductionInputs.Include(x => x.ProductionRun)
             .FirstOrDefaultAsync(x => x.ProductionInputId == productionInputId);
-        if (input == null) return (false, "ردیف ورودی یافت نشد.");
-        if (input.InventoryTransactionId.HasValue) return (false, "این ورودی قبلاً به موجودی ارسال شده است.");
+        if (input == null) return (false, "ردیف ورودی یافت نشد.", false);
+        if (input.InventoryTransactionId.HasValue) return (false, "این ورودی قبلاً به موجودی ارسال شده است.", false);
 
-        var stock = await _context.MaterialStocks.FirstOrDefaultAsync(x =>
-            x.MaterialItemId == input.MaterialItemId && x.WarehouseId == warehouseId && x.StorageLocationId == storageLocationId);
-        var currentQuantity = stock?.OnHandQuantity ?? 0;
-        var newQuantity = currentQuantity - input.Quantity;
+        // ثبت قبلی که لینکش ذخیره نشده (شکست بین دو ذخیره): از دفتر کل پیدا و فقط لینک می‌شود، ثبت دوباره نمی‌شود
+        var postedTx = await _materialStockService.GetLastTransactionIdAsync("ProductionInput", productionInputId);
+        if (postedTx.HasValue)
+        {
+            input.InventoryTransactionId = postedTx;
+            await _context.SaveChangesAsync();
+            return (false, "این ورودی قبلاً به موجودی ارسال شده است.", true);
+        }
 
-        if (newQuantity < 0)
-            return (false, $"موجودی کافی برای ارسال این مصرف به انبار وجود ندارد - موجودی فعلی: {currentQuantity}.");
-
+        // Phase 2 / P4: کلید کامل (متریال، انبار، محل)؛ ردیف‌های مبهم ⇒ خطای صریح. مصرف به‌صورت «کاهش نسبی» روی مقدار تازه‌ی ردیف ثبت می‌شود
+        // (AdjustByAsync) - قبلاً موجودی خوانده و مقدار مطلق نوشته می‌شد که با عملیات هم‌زمان دیگر روی همان ردیف Race داشت.
         // طبق «PEMS Operations Phase 2A» بخش ۱۰: اگر ماده‌ی مصرفی خودش از یک ProductionBatch
         // شناخته‌شده آمده باشد (SourceProductionBatchId - ژنالوژی فاز ۱)، همان هویت بچ روی
         // تراکنش موجودی هم ثبت می‌شود؛ در غیر این صورت Null می‌ماند (بدون حدس).
-        var (success, error) = await _materialStockService.AdjustAsync(
-            input.MaterialItemId, warehouseId, storageLocationId, newQuantity,
+        var (success, error) = await _materialStockService.AdjustByAsync(
+            input.MaterialItemId, warehouseId, storageLocationId, -input.Quantity,
             $"مصرف تولید - اجرای {input.ProductionRun?.RunNumber}", actorEmployeeId,
             referenceType: "ProductionInput", referenceId: input.ProductionInputId,
             productionBatchId: input.SourceProductionBatchId);
 
-        if (!success) return (false, error);
+        if (!success) return (false, error, false);
 
         input.InventoryTransactionId = await _materialStockService.GetLastTransactionIdAsync("ProductionInput", input.ProductionInputId);
         await _context.SaveChangesAsync();
-        return (true, null);
+        return (true, null, true);
     }
 
-    public async Task<(bool Success, string? Error)> PostOutputToInventoryAsync(
+    public Task<(bool Success, string? Error)> PostOutputToInventoryAsync(
+        int productionOutputId, int warehouseId, int? storageLocationId, int? actorEmployeeId)
+        // Phase 2 / P4: قفل سند + خواندن بعد از قفل؛ دو کلیک هم‌زمان روی همین سند فقط یک‌بار ثبت می‌شوند (جزئیات: PostingScope)
+        => PostingScope.RunAsync(_context, $"ProductionOutput:{productionOutputId}", () => PostOutputCoreAsync(productionOutputId, warehouseId, storageLocationId, actorEmployeeId));
+
+    private async Task<(bool Success, string? Error, bool Commit)> PostOutputCoreAsync(
         int productionOutputId, int warehouseId, int? storageLocationId, int? actorEmployeeId)
     {
         var output = await _context.ProductionOutputs.Include(x => x.ProductionBatch)
             .FirstOrDefaultAsync(x => x.ProductionOutputId == productionOutputId);
-        if (output == null) return (false, "ردیف خروجی یافت نشد.");
-        if (output.InventoryTransactionId.HasValue) return (false, "این خروجی قبلاً به موجودی ارسال شده است.");
+        if (output == null) return (false, "ردیف خروجی یافت نشد.", false);
+        if (output.InventoryTransactionId.HasValue) return (false, "این خروجی قبلاً به موجودی ارسال شده است.", false);
+
+        var postedTx = await _materialStockService.GetLastTransactionIdAsync("ProductionOutput", productionOutputId);
+        if (postedTx.HasValue)
+        {
+            output.InventoryTransactionId = postedTx;
+            await _context.SaveChangesAsync();
+            return (false, "این خروجی قبلاً به موجودی ارسال شده است.", true);
+        }
 
         // طبق «PEMS Operations Phase 2C — Production Safety Correction»: قبل از این تغییر، این
         // متد وضعیت کیفیت بچ را اصلاً بررسی نمی‌کرد - یک بچ Blocked/Rejected می‌توانست عیناً مثل
@@ -470,7 +491,7 @@ public class ProductionRunService : IProductionRunService
         if (output.ProductionBatch == null || output.ProductionBatch.QualityStatus != "Released")
         {
             var currentStatus = output.ProductionBatch?.QualityStatus ?? "نامشخص";
-            return (false, $"این خروجی قابل ارسال به موجودی نیست - بچ مربوطه هنوز Released نشده (وضعیت فعلی: {currentStatus}). فقط بچ‌های Released قابل ارسال به موجودی هستند.");
+            return (false, $"این خروجی قابل ارسال به موجودی نیست - بچ مربوطه هنوز Released نشده (وضعیت فعلی: {currentStatus}). فقط بچ‌های Released قابل ارسال به موجودی هستند.", false);
         }
 
         // طبق «PEMS Operations Phase 2A» بخش ۱۰: خروجی همیشه ProductionBatchId مشخص دارد
@@ -482,11 +503,11 @@ public class ProductionRunService : IProductionRunService
             referenceType: "ProductionOutput", referenceId: output.ProductionOutputId,
             productionBatchId: output.ProductionBatchId);
 
-        if (!success) return (false, error);
+        if (!success) return (false, error, false);
 
         output.InventoryTransactionId = await _materialStockService.GetLastTransactionIdAsync("ProductionOutput", output.ProductionOutputId);
         await _context.SaveChangesAsync();
-        return (true, null);
+        return (true, null, true);
     }
 
     public async Task<ProductionBatchDto?> GetBatchByIdAsync(int productionBatchId)

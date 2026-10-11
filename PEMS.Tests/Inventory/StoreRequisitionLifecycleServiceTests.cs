@@ -188,6 +188,45 @@ public class StoreRequisitionLifecycleServiceTests
         Assert.Equal(12, (await fx.Stock()).ReservedQuantity);
     }
 
+    // ------------------------------------------------------------------ Phase 2 / P4: ردیف موجودی مبهم
+
+    [Fact]
+    public async Task Reserve_WhenTheWarehouseHasDuplicateStockRows_FailsWithDiagnostics_AndChangesNothing()
+    {
+        var fx = await NewAsync();
+        fx.Db.MaterialStocks.Add(new MaterialStock { MaterialItemId = ItemA, WarehouseId = Wh, OnHandQuantity = 900 });   // ردیف تکراری بدون محل
+        await fx.Db.SaveChangesAsync();
+        Assert.True((await fx.Go("Submitted", Requester)).Success);
+        Assert.True((await fx.Go("Approved")).Success);
+
+        var r = await fx.Go("Reserved");
+
+        Assert.False(r.Success);
+        Assert.Contains("MaterialStockId", r.Error);
+        Assert.Empty(await fx.Db.MaterialReservations.ToListAsync());
+        Assert.Equal("Approved", (await fx.Req()).Status);
+        Assert.All(await fx.Db.MaterialStocks.AsNoTracking().Where(s => s.MaterialItemId == ItemA).ToListAsync(), s => Assert.Equal(0, s.ReservedQuantity));
+        Assert.DoesNotContain(await fx.Db.InventoryTransactions.ToListAsync(), t => t.TransactionType == "Reservation");
+    }
+
+    [Fact]
+    public async Task Reserve_WhenAnItemHasRowsInTwoLocationsOfTheWarehouse_IsAmbiguous_AndNeverPicksOne()
+    {
+        var fx = await NewAsync();
+        var loc = new StorageLocation { WarehouseId = Wh, Code = "L1", Name = "L1", IsActive = true };
+        fx.Db.StorageLocations.Add(loc);
+        await fx.Db.SaveChangesAsync();
+        fx.Db.MaterialStocks.Add(new MaterialStock { MaterialItemId = ItemA, WarehouseId = Wh, StorageLocationId = loc.StorageLocationId, OnHandQuantity = 900 });
+        await fx.Db.SaveChangesAsync();
+        Assert.True((await fx.Go("Submitted", Requester)).Success);
+        Assert.True((await fx.Go("Approved")).Success);
+
+        var r = await fx.Go("Reserved");
+
+        Assert.False(r.Success);
+        Assert.Empty(await fx.Db.MaterialReservations.ToListAsync());
+    }
+
     // ------------------------------------------------------------------ approved quantity
 
     [Fact]

@@ -3,6 +3,14 @@ using PEMS.Domain.Common;
 
 namespace PEMS.Domain.Entities;
 
+public static class PurchaseOrderStatuses
+{
+    public const string Draft = "Draft";
+    public const string Issued = "Issued";
+    public const string Closed = "Closed";
+    public const string Cancelled = "Cancelled";
+}
+
 public class PurchaseOrder : BaseEntity
 {
     [Key]
@@ -27,7 +35,10 @@ public class PurchaseOrder : BaseEntity
     public string? Currency { get; set; } = "USD";
 
     // Draft, Issued, Closed, Cancelled
-    public string Status { get; set; } = "Issued";
+    // پیش‌فرض Issued برای سازگاری با داده‌ی قدیمی و مسیرهای Import حفظ شده؛ PO های دستی جدید
+    // توسط PurchaseOrderService.CreateAsync با Draft ساخته می‌شوند و فقط با IssueAsync (مجوز
+    // Approve + SoD) به Issued می‌روند.
+    public string Status { get; set; } = PurchaseOrderStatuses.Issued;
 
     public bool IsActive { get; set; } = true;
 

@@ -94,7 +94,9 @@ public class ContractWorkflowService : IContractWorkflowService
             return (false, $"قرارداد در حال حاضر در مرحله‌ی بازبینی نیست (وضعیت فعلی: {contract.Status}).");
 
         var expectedRole = RoleForDiscipline(disciplineRole);
-        if (!actorRoles.Contains(expectedRole) && !actorRoles.Contains(SystemRoles.SystemAdmin))
+        // SystemAdmin عمداً جانشین نقش رشته نیست: بازبینی رشته‌ای تاییدیه‌ی مستقل است و Runtime هم با
+        // نقش رشته اجرا می‌شود؛ اگر SystemAdmin این نقش را ندارد باید صریحاً به او تخصیص داده شود.
+        if (!actorRoles.Contains(expectedRole))
             return (false, $"شما مجاز به ثبت بازبینی رشته‌ی {disciplineRole} نیستید.");
 
         var review = await _context.ContractDisciplineReviews
@@ -175,7 +177,8 @@ public class ContractWorkflowService : IContractWorkflowService
             if (matchingRule == null)
                 return (false, "هیچ قاعده‌ی ماتریس تایید پیکربندی‌شده‌ای با ارزش/بحرانی‌بودن این قرارداد مطابقت ندارد - تایید مسدود است تا این مورد پیکربندی شود.");
 
-            if (!actorRoles.Contains(matchingRule.RequiredApproverRole) && !actorRoles.Contains(SystemRoles.SystemAdmin))
+            // SystemAdmin عمداً مستثنی نیست: بدون نقش تعیین‌شده توسط ماتریس اختیار، تایید مسدود می‌ماند
+            if (!actorRoles.Contains(matchingRule.RequiredApproverRole))
                 return (false, $"طبق ماتریس تایید پیکربندی‌شده، این قرارداد نیازمند تایید نقش «{matchingRule.RequiredApproverRole}» است.");
         }
 

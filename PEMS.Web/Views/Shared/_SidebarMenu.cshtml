@@ -23,6 +23,8 @@
     var canAdminPartCatalogue = pcActions["Admin"];
 
     var canSeeQuickSetup = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "Setup", "View");
+    // Phase 2 / P5: توصیه‌های تأمین مجوزمحور است (ماژول ReplenishmentRecommendation)؛ بدون مجوز، لینک دیده نمی‌شود (Sidebar visible + denied = BAD)
+    var canSeeReplenishment = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "ReplenishmentRecommendation", "View");
     // Discipline Master Data: مجوزمحور (ماژول DisciplineMaster)، نه نقش-محور؛ بدون دادن بخش Administration کامل به نقش‌های غیرادمین
     var canSeeDisciplineMaster = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "DisciplineMaster", "View");
 
@@ -70,7 +72,7 @@
     var contractControllers = new[] { "Contract", "Vendor", "PurchaseOrder" };
     var projectControlControllers = new[] { "Task", "Tag", "Report", "Meeting" };
     var cmmsControllers = new[] { "Equipment", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "MaintenanceCalendar", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "Barcode", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
-    var inventoryControllers = new[] { "Inventory", "MaterialItem", "IrnReceipt", "InventoryMasterData", "InventoryTransaction", "StoreRequisition" };
+    var inventoryControllers = new[] { "Inventory", "MaterialItem", "IrnReceipt", "InventoryMasterData", "InventoryTransaction", "StoreRequisition", "Replenishment" };
     // طبق «PEMS Operations CMMS Boundary Correction»: Operations دیگر زیرمجموعه‌ی CMMS Integration
     // نیست - بخش سایدباری کاملاً مستقل خودش را دارد (دقیقاً هم‌الگو با جدایی Inventory & Materials
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
@@ -607,6 +609,13 @@
             <a class="nav-link @(IsActive("StoreRequisition", "Warehouse") ? "active" : "")" asp-controller="StoreRequisition" asp-action="Index" asp-area="Warehouse">
                 <i class="bi bi-clipboard-check"></i> @Localizer["Store Requisitions"]
             </a>
+
+            @if (canSeeReplenishment)
+            {
+            <a class="nav-link @(IsActive("Replenishment", "Warehouse") ? "active" : "")" asp-controller="Replenishment" asp-action="Index" asp-area="Warehouse">
+                <i class="bi bi-cart-plus"></i> @Localizer["Repl_Menu"]
+            </a>
+            }
 
             <a class="nav-link @(IsActive("InventoryMasterData", "Warehouse") ? "active" : "")" asp-controller="InventoryMasterData" asp-action="Index" asp-area="Warehouse">
                 <i class="bi bi-collection"></i> @Localizer["Master Data"]

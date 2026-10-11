@@ -470,6 +470,13 @@ builder.Services.AddScoped<INumberingService, NumberingService>();
 // Warehouse / Part Catalogue Request (درخواست کاتالوگ قطعه): تنظیمات + سرویس‌ها
 builder.Services.AddSingleton(builder.Configuration.GetSection(PartCatalogueOptions.SectionName).Get<PartCatalogueOptions>() ?? new PartCatalogueOptions());
 builder.Services.AddScoped<IPartCatalogueLookupService, PartCatalogueLookupService>();
+builder.Services.AddScoped<IPartCatalogueDuplicateService, PartCatalogueDuplicateService>();
+// Phase 2 (P1-P3): فقط‌خواندنی - موجودی قابل‌استفاده، جمع‌آوری تقاضا و نیاز خالص
+builder.Services.AddScoped<IUsableStockService, UsableStockService>();
+builder.Services.AddScoped<INetDemandCollector, NetDemandCollector>();
+builder.Services.AddScoped<INetDemandService, NetDemandService>();
+// Phase 2 / P5: توصیه‌های تأمین (اجرای دستی؛ فقط روی جدول‌های خودش می‌نویسد)
+builder.Services.AddScoped<IReplenishmentRecommendationService, ReplenishmentRecommendationService>();
 builder.Services.AddScoped<IPartCatalogueService, PartCatalogueService>();
 builder.Services.AddScoped<IPartCatalogueAdminService, PartCatalogueAdminService>();
 

@@ -1,0 +1,98 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using PEMS.Application.DTOs;
+using PEMS.Application.Interfaces;
+using PEMS.Web.Areas.Warehouse.Models;
+using PEMS.Web.Helpers;
+using PEMS.Web.Resources;
+
+namespace PEMS.Web.Areas.Warehouse.Controllers;
+
+/// <summary>
+/// جستجوی قطعه‌ی موجود/کاندید تکراری (JSON، فقط‌خواندنی) + پیوند Material Master + منشأ تقاضا. Controller نازک است؛
+/// مجوز و همه‌ی قواعد در سرویس‌ها اعمال می‌شود (IPartCatalogueDuplicateService / IPartCatalogueTraceabilityService).
+/// </summary>
+[Area("Warehouse")]
+public class PartCatalogueTraceabilityController : Controller
+{
+    private readonly IPartCatalogueDuplicateService _duplicates;
+    private readonly IPartCatalogueTraceabilityService _trace;
+    private readonly IRoleModuleActionService _actions;
+    private readonly ICurrentUserContext _user;
+    private readonly IStringLocalizer<SharedResource> _l;
+
+    public PartCatalogueTraceabilityController(IPartCatalogueDuplicateService duplicates, IPartCatalogueTraceabilityService trace,
+        IRoleModuleActionService actions, ICurrentUserContext user, IStringLocalizer<SharedResource> l)
+    {
+        _duplicates = duplicates;
+        _trace = trace;
+        _actions = actions;
+        _user = user;
+        _l = l;
+    }
+
+    private PcActor? Actor => _user.EmployeeId is int emp ? new PcActor(emp, _user.UserId, _user.Roles) : null;
+
+    private async Task<bool> AllowedAsync()
+    {
+        foreach (var a in new[] { "Create", "View", "Review", "Approve", "Admin" })
+            if (await _actions.HasActionAsync(_user.Roles, "PartCatalogue", a)) return true;
+        return false;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ExistingParts(string? q)
+    {
+        if (!await AllowedAsync()) return Forbid();
+        Response.Headers.CacheControl = "no-store";
+        return Json(await _duplicates.SearchExistingPartsAsync(q));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> DuplicateCandidates(string? manufacturerPartNumber, string? supplierPartNumber,
+        int? manufacturerId, string? newManufacturerName, int? excludeRequestId)
+    {
+        if (!await AllowedAsync()) return Forbid();
+        Response.Headers.CacheControl = "no-store";
+        return Json(await _duplicates.FindDuplicateCandidatesAsync(new PcDuplicateProbe
+        {
+            ManufacturerPartNumber = manufacturerPartNumber, SupplierPartNumber = supplierPartNumber,
+            ManufacturerId = manufacturerId, NewManufacturerName = newManufacturerName, ExcludeRequestId = excludeRequestId
+        }));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> LinkCandidate(int id)
+    {
+        var actor = Actor;
+        if (actor == null) return Forbid();
+        Response.Headers.CacheControl = "no-store";
+        return Json(await _trace.FindLinkCandidateAsync(id, actor));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> LinkMaterialItem(int id, int materialItemId)
+    {
+        var actor = Actor;
+        if (actor == null) { TempData["Error"] = _l["Pc_Err_NoEmployee"].Value; return RedirectToAction("Index", "Home", new { area = "" }); }
+        Flash(await _trace.LinkMaterialItemAsync(id, materialItemId, actor), "Pc_Msg_MaterialLinked");
+        return RedirectToAction("Details", "PartCatalogueRequest", new { area = "Warehouse", id });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetDemandOrigin(int id, string? type, int originId)
+    {
+        var actor = Actor;
+        if (actor == null) { TempData["Error"] = _l["Pc_Err_NoEmployee"].Value; return RedirectToAction("Index", "Home", new { area = "" }); }
+        Flash(await _trace.SetDemandOriginAsync(id, new PcDemandOriginInput { Type = type, Id = originId }, actor), "Pc_Msg_OriginSaved");
+        return RedirectToAction("Edit", "PartCatalogueRequest", new { area = "Warehouse", id });
+    }
+
+    private void Flash(PcResult r, string okKey)
+    {
+        if (r.Success) TempData["Message"] = _l[okKey].Value;
+        else TempData["Error"] = string.Join(" | ", PcMessages.FormatAll(_l, r.Errors));
+    }
+}

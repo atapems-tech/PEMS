@@ -48,7 +48,21 @@ public class StoreRequisitionLifecycleService : IStoreRequisitionLifecycleServic
 
     // ------------------------------------------------------------------ تراکنش + Idempotency + تلاش مجدد روی تعارض
 
-    private async Task<(bool Success, string? Error)> RunAsync(int id, string? requestKey, Func<Task<(bool Success, string? Error)>> operation)
+    // Phase 2 / P4 (Audit): برنامه با EnableRetryOnFailure اجرا می‌شود (Program.cs) و آن استراتژی تراکنش کاربر را فقط داخل
+    // strategy.ExecuteAsync می‌پذیرد؛ بدون این پوشش، BeginTransactionAsync در محیط واقعی InvalidOperationException می‌داد (تست‌ها بدون
+    // استراتژی بودند و آن را نمی‌دیدند). هر بار اجرای مجدد روی خطای گذرا از یک ChangeTracker تمیز شروع می‌شود؛ منطق داخلی (RequestKey،
+    // تلاش مجدد روی RowVersion) بدون تغییر است و برای اجرای دوباره ایمن است.
+    private Task<(bool Success, string? Error)> RunAsync(int id, string? requestKey, Func<Task<(bool Success, string? Error)>> operation)
+    {
+        var executions = 0;
+        return _context.Database.CreateExecutionStrategy().ExecuteAsync(() =>
+        {
+            if (++executions > 1) _context.ChangeTracker.Clear();
+            return RunAttemptsAsync(id, requestKey, operation);
+        });
+    }
+
+    private async Task<(bool Success, string? Error)> RunAttemptsAsync(int id, string? requestKey, Func<Task<(bool Success, string? Error)>> operation)
     {
         requestKey = string.IsNullOrWhiteSpace(requestKey) ? null : requestKey.Trim();
         if (requestKey is { Length: > 64 }) return (false, "کلید درخواست نامعتبر است.");
@@ -194,7 +208,10 @@ public class StoreRequisitionLifecycleService : IStoreRequisitionLifecycleServic
         }
 
         if (next is StoreRequisitionStatuses.Rejected or StoreRequisitionStatuses.Cancelled or StoreRequisitionStatuses.Closed)
-            await ReleaseRemainingAsync(req, by!.Value, reason);
+        {
+            var releaseError = await ReleaseRemainingAsync(req, by!.Value, reason);
+            if (releaseError != null) return Fail(releaseError);
+        }
 
         var historyReason = from is StoreRequisitionStatuses.PartiallyIssued or StoreRequisitionStatuses.Reserved && next == StoreRequisitionStatuses.Closed
             ? "CloseShort: " + reason + ShortfallNote(req)
@@ -216,8 +233,17 @@ public class StoreRequisitionLifecycleService : IStoreRequisitionLifecycleServic
             ChangedById = by, ChangedDate = DateTime.Now, Reason = reason, RequestKey = string.IsNullOrWhiteSpace(requestKey) ? null : requestKey.Trim()
         });
 
-    private Task<MaterialStock?> StockOfAsync(int materialItemId, int warehouseId) =>
-        _context.MaterialStocks.FirstOrDefaultAsync(x => x.MaterialItemId == materialItemId && x.WarehouseId == warehouseId && x.IsActive);
+    /// <summary>
+    /// Phase 2 / P4: رزرو/تحویل/آزادسازی در سطح (متریال، انبار) کار می‌کند و محل ندارد. بیش از یک ردیف فعال (تکراری یا چند محل) مبهم است:
+    /// قبلاً FirstOrDefault بدون ترتیب یکی را دلخواه برمی‌داشت (رزرو روی یک ردیف، تحویل روی ردیف دیگر)؛ اکنون خطای صریح بدون هیچ اثر.
+    /// </summary>
+    private async Task<(MaterialStock? Stock, string? Error)> StockOfAsync(int materialItemId, int warehouseId)
+    {
+        var lookup = await StockRowResolver.FindForWarehouseAsync(_context, materialItemId, warehouseId, activeOnly: true);
+        return lookup.IsAmbiguous
+            ? (null, StockRowResolver.AmbiguousMessage(materialItemId, warehouseId, null, lookup.CandidateIds))
+            : (lookup.Row, null);
+    }
 
     private async Task AddTransactionAsync(StoreRequisition req, int materialItemId, int warehouseId, string type, decimal qty, int by, string reason,
         int? lineId, MaterialReservation reservation) =>
@@ -245,7 +271,8 @@ public class StoreRequisitionLifecycleService : IStoreRequisitionLifecycleServic
             var needed = target - already;
             if (needed <= 0) continue;                      // Idempotent: همین خط قبلاً رزرو شده است
 
-            var stock = await StockOfAsync(line.MaterialItemId, req.WarehouseId);
+            var (stock, stockError) = await StockOfAsync(line.MaterialItemId, req.WarehouseId);
+            if (stockError != null) return stockError;
             if (stock == null || stock.AvailableQuantity < needed)
                 return $"موجودی قابل‌رزرو کافی نیست برای متریال شماره {line.MaterialItemId}.";
 
@@ -326,7 +353,8 @@ public class StoreRequisitionLifecycleService : IStoreRequisitionLifecycleServic
                 var take = Math.Min(toIssue, res.Quantity - res.IssuedQuantity);
                 if (take <= 0) continue;
 
-                var stock = await StockOfAsync(res.MaterialItemId, res.WarehouseId ?? req.WarehouseId);
+                var (stock, stockError) = await StockOfAsync(res.MaterialItemId, res.WarehouseId ?? req.WarehouseId);
+                if (stockError != null) return Fail(stockError);
                 if (stock == null) return Fail($"ردیف موجودی متریال {res.MaterialItemId} یافت نشد.");
                 if (stock.OnHandQuantity < take || stock.ReservedQuantity < take) return Fail($"موجودی/رزرو متریال {res.MaterialItemId} برای تحویل کافی نیست.");
 
@@ -361,7 +389,7 @@ public class StoreRequisitionLifecycleService : IStoreRequisitionLifecycleServic
 
     // ------------------------------------------------------------------ آزادسازی باقی‌مانده‌ی رزرو (Reject/Cancel/Close با کسری)
 
-    private async Task ReleaseRemainingAsync(StoreRequisition req, int by, string? reason)
+    private async Task<string?> ReleaseRemainingAsync(StoreRequisition req, int by, string? reason)
     {
         var lineIds = req.Lines.Select(l => l.StoreRequisitionLineId).ToList();
         var reservations = await _context.MaterialReservations
@@ -374,7 +402,8 @@ public class StoreRequisitionLifecycleService : IStoreRequisitionLifecycleServic
             var remaining = res.Quantity - res.IssuedQuantity;
             if (remaining > 0)
             {
-                var stock = await StockOfAsync(res.MaterialItemId, res.WarehouseId ?? req.WarehouseId);
+                var (stock, stockError) = await StockOfAsync(res.MaterialItemId, res.WarehouseId ?? req.WarehouseId);
+                if (stockError != null) return stockError;   // مبهم: آزادسازی روی ردیف دلخواه ممنوع؛ کل گذار متوقف (RunAsync تغییرات را Rollback می‌کند)
                 if (stock != null)
                 {
                     stock.ReservedQuantity = Math.Max(0, stock.ReservedQuantity - remaining);
@@ -387,5 +416,7 @@ public class StoreRequisitionLifecycleService : IStoreRequisitionLifecycleServic
 
             res.Status = res.IssuedQuantity > 0 ? MaterialReservationStatuses.FullyIssued : MaterialReservationStatuses.Released;
         }
+
+        return null;
     }
 }

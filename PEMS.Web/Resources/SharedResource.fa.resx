@@ -777,6 +777,15 @@
   <data name="Pc_Err_NotAuthorized" xml:space="preserve"><value>برای این اقدام مجوز ندارید.</value></data>
   <data name="Pc_Err_NotChangeRequest" xml:space="preserve"><value>این درخواست از نوع Change نیست.</value></data>
   <data name="Pc_Err_NotEditable" xml:space="preserve"><value>درخواست در وضعیت فعلی قابل ویرایش نیست.</value></data>
+  <data name="Pc_Dedup_Title" xml:space="preserve"><value>جستجوی قطعه‌ی موجود پیش از ثبت</value></data>
+  <data name="Pc_Dedup_Hint" xml:space="preserve"><value>پیش از ثبت قطعه‌ی جدید، قطعات تأییدشده را بررسی کنید. هیچ ادغام خودکاری انجام نمی‌شود؛ تصمیم با شماست.</value></data>
+  <data name="Pc_Dedup_SearchLabel" xml:space="preserve"><value>شماره‌ی قطعه، MPN یا شرح</value></data>
+  <data name="Pc_Dedup_Search" xml:space="preserve"><value>جستجو</value></data>
+  <data name="Pc_Dedup_Check" xml:space="preserve"><value>بررسی تکراری‌بودن MPN فرم</value></data>
+  <data name="Pc_Dedup_None" xml:space="preserve"><value>موردی یافت نشد.</value></data>
+  <data name="Pc_Dedup_Ambiguous" xml:space="preserve"><value>چند قطعه‌ی متمایز با همین MPN و سازنده وجود دارد؛ انتخاب خودکار انجام نمی‌شود.</value></data>
+  <data name="Pc_Dedup_InFlight" xml:space="preserve"><value>درخواست‌های در جریان دیگر با همین MPN:</value></data>
+  <data name="Pc_Dedup_Error" xml:space="preserve"><value>خطا در جستجو.</value></data>
   <data name="Pc_Err_NotFound" xml:space="preserve"><value>درخواست یافت نشد.</value></data>
   <data name="Pc_Err_NumberConflict" xml:space="preserve"><value>تداخل در شماره درخواست. دوباره تلاش کنید.</value></data>
   <data name="Pc_Err_NumberExists" xml:space="preserve"><value>شماره درخواست قبلاً تولید شده است.</value></data>
@@ -1207,4 +1216,57 @@
   <data name="MyWork_Stage_Planned" xml:space="preserve"><value>برنامه‌ریزی‌شده</value></data>
   <data name="MyWork_Stage_Submitted" xml:space="preserve"><value>ارسال‌شده</value></data>
   <data name="MyWork_Stage_UnderReview" xml:space="preserve"><value>در حال بررسی</value></data>
+  <data name="Repl_Menu" xml:space="preserve"><value>توصیه‌های تأمین</value></data>
+  <data name="Repl_StockOnlyNote" xml:space="preserve"><value>برآورد کمبود فقط بر پایه‌ی موجودی: تأمین ورودی (سفارش‌های خرید) مدل نشده است، پس ممکن است مقدار توصیه‌شده بیش از نیاز واقعی خرید باشد. توصیه‌ها صرفاً مشاوره‌ای هستند و هرگز درخواست، سفارش یا رزرو نمی‌سازند.</value></data>
+  <data name="Repl_SearchPlaceholder" xml:space="preserve"><value>کالا / انبار</value></data>
+  <data name="Repl_DefinitiveOnly" xml:space="preserve"><value>فقط قطعی</value></data>
+  <data name="Repl_Run" xml:space="preserve"><value>اجرای محاسبه</value></data>
+  <data name="Repl_LastRun" xml:space="preserve"><value>آخرین اجرا</value></data>
+  <data name="Repl_Evaluated" xml:space="preserve"><value>ارزیابی‌شده</value></data>
+  <data name="Repl_New" xml:space="preserve"><value>جدید</value></data>
+  <data name="Repl_Updated" xml:space="preserve"><value>به‌روز</value></data>
+  <data name="Repl_ClosedCount" xml:space="preserve"><value>بسته</value></data>
+  <data name="Repl_NotDefinitiveCount" xml:space="preserve"><value>غیرقطعی</value></data>
+  <data name="Repl_NotRecommended" xml:space="preserve"><value>توصیه‌نشده (و دلیل)</value></data>
+  <data name="Repl_Material" xml:space="preserve"><value>کالا</value></data>
+  <data name="Repl_Usable" xml:space="preserve"><value>موجودی قابل‌استفاده</value></data>
+  <data name="Repl_UnreservedDemand" xml:space="preserve"><value>تقاضای رزروناشده</value></data>
+  <data name="Repl_Shortage" xml:space="preserve"><value>کمبود</value></data>
+  <data name="Repl_NotDefinitive" xml:space="preserve"><value>غیرقطعی</value></data>
+  <data name="Repl_NotDefinitiveHint" xml:space="preserve"><value>آخرین محاسبه نتیجه‌ی قطعی نداد (موجودی مبهم یا چندمحلی، واحد ناسازگار یا تقاضای بدون انبار)؛ اعداد نمایش‌داده‌شده مربوط به اجرای قبلی است.</value></data>
+  <data name="Repl_NoItems" xml:space="preserve"><value>توصیه‌ای وجود ندارد.</value></data>
+  <data name="Repl_Revision" xml:space="preserve"><value>نسخه</value></data>
+  <data name="Repl_FirstDetected" xml:space="preserve"><value>نخستین شناسایی</value></data>
+  <data name="Repl_GrossDemand" xml:space="preserve"><value>تقاضای واجد شرایط</value></data>
+  <data name="Repl_Covered" xml:space="preserve"><value>پوشش‌داده‌شده با رزرو</value></data>
+  <data name="Repl_Notices" xml:space="preserve"><value>اطلاعیه‌ها</value></data>
+  <data name="Repl_DismissedAt" xml:space="preserve"><value>رد شده در</value></data>
+  <data name="Repl_ShortageAtDismissal" xml:space="preserve"><value>کمبود هنگام رد شدن</value></data>
+  <data name="Repl_ClosedReason" xml:space="preserve"><value>دلیل بسته شدن</value></data>
+  <data name="Repl_Reason" xml:space="preserve"><value>دلیل</value></data>
+  <data name="Repl_Dismiss" xml:space="preserve"><value>رد کردن</value></data>
+  <data name="Repl_Reopen" xml:space="preserve"><value>بازگشایی</value></data>
+  <data name="Repl_Note" xml:space="preserve"><value>یادداشت</value></data>
+  <data name="Repl_Sources" xml:space="preserve"><value>منابع تقاضا (نسخه‌ی جاری)</value></data>
+  <data name="Repl_SourceType" xml:space="preserve"><value>نوع</value></data>
+  <data name="Repl_SourceNumber" xml:space="preserve"><value>سند</value></data>
+  <data name="Repl_SourceSr" xml:space="preserve"><value>درخواست انبار</value></data>
+  <data name="Repl_SourceWo" xml:space="preserve"><value>دستور کار</value></data>
+  <data name="Repl_Restricted" xml:space="preserve"><value>محدود (مقدار شمرده شده است)</value></data>
+  <data name="Repl_NoSources" xml:space="preserve"><value>منبع تقاضایی وجود ندارد.</value></data>
+  <data name="Repl_History" xml:space="preserve"><value>تاریخچه</value></data>
+  <data name="Repl_Action" xml:space="preserve"><value>اقدام</value></data>
+  <data name="Repl_By" xml:space="preserve"><value>توسط</value></data>
+  <data name="Repl_System" xml:space="preserve"><value>سیستم</value></data>
+  <data name="Repl_Back" xml:space="preserve"><value>بازگشت به فهرست</value></data>
+  <data name="Repl_OnHand" xml:space="preserve"><value>موجود</value></data>
+  <data name="Repl_Reserved" xml:space="preserve"><value>رزرو</value></data>
+  <data name="Repl_CalculatedAt" xml:space="preserve"><value>محاسبه‌شده</value></data>
+  <data name="Repl_Freshness" xml:space="preserve"><value>تازگی ورودی‌ها</value></data>
+  <data name="Repl_StockUpdated" xml:space="preserve"><value>آخرین به‌روزرسانی موجودی</value></data>
+  <data name="Repl_DemandChanged" xml:space="preserve"><value>آخرین تغییر تقاضا</value></data>
+  <data name="Repl_Unknown" xml:space="preserve"><value>نامعلوم</value></data>
+  <data name="Repl_FreshnessDisclaimer" xml:space="preserve"><value>ورودی‌ها پشت‌سرهم و بدون Snapshot Isolation خوانده می‌شوند؛ پس این اطلاعات «به‌روز بودن» اعداد را اثبات نمی‌کند. «نامعلوم» یعنی زمان دست‌کم یکی از ورودی‌ها ثبت نشده است.</value></data>
+  <data name="Repl_RequiresAttribution" xml:space="preserve"><value>نیازمند تعیین انبار</value></data>
+  <data name="Repl_RequiresAttributionHelp" xml:space="preserve"><value>تقاضای مواد دستور کار انبار ندارد و هرگز با استنتاج به انبار نسبت داده نمی‌شود. تا زمانی که تعیین انبارِ تأییدشده وجود نداشته باشد، مواد مربوط در همین‌جا گزارش می‌شوند و برایشان توصیه‌ای ساخته نمی‌شود.</value></data>
 </root>

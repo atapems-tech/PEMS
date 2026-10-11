@@ -1,0 +1,33 @@
+﻿BEGIN TRANSACTION;
+ALTER TABLE [PartCatalogueRequests] ADD [MaterialItemId] int NULL;
+
+ALTER TABLE [PartCatalogueRequests] ADD [SourceMaterialRequisitionId] int NULL;
+
+ALTER TABLE [PartCatalogueRequests] ADD [SourceStoreRequisitionId] int NULL;
+
+ALTER TABLE [PartCatalogueRequests] ADD [SourceWorkOrderId] int NULL;
+
+CREATE INDEX [IX_PartCatalogueRequests_MaterialItemId] ON [PartCatalogueRequests] ([MaterialItemId]);
+
+CREATE INDEX [IX_PartCatalogueRequests_SourceMaterialRequisitionId] ON [PartCatalogueRequests] ([SourceMaterialRequisitionId]);
+
+CREATE INDEX [IX_PartCatalogueRequests_SourceStoreRequisitionId] ON [PartCatalogueRequests] ([SourceStoreRequisitionId]);
+
+CREATE INDEX [IX_PartCatalogueRequests_SourceWorkOrderId] ON [PartCatalogueRequests] ([SourceWorkOrderId]);
+
+ALTER TABLE [PartCatalogueRequests] ADD CONSTRAINT [CK_PartCatalogueRequests_SingleDemandOrigin] CHECK ((CASE WHEN [SourceWorkOrderId] IS NULL THEN 0 ELSE 1 END + CASE WHEN [SourceStoreRequisitionId] IS NULL THEN 0 ELSE 1 END + CASE WHEN [SourceMaterialRequisitionId] IS NULL THEN 0 ELSE 1 END) <= 1);
+
+ALTER TABLE [PartCatalogueRequests] ADD CONSTRAINT [FK_PartCatalogueRequests_MaterialItems_MaterialItemId] FOREIGN KEY ([MaterialItemId]) REFERENCES [MaterialItems] ([MaterialItemId]) ON DELETE NO ACTION;
+
+ALTER TABLE [PartCatalogueRequests] ADD CONSTRAINT [FK_PartCatalogueRequests_MaterialRequisitions_SourceMaterialRequisitionId] FOREIGN KEY ([SourceMaterialRequisitionId]) REFERENCES [MaterialRequisitions] ([MRId]) ON DELETE NO ACTION;
+
+ALTER TABLE [PartCatalogueRequests] ADD CONSTRAINT [FK_PartCatalogueRequests_StoreRequisitions_SourceStoreRequisitionId] FOREIGN KEY ([SourceStoreRequisitionId]) REFERENCES [StoreRequisitions] ([StoreRequisitionId]) ON DELETE NO ACTION;
+
+ALTER TABLE [PartCatalogueRequests] ADD CONSTRAINT [FK_PartCatalogueRequests_WorkOrders_SourceWorkOrderId] FOREIGN KEY ([SourceWorkOrderId]) REFERENCES [WorkOrders] ([WorkOrderId]) ON DELETE NO ACTION;
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20261009225034_PartCatalogueTraceability', N'10.0.10');
+
+COMMIT;
+GO
+

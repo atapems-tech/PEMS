@@ -491,10 +491,23 @@ public class WorkOrderController : Controller
 
         // طبق سند Inventory بخش ۹-۱۰: بدون انتخاب انبار در فرم فعلی، موجودترین انبار برای
         // این متریال انتخاب می‌شه - Transaction است که رکورد واقعی رو نگه می‌داره، نه این انتخاب.
+        // Phase 2 / P4: ترتیب قطعی (در تساوی کمترین MaterialStockId) و رد ردیف مبهم - قبلاً در تساوی ردیف دلخواه انتخاب می‌شد
         var stock = await _context.MaterialStocks
             .Where(x => x.MaterialItemId == materialItemId && x.IsActive)
             .OrderByDescending(x => x.OnHandQuantity - x.ReservedQuantity)
+            .ThenBy(x => x.MaterialStockId)
             .FirstOrDefaultAsync();
+
+        if (stock != null)
+        {
+            var exact = await PEMS.Persistence.Services.StockRowResolver.FindExactAsync(
+                _context, materialItemId, stock.WarehouseId, stock.StorageLocationId, activeOnly: true);
+            if (exact.IsAmbiguous)
+            {
+                TempData["Error"] = PEMS.Persistence.Services.StockRowResolver.AmbiguousMessage(materialItemId, stock.WarehouseId, stock.StorageLocationId, exact.CandidateIds);
+                return RedirectToAction(nameof(Details), new { id = workOrderId });
+            }
+        }
 
         if (stock == null || stock.AvailableQuantity < quantity)
         {
@@ -523,7 +536,18 @@ public class WorkOrderController : Controller
         stock.OnHandQuantity -= quantity;
         stock.LastUpdated = DateTime.Now;
 
-        await _context.SaveChangesAsync();
+        try
+        {
+            // یک SaveChanges (یک تراکنش): مصرف + تراکنش Issue + کسر موجودی با هم ذخیره می‌شوند یا هیچ‌کدام
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            _context.ChangeTracker.Clear();
+            TempData["Error"] = "موجودی هم‌زمان توسط عملیات دیگری تغییر کرد و مصرف ثبت نشد؛ هیچ تغییری ذخیره نشد. دوباره تلاش کنید.";
+            return RedirectToAction(nameof(Details), new { id = workOrderId });
+        }
+
         TempData["Message"] = "مصرف قطعه ثبت شد" + (stock.IsLowStock ? " - هشدار: موجودی این متریال کمه." : "");
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }
@@ -543,49 +567,18 @@ public class WorkOrderController : Controller
             return RedirectToAction(nameof(Details), new { id = workOrderId });
         }
 
-        var usage = await _context.MaintenanceSpareUsages
-            .Include(x => x.MaterialItem)
-            .FirstOrDefaultAsync(x => x.MaintenanceSpareUsageId == maintenanceSpareUsageId);
-
-        if (usage == null) return NotFound();
-
-        var alreadyReturned = usage.ReturnedQuantity ?? 0;
-        var outstanding = usage.Quantity - alreadyReturned;
-
-        if (returnQuantity > outstanding)
-        {
-            TempData["Error"] = $"حداکثر مقدار قابل‌برگشت {outstanding} است.";
-            return RedirectToAction(nameof(Details), new { id = workOrderId });
-        }
-
-        var stock = await _context.MaterialStocks
-            .Where(x => x.MaterialItemId == usage.MaterialItemId && x.IsActive)
-            .OrderByDescending(x => x.OnHandQuantity)
-            .FirstOrDefaultAsync();
-
-        if (stock == null)
-        {
-            TempData["Error"] = "رکورد موجودی این متریال پیدا نشد.";
-            return RedirectToAction(nameof(Details), new { id = workOrderId });
-        }
-
+        // Phase 2 / P4: مقصد برگشت از تراکنش Issue همان مصرف (انبار/محل مبدأ) خوانده می‌شود، نه «بیشترین موجودی»؛ Usage و موجودی و تراکنش در یک SaveChanges
         var employeeId = await GetCurrentEmployeeIdAsync();
+        var (success, error, notFound) = await PEMS.Persistence.Services.WorkOrderSpareReturn.ReturnAsync(
+            _context, maintenanceSpareUsageId, workOrderId, returnQuantity, reason, employeeId);
 
-        var (success, error) = await _materialStockService.ReturnAsync(
-            usage.MaterialItemId, stock.WarehouseId, stock.StorageLocationId, returnQuantity,
-            reason ?? $"برگشت از WorkOrder #{workOrderId}", employeeId);
+        if (notFound) return NotFound();
 
         if (!success)
         {
             TempData["Error"] = error;
             return RedirectToAction(nameof(Details), new { id = workOrderId });
         }
-
-        usage.ReturnedQuantity = alreadyReturned + returnQuantity;
-        if (usage.UnitCost.HasValue)
-            usage.TotalCost = usage.UnitCost.Value * (usage.Quantity - usage.ReturnedQuantity.Value);
-
-        await _context.SaveChangesAsync();
 
         TempData["Message"] = "برگشت قطعه ثبت شد.";
         return RedirectToAction(nameof(Details), new { id = workOrderId });

@@ -33,7 +33,7 @@ public class PurchaseOrderControllerAuthorizationTests
 
         var currentUser = new FakeCurrentUserService { UserId = 1, Roles = role != null ? new List<string> { role } : new List<string>() };
         var service = new PurchaseOrderService(ctx);
-        var controller = new PurchaseOrderController(service, permissionService, currentUser, ctx).WithTempData();
+        var controller = new PurchaseOrderController(service, permissionService, currentUser, ctx, accessControl).WithTempData();
 
         return (controller, ctx);
     }

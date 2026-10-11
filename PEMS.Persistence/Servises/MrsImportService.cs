@@ -433,8 +433,11 @@ public class MrsImportService : IMrsImportService
 
             foreach (var row in chunk)
             {
+                // Phase 2 / P4 closure (Workstream C): Attach(row) یک Graph-Attach است و از روی row.Batch → Batch.Rows (و row.Metadata) کل Batch را
+                // (۵۰۰۰ ردیف + ۶ برابر آن با Metadata) در هر بلوک دوباره ردیابی می‌کرد؛ هر SaveChanges هم روی همه‌ی آن‌ها DetectChanges/Audit
+                // اجرا می‌کرد ⇒ رشد درجه‌ی دو (اندازه‌گیری: ۶۶ ثانیه ⇒ ۲.۹ ثانیه برای ۵۰۰۰ ردیف). Entry().State فقط همین یک Entity را ردیابی می‌کند.
                 if (_context.Entry(row).State == EntityState.Detached)
-                    _context.MrsImportRows.Attach(row);
+                    _context.Entry(row).State = EntityState.Unchanged;
 
                 if (row.MatchStatus == "Invalid") { skipped++; continue; }
 
@@ -576,58 +579,72 @@ public class MrsImportService : IMrsImportService
 
                 if (row.ResolvedWarehouseId.HasValue)
                 {
-                    var stock = existingStocks.FirstOrDefault(x => x.MaterialItemId == materialItemId && x.WarehouseId == row.ResolvedWarehouseId.Value);
+                    // Phase 2 / P4: چند ردیف فعال NULL-location برای یک (متریال، انبار) ⇒ انتخاب دلخواه ممنوع؛ متریال ساخته می‌شود ولی موجودی/تراکنشی
+                    // برای این ردیف ثبت نمی‌شود و خطای صریح روی ردیف می‌ماند (همان الگوی «انبار تشخیص داده نشد»).
+                    var stockCandidates = existingStocks
+                        .Where(x => x.MaterialItemId == materialItemId && x.WarehouseId == row.ResolvedWarehouseId.Value)
+                        .OrderBy(x => x.MaterialStockId).Take(5).ToList();
 
-                    if (stock == null)
+                    if (stockCandidates.Count > 1)
                     {
-                        stock = new MaterialStock
-                        {
-                            MaterialItemId = materialItemId,
-                            WarehouseId = row.ResolvedWarehouseId.Value,
-                            OnHandQuantity = 0,
-                            ReservedQuantity = 0,
-                            IsActive = true,
-                            CreatedDate = DateTime.Now
-                        };
-                        _context.MaterialStocks.Add(stock);
-                        existingStocks.Add(stock);
+                        row.ErrorMessage = StockRowResolver.AmbiguousMessage(
+                            materialItemId, row.ResolvedWarehouseId.Value, null, stockCandidates.Select(x => x.MaterialStockId).ToList());
                     }
-
-                    if (row.RawQtyReceived is > 0)
+                    else
                     {
-                        lastTransaction = new InventoryTransaction
-                        {
-                            MaterialItemId = materialItemId,
-                            WarehouseId = row.ResolvedWarehouseId.Value,
-                            TransactionType = "Receipt",
-                            Quantity = row.RawQtyReceived.Value,
-                            ReferenceType = "MrsImport",
-                            ReferenceId = batchId,
-                            TransactionDate = row.RawDateReceived ?? batch.ImportDate,
-                            Reason = $"MRS Import - {row.RawMrsNo}"
-                        };
-                        _context.InventoryTransactions.Add(lastTransaction);
-                        stock.OnHandQuantity += row.RawQtyReceived.Value;
-                    }
+                        var stock = stockCandidates.SingleOrDefault();
 
-                    if (row.RawQtyIssued is > 0)
-                    {
-                        lastTransaction = new InventoryTransaction
+                        if (stock == null)
                         {
-                            MaterialItemId = materialItemId,
-                            WarehouseId = row.ResolvedWarehouseId.Value,
-                            TransactionType = "Issue",
-                            Quantity = row.RawQtyIssued.Value,
-                            ReferenceType = "MrsImport",
-                            ReferenceId = batchId,
-                            TransactionDate = row.RawDateIssued ?? batch.ImportDate,
-                            Reason = $"MRS Import - {row.RawMrsNo}"
-                        };
-                        _context.InventoryTransactions.Add(lastTransaction);
-                        stock.OnHandQuantity -= row.RawQtyIssued.Value;
-                    }
+                            stock = new MaterialStock
+                            {
+                                MaterialItemId = materialItemId,
+                                WarehouseId = row.ResolvedWarehouseId.Value,
+                                OnHandQuantity = 0,
+                                ReservedQuantity = 0,
+                                IsActive = true,
+                                CreatedDate = DateTime.Now
+                            };
+                            _context.MaterialStocks.Add(stock);
+                            existingStocks.Add(stock);
+                        }
 
-                    stock.LastUpdated = DateTime.Now;
+                        if (row.RawQtyReceived is > 0)
+                        {
+                            lastTransaction = new InventoryTransaction
+                            {
+                                MaterialItemId = materialItemId,
+                                WarehouseId = row.ResolvedWarehouseId.Value,
+                                TransactionType = "Receipt",
+                                Quantity = row.RawQtyReceived.Value,
+                                ReferenceType = "MrsImport",
+                                ReferenceId = batchId,
+                                TransactionDate = row.RawDateReceived ?? batch.ImportDate,
+                                Reason = $"MRS Import - {row.RawMrsNo}"
+                            };
+                            _context.InventoryTransactions.Add(lastTransaction);
+                            stock.OnHandQuantity += row.RawQtyReceived.Value;
+                        }
+
+                        if (row.RawQtyIssued is > 0)
+                        {
+                            lastTransaction = new InventoryTransaction
+                            {
+                                MaterialItemId = materialItemId,
+                                WarehouseId = row.ResolvedWarehouseId.Value,
+                                TransactionType = "Issue",
+                                Quantity = row.RawQtyIssued.Value,
+                                ReferenceType = "MrsImport",
+                                ReferenceId = batchId,
+                                TransactionDate = row.RawDateIssued ?? batch.ImportDate,
+                                Reason = $"MRS Import - {row.RawMrsNo}"
+                            };
+                            _context.InventoryTransactions.Add(lastTransaction);
+                            stock.OnHandQuantity -= row.RawQtyIssued.Value;
+                        }
+
+                        stock.LastUpdated = DateTime.Now;
+                    }
                 }
                 else
                 {

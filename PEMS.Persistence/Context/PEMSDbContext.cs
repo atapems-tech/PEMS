@@ -126,6 +126,12 @@ public class PEMSDbContext
     public DbSet<MaterialStock> MaterialStocks { get; set; }
     public DbSet<InventoryTransaction> InventoryTransactions { get; set; }
     public DbSet<MaterialReservation> MaterialReservations { get; set; }
+
+    // Phase 2 / P5 - توصیه‌های تأمین (فقط‌خواندن از موجودی/تقاضا؛ هیچ MR/PO/رزرویی نمی‌سازد)
+    public DbSet<NetDemandRun> NetDemandRuns { get; set; }
+    public DbSet<ReplenishmentRecommendation> ReplenishmentRecommendations { get; set; }
+    public DbSet<ReplenishmentRecommendationSource> ReplenishmentRecommendationSources { get; set; }
+    public DbSet<ReplenishmentRecommendationHistory> ReplenishmentRecommendationHistories { get; set; }
     public DbSet<StoreRequisition> StoreRequisitions { get; set; }
 
     // ---- Warehouse: درخواست کاتالوگ قطعه (Part Catalogue Request)

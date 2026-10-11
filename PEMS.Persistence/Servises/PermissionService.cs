@@ -354,6 +354,14 @@ public class PermissionService : IPermissionService
             New(SystemRoles.EngineeringManager, "DisciplineMaster", create: true, edit: true)
         });
 
+        // Phase 2 / P5 - توصیه‌های تأمین (تأیید مالک): فقط «مدیر انبار» View+Create+Edit (اجرای محاسبه و رد/بازگشایی). این الگو فقط ردیف نقشِ غایب را اضافه می‌کند و
+        // تنظیم دستی مدیر را بازنویسی نمی‌کند. سه نقش دیگرِ تأییدشده (کارمند انبار / تدارکات / برنامه‌ریز نگهداری) تا روشن‌شدن شناسه‌ی دقیق نقش
+        // عمداً اینجا نیستند - docs/procurement/P5_REPLENISHMENT_RECOMMENDATIONS.md بخش «Role assignments». هیچ مجوز Approve/Delete، خرید یا رزرو داده نمی‌شود.
+        await SeedMissingRolesAsync("ReplenishmentRecommendation", new List<RolePermission>
+        {
+            New(RoleCatalog.WarehouseManager, "ReplenishmentRecommendation", create: true, edit: true)
+        });
+
         // Correspondence (مکاتبات رسمی)
         await SeedMissingRolesAsync("Correspondence", new List<RolePermission>
         {

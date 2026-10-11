@@ -58,7 +58,48 @@ public class AccessControlService : IAccessControlService
         return decision;
     }
 
+    public async Task RecordDenialAsync(int? userId, string resourceName, string actionName, string? resourceId, string? ipAddress,
+        AccessDecisionReason reason, string detail)
+    {
+        if (reason == AccessDecisionReason.Allow)
+            throw new ArgumentException("RecordDenialAsync only records denials.", nameof(reason));
+
+        _context.AuthorizationAuditLogs.Add(new AuthorizationAuditLog
+        {
+            UserId = userId,
+            ResourceName = resourceName,
+            ActionName = actionName,
+            ResourceId = resourceId,
+            Decision = reason.ToString(),
+            Reason = detail,
+            IpAddress = ipAddress,
+            Timestamp = DateTime.Now
+        });
+        await _context.SaveChangesAsync();
+    }
+
     private record RoleGrant(int RoleId, string RoleName, string ScopeType, string? ScopeValue);
+
+    /// <summary>
+    /// اقداماتی که «بای‌پس سراسری SystemAdmin» شامل آن‌ها نمی‌شود و حتی SystemAdmin هم باید
+    /// RolePermissionGrant صریح (و قابل‌ممیزی) برای آن داشته باشد؛ در مسیر کاربر-آگاه، SoD هم
+    /// روی آن اعمال می‌شود. (۱) Break-Glass موجود: ExecutionGate.EmergencyOverride و تمام
+    /// WorkflowManagement. (۲) تاییدیه‌های مستقل چرخه‌ی تدارکات که SystemAdmin نباید بی‌صدا جای
+    /// تاییدکننده‌ی مستقل را بگیرد: ProcurementPackage / Tender / PurchaseOrder / Contracts با
+    /// Approve. هیچ Grant برای SystemAdmin Seed نمی‌شود (Fail-Closed)؛ دسترسی اضطراری فقط با
+    /// Grant صریح و ثبت‌شده توسط مدیر دارای اختیار ممکن است.
+    /// </summary>
+    public static bool RequiresExplicitGrant(string resourceName, string actionName)
+    {
+        if (resourceName == "ExecutionGate" && actionName == "EmergencyOverride") return true;
+        if (resourceName == "WorkflowManagement") return true;
+        return actionName == "Approve" && ExplicitGrantApprovalResources.Contains(resourceName);
+    }
+
+    private static readonly HashSet<string> ExplicitGrantApprovalResources = new(StringComparer.Ordinal)
+    {
+        "ProcurementPackage", "Tender", "PurchaseOrder", "Contracts"
+    };
 
     /// <summary>
     /// طبق سند بخش ۱۱ (Scope-Based Access) + بخش ۱۰ (Separation of Duties) - مسیر کامل و
@@ -71,9 +112,7 @@ public class AccessControlService : IAccessControlService
     {
         var grants = await ResolveUserRoleGrantsAsync(userId);
 
-        var isBreakGlassAction = (resourceName == "ExecutionGate" && actionName == "EmergencyOverride")
-            || resourceName == "WorkflowManagement"; // Phase 4: مدیریت گردش‌کار همیشه Grant صریح می‌خواهد (حتی SystemAdmin)
-        if (!isBreakGlassAction && grants.Any(g => g.RoleName == SystemRoles.SystemAdmin))
+        if (!RequiresExplicitGrant(resourceName, actionName) && grants.Any(g => g.RoleName == SystemRoles.SystemAdmin))
             return AccessDecision.Allow(SystemRoles.SystemAdmin, "SystemAdmin bypass");
 
         var permission = await _context.Permissions
@@ -166,10 +205,7 @@ public class AccessControlService : IAccessControlService
     {
         // طبق بند ۱۲ سند PEMS-SEC-PERMIT-AUTH-001: یک نقش SystemAdmin عادی نباید به‌طور خودکار
         // اختیار Break-Glass داشته باشد - حتی SystemAdmin باید یک RolePermissionGrant صریح داشته باشد
-        var isBreakGlassAction = (resourceName == "ExecutionGate" && actionName == "EmergencyOverride")
-            || resourceName == "WorkflowManagement"; // Phase 4: مدیریت گردش‌کار همیشه Grant صریح می‌خواهد (حتی SystemAdmin)
-
-        if (!isBreakGlassAction && roleNames.Contains(SystemRoles.SystemAdmin))
+        if (!RequiresExplicitGrant(resourceName, actionName) && roleNames.Contains(SystemRoles.SystemAdmin))
             return AccessDecision.Allow(SystemRoles.SystemAdmin, "SystemAdmin bypass");
 
         var permission = await _context.Permissions

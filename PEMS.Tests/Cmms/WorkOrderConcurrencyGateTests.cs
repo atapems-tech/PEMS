@@ -166,7 +166,8 @@ public class WorkOrderConcurrencyGateTests : IAsyncLifetime
             var s = await SnapshotAsync(id);
             try
             {
-                Assert.True(r.Count(x => x.Success) == 1, $"successes={r.Count(x => x.Success)}");
+                // تشخیص: علت واقعی باخت هر دو رقیب (خطای سرویس یا استثنا) در پیام می‌آید تا شکست‌های گاه‌به‌گاه زیر بار قابل ریشه‌یابی باشند
+                Assert.True(r.Count(x => x.Success) == 1, $"successes={r.Count(x => x.Success)} outcomes=[{string.Join(" ; ", r.Select(o => o.Success ? "ok" : (o.Error ?? o.Thrown?.GetType().Name + ": " + o.Thrown?.Message)))}]");
                 Assert.True(s.Instances == 1 && s.StartRows == 1, $"instances={s.Instances} start={s.StartRows}");
                 Assert.True(s.ApproveRows == 1 && s.Histories == 2, $"approve={s.ApproveRows} hist={s.Histories}");        // Start + دقیقاً یک Approve
                 Assert.True(s.BusinessRows == 1 || s.BusinessRows == 2, $"biz={s.BusinessRows}");
