@@ -320,6 +320,7 @@ builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationConsistenc
 // (ترتیب ثبت DI مهم نیست چون Scoped/Constructor Injection است، ولی همین‌جا برای خوانایی کنار هم آمدند)
 builder.Services.AddScoped<IWorkOrderReleaseGateService, WorkOrderReleaseGateService>();
 builder.Services.AddScoped<IWorkOrderLifecycleService, WorkOrderLifecycleService>();
+builder.Services.AddScoped<IWorkOrderSectionGuard, WorkOrderSectionGuard>();
 builder.Services.AddScoped<IPMGenerationService, PMGenerationService>();
 builder.Services.AddScoped<IRcmOperationalBridgeService, RcmOperationalBridgeService>();
 builder.Services.AddScoped<IStoreRequisitionLifecycleService, StoreRequisitionLifecycleService>();
@@ -477,6 +478,8 @@ builder.Services.AddScoped<INetDemandCollector, NetDemandCollector>();
 builder.Services.AddScoped<INetDemandService, NetDemandService>();
 // Phase 2 / P5: توصیه‌های تأمین (اجرای دستی؛ فقط روی جدول‌های خودش می‌نویسد)
 builder.Services.AddScoped<IReplenishmentRecommendationService, ReplenishmentRecommendationService>();
+// دروازه‌ی موقت P5: پیش‌فرض غیرفعال تا اعمال Migration تأییدشده؛ فقط Features:ReplenishmentRecommendations:Enabled=true فعال می‌کند
+builder.Services.AddSingleton<PEMS.Web.Security.IReplenishmentAvailability, PEMS.Web.Security.ReplenishmentAvailability>();
 builder.Services.AddScoped<IPartCatalogueService, PartCatalogueService>();
 builder.Services.AddScoped<IPartCatalogueAdminService, PartCatalogueAdminService>();
 
@@ -487,6 +490,11 @@ builder.Services.AddScoped<IFunctionalLocationService, FunctionalLocationService
 builder.Services.AddScoped<IJobPlanService, JobPlanService>();
 
 // طبق CMMS Production Baseline v1 بند P0-05 (CMMS-03: Work Management)
+// A3: تفکیک وظایف Work Request - پیش‌فرض روشن؛ برای خاموش کردن: "Cmms": { "WorkRequest": { "EnforceSegregationOfDuties": false } } (SystemAdmin همیشه فقط با ممیزی Override می‌کند)
+builder.Services.AddSingleton(new PEMS.Application.Common.WorkRequestPolicyOptions
+{
+    EnforceSegregationOfDuties = bool.TryParse(builder.Configuration["Cmms:WorkRequest:EnforceSegregationOfDuties"], out var enforceSod) ? enforceSod : true
+});
 builder.Services.AddScoped<IWorkRequestService, WorkRequestService>();
 
 builder.Services.AddScoped<IUserDashboardService, UserDashboardService>();
@@ -546,6 +554,14 @@ builder.Services.AddScoped<ISparePartService, SparePartService>();
 builder.Services.AddScoped<IMaintenancePlanService, MaintenancePlanService>();
 
 builder.Services.AddScoped<IMaintenanceStrategyService, MaintenanceStrategyService>();
+
+// RCM کلاس‌محور: الگوی استراتژی + تخصیص به تگ + Plan از تخصیص + پوشش + کاتالوگ حالت خرابی ISO 14224
+builder.Services.AddScoped<IMaintenanceStrategyCommandService, MaintenanceStrategyCommandService>();
+builder.Services.AddScoped<IStrategyAssignmentService, StrategyAssignmentService>();
+builder.Services.AddScoped<IMaintenancePlanCommandService, MaintenancePlanCommandService>();
+builder.Services.AddScoped<IStrategyCoverageService, StrategyCoverageService>();
+builder.Services.AddScoped<IFailureModeCatalogService, FailureModeCatalogService>();
+builder.Services.AddScoped<IStrategyImportService, StrategyImportService>();
 
 builder.Services.AddScoped<IDisciplineWorkspaceService, DisciplineWorkspaceService>();
 
@@ -791,6 +807,9 @@ using (var scope = app.Services.CreateScope())
     // Release را از Start Work جدا می‌کند (Instance های در حال اجرا روی نسخه‌ی قبلی دست‌نخورده می‌مانند).
     await PEMS.Persistence.Seed.WorkOrderLifecycleWorkflowV2Seeder.SeedAsync(scope.ServiceProvider);
 
+    // H28: مجوز جدای بازگشایی Work Order بسته‌شده (Idempotent، فقط افزایشی)
+    await PEMS.Persistence.Seed.WorkOrderReopenPermissionSeeder.SeedAsync(scope.ServiceProvider);
+
     await PEMS.Persistence.Seed.WorkflowManagementSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق «PEMS Bilingual Help & Knowledge System» - کتابخانه‌ی اولیه‌ی محتوای راهنما (ایدمپوتنت)
@@ -808,6 +827,9 @@ using (var scope = app.Services.CreateScope())
 
     // طبق ممیزی Material Management (Gap B) + Step 3: زنجیره‌ی تایید Disposition دریافت مادی (IRN)
     await PEMS.Persistence.Seed.IrnDispositionWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // RCM: گردش‌کار تایید استراتژی نگهداری (Draft → InReview → Approved) روی همان موتور مرکزی
+    await PEMS.Persistence.Seed.MaintenanceStrategyWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق ممیزی Package Procurement Contract Finalization §D: گردش‌کار نهایی‌سازی قرارداد
     await PEMS.Persistence.Seed.ContractWorkflowSeeder.SeedAsync(scope.ServiceProvider);

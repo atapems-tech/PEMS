@@ -6,6 +6,7 @@
 @inject IPermissionService PermissionService
 @inject IRoleModuleActionService RoleActions
 @inject ICurrentUserService CurrentUserService
+@inject IReplenishmentAvailability ReplenishmentAvailability
 @inject PEMS.Web.Security.NavigationVisibilityResolver NavigationVisibilityResolver
 @{
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
@@ -24,7 +25,8 @@
 
     var canSeeQuickSetup = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "Setup", "View");
     // Phase 2 / P5: توصیه‌های تأمین مجوزمحور است (ماژول ReplenishmentRecommendation)؛ بدون مجوز، لینک دیده نمی‌شود (Sidebar visible + denied = BAD)
-    var canSeeReplenishment = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "ReplenishmentRecommendation", "View");
+    // دروازه‌ی موقت P5: وقتی غیرفعال است (پیش‌فرض) هیچ بررسی مجوزی برای P5 انجام نمی‌شود (&& کوتاه‌شونده) و لینک نمایش داده نمی‌شود
+    var canSeeReplenishment = ReplenishmentAvailability.IsEnabled && await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "ReplenishmentRecommendation", "View");
     // Discipline Master Data: مجوزمحور (ماژول DisciplineMaster)، نه نقش-محور؛ بدون دادن بخش Administration کامل به نقش‌های غیرادمین
     var canSeeDisciplineMaster = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "DisciplineMaster", "View");
 
@@ -71,7 +73,7 @@
     var qualityControllers = new[] { "QC", "MOC" };
     var contractControllers = new[] { "Contract", "Vendor", "PurchaseOrder" };
     var projectControlControllers = new[] { "Task", "Tag", "Report", "Meeting" };
-    var cmmsControllers = new[] { "Equipment", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "MaintenanceCalendar", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "Barcode", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
+    var cmmsControllers = new[] { "Equipment", "Instrument", "Asset", "MaintenanceStrategy", "FailureModeCatalog", "StrategyImport", "MaintenancePlan", "MaintenanceCalendar", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "Barcode", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
     var inventoryControllers = new[] { "Inventory", "MaterialItem", "IrnReceipt", "InventoryMasterData", "InventoryTransaction", "StoreRequisition", "Replenishment" };
     // طبق «PEMS Operations CMMS Boundary Correction»: Operations دیگر زیرمجموعه‌ی CMMS Integration
     // نیست - بخش سایدباری کاملاً مستقل خودش را دارد (دقیقاً هم‌الگو با جدایی Inventory & Materials

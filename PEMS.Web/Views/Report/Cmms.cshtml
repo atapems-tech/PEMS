@@ -16,7 +16,7 @@
     <form method="get" class="row g-2">
         <div class="col-md-3">
             <select name="status" class="form-select form-select-sm">
-                <option value="">@Localizer["All Statuses"]</option>
+                <option value="">@Localizer["All statuses"]</option>
                 @foreach (var s in new[] { "Open", "Assigned", "InProgress", "Completed", "Closed" })
                 { <option value="@s" selected="@(s == (string)ViewBag.SelectedStatus)">@s</option> }
             </select>

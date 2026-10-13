@@ -75,14 +75,39 @@ public class VendorController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Vendor vendor)
+    public async Task<IActionResult> Create(
+        [Bind("Name,VendorCode,Country,ContactName,ContactEmail,ContactPhone")] Vendor vendor)
     {
         if (!await EnsurePermissionAsync("Create", "شما مجاز به ثبت وندور جدید نیستید."))
             return RedirectToAction(nameof(Index));
 
-        await _service.CreateAsync(vendor);
-        TempData["Message"] = "Vendor created successfully";
-        return RedirectToAction(nameof(Index));
+        // P0 / F-01: [Bind] فقط فیلدهای مجاز فرم را می‌پذیرد و CreateAsync هم مستقل از Binding موجودیت جدید می‌سازد
+        // (دفاع در عمق)؛ پس وضعیت صلاحیت/ریسک/فعال‌بودن هرگز از POST گرفته نمی‌شود.
+        // خطا هم در ModelState و هم در TempData["Error"] (Toast سراسری Layout) ثبت می‌شود؛ فرم ورودی کاربر حفظ می‌شود.
+        if (string.IsNullOrWhiteSpace(vendor.Name))
+        {
+            ModelState.AddModelError(nameof(Vendor.Name), "نام فروشنده الزامی است.");
+            TempData["Error"] = "نام فروشنده الزامی است.";
+        }
+
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                await _service.CreateAsync(vendor);
+                TempData["Message"] = "Vendor created successfully";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                TempData["Error"] = ex.Message;
+            }
+        }
+
+        ViewData["Title"] = "New Vendor";
+        ViewData["Section"] = "Contract Management";
+        return View(vendor);
     }
 
     [HttpGet]

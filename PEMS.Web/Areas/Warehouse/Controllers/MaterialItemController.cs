@@ -66,6 +66,10 @@ public class MaterialItemController : Controller
         int? vendorId, string? specification, string? model, string? size, string? materialGrade,
         bool isStockItem, bool isCritical)
     {
+        // P0 / F-04: تعریف ماده‌ی جدید در Material Master مجوز Create ماژول MaterialItem می‌خواهد (همان مجوزی که ReceiveStock دارد)
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaterialItem", "Create"))
+            return Forbid();
+
         var (success, error, itemId) = await _materialItemService.CreateAsync(
             materialCode, description, materialType, longDescription, categoryId, disciplineId, uomId,
             manufacturer, manufacturerPartNumber, vendorId, specification, model, size, materialGrade,
@@ -109,6 +113,10 @@ public class MaterialItemController : Controller
         int? vendorId, string? specification, string? model, string? size, string? materialGrade,
         bool isStockItem, bool isCritical)
     {
+        // P0 / F-04: ویرایش Material Master مجوز Edit ماژول MaterialItem می‌خواهد
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaterialItem", "Edit"))
+            return Forbid();
+
         var (success, error) = await _materialItemService.UpdateAsync(
             materialItemId, materialCode, description, materialType, longDescription, categoryId, disciplineId,
             uomId, manufacturer, manufacturerPartNumber, vendorId, specification, model, size, materialGrade,
@@ -122,6 +130,10 @@ public class MaterialItemController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleActive(int id)
     {
+        // P0 / F-04: فعال/غیرفعال‌کردن ماده مجوز Edit ماژول MaterialItem می‌خواهد
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaterialItem", "Edit"))
+            return Forbid();
+
         await _materialItemService.ToggleActiveAsync(id, _currentUser.UserName);
         TempData["Message"] = "وضعیت متریال به‌روزرسانی شد.";
         return RedirectToAction(nameof(Index));
@@ -149,6 +161,11 @@ public class MaterialItemController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AdjustStock(int materialItemId, int warehouseId, decimal newOnHandQuantity, string? reason)
     {
+        // P0 / F-04: اصلاح مستقیم موجودی (مقدار مطلق OnHand) پیش از این هیچ بررسی مجوزی نداشت. کمترین مجوز موجود و هم‌معنا:
+        // MaterialItem.Edit (نقش‌های هم‌الگو با InventoryMasterData). مجوز اختصاصی «اصلاح موجودی» تصمیم سیاستی جدا و باز است.
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaterialItem", "Edit"))
+            return Forbid();
+
         var (success, error) = await _materialStockService.AdjustAsync(
             materialItemId, warehouseId, null, newOnHandQuantity, reason, await GetCurrentEmployeeIdAsync());
 
@@ -160,6 +177,10 @@ public class MaterialItemController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> TransferStock(int materialItemId, int fromWarehouseId, int toWarehouseId, decimal quantity, string? reason)
     {
+        // P0 / F-04: انتقال موجودی بین انبارها همان مجوز MaterialItem.Edit را می‌خواهد (دلیل بالا)
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaterialItem", "Edit"))
+            return Forbid();
+
         var (success, error) = await _materialStockService.TransferAsync(
             materialItemId, fromWarehouseId, null, toWarehouseId, null, quantity, reason, await GetCurrentEmployeeIdAsync());
 

@@ -82,23 +82,33 @@ public class NumberingService : INumberingService
 
         var scope = string.IsNullOrWhiteSpace(scopeKey) ? config.DefaultScope() : scopeKey;
 
-        var strategy = _context.Database.CreateExecutionStrategy();
-
-        var value = await strategy.ExecuteAsync(async () =>
+        int value;
+        if (_context.Database.CurrentTransaction != null)
         {
-            await using var transaction = await _context.Database.BeginTransactionAsync();
-            try
+            // A7 (بدون حفره): فراخوان یک تراکنش بازِ مشترک با ثبت خودِ سند دارد؛ افزایش شمارنده در همان تراکنش انجام می‌شود، پس اگر ثبت سند شکست بخورد
+            // (Rollback) شماره هم برمی‌گردد و حفره‌ای ایجاد نمی‌شود. ردیف شمارنده تا Commit قفل می‌ماند، پس ثبت‌های هم‌زمان سریالی و بدون تکرار هستند.
+            // (فراخوان باید خودش داخل CreateExecutionStrategy().ExecuteAsync باشد؛ اینجا Retry/Commit نمی‌کنیم.)
+            value = await IncrementAsync(documentType, scope, config, ambient: true);
+        }
+        else
+        {
+            var strategy = _context.Database.CreateExecutionStrategy();
+            value = await strategy.ExecuteAsync(async () =>
             {
-                var next = await IncrementAsync(documentType, scope, config);
-                await transaction.CommitAsync();
-                return next;
-            }
-            catch
-            {
-                await transaction.RollbackAsync();
-                throw;
-            }
-        });
+                await using var transaction = await _context.Database.BeginTransactionAsync();
+                try
+                {
+                    var next = await IncrementAsync(documentType, scope, config);
+                    await transaction.CommitAsync();
+                    return next;
+                }
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            });
+        }
 
         var padded = value.ToString().PadLeft(config.PadWidth, '0');
 
@@ -107,7 +117,7 @@ public class NumberingService : INumberingService
             : $"{config.Prefix}-{padded}";
     }
 
-    private async Task<int> IncrementAsync(string documentType, string scope, Config config)
+    private async Task<int> IncrementAsync(string documentType, string scope, Config config, bool ambient = false)
     {
         const int maxAttempts = 3;
 
@@ -139,9 +149,10 @@ public class NumberingService : INumberingService
                 await _context.SaveChangesAsync();
                 return 1;
             }
-            catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex) && attempt < maxAttempts)
+            catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex) && attempt < maxAttempts && !ambient)
             {
                 // هم‌زمان یک درخواست دیگر همین ردیف را ساخت؛ دور بعد UPDATE موفق می‌شود.
+                // (در تراکنش مشترک فراخوان، Clear() موجودیت‌های فراخوان را هم می‌پراند؛ آنجا خطا بالا می‌رود و فراخوان کل تراکنش را دوباره اجرا می‌کند.)
                 _context.ChangeTracker.Clear();
             }
         }

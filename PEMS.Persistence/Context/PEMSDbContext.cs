@@ -110,6 +110,8 @@ public class PEMSDbContext
 
 
     public DbSet<MaintenanceStrategy> MaintenanceStrategies { get; set; }
+    public DbSet<MaintenanceStrategyAssignment> MaintenanceStrategyAssignments { get; set; }
+    public DbSet<MaintenanceStrategyHistory> MaintenanceStrategyHistories { get; set; }
     public DbSet<MaintenancePlan> MaintenancePlans { get; set; }
     public DbSet<WorkOrder> WorkOrders { get; set; }
     public DbSet<MaintenanceHistory> MaintenanceHistories { get; set; }
@@ -401,6 +403,7 @@ public class PEMSDbContext
 
     // طبق PEMS_CMMS_ARCHITECTURE.md بخش ۸: تاریخچه‌ی تغییر وضعیت WorkOrder (چه‌کسی/چه‌زمانی/چرا)
     public DbSet<WorkOrderStatusHistory> WorkOrderStatusHistories { get; set; }
+    public DbSet<WorkOrderChangeLog> WorkOrderChangeLogs { get; set; }
 
     // ==============================================================================
     // Workflow Platform (فاز A) - این DbSet ها اینترفیس IWorkflowDbContext (تعریف‌شده در
@@ -555,6 +558,10 @@ public class PEMSDbContext
     }
 
 
+    private static readonly HashSet<string> NeverAuditedProperties = new(StringComparer.Ordinal) { "SecurityStamp", "ConcurrencyStamp", "RowVersion" };
+    private static readonly HashSet<string> MaskedAuditProperties = new(StringComparer.Ordinal) { "PasswordHash" };
+    private static readonly HashSet<string> SecuritySensitiveEntities = new(StringComparer.Ordinal) { "ApplicationUser", "IdentityUserRole`1", "RoleAssignment", "RolePermissionGrant", "ApplicationRole" };
+
     private List<PendingAudit> PrepareAuditEntries()
     {
         var pending = new List<PendingAudit>();
@@ -588,11 +595,15 @@ public class PEMSDbContext
                 foreach (var prop in entry.Properties)
                 {
                     if (!prop.IsModified) continue;
+                    // E24: مقادیر محرمانه/فنی هرگز در ممیزی ذخیره نمی‌شوند (قبلاً هش رمز قبل→بعد در ChangedFieldsSummary می‌ماند)
+                    if (NeverAuditedProperties.Contains(prop.Metadata.Name)) continue;
 
                     var oldVal = prop.OriginalValue?.ToString() ?? "null";
                     var newVal = prop.CurrentValue?.ToString() ?? "null";
 
                     if (oldVal == newVal) continue;
+
+                    if (MaskedAuditProperties.Contains(prop.Metadata.Name)) { changes.Add($"{prop.Metadata.Name}: [changed]"); continue; }
 
                     changes.Add($"{prop.Metadata.Name}: {oldVal} -> {newVal}");
                 }
@@ -601,6 +612,17 @@ public class PEMSDbContext
                     continue; // چیزی واقعاً تغییر نکرده، نیازی به ثبت نیست
 
                 changedSummary = string.Join(" | ", changes);
+            }
+
+            // E24: ایجاد/حذف موجودیت‌های امنیتی (کاربر، نقش کاربر، تخصیص نقش، مجوز نقش) مقدار فیلدهای غیرمحرمانه را هم ثبت می‌کند (چه کسی/چه چیزی/چه زمانی)
+            if (entry.State != EntityState.Modified && SecuritySensitiveEntities.Contains(entityName))
+            {
+                var values = entry.Properties
+                    .Where(pr => pr.Metadata.ClrType.IsPrimitive || pr.Metadata.ClrType == typeof(string) || pr.Metadata.ClrType == typeof(int?) || pr.Metadata.ClrType == typeof(bool?) || pr.Metadata.ClrType == typeof(DateTime) || pr.Metadata.ClrType == typeof(DateTime?))
+                    .Where(pr => !NeverAuditedProperties.Contains(pr.Metadata.Name) && !MaskedAuditProperties.Contains(pr.Metadata.Name))
+                    .Select(pr => $"{pr.Metadata.Name}={(entry.State == EntityState.Deleted ? pr.OriginalValue : pr.CurrentValue)}");
+                changedSummary = string.Join("; ", values);
+                if (changedSummary.Length > 1000) changedSummary = changedSummary[..1000];
             }
 
             string? knownKey = null;

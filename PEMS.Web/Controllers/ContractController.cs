@@ -141,25 +141,53 @@ public class ContractController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Create"))
             return Forbid();
 
-        var id = await _service.CreateAsync(contractNo, projectId, vendorId, scope, value, startDate, endDate, requiresInspection);
+        var ip = GetClientIp();
 
-        // طبق §F: این فراخوان یک ردیف Allow در AuthorizationAuditLog ثبت می‌کند تا اگر همین
-        // کاربر بعداً بخواهد همین قرارداد را Approve کند، بررسی SoD در ContractWorkflowService.
-        // ApproveAsync آن را پیدا کند و مسدودش کند (دقیقاً همون الگوی EngineeringDocumentsController).
-        if (_currentUser.UserId.HasValue)
+        // P0.4 / H-1: بدون هویت احرازشده نه ایجادکننده قابل‌انتساب است نه SoD قابل‌ارزیابی؛ قرارداد ساخته نمی‌شود (قبلاً رویداد بی‌صدا نوشته نمی‌شد).
+        if (!_currentUser.UserId.HasValue)
         {
-            await _accessControlService.AuthorizeAsync(new AccessControlRequest
-            {
-                UserId = _currentUser.UserId.Value,
-                ResourceName = "Contracts",
-                ActionName = "Create",
-                ResourceId = id.ToString(),
-                IpAddress = GetClientIp()
-            });
+            try { await _accessControlService.RecordDenialAsync(null, "Contracts", "Create", null, ip, AccessDecisionReason.DeniedByPolicy, "شناسه‌ی کاربر احرازهویت‌شده در دسترس نیست."); }
+            catch (Exception) { /* شکست ثبت ممیزی هرگز به Allow تبدیل نمی‌شود */ }
+            return Forbid();
         }
 
-        TempData["Message"] = "Contract created successfully";
-        return RedirectToAction(nameof(Details), new { id });
+        // P0.4 / H-1: مجوز آگاه-از-کاربر (Fail-Closed، پیش از هر درج)، تراکنش واحد قرارداد + AuditLog + رویداد «Contracts/Create/Allow» برای همین کاربر، و قفل
+        // شماره‌ی قرارداد - همه داخل سرویس (همان قفل و تراکنش مسیر مناقصه). قبلاً رویداد بعد از Commit با AuthorizeAsync نوشته می‌شد، نتیجه‌اش نادیده گرفته
+        // می‌شد و استثنای آن قرارداد را بی‌رویداد (SoD کور) می‌گذاشت.
+        var result = await _service.CreateWithCreatorEventAsync(contractNo, projectId, vendorId, scope, value, startDate, endDate,
+            requiresInspection, _currentUser.UserId.Value, ip);
+
+        if (result.AuthorizationDenied)
+            return Forbid();
+
+        if (result.AuthorizationIndeterminate)
+        {
+            TempData["Error"] = result.Error;
+            return RedirectToAction(nameof(Create));
+        }
+
+        if (result.OutcomeUnknown)
+        {
+            // Commit نامطمئن بود و بررسی بعدی هم وضعیت را روشن نکرد: هرگز «ساخته نشد» نمی‌گوییم
+            TempData["Error"] = result.Error;
+            return RedirectToAction(nameof(Index));
+        }
+
+        if (!result.Success)
+        {
+            // P0: شماره‌ی خالی/تکراری، مبلغ منفی، بازه‌ی تاریخ نامعتبر یا شکست ذخیره (Rollback کامل) - ردِ قابل‌فهم به‌جای ثبت رکورد نامعتبر
+            TempData["Error"] = result.Error;
+            return RedirectToAction(nameof(Create));
+        }
+
+        if (result.CreatorEvent == ContractCreatorEventStatus.NotRecorded)
+            TempData["Error"] = "قرارداد ساخته شد، اما رویداد «ایجادکننده‌ی قرارداد» ثبت نشد (فقط در Provider بدون تراکنش ممکن است)؛ برای ترمیم با مدیر سیستم تماس بگیرید.";
+        else if (result.RecoveredAfterUncertainCommit)
+            TempData["Message"] = "Contract created successfully (the commit result was uncertain and was confirmed by re-reading the database; no duplicate was created)";
+        else
+            TempData["Message"] = "Contract created successfully";
+
+        return RedirectToAction(nameof(Details), new { id = result.ContractId });
     }
 
     // طبق §D (Phase 2.2): جایگزین رشته‌ی آزاد قدیمی - فقط همین چند گذار مشخص و اعتبارسنجی‌شده
@@ -199,6 +227,8 @@ public class ContractController : Controller
         return RedirectToAction(nameof(Details), new { id = contractId });
     }
 
+    private const string WorkflowDenialMessage = "نقش شما در این مرحله‌ی گردش‌کار قرارداد مجاز نیست.";
+
     private async Task<(bool Success, string? Error)> SubmitForReviewInternalAsync(int contractId)
     {
         var employeeId = await GetCurrentEmployeeIdAsync();
@@ -213,8 +243,17 @@ public class ContractController : Controller
             return Forbid();
 
         var employeeId = await GetCurrentEmployeeIdAsync();
-        var result = await _workflowService.RecordDisciplineReviewAsync(
-            contractId, disciplineRole, decision, comment, employeeId, _currentUser.Roles);
+        (bool Success, string? Error) result;
+        try
+        {
+            result = await _workflowService.RecordDisciplineReviewAsync(
+                contractId, disciplineRole, decision, comment, employeeId, _currentUser.Roles);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            // P0: ردِ نقش/مرحله در موتور گردش‌کار باید Fail-Closed و با پیام قابل‌فهم باشد، نه HTTP 500
+            result = (false, WorkflowDenialMessage);
+        }
 
         if (!result.Success) TempData["Error"] = result.Error;
         else TempData["Message"] = "تصمیم بازبینی ثبت شد.";
@@ -231,8 +270,17 @@ public class ContractController : Controller
         if (!_currentUser.UserId.HasValue) return Forbid();
 
         var employeeId = await GetCurrentEmployeeIdAsync();
-        var result = await _workflowService.ApproveAsync(
-            contractId, comment, _currentUser.UserId.Value, employeeId, _currentUser.Roles, GetClientIp());
+        (bool Success, string? Error) result;
+        try
+        {
+            result = await _workflowService.ApproveAsync(
+                contractId, comment, _currentUser.UserId.Value, employeeId, _currentUser.Roles, GetClientIp());
+        }
+        catch (UnauthorizedAccessException)
+        {
+            // P0: نقش کاربر مجاز به مرحله‌ی «تایید نهایی» گردش‌کار نیست (مثلاً SystemAdmin بدون نقش مرحله) - رد با پیام، بدون 500
+            result = (false, WorkflowDenialMessage);
+        }
 
         if (!result.Success) TempData["Error"] = result.Error;
         else TempData["Message"] = "قرارداد تایید شد.";
@@ -248,7 +296,15 @@ public class ContractController : Controller
             return Forbid();
 
         var employeeId = await GetCurrentEmployeeIdAsync();
-        var result = await _workflowService.RejectAsync(contractId, comment, employeeId, _currentUser.Roles);
+        (bool Success, string? Error) result;
+        try
+        {
+            result = await _workflowService.RejectAsync(contractId, comment, employeeId, _currentUser.Roles);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            result = (false, WorkflowDenialMessage);
+        }
 
         if (!result.Success) TempData["Error"] = result.Error;
         else TempData["Message"] = "قرارداد رد شد و به Draft بازگشت.";

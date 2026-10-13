@@ -123,6 +123,44 @@ public class UsersController : Controller
         }
     }
 
+    /// <summary>C16: همان اعتبارسنج‌های Identity (کاربر + رمز) را پیش از ساخت کارمند/کاربر اجرا می‌کند و نقش‌های نامعتبر را رد می‌کند.</summary>
+    private async Task ValidateIdentityUpFrontAsync(UserFormViewModel model)
+    {
+        var probe = new ApplicationUser { UserName = model.UserName, Email = model.Email, FullName = model.FullName };
+        foreach (var validator in _userManager.UserValidators)
+        {
+            var r = await validator.ValidateAsync(_userManager, probe);
+            foreach (var e in r.Errors) ModelState.AddModelError(string.Empty, e.Description);
+        }
+        if (!string.IsNullOrWhiteSpace(model.Password))
+            foreach (var validator in _userManager.PasswordValidators)
+            {
+                var r = await validator.ValidateAsync(_userManager, probe, model.Password);
+                foreach (var e in r.Errors) ModelState.AddModelError(nameof(model.Password), e.Description);
+            }
+        var invalidRoles = model.SelectedRoles.Where(r => !model.AllRoles.Contains(r)).ToList();
+        if (invalidRoles.Count > 0) ModelState.AddModelError(string.Empty, "Unknown role(s): " + string.Join(", ", invalidRoles));
+    }
+
+    private async Task RollbackCreatedEmployeeAsync(int? employeeId)
+    {
+        if (!employeeId.HasValue) return;
+        try
+        {
+            _context.ChangeTracker.Clear();
+            var assignments = await _context.EmployeeAssignments.Where(a => a.EmployeeId == employeeId.Value).ToListAsync();
+            _context.EmployeeAssignments.RemoveRange(assignments);
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.EmployeeId == employeeId.Value);
+            if (employee != null) _context.Employees.Remove(employee);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception)
+        {
+            _context.ChangeTracker.Clear();
+            TempData["Warning"] = $"The employee #{employeeId} created for this attempt could not be removed automatically; please deactivate it manually.";
+        }
+    }
+
     private async Task LoadEmployeeDropdownsAsync(UserFormViewModel model)
     {
         var employees = await _context.Employees.Where(x => x.IsActive)
@@ -256,21 +294,25 @@ public class UsersController : Controller
             ModelState.AddModelError(nameof(model.DepartmentId), "Select an existing employee or specify a department to create one.");
 
         await ValidateEmployeeLinkAsync(model, null);
+        // C16: سیاست رمز/یکتایی نام‌کاربری و ایمیل/نقش‌ها «قبل از» هر اثر جانبی بررسی می‌شود تا کارمند یتیم (و تکرار آن در ارسال مجدد فرم) ساخته نشود
+        await ValidateIdentityUpFrontAsync(model);
 
         if (!ModelState.IsValid)
         {
             ViewData["Title"] = "New User";
             ViewData["Section"] = "Administration";
 
+            model.Password = null;                    // رمز هرگز در پاسخ برنگردد؛ هر ارسال دوباره رمز می‌خواهد (مقادیر غیرمحرمانه و نقش‌ها حفظ می‌شوند)
             await LoadEmployeeDropdownsAsync(model);
             return View(model);
         }
 
 
         int? employeeId = model.ExistingEmployeeId;
+        int? createdEmployeeId = null;
 
         if (!employeeId.HasValue && model.DepartmentId.HasValue)
-            employeeId = await CreateEmployeeFromModelAsync(model);
+            employeeId = createdEmployeeId = await CreateEmployeeFromModelAsync(model);
 
         var user = new ApplicationUser
         {
@@ -283,22 +325,42 @@ public class UsersController : Controller
             CreatedDate = DateTime.Now
         };
 
-        var result = await _userManager.CreateAsync(user, model.Password!);
+        IdentityResult result;
+        try { result = await _userManager.CreateAsync(user, model.Password!); }
+        catch (Exception ex) { result = IdentityResult.Failed(new IdentityError { Description = ex.GetBaseException().Message }); }
 
         if (!result.Succeeded)
         {
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
 
+            // جبران: کارمندی که همین درخواست ساخته بود حذف می‌شود تا یتیم نماند و در لیست‌ها آلودگی نسازد
+            await RollbackCreatedEmployeeAsync(createdEmployeeId);
+
             ViewData["Title"] = "New User";
             ViewData["Section"] = "Administration";
 
+            model.Password = null;
             await LoadEmployeeDropdownsAsync(model);
             return View(model);
         }
 
         if (model.SelectedRoles.Any())
-            await _userManager.AddToRolesAsync(user, model.SelectedRoles);
+        {
+            var roleResult = await _userManager.AddToRolesAsync(user, model.SelectedRoles);
+            if (!roleResult.Succeeded)
+            {
+                // کاربر بدون نقش‌های انتخاب‌شده رها نمی‌شود: ساخت کامل برگردانده می‌شود
+                foreach (var error in roleResult.Errors) ModelState.AddModelError(string.Empty, error.Description);
+                await _userManager.DeleteAsync(user);
+                await RollbackCreatedEmployeeAsync(createdEmployeeId);
+                ViewData["Title"] = "New User";
+                ViewData["Section"] = "Administration";
+                model.Password = null;
+                await LoadEmployeeDropdownsAsync(model);
+                return View(model);
+            }
+        }
 
         await _roleSync.SyncAsync(user.Id);
 

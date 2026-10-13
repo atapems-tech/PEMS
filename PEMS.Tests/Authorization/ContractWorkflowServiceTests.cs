@@ -557,10 +557,12 @@ public class ContractWorkflowServiceTests
         await GetToUnderReviewFullyApprovedAsync(ctx, workflow, contractId);
         var admin = await CreateUserWithRoleAsync(ctx, SystemRoles.SystemAdmin);
 
-        // موتور گردش‌کار نقش مرحله‌ی FinalApproval را اجباری می‌کند و SystemAdmin جانشین آن نیست
-        await Assert.ThrowsAsync<UnauthorizedAccessException>(
-            () => workflow.ApproveAsync(contractId, null, admin, 1, new[] { SystemRoles.SystemAdmin }, null));
+        // P0 (Fail-Closed): SystemAdmin برای Contracts.Approve بدون Grant صریح مجاز نیست (RequiresExplicitGrant). قبلاً ردِ
+        // کاربر-آگاه نادیده گرفته می‌شد و فقط نقش مرحله‌ی FinalApproval در موتور گردش‌کار استثنا می‌داد؛ حالا تایید زودتر و
+        // بدون استثنا رد می‌شود (و ContractController هم استثنای موتور را به پیام دوستانه تبدیل می‌کند).
+        var result = await workflow.ApproveAsync(contractId, null, admin, 1, new[] { SystemRoles.SystemAdmin }, null);
 
+        Assert.False(result.Success);
         Assert.NotEqual("Approved", ctx.Contracts.Single().Status);
     }
 }
