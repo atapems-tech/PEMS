@@ -44,6 +44,9 @@ public class PEMSDbContext
     // تازه‌ی این فاز - استثنای دستیِ Visibility، عمداً جدا از مدل داده‌ی Authorization بالا
     public DbSet<NavigationVisibilityOverride> NavigationVisibilityOverrides { get; set; }
 
+    // سایدبار داده‌محور (مدیریت توسط SystemAdmin؛ قاعده‌ی نمایش آیتم‌های سیستمی از کد)
+    public DbSet<NavigationMenuItem> NavigationMenuItems { get; set; }
+
     public DbSet<AIDocumentClassification> AIDocumentClassifications { get; set; }
     public DbSet<DocumentTagLink> DocumentTagLinks { get; set; }
     public DbSet<DocumentComment> DocumentComments { get; set; }

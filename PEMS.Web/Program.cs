@@ -177,6 +177,11 @@ builder.Services
     .AddDefaultTokenProviders();
 
 
+// نقش‌های کاربر در Claim کوکی هستند؛ پیش‌فرض Identity فقط هر ۳۰ دقیقه آن‌ها را از دیتابیس تازه می‌کند و تغییر نقش/دسترسی
+// در پنل مدیر تا آن زمان (یا خروج/ورود دوباره) در سایدبار همان کاربر دیده نمی‌شد. هر دقیقه تازه‌سازی می‌شود.
+builder.Services.Configure<Microsoft.AspNetCore.Identity.SecurityStampValidatorOptions>(o =>
+    o.ValidationInterval = TimeSpan.FromMinutes(1));
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
@@ -480,6 +485,12 @@ builder.Services.AddScoped<INetDemandService, NetDemandService>();
 builder.Services.AddScoped<IReplenishmentRecommendationService, ReplenishmentRecommendationService>();
 // دروازه‌ی موقت P5: پیش‌فرض غیرفعال تا اعمال Migration تأییدشده؛ فقط Features:ReplenishmentRecommendations:Enabled=true فعال می‌کند
 builder.Services.AddSingleton<PEMS.Web.Security.IReplenishmentAvailability, PEMS.Web.Security.ReplenishmentAvailability>();
+// سایدبار داده‌محور (پشت پرچم Features:DynamicSidebar:Enabled؛ پیش‌فرض سایدبار قدیمی)
+builder.Services.AddSingleton<PEMS.Web.Navigation.IDynamicSidebarAvailability, PEMS.Web.Navigation.DynamicSidebarAvailability>();
+builder.Services.AddScoped<INavigationMenuService, NavigationMenuService>();
+builder.Services.AddScoped<INavigationCountService, NavigationCountService>();
+builder.Services.AddScoped<PEMS.Web.Navigation.DynamicSidebarBuilder>();
+builder.Services.AddScoped<PEMS.Web.Navigation.NavigationBadgeService>();
 builder.Services.AddScoped<IPartCatalogueService, PartCatalogueService>();
 builder.Services.AddScoped<IPartCatalogueAdminService, PartCatalogueAdminService>();
 
@@ -857,6 +868,10 @@ using (var scope = app.Services.CreateScope())
     // طبق CMMS Production Baseline v1 بند P0-04: شمارنده‌ی WorkOrder را از روی شماره‌های قدیمی
     // (پیش از NumberingService) Seed می‌کند تا شماره‌ی بعدی با آن‌ها برخورد نکند.
     await PEMS.Persistence.Seed.NumberingBackfillSeeder.SeedAsync(scope.ServiceProvider);
+
+    // سایدبار داده‌محور: همگام‌سازی افزایشی کاتالوگ کد (فقط وقتی پرچم فعال است؛ جدول تا اعمال Migration وجود ندارد)
+    if (scope.ServiceProvider.GetRequiredService<PEMS.Web.Navigation.IDynamicSidebarAvailability>().IsEnabled)
+        await scope.ServiceProvider.GetRequiredService<INavigationMenuService>().SyncDefaultsAsync(PEMS.Web.Navigation.NavigationMenuDefaults.All);
 }
 
 

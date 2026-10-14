@@ -1824,4 +1824,69 @@
   <data name="Edit Maintenance Strategy" xml:space="preserve"><value>ویرایش استراتژی نگهداری</value></data>
   <data name="Tag Maintenance" xml:space="preserve"><value>نگهداری تگ</value></data>
   <data name="Import Strategies" xml:space="preserve"><value>ایمپورت استراتژی‌ها</value></data>
+  <data name="Nav_Admin_Title" xml:space="preserve"><value>منوی ناوبری</value></data>
+  <data name="Nav_Admin_Edit" xml:space="preserve"><value>ویرایش آیتم منو</value></data>
+  <data name="Nav_Admin_AddLink" xml:space="preserve"><value>افزودن پیوند</value></data>
+  <data name="Nav_Admin_Intro" xml:space="preserve"><value>ترتیب، نام، نمایان/پنهان بودن و شمارنده‌ی آیتم‌های سایدبار را مدیریت کنید. تغییرات فوراً برای همه‌ی کاربران اعمال می‌شود؛ آنچه هر کاربر می‌بیند همچنان به مجوزهای او بستگی دارد.</value></data>
+  <data name="Nav_Admin_RuleNote" xml:space="preserve"><value>قاعده‌ی نمایش آیتم‌های سیستمی از کد می‌آید و همان مجوزی است که صفحه‌ی مقصد اعمال می‌کند. پنهان کردن یک آیتم، دسترسی به صفحه را حذف نمی‌کند.</value></data>
+  <data name="Nav_Col_Item" xml:space="preserve"><value>آیتم</value></data>
+  <data name="Nav_Col_Route" xml:space="preserve"><value>مسیر</value></data>
+  <data name="Nav_Col_Rule" xml:space="preserve"><value>قاعده‌ی نمایش</value></data>
+  <data name="Nav_Col_Badge" xml:space="preserve"><value>شمارنده</value></data>
+  <data name="Nav_Col_Status" xml:space="preserve"><value>وضعیت</value></data>
+  <data name="Nav_Col_Actions" xml:space="preserve"><value>عملیات</value></data>
+  <data name="Nav_Kind_Section" xml:space="preserve"><value>بخش</value></data>
+  <data name="Nav_Kind_Subheading" xml:space="preserve"><value>زیرتیتر</value></data>
+  <data name="Nav_Kind_Link" xml:space="preserve"><value>پیوند</value></data>
+  <data name="Nav_Custom" xml:space="preserve"><value>سفارشی</value></data>
+  <data name="Nav_NoPermissionSignal" xml:space="preserve"><value>بدون سیگنال مجوز</value></data>
+  <data name="Nav_Visible" xml:space="preserve"><value>نمایان</value></data>
+  <data name="Nav_Hidden" xml:space="preserve"><value>پنهان</value></data>
+  <data name="Nav_MoveUp" xml:space="preserve"><value>انتقال به بالا</value></data>
+  <data name="Nav_MoveDown" xml:space="preserve"><value>انتقال به پایین</value></data>
+  <data name="Nav_ConfirmDelete" xml:space="preserve"><value>این پیوند سفارشی حذف شود؟</value></data>
+  <data name="Nav_Saved" xml:space="preserve"><value>منو ذخیره شد.</value></data>
+  <data name="Nav_Deleted" xml:space="preserve"><value>پیوند سفارشی حذف شد.</value></data>
+  <data name="Nav_Field_Parent" xml:space="preserve"><value>والد</value></data>
+  <data name="Nav_Field_TitleFa" xml:space="preserve"><value>عنوان فارسی</value></data>
+  <data name="Nav_Field_TitleEn" xml:space="preserve"><value>عنوان انگلیسی</value></data>
+  <data name="Nav_Field_Icon" xml:space="preserve"><value>آیکون</value></data>
+  <data name="Nav_Field_Badge" xml:space="preserve"><value>شمارنده</value></data>
+  <data name="Nav_Field_Visible" xml:space="preserve"><value>در سایدبار نمایان باشد</value></data>
+  <data name="Nav_Field_Route" xml:space="preserve"><value>صفحه‌ی مقصد</value></data>
+  <data name="Nav_Field_Area" xml:space="preserve"><value>ناحیه (Area)</value></data>
+  <data name="Nav_Field_Controller" xml:space="preserve"><value>کنترلر</value></data>
+  <data name="Nav_Field_Action" xml:space="preserve"><value>اکشن</value></data>
+  <data name="Nav_Field_Permission" xml:space="preserve"><value>مجوز لازم</value></data>
+  <data name="Nav_TopLevel" xml:space="preserve"><value>(سطح بالا)</value></data>
+  <data name="Nav_SectionTopLevelOnly" xml:space="preserve"><value>بخش‌ها همیشه در سطح بالا می‌مانند.</value></data>
+  <data name="Nav_TitleHelp" xml:space="preserve"><value>برای استفاده از عنوان پیش‌فرض خالی بگذارید.</value></data>
+  <data name="Nav_IconHelp" xml:space="preserve"><value>یک کلاس Bootstrap Icons، مثلاً bi-gear.</value></data>
+  <data name="Nav_NoBadge" xml:space="preserve"><value>(بدون شمارنده)</value></data>
+  <data name="Nav_BadgeHelp" xml:space="preserve"><value>شمارش‌های ماژولی فقط به کاربرانی نشان داده می‌شود که مجوز مربوط را دارند.</value></data>
+  <data name="Nav_AddLinkIntro" xml:space="preserve"><value>پیوند فقط می‌تواند به یک صفحه‌ی موجود در همین برنامه اشاره کند.</value></data>
+  <data name="Nav_RouteHelp" xml:space="preserve"><value>صفحه باید وجود داشته باشد و درخواست GET بپذیرد. برای صفحه‌های بیرون از Area، فیلد Area را خالی بگذارید.</value></data>
+  <data name="Nav_NoPermission" xml:space="preserve"><value>(بدون شرط مجوز)</value></data>
+  <data name="Nav_PermissionHelp" xml:space="preserve"><value>کاربران بدون این مجوز پیوند را نمی‌بینند. صفحه‌ی مقصد همچنان مجوزهای خودش را اعمال می‌کند.</value></data>
+  <data name="Nav_Err_NotFound" xml:space="preserve"><value>آیتم منو یافت نشد.</value></data>
+  <data name="Nav_Err_Icon" xml:space="preserve"><value>آیکون باید یک کلاس Bootstrap Icons مانند bi-gear باشد.</value></data>
+  <data name="Nav_Err_TitleTooLong" xml:space="preserve"><value>عنوان حداکثر ۲۰۰ نویسه است.</value></data>
+  <data name="Nav_Err_TitleRequired" xml:space="preserve"><value>عنوان فارسی و انگلیسی هر دو الزامی است.</value></data>
+  <data name="Nav_Err_Parent" xml:space="preserve"><value>این والد برای این نوع آیتم مجاز نیست.</value></data>
+  <data name="Nav_Err_Route" xml:space="preserve"><value>صفحه‌ی مقصد وجود ندارد یا درخواست GET نمی‌پذیرد.</value></data>
+  <data name="Nav_Err_Permission" xml:space="preserve"><value>مجوز انتخاب‌شده وجود ندارد.</value></data>
+  <data name="Nav_Err_Badge" xml:space="preserve"><value>شمارنده‌ی انتخاب‌شده وجود ندارد.</value></data>
+  <data name="Nav_Err_SystemItem" xml:space="preserve"><value>آیتم‌های سیستمی حذف نمی‌شوند؛ آن‌ها را پنهان کنید.</value></data>
+  <data name="Nav_Err_Concurrency" xml:space="preserve"><value>شخص دیگری این آیتم را تغییر داده است. صفحه را دوباره بارگذاری کنید و دوباره امتحان کنید.</value></data>
+  <data name="Nav_Badge_MyWorkPending" xml:space="preserve"><value>کارهای من: در انتظار</value></data>
+  <data name="Nav_Badge_MyWorkOverdue" xml:space="preserve"><value>کارهای من: عقب‌افتاده</value></data>
+  <data name="Nav_Badge_NotificationsUnread" xml:space="preserve"><value>اعلان‌های خوانده‌نشده</value></data>
+  <data name="Nav_Badge_TasksOpen" xml:space="preserve"><value>اقدام‌های باز من</value></data>
+  <data name="Nav_Badge_MyWorkPartCatalogue" xml:space="preserve"><value>کارهای من: کاتالوگ قطعه</value></data>
+  <data name="Nav_Badge_MyWorkWorkOrder" xml:space="preserve"><value>کارهای من: دستور کار</value></data>
+  <data name="Nav_Badge_MyWorkWorkRequest" xml:space="preserve"><value>کارهای من: درخواست کار</value></data>
+  <data name="Nav_Badge_MyWorkContract" xml:space="preserve"><value>کارهای من: قرارداد</value></data>
+  <data name="Nav_Badge_MyWorkIrn" xml:space="preserve"><value>کارهای من: IRN</value></data>
+  <data name="Nav_Badge_WorkOrdersOpen" xml:space="preserve"><value>دستور کارهای باز</value></data>
+  <data name="Nav_Badge_SrAwaitingApproval" xml:space="preserve"><value>درخواست‌های انبار در انتظار تأیید</value></data>
 </root>

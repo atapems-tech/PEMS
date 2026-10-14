@@ -1030,4 +1030,69 @@
   <data name="Edit Maintenance Strategy" xml:space="preserve"><value>Edit Maintenance Strategy</value></data>
   <data name="Tag Maintenance" xml:space="preserve"><value>Tag Maintenance</value></data>
   <data name="Import Strategies" xml:space="preserve"><value>Import Strategies</value></data>
+  <data name="Nav_Admin_Title" xml:space="preserve"><value>Navigation Menu</value></data>
+  <data name="Nav_Admin_Edit" xml:space="preserve"><value>Edit menu item</value></data>
+  <data name="Nav_Admin_AddLink" xml:space="preserve"><value>Add link</value></data>
+  <data name="Nav_Admin_Intro" xml:space="preserve"><value>Arrange, rename, hide and badge the sidebar items. Changes apply to all users immediately; what each user sees still depends on their permissions.</value></data>
+  <data name="Nav_Admin_RuleNote" xml:space="preserve"><value>The visibility rule of built-in items comes from the code and matches the permission the target page enforces. Hiding an item does not remove access to the page.</value></data>
+  <data name="Nav_Col_Item" xml:space="preserve"><value>Item</value></data>
+  <data name="Nav_Col_Route" xml:space="preserve"><value>Route</value></data>
+  <data name="Nav_Col_Rule" xml:space="preserve"><value>Visibility rule</value></data>
+  <data name="Nav_Col_Badge" xml:space="preserve"><value>Badge</value></data>
+  <data name="Nav_Col_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Nav_Col_Actions" xml:space="preserve"><value>Actions</value></data>
+  <data name="Nav_Kind_Section" xml:space="preserve"><value>Section</value></data>
+  <data name="Nav_Kind_Subheading" xml:space="preserve"><value>Subheading</value></data>
+  <data name="Nav_Kind_Link" xml:space="preserve"><value>Link</value></data>
+  <data name="Nav_Custom" xml:space="preserve"><value>Custom</value></data>
+  <data name="Nav_NoPermissionSignal" xml:space="preserve"><value>No permission signal</value></data>
+  <data name="Nav_Visible" xml:space="preserve"><value>Visible</value></data>
+  <data name="Nav_Hidden" xml:space="preserve"><value>Hidden</value></data>
+  <data name="Nav_MoveUp" xml:space="preserve"><value>Move up</value></data>
+  <data name="Nav_MoveDown" xml:space="preserve"><value>Move down</value></data>
+  <data name="Nav_ConfirmDelete" xml:space="preserve"><value>Delete this custom link?</value></data>
+  <data name="Nav_Saved" xml:space="preserve"><value>Menu saved.</value></data>
+  <data name="Nav_Deleted" xml:space="preserve"><value>Custom link deleted.</value></data>
+  <data name="Nav_Field_Parent" xml:space="preserve"><value>Parent</value></data>
+  <data name="Nav_Field_TitleFa" xml:space="preserve"><value>Persian title</value></data>
+  <data name="Nav_Field_TitleEn" xml:space="preserve"><value>English title</value></data>
+  <data name="Nav_Field_Icon" xml:space="preserve"><value>Icon</value></data>
+  <data name="Nav_Field_Badge" xml:space="preserve"><value>Badge</value></data>
+  <data name="Nav_Field_Visible" xml:space="preserve"><value>Visible in the sidebar</value></data>
+  <data name="Nav_Field_Route" xml:space="preserve"><value>Target page</value></data>
+  <data name="Nav_Field_Area" xml:space="preserve"><value>Area</value></data>
+  <data name="Nav_Field_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="Nav_Field_Action" xml:space="preserve"><value>Action</value></data>
+  <data name="Nav_Field_Permission" xml:space="preserve"><value>Required permission</value></data>
+  <data name="Nav_TopLevel" xml:space="preserve"><value>(Top level)</value></data>
+  <data name="Nav_SectionTopLevelOnly" xml:space="preserve"><value>Sections always stay at the top level.</value></data>
+  <data name="Nav_TitleHelp" xml:space="preserve"><value>Leave empty to use the default title.</value></data>
+  <data name="Nav_IconHelp" xml:space="preserve"><value>A Bootstrap Icons class, for example bi-gear.</value></data>
+  <data name="Nav_NoBadge" xml:space="preserve"><value>(No badge)</value></data>
+  <data name="Nav_BadgeHelp" xml:space="preserve"><value>Module counts are shown only to users who hold the related permission.</value></data>
+  <data name="Nav_AddLinkIntro" xml:space="preserve"><value>Links can only point to an existing page of this application.</value></data>
+  <data name="Nav_RouteHelp" xml:space="preserve"><value>The page must exist and accept GET requests. Leave Area empty for pages outside an area.</value></data>
+  <data name="Nav_NoPermission" xml:space="preserve"><value>(No permission condition)</value></data>
+  <data name="Nav_PermissionHelp" xml:space="preserve"><value>Users without this permission will not see the link. The target page still enforces its own permissions.</value></data>
+  <data name="Nav_Err_NotFound" xml:space="preserve"><value>The menu item was not found.</value></data>
+  <data name="Nav_Err_Icon" xml:space="preserve"><value>The icon must be a Bootstrap Icons class such as bi-gear.</value></data>
+  <data name="Nav_Err_TitleTooLong" xml:space="preserve"><value>Titles can be at most 200 characters.</value></data>
+  <data name="Nav_Err_TitleRequired" xml:space="preserve"><value>Both Persian and English titles are required.</value></data>
+  <data name="Nav_Err_Parent" xml:space="preserve"><value>This parent is not allowed for this kind of item.</value></data>
+  <data name="Nav_Err_Route" xml:space="preserve"><value>The target page does not exist or does not accept GET requests.</value></data>
+  <data name="Nav_Err_Permission" xml:space="preserve"><value>The selected permission does not exist.</value></data>
+  <data name="Nav_Err_Badge" xml:space="preserve"><value>The selected badge does not exist.</value></data>
+  <data name="Nav_Err_SystemItem" xml:space="preserve"><value>Built-in items cannot be deleted; hide them instead.</value></data>
+  <data name="Nav_Err_Concurrency" xml:space="preserve"><value>Someone else changed this item. Reload the page and try again.</value></data>
+  <data name="Nav_Badge_MyWorkPending" xml:space="preserve"><value>My Work: pending</value></data>
+  <data name="Nav_Badge_MyWorkOverdue" xml:space="preserve"><value>My Work: overdue</value></data>
+  <data name="Nav_Badge_NotificationsUnread" xml:space="preserve"><value>Unread notifications</value></data>
+  <data name="Nav_Badge_TasksOpen" xml:space="preserve"><value>My open action items</value></data>
+  <data name="Nav_Badge_MyWorkPartCatalogue" xml:space="preserve"><value>My Work: Part Catalogue</value></data>
+  <data name="Nav_Badge_MyWorkWorkOrder" xml:space="preserve"><value>My Work: Work Orders</value></data>
+  <data name="Nav_Badge_MyWorkWorkRequest" xml:space="preserve"><value>My Work: Work Requests</value></data>
+  <data name="Nav_Badge_MyWorkContract" xml:space="preserve"><value>My Work: Contracts</value></data>
+  <data name="Nav_Badge_MyWorkIrn" xml:space="preserve"><value>My Work: IRN</value></data>
+  <data name="Nav_Badge_WorkOrdersOpen" xml:space="preserve"><value>Open Work Orders</value></data>
+  <data name="Nav_Badge_SrAwaitingApproval" xml:space="preserve"><value>Store requisitions awaiting approval</value></data>
 </root>
