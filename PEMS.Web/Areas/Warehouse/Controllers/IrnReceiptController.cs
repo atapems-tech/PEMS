@@ -44,8 +44,13 @@ public class IrnReceiptController : Controller
         _runtime = runtime;
     }
 
+    // P0-09 (D-OPEN-02، تصمیم مالک): صفحات فقط-خواندنی هم مجوز View می‌خواهند.
+    private Task<bool> CanViewAsync() => _permissionService.HasPermissionAsync(_currentUser.Roles, "IRN", "View");
+
     public async Task<IActionResult> Index(string? status, int page = 1, int? pageSize = null)
     {
+        if (!await CanViewAsync()) return Forbid();
+
         ViewData["Title"] = "Incoming Receipts (IRN)";
         ViewData["Section"] = "Inventory & Materials";
         ViewData["HelpKey"] = "IrnReceipt.Index";
@@ -146,6 +151,8 @@ public class IrnReceiptController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
+        if (!await CanViewAsync()) return Forbid();
+
         ViewData["Title"] = "IRN Details";
         ViewData["Section"] = "Inventory & Materials";
         ViewData["HelpKey"] = "IrnReceipt.Details";

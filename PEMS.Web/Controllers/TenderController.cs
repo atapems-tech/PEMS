@@ -227,6 +227,9 @@ public class TenderController : Controller
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Tender", "Approve"))
             return Forbid();
+        // P0-10: مناقصه از خودِ مذاکره تعیین می‌شود، نه از tenderId فرم
+        var separation = await EnforceCreatorSeparationAsync(null, bidNegotiationId, tenderId);
+        if (separation != null) return separation;
 
         var employeeId = await GetCurrentEmployeeIdAsync();
         var result = await _service.ApproveNegotiationAsync(bidNegotiationId, employeeId);
@@ -250,6 +253,8 @@ public class TenderController : Controller
         }
         if (outcome != ProtectedActionOutcome.Allowed)
             return Forbid();
+        var separation = await EnforceCreatorSeparationAsync(tenderId, null, tenderId);
+        if (separation != null) return separation;
 
         var employeeId = await GetCurrentEmployeeIdAsync();
         var result = await _service.SelectWinnerAsync(tenderId, bidId, employeeId);
@@ -275,6 +280,8 @@ public class TenderController : Controller
             return Forbid();
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Create"))
             return Forbid();
+        var separation = await EnforceCreatorSeparationAsync(tenderId, null, tenderId);
+        if (separation != null) return separation;
 
         // P0.1 / R-01: رویداد «Contracts.Create» (که SoD «ایجادکننده ≠ تاییدکننده» به آن تکیه دارد) دیگر اینجا و با AuthorizeAsync نوشته نمی‌شود.
         // P0.3: سرویس قرارداد، هر دو AuditLog عمومی و این رویداد را روی SQL Server در یک تراکنش می‌نویسد؛ شکست هرکدام کل عملیات را Rollback می‌کند.
@@ -333,6 +340,26 @@ public class TenderController : Controller
 
         TempData["Error"] = result.Error;
         return RedirectToAction(nameof(Details), new { id = tenderId });
+    }
+
+    /// <summary>
+    /// P0-10 / D-OPEN-04: ایجادکننده‌ی مناقصه نمی‌تواند آن را تأیید کند (SystemAdmin مستثنا، با ثبت ممیزی). null = ادامه مجاز است.
+    /// </summary>
+    private async Task<IActionResult?> EnforceCreatorSeparationAsync(int? tenderId, int? bidNegotiationId, int redirectTenderId)
+    {
+        var result = await _service.CheckCreatorApproverSeparationAsync(tenderId, bidNegotiationId, _currentUser.UserId, _currentUser.UserName,
+            _currentUser.Roles.Contains(PEMS.Persistence.Identity.SystemRoles.SystemAdmin), HttpContext?.Connection.RemoteIpAddress?.ToString());
+
+        switch (result)
+        {
+            case TenderApprovalSeparation.DeniedCreator:
+                TempData["Error"] = "طبق سیاست تفکیک وظایف، ایجادکننده‌ی مناقصه نمی‌تواند همان مناقصه را تأیید کند.";
+                return RedirectToAction(nameof(Details), new { id = redirectTenderId });
+            case TenderApprovalSeparation.DeniedUnverifiable:
+                return Forbid();
+            default:
+                return null;
+        }
     }
 
     private async Task<int?> GetCurrentEmployeeIdAsync()

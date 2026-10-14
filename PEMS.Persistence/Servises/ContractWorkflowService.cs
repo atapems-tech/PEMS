@@ -49,7 +49,8 @@ public class ContractWorkflowService : IContractWorkflowService
     }
 
     public async Task<(bool Success, string? Error)> SubmitForReviewAsync(
-        int contractId, IReadOnlyList<string>? requiredDisciplines, int? actorEmployeeId, IReadOnlyList<string> actorRoles)
+        int contractId, IReadOnlyList<string>? requiredDisciplines, int? actorEmployeeId, IReadOnlyList<string> actorRoles,
+        int? editorUserId = null, string? ipAddress = null)
     {
         var contract = await _context.Contracts.FirstOrDefaultAsync(x => x.ContractId == contractId);
         if (contract == null) return (false, "قرارداد یافت نشد.");
@@ -100,6 +101,7 @@ public class ContractWorkflowService : IContractWorkflowService
             ContractWorkflowSeeder.Category, contract.ProjectId, actorEmployeeId, participantRoles);
 
         contract.Status = "UnderReview";
+        ContractEditorEvents.Add(_context, contractId, editorUserId, ipAddress, "Submitted the contract for review");
         await _context.SaveChangesAsync();
         return (true, null);
     }
@@ -327,7 +329,8 @@ public class ContractWorkflowService : IContractWorkflowService
     }
 
     public async Task<(bool Success, string? Error, int? RevisionId)> RequestRevisionAsync(
-        int contractId, string changeType, decimal? newValue, string? reason, string? changeDescription, int? actorEmployeeId)
+        int contractId, string changeType, decimal? newValue, string? reason, string? changeDescription, int? actorEmployeeId,
+        int? editorUserId = null, string? ipAddress = null)
     {
         var contract = await _context.Contracts.Include(x => x.Revisions).FirstOrDefaultAsync(x => x.ContractId == contractId);
         if (contract == null) return (false, "قرارداد یافت نشد.", null);
@@ -351,19 +354,38 @@ public class ContractWorkflowService : IContractWorkflowService
             Status = "Pending"
         };
         _context.ContractRevisions.Add(revision);
+        ContractEditorEvents.Add(_context, contractId, editorUserId, ipAddress, "Requested a contract revision");
         await _context.SaveChangesAsync();
 
         return (true, null, revision.ContractRevisionId);
     }
 
     public async Task<(bool Success, string? Error)> ApproveRevisionAsync(
-        int contractRevisionId, int? actorEmployeeId, IReadOnlyList<string> actorRoles)
+        int contractRevisionId, int? actorEmployeeId, IReadOnlyList<string> actorRoles,
+        int? currentUserId = null, string? ipAddress = null)
     {
         var revision = await _context.ContractRevisions
             .Include(x => x.Contract)
             .FirstOrDefaultAsync(x => x.ContractRevisionId == contractRevisionId);
         if (revision == null) return (false, "این تغییر یافت نشد.");
         if (revision.Status != "Pending") return (false, "این تغییر قبلاً تصمیم‌گیری شده است.");
+
+        // P0-10 / D-OPEN-05: تأیید تغییر ارزش هم «تأیید قرارداد» است؛ همان مسیر کاربر-آگاه ApproveAsync (Scope + SoD) و Fail-Closed.
+        if (currentUserId.HasValue)
+        {
+            var decision = await _accessControlService.AuthorizeAsync(new AccessControlRequest
+            {
+                UserId = currentUserId.Value,
+                ResourceName = "Contracts",
+                ActionName = "Approve",
+                ResourceId = revision.ContractId.ToString(),
+                IpAddress = ipAddress
+            });
+            if (!decision.Allowed && decision.Reason == AccessDecisionReason.DeniedBySoD)
+                return (false, "طبق سیاست تفکیک وظایف، کاربری که این قرارداد را ایجاد/ویرایش کرده نمی‌تواند تغییر آن را تایید کند.");
+            if (!(decision.Allowed && decision.Reason == AccessDecisionReason.Allow))
+                return (false, "شما برای تایید تغییر این قرارداد مجاز نیستید (مجوز، محدوده‌ی دسترسی یا سیاست تفکیک وظایف).");
+        }
 
         revision.Status = "Approved";
         revision.ApprovedById = actorEmployeeId;

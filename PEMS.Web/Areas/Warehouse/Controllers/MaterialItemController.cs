@@ -33,8 +33,13 @@ public class MaterialItemController : Controller
         _barcodeService = barcodeService;
     }
 
+    // P0-09 (D-OPEN-02، تصمیم مالک): صفحات فقط-خواندنی هم مجوز View می‌خواهند.
+    private Task<bool> CanViewAsync() => _permissionService.HasPermissionAsync(_currentUser.Roles, "MaterialItem", "View");
+
     public async Task<IActionResult> Index(string? q, int? categoryId, bool lowStockOnly = false, bool criticalOnly = false, int page = 1)
     {
+        if (!await CanViewAsync()) return Forbid();
+
         ViewData["Title"] = "Material Master";
         ViewData["Section"] = "Inventory & Materials";
         ViewData["HelpKey"] = "MaterialItems.Index";
@@ -83,6 +88,8 @@ public class MaterialItemController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
+        if (!await CanViewAsync()) return Forbid();
+
         ViewData["Title"] = "Material Details";
         ViewData["Section"] = "Inventory & Materials";
 

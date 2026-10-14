@@ -38,9 +38,14 @@ public class ContractController : Controller
         _context = context;
     }
 
+    // P0-09 (D-OPEN-02، تصمیم مالک): صفحات فقط-خواندنی هم مجوز View می‌خواهند.
+    private Task<bool> HasAsync(string action) => _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", action);
+
     // طبق «PEMS — Global Grid Hardening» P1: این Grid فیلتری نداشت؛ فقط صفحه‌بندی واقعی اضافه شد.
     public async Task<IActionResult> Index(int page = 1, int? pageSize = null)
     {
+        if (!await HasAsync("View")) return Forbid();
+
         ViewData["Title"] = "Contracts";
         ViewData["Section"] = "Contract Management";
         ViewData["HelpKey"] = "Contract.Index";
@@ -59,6 +64,8 @@ public class ContractController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
+        if (!await HasAsync("View")) return Forbid();
+
         ViewData["Title"] = "Contract Details";
         ViewData["Section"] = "Contract Management";
 
@@ -117,6 +124,8 @@ public class ContractController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
+        if (!await HasAsync("Create")) return Forbid();
+
         ViewData["Title"] = "New Contract";
         ViewData["Section"] = "Contract Management";
 
@@ -232,7 +241,9 @@ public class ContractController : Controller
     private async Task<(bool Success, string? Error)> SubmitForReviewInternalAsync(int contractId)
     {
         var employeeId = await GetCurrentEmployeeIdAsync();
-        return await _workflowService.SubmitForReviewAsync(contractId, null, employeeId, _currentUser.Roles);
+        // P0-10: ارسال‌کننده «ویرایشگر» قرارداد است و نباید همان را تأیید کند (رویداد Contracts.Edit در همان ذخیره)
+        return await _workflowService.SubmitForReviewAsync(contractId, null, employeeId, _currentUser.Roles,
+            _currentUser.UserId, HttpContext?.Connection.RemoteIpAddress?.ToString());
     }
 
     [HttpPost]
@@ -383,7 +394,8 @@ public class ContractController : Controller
             return Forbid();
 
         var employeeId = await GetCurrentEmployeeIdAsync();
-        var result = await _workflowService.RequestRevisionAsync(contractId, changeType, newValue, reason, changeDescription, employeeId);
+        var result = await _workflowService.RequestRevisionAsync(contractId, changeType, newValue, reason, changeDescription, employeeId,
+            _currentUser.UserId, HttpContext?.Connection.RemoteIpAddress?.ToString());
 
         if (!result.Success) TempData["Error"] = result.Error;
         else TempData["Message"] = "درخواست تغییر ارزش قرارداد ثبت شد (در انتظار تایید).";
@@ -415,6 +427,8 @@ public class ContractController : Controller
             ClauseReference = clauseReference,
             Status = "Draft"
         });
+        // P0-10: افزودن سند ویرایش محتوای قرارداد است (رویداد Contracts.Edit با همان ذخیره)
+        ContractEditorEvents.Add(_context, contractId, _currentUser.UserId, HttpContext?.Connection.RemoteIpAddress?.ToString(), "Added a contract document");
         await _context.SaveChangesAsync();
 
         TempData["Message"] = "سند قرارداد ثبت شد.";
@@ -428,8 +442,13 @@ public class ContractController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Approve"))
             return Forbid();
 
+        // P0-10: بدون شناسه‌ی کاربر، SoD قابل‌ارزیابی نیست (Fail-Closed، همان قاعده‌ی ProtectedActionGuard)
+        if (!_currentUser.UserId.HasValue)
+            return Forbid();
+
         var employeeId = await GetCurrentEmployeeIdAsync();
-        var result = await _workflowService.ApproveRevisionAsync(contractRevisionId, employeeId, _currentUser.Roles);
+        var result = await _workflowService.ApproveRevisionAsync(contractRevisionId, employeeId, _currentUser.Roles,
+            _currentUser.UserId, HttpContext?.Connection.RemoteIpAddress?.ToString());
 
         if (!result.Success) TempData["Error"] = result.Error;
         else TempData["Message"] = "تغییر ارزش قرارداد تایید شد.";

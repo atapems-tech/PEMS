@@ -241,6 +241,62 @@ public class TenderService : ITenderService
         return (true, null);
     }
 
+    public async Task<TenderApprovalSeparation> CheckCreatorApproverSeparationAsync(
+        int? tenderId, int? bidNegotiationId, int? userId, string? userName, bool isSystemAdmin, string? ipAddress = null)
+    {
+        var resolvedTenderId = tenderId;
+        if (bidNegotiationId.HasValue)
+        {
+            resolvedTenderId = await _context.BidNegotiations.AsNoTracking()
+                .Where(n => n.BidNegotiationId == bidNegotiationId.Value)
+                .Select(n => (int?)n.Bid!.TenderId)
+                .FirstOrDefaultAsync();
+        }
+        if (!resolvedTenderId.HasValue) return TenderApprovalSeparation.NotFound;
+
+        var tender = await _context.Tenders.AsNoTracking()
+            .Where(t => t.TenderId == resolvedTenderId.Value)
+            .Select(t => new { t.TenderId, t.CreatedBy })
+            .FirstOrDefaultAsync();
+        if (tender == null) return TenderApprovalSeparation.NotFound;
+
+        // رکورد قدیمی بدون ایجادکننده‌ی ثبت‌شده: ایجادکننده قابل‌تشخیص نیست (محدودیت مستند، نه حدس)
+        if (string.IsNullOrWhiteSpace(tender.CreatedBy)) return TenderApprovalSeparation.Allowed;
+
+        if (string.IsNullOrWhiteSpace(userName) || !userId.HasValue) return TenderApprovalSeparation.DeniedUnverifiable;
+
+        if (!string.Equals(tender.CreatedBy, userName, StringComparison.OrdinalIgnoreCase))
+            return TenderApprovalSeparation.Allowed;
+
+        if (!isSystemAdmin) return TenderApprovalSeparation.DeniedCreator;
+
+        // استثنای SystemAdmin فقط با ردیف ممیزی؛ شکست ثبت = رد (Fail-Closed)
+        var exemption = new AuthorizationAuditLog
+        {
+            UserId = userId.Value,
+            ResourceName = "Tender",
+            ActionName = "Approve",
+            ResourceId = tender.TenderId.ToString(),
+            Decision = AccessDecisionReason.Allow.ToString(),
+            Reason = "SoD exemption: SystemAdmin approved a tender they created (owner decision D-OPEN-04, Tender Create<->Approve)",
+            IpAddress = ipAddress,
+            Timestamp = DateTime.Now
+        };
+        try
+        {
+            _context.AuthorizationAuditLogs.Add(exemption);
+            await _context.SaveChangesAsync();
+            return TenderApprovalSeparation.AllowedBySystemAdminExemption;
+        }
+        catch (Exception ex)
+        {
+            // ردیف ناموفق نباید با ذخیره‌ی بعدی همین درخواست بی‌صدا نوشته شود
+            _context.Entry(exemption).State = EntityState.Detached;
+            _logger?.LogError(ex, "Could not audit the SystemAdmin SoD exemption for tender {TenderId}; approval denied.", tender.TenderId);
+            return TenderApprovalSeparation.DeniedUnverifiable;
+        }
+    }
+
     public async Task<(bool Success, string? Error)> SelectWinnerAsync(int tenderId, int bidId, int? actorEmployeeId)
     {
         var tender = await _context.Tenders.FirstOrDefaultAsync(x => x.TenderId == tenderId);

@@ -36,6 +36,14 @@ public interface ITenderService
     Task<(bool Success, string? Error)> SelectWinnerAsync(int tenderId, int bidId, int? actorEmployeeId);
 
     /// <summary>
+    /// P0-10 / D-OPEN-04: «ایجادکننده‌ی مناقصه ≠ تأییدکننده‌ی آن». ایجادکننده از Tender.CreatedBy (که DbContext هنگام درج از کاربر جاری
+    /// می‌نویسد) خوانده می‌شود، پس به ثبت جداگانه‌ی رویداد وابسته نیست. SystemAdmin مستثناست و استثنا در AuthorizationAuditLog ثبت می‌شود؛
+    /// اگر آن ثبت ممکن نباشد، نتیجه رد است. فقط یکی از tenderId یا bidNegotiationId لازم است (مذاکره به مناقصه‌ی خودش نگاشت می‌شود).
+    /// </summary>
+    Task<TenderApprovalSeparation> CheckCreatorApproverSeparationAsync(
+        int? tenderId, int? bidNegotiationId, int? userId, string? userName, bool isSystemAdmin, string? ipAddress = null);
+
+    /// <summary>
     /// ساخت قرارداد از پیشنهاد برنده. creatorUserId = کاربری که این اقدام را انجام می‌دهد؛ اگر داده شود، رویداد «Contracts.Create» برای
     /// همان کاربر ثبت می‌شود. اگر قرارداد از قبل وجود داشته باشد، رویداد ناقص برای ایجادکننده‌ی اصلی (Contract.CreatedBy) ترمیم می‌شود،
     /// نه برای کاربری که تلاش مجدد می‌کند.
