@@ -521,6 +521,10 @@ builder.Services.AddScoped<ITagService, TagService>();
 
 builder.Services.AddScoped<ITaskService, TaskService>();
 
+// Task Manager (فضا/Backlog/Board/Sprint روی همان TaskItem) - دسترسی سطح-شیء در TaskAccess
+builder.Services.AddScoped<ITaskManagerService, PEMS.Persistence.Services.TaskManager.TaskManagerService>();
+builder.Services.AddScoped<IWorkSpaceService, PEMS.Persistence.Services.TaskManager.WorkSpaceService>();
+
 builder.Services.AddScoped<ICorrespondenceReportService, CorrespondenceReportService>();
 
 builder.Services.AddScoped<IEngineeringReportService, EngineeringReportService>();

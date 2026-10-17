@@ -448,6 +448,17 @@ public class PEMSDbContext
     public DbSet<LetterTag> LetterTags { get; set; }
     public DbSet<TaskItem> TaskItems { get; set; }
 
+    // Task Manager (فضا، طرح وضعیت، Sprint، نظر، پیوند، ناظر) - روی همان TaskItem، نه موجودیت موازی
+    public DbSet<WorkSpace> WorkSpaces { get; set; }
+    public DbSet<WorkSpaceMember> WorkSpaceMembers { get; set; }
+    public DbSet<WorkItemType> WorkItemTypes { get; set; }
+    public DbSet<WorkItemStatus> WorkItemStatuses { get; set; }
+    public DbSet<WorkItemStatusTransition> WorkItemStatusTransitions { get; set; }
+    public DbSet<Sprint> Sprints { get; set; }
+    public DbSet<WorkItemComment> WorkItemComments { get; set; }
+    public DbSet<WorkItemLink> WorkItemLinks { get; set; }
+    public DbSet<WorkItemWatcher> WorkItemWatchers { get; set; }
+
     public DbSet<Meeting> Meetings { get; set; }
     public DbSet<MeetingAttendee> MeetingAttendees { get; set; }
 

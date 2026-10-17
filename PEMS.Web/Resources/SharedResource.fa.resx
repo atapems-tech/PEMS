@@ -1889,4 +1889,250 @@
   <data name="Nav_Badge_MyWorkIrn" xml:space="preserve"><value>کارهای من: IRN</value></data>
   <data name="Nav_Badge_WorkOrdersOpen" xml:space="preserve"><value>دستور کارهای باز</value></data>
   <data name="Nav_Badge_SrAwaitingApproval" xml:space="preserve"><value>درخواست‌های انبار در انتظار تأیید</value></data>
+  <data name="Tm_Title" xml:space="preserve"><value>مدیریت وظایف</value></data>
+  <data name="Tm_Index_Hint" xml:space="preserve"><value>کارهای تیم را در فضاها برنامه‌ریزی، پیگیری و تحویل کنید. فقط فضاهایی که عضو آن‌ها هستید و وظایفی که در آن‌ها نقش دارید نمایش داده می‌شوند.</value></data>
+  <data name="Tm_NoEmployeeLink" xml:space="preserve"><value>حساب کاربری شما به پرونده‌ی کارمند متصل نیست؛ بنابراین عضویت فضا و ارجاع قابل تعیین نیست. از مدیر سیستم بخواهید آن را متصل کند.</value></data>
+  <data name="Tm_Spaces" xml:space="preserve"><value>فضاها</value></data>
+  <data name="Tm_NoSpaces" xml:space="preserve"><value>هنوز فضایی برای شما در دسترس نیست.</value></data>
+  <data name="Tm_MyTasks" xml:space="preserve"><value>وظایف من</value></data>
+  <data name="Tm_AssignedByMe" xml:space="preserve"><value>ارجاع‌شده توسط من</value></data>
+  <data name="Tm_AllWork" xml:space="preserve"><value>همه‌ی کارها</value></data>
+  <data name="Tm_Backlog" xml:space="preserve"><value>بک‌لاگ</value></data>
+  <data name="Tm_Board" xml:space="preserve"><value>بورد</value></data>
+  <data name="Tm_View" xml:space="preserve"><value>نما</value></data>
+  <data name="Tm_OpenItems" xml:space="preserve"><value>موارد باز</value></data>
+  <data name="Tm_Create" xml:space="preserve"><value>ایجاد</value></data>
+  <data name="Tm_Close" xml:space="preserve"><value>بستن</value></data>
+  <data name="Tm_Cancel" xml:space="preserve"><value>انصراف</value></data>
+  <data name="Tm_Save" xml:space="preserve"><value>ذخیره</value></data>
+  <data name="Tm_Edit" xml:space="preserve"><value>ویرایش</value></data>
+  <data name="Tm_Add" xml:space="preserve"><value>افزودن</value></data>
+  <data name="Tm_Delete" xml:space="preserve"><value>حذف</value></data>
+  <data name="Tm_Apply" xml:space="preserve"><value>اعمال</value></data>
+  <data name="Tm_Open" xml:space="preserve"><value>باز کردن</value></data>
+  <data name="Tm_Filter" xml:space="preserve"><value>فیلتر</value></data>
+  <data name="Tm_Reset" xml:space="preserve"><value>بازنشانی</value></data>
+  <data name="Tm_Yes" xml:space="preserve"><value>بله</value></data>
+  <data name="Tm_No" xml:space="preserve"><value>خیر</value></data>
+  <data name="Tm_Any" xml:space="preserve"><value>همه</value></data>
+  <data name="Tm_Me" xml:space="preserve"><value>من</value></data>
+  <data name="Tm_Actions" xml:space="preserve"><value>عملیات</value></data>
+  <data name="Tm_Details" xml:space="preserve"><value>جزئیات</value></data>
+  <data name="Tm_Configure" xml:space="preserve"><value>پیکربندی</value></data>
+  <data name="Tm_Personal" xml:space="preserve"><value>شخصی</value></data>
+  <data name="Tm_Unassigned" xml:space="preserve"><value>بدون مسئول</value></data>
+  <data name="Tm_Archived" xml:space="preserve"><value>بایگانی‌شده</value></data>
+  <data name="Tm_Archive" xml:space="preserve"><value>بایگانی</value></data>
+  <data name="Tm_Restore" xml:space="preserve"><value>بازگردانی</value></data>
+  <data name="Tm_ArchiveConfirm" xml:space="preserve"><value>این وظیفه بایگانی شود؟ از فهرست‌ها پنهان می‌شود ولی سابقه‌اش حفظ می‌شود.</value></data>
+  <data name="Tm_RestoreConfirm" xml:space="preserve"><value>این وظیفه بازگردانی شود؟</value></data>
+  <data name="Tm_Watch" xml:space="preserve"><value>دنبال کردن</value></data>
+  <data name="Tm_Unwatch" xml:space="preserve"><value>توقف دنبال کردن</value></data>
+  <data name="Tm_Watchers" xml:space="preserve"><value>دنبال‌کنندگان</value></data>
+  <data name="Tm_Reporter" xml:space="preserve"><value>گزارش‌دهنده</value></data>
+  <data name="Tm_AssignedBy" xml:space="preserve"><value>ارجاع‌دهنده</value></data>
+  <data name="Tm_Created" xml:space="preserve"><value>ایجاد</value></data>
+  <data name="Tm_Completed" xml:space="preserve"><value>تکمیل</value></data>
+  <data name="Tm_Related" xml:space="preserve"><value>مرتبط با</value></data>
+  <data name="Tm_Related_Letter" xml:space="preserve"><value>نامه</value></data>
+  <data name="Tm_Related_Meeting" xml:space="preserve"><value>جلسه</value></data>
+  <data name="Tm_Role_Member" xml:space="preserve"><value>عضو</value></data>
+  <data name="Tm_Role_Lead" xml:space="preserve"><value>سرپرست</value></data>
+  <data name="Tm_Field_Key" xml:space="preserve"><value>کلید</value></data>
+  <data name="Tm_Field_Space" xml:space="preserve"><value>فضا</value></data>
+  <data name="Tm_Field_Title" xml:space="preserve"><value>عنوان</value></data>
+  <data name="Tm_Field_Description" xml:space="preserve"><value>شرح</value></data>
+  <data name="Tm_Field_Type" xml:space="preserve"><value>نوع</value></data>
+  <data name="Tm_Field_Status" xml:space="preserve"><value>وضعیت</value></data>
+  <data name="Tm_Field_Priority" xml:space="preserve"><value>اولویت</value></data>
+  <data name="Tm_Field_Assignee" xml:space="preserve"><value>مسئول</value></data>
+  <data name="Tm_Field_Sprint" xml:space="preserve"><value>اسپرینت</value></data>
+  <data name="Tm_Field_StartDate" xml:space="preserve"><value>تاریخ شروع</value></data>
+  <data name="Tm_Field_DueDate" xml:space="preserve"><value>سررسید</value></data>
+  <data name="Tm_Field_EndDate" xml:space="preserve"><value>تاریخ پایان</value></data>
+  <data name="Tm_Field_StoryPoints" xml:space="preserve"><value>امتیاز تخمین</value></data>
+  <data name="Tm_Field_StoryPointsShort" xml:space="preserve"><value>امتیاز</value></data>
+  <data name="Tm_Field_Name" xml:space="preserve"><value>نام</value></data>
+  <data name="Tm_Field_NameFa" xml:space="preserve"><value>نام فارسی</value></data>
+  <data name="Tm_Field_Goal" xml:space="preserve"><value>هدف</value></data>
+  <data name="Tm_Field_Department" xml:space="preserve"><value>واحد مالک</value></data>
+  <data name="Tm_Field_Active" xml:space="preserve"><value>فعال</value></data>
+  <data name="Tm_Field_Role" xml:space="preserve"><value>نقش</value></data>
+  <data name="Tm_Field_Category" xml:space="preserve"><value>دسته</value></data>
+  <data name="Tm_Field_Order" xml:space="preserve"><value>ترتیب</value></data>
+  <data name="Tm_Field_Icon" xml:space="preserve"><value>آیکن (کلاس Bootstrap Icons)</value></data>
+  <data name="Tm_Status_Open" xml:space="preserve"><value>باز</value></data>
+  <data name="Tm_Status_InProgress" xml:space="preserve"><value>در حال انجام</value></data>
+  <data name="Tm_Status_Completed" xml:space="preserve"><value>تکمیل‌شده</value></data>
+  <data name="Tm_Status_Cancelled" xml:space="preserve"><value>لغوشده</value></data>
+  <data name="Tm_Priority_Low" xml:space="preserve"><value>کم</value></data>
+  <data name="Tm_Priority_Normal" xml:space="preserve"><value>عادی</value></data>
+  <data name="Tm_Priority_High" xml:space="preserve"><value>زیاد</value></data>
+  <data name="Tm_Priority_Urgent" xml:space="preserve"><value>فوری</value></data>
+  <data name="Tm_Category_ToDo" xml:space="preserve"><value>برای انجام</value></data>
+  <data name="Tm_Category_InProgress" xml:space="preserve"><value>در حال انجام</value></data>
+  <data name="Tm_Category_Done" xml:space="preserve"><value>انجام‌شده</value></data>
+  <data name="Tm_Category_NotDone" xml:space="preserve"><value>انجام‌نشده</value></data>
+  <data name="Tm_SprintState_Future" xml:space="preserve"><value>برنامه‌ریزی‌شده</value></data>
+  <data name="Tm_SprintState_Active" xml:space="preserve"><value>فعال</value></data>
+  <data name="Tm_SprintState_Closed" xml:space="preserve"><value>بسته</value></data>
+  <data name="Tm_SprintCounts" xml:space="preserve"><value>برای انجام {0} · در حال انجام {1} · انجام‌شده {2}</value></data>
+  <data name="Tm_StartSprint" xml:space="preserve"><value>شروع اسپرینت</value></data>
+  <data name="Tm_CompleteSprint" xml:space="preserve"><value>پایان اسپرینت</value></data>
+  <data name="Tm_CompleteSprintConfirm" xml:space="preserve"><value>این اسپرینت پایان یابد؟ وظایف ناتمام به مقصد انتخاب‌شده منتقل می‌شوند.</value></data>
+  <data name="Tm_MoveUnfinishedTo" xml:space="preserve"><value>انتقال ناتمام‌ها به</value></data>
+  <data name="Tm_CreateSprint" xml:space="preserve"><value>ایجاد اسپرینت</value></data>
+  <data name="Tm_RankHint" xml:space="preserve"><value>سرپرست‌ها می‌توانند با کشیدن ردیف‌ها یا دکمه‌های بالا/پایین ترتیب را تغییر دهند.</value></data>
+  <data name="Tm_MoveUp" xml:space="preserve"><value>انتقال به بالا</value></data>
+  <data name="Tm_MoveDown" xml:space="preserve"><value>انتقال به پایین</value></data>
+  <data name="Tm_MoveToSprint" xml:space="preserve"><value>انتقال به اسپرینت</value></data>
+  <data name="Tm_MoveTo" xml:space="preserve"><value>انتقال به</value></data>
+  <data name="Tm_Move" xml:space="preserve"><value>انتقال</value></data>
+  <data name="Tm_EmptyList" xml:space="preserve"><value>وظیفه‌ای وجود ندارد.</value></data>
+  <data name="Tm_EmptyColumn" xml:space="preserve"><value>موردی نیست</value></data>
+  <data name="Tm_Select" xml:space="preserve"><value>انتخاب</value></data>
+  <data name="Tm_SelectAll" xml:space="preserve"><value>انتخاب همه</value></data>
+  <data name="Tm_Selected" xml:space="preserve"><value>انتخاب‌شده</value></data>
+  <data name="Tm_BulkAction" xml:space="preserve"><value>عملیات گروهی</value></data>
+  <data name="Tm_Bulk_Status" xml:space="preserve"><value>تغییر وضعیت</value></data>
+  <data name="Tm_Bulk_Assign" xml:space="preserve"><value>ارجاع</value></data>
+  <data name="Tm_Bulk_Sprint" xml:space="preserve"><value>انتقال به اسپرینت</value></data>
+  <data name="Tm_Bulk_Archive" xml:space="preserve"><value>بایگانی</value></data>
+  <data name="Tm_BulkConfirm" xml:space="preserve"><value>این عملیات روی وظایف انتخاب‌شده اعمال شود؟ مجوز هر وظیفه جداگانه بررسی می‌شود.</value></data>
+  <data name="Tm_BulkHint" xml:space="preserve"><value>برای تغییر گروهی وضعیت، مسئول یا اسپرینت، ردیف‌ها را انتخاب کنید.</value></data>
+  <data name="Tm_BulkHintNoSpace" xml:space="preserve"><value>برای تغییر گروهی وضعیت، مسئول و اسپرینت ابتدا یک فضا را فیلتر کنید؛ بدون آن فقط بایگانی در دسترس است.</value></data>
+  <data name="Tm_Msg_BulkDone" xml:space="preserve"><value>{0} وظیفه به‌روزرسانی شد.</value></data>
+  <data name="Tm_Msg_BulkFailed" xml:space="preserve"><value>{0} وظیفه تغییر نکرد:</value></data>
+  <data name="Tm_CreateAnother" xml:space="preserve"><value>ایجاد مورد بعدی</value></data>
+  <data name="Tm_CtrlEnterHint" xml:space="preserve"><value>Ctrl+Enter برای ثبت</value></data>
+  <data name="Tm_Diag_NO_CONFIGURATION" xml:space="preserve"><value>برای این فضا عضو یا واحد مالک تعریف نشده است. از مدیر سیستم بخواهید آن را پیکربندی کند؛ هیچ مسئولی خودکار انتخاب نمی‌شود.</value></data>
+  <data name="Tm_Diag_NO_ELIGIBLE_ACTOR" xml:space="preserve"><value>هیچ کارمند فعال واجد شرایطی برای این فضا یافت نشد.</value></data>
+  <data name="Tm_NotEligible" xml:space="preserve"><value>غیرمجاز</value></data>
+  <data name="Tm_BoardNoSprint" xml:space="preserve"><value>اسپرینت فعالی وجود ندارد: بورد همه‌ی وظایف فعال این فضا را نشان می‌دهد.</value></data>
+  <data name="Tm_BoardHint" xml:space="preserve"><value>کارت را به ستون دیگر بکشید یا از کنترل «انتقال به» استفاده کنید. فقط گذارهای مجاز پذیرفته می‌شوند.</value></data>
+  <data name="Tm_Search" xml:space="preserve"><value>جستجو</value></data>
+  <data name="Tm_SearchPlaceholder" xml:space="preserve"><value>کلید، عنوان یا شرح</value></data>
+  <data name="Tm_IncludeArchived" xml:space="preserve"><value>شامل بایگانی‌شده‌ها</value></data>
+  <data name="Tm_SortBy" xml:space="preserve"><value>مرتب‌سازی</value></data>
+  <data name="Tm_Sort_updated" xml:space="preserve"><value>آخرین تغییر</value></data>
+  <data name="Tm_Sort_rank" xml:space="preserve"><value>رتبه</value></data>
+  <data name="Tm_Sort_due" xml:space="preserve"><value>سررسید</value></data>
+  <data name="Tm_Sort_priority" xml:space="preserve"><value>اولویت</value></data>
+  <data name="Tm_Sort_created" xml:space="preserve"><value>ایجاد</value></data>
+  <data name="Tm_Sort_key" xml:space="preserve"><value>کلید</value></data>
+  <data name="Tm_ResultCount" xml:space="preserve"><value>{0} نتیجه</value></data>
+  <data name="Tm_NoDescription" xml:space="preserve"><value>شرحی ثبت نشده است.</value></data>
+  <data name="Tm_Subtasks" xml:space="preserve"><value>زیروظایف</value></data>
+  <data name="Tm_Subtask" xml:space="preserve"><value>زیروظیفه</value></data>
+  <data name="Tm_NewSubtask" xml:space="preserve"><value>عنوان زیروظیفه‌ی جدید</value></data>
+  <data name="Tm_Links" xml:space="preserve"><value>پیوندها</value></data>
+  <data name="Tm_NoLinks" xml:space="preserve"><value>وظیفه‌ی پیوندشده‌ای وجود ندارد.</value></data>
+  <data name="Tm_LinkType" xml:space="preserve"><value>نوع پیوند</value></data>
+  <data name="Tm_LinkTarget" xml:space="preserve"><value>وظیفه‌ی مقصد</value></data>
+  <data name="Tm_LinkTargetPlaceholder" xml:space="preserve"><value>کلید وظیفه، مثلاً MNT-12</value></data>
+  <data name="Tm_AddLink" xml:space="preserve"><value>افزودن پیوند</value></data>
+  <data name="Tm_RemoveLink" xml:space="preserve"><value>حذف پیوند</value></data>
+  <data name="Tm_RemoveLinkConfirm" xml:space="preserve"><value>این پیوند حذف شود؟</value></data>
+  <data name="Tm_RestrictedItem" xml:space="preserve"><value>مورد محدود</value></data>
+  <data name="Tm_Link_Blocks_Out" xml:space="preserve"><value>مانع است برای</value></data>
+  <data name="Tm_Link_Blocks_In" xml:space="preserve"><value>مسدودشده توسط</value></data>
+  <data name="Tm_Link_RelatesTo_Out" xml:space="preserve"><value>مرتبط با</value></data>
+  <data name="Tm_Link_RelatesTo_In" xml:space="preserve"><value>مرتبط با</value></data>
+  <data name="Tm_Link_Duplicates_Out" xml:space="preserve"><value>تکرار</value></data>
+  <data name="Tm_Link_Duplicates_In" xml:space="preserve"><value>تکرارشده توسط</value></data>
+  <data name="Tm_Comments" xml:space="preserve"><value>نظرها</value></data>
+  <data name="Tm_AddComment" xml:space="preserve"><value>افزودن نظر</value></data>
+  <data name="Tm_NoComments" xml:space="preserve"><value>هنوز نظری ثبت نشده است.</value></data>
+  <data name="Tm_CommentDeleted" xml:space="preserve"><value>این نظر حذف شده است.</value></data>
+  <data name="Tm_DeleteCommentConfirm" xml:space="preserve"><value>این نظر حذف شود؟</value></data>
+  <data name="Tm_History" xml:space="preserve"><value>تاریخچه</value></data>
+  <data name="Tm_NoHistory" xml:space="preserve"><value>تغییری ثبت نشده است.</value></data>
+  <data name="Tm_When" xml:space="preserve"><value>زمان</value></data>
+  <data name="Tm_Who" xml:space="preserve"><value>کاربر</value></data>
+  <data name="Tm_Action" xml:space="preserve"><value>عملیات</value></data>
+  <data name="Tm_Changes" xml:space="preserve"><value>تغییرات</value></data>
+  <data name="Tm_Audit_Insert" xml:space="preserve"><value>ایجاد</value></data>
+  <data name="Tm_Audit_Update" xml:space="preserve"><value>ویرایش</value></data>
+  <data name="Tm_Audit_Delete" xml:space="preserve"><value>حذف</value></data>
+  <data name="Tm_ChangeStatus" xml:space="preserve"><value>تغییر وضعیت</value></data>
+  <data name="Tm_CompletionNote" xml:space="preserve"><value>یادداشت تکمیل</value></data>
+  <data name="Tm_CompletionNoteOptional" xml:space="preserve"><value>یادداشت (اختیاری)</value></data>
+  <data name="Tm_Tab_Action" xml:space="preserve"><value>اقدام وظایف (محول‌شده به من)</value></data>
+  <data name="Tm_Tab_Followup" xml:space="preserve"><value>پیگیری وظایف (محول‌شده توسط من)</value></data>
+  <data name="Tm_NewPersonalTask" xml:space="preserve"><value>وظیفه‌ی شخصی جدید</value></data>
+  <data name="Tm_Admin_Title" xml:space="preserve"><value>مدیریت فضاهای وظایف</value></data>
+  <data name="Tm_Admin_Hint" xml:space="preserve"><value>برای واحدهای سازمانی فضا بسازید، عضو و سرپرست اضافه کنید و وضعیت‌ها، گذارها و انواع را پیکربندی کنید. هیچ چیزی حدس زده نمی‌شود: عضویت فقط از اعضای صریح و واحد مالک است.</value></data>
+  <data name="Tm_Admin_CreateSpace" xml:space="preserve"><value>ایجاد فضا</value></data>
+  <data name="Tm_KeyHelp" xml:space="preserve"><value>۲ تا ۱۰ حرف یا رقم، با حرف شروع شود. بعداً قابل تغییر نیست.</value></data>
+  <data name="Tm_KeyImmutable" xml:space="preserve"><value>کلید ثابت است چون کلید وظایف موجود به آن وابسته است.</value></data>
+  <data name="Tm_NoDepartment" xml:space="preserve"><value>بدون واحد مالک</value></data>
+  <data name="Tm_DepartmentHelp" xml:space="preserve"><value>کارمندان فعال این واحد به‌صورت خودکار عضو می‌شوند.</value></data>
+  <data name="Tm_Members" xml:space="preserve"><value>اعضا</value></data>
+  <data name="Tm_MembersHint" xml:space="preserve"><value>اعضای صریح. سرپرست‌ها اسپرینت، رتبه‌بندی، ارجاع و بایگانی را در این فضا مدیریت می‌کنند.</value></data>
+  <data name="Tm_NoMembers" xml:space="preserve"><value>عضو صریحی تعریف نشده است.</value></data>
+  <data name="Tm_Employee" xml:space="preserve"><value>کارمند</value></data>
+  <data name="Tm_SelectEmployee" xml:space="preserve"><value>انتخاب کارمند</value></data>
+  <data name="Tm_Types" xml:space="preserve"><value>انواع وظیفه</value></data>
+  <data name="Tm_Activate" xml:space="preserve"><value>فعال‌سازی</value></data>
+  <data name="Tm_Deactivate" xml:space="preserve"><value>غیرفعال‌سازی</value></data>
+  <data name="Tm_Statuses" xml:space="preserve"><value>وضعیت‌ها</value></data>
+  <data name="Tm_StatusesHint" xml:space="preserve"><value>دسته‌ی وضعیت شمارنده‌های کارهای من و حالت انجام‌شده را تعیین می‌کند. وضعیتی که در حال استفاده است غیرفعال نمی‌شود و دسته‌اش تغییر نمی‌کند.</value></data>
+  <data name="Tm_Transitions" xml:space="preserve"><value>گذارهای مجاز</value></data>
+  <data name="Tm_TransitionsHint" xml:space="preserve"><value>فقط تغییر وضعیت عادی. تأیید رسمی از سکوی گردش‌کار انجام می‌شود.</value></data>
+  <data name="Tm_FromTo" xml:space="preserve"><value>از \ به</value></data>
+  <data name="Tm_Allowed" xml:space="preserve"><value>مجاز</value></data>
+  <data name="Tm_NotAllowed" xml:space="preserve"><value>غیرمجاز</value></data>
+  <data name="Tm_Msg_Saved" xml:space="preserve"><value>ذخیره شد.</value></data>
+  <data name="Tm_Msg_Created" xml:space="preserve"><value>وظیفه ایجاد شد.</value></data>
+  <data name="Tm_Msg_Archived" xml:space="preserve"><value>وظیفه بایگانی شد.</value></data>
+  <data name="Tm_Msg_Restored" xml:space="preserve"><value>وظیفه بازگردانی شد.</value></data>
+  <data name="Tm_Msg_CommentAdded" xml:space="preserve"><value>نظر ثبت شد.</value></data>
+  <data name="Tm_Msg_CommentDeleted" xml:space="preserve"><value>نظر حذف شد.</value></data>
+  <data name="Tm_Msg_SprintStarted" xml:space="preserve"><value>اسپرینت شروع شد.</value></data>
+  <data name="Tm_Msg_SprintCompleted" xml:space="preserve"><value>اسپرینت پایان یافت.</value></data>
+  <data name="Tm_Err_NotFound" xml:space="preserve"><value>یافت نشد.</value></data>
+  <data name="Tm_Err_NotAuthorized" xml:space="preserve"><value>شما مجاز به انجام این کار نیستید.</value></data>
+  <data name="Tm_Err_Concurrency" xml:space="preserve"><value>شخص دیگری این وظیفه را تغییر داده است. صفحه را بارگذاری مجدد کنید و دوباره تلاش کنید.</value></data>
+  <data name="Tm_Err_TitleRequired" xml:space="preserve"><value>عنوان الزامی است.</value></data>
+  <data name="Tm_Err_TitleTooLong" xml:space="preserve"><value>عنوان بیش از حد طولانی است (حداکثر ۳۰۰).</value></data>
+  <data name="Tm_Err_DescriptionTooLong" xml:space="preserve"><value>شرح بیش از حد طولانی است (حداکثر ۸۰۰۰).</value></data>
+  <data name="Tm_Err_InvalidPriority" xml:space="preserve"><value>اولویت نامعتبر است.</value></data>
+  <data name="Tm_Err_StartAfterDue" xml:space="preserve"><value>تاریخ شروع نباید بعد از تاریخ پایان/سررسید باشد.</value></data>
+  <data name="Tm_Err_InvalidPoints" xml:space="preserve"><value>امتیاز تخمین باید بین ۰ و ۱۰۰۰ باشد.</value></data>
+  <data name="Tm_Err_InvalidType" xml:space="preserve"><value>نوع وظیفه نامعتبر است.</value></data>
+  <data name="Tm_Err_NoInitialStatus" xml:space="preserve"><value>فضا وضعیت فعالی در دسته‌ی «برای انجام» ندارد.</value></data>
+  <data name="Tm_Err_SubtaskNeedsParent" xml:space="preserve"><value>زیروظیفه به وظیفه‌ی والد نیاز دارد.</value></data>
+  <data name="Tm_Err_InvalidParent" xml:space="preserve"><value>وظیفه‌ی والد نامعتبر است.</value></data>
+  <data name="Tm_Err_InvalidSprint" xml:space="preserve"><value>اسپرینت نامعتبر است.</value></data>
+  <data name="Tm_Err_PersonalTaskFields" xml:space="preserve"><value>نوع، والد، اسپرینت و امتیاز فقط برای وظایف فضا معتبر است.</value></data>
+  <data name="Tm_Err_AssigneeNotEligible" xml:space="preserve"><value>مسئول انتخاب‌شده برای این وظیفه واجد شرایط نیست.</value></data>
+  <data name="Tm_Err_InvalidTransition" xml:space="preserve"><value>این تغییر وضعیت مجاز نیست.</value></data>
+  <data name="Tm_Err_NoteTooLong" xml:space="preserve"><value>یادداشت بیش از حد طولانی است (حداکثر ۲۰۰۰).</value></data>
+  <data name="Tm_Err_StaleOrder" xml:space="preserve"><value>فهرست در این فاصله تغییر کرده است. بارگذاری مجدد کنید و دوباره تلاش کنید.</value></data>
+  <data name="Tm_Err_InvalidAction" xml:space="preserve"><value>عملیات نامعتبر است.</value></data>
+  <data name="Tm_Err_NothingSelected" xml:space="preserve"><value>حداقل یک وظیفه انتخاب کنید.</value></data>
+  <data name="Tm_Err_CommentRequired" xml:space="preserve"><value>متن نظر الزامی است.</value></data>
+  <data name="Tm_Err_CommentTooLong" xml:space="preserve"><value>نظر بیش از حد طولانی است (حداکثر ۵۰۰۰).</value></data>
+  <data name="Tm_Err_InvalidLinkType" xml:space="preserve"><value>نوع پیوند نامعتبر است.</value></data>
+  <data name="Tm_Err_LinkTargetNotFound" xml:space="preserve"><value>وظیفه‌ی مقصد یافت نشد.</value></data>
+  <data name="Tm_Err_SelfLink" xml:space="preserve"><value>وظیفه نمی‌تواند به خودش پیوند داشته باشد.</value></data>
+  <data name="Tm_Err_LinkExists" xml:space="preserve"><value>این پیوند از قبل وجود دارد.</value></data>
+  <data name="Tm_Err_NoEmployee" xml:space="preserve"><value>حساب شما به کارمندی متصل نیست.</value></data>
+  <data name="Tm_Err_SaveFailed" xml:space="preserve"><value>تغییر ذخیره نشد. بارگذاری مجدد کنید و دوباره تلاش کنید.</value></data>
+  <data name="Tm_Err_NameRequired" xml:space="preserve"><value>نام الزامی است (حداکثر ۱۵۰).</value></data>
+  <data name="Tm_Err_TooLong" xml:space="preserve"><value>یکی از مقادیر بیش از حد طولانی است.</value></data>
+  <data name="Tm_Err_InvalidDepartment" xml:space="preserve"><value>واحد نامعتبر است.</value></data>
+  <data name="Tm_Err_InvalidKey" xml:space="preserve"><value>کلید باید ۲ تا ۱۰ حرف یا رقم و با حرف شروع شود.</value></data>
+  <data name="Tm_Err_KeyExists" xml:space="preserve"><value>این کلید قبلاً استفاده شده است.</value></data>
+  <data name="Tm_Err_InvalidRole" xml:space="preserve"><value>نقش نامعتبر است.</value></data>
+  <data name="Tm_Err_InvalidEmployee" xml:space="preserve"><value>کارمند یافت نشد یا غیرفعال است.</value></data>
+  <data name="Tm_Err_InvalidCategory" xml:space="preserve"><value>دسته‌ی وضعیت نامعتبر است.</value></data>
+  <data name="Tm_Err_NameExists" xml:space="preserve"><value>این نام در فضا وجود دارد.</value></data>
+  <data name="Tm_Err_StatusInUse" xml:space="preserve"><value>این وضعیت توسط وظایف فعال استفاده می‌شود و نمی‌توان آن را غیرفعال کرد یا دسته‌اش را تغییر داد.</value></data>
+  <data name="Tm_Err_InvalidIcon" xml:space="preserve"><value>آیکن باید کلاس Bootstrap Icons باشد، مثلاً bi-bug.</value></data>
+  <data name="Tm_Err_LastType" xml:space="preserve"><value>حداقل یک نوع فعال غیر زیروظیفه لازم است.</value></data>
+  <data name="Tm_Err_SprintClosed" xml:space="preserve"><value>اسپرینت بسته شده است.</value></data>
+  <data name="Tm_Err_SprintState" xml:space="preserve"><value>اسپرینت در وضعیت مناسب این عملیات نیست.</value></data>
+  <data name="Tm_Err_ActiveSprintExists" xml:space="preserve"><value>این فضا از قبل یک اسپرینت فعال دارد.</value></data>
+  <data name="Nav_TaskManager" xml:space="preserve"><value>مدیریت وظایف</value></data>
 </root>

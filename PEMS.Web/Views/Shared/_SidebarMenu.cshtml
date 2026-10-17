@@ -72,7 +72,7 @@
     var correspondenceControllers = new[] { "Letter", "DCC", "TechnicalQuery" };
     var qualityControllers = new[] { "QC", "MOC" };
     var contractControllers = new[] { "Contract", "Vendor", "PurchaseOrder" };
-    var projectControlControllers = new[] { "Task", "Tag", "Report", "Meeting" };
+    var projectControlControllers = new[] { "Task", "TaskManager", "Tag", "Report", "Meeting" };
     var cmmsControllers = new[] { "Equipment", "Instrument", "Asset", "MaintenanceStrategy", "FailureModeCatalog", "StrategyImport", "MaintenancePlan", "MaintenanceCalendar", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "Barcode", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
     var inventoryControllers = new[] { "Inventory", "MaterialItem", "IrnReceipt", "InventoryMasterData", "InventoryTransaction", "StoreRequisition", "Replenishment" };
     // طبق «PEMS Operations CMMS Boundary Correction»: Operations دیگر زیرمجموعه‌ی CMMS Integration
@@ -308,6 +308,10 @@
 
             <a class="nav-link @(IsActive("Task") ? "active" : "")" asp-controller="Task" asp-action="Index" asp-area="">
                 <i class="bi bi-check2-square"></i> @Localizer["Tasks"]
+            </a>
+
+            <a class="nav-link @(IsActive("TaskManager") ? "active" : "")" asp-controller="TaskManager" asp-action="Index" asp-area="">
+                <i class="bi bi-kanban"></i> @Localizer["Nav_TaskManager"]
             </a>
 
             <a class="nav-link @(IsActive("Meeting") ? "active" : "")" asp-controller="Meeting" asp-action="Index" asp-area="">

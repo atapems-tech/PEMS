@@ -68,7 +68,17 @@ public class NumberingService : INumberingService
         // عمداً «NTP» نه «IRN» - طبق §K ریسک ۹ ممیزی: پرهیز از برخورد نام با
         // IrnReceipt (Incoming Receipt Note) موجود در ماژول Material Management
         ["NTP"] = new("NTP", 4, true, () => DateTime.Now.Year.ToString()),
+        // Task Manager: شمارنده به‌ازای هر فضا (ScopeKey = کلید فضا)؛ قالب کلید «{فضا}-{n}» را خود ماژول می‌سازد (GetNextValueAsync)
+        ["WorkItem"] = new("WI", 1, true, () => throw new InvalidOperationException("WorkItem numbering requires the workspace key as scope.")),
     };
+
+    public async Task<int> GetNextValueAsync(string documentType, string scopeKey)
+    {
+        if (string.IsNullOrWhiteSpace(scopeKey)) throw new ArgumentException("A scope key is required.", nameof(scopeKey));
+        var formatted = await GetNextNumberAsync(documentType, scopeKey);
+        // قالب ثابت Prefix-Scope-Value؛ مقدار آخرین بخش است (کلید فضا خط تیره ندارد - اعتبارسنجی WorkSpace.Key)
+        return int.Parse(formatted[(formatted.LastIndexOf('-') + 1)..], System.Globalization.CultureInfo.InvariantCulture);
+    }
 
     public NumberingService(PEMSDbContext context)
     {

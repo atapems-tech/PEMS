@@ -89,8 +89,9 @@ public static class NavigationMenuDefaults
         ComingSoon("contract.claims", "sec.contract", 50, "Claims", "bi-exclamation-diamond", "Claims", "Contract Management"),
 
         // ---- کنترل پروژه
-        Section("sec.projctrl", 600, "ProjectControls", "bi-sliders", "Module:ProjectControls", "Task,Tag,Report,Meeting"),
+        Section("sec.projctrl", 600, "ProjectControls", "bi-sliders", "Module:ProjectControls", "Task,TaskManager,Tag,Report,Meeting"),
         Link("proj.tasks", "sec.projctrl", 10, "Tasks", "bi-check2-square", "Task", rule: "Perm:Task.View", badge: NavigationBadges.TasksOpen),
+        Link("proj.taskmanager", "sec.projctrl", 15, "Nav_TaskManager", "bi-kanban", "TaskManager", rule: "Perm:Task.View"),
         Link("proj.meetings", "sec.projctrl", 20, "Meetings", "bi-people", "Meeting"),
         Link("proj.reports", "sec.projctrl", 30, "Reports", "bi-graph-up", "Report"),
         Link("proj.tags", "sec.projctrl", 40, "Tags", "bi-tags", "Tag"),

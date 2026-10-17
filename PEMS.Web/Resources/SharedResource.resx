@@ -1095,4 +1095,250 @@
   <data name="Nav_Badge_MyWorkIrn" xml:space="preserve"><value>My Work: IRN</value></data>
   <data name="Nav_Badge_WorkOrdersOpen" xml:space="preserve"><value>Open Work Orders</value></data>
   <data name="Nav_Badge_SrAwaitingApproval" xml:space="preserve"><value>Store requisitions awaiting approval</value></data>
+  <data name="Tm_Title" xml:space="preserve"><value>Task Manager</value></data>
+  <data name="Tm_Index_Hint" xml:space="preserve"><value>Plan, track and deliver team work in spaces. You only see spaces you belong to and tasks you are involved in.</value></data>
+  <data name="Tm_NoEmployeeLink" xml:space="preserve"><value>Your user account is not linked to an employee record, so space membership and assignments cannot be resolved. Ask an administrator to link it.</value></data>
+  <data name="Tm_Spaces" xml:space="preserve"><value>Spaces</value></data>
+  <data name="Tm_NoSpaces" xml:space="preserve"><value>No spaces are available to you yet.</value></data>
+  <data name="Tm_MyTasks" xml:space="preserve"><value>My tasks</value></data>
+  <data name="Tm_AssignedByMe" xml:space="preserve"><value>Assigned by me</value></data>
+  <data name="Tm_AllWork" xml:space="preserve"><value>All work</value></data>
+  <data name="Tm_Backlog" xml:space="preserve"><value>Backlog</value></data>
+  <data name="Tm_Board" xml:space="preserve"><value>Board</value></data>
+  <data name="Tm_View" xml:space="preserve"><value>View</value></data>
+  <data name="Tm_OpenItems" xml:space="preserve"><value>Open items</value></data>
+  <data name="Tm_Create" xml:space="preserve"><value>Create</value></data>
+  <data name="Tm_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Tm_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Tm_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Tm_Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Tm_Add" xml:space="preserve"><value>Add</value></data>
+  <data name="Tm_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Tm_Apply" xml:space="preserve"><value>Apply</value></data>
+  <data name="Tm_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Tm_Filter" xml:space="preserve"><value>Filter</value></data>
+  <data name="Tm_Reset" xml:space="preserve"><value>Reset</value></data>
+  <data name="Tm_Yes" xml:space="preserve"><value>Yes</value></data>
+  <data name="Tm_No" xml:space="preserve"><value>No</value></data>
+  <data name="Tm_Any" xml:space="preserve"><value>Any</value></data>
+  <data name="Tm_Me" xml:space="preserve"><value>Me</value></data>
+  <data name="Tm_Actions" xml:space="preserve"><value>Actions</value></data>
+  <data name="Tm_Details" xml:space="preserve"><value>Details</value></data>
+  <data name="Tm_Configure" xml:space="preserve"><value>Configure</value></data>
+  <data name="Tm_Personal" xml:space="preserve"><value>Personal</value></data>
+  <data name="Tm_Unassigned" xml:space="preserve"><value>Unassigned</value></data>
+  <data name="Tm_Archived" xml:space="preserve"><value>Archived</value></data>
+  <data name="Tm_Archive" xml:space="preserve"><value>Archive</value></data>
+  <data name="Tm_Restore" xml:space="preserve"><value>Restore</value></data>
+  <data name="Tm_ArchiveConfirm" xml:space="preserve"><value>Archive this task? It will be hidden from lists but its history is kept.</value></data>
+  <data name="Tm_RestoreConfirm" xml:space="preserve"><value>Restore this task?</value></data>
+  <data name="Tm_Watch" xml:space="preserve"><value>Watch</value></data>
+  <data name="Tm_Unwatch" xml:space="preserve"><value>Stop watching</value></data>
+  <data name="Tm_Watchers" xml:space="preserve"><value>Watchers</value></data>
+  <data name="Tm_Reporter" xml:space="preserve"><value>Reporter</value></data>
+  <data name="Tm_AssignedBy" xml:space="preserve"><value>Assigned by</value></data>
+  <data name="Tm_Created" xml:space="preserve"><value>Created</value></data>
+  <data name="Tm_Completed" xml:space="preserve"><value>Completed</value></data>
+  <data name="Tm_Related" xml:space="preserve"><value>Related</value></data>
+  <data name="Tm_Related_Letter" xml:space="preserve"><value>Letter</value></data>
+  <data name="Tm_Related_Meeting" xml:space="preserve"><value>Meeting</value></data>
+  <data name="Tm_Role_Member" xml:space="preserve"><value>Member</value></data>
+  <data name="Tm_Role_Lead" xml:space="preserve"><value>Lead</value></data>
+  <data name="Tm_Field_Key" xml:space="preserve"><value>Key</value></data>
+  <data name="Tm_Field_Space" xml:space="preserve"><value>Space</value></data>
+  <data name="Tm_Field_Title" xml:space="preserve"><value>Title</value></data>
+  <data name="Tm_Field_Description" xml:space="preserve"><value>Description</value></data>
+  <data name="Tm_Field_Type" xml:space="preserve"><value>Type</value></data>
+  <data name="Tm_Field_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Tm_Field_Priority" xml:space="preserve"><value>Priority</value></data>
+  <data name="Tm_Field_Assignee" xml:space="preserve"><value>Assignee</value></data>
+  <data name="Tm_Field_Sprint" xml:space="preserve"><value>Sprint</value></data>
+  <data name="Tm_Field_StartDate" xml:space="preserve"><value>Start date</value></data>
+  <data name="Tm_Field_DueDate" xml:space="preserve"><value>Due date</value></data>
+  <data name="Tm_Field_EndDate" xml:space="preserve"><value>End date</value></data>
+  <data name="Tm_Field_StoryPoints" xml:space="preserve"><value>Story points</value></data>
+  <data name="Tm_Field_StoryPointsShort" xml:space="preserve"><value>Pts</value></data>
+  <data name="Tm_Field_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Tm_Field_NameFa" xml:space="preserve"><value>Persian name</value></data>
+  <data name="Tm_Field_Goal" xml:space="preserve"><value>Goal</value></data>
+  <data name="Tm_Field_Department" xml:space="preserve"><value>Owner department</value></data>
+  <data name="Tm_Field_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Tm_Field_Role" xml:space="preserve"><value>Role</value></data>
+  <data name="Tm_Field_Category" xml:space="preserve"><value>Category</value></data>
+  <data name="Tm_Field_Order" xml:space="preserve"><value>Order</value></data>
+  <data name="Tm_Field_Icon" xml:space="preserve"><value>Icon (Bootstrap Icons class)</value></data>
+  <data name="Tm_Status_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Tm_Status_InProgress" xml:space="preserve"><value>In progress</value></data>
+  <data name="Tm_Status_Completed" xml:space="preserve"><value>Completed</value></data>
+  <data name="Tm_Status_Cancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Tm_Priority_Low" xml:space="preserve"><value>Low</value></data>
+  <data name="Tm_Priority_Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Tm_Priority_High" xml:space="preserve"><value>High</value></data>
+  <data name="Tm_Priority_Urgent" xml:space="preserve"><value>Urgent</value></data>
+  <data name="Tm_Category_ToDo" xml:space="preserve"><value>To do</value></data>
+  <data name="Tm_Category_InProgress" xml:space="preserve"><value>In progress</value></data>
+  <data name="Tm_Category_Done" xml:space="preserve"><value>Done</value></data>
+  <data name="Tm_Category_NotDone" xml:space="preserve"><value>Not done</value></data>
+  <data name="Tm_SprintState_Future" xml:space="preserve"><value>Planned</value></data>
+  <data name="Tm_SprintState_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Tm_SprintState_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Tm_SprintCounts" xml:space="preserve"><value>To do {0} · In progress {1} · Done {2}</value></data>
+  <data name="Tm_StartSprint" xml:space="preserve"><value>Start sprint</value></data>
+  <data name="Tm_CompleteSprint" xml:space="preserve"><value>Complete sprint</value></data>
+  <data name="Tm_CompleteSprintConfirm" xml:space="preserve"><value>Complete this sprint? Unfinished tasks move to the selected destination.</value></data>
+  <data name="Tm_MoveUnfinishedTo" xml:space="preserve"><value>Move unfinished to</value></data>
+  <data name="Tm_CreateSprint" xml:space="preserve"><value>Create sprint</value></data>
+  <data name="Tm_RankHint" xml:space="preserve"><value>Leads can reorder by dragging rows or with the up/down buttons.</value></data>
+  <data name="Tm_MoveUp" xml:space="preserve"><value>Move up</value></data>
+  <data name="Tm_MoveDown" xml:space="preserve"><value>Move down</value></data>
+  <data name="Tm_MoveToSprint" xml:space="preserve"><value>Move to sprint</value></data>
+  <data name="Tm_MoveTo" xml:space="preserve"><value>Move to</value></data>
+  <data name="Tm_Move" xml:space="preserve"><value>Move</value></data>
+  <data name="Tm_EmptyList" xml:space="preserve"><value>No tasks here.</value></data>
+  <data name="Tm_EmptyColumn" xml:space="preserve"><value>No items</value></data>
+  <data name="Tm_Select" xml:space="preserve"><value>Select</value></data>
+  <data name="Tm_SelectAll" xml:space="preserve"><value>Select all</value></data>
+  <data name="Tm_Selected" xml:space="preserve"><value>selected</value></data>
+  <data name="Tm_BulkAction" xml:space="preserve"><value>Bulk action</value></data>
+  <data name="Tm_Bulk_Status" xml:space="preserve"><value>Change status</value></data>
+  <data name="Tm_Bulk_Assign" xml:space="preserve"><value>Assign</value></data>
+  <data name="Tm_Bulk_Sprint" xml:space="preserve"><value>Move to sprint</value></data>
+  <data name="Tm_Bulk_Archive" xml:space="preserve"><value>Archive</value></data>
+  <data name="Tm_BulkConfirm" xml:space="preserve"><value>Apply this action to the selected tasks? Each task is checked individually.</value></data>
+  <data name="Tm_BulkHint" xml:space="preserve"><value>Select rows to change status, assignee or sprint together.</value></data>
+  <data name="Tm_BulkHintNoSpace" xml:space="preserve"><value>Filter by one space to enable bulk status, assignee and sprint changes; without it only archive is available.</value></data>
+  <data name="Tm_Msg_BulkDone" xml:space="preserve"><value>{0} task(s) updated.</value></data>
+  <data name="Tm_Msg_BulkFailed" xml:space="preserve"><value>{0} task(s) were not changed:</value></data>
+  <data name="Tm_CreateAnother" xml:space="preserve"><value>Create another</value></data>
+  <data name="Tm_CtrlEnterHint" xml:space="preserve"><value>Ctrl+Enter to submit</value></data>
+  <data name="Tm_Diag_NO_CONFIGURATION" xml:space="preserve"><value>No members or owner department are configured for this space. Ask an administrator to configure it; no assignee is chosen automatically.</value></data>
+  <data name="Tm_Diag_NO_ELIGIBLE_ACTOR" xml:space="preserve"><value>No active eligible employee was found for this space.</value></data>
+  <data name="Tm_NotEligible" xml:space="preserve"><value>not eligible</value></data>
+  <data name="Tm_BoardNoSprint" xml:space="preserve"><value>No active sprint: the board shows all active tasks of this space.</value></data>
+  <data name="Tm_BoardHint" xml:space="preserve"><value>Drag a card to another column, or use its Move to control. Only allowed transitions are accepted.</value></data>
+  <data name="Tm_Search" xml:space="preserve"><value>Search</value></data>
+  <data name="Tm_SearchPlaceholder" xml:space="preserve"><value>Key, title or description</value></data>
+  <data name="Tm_IncludeArchived" xml:space="preserve"><value>Include archived</value></data>
+  <data name="Tm_SortBy" xml:space="preserve"><value>Sort by</value></data>
+  <data name="Tm_Sort_updated" xml:space="preserve"><value>Updated</value></data>
+  <data name="Tm_Sort_rank" xml:space="preserve"><value>Rank</value></data>
+  <data name="Tm_Sort_due" xml:space="preserve"><value>Due date</value></data>
+  <data name="Tm_Sort_priority" xml:space="preserve"><value>Priority</value></data>
+  <data name="Tm_Sort_created" xml:space="preserve"><value>Created</value></data>
+  <data name="Tm_Sort_key" xml:space="preserve"><value>Key</value></data>
+  <data name="Tm_ResultCount" xml:space="preserve"><value>{0} result(s)</value></data>
+  <data name="Tm_NoDescription" xml:space="preserve"><value>No description.</value></data>
+  <data name="Tm_Subtasks" xml:space="preserve"><value>Subtasks</value></data>
+  <data name="Tm_Subtask" xml:space="preserve"><value>Subtask</value></data>
+  <data name="Tm_NewSubtask" xml:space="preserve"><value>New subtask title</value></data>
+  <data name="Tm_Links" xml:space="preserve"><value>Links</value></data>
+  <data name="Tm_NoLinks" xml:space="preserve"><value>No linked tasks.</value></data>
+  <data name="Tm_LinkType" xml:space="preserve"><value>Link type</value></data>
+  <data name="Tm_LinkTarget" xml:space="preserve"><value>Target task</value></data>
+  <data name="Tm_LinkTargetPlaceholder" xml:space="preserve"><value>Task key, e.g. MNT-12</value></data>
+  <data name="Tm_AddLink" xml:space="preserve"><value>Add link</value></data>
+  <data name="Tm_RemoveLink" xml:space="preserve"><value>Remove link</value></data>
+  <data name="Tm_RemoveLinkConfirm" xml:space="preserve"><value>Remove this link?</value></data>
+  <data name="Tm_RestrictedItem" xml:space="preserve"><value>Restricted item</value></data>
+  <data name="Tm_Link_Blocks_Out" xml:space="preserve"><value>blocks</value></data>
+  <data name="Tm_Link_Blocks_In" xml:space="preserve"><value>is blocked by</value></data>
+  <data name="Tm_Link_RelatesTo_Out" xml:space="preserve"><value>relates to</value></data>
+  <data name="Tm_Link_RelatesTo_In" xml:space="preserve"><value>relates to</value></data>
+  <data name="Tm_Link_Duplicates_Out" xml:space="preserve"><value>duplicates</value></data>
+  <data name="Tm_Link_Duplicates_In" xml:space="preserve"><value>is duplicated by</value></data>
+  <data name="Tm_Comments" xml:space="preserve"><value>Comments</value></data>
+  <data name="Tm_AddComment" xml:space="preserve"><value>Add comment</value></data>
+  <data name="Tm_NoComments" xml:space="preserve"><value>No comments yet.</value></data>
+  <data name="Tm_CommentDeleted" xml:space="preserve"><value>This comment was deleted.</value></data>
+  <data name="Tm_DeleteCommentConfirm" xml:space="preserve"><value>Delete this comment?</value></data>
+  <data name="Tm_History" xml:space="preserve"><value>History</value></data>
+  <data name="Tm_NoHistory" xml:space="preserve"><value>No recorded changes.</value></data>
+  <data name="Tm_When" xml:space="preserve"><value>When</value></data>
+  <data name="Tm_Who" xml:space="preserve"><value>Who</value></data>
+  <data name="Tm_Action" xml:space="preserve"><value>Action</value></data>
+  <data name="Tm_Changes" xml:space="preserve"><value>Changes</value></data>
+  <data name="Tm_Audit_Insert" xml:space="preserve"><value>Created</value></data>
+  <data name="Tm_Audit_Update" xml:space="preserve"><value>Updated</value></data>
+  <data name="Tm_Audit_Delete" xml:space="preserve"><value>Deleted</value></data>
+  <data name="Tm_ChangeStatus" xml:space="preserve"><value>Change status</value></data>
+  <data name="Tm_CompletionNote" xml:space="preserve"><value>Completion note</value></data>
+  <data name="Tm_CompletionNoteOptional" xml:space="preserve"><value>Note (optional)</value></data>
+  <data name="Tm_Tab_Action" xml:space="preserve"><value>Action items (assigned to me)</value></data>
+  <data name="Tm_Tab_Followup" xml:space="preserve"><value>Follow-up (assigned by me)</value></data>
+  <data name="Tm_NewPersonalTask" xml:space="preserve"><value>New personal task</value></data>
+  <data name="Tm_Admin_Title" xml:space="preserve"><value>Task spaces administration</value></data>
+  <data name="Tm_Admin_Hint" xml:space="preserve"><value>Create spaces for organizational units, add members and leads, and configure statuses, transitions and types. Nothing is inferred: membership comes only from explicit members and the owner department.</value></data>
+  <data name="Tm_Admin_CreateSpace" xml:space="preserve"><value>Create space</value></data>
+  <data name="Tm_KeyHelp" xml:space="preserve"><value>2–10 letters/digits, starting with a letter. Cannot be changed later.</value></data>
+  <data name="Tm_KeyImmutable" xml:space="preserve"><value>The key is fixed because existing task keys depend on it.</value></data>
+  <data name="Tm_NoDepartment" xml:space="preserve"><value>No owner department</value></data>
+  <data name="Tm_DepartmentHelp" xml:space="preserve"><value>Active employees of this department become members automatically.</value></data>
+  <data name="Tm_Members" xml:space="preserve"><value>Members</value></data>
+  <data name="Tm_MembersHint" xml:space="preserve"><value>Explicit members. Leads manage sprints, ranking, assignment and archiving in this space.</value></data>
+  <data name="Tm_NoMembers" xml:space="preserve"><value>No explicit members.</value></data>
+  <data name="Tm_Employee" xml:space="preserve"><value>Employee</value></data>
+  <data name="Tm_SelectEmployee" xml:space="preserve"><value>Select an employee</value></data>
+  <data name="Tm_Types" xml:space="preserve"><value>Work item types</value></data>
+  <data name="Tm_Activate" xml:space="preserve"><value>Activate</value></data>
+  <data name="Tm_Deactivate" xml:space="preserve"><value>Deactivate</value></data>
+  <data name="Tm_Statuses" xml:space="preserve"><value>Statuses</value></data>
+  <data name="Tm_StatusesHint" xml:space="preserve"><value>Status category drives My Work counters and the Done state. A status in use cannot be deactivated or change category.</value></data>
+  <data name="Tm_Transitions" xml:space="preserve"><value>Allowed transitions</value></data>
+  <data name="Tm_TransitionsHint" xml:space="preserve"><value>Plain status changes only. Formal approvals use the workflow platform.</value></data>
+  <data name="Tm_FromTo" xml:space="preserve"><value>From \ To</value></data>
+  <data name="Tm_Allowed" xml:space="preserve"><value>allowed</value></data>
+  <data name="Tm_NotAllowed" xml:space="preserve"><value>not allowed</value></data>
+  <data name="Tm_Msg_Saved" xml:space="preserve"><value>Saved.</value></data>
+  <data name="Tm_Msg_Created" xml:space="preserve"><value>Task created.</value></data>
+  <data name="Tm_Msg_Archived" xml:space="preserve"><value>Task archived.</value></data>
+  <data name="Tm_Msg_Restored" xml:space="preserve"><value>Task restored.</value></data>
+  <data name="Tm_Msg_CommentAdded" xml:space="preserve"><value>Comment added.</value></data>
+  <data name="Tm_Msg_CommentDeleted" xml:space="preserve"><value>Comment deleted.</value></data>
+  <data name="Tm_Msg_SprintStarted" xml:space="preserve"><value>Sprint started.</value></data>
+  <data name="Tm_Msg_SprintCompleted" xml:space="preserve"><value>Sprint completed.</value></data>
+  <data name="Tm_Err_NotFound" xml:space="preserve"><value>Not found.</value></data>
+  <data name="Tm_Err_NotAuthorized" xml:space="preserve"><value>You are not allowed to do this.</value></data>
+  <data name="Tm_Err_Concurrency" xml:space="preserve"><value>Someone else changed this task. Reload and try again.</value></data>
+  <data name="Tm_Err_TitleRequired" xml:space="preserve"><value>Title is required.</value></data>
+  <data name="Tm_Err_TitleTooLong" xml:space="preserve"><value>Title is too long (max 300).</value></data>
+  <data name="Tm_Err_DescriptionTooLong" xml:space="preserve"><value>Description is too long (max 8000).</value></data>
+  <data name="Tm_Err_InvalidPriority" xml:space="preserve"><value>Invalid priority.</value></data>
+  <data name="Tm_Err_StartAfterDue" xml:space="preserve"><value>Start date must not be after the end/due date.</value></data>
+  <data name="Tm_Err_InvalidPoints" xml:space="preserve"><value>Story points must be between 0 and 1000.</value></data>
+  <data name="Tm_Err_InvalidType" xml:space="preserve"><value>Invalid work item type.</value></data>
+  <data name="Tm_Err_NoInitialStatus" xml:space="preserve"><value>The space has no active To do status.</value></data>
+  <data name="Tm_Err_SubtaskNeedsParent" xml:space="preserve"><value>A subtask needs a parent task.</value></data>
+  <data name="Tm_Err_InvalidParent" xml:space="preserve"><value>Invalid parent task.</value></data>
+  <data name="Tm_Err_InvalidSprint" xml:space="preserve"><value>Invalid sprint.</value></data>
+  <data name="Tm_Err_PersonalTaskFields" xml:space="preserve"><value>Type, parent, sprint and story points apply only to space tasks.</value></data>
+  <data name="Tm_Err_AssigneeNotEligible" xml:space="preserve"><value>The selected assignee is not eligible for this task.</value></data>
+  <data name="Tm_Err_InvalidTransition" xml:space="preserve"><value>This status change is not allowed.</value></data>
+  <data name="Tm_Err_NoteTooLong" xml:space="preserve"><value>Note is too long (max 2000).</value></data>
+  <data name="Tm_Err_StaleOrder" xml:space="preserve"><value>The list changed meanwhile. Reload and try again.</value></data>
+  <data name="Tm_Err_InvalidAction" xml:space="preserve"><value>Invalid action.</value></data>
+  <data name="Tm_Err_NothingSelected" xml:space="preserve"><value>Select at least one task.</value></data>
+  <data name="Tm_Err_CommentRequired" xml:space="preserve"><value>Comment text is required.</value></data>
+  <data name="Tm_Err_CommentTooLong" xml:space="preserve"><value>Comment is too long (max 5000).</value></data>
+  <data name="Tm_Err_InvalidLinkType" xml:space="preserve"><value>Invalid link type.</value></data>
+  <data name="Tm_Err_LinkTargetNotFound" xml:space="preserve"><value>Target task not found.</value></data>
+  <data name="Tm_Err_SelfLink" xml:space="preserve"><value>A task cannot link to itself.</value></data>
+  <data name="Tm_Err_LinkExists" xml:space="preserve"><value>This link already exists.</value></data>
+  <data name="Tm_Err_NoEmployee" xml:space="preserve"><value>Your account is not linked to an employee.</value></data>
+  <data name="Tm_Err_SaveFailed" xml:space="preserve"><value>The change could not be saved. Reload and try again.</value></data>
+  <data name="Tm_Err_NameRequired" xml:space="preserve"><value>Name is required (max 150).</value></data>
+  <data name="Tm_Err_TooLong" xml:space="preserve"><value>A value is too long.</value></data>
+  <data name="Tm_Err_InvalidDepartment" xml:space="preserve"><value>Invalid department.</value></data>
+  <data name="Tm_Err_InvalidKey" xml:space="preserve"><value>Key must be 2–10 letters/digits starting with a letter.</value></data>
+  <data name="Tm_Err_KeyExists" xml:space="preserve"><value>This key is already used.</value></data>
+  <data name="Tm_Err_InvalidRole" xml:space="preserve"><value>Invalid role.</value></data>
+  <data name="Tm_Err_InvalidEmployee" xml:space="preserve"><value>Employee not found or inactive.</value></data>
+  <data name="Tm_Err_InvalidCategory" xml:space="preserve"><value>Invalid status category.</value></data>
+  <data name="Tm_Err_NameExists" xml:space="preserve"><value>This name already exists in the space.</value></data>
+  <data name="Tm_Err_StatusInUse" xml:space="preserve"><value>This status is used by active tasks; it cannot be deactivated or change category.</value></data>
+  <data name="Tm_Err_InvalidIcon" xml:space="preserve"><value>Icon must be a Bootstrap Icons class such as bi-bug.</value></data>
+  <data name="Tm_Err_LastType" xml:space="preserve"><value>At least one active non-subtask type is required.</value></data>
+  <data name="Tm_Err_SprintClosed" xml:space="preserve"><value>The sprint is closed.</value></data>
+  <data name="Tm_Err_SprintState" xml:space="preserve"><value>The sprint is not in the right state for this action.</value></data>
+  <data name="Tm_Err_ActiveSprintExists" xml:space="preserve"><value>This space already has an active sprint.</value></data>
+  <data name="Nav_TaskManager" xml:space="preserve"><value>Task Manager</value></data>
 </root>
