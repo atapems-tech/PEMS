@@ -1,4 +1,7 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.OCRProcessingAttachmentListDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var counts = (Dictionary<string, int>)ViewBag.Counts;
     string GetCount(string key) => counts.TryGetValue(key, out var c) ? c.ToString() : "0";
@@ -9,7 +12,7 @@
     <div class="col-md-3 col-sm-6">
         <div class="kpi-card">
             <div class="kpi-icon bg-icon-slate"><i class="bi bi-hourglass"></i></div>
-            <div><div class="kpi-value">@GetCount("Pending")</div><div class="kpi-label">Pending</div></div>
+            <div><div class="kpi-value">@GetCount("Pending")</div><div class="kpi-label">@Localizer["Pending"]</div></div>
         </div>
     </div>
     <div class="col-md-3 col-sm-6">
@@ -21,7 +24,7 @@
     <div class="col-md-3 col-sm-6">
         <div class="kpi-card">
             <div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div>
-            <div><div class="kpi-value">@GetCount("Completed")</div><div class="kpi-label">Completed</div></div>
+            <div><div class="kpi-value">@GetCount("Completed")</div><div class="kpi-label">@Localizer["Completed"]</div></div>
         </div>
     </div>
     <div class="col-md-3 col-sm-6">
@@ -35,7 +38,7 @@
 <div class="content-card">
     <form method="get" class="mb-3">
         <select name="status" class="form-select form-select-sm" style="max-width:220px;" onchange="this.form.submit()">
-            <option value="">All Statuses</option>
+            <option value="">@Localizer["All Statuses"]</option>
             @foreach (var s in new[] { "Pending", "Processing", "Completed", "Failed" })
             {
                 <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option>
@@ -45,20 +48,20 @@
 
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('OCRProcessing')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:65vh; overflow-y:auto;">
         <table class="table table-enterprise pems-grid-table" data-grid-key="OCRProcessing">
             <thead>
                 <tr>
-                    <th data-col-key="file" data-resizable="true" data-min-width="140" data-max-width="320">File</th>
-                    <th data-col-key="document" data-resizable="true" data-min-width="100" data-max-width="220">Document</th>
-                    <th data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="140">Type</th>
-                    <th data-col-key="size" data-resizable="true" data-min-width="70" data-max-width="120">Size</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">Status</th>
+                    <th data-col-key="file" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["File"]</th>
+                    <th data-col-key="document" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Document"]</th>
+                    <th data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="140">@Localizer["Type"]</th>
+                    <th data-col-key="size" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Size"]</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Status"]</th>
                     <th data-col-key="summary" data-resizable="true" data-min-width="180" data-max-width="400">Summary / Error</th>
-                    <th data-col-key="uploaded" data-resizable="true" data-min-width="120" data-max-width="200">Uploaded</th>
+                    <th data-col-key="uploaded" data-resizable="true" data-min-width="120" data-max-width="200">@Localizer["Uploaded"]</th>
                     <th data-col-key="actions" data-resizable="false" style="width:90px"></th>
                 </tr>
             </thead>

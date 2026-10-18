@@ -99,6 +99,22 @@ public class ProcurementCommunicationConfiguration : IEntityTypeConfiguration<Pr
             .WithMany()
             .HasForeignKey(x => x.AttachmentId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.Tender)
+            .WithMany()
+            .HasForeignKey(x => x.TenderId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+}
+
+public class ProcurementCommunicationResponseConfiguration : IEntityTypeConfiguration<ProcurementCommunicationResponse>
+{
+    public void Configure(EntityTypeBuilder<ProcurementCommunicationResponse> builder)
+    {
+        builder.HasOne(x => x.ProcurementCommunication)
+            .WithMany(x => x.Responses)
+            .HasForeignKey(x => x.ProcurementCommunicationId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
 

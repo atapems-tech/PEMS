@@ -1,19 +1,22 @@
 ﻿@model PEMS.Application.DTOs.EquipmentImportBatchDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="alert alert-info py-2 px-3 small mb-3">
     <i class="bi bi-info-circle"></i> ستون‌های MR No / PO No فقط به‌عنوان متن ذخیره می‌شوند - دیگر
     خودکار Vendor/MR/VDR جدید ساخته نمی‌شود. برای اتصال به داده‌ی موجود، بعد از Commit به
-    <a asp-controller="Relationship" asp-action="Equipment" asp-route-id="0" onclick="return false;" class="text-decoration-underline">Relationship Explorer</a>
+    <a asp-controller="Relationship" asp-action="Equipment" asp-route-id="0" onclick="return false;" class="text-decoration-underline">@Localizer["Relationship Explorer"]</a>
     هر تجهیز مراجعه کن و پیشنهاد اتصال را تایید کن.
 </div>
 
 <div class="content-card mb-3">
     <div class="row g-3">
-        <div class="col-md-3"><strong>File:</strong> @Model.FileName</div>
-        <div class="col-md-3"><strong>Project:</strong> @Model.ProjectName</div>
-        <div class="col-md-2"><strong>Total:</strong> @Model.Rows.Count</div>
+        <div class="col-md-3"><strong>@Localizer["File:"]</strong> @Model.FileName</div>
+        <div class="col-md-3"><strong>@Localizer["Project:"]</strong> @Model.ProjectName</div>
+        <div class="col-md-2"><strong>@Localizer["Total:"]</strong> @Model.Rows.Count</div>
         <div class="col-md-2"><strong>Updates:</strong> @Model.Rows.Count(x => x.IsUpdate)</div>
-        <div class="col-md-2"><strong>Status:</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
+        <div class="col-md-2"><strong>@Localizer["Status:"]</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
     </div>
 
     @if (Model.Status == "Staging")
@@ -40,8 +43,8 @@
         <table class="table table-enterprise">
             <thead>
                 <tr>
-                    <th>Include</th><th>#</th><th>Tag No</th><th>Name</th><th>Type</th>
-                    <th>Discipline</th><th>Area</th><th>P&amp;ID</th><th>MR No</th><th>PO No</th><th>Existing?</th>
+                    <th>@Localizer["Include"]</th><th>#</th><th>Tag No</th><th>@Localizer["Name"]</th><th>@Localizer["Type"]</th>
+                    <th>@Localizer["Discipline"]</th><th>@Localizer["Area"]</th><th>P&amp;ID</th><th>MR No</th><th>PO No</th><th>Existing?</th>
                 </tr>
             </thead>
             <tbody>

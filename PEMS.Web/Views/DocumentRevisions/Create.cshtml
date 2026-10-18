@@ -1,4 +1,7 @@
 ﻿@model PEMS.Domain.Entities.DocumentRevision
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     dynamic document = ViewBag.Document;
 }
@@ -19,20 +22,20 @@
                 <input asp-for="PreviousRevisionNo" class="form-control" readonly />
             </div>
             <div class="col-md-6">
-                <label class="form-label">Status</label>
+                <label class="form-label">@Localizer["Status"]</label>
                 <select asp-for="Status" class="form-select">
-                    <option>Draft</option>
-                    <option>Review</option>
-                    <option>Approved</option>
-                    <option>Rejected</option>
+                    <option>@Localizer["Draft"]</option>
+                    <option>@Localizer["Review"]</option>
+                    <option>@Localizer["Approved"]</option>
+                    <option>@Localizer["Rejected"]</option>
                 </select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Issue Purpose</label>
+                <label class="form-label">@Localizer["Issue Purpose"]</label>
                 <input asp-for="IssuePurpose" class="form-control" placeholder="For Approval / For Construction / For Information" />
             </div>
             <div class="col-12">
-                <label class="form-label">Comment</label>
+                <label class="form-label">@Localizer["Comment"]</label>
                 <textarea asp-for="Comment" class="form-control" rows="3"></textarea>
             </div>
         </div>

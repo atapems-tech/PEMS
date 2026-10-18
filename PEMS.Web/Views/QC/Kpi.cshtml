@@ -1,19 +1,21 @@
-﻿<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-graph-up"></i> QC/QA KPI Report</h5>
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Back to Dashboard</a>
+﻿@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+<div class="d-flex justify-content-end align-items-center mb-2">
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Back to Dashboard"]</a>
 </div>
 
 <div class="row g-3 mb-3">
     <div class="col-md-4">
         <div class="content-card text-center">
             <div class="fs-3 fw-bold">@ViewBag.TotalNCRs</div>
-            <div class="text-muted small">کل NCR های ثبت‌شده</div>
+            <div class="text-muted small">@Localizer["کل NCR های ثبت‌شده"]</div>
         </div>
     </div>
     <div class="col-md-4">
         <div class="content-card text-center">
             <div class="fs-3 fw-bold text-success">@ViewBag.ClosedOnTimeRate%</div>
-            <div class="text-muted small">درصد بسته‌شده در ۱۴ روز</div>
+            <div class="text-muted small">@Localizer["درصد بسته‌شده در ۱۴ روز"]</div>
         </div>
     </div>
     <div class="col-md-4">
@@ -23,7 +25,7 @@
                 var criticalCount = bySeverity.FirstOrDefault(x => x.Severity == "Critical")?.Count ?? 0;
             }
             <div class="fs-3 fw-bold text-danger">@criticalCount</div>
-            <div class="text-muted small">NCR بحرانی (کل تاریخچه)</div>
+            <div class="text-muted small">@Localizer["NCR بحرانی (کل تاریخچه)"]</div>
         </div>
     </div>
 </div>
@@ -31,9 +33,9 @@
 <div class="row g-3">
     <div class="col-md-7">
         <div class="content-card h-100">
-            <h6 class="mb-3">نرخ NCR به تفکیک دیسیپلین</h6>
+            <h6 class="mb-3">@Localizer["نرخ NCR به تفکیک دیسیپلین"]</h6>
             <table class="table table-enterprise mb-0">
-                <thead><tr><th>دیسیپلین</th><th>کل</th><th>باز</th><th>بحرانی</th><th>میانگین روز تا بستن</th></tr></thead>
+                <thead><tr><th>@Localizer["دیسیپلین"]</th><th>@Localizer["کل"]</th><th>@Localizer["باز"]</th><th>@Localizer["بحرانی"]</th><th>@Localizer["میانگین روز تا بستن"]</th></tr></thead>
                 <tbody>
                     @foreach (var d in (IEnumerable<dynamic>)ViewBag.ByDiscipline)
                     {
@@ -52,7 +54,7 @@
 
     <div class="col-md-5">
         <div class="content-card h-100">
-            <h6 class="mb-3">نرخ NCR به تفکیک شدت</h6>
+            <h6 class="mb-3">@Localizer["نرخ NCR به تفکیک شدت"]</h6>
             <ul class="list-unstyled mb-0">
                 @foreach (var s in (IEnumerable<dynamic>)ViewBag.BySeverity)
                 {
@@ -68,7 +70,7 @@
 </div>
 
 <div class="content-card mt-3">
-    <h6 class="mb-3">روند ماهانه NCR (۱۲ ماه اخیر)</h6>
+    <h6 class="mb-3">@Localizer["روند ماهانه NCR (۱۲ ماه اخیر)"]</h6>
     @{
         var byMonth = (IEnumerable<dynamic>)ViewBag.ByMonth;
         var maxCount = byMonth.Any() ? (int)byMonth.Max(x => (int)x.Count) : 1;
@@ -89,6 +91,6 @@
     }
     else
     {
-        <p class="text-muted small mb-0">داده‌ای برای ۱۲ ماه اخیر نیست.</p>
+        <p class="text-muted small mb-0">@Localizer["داده‌ای برای ۱۲ ماه اخیر نیست."]</p>
     }
 </div>

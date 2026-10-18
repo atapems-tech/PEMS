@@ -72,5 +72,13 @@ public class MaterialStockConfiguration : IEntityTypeConfiguration<MaterialStock
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(x => new { x.MaterialItemId, x.WarehouseId, x.StorageLocationId }).IsUnique();
+
+        // Phase 2 / P4: کلید کسب‌وکار (متریال، انبار، محل) برای محل NULL («موجودی بدون محل») تا اینجا هیچ یکتایی نداشت - EF برای ایندکس یکتای
+        // ستون Nullable خودکار Filter «IS NOT NULL» می‌گذارد. دو دریافت هم‌زمانِ اول می‌توانستند دو ردیف NULL-location بسازند و
+        // رزرو/تحویل روی ردیف دلخواه برود. این ایندکس فقط یک ایندکس است (ستون/Entity تغییر نمی‌کند، پس کد روی Schema بدون این Migration هم کار می‌کند).
+        builder.HasIndex(x => new { x.MaterialItemId, x.WarehouseId })
+            .IsUnique()
+            .HasFilter("[StorageLocationId] IS NULL")
+            .HasDatabaseName("UX_MaterialStocks_Item_Warehouse_NoLocation");
     }
 }

@@ -54,6 +54,24 @@ public static class StandardReferenceSeeder
             "Reliability / RCM", "راهنمای تفسیری SAE JA1011 - مرجع مفهومی برای واژگان و گردش‌کار RCM (Functional Failure/Failure Mode/Consequence) استفاده‌شده در PEMS."),
     };
 
+    // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۲:
+    // فقط ابرداده‌ی سه استاندارد صراحتاً نام‌برده‌شده در سند (۱۷۳۵۹/۲۰۸۱۶/۱۸۴۳۶) - ISO-14224
+    // پیش‌تر در Defaults بالا موجود است. Edition فقط همان سال داخل عنوان رسمی استاندارد است
+    // (مثلاً «ISO 17359:2018») - نه یک مقدار حدس‌زده؛ PublishedDate/EffectiveFrom عمداً خالی
+    // می‌مانند چون ماه/روز دقیق انتشار از منبع رسمی PEMS تأیید نشده (بند «no fabricated values»).
+    private static readonly (string Code, string Org, string Number, string Title, string Edition, string Category, string Description)[] ConditionMonitoringDefaults =
+    {
+        ("ISO-17359", "ISO", "17359", "Condition monitoring and diagnostics of machines — General guidelines",
+            "2018", "Condition Monitoring",
+            "چارچوب کلی برنامه‌ریزی یک برنامه‌ی Condition Monitoring (از انتخاب پارامتر تا تصمیم‌گیری) - مرجع مفهومی برای ساختار ماژول CM در PEMS، نه یک متن کپی‌شده."),
+        ("ISO-20816-1", "ISO", "20816-1", "Mechanical vibration — Measurement and evaluation of machine vibration — Part 1: General guidelines",
+            "2016", "Condition Monitoring / Vibration",
+            "چارچوب کلی اندازه‌گیری و ارزیابی ارتعاش ماشین‌آلات - مرجع مفهومی برای EvaluationProfile های نوع Vibration؛ مقادیر آستانه‌ی واقعی فقط با تأیید مهندسی در EvaluationLimit ثبت می‌شوند، نه از این سند."),
+        ("ISO-18436-2", "ISO", "18436-2", "Condition monitoring and diagnostics of machines — Requirements for qualification and assessment of personnel — Part 2: Vibration condition monitoring and diagnostics",
+            "2014", "Condition Monitoring / Personnel Competence",
+            "الزامات صلاحیت پرسنل اندازه‌گیری/تفسیر ارتعاش - حداقل نیاز PEMS همان ثبت مسئول قرائت (Employee) در ConditionReading.RecordedBy است، نه یک پلتفرم گواهی‌نامه‌ی جدید."),
+    };
+
     public static async Task SeedAsync(IServiceProvider services)
     {
         var db = services.GetRequiredService<PEMSDbContext>();
@@ -62,8 +80,6 @@ public static class StandardReferenceSeeder
             .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
         var missing = Defaults.Where(d => !existingCodes.Contains(d.Code)).ToList();
-        if (missing.Count == 0) return;
-
         foreach (var (code, org, number, title, category, description) in missing)
         {
             db.StandardReferences.Add(new StandardReference
@@ -79,6 +95,27 @@ public static class StandardReferenceSeeder
                 CreatedDate = DateTime.Now
             });
         }
+
+        var missingCm = ConditionMonitoringDefaults.Where(d => !existingCodes.Contains(d.Code)).ToList();
+        foreach (var (code, org, number, title, edition, category, description) in missingCm)
+        {
+            db.StandardReferences.Add(new StandardReference
+            {
+                Code = code,
+                Organization = org,
+                StandardNumber = number,
+                Title = title,
+                Edition = edition,
+                Category = category,
+                Description = description,
+                Status = "Current",
+                IsSystemDefault = true,
+                IsActive = true,
+                CreatedDate = DateTime.Now
+            });
+        }
+
+        if (missing.Count == 0 && missingCm.Count == 0) return;
 
         await db.SaveChangesAsync();
     }

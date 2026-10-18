@@ -27,7 +27,7 @@ public interface IProcurementPackageService
     Task LinkExistingMRAsync(int packageId, int mrId);
 
     Task<int> AddCommunicationAsync(int packageId, string type, string subject, string body,
-        int? vendorId, string? raisedByName, int? attachmentId);
+        int? vendorId, string? raisedByName, int? attachmentId, int? tenderId = null);
 
     // طبق «PEMS — Final Global Repository Audit» بند ۲۴/۳۸ (IDOR): قبلاً فقط با communicationId
     // پیدا می‌شد - هیچ بررسی نمی‌شد که این Communication واقعاً متعلق به packageId درخواستی است

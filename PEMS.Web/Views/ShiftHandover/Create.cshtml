@@ -1,9 +1,11 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = "New Shift Handover";
     var employees = (IEnumerable<dynamic>)ViewBag.Employees;
 }
 
-<h5 class="mb-3"><i class="bi bi-arrow-left-right"></i> New Shift Handover</h5>
 
 @if (TempData["Error"] != null)
 {
@@ -15,19 +17,19 @@
         <div class="col-md-4">
             <label class="form-label small">Outgoing Employee</label>
             <select name="outgoingEmployeeId" class="form-select" required>
-                <option value="">-- select --</option>
+                <option value="">@Localizer["-- select --"]</option>
                 @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Label</option> }
             </select>
         </div>
         <div class="col-md-4">
             <label class="form-label small">Incoming Employee</label>
             <select name="incomingEmployeeId" class="form-select" required>
-                <option value="">-- select --</option>
+                <option value="">@Localizer["-- select --"]</option>
                 @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Label</option> }
             </select>
         </div>
         <div class="col-md-4">
-            <label class="form-label small">Handover Date</label>
+            <label class="form-label small">@Localizer["Handover Date"]</label>
             <input type="datetime-local" name="handoverDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required />
         </div>
         <div class="col-md-6">
@@ -39,8 +41,8 @@
             <textarea name="notes" class="form-control" rows="4"></textarea>
         </div>
         <div class="col-12">
-            <button type="submit" class="btn btn-pems-solid">Create</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            <button type="submit" class="btn btn-pems-solid">@Localizer["Create"]</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
         </div>
     </form>
 </div>

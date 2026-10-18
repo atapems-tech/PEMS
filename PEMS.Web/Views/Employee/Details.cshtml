@@ -1,5 +1,9 @@
 @model PEMS.Domain.Entities.Employee
 @using System.Globalization
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@inject PEMS.Application.Organization.IOrganizationHierarchyService OrgHierarchy
 @{
     var laborRates = (List<PEMS.Domain.Entities.EmployeeLaborRate>)ViewBag.LaborRates;
     var teamHistory = (List<PEMS.Domain.Entities.TeamMember>)ViewBag.TeamHistory;
@@ -24,7 +28,10 @@
     // طبق سند معماری Employee/Team: Employee فیلد Manager مستقل ندارد - از سرپرست تیمِ فعلی
     // (عضویت IsActive) مشتق می‌شود، نه یک فیلد تکراری
     var currentMembership = teamHistory.FirstOrDefault(x => x.IsActive);
-    var manager = currentMembership?.Team?.SupervisorEmployee;
+    var manager = currentMembership?.Team?.SupervisorEmployee;   // سرپرست تیم (عملیاتی) - «مدیر مستقیم» نیست
+    var directManager = await OrgHierarchy.GetDirectManagerAsync(Model.EmployeeId);
+    var orgCtx = ViewBag.OrgContext as PEMS.Application.Organization.OrganizationalContext;
+    var linkedUser = ViewBag.LinkedUser;
 
     string Initials(string? first, string? last)
     {
@@ -98,8 +105,12 @@
             </h6>
             <div class="row g-3">
                 <div class="col-sm-6">
-                    <p class="text-uppercase text-muted small mb-1">@L("Role", "نقش")</p>
-                    <p class="mb-0 fw-semibold">@Dash(Model.Position)</p>
+                    <p class="text-uppercase text-muted small mb-1">@L("Organizational Position", "سمت سازمانی")</p>
+                    <p class="mb-0 fw-semibold">@Dash(orgCtx?.PrimaryPositionTitle)</p>
+                    @if (!string.IsNullOrWhiteSpace(Model.Position) && Model.Position != orgCtx?.PrimaryPositionTitle)
+                    {
+                        <p class="small text-muted mb-0">@L("Title on file", "عنوان ثبت‌شده"): @Model.Position</p>
+                    }
                 </div>
                 <div class="col-sm-6">
                     <p class="text-uppercase text-muted small mb-1">@L("Department", "بخش")</p>
@@ -110,7 +121,7 @@
                     <p class="mb-0 fw-semibold">@Dash(Model.Discipline?.Name)</p>
                 </div>
                 <div class="col-sm-6">
-                    <p class="text-uppercase text-muted small mb-1">@L("Manager", "مدیر")</p>
+                    <p class="text-uppercase text-muted small mb-1">@L("Team Supervisor", "سرپرست تیم")</p>
                     @if (manager != null)
                     {
                         <div class="d-flex align-items-center gap-2">
@@ -123,6 +134,21 @@
                     else
                     {
                         <p class="mb-0 fw-semibold">—</p>
+                    }
+                </div>
+                <div class="col-sm-6">
+                    <p class="text-uppercase text-muted small mb-1">@L("Direct Manager", "مدیر مستقیم")</p>
+                    @if (directManager.IssueCode == null && directManager.Managers.Count > 0)
+                    {
+                        @foreach (var dm in directManager.Managers)
+                        {
+                            <a asp-action="Details" asp-route-id="@dm.EmployeeId" class="fw-semibold text-decoration-none d-block">@dm.Name</a>
+                        }
+                    }
+                    else
+                    {
+                        <p class="mb-0 fw-semibold">—</p>
+                        <p class="small text-muted mb-0" title="@directManager.IssueCode">@(directManager.IssueCode == null ? "" : Localizer["Org_Issue_" + directManager.IssueCode].Value)</p>
                     }
                 </div>
                 <div class="col-sm-6">
@@ -169,6 +195,51 @@
             else
             {
                 <p class="text-muted small text-center py-3 mb-0">@L("No active team membership.", "عضویت فعالی در تیمی ثبت نشده.")</p>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- System Account & Authorization (roles belong to the user account; managed in Administration -> Users) -->
+<div class="row g-3 mb-3">
+    <div class="col-12">
+        <div class="content-card">
+            <h6 class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
+                <i class="bi bi-shield-lock text-warning"></i>
+                <span>@L("System Account & Authorization", "حساب کاربری و دسترسی")</span>
+            </h6>
+            @if (linkedUser == null)
+            {
+                <p class="text-muted mb-0">@L("No system account is linked to this employee.", "حساب کاربری به این کارمند متصل نیست.")</p>
+            }
+            else
+            {
+                <div class="row g-3">
+                    <div class="col-sm-4">
+                        <p class="text-uppercase text-muted small mb-1">@L("Username", "نام کاربری")</p>
+                        <p class="mb-0 fw-semibold">@linkedUser.UserName</p>
+                    </div>
+                    <div class="col-sm-2">
+                        <p class="text-uppercase text-muted small mb-1">@L("Status", "وضعیت")</p>
+                        <p class="mb-0"><span class="badge @(linkedUser.IsActive ? "bg-success" : "bg-secondary")">@(linkedUser.IsActive ? L("Active", "فعال") : L("Inactive", "غیرفعال"))</span></p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="text-uppercase text-muted small mb-1">@L("Roles", "نقش‌ها")</p>
+                        <p class="mb-0">
+                            @if (((IEnumerable<string>)linkedUser.Roles).Any())
+                            {
+                                foreach (var role in (IEnumerable<string>)linkedUser.Roles) { <span class="badge bg-info text-dark me-1">@role</span> }
+                            }
+                            else { <span class="text-muted">—</span> }
+                        </p>
+                    </div>
+                </div>
+                @if (User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
+                {
+                    <div class="mt-3">
+                        <a class="btn btn-sm btn-outline-secondary" asp-area="Admin" asp-controller="Users" asp-action="Edit" asp-route-id="@linkedUser.Id"><i class="bi bi-person-gear"></i> @L("Manage Access", "مدیریت دسترسی")</a>
+                    </div>
+                }
             }
         </div>
     </div>
@@ -381,7 +452,7 @@
                         <div class="col-md-4"><label class="form-label">@L("Personnel Code", "کد پرسنلی")</label><input name="personnelCode" value="@Model.PersonnelCode" class="form-control" /></div>
                         <div class="col-md-4"><label class="form-label">@L("First Name", "نام")</label><input name="firstName" value="@Model.FirstName" class="form-control" required /></div>
                         <div class="col-md-4"><label class="form-label">@L("Last Name", "نام خانوادگی")</label><input name="lastName" value="@Model.LastName" class="form-control" required /></div>
-                        <div class="col-md-6"><label class="form-label">@L("Position / Title", "سمت")</label><input name="position" value="@Model.Position" class="form-control" /></div>
+                        <div class="col-md-6"><partial name="_PositionSelect" model="(int?)Model.EmployeeId" /></div>
                         <div class="col-md-6"><label class="form-label">@L("Email", "ایمیل")</label><input name="email" value="@Model.Email" type="email" class="form-control" /></div>
                         <div class="col-md-6"><label class="form-label">@L("Phone", "تلفن")</label><input name="phone" value="@Model.Phone" class="form-control" /></div>
                         <div class="col-md-3">
@@ -439,10 +510,10 @@
                 <div class="mb-2">
                     <label class="form-label small">@L("Proficiency Level", "سطح مهارت")</label>
                     <select name="proficiencyLevel" class="form-select form-select-sm" required>
-                        <option value="Basic">Basic</option>
-                        <option value="Intermediate">Intermediate</option>
-                        <option value="Advanced">Advanced</option>
-                        <option value="Expert">Expert</option>
+                        <option value="Basic">@Localizer["Basic"]</option>
+                        <option value="Intermediate">@Localizer["Intermediate"]</option>
+                        <option value="Advanced">@Localizer["Advanced"]</option>
+                        <option value="Expert">@Localizer["Expert"]</option>
                     </select>
                 </div>
                 <div class="mb-2">

@@ -31,5 +31,21 @@ public class StandardReference : BaseEntity
 
     public bool IsActive { get; set; } = true;
 
+    // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» بند ۱.۳/۲۲:
+    // یک استاندارد (مثلاً ISO 20816-1:2016) هرگز نباید «همیشگی» فرض شود - نسخه/بازه‌ی اعتبار باید
+    // صریح و ردیابی‌پذیر باشد، نه فقط یک متن ثابت در کد. این پنج فیلد Additive روی همین جدول
+    // موجود اضافه شدند (بدون Migration مخرب) - هیچ مصرف‌کننده‌ی موجود (JobPlan/PMTemplate/
+    // MaintenanceMasterDataController) نیازی به تغییر ندارد.
+    public string? Edition { get; set; }
+
+    public DateTime? PublishedDate { get; set; }
+
+    public DateTime? EffectiveFrom { get; set; }
+
+    public DateTime? EffectiveTo { get; set; }
+
+    // Current, Superseded, Withdrawn, UnderRevision
+    public string Status { get; set; } = "Current";
+
     public DateTime CreatedDate { get; set; } = DateTime.Now;
 }

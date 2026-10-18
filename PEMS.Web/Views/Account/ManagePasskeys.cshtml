@@ -1,9 +1,11 @@
 @model List<(int Id, string? Nickname, DateTime CreatedDate, DateTime? LastUsedDate)>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = "Manage Passkeys";
 }
 
-<h5 class="mb-3"><i class="bi bi-shield-lock"></i> Manage Passkeys</h5>
 <p class="text-muted small">
     طبق سند PEMS-SEC-PERMIT-AUTH-001: تایید/رد Permit، تایید ایزوله‌سازی، اقدامات SIMOPS، و
     Execution Gate نیازمند Step-up Authentication با Passkey (اثر انگشت/Face ID/PIN دستگاه) هستند.
@@ -14,25 +16,25 @@
 <div id="pems-passkey-alert"></div>
 
 <div class="content-card mb-3">
-    <h6 class="mb-3">Register New Passkey</h6>
+    <h6 class="mb-3">@Localizer["Register New Passkey"]</h6>
     <form id="registerForm" class="row g-2 align-items-end" onsubmit="return false;">
         @Html.AntiForgeryToken()
         <div class="col-md-4">
-            <label class="form-label small">Nickname (optional)</label>
+            <label class="form-label small">@Localizer["Nickname (optional)"]</label>
             <input type="text" id="nickname" class="form-control form-control-sm" placeholder="e.g. My Laptop Windows Hello" />
         </div>
         <div class="col-md-2">
             <button type="button" class="btn btn-sm btn-pems-solid" onclick="registerNow()">
-                <i class="bi bi-fingerprint"></i> Register Passkey
+                <i class="bi bi-fingerprint"></i> @Localizer["Register Passkey"]
             </button>
         </div>
     </form>
 </div>
 
 <div class="content-card">
-    <h6 class="mb-3">Registered Passkeys</h6>
+    <h6 class="mb-3">@Localizer["Registered Passkeys"]</h6>
     <table class="table table-enterprise table-sm mb-0">
-        <thead><tr><th>Nickname</th><th>Registered</th><th>Last Used</th></tr></thead>
+        <thead><tr><th>@Localizer["Nickname"]</th><th>@Localizer["Registered"]</th><th>@Localizer["Last Used"]</th></tr></thead>
         <tbody>
             @foreach (var c in Model)
             {
@@ -44,7 +46,7 @@
             }
         </tbody>
     </table>
-    @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">هنوز Passkey ای ثبت نشده.</p> }
+    @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز Passkey ای ثبت نشده."]</p> }
 </div>
 
 <script src="~/js/webauthn.js"></script>

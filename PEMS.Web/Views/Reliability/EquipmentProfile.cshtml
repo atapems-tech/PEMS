@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.EquipmentIntelligenceProfileDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     string StatusBadge(string status) => status switch
     {
@@ -16,7 +19,7 @@
     <div>
         <a asp-action="Details" asp-route-id="@Model.EquipmentId" class="btn btn-outline-secondary btn-sm">Reliability Detail</a>
         <a asp-action="Ram" asp-route-id="@Model.EquipmentId" class="btn btn-outline-primary btn-sm">RAM / Weibull</a>
-        <a asp-controller="EquipmentCriticality" asp-action="Index" class="btn btn-outline-secondary btn-sm">Criticality</a>
+        <a asp-controller="EquipmentCriticality" asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Criticality"]</a>
     </div>
 </div>
 <p class="text-muted small">
@@ -35,7 +38,7 @@
     </div>
     <div class="col-md-3">
         <div class="content-card h-100">
-            <div class="small text-muted">Criticality</div>
+            <div class="small text-muted">@Localizer["Criticality"]</div>
             <div class="fw-bold fs-5">@(Model.CurrentCriticalityClass ?? "N/A")</div>
             <div class="small">Risk: @(Model.CurrentRiskLevel ?? "N/A")</div>
             <div class="small text-muted">Latest Assessment: @(Model.LatestAssessmentStatus ?? "None") (@Model.LatestAssessmentEvidenceCount evidence)</div>
@@ -43,7 +46,7 @@
     </div>
     <div class="col-md-3">
         <div class="content-card h-100">
-            <div class="small text-muted">Reliability</div>
+            <div class="small text-muted">@Localizer["Reliability"]</div>
             <span class="badge @StatusBadge(Model.ReliabilityDataStatus)">@Model.ReliabilityDataStatus</span>
             <div class="small mt-1">MTBF: @(Model.MTBFHours.HasValue ? $"{Model.MTBFHours.Value:N1}h" : "N/A")</div>
             <div class="small">MTTR: @(Model.MTTRHours.HasValue ? $"{Model.MTTRHours.Value:N1}h" : "N/A")</div>

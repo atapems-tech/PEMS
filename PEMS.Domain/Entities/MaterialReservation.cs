@@ -32,6 +32,13 @@ public class MaterialReservation : BaseEntity
     public int? StoreRequisitionId { get; set; }
     public StoreRequisition? StoreRequisition { get; set; }
 
+    /// <summary>خطِ دقیق درخواستی که این رزرو برایش ساخته شده (ردیابی خط‌به‌خط؛ خطوط تکراریِ یک کالا مبهم نمی‌شوند). null = رزروهای قدیمی/غیر StoreRequisition.</summary>
+    public int? StoreRequisitionLineId { get; set; }
+    public StoreRequisitionLine? StoreRequisitionLine { get; set; }
+
+    /// <summary>مقدار تحویل‌شده از همین رزرو (تحویل بخشی)؛ باقی‌مانده‌ی رزرو = Quantity - IssuedQuantity.</summary>
+    public decimal IssuedQuantity { get; set; }
+
     public int ReservedById { get; set; }
     public Employee? ReservedBy { get; set; }
 

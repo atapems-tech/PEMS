@@ -12,13 +12,12 @@ namespace PEMS.Persistence.Seed;
 /// </summary>
 public static class MaintenanceRoleSeeder
 {
-    private static readonly string[] MaintenanceDisciplineNames = { "Mechanical", "Electrical", "Instrument", "Civil" };
+    private static readonly string[] MaintenanceDisciplineNames = { "Mechanical", "Electrical", "Instrumentation", "Civil" };
 
     public static async Task SeedAsync(IServiceProvider services)
     {
         var db = services.GetRequiredService<PEMSDbContext>();
 
-        if (await db.MaintenanceRoles.AnyAsync()) return;
 
         var disciplines = await db.Disciplines
             .Where(x => x.IsActive && MaintenanceDisciplineNames.Contains(x.Name))
@@ -28,6 +27,8 @@ public static class MaintenanceRoleSeeder
 
         foreach (var discipline in disciplines)
         {
+            // Phase 3B: Idempotent به‌ازای هر دیسیپلین (قبلاً گارد سراسری باعث می‌شد Instrumentation هرگز Seed نشود)؛ ردیف‌های موجود دست‌نخورده
+            if (await db.MaintenanceRoles.AnyAsync(x => x.DisciplineId == discipline.DisciplineId)) continue;
             db.MaintenanceRoles.Add(new MaintenanceRole
             {
                 Name = $"{discipline.Name} Technician",

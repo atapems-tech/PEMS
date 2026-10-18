@@ -207,32 +207,76 @@ public class ProcurementPackageService : IProcurementPackageService
         return package.ProcurementPackageId;
     }
 
+    /// <summary>
+    /// جلو/عقب بردن مرحله‌ی کاری Package (MR … Approval). مرحله‌ی «Closeout» عمداً از این مسیر
+    /// قابل‌دسترس نیست: بستن Package باید فقط از <see cref="CloseoutAsync"/> عبور کند تا گیت بازرسی
+    /// (و در لایه‌ی Controller مجوز Approve و SoD) دور زده نشود. Package بسته‌شده یا لغوشده نیز
+    /// دیگر با این مسیر «احیا» نمی‌شود.
+    /// </summary>
     public async Task AdvanceStageAsync(int packageId, string newStage)
     {
         if (!StageOrder.Contains(newStage))
-            throw new Exception($"مرحله‌ی نامعتبر: {newStage}");
+            throw new InvalidOperationException($"مرحله‌ی نامعتبر: {newStage}");
+
+        if (newStage == CloseoutStage)
+            throw new InvalidOperationException(
+                "مرحله‌ی Closeout از مسیر تغییر مرحله‌ی عمومی قابل‌انجام نیست؛ از عملیات «Closeout» (نیازمند مجوز Approve و گیت بازرسی) استفاده کنید.");
 
         var package = await _context.ProcurementPackages.FirstOrDefaultAsync(x => x.ProcurementPackageId == packageId);
         if (package == null) throw new Exception("Package یافت نشد");
 
-        package.Stage = newStage;
+        EnsureNotTerminal(package);
 
-        if (newStage == "Closeout")
-        {
-            package.Status = "Closed";
-            package.ClosedDate = DateTime.Now;
-        }
-        else
-        {
-            package.Status = "InProgress";
-        }
+        package.Stage = newStage;
+        package.Status = "InProgress";
 
         await _context.SaveChangesAsync();
     }
 
+    // طبق ممیزی Package Procurement Contract Finalization (§D/§I قاعده‌ی ۱۱، Phase 5.4): پیش از
+    // این، Closeout هیچ وابستگی‌ای به وضعیت بازرسی نداشت - یک بسته‌ی نیازمند بازرسی می‌توانست با
+    // صفر رکورد بازرسی بسته شود. این گیت سمت-سرور است (نه فقط UI) - دقیقاً هم‌الگو با سایر
+    // گیت‌های این پروژه (مثلاً IrnDispositionService).
+    // تنها نقطه‌ی ورود به Stage=Closeout / Status=Closed است (AdvanceStageAsync آن را رد می‌کند).
+    // سیاست: در حال حاضر قاعده‌ای که «ثبت تاییدیه‌ی Approval پیش از Closeout» را الزامی کند در
+    // دامنه تعریف نشده و اختراع نشده است - این یک شکاف سیاستی مستند است، نه رفتار پیاده‌شده.
     public async Task CloseoutAsync(int packageId)
     {
-        await AdvanceStageAsync(packageId, "Closeout");
+        var package = await _context.ProcurementPackages.FirstOrDefaultAsync(x => x.ProcurementPackageId == packageId);
+        if (package == null) throw new Exception("Package یافت نشد");
+
+        EnsureNotTerminal(package);
+
+        if (package.RequiresInspection)
+        {
+            var linkedItps = await _context.InspectionTestPlans
+                .Where(x => x.ProcurementPackageId == packageId)
+                .ToListAsync();
+
+            if (linkedItps.Count == 0)
+                throw new InvalidOperationException(
+                    "این بسته نیازمند کنترل‌های بازرسی الزامی است ولی هیچ ITP ای برایش تعریف نشده - Closeout مسدود است.");
+
+            var incomplete = linkedItps.Where(x => x.Status != "Closed").ToList();
+            if (incomplete.Count > 0)
+                throw new InvalidOperationException(
+                    $"{incomplete.Count} ITP این بسته هنوز به وضعیت Closed نرسیده‌اند - Closeout مسدود است تا همه‌ی بازرسی‌های الزامی کامل شوند.");
+        }
+
+        package.Stage = CloseoutStage;
+        package.Status = "Closed";
+        package.ClosedDate = DateTime.Now;
+
+        await _context.SaveChangesAsync();
+    }
+
+    private const string CloseoutStage = "Closeout";
+
+    private static void EnsureNotTerminal(ProcurementPackage package)
+    {
+        if (package.Status == "Closed" || package.Status == "Cancelled")
+            throw new InvalidOperationException(
+                $"Package در وضعیت {package.Status} است و مرحله‌ی آن دیگر قابل‌تغییر نیست.");
     }
 
     public async Task LinkExistingMRAsync(int packageId, int mrId)
@@ -246,11 +290,12 @@ public class ProcurementPackageService : IProcurementPackageService
     }
 
     public async Task<int> AddCommunicationAsync(int packageId, string type, string subject, string body,
-        int? vendorId, string? raisedByName, int? attachmentId)
+        int? vendorId, string? raisedByName, int? attachmentId, int? tenderId = null)
     {
         var communication = new ProcurementCommunication
         {
             ProcurementPackageId = packageId,
+            TenderId = tenderId,
             Type = type,
             Subject = subject,
             Body = body,
@@ -294,6 +339,17 @@ public class ProcurementPackageService : IProcurementPackageService
             .FirstOrDefaultAsync(x => x.ProcurementCommunicationId == communicationId && x.ProcurementPackageId == packageId);
 
         if (communication == null) return;
+
+        // طبق گزارش سخت‌افزاری نهایی (Gap ۲): پیش از این، پاسخ قبلی این‌جا بدون اثر بازنویسی
+        // می‌شد - اکنون هر پاسخ یک ردیف تازه‌ی append-only در Responses ثبت می‌کند، و فیلدهای
+        // هم‌نام روی خودِ رکورد فقط Cache آخرین پاسخ‌اند (دقیقاً الگوی Document/DocumentRevision)
+        _context.ProcurementCommunicationResponses.Add(new ProcurementCommunicationResponse
+        {
+            ProcurementCommunicationId = communicationId,
+            ResponseText = responseText,
+            RespondedByName = respondedByName,
+            ResponseDate = DateTime.Now
+        });
 
         communication.ResponseText = responseText;
         communication.RespondedByName = respondedByName;

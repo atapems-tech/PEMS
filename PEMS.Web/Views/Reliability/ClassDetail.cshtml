@@ -1,15 +1,18 @@
 @model PEMS.Application.DTOs.EquipmentClassReliabilityDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0">@Model.Name <code class="small">@Model.Code</code></h5>
-    <a asp-action="Index" class="small">← Fleet Reliability</a>
+    <a asp-action="Index" class="small">@Localizer["← Fleet Reliability"]</a>
 </div>
 
 <div class="content-card">
     <div class="row g-3 text-center">
         <div class="col-md-2">
             <div class="fs-4 fw-bold">@Model.EquipmentPopulation</div>
-            <div class="text-muted small">Population</div>
+            <div class="text-muted small">@Localizer["Population"]</div>
         </div>
         <div class="col-md-2">
             <div class="fs-4 fw-bold">@Model.EquipmentWithFailureHistory</div>
@@ -17,11 +20,11 @@
         </div>
         <div class="col-md-2">
             <div class="fs-4 fw-bold">@Model.FailureCount</div>
-            <div class="text-muted small">Total Failures</div>
+            <div class="text-muted small">@Localizer["Total Failures"]</div>
         </div>
         <div class="col-md-2">
             <div class="fs-4 fw-bold">@Model.TotalDowntimeHours.ToString("N1")h</div>
-            <div class="text-muted small">Total Downtime</div>
+            <div class="text-muted small">@Localizer["Total Downtime"]</div>
         </div>
         <div class="col-md-2">
             <div class="fs-4 fw-bold">@(Model.AverageMTBFHours.HasValue ? $"{Model.AverageMTBFHours.Value:N1}h" : "N/A")</div>

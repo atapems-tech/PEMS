@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.ClassificationDashboardDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 @{
     string BarWidth(int count, int max) => max == 0 ? "0%" : $"{Math.Round(count * 100.0 / max, 1)}%";
@@ -8,7 +11,7 @@
     <div class="row g-3 text-center">
         <div class="col-md-2">
             <div class="fs-3 fw-bold">@Model.TotalActiveEquipment.ToString("N0")</div>
-            <div class="text-muted small">Total Active Equipment</div>
+            <div class="text-muted small">@Localizer["Total Active Equipment"]</div>
         </div>
         <div class="col-md-2">
             <div class="fs-3 fw-bold text-success">@Model.ClassifiedCount.ToString("N0")</div>
@@ -24,7 +27,7 @@
         </div>
         <div class="col-md-2">
             <div class="fs-3 fw-bold text-warning">@Model.PendingReviewCount.ToString("N0")</div>
-            <div class="text-muted small">Pending Review</div>
+            <div class="text-muted small">@Localizer["Pending Review"]</div>
         </div>
         <div class="col-md-2">
             <a asp-action="ReviewQueue" class="btn btn-pems-solid btn-sm mt-2">
@@ -50,7 +53,7 @@
                     <div class="progress-bar" style="width:@BarWidth(item.Count, Model.ClassifiedCount)"></div>
                 </div>
             }
-            @if (!Model.ByConfidence.Any()) { <p class="text-muted small">داده‌ای موجود نیست.</p> }
+            @if (!Model.ByConfidence.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>
     </div>
     <div class="col-md-6">
@@ -65,7 +68,7 @@
                     <div class="progress-bar bg-info" style="width:@BarWidth(item.Count, Model.ClassifiedCount)"></div>
                 </div>
             }
-            @if (!Model.BySource.Any()) { <p class="text-muted small">داده‌ای موجود نیست.</p> }
+            @if (!Model.BySource.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>
     </div>
 </div>
@@ -80,7 +83,7 @@
                     <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
                 </div>
             }
-            @if (!Model.PendingSuggestionsByConfidence.Any()) { <p class="text-muted small">هیچ پیشنهادی در انتظار بازبینی نیست.</p> }
+            @if (!Model.PendingSuggestionsByConfidence.Any()) { <p class="text-muted small">@Localizer["هیچ پیشنهادی در انتظار بازبینی نیست."]</p> }
         </div>
     </div>
     <div class="col-md-6">
@@ -92,7 +95,7 @@
                     <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
                 </div>
             }
-            @if (!Model.UnclassifiedByDiscipline.Any()) { <p class="text-muted small">داده‌ای موجود نیست.</p> }
+            @if (!Model.UnclassifiedByDiscipline.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
         </div>
     </div>
 </div>
@@ -101,7 +104,7 @@
     <h6 class="mb-3">Classified — by Equipment Class (Top 20)</h6>
     <div class="table-responsive">
         <table class="table table-enterprise table-sm">
-            <thead><tr><th>Equipment Class</th><th>Count</th></tr></thead>
+            <thead><tr><th>@Localizer["Equipment Class"]</th><th>@Localizer["Count"]</th></tr></thead>
             <tbody>
                 @foreach (var item in Model.ByEquipmentClass)
                 {
@@ -109,7 +112,7 @@
                 }
             </tbody>
         </table>
-        @if (!Model.ByEquipmentClass.Any()) { <p class="text-muted small text-center py-3">داده‌ای موجود نیست.</p> }
+        @if (!Model.ByEquipmentClass.Any()) { <p class="text-muted small text-center py-3">@Localizer["داده‌ای موجود نیست."]</p> }
     </div>
 </div>
 

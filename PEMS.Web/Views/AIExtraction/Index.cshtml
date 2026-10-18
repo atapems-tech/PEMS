@@ -1,4 +1,7 @@
 ﻿@model List<(PEMS.Domain.Entities.DocumentAttachment Attachment, int PendingTags, int PendingSpecs)>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card">
     <p class="text-muted">
@@ -10,8 +13,8 @@
         <table class="table table-enterprise">
             <thead>
                 <tr>
-                    <th>File</th><th>Document</th><th>Summary</th>
-                    <th>Confidence</th><th>Pending Tags</th><th>Pending Specs</th><th></th>
+                    <th>@Localizer["File"]</th><th>@Localizer["Document"]</th><th>@Localizer["Summary"]</th>
+                    <th>@Localizer["Confidence"]</th><th>@Localizer["Pending Tags"]</th><th>@Localizer["Pending Specs"]</th><th></th>
                 </tr>
             </thead>
             <tbody>

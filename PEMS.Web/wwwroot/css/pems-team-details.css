@@ -1,0 +1,110 @@
+/* PEMS Dynamic Maintenance Organization — Phase 6B: Team Details / Workforce Management.
+   فقط از توکن‌های رنگ موجود (--pems-*) استفاده می‌شود؛ بدون رنگ ثابت، بدون کتابخانه‌ی جدید. */
+
+.pems-team-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.pems-team-summary-item {
+    text-align: center;
+    padding: 10px 6px;
+    border-radius: 10px;
+    background: var(--pems-bg);
+    border: 1px solid var(--pems-surface-border);
+}
+
+.pems-team-summary-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--pems-text);
+}
+
+.pems-team-summary-label {
+    font-size: .72rem;
+    color: var(--pems-text-muted);
+}
+
+.pems-vacant-badge {
+    color: var(--pems-chart-warning);
+    font-weight: 650;
+}
+
+.pems-unit-card {
+    border: 1px solid var(--pems-surface-border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    background: var(--pems-surface);
+    height: 100%;
+}
+
+.pems-unit-card .pems-unit-kind {
+    font-size: .68rem;
+    text-transform: uppercase;
+    color: var(--pems-text-muted);
+    font-weight: 700;
+}
+
+.pems-unit-card[data-inactive="true"] { opacity: .55; }
+
+/* ---- Phase 6C: Position status filter ---- */
+
+#positionStatusFilter .btn.active {
+    background: var(--pems-primary);
+    border-color: var(--pems-primary);
+    color: #fff;
+}
+
+.pems-actions-cell { white-space: nowrap; }
+
+/* ---- Phase 6C bند ۱۶: جدول واکنش‌گرا در موبایل — کارت به‌جای اسکرول افقیِ تنها.
+   الگوی شناخته‌شده‌ی "Responsive Table" (سرستون پنهان، هر ردیف یک کارت، هر سلول با برچسب
+   خودش از data-label) - بدون شکستن قرارداد .table-responsive موجود (که در صفحه‌کلید بزرگ‌تر
+   دست‌نخورده می‌ماند). */
+@media (max-width: 575.98px) {
+    .pems-responsive-table thead { display: none; }
+
+    .pems-responsive-table, .pems-responsive-table tbody, .pems-responsive-table tr, .pems-responsive-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .pems-responsive-table tr {
+        margin-bottom: 10px;
+        border: 1px solid var(--pems-surface-border);
+        border-radius: 10px;
+        padding: 8px 10px;
+        background: var(--pems-surface);
+    }
+
+    .pems-responsive-table tr[hidden] { display: none; }
+
+    .pems-responsive-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 2px;
+        border: none;
+        text-align: end;
+    }
+
+    .pems-responsive-table td[data-label]::before {
+        content: attr(data-label);
+        font-size: .72rem;
+        font-weight: 650;
+        color: var(--pems-text-muted);
+        text-align: start;
+        flex-shrink: 0;
+    }
+
+    .pems-responsive-table .pems-actions-cell {
+        justify-content: flex-end;
+    }
+
+    .pems-responsive-table .pems-actions-cell::before {
+        content: none;
+    }
+}

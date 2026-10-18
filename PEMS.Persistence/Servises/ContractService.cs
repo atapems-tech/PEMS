@@ -35,7 +35,8 @@ public class ContractService : IContractService
                 StartDate = x.StartDate,
                 EndDate = x.EndDate,
                 Status = x.Status,
-                PurchaseOrdersCount = x.PurchaseOrders.Count
+                PurchaseOrdersCount = x.PurchaseOrders.Count,
+                RequiresInspection = x.RequiresInspection
             })
             .ToListAsync();
     }
@@ -73,7 +74,8 @@ public class ContractService : IContractService
                 StartDate = x.StartDate,
                 EndDate = x.EndDate,
                 Status = x.Status,
-                PurchaseOrdersCount = x.PurchaseOrders.Count
+                PurchaseOrdersCount = x.PurchaseOrders.Count,
+                RequiresInspection = x.RequiresInspection
             })
             .ToListAsync();
 
@@ -87,7 +89,7 @@ public class ContractService : IContractService
     }
 
     public async Task<int> CreateAsync(string contractNo, int projectId, int vendorId, string? scope,
-        decimal? value, DateTime? startDate, DateTime? endDate)
+        decimal? value, DateTime? startDate, DateTime? endDate, bool requiresInspection = false)
     {
         var contract = new Contract
         {
@@ -99,6 +101,7 @@ public class ContractService : IContractService
             StartDate = startDate,
             EndDate = endDate,
             Status = "Draft",
+            RequiresInspection = requiresInspection,
             CreatedDate = DateTime.Now
         };
 

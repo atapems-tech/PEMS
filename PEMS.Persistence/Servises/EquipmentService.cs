@@ -457,7 +457,51 @@ public class EquipmentService : IEquipmentService
             PlannedOrDueDate = t.RequiredResponseDate
         }).ToList();
 
-        // Maintenance History (Work Orders)
+        // Maintenance History = Work Requests (نه Work Order): درخواست‌هایی که مستقیم به این تجهیز یا
+        // به Asset همین تجهیز وصل‌اند. فقط رکوردهای فعال؛ WorkOrder مرتبط (بعد از تبدیل) فقط برای ردیابی.
+        var assetIds = await _context.Assets.Where(a => a.EquipmentId == equipmentId).Select(a => a.AssetId).ToListAsync();
+        passport.WorkRequests = await _context.WorkRequests
+            .Where(r => r.IsActive && (r.EquipmentId == equipmentId || (r.AssetId != null && assetIds.Contains(r.AssetId.Value))))
+            .OrderByDescending(r => r.RequestedDate).ThenByDescending(r => r.WorkRequestId)
+            .Select(r => new WorkRequestSummaryDto
+            {
+                WorkRequestId = r.WorkRequestId,
+                RequestNumber = r.RequestNumber,
+                Title = r.Title,
+                Status = r.Status,
+                Priority = r.Priority,
+                RequestedDate = r.RequestedDate,
+                LinkedWorkOrderId = r.LinkedWorkOrderId,
+                LinkedWorkOrderNo = r.LinkedWorkOrder != null ? r.LinkedWorkOrder.WorkOrderNumber : null
+            }).ToListAsync();
+
+        // استراتژی + PM: روابط موجود دامنه (EquipmentId مستقیم روی MaintenanceStrategy/MaintenancePlan) - رابطه‌ی جدیدی ساخته نشده
+        passport.Strategies = await _context.MaintenanceStrategies
+            .Where(s => s.EquipmentId == equipmentId && s.IsActive)
+            .OrderBy(s => s.StrategyType)
+            .Select(s => new EquipmentStrategySummaryDto
+            {
+                MaintenanceStrategyId = s.MaintenanceStrategyId,
+                StrategyType = s.StrategyType,
+                RecommendedTriggerType = s.RecommendedTriggerType,
+                Frequency = s.Frequency,
+                ConsequenceCategory = s.ConsequenceCategory
+            }).ToListAsync();
+        passport.Plans = await _context.MaintenancePlans
+            .Where(p => p.EquipmentId == equipmentId && p.IsActive)
+            .OrderBy(p => p.NextDueDate == null).ThenBy(p => p.NextDueDate)
+            .Select(p => new EquipmentPlanSummaryDto
+            {
+                MaintenancePlanId = p.MaintenancePlanId,
+                PlanNumber = p.PlanNumber,
+                Title = p.Title,
+                TriggerType = p.TriggerType,
+                IntervalDays = p.IntervalDays,
+                LastExecutionDate = p.LastExecutionDate,
+                NextDueDate = p.NextDueDate
+            }).ToListAsync();
+
+        // Work Orderهای اجراشده‌ی تجهیز (فقط خواندنی، بخش جداگانه)
         var workOrders = await _context.WorkOrders
             .Where(x => x.EquipmentId == equipmentId)
             .OrderByDescending(x => x.CreatedDate)
@@ -504,6 +548,107 @@ public class EquipmentService : IEquipmentService
                 LastMaintenanceDate = instrument.LastMaintenanceDate,
                 NextMaintenanceDue = instrument.NextMaintenanceDue,
                 CurrentStatus = instrument.CurrentStatus
+            };
+        }
+
+        // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۳:
+        // دقیقاً همون الگوی Instrument بالا. EquipmentId روی MechanicalEquipment اختیاری است (زنجیره‌ی
+        // Nullable موجود که باید حفظ شود) - پس این‌جا هنوز با FirstOrDefaultAsync پیدا می‌شود، نه Include.
+        var mechanical = await _context.MechanicalEquipments.FirstOrDefaultAsync(m => m.EquipmentId == equipmentId && m.IsActive);
+        if (mechanical != null)
+        {
+            var rotating = await _context.RotatingEquipments.FirstOrDefaultAsync(r => r.MechanicalEquipmentId == mechanical.MechanicalEquipmentId && r.IsActive);
+            var staticEq = rotating == null
+                ? await _context.StaticEquipments.FirstOrDefaultAsync(s => s.MechanicalEquipmentId == mechanical.MechanicalEquipmentId && s.IsActive)
+                : null;
+
+            passport.MechanicalEquipment = new MechanicalEquipmentPassportSummaryDto
+            {
+                MechanicalEquipmentId = mechanical.MechanicalEquipmentId,
+                TagNumber = mechanical.TagNumber,
+                EquipmentType = mechanical.EquipmentType,
+                DesignPressure = mechanical.DesignPressure,
+                DesignTemperature = mechanical.DesignTemperature,
+                OperatingPressure = mechanical.OperatingPressure,
+                OperatingTemperature = mechanical.OperatingTemperature,
+                Material = mechanical.Material,
+                Manufacturer = mechanical.Manufacturer,
+                Model = mechanical.Model,
+                SubType = rotating != null ? "Rotating" : staticEq != null ? "Static" : "Unclassified",
+                FlowRate = rotating?.FlowRate,
+                Head = rotating?.Head,
+                SpeedRPM = rotating?.SpeedRPM,
+                RotatingPowerKW = rotating?.PowerKW,
+                DriverType = rotating?.DriverType,
+                Volume = staticEq?.Volume,
+                Orientation = staticEq?.Orientation,
+                CodeStandard = staticEq?.CodeStandard
+            };
+        }
+
+        // طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §2/§5-1: پایش وضعیت باید
+        // همین‌جا هم خلاصه دیده شود - جزئیات کامل همچنان روی Reliability/ConditionMonitoring
+        // و Finding/Index می‌مانند. هیچ منطق ارزیابی/محاسبه‌ی تازه‌ای این‌جا نیست - فقط همون
+        // Query هایی که ConditionMonitoringService/FindingController از قبل دارند.
+        var cmPoints = await _context.ConditionMonitoringPoints
+            .Where(x => x.EquipmentId == equipmentId && x.IsActive)
+            .Include(x => x.EvaluationProfile)
+            .ToListAsync();
+
+        if (cmPoints.Count > 0)
+        {
+            var pointIds = cmPoints.Select(p => p.ConditionMonitoringPointId).ToList();
+            var lastReadings = await _context.ConditionReadings
+                .Where(x => pointIds.Contains(x.ConditionMonitoringPointId))
+                .GroupBy(x => x.ConditionMonitoringPointId)
+                .Select(g => new { PointId = g.Key, Count = g.Count(), Last = g.OrderByDescending(x => x.ReadingDate).First() })
+                .ToListAsync();
+
+            var cbmStrategy = await _context.MaintenanceStrategies
+                .Where(x => x.EquipmentId == equipmentId && x.IsActive && x.ConditionMonitoringPointId != null && pointIds.Contains(x.ConditionMonitoringPointId!.Value))
+                .FirstOrDefaultAsync();
+
+            DateTime? nextDue = null;
+            if (cbmStrategy != null)
+            {
+                nextDue = await _context.MaintenancePlans
+                    .Where(x => x.MaintenanceStrategyId == cbmStrategy.MaintenanceStrategyId && x.IsActive)
+                    .OrderBy(x => x.NextDueDate)
+                    .Select(x => x.NextDueDate)
+                    .FirstOrDefaultAsync();
+            }
+
+            var openFindingCount = await _context.Findings
+                .CountAsync(x => x.EquipmentId == equipmentId && x.IsActive && x.Status == "Open");
+
+            passport.ConditionMonitoring = new ConditionMonitoringPassportSummaryDto
+            {
+                PointCount = cmPoints.Count,
+                OpenFindingCount = openFindingCount,
+                HasCbmStrategy = cbmStrategy != null,
+                NextDueDate = nextDue,
+                Points = cmPoints.Select(p =>
+                {
+                    var last = lastReadings.FirstOrDefault(x => x.PointId == p.ConditionMonitoringPointId);
+                    return new ConditionMonitoringPointDto
+                    {
+                        ConditionMonitoringPointId = p.ConditionMonitoringPointId,
+                        EquipmentId = p.EquipmentId,
+                        VariableType = p.VariableType,
+                        Tag = p.Tag,
+                        Unit = p.Unit,
+                        AlarmThresholdLow = p.AlarmThresholdLow,
+                        AlarmThresholdHigh = p.AlarmThresholdHigh,
+                        ReadingCount = last?.Count ?? 0,
+                        LastReadingDate = last?.Last.ReadingDate,
+                        LastValue = last?.Last.Value,
+                        LastReadingIsAlarm = last?.Last.IsAlarm ?? false,
+                        LastReadingId = last?.Last.ConditionReadingId,
+                        EvaluationProfileId = p.EvaluationProfileId,
+                        EvaluationProfileCode = p.EvaluationProfile?.Code,
+                        LastReadingEvaluationStatus = last?.Last.EvaluationStatus ?? "NotEvaluated"
+                    };
+                }).ToList()
             };
         }
 

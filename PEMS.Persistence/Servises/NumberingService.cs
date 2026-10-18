@@ -32,6 +32,8 @@ public class NumberingService : INumberingService
         ["JobPlan"] = new("JP", 4, false, () => "GLOBAL"),
         // طبق CMMS-03 بند P0-05: Work Request سالانه، هم‌الگو با WorkOrder.
         ["WorkRequest"] = new("WR", 4, true, () => DateTime.Now.Year.ToString()),
+        // Warehouse / Part Catalogue Request - سالانه، مثل WorkRequest (PCR-2026-0001)
+        ["PartCatalogueRequest"] = new("PCR", 4, true, () => DateTime.Now.Year.ToString()),
         // طبق CMMS-10a: Permit to Work سالانه، هم‌الگو با WorkOrder/WorkRequest.
         ["Permit"] = new("PTW", 4, true, () => DateTime.Now.Year.ToString()),
         // طبق Phase E-01 (رفع P0 ممیزی شماره‌گذاری مدارک مهندسی): این‌جا فقط برای گرفتن توالی
@@ -57,6 +59,15 @@ public class NumberingService : INumberingService
         ["ProductionOrder"] = new("PRO", 4, true, () => DateTime.Now.Year.ToString()),
         ["ProductionRun"] = new("PRN", 3, true, () => "GEN"),
         ["ProductionBatch"] = new("PB", 5, true, () => DateTime.Now.Year.ToString()),
+        // طبق ممیزی Material Management (Gap A) + Step 2: هم‌الگو با WorkOrder/StoreRequisition
+        // (سالانه) - نه یک الگوی جدید اختراعی.
+        ["IRN"] = new("IRN", 4, true, () => DateTime.Now.Year.ToString()),
+        // طبق ممیزی Package Procurement Contract Finalization (§C) - هم‌الگو با بالا (سالانه)
+        ["Tender"] = new("TND", 4, true, () => DateTime.Now.Year.ToString()),
+        ["Bid"] = new("BID", 4, true, () => DateTime.Now.Year.ToString()),
+        // عمداً «NTP» نه «IRN» - طبق §K ریسک ۹ ممیزی: پرهیز از برخورد نام با
+        // IrnReceipt (Incoming Receipt Note) موجود در ماژول Material Management
+        ["NTP"] = new("NTP", 4, true, () => DateTime.Now.Year.ToString()),
     };
 
     public NumberingService(PEMSDbContext context)

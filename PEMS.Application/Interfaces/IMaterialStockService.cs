@@ -31,6 +31,12 @@ public interface IMaterialStockService
         string? reason, int? employeeId, string? referenceType = null, int? referenceId = null,
         int? productionBatchId = null);
 
+    /// <summary>تغییر نسبی (Delta علامت‌دار) موجودی؛ مقدار جدید روی مقدار تازه‌ی ردیف داخل هر تلاش محاسبه می‌شود (بدون Race خواندن-سپس-نوشتن).</summary>
+    Task<(bool Success, string? Error)> AdjustByAsync(
+        int materialItemId, int warehouseId, int? storageLocationId, decimal delta,
+        string? reason, int? employeeId, string? referenceType = null, int? referenceId = null,
+        int? productionBatchId = null);
+
     /// <summary>
     /// آخرین InventoryTransactionId ثبت‌شده برای یک (ReferenceType, ReferenceId) مشخص را برمی‌گرداند -
     /// طبق تصمیم بالا (بدون تغییر امضای برگشتی Receive/Adjust)، این‌جوری کدِ صدازننده

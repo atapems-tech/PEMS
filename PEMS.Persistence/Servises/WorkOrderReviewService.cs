@@ -3,14 +3,17 @@ using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
 using PEMS.Persistence.Seed;
+using PEMS.Persistence.Workflow;
 using PEMS.WorkflowPlatform.Interfaces;
 
 namespace PEMS.Persistence.Services;
 
 public class WorkOrderReviewService : IWorkOrderReviewService
 {
+    // Phase 3B (Architecture A): بازبینی، فرآیند جدا با هویت جدا از چرخه‌عمر است (EntityType اختصاصی). Instance های قدیمی
+    // (BusinessObjectType="WorkOrder"، بدون Binding) با تعریفشان (Category) شناسایی می‌شوند، نه با «جدیدترین Instance این نوع».
     private const string Module = WorkOrderReviewWorkflowSeeder.Module;
-    private const string BusinessObjectType = "WorkOrder";
+    private const string BusinessObjectType = WorkOrderWorkflow.ReviewEntityType;
     private const string Category = WorkOrderReviewWorkflowSeeder.Category;
 
     private readonly PEMSDbContext _context;
@@ -33,8 +36,7 @@ public class WorkOrderReviewService : IWorkOrderReviewService
         var workOrder = await _context.WorkOrders.FirstOrDefaultAsync(x => x.WorkOrderId == workOrderId);
         if (workOrder == null) throw new Exception("WorkOrder یافت نشد.");
 
-        var existingInstance = await _runtime.GetInstanceAsync(BusinessObjectType, workOrderId);
-        if (existingInstance != null && existingInstance.Status == "Running")
+        if ((await WorkOrderWorkflow.ReviewInstancesAsync(_context, workOrderId, runningOnly: true)).Count > 0)
             throw new Exception("این WorkOrder از قبل یک بازبینی چند-دیسیپلینه‌ی فعال داره.");
 
         // ثبت ارجاع‌ها - همون الگوی DocumentIdcReferral
@@ -81,8 +83,8 @@ public class WorkOrderReviewService : IWorkOrderReviewService
         if (!isReferred)
             throw new Exception("دیسیپلین شما برای این WorkOrder ارجاع نشده - نمی‌تونی نظر ثبت کنی.");
 
-        var instance = await _runtime.GetInstanceAsync(BusinessObjectType, workOrderId);
-        if (instance == null || instance.Status != "Running")
+        var instance = (await WorkOrderWorkflow.ReviewInstancesAsync(_context, workOrderId, runningOnly: true)).FirstOrDefault();
+        if (instance == null)
             throw new Exception("این WorkOrder بازبینی چند-دیسیپلینه‌ی فعالی نداره.");
 
         var actorRoles = new[] { EngineeringDocumentWorkflowSeeder.DisciplineRole(actorDisciplineId) };
@@ -108,10 +110,7 @@ public class WorkOrderReviewService : IWorkOrderReviewService
 
     public async Task<IReadOnlyList<VdrReviewStatusItemDto>> GetDisciplineReviewStatusAsync(int workOrderId)
     {
-        var instance = await _context.WorkflowInstances
-            .Where(x => x.Module == Module && x.BusinessObjectType == BusinessObjectType && x.BusinessObjectId == workOrderId)
-            .OrderByDescending(x => x.StartDate)
-            .FirstOrDefaultAsync();
+        var instance = (await WorkOrderWorkflow.ReviewInstancesAsync(_context, workOrderId, runningOnly: false)).FirstOrDefault();
 
         if (instance == null) return Array.Empty<VdrReviewStatusItemDto>();
 
@@ -154,8 +153,7 @@ public class WorkOrderReviewService : IWorkOrderReviewService
 
     public async Task<bool> HasPendingDisciplineReviewAsync(int workOrderId)
     {
-        var instance = await _runtime.GetInstanceAsync(BusinessObjectType, workOrderId);
-        return instance != null && instance.Status == "Running";
+        return (await WorkOrderWorkflow.ReviewInstancesAsync(_context, workOrderId, runningOnly: true)).Count > 0;
     }
 
 

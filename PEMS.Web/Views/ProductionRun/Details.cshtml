@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.ProductionRunDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card mb-3">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
@@ -20,12 +23,12 @@
         <div class="d-flex flex-column gap-1" style="min-width:160px">
             @if (Model.Status == "Planned")
             {
-                <form asp-action="Start" asp-route-id="@Model.ProductionRunId" method="post"><button class="btn btn-sm btn-pems-solid w-100" type="submit"><i class="bi bi-play-fill"></i> Start</button></form>
+                <form asp-action="Start" asp-route-id="@Model.ProductionRunId" method="post"><button class="btn btn-sm btn-pems-solid w-100" type="submit"><i class="bi bi-play-fill"></i> @Localizer["Start"]</button></form>
             }
             @if (Model.Status == "InProgress")
             {
                 <form asp-action="Pause" asp-route-id="@Model.ProductionRunId" method="post"><button class="btn btn-sm btn-outline-secondary w-100" type="submit"><i class="bi bi-pause-fill"></i> Pause</button></form>
-                <button class="btn btn-sm btn-outline-warning w-100" type="button" data-bs-toggle="modal" data-bs-target="#holdRunModal"><i class="bi bi-exclamation-circle"></i> Hold</button>
+                <button class="btn btn-sm btn-outline-warning w-100" type="button" data-bs-toggle="modal" data-bs-target="#holdRunModal"><i class="bi bi-exclamation-circle"></i> @Localizer["Hold"]</button>
                 <form asp-action="Complete" asp-route-id="@Model.ProductionRunId" method="post"><button class="btn btn-sm btn-pems-solid w-100" type="submit"><i class="bi bi-check2-circle"></i> Complete</button></form>
             }
             @if (Model.Status is "Paused" or "OnHold")
@@ -34,7 +37,7 @@
             }
             @if (Model.Status is "Planned" or "Paused" or "OnHold")
             {
-                <button class="btn btn-sm btn-outline-danger w-100" type="button" data-bs-toggle="modal" data-bs-target="#cancelRunModal"><i class="bi bi-x-circle"></i> Cancel</button>
+                <button class="btn btn-sm btn-outline-danger w-100" type="button" data-bs-toggle="modal" data-bs-target="#cancelRunModal"><i class="bi bi-x-circle"></i> @Localizer["Cancel"]</button>
             }
         </div>
     </div>
@@ -52,7 +55,7 @@
         <div class="row row-cols-2 row-cols-md-4 g-2">
             <div class="col"><div class="text-muted small">Input</div><div class="fw-semibold">@reconciliation.TotalInputQuantity.ToString("N3")</div></div>
             <div class="col"><div class="text-muted small">Output</div><div class="fw-semibold">@reconciliation.TotalOutputQuantity.ToString("N3")</div></div>
-            <div class="col"><div class="text-muted small">Loss</div><div class="fw-semibold">@reconciliation.TotalLossQuantity.ToString("N3")</div></div>
+            <div class="col"><div class="text-muted small">@Localizer["Loss"]</div><div class="fw-semibold">@reconciliation.TotalLossQuantity.ToString("N3")</div></div>
             <div class="col"><div class="text-muted small">Difference</div><div class="fw-semibold @(reconciliation.Difference != 0 ? "text-danger" : "text-success")">@reconciliation.Difference?.ToString("N3")</div></div>
         </div>
         @if (reconciliation.Difference != 0)
@@ -65,7 +68,7 @@
         <div class="text-muted small">@reconciliation.Note</div>
         <div class="row row-cols-2 row-cols-md-3 g-2 mt-1">
             <div class="col"><div class="text-muted small">Total Input</div><div class="fw-semibold">@reconciliation.TotalInputQuantity.ToString("N3")</div></div>
-            <div class="col"><div class="text-muted small">Total Output</div><div class="fw-semibold">@reconciliation.TotalOutputQuantity.ToString("N3")</div></div>
+            <div class="col"><div class="text-muted small">@Localizer["Total Output"]</div><div class="fw-semibold">@reconciliation.TotalOutputQuantity.ToString("N3")</div></div>
             <div class="col"><div class="text-muted small">Total Loss</div><div class="fw-semibold">@reconciliation.TotalLossQuantity.ToString("N3")</div></div>
         </div>
     }
@@ -76,7 +79,7 @@
     <div class="row row-cols-1 row-cols-lg-3 g-3 mb-3">
         <div class="col">
             <div class="content-card h-100">
-                <h6 class="mb-2">Record Input</h6>
+                <h6 class="mb-2">@Localizer["Record Input"]</h6>
                 <form asp-action="RecordInput" method="post">
                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
                     <div class="mb-2">
@@ -88,16 +91,16 @@
                             }
                         </select>
                     </div>
-                    <div class="mb-2"><input type="number" step="0.001" min="0.001" name="quantity" class="form-control form-control-sm" placeholder="Quantity" required /></div>
+                    <div class="mb-2"><input type="number" step="0.001" min="0.001" name="quantity" class="form-control form-control-sm" placeholder="@Localizer["Quantity"]" required /></div>
                     <div class="mb-2"><input type="number" name="sourceProductionBatchId" class="form-control form-control-sm" placeholder="Source batch ID (optional)" /></div>
-                    <div class="mb-2"><input type="text" name="notes" class="form-control form-control-sm" placeholder="Notes" /></div>
-                    <button type="submit" class="btn btn-sm btn-outline-primary w-100">Record Input</button>
+                    <div class="mb-2"><input type="text" name="notes" class="form-control form-control-sm" placeholder="@Localizer["Notes"]" /></div>
+                    <button type="submit" class="btn btn-sm btn-outline-primary w-100">@Localizer["Record Input"]</button>
                 </form>
             </div>
         </div>
         <div class="col">
             <div class="content-card h-100">
-                <h6 class="mb-2">Record Output</h6>
+                <h6 class="mb-2">@Localizer["Record Output"]</h6>
                 <form asp-action="RecordOutput" method="post">
                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
                     <div class="mb-2">
@@ -110,24 +113,24 @@
                         </select>
                     </div>
                     <div class="mb-2"><input type="number" name="productionBatchId" class="form-control form-control-sm" placeholder="Existing batch ID (optional - else new batch)" /></div>
-                    <div class="mb-2"><input type="number" step="0.001" min="0.001" name="quantity" class="form-control form-control-sm" placeholder="Quantity" required /></div>
+                    <div class="mb-2"><input type="number" step="0.001" min="0.001" name="quantity" class="form-control form-control-sm" placeholder="@Localizer["Quantity"]" required /></div>
                     <div class="mb-2">
                         <select name="outputClassification" class="form-select form-select-sm">
                             <option value="Primary">Primary</option>
                             <option value="ByProduct">ByProduct</option>
                         </select>
                     </div>
-                    <div class="mb-2"><input type="text" name="notes" class="form-control form-control-sm" placeholder="Notes" /></div>
-                    <button type="submit" class="btn btn-sm btn-outline-primary w-100">Record Output</button>
+                    <div class="mb-2"><input type="text" name="notes" class="form-control form-control-sm" placeholder="@Localizer["Notes"]" /></div>
+                    <button type="submit" class="btn btn-sm btn-outline-primary w-100">@Localizer["Record Output"]</button>
                 </form>
             </div>
         </div>
         <div class="col">
             <div class="content-card h-100">
-                <h6 class="mb-2">Record Loss</h6>
+                <h6 class="mb-2">@Localizer["Record Loss"]</h6>
                 <form asp-action="RecordLoss" method="post">
                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
-                    <div class="mb-2"><input type="number" step="0.001" min="0.001" name="quantity" class="form-control form-control-sm" placeholder="Quantity" required /></div>
+                    <div class="mb-2"><input type="number" step="0.001" min="0.001" name="quantity" class="form-control form-control-sm" placeholder="@Localizer["Quantity"]" required /></div>
                     <div class="mb-2">
                         <select name="lossCategory" class="form-select form-select-sm" required>
                             <option value="">-- category --</option>
@@ -137,8 +140,8 @@
                             }
                         </select>
                     </div>
-                    <div class="mb-2"><input type="text" name="notes" class="form-control form-control-sm" placeholder="Notes" /></div>
-                    <button type="submit" class="btn btn-sm btn-outline-warning w-100">Record Loss</button>
+                    <div class="mb-2"><input type="text" name="notes" class="form-control form-control-sm" placeholder="@Localizer["Notes"]" /></div>
+                    <button type="submit" class="btn btn-sm btn-outline-warning w-100">@Localizer["Record Loss"]</button>
                 </form>
             </div>
         </div>
@@ -151,7 +154,7 @@
             <h6 class="mb-2">Inputs</h6>
             <div class="table-scroll-area" style="max-height:40vh; overflow-y:auto;">
                 <table class="table table-enterprise table-sm">
-                    <thead><tr><th>Material</th><th>Qty</th><th>Source Batch</th><th>Inventory</th><th></th></tr></thead>
+                    <thead><tr><th>@Localizer["Material"]</th><th>@Localizer["Qty"]</th><th>Source Batch</th><th>@Localizer["Inventory"]</th><th></th></tr></thead>
                     <tbody>
                         @foreach (var i in Model.Inputs)
                         {
@@ -171,12 +174,12 @@
                                                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
                                                     <div class="modal-header"><h6 class="modal-title">Post Consumption to Inventory</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                                                     <div class="modal-body">
-                                                        <label class="form-label">Warehouse</label>
+                                                        <label class="form-label">@Localizer["Warehouse"]</label>
                                                         <select name="warehouseId" class="form-select mb-2" required>
                                                             @foreach (var w in ViewBag.Warehouses) { <option value="@w.WarehouseId">@w.Code - @w.Name</option> }
                                                         </select>
                                                     </div>
-                                                    <div class="modal-footer"><button type="submit" class="btn btn-primary">Post</button></div>
+                                                    <div class="modal-footer"><button type="submit" class="btn btn-primary">@Localizer["Post"]</button></div>
                                                 </form>
                                             </div></div>
                                         </div>
@@ -195,7 +198,7 @@
             <h6 class="mb-2">Outputs</h6>
             <div class="table-scroll-area" style="max-height:40vh; overflow-y:auto;">
                 <table class="table table-enterprise table-sm">
-                    <thead><tr><th>Material</th><th>Batch</th><th>Qty</th><th>Class</th><th>Inventory</th><th></th></tr></thead>
+                    <thead><tr><th>@Localizer["Material"]</th><th>@Localizer["Batch"]</th><th>@Localizer["Qty"]</th><th>@Localizer["Class"]</th><th>@Localizer["Inventory"]</th><th></th></tr></thead>
                     <tbody>
                         @foreach (var o in Model.Outputs)
                         {
@@ -216,12 +219,12 @@
                                                     <input type="hidden" name="productionRunId" value="@Model.ProductionRunId" />
                                                     <div class="modal-header"><h6 class="modal-title">Post Receipt to Inventory</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                                                     <div class="modal-body">
-                                                        <label class="form-label">Warehouse</label>
+                                                        <label class="form-label">@Localizer["Warehouse"]</label>
                                                         <select name="warehouseId" class="form-select mb-2" required>
                                                             @foreach (var w in ViewBag.Warehouses) { <option value="@w.WarehouseId">@w.Code - @w.Name</option> }
                                                         </select>
                                                     </div>
-                                                    <div class="modal-footer"><button type="submit" class="btn btn-primary">Post</button></div>
+                                                    <div class="modal-footer"><button type="submit" class="btn btn-primary">@Localizer["Post"]</button></div>
                                                 </form>
                                             </div></div>
                                         </div>
@@ -242,7 +245,7 @@
         <div class="content-card">
             <h6 class="mb-2">Losses</h6>
             <table class="table table-enterprise table-sm">
-                <thead><tr><th>Qty</th><th>Category</th><th>Notes</th></tr></thead>
+                <thead><tr><th>@Localizer["Qty"]</th><th>@Localizer["Category"]</th><th>@Localizer["Notes"]</th></tr></thead>
                 <tbody>
                     @foreach (var l in Model.Losses)
                     {
@@ -258,7 +261,7 @@
             <h6 class="mb-2">Event History</h6>
             <div class="table-scroll-area" style="max-height:30vh; overflow-y:auto;">
                 <table class="table table-enterprise table-sm">
-                    <thead><tr><th>Date</th><th>Event</th><th>By</th><th>Details</th></tr></thead>
+                    <thead><tr><th>@Localizer["Date"]</th><th>Event</th><th>By</th><th>@Localizer["Details"]</th></tr></thead>
                     <tbody>
                         @foreach (var e in Model.Events)
                         {
@@ -275,8 +278,8 @@
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="Hold" asp-route-id="@Model.ProductionRunId" method="post">
             <div class="modal-header"><h6 class="modal-title">Hold Production Run</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><label class="form-label">Reason</label><textarea name="reason" class="form-control" required></textarea></div>
-            <div class="modal-footer"><button type="submit" class="btn btn-warning">Hold</button></div>
+            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><textarea name="reason" class="form-control" required></textarea></div>
+            <div class="modal-footer"><button type="submit" class="btn btn-warning">@Localizer["Hold"]</button></div>
         </form>
     </div></div>
 </div>
@@ -285,7 +288,7 @@
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="Cancel" asp-route-id="@Model.ProductionRunId" method="post">
             <div class="modal-header"><h6 class="modal-title">Cancel Production Run</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><label class="form-label">Reason</label><textarea name="reason" class="form-control" required></textarea></div>
+            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><textarea name="reason" class="form-control" required></textarea></div>
             <div class="modal-footer"><button type="submit" class="btn btn-danger">Cancel Run</button></div>
         </form>
     </div></div>

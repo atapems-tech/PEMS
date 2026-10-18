@@ -1,5 +1,8 @@
 @model PEMS.Application.DTOs.PermitDetailDto
 @using PEMS.WorkflowPlatform.Dtos
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var nextStatus = (string?)ViewBag.NextStatus;
     var approvalInstance = (WorkflowInstanceDto?)ViewBag.ApprovalInstance;
@@ -75,8 +78,8 @@
         </div>
     </div>
     <div class="row g-2 small mt-1">
-        <div class="col-md-3"><strong>Equipment:</strong> @(Model.EquipmentTagNumber ?? "N/A")</div>
-        <div class="col-md-3"><strong>Functional Location:</strong> @(Model.FunctionalLocationBreadcrumb ?? "N/A")</div>
+        <div class="col-md-3"><strong>@Localizer["Equipment:"]</strong> @(Model.EquipmentTagNumber ?? "N/A")</div>
+        <div class="col-md-3"><strong>@Localizer["Functional Location:"]</strong> @(Model.FunctionalLocationBreadcrumb ?? "N/A")</div>
         <div class="col-md-3">
             <strong>Work Order:</strong>
             @if (Model.WorkOrderId.HasValue)
@@ -85,7 +88,7 @@
             }
             else { <text>N/A</text> }
         </div>
-        <div class="col-md-3"><strong>Priority:</strong> @Model.Priority</div>
+        <div class="col-md-3"><strong>@Localizer["Priority:"]</strong> @Model.Priority</div>
     </div>
     <div class="row g-2 small mt-1">
         <div class="col-md-4"><strong>Permit Issuer:</strong> @(Model.IssuerName ?? "N/A")</div>
@@ -99,7 +102,7 @@
         <div class="col-md-4"><strong>Validity:</strong> @(Model.ValidFrom?.ToString("yyyy-MM-dd") ?? "N/A") &rarr; @(Model.ValidTo?.ToString("yyyy-MM-dd") ?? "N/A")</div>
     </div>
     <div class="row g-2 small mt-1">
-        <div class="col-12"><strong>Description:</strong> @NA(Model.Description)</div>
+        <div class="col-12"><strong>@Localizer["Description:"]</strong> @NA(Model.Description)</div>
     </div>
 
     @if (Model.Status == "Cancelled" && !string.IsNullOrWhiteSpace(Model.CancellationReason))
@@ -148,7 +151,7 @@
 }
 
 <div class="content-card mb-3" id="actions">
-    <h6 class="mb-3">Actions</h6>
+    <h6 class="mb-3">@Localizer["Actions"]</h6>
     @if (errorArea == "Actions" && (pageMessage != null || pageError != null))
     {
         @if (pageError != null && pageError.Contains(passkeyMissingMarker))
@@ -201,7 +204,7 @@
         {
             <form asp-action="Cancel" method="post">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این Permit لغو شود؟');">Cancel</button>
+                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این Permit لغو شود؟');">@Localizer["Cancel"]</button>
             </form>
         }
         @if (Model.Status is "Approved" or "Issued" or "Active")
@@ -209,12 +212,12 @@
             <form asp-action="Revoke" method="post" class="d-flex flex-wrap gap-2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
                 <input type="text" name="reason" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="Revocation reason" />
-                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('این Permit ابطال شود؟');">Revoke</button>
+                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('این Permit ابطال شود؟');">@Localizer["Revoke"]</button>
             </form>
         }
         @if (nextStatus == null && Model.Status is not ("Active" or "Draft" or "Submitted" or "Approved" or "Issued"))
         {
-            <span class="text-muted small">No further actions available.</span>
+            <span class="text-muted small">@Localizer["No further actions available."]</span>
         }
     </div>
 </div>
@@ -281,7 +284,7 @@
         @if (executionGateDecisions.Any())
         {
             <table class="table table-enterprise table-sm mt-3 mb-0">
-                <thead><tr><th>From</th><th>To</th><th>Result</th><th>By</th><th>Date</th><th>Emergency</th><th>Detail</th></tr></thead>
+                <thead><tr><th>@Localizer["From"]</th><th>To</th><th>@Localizer["Result"]</th><th>By</th><th>@Localizer["Date"]</th><th>@Localizer["Emergency"]</th><th>@Localizer["Detail"]</th></tr></thead>
                 <tbody>
                     @foreach (var d in executionGateDecisions)
                     {
@@ -370,7 +373,7 @@
             }
             <form asp-action="RespondApproval" method="post" class="d-flex flex-wrap gap-2 align-items-center @(approveElig == null && rejectElig == null ? "border-top pt-3" : "")">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <input type="text" name="comment" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="Comment (optional)" />
+                <input type="text" name="comment" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="@Localizer["Comment (optional)"]" />
                 <button type="button" class="btn btn-sm btn-success" @(approveElig != null && approveElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this, 'decision', 'Approve')">Approve</button>
                 <button type="button" class="btn btn-sm btn-outline-danger" @(rejectElig != null && rejectElig.Result != "Eligible" ? "disabled" : "")
                         onclick="if(confirm('این مرحله رد شود؟ کل زنجیره‌ی تایید با نتیجه‌ی Rejected بسته می‌شود.')) pemsSubmitWithStepUp(this, 'decision', 'Reject')">Reject</button>
@@ -389,7 +392,7 @@
         @if (approvalHistory != null && approvalHistory.Any())
         {
             <table class="table table-enterprise table-sm mt-3 mb-0">
-                <thead><tr><th>From</th><th>To</th><th>Action</th><th>By Role</th><th>Comment</th><th>Date</th></tr></thead>
+                <thead><tr><th>@Localizer["From"]</th><th>To</th><th>@Localizer["Action"]</th><th>By Role</th><th>@Localizer["Comment"]</th><th>@Localizer["Date"]</th></tr></thead>
                 <tbody>
                     @foreach (var h in approvalHistory.OrderByDescending(h => h.ActionDate))
                     {
@@ -436,7 +439,7 @@
     }
 
     <table class="table table-enterprise table-sm mb-3">
-        <thead><tr><th>Energy Type</th><th>Location</th><th>Lock/Tag</th><th>Status</th><th>Isolated By</th><th>Verified By</th><th></th></tr></thead>
+        <thead><tr><th>@Localizer["Energy Type"]</th><th>@Localizer["Location"]</th><th>Lock/Tag</th><th>@Localizer["Status"]</th><th>Isolated By</th><th>Verified By</th><th></th></tr></thead>
         <tbody>
             @foreach (var p in isolationPoints)
             {
@@ -468,7 +471,7 @@
                             <form asp-controller="Isolation" asp-action="Cancel" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@p.IsolationPointId" />
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این نقطه لغو شود؟');">Cancel</button>
+                                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این نقطه لغو شود؟');">@Localizer["Cancel"]</button>
                             </form>
                         }
                         @if (p.Status == "Isolated")
@@ -499,16 +502,16 @@
         <form asp-controller="Isolation" asp-action="Create" method="post" class="row g-2 align-items-end border-top pt-3">
             <input type="hidden" name="permitId" value="@Model.PermitId" />
             <div class="col-md-2">
-                <label class="form-label small">Energy Type</label>
+                <label class="form-label small">@Localizer["Energy Type"]</label>
                 <select name="energyType" class="form-select form-select-sm" required>
                     @foreach (var t in isolationEnergyTypes) { <option value="@t">@t</option> }
                 </select>
             </div>
-            <div class="col-md-3"><label class="form-label small">Location</label><input name="location" class="form-control form-control-sm" required /></div>
+            <div class="col-md-3"><label class="form-label small">@Localizer["Location"]</label><input name="location" class="form-control form-control-sm" required /></div>
             <div class="col-md-2"><label class="form-label small">Normal State</label><input name="normalState" class="form-control form-control-sm" /></div>
             <div class="col-md-2"><label class="form-label small">Required Isolation State</label><input name="requiredIsolationState" class="form-control form-control-sm" /></div>
             <div class="col-md-2"><label class="form-label small">Method</label><input name="isolationMethod" class="form-control form-control-sm" /></div>
-            <div class="col-md-1"><button type="submit" class="btn btn-sm btn-pems-solid w-100">Add</button></div>
+            <div class="col-md-1"><button type="submit" class="btn btn-sm btn-pems-solid w-100">@Localizer["Add"]</button></div>
         </form>
     }
 </div>
@@ -554,7 +557,7 @@
                 }
             </div>
             <table class="table table-enterprise table-sm mb-2">
-                <thead><tr><th>Parameter</th><th>Value</th><th>Unit</th><th>Result</th></tr></thead>
+                <thead><tr><th>Parameter</th><th>@Localizer["Value"]</th><th>@Localizer["Unit"]</th><th>@Localizer["Result"]</th></tr></thead>
                 <tbody>
                     @foreach (var r in g.Readings)
                     {
@@ -590,7 +593,7 @@
     {
         <form asp-controller="GasTest" asp-action="Create" method="post" class="row g-2 align-items-end border-top pt-3">
             <input type="hidden" name="permitId" value="@Model.PermitId" />
-            <div class="col-md-3"><label class="form-label small">Location</label><input name="location" class="form-control form-control-sm" required /></div>
+            <div class="col-md-3"><label class="form-label small">@Localizer["Location"]</label><input name="location" class="form-control form-control-sm" required /></div>
             <div class="col-md-2"><label class="form-label small">Tested At</label><input type="datetime-local" name="testedAt" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required /></div>
             <div class="col-md-2"><label class="form-label small">Instrument Tag</label><input name="instrumentTag" class="form-control form-control-sm" /></div>
             <div class="col-md-2"><label class="form-label small">Instrument Cal. Due</label><input type="date" name="instrumentCalibrationDueDate" class="form-control form-control-sm" /></div>
@@ -603,8 +606,8 @@
                 </div>
                 <input type="hidden" name="unit" value="@(p == "O2" ? "%VOL" : p == "LEL" ? "%LEL" : "PPM")" />
             }
-            <div class="col-md-1"><label class="form-label small">Other</label><input type="number" step="0.01" name="otherValue" class="form-control form-control-sm" /></div>
-            <div class="col-md-1"><label class="form-label small">Unit</label><input type="text" name="otherUnit" class="form-control form-control-sm" placeholder="e.g. PPM" /></div>
+            <div class="col-md-1"><label class="form-label small">@Localizer["Other"]</label><input type="number" step="0.01" name="otherValue" class="form-control form-control-sm" /></div>
+            <div class="col-md-1"><label class="form-label small">@Localizer["Unit"]</label><input type="text" name="otherUnit" class="form-control form-control-sm" placeholder="e.g. PPM" /></div>
             <div class="col-md-1"><button type="submit" class="btn btn-sm btn-pems-solid w-100">Record</button></div>
         </form>
     }
@@ -657,7 +660,7 @@
     @if (simopsConflicts.Any())
     {
         <table class="table table-enterprise table-sm mb-3">
-            <thead><tr><th>Other Permit</th><th>Basis</th><th>Severity</th><th>Status</th><th>Detail</th><th></th></tr></thead>
+            <thead><tr><th>Other Permit</th><th>@Localizer["Basis"]</th><th>@Localizer["Severity"]</th><th>@Localizer["Status"]</th><th>@Localizer["Detail"]</th><th></th></tr></thead>
             <tbody>
                 @foreach (var c in simopsConflicts)
                 {
@@ -719,7 +722,7 @@
     {
         <p class="small text-muted mb-1">Other active Permits sharing equipment/location:</p>
         <table class="table table-enterprise table-sm mb-2">
-            <thead><tr><th>Permit</th><th>Type</th><th>Basis</th><th>Time Overlap</th><th></th></tr></thead>
+            <thead><tr><th>@Localizer["Permit"]</th><th>@Localizer["Type"]</th><th>@Localizer["Basis"]</th><th>Time Overlap</th><th></th></tr></thead>
             <tbody>
                 @foreach (var cand in simopsCandidates.Where(x => x.ExistingConflictId == null))
                 {
@@ -768,9 +771,9 @@
 </div>
 
 <div class="content-card">
-    <h6 class="mb-3">Status History</h6>
+    <h6 class="mb-3">@Localizer["Status History"]</h6>
     <table class="table table-enterprise table-sm mb-0">
-        <thead><tr><th>From</th><th>To</th><th>By</th><th>Date</th><th>Reason</th></tr></thead>
+        <thead><tr><th>@Localizer["From"]</th><th>To</th><th>By</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
         <tbody>
             @foreach (var h in Model.StatusHistory)
             {
@@ -784,7 +787,7 @@
             }
         </tbody>
     </table>
-    @if (!Model.StatusHistory.Any()) { <p class="text-muted text-center py-3 mb-0">هنوز تغییر وضعیتی ثبت نشده.</p> }
+    @if (!Model.StatusHistory.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز تغییر وضعیتی ثبت نشده."]</p> }
 </div>
 
 <script src="~/js/webauthn.js"></script>

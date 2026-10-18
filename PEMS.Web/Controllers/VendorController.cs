@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
@@ -10,16 +11,22 @@ public class VendorController : Controller
 {
     private readonly IVendorService _service;
     private readonly IVendorRiskService _riskService;
+    private readonly IVendorQualificationService _qualificationService;
     private readonly IPermissionService _permissionService;
     private readonly ICurrentUserService _currentUser;
+    private readonly Persistence.Context.PEMSDbContext _context;
 
     public VendorController(IVendorService service, IVendorRiskService riskService,
-        IPermissionService permissionService, ICurrentUserService currentUser)
+        IVendorQualificationService qualificationService,
+        IPermissionService permissionService, ICurrentUserService currentUser,
+        Persistence.Context.PEMSDbContext context)
     {
         _service = service;
         _riskService = riskService;
+        _qualificationService = qualificationService;
         _permissionService = permissionService;
         _currentUser = currentUser;
+        _context = context;
     }
 
     // طبق «PEMS Phase 2B»: بررسی مجوز مشترک برای اکشن‌های تغییردهنده - داده‌های Permission
@@ -131,6 +138,31 @@ public class VendorController : Controller
 
         await _riskService.RecalculateAsync(id);
         TempData["Message"] = "Risk score recalculated";
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    // طبق ممیزی Package Procurement Contract Finalization (§C/§I، Phase 1.1 + Phase 3): بدون این
+    // اکشن، هیچ راه UI ای برای Qualified کردن یک فروشنده نبود و TenderService.InviteVendorAsync
+    // هرگز برای هیچ فروشنده‌ای راضی نمی‌شد.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetQualification(
+        int id, string newStatus, string? category, DateTime? effectiveDate, DateTime? expiryDate,
+        string? evidenceReference, string? reason)
+    {
+        if (!await EnsurePermissionAsync("Edit", "شما مجاز به تغییر وضعیت صلاحیت این وندور نیستید."))
+            return RedirectToAction(nameof(Details), new { id });
+
+        var employeeId = _currentUser.UserId.HasValue
+            ? await _context.Users.Where(u => u.Id == _currentUser.UserId.Value).Select(u => u.EmployeeId).FirstOrDefaultAsync()
+            : null;
+
+        var result = await _qualificationService.SetQualificationAsync(
+            id, newStatus, category, effectiveDate, expiryDate, evidenceReference, reason, employeeId);
+
+        if (!result.Success) TempData["Error"] = result.Error;
+        else TempData["Message"] = "وضعیت صلاحیت فروشنده به‌روزرسانی شد.";
+
         return RedirectToAction(nameof(Details), new { id });
     }
 }

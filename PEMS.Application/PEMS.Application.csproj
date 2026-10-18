@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PEMS.Domain\PEMS.Domain.csproj" />
+    <!-- Phase 2: IWorkRequestService یک مدل خواندنی عمومی گردش‌کار را برمی‌گرداند؛ PEMS.WorkflowPlatform به هیچ پروژه‌ی دیگری وابسته نیست (بدون چرخه) -->
+    <ProjectReference Include="..\PEMS.WorkflowPlatform\PEMS.WorkflowPlatform.csproj" />
   </ItemGroup>
 
   <ItemGroup>

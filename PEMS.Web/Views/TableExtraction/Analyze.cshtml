@@ -1,5 +1,8 @@
 @model PEMS.Application.AI.Models.AIAnalysisResult
 @using PEMS.Domain.Entities
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var attachment = (DocumentAttachment)ViewBag.Attachment;
     var table = Model.ExtractedTableData;
@@ -37,7 +40,7 @@
 <div class="content-card mb-3">
     <div class="admin-kpi-grid">
         <div class="admin-kpi"><div class="admin-kpi-label">Rows extracted</div><div class="admin-kpi-value">@(table?.RowCount ?? 0)</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">Confidence</div><div class="admin-kpi-value">@Model.Confidence.ToString("P0")</div></div>
+        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Confidence"]</div><div class="admin-kpi-value">@Model.Confidence.ToString("P0")</div></div>
         <div class="admin-kpi"><div class="admin-kpi-label">Used OCR</div><div class="admin-kpi-value">@(Model.UsedOcr ? "Yes" : "No")</div></div>
         <div class="admin-kpi"><div class="admin-kpi-label">Warnings</div><div class="admin-kpi-value">@Model.Warnings.Count</div></div>
     </div>
@@ -66,13 +69,13 @@
         <h6 class="mb-2">Document Info</h6>
         <div class="row g-2 small">
             <div class="col-md-3"><strong>Document No.</strong><div>@(info.DocumentNo ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>Title</strong><div>@(info.Title ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>Type</strong><div>@(info.DocumentType ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>Discipline</strong><div>@(info.Discipline ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>Revision</strong><div>@(info.RevisionNo ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>Vendor</strong><div>@(info.VendorName ?? "N/A")</div></div>
+            <div class="col-md-3"><strong>@Localizer["Title"]</strong><div>@(info.Title ?? "N/A")</div></div>
+            <div class="col-md-3"><strong>@Localizer["Type"]</strong><div>@(info.DocumentType ?? "N/A")</div></div>
+            <div class="col-md-3"><strong>@Localizer["Discipline"]</strong><div>@(info.Discipline ?? "N/A")</div></div>
+            <div class="col-md-3"><strong>@Localizer["Revision"]</strong><div>@(info.RevisionNo ?? "N/A")</div></div>
+            <div class="col-md-3"><strong>@Localizer["Vendor"]</strong><div>@(info.VendorName ?? "N/A")</div></div>
             <div class="col-md-3"><strong>Area / Unit</strong><div>@(info.Area ?? "N/A") / @(info.Unit ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>System</strong><div>@(info.System ?? "N/A")</div></div>
+            <div class="col-md-3"><strong>@Localizer["System"]</strong><div>@(info.System ?? "N/A")</div></div>
         </div>
     </div>
 }
@@ -83,9 +86,9 @@
         <table class="table table-enterprise table-sm">
             <thead>
                 <tr>
-                    <th>Tag No.</th><th>Description</th><th>Signal</th><th>JB / Terminal</th>
-                    <th>Cable</th><th>Marshalling</th><th>I/O Card / Ch</th><th>Loop</th>
-                    <th>System</th><th>Spare</th><th>Remarks</th><th>Raw Extra</th>
+                    <th>Tag No.</th><th>@Localizer["Description"]</th><th>Signal</th><th>JB / Terminal</th>
+                    <th>Cable</th><th>Marshalling</th><th>I/O Card / Ch</th><th>@Localizer["Loop"]</th>
+                    <th>@Localizer["System"]</th><th>Spare</th><th>@Localizer["Remarks"]</th><th>Raw Extra</th>
                 </tr>
             </thead>
             <tbody>

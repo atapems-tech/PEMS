@@ -22,7 +22,10 @@ public interface IWorkflowDbContext
     DbSet<WorkflowTransition> WorkflowTransitions { get; }
     DbSet<WorkflowInstance> WorkflowInstances { get; }
     DbSet<WorkflowInstanceStage> WorkflowInstanceStages { get; }
+    DbSet<WorkflowInstanceStageCandidate> WorkflowInstanceStageCandidates { get; }
     DbSet<WorkflowHistory> WorkflowHistories { get; }
+    DbSet<WorkflowBinding> WorkflowBindings { get; }
+    DbSet<WorkflowConfigAudit> WorkflowConfigAudits { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

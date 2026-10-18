@@ -36,6 +36,13 @@ public class WorkflowInstance
 
     public int? InitiatedById { get; set; }
 
+    // --- Phase 1 Hardening (additive; null برای Instance های قدیمی) ---
+    /// <summary>Binding صریحی که این Instance را ایجاد کرده (null = مسیر Legacy با Module+Category).</summary>
+    public int? WorkflowBindingId { get; set; }
+
+    /// <summary>کلید صریح ارتباط با موجودیت: "{Module}|{BusinessObjectType}|{BusinessObjectId}".</summary>
+    public string? EntityKey { get; set; }
+
     public ICollection<WorkflowInstanceStage> InstanceStages { get; set; } = new List<WorkflowInstanceStage>();
     public ICollection<WorkflowHistory> History { get; set; } = new List<WorkflowHistory>();
 }

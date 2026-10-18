@@ -22,9 +22,13 @@ public class InstrumentController : Controller
     private readonly ICurrentUserService _currentUser;
     private readonly IInstrumentService _instrumentService;
 
+    private readonly IWorkOrderLifecycleService? _workOrderLifecycle;
+
     public InstrumentController(PEMSDbContext context, INumberingService numberingService,
-        IWorkRequestService workRequestService, ICurrentUserService currentUser, IInstrumentService instrumentService)
+        IWorkRequestService workRequestService, ICurrentUserService currentUser, IInstrumentService instrumentService,
+        IWorkOrderLifecycleService? workOrderLifecycle = null)
     {
+        _workOrderLifecycle = workOrderLifecycle;
         _context = context;
         _numberingService = numberingService;
         _workRequestService = workRequestService;
@@ -456,6 +460,14 @@ public class InstrumentController : Controller
 
         await _context.WorkOrders.AddAsync(workOrder);
         await _context.SaveChangesAsync();
+
+        // Phase 3B: Work Order تولیدشده حاکمیتی می‌شود (Snapshot مبدأ از کاربر + شروع چرخه‌عمر)؛ بدون Binding بی‌اثر
+        if (_workOrderLifecycle != null)
+        {
+            var employeeId = await GetCurrentEmployeeIdAsync();
+            var (ok, govError, _) = await _workOrderLifecycle.GovernPendingNewAsync(new PEMS.Application.DTOs.WorkOrderActor(employeeId, _currentUser.Roles));
+            if (!ok) { TempData["Error"] = govError; return RedirectToAction("Details", "WorkOrder", new { id = workOrder.WorkOrderId }); }
+        }
 
         TempData["Message"] = $"Work order {workOrderNumber} generated for calibration";
         return RedirectToAction("Details", "WorkOrder", new { id = workOrder.WorkOrderId });

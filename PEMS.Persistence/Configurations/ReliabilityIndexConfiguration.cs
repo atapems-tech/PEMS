@@ -52,3 +52,17 @@ public class FailureRecordRepeatFailureIndexConfiguration : IEntityTypeConfigura
             .HasDatabaseName("IX_FailureRecords_EquipmentId_FailureModeId_FailureDate");
     }
 }
+
+/// <summary>
+/// طبق «PEMS — Work Request/Work Order Scheduling &amp; Maintenance Calendar»: تقویم نگهداری
+/// برای هر بازه‌ی تاریخی (روز/هفته/ماه) روی (PlannedStart, PlannedFinish) فیلتر می‌کند - این
+/// ایندکس دقیقاً همان الگوی Query تازه را پوشش می‌دهد، بدون بارگذاری کل جدول.
+/// </summary>
+public class WorkOrderCalendarIndexConfiguration : IEntityTypeConfiguration<WorkOrder>
+{
+    public void Configure(EntityTypeBuilder<WorkOrder> builder)
+    {
+        builder.HasIndex(x => new { x.PlannedStart, x.PlannedFinish })
+            .HasDatabaseName("IX_WorkOrders_PlannedStart_PlannedFinish");
+    }
+}

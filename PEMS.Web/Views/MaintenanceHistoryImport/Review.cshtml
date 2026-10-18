@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.MaintenanceHistoryImportBatchDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     string StatusBadge(string status) => status switch
     {
@@ -26,12 +29,12 @@
 
 <div class="content-card mb-3">
     <div class="row g-3">
-        <div class="col-md-3"><strong>File:</strong> @Model.FileName</div>
-        <div class="col-md-2"><strong>Total Rows:</strong> @Model.TotalRows</div>
+        <div class="col-md-3"><strong>@Localizer["File:"]</strong> @Model.FileName</div>
+        <div class="col-md-2"><strong>@Localizer["Total Rows:"]</strong> @Model.TotalRows</div>
         <div class="col-md-2"><strong>New:</strong> @Model.NewCount</div>
         <div class="col-md-2"><strong>Duplicate:</strong> @Model.DuplicateCount</div>
-        <div class="col-md-1"><strong>Unresolved:</strong> @Model.UnresolvedCount</div>
-        <div class="col-md-2"><strong>Status:</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
+        <div class="col-md-1"><strong>@Localizer["Unresolved:"]</strong> @Model.UnresolvedCount</div>
+        <div class="col-md-2"><strong>@Localizer["Status:"]</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
     </div>
 
     @if (Model.Status == "Staging")
@@ -54,7 +57,7 @@
 </div>
 
 <div class="pems-filter-bar mb-3">
-    <span class="pems-filter-label">Filter</span>
+    <span class="pems-filter-label">@Localizer["Filter"]</span>
     @if (!string.IsNullOrEmpty(statusFilter))
     {
         <span class="pems-filter-active-count">1</span>
@@ -78,8 +81,8 @@
         <table class="table table-enterprise">
             <thead>
                 <tr>
-                    <th>Approve</th><th>Src Row</th><th>Equipment Tag</th><th>Equipment</th>
-                    <th>Execution Date</th><th>Work Order</th><th>Action Taken</th><th>Match Result</th><th>Note</th>
+                    <th>@Localizer["Approve"]</th><th>@Localizer["Src Row"]</th><th>@Localizer["Equipment Tag"]</th><th>@Localizer["Equipment"]</th>
+                    <th>@Localizer["Execution Date"]</th><th>@Localizer["Work Order"]</th><th>@Localizer["Action Taken"]</th><th>@Localizer["Match Result"]</th><th>@Localizer["Note"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -132,7 +135,7 @@
             </tbody>
         </table>
     </div>
-    @if (!Model.Rows.Items.Any()) { <p class="text-muted text-center py-4">No rows match this filter.</p> }
+    @if (!Model.Rows.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["No rows match this filter."]</p> }
 
     @{
         var qsParts = new List<string>();

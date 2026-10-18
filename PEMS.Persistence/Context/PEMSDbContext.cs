@@ -5,6 +5,7 @@ using PEMS.Domain.Entities;
 using PEMS.Persistence.Identity;
 using PEMS.WorkflowPlatform.Entities;
 using PEMS.WorkflowPlatform.Interfaces;
+using PEMS.WorkflowPlatform.Services;
 
 namespace PEMS.Persistence.Context;
 
@@ -38,6 +39,10 @@ public class PEMSDbContext
     // طبق سند RBAC-ABAC Authorization Architecture (فاز ۲): سلسله‌مراتب سازمانی/سمت + تفکیک وظایف
     public DbSet<Position> Positions { get; set; }
     public DbSet<SoDPolicy> SoDPolicies { get; set; }
+
+    // طبق سند «PEMS Phase 6 — User Module & Navigation Visibility Architecture»: تنها Entity
+    // تازه‌ی این فاز - استثنای دستیِ Visibility، عمداً جدا از مدل داده‌ی Authorization بالا
+    public DbSet<NavigationVisibilityOverride> NavigationVisibilityOverrides { get; set; }
 
     public DbSet<AIDocumentClassification> AIDocumentClassifications { get; set; }
     public DbSet<DocumentTagLink> DocumentTagLinks { get; set; }
@@ -121,7 +126,37 @@ public class PEMSDbContext
     public DbSet<MaterialStock> MaterialStocks { get; set; }
     public DbSet<InventoryTransaction> InventoryTransactions { get; set; }
     public DbSet<MaterialReservation> MaterialReservations { get; set; }
+
+    // Phase 2 / P5 - توصیه‌های تأمین (فقط‌خواندن از موجودی/تقاضا؛ هیچ MR/PO/رزرویی نمی‌سازد)
+    public DbSet<NetDemandRun> NetDemandRuns { get; set; }
+    public DbSet<ReplenishmentRecommendation> ReplenishmentRecommendations { get; set; }
+    public DbSet<ReplenishmentRecommendationSource> ReplenishmentRecommendationSources { get; set; }
+    public DbSet<ReplenishmentRecommendationHistory> ReplenishmentRecommendationHistories { get; set; }
     public DbSet<StoreRequisition> StoreRequisitions { get; set; }
+
+    // ---- Warehouse: درخواست کاتالوگ قطعه (Part Catalogue Request)
+    public DbSet<PartCatalogueTechnicalClass> PartCatalogueTechnicalClasses { get; set; }
+    public DbSet<PartCatalogueCommodityGroup> PartCatalogueCommodityGroups { get; set; }
+    public DbSet<PartCatalogueProductFamily> PartCatalogueProductFamilies { get; set; }
+    public DbSet<PartCatalogueSection> PartCatalogueSections { get; set; }
+    public DbSet<PartCatalogueManufacturer> PartCatalogueManufacturers { get; set; }
+    public DbSet<PartCatalogueSupplier> PartCatalogueSuppliers { get; set; }
+    public DbSet<PartCatalogueCurrency> PartCatalogueCurrencies { get; set; }
+    public DbSet<PartCatalogueStockGrade> PartCatalogueStockGrades { get; set; }
+    public DbSet<PartCataloguePlanningMethod> PartCataloguePlanningMethods { get; set; }
+    public DbSet<PartCatalogueTypeDesignation> PartCatalogueTypeDesignations { get; set; }
+    public DbSet<PartCatalogueSectionCommodityGroup> PartCatalogueSectionCommodityGroups { get; set; }
+    public DbSet<PartCatalogueCommodityGroupChild> PartCatalogueCommodityGroupChildren { get; set; }
+    public DbSet<PartCatalogueWorkflowStep> PartCatalogueWorkflowSteps { get; set; }
+    public DbSet<PartCatalogueApproverAssignment> PartCatalogueApproverAssignments { get; set; }
+    public DbSet<PartCatalogueOrgLink> PartCatalogueOrgLinks { get; set; }
+    public DbSet<PartCatalogueRequest> PartCatalogueRequests { get; set; }
+    public DbSet<PartCatalogueRequestEquipment> PartCatalogueRequestEquipment { get; set; }
+    public DbSet<PartCatalogueRequestAttribute> PartCatalogueRequestAttributes { get; set; }
+    public DbSet<PartCatalogueRequestNote> PartCatalogueRequestNotes { get; set; }
+    public DbSet<PartCatalogueRequestAttachment> PartCatalogueRequestAttachments { get; set; }
+    public DbSet<PartCatalogueRequestStep> PartCatalogueRequestSteps { get; set; }
+    public DbSet<PartCatalogueRequestApproval> PartCatalogueRequestApprovals { get; set; }
     public DbSet<StoreRequisitionLine> StoreRequisitionLines { get; set; }
     public DbSet<StoreRequisitionStatusHistory> StoreRequisitionStatusHistories { get; set; }
     public DbSet<WorkOrderMaterial> WorkOrderMaterials { get; set; }
@@ -129,6 +164,13 @@ public class PEMSDbContext
     public DbSet<MrsImportRow> MrsImportRows { get; set; }
     public DbSet<MrsImportRowMetadata> MrsImportRowMetadata { get; set; }
     public DbSet<NumberingSequence> NumberingSequences { get; set; }
+
+    // طبق ممیزی Material Management (Gap A) + Step 1/Step 2: IRN - سند رسمی دریافت مادی،
+    // جدا از MrsImportBatch/Row (که مکانیزم Import اکسل است).
+    public DbSet<IrnReceipt> IrnReceipts { get; set; }
+    public DbSet<IrnReceiptLine> IrnReceiptLines { get; set; }
+    public DbSet<IrnReceiptStatusHistory> IrnReceiptStatusHistories { get; set; }
+    public DbSet<IrnDispositionRecord> IrnDispositionRecords { get; set; }
 
     // طبق «PEMS Operations & Production Architecture Spec v1» فاز ۱ (Production Core) - همه‌ی
     // موجودیت‌های جدید، بدون تغییر در جدول‌های بالا (Warehouse/StorageLocation/MaterialStock/
@@ -295,6 +337,14 @@ public class PEMSDbContext
     public DbSet<PredictiveMaintenanceResult> PredictiveMaintenanceResults { get; set; }
     public DbSet<AIReliabilityInsight> AIReliabilityInsights { get; set; }
 
+    // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۱
+    public DbSet<EvaluationProfile> EvaluationProfiles { get; set; }
+    public DbSet<EvaluationLimit> EvaluationLimits { get; set; }
+    public DbSet<Finding> Findings { get; set; }
+
+    // طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §3.7
+    public DbSet<ConditionPriorityMapping> ConditionPriorityMappings { get; set; }
+
     // طبق «Functional Location Master Data Import»
     public DbSet<FunctionalLocationImportBatch> FunctionalLocationImportBatches { get; set; }
     public DbSet<FunctionalLocationImportRow> FunctionalLocationImportRows { get; set; }
@@ -310,6 +360,10 @@ public class PEMSDbContext
     public DbSet<MaintenanceHistoryImportBatch> MaintenanceHistoryImportBatches { get; set; }
     public DbSet<MaintenanceHistoryImportRow> MaintenanceHistoryImportRows { get; set; }
 
+    // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۹
+    public DbSet<ConditionReadingImportBatch> ConditionReadingImportBatches { get; set; }
+    public DbSet<ConditionReadingImportRow> ConditionReadingImportRows { get; set; }
+
     // طبق «PEMS — Enterprise Barcode System»: یک جدول هویت مشترک برای کل PEMS - نه یک جدول
     // جدا به‌ازای هر ماژول (Equipment/Material/Warehouse/StorageLocation).
     public DbSet<BarcodeIdentity> BarcodeIdentities { get; set; }
@@ -322,6 +376,9 @@ public class PEMSDbContext
     public DbSet<TeamMember> TeamMembers { get; set; }
     public DbSet<Crew> Crews { get; set; }
     public DbSet<CrewMember> CrewMembers { get; set; }
+
+    // طبق «PEMS Dynamic Maintenance Organization»
+    public DbSet<EmployeeAssignment> EmployeeAssignments { get; set; }
 
     // طبق PEMS_CMMS_MAINTENANCE_ORGANIZATION_BLUEPRINT.md: مهارت‌ها
     public DbSet<Skill> Skills { get; set; }
@@ -356,7 +413,13 @@ public class PEMSDbContext
     public DbSet<WorkflowTransition> WorkflowTransitions { get; set; }
     public DbSet<WorkflowInstance> WorkflowInstances { get; set; }
     public DbSet<WorkflowInstanceStage> WorkflowInstanceStages { get; set; }
+    public DbSet<WorkflowInstanceStageCandidate> WorkflowInstanceStageCandidates { get; set; }
+    public DbSet<WorkflowActorResponsibility> WorkflowActorResponsibilities { get; set; }
+    public DbSet<WorkflowActorResponsibilityPosition> WorkflowActorResponsibilityPositions { get; set; }
+    public DbSet<CommodityGroupResponsible> CommodityGroupResponsibles { get; set; }
     public DbSet<WorkflowHistory> WorkflowHistories { get; set; }
+    public DbSet<WorkflowBinding> WorkflowBindings { get; set; }
+    public DbSet<WorkflowConfigAudit> WorkflowConfigAudits { get; set; }
 
     public DbSet<EquipmentImportBatch> EquipmentImportBatches { get; set; }
     public DbSet<EquipmentImportRow> EquipmentImportRows { get; set; }
@@ -389,7 +452,20 @@ public class PEMSDbContext
 
     public DbSet<ProcurementPackage> ProcurementPackages { get; set; }
     public DbSet<ProcurementCommunication> ProcurementCommunications { get; set; }
+    public DbSet<ProcurementCommunicationResponse> ProcurementCommunicationResponses { get; set; }
     public DbSet<ProcurementApproval> ProcurementApprovals { get; set; }
+
+    // Package Procurement Contract Finalization (Phase 1 — Domain/Data Foundation)
+    public DbSet<VendorQualificationHistory> VendorQualificationHistories { get; set; }
+    public DbSet<ContractRevision> ContractRevisions { get; set; }
+    public DbSet<ContractDisciplineReview> ContractDisciplineReviews { get; set; }
+    public DbSet<Tender> Tenders { get; set; }
+    public DbSet<TenderInvitedVendor> TenderInvitedVendors { get; set; }
+    public DbSet<Bid> Bids { get; set; }
+    public DbSet<BidEvaluation> BidEvaluations { get; set; }
+    public DbSet<BidNegotiation> BidNegotiations { get; set; }
+    public DbSet<ContractNTP> ContractNTPs { get; set; }
+    public DbSet<ContractApprovalAuthorityRule> ContractApprovalAuthorityRules { get; set; }
 
     public DbSet<DisciplineTask> DisciplineTasks { get; set; }
 
@@ -397,6 +473,9 @@ public class PEMSDbContext
 
     public override int SaveChanges()
     {
+        // Phase 1 Hardening: نسخه‌ی Published/Retired گردش‌کار تغییرناپذیر است (ساختار، مراحل، گذارها)
+        WorkflowVersionImmutabilityGuard.Enforce(this);
+
         ApplyCreatedDate();
 
         var pending = PrepareAuditEntries();
@@ -415,6 +494,8 @@ public class PEMSDbContext
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
+        await WorkflowVersionImmutabilityGuard.EnforceAsync(this, cancellationToken);
+
         ApplyCreatedDate();
 
         var pending = PrepareAuditEntries();
@@ -1700,7 +1781,12 @@ public class PEMSDbContext
             .Property(x => x.OperatingTemperature)
             .HasPrecision(18, 3);
 
-
+        // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۳:
+        // دقیقاً همون الگوی Instrument (HasIndex(x => x.EquipmentId).IsUnique() پایین‌تر در همین
+        // فایل) - یک Equipment حداکثر یک پروفایل Mechanical Equipment دارد. چون EquipmentId
+        // Nullable است، این ایندکس فقط روی مقادیر غیر-NULL اعمال می‌شود (رفتار پیش‌فرض SQL Server) -
+        // چند رکورد با EquipmentId=NULL هنوز مجازند، دقیقاً همون زنجیره‌ی اختیاری موجود.
+        modelBuilder.Entity<MechanicalEquipment>().HasIndex(x => x.EquipmentId).IsUnique();
 
 
         // ==============================
@@ -1722,7 +1808,9 @@ public class PEMSDbContext
             .Property(x => x.PowerKW)
             .HasPrecision(18, 3);
 
-
+        // طبق فاز ۳: یک MechanicalEquipment حداکثر یک زیررده‌ی Rotating دارد (XOR با Static در
+        // سطح Controller اعمال می‌شود؛ این ایندکس فقط از تکرار تصادفی همان زیررده جلوگیری می‌کند).
+        modelBuilder.Entity<RotatingEquipment>().HasIndex(x => x.MechanicalEquipmentId).IsUnique();
 
 
         // ==============================
@@ -1744,6 +1832,7 @@ public class PEMSDbContext
             .Property(x => x.Volume)
             .HasPrecision(18, 3);
 
+        modelBuilder.Entity<StaticEquipment>().HasIndex(x => x.MechanicalEquipmentId).IsUnique();
 
 
 

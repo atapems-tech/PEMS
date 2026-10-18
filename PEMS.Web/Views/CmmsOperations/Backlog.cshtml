@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MaintenanceBacklogItemDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var status = (string?)ViewBag.Status;
     var priority = (string?)ViewBag.Priority;
@@ -13,9 +16,8 @@
     };
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-list-task"></i> Maintenance Backlog</h5>
-    <a asp-action="Dashboard" class="btn btn-outline-secondary btn-sm">← Dashboard</a>
+<div class="d-flex justify-content-end align-items-center mb-2">
+    <a asp-action="Dashboard" class="btn btn-outline-secondary btn-sm">@Localizer["← Dashboard"]</a>
 </div>
 <p class="text-muted small">
     طبق «PEMS Phase 8» بند ۲۲: WorkOrder های واقعی در وضعیت غیرنهایی (Open/Assigned/InProgress/
@@ -24,7 +26,7 @@
 
 <form method="get" class="row g-2 mb-3 align-items-end">
     <div class="col-auto">
-        <label class="form-label small mb-0">Status</label>
+        <label class="form-label small mb-0">@Localizer["Status"]</label>
         <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
             <option value="">Open Backlog (all non-final)</option>
             <option value="Open" selected="@(status == "Open")">Open</option>
@@ -34,9 +36,9 @@
         </select>
     </div>
     <div class="col-auto">
-        <label class="form-label small mb-0">Priority</label>
+        <label class="form-label small mb-0">@Localizer["Priority"]</label>
         <select name="priority" class="form-select form-select-sm" onchange="this.form.submit()">
-            <option value="">All</option>
+            <option value="">@Localizer["All"]</option>
             <option value="Critical" selected="@(priority == "Critical")">Critical</option>
             <option value="High" selected="@(priority == "High")">High</option>
             <option value="Medium" selected="@(priority == "Medium")">Medium</option>
@@ -45,7 +47,7 @@
     </div>
     <div class="col-auto form-check mb-1">
         <input type="checkbox" class="form-check-input" name="overdueOnly" value="true" id="overdueOnly" @(overdueOnly ? "checked" : "") onchange="this.form.submit()" />
-        <label class="form-check-label small" for="overdueOnly">Overdue only</label>
+        <label class="form-check-label small" for="overdueOnly">@Localizer["Overdue only"]</label>
     </div>
 </form>
 
@@ -54,14 +56,14 @@
     <table class="table table-enterprise table-sm mb-0">
         <thead>
             <tr>
-                <th>WO Number</th>
-                <th>Equipment</th>
-                <th>Type</th>
-                <th>Priority</th>
-                <th>Status</th>
-                <th>Due Date</th>
-                <th class="text-end">Age (days)</th>
-                <th>Assigned</th>
+                <th>@Localizer["WO Number"]</th>
+                <th>@Localizer["Equipment"]</th>
+                <th>@Localizer["Type"]</th>
+                <th>@Localizer["Priority"]</th>
+                <th>@Localizer["Status"]</th>
+                <th>@Localizer["Due Date"]</th>
+                <th class="text-end">@Localizer["Age (days)"]</th>
+                <th>@Localizer["Assigned"]</th>
                 <th></th>
             </tr>
         </thead>
@@ -78,7 +80,7 @@
                         @if (wo.DueDate.HasValue)
                         {
                             @wo.DueDate.Value.ToString("yyyy-MM-dd")
-                            @if (wo.IsOverdue) { <span class="badge text-bg-danger ms-1">Overdue</span> }
+                            @if (wo.IsOverdue) { <span class="badge text-bg-danger ms-1">@Localizer["Overdue"]</span> }
                         }
                         else
                         {
@@ -93,7 +95,7 @@
         </tbody>
     </table>
     </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ WorkOrder ای در Backlog با این فیلتر نیست.</p> }
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ WorkOrder ای در Backlog با این فیلتر نیست."]</p> }
 
     @{
         var qsParts = new List<string>();

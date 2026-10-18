@@ -64,5 +64,14 @@ public class WorkRequest : BaseEntity
 
     public bool IsActive { get; set; } = true;
 
+    // طبق ممیزی «PEMS CM Audit» بند ۵: هیچ فیلد Source/Origin ای روی WorkRequest وجود نداشت.
+    // نزدیک‌ترین قرارداد موجود همین دو-فیلدی SourceType/SourceIdentifier است که
+    // CriticalityAssessmentEvidence از قبل استفاده می‌کند - همان الگو، بدون اختراع تازه.
+    // Manual, Finding, MaintenancePlan, Inspection
+    public string SourceType { get; set; } = "Manual";
+
+    // مثلاً "Finding#123" - فقط وقتی SourceType != Manual پر می‌شود
+    public string? SourceIdentifier { get; set; }
+
     public DateTime CreatedDate { get; set; } = DateTime.Now;
 }

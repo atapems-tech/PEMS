@@ -57,7 +57,10 @@ public class PurchaseOrderService : IPurchaseOrderService
             ContractId = contractId,
             Description = description,
             Value = value,
-            Status = "Issued",
+            // PO دستی با ثبت اولیه فقط Draft است؛ صدور (Issued) یک انتقال مجزا با مجوز Approve و SoD
+            // است (IssueAsync). مسیر Import (VDRImportService / FindOrCreateByNumberAsync) عمداً
+            // وضعیت قدیمی Issued را حفظ می‌کند چون شماره‌ی PO از یک سند صادرشده‌ی بیرونی می‌آید.
+            Status = PurchaseOrderStatuses.Draft,
             CreatedDate = DateTime.Now
         };
 
@@ -67,6 +70,27 @@ public class PurchaseOrderService : IPurchaseOrderService
         return po.PoId;
     }
 
+    public async Task IssueAsync(int poId)
+    {
+        var po = await _context.PurchaseOrders.FirstOrDefaultAsync(x => x.PoId == poId);
+        if (po == null)
+            throw new InvalidOperationException("Purchase Order یافت نشد.");
+
+        if (!po.IsActive)
+            throw new InvalidOperationException("Purchase Order غیرفعال است و قابل صدور نیست.");
+
+        if (po.Status != PurchaseOrderStatuses.Draft)
+            throw new InvalidOperationException(
+                $"فقط Purchase Order در وضعیت Draft قابل صدور است (وضعیت فعلی: {po.Status}).");
+
+        if (string.IsNullOrWhiteSpace(po.PoNumber))
+            throw new InvalidOperationException("Purchase Order بدون شماره قابل صدور نیست.");
+
+        po.Status = PurchaseOrderStatuses.Issued;
+        await _context.SaveChangesAsync();
+    }
+
+    // Import/Reconciliation-only (نگاه کنید به IPurchaseOrderService): ساخت PO با Issued بدون Approve/SoD است.
     public async Task<int> FindOrCreateByNumberAsync(string poNumber, int projectId, int vendorId)
     {
         var trimmed = poNumber.Trim();
@@ -82,7 +106,7 @@ public class PurchaseOrderService : IPurchaseOrderService
             PoNumber = trimmed,
             ProjectId = projectId,
             VendorId = vendorId,
-            Status = "Issued",
+            Status = PurchaseOrderStatuses.Issued, // مسیر Import: وضعیت قدیمی حفظ می‌شود (بند بالا)
             CreatedDate = DateTime.Now
         };
 

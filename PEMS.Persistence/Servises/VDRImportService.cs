@@ -392,8 +392,29 @@ public class VDRImportService : IVDRImportService
         // Linker Service ها (که برای فایل‌های بزرگ یعنی چند ساعت طول می‌کشید). SaveChanges
         // هم به‌جای هر ردیف، هر ۲۰۰ ردیف یک‌بار زده می‌شود.
         // ==============================================================================
-        var vendorCache = await _context.Vendors
-            .ToDictionaryAsync(x => x.Name.ToLower(), x => x);
+        // طبق ممیزی «VDR Import — Duplicate Vendor Key Exception»: هویت کسب‌وکاری Vendor در این
+        // پروژه از قبل همون چیزیه که IVendorService.FindOrCreateByNameAsync پیاده می‌کنه - نام،
+        // بعد از Trim + بی‌تفاوت به بزرگی/کوچکی حروف. هیچ ایندکس یکتایی روی Vendor.Name/VendorCode
+        // در دیتابیس وجود نداره (VendorConfiguration فقط Precision روی RiskScore می‌گذارد)، و
+        // Vendor های تکراری واقعی (چندین ردیف با همون نام‌نرمال‌شده) از قبل در PEMSDB وجود دارند -
+        // مستقیماً ToDictionaryAsync با همین Key با ArgumentException («An item with the same key
+        // has already been added») روی همین رکوردهای موجود کرش می‌کرد، نه به‌خاطر چیزی در همین فایل
+        // Import. اینجا به‌جای فرض یکتایی، رکوردها را با همون Key گروه‌بندی می‌کنیم: گروه با دقیقاً
+        // یک عضو → همون Vendor بدون ابهام استفاده می‌شود (رفتار قبلی)؛ گروه با بیش از یک عضو →
+        // «تعارض داده‌ی مرجع Vendor» صریح است - هیچ عضوی خودکار انتخاب نمی‌شود (نه First، نه
+        // FirstOrDefault)، ردیف‌های Import که به این نام ارجاع می‌دهند Skip می‌شوند و دلیل دقیق در
+        // همون ValidationStatus/ValidationMessage موجود هر ردیف (همون مکانیزم فعلی صفحه‌ی Review)
+        // ثبت می‌شود تا کاربر بتواند تعارض را در ماژول Vendor برطرف کند و دوباره Import بزند.
+        var vendorGroups = (await _context.Vendors.ToListAsync())
+            .GroupBy(x => x.Name.Trim().ToLower())
+            .ToDictionary(g => g.Key, g => g.ToList());
+
+        var ambiguousVendorKeys = new HashSet<string>(
+            vendorGroups.Where(g => g.Value.Count > 1).Select(g => g.Key));
+
+        var vendorCache = vendorGroups
+            .Where(g => g.Value.Count == 1)
+            .ToDictionary(g => g.Key, g => g.Value[0]);
 
         var poCache = await _context.PurchaseOrders
             .Where(x => x.ProjectId == batch.ProjectId)
@@ -437,6 +458,24 @@ public class VDRImportService : IVDRImportService
             // --- Vendor (کش‌شده) ---
             var vendorName = string.IsNullOrWhiteSpace(payload.VendorName) ? "Unknown Vendor" : payload.VendorName!;
             var vendorKey = vendorName.Trim().ToLower();
+
+            // تعارض داده‌ی مرجع: چند Vendor با همین نام‌نرمال‌شده در دیتابیس موجود است - انتخاب
+            // خودکار یکی از آن‌ها (با First/FirstOrDefault) می‌تواند مدرک را به Vendor غلط وصل کند؛
+            // چون Vendor روی VDRItem الزامی است (VendorId غیر-Nullable)، کل ردیف بدون تصمیم انسانی
+            // قابل ثبت نیست و Skip می‌شود - دقیقاً همون رفتار «Skip» که برای شماره مدرک خالی بالاتر
+            // اعمال شده، نه یک مسیر خطای جدید.
+            if (ambiguousVendorKeys.Contains(vendorKey))
+            {
+                skipped++;
+                row.ValidationStatus = "Error";
+                row.ValidationMessage =
+                    $"تعارض داده‌ی مرجع Vendor: {vendorGroups[vendorKey].Count} رکورد Vendor با نام «{vendorName.Trim()}» " +
+                    "در سامانه موجود است (شناسه‌ها: " + string.Join(", ", vendorGroups[vendorKey].Select(v => v.VendorId)) + "). " +
+                    "این ردیف به‌صورت خودکار به هیچ‌کدام وصل نشد تا سند به Vendor نادرست متصل نشود. " +
+                    "ابتدا رکوردهای تکراری Vendor را در ماژول Vendors برطرف کنید، سپس این ردیف را دوباره Import کنید.";
+                continue;
+            }
+
             if (!vendorCache.TryGetValue(vendorKey, out var vendor))
             {
                 vendor = new Vendor { Name = vendorName.Trim(), RiskLevel = "Unknown", IsActive = true, CreatedDate = DateTime.Now };

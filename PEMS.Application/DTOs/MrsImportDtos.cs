@@ -60,5 +60,10 @@ public class MrsImportRowMetadataDto
 public class MrsImportBatchDetailDto
 {
     public MrsImportBatchSummaryDto Batch { get; set; } = new();
-    public List<MrsImportRowDto> Rows { get; set; } = new();
+
+    // طبق ممیزی «PEMS Import Center — Global 500-Row Batch Limitation Remediation»: قبلاً
+    // Take(500) ثابت و بی‌صدا بود - ردیف‌های بعد از ۵۰۰ برای همیشه نامرئی و غیرقابل‌عمل می‌ماندند
+    // (نه Commit، نه Reject ممکن بود). حالا از همون الگوی استاندارد PagedResult<T> استفاده
+    // می‌شود که «PEMS — Global Data Grid Standard» برای هر Grid بزرگ الزامی کرده.
+    public PagedResult<MrsImportRowDto> Rows { get; set; } = new();
 }

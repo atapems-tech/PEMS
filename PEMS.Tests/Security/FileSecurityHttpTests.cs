@@ -15,9 +15,12 @@ public class FileSecurityHttpTests : IClassFixture<WebApplicationFactory<Program
 
     public FileSecurityHttpTests(WebApplicationFactory<Program> factory)
     {
+        // The real application pipeline must also run against the isolated regression database, never PEMSDB.
+        PEMS.Tests.TestSupport.PemsDbContextFactory.EnsureRegressionDatabase();
         _factory = factory.WithWebHostBuilder(builder =>
         {
             builder.UseSetting("https_port", "5443");
+            builder.UseSetting("ConnectionStrings:PEMSConnection", PEMS.Tests.TestSupport.PemsDbContextFactory.ConnectionString);
         });
     }
 

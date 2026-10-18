@@ -1,12 +1,14 @@
 @model PEMS.Application.DTOs.CmmsOperationsDashboardDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-speedometer2"></i> CMMS Operations Dashboard</h5>
+<div class="d-flex justify-content-end align-items-center mb-2">
     <div>
-        <a asp-action="Backlog" class="btn btn-outline-primary btn-sm"><i class="bi bi-list-task"></i> Maintenance Backlog</a>
-        <a asp-controller="WorkRequest" asp-action="Index" class="btn btn-outline-secondary btn-sm">Work Requests</a>
-        <a asp-controller="WorkOrder" asp-action="Index" class="btn btn-outline-secondary btn-sm">Work Orders</a>
-        <a asp-controller="Reliability" asp-action="Intelligence" class="btn btn-outline-secondary btn-sm">Maintenance Intelligence</a>
+        <a asp-action="Backlog" class="btn btn-outline-primary btn-sm"><i class="bi bi-list-task"></i> @Localizer["Maintenance Backlog"]</a>
+        <a asp-controller="WorkRequest" asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Work Requests"]</a>
+        <a asp-controller="WorkOrder" asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Work Orders"]</a>
+        <a asp-controller="Reliability" asp-action="Intelligence" class="btn btn-outline-secondary btn-sm">@Localizer["Maintenance Intelligence"]</a>
     </div>
 </div>
 <p class="text-muted small">
@@ -47,14 +49,14 @@
             <h6 class="mb-2">Work Request — by Status</h6>
             <table class="table table-enterprise table-sm mb-0">
                 <tbody>
-                    <tr><td>Draft</td><td class="text-end">@Model.WorkRequestDraft.ToString("N0")</td></tr>
-                    <tr><td>Submitted</td><td class="text-end">@Model.WorkRequestSubmitted.ToString("N0")</td></tr>
-                    <tr><td>Under Review</td><td class="text-end">@Model.WorkRequestUnderReview.ToString("N0")</td></tr>
-                    <tr><td>Approved</td><td class="text-end">@Model.WorkRequestApproved.ToString("N0")</td></tr>
+                    <tr><td>@Localizer["Draft"]</td><td class="text-end">@Model.WorkRequestDraft.ToString("N0")</td></tr>
+                    <tr><td>@Localizer["Submitted"]</td><td class="text-end">@Model.WorkRequestSubmitted.ToString("N0")</td></tr>
+                    <tr><td>@Localizer["Under Review"]</td><td class="text-end">@Model.WorkRequestUnderReview.ToString("N0")</td></tr>
+                    <tr><td>@Localizer["Approved"]</td><td class="text-end">@Model.WorkRequestApproved.ToString("N0")</td></tr>
                     <tr><td>Planned (ready to convert)</td><td class="text-end">@Model.WorkRequestPlanned.ToString("N0")</td></tr>
                     <tr><td>Converted</td><td class="text-end">@Model.WorkRequestConverted.ToString("N0")</td></tr>
-                    <tr><td class="text-muted">Rejected</td><td class="text-end text-muted">@Model.WorkRequestRejected.ToString("N0")</td></tr>
-                    <tr><td class="text-muted">Cancelled</td><td class="text-end text-muted">@Model.WorkRequestCancelled.ToString("N0")</td></tr>
+                    <tr><td class="text-muted">@Localizer["Rejected"]</td><td class="text-end text-muted">@Model.WorkRequestRejected.ToString("N0")</td></tr>
+                    <tr><td class="text-muted">@Localizer["Cancelled"]</td><td class="text-end text-muted">@Model.WorkRequestCancelled.ToString("N0")</td></tr>
                 </tbody>
             </table>
         </div>
@@ -64,14 +66,14 @@
             <h6 class="mb-2">Work Order — by Status</h6>
             <table class="table table-enterprise table-sm mb-0">
                 <tbody>
-                    <tr><td>Open</td><td class="text-end">@Model.WorkOrderOpen.ToString("N0")</td></tr>
-                    <tr><td>Assigned</td><td class="text-end">@Model.WorkOrderAssigned.ToString("N0")</td></tr>
-                    <tr><td>In Progress</td><td class="text-end">@Model.WorkOrderInProgress.ToString("N0")</td></tr>
-                    <tr><td>On Hold</td><td class="text-end">@Model.WorkOrderOnHold.ToString("N0")</td></tr>
-                    <tr><td>Completed</td><td class="text-end">@Model.WorkOrderCompleted.ToString("N0")</td></tr>
-                    <tr><td>Closed</td><td class="text-end">@Model.WorkOrderClosed.ToString("N0")</td></tr>
-                    <tr><td class="text-muted">Cancelled</td><td class="text-end text-muted">@Model.WorkOrderCancelled.ToString("N0")</td></tr>
-                    <tr><td class="text-muted">Rejected</td><td class="text-end text-muted">@Model.WorkOrderRejected.ToString("N0")</td></tr>
+                    <tr><td>@Localizer["Open"]</td><td class="text-end">@Model.WorkOrderOpen.ToString("N0")</td></tr>
+                    <tr><td>@Localizer["Assigned"]</td><td class="text-end">@Model.WorkOrderAssigned.ToString("N0")</td></tr>
+                    <tr><td>@Localizer["In Progress"]</td><td class="text-end">@Model.WorkOrderInProgress.ToString("N0")</td></tr>
+                    <tr><td>@Localizer["On Hold"]</td><td class="text-end">@Model.WorkOrderOnHold.ToString("N0")</td></tr>
+                    <tr><td>@Localizer["Completed"]</td><td class="text-end">@Model.WorkOrderCompleted.ToString("N0")</td></tr>
+                    <tr><td>@Localizer["Closed"]</td><td class="text-end">@Model.WorkOrderClosed.ToString("N0")</td></tr>
+                    <tr><td class="text-muted">@Localizer["Cancelled"]</td><td class="text-end text-muted">@Model.WorkOrderCancelled.ToString("N0")</td></tr>
+                    <tr><td class="text-muted">@Localizer["Rejected"]</td><td class="text-end text-muted">@Model.WorkOrderRejected.ToString("N0")</td></tr>
                     <tr><td class="fw-bold">Critical &amp; Open</td><td class="text-end fw-bold">@Model.WorkOrderCriticalOpen.ToString("N0")</td></tr>
                 </tbody>
             </table>
@@ -83,7 +85,7 @@
 <div class="row g-3">
     <div class="col-md-6">
         <div class="content-card h-100">
-            <h6 class="mb-2">PM Compliance <span class="text-muted small">(از IReliabilityIntelligenceService)</span></h6>
+            <h6 class="mb-2">PM Compliance <span class="text-muted small">@Localizer["(از IReliabilityIntelligenceService)"]</span></h6>
             @if (Model.PmCompliance is { } pm)
             {
                 <span class="badge @(pm.DataStatus == "READY" ? "text-bg-success" : pm.DataStatus == "PARTIAL" ? "text-bg-warning" : "text-bg-secondary") mb-2">@pm.DataStatus</span>
@@ -97,10 +99,10 @@
                 }
                 <table class="table table-enterprise table-sm mb-0 mt-2">
                     <tbody>
-                        <tr><td>Compliant</td><td class="text-end">@pm.CompliantCount</td></tr>
-                        <tr><td>Completed Late</td><td class="text-end">@pm.CompletedLateCount</td></tr>
-                        <tr><td>Overdue</td><td class="text-end">@pm.OverdueCount</td></tr>
-                        <tr><td>Not Yet Due</td><td class="text-end">@pm.NotYetDueCount</td></tr>
+                        <tr><td>@Localizer["Compliant"]</td><td class="text-end">@pm.CompliantCount</td></tr>
+                        <tr><td>@Localizer["Completed Late"]</td><td class="text-end">@pm.CompletedLateCount</td></tr>
+                        <tr><td>@Localizer["Overdue"]</td><td class="text-end">@pm.OverdueCount</td></tr>
+                        <tr><td>@Localizer["Not Yet Due"]</td><td class="text-end">@pm.NotYetDueCount</td></tr>
                     </tbody>
                 </table>
             }
@@ -108,7 +110,7 @@
     </div>
     <div class="col-md-6">
         <div class="content-card h-100">
-            <h6 class="mb-2">Maintenance Type Breakdown <span class="text-muted small">(از IReliabilityIntelligenceService)</span></h6>
+            <h6 class="mb-2">Maintenance Type Breakdown <span class="text-muted small">@Localizer["(از IReliabilityIntelligenceService)"]</span></h6>
             @if (Model.MaintenanceTypeBreakdown is { } tb)
             {
                 <span class="badge @(tb.DataStatus == "READY" ? "text-bg-success" : "text-bg-secondary") mb-2">@tb.DataStatus</span>

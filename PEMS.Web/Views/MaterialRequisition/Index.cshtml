@@ -1,9 +1,12 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MRDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('MaterialRequisition')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
         <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> New MR</a>
     </div>
@@ -12,14 +15,14 @@
     <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="MaterialRequisition">
         <thead>
             <tr>
-                <th data-col-key="mrNumber" data-resizable="true" data-min-width="100" data-max-width="200">MR Number</th>
-                <th data-col-key="project" data-resizable="true" data-min-width="120" data-max-width="240">Project</th>
-                <th data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="200">Discipline</th>
-                <th data-col-key="equipmentTag" data-resizable="true" data-min-width="100" data-max-width="200">Equipment Tag</th>
-                <th data-col-key="requiredDate" data-resizable="true" data-min-width="100" data-max-width="160">Required Date</th>
-                <th data-col-key="responsible" data-resizable="true" data-min-width="120" data-max-width="240">Responsible</th>
-                <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">Status</th>
-                <th data-col-key="mrqs" data-resizable="true" data-min-width="60" data-max-width="100">MRQs</th>
+                <th data-col-key="mrNumber" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["MR Number"]</th>
+                <th data-col-key="project" data-resizable="true" data-min-width="120" data-max-width="240">@Localizer["Project"]</th>
+                <th data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Discipline"]</th>
+                <th data-col-key="equipmentTag" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Equipment Tag"]</th>
+                <th data-col-key="requiredDate" data-resizable="true" data-min-width="100" data-max-width="160">@Localizer["Required Date"]</th>
+                <th data-col-key="responsible" data-resizable="true" data-min-width="120" data-max-width="240">@Localizer["Responsible"]</th>
+                <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Status"]</th>
+                <th data-col-key="mrqs" data-resizable="true" data-min-width="60" data-max-width="100">@Localizer["MRQs"]</th>
                 <th></th>
             </tr>
         </thead>

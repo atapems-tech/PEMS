@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.ManufacturerDataBookDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var documents = (IEnumerable<dynamic>)ViewBag.Documents;
 }
@@ -20,7 +23,7 @@
             <strong>Index of Contents Due:</strong> @(Model.IndexOfContentsDueDate?.ToString("yyyy-MM-dd") ?? "-")
             @if (Model.IsIndexOverdue)
             {
-                <span class="badge bg-danger">overdue</span>
+                <span class="badge bg-danger">@Localizer["overdue"]</span>
             }
         </div>
         <div class="col-md-3"><strong>Index Submitted:</strong> @(Model.IndexOfContentsSubmittedDate?.ToString("yyyy-MM-dd") ?? "-")</div>
@@ -65,7 +68,7 @@
     <div class="content-card mb-3">
         <h6 class="mb-3">@label</h6>
         <table class="table table-enterprise">
-            <thead><tr><th>Document No</th><th>Title</th><th>DVD Volume</th><th>N/A</th><th>Notes</th><th></th></tr></thead>
+            <thead><tr><th>@Localizer["Document No"]</th><th>@Localizer["Title"]</th><th>DVD Volume</th><th>N/A</th><th>@Localizer["Notes"]</th><th></th></tr></thead>
             <tbody>
                 @foreach (var d in docs)
                 {
@@ -109,7 +112,7 @@
                 <input type="checkbox" name="isNotApplicable" value="true" class="form-check-input me-1" id="na_@code" />
                 <label class="form-check-label small" for="na_@code">Not applicable</label>
             </div>
-            <div class="col-md-2"><button class="btn btn-sm btn-outline-primary w-100"><i class="bi bi-plus-lg"></i> Add</button></div>
+            <div class="col-md-2"><button class="btn btn-sm btn-outline-primary w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</button></div>
         </form>
     </div>
 }

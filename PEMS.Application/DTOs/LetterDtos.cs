@@ -140,6 +140,9 @@ public class NotificationDto
     public string Title { get; set; } = "";
     public string Message { get; set; } = "";
     public string? LinkUrl { get; set; }
+    public string? RelatedType { get; set; }
+    public int? RelatedId { get; set; }
     public bool IsRead { get; set; }
+    public DateTime? DismissedDate { get; set; }
     public DateTime CreatedDate { get; set; }
 }

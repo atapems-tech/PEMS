@@ -1,4 +1,7 @@
 ﻿@model List<PEMS.Application.DTOs.MDRImportBatchDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
 }
@@ -44,7 +47,7 @@
     </p>
     <form asp-action="Upload" method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
         <div class="col-md-5">
-            <label class="form-label small">Project</label>
+            <label class="form-label small">@Localizer["Project"]</label>
             <select name="projectId" class="form-select" required>
                 @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
             </select>
@@ -54,16 +57,16 @@
             <input type="file" name="file" class="form-control" accept=".xlsx" required />
         </div>
         <div class="col-md-2">
-            <button type="submit" class="btn btn-pems-solid w-100"><i class="bi bi-cloud-upload"></i> Upload</button>
+            <button type="submit" class="btn btn-pems-solid w-100"><i class="bi bi-cloud-upload"></i> @Localizer["Upload"]</button>
         </div>
     </form>
 </div>
 
 <div class="content-card">
-    <h6 class="mb-3">Recent Import Batches</h6>
+    <h6 class="mb-3">@Localizer["Recent Import Batches"]</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
     <table class="table table-enterprise">
-        <thead><tr><th>File</th><th>Project</th><th>Date</th><th>Total</th><th>Valid</th><th>Warning</th><th>Error</th><th>Duplicate</th><th>Status</th><th></th></tr></thead>
+        <thead><tr><th>@Localizer["File"]</th><th>@Localizer["Project"]</th><th>@Localizer["Date"]</th><th>@Localizer["Total"]</th><th>@Localizer["Valid"]</th><th>@Localizer["Warning"]</th><th>Error</th><th>@Localizer["Duplicate"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
         <tbody>
             @foreach (var b in Model)
             {

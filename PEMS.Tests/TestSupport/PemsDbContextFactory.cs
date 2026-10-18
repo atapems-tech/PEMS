@@ -21,13 +21,43 @@ public static class PemsDbContextFactory
         return new PEMSDbContext(options);
     }
 
-    // همون Connection String پیش‌فرض appsettings.json (PEMS.Web) - قابل بازنویسی با متغیر محیطی
-    // PEMS_TEST_CONNECTION برای محیط‌های CI/دیگر.
+    // Data-integrity rule: the regression suite NEVER touches the shared development database (PEMSDB).
+    // Tests that need a real SQL Server use a dedicated regression database that is dropped and re-created from the real
+    // migration history once per test process (so test master data - departments, employees, documents - never accumulates
+    // in the development/master-data database). Override the server/database with PEMS_TEST_CONNECTION; pointing it at
+    // PEMSDB is refused unless PEMS_TEST_ALLOW_SHARED_DB=1 is set explicitly.
+    public const string RegressionDatabaseName = "PEMSDB_RegressionTest";
+
     private const string DefaultConnection =
-        "Server=localhost\\SQLEXPRESS;Database=PEMSDB;Trusted_Connection=True;TrustServerCertificate=True";
+        "Server=localhost\\SQLEXPRESS;Database=" + RegressionDatabaseName + ";Trusted_Connection=True;TrustServerCertificate=True";
 
     public static string ConnectionString =>
         Environment.GetEnvironmentVariable("PEMS_TEST_CONNECTION") ?? DefaultConnection;
+
+    private static readonly object RegressionGate = new();
+    private static bool _regressionReady;
+
+    /// <summary>Drops and re-creates the regression database once per test process (real migrations, no seed). Thread-safe.</summary>
+    public static void EnsureRegressionDatabase()
+    {
+        lock (RegressionGate)
+        {
+            if (_regressionReady) return;
+            var csb = new SqlConnectionStringBuilder(ConnectionString);
+            if (string.Equals(csb.InitialCatalog, "PEMSDB", StringComparison.OrdinalIgnoreCase)
+                && Environment.GetEnvironmentVariable("PEMS_TEST_ALLOW_SHARED_DB") != "1")
+                throw new InvalidOperationException(
+                    "Refusing to run regression tests against the shared development database 'PEMSDB'. " +
+                    "Use the default isolated database or set PEMS_TEST_CONNECTION to another database " +
+                    "(PEMS_TEST_ALLOW_SHARED_DB=1 overrides this guard deliberately).");
+
+            using var ctx = new PEMSDbContext(new DbContextOptionsBuilder<PEMSDbContext>().UseSqlServer(csb.ConnectionString).Options);
+            ctx.Database.EnsureDeleted();
+            ctx.Database.Migrate();
+            RegressionBaselineData.Seed(ctx);
+            _regressionReady = true;
+        }
+    }
 
     /// <summary>
     /// طبق درخواست ممیزی: تست‌های وابسته به SQL Server واقعی نباید بی‌صدا Pass نشان بدهند وقتی
@@ -38,9 +68,12 @@ public static class PemsDbContextFactory
     {
         try
         {
-            using var conn = new SqlConnection(ConnectionString);
+            var master = new SqlConnectionStringBuilder(ConnectionString) { InitialCatalog = "master" };
+            using var conn = new SqlConnection(master.ConnectionString);
             conn.Open();
+            EnsureRegressionDatabase();
         }
+        catch (InvalidOperationException) { throw; }
         catch (Exception ex)
         {
             throw new InvalidOperationException(

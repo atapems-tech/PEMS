@@ -26,12 +26,15 @@ public class LetterController : Controller
     private readonly ICacheService _cache;
     private readonly ILetterNumberingService _numberingService;
     private readonly IFileStorageService _fileStorage;
+    private readonly INotificationService _notifications;
 
     public LetterController(ILetterService letterService, ILetterReferralService referralService,
         PEMSDbContext context, ICurrentUserService currentUser, IPermissionService permissionService,
         ITagService tagService, IRichTextSanitizerService richTextSanitizer, ICacheService cache,
-        ILetterNumberingService numberingService, IFileStorageService fileStorage)
+        ILetterNumberingService numberingService, IFileStorageService fileStorage,
+        INotificationService notifications)
     {
+        _notifications = notifications;
         _letterService = letterService;
         _referralService = referralService;
         _context = context;
@@ -148,6 +151,10 @@ public class LetterController : Controller
 
         var detail = await _letterService.GetDetailAsync(id);
         if (detail == null) return NotFound();
+
+        // باز کردن مستقیم نامه (نه فقط از روی اعلان) هم اعلان‌های مرتبطِ همین کاربر را Read می‌کند
+        if (_currentUser.UserId.HasValue)
+            await _notifications.MarkRelatedReadAsync(_currentUser.UserId.Value, "Letter", id);
 
         ViewBag.Timeline = await _letterService.GetTimelineAsync(id);
         // طبق بند ۱۹: ParentLetterId/Thread از قبل در سرویس وجود داشت اما هرگز از Details

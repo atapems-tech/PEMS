@@ -1,0 +1,56 @@
+# Kit-owned Compose file for the pems-web service ONLY.
+#
+# The VM's Compose project is `pems-cmms-edit-empoleeys-master` (its file /opt/pems/source/PEMS-cmms-edit-empoleeys-master/docker-compose.yml
+# manages sqlserver; Caddy is a separate container). pems-web was originally started by hand, so this file takes it over WITHOUT touching the
+# source tree's compose file, the SQL Server container, Caddy, or any existing volume:
+#   - it joins the existing project network (external) so `sqlserver` still resolves,
+#   - it re-uses the existing named volumes (external) and adds two NEW persistent ones (filestore + DataProtection keys),
+#   - secrets are NOT in this file: the service environment comes from an env file kept only on the VM (mode 600, generated from the
+#     running container by `pems-docker.sh adopt-env`).
+# Never run `docker compose down -v`, `docker volume prune` or `docker system prune` against this project (the kit never does).
+name: pems-cmms-edit-empoleeys-master
+
+services:
+  pems-web:
+    image: ${PEMS_WEB_IMAGE:?PEMS_WEB_IMAGE is set by pems-docker.sh}
+    container_name: pems-web
+    restart: unless-stopped
+    env_file:
+      - ${PEMS_WEB_ENV_FILE:?PEMS_WEB_ENV_FILE is set by pems-docker.sh}
+    ports:
+      # Loopback only: the app speaks plain HTTP and its auth cookie is Secure, so LAN clients must use https://pems.home.arpa via Caddy.
+      # Caddy reaches the container over the Docker network (pems-web:8080); the deploy kit's health checks use 127.0.0.1:8080.
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - pems-uploads:/app/wwwroot/uploads
+      - pems-logs:/app/logs
+      - pems-filestore:/app/filestore
+      - pems-dpkeys:/root/.aspnet/DataProtection-Keys
+    healthcheck:
+      # the image has no curl/wget: plain bash /dev/tcp request to the application's own /health (which runs SELECT 1 on the database)
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8080 && printf \"GET /health HTTP/1.0\\r\\nHost: localhost\\r\\n\\r\\n\" >&3 && head -n1 <&3 | grep -q \" 200 \"'"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+    networks:
+      - default
+
+networks:
+  default:
+    name: pems-cmms-edit-empoleeys-master_default
+    external: true
+
+volumes:
+  pems-uploads:
+    name: pems-uploads
+    external: true
+  pems-logs:
+    name: pems-logs
+    external: true
+  pems-filestore:
+    name: pems-filestore
+    external: true
+  pems-dpkeys:
+    name: pems-dpkeys
+    external: true

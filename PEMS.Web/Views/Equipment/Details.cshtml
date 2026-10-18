@@ -1,8 +1,23 @@
 @model PEMS.Application.DTOs.EquipmentPassportDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var eq = Model.Equipment;
     var inst = Model.Instrument;
     var asset = Model.Asset;
+    var mech = Model.MechanicalEquipment;
+    var cm = Model.ConditionMonitoring;
+
+    string CmEvalBadge(string status) => status switch
+    {
+        "Critical" => "bg-dark",
+        "Alarm" => "bg-danger",
+        "Warning" => "bg-warning text-dark",
+        "Normal" => "bg-success",
+        "RequiresEngineeringReview" => "bg-info text-dark",
+        _ => "bg-secondary"
+    };
     var inspections = ViewBag.Inspections as List<PEMS.Application.DTOs.InspectionListItemDto> ?? new();
 
     var calBadgeClass = inst?.CalibrationStatus switch
@@ -13,7 +28,15 @@
         _ => "bg-secondary"
     };
 
+    bool canCreateWr = ViewBag.CanCreateWorkRequest == true, canViewWr = ViewBag.CanViewWorkRequest == true, canViewWo = ViewBag.CanViewWorkOrder == true;
+    string WrTone(string s) => s switch { "Converted" or "Approved" or "Planned" => "vs-pill--success", "Rejected" => "vs-pill--danger", "Cancelled" or "Draft" => "vs-pill--neutral", _ => "vs-pill--info" };
+    string WrIcon(string s) => s switch { "Draft" => "bi-pencil", "Submitted" => "bi-send", "UnderReview" => "bi-hourglass-split", "Approved" => "bi-check-circle", "Planned" => "bi-calendar-check", "Converted" => "bi-box-arrow-up-right", "Rejected" => "bi-x-circle", "Cancelled" => "bi-slash-circle", _ => "bi-circle" };
+    string PrioTone(string s) => s switch { "Critical" => "vs-pill--danger", "High" => "vs-pill--warning", _ => "vs-pill--neutral" };
     string NA(string? v) => string.IsNullOrWhiteSpace(v) ? "N/A" : v;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
 }
 
 @* طراحی جدید: به‌جای یک صفحه‌ی طولانی با هفت جدول/بخش پشت سر هم، محتوا در تب‌ها سازمان‌دهی شده -
@@ -21,95 +44,74 @@
    داده‌ای حذف نشده - فقط پشت تب‌هایی که فقط وقتی کاربر انتخاب کند نمایش داده می‌شوند، دسته‌بندی شده.
    طبق درخواست: شناسنامه‌ی ابزاردقیق (در صورت وجود) حالا بخشی از همین صفحه است، نه فقط یک لینک بیرونی. *@
 
-<div class="content-card mb-3">
-    <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
-        <div class="kpi-icon bg-icon-blue" style="width:56px;height:56px;font-size:26px;"><i class="bi bi-gear"></i></div>
-        <div>
-            <h5 class="mb-0">
-                @eq.TagNumber &mdash; @eq.Name
+<div class="vs-page">
+<div class="vs-section">
+    <div class="vs-doc-head">
+        <div class="vs-doc-identity">
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <h2 class="vs-doc-number vs-num">@eq.TagNumber</h2>
+                <span class="vs-pill vs-pill--icon vs-pill--success"><i class="bi bi-check-circle" aria-hidden="true"></i> @eq.Status</span>
                 @if (!string.IsNullOrWhiteSpace(eq.CriticalityClass))
                 {
-                    <span class="badge @(eq.CriticalityClass == "A" ? "bg-danger" : eq.CriticalityClass == "B" ? "bg-warning text-dark" : "bg-secondary")" title="Criticality Class">
-                        Class @eq.CriticalityClass
-                    </span>
+                    <span class="vs-pill vs-pill--icon @(eq.CriticalityClass == "A" ? "vs-pill--danger" : eq.CriticalityClass == "B" ? "vs-pill--warning" : "vs-pill--neutral")" title="Criticality Class"><i class="bi bi-exclamation-diamond" aria-hidden="true"></i> @Localizer["Cm_Criticality"] @eq.CriticalityClass</span>
                 }
-                <span class="badge bg-success">@eq.Status</span>
                 @if (inst != null)
                 {
-                    <span class="badge @calBadgeClass" title="Calibration status"><i class="bi bi-speedometer2"></i> Cal: @inst.CalibrationStatus</span>
-                }
-            </h5>
-            <span class="text-muted small">@eq.EquipmentType &middot; @eq.ProjectName &middot; @eq.DisciplineName @(string.IsNullOrWhiteSpace(eq.Area) ? "" : "· " + eq.Area)</span>
-        </div>
-        <a asp-controller="Relationship" asp-action="Equipment" asp-route-id="@eq.EquipmentId" class="btn btn-outline-primary btn-sm ms-auto">
-            <i class="bi bi-diagram-3"></i> Explore Relationships
-        </a>
-    </div>
-    <div class="row g-2 small mt-1">
-        <div class="col-md-3">
-            <strong>P&amp;ID:</strong>
-            @if (Model.PIDDocument != null)
-            {
-                <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.PIDDocument.DocumentId" class="fw-bold">
-                    @eq.PIDNumber <i class="bi bi-box-arrow-up-right small"></i>
-                </a>
-            }
-            else if (!string.IsNullOrWhiteSpace(eq.PIDNumber))
-            {
-                <span title="مدرکی با این شماره پیدا نشد">@eq.PIDNumber</span>
-            }
-            else
-            {
-                <span class="text-muted">-</span>
-            }
-        </div>
-        <div class="col-md-4"><strong>Manufacturer / Model:</strong> @NA(eq.Manufacturer) / @NA(eq.Model)</div>
-        <div class="col-md-5"><strong>Description:</strong> @NA(eq.Description)</div>
-    </div>
-    <div class="row g-2 small mt-1">
-        <div class="col-md-4"><strong>Functional Location:</strong> @NA(eq.FunctionalLocationBreadcrumb)</div>
-        <div class="col-md-4">
-            <strong>Parent Equipment:</strong>
-            @if (eq.ParentEquipmentId.HasValue)
-            {
-                <a asp-action="Details" asp-route-id="@eq.ParentEquipmentId">@eq.ParentEquipmentTagNumber</a>
-            }
-            else
-            {
-                <span class="text-muted">N/A</span>
-            }
-        </div>
-        <div class="col-md-3"><strong>Installation Date:</strong> @(eq.InstallationDate?.ToString("yyyy-MM-dd") ?? "N/A")</div>
-        <div class="col-md-1">
-            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#assignFoundationModal" title="Assign Functional Location / Parent Equipment">
-                <i class="bi bi-pencil"></i>
-            </button>
-        </div>
-    </div>
-    @if (eq.ChildEquipments.Any())
-    {
-        <div class="row g-2 small mt-1">
-            <div class="col-12">
-                <strong>Child Equipment (@eq.ChildEquipmentCount):</strong>
-                @foreach (var c in eq.ChildEquipments)
-                {
-                    <a asp-action="Details" asp-route-id="@c.EquipmentId" class="badge bg-light text-dark border me-1">@c.TagNumber</a>
+                    <span class="vs-pill vs-pill--icon @(inst.CalibrationStatus == "Overdue" ? "vs-pill--danger" : inst.CalibrationStatus == "DueSoon" ? "vs-pill--warning" : inst.CalibrationStatus == "OK" ? "vs-pill--success" : "vs-pill--neutral")" title="Calibration status"><i class="bi bi-speedometer2" aria-hidden="true"></i> @Localizer["Cm_Cal"]: @inst.CalibrationStatus</span>
                 }
             </div>
+            <div class="vs-doc-title">@eq.Name</div>
+            <div class="vs-doc-meta">@eq.EquipmentType &middot; @eq.ProjectName &middot; @eq.DisciplineName @(string.IsNullOrWhiteSpace(eq.Area) ? "" : "· " + eq.Area)</div>
         </div>
-    }
+        <div class="vs-doc-actions">
+            <a asp-controller="Relationship" asp-action="Equipment" asp-route-id="@eq.EquipmentId" class="vs-btn"><i class="bi bi-diagram-3"></i> @Localizer["Cm_Relationships"]</a>
+            <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#assignFoundationModal" title="Assign Functional Location / Parent Equipment"><i class="bi bi-pencil"></i> @Localizer["Cm_AssignLocation"]</button>
+        </div>
+    </div>
+    <div class="vs-info">
+        <div>
+            <p class="vs-info__label">P&amp;ID</p>
+            <p class="vs-info__value vs-num">
+            @if (Model.PIDDocument != null)
+            {
+                <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.PIDDocument.DocumentId">@eq.PIDNumber <i class="bi bi-box-arrow-up-right small"></i></a>
+            }
+            else if (!string.IsNullOrWhiteSpace(eq.PIDNumber)) { <span title="@Localizer["مدرکی با این شماره پیدا نشد"]">@eq.PIDNumber</span> }
+            else { <span class="text-muted">N/A</span> }
+            </p>
+        </div>
+        <div><p class="vs-info__label">@Localizer["Cm_ManufacturerModel"]</p><p class="vs-info__value vs-num">@NA(eq.Manufacturer) / @NA(eq.Model)</p></div>
+        <div><p class="vs-info__label">@Localizer["Cm_FunctionalLocation"]</p><p class="vs-info__value">@NA(eq.FunctionalLocationBreadcrumb)</p></div>
+        <div>
+            <p class="vs-info__label">@Localizer["Cm_ParentEquipment"]</p>
+            <p class="vs-info__value vs-num">
+            @if (eq.ParentEquipmentId.HasValue) { <a asp-action="Details" asp-route-id="@eq.ParentEquipmentId">@eq.ParentEquipmentTagNumber</a> } else { <span class="text-muted">N/A</span> }
+            </p>
+        </div>
+        <div><p class="vs-info__label">@Localizer["Cm_InstallationDate"]</p><p class="vs-info__value vs-num">@(eq.InstallationDate?.ToString("yyyy-MM-dd") ?? "N/A")</p></div>
+        <div class="vs-info__wide"><p class="vs-info__label">@Localizer["Cm_Description"]</p><p class="vs-info__value">@NA(eq.Description)</p></div>
+        @if (eq.ChildEquipments.Any())
+        {
+            <div class="vs-info__wide">
+                <p class="vs-info__label">@Localizer["Cm_ChildEquipment"] (@eq.ChildEquipmentCount)</p>
+                <p class="vs-info__value">
+                @foreach (var c in eq.ChildEquipments) { <a asp-action="Details" asp-route-id="@c.EquipmentId" class="vs-chip text-decoration-none vs-num me-1">@c.TagNumber</a> }
+                </p>
+            </div>
+        }
+    </div>
 </div>
 
 <div class="modal fade" id="assignFoundationModal" tabindex="-1">
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="AssignFoundation" method="post">
             <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
-            <div class="modal-header"><h6 class="modal-title">Assign Functional Location / Parent Equipment</h6></div>
+            <div class="modal-header"><h6 class="modal-title">@Localizer["Cm_AssignTitle"]</h6></div>
             <div class="modal-body">
                 <div class="mb-2">
-                    <label class="form-label small">Functional Location</label>
+                    <label class="form-label small">@Localizer["Functional Location"]</label>
                     <select name="functionalLocationId" class="form-select form-select-sm">
-                        <option value="">-- not linked --</option>
+                        <option value="">@Localizer["-- not linked --"]</option>
                         @foreach (var fl in (List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations)
                         {
                             <option value="@fl.FunctionalLocationId" selected="@(fl.FunctionalLocationId == eq.FunctionalLocationId)">@fl.PathBreadcrumb</option>
@@ -125,7 +127,7 @@
                             .FirstOrDefault(x => x.FunctionalLocationId == eq.FunctionalLocationId);
                         <div class="form-text">Currently: @(currentFl?.PathBreadcrumb ?? NA(eq.FunctionalLocationBreadcrumb))</div>
                     }
-                    <div class="form-text">Real link, distinct from the raw "@NA(eq.Area)" import value. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">Manage list</a></div>
+                    <div class="form-text">Real link, distinct from the raw "@NA(eq.Area)" import value. <a asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</a></div>
                 </div>
                 <div class="mb-2">
                     <label class="form-label small">Parent Equipment</label>
@@ -143,8 +145,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">Save</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Save"]</button>
             </div>
         </form>
     </div></div>
@@ -170,61 +172,78 @@
 <ul class="nav nav-tabs mb-3" id="equipmentTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
-            <i class="bi bi-info-circle"></i> Overview
+            <i class="bi bi-info-circle"></i> @Localizer["Cm_TabOverview"]
         </button>
     </li>
     @if (inst != null)
     {
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-instrument" type="button">
-                <i class="bi bi-card-text"></i> Instrument Passport
+                <i class="bi bi-card-text"></i> @Localizer["Cm_InstrumentPassport"]
+            </button>
+        </li>
+    }
+    @if (mech != null)
+    {
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-mechanical" type="button">
+                <i class="bi bi-gear-wide-connected"></i> @Localizer["Mechanical Passport"]
+            </button>
+        </li>
+    }
+    @if (cm != null)
+    {
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-cm" type="button">
+                <i class="bi bi-activity"></i> @Localizer["Condition Monitoring"]
+                @if (cm.OpenFindingCount > 0) { <span class="badge bg-danger">@cm.OpenFindingCount</span> }
             </button>
         </li>
     }
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-barcode" type="button">
-            <i class="bi bi-upc-scan"></i> Barcode
+            <i class="bi bi-upc-scan"></i> @Localizer["Cm_TabBarcode"]
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-asset" type="button">
-            <i class="bi bi-diagram-2"></i> Asset
+            <i class="bi bi-diagram-2"></i> @Localizer["Cm_TabAsset"]
             @if (asset != null) { <span class="badge bg-secondary">@asset.Status</span> }
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-documents" type="button">
-            <i class="bi bi-file-earmark-text"></i> Documents
+            <i class="bi bi-file-earmark-text"></i> @Localizer["Cm_EngDocs"]
             <span class="badge bg-secondary">@(Model.Documents.Count + Model.VDRItems.Count)</span>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-procurement" type="button">
-            <i class="bi bi-cart-check"></i> Procurement <span class="badge bg-secondary">@Model.RelatedMRs.Count</span>
+            <i class="bi bi-cart-check"></i> @Localizer["Cm_TabProcurement"] <span class="badge bg-secondary">@Model.RelatedMRs.Count</span>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance" type="button">
-            <i class="bi bi-tools"></i> Maintenance <span class="badge bg-secondary">@Model.WorkOrders.Count</span>
+            <i class="bi bi-tools"></i> @Localizer["Cm_TabMaintenance"] <span class="badge bg-secondary">@Model.WorkRequests.Count</span>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-inspection" type="button">
-            <i class="bi bi-clipboard-pulse"></i> Inspections
+            <i class="bi bi-clipboard-pulse"></i> @Localizer["Cm_TabInspections"]
             @if (inspections.Any()) { <span class="badge bg-secondary">@inspections.Count</span> }
-            @if (inspections.Any(x => x.ConditionStatus == "Alert")) { <span class="badge bg-danger">Alert</span> }
+            @if (inspections.Any(x => x.ConditionStatus == "Alert")) { <span class="badge bg-danger">@Localizer["Alert"]</span> }
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-quality" type="button">
-            <i class="bi bi-shield-exclamation"></i> Quality &amp; Change
+            <i class="bi bi-shield-exclamation"></i> @Localizer["Cm_TabQuality"]
             @{ var qcCount = Model.NonConformanceReports.Count + Model.MOCs.Count + Model.TechnicalQueries.Count; }
             @if (qcCount > 0) { <span class="badge bg-secondary">@qcCount</span> }
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-classification" type="button">
-            <i class="bi bi-diagram-3-fill"></i> Classification
+            <i class="bi bi-diagram-3-fill"></i> @Localizer["Cm_TabClassification"]
             @{ var pendingSuggestion = ViewBag.PendingClassificationSuggestion as PEMS.Application.DTOs.ReviewQueueItemDto; }
             @if (pendingSuggestion != null) { <span class="badge bg-warning text-dark">1</span> }
         </button>
@@ -235,47 +254,28 @@
 
     @* ===================== Overview ===================== *@
     <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
-        <div class="row g-3">
-            <div class="col-md-3 col-sm-6">
-                <div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-file-earmark-text"></i></div>
-                    <div><div class="kpi-value">@Model.Documents.Count</div><div class="kpi-label">Engineering Documents</div></div></div>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-journal-check"></i></div>
-                    <div><div class="kpi-value">@Model.VDRItems.Count</div><div class="kpi-label">VDR / Vendor Documents</div></div></div>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-cart-check"></i></div>
-                    <div><div class="kpi-value">@Model.RelatedMRs.Count</div><div class="kpi-label">Material Requisitions</div></div></div>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="kpi-card"><div class="kpi-icon bg-icon-teal"><i class="bi bi-tools"></i></div>
-                    <div><div class="kpi-value">@Model.WorkOrders.Count</div><div class="kpi-label">Maintenance / Work Orders</div></div></div>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-exclamation-triangle"></i></div>
-                    <div><div class="kpi-value">@Model.NonConformanceReports.Count</div><div class="kpi-label">NCR</div></div></div>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-arrow-repeat"></i></div>
-                    <div><div class="kpi-value">@Model.MOCs.Count</div><div class="kpi-label">MOC</div></div></div>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-question-circle"></i></div>
-                    <div><div class="kpi-value">@Model.TechnicalQueries.Count</div><div class="kpi-label">TQ / TSR / RFI</div></div></div>
-            </div>
+        @{ var pendingWr = Model.WorkRequests.Count(w => w.Status is "Draft" or "Submitted" or "UnderReview" or "Approved" or "Planned"); }
+        <div class="vs-chips">
+            <button type="button" class="vs-chip" data-goto-tab="#tab-documents"><i class="bi bi-file-earmark-text"></i> @Localizer["Cm_EngDocs"] <strong>@Model.Documents.Count</strong></button>
+            <button type="button" class="vs-chip" data-goto-tab="#tab-documents"><i class="bi bi-journal-check"></i> VDR <strong>@Model.VDRItems.Count</strong></button>
+            <button type="button" class="vs-chip" data-goto-tab="#tab-procurement"><i class="bi bi-cart-check"></i> MR <strong>@Model.RelatedMRs.Count</strong></button>
+            <button type="button" class="vs-chip @(pendingWr > 0 ? "vs-chip--danger" : "")" data-goto-tab="#tab-maintenance"><i class="bi bi-clipboard-plus"></i> @Localizer["Cm_WorkRequests"] <strong>@Model.WorkRequests.Count</strong></button>
+            <button type="button" class="vs-chip" data-goto-tab="#tab-maintenance"><i class="bi bi-tools"></i> @Localizer["Cm_WorkOrders"] <strong>@Model.WorkOrders.Count</strong></button>
+            <button type="button" class="vs-chip" data-goto-tab="#tab-quality">NCR <strong>@Model.NonConformanceReports.Count</strong></button>
+            <button type="button" class="vs-chip" data-goto-tab="#tab-quality">MOC <strong>@Model.MOCs.Count</strong></button>
+            <button type="button" class="vs-chip" data-goto-tab="#tab-quality">TQ / TSR / RFI <strong>@Model.TechnicalQueries.Count</strong></button>
         </div>
 
         @if (inst != null)
         {
             <div class="content-card mt-3">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0"><i class="bi bi-card-text"></i> Instrument Passport</h6>
+                    <h6 class="mb-0"><i class="bi bi-card-text"></i> @Localizer["Cm_InstrumentPassport"]</h6>
                     <span class="small text-muted">See the "Instrument Passport" tab for full details, calibration history and print.</span>
                 </div>
                 <div class="row g-2 small mt-2">
-                    <div class="col-md-3"><strong>Type</strong><div>@NA(inst.InstrumentType)</div></div>
-                    <div class="col-md-3"><strong>Loop No.</strong><div>@NA(inst.LoopNumber)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Type"]</strong><div>@NA(inst.InstrumentType)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Loop No."]</strong><div>@NA(inst.LoopNumber)</div></div>
                     <div class="col-md-3"><strong>System / Signal</strong><div>@NA(inst.System) / @NA(inst.SignalClass)</div></div>
                     <div class="col-md-3"><strong>Next Calibration</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <span class="badge @calBadgeClass">@inst.CalibrationStatus</span></div></div>
                 </div>
@@ -289,37 +289,126 @@
         <div class="tab-pane fade" id="tab-instrument" role="tabpanel">
             <div class="content-card mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h6 class="mb-0">Instrument Passport</h6>
+                    <h6 class="mb-0">@Localizer["Cm_InstrumentPassport"]</h6>
                     <a asp-controller="Instrument" asp-action="Passport" asp-route-id="@inst.InstrumentId" class="btn btn-sm btn-pems-solid">
-                        <i class="bi bi-card-text"></i> Full Passport / Print / Record Calibration
+                        <i class="bi bi-card-text"></i> @Localizer["Cm_FullPassport"]
                     </a>
                 </div>
                 <div class="row g-2 small">
-                    <div class="col-md-3"><strong>Instrument Type</strong><div>@NA(inst.InstrumentType)</div></div>
-                    <div class="col-md-3"><strong>Loop No.</strong><div>@NA(inst.LoopNumber)</div></div>
-                    <div class="col-md-3"><strong>System</strong><div>@NA(inst.System)</div></div>
-                    <div class="col-md-3"><strong>Signal Class</strong><div>@NA(inst.SignalClass)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Instrument Type"]</strong><div>@NA(inst.InstrumentType)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Loop No."]</strong><div>@NA(inst.LoopNumber)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["System"]</strong><div>@NA(inst.System)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Signal Class"]</strong><div>@NA(inst.SignalClass)</div></div>
 
-                    <div class="col-md-3"><strong>Process Variable</strong><div>@NA(inst.ProcessVariable)</div></div>
-                    <div class="col-md-3"><strong>Range</strong><div>@(inst.RangeMin?.ToString() ?? "N/A") - @(inst.RangeMax?.ToString() ?? "N/A") @inst.Unit</div></div>
-                    <div class="col-md-3"><strong>Output Signal</strong><div>@NA(inst.OutputSignal)</div></div>
-                    <div class="col-md-3"><strong>Current Status</strong><div>@NA(inst.CurrentStatus)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Process Variable"]</strong><div>@NA(inst.ProcessVariable)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Range"]</strong><div>@(inst.RangeMin?.ToString() ?? "N/A") - @(inst.RangeMax?.ToString() ?? "N/A") @inst.Unit</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Output Signal"]</strong><div>@NA(inst.OutputSignal)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Current Status"]</strong><div>@NA(inst.CurrentStatus)</div></div>
 
-                    <div class="col-md-3"><strong>Hazardous Area</strong><div>@NA(inst.HazardousArea)</div></div>
-                    <div class="col-md-3"><strong>Ex Protection</strong><div>@NA(inst.ExProtection)</div></div>
-                    <div class="col-md-3"><strong>SIL</strong><div>@NA(inst.SIL)</div></div>
-                    <div class="col-md-3"><strong>Calibration Interval</strong><div>@(inst.CalibrationInterval.HasValue ? inst.CalibrationInterval + " days" : "N/A")</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Hazardous Area"]</strong><div>@NA(inst.HazardousArea)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Ex Protection"]</strong><div>@NA(inst.ExProtection)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["SIL"]</strong><div>@NA(inst.SIL)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Calibration Interval"]</strong><div>@(inst.CalibrationInterval.HasValue ? inst.CalibrationInterval + " days" : "N/A")</div></div>
 
-                    <div class="col-md-3"><strong>Junction Box</strong><div>@NA(inst.JunctionBox)</div></div>
-                    <div class="col-md-3"><strong>Marshalling Cabinet</strong><div>@NA(inst.MarshallingCabinet)</div></div>
-                    <div class="col-md-3"><strong>Cable No.</strong><div>@NA(inst.CableNumber)</div></div>
-                    <div class="col-md-3"><strong>I/O Card / Channel</strong><div>@NA(inst.IOCardChannel)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Junction Box"]</strong><div>@NA(inst.JunctionBox)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Marshalling Cabinet"]</strong><div>@NA(inst.MarshallingCabinet)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Cable No."]</strong><div>@NA(inst.CableNumber)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["I/O Card / Channel"]</strong><div>@NA(inst.IOCardChannel)</div></div>
 
-                    <div class="col-md-3"><strong>System Cabinet</strong><div>@NA(inst.SystemCabinet)</div></div>
-                    <div class="col-md-3"><strong>Last Calibration</strong><div>@(inst.LastCalibrationDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
+                    <div class="col-md-3"><strong>@Localizer["System Cabinet"]</strong><div>@NA(inst.SystemCabinet)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Last Calibration"]</strong><div>@(inst.LastCalibrationDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
                     <div class="col-md-3"><strong>Next Calibration Due</strong><div>@(inst.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "N/A") <span class="badge @calBadgeClass">@inst.CalibrationStatus</span></div></div>
                     <div class="col-md-3"><strong>Next Maintenance Due</strong><div>@(inst.NextMaintenanceDue?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
                 </div>
+            </div>
+        </div>
+    }
+
+    @* ===================== Mechanical Equipment Passport ===================== *@
+    @if (mech != null)
+    {
+        <div class="tab-pane fade" id="tab-mechanical" role="tabpanel">
+            <div class="content-card mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="mb-0">@Localizer["Mechanical Passport"]</h6>
+                    <a asp-controller="MechanicalEquipment" asp-action="Passport" asp-route-id="@mech.MechanicalEquipmentId" class="btn btn-sm btn-pems-solid">
+                        <i class="bi bi-gear-wide-connected"></i> @Localizer["Full Mechanical Passport"]
+                    </a>
+                </div>
+                <div class="row g-2 small">
+                    <div class="col-md-3"><strong>@Localizer["Equipment Type"]</strong><div>@NA(mech.EquipmentType)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Sub-Type"]</strong><div><span class="badge bg-secondary">@mech.SubType</span></div></div>
+                    <div class="col-md-3"><strong>@Localizer["Manufacturer"]</strong><div>@NA(mech.Manufacturer)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Model"]</strong><div>@NA(mech.Model)</div></div>
+
+                    <div class="col-md-3"><strong>@Localizer["Design Pressure"]</strong><div>@(mech.DesignPressure?.ToString() ?? "N/A")</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Design Temperature"]</strong><div>@(mech.DesignTemperature?.ToString() ?? "N/A")</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Operating Pressure"]</strong><div>@(mech.OperatingPressure?.ToString() ?? "N/A")</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Operating Temperature"]</strong><div>@(mech.OperatingTemperature?.ToString() ?? "N/A")</div></div>
+
+                    @if (mech.SubType == "Rotating")
+                    {
+                        <div class="col-md-3"><strong>@Localizer["Flow Rate"]</strong><div>@(mech.FlowRate?.ToString() ?? "N/A")</div></div>
+                        <div class="col-md-3"><strong>@Localizer["Speed (RPM)"]</strong><div>@(mech.SpeedRPM?.ToString() ?? "N/A")</div></div>
+                        <div class="col-md-3"><strong>@Localizer["Power (kW)"]</strong><div>@(mech.RotatingPowerKW?.ToString() ?? "N/A")</div></div>
+                        <div class="col-md-3"><strong>@Localizer["Driver Type"]</strong><div>@NA(mech.DriverType)</div></div>
+                    }
+                    else if (mech.SubType == "Static")
+                    {
+                        <div class="col-md-3"><strong>@Localizer["Volume"]</strong><div>@(mech.Volume?.ToString() ?? "N/A")</div></div>
+                        <div class="col-md-3"><strong>@Localizer["Orientation"]</strong><div>@NA(mech.Orientation)</div></div>
+                        <div class="col-md-3"><strong>@Localizer["Code Standard"]</strong><div>@NA(mech.CodeStandard)</div></div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    @* ===================== Condition Monitoring ===================== *@
+    @if (cm != null)
+    {
+        <div class="tab-pane fade" id="tab-cm" role="tabpanel">
+            <div class="content-card mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="mb-0">@Localizer["Condition Monitoring"]</h6>
+                    <div class="d-flex gap-2">
+                        <a asp-controller="Finding" asp-action="Index" asp-route-equipmentId="@eq.EquipmentId" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-flag"></i> @Localizer["Findings"] @(cm.OpenFindingCount > 0 ? $"({cm.OpenFindingCount})" : "")
+                        </a>
+                        <a asp-controller="Reliability" asp-action="ConditionMonitoring" asp-route-equipmentId="@eq.EquipmentId" class="btn btn-sm btn-pems-solid">
+                            <i class="bi bi-activity"></i> @Localizer["Full Condition Monitoring"]
+                        </a>
+                    </div>
+                </div>
+                <div class="row g-2 small mb-3">
+                    <div class="col-md-3"><strong>@Localizer["Monitoring Points"]:</strong> @cm.PointCount</div>
+                    <div class="col-md-3"><strong>@Localizer["CBM Strategy"]:</strong> @(cm.HasCbmStrategy ? Localizer["Linked"] : Localizer["No"])</div>
+                    <div class="col-md-3"><strong>@Localizer["Next Due"]:</strong> @(cm.NextDueDate?.ToString("yyyy-MM-dd") ?? "N/A")</div>
+                    <div class="col-md-3"><strong>@Localizer["Findings"]:</strong> @cm.OpenFindingCount</div>
+                </div>
+                <table class="table table-enterprise table-sm mb-0">
+                    <thead><tr><th>@Localizer["Variable"]</th><th>@Localizer["Tag"]</th><th>@Localizer["Last Reading"]</th><th>@Localizer["Evaluation"]</th></tr></thead>
+                    <tbody>
+                        @foreach (var p in cm.Points)
+                        {
+                            <tr class="@(p.LastReadingIsAlarm ? "table-danger" : "")">
+                                <td>@p.VariableType</td>
+                                <td dir="ltr">@p.Tag</td>
+                                <td class="small">@(p.LastReadingDate.HasValue ? $"{p.LastValue} {p.Unit} @ {p.LastReadingDate.Value:yyyy-MM-dd}" : Localizer["No readings yet"])</td>
+                                <td>
+                                    @if (p.EvaluationProfileId.HasValue)
+                                    {
+                                        <span class="badge @CmEvalBadge(p.LastReadingEvaluationStatus)">@p.LastReadingEvaluationStatus</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">@Localizer["NotEvaluated"]</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     }
@@ -332,33 +421,33 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h6 class="mb-0">Asset - @asset.AssetNumber</h6>
                     <a asp-controller="Asset" asp-action="Details" asp-route-id="@asset.AssetId" class="btn btn-sm btn-pems-solid">
-                        <i class="bi bi-diagram-2"></i> Full Asset - Maintenance / Inspection / Failure / Cost
+                        <i class="bi bi-diagram-2"></i> @Localizer["Cm_FullAsset"]
                     </a>
                 </div>
                 <div class="row g-2 small">
-                    <div class="col-md-3"><strong>Status</strong><div>@NA(asset.Status)</div></div>
-                    <div class="col-md-3"><strong>Criticality</strong><div>@NA(asset.CriticalityClass)</div></div>
-                    <div class="col-md-3"><strong>Maintenance Class</strong><div>@NA(asset.MaintenanceClass)</div></div>
-                    <div class="col-md-3"><strong>Functional Location</strong><div>@NA(asset.FunctionalLocation)</div></div>
-                    <div class="col-md-3"><strong>Commissioning Date</strong><div>@(asset.CommissioningDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Status"]</strong><div>@NA(asset.Status)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Criticality"]</strong><div>@NA(asset.CriticalityClass)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Maintenance Class"]</strong><div>@NA(asset.MaintenanceClass)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Functional Location"]</strong><div>@NA(asset.FunctionalLocation)</div></div>
+                    <div class="col-md-3"><strong>@Localizer["Commissioning Date"]</strong><div>@(asset.CommissioningDate?.ToString("yyyy-MM-dd") ?? "N/A")</div></div>
                 </div>
             }
             else
             {
-                <p class="text-muted small">این تجهیز هنوز پروفایل Asset (چرخه‌عمر CMMS) ندارد.</p>
+                <p class="text-muted small">@Localizer["Cm_NoAsset"]</p>
                 <form asp-controller="Asset" asp-action="Create" method="post" class="row g-2 align-items-end">
                     <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
                     <div class="col-md-4">
-                        <label class="form-label small">Asset Number</label>
+                        <label class="form-label small">@Localizer["Asset Number"]</label>
                         <input name="assetNumber" class="form-control form-control-sm" placeholder="AST-@eq.TagNumber" required />
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label small">Maintenance Class</label>
+                        <label class="form-label small">@Localizer["Maintenance Class"]</label>
                         <input name="maintenanceClass" class="form-control form-control-sm" placeholder="Rotating, Static ..." />
                     </div>
                     <div class="col-md-2">
                         <input type="hidden" name="status" value="Active" />
-                        <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-plus-lg"></i> Create Asset</button>
+                        <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-plus-lg"></i> @Localizer["Cm_CreateAsset"]</button>
                     </div>
                 </form>
             }
@@ -368,10 +457,10 @@
     @* ===================== Documents ===================== *@
     <div class="tab-pane fade" id="tab-documents" role="tabpanel">
         <div class="content-card mb-3">
-            <h6 class="mb-3"><i class="bi bi-file-earmark-text"></i> Engineering Documents</h6>
+            <h6 class="mb-3"><i class="bi bi-file-earmark-text"></i> @Localizer["Cm_SecEngDocs"]</h6>
             <div class="table-responsive table-scroll-area" style="max-height:55vh; overflow-y:auto;">
             <table class="table table-enterprise">
-                <thead><tr><th>Doc No</th><th>Title</th><th>Type</th><th>Discipline</th><th>Rev</th><th>Status</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Cm_DocNo"]</th><th>@Localizer["Cm_Title"]</th><th>@Localizer["Cm_Type"]</th><th>@Localizer["Cm_Discipline"]</th><th>@Localizer["Cm_Rev"]</th><th>@Localizer["Cm_Status"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var d in Model.Documents)
                     {
@@ -384,14 +473,14 @@
                 </tbody>
             </table>
             </div>
-            @if (!Model.Documents.Any()) { <p class="text-muted mb-0">No engineering documents linked to this equipment yet.</p> }
+            @if (!Model.Documents.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoDocs"]</p> }
         </div>
 
         <div class="content-card">
-            <h6 class="mb-3"><i class="bi bi-journal-check"></i> Vendor Documents (VDR)</h6>
+            <h6 class="mb-3"><i class="bi bi-journal-check"></i> @Localizer["Cm_SecVdr"]</h6>
             <div class="table-responsive table-scroll-area" style="max-height:55vh; overflow-y:auto;">
             <table class="table table-enterprise">
-                <thead><tr><th>Doc No</th><th>Description</th><th>Vendor</th><th>Rev</th><th>Category</th><th>Status</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Cm_DocNo"]</th><th>@Localizer["Cm_Description"]</th><th>@Localizer["Cm_Vendor"]</th><th>@Localizer["Cm_Rev"]</th><th>@Localizer["Cm_Category"]</th><th>@Localizer["Cm_Status"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var v in Model.VDRItems)
                     {
@@ -405,17 +494,17 @@
                 </tbody>
             </table>
             </div>
-            @if (!Model.VDRItems.Any()) { <p class="text-muted mb-0">No vendor documents linked yet. Link the equipment when importing or creating VDR items.</p> }
+            @if (!Model.VDRItems.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoVdr"]</p> }
         </div>
     </div>
 
     @* ===================== Procurement ===================== *@
     <div class="tab-pane fade" id="tab-procurement" role="tabpanel">
         <div class="content-card">
-            <h6 class="mb-3"><i class="bi bi-cart-check"></i> Material Requisitions (MR/MRQ)</h6>
+            <h6 class="mb-3"><i class="bi bi-cart-check"></i> @Localizer["Cm_SecMr"]</h6>
             <div class="table-responsive table-scroll-area" style="max-height:60vh; overflow-y:auto;">
             <table class="table table-enterprise">
-                <thead><tr><th>MR Number</th><th>Project</th><th>Discipline</th><th>Description</th><th>Status</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Cm_MrNumber"]</th><th>@Localizer["Cm_Project"]</th><th>@Localizer["Cm_Discipline"]</th><th>@Localizer["Cm_Description"]</th><th>@Localizer["Cm_Status"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var m in Model.RelatedMRs)
                     {
@@ -428,7 +517,7 @@
                 </tbody>
             </table>
             </div>
-            @if (!Model.RelatedMRs.Any()) { <p class="text-muted mb-0">No MR/MRQ found for this equipment tag.</p> }
+            @if (!Model.RelatedMRs.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoMr"]</p> }
         </div>
     </div>
 
@@ -439,42 +528,123 @@
         {
             <div class="content-card mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="mb-0"><i class="bi bi-graph-up-arrow"></i> Reliability</h6>
+                    <h6 class="mb-0"><i class="bi bi-graph-up-arrow"></i> @Localizer["Cm_Reliability"]</h6>
                     <a asp-controller="Reliability" asp-action="Details" asp-route-id="@eq.EquipmentId" class="btn btn-sm btn-outline-secondary">
-                        <i class="bi bi-clock-history"></i> Failure History
+                        <i class="bi bi-clock-history"></i> @Localizer["Cm_FailureHistory"]
                     </a>
                 </div>
                 <div class="row g-2 text-center">
-                    <div class="col-md-3"><div class="small text-muted">MTBF</div><div class="fw-bold">@(reliability.MTBFHours.HasValue ? $"{reliability.MTBFHours.Value:N1} h" : "N/A")</div></div>
-                    <div class="col-md-3"><div class="small text-muted">MTTR</div><div class="fw-bold">@(reliability.MTTRHours.HasValue ? $"{reliability.MTTRHours.Value:N1} h" : "N/A")</div></div>
-                    <div class="col-md-3"><div class="small text-muted">Availability</div><div class="fw-bold">@(reliability.AvailabilityPercent.HasValue ? $"{reliability.AvailabilityPercent.Value:N1}%" : "N/A")</div></div>
-                    <div class="col-md-3"><div class="small text-muted">Failure Count</div><div class="fw-bold">@reliability.FailureCount</div></div>
+                    <div class="col-md-3"><div class="small text-muted">@Localizer["MTBF"]</div><div class="fw-bold">@(reliability.MTBFHours.HasValue ? $"{reliability.MTBFHours.Value:N1} h" : "N/A")</div></div>
+                    <div class="col-md-3"><div class="small text-muted">@Localizer["MTTR"]</div><div class="fw-bold">@(reliability.MTTRHours.HasValue ? $"{reliability.MTTRHours.Value:N1} h" : "N/A")</div></div>
+                    <div class="col-md-3"><div class="small text-muted">@Localizer["Availability"]</div><div class="fw-bold">@(reliability.AvailabilityPercent.HasValue ? $"{reliability.AvailabilityPercent.Value:N1}%" : "N/A")</div></div>
+                    <div class="col-md-3"><div class="small text-muted">@Localizer["Failure Count"]</div><div class="fw-bold">@reliability.FailureCount</div></div>
                 </div>
             </div>
         }
-        <div class="content-card">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="mb-0"><i class="bi bi-tools"></i> Maintenance History (Work Orders)</h6>
-                <a asp-controller="WorkOrder" asp-action="Create" asp-route-equipmentId="@eq.EquipmentId" class="btn btn-sm btn-outline-primary">
-                    <i class="bi bi-plus-lg"></i> New Work Order
-                </a>
+        @* استراتژی و PM (فقط خواندنی) - از روابط موجود MaintenanceStrategy/MaintenancePlan.EquipmentId *@
+        <div class="content-card mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="mb-0"><i class="bi bi-diagram-2"></i> @Localizer["Cm_StrategyPm"]</h6>
+                <span class="d-flex gap-2">
+                    @if (ViewBag.CanViewStrategy == true) { <a asp-controller="MaintenanceStrategy" asp-action="Index" asp-route-equipmentId="@eq.EquipmentId" class="vs-btn vs-btn--sm">@Localizer["Cm_Strategies"]</a> }
+                    @if (ViewBag.CanViewPlan == true) { <a asp-controller="MaintenancePlan" asp-action="Index" class="vs-btn vs-btn--sm">@Localizer["Cm_PmPlans"]</a> }
+                </span>
             </div>
-            <div class="table-responsive table-scroll-area" style="max-height:60vh; overflow-y:auto;">
+            @if (!Model.Strategies.Any() && !Model.Plans.Any())
+            {
+                <p class="text-muted mb-0 small">@Localizer["Cm_NoStrategy"]</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                <table class="table table-enterprise mb-0">
+                    <thead><tr><th>@Localizer["Cm_Kind"]</th><th>@Localizer["Cm_Reference"]</th><th>@Localizer["Cm_Trigger"]</th><th>@Localizer["Cm_Interval"]</th><th>@Localizer["Cm_LastDone"]</th><th>@Localizer["Cm_NextDue"]</th></tr></thead>
+                    <tbody>
+                        @foreach (var s in Model.Strategies)
+                        {
+                            <tr>
+                                <td>@Localizer["Cm_Strategy"]</td>
+                                <td>@s.StrategyType <span class="vs-sub">@s.ConsequenceCategory</span></td>
+                                <td>@s.RecommendedTriggerType</td>
+                                <td class="vs-num">@(string.IsNullOrWhiteSpace(s.Frequency) ? "—" : s.Frequency)</td>
+                                <td>—</td><td>—</td>
+                            </tr>
+                        }
+                        @foreach (var p in Model.Plans)
+                        {
+                            <tr>
+                                <td>@Localizer["Cm_PmPlan"]</td>
+                                <td><span class="vs-num">@p.PlanNumber</span> <span class="vs-sub">@p.Title</span></td>
+                                <td>@p.TriggerType</td>
+                                <td class="vs-num">@(p.IntervalDays.HasValue ? p.IntervalDays + " d" : "—")</td>
+                                <td class="vs-num">@(p.LastExecutionDate?.ToString("yyyy-MM-dd") ?? "—")</td>
+                                <td class="vs-num">
+                                    @if (p.NextDueDate.HasValue)
+                                    {
+                                        var overdue = p.NextDueDate.Value.Date < DateTime.Today;
+                                        <span class="vs-pill vs-pill--icon @(overdue ? "vs-pill--danger" : "vs-pill--neutral")"><i class="bi @(overdue ? "bi-exclamation-triangle" : "bi-calendar-event")" aria-hidden="true"></i> @p.NextDueDate.Value.ToString("yyyy-MM-dd")</span>
+                                    }
+                                    else { <span>—</span> }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                </div>
+            }
+        </div>
+
+        <div class="content-card mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="mb-0"><i class="bi bi-clipboard-plus"></i> @Localizer["Cm_MaintHistoryWr"]</h6>
+                @if (canCreateWr)
+                {
+                    <a asp-controller="WorkRequest" asp-action="Create" asp-route-equipmentId="@eq.EquipmentId" class="vs-btn vs-btn--primary vs-btn--sm">
+                        <i class="bi bi-plus-lg"></i> @Localizer["Cm_NewWorkRequest"]
+                    </a>
+                }
+            </div>
+            <div class="table-responsive table-scroll-area" style="max-height:50vh; overflow-y:auto;">
             <table class="table table-enterprise">
-                <thead><tr><th>WO Number</th><th>Description</th><th>Status</th><th>Date</th></tr></thead>
+                <thead><tr><th>@Localizer["Cm_WrNumber"]</th><th>@Localizer["Cm_Title"]</th><th>@Localizer["Cm_Priority"]</th><th>@Localizer["Cm_Status"]</th><th>@Localizer["Cm_Requested"]</th><th>@Localizer["Cm_LinkedWo"]</th></tr></thead>
                 <tbody>
-                    @foreach (var w in Model.WorkOrders)
+                    @foreach (var r in Model.WorkRequests)
                     {
                         <tr>
-                            <td><a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@w.WorkOrderId">@w.WorkOrderNo</a></td><td>@w.Description</td>
-                            <td><span class="badge bg-secondary">@w.Status</span></td>
-                            <td>@(w.CreatedDate?.ToString("yyyy-MM-dd"))</td>
+                            <td class="vs-num">@if (canViewWr) { <a asp-controller="WorkRequest" asp-action="Details" asp-route-id="@r.WorkRequestId">@r.RequestNumber</a> } else { @r.RequestNumber }</td>
+                            <td>@r.Title</td>
+                            <td><span class="vs-pill @PrioTone(r.Priority)">@r.Priority</span></td>
+                            <td><span class="vs-pill vs-pill--icon @WrTone(r.Status)"><i class="bi @WrIcon(r.Status)" aria-hidden="true"></i> @r.Status</span></td>
+                            <td class="vs-num">@r.RequestedDate.ToString("yyyy-MM-dd")</td>
+                            <td class="vs-num">@if (r.LinkedWorkOrderId.HasValue) { if (canViewWo) { <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@r.LinkedWorkOrderId">@r.LinkedWorkOrderNo</a> } else { @r.LinkedWorkOrderNo } } else { <span class="text-muted">—</span> }</td>
                         </tr>
                     }
                 </tbody>
             </table>
             </div>
-            @if (!Model.WorkOrders.Any()) { <p class="text-muted mb-0">No maintenance history recorded yet.</p> }
+            @if (!Model.WorkRequests.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoWorkRequests"]</p> }
+        </div>
+
+        @* Work Orderهای اجراشده: فقط خواندنی - ساخت Work Order از این بخش مجاز نیست؛ فقط از Work Request تاییدشده *@
+        <div class="content-card">
+            <h6 class="mb-2"><i class="bi bi-tools"></i> @Localizer["Cm_ExecutedWo"]</h6>
+            <div class="table-responsive table-scroll-area" style="max-height:40vh; overflow-y:auto;">
+            <table class="table table-enterprise">
+                <thead><tr><th>@Localizer["Cm_WoNumber"]</th><th>@Localizer["Cm_Description"]</th><th>@Localizer["Cm_Status"]</th><th>@Localizer["Cm_Date"]</th></tr></thead>
+                <tbody>
+                    @foreach (var w in Model.WorkOrders)
+                    {
+                        <tr>
+                            <td class="vs-num">@if (canViewWo) { <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@w.WorkOrderId">@w.WorkOrderNo</a> } else { @w.WorkOrderNo }</td>
+                            <td>@w.Description</td>
+                            <td><span class="vs-pill">@w.Status</span></td>
+                            <td class="vs-num">@(w.CreatedDate?.ToString("yyyy-MM-dd"))</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            </div>
+            @if (!Model.WorkOrders.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoWorkOrders"]</p> }
         </div>
     </div>
 
@@ -482,14 +652,14 @@
     <div class="tab-pane fade" id="tab-inspection" role="tabpanel">
         <div class="content-card">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="mb-0"><i class="bi bi-clipboard-pulse"></i> Condition Monitoring Inspections</h6>
+                <h6 class="mb-0"><i class="bi bi-clipboard-pulse"></i> @Localizer["Cm_SecInspections"]</h6>
                 <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newInspectionModal">
-                    <i class="bi bi-plus-lg"></i> New Inspection
+                    <i class="bi bi-plus-lg"></i> @Localizer["Cm_NewInspection"]
                 </button>
             </div>
             <table class="table table-enterprise mb-0">
                 <thead>
-                    <tr><th>Type</th><th>Date</th><th>Measurement</th><th>Condition</th><th>Next Due</th><th>Due Status</th><th></th></tr>
+                    <tr><th>@Localizer["Cm_Type"]</th><th>@Localizer["Cm_Date"]</th><th>@Localizer["Cm_Measurement"]</th><th>@Localizer["Cm_Condition"]</th><th>@Localizer["Cm_NextDue"]</th><th>@Localizer["Cm_DueStatus"]</th><th></th></tr>
                 </thead>
                 <tbody>
                     @foreach (var i in inspections)
@@ -501,8 +671,8 @@
                             <td class="small">
                                 @switch (i.ConditionStatus)
                                 {
-                                    case "Alert": <span class="badge bg-danger">Alert</span> break;
-                                    case "Normal": <span class="badge bg-success">Normal</span> break;
+                                    case "Alert": <span class="badge bg-danger">@Localizer["Alert"]</span> break;
+                                    case "Normal": <span class="badge bg-success">@Localizer["Normal"]</span> break;
                                     default: <span class="text-muted">N/A</span> break;
                                 }
                             </td>
@@ -510,8 +680,8 @@
                             <td class="small">
                                 @switch (i.DueStatus)
                                 {
-                                    case "Overdue": <span class="badge bg-danger">Overdue</span> break;
-                                    case "DueSoon": <span class="badge bg-warning text-dark">Due Soon</span> break;
+                                    case "Overdue": <span class="badge bg-danger">@Localizer["Overdue"]</span> break;
+                                    case "DueSoon": <span class="badge bg-warning text-dark">@Localizer["Due Soon"]</span> break;
                                     case "OK": <span class="badge bg-success">OK</span> break;
                                     default: <span class="text-muted">N/A</span> break;
                                 }
@@ -521,7 +691,7 @@
                                 {
                                     <form asp-controller="Inspection" asp-action="RaiseWorkRequest" method="post" class="d-inline">
                                         <input type="hidden" name="inspectionRecordId" value="@i.InspectionRecordId" />
-                                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-exclamation-triangle"></i> Raise Work Request</button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Cm_RaiseWr"]</button>
                                     </form>
                                 }
                             </td>
@@ -529,7 +699,7 @@
                     }
                 </tbody>
             </table>
-            @if (!inspections.Any()) { <p class="text-muted mb-0">هنوز هیچ بازرسی‌ای برای این تجهیز ثبت نشده.</p> }
+            @if (!inspections.Any()) { <p class="text-muted mb-0 small">@Localizer["Cm_NoInspections"]</p> }
         </div>
 
         <div class="modal fade" id="newInspectionModal" tabindex="-1">
@@ -542,12 +712,12 @@
                             <input name="inspectionType" class="form-control form-control-sm" placeholder="Vibration, Thickness, Visual..." required /></div>
                         <div class="mb-2"><label class="form-label small">Inspection Date</label>
                             <input name="inspectionDate" type="date" class="form-control form-control-sm" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
-                        <div class="mb-2"><label class="form-label small">Inspector</label>
+                        <div class="mb-2"><label class="form-label small">@Localizer["Inspector"]</label>
                             <input name="inspector" class="form-control form-control-sm" /></div>
                         <div class="row g-2 mb-2">
                             <div class="col-6"><label class="form-label small">Measurement Value</label>
                                 <input name="measurementValue" type="number" step="0.01" class="form-control form-control-sm" /></div>
-                            <div class="col-6"><label class="form-label small">Unit</label>
+                            <div class="col-6"><label class="form-label small">@Localizer["Unit"]</label>
                                 <input name="measurementUnit" class="form-control form-control-sm" placeholder="mm/s, mm, °C..." /></div>
                         </div>
                         <div class="row g-2 mb-2">
@@ -560,12 +730,12 @@
                             <input name="nextInspectionDate" type="date" class="form-control form-control-sm" /></div>
                         <div class="mb-2"><label class="form-label small">Recommendation</label>
                             <textarea name="recommendation" class="form-control form-control-sm" rows="2"></textarea></div>
-                        <div class="mb-2"><label class="form-label small">Description</label>
+                        <div class="mb-2"><label class="form-label small">@Localizer["Description"]</label>
                             <textarea name="description" class="form-control form-control-sm" rows="2"></textarea></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-pems-solid btn-sm">Save</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                        <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Save"]</button>
                     </div>
                 </form>
             </div></div>
@@ -587,7 +757,7 @@
                             </li>
                         }
                     </ul>
-                    @if (!Model.NonConformanceReports.Any()) { <p class="text-muted small mb-0">موردی ثبت نشده.</p> }
+                    @if (!Model.NonConformanceReports.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneRecorded"]</p> }
                 </div>
             </div>
             <div class="col-md-4">
@@ -602,7 +772,7 @@
                             </li>
                         }
                     </ul>
-                    @if (!Model.MOCs.Any()) { <p class="text-muted small mb-0">موردی ثبت نشده.</p> }
+                    @if (!Model.MOCs.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneRecorded"]</p> }
                 </div>
             </div>
             <div class="col-md-4">
@@ -617,7 +787,7 @@
                             </li>
                         }
                     </ul>
-                    @if (!Model.TechnicalQueries.Any()) { <p class="text-muted small mb-0">موردی ثبت نشده.</p> }
+                    @if (!Model.TechnicalQueries.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneRecorded"]</p> }
                 </div>
             </div>
         </div>
@@ -630,19 +800,19 @@
             var explanation = ViewBag.ClassificationExplanation as PEMS.Application.DTOs.ClassificationExplanationDto;
         }
         <div class="content-card mb-3">
-            <h6 class="mb-3"><i class="bi bi-diagram-3-fill"></i> Equipment Classification</h6>
+            <h6 class="mb-3"><i class="bi bi-diagram-3-fill"></i> @Localizer["Cm_SecClassification"]</h6>
             @if (intel?.EquipmentClassId != null)
             {
                 <div class="row g-2 small">
-                    <div class="col-md-3"><strong>Equipment Class</strong><div>@intel.EquipmentClassName <code>@intel.EquipmentClassCode</code></div></div>
+                    <div class="col-md-3"><strong>@Localizer["Equipment Class"]</strong><div>@intel.EquipmentClassName <code>@intel.EquipmentClassCode</code></div></div>
                     <div class="col-md-3"><strong>Class Hierarchy</strong><div>@string.Join(" ← ", intel.ResolvedClassHierarchy)</div></div>
-                    <div class="col-md-3"><strong>Confidence</strong><div><span class="badge text-bg-info">@intel.ClassificationConfidence</span></div></div>
-                    <div class="col-md-3"><strong>Source</strong><div><span class="badge text-bg-secondary">@intel.ClassificationSource</span></div></div>
+                    <div class="col-md-3"><strong>@Localizer["Confidence"]</strong><div><span class="badge text-bg-info">@intel.ClassificationConfidence</span></div></div>
+                    <div class="col-md-3"><strong>@Localizer["Source"]</strong><div><span class="badge text-bg-secondary">@intel.ClassificationSource</span></div></div>
                 </div>
                 @if (explanation?.MatchedRuleTier != null)
                 {
                     <div class="alert alert-light border small mt-3 mb-0">
-                        <strong>چرا این طبقه‌بندی؟</strong>
+                        <strong>@Localizer["چرا این طبقه‌بندی؟"]</strong>
                         Rule tier: <span class="badge text-bg-light border">@explanation.MatchedRuleTier</span> &middot;
                         Matched on: <code>@explanation.MatchedInput</code> &middot;
                         @explanation.Reason
@@ -669,7 +839,7 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <div class="content-card h-100">
-                        <h6 class="mb-3">Applicable Maintenance Activities <span class="badge bg-secondary">@intel.ApplicableActivities.Count</span></h6>
+                        <h6 class="mb-3">@Localizer["Cm_ApplicableActivities"] <span class="badge bg-secondary">@intel.ApplicableActivities.Count</span></h6>
                         <ul class="list-unstyled mb-0 small">
                             @foreach (var a in intel.ApplicableActivities)
                             {
@@ -679,12 +849,12 @@
                                 </li>
                             }
                         </ul>
-                        @if (!intel.ApplicableActivities.Any()) { <p class="text-muted small mb-0">موردی تعریف نشده.</p> }
+                        @if (!intel.ApplicableActivities.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</p> }
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="content-card h-100">
-                        <h6 class="mb-3">Candidate PM Templates <span class="badge bg-secondary">@intel.CandidatePMTemplates.Count</span></h6>
+                        <h6 class="mb-3">@Localizer["Cm_PmTemplates"] <span class="badge bg-secondary">@intel.CandidatePMTemplates.Count</span></h6>
                         <ul class="list-unstyled mb-0 small">
                             @foreach (var t in intel.CandidatePMTemplates)
                             {
@@ -694,12 +864,12 @@
                                 </li>
                             }
                         </ul>
-                        @if (!intel.CandidatePMTemplates.Any()) { <p class="text-muted small mb-0">موردی تعریف نشده.</p> }
+                        @if (!intel.CandidatePMTemplates.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</p> }
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="content-card h-100">
-                        <h6 class="mb-3">Applicable Failure Modes <span class="badge bg-secondary">@intel.ApplicableFailureModes.Count</span></h6>
+                        <h6 class="mb-3">@Localizer["Cm_FailureModes"] <span class="badge bg-secondary">@intel.ApplicableFailureModes.Count</span></h6>
                         <ul class="list-unstyled mb-0 small">
                             @foreach (var fm in intel.ApplicableFailureModes)
                             {
@@ -709,12 +879,12 @@
                                 </li>
                             }
                         </ul>
-                        @if (!intel.ApplicableFailureModes.Any()) { <p class="text-muted small mb-0">موردی تعریف نشده.</p> }
+                        @if (!intel.ApplicableFailureModes.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</p> }
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="content-card h-100">
-                        <h6 class="mb-3">Standard References <span class="badge bg-secondary">@intel.ApplicableStandardReferences.Count</span></h6>
+                        <h6 class="mb-3">@Localizer["Cm_StdRefs"] <span class="badge bg-secondary">@intel.ApplicableStandardReferences.Count</span></h6>
                         <ul class="list-unstyled mb-0 small">
                             @foreach (var s in intel.ApplicableStandardReferences)
                             {
@@ -724,7 +894,7 @@
                                 </li>
                             }
                         </ul>
-                        @if (!intel.ApplicableStandardReferences.Any()) { <p class="text-muted small mb-0">موردی تعریف نشده.</p> }
+                        @if (!intel.ApplicableStandardReferences.Any()) { <p class="text-muted small mb-0">@Localizer["Cm_NoneDefined"]</p> }
                     </div>
                 </div>
             </div>
@@ -737,3 +907,17 @@
     </div>
 
 </div>
+
+</div> @* end .vs-page *@
+
+@section Scripts {
+    <script>
+        // Summary chips jump to the matching tab (Bootstrap tabs only activate from inside a .nav/tablist, so drive the real tab button)
+        document.querySelectorAll('[data-goto-tab]').forEach(function (chip) {
+            chip.addEventListener('click', function () {
+                var btn = document.querySelector('#equipmentTabs [data-bs-target="' + chip.getAttribute('data-goto-tab') + '"]');
+                if (btn) bootstrap.Tab.getOrCreateInstance(btn).show();
+            });
+        });
+    </script>
+}

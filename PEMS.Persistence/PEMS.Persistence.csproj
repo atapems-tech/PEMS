@@ -38,4 +38,9 @@
     <ProjectReference Include="..\PEMS.Infrastructure\PEMS.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- مرجع‌های IFS ماژول Part Catalogue (Seed ایدمپوتنت): داخل Assembly تا مسیر فایل/Deploy مسئله نشود -->
+    <EmbeddedResource Include="Seed\Data\PartCatalogue\*.xlsx" LogicalName="PEMS.Seed.PartCatalogue.%(Filename)%(Extension)" />
+  </ItemGroup>
+
 </Project>

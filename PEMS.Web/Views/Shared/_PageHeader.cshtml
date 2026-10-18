@@ -1,0 +1,22 @@
+@* Global PEMS page header (single source): one compact row = page title + optional muted module label.
+   Rules (docs/design/WORKSPACE_DESIGN_SYSTEM.md): no raw URL / controller-action route / "Dashboard / Section / Title"
+   breadcrumb chain, no duplicated title. The sidebar is the module navigation. Pages that need a parent link
+   provide a local action link in their own header. Pages with their own header set ViewData["HidePageTitle"]=true. *@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    // Page titles / module labels are set as English literals by controllers. Localize them at this single shared point:
+    // the English text is the resource key; when no translation exists the original text is shown unchanged.
+    string Loc(string? s) { if (string.IsNullOrWhiteSpace(s)) return s ?? ""; var l = Localizer[s]; return l.ResourceNotFound ? s : l.Value; }
+    var title = Loc(ViewData["Title"]?.ToString());
+    var moduleLabel = Loc(ViewData["Section"] as string);
+    var showSection = !string.IsNullOrWhiteSpace(moduleLabel) && !string.Equals(moduleLabel, title, StringComparison.OrdinalIgnoreCase);
+}
+@if (!string.IsNullOrWhiteSpace(title) && ViewData["HidePageTitle"] is not true)
+{
+    <div class="pems-page-head">
+        <h1 class="pems-page-title">@title</h1>
+        @if (showSection) { <span class="pems-page-section">@moduleLabel</span> }
+    </div>
+}

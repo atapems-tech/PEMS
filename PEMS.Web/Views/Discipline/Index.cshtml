@@ -1,6 +1,13 @@
 ﻿@model List<PEMS.Application.DTOs.DisciplineSummaryDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card">
+    @if (ViewBag.CanManageMaster == true)
+    {
+        <div class="mb-3"><a asp-action="Manage" class="btn btn-sm btn-outline-secondary"><i class="bi bi-sliders"></i> @Localizer["Manage disciplines"]</a></div>
+    }
     <p class="text-muted">
         هر دیسیپلین یک Workspace اختصاصی دارد (Equipment, Documents, VDR, MR/MRQ, Tasks, KPI) —
         دیتابیس مشترک است، فقط نما فیلترشده است.
@@ -8,7 +15,7 @@
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
         <table class="table table-enterprise">
             <thead>
-                <tr><th>Code</th><th>Discipline</th><th>Documents</th><th>Pending</th><th>Equipment</th><th>VDR</th><th>Open Tasks</th><th>Overdue</th><th></th></tr>
+                <tr><th>@Localizer["Code"]</th><th>@Localizer["Discipline"]</th><th>@Localizer["Documents"]</th><th>@Localizer["Pending"]</th><th>@Localizer["Equipment"]</th><th>@Localizer["VDR"]</th><th>@Localizer["Open Tasks"]</th><th>@Localizer["Overdue"]</th><th></th></tr>
             </thead>
             <tbody>
                 @foreach (var d in Model)

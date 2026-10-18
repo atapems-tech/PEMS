@@ -29,6 +29,18 @@ public class WorkflowInstanceStage
     public DateTime AssignedDate { get; set; } = DateTime.Now;
     public DateTime? ActionDate { get; set; }
 
+    // --- Enterprise Actor Resolution Snapshot (additive) ---
+    /// <summary>RESOLVED | MULTIPLE_ELIGIBLE_ACTORS | ... (فقط وقتی مرحله با ResponsibilityKey حل شده).</summary>
+    [MaxLength(50)]
+    public string? ResolutionState { get; set; }
+
+    /// <summary>JSON تشخیصی (کاندیدها، حذف‌شده‌ها و دلیل هرکدام، راهبرد انتخاب) در لحظه‌ی حل؛ پس از ثبت تغییر نمی‌کند.</summary>
+    public string? ResolutionDetails { get; set; }
+
+    public DateTime? ResolvedDate { get; set; }
+
+    public ICollection<WorkflowInstanceStageCandidate> Candidates { get; set; } = new List<WorkflowInstanceStageCandidate>();
+
     [Timestamp]
     public byte[] RowVersion { get; set; } = Array.Empty<byte>();
 }

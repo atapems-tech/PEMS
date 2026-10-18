@@ -1,4 +1,7 @@
 ﻿@model PEMS.Domain.Entities.MOC
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 @{
     var sb = Model.Status switch { "Closed" => "bg-success", "Rejected" => "bg-dark", _ => "bg-info text-dark" };
@@ -23,19 +26,19 @@
 <div class="content-card mb-3">
     <div class="row g-3">
         <div class="col-12"><strong>Title:</strong> @Model.Title</div>
-        <div class="col-12"><strong>Description:</strong> @Model.Description</div>
+        <div class="col-12"><strong>@Localizer["Description:"]</strong> @Model.Description</div>
         <div class="col-12"><strong>Reason:</strong> @Model.Reason</div>
         @if (Model.RelatedDocument != null)
         {
             <div class="col-md-6">
-                <strong>Related Document:</strong>
+                <strong>@Localizer["Related Document:"]</strong>
                 <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.RelatedDocumentId">@Model.RelatedDocument.DocumentNo</a>
             </div>
         }
         @if (Model.RelatedEquipment != null)
         {
             <div class="col-md-6">
-                <strong>Related Equipment:</strong>
+                <strong>@Localizer["Related Equipment:"]</strong>
                 <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.RelatedEquipmentId">@Model.RelatedEquipment.TagNumber</a>
             </div>
         }
@@ -57,7 +60,7 @@
 @if (Model.Status == "Rejected")
 {
     <div class="content-card mb-3 border-danger">
-        <h6 class="mb-2 text-danger"><i class="bi bi-x-circle"></i> Rejected</h6>
+        <h6 class="mb-2 text-danger"><i class="bi bi-x-circle"></i> @Localizer["Rejected"]</h6>
         <p class="mb-0">@Model.RejectionReason</p>
     </div>
 }
@@ -98,7 +101,7 @@
             <form asp-action="AssessRisk" method="post">
                 <input type="hidden" name="mocId" value="@Model.MOCId" />
                 <textarea name="riskAssessmentText" class="form-control mb-2" rows="3" placeholder="متن ارزیابی ریسک..." required></textarea>
-                <button type="submit" class="btn btn-pems-solid btn-sm">ثبت ارزیابی</button>
+                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت ارزیابی"]</button>
             </form>
         }
     }
@@ -110,10 +113,10 @@
         <div class="d-flex gap-2">
             <form asp-action="Approve" method="post">
                 <input type="hidden" name="mocId" value="@Model.MOCId" />
-                <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> Approve</button>
+                <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> @Localizer["Approve"]</button>
             </form>
             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal">
-                <i class="bi bi-x-lg"></i> Reject
+                <i class="bi bi-x-lg"></i> @Localizer["Reject"]
             </button>
         </div>
 
@@ -121,11 +124,11 @@
             <div class="modal-dialog"><div class="modal-content">
                 <form asp-action="Reject" method="post">
                     <input type="hidden" name="mocId" value="@Model.MOCId" />
-                    <div class="modal-header"><h6 class="modal-title">دلیل رد</h6></div>
+                    <div class="modal-header"><h6 class="modal-title">@Localizer["دلیل رد"]</h6></div>
                     <div class="modal-body"><textarea name="reason" class="form-control" rows="3" required></textarea></div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                        <button type="submit" class="btn btn-danger btn-sm">رد کن</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                        <button type="submit" class="btn btn-danger btn-sm">@Localizer["رد کن"]</button>
                     </div>
                 </form>
             </div></div>
@@ -141,7 +144,7 @@
                 <input type="hidden" name="mocId" value="@Model.MOCId" />
                 <label class="form-label small">Implementation Plan / نحوه‌ی اجرا</label>
                 <textarea name="implementationPlan" class="form-control form-control-sm mb-2" rows="2" required></textarea>
-                <button type="submit" class="btn btn-outline-primary btn-sm">ثبت اجرا</button>
+                <button type="submit" class="btn btn-outline-primary btn-sm">@Localizer["ثبت اجرا"]</button>
             </form>
         }
         else
@@ -156,14 +159,14 @@
                         <span class="small"><i class="bi bi-file-earmark-check"></i> به‌روزرسانی مدارک متاثر</span>
                         @if (Model.DocumentsUpdated)
                         {
-                            <span class="badge bg-success">تکمیل‌شده</span>
+                            <span class="badge bg-success">@Localizer["تکمیل‌شده"]</span>
                         }
                         else
                         {
                             <form asp-action="MarkDocumentsUpdated" method="post" class="d-flex gap-1">
                                 <input type="hidden" name="mocId" value="@Model.MOCId" />
-                                <input type="text" name="note" class="form-control form-control-sm" placeholder="یادداشت (اختیاری)" style="max-width:150px;" />
-                                <button type="submit" class="btn btn-outline-success btn-sm">تکمیل شد</button>
+                                <input type="text" name="note" class="form-control form-control-sm" placeholder="@Localizer["یادداشت (اختیاری)"]" style="max-width:150px;" />
+                                <button type="submit" class="btn btn-outline-success btn-sm">@Localizer["تکمیل شد"]</button>
                             </form>
                         }
                     </div>
@@ -181,7 +184,7 @@
                         {
                             <form asp-action="MarkTrainingCompleted" method="post">
                                 <input type="hidden" name="mocId" value="@Model.MOCId" />
-                                <button type="submit" class="btn btn-outline-success btn-sm">تکمیل شد</button>
+                                <button type="submit" class="btn btn-outline-success btn-sm">@Localizer["تکمیل شد"]</button>
                             </form>
                         }
                     </div>

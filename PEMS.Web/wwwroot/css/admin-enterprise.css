@@ -52,3 +52,10 @@
 [dir="rtl"] .admin-area .admin-actions{justify-content:flex-start}
 [dir="rtl"] .admin-area .admin-hero{flex-direction:row-reverse}
 [dir="rtl"] .admin-area .admin-toolbar{direction:rtl}
+.admin-area .pems-page-head .pems-page-title{font-size:20px;line-height:28px;margin:0}
+
+/* Unified header: admin heroes no longer duplicate the page title or add a decorative block (title = layout h1; the hero keeps only its description/actions) */
+.admin-area .admin-hero { flex-direction: row; padding: 0 0 8px; border: 0; border-radius: 0; background: none; box-shadow: none; align-items: center; }
+.admin-area .admin-hero .admin-hero-icon { display: none; }
+.admin-area .admin-hero p { margin: 0; }
+.admin-area .content-card { border-radius: 8px; }

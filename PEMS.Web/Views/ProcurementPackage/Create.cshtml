@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
     var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
 }
@@ -6,26 +9,26 @@
 <div class="content-card" style="max-width:700px;">
     <form asp-action="Create" method="post">
         <div class="row g-3">
-            <div class="col-md-6"><label class="form-label">Package Number</label><input name="packageNumber" class="form-control" placeholder="e.g. PP-2026-001" required /></div>
+            <div class="col-md-6"><label class="form-label">@Localizer["Package Number"]</label><input name="packageNumber" class="form-control" placeholder="e.g. PP-2026-001" required /></div>
             <div class="col-md-6">
-                <label class="form-label">Project</label>
+                <label class="form-label">@Localizer["Project"]</label>
                 <select name="projectId" class="form-select" required>
                     @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                 </select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Discipline</label>
+                <label class="form-label">@Localizer["Discipline"]</label>
                 <select name="disciplineId" class="form-select">
-                    <option value="">-- none --</option>
+                    <option value="">@Localizer["-- none --"]</option>
                     @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                 </select>
             </div>
-            <div class="col-md-6"><label class="form-label">Title</label><input name="title" class="form-control" required /></div>
-            <div class="col-12"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+            <div class="col-md-6"><label class="form-label">@Localizer["Title"]</label><input name="title" class="form-control" required /></div>
+            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">Save</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
         </div>
     </form>
 </div>

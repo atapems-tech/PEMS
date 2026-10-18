@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
@@ -106,8 +106,69 @@ public static class HelpContentSeeder
         // اجرای دوباره هیچ تغییری اضافه نمی‌کند چون متن قدیمی دیگر پیدا نمی‌شود.
         await PatchReliabilityOverviewGapCaveatsAsync(db);
 
+        // طبق ممیزی نهایی Ownership/Traceability (§22): این مقاله پیش از Gap ۱ (تکمیل/فسخ) و پیش
+        // از افزودن بخش «خاستگاه تدارکات» نوشته شده بود - همان الگوی ایدمپوتنت PatchReliability...
+        // را دنبال می‌کند: فقط اگر متن دقیقِ نسخه‌ی قبلی هنوز دست‌نخورده باشد جایگزین می‌شود.
+        await PatchTenderContractFinalizationLifecycleAsync(db);
+
         // پیوندهای «مقاله‌ی مرتبط» - بعد از این‌که همه‌ی مقالات (چه تازه‌ساخته چه قبلاً موجود) شناسه دارند
         await LinkRelatedArticlesAsync(db, articles);
+    }
+
+    private static async Task PatchTenderContractFinalizationLifecycleAsync(PEMSDbContext db)
+    {
+        var article = await db.HelpArticles
+            .Include(x => x.Translations)
+            .FirstOrDefaultAsync(x => x.Code == "tender-and-contract-finalization");
+        if (article == null) return;
+
+        var en = article.Translations.FirstOrDefault(t => t.LanguageCode == "en");
+        if (en != null)
+        {
+            const string oldTailEn = "value\" is updated once a change is approved.</p>";
+            const string newTailEn = "value\" is updated once a change is approved.</p>" +
+                "<p>From Effective, a contract ends one of two ways. <strong>Completed</strong> closes it out normally - if " +
+                "the contract is marked <strong>Requires Inspection</strong>, this is blocked until at least one linked " +
+                "Inspection &amp; Test Plan (ITP) exists and every one of its line items has closed; a contract with no " +
+                "inspection requirement can complete without one. <strong>Terminated</strong> ends it early with a reason, " +
+                "and is only possible while the contract has not already reached Completed or Terminated. The Contract " +
+                "Details page shows its <strong>Procurement Origin</strong> (the Package, Tender and winning Bid it traces " +
+                "back to) and its execution items (NTP, Kick-off, linked ITPs) together, and the Relationship Explorer can " +
+                "be opened directly from either a Procurement Package or a Contract to see the same Package → Tender → " +
+                "Bid → Contract → NTP → Kick-off → ITP chain.</p>";
+
+            if (en.Content.EndsWith(oldTailEn, StringComparison.Ordinal))
+                en.Content = en.Content[..^oldTailEn.Length] + newTailEn;
+
+            const string oldKeywordsEn = "tender,bid,evaluation,negotiation,winner selection,contract,ntp,kick-off,vendor qualification";
+            if (en.SearchKeywords == oldKeywordsEn)
+                en.SearchKeywords = oldKeywordsEn + ",completed,terminated,inspection,itp,procurement origin";
+        }
+
+        var fa = article.Translations.FirstOrDefault(t => t.LanguageCode == "fa");
+        if (fa != null)
+        {
+            const string oldTailFa = "قرارداد حفظ می‌شود و فقط «ارزش جاری» آن پس از تایید یک تغییر به‌روز می‌شود.</p>";
+            const string newTailFa = "قرارداد حفظ می‌شود و فقط «ارزش جاری» آن پس از تایید یک تغییر به‌روز می‌شود.</p>" +
+                "<p>از وضعیت Effective، قرارداد به یکی از دو شکل پایان می‌یابد. <strong>تکمیل‌شده (Completed)</strong> آن را " +
+                "به‌صورت عادی می‌بندد - اگر قرارداد <strong>نیازمند بازرسی</strong> علامت‌گذاری شده باشد، این کار تا زمانی " +
+                "که حداقل یک برنامه‌ی بازرسی و آزمون (ITP) وصل‌شده وجود نداشته باشد و همه‌ی ردیف‌های آن بسته نشده باشند، " +
+                "مسدود می‌ماند؛ قراردادی که نیاز به بازرسی ندارد بدون آن هم می‌تواند تکمیل شود. <strong>فسخ‌شده " +
+                "(Terminated)</strong> آن را زودتر با ذکر دلیل پایان می‌دهد و فقط تا پیش از رسیدن قرارداد به Completed یا " +
+                "Terminated ممکن است. صفحه‌ی جزئیات قرارداد <strong>خاستگاه تدارکات</strong> آن (Package، مناقصه و پیشنهاد " +
+                "برنده‌ای که از آن‌ها ریشه می‌گیرد) را همراه با اقلام اجرایی‌اش (NTP، جلسه‌ی Kick-off، ITP های وصل‌شده) نشان " +
+                "می‌دهد، و کاوشگر روابط (Relationship Explorer) را می‌توان مستقیماً از یک Procurement Package یا یک قرارداد " +
+                "باز کرد تا همان زنجیره‌ی Package ← مناقصه ← پیشنهاد ← قرارداد ← NTP ← Kick-off ← ITP دیده شود.</p>";
+
+            if (fa.Content.EndsWith(oldTailFa, StringComparison.Ordinal))
+                fa.Content = fa.Content[..^oldTailFa.Length] + newTailFa;
+
+            const string oldKeywordsFa = "مناقصه,پیشنهاد,ارزیابی,مذاکره,انتخاب برنده,قرارداد,ntp,kick-off,صلاحیت فروشنده";
+            if (fa.SearchKeywords == oldKeywordsFa)
+                fa.SearchKeywords = oldKeywordsFa + ",تکمیل,فسخ,بازرسی,itp,خاستگاه تدارکات";
+        }
+
+        await db.SaveChangesAsync();
     }
 
     private static async Task PatchReliabilityOverviewGapCaveatsAsync(PEMSDbContext db)
@@ -249,6 +310,35 @@ public static class HelpContentSeeder
             "رکوردها صرف‌نظر از زبان نمایش، یکسان و قابل‌مقایسه بمانند.</p>",
             "پیمایش,منو,نوار بالا,شروع کار",
             new[] { "welcome-to-pems", "help-center-usage" }),
+
+        // طبق «PEMS Site-Wide UI/UX Redesign»: راهنمای یکپارچه‌ی الگوهای رابط کاربری (دوزبانه) - فقط توضیح می‌دهد کاربر
+        // چه چیزی را کجا ببیند؛ هیچ فرایند کسب‌وکاری تغییر نکرده است.
+        new Art("ui-conventions", "general", "Module", null, 3,
+            "Screen layout and status conventions",
+            "How pages, search, filters, statuses and action buttons are laid out consistently across PEMS.",
+            "<p>Every PEMS page follows the same layout. The page title sits in one compact row at the top (with the module name beside it); " +
+            "there is no address bar-style path above it - use the sidebar to move between modules. The sidebar shows icons only and " +
+            "slides open when you move the mouse over it, and closes when you move away.</p>" +
+            "<p>Lists have one search box; extra criteria live behind the Filters button and appear as removable chips once applied. " +
+            "Each page has one main (filled) action; secondary actions are outlined, and destructive actions such as Delete are separated " +
+            "and ask for confirmation.</p>" +
+            "<p>A status is always shown as icon + text + colour - never colour alone: green with a check means approved/completed/active, " +
+            "red with a cross means rejected/critical/overdue, amber with a triangle means attention/on hold, blue means in progress or " +
+            "informational, grey means draft/inactive/cancelled. The same status looks the same in every module. Identifiers such as tag " +
+            "numbers, document numbers, revisions and dates always read left-to-right, even on Persian pages.</p>",
+            "layout,status,colors,search,filters,sidebar,rtl",
+            "چیدمان صفحه‌ها و قراردادهای نمایش وضعیت",
+            "چگونه صفحه‌ها، جستجو، فیلترها، وضعیت‌ها و دکمه‌های عملیات در همه‌ی PEMS یکسان چیده شده‌اند.",
+            "<p>همه‌ی صفحه‌های PEMS چیدمان یکسانی دارند. عنوان صفحه در یک ردیف فشرده در بالا قرار دارد (نام ماژول کنارش) و بالای آن " +
+            "مسیر یا آدرس فنی نمایش داده نمی‌شود - برای جابه‌جایی بین ماژول‌ها از نوار کناری استفاده کنید. نوار کناری فقط آیکون نشان می‌دهد، " +
+            "با رفتن ماوس روی آن باز می‌شود و با دور شدن ماوس بسته می‌شود.</p>" +
+            "<p>هر فهرست یک کادر جستجو دارد؛ معیارهای بیشتر پشت دکمه‌ی «فیلترها» هستند و پس از اعمال به‌شکل چیپ‌های قابل‌حذف دیده می‌شوند. " +
+            "هر صفحه یک عملیات اصلی (پُر) دارد؛ عملیات فرعی به‌صورت خط‌دار و عملیات مخرب مانند حذف جدا شده و تأیید می‌خواهند.</p>" +
+            "<p>وضعیت همیشه با آیکون + متن + رنگ نشان داده می‌شود و هرگز فقط رنگ نیست: سبز با تیک یعنی تأییدشده/تکمیل‌شده/فعال، قرمز با ضربدر یعنی ردشده/بحرانی/" +
+            "عقب‌افتاده، کهربایی با مثلث یعنی نیازمند توجه/متوقف، آبی یعنی در جریان یا اطلاع‌رسانی، خاکستری یعنی پیش‌نویس/غیرفعال/لغوشده. یک وضعیت " +
+            "در همه‌ی ماژول‌ها یکسان دیده می‌شود. شناسه‌هایی مانند شماره‌ی تگ، شماره‌ی مدرک، ویرایش و تاریخ همیشه چپ‌به‌راست خوانده می‌شوند، حتی در صفحه‌های فارسی.</p>",
+            "چیدمان,وضعیت,رنگ,جستجو,فیلتر,نوار کناری",
+            new[] { "help-center-usage" }),
 
         new Art("help-center-usage", "general", "Module", null, 2,
             "Using the Help Center",
@@ -582,6 +672,79 @@ public static class HelpContentSeeder
             "بازنگری,بازنگری مدرک,تاریخچه",
             new[] { "document-workflow" }),
 
+        new Art("tender-and-contract-finalization", "engineering", "Workflow", "Tender.Index", 18,
+            "Tender, Bid Evaluation and Contract Finalization",
+            "How a Procurement Package moves from tender through winner selection to an effective, signed contract.",
+            "<p>A <strong>Tender</strong> belongs to a Procurement Package and adds a formal, multi-vendor bidding stage " +
+            "that a single Procurement Package/MRQ inquiry does not provide. Vendors must be invited before they can " +
+            "bid; if the tender is marked <strong>Requires Vendor Qualification</strong>, only vendors whose " +
+            "qualification was confirmed <em>at the moment of invitation</em> can be invited or bid - qualifying a " +
+            "vendor afterward does not retroactively unlock an existing tender.</p>" +
+            "<p>Once opened, invited vendors submit a <strong>Bid</strong>. The original submitted value is never " +
+            "overwritten: a later negotiation records its own row with a previous/negotiated value pair, and only the " +
+            "bid's separate \"negotiated value\" field is updated - the original stays intact for audit. " +
+            "<strong>Technical</strong> and <strong>Commercial</strong> evaluation are always independent: a bid needs " +
+            "a Passed decision on <em>both</em>, recorded separately, before it can be selected as the winner - one " +
+            "passing evaluation never substitutes for the other.</p>" +
+            "<p>Selecting a winner creates a <strong>Contract</strong> in Draft status pre-filled with the winning " +
+            "bid's vendor and final value. From there the contract moves through a real, enforced lifecycle - " +
+            "<strong>Draft → Under Review → Approved → Signed → Effective</strong> - each transition gated by " +
+            "permission and, for the review stage, by every required discipline (Engineering, Technical Inspection, " +
+            "Legal, Finance, Procurement, HSE) independently recording Approve or Reject before the package can move to " +
+            "final approval. A user who created or edited a contract cannot approve that same contract - this is " +
+            "enforced server-side by the Separation-of-Duties check, not just hidden in the UI.</p>" +
+            "<p>Two actions are only available once a contract reaches Signed or Effective: issuing an <strong>NTP " +
+            "(Notice to Proceed)</strong>, and scheduling the <strong>Kick-off meeting</strong> (which reuses the " +
+            "same Meeting feature used elsewhere in PEMS, not a separate entity). Neither can be recorded against a " +
+            "contract that hasn't reached that state yet. Value changes after signing (variations/change orders) are " +
+            "requested and approved separately - the contract's original value is preserved and only its \"current " +
+            "value\" is updated once a change is approved.</p>" +
+            "<p>From Effective, a contract ends one of two ways. <strong>Completed</strong> closes it out normally - if " +
+            "the contract is marked <strong>Requires Inspection</strong>, this is blocked until at least one linked " +
+            "Inspection &amp; Test Plan (ITP) exists and every one of its line items has closed; a contract with no " +
+            "inspection requirement can complete without one. <strong>Terminated</strong> ends it early with a reason, " +
+            "and is only possible while the contract has not already reached Completed or Terminated. The Contract " +
+            "Details page shows its <strong>Procurement Origin</strong> (the Package, Tender and winning Bid it traces " +
+            "back to) and its execution items (NTP, Kick-off, linked ITPs) together, and the Relationship Explorer can " +
+            "be opened directly from either a Procurement Package or a Contract to see the same Package → Tender → " +
+            "Bid → Contract → NTP → Kick-off → ITP chain.</p>",
+            "tender,bid,evaluation,negotiation,winner selection,contract,ntp,kick-off,vendor qualification,completed,terminated,inspection,itp,procurement origin",
+            "مناقصه، ارزیابی پیشنهاد و نهایی‌سازی قرارداد",
+            "چگونه یک Procurement Package از مناقصه تا انتخاب برنده و رسیدن به یک قرارداد امضاشده و اثربخش پیش می‌رود.",
+            "<p>یک <strong>مناقصه (Tender)</strong> متعلق به یک Procurement Package است و یک مرحله‌ی رسمی و چند-فروشنده‌ای " +
+            "به آن اضافه می‌کند که یک استعلام تک-فروشنده‌ی Procurement Package/MRQ آن را ندارد. فروشندگان باید پیش از " +
+            "پیشنهاد دادن دعوت شوند؛ اگر مناقصه <strong>نیازمند صلاحیت فروشنده</strong> علامت‌گذاری شده باشد، فقط " +
+            "فروشندگانی که صلاحیتشان <em>در لحظه‌ی دعوت</em> تایید شده بود می‌توانند دعوت شوند یا پیشنهاد بدهند - " +
+            "صلاحیت‌سنجی بعدیِ یک فروشنده، مناقصه‌ی از قبل موجود را بازگشایی نمی‌کند.</p>" +
+            "<p>پس از باز شدن، فروشندگان دعوت‌شده یک <strong>پیشنهاد (Bid)</strong> ثبت می‌کنند. مقدار اصلی ثبت‌شده هرگز " +
+            "بازنویسی نمی‌شود: یک مذاکره‌ی بعدی ردیف مستقل خودش را با جفت مقدار قبلی/مذاکره‌شده ثبت می‌کند، و فقط فیلد " +
+            "جداگانه‌ی «مقدار مذاکره‌شده» روی پیشنهاد به‌روز می‌شود - مقدار اصلی برای ممیزی دست‌نخورده می‌ماند. ارزیابی " +
+            "<strong>فنی</strong> و <strong>تجاری</strong> همیشه مستقل‌اند: یک پیشنهاد باید تصمیم Passed را روی " +
+            "<em>هر دو</em>، جداگانه ثبت‌شده، داشته باشد پیش از این‌که به‌عنوان برنده انتخاب شود - یک ارزیابی موفق هرگز " +
+            "جای دیگری را نمی‌گیرد.</p>" +
+            "<p>انتخاب برنده یک <strong>قرارداد (Contract)</strong> در وضعیت Draft می‌سازد که از قبل با فروشنده و ارزش " +
+            "نهاییِ پیشنهاد برنده پر شده. از آن‌جا قرارداد یک چرخه‌ی واقعی و اجراشونده را طی می‌کند - " +
+            "<strong>Draft → Under Review → Approved → Signed → Effective</strong> - هر گذار با مجوز، و برای مرحله‌ی " +
+            "بازبینی، با ثبت مستقل Approve یا Reject توسط هر رشته‌ی الزامی (مهندسی، بازرسی فنی، حقوقی، مالی، تدارکات، " +
+            "HSE) پیش از رسیدن به تایید نهایی، کنترل می‌شود. کاربری که قرارداد را ایجاد یا ویرایش کرده نمی‌تواند همان " +
+            "قرارداد را تایید کند - این توسط بررسی تفکیک وظایف سمت-سرور اجرا می‌شود، نه فقط پنهان‌شده در رابط کاربری.</p>" +
+            "<p>دو اقدام فقط پس از رسیدن قرارداد به Signed یا Effective در دسترس‌اند: صدور <strong>NTP (اخطار شروع به " +
+            "کار)</strong>، و برنامه‌ریزی <strong>جلسه‌ی Kick-off</strong> (که از همان قابلیت Meeting موجود در جاهای " +
+            "دیگر PEMS استفاده می‌کند، نه یک Entity جدا). هیچ‌کدام برای قراردادی که هنوز به آن وضعیت نرسیده قابل ثبت " +
+            "نیستند. تغییرات ارزش پس از امضا (Variation/Change Order) جداگانه درخواست و تایید می‌شوند - ارزش اصلی " +
+            "قرارداد حفظ می‌شود و فقط «ارزش جاری» آن پس از تایید یک تغییر به‌روز می‌شود.</p>" +
+            "<p>از وضعیت Effective، قرارداد به یکی از دو شکل پایان می‌یابد. <strong>تکمیل‌شده (Completed)</strong> آن را " +
+            "به‌صورت عادی می‌بندد - اگر قرارداد <strong>نیازمند بازرسی</strong> علامت‌گذاری شده باشد، این کار تا زمانی " +
+            "که حداقل یک برنامه‌ی بازرسی و آزمون (ITP) وصل‌شده وجود نداشته باشد و همه‌ی ردیف‌های آن بسته نشده باشند، " +
+            "مسدود می‌ماند؛ قراردادی که نیاز به بازرسی ندارد بدون آن هم می‌تواند تکمیل شود. <strong>فسخ‌شده " +
+            "(Terminated)</strong> آن را زودتر با ذکر دلیل پایان می‌دهد و فقط تا پیش از رسیدن قرارداد به Completed یا " +
+            "Terminated ممکن است. صفحه‌ی جزئیات قرارداد <strong>خاستگاه تدارکات</strong> آن (Package، مناقصه و پیشنهاد " +
+            "برنده‌ای که از آن‌ها ریشه می‌گیرد) را همراه با اقلام اجرایی‌اش (NTP، جلسه‌ی Kick-off، ITP های وصل‌شده) نشان " +
+            "می‌دهد، و کاوشگر روابط (Relationship Explorer) را می‌توان مستقیماً از یک Procurement Package یا یک قرارداد " +
+            "باز کرد تا همان زنجیره‌ی Package ← مناقصه ← پیشنهاد ← قرارداد ← NTP ← Kick-off ← ITP دیده شود.</p>",
+            "مناقصه,پیشنهاد,ارزیابی,مذاکره,انتخاب برنده,قرارداد,ntp,kick-off,صلاحیت فروشنده,تکمیل,فسخ,بازرسی,itp,خاستگاه تدارکات",
+            new[] { "contracts-overview", "vendors-overview" }),
+
         // ============================= CMMS =============================
         new Art("cmms-overview", "cmms", "Module", null, 0,
             "CMMS Overview",
@@ -646,6 +809,104 @@ public static class HelpContentSeeder
             "پیشگیرانه مفید است.</p>",
             "درخواست کار,دستور کار,برنامه‌ریزی نگهداری",
             new[] { "cmms-overview" }),
+
+        new Art("work-request-workflow", "cmms", "Workflow", "WorkRequests.Details", 3,
+            "How a Work Request moves through the workflow",
+            "The approval flow of a Work Request is configured in the central Workflow Platform; the page shows whatever stages that configuration defines.",
+            "<p>A Work Request is created as a <strong>Draft</strong>. <em>Submit to Workflow</em> starts a workflow instance using the " +
+            "Work Request workflow that is explicitly bound for new requests. The timeline on the Work Request page lists the stages of that " +
+            "workflow version, highlights the current stage and shows who can act on it.</p>" +
+            "<p>The buttons under <em>Actions</em> are the actions the workflow offers for the current stage. An action that you are not " +
+            "permitted to perform is shown disabled, and the server checks your permission again when you press it. " +
+            "<em>Convert to Work Order</em> is a Work Request business action (it needs a linked equipment and the Planned stage).</p>" +
+            "<p><strong>Versions:</strong> when an administrator publishes a new workflow version (for example one that adds a review stage) " +
+            "and binds it, only Work Requests submitted afterwards use it. Requests already in progress stay on the version they started with " +
+            "and keep showing its stages. Requests that were in progress before the workflow platform was introduced have no workflow instance " +
+            "and are marked as legacy records; they continue with the previous status buttons.</p>" +
+            "<p><strong>History:</strong> <em>Workflow History</em> lists workflow actions; <em>Business Audit</em> lists status changes of the " +
+            "Work Request itself.</p>",
+            "work request,workflow,approval,timeline",
+            "مسیر گردش‌کار درخواست کار",
+            "مسیر تأیید درخواست کار در پلتفرم مرکزی گردش‌کار پیکربندی می‌شود؛ صفحه دقیقاً همان مراحل پیکربندی را نشان می‌دهد.",
+            "<p>درخواست کار ابتدا به‌صورت <strong>پیش‌نویس</strong> ساخته می‌شود. دکمه‌ی <em>ارسال به گردش‌کار</em> یک نمونه‌ی گردش‌کار را با " +
+            "گردش‌کاری که به‌صورت صریح برای درخواست‌های جدید متصل شده شروع می‌کند. نوار مراحل در صفحه‌ی درخواست کار، مراحل همان نسخه‌ی " +
+            "گردش‌کار را فهرست می‌کند، مرحله‌ی جاری را مشخص می‌کند و نشان می‌دهد چه کسانی می‌توانند اقدام کنند.</p>" +
+            "<p>دکمه‌های بخش <em>عملیات</em> همان اقدام‌هایی هستند که گردش‌کار برای مرحله‌ی جاری ارائه می‌دهد. اقدامی که مجوزش را ندارید " +
+            "غیرفعال نمایش داده می‌شود و سرور هنگام زدن دکمه دوباره مجوز شما را بررسی می‌کند. <em>تبدیل به دستور کار</em> یک اقدام کسب‌وکاری " +
+            "درخواست کار است (نیازمند تجهیز مرتبط و مرحله‌ی برنامه‌ریزی‌شده).</p>" +
+            "<p><strong>نسخه‌ها:</strong> وقتی مدیر نسخه‌ی جدیدی از گردش‌کار (مثلاً با یک مرحله‌ی بازبینی اضافه) منتشر و متصل می‌کند، فقط " +
+            "درخواست‌هایی که بعد از آن ارسال می‌شوند از آن استفاده می‌کنند. درخواست‌های در جریان، روی نسخه‌ای که با آن شروع شده‌اند می‌مانند و " +
+            "همان مراحل را نشان می‌دهند. درخواست‌هایی که پیش از معرفی پلتفرم گردش‌کار در جریان بوده‌اند نمونه‌ی گردش‌کار ندارند، به‌عنوان " +
+            "رکورد قدیمی علامت‌گذاری می‌شوند و با دکمه‌های وضعیت قبلی ادامه می‌دهند.</p>" +
+            "<p><strong>تاریخچه:</strong> <em>تاریخچه گردش‌کار</em> اقدام‌های گردش‌کار را فهرست می‌کند و <em>ممیزی کسب‌وکاری</em> تغییر وضعیت خود " +
+            "درخواست کار را.</p>",
+            "درخواست کار,گردش‌کار,تأیید,نوار مراحل",
+            new[] { "work-request-vs-work-order" }),
+
+        new Art("work-order-lifecycle", "cmms", "Workflow", "WorkOrders.Lifecycle", 4,
+            "How a Work Order moves through its lifecycle",
+            "A Work Order is governed by the central Workflow Platform: planning, preparation, Operations release, execution, completion, verification by the originating discipline, final approval and closure.",
+            "<p>New Work Orders start a lifecycle workflow that is explicitly bound and version-pinned. The timeline on the Work Order page shows " +
+            "the stages of that version: <em>Created → Maintenance Planning → Preparation / Assignment → Operations Issue / Release → In Execution → " +
+            "Completion → Originating-Discipline Verification → Final Approval → Closed</em>. <em>On Hold</em>, <em>Cancelled</em> and <em>Rejected</em> are " +
+            "workflow transitions. The Work Order status you see in lists is a projection of the current stage.</p>" +
+            "<p><strong>Who does what.</strong> Maintenance plans, prepares and executes the work; Operations issues / releases it for execution; " +
+            "Engineering appears only as the <em>originating discipline</em> when the request came from Engineering, and verifies and finally approves the " +
+            "result. Warehouse has no workflow authority. The originating discipline (who asked for the work) and the responsible maintenance " +
+            "discipline (who does it) are recorded separately; Engineering / Mechanical is not the same as Maintenance / Mechanical.</p>" +
+            "<p><strong>Separation of duties.</strong> The server enforces: the planner cannot execute, the Operations issuer cannot execute, the executor " +
+            "cannot verify, the verifier cannot give final approval and the creator cannot close. Creator and executor may be the same person. " +
+            "Managers and deputies may cancel or reject, but cannot final-approve work they executed or verified. Emergency Work Orders follow the " +
+            "same path - there is no bypass.</p>" +
+            "<p><strong>Actions.</strong> The buttons under <em>Actions</em> come from the workflow for the current stage; an action you cannot perform is " +
+            "shown disabled with the reason, and the server re-checks it. A running multi-discipline review is a separate process: it blocks completion, and " +
+            "cancelling the Work Order cancels it. Work Orders that existed before the workflow platform are <em>legacy</em> records and keep the previous status buttons.</p>" +
+            "<p><strong>Versions.</strong> If an administrator publishes and binds a new version (for example adding a review stage), only Work Orders created afterwards " +
+            "use it; existing Work Orders stay on the version they started with.</p>",
+            "work order,lifecycle,workflow,separation of duties,originating discipline",
+            "مسیر چرخه‌عمر دستور کار",
+            "دستور کار توسط پلتفرم مرکزی گردش‌کار اداره می‌شود: برنامه‌ریزی، آماده‌سازی، صدور توسط عملیات، اجرا، تکمیل، تأیید دیسیپلین مبدأ، تصویب نهایی و بسته‌شدن.",
+            "<p>دستور کار جدید یک گردش‌کار چرخه‌عمر را شروع می‌کند که به‌صورت صریح متصل و روی یک نسخه ثابت شده است. نوار مراحل صفحه‌ی دستور کار مراحل همان نسخه را " +
+            "نشان می‌دهد: <em>ایجادشده ← برنامه‌ریزی نگهداری ← آماده‌سازی / تخصیص ← صدور / آزادسازی توسط عملیات ← در حال اجرا ← تکمیل ← تأیید دیسیپلین مبدأ ← تصویب نهایی ← " +
+            "بسته‌شده</em>. <em>متوقف</em>، <em>لغو</em> و <em>رد</em> گذارهای گردش‌کار هستند. وضعیت دستور کار در فهرست‌ها نمایشی از مرحله‌ی جاری است.</p>" +
+            "<p><strong>چه کسی چه کاری می‌کند.</strong> نگهداری برنامه‌ریزی، آماده‌سازی و اجرا را انجام می‌دهد؛ عملیات کار را برای اجرا صادر / آزاد می‌کند؛ مهندسی فقط زمانی " +
+            "به‌عنوان <em>دیسیپلین مبدأ</em> ظاهر می‌شود که درخواست از مهندسی آمده باشد و نتیجه را تأیید و تصویب نهایی می‌کند. انبار اختیار گردش‌کاری ندارد. دیسیپلین مبدأ (درخواست‌دهنده) و " +
+            "دیسیپلین مسئول نگهداری (اجراکننده) جداگانه ثبت می‌شوند؛ مهندسی / مکانیک با نگهداری / مکانیک یکسان نیست.</p>" +
+            "<p><strong>تفکیک وظایف.</strong> سرور این موارد را اعمال می‌کند: برنامه‌ریز نمی‌تواند اجرا کند، صادرکننده‌ی عملیات نمی‌تواند اجرا کند، مجری نمی‌تواند تأیید کند، تأییدکننده نمی‌تواند تصویب نهایی کند و " +
+            "ایجادکننده نمی‌تواند ببندد. ایجادکننده و مجری می‌توانند یک نفر باشند. مدیر و معاون می‌توانند لغو یا رد کنند اما نمی‌توانند کاری را که خودشان اجرا یا تأیید کرده‌اند تصویب نهایی کنند. " +
+            "دستور کار اضطراری همین مسیر را می‌رود؛ میان‌بری وجود ندارد.</p>" +
+            "<p><strong>اقدام‌ها.</strong> دکمه‌های بخش <em>عملیات</em> از گردش‌کار مرحله‌ی جاری می‌آیند؛ اقدامی که مجاز نیستید همراه با دلیل غیرفعال نمایش داده می‌شود و سرور دوباره آن را بررسی می‌کند. " +
+            "بازبینی چند-دیسیپلینه‌ی در جریان یک فرآیند جداست: تکمیل را مسدود می‌کند و لغو دستور کار آن را هم لغو می‌کند. دستور کارهای پیش از پلتفرم گردش‌کار، رکورد <em>قدیمی</em> هستند و با دکمه‌های وضعیت قبلی ادامه می‌دهند.</p>" +
+            "<p><strong>نسخه‌ها.</strong> اگر مدیر نسخه‌ی جدیدی (مثلاً با یک مرحله‌ی بازبینی اضافه) منتشر و متصل کند، فقط دستور کارهای ایجادشده بعد از آن از آن استفاده می‌کنند؛ دستور کارهای موجود روی نسخه‌ی خودشان می‌مانند.</p>",
+            "دستور کار,چرخه‌عمر,گردش‌کار,تفکیک وظایف,دیسیپلین مبدأ",
+            new[] { "work-request-workflow", "work-request-vs-work-order" }),
+
+        new Art("workflow-management", "administration", "Workflow", "Admin.WorkflowManagement", 1,
+            "Workflow Management",
+            "Administrators can inspect workflows and safely change them by cloning a version into a draft, validating, publishing and binding it - without editing code.",
+            "<p><strong>Where:</strong> Administration → Workflow Management. Access needs the SystemAdmin role <em>and</em> the matching WorkflowManagement permission (View, Edit, Validate, Publish, Bind, Retire); the server checks both, hiding a button is not the protection.</p>" +
+            "<p><strong>Definition and version.</strong> A <em>workflow definition</em> (for example Work Order Lifecycle) has numbered <em>versions</em>: Draft → Validated → Published → Retired. A published or retired version is <em>immutable</em>. To change a workflow, <em>clone</em> a published version into a new <em>draft</em> (only one open draft per definition), edit it, validate it, publish it and then bind it. A draft you no longer need can be <em>discarded</em> (kept for audit, no longer editable).</p>" +
+            "<p><strong>Designer.</strong> The graph is drawn from the real stages and transitions of the version (automatic layout, nothing is stored). Select a stage or a transition to edit it. <em>Stage</em>: name, Persian name, business status, order, type, <em>responsible role</em> and <em>responsible employee</em>, approval strategy, timeout. <em>Transition</em>: from, to (empty = start / end), action, label, Persian label, <em>required permission</em>, condition, priority. There is no separate participant table: responsibility is the stage's responsible role/employee, and authorization of an action is the transition's required permission.</p>" +
+            "<p><strong>Validation.</strong> The platform validator checks the draft (reachable stages, terminal transition, known roles and permissions, registered actions and more). Errors block publication; warnings do not. The server validates again when you publish.</p>" +
+            "<p><strong>Publishing and four-eyes.</strong> The last editor of a draft cannot publish it; another administrator must. Publishing makes the version immutable.</p>" +
+            "<p><strong>Binding and version pinning.</strong> The binding decides which published version <em>new</em> instances use. Changing it needs an explicit confirmation that shows the current and target version and the running instances. Running instances stay pinned to the version they started with; nothing is rewritten.</p>" +
+            "<p><strong>Rollback.</strong> There is no rollback button. Roll back by binding again to an older published version (or clone it, validate, publish and bind the clone). Old versions are never modified.</p>" +
+            "<p><strong>Concurrency.</strong> If another administrator saved the same draft after you opened it, your save is rejected with a message; reload and repeat your change. Nothing is overwritten silently.</p>" +
+            "<p><strong>Release 1 scope.</strong> Editable: Work Request, Work Order Lifecycle and Work Order Multi-Discipline Review. Other definitions (legacy EDMS, VDR, TQ, MOC, NCR, Permit) are <em>View Only</em>; having no active binding is a normal state, not an error.</p>",
+            "workflow,administration,designer,version,draft,publish,binding,pinning",
+            "مدیریت گردش‌کار",
+            "مدیران می‌توانند گردش‌کارها را ببینند و با کپی نسخه به پیش‌نویس، اعتبارسنجی، انتشار و اتصال، بدون تغییر کد و به‌صورت ایمن تغییر دهند.",
+            "<p><strong>مسیر:</strong> مدیریت ← مدیریت گردش‌کار. دسترسی هم نقش SystemAdmin و هم مجوز متناظر WorkflowManagement (مشاهده، ویرایش، اعتبارسنجی، انتشار، اتصال، بازنشسته‌سازی) را می‌خواهد؛ سرور هر دو را بررسی می‌کند و پنهان‌کردن دکمه محافظت نیست.</p>" +
+            "<p><strong>تعریف و نسخه.</strong> هر <em>تعریف گردش‌کار</em> (مثلاً چرخه‌عمر دستور کار) <em>نسخه</em>های شماره‌دار دارد: پیش‌نویس ← اعتبارسنجی‌شده ← منتشرشده ← بازنشسته. نسخه‌ی منتشرشده یا بازنشسته <em>تغییرناپذیر</em> است. برای تغییر، یک نسخه‌ی منتشرشده را به یک <em>پیش‌نویس</em> جدید <em>کپی</em> کنید (هر تعریف فقط یک پیش‌نویس باز دارد)، ویرایش، اعتبارسنجی، منتشر و سپس متصل کنید. پیش‌نویسی که لازم نیست <em>رها</em> می‌شود (برای ممیزی می‌ماند و دیگر قابل ویرایش نیست).</p>" +
+            "<p><strong>طراح.</strong> گراف از مراحل و گذارهای واقعی نسخه رسم می‌شود (چیدمان خودکار و بدون ذخیره). یک مرحله یا گذار را انتخاب و ویرایش کنید. <em>مرحله</em>: نام، نام فارسی، وضعیت کسب‌وکاری، ترتیب، نوع، <em>نقش مسئول</em> و <em>کارمند مسئول</em>، راهبرد تأیید، مهلت. <em>گذار</em>: مبدأ، مقصد (خالی = شروع / پایان)، اقدام، برچسب، برچسب فارسی، <em>مجوز لازم</em>، شرط، اولویت. جدول جداگانه‌ای برای شرکت‌کننده وجود ندارد: مسئولیت همان نقش/کارمند مسئول مرحله است و مجاز بودن اقدام همان مجوز لازم گذار.</p>" +
+            "<p><strong>اعتبارسنجی.</strong> اعتبارسنج پلتفرم پیش‌نویس را بررسی می‌کند (مراحل قابل‌دسترسی، گذار پایانی، نقش‌ها و مجوزهای شناخته‌شده، اقدام‌های ثبت‌شده و ...). خطا انتشار را مسدود می‌کند و هشدار نه. سرور هنگام انتشار دوباره اعتبارسنجی می‌کند.</p>" +
+            "<p><strong>انتشار و چهارچشمی.</strong> آخرین ویرایشگر پیش‌نویس نمی‌تواند آن را منتشر کند؛ مدیر دیگری باید منتشر کند. انتشار نسخه را تغییرناپذیر می‌کند.</p>" +
+            "<p><strong>اتصال و ثابت‌ماندن نسخه.</strong> اتصال تعیین می‌کند نمونه‌های <em>جدید</em> از کدام نسخه‌ی منتشرشده استفاده کنند. تغییر آن تأیید صریح می‌خواهد و نسخه‌ی جاری و هدف و نمونه‌های در جریان را نشان می‌دهد. نمونه‌های در جریان روی نسخه‌ی شروعشان می‌مانند و چیزی بازنویسی نمی‌شود.</p>" +
+            "<p><strong>بازگشت.</strong> دکمه‌ی بازگشت وجود ندارد. با اتصال دوباره به یک نسخه‌ی منتشرشده‌ی قدیمی‌تر (یا کپی، اعتبارسنجی، انتشار و اتصال آن) برگردید. نسخه‌های قدیمی هرگز تغییر نمی‌کنند.</p>" +
+            "<p><strong>هم‌زمانی.</strong> اگر مدیر دیگری پس از باز کردن شما همان پیش‌نویس را ذخیره کرده باشد، ذخیره‌ی شما با پیام رد می‌شود؛ صفحه را دوباره بارگذاری و تغییر را تکرار کنید. هیچ چیز بی‌صدا بازنویسی نمی‌شود.</p>" +
+            "<p><strong>دامنه‌ی انتشار ۱.</strong> قابل‌ویرایش: درخواست کار، چرخه‌عمر دستور کار و بازبینی چند-دیسیپلینه‌ی دستور کار. تعریف‌های دیگر (EDMS قدیمی، VDR، TQ، MOC، NCR، Permit) <em>فقط مشاهده</em> هستند؛ نداشتن اتصال فعال وضعیت عادی است، نه خطا.</p>",
+            "گردش‌کار,مدیریت,طراح,نسخه,پیش‌نویس,انتشار,اتصال",
+            new[] { "work-order-lifecycle", "work-request-workflow" }),
 
         new Art("maintenance-strategy-overview", "cmms", "Field", "MaintenanceStrategies.Index", 3,
             "Maintenance Strategy",
@@ -951,7 +1212,16 @@ public static class HelpContentSeeder
             "later by a human, through the Relationship Explorer.</p>" +
             "<p><strong>Verified difference:</strong> the MRS/Material importer uses a slightly different reviewer " +
             "flow - rows carry a match-status filter and are committed or rejected in bulk by explicit selection, " +
-            "rather than the per-row include/exclude-then-single-commit pattern the other importers use.</p>",
+            "rather than the per-row include/exclude-then-single-commit pattern the other importers use. The review " +
+            "grid is paginated (like every large PEMS list) so uploading a large file never requires splitting it " +
+            "manually - use the Match Status filter (New / Matched / Duplicate / Invalid) and its \"Commit ALL ... in " +
+            "entire batch\" / \"Reject ALL ... in entire batch\" buttons to act on every row of that category across " +
+            "the whole file in one action, or select rows individually on the current page for finer-grained review.</p>" +
+            "<p><strong>VDR import - Vendor master-data conflict:</strong> a VDR row's Vendor is resolved by name only " +
+            "(trimmed, case-insensitive), the same identity rule used everywhere else Vendors are auto-matched in PEMS. " +
+            "If more than one existing Vendor record already shares that name, the importer does not guess which one to " +
+            "use - that row is skipped and its Validation column shows a Vendor master-data conflict message naming the " +
+            "duplicate Vendor IDs. Resolve the duplicate Vendor records first, then re-import.</p>",
             "import,staging,batch,commit,discard,mdr import,vdr import,equipment import",
             "واردات مرحله‌ای چگونه کار می‌کند",
             "الگوی جهانیِ Batch مرحله‌ای که هر Import‌کننده‌ی اکسل/داده در PEMS به اشتراک می‌گذارد: آپلود، بازبینی، سپس Commit یا Discard.",
@@ -971,9 +1241,62 @@ public static class HelpContentSeeder
             "از طریق کاوشگر روابط، ساخته می‌شوند.</p>" +
             "<p><strong>تفاوت تاییدشده:</strong> Import‌کننده‌ی MRS/مواد یک روند بازبینیِ کمی متفاوت استفاده می‌کند - " +
             "ردیف‌ها یک فیلتر وضعیت تطابق دارند و به‌صورت گروهی با انتخاب صریح Commit یا رد می‌شوند، نه الگوی " +
-            "شامل/مستثنی-به‌ازای-هر-ردیف-سپس-یک-Commit که بقیه‌ی Import‌کننده‌ها استفاده می‌کنند.</p>",
+            "شامل/مستثنی-به‌ازای-هر-ردیف-سپس-یک-Commit که بقیه‌ی Import‌کننده‌ها استفاده می‌کنند. جدول بازبینی " +
+            "صفحه‌بندی‌شده است (مثل هر فهرست بزرگ دیگر در PEMS)، پس آپلود یک فایل بزرگ هرگز نیازمند تقسیم دستی نیست - " +
+            "از فیلتر Match Status (New / Matched / Duplicate / Invalid) و دکمه‌های «Commit ALL ... in entire batch» / " +
+            "«Reject ALL ... in entire batch» آن برای اقدام روی همه‌ی ردیف‌های آن دسته در کل فایل با یک اقدام استفاده " +
+            "کنید، یا برای بازبینی دقیق‌تر، ردیف‌ها را تک‌تک در همان صفحه انتخاب کنید.</p>" +
+            "<p><strong>Import VDR - تعارض داده‌ی مرجع Vendor:</strong> Vendor هر ردیف VDR فقط از روی نام تطبیق داده " +
+            "می‌شود (بعد از Trim، بی‌تفاوت به بزرگی/کوچکی حروف) - همان قاعده‌ی هویتی که در همه‌جای دیگر PEMS برای " +
+            "تطبیق خودکار Vendor استفاده می‌شود. اگر بیش از یک رکورد Vendor موجود با همان نام باشد، Import‌کننده حدس " +
+            "نمی‌زند کدام را استفاده کند - آن ردیف Skip می‌شود و ستون Validation پیام تعارض داده‌ی مرجع Vendor را با " +
+            "شناسه‌ی رکوردهای تکراری نشان می‌دهد. ابتدا رکوردهای تکراری Vendor را برطرف کنید، سپس دوباره Import بزنید.</p>",
             "ایمپورت,مرحله بندی,batch,commit,discard,ایمپورت mdr,ایمپورت vdr,ایمپورت تجهیز",
             null),
+
+        // ============================= MATERIAL MANAGEMENT AUDIT — STEP 2/3: IRN + DISPOSITION =============================
+        new Art("irn-receiving-and-disposition", "cmms", "Workflow", "IrnReceipt.Index", 28,
+            "IRN — Incoming Receipt & Disposition",
+            "Why receiving material and making it available stock are two separate, gated steps - not the same event.",
+            "<p>An <strong>IRN (Incoming Receipt Note)</strong> is the formal record that material physically arrived - " +
+            "it is not the same as MRS (a separate, existing Excel-staging import for material receiving); both exist " +
+            "side by side. Creating an IRN and adding its received-quantity lines only records that a delivery arrived; " +
+            "it does not, by itself, create any stock or inventory transaction.</p>" +
+            "<p><strong>Verified rule - Received ≠ Available:</strong> a received quantity only becomes usable stock " +
+            "after two further, separate steps. First, an inspector records a <strong>Disposition</strong> for every " +
+            "line - splitting the received quantity into <strong>Accepted</strong>, <strong>Rejected</strong>, and " +
+            "<strong>Hold</strong> amounts that must sum exactly to what was received. Recording a disposition starts " +
+            "an independent QA approval step (the same approval engine used for Critical Non-Conformance Reports) - " +
+            "it does not itself post anything to stock. Second, only once a QA approver actually <strong>approves</strong> " +
+            "that disposition does the <strong>Accepted</strong> quantity become a real Inventory Transaction and " +
+            "raise on-hand stock - Rejected and Hold quantities are never posted to stock, by any approval outcome. " +
+            "If the QA approver rejects the disposition instead, the IRN returns to its pre-disposition state so the " +
+            "inspector can record it again; nothing is posted either way.</p>" +
+            "<p><strong>Who does what:</strong> receiving/creating and submitting an IRN, and recording its " +
+            "disposition, are permission-gated separately from the independent QA approval that actually releases " +
+            "stock - the same person recording a disposition is not automatically the one who can approve it.</p>",
+            "irn,incoming receipt,disposition,accepted,rejected,hold,received not available,qa approval",
+            "IRN - دریافت و تعیین‌تکلیف مادی ورودی",
+            "این‌که چرا دریافت مادی و در‌دسترس‌شدن آن به‌عنوان موجودی، دو گام جدا و دارای گیت هستند - نه یک رویداد.",
+            "<p><strong>IRN (Incoming Receipt Note)</strong> سند رسمی این است که مادی فیزیکاً رسیده - این با MRS (یک " +
+            "Import مرحله‌بندی‌شده‌ی اکسل موجود و جدا، برای دریافت مادی) یکی نیست؛ هر دو کنار هم وجود دارند. ساخت یک " +
+            "IRN و اضافه‌کردن خطوط مقدار دریافتی‌اش فقط ثبت می‌کند که یک محموله رسیده؛ به‌تنهایی هیچ موجودی یا " +
+            "تراکنش موجودی‌ای نمی‌سازد.</p>" +
+            "<p><strong>قاعده‌ی تاییدشده - دریافت‌شده ≠ در‌دسترس:</strong> یک مقدار دریافتی فقط بعد از دو گام جدای " +
+            "دیگر به موجودی قابل‌استفاده تبدیل می‌شود. اول، یک بازرس برای هر خط یک <strong>Disposition</strong> ثبت " +
+            "می‌کند - مقدار دریافتی را به مقادیر <strong>Accepted (پذیرفته)</strong>، <strong>Rejected (رد‌شده)</strong>، " +
+            "و <strong>Hold (بلوکه)</strong> تقسیم می‌کند که باید دقیقاً برابر مقدار دریافتی باشند. ثبت Disposition یک " +
+            "گام تایید مستقل QA را شروع می‌کند (همان موتور تاییدی که برای NCR های بحرانی استفاده می‌شود) - خودش چیزی " +
+            "به موجودی Post نمی‌کند. دوم، فقط وقتی یک تاییدکننده‌ی QA واقعاً آن Disposition را <strong>تایید</strong> " +
+            "کند، مقدار <strong>Accepted</strong> به یک تراکنش موجودی واقعی تبدیل می‌شود و موجودی در دست را بالا " +
+            "می‌برد - مقادیر Rejected و Hold، با هر نتیجه‌ی تاییدی، هرگز به موجودی Post نمی‌شوند. اگر تاییدکننده‌ی QA " +
+            "به‌جای آن Disposition را رد کند، IRN به وضعیت پیش از Disposition برمی‌گردد تا بازرس دوباره آن را ثبت کند؛ " +
+            "در هیچ‌کدام چیزی Post نمی‌شود.</p>" +
+            "<p><strong>چه‌کسی چه‌کاری می‌کند:</strong> دریافت/ساخت و Submit یک IRN، و ثبت Disposition آن، جدا از " +
+            "تایید مستقل QA که واقعاً موجودی را آزاد می‌کند، از نظر مجوز گیت می‌شوند - کسی که Disposition را ثبت " +
+            "می‌کند به‌طور خودکار همان کسی نیست که می‌تواند آن را تایید کند.</p>",
+            "irn,رسید دریافت,disposition,پذیرفته,رد شده,بلوکه,دریافت نه در دسترس,تایید qa",
+            new[] { "material-items-overview" }),
 
         // ============================= PHASE 4 INCREMENT 3B: RELIABILITY =============================
         new Art("reliability-overview", "cmms", "Workflow", "Reliability.Overview", 27,
@@ -1079,20 +1402,60 @@ public static class HelpContentSeeder
             "What the Employee Details page shows, and which fields are backed by real data today.",
             "<p>An employee's profile brings together: employment details (role, department, discipline, personnel type - " +
             "Internal/Contractor/External/Temporary), their current team membership (with the team's supervisor shown as " +
-            "\"Manager\"), contact information, and skills/qualifications/certifications/labor rate history.</p>" +
-            "<p>An employee's \"Manager\" is not a separate stored field - it is derived from their current active team " +
-            "membership's team supervisor, so it always reflects the real organizational assignment rather than a " +
-            "manually-entered value that could drift out of date.</p>",
-            "employee,profile,manager,team,personnel type",
+            "\"Team Supervisor\"), the Direct Manager resolved from the organization hierarchy, contact information, and " +
+            "skills/qualifications/certifications/labor rate history.</p>" +
+            "<p>The <strong>Team Supervisor</strong> is an operational team role, derived from the employee's current active " +
+            "team membership. It is NOT the Direct Manager. The <strong>Direct Manager</strong> comes only from the " +
+            "organization structure (see the Organization Structure article): the holder of the parent of the employee's " +
+            "primary position. When it cannot be determined, the profile says why instead of guessing.</p>",
+            "employee,profile,team supervisor,direct manager,team,personnel type",
             "پروفایل کارمند",
             "صفحه‌ی جزئیات کارمند چه چیزهایی نشان می‌دهد، و کدام فیلدها امروز داده‌ی واقعی پشت خود دارند.",
             "<p>پروفایل کارمند این موارد را کنار هم می‌آورد: جزئیات استخدام (نقش، دپارتمان، دیسیپلین، نوع پرسنل - " +
-            "Internal/Contractor/External/Temporary)، عضویت فعلی در تیم (با سرپرست تیم که به‌عنوان «مدیر» نمایش داده " +
-            "می‌شود)، اطلاعات تماس، و تاریخچه‌ی مهارت‌ها/صلاحیت‌ها/گواهینامه‌ها/نرخ دستمزد.</p>" +
-            "<p>«مدیر» یک کارمند فیلد ذخیره‌شده‌ی جداگانه‌ای نیست - از سرپرستِ تیمِ عضویتِ فعالِ فعلیِ او مشتق می‌شود، پس " +
-            "همیشه انتساب سازمانی واقعی را نشان می‌دهد، نه یک مقدار دستی که ممکن است از واقعیت عقب بماند.</p>",
-            "کارمند,پروفایل,مدیر,تیم,نوع پرسنل",
+            "Internal/Contractor/External/Temporary)، عضویت فعلی در تیم (با سرپرست تیم که به‌عنوان «سرپرست تیم» نمایش " +
+            "داده می‌شود)، «مدیر مستقیم» که از سلسله‌مراتب سازمانی تعیین می‌شود، اطلاعات تماس، و تاریخچه‌ی " +
+            "مهارت‌ها/صلاحیت‌ها/گواهینامه‌ها/نرخ دستمزد.</p>" +
+            "<p><strong>سرپرست تیم</strong> یک نقش عملیاتی است و از عضویت فعال فعلی کارمند در تیم مشتق می‌شود؛ «مدیر " +
+            "مستقیم» نیست. <strong>مدیر مستقیم</strong> فقط از ساختار سازمانی می‌آید (مقاله‌ی «ساختار سازمانی»): دارنده‌ی " +
+            "سمتِ مافوقِ سمت اصلی کارمند. وقتی قابل‌تعیین نباشد، پروفایل دلیل را نشان می‌دهد و حدس نمی‌زند.</p>",
+            "کارمند,پروفایل,سرپرست تیم,مدیر مستقیم,تیم,نوع پرسنل",
             null),
+
+        new Art("organization-hierarchy-direct-manager", "administration", "Page", "Admin.Organization.Index", 1,
+            "Organization Structure and Direct Manager",
+            "How positions, the managerial hierarchy and holders decide who a workflow sends your request to - and how to repair it.",
+            "<p><strong>Position.</strong> A position (for example \"Maintenance Engineer\") is separate from the person and from " +
+            "roles/permissions. Each position can have a <em>parent position</em> (the position it reports to). A person holds a " +
+            "position through an assignment with effective dates; exactly one effective assignment is the person's " +
+            "<em>primary</em> position. A position can be vacant without breaking the structure.</p>" +
+            "<p><strong>Direct Manager.</strong> The system resolves it only as: Employee &rarr; Primary Position &rarr; Parent " +
+            "Position &rarr; the holder of that parent position. The <em>Superior Manager</em> is the holder of the parent's " +
+            "parent. A <strong>Team Supervisor</strong> (a team's operational lead) is NOT the Direct Manager, a department is " +
+            "not a source of managers, and no administrator, CEO or \"first available manager\" is ever substituted.</p>" +
+            "<p><strong>Organization Resolution Required.</strong> If the chain is incomplete (no primary position, root position, " +
+            "inactive or vacant parent, expired assignment, inactive holder, cycle, multiple primaries) the request is NOT " +
+            "rejected and NOT auto-approved: it waits in the status <em>Organization Resolution Required</em> with the reason code. " +
+            "An organization administrator repairs the structure in <em>Organization Structure</em> (or via Organization Import in the " +
+            "Import Center) and checks <em>Organization Diagnostics</em>; then the requester (or the module administrator) presses " +
+            "<em>Retry routing</em> and the central resolver decides. Approvers are never picked by hand, and open requests keep " +
+            "the approvers they were resolved with.</p>",
+            "organization,position,parent position,direct manager,superior manager,team supervisor,organization resolution required",
+            "ساختار سازمانی و مدیر مستقیم",
+            "سمت‌ها، سلسله‌مراتب مدیریتی و دارندگان چگونه تعیین می‌کنند درخواست شما برای چه کسی ارسال شود - و چگونه اصلاح می‌شود.",
+            "<p><strong>سمت.</strong> سمت (مثلاً «مهندس نگهداری») از شخص و از نقش/مجوز جداست. هر سمت می‌تواند <em>سمت مافوق</em> " +
+            "داشته باشد (سمتی که به آن گزارش می‌دهد). شخص از طریق یک تخصیص با تاریخ اعتبار سمت را در اختیار دارد؛ دقیقاً یک " +
+            "تخصیص معتبر، <em>سمت اصلی</em> شخص است. سمت می‌تواند خالی باشد بی‌آن‌که ساختار از بین برود.</p>" +
+            "<p><strong>مدیر مستقیم.</strong> سیستم آن را فقط چنین تعیین می‌کند: کارمند &larr; سمت اصلی &larr; سمت مافوق &larr; دارنده‌ی " +
+            "آن سمت مافوق. <em>مدیر ارشد</em> دارنده‌ی سمتِ مافوقِ مافوق است. <strong>سرپرست تیم</strong> (راهبر عملیاتی تیم) " +
+            "«مدیر مستقیم» نیست، دپارتمان منبع مدیر نیست، و هرگز مدیر سیستم، مدیرعامل یا «اولین مدیر موجود» جایگزین نمی‌شود.</p>" +
+            "<p><strong>نیازمند تکمیل ساختار سازمانی.</strong> اگر زنجیره ناقص باشد (نبود سمت اصلی، سمت ریشه، مافوق غیرفعال یا " +
+            "خالی، تخصیص منقضی، دارنده‌ی غیرفعال، دور، چند سمت اصلی) درخواست رد یا خودکار تأیید <strong>نمی‌شود</strong>؛ با " +
+            "وضعیت <em>نیازمند تکمیل ساختار سازمانی</em> و کد دلیل منتظر می‌ماند. مدیر سازمان ساختار را در «ساختار سازمانی» (یا " +
+            "با ایمپورت ساختار سازمانی در مرکز ایمپورت) اصلاح می‌کند و «عیب‌یابی ساختار سازمانی» را بررسی می‌کند؛ سپس " +
+            "درخواست‌دهنده (یا مدیر ماژول) «تلاش مجدد مسیریابی» را می‌زند و Resolver مرکزی تصمیم می‌گیرد. تأییدکننده هرگز دستی " +
+            "انتخاب نمی‌شود و درخواست‌های باز همان تأییدکنندگانی را نگه می‌دارند که با آن‌ها تعیین شده‌اند.</p>",
+            "سازمان,سمت,سمت مافوق,مدیر مستقیم,مدیر ارشد,سرپرست تیم,نیازمند تکمیل ساختار سازمانی",
+            new[] { "employee-profile-overview" }),
 
         // ============================= ADMINISTRATION =============================
         new Art("users-roles-permissions-overview", "administration", "Module", null, 0,

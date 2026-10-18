@@ -29,4 +29,17 @@ public class WorkflowTransition
     public string? ConditionExpression { get; set; }
 
     public int Priority { get; set; }
+
+    // --- Phase 1 Hardening (additive) ---
+    /// <summary>اگر تنظیم شود، اجرای این گذار از طریق IWorkflowAuthorizationHook با مجوز PEMS بررسی می‌شود (Resource.Action).</summary>
+    public string? RequiredPermission { get; set; }
+
+    /// <summary>اگر true باشد، کسی که خودش گردش‌کار را آغاز کرده مجاز به اجرای این گذار نیست (تفکیک وظایف).</summary>
+    public bool ForbidInitiator { get; set; }
+
+    // --- Phase 2 (additive) --- برچسب نمایشی اکشن (UI از همین می‌خواند)
+    [System.ComponentModel.DataAnnotations.MaxLength(100)]
+    public string? Label { get; set; }
+    [System.ComponentModel.DataAnnotations.MaxLength(100)]
+    public string? LabelFa { get; set; }
 }

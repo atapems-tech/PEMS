@@ -1,4 +1,7 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.TaskItemDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var employees = (IEnumerable<dynamic>)ViewBag.Employees;
     var tab = (string)ViewBag.Tab;
@@ -17,18 +20,18 @@
 <div class="content-card mb-3">
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Task')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="pems-grid-scroll">
     <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="Task">
         <thead>
             <tr>
-                <th data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400">Title</th>
-                <th data-col-key="assignedTo" data-resizable="true" data-min-width="120" data-max-width="240">Assigned To</th>
-                <th data-col-key="due" data-resizable="true" data-min-width="90" data-max-width="160">Due</th>
-                <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">Priority</th>
-                <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">Status</th>
+                <th data-col-key="title" data-resizable="true" data-min-width="160" data-max-width="400">@Localizer["Title"]</th>
+                <th data-col-key="assignedTo" data-resizable="true" data-min-width="120" data-max-width="240">@Localizer["Assigned To"]</th>
+                <th data-col-key="due" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Due"]</th>
+                <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Priority"]</th>
+                <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Status"]</th>
                 <th data-col-key="related" data-resizable="true" data-min-width="100" data-max-width="200">Related</th>
                 <th></th>
             </tr>
@@ -54,7 +57,7 @@
                                 var sb = t.Status switch { "Completed" => "bg-success", "InProgress" => "bg-info text-dark", "Cancelled" => "bg-dark", _ => "bg-secondary" };
                             }
                             <span class="badge @sb">@t.Status</span>
-                            @if (t.IsOverdue) { <span class="badge bg-danger">Overdue</span> }
+                            @if (t.IsOverdue) { <span class="badge bg-danger">@Localizer["Overdue"]</span> }
                         </td>
                         <td class="small">
                             @if (!string.IsNullOrEmpty(t.RelatedType))
@@ -114,21 +117,21 @@
     <div class="content-card">
         <h6 class="mb-3">New Task</h6>
         <form asp-action="Create" method="post" class="row g-2">
-            <div class="col-md-4"><input name="title" class="form-control form-control-sm" placeholder="Title" required /></div>
+            <div class="col-md-4"><input name="title" class="form-control form-control-sm" placeholder="@Localizer["Title"]" required /></div>
             <div class="col-md-3">
                 <select name="assignedToEmployeeId" class="form-select form-select-sm">
-                    <option value="">-- Assign to --</option>
+                    <option value="">@Localizer["-- Assign to --"]</option>
                     @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Name</option> }
                 </select>
             </div>
             <div class="col-md-2"><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
             <div class="col-md-2">
                 <select name="priority" class="form-select form-select-sm">
-                    <option>Normal</option><option>Low</option><option>High</option><option>Urgent</option>
+                    <option>@Localizer["Normal"]</option><option>@Localizer["Low"]</option><option>@Localizer["High"]</option><option>@Localizer["Urgent"]</option>
                 </select>
             </div>
             <div class="col-md-1"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i></button></div>
-            <div class="col-12"><input name="description" class="form-control form-control-sm" placeholder="Description (optional)" /></div>
+            <div class="col-12"><input name="description" class="form-control form-control-sm" placeholder="@Localizer["Description (optional)"]" /></div>
         </form>
     </div>
 }

@@ -80,10 +80,24 @@ public class PositionConfiguration : IEntityTypeConfiguration<Position>
 
         builder.Property(x => x.Title).HasMaxLength(150).IsRequired();
         builder.Property(x => x.Description).HasMaxLength(500);
+        builder.Property(x => x.PositionCode).HasMaxLength(50);
+
+        builder.HasIndex(x => x.PositionCode).IsUnique().HasFilter("[PositionCode] IS NOT NULL");
+        builder.HasOne(x => x.ParentPosition).WithMany(x => x.ChildPositions).HasForeignKey(x => x.ParentPositionId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasIndex(x => x.ParentPositionId);
 
         builder.HasOne(x => x.Department)
             .WithMany()
             .HasForeignKey(x => x.DepartmentId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // طبق «PEMS Dynamic Maintenance Organization» بخش ۱۴-۱۶: یک سمت معمولاً جای مشخصی در
+        // سلسله‌مراتب تعمیرونگهداری دارد (مثلاً «سرگروه»/«سرشیفت» زیر یک Team). Null یعنی سمت
+        // عمومی/سطح دپارتمان (رفتار امروز، دست‌نخورده) - این فقط یک ستون اضافه است، جایگزین
+        // DepartmentId نیست.
+        builder.HasOne(x => x.Team)
+            .WithMany(x => x.Positions)
+            .HasForeignKey(x => x.TeamId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

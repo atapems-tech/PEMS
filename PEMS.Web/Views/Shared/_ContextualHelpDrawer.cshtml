@@ -11,13 +11,7 @@
    ViewData["HelpKey"] را ست کرده باشد رندر می‌شود - طبق بخش ۱۸ (Performance): محتوا فقط با
    درخواست واقعی کاربر (کلیک) از /Help/Context بارگذاری می‌شود، نه در هر بار رندر صفحه.
    ============================================================================== *@
-@if (!string.IsNullOrEmpty(helpKey))
-{
-    <button type="button" class="btn btn-sm btn-outline-secondary pems-contextual-help-btn" data-bs-toggle="offcanvas" data-bs-target="#pemsHelpDrawer"
-            data-help-key="@helpKey" title="@L("Help for this page", "راهنمای این صفحه")">
-        <i class="bi bi-question-circle"></i> @L("Help", "راهنما")
-    </button>
-}
+@* دکمه‌ی فراخوان در _ContextualHelpButton است؛ این Partial باید «بیرون از <header>» (مثلاً بعد از آن) رندر شود تا z-index پنل (1045) در Stacking Context هدر (1030) گیر نکند. *@
 
 <div class="offcanvas @(isRtl ? "offcanvas-start" : "offcanvas-end")" tabindex="-1" id="pemsHelpDrawer" aria-labelledby="pemsHelpDrawerLabel">
     <div class="offcanvas-header border-bottom">
@@ -44,13 +38,13 @@
             var body = document.getElementById('pemsHelpDrawerBody');
             body.innerHTML = '<p class="text-muted small text-center py-4">@L("Loading...", "در حال بارگذاری...")</p>';
 
-            fetch('@Url.Action("Context", "Help")?key=' + encodeURIComponent(helpKey))
+            fetch('@Url.Action("Context", "Help", new { area = "" })?key=' + encodeURIComponent(helpKey))
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
                     loadedForKey = helpKey;
                     if (!data.found) {
                         body.innerHTML = '<p class="text-muted small text-center py-4">@L("No Help content yet for this page.", "هنوز محتوای راهنمایی برای این صفحه ثبت نشده.")</p>'
-                            + '<a class="btn btn-sm btn-outline-secondary w-100" href="@Url.Action("Index", "Help")">@L("Browse Help Center", "مرور مرکز راهنما")</a>';
+                            + '<a class="btn btn-sm btn-outline-secondary w-100" href="@Url.Action("Index", "Help", new { area = "" })">@L("Browse Help Center", "مرور مرکز راهنما")</a>';
                         return;
                     }
                     var related = (data.relatedArticles || []).map(function (r) {

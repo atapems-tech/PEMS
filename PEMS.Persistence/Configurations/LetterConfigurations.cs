@@ -101,6 +101,9 @@ public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
     public void Configure(EntityTypeBuilder<Notification> builder)
     {
         builder.HasIndex(x => new { x.UserId, x.IsRead });
+
+        // صندوق فعال (DismissedDate IS NULL) مرتب بر اساس تاریخ؛ (UserId,IsRead) برای شمارنده کافی است
+        builder.HasIndex(x => new { x.UserId, x.DismissedDate, x.CreatedDate });
     }
 }
 

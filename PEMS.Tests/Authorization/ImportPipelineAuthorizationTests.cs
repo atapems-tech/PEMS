@@ -1,3 +1,4 @@
+using PEMS.Web.Areas.Warehouse.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.DTOs;
@@ -86,10 +87,13 @@ public class ImportPipelineAuthorizationTests
         public Task<(bool Success, string? Error, int? BatchId)> StageFromExcelAsync(Stream fileStream, string fileName, string? sheetName, int? importedById, int? sourceAttachmentId = null)
             => Task.FromResult<(bool, string?, int?)>((true, null, 1));
         public Task<List<MrsImportBatchSummaryDto>> GetBatchesAsync() => Task.FromResult(new List<MrsImportBatchSummaryDto>());
-        public Task<MrsImportBatchDetailDto?> GetBatchDetailAsync(int batchId, string? matchStatusFilter = null) => Task.FromResult<MrsImportBatchDetailDto?>(null);
+        public Task<MrsImportBatchDetailDto?> GetBatchDetailAsync(int batchId, string? matchStatusFilter = null, int page = 1, int pageSize = 50) => Task.FromResult<MrsImportBatchDetailDto?>(null);
         public Task<(bool Success, string? Error, int Committed, int Skipped)> CommitAsync(int batchId, List<int> rowIds, int? reviewedById)
         { CommitCalled = true; return Task.FromResult<(bool, string?, int, int)>((true, null, rowIds.Count, 0)); }
         public Task<(bool Success, string? Error)> RejectRowsAsync(int batchId, List<int> rowIds, int? reviewedById) => Task.FromResult<(bool, string?)>((true, null));
+        public Task<(bool Success, string? Error, int Committed, int Skipped)> CommitByStatusAsync(int batchId, string matchStatusFilter, int? reviewedById)
+        { CommitCalled = true; return Task.FromResult<(bool, string?, int, int)>((true, null, 1, 0)); }
+        public Task<(bool Success, string? Error, int Count)> RejectByStatusAsync(int batchId, string matchStatusFilter, int? reviewedById) => Task.FromResult<(bool, string?, int)>((true, null, 0));
     }
 
     // ================= MDR Import =================

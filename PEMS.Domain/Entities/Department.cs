@@ -15,6 +15,11 @@ public class Department
     // "Process"/"Mechanical" زیرمجموعه‌ی آن). عمداً به‌جای Entity جدید "Organization" بالای این -
     // PEMS تک‌شرکتی/on-prem است (BaseEntity.TenantId هنوز خالی/آماده‌ی آینده است)، خودِ Department
     // با این FK خودارجاع، ریشه‌ی سلسله‌مراتب واقعی می‌شود.
+    // Phase 3B (Work Order governance): دامنه‌ی سازمانی این دپارتمان (Engineering/Maintenance/Operations/Warehouse). Null = ارث از
+    // والد؛ اگر تا ریشه هیچ‌کدام مقدار نداشته باشد، دامنه «نامشخص» است و کنش‌های حاکمیتی Work Order برای اعضای آن رد می‌شود (Fail-closed).
+    [System.ComponentModel.DataAnnotations.MaxLength(30)]
+    public string? OrganizationDomain { get; set; }
+
     public int? ParentDepartmentId { get; set; }
     public Department? ParentDepartment { get; set; }
 

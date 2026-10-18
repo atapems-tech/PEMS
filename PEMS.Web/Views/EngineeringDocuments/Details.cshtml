@@ -1,6 +1,9 @@
 ﻿@model PEMS.Application.DTOs.EngineeringDocumentDto
 @using PEMS.Web.Helpers
 @using PEMS.Web.Models
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = "Engineering Document Details";
     // طبق «PEMS — Engineering Documents Upper-Whitespace Correction»: این صفحه از قبل یک
@@ -38,6 +41,8 @@
         ["Draft"] = "Engineer", ["Submitted"] = "Eng. Supervisor / Manager", ["IDC Review"] = "دیسیپلین‌های ارجاع‌شده",
         ["Checked"] = "Eng. Manager", ["Approved"] = "Document Controller", ["Issued"] = "—", ["ClientReview"] = "Document Controller"
     };
+    // ترجمه‌ی نمایشی وضعیت؛ مقدار ذخیره‌شده هرگز تغییر نمی‌کند
+    string StatusText(string? s) { var l = Localizer[DocumentStatusBadge.ResourceKey(s)]; return l.ResourceNotFound ? (s ?? "") : l.Value; }
     var wfIsRejected = wfCurrentStatus == "Rejected" || wfCurrentStatus == "Revise & Resubmit";
     var wfCurrentIndex = Array.IndexOf(wfStageOrder, wfCurrentStatus);
     if (wfCurrentIndex < 0) wfCurrentIndex = wfIsRejected ? 0 : wfStageOrder.Length - 1;
@@ -65,37 +70,32 @@
    جدید/تحلیل AI/رویژن جدید) به منوی «More» منتقل شدند تا فقط اکشن مرحله‌ی فعلی گردش‌کار برجسته
    بماند - هیچ Route/Field/مجوز سرور تغییر نکرده، فقط محل نمایش دکمه‌ها. *@
 
-<div class="pems-doc-page">
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+}
 
-<nav aria-label="breadcrumb" class="mb-2">
-    <ol class="breadcrumb mb-0 small">
-        <li class="breadcrumb-item"><a asp-action="Index">Engineering Documents</a></li>
-        <li class="breadcrumb-item active" aria-current="page">@Model.DocumentNo</li>
-    </ol>
-</nav>
+<div class="vs-page">
 
-<div class="content-card mb-2 pems-doc-header">
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
-        <div class="pems-doc-identity">
+<div class="vs-section">
+    <div class="vs-doc-head">
+        <div class="vs-doc-identity">
             <div class="d-flex align-items-center gap-2 flex-wrap">
-                <h4 class="mb-0 pems-doc-number">@Model.DocumentNo</h4>
-                <span class="badge @DocumentStatusBadge.CssClass(Model.Status)">@Model.Status</span>
-                <span class="badge bg-light text-dark border">REV @Model.RevisionNo</span>
-                @if (Model.IsFrozen) { <span class="badge bg-info text-dark"><i class="bi bi-snow"></i> Frozen</span> }
-                @if (Model.IsOnHold) { <span class="badge bg-warning text-dark"><i class="bi bi-pause-circle"></i> On Hold</span> }
+                <h1 class="vs-doc-number vs-num">@Model.DocumentNo</h1>
+                <span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(Model.Status)"><i class="bi @DocumentStatusBadge.Icon(Model.Status)" aria-hidden="true"></i> @StatusText(Model.Status)</span>
+                <span class="vs-pill vs-pill--current">@Localizer["Ed_CurrentRev"] <span class="vs-num">@Model.RevisionNo</span></span>
+                @if (Model.IsFrozen) { <span class="vs-pill vs-pill--icon vs-pill--info"><i class="bi bi-snow" aria-hidden="true"></i> @Localizer["Ed_Frozen"]</span> }
+                @if (Model.IsOnHold) { <span class="vs-pill vs-pill--icon vs-pill--warning"><i class="bi bi-pause-circle" aria-hidden="true"></i> @Localizer["Ed_OnHold"]</span> }
             </div>
-            <div class="text-muted pems-doc-title-clamp" title="@Model.Title">@Model.Title</div>
-            <div class="pems-doc-meta text-muted mt-1">
-                @Model.ProjectName &middot; @Model.DisciplineName@(!string.IsNullOrEmpty(Model.Area) ? " · " + Model.Area : "")
-            </div>
+            <div class="vs-doc-title" title="@Model.Title">@Model.Title</div>
+            <div class="vs-doc-meta">@Model.ProjectName &middot; @Model.DisciplineName@(!string.IsNullOrEmpty(Model.Area) ? " · " + Model.Area : "")</div>
         </div>
 
-        <div class="d-flex align-items-center gap-2 flex-wrap pems-doc-actions">
+        <div class="vs-doc-actions">
             @* طبق بخش ۱۹ ممیزی UX: فقط اکشن(های) مرحله‌ی فعلی گردش‌کار این‌جا برجسته می‌مانند -
                بدون تغییر در Route/Field/بررسی وضعیت سرور. *@
             @if (Model.Status == "Draft")
             {
-                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
+                <button type="button" class="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
                     <i class="bi bi-send"></i> Submit For Review
                 </button>
             }
@@ -103,13 +103,13 @@
             {
                 <form asp-action="Check" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@Model.DocumentId" />
-                    <button class="btn btn-info btn-sm"><i class="bi bi-clipboard-check"></i> Check</button>
+                    <button class="vs-btn vs-btn--primary"><i class="bi bi-clipboard-check"></i> Check</button>
                 </form>
                 <form asp-action="Reject" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@Model.DocumentId" />
-                    <button class="btn btn-danger btn-sm">Reject</button>
+                    <button class="vs-btn vs-btn--dangerline">@Localizer["Reject"]</button>
                 </form>
-                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#reviseModal">
+                <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#reviseModal">
                     <i class="bi bi-arrow-repeat"></i> Revise &amp; Resubmit
                 </button>
             }
@@ -124,37 +124,37 @@
                        (My Review) هستند - نه اقدام تایید/رد رسمیِ کل مدرک (که فقط در مرحله‌ی Approval،
                        با برچسب مشابه ولی جدا، پایین‌تر ظاهر می‌شود). برچسب‌ها عمداً متفاوت نگه داشته
                        شده‌اند تا با دکمه‌های تصمیم رسمی اشتباه گرفته نشوند. *@
-                    <span class="text-muted small me-1">My IDC Review:</span>
+                    <span class="text-muted small me-1">@Localizer["My IDC Review:"]</span>
                     <form asp-action="IdcRespond" method="post" class="d-inline">
                         <input type="hidden" name="id" value="@Model.DocumentId" />
                         <input type="hidden" name="decision" value="Approve" />
-                        <button class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> No Comment</button>
+                        <button class="vs-btn vs-btn--primary"><i class="bi bi-check-lg"></i> No Comment</button>
                     </form>
-                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#idcCommentModal">Approve with Comments</button>
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#idcRejectModal">Revision Required</button>
+                    <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#idcCommentModal">@Localizer["Approve with Comments"]</button>
+                    <button type="button" class="vs-btn vs-btn--dangerline" data-bs-toggle="modal" data-bs-target="#idcRejectModal">@Localizer["Revision Required"]</button>
                 }
                 else
                 {
-                    <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> منتظر بازبینی دیسیپلین‌های دیگر (IDC)</span>
+                    <span class="vs-pill vs-pill--icon vs-pill--warning"><i class="bi bi-hourglass-split" aria-hidden="true"></i> منتظر بازبینی دیسیپلین‌های دیگر (IDC)</span>
                 }
             }
             else if (Model.Status == "Checked")
             {
                 <form asp-action="Approve" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@Model.DocumentId" />
-                    <button class="btn btn-success btn-sm">Approve</button>
+                    <button class="vs-btn vs-btn--primary">@Localizer["Approve"]</button>
                 </form>
                 <form asp-action="Reject" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@Model.DocumentId" />
-                    <button class="btn btn-danger btn-sm">Reject</button>
+                    <button class="vs-btn vs-btn--dangerline">@Localizer["Reject"]</button>
                 </form>
-                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#reviseModal">
+                <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#reviseModal">
                     <i class="bi bi-arrow-repeat"></i> Revise &amp; Resubmit
                 </button>
             }
             else if (Model.Status == "Approved")
             {
-                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#issueModal">
+                <button type="button" class="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#issueModal">
                     <i class="bi bi-send-check"></i> Issue
                 </button>
             }
@@ -162,14 +162,14 @@
             {
                 @if (string.IsNullOrEmpty(Model.ClientApprovalStatus))
                 {
-                    <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#clientResponseModal">
+                    <button type="button" class="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#clientResponseModal">
                         <i class="bi bi-building"></i> Record Client Response
                     </button>
                 }
             }
             else if (Model.Status == "Rejected" || Model.Status == "Revise & Resubmit")
             {
-                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
+                <button type="button" class="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
                     <i class="bi bi-arrow-repeat"></i> Resubmit
                 </button>
             }
@@ -177,11 +177,11 @@
             @* طبق بخش ۲۱ ممیزی UX: اکشن‌های کم‌تکرار این‌جا جمع شدند - نمایش هر آیتم دقیقاً همون
                شرط/مجوزی که قبلاً به‌صورت جداگانه روی صفحه داشت را حفظ می‌کند. *@
             <div class="dropdown">
-                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    More
+                <button class="vs-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    @Localizer["Ed_MoreActions"]
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@Model.DocumentId"><i class="bi bi-pencil"></i> Edit</a></li>
+                    <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@Model.DocumentId"><i class="bi bi-pencil"></i> @Localizer["Edit"]</a></li>
                     @if (Model.Status == "Approved" || Model.Status == "Issued")
                     {
                         <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newRevisionModal"><i class="bi bi-file-earmark-plus"></i> Create New Revision</button></li>
@@ -189,16 +189,16 @@
                     <li><hr class="dropdown-divider" /></li>
                     <li>
                         <form asp-action="AnalyzeRelationships" asp-route-id="@Model.DocumentId" method="post">
-                            <button type="submit" class="dropdown-item"><i class="bi bi-stars"></i> تحلیل روابط (AI)</button>
+                            <button type="submit" class="dropdown-item"><i class="bi bi-stars"></i> @Localizer["تحلیل روابط (AI)"]</button>
                         </form>
                     </li>
                     @if (!Model.IsFrozen && (bool)(ViewBag.CanFreeze ?? false))
                     {
-                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#freezeModal"><i class="bi bi-snow"></i> Freeze</button></li>
+                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#freezeModal"><i class="bi bi-snow"></i> @Localizer["Freeze"]</button></li>
                     }
                     @if (!Model.IsOnHold && !Model.IsFrozen && Model.Status != "Issued" && (bool)(ViewBag.CanHold ?? false))
                     {
-                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#holdModal"><i class="bi bi-pause-circle"></i> Hold</button></li>
+                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#holdModal"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</button></li>
                     }
                 </ul>
             </div>
@@ -219,7 +219,7 @@
                 <form asp-action="Unfreeze" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
                     <input type="text" name="reason" class="form-control form-control-sm" style="max-width:240px;" placeholder="Unfreeze reason (required)" required />
                     <button type="submit" class="btn btn-outline-dark btn-sm" onclick="return confirm('انجماد این مدرک برداشته شود؟');">
-                        <i class="bi bi-sun"></i> Unfreeze
+                        <i class="bi bi-sun"></i> @Localizer["Unfreeze"]
                     </button>
                 </form>
             }
@@ -236,7 +236,7 @@
                 <form asp-action="ReleaseHold" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
                     <input type="text" name="reason" class="form-control form-control-sm" style="max-width:240px;" placeholder="Release reason (required)" required />
                     <button type="submit" class="btn btn-outline-dark btn-sm" onclick="return confirm('Hold این مدرک رفع شود؟');">
-                        <i class="bi bi-play-circle"></i> Release Hold
+                        <i class="bi bi-play-circle"></i> @Localizer["Release Hold"]
                     </button>
                 </form>
             }
@@ -251,7 +251,7 @@
         <details class="mt-2 small">
             <summary class="text-muted">Hold History (@holdHistory.Count)</summary>
             <table class="table table-sm table-enterprise mt-1">
-                <thead><tr><th>Reason</th><th>Held</th><th>By</th><th>Released</th><th>By</th><th>Release Reason</th></tr></thead>
+                <thead><tr><th>@Localizer["Reason"]</th><th>Held</th><th>By</th><th>Released</th><th>By</th><th>Release Reason</th></tr></thead>
                 <tbody>
                     @foreach (var h in holdHistory)
                     {
@@ -307,12 +307,12 @@
 <ul class="nav nav-tabs mb-3" id="docTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
-            <i class="bi bi-info-circle"></i> Overview
+            <i class="bi bi-info-circle"></i> @Localizer["Ed_TabOverview"]
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-attachments" type="button">
-            <i class="bi bi-paperclip"></i> Attachments &amp; AI <span class="badge bg-secondary">@(Model.Attachments?.Count ?? 0)</span>
+            <i class="bi bi-paperclip"></i> @Localizer["Ed_TabFiles"] <span class="badge bg-secondary">@(Model.Attachments?.Count ?? 0)</span>
         </button>
     </li>
     @* طبق بخش ۲۵ ممیزی UX: IDC حالا یک تب اختصاصی است، نه فقط چند Badge کوچک توی هدر -
@@ -322,23 +322,23 @@
     {
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-idc" type="button">
-                <i class="bi bi-diagram-3"></i> IDC Review <span class="badge bg-secondary">@idcApprovedCount/@idcStatusForPage.Count</span>
+                <i class="bi bi-diagram-3"></i> @Localizer["Ed_TabIdc"] <span class="badge bg-secondary">@idcApprovedCount/@idcStatusForPage.Count</span>
             </button>
         </li>
     }
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-revisions" type="button">
-            <i class="bi bi-clock-history"></i> Revisions <span class="badge bg-secondary">@(Model.Revisions?.Count ?? 0)</span>
+            <i class="bi bi-clock-history"></i> @Localizer["Ed_TabRevisions"] <span class="badge bg-secondary">@(Model.Revisions?.Count ?? 0)</span>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
-            <i class="bi bi-diagram-2"></i> Workflow History
+            <i class="bi bi-diagram-2"></i> @Localizer["Ed_TabWorkflow"]
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
-            <i class="bi bi-envelope-paper"></i> Correspondence
+            <i class="bi bi-envelope-paper"></i> @Localizer["Ed_TabDistribution"]
             @if (relatedLetters.Any()) { <span class="badge bg-secondary">@relatedLetters.Count</span> }
         </button>
     </li>
@@ -348,71 +348,70 @@
 
     @* ===================== Overview ===================== *@
     <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
-        <div class="row g-3">
-            <div class="col-lg-6">
-                <div class="content-card h-100">
-                    <h6 class="mb-3">Basic Information</h6>
-                    <table class="table table-borderless mb-0">
-                        <tr><th class="text-muted" style="width:40%;">Document No</th><td>@Model.DocumentNo</td></tr>
-                        <tr><th class="text-muted">Title</th><td>@Model.Title</td></tr>
-                        <tr><th class="text-muted">Description</th><td>@Model.Description</td></tr>
-                        <tr><th class="text-muted">Document Type</th><td>@Model.DocumentType</td></tr>
-                        <tr><th class="text-muted">Project</th><td>@Model.ProjectName</td></tr>
-                        <tr><th class="text-muted">Discipline</th><td>@Model.DisciplineName</td></tr>
-                        <tr><th class="text-muted">Area</th><td>@Model.Area</td></tr>
-                        <tr><th class="text-muted">Revision</th><td>@Model.RevisionNo</td></tr>
-                        <tr><th class="text-muted">Created Date</th><td>@Model.CreatedDate.ToString("yyyy-MM-dd")</td></tr>
-                    </table>
-                </div>
+        <div class="vs-section">
+            <h2 class="vs-section__title"><i class="bi bi-card-list"></i> @Localizer["Ed_SecIdentification"]</h2>
+            <div class="vs-info">
+                <div><p class="vs-info__label">@Localizer["Ed_DocType"]</p><p class="vs-info__value">@Model.DocumentType</p></div>
+                <div><p class="vs-info__label">@Localizer["Ed_Project"]</p><p class="vs-info__value">@Model.ProjectName</p></div>
+                <div><p class="vs-info__label">@Localizer["Ed_Discipline"]</p><p class="vs-info__value">@Model.DisciplineName</p></div>
+                <div><p class="vs-info__label">@Localizer["Ed_Area"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.Area) ? "—" : Model.Area)</p></div>
+                <div><p class="vs-info__label">@Localizer["Ed_Revision"]</p><p class="vs-info__value vs-num">@Model.RevisionNo</p></div>
+                <div><p class="vs-info__label">@Localizer["Ed_CreatedDate"]</p><p class="vs-info__value vs-num">@Model.CreatedDate.ToString("yyyy-MM-dd")</p></div>
+                <div class="vs-info__wide"><p class="vs-info__label">@Localizer["Ed_Description"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.Description) ? "—" : Model.Description)</p></div>
             </div>
-            <div class="col-lg-6">
-                <div class="content-card h-100">
-                    <h6 class="mb-3">Engineering Information</h6>
-                    <table class="table table-borderless mb-0">
-                        <tr><th class="text-muted" style="width:40%;">Issue Purpose</th><td>@Model.IssuePurpose</td></tr>
-                        <tr><th class="text-muted">Prepared By</th><td>@Model.PreparedBy</td></tr>
-                        <tr><th class="text-muted">Checked By</th><td>
-                            @Model.CheckedBy @(Model.CheckedDate.HasValue ? $"({Model.CheckedDate:yyyy-MM-dd})" : "")
-                            @if (!string.IsNullOrEmpty(Model.CheckedBySignaturePath))
-                            {
-                                <img src="@Model.CheckedBySignaturePath" alt="Signature" style="height:32px; vertical-align:middle; margin-right:8px; background:#fff; border:1px solid #eee; border-radius:3px;" />
-                            }
-                        </td></tr>
-                        <tr><th class="text-muted">Approved By</th><td>
-                            @Model.ApprovedBy @(Model.ApprovedDate.HasValue ? $"({Model.ApprovedDate:yyyy-MM-dd})" : "")
-                            @if (!string.IsNullOrEmpty(Model.ApprovedBySignaturePath))
-                            {
-                                <img src="@Model.ApprovedBySignaturePath" alt="Signature" style="height:32px; vertical-align:middle; margin-right:8px; background:#fff; border:1px solid #eee; border-radius:3px;" />
-                            }
-                        </td></tr>
-                        <tr><th class="text-muted">Comment Status</th><td>@Model.CommentStatus</td></tr>
-                        @if (!string.IsNullOrEmpty(Model.ClientApprovalStatus))
+        </div>
+
+        <div class="vs-section">
+            <h2 class="vs-section__title"><i class="bi bi-patch-check"></i> @Localizer["Ed_SecEngineering"]</h2>
+            <div class="vs-info">
+                <div><p class="vs-info__label">@Localizer["Ed_IssuePurpose"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.IssuePurpose) ? "—" : Model.IssuePurpose)</p></div>
+                <div><p class="vs-info__label">@Localizer["Ed_PreparedBy"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.PreparedBy) ? "—" : Model.PreparedBy)</p></div>
+                <div>
+                    <p class="vs-info__label">@Localizer["Ed_CheckedBy"]</p>
+                    <p class="vs-info__value">
+                        @(string.IsNullOrEmpty(Model.CheckedBy) ? "—" : Model.CheckedBy) @(Model.CheckedDate.HasValue ? $"({Model.CheckedDate:yyyy-MM-dd})" : "")
+                        @if (!string.IsNullOrEmpty(Model.CheckedBySignaturePath))
                         {
-                            <tr>
-                                <th class="text-muted">Client Response</th>
-                                <td>
-                                    <span class="badge @(Model.ClientApprovalStatus == "Approved" ? "bg-success" : Model.ClientApprovalStatus == "Rejected" ? "bg-danger" : "bg-warning text-dark")">@Model.ClientApprovalStatus</span>
-                                    @if (!string.IsNullOrEmpty(Model.ClientComment)) { <div class="small text-muted">@Model.ClientComment</div> }
-                                </td>
-                            </tr>
+                            <img src="@Model.CheckedBySignaturePath" alt="Signature" style="height:32px; vertical-align:middle; margin-inline-start:8px; background:#fff; border:1px solid #eee; border-radius:3px;" />
                         }
-                        <tr>
-                            <th class="text-muted">Related Equipment</th>
-                            <td>
-                                @if (Model.EquipmentId.HasValue)
-                                { <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</a> }
-                                else { <span class="text-muted">-</span> }
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="text-muted">Related Contract</th>
-                            <td>
-                                @if (Model.ContractId.HasValue)
-                                { <a asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Model.ContractNo</a> }
-                                else { <span class="text-muted">-</span> }
-                            </td>
-                        </tr>
-                    </table>
+                    </p>
+                </div>
+                <div>
+                    <p class="vs-info__label">@Localizer["Ed_ApprovedBy"]</p>
+                    <p class="vs-info__value">
+                        @(string.IsNullOrEmpty(Model.ApprovedBy) ? "—" : Model.ApprovedBy) @(Model.ApprovedDate.HasValue ? $"({Model.ApprovedDate:yyyy-MM-dd})" : "")
+                        @if (!string.IsNullOrEmpty(Model.ApprovedBySignaturePath))
+                        {
+                            <img src="@Model.ApprovedBySignaturePath" alt="Signature" style="height:32px; vertical-align:middle; margin-inline-start:8px; background:#fff; border:1px solid #eee; border-radius:3px;" />
+                        }
+                    </p>
+                </div>
+                <div><p class="vs-info__label">@Localizer["Ed_CommentStatus"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.CommentStatus) ? "—" : Model.CommentStatus)</p></div>
+                @if (!string.IsNullOrEmpty(Model.ClientApprovalStatus))
+                {
+                    <div>
+                        <p class="vs-info__label">@Localizer["Ed_ClientResponse"]</p>
+                        <p class="vs-info__value">
+                            <span class="vs-pill vs-pill--icon @(Model.ClientApprovalStatus == "Approved" ? "vs-pill--success" : Model.ClientApprovalStatus == "Rejected" ? "vs-pill--danger" : "vs-pill--warning")"><i class="bi @(Model.ClientApprovalStatus == "Approved" ? "bi-check-circle" : Model.ClientApprovalStatus == "Rejected" ? "bi-x-circle" : "bi-exclamation-circle")" aria-hidden="true"></i> @Model.ClientApprovalStatus</span>
+                            @if (!string.IsNullOrEmpty(Model.ClientComment)) { <span class="vs-sub">@Model.ClientComment</span> }
+                        </p>
+                    </div>
+                }
+                <div>
+                    <p class="vs-info__label">@Localizer["Ed_RelatedEquipment"]</p>
+                    <p class="vs-info__value">
+                        @if (Model.EquipmentId.HasValue)
+                        { <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</a> }
+                        else { <span class="text-muted">—</span> }
+                    </p>
+                </div>
+                <div>
+                    <p class="vs-info__label">@Localizer["Ed_RelatedContract"]</p>
+                    <p class="vs-info__value">
+                        @if (Model.ContractId.HasValue)
+                        { <a asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Model.ContractNo</a> }
+                        else { <span class="text-muted">—</span> }
+                    </p>
                 </div>
             </div>
         </div>
@@ -420,11 +419,11 @@
 
     @* ===================== Attachments & AI ===================== *@
     <div class="tab-pane fade" id="tab-attachments" role="tabpanel">
-        <div class="content-card">
+        <div class="vs-section">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="mb-0">Attachments</h6>
+                <h6 class="mb-0">@Localizer["Ed_SecFiles"]</h6>
                 <a asp-action="UploadAttachment" asp-route-id="@Model.DocumentId" class="btn btn-sm btn-pems-solid">
-                    <i class="bi bi-upload"></i> Upload Attachment
+                    <i class="bi bi-upload"></i> @Localizer["Ed_Upload"]
                 </a>
             </div>
 
@@ -432,7 +431,7 @@
             {
                 <table class="table table-enterprise">
                     <thead>
-                        <tr><th>File Name</th><th>Revision</th><th>Ext</th><th>Size</th><th>AI Status</th><th>Date</th><th class="text-end">Actions</th></tr>
+                        <tr><th>@Localizer["Ed_FileName"]</th><th>@Localizer["Ed_Revision"]</th><th>@Localizer["Ed_Ext"]</th><th>@Localizer["Ed_Size"]</th><th>@Localizer["Ed_AiStatus"]</th><th>@Localizer["Ed_Date"]</th><th class="text-end">@Localizer["Ed_Actions"]</th></tr>
                     </thead>
                     <tbody>
                         @foreach (var file in Model.Attachments)
@@ -445,7 +444,9 @@
                                 "Failed" => "bg-danger",
                                 _ => "bg-secondary"
                             };
-                            <tr>
+                            var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev;
+                            <tr class="@(fileIsPreviousRev ? "vs-rev-superseded" : "")">
                                 <td>
                                     @file.FileName
                                     @if (!string.IsNullOrEmpty(file.FileHash))
@@ -456,7 +457,9 @@
                                 <td>
                                     @if (file.DocumentRevisionId.HasValue)
                                     {
-                                        <span class="badge bg-secondary">Rev @file.RevisionNo</span>
+                                        <span class="badge bg-secondary">@Localizer["Ed_CurrentRev"] @file.RevisionNo</span>
+                                        @if (fileIsCurrentRev) { <span class="vs-pill vs-pill--current">@Localizer["Ed_CurrentRevFile"]</span> }
+                                        else { <span class="vs-sub">@Localizer["Ed_PreviousRevFile"]</span> }
                                         @if (file.IsOfficial)
                                         {
                                             <span class="badge bg-success" data-bs-toggle="tooltip" title="Official file for this revision">Official</span>
@@ -468,7 +471,7 @@
                                     }
                                     else
                                     {
-                                        <span class="text-muted small">Document-level</span>
+                                        <span class="text-muted small">@Localizer["Ed_DocLevelFile"]</span>
                                     }
                                 </td>
                                 <td>@file.FileExtension</td>
@@ -498,7 +501,7 @@
             }
             else
             {
-                <p class="text-muted text-center py-4">No attachment available.</p>
+                <p class="text-muted text-center py-4">@Localizer["Ed_NoFiles"]</p>
             }
         </div>
     </div>
@@ -513,7 +516,7 @@
     @if (idcStatusForPage.Any())
     {
         <div class="tab-pane fade" id="tab-idc" role="tabpanel">
-            <div class="content-card">
+            <div class="vs-section">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h6 class="mb-0"><i class="bi bi-diagram-3"></i> Inter-Discipline Check (IDC) — Discipline Review Summary</h6>
                     <span class="text-muted small">@idcApprovedCount / @idcStatusForPage.Count disciplines responded</span>
@@ -527,7 +530,7 @@
                     <div class="progress-bar bg-success" style="width:@(idcStatusForPage.Count > 0 ? idcApprovedCount * 100 / idcStatusForPage.Count : 0)%"></div>
                 </div>
                 <table class="table table-enterprise">
-                    <thead><tr><th>Discipline</th><th>Status</th><th>Comment</th><th>Responded By</th><th>Responded Date</th></tr></thead>
+                    <thead><tr><th>@Localizer["Discipline"]</th><th>@Localizer["Status"]</th><th>@Localizer["Comment"]</th><th>Responded By</th><th>Responded Date</th></tr></thead>
                     <tbody>
                         @foreach (var idc in idcStatusForPage)
                         {
@@ -555,14 +558,14 @@
                     @if (myPendingIdcTab != null)
                     {
                         <div class="d-flex align-items-center gap-2 mt-3">
-                            <span class="text-muted small">My IDC Review:</span>
+                            <span class="text-muted small">@Localizer["My IDC Review:"]</span>
                             <form asp-action="IdcRespond" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@Model.DocumentId" />
                                 <input type="hidden" name="decision" value="Approve" />
-                                <button class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> No Comment</button>
+                                <button class="vs-btn vs-btn--primary"><i class="bi bi-check-lg"></i> No Comment</button>
                             </form>
-                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#idcCommentModal">Approve with Comments</button>
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#idcRejectModal">Revision Required</button>
+                            <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#idcCommentModal">@Localizer["Approve with Comments"]</button>
+                            <button type="button" class="vs-btn vs-btn--dangerline" data-bs-toggle="modal" data-bs-target="#idcRejectModal">@Localizer["Revision Required"]</button>
                         </div>
                     }
                 }
@@ -572,19 +575,20 @@
 
     @* ===================== Revisions ===================== *@
     <div class="tab-pane fade" id="tab-revisions" role="tabpanel">
-        <div class="content-card">
-            <h6 class="mb-3">Revision History</h6>
+        <div class="vs-section">
+            <h6 class="mb-3">@Localizer["Ed_SecRevisionHistory"]</h6>
             @if (Model.Revisions != null && Model.Revisions.Any())
             {
                 <table class="table table-enterprise">
-                    <thead><tr><th>Revision</th><th>Status</th><th>Client Review</th><th>Reason</th><th>Created By</th><th>Reviewer</th><th>Approved</th>
-                        <th>Created</th><th>Issued</th><th>Effective</th><th>Supersedes</th></tr></thead>
+                    <thead><tr><th>@Localizer["Ed_RevisionCol"]</th><th>@Localizer["Ed_Status"]</th><th>@Localizer["Ed_ClientReviewCol"]</th><th>@Localizer["Ed_Reason"]</th><th>@Localizer["Ed_CreatedBy"]</th><th>@Localizer["Ed_Reviewer"]</th><th>@Localizer["Ed_ApprovedCol"]</th>
+                        <th>@Localizer["Ed_Created"]</th><th>@Localizer["Ed_IssuedCol"]</th><th>@Localizer["Ed_EffectiveCol"]</th><th>@Localizer["Ed_SupersedesCol"]</th></tr></thead>
                     <tbody>
                         @foreach (var rev in Model.Revisions)
                         {
-                            <tr>
-                                <td>@rev.RevisionNo</td>
-                                <td><span class="badge bg-secondary">@rev.Status</span></td>
+                            var revIsCurrent = rev.RevisionNo == Model.RevisionNo;
+                            <tr class="@(revIsCurrent ? "vs-rev-current" : "vs-rev-superseded")">
+                                <td><span class="vs-num vs-num--strong">@rev.RevisionNo</span> @if (revIsCurrent) { <span class="vs-pill vs-pill--current">@Localizer["Ed_CurrentBadge"]</span> }</td>
+                                <td><span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(rev.Status)"><i class="bi @DocumentStatusBadge.Icon(rev.Status)" aria-hidden="true"></i> @StatusText(rev.Status)</span></td>
                                 <td class="small">
                                     @{
                                         var clientBadge = rev.ClientReviewStatus switch
@@ -600,7 +604,7 @@
                                     }
                                     else
                                     {
-                                        <span class="text-muted">Not yet submitted to client</span>
+                                        <span class="text-muted">@Localizer["Ed_NotSubmittedToClient"]</span>
                                     }
                                 </td>
                                 <td class="small">@rev.Reason</td>
@@ -628,7 +632,7 @@
             }
             else
             {
-                <p class="text-muted text-center py-4">No revision history.</p>
+                <p class="text-muted text-center py-4">@Localizer["Ed_NoRevisions"]</p>
             }
         </div>
     </div>
@@ -642,8 +646,8 @@
        این تب همیشه (نه فقط بعد از اصلاح مالکیت IDC) عملاً خالی/ناقص بود. حالا از
        WorkflowHistory واقعی (روی همه‌ی Instance های این مدرک، نه فقط چرخه‌ی جاری) می‌خواند. *@
     <div class="tab-pane fade" id="tab-workflow" role="tabpanel">
-        <div class="content-card">
-            <h6 class="mb-3">Workflow History</h6>
+        <div class="vs-section">
+            <h6 class="mb-3">@Localizer["Ed_SecWorkflowHistory"]</h6>
             @if (workflowHistoryForPage.Any())
             {
                 var orderedWorkflow = workflowHistoryForPage.OrderByDescending(x => x.ActionDate).ToList();
@@ -683,7 +687,7 @@
                 <details class="mt-3 small">
                     <summary class="text-muted">Full audit table (@orderedWorkflow.Count)</summary>
                     <table class="table table-enterprise mt-2">
-                        <thead><tr><th>From</th><th>To</th><th>Action</th><th>Comment</th><th>Date</th><th>User</th></tr></thead>
+                        <thead><tr><th>@Localizer["From"]</th><th>To</th><th>@Localizer["Action"]</th><th>@Localizer["Comment"]</th><th>@Localizer["Date"]</th><th>@Localizer["User"]</th></tr></thead>
                         <tbody>
                             @foreach (var item in orderedWorkflow)
                             {
@@ -702,19 +706,19 @@
             }
             else
             {
-                <p class="text-muted text-center py-4">No workflow history.</p>
+                <p class="text-muted text-center py-4">@Localizer["Ed_NoWorkflow"]</p>
             }
         </div>
     </div>
 
     @* ===================== Correspondence ===================== *@
     <div class="tab-pane fade" id="tab-correspondence" role="tabpanel">
-        <div class="content-card">
-            <h6 class="mb-3"><i class="bi bi-envelope-paper"></i> Related Correspondence</h6>
+        <div class="vs-section">
+            <h6 class="mb-3"><i class="bi bi-envelope-paper"></i> @Localizer["Ed_SecCorrespondence"]</h6>
             @if (relatedLetters.Any())
             {
                 <table class="table table-enterprise">
-                    <thead><tr><th>Type</th><th>Letter No</th><th>Subject</th><th>Date</th><th>Status</th><th></th></tr></thead>
+                    <thead><tr><th>@Localizer["Ed_Letters_Type"]</th><th>@Localizer["Ed_LetterNo"]</th><th>@Localizer["Ed_Subject"]</th><th>@Localizer["Ed_Date"]</th><th>@Localizer["Ed_Status"]</th><th></th></tr></thead>
                     <tbody>
                         @foreach (var l in relatedLetters)
                         {
@@ -732,30 +736,30 @@
             }
             else
             {
-                <p class="text-muted text-center py-4">No correspondence linked to this document yet.</p>
+                <p class="text-muted text-center py-4">@Localizer["Ed_NoCorrespondence"]</p>
             }
         </div>
 
         @* طبق «PEMS Phase 2A — EDMS Foundation» بخش ۲: قبلاً هیچ پیوند متقابلی با Transmittal
            روی این صفحه نبود - Service/Entity موجود، فقط یک بخش خلاصه‌ی جدید *@
-        <div class="content-card mt-3">
-            <h6 class="mb-3"><i class="bi bi-truck"></i> Related Transmittals</h6>
+        <div class="vs-section">
+            <h6 class="mb-3"><i class="bi bi-truck"></i> @Localizer["Ed_SecTransmittals"]</h6>
             @{
                 var relatedTransmittals = (List<PEMS.Application.DTOs.RelatedTransmittalDto>)(ViewBag.RelatedTransmittals ?? new List<PEMS.Application.DTOs.RelatedTransmittalDto>());
             }
             @if (relatedTransmittals.Any())
             {
                 <table class="table table-enterprise">
-                    <thead><tr><th>Transmittal No</th><th>Rev. Sent</th><th>Purpose</th><th>Date</th><th>Status</th><th></th></tr></thead>
+                    <thead><tr><th>@Localizer["Ed_TransmittalNo"]</th><th>@Localizer["Ed_RevSent"]</th><th>@Localizer["Ed_Purpose"]</th><th>@Localizer["Ed_Date"]</th><th>@Localizer["Ed_Status"]</th><th></th></tr></thead>
                     <tbody>
                         @foreach (var t in relatedTransmittals)
                         {
                             <tr>
                                 <td>@t.TransmittalNo</td>
-                                <td class="small text-muted">Rev @t.RevisionNoAtTransmittal</td>
+                                <td class="small text-muted">@Localizer["Ed_CurrentRev"] <span class="vs-num">@t.RevisionNoAtTransmittal</span></td>
                                 <td>@t.Purpose</td>
                                 <td class="small text-muted">@(t.SentDate?.ToString("yyyy-MM-dd") ?? t.TransmittalDate.ToString("yyyy-MM-dd"))</td>
-                                <td><span class="badge bg-info text-dark">@t.Status</span></td>
+                                <td><span class="vs-pill @PEMS.Web.Helpers.VdrUi.TransmittalTone(t.Status)">@VdrUi.Loc(Localizer, "St_", t.Status)</span></td>
                                 <td><a asp-controller="Transmittal" asp-action="Details" asp-route-id="@t.TransmittalId" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="View transmittal" aria-label="View transmittal @t.TransmittalNo"><i class="bi bi-eye"></i></a></td>
                             </tr>
                         }
@@ -764,7 +768,7 @@
             }
             else
             {
-                <p class="text-muted text-center py-4">No transmittals include this document yet.</p>
+                <p class="text-muted text-center py-4">@Localizer["Ed_NoTransmittals"]</p>
             }
         </div>
     </div>
@@ -814,8 +818,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                    <button type="submit" class="btn btn-warning btn-sm"><i class="bi bi-send"></i> تایید و ارسال</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                    <button type="submit" class="btn btn-warning btn-sm"><i class="bi bi-send"></i> @Localizer["تایید و ارسال"]</button>
                 </div>
             </form>
         </div>
@@ -832,14 +836,14 @@
             <form asp-action="IdcRespond" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <input type="hidden" name="decision" value="Comment" />
-                <div class="modal-header"><h6 class="modal-title">ثبت کامنت بازبینی IDC (دیسیپلین شما)</h6></div>
+                <div class="modal-header"><h6 class="modal-title">@Localizer["ثبت کامنت بازبینی IDC (دیسیپلین شما)"]</h6></div>
                 <div class="modal-body">
                     <p class="text-muted small">این نظر به‌عنوان نتیجه‌ی بازبینی دیسیپلین شما ثبت می‌شود و مستقیماً روی وضعیت رسمی مدرک اثر نمی‌گذارد. بعد از پاسخ همه‌ی دیسیپلین‌های ارجاع‌شده، سازنده/تأییدکننده‌ی مدرک با دیدن مجموع نظرات IDC تصمیم نهایی را می‌گیرد.</p>
                     <textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                    <button type="submit" class="btn btn-warning btn-sm">ثبت کامنت</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                    <button type="submit" class="btn btn-warning btn-sm">@Localizer["ثبت کامنت"]</button>
                 </div>
             </form>
         </div>
@@ -852,14 +856,14 @@
             <form asp-action="IdcRespond" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <input type="hidden" name="decision" value="Reject" />
-                <div class="modal-header"><h6 class="modal-title">اعلام نیاز به اصلاح (دیسیپلین شما)</h6></div>
+                <div class="modal-header"><h6 class="modal-title">@Localizer["اعلام نیاز به اصلاح (دیسیپلین شما)"]</h6></div>
                 <div class="modal-body">
                     <p class="text-muted small"><strong>این اقدام، مدرک را رد نمی‌کند و آن را به سازنده برنمی‌گرداند.</strong> فقط نتیجه‌ی بازبینی دیسیپلین شما را «نیازمند اصلاح» ثبت می‌کند. بعد از پاسخ همه‌ی دیسیپلین‌های ارجاع‌شده، مدرک برای تصمیم رسمی (تایید / رد / بازگشت برای اصلاح) به سازنده/تأییدکننده می‌رسد - با دیدن نظر شما در کنار سایر نظرات.</p>
                     <textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                    <button type="submit" class="btn btn-danger btn-sm">رد کن</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                    <button type="submit" class="btn btn-danger btn-sm">@Localizer["رد کن"]</button>
                 </div>
             </form>
         </div>
@@ -873,14 +877,14 @@
         <div class="modal-content">
             <form asp-action="ReviseAndResubmit" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
-                <div class="modal-header"><h6 class="modal-title">برگرداندن برای اصلاح</h6></div>
+                <div class="modal-header"><h6 class="modal-title">@Localizer["برگرداندن برای اصلاح"]</h6></div>
                 <div class="modal-body">
                     <p class="text-muted small">برخلاف رد قطعی، این یعنی سازنده باید اصلاح کند و دوباره Submit کند - نه رد نهایی.</p>
-                    <textarea name="comment" class="form-control form-control-sm" rows="3" placeholder="توضیح اصلاحات لازم" required></textarea>
+                    <textarea name="comment" class="form-control form-control-sm" rows="3" placeholder="@Localizer["توضیح اصلاحات لازم"]" required></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                    <button type="submit" class="btn btn-warning btn-sm">برگردان برای اصلاح</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                    <button type="submit" class="btn btn-warning btn-sm">@Localizer["برگردان برای اصلاح"]</button>
                 </div>
             </form>
         </div>
@@ -903,8 +907,8 @@
                         <input type="text" name="reason" class="form-control form-control-sm" required />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-outline-dark btn-sm"><i class="bi bi-snow"></i> Freeze</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                        <button type="submit" class="btn btn-outline-dark btn-sm"><i class="bi bi-snow"></i> @Localizer["Freeze"]</button>
                     </div>
                 </form>
             </div>
@@ -924,8 +928,8 @@
                         <input type="text" name="reason" class="form-control form-control-sm" required />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-outline-dark btn-sm"><i class="bi bi-pause-circle"></i> Hold</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                        <button type="submit" class="btn btn-outline-dark btn-sm"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</button>
                     </div>
                 </form>
             </div>
@@ -943,7 +947,7 @@
         <div class="modal-content">
             <form asp-action="Issue" method="post" id="issueForm">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
-                <div class="modal-header"><h6 class="modal-title"><i class="bi bi-send-check"></i> صدور مدرک - انتخاب واحد تحویل</h6></div>
+                <div class="modal-header"><h6 class="modal-title"><i class="bi bi-send-check"></i> @Localizer["صدور مدرک - انتخاب واحد تحویل"]</h6></div>
                 <div class="modal-body">
                     @* طبق Phase E-04: هدف واقعی همین صدور (IFC/IFA/IFI/...) - در لحظه‌ی صدور
                        ثبت می‌شود، نه مقدار قدیمی فرم Create/Edit *@
@@ -973,7 +977,7 @@
                     </div>
 
                     <div class="mb-2" id="issueDeptField" style="display:none;">
-                        <label class="form-label small">واحد داخلی</label>
+                        <label class="form-label small">@Localizer["واحد داخلی"]</label>
                         <select name="deliveryDepartmentId" class="form-select form-select-sm">
                             @{
                                 var allDepartmentsForIssue = (IEnumerable<PEMS.Domain.Entities.Department>)(ViewBag.AllDepartments ?? new List<PEMS.Domain.Entities.Department>());
@@ -1000,11 +1004,11 @@
                         <input type="text" name="letterNumber" class="form-control form-control-sm" />
                     </div>
                     <div class="mb-2" id="issueSubjectField" style="display:none;">
-                        <label class="form-label small">موضوع نامه</label>
+                        <label class="form-label small">@Localizer["موضوع نامه"]</label>
                         <input type="text" name="letterSubject" class="form-control form-control-sm" value="صدور مدرک @Model.DocumentNo" />
                     </div>
                     <div class="mb-2" id="issueBodyField" style="display:none;">
-                        <label class="form-label small">متن نامه (اختیاری)</label>
+                        <label class="form-label small">@Localizer["متن نامه (اختیاری)"]</label>
                         <textarea name="letterBody" class="form-control form-control-sm" rows="2"></textarea>
                     </div>
 
@@ -1014,7 +1018,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
                     <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-send-check"></i> تایید و صدور</button>
                 </div>
             </form>
@@ -1056,14 +1060,14 @@
                 <div class="modal-header"><h6 class="modal-title">Create New Revision</h6></div>
                 <div class="modal-body">
                     <div class="mb-2">
-                        <label class="form-label small">Reason</label>
+                        <label class="form-label small">@Localizer["Reason"]</label>
                         <select name="reason" class="form-select form-select-sm">
                             <option>Design Change</option>
                             <option>Client Comment</option>
                             <option>Vendor Update</option>
                             <option>Internal Review</option>
                             <option>Regulatory Requirement</option>
-                            <option>Other</option>
+                            <option>@Localizer["Other"]</option>
                         </select>
                     </div>
                     <div class="mb-2">
@@ -1081,9 +1085,9 @@
                     @if (openClouded.Any())
                     {
                         <div class="mb-2">
-                            <label class="form-label small"><i class="bi bi-cloud-fill"></i> Closes Marked-for-Revision comment <span class="text-muted">(optional)</span></label>
+                            <label class="form-label small"><i class="bi bi-cloud-fill"></i> Closes Marked-for-Revision comment <span class="text-muted">@Localizer["(optional)"]</span></label>
                             <select name="triggeringCommentId" class="form-select form-select-sm">
-                                <option value="">-- none --</option>
+                                <option value="">@Localizer["-- none --"]</option>
                                 @foreach (var oc in openClouded)
                                 {
                                     <option value="@oc.VDRCommentId">@oc.CommentNo - @oc.CommentText</option>
@@ -1120,7 +1124,7 @@
                         @if (availableIncomingLetters.Any())
                         {
                             <select name="incomingLetterId" class="form-select form-select-sm" required>
-                                <option value="">-- انتخاب کنید --</option>
+                                <option value="">@Localizer["-- انتخاب کنید --"]</option>
                                 @foreach (var l in availableIncomingLetters)
                                 {
                                     <option value="@l.LetterId">@l.LetterNumber &mdash; @l.Subject (@l.LetterDate.ToString("yyyy-MM-dd"))</option>
@@ -1173,11 +1177,11 @@
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h6 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></h6>
             <div class="d-flex align-items-center gap-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfPrevPage" data-bs-toggle="tooltip" title="Previous page" aria-label="Previous page"><i class="bi bi-chevron-left"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfPrevPage" data-bs-toggle="tooltip" title="@Localizer["Previous page"]" aria-label="@Localizer["Previous page"]"><i class="bi bi-chevron-left"></i></button>
                 <span class="small" id="pdfPageLabel">Page - / -</span>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfNextPage" data-bs-toggle="tooltip" title="Next page" aria-label="Next page"><i class="bi bi-chevron-right"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomOut" data-bs-toggle="tooltip" title="Zoom out" aria-label="Zoom out"><i class="bi bi-zoom-out"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomIn" data-bs-toggle="tooltip" title="Zoom in" aria-label="Zoom in"><i class="bi bi-zoom-in"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfNextPage" data-bs-toggle="tooltip" title="@Localizer["Next page"]" aria-label="@Localizer["Next page"]"><i class="bi bi-chevron-right"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomOut" data-bs-toggle="tooltip" title="@Localizer["Zoom out"]" aria-label="@Localizer["Zoom out"]"><i class="bi bi-zoom-out"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomIn" data-bs-toggle="tooltip" title="@Localizer["Zoom in"]" aria-label="@Localizer["Zoom in"]"><i class="bi bi-zoom-in"></i></button>
             </div>
         </div>
         <div id="pdfCanvasWrapper" style="position:relative; border:1px solid var(--pems-surface-border,#dee2e6); overflow:auto; max-height:75vh; text-align:center; cursor:crosshair;">
@@ -1272,7 +1276,7 @@
     <h6 class="mb-3">Comment Management <span class="text-muted small">(Action Status is tracked independently from Review Status)</span></h6>
 
     <table class="table table-enterprise">
-        <thead><tr><th>No</th><th>Category</th><th>Sheet/Zone</th><th>Comment</th><th>Raised By</th><th>Raised</th><th>Action Status</th><th>Response</th></tr></thead>
+        <thead><tr><th>No</th><th>@Localizer["Category"]</th><th>Sheet/Zone</th><th>@Localizer["Comment"]</th><th>@Localizer["Raised By"]</th><th>@Localizer["Raised"]</th><th>@Localizer["Action Status"]</th><th>@Localizer["Response"]</th></tr></thead>
         <tbody>
             @foreach (var c in engComments)
             {
@@ -1351,7 +1355,7 @@
     @if (!engComments.Any()) { <p class="text-muted">No comments recorded yet.</p> }
 
     <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#addEngCommentModal">
-        <i class="bi bi-plus-lg"></i> Add Comment
+        <i class="bi bi-plus-lg"></i> @Localizer["Add Comment"]
     </button>
 </div>
 
@@ -1363,34 +1367,34 @@
                 <input type="hidden" name="pageNumber" id="engPinPageNumber" value="" />
                 <input type="hidden" name="pinX" id="engPinX" value="" />
                 <input type="hidden" name="pinY" id="engPinY" value="" />
-                <div class="modal-header"><h6 class="modal-title">Add Comment</h6></div>
+                <div class="modal-header"><h6 class="modal-title">@Localizer["Add Comment"]</h6></div>
                 <div class="modal-body">
                     <div id="engPinLocationLabel" class="small text-primary mb-2"></div>
                     <div class="row g-3">
-                        <div class="col-md-4"><label class="form-label small">Raised By</label><input name="raisedByName" class="form-control form-control-sm" /></div>
+                        <div class="col-md-4"><label class="form-label small">@Localizer["Raised By"]</label><input name="raisedByName" class="form-control form-control-sm" /></div>
                         <div class="col-md-4">
-                            <label class="form-label small">Category</label>
+                            <label class="form-label small">@Localizer["Category"]</label>
                             <select name="category" class="form-select form-select-sm">
-                                <option value="">-- select --</option>
+                                <option value="">@Localizer["-- select --"]</option>
                                 @foreach (var cat in new[] { "Technical", "Safety", "Constructability", "Documentation", "Specification", "Calculation", "Typographical", "Clarification" })
                                 { <option value="@cat">@cat</option> }
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label small">Severity</label>
+                            <label class="form-label small">@Localizer["Severity"]</label>
                             <select name="severity" class="form-select form-select-sm">
-                                <option value="">-- select --</option>
+                                <option value="">@Localizer["-- select --"]</option>
                                 @foreach (var sev in new[] { "Low", "Medium", "High", "Critical" })
                                 { <option value="@sev">@sev</option> }
                             </select>
                         </div>
-                        <div class="col-md-4"><label class="form-label small">Sheet</label><input name="sheet" class="form-control form-control-sm" /></div>
-                        <div class="col-md-4"><label class="form-label small">Zone</label><input name="zone" class="form-control form-control-sm" /></div>
-                        <div class="col-md-4"><label class="form-label small">Reference</label><input name="reference" class="form-control form-control-sm" /></div>
-                        <div class="col-12"><label class="form-label small">Comment</label><textarea name="commentText" class="form-control form-control-sm" rows="3" required></textarea></div>
+                        <div class="col-md-4"><label class="form-label small">@Localizer["Sheet"]</label><input name="sheet" class="form-control form-control-sm" /></div>
+                        <div class="col-md-4"><label class="form-label small">@Localizer["Zone"]</label><input name="zone" class="form-control form-control-sm" /></div>
+                        <div class="col-md-4"><label class="form-label small">@Localizer["Reference"]</label><input name="reference" class="form-control form-control-sm" /></div>
+                        <div class="col-12"><label class="form-label small">@Localizer["Comment"]</label><textarea name="commentText" class="form-control form-control-sm" rows="3" required></textarea></div>
                         <div class="col-md-6"><label class="form-label small">Required Action</label><input name="requiredAction" class="form-control form-control-sm" /></div>
-                        <div class="col-md-6"><label class="form-label small">Due Date</label><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
-                        <div class="col-12"><label class="form-label small">Attachment <span class="text-muted">(optional)</span></label><input type="file" name="attachment" class="form-control form-control-sm" /></div>
+                        <div class="col-md-6"><label class="form-label small">@Localizer["Due Date"]</label><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
+                        <div class="col-12"><label class="form-label small">Attachment <span class="text-muted">@Localizer["(optional)"]</span></label><input type="file" name="attachment" class="form-control form-control-sm" /></div>
                         <div class="col-12 form-check">
                             <input type="checkbox" class="form-check-input" name="marksRevisionRequired" value="true" id="marksRevisionRequired" />
                             <label class="form-check-label" for="marksRevisionRequired">
@@ -1400,7 +1404,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
                     <button type="submit" class="btn btn-pems-solid">Save Comment</button>
                 </div>
             </form>
@@ -1429,7 +1433,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
                         <button type="submit" class="btn btn-pems-solid btn-sm">Save Reply</button>
                     </div>
                 </form>
@@ -1438,7 +1442,7 @@
     </div>
 }
 
-</div> @* end .pems-doc-page *@
+</div> @* end .vs-page *@
 
 @section Scripts {
     <script>

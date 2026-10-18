@@ -19,4 +19,41 @@ public static class DocumentStatusBadge
         null or "" => "badge-status-Draft",
         _ => "badge-status-" + status
     };
+
+    // ---- workspace presentation (semantic tone + icon + text; the stored Status string is never changed) ----
+
+    public static string Tone(string? status) => status switch
+    {
+        "Approved" or "Issued" or "Client Approved" => "vs-pill--success",
+        "Rejected" => "vs-pill--danger",
+        "Revise & Resubmit" => "vs-pill--warning",
+        "Submitted" or "IDC Review" or "Checked" => "vs-pill--info",
+        _ => "vs-pill--neutral"   // Draft, Archived, Superseded, unknown
+    };
+
+    public static string Icon(string? status) => status switch
+    {
+        "Draft" or null or "" => "bi-pencil",
+        "Submitted" => "bi-send",
+        "IDC Review" => "bi-diagram-3",
+        "Checked" => "bi-patch-check",
+        "Approved" => "bi-check-circle",
+        "Issued" => "bi-send-check",
+        "Rejected" => "bi-x-circle",
+        "Revise & Resubmit" => "bi-arrow-repeat",
+        "Client Approved" => "bi-building-check",
+        "Archived" => "bi-archive",
+        "Superseded" => "bi-layers",
+        _ => "bi-circle"
+    };
+
+    /// <summary>کلید Localization وضعیت (بدون فاصله/&amp;): St_IDCReview، St_ReviseResubmit، ...</summary>
+    public static string ResourceKey(string? status) => "St_" + status switch
+    {
+        "IDC Review" => "IDCReview",
+        "Revise & Resubmit" => "ReviseResubmit",
+        "Client Approved" => "ClientApproved",
+        null or "" => "Draft",
+        _ => status
+    };
 }

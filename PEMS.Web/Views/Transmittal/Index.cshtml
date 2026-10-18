@@ -6,7 +6,7 @@
 
 @{ ViewData["Title"] = Localizer["Vs_TransmittalRegistry"].Value; }
 @section Styles {
-    <link rel="stylesheet" href="~/css/pems-vdr.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
 }
 
 <div class="vs-page">
@@ -21,7 +21,7 @@
 
     <div class="vs-panel">
         <div class="vs-panel__head">
-            <h3 class="vs-panel__title"><i class="bi bi-envelope-paper"></i> @Localizer["Vs_TransmittalRegistry"]</h3>
+            <span></span>
             <button type="button" class="vs-btn vs-btn--sm" onclick="PemsDataGrid.resetColumns('Transmittal')">
                 <i class="bi bi-arrow-counterclockwise"></i> @Localizer["ResetColumns"]
             </button>

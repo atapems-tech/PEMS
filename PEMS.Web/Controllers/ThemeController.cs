@@ -12,13 +12,20 @@ namespace PEMS.Web.Controllers;
 /// midnight) پشتیبانی می‌کردند - یک مکانیزم سمت کلاینت جداگانه (admin.js، localStorage)
 /// همان ۵ گزینه را مدیریت می‌کرد و هر بار رندر سمت سرور را بی‌صدا رونویسی می‌کرد. حالا این‌جا
 /// تنها منبع حقیقت است؛ مکانیزم موازی حذف شده (admin.js).
+///
+/// طبق «PEMS Global Three-Theme Design System»: محصول اکنون دقیقاً سه تم قابل‌انتخاب دارد -
+/// light/dark/turquoise (فیروزه‌ای ایرانی، امضای بصری اختصاصی PEMS). ocean/warm/midnight از
+/// این‌جا و از منوی _Layout.cshtml حذف شدند، ولی بلوک‌های CSS مربوطه در site.css/admin.css
+/// دست‌نخورده باقی مانده‌اند (حذف نشده‌اند - صرفاً دیگر هیچ Cookie معتبری نمی‌تواند آن‌ها را
+/// فعال کند؛ Normalize هر مقدار قدیمی/نامعتبر را بی‌صدا به light برمی‌گرداند - بدون شکستن
+/// چیزی برای کاربرانی که قبلاً یکی از آن سه تم را انتخاب کرده بودند).
 /// </summary>
 public class ThemeController : Controller
 {
     public const string CookieName = "pems_theme";
     public const string DefaultTheme = "light";
 
-    public static readonly string[] AllowedThemes = { "light", "dark", "ocean", "warm", "midnight" };
+    public static readonly string[] AllowedThemes = { "light", "dark", "turquoise" };
 
     public static string Normalize(string? theme) =>
         theme != null && Array.IndexOf(AllowedThemes, theme) >= 0 ? theme : DefaultTheme;

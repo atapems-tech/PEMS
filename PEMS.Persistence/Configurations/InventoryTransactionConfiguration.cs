@@ -16,6 +16,11 @@ public class InventoryTransactionConfiguration : IEntityTypeConfiguration<Invent
         builder.Property(x => x.Reason).HasMaxLength(500);
         builder.Property(x => x.Quantity).HasColumnType("decimal(18,3)");
 
+        builder.HasOne(x => x.StoreRequisitionLine).WithMany().HasForeignKey(x => x.StoreRequisitionLineId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.MaterialReservation).WithMany().HasForeignKey(x => x.MaterialReservationId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasIndex(x => x.StoreRequisitionLineId);
+        builder.HasIndex(x => x.MaterialReservationId);
+
         builder.HasOne(x => x.MaterialItem)
             .WithMany()
             .HasForeignKey(x => x.MaterialItemId)

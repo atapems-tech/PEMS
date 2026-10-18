@@ -26,7 +26,8 @@ public class AccessControlParityTests
     {
         var ctx = PemsDbContextFactory.CreateInMemory(dbName);
 
-        foreach (var roleName in SystemRoles.All)
+        // نقش‌های کاتالوگ (MNT.* / OPS.* / WH.*) هم در سیستم واقعی وجود دارند؛ ردیف‌های RoleModuleAction آن‌ها (مثلاً PartCatalogue) باید Grant شوند
+        foreach (var roleName in SystemRoles.All.Concat(PEMS.Persistence.Identity.RoleCatalog.Definitions.Select(d => d.Name)).Distinct())
             ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
         await ctx.SaveChangesAsync();
 

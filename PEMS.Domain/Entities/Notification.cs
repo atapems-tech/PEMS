@@ -30,5 +30,12 @@ public class Notification : BaseEntity
 
     public DateTime? ReadDate { get; set; }
 
+    /// <summary>
+    /// خروج از صندوق فعال - هم Dismiss دستی کاربر و هم Resolve خودکار (وقتی کار مرتبط انجام شد)
+    /// همین فیلد را پر می‌کنند. رکورد هرگز حذف نمی‌شود (ردیابی/ممیزی)؛ فقط از لیست فعال پنهان می‌شود.
+    /// null = فعال.
+    /// </summary>
+    public DateTime? DismissedDate { get; set; }
+
     public DateTime CreatedDate { get; set; } = DateTime.Now;
 }

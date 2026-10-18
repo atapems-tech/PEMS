@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.KpiDashboardDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0"><i class="bi bi-speedometer2"></i> Maintenance &amp; Cost KPI Dashboard</h5>
@@ -11,15 +14,15 @@
 
 <form method="get" class="d-flex gap-2 align-items-end mb-3">
     <div>
-        <label class="form-label small mb-0">From</label>
+        <label class="form-label small mb-0">@Localizer["From"]</label>
         <input type="date" name="fromDate" class="form-control form-control-sm" value="@(Model.FromDate?.ToString("yyyy-MM-dd"))" />
     </div>
     <div>
         <label class="form-label small mb-0">To</label>
         <input type="date" name="toDate" class="form-control form-control-sm" value="@(Model.ToDate?.ToString("yyyy-MM-dd"))" />
     </div>
-    <button type="submit" class="btn btn-sm btn-pems-solid">Filter</button>
-    <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Clear</a>
+    <button type="submit" class="btn btn-sm btn-pems-solid">@Localizer["Filter"]</button>
+    <a asp-action="Index" class="btn btn-sm btn-outline-secondary">@Localizer["Clear"]</a>
 </form>
 
 @{
@@ -29,8 +32,8 @@
 
 <h6 class="text-muted mb-2"><i class="bi bi-cash-coin"></i> Cost KPIs</h6>
 <div class="row g-3 mb-4">
-    <div class="col-md-3"><div class="content-card text-center py-3"><div class="small text-muted">Total Maintenance Cost</div><div class="fs-5 fw-bold">@Model.Cost.TotalCost.ToString("N0")</div></div></div>
-    <div class="col-md-3"><div class="content-card text-center py-3"><div class="small text-muted">Labor Cost</div><div class="fs-5 fw-bold">@Model.Cost.LaborCost.ToString("N0")</div></div></div>
+    <div class="col-md-3"><div class="content-card text-center py-3"><div class="small text-muted">@Localizer["Total Maintenance Cost"]</div><div class="fs-5 fw-bold">@Model.Cost.TotalCost.ToString("N0")</div></div></div>
+    <div class="col-md-3"><div class="content-card text-center py-3"><div class="small text-muted">@Localizer["Labor Cost"]</div><div class="fs-5 fw-bold">@Model.Cost.LaborCost.ToString("N0")</div></div></div>
     <div class="col-md-3"><div class="content-card text-center py-3"><div class="small text-muted">Material Cost</div><div class="fs-5 fw-bold">@Model.Cost.MaterialCost.ToString("N0")</div></div></div>
     <div class="col-md-3"><div class="content-card text-center py-3"><div class="small text-muted">Contractor Cost</div><div class="fs-5 fw-bold">@Model.Cost.ContractorCost.ToString("N0")</div></div></div>
 </div>
@@ -40,7 +43,7 @@
         <div class="content-card h-100">
             <h6 class="mb-2">Top Equipment by Cost</h6>
             <table class="table table-enterprise table-sm mb-0">
-                <thead><tr><th>Tag</th><th class="text-end">Cost</th></tr></thead>
+                <thead><tr><th>@Localizer["Tag"]</th><th class="text-end">@Localizer["Cost"]</th></tr></thead>
                 <tbody>
                     @foreach (var e in Model.Cost.TopEquipmentByCost)
                     {
@@ -48,14 +51,14 @@
                     }
                 </tbody>
             </table>
-            @if (!Model.Cost.TopEquipmentByCost.Any()) { <p class="text-muted small mb-0">داده‌ای نیست.</p> }
+            @if (!Model.Cost.TopEquipmentByCost.Any()) { <p class="text-muted small mb-0">@Localizer["داده‌ای نیست."]</p> }
         </div>
     </div>
     <div class="col-md-4">
         <div class="content-card h-100">
             <h6 class="mb-2">Cost by Functional Location</h6>
             <table class="table table-enterprise table-sm mb-0">
-                <thead><tr><th>Location</th><th class="text-end">Cost</th></tr></thead>
+                <thead><tr><th>@Localizer["Location"]</th><th class="text-end">@Localizer["Cost"]</th></tr></thead>
                 <tbody>
                     @foreach (var g in Model.Cost.CostByFunctionalLocation)
                     {
@@ -63,14 +66,14 @@
                     }
                 </tbody>
             </table>
-            @if (!Model.Cost.CostByFunctionalLocation.Any()) { <p class="text-muted small mb-0">داده‌ای نیست.</p> }
+            @if (!Model.Cost.CostByFunctionalLocation.Any()) { <p class="text-muted small mb-0">@Localizer["داده‌ای نیست."]</p> }
         </div>
     </div>
     <div class="col-md-4">
         <div class="content-card h-100">
             <h6 class="mb-2">Cost by Maintenance Type</h6>
             <table class="table table-enterprise table-sm mb-0">
-                <thead><tr><th>Type</th><th class="text-end">Cost</th></tr></thead>
+                <thead><tr><th>@Localizer["Type"]</th><th class="text-end">@Localizer["Cost"]</th></tr></thead>
                 <tbody>
                     @foreach (var g in Model.Cost.CostByMaintenanceType)
                     {
@@ -78,14 +81,14 @@
                     }
                 </tbody>
             </table>
-            @if (!Model.Cost.CostByMaintenanceType.Any()) { <p class="text-muted small mb-0">داده‌ای نیست.</p> }
+            @if (!Model.Cost.CostByMaintenanceType.Any()) { <p class="text-muted small mb-0">@Localizer["داده‌ای نیست."]</p> }
         </div>
     </div>
 </div>
 
 <h6 class="text-muted mb-2"><i class="bi bi-tools"></i> Maintenance KPIs</h6>
 <div class="row g-3 mb-4">
-    <div class="col-md-2"><div class="content-card text-center py-3"><div class="small text-muted">PM Compliance</div><div class="fs-5 fw-bold">@Pct(Model.Maintenance.PmCompliancePercent)</div></div></div>
+    <div class="col-md-2"><div class="content-card text-center py-3"><div class="small text-muted">@Localizer["PM Compliance"]</div><div class="fs-5 fw-bold">@Pct(Model.Maintenance.PmCompliancePercent)</div></div></div>
     <div class="col-md-2"><div class="content-card text-center py-3"><div class="small text-muted">PM Overdue</div><div class="fs-5 fw-bold">@Model.Maintenance.PmOverdueCount / @Model.Maintenance.PmActivePlanCount</div></div></div>
     <div class="col-md-2"><div class="content-card text-center py-3"><div class="small text-muted">Backlog</div><div class="fs-5 fw-bold">@Model.Maintenance.BacklogCount</div></div></div>
     <div class="col-md-2"><div class="content-card text-center py-3"><div class="small text-muted">Backlog Hours</div><div class="fs-5 fw-bold">@Model.Maintenance.BacklogHours.ToString("N0")</div></div></div>
@@ -103,7 +106,7 @@
 <h6 class="text-muted mb-2"><i class="bi bi-graph-up-arrow"></i> Reliability Summary</h6>
 <div class="row g-3">
     <div class="col-md-4"><div class="content-card text-center py-3"><div class="small text-muted">Equipment with Failures</div><div class="fs-5 fw-bold">@Model.Reliability.EquipmentWithFailuresCount</div></div></div>
-    <div class="col-md-4"><div class="content-card text-center py-3"><div class="small text-muted">Total Failures</div><div class="fs-5 fw-bold">@Model.Reliability.TotalFailureCount</div></div></div>
+    <div class="col-md-4"><div class="content-card text-center py-3"><div class="small text-muted">@Localizer["Total Failures"]</div><div class="fs-5 fw-bold">@Model.Reliability.TotalFailureCount</div></div></div>
     <div class="col-md-4"><div class="content-card text-center py-3"><div class="small text-muted">Avg. Availability</div><div class="fs-5 fw-bold">@Pct(Model.Reliability.AverageAvailabilityPercent)</div></div></div>
 </div>
 <p class="mt-2"><a asp-controller="Reliability" asp-action="Index" class="small">جزئیات کامل Reliability (MTBF/MTTR در سطح تجهیز) &rarr;</a></p>

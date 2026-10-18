@@ -1,0 +1,10 @@
+﻿{
+  "default": {
+    "host": "CHANGE_ME (verified IP or DNS name of the Ubuntu VM)",
+    "port": 22,
+    "user": "CHANGE_ME (account in the docker group; key-based SSH only)",
+    "rid": "linux-x64",
+    "remoteBase": "/opt/pems",
+    "identityFile": "C:\\Users\\<you>\\.ssh\\pems_deploy_ed25519"
+  }
+}

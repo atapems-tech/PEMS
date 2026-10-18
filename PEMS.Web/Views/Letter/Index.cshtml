@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.LetterDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var dash = (PEMS.Application.DTOs.LetterDashboardDto)ViewBag.Dashboard;
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
@@ -11,28 +14,30 @@
     bool hasAdvancedFilter = !string.IsNullOrEmpty((string?)f.letterNumber) || !string.IsNullOrEmpty((string?)f.subject) || f.projectId != null;
 }
 
-@* جستجوی سریع هوشمند - طبق مثال اصلی: شماره نامه، موضوع، فرستنده، گیرنده، پروژه، یا کلمات داخل متن (Semantic) *@
-<div class="content-card mb-3">
-    <label class="form-label small fw-bold"><i class="bi bi-search"></i> جستجوی سریع نامه (شماره، موضوع، فرستنده/گیرنده، یا مفهوم متن)</label>
-    <input type="text" class="form-control" id="letterQuickSearch" placeholder="مثلاً شماره نامه، بخشی از موضوع یا حتی توصیف مفهومی محتوا..."
-           data-pems-search data-search-type="Letter" autocomplete="off" />
+@* Re-composed: quick-search card + 5 KPI cards + a stray button became one chip strip and one toolbar (semantic quick search kept). *@
+<div class="vs-chips">
+    <span class="vs-chip"><i class="bi bi-hourglass-split" aria-hidden="true"></i> @Localizer["Lt_Pending"] <strong>@dash.PendingLetters</strong></span>
+    <span class="vs-chip @(dash.OverdueReferrals > 0 ? "vs-chip--danger" : "")"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Lt_OverdueReferrals"] <strong>@dash.OverdueReferrals</strong></span>
+    <a class="vs-chip text-decoration-none" asp-action="MyReferrals"><i class="bi bi-person-check" aria-hidden="true"></i> @Localizer["Lt_MyOpenReferrals"] <strong>@dash.MyOpenReferrals</strong></a>
+    <span class="vs-chip"><i class="bi bi-inbox-fill" aria-hidden="true"></i> @Localizer["Lt_Received7"] <strong>@dash.RecentlyReceived</strong></span>
+    <span class="vs-chip"><i class="bi bi-send-fill" aria-hidden="true"></i> @Localizer["Lt_Sent7"] <strong>@dash.RecentlySent</strong></span>
+</div>
+
+<div class="vs-toolbar" role="search">
+    <div class="pems-search-bar">
+        <i class="bi bi-search pems-search-icon" aria-hidden="true"></i>
+        <input type="text" class="form-control" id="letterQuickSearch" placeholder="@Localizer["Lt_SearchPlaceholder"]" aria-label="@Localizer["Lt_SearchPlaceholder"]"
+               data-pems-search data-search-type="Letter" autocomplete="off" />
+    </div>
+    <span class="vs-toolbar__end">
+        <a asp-action="MyReferrals" class="vs-btn vs-btn--sm"><i class="bi bi-arrow-right-circle" aria-hidden="true"></i> @Localizer["Lt_MyReferrals"]</a>
+    </span>
 </div>
 <script>
     document.getElementById('letterQuickSearch').addEventListener('pems:search-select', function (e) {
         if (e.detail && e.detail.url) window.location.href = e.detail.url;
     });
 </script>
-
-<div class="row g-3 mb-3">
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-hourglass-split"></i></div><div><div class="kpi-value">@dash.PendingLetters</div><div class="kpi-label">Pending</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-exclamation-triangle"></i></div><div><div class="kpi-value">@dash.OverdueReferrals</div><div class="kpi-label">Overdue Referrals</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-blue"><i class="bi bi-person-check"></i></div><div><div class="kpi-value">@dash.MyOpenReferrals</div><div class="kpi-label">My Open Referrals</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-green"><i class="bi bi-inbox-fill"></i></div><div><div class="kpi-value">@dash.RecentlyReceived</div><div class="kpi-label">Received (7d)</div></div></div></div>
-    <div class="col-md-2 col-sm-6"><div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-send-fill"></i></div><div><div class="kpi-value">@dash.RecentlySent</div><div class="kpi-label">Sent (7d)</div></div></div></div>
-    <div class="col-md-2 col-sm-6 d-flex align-items-stretch">
-        <a asp-action="MyReferrals" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center"><i class="bi bi-arrow-right-circle me-1"></i> My Referrals</a>
-    </div>
-</div>
 
 @* طبق «PEMS Correspondence Workspace» بند ۸: پیمایش سبک Gmail - یک سایدبار پوشه‌ای در سمت
    شروع (Start) صفحه، به‌جای فقط یک ردیف دکمه‌ی نوع بالای فهرست *@
@@ -44,38 +49,38 @@
                     <i class="bi bi-pencil-square"></i> Compose
                 </button>
                 <ul class="dropdown-menu w-100">
-                    <li><a class="dropdown-item" asp-action="Create" asp-route-letterType="Incoming"><i class="bi bi-envelope-arrow-down me-1"></i> New Incoming</a></li>
-                    <li><a class="dropdown-item" asp-action="Create" asp-route-letterType="Outgoing"><i class="bi bi-envelope-arrow-up me-1"></i> New Outgoing</a></li>
-                    <li><a class="dropdown-item" asp-action="Create" asp-route-letterType="Internal"><i class="bi bi-envelope me-1"></i> New Internal Memo</a></li>
+                    <li><a class="dropdown-item" asp-action="Create" asp-route-letterType="Incoming"><i class="bi bi-envelope-arrow-down me-1"></i> @Localizer["New Incoming"]</a></li>
+                    <li><a class="dropdown-item" asp-action="Create" asp-route-letterType="Outgoing"><i class="bi bi-envelope-arrow-up me-1"></i> @Localizer["New Outgoing"]</a></li>
+                    <li><a class="dropdown-item" asp-action="Create" asp-route-letterType="Internal"><i class="bi bi-envelope me-1"></i> @Localizer["New Internal Memo"]</a></li>
                 </ul>
             </div>
 
             <div class="d-flex flex-column gap-1">
                 <a asp-action="Index" class="pems-folder-link @(isAllFolder ? "active" : "")"><i class="bi bi-inboxes"></i> All Correspondence</a>
                 <a asp-action="Index" asp-route-status="Draft" class="pems-folder-link @(currentStatus == "Draft" ? "active" : "")"><i class="bi bi-file-earmark"></i> Drafts</a>
-                <a asp-action="Index" asp-route-status="PendingApproval" class="pems-folder-link @(currentStatus == "PendingApproval" ? "active" : "")"><i class="bi bi-hourglass-split"></i> Under Review</a>
+                <a asp-action="Index" asp-route-status="PendingApproval" class="pems-folder-link @(currentStatus == "PendingApproval" ? "active" : "")"><i class="bi bi-hourglass-split"></i> @Localizer["Under Review"]</a>
                 <a asp-action="Index" asp-route-status="ReturnedForRevision" class="pems-folder-link @(currentStatus == "ReturnedForRevision" ? "active" : "")"><i class="bi bi-arrow-return-left"></i> Returned for Revision</a>
-                <a asp-action="Index" asp-route-status="Approved" class="pems-folder-link @(currentStatus == "Approved" ? "active" : "")"><i class="bi bi-check2-square"></i> Approved</a>
+                <a asp-action="Index" asp-route-status="Approved" class="pems-folder-link @(currentStatus == "Approved" ? "active" : "")"><i class="bi bi-check2-square"></i> @Localizer["Approved"]</a>
                 <a asp-action="Index" asp-route-status="Issued" class="pems-folder-link @(currentStatus == "Issued" ? "active" : "")"><i class="bi bi-send-check"></i> Issued</a>
-                <a asp-action="Index" asp-route-status="Closed" class="pems-folder-link @(currentStatus == "Closed" ? "active" : "")"><i class="bi bi-archive"></i> Closed</a>
+                <a asp-action="Index" asp-route-status="Closed" class="pems-folder-link @(currentStatus == "Closed" ? "active" : "")"><i class="bi bi-archive"></i> @Localizer["Closed"]</a>
                 <a asp-action="Index" asp-route-starred="true" class="pems-folder-link @(currentStarred ? "active" : "")"><i class="bi bi-star-fill text-warning"></i> Starred</a>
             </div>
 
             <hr />
 
-            <div class="small text-muted text-uppercase mb-1">Type</div>
+            <div class="small text-muted text-uppercase mb-1">@Localizer["Type"]</div>
             <div class="d-flex flex-column gap-1">
                 <a asp-action="Index" class="pems-folder-link @(currentType == "" ? "active" : "")"><i class="bi bi-collection"></i> All Types</a>
-                <a asp-action="Index" asp-route-letterType="Incoming" class="pems-folder-link @(currentType == "Incoming" ? "active" : "")"><i class="bi bi-envelope-arrow-down"></i> Incoming</a>
-                <a asp-action="Index" asp-route-letterType="Outgoing" class="pems-folder-link @(currentType == "Outgoing" ? "active" : "")"><i class="bi bi-envelope-arrow-up"></i> Outgoing</a>
-                <a asp-action="Index" asp-route-letterType="Internal" class="pems-folder-link @(currentType == "Internal" ? "active" : "")"><i class="bi bi-envelope"></i> Internal</a>
+                <a asp-action="Index" asp-route-letterType="Incoming" class="pems-folder-link @(currentType == "Incoming" ? "active" : "")"><i class="bi bi-envelope-arrow-down"></i> @Localizer["Incoming"]</a>
+                <a asp-action="Index" asp-route-letterType="Outgoing" class="pems-folder-link @(currentType == "Outgoing" ? "active" : "")"><i class="bi bi-envelope-arrow-up"></i> @Localizer["Outgoing"]</a>
+                <a asp-action="Index" asp-route-letterType="Internal" class="pems-folder-link @(currentType == "Internal" ? "active" : "")"><i class="bi bi-envelope"></i> @Localizer["Internal"]</a>
             </div>
         </div>
 
         @if (disciplines.Any())
         {
             <div class="content-card">
-                <h6 class="mb-2 text-muted small text-uppercase">Discipline Shortcuts</h6>
+                <h6 class="mb-2 text-muted small text-uppercase">@Localizer["Discipline Shortcuts"]</h6>
                 <div class="d-flex flex-column gap-1">
                     @foreach (var d in disciplines)
                     {
@@ -90,11 +95,11 @@
         <div class="content-card mb-3">
             <div class="d-flex justify-content-between align-items-center @(hasAdvancedFilter ? "mb-2" : "")">
                 <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#advancedFilters">
-                    <i class="bi bi-funnel"></i> Advanced Filters
+                    <i class="bi bi-funnel"></i> @Localizer["Advanced Filters"]
                 </button>
                 @if (hasAdvancedFilter)
                 {
-                    <a asp-action="Index" class="btn btn-sm btn-outline-danger" title="Clear filters"><i class="bi bi-x-lg"></i> Clear</a>
+                    <a asp-action="Index" class="btn btn-sm btn-outline-danger" title="Clear filters"><i class="bi bi-x-lg"></i> @Localizer["Clear"]</a>
                 }
             </div>
             <div class="collapse @(hasAdvancedFilter ? "show" : "")" id="advancedFilters">
@@ -102,11 +107,11 @@
                     <input type="hidden" name="letterType" value="@currentType" />
                     <input type="hidden" name="status" value="@currentStatus" />
                     <input type="hidden" name="starred" value="@currentStarred" />
-                    <div class="col-md-4"><input name="letterNumber" value="@f.letterNumber" class="form-control form-control-sm" placeholder="Letter No" /></div>
-                    <div class="col-md-4"><input name="subject" value="@f.subject" class="form-control form-control-sm" placeholder="Subject" /></div>
+                    <div class="col-md-4"><input name="letterNumber" value="@f.letterNumber" class="form-control form-control-sm" placeholder="@Localizer["Letter No"]" /></div>
+                    <div class="col-md-4"><input name="subject" value="@f.subject" class="form-control form-control-sm" placeholder="@Localizer["Subject"]" /></div>
                     <div class="col-md-3">
                         <select name="projectId" class="form-select form-select-sm">
-                            <option value="">All Projects</option>
+                            <option value="">@Localizer["All Projects"]</option>
                             @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == f.projectId)">@p.ProjectName</option> }
                         </select>
                     </div>
@@ -118,7 +123,7 @@
         <div class="content-card">
             <div class="d-flex justify-content-end mb-2">
                 <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Letter')">
-                    <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+                    <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
                 </button>
             </div>
             <div class="table-responsive pems-grid-scroll table-scroll-area">
@@ -127,11 +132,11 @@
                         <tr>
                             <th data-col-key="select" data-resizable="false" style="width:30px;"><input type="checkbox" id="selectAllLetters" /></th>
                             <th data-col-key="star" data-resizable="false" style="width:30px;"></th>
-                            <th data-col-key="subject" data-resizable="true" data-min-width="200" data-max-width="600">Subject</th>
-                            <th data-col-key="letterNo" data-resizable="true" data-min-width="90" data-max-width="200" style="width:110px;">Letter No</th>
-                            <th data-col-key="senderReceiver" data-resizable="true" data-min-width="120" data-max-width="260" style="width:160px;">Sender / Receiver</th>
-                            <th data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160" style="width:100px;">Date</th>
-                            <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px;">Status</th>
+                            <th data-col-key="subject" data-resizable="true" data-min-width="200" data-max-width="600">@Localizer["Subject"]</th>
+                            <th data-col-key="letterNo" data-resizable="true" data-min-width="90" data-max-width="200" style="width:110px;">@Localizer["Letter No"]</th>
+                            <th data-col-key="senderReceiver" data-resizable="true" data-min-width="120" data-max-width="260" style="width:160px;">@Localizer["Sender / Receiver"]</th>
+                            <th data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160" style="width:100px;">@Localizer["Date"]</th>
+                            <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px;">@Localizer["Status"]</th>
                             <th data-col-key="actions" data-resizable="false" style="width:60px;"></th>
                         </tr>
                     </thead>

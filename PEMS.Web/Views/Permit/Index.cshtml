@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.PermitListDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var pendingMyApproval = (bool)ViewBag.PendingMyApproval;
     var pendingTasksByPermitId = pendingMyApproval
@@ -13,8 +16,7 @@
     }
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-shield-check"></i> Permits</h5>
+<div class="d-flex justify-content-end align-items-center mb-2">
     <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> New Permit</a>
 </div>
 <p class="text-muted small">
@@ -48,20 +50,20 @@
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Permit')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="pems-grid-scroll">
     <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="Permit">
         <thead>
             <tr>
-                <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">Number</th>
-                <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="160">Type</th>
-                <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="360">Title</th>
-                <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="200">Equipment</th>
-                <th data-col-key="workOrder" data-resizable="true" data-min-width="100" data-max-width="200">Work Order</th>
-                <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">Priority</th>
-                <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">Status</th>
+                <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Number"]</th>
+                <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Type"]</th>
+                <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="360">@Localizer["Title"]</th>
+                <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Equipment"]</th>
+                <th data-col-key="workOrder" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Work Order"]</th>
+                <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Priority"]</th>
+                <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Status"]</th>
                 @if (pendingMyApproval)
                 {
                     <th data-col-key="stage" data-resizable="true" data-min-width="100" data-max-width="220">Current Stage</th>
@@ -69,9 +71,9 @@
                 }
                 else
                 {
-                    <th data-col-key="issuer" data-resizable="true" data-min-width="100" data-max-width="220">Issuer</th>
+                    <th data-col-key="issuer" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Issuer"]</th>
                     <th data-col-key="receiver" data-resizable="true" data-min-width="100" data-max-width="220">Receiver</th>
-                    <th data-col-key="valid" data-resizable="true" data-min-width="140" data-max-width="260">Valid</th>
+                    <th data-col-key="valid" data-resizable="true" data-min-width="140" data-max-width="260">@Localizer["Valid"]</th>
                 }
             </tr>
         </thead>

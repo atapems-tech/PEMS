@@ -1,12 +1,15 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var letterType = (string)ViewBag.LetterType;
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
     var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
     var saveLabel = letterType switch
     {
-        "Outgoing" => "Save Draft",
-        "Incoming" => "Register",
-        _ => "Send"
+        "Outgoing" => Localizer["Lt_SaveDraft"].Value,
+        "Incoming" => Localizer["Lt_Register"].Value,
+        _ => Localizer["Lt_Send"].Value
     };
 }
 
@@ -14,40 +17,40 @@
    (گیرنده/فرستنده، موضوع، متن) مستقیم دیده می‌شوند؛ متادیتای ثانویه (اولویت، محرمانگی، پروژه،
    دیسیپلین، شماره‌ی دستی، مدرک/MR مرتبط) پشت «More Details» جمع می‌شود - نه یک فرم بزرگ یک‌جا *@
 <div class="content-card" style="max-width:800px;">
-    <h6 class="mb-3">New @letterType Letter</h6>
+    <h2 class="vs-section__title">@Localizer[letterType == "Incoming" ? "Lt_NewIncoming" : letterType == "Outgoing" ? "Lt_NewOutgoing" : "Lt_NewInternal"]</h2>
     <form asp-action="Create" method="post">
         <input type="hidden" name="letterType" value="@letterType" />
 
         <div class="row g-3">
-            <div class="col-md-6"><label class="form-label">Date</label><input name="letterDate" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" required /></div>
+            <div class="col-md-6"><label class="form-label" for="letterDate">@Localizer["Lt_Date"]</label><input name="letterDate" id="letterDate" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" required /></div>
 
             @if (letterType == "Incoming")
             {
-                <div class="col-md-6"><label class="form-label">From (Sender)</label><input name="sender" class="form-control" placeholder="External sender" required /></div>
+                <div class="col-md-6"><label class="form-label" for="letterSender">@Localizer["Lt_From"]</label><input name="sender" id="letterSender" class="form-control" placeholder="@Localizer["Lt_ExtSender"]" required /></div>
             }
             else
             {
-                <div class="col-md-6"><label class="form-label">To (Receiver)</label><input name="receiver" class="form-control" placeholder="Recipient" required /></div>
+                <div class="col-md-6"><label class="form-label" for="letterReceiver">@Localizer["Lt_To"]</label><input name="receiver" id="letterReceiver" class="form-control" placeholder="@Localizer["Lt_Recipient"]" required /></div>
             }
 
-            <div class="col-12"><label class="form-label">Subject</label><input name="subject" class="form-control" required /></div>
-            <div class="col-12"><label class="form-label">Body</label><textarea name="body" id="letterBodyEditor" class="form-control" rows="8"></textarea></div>
+            <div class="col-12"><label class="form-label" for="letterSubject">@Localizer["Lt_Subject"]</label><input name="subject" id="letterSubject" class="form-control" required /></div>
+            <div class="col-12"><label class="form-label" for="letterBodyEditor" id="letterBodyLabel">@Localizer["Lt_Body"]</label><textarea name="body" id="letterBodyEditor" class="form-control" rows="8"></textarea></div>
         </div>
 
-        <button type="button" class="btn btn-sm btn-outline-secondary mt-3" data-bs-toggle="collapse" data-bs-target="#moreDetails">
-            <i class="bi bi-three-dots"></i> More Details
+        <button type="button" class="btn btn-sm btn-outline-secondary mt-3" data-bs-toggle="collapse" data-bs-target="#moreDetails" aria-expanded="false" aria-controls="moreDetails">
+            <i class="bi bi-three-dots" aria-hidden="true"></i> @Localizer["Lt_MoreDetails"]
         </button>
 
         <div class="collapse mt-3" id="moreDetails">
             <div class="row g-3">
                 <div class="col-md-4">
-                    <label class="form-label">Letter Number</label>
-                    <input name="letterNumber" class="form-control" placeholder="Generated automatically on save" disabled="disabled" />
+                    <label class="form-label" for="letterNumber">@Localizer["Lt_Number"]</label>
+                    <input name="letterNumber" id="letterNumber" class="form-control vs-num" placeholder="@Localizer["Lt_NumberHint"]" disabled="disabled" />
                     @if ((bool)(ViewBag.CanManualNumber ?? false))
                     {
                         <div class="form-check mt-1">
                             <input class="form-check-input" type="checkbox" name="useManualNumber" value="true" id="useManualNumberCheck" />
-                            <label class="form-check-label small" for="useManualNumberCheck">Enter manually</label>
+                            <label class="form-check-label small" for="useManualNumberCheck">@Localizer["Lt_EnterManually"]</label>
                         </div>
                     }
                     <script>
@@ -59,45 +62,45 @@
                     </script>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Priority</label>
-                    <select name="priority" class="form-select">
-                        <option>Normal</option><option>Low</option><option>High</option><option>Urgent</option>
+                    <label class="form-label" for="letterPriority">@Localizer["Lt_Priority"]</label>
+                    <select name="priority" id="letterPriority" class="form-select">
+                        <option value="Normal">@Localizer["Lt_P_Normal"]</option><option value="Low">@Localizer["Lt_P_Low"]</option><option value="High">@Localizer["Lt_P_High"]</option><option value="Urgent">@Localizer["Lt_P_Urgent"]</option>
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Confidentiality Level</label>
-                    <select name="confidentialityLevel" class="form-select">
-                        <option>Internal</option><option>Public</option><option>Confidential</option>
-                        <option>Restricted</option><option>HighlyConfidential</option>
+                    <label class="form-label" for="letterConf">@Localizer["Lt_Confidentiality"]</label>
+                    <select name="confidentialityLevel" id="letterConf" class="form-select">
+                        <option value="Internal">@Localizer["Lt_C_Internal"]</option><option value="Public">@Localizer["Lt_C_Public"]</option><option value="Confidential">@Localizer["Lt_C_Confidential"]</option>
+                        <option value="Restricted">@Localizer["Lt_C_Restricted"]</option><option value="HighlyConfidential">@Localizer["Lt_C_HighlyConfidential"]</option>
                     </select>
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Related Project <span class="text-muted small">(optional)</span></label>
-                    <select name="projectId" class="form-select">
-                        <option value="">-- none --</option>
+                    <label class="form-label" for="letterProject">@Localizer["Lt_Project"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
+                    <select name="projectId" id="letterProject" class="form-select">
+                        <option value="">@Localizer["Ed_None"]</option>
                         @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Related Discipline <span class="text-muted small">(optional)</span></label>
-                    <select name="disciplineId" class="form-select">
-                        <option value="">-- none --</option>
+                    <label class="form-label" for="letterDiscipline">@Localizer["Lt_Discipline"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
+                    <select name="disciplineId" id="letterDiscipline" class="form-select">
+                        <option value="">@Localizer["Ed_None"]</option>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                     </select>
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Related Engineering/Vendor Document <span class="text-muted small">(optional)</span></label>
-                    <select name="relatedDocumentId" class="form-select">
-                        <option value="">-- none --</option>
+                    <label class="form-label" for="letterRelDoc">@Localizer["Lt_RelDoc"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
+                    <select name="relatedDocumentId" id="letterRelDoc" class="form-select">
+                        <option value="">@Localizer["Ed_None"]</option>
                         @foreach (var d in (IEnumerable<dynamic>)ViewBag.RelatedDocuments) { <option value="@d.DocumentId">@d.DocumentNo - @d.Title</option> }
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Related MR <span class="text-muted small">(optional)</span></label>
-                    <select name="relatedMRId" class="form-select">
-                        <option value="">-- none --</option>
+                    <label class="form-label" for="letterRelMr">@Localizer["Lt_RelMr"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
+                    <select name="relatedMRId" id="letterRelMr" class="form-select">
+                        <option value="">@Localizer["Ed_None"]</option>
                         @foreach (var m in (IEnumerable<dynamic>)ViewBag.RelatedMRs) { <option value="@m.MRId">@m.MRNumber</option> }
                     </select>
                 </div>
@@ -106,7 +109,7 @@
 
         <div class="mt-4">
             <button type="submit" class="btn btn-pems-solid">@saveLabel</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
         </div>
     </form>
 </div>

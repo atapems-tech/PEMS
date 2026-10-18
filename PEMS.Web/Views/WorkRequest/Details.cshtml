@@ -1,7 +1,29 @@
 @model PEMS.Application.DTOs.WorkRequestDetailDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Models
+@using PEMS.WorkflowPlatform.Interfaces
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var nextStatus = (string?)ViewBag.NextStatus;
+    var canCreate = (bool?)ViewBag.CanCreate ?? false;
+    var employeeNames = (Dictionary<int, string>?)ViewBag.EmployeeNames ?? new Dictionary<int, string>();
     string NA(string? v) => string.IsNullOrWhiteSpace(v) ? "N/A" : v;
+
+    var wf = Model.Workflow;
+    var fa = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
+
+    // نمایش‌نام‌ها فقط از داده‌ی پیکربندی گردش‌کار (Stage.Name/NameFa، Transition.Label/LabelFa) می‌آید.
+    string StageName(WorkflowStageView s) => fa && !string.IsNullOrWhiteSpace(s.NameFa) ? s.NameFa! : s.Name;
+    string ActionLabel(WorkflowAvailableAction a) => (fa && !string.IsNullOrWhiteSpace(a.LabelFa)) ? a.LabelFa! : (!string.IsNullOrWhiteSpace(a.Label) ? a.Label! : a.ActionType);
+    string Who(int? id) => id.HasValue && employeeNames.TryGetValue(id.Value, out var n) ? n : (id.HasValue ? "#" + id.Value : "-");
+    // نام مرحله/اکشن در جدول تاریخچه و هدف دکمه‌ها هم‌زبان با UI (از داده‌ی پیکربندی، نه ثابت‌نویسی)
+    string StageByName(string? n) => string.IsNullOrEmpty(n) ? "-" : (fa ? (wf?.Stages.FirstOrDefault(x => x.Name == n)?.NameFa ?? n) : n);
+    string ActionText(string a) { var t = Localizer[a]; return t.ResourceNotFound ? a : t.Value; }
+    // شرکت‌کننده‌ی مبتنی بر مجوز: صریحاً «مجوز» نمایش داده می‌شود، نه نام شخص/تیم
+    string Participant(WorkflowParticipantView p) => (p.Role ?? "").Contains("Permission:")
+        ? Localizer["Permission"] + ": ⁦" + (p.Role ?? "").Replace("Permission:", "").Replace(",", " / ") + "⁩"
+        : (p.Role ?? "");
 
     var badgeClass = Model.Status switch
     {
@@ -10,6 +32,29 @@
         "Approved" or "Planned" => "bg-info text-dark",
         _ => "bg-primary"
     };
+
+    // تایم‌لاین: هر مرحله‌ی برگشتی از Runtime رندر می‌شود؛ هیچ نام مرحله‌ای در این View ثابت نیست.
+    var diagram = new StageDiagramViewModel();
+    if (wf != null)
+    {
+        foreach (var s in wf.Stages.OrderBy(x => x.Order))
+        {
+            diagram.Stages.Add(new StageDiagramItem
+            {
+                Label = StageName(s),
+                IconCssClass = "bi-circle",
+                RoleLabel = s.Status == "Current" ? string.Join(", ", s.Participants.Where(p => p.Status == "Pending").Select(Participant).Distinct()) : null,
+                State = s.Status switch
+                {
+                    "Current" => StageItemState.Current,
+                    "Completed" or "Skipped" => StageItemState.Done,
+                    "Rejected" or "Cancelled" => StageItemState.Rejected,   // «Cancelled»: مرحله‌ای که درخواست در آن متوقف شد
+                    _ => StageItemState.Pending
+                }
+            });
+        }
+    }
+    var actions = wf?.AvailableActions.Where(a => a.ActionType != "Complete").ToList() ?? new List<WorkflowAvailableAction>();
 }
 
 <div class="content-card mb-3">
@@ -17,15 +62,15 @@
         <div class="kpi-icon bg-icon-blue" style="width:56px;height:56px;font-size:26px;"><i class="bi bi-clipboard-plus"></i></div>
         <div>
             <h5 class="mb-0">@Model.RequestNumber &mdash; @Model.Title <span class="badge @badgeClass">@Model.Status</span></h5>
-            <span class="text-muted small">Requested by @Model.RequestedByName on @Model.RequestedDate.ToString("yyyy-MM-dd")</span>
+            <span class="text-muted small">@Localizer["Requested By"] @Model.RequestedByName @Localizer["on"] <bdi dir="ltr">@Model.RequestedDate.ToString("yyyy-MM-dd")</bdi></span>
         </div>
     </div>
     <div class="row g-2 small mt-1">
-        <div class="col-md-3"><strong>Equipment:</strong> @(Model.EquipmentTagNumber ?? "N/A")</div>
-        <div class="col-md-3"><strong>Asset:</strong> @(Model.AssetNumber ?? "N/A")</div>
-        <div class="col-md-3"><strong>Functional Location:</strong> @(Model.FunctionalLocationBreadcrumb ?? "N/A")</div>
+        <div class="col-md-3"><strong>@Localizer["Equipment:"]</strong> <bdi dir="ltr">@(Model.EquipmentTagNumber ?? "N/A")</bdi></div>
+        <div class="col-md-3"><strong>@Localizer["Asset:"]</strong> <bdi dir="ltr">@(Model.AssetNumber ?? "N/A")</bdi></div>
+        <div class="col-md-3"><strong>@Localizer["Functional Location:"]</strong> @(Model.FunctionalLocationBreadcrumb ?? "N/A")</div>
         <div class="col-md-3">
-            <strong>Priority:</strong> @Model.Priority
+            <strong>@Localizer["Priority:"]</strong> @Model.Priority
             @if (!string.IsNullOrWhiteSpace(Model.EquipmentCriticalityClass))
             {
                 <span class="badge bg-light text-dark border" title="Equipment Criticality (context only, not auto-applied)">Crit: @Model.EquipmentCriticalityClass</span>
@@ -33,85 +78,174 @@
         </div>
     </div>
     <div class="row g-2 small mt-1">
-        <div class="col-md-6"><strong>Reported Condition:</strong> @NA(Model.ReportedCondition)</div>
-        <div class="col-md-6"><strong>Suggested Discipline:</strong> @(Model.SuggestedDisciplineName ?? "N/A")</div>
+        <div class="col-md-6"><strong>@Localizer["Reported Condition:"]</strong> @NA(Model.ReportedCondition)</div>
+        <div class="col-md-6"><strong>@Localizer["Suggested Discipline:"]</strong> @(Model.SuggestedDisciplineName ?? "N/A")</div>
     </div>
     <div class="row g-2 small mt-1">
-        <div class="col-12"><strong>Description:</strong> @NA(Model.Description)</div>
+        <div class="col-12"><strong>@Localizer["Description:"]</strong> @NA(Model.Description)</div>
     </div>
 
     @if (Model.Status == "Rejected")
     {
-        <div class="alert alert-danger py-2 px-3 small mt-2 mb-0"><strong>Rejection Reason:</strong> @Model.RejectionReason</div>
+        <div class="alert alert-danger py-2 px-3 small mt-2 mb-0"><strong>@Localizer["Rejection Reason:"]</strong> @Model.RejectionReason</div>
     }
     @if (Model.LinkedWorkOrderId.HasValue)
     {
         <div class="alert alert-success py-2 px-3 small mt-2 mb-0">
-            Converted to <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@Model.LinkedWorkOrderId">@Model.LinkedWorkOrderNumber</a>
+            @Localizer["Converted to"] <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@Model.LinkedWorkOrderId">@Model.LinkedWorkOrderNumber</a>
         </div>
     }
 </div>
 
-@if (TempData["Message"] != null)
+@if (wf != null)
 {
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+    <div class="content-card mb-3">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h6 class="mb-0">@Localizer["Workflow"] <span class="text-muted small">@wf.WorkflowName · @Localizer["Version"] @wf.VersionNumber · @Localizer[wf.Status]</span></h6>
+            @foreach (var w in wf.Warnings)
+            {
+                <span class="small text-warning"><i class="bi bi-exclamation-triangle"></i> @w</span>
+            }
+        </div>
+        <partial name="_PemsStageDiagram" model="diagram" />
+    </div>
 }
 
 <div class="content-card mb-3">
-    <h6 class="mb-3">Actions</h6>
-    <div class="d-flex flex-wrap gap-2">
-        @if (nextStatus != null)
+    <h6 class="mb-3">@Localizer["Actions"]</h6>
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+        @if (wf != null)
         {
-            <form asp-action="AdvanceStatus" method="post" class="d-flex gap-2">
-                <input type="hidden" name="id" value="@Model.WorkRequestId" />
-                <button type="submit" class="btn btn-sm btn-pems-solid">Advance to @nextStatus</button>
-            </form>
+            @* اکشن‌های گردش‌کار: کاملاً از مدل خواندنی مرکزی. مجوز واقعی سمت‌سرور اعمال می‌شود؛ دکمه‌ی غیرمجاز فقط برای نمایش است. *@
+            @if (actions.Count > 0)
+            {
+                <form asp-action="WorkflowAction" method="post" class="d-flex flex-wrap gap-2 align-items-center">
+                    <input type="hidden" name="id" value="@Model.WorkRequestId" />
+                    <input type="text" name="comment" class="form-control form-control-sm" placeholder="@Localizer["Comment (optional)"]" style="width:220px;" />
+                    @foreach (var a in actions)
+                    {
+                        var cls = a.ActionType == "Approve" ? "btn-pems-solid" : a.ActionType is "Reject" or "Cancel" ? "btn-outline-danger" : "btn-outline-primary";
+                        <button type="submit" name="actionType" value="@a.ActionType" class="btn btn-sm @cls" disabled="@(!a.IsAllowed)"
+                                title="@(a.IsAllowed ? "" : a.DeniedReason)"
+                                onclick="@(a.ActionType is "Reject" or "Cancel" ? "return confirm('" + Localizer["Are you sure?"] + "');" : "")">
+                            @ActionLabel(a)@if (!string.IsNullOrWhiteSpace(a.ToStageName)) { <span class="opacity-75"> → @StageByName(a.ToStageName)</span> }
+                        </button>
+                    }
+                </form>
+            }
+            @* اکشن کسب‌وکاری Work Request (نه اکشن عمومی): تبدیل به WorkOrder؛ قواعد خودش را در سرویس Work Request دارد *@
+            @if (Model.CanConvert)
+            {
+                <form asp-action="ConvertToWorkOrder" method="post" class="d-flex gap-2 align-items-center">
+                    <input type="hidden" name="id" value="@Model.WorkRequestId" />
+                    <select name="workOrderType" class="form-select form-select-sm" style="width:auto;">
+                        <option value="Corrective">@Localizer["Corrective"]</option>
+                        <option value="Preventive">@Localizer["Preventive"]</option>
+                        <option value="Emergency">@Localizer["Emergency"]</option>
+                        <option value="Predictive">@Localizer["Predictive"]</option>
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('@Localizer["A real WorkOrder will be created. Continue?"]');">
+                        <i class="bi bi-arrow-right-circle"></i> @Localizer["Convert to Work Order"]
+                    </button>
+                </form>
+            }
+            @foreach (var denied in actions.Where(a => !a.IsAllowed && !string.IsNullOrWhiteSpace(a.DeniedReason)))
+            {
+                <div class="small text-muted w-100"><i class="bi bi-lock"></i> @ActionLabel(denied): @denied.DeniedReason</div>
+            }
+            @if (actions.Count == 0 && !Model.CanConvert)
+            {
+                <span class="text-muted small">@Localizer["No further actions available."]</span>
+            }
         }
-        @if (Model.Status == "Planned")
+        else if (Model.Status == "Draft")
         {
-            <form asp-action="ConvertToWorkOrder" method="post" class="d-flex gap-2 align-items-center">
-                <input type="hidden" name="id" value="@Model.WorkRequestId" />
-                <select name="workOrderType" class="form-select form-select-sm" style="width:auto;">
-                    <option value="Corrective">Corrective</option>
-                    <option value="Preventive">Preventive</option>
-                    <option value="Emergency">Emergency</option>
-                    <option value="Predictive">Predictive</option>
-                </select>
-                <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('یک WorkOrder واقعی ساخته می‌شود. ادامه؟');">
-                    <i class="bi bi-arrow-right-circle"></i> Convert to WorkOrder
-                </button>
-            </form>
+            @* پیش‌نویس هنوز وارد گردش‌کار نشده؛ «ارسال» همان نقطه‌ی شروع Instance است *@
+            @if (canCreate)
+            {
+                <form asp-action="Submit" method="post">
+                    <input type="hidden" name="id" value="@Model.WorkRequestId" />
+                    <button type="submit" class="btn btn-sm btn-pems-solid">@Localizer["Submit to Workflow"]</button>
+                </form>
+                <form asp-action="Cancel" method="post">
+                    <input type="hidden" name="id" value="@Model.WorkRequestId" />
+                    <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('@Localizer["Are you sure?"]');">@Localizer["Cancel Request"]</button>
+                </form>
+            }
         }
-        @if (Model.Status is "UnderReview" or "Approved")
+        else if (Model.IsLegacyWithoutWorkflow)
         {
-            <form asp-action="Reject" method="post" class="d-flex gap-2">
-                <input type="hidden" name="id" value="@Model.WorkRequestId" />
-                <input type="text" name="reason" class="form-control form-control-sm" placeholder="Rejection reason" style="width:220px;" />
-                <button type="submit" class="btn btn-sm btn-outline-danger">Reject</button>
-            </form>
-        }
-        @if (Model.Status is "Draft" or "Submitted" or "UnderReview" or "Approved" or "Planned")
-        {
+            @* رکورد Legacy قبل از مهاجرت (بدون Instance): مسیر قدیمی تا تخلیه‌ی طبیعی این رکوردها باقی می‌ماند *@
+            <span class="badge bg-light text-dark border">@Localizer["Legacy record - no workflow instance"]</span>
+            @if (nextStatus != null)
+            {
+                <form asp-action="AdvanceStatus" method="post" class="d-flex gap-2">
+                    <input type="hidden" name="id" value="@Model.WorkRequestId" />
+                    <button type="submit" class="btn btn-sm btn-pems-solid">@Localizer["Advance to"] @nextStatus</button>
+                </form>
+            }
+            @if (Model.Status == "Planned")
+            {
+                <form asp-action="ConvertToWorkOrder" method="post" class="d-flex gap-2 align-items-center">
+                    <input type="hidden" name="id" value="@Model.WorkRequestId" />
+                    <select name="workOrderType" class="form-select form-select-sm" style="width:auto;">
+                        <option value="Corrective">@Localizer["Corrective"]</option>
+                        <option value="Preventive">@Localizer["Preventive"]</option>
+                        <option value="Emergency">@Localizer["Emergency"]</option>
+                        <option value="Predictive">@Localizer["Predictive"]</option>
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('@Localizer["A real WorkOrder will be created. Continue?"]');">
+                        <i class="bi bi-arrow-right-circle"></i> @Localizer["Convert to Work Order"]
+                    </button>
+                </form>
+            }
+            @if (Model.Status is "UnderReview" or "Approved")
+            {
+                <form asp-action="Reject" method="post" class="d-flex gap-2">
+                    <input type="hidden" name="id" value="@Model.WorkRequestId" />
+                    <input type="text" name="reason" class="form-control form-control-sm" placeholder="Rejection reason" style="width:220px;" />
+                    <button type="submit" class="btn btn-sm btn-outline-danger">@Localizer["Reject"]</button>
+                </form>
+            }
             <form asp-action="Cancel" method="post">
                 <input type="hidden" name="id" value="@Model.WorkRequestId" />
-                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این درخواست لغو شود؟');">Cancel Request</button>
+                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('@Localizer["Are you sure?"]');">@Localizer["Cancel Request"]</button>
             </form>
         }
-        @if (nextStatus == null && Model.Status != "Planned" && Model.Status is not ("Rejected" or "Cancelled" or "Converted"))
+        else
         {
-            <span class="text-muted small">No further actions available.</span>
+            <span class="text-muted small">@Localizer["No further actions available."]</span>
         }
     </div>
 </div>
 
-<div class="content-card">
-    <h6 class="mb-3">Status History</h6>
-    <table class="table table-enterprise table-sm mb-0">
-        <thead><tr><th>From</th><th>To</th><th>By</th><th>Date</th><th>Reason</th></tr></thead>
+@if (wf != null)
+{
+    <div class="content-card mb-3">
+        <h6 class="mb-3">@Localizer["Workflow History"]</h6>
+        <table class="table table-enterprise table-sm mb-0">
+            <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Action"]</th><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["By"]</th><th>@Localizer["Reason"]</th></tr></thead>
+            <tbody>
+                @foreach (var h in wf.HistorySummary.OrderByDescending(x => x.ActionDate))
+                {
+                    <tr>
+                        <td class="small"><bdi dir="ltr">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</bdi></td>
+                        <td class="small">@ActionText(h.ActionType)</td>
+                        <td class="small">@StageByName(h.FromStageName)</td>
+                        <td class="small">@StageByName(h.ToStageName)</td>
+                        <td class="small">@Who(h.UserId)</td>
+                        <td class="small text-muted">@h.Comment</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<details class="content-card" @(wf == null ? "open" : null)>
+    <summary class="h6 mb-0">@Localizer["Business Audit"]</summary>
+    <table class="table table-enterprise table-sm mb-0 mt-3">
+        <thead><tr><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["By"]</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
         <tbody>
             @foreach (var h in Model.StatusHistory)
             {
@@ -119,11 +253,11 @@
                     <td class="small">@h.FromStatus</td>
                     <td class="small">@h.ToStatus</td>
                     <td class="small">@(h.ChangedByName ?? "-")</td>
-                    <td class="small">@h.ChangedDate.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td class="small"><bdi dir="ltr">@h.ChangedDate.ToString("yyyy-MM-dd HH:mm")</bdi></td>
                     <td class="small text-muted">@h.Reason</td>
                 </tr>
             }
         </tbody>
     </table>
-    @if (!Model.StatusHistory.Any()) { <p class="text-muted text-center py-3 mb-0">هنوز تغییر وضعیتی ثبت نشده.</p> }
-</div>
+    @if (!Model.StatusHistory.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز تغییر وضعیتی ثبت نشده."]</p> }
+</details>

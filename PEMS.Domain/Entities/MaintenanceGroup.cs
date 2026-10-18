@@ -18,6 +18,14 @@ public class MaintenanceGroup : BaseEntity
     public int DisciplineId { get; set; }
     public Discipline? Discipline { get; set; }
 
+    // طبق «PEMS Dynamic Maintenance Organization» بخش ۵/۹: تودرتویی دلخواه (مثلاً Mechanical
+    // Maintenance ⊃ Rotating Equipment) - Null یعنی گروه ریشه (زیر Discipline مستقیم). خودارجاع
+    // دقیقاً هم‌الگو با Department.ParentDepartmentId؛ گروه‌های امروز (بدون این ستون) به‌طور
+    // پیش‌فرض ریشه می‌مانند، هیچ داده‌ای جابه‌جا نمی‌شود.
+    public int? ParentMaintenanceGroupId { get; set; }
+    public MaintenanceGroup? ParentMaintenanceGroup { get; set; }
+    public ICollection<MaintenanceGroup> Children { get; set; } = new List<MaintenanceGroup>();
+
     public string? Description { get; set; }
 
     // طبق «PEMS — Enterprise Maintenance Master Data & Standards Implementation» بند ۱۲:

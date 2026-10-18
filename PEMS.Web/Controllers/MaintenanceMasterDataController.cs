@@ -23,13 +23,15 @@ public class MaintenanceMasterDataController : Controller
     private readonly PEMSDbContext _context;
     private readonly ICurrentUserService _currentUser;
     private readonly IPermissionService _permissionService;
+    private readonly IOrganizationStructureService _organizationService;
 
     public MaintenanceMasterDataController(PEMSDbContext context, ICurrentUserService currentUser,
-        IPermissionService permissionService)
+        IPermissionService permissionService, IOrganizationStructureService organizationService)
     {
         _context = context;
         _currentUser = currentUser;
         _permissionService = permissionService;
+        _organizationService = organizationService;
     }
 
     public async Task<IActionResult> Index()
@@ -123,6 +125,23 @@ public class MaintenanceMasterDataController : Controller
             .OrderBy(x => x.EquipmentClass!.Name).ThenBy(x => x.DisplayOrder).ThenBy(x => x.Name)
             .ToListAsync();
 
+        // ==============================================================================
+        // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۲:
+        // تب جدید Evaluation Profiles - همون ماژول مجوز "MaintenanceMasterData" (بدون ماژول تازه)،
+        // دقیقاً همون الگوی Create/Toggle استانداردهای بالا.
+        // ==============================================================================
+        ViewBag.EvaluationProfiles = await _context.EvaluationProfiles.AsNoTracking()
+            .Include(x => x.StandardReference)
+            .Include(x => x.EquipmentClass)
+            .Include(x => x.Limits)
+            .OrderBy(x => x.VariableType).ThenBy(x => x.Code)
+            .ToListAsync();
+
+        // طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §3.7
+        ViewBag.ConditionPriorityMappings = await _context.ConditionPriorityMappings.AsNoTracking()
+            .OrderBy(x => x.Condition)
+            .ToListAsync();
+
         return View(groups);
     }
 
@@ -176,6 +195,48 @@ public class MaintenanceMasterDataController : Controller
         await _context.SaveChangesAsync();
 
         TempData["Message"] = "وضعیت گروه تعمیراتی به‌روزرسانی شد.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    // طبق «PEMS Dynamic Maintenance Organization» بخش ۹/۲۳: تودرتویی دلخواه گروه‌های تعمیراتی
+    // (مثلاً Mechanical Maintenance ⊃ Rotating Equipment) - هم‌الگوی دقیق مجوز CreateGroup بالا.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateSubGroup(string code, string name, int disciplineId, int parentMaintenanceGroupId, string? description)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Create"))
+            return Forbid();
+
+        try
+        {
+            await _organizationService.CreateGroupAsync(code, name, disciplineId, parentMaintenanceGroupId, description);
+            TempData["Message"] = "زیرگروه تعمیراتی ساخته شد.";
+        }
+        catch (Exception ex)
+        {
+            TempData["Error"] = ex.Message;
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> MoveGroup(int maintenanceGroupId, int? newParentMaintenanceGroupId)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Edit"))
+            return Forbid();
+
+        try
+        {
+            await _organizationService.MoveGroupAsync(maintenanceGroupId, newParentMaintenanceGroupId);
+            TempData["Message"] = "گروه تعمیراتی جابه‌جا شد.";
+        }
+        catch (Exception ex)
+        {
+            TempData["Error"] = ex.Message;
+        }
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -655,6 +716,207 @@ public class MaintenanceMasterDataController : Controller
         await _context.SaveChangesAsync();
 
         TempData["Message"] = "وضعیت PM Template به‌روزرسانی شد.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    // ==============================================================================
+    // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۲/
+    // بند ۲۴/۲۵: پروفایل ارزیابی نسخه‌دار - هیچ آستانه‌ای در لحظه‌ی ساخت پروفایل خودش وارد
+    // نمی‌شود (فقط تعریف VariableType/Version/EffectiveFrom)؛ مقادیر واقعی فقط بعداً و جداگانه
+    // از طریق AddEvaluationLimit توسط یک مهندس واقعی وارد می‌شوند - هیچ مقدار پیش‌فرض حدسی.
+    // ==============================================================================
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateEvaluationProfile(string code, string name, string? nameFa,
+        string variableType, int? standardReferenceId, int? equipmentClassId, string? operatingCondition,
+        DateTime? effectiveFrom)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Create"))
+            return Forbid();
+
+        if (string.IsNullOrWhiteSpace(code) || string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(variableType))
+        {
+            TempData["Error"] = "کد، نام و VariableType الزامی هستند.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        if (await _context.EvaluationProfiles.AnyAsync(x => x.Code == code.Trim()))
+        {
+            TempData["Error"] = "Evaluation Profile ای با همین کد از قبل وجود دارد.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        await _context.EvaluationProfiles.AddAsync(new EvaluationProfile
+        {
+            Code = code.Trim(),
+            Name = name.Trim(),
+            NameFa = nameFa,
+            VariableType = variableType.Trim(),
+            StandardReferenceId = standardReferenceId,
+            EquipmentClassId = equipmentClassId,
+            OperatingCondition = operatingCondition,
+            Version = 1,
+            EffectiveFrom = effectiveFrom ?? DateTime.Now,
+            IsActive = true,
+            CreatedDate = DateTime.Now
+        });
+
+        await _context.SaveChangesAsync();
+        TempData["Message"] = "Evaluation Profile ساخته شد. حالا آستانه‌های واقعی را از دکمه‌ی «Add Limit» وارد کنید.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ToggleEvaluationProfileActive(int id)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Edit"))
+            return Forbid();
+
+        var item = await _context.EvaluationProfiles.FirstOrDefaultAsync(x => x.EvaluationProfileId == id);
+        if (item == null) return NotFound();
+
+        item.IsActive = !item.IsActive;
+        await _context.SaveChangesAsync();
+
+        TempData["Message"] = "وضعیت Evaluation Profile به‌روزرسانی شد.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    // طبق بند ۲۵: تا وقتی مقداری تأمین نشده، سطر Limit برای آن Status ساخته نمی‌شود - این اکشن
+    // فقط زمانی صدا زده می‌شود که یک مهندس واقعی حداقل یکی از Low/High را وارد کرده باشد.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddEvaluationLimit(int evaluationProfileId, string status,
+        decimal? lowValue, decimal? highValue, bool lowInclusive, bool highInclusive)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Edit"))
+            return Forbid();
+
+        if (string.IsNullOrWhiteSpace(status))
+        {
+            TempData["Error"] = "Status الزامی است.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        if (lowValue == null && highValue == null)
+        {
+            TempData["Error"] = "حداقل یکی از Low/High Value باید وارد شود - آستانه‌ی خالی/فرضی ثبت نمی‌شود.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        var profileExists = await _context.EvaluationProfiles.AnyAsync(x => x.EvaluationProfileId == evaluationProfileId);
+        if (!profileExists)
+        {
+            TempData["Error"] = "Evaluation Profile معتبر نیست.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        await _context.EvaluationLimits.AddAsync(new EvaluationLimit
+        {
+            EvaluationProfileId = evaluationProfileId,
+            Status = status.Trim(),
+            LowValue = lowValue,
+            HighValue = highValue,
+            LowInclusive = lowInclusive,
+            HighInclusive = highInclusive,
+            IsActive = true,
+            CreatedDate = DateTime.Now
+        });
+
+        await _context.SaveChangesAsync();
+        TempData["Message"] = "آستانه‌ی ارزیابی اضافه شد.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ToggleEvaluationLimitActive(int id)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Edit"))
+            return Forbid();
+
+        var item = await _context.EvaluationLimits.FirstOrDefaultAsync(x => x.EvaluationLimitId == id);
+        if (item == null) return NotFound();
+
+        item.IsActive = !item.IsActive;
+        await _context.SaveChangesAsync();
+
+        TempData["Message"] = "وضعیت آستانه‌ی ارزیابی به‌روزرسانی شد.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    // ==============================================================================
+    // طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §3.7: نگاشت Condition→Priority
+    // قابل‌مشاهده/قابل‌ویرایش - قبلاً این نگاشت مستقیم در کد C# FindingController Hard-Code
+    // شده بود؛ رکوردهای IsSystemDefault=true فقط Deactivate می‌شوند (طبق بند ۱۹)، نه Hard-Delete.
+    // ==============================================================================
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateConditionPriorityMapping(string condition, string priority)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Create"))
+            return Forbid();
+
+        if (string.IsNullOrWhiteSpace(condition) || string.IsNullOrWhiteSpace(priority))
+        {
+            TempData["Error"] = "Condition و Priority الزامی هستند.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        if (await _context.ConditionPriorityMappings.AnyAsync(x => x.Condition == condition.Trim()))
+        {
+            TempData["Error"] = "نگاشتی برای این Condition از قبل وجود دارد.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        await _context.ConditionPriorityMappings.AddAsync(new ConditionPriorityMapping
+        {
+            Condition = condition.Trim(),
+            Priority = priority,
+            IsSystemDefault = false,
+            IsActive = true,
+            CreatedDate = DateTime.Now
+        });
+
+        await _context.SaveChangesAsync();
+        TempData["Message"] = "نگاشت Condition→Priority ساخته شد.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UpdateConditionPriorityMapping(int id, string priority)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Edit"))
+            return Forbid();
+
+        var item = await _context.ConditionPriorityMappings.FirstOrDefaultAsync(x => x.ConditionPriorityMappingId == id);
+        if (item == null) return NotFound();
+
+        item.Priority = priority;
+        await _context.SaveChangesAsync();
+
+        TempData["Message"] = "نگاشت Condition→Priority به‌روزرسانی شد.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ToggleConditionPriorityMappingActive(int id)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Edit"))
+            return Forbid();
+
+        var item = await _context.ConditionPriorityMappings.FirstOrDefaultAsync(x => x.ConditionPriorityMappingId == id);
+        if (item == null) return NotFound();
+
+        item.IsActive = !item.IsActive;
+        await _context.SaveChangesAsync();
+
+        TempData["Message"] = "وضعیت نگاشت Condition→Priority به‌روزرسانی شد.";
         return RedirectToAction(nameof(Index));
     }
 }

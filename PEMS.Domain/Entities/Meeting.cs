@@ -23,6 +23,18 @@ public class Meeting : BaseEntity
     public int? ProjectId { get; set; }
     public Project? Project { get; set; }
 
+    // طبق ممیزی Package Procurement Contract Finalization (§C, §E، Phase 6.4): زیرساخت Meeting
+    // پیش از این هیچ ارتباطی به Contract/ProcurementPackage نداشت - این دو فیلد اختیاری همان الگوی
+    // FK اختیاری تکرارشونده در بقیه‌ی پروژه است، نه یک Entity جدید KickOffMeeting.
+    // General, KickOff - جلسه‌ی General نیازی به این دو فیلد ندارد
+    public string MeetingType { get; set; } = "General";
+
+    public int? ContractId { get; set; }
+    public Contract? Contract { get; set; }
+
+    public int? ProcurementPackageId { get; set; }
+    public ProcurementPackage? ProcurementPackage { get; set; }
+
     public string? Agenda { get; set; }
 
     public string? MinutesNotes { get; set; }
