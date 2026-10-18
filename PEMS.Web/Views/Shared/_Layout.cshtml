@@ -9,6 +9,7 @@
 @inject ICurrentUserService CurrentUser
 @{
     var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
+    string LocalizedPageTitle(string? s) { if (string.IsNullOrWhiteSpace(s)) return s ?? ""; var l = Localizer[s]; return l.ResourceNotFound ? s : l.Value; }
     var currentTheme = PEMS.Web.Controllers.ThemeController.Normalize(Context.Request.Cookies[PEMS.Web.Controllers.ThemeController.CookieName]);
     var currentUrl = Context.Request.PathBase + Context.Request.Path + Context.Request.QueryString;
     var isAdminArea = string.Equals(ViewContext.RouteData.Values["area"]?.ToString(), "Admin", StringComparison.OrdinalIgnoreCase);
@@ -27,7 +28,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>@ViewData["Title"] - PEMS</title>
+    <title>@(LocalizedPageTitle(ViewData["Title"]?.ToString())) - PEMS</title>
     <link rel="manifest" href="~/manifest.json" />
     <meta name="theme-color" content="#0d6efd" />
     <script type="importmap"></script>
@@ -41,11 +42,16 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     }
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-global-search.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-data-grid.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    @* طبق «PEMS Premium Three-Theme UI/UX Redesign»: لایه‌ی Glass/Persian Geometry/Loading -
+       بعد از همه‌ی فایل‌های دیگر بارگذاری می‌شود تا بتواند override های محدود و هدفمند خودش
+       را (فقط روی Turquoise + کلاس‌های Loading/Skeleton سراسری) اعمال کند. *@
+    <link rel="stylesheet" href="~/css/pems-glass.css" asp-append-version="true" />
 
     @if (isRtl)
     {
@@ -64,35 +70,38 @@
 <body class="@(isAdminArea ? "admin-area" : "")" data-user-id="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value">
     <header class="pems-topbar">
         <div class="d-flex align-items-center gap-2">
-            <button class="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" aria-label="Toggle menu">
+            <button class="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" aria-label="@Localizer["Shell_ToggleMenu"]">
                 <i class="bi bi-list"></i>
             </button>
-            <a class="brand text-decoration-none" asp-controller="Home" asp-action="Index">
+            <a class="brand text-decoration-none" asp-controller="Home" asp-action="Index" asp-area="">
                 <span class="brand-icon"><i class="bi bi-diagram-3-fill"></i></span>
-                <span class="d-none d-sm-inline">PEMS</span>
+                <span class="d-none d-sm-inline">@Localizer["PEMS"]</span>
             </a>
         </div>
 
         <div class="pems-search d-none d-md-block">
-            <form class="d-flex" role="search" asp-controller="GlobalSearch" asp-action="Index" method="get">
+            <form class="d-flex" role="search" asp-controller="GlobalSearch" asp-action="Index" asp-area="" method="get">
                 <input type="search" name="q" class="form-control" placeholder="@Localizer["Search"]" />
             </form>
         </div>
 
         <div class="d-flex align-items-center gap-3">
             <div class="dropdown">
-                <a href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="Change Theme">
+                <a href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="@Localizer["Shell_ChangeTheme"]">
                     <i class="bi bi-palette-fill fs-5"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
+                    @* طبق «PEMS Global Three-Theme Design System»: محصول دقیقاً سه تم قابل‌انتخاب دارد -
+                       ocean/warm/midnight از این منو حذف شدند (نه از CSS - همان‌جا دست‌نخورده مانده تا
+                       چیزی نشکند)؛ turquoise (فیروزه‌ای ایرانی) امضای بصری اختصاصی PEMS است. *@
                     @foreach (var (themeValue, icon, label) in new[] {
-                        ("light", "bi-sun", "Light (Default)"), ("dark", "bi-moon-stars", "Dark"),
-                        ("ocean", "bi-water", "Ocean"), ("warm", "bi-tree", "Warm"), ("midnight", "bi-moon", "Midnight")
+                        ("light", "bi-sun", Localizer["Theme_Light"].Value), ("dark", "bi-moon-stars", Localizer["Theme_Dark"].Value),
+                        ("turquoise", "bi-gem", Localizer["Theme_Turquoise"].Value)
                     })
                     {
                         <li>
                             <a class="dropdown-item theme-switch @(currentTheme == themeValue ? "active" : "")"
-                               href="@Url.Action("SetTheme", "Theme", new { theme = themeValue, returnUrl = currentUrl })">
+                               href="@Url.Action("SetTheme", "Theme", new { area = "", theme = themeValue, returnUrl = currentUrl })">
                                 <i class="bi @icon me-2"></i> @label
                             </a>
                         </li>
@@ -101,22 +110,22 @@
             </div>
 
             <div class="dropdown">
-                <a href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="Language / زبان">
+                <a href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="@Localizer["Shell_Language"]">
                     <i class="bi bi-translate fs-5"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <a class="dropdown-item @(!isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { culture = "en", returnUrl = currentUrl })">English</a>
+                        <a class="dropdown-item @(!isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "en", returnUrl = currentUrl })">English</a>
                     </li>
                     <li>
-                        <a class="dropdown-item @(isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { culture = "fa", returnUrl = currentUrl })">فارسی</a>
+                        <a class="dropdown-item @(isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "fa", returnUrl = currentUrl })">فارسی</a>
                     </li>
                 </ul>
             </div>
 
-            @await Html.PartialAsync("_ContextualHelpDrawer")
+            @await Html.PartialAsync("_ContextualHelpButton")
 
-            <a asp-controller="Help" asp-action="Index" class="text-secondary" title="@(isRtl ? "مرکز راهنما" : "Help Center")">
+            <a asp-controller="Help" asp-action="Index" asp-area="" class="text-secondary" title="@(isRtl ? "مرکز راهنما" : "Help Center")">
                 <i class="bi bi-question-circle fs-5"></i>
             </a>
 
@@ -133,18 +142,18 @@
             <div class="dropdown pems-user-menu">
                 <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="pems-user-avatar">@(string.IsNullOrEmpty(User.Identity?.Name) ? "?" : User.Identity!.Name!.Substring(0, 1).ToUpper())</span>
-                    <span class="d-none d-sm-flex flex-column text-start">
+                    <span class="d-none d-md-flex flex-column text-start">
                         <span class="fw-semibold">@(User.FindFirst("FullName")?.Value ?? User.Identity?.Name)</span>
                         <span class="text-muted" style="font-size:11px;">@(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value)</span>
                     </span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><h6 class="dropdown-header">@User.Identity?.Name</h6></li>
-                    <li><a class="dropdown-item" asp-controller="MyProfile" asp-action="Index"><i class="bi bi-person-badge"></i> پروفایل من</a></li>
-                    <li><a class="dropdown-item" asp-controller="Account" asp-action="ManagePasskeys"><i class="bi bi-key"></i> Manage Passkeys</a></li>
+                    <li><a class="dropdown-item" asp-controller="MyProfile" asp-action="Index" asp-area=""><i class="bi bi-person-badge"></i> @Localizer["Shell_MyProfile"]</a></li>
+                    <li><a class="dropdown-item" asp-controller="Account" asp-action="ManagePasskeys" asp-area=""><i class="bi bi-key"></i> @Localizer["Shell_Passkeys"]</a></li>
                     <li><hr class="dropdown-divider" /></li>
                     <li>
-                        <form asp-controller="Account" asp-action="Logout" method="post">
+                        <form asp-controller="Account" asp-action="Logout" asp-area="" method="post">
                             <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> @Localizer["Logout"]</button>
                         </form>
                     </li>
@@ -153,34 +162,24 @@
         </div>
     </header>
 
+    @* پنل راهنما باید بیرون از <header> باشد (Stacking Context هدر z-index:1030 است؛ در RTL پنل زیر نوار کناری می‌رفت) *@
+    @await Html.PartialAsync("_ContextualHelpDrawer")
+
     <div class="pems-shell">
         <partial name="_SidebarMenu" />
         <main class="pems-content">
-            @* طبق «PEMS — Engineering Documents Upper-Whitespace Correction»: برخی صفحات (مثلاً
-               Engineering Documents/Details) از قبل هدر اختصاصی خودشان (Breadcrumb محلی + کارت
-               هویت مدرک) را دارند که همون متن ViewData["Title"] را دقیق‌تر/مفیدتر نشان می‌دهند -
-               این H1 عمومی برای آن‌ها صرفاً تکرار همان متن با فونت درشت‌تر است، نه اطلاعات جدید.
-               پیش‌فرض این پرچم false می‌ماند (یعنی رفتار همه‌ی صفحات دیگر دقیقاً مثل قبل است) -
-               فقط صفحاتی که صریحاً ViewData["HidePageTitle"]=true تنظیم کنند این H1 را نمی‌بینند. *@
-            @{ var hidePageTitle = ViewData["HidePageTitle"] is true; }
+            @* هدر عمومی صفحه: فقط یک ردیف فشرده (عنوان + برچسب ماژول) - بدون مسیر/URL و بدون Breadcrumb تکراری.
+               صفحاتی که هدر اختصاصی دارند ViewData["HidePageTitle"]=true می‌گذارند. *@
             @if (isAdminArea)
             {
                 <div class="admin-ui-surface">
-                    <partial name="_Breadcrumb" />
-                    @if (ViewData["Title"] != null && !hidePageTitle)
-                    {
-                        <h1 class="pems-page-title">@ViewData["Title"]</h1>
-                    }
+                    <partial name="_PageHeader" />
                     @RenderBody()
                 </div>
             }
             else
             {
-                <partial name="_Breadcrumb" />
-                @if (ViewData["Title"] != null && !hidePageTitle)
-                {
-                    <h1 class="pems-page-title">@ViewData["Title"]</h1>
-                }
+                <partial name="_PageHeader" />
                 @RenderBody()
             }
         </main>
@@ -208,13 +207,17 @@
         <div id="liveToastArea"></div>
     </div>
 
+    <partial name="_PemsLoadingOverlay" />
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/pems-global-search.js" asp-append-version="true"></script>
     <script src="~/js/pems-data-grid.js" asp-append-version="true"></script>
+    <script src="~/js/pems-ui.js" asp-append-version="true"></script>
+    <script src="~/js/pems-loading.js" asp-append-version="true"></script>
     <script src="~/js/admin.js" asp-append-version="true"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+    <script src="~/lib/signalr/signalr-8.0.7.min.js"></script>
     <script src="~/js/notifications-hub.js" asp-append-version="true"></script>
 
     <script>
@@ -228,7 +231,9 @@
             const el = document.createElement('div');
             el.className = 'toast align-items-center border-0 ' + (isError ? 'text-bg-danger' : 'text-bg-primary');
             el.setAttribute('role', 'alert');
-            el.innerHTML = '<div class="d-flex"><div class="toast-body"><i class="bi bi-bell-fill me-1"></i> ' + message + '</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>';
+            // message شامل متن کاربر (مثلاً عنوان وظیفه) است - فقط textContent، نه innerHTML (جلوگیری از XSS)
+            el.innerHTML = '<div class="d-flex"><div class="toast-body"><i class="bi bi-bell-fill me-1"></i> <span class="toast-msg"></span></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>';
+            el.querySelector('.toast-msg').textContent = message;
             area.appendChild(el);
             new bootstrap.Toast(el, { delay: 6000 }).show();
         }

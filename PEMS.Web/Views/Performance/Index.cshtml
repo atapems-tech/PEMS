@@ -1,3 +1,6 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = "Performance Testing";
 }
@@ -24,7 +27,7 @@
         <div class="col-md-6">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
-                    <h3 class="h5 mb-3">چیزی که k6 انجام می‌دهد</h3>
+                    <h3 class="h5 mb-3">@Localizer["چیزی که k6 انجام می‌دهد"]</h3>
                     <ul class="mb-0">
                         <li>تست بار و بالا رفتن تعداد کاربرها</li>
                         <li>سنجش P50/P95/P99 latency</li>
@@ -39,7 +42,7 @@
         <div class="col-md-6">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
-                    <h3 class="h5 mb-3">پیشنهاد اجرای اولیه</h3>
+                    <h3 class="h5 mb-3">@Localizer["پیشنهاد اجرای اولیه"]</h3>
                     <pre class="mb-0 bg-dark text-light p-3 rounded"><code>k6 run --vus 10 --duration 30s ./performance-tests/smoke.js</code></pre>
                     <p class="mt-3 mb-0 text-muted small">در این پروژه هنوز اسکریپت واقعی k6 وجود ندارد، اما این مسیر برای اجرای آینده آماده می‌شود.</p>
                 </div>
@@ -49,24 +52,24 @@
         <div class="col-12">
             <div class="card shadow-sm border-0">
                 <div class="card-body">
-                    <h3 class="h5 mb-3">Scenarios پیشنهادی</h3>
+                    <h3 class="h5 mb-3">@Localizer["Scenarios پیشنهادی"]</h3>
                     <div class="row g-3">
                         <div class="col-md-4">
                             <div class="border rounded p-3 h-100">
                                 <h4 class="h6">Baseline</h4>
-                                <small class="text-muted">1, 5, 10 کاربران</small>
+                                <small class="text-muted">@Localizer["1, 5, 10 کاربران"]</small>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="border rounded p-3 h-100">
                                 <h4 class="h6">Load</h4>
-                                <small class="text-muted">25, 50, 100 کاربران</small>
+                                <small class="text-muted">@Localizer["25, 50, 100 کاربران"]</small>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="border rounded p-3 h-100">
                                 <h4 class="h6">Stress / Spike</h4>
-                                <small class="text-muted">150 تا 500 و بازگشت به حالت عادی</small>
+                                <small class="text-muted">@Localizer["150 تا 500 و بازگشت به حالت عادی"]</small>
                             </div>
                         </div>
                     </div>

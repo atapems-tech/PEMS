@@ -1,3 +1,6 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var order = ViewBag.Order;
 }
@@ -10,7 +13,7 @@
             <div class="col-md-6">
                 <label class="form-label">Operator (optional)</label>
                 <select name="operatorEmployeeId" class="form-select">
-                    <option value="">-- none --</option>
+                    <option value="">@Localizer["-- none --"]</option>
                     @foreach (var emp in ViewBag.Employees)
                     {
                         <option value="@emp.EmployeeId">@emp.Name</option>
@@ -20,7 +23,7 @@
             <div class="col-md-6">
                 <label class="form-label">Shift (optional)</label>
                 <select name="shiftDefinitionId" class="form-select">
-                    <option value="">-- none --</option>
+                    <option value="">@Localizer["-- none --"]</option>
                     @foreach (var s in ViewBag.Shifts)
                     {
                         <option value="@s.ShiftDefinitionId">@s.Code - @s.Name</option>
@@ -28,11 +31,11 @@
                 </select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Equipment (optional)</label>
-                <input type="number" name="equipmentId" class="form-control" placeholder="Equipment ID" />
+                <label class="form-label">@Localizer["Equipment (optional)"]</label>
+                <input type="number" name="equipmentId" class="form-control" placeholder="@Localizer["Equipment ID"]" />
             </div>
             <div class="col-12">
-                <label class="form-label">Notes</label>
+                <label class="form-label">@Localizer["Notes"]</label>
                 <textarea name="notes" class="form-control" rows="2"></textarea>
             </div>
         </div>

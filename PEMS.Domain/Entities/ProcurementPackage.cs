@@ -33,6 +33,16 @@ public class ProcurementPackage : BaseEntity
     // Open, InProgress, Closed, Cancelled
     public string Status { get; set; } = "Open";
 
+    // طبق ممیزی Package Procurement Contract Finalization (§C, §E): بحرانی‌بودن بسته مستقل از
+    // Equipment Criticality است - همان واژگان EquipmentCriticality.CriticalityClass (A/B/C) و
+    // RiskLevel (Low/Medium/High) برای یکپارچگی با بقیه‌ی سیستم استفاده شده، نه یک طبقه‌بندی تازه.
+    public string? CriticalityClass { get; set; }
+    public string? RiskLevel { get; set; }
+
+    // آیا این بسته نیازمند کنترل‌های بازرسی الزامی است (ITP) - جزئیات پیوند در Phase 5 اضافه می‌شود
+    public bool RequiresInspection { get; set; }
+    public string? InspectionNotes { get; set; }
+
     public bool IsActive { get; set; } = true;
 
     public DateTime CreatedDate { get; set; } = DateTime.Now;

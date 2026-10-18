@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.RcmFmeaCoverageMatrixDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card mb-3">
     <p class="text-muted small mb-3">
@@ -9,7 +12,7 @@
     <div class="row g-3 text-center">
         <div class="col-md-2">
             <div class="fs-4 fw-bold">@Model.ClassesWithEquipment</div>
-            <div class="text-muted small">Classes with Equipment</div>
+            <div class="text-muted small">@Localizer["Classes with Equipment"]</div>
         </div>
         <div class="col-md-2">
             <div class="fs-4 fw-bold text-success">@Model.ClassesFmeaReady</div>
@@ -39,16 +42,16 @@
         <table class="table table-enterprise table-sm">
             <thead>
                 <tr>
-                    <th>Equipment Class</th>
-                    <th class="text-end">Equipment</th>
+                    <th>@Localizer["Equipment Class"]</th>
+                    <th class="text-end">@Localizer["Equipment"]</th>
                     <th class="text-end">Func. Req.</th>
-                    <th class="text-end">Failure Modes</th>
+                    <th class="text-end">@Localizer["Failure Modes"]</th>
                     <th class="text-end">Causes</th>
                     <th class="text-end">Effects</th>
                     <th class="text-end">Consequences</th>
-                    <th class="text-end">Strategy Types</th>
-                    <th>FMEA</th>
-                    <th>RCM</th>
+                    <th class="text-end">@Localizer["Strategy Types"]</th>
+                    <th>@Localizer["FMEA"]</th>
+                    <th>@Localizer["RCM"]</th>
                     <th></th>
                 </tr>
             </thead>

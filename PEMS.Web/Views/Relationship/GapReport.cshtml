@@ -1,8 +1,11 @@
 ﻿@model PEMS.Application.DTOs.RelationshipGapReportDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-clipboard-x"></i> گزارش تحلیل شکاف - رابطه‌های ناقص تجهیزات</h5>
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">بازگشت به Explorer</a>
+    <h5 class="mb-0"><i class="bi bi-clipboard-x"></i> @Localizer["گزارش تحلیل شکاف - رابطه‌های ناقص تجهیزات"]</h5>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["بازگشت به Explorer"]</a>
 </div>
 
 <p class="text-muted small">
@@ -15,25 +18,25 @@
     <div class="col-md-3">
         <div class="content-card text-center">
             <div class="fs-3 fw-bold">@Model.TotalEquipmentCount</div>
-            <div class="text-muted small">کل تجهیزات</div>
+            <div class="text-muted small">@Localizer["کل تجهیزات"]</div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="content-card text-center">
             <div class="fs-3 fw-bold text-success">@Model.FullyLinkedCount</div>
-            <div class="text-muted small">کاملاً وصل (هر ۴ نوع رابطه)</div>
+            <div class="text-muted small">@Localizer["کاملاً وصل (هر ۴ نوع رابطه)"]</div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="content-card text-center">
             <div class="fs-3 fw-bold text-warning">@Model.PartiallyLinkedCount</div>
-            <div class="text-muted small">ناقص (بعضی روابط)</div>
+            <div class="text-muted small">@Localizer["ناقص (بعضی روابط)"]</div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="content-card text-center">
             <div class="fs-3 fw-bold text-danger">@Model.UnlinkedCount</div>
-            <div class="text-muted small">کاملاً بدون رابطه</div>
+            <div class="text-muted small">@Localizer["کاملاً بدون رابطه"]</div>
         </div>
     </div>
 </div>
@@ -42,8 +45,8 @@
     <table class="table table-enterprise mb-0">
         <thead>
             <tr>
-                <th>Tag</th><th>Name</th><th>Area</th><th>Discipline</th>
-                <th class="text-center">مدارک</th><th class="text-center">VDR</th>
+                <th>@Localizer["Tag"]</th><th>@Localizer["Name"]</th><th>@Localizer["Area"]</th><th>@Localizer["Discipline"]</th>
+                <th class="text-center">@Localizer["مدارک"]</th><th class="text-center">@Localizer["VDR"]</th>
                 <th class="text-center">MR</th><th class="text-center">WorkOrder</th><th></th>
             </tr>
         </thead>

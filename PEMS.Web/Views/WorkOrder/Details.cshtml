@@ -1,4 +1,9 @@
 ﻿@model PEMS.Domain.Entities.WorkOrder
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Models
+@using PEMS.WorkflowPlatform.Interfaces
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var sparesUsed = (List<PEMS.Domain.Entities.MaintenanceSpareUsage>)ViewBag.SparesUsed;
     var materialItems = (IEnumerable<dynamic>)ViewBag.MaterialItems;
@@ -16,11 +21,47 @@
     };
 
     var hasPendingReview = (bool)(ViewBag.HasPendingReview ?? false);
+
+    // Phase 3B: Work Order حاکمیتی → ساختار/اقدام‌ها/شرکت‌کنندگان/تاریخچه از مدل خواندنی مرکزی. Legacy (بدون Instance) → مسیر قدیمی.
+    var wf = ViewBag.Workflow as WorkflowRuntimeViewModel;
+    var isLegacy = wf == null;
+    var fa = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
+    var employeeNames = (Dictionary<int, string>?)ViewBag.EmployeeNames ?? new Dictionary<int, string>();
+    string StageName(WorkflowStageView st) => fa && !string.IsNullOrWhiteSpace(st.NameFa) ? st.NameFa! : st.Name;
+    string ActionLabel(WorkflowAvailableAction a) => (fa && !string.IsNullOrWhiteSpace(a.LabelFa)) ? a.LabelFa! : (!string.IsNullOrWhiteSpace(a.Label) ? a.Label! : a.ActionType);
+    string StageByName(string? n) => string.IsNullOrEmpty(n) ? "-" : (fa ? (wf?.Stages.FirstOrDefault(x => x.Name == n)?.NameFa ?? n) : n);
+    string Who(int? id) => id.HasValue && employeeNames.TryGetValue(id.Value, out var nm) ? nm : (id.HasValue ? "#" + id.Value : "-");
+    string ActionText(string a) { var t = Localizer[a]; return t.ResourceNotFound ? a : t.Value; }
+    string Participant(WorkflowParticipantView pt) => (pt.Role ?? "").Contains("Permission:")
+        ? Localizer["Permission"] + ": \u2066" + (pt.Role ?? "").Replace("Permission:", "").Replace(",", " / ") + "\u2069" : (pt.Role ?? "");
+    var diagram = new StageDiagramViewModel();
+    if (wf != null)
+        foreach (var st in wf.Stages.OrderBy(x => x.Order))
+            diagram.Stages.Add(new StageDiagramItem
+            {
+                Label = StageName(st), IconCssClass = "bi-circle",
+                RoleLabel = st.Status == "Current" ? string.Join(", ", st.Participants.Where(x => x.Status == "Pending").Select(Participant).Distinct()) : null,
+                State = st.Status switch { "Current" => StageItemState.Current, "Completed" or "Skipped" => StageItemState.Done, "Rejected" or "Cancelled" => StageItemState.Rejected, _ => StageItemState.Pending }
+            });
+    var actions = wf?.AvailableActions ?? new List<WorkflowAvailableAction>();
 }
 
+@if (wf != null)
+{
+    <div class="content-card mb-3">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h6 class="mb-0">@Localizer["Workflow"] <span class="text-muted small">@wf.WorkflowName · @Localizer["Version"] @wf.VersionNumber · @Localizer[wf.Status]</span></h6>
+            @foreach (var w in wf.Warnings) { <span class="small text-warning"><i class="bi bi-exclamation-triangle"></i> @w</span> }
+        </div>
+        <partial name="_PemsStageDiagram" model="diagram" />
+    </div>
+}
+else
+{
 <div class="content-card mb-3">
     <partial name="_WorkOrderStagesDiagram" model="@(( Model.Status, hasPendingReview ))" />
 </div>
+}
 
 <div class="content-card mb-3">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
@@ -30,6 +71,8 @@
             <span class="badge @(Model.Priority == "Critical" ? "bg-danger" : "bg-secondary")">@Model.Priority</span>
             <span class="badge bg-secondary">@Model.WorkOrderType</span>
         </div>
+        @if (isLegacy)
+        {
         <div>
             @if (nextStatus != null)
             {
@@ -51,28 +94,28 @@
                                         <div class="mb-2">
                                             <label class="form-label small">حالت خرابی (Failure Mode)</label>
                                             <select name="failureModeCode" class="form-select form-select-sm">
-                                                <option value="">-- انتخاب --</option>
-                                                <option>Leakage</option><option>Fracture</option><option>Vibration</option>
-                                                <option>Overheating</option><option>Blockage</option><option>ElectricalFault</option>
-                                                <option>Other</option>
+                                                <option value="">@Localizer["-- انتخاب --"]</option>
+                                                <option>@Localizer["Leakage"]</option><option>@Localizer["Fracture"]</option><option>@Localizer["Vibration"]</option>
+                                                <option>@Localizer["Overheating"]</option><option>@Localizer["Blockage"]</option><option>@Localizer["ElectricalFault"]</option>
+                                                <option>@Localizer["Other"]</option>
                                             </select>
                                         </div>
                                         <div class="mb-2">
                                             <label class="form-label small">علت خرابی (Failure Cause)</label>
                                             <select name="failureCauseCode" class="form-select form-select-sm">
-                                                <option value="">-- انتخاب --</option>
-                                                <option>Corrosion</option><option>Fatigue</option><option>Wear</option>
-                                                <option>OperatorError</option><option>DesignDeficiency</option><option>MaterialDefect</option>
-                                                <option>Other</option>
+                                                <option value="">@Localizer["-- انتخاب --"]</option>
+                                                <option>@Localizer["Corrosion"]</option><option>@Localizer["Fatigue"]</option><option>@Localizer["Wear"]</option>
+                                                <option>@Localizer["OperatorError"]</option><option>@Localizer["DesignDeficiency"]</option><option>@Localizer["MaterialDefect"]</option>
+                                                <option>@Localizer["Other"]</option>
                                             </select>
                                         </div>
                                         <div class="mb-2">
                                             <label class="form-label small">اثر خرابی (Failure Effect)</label>
                                             <select name="failureEffect" class="form-select form-select-sm">
-                                                <option value="">-- انتخاب --</option>
+                                                <option value="">@Localizer["-- انتخاب --"]</option>
                                                 <option>Unplanned Shutdown</option><option>Production Loss</option><option>Safety Impact</option>
                                                 <option>Environmental Impact</option><option>Quality Impact</option><option>No Impact</option>
-                                                <option>Other</option>
+                                                <option>@Localizer["Other"]</option>
                                             </select>
                                         </div>
                                         <div class="mb-2">
@@ -103,8 +146,8 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                                    <button type="submit" class="btn btn-pems-solid btn-sm">ثبت و تکمیل</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                                    <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت و تکمیل"]</button>
                                 </div>
                             </form>
                         </div></div>
@@ -121,7 +164,7 @@
                                 @foreach (var c in (IEnumerable<dynamic>)ViewBag.Teams) { <option value="@c.TeamId">@c.Name</option> }
                             </select>
                         }
-                        <input name="reason" class="form-control form-control-sm d-inline-block" style="width:180px;" placeholder="دلیل (اختیاری)" />
+                        <input name="reason" class="form-control form-control-sm d-inline-block" style="width:180px;" placeholder="@Localizer["دلیل (اختیاری)"]" />
                         <button type="submit" class="btn btn-pems-solid btn-sm">Advance to @nextStatus</button>
                     </form>
                 }
@@ -137,7 +180,7 @@
             {
                 <form asp-action="Hold" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
-                    <button type="submit" class="btn btn-outline-warning btn-sm"><i class="bi bi-pause-circle"></i> Hold</button>
+                    <button type="submit" class="btn btn-outline-warning btn-sm"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</button>
                 </form>
             }
             @if (Model.Status == "OnHold")
@@ -151,18 +194,27 @@
             {
                 <form asp-action="Reject" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
-                    <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('این WorkOrder رد شود؟');">Reject</button>
+                    <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('این WorkOrder رد شود؟');">@Localizer["Reject"]</button>
                 </form>
             }
             @if (Model.Status is "Open" or "Assigned" or "InProgress" or "OnHold")
             {
                 <form asp-action="Cancel" method="post" class="d-inline ms-1">
                     <input type="hidden" name="id" value="@Model.WorkOrderId" />
-                    <button type="submit" class="btn btn-outline-secondary btn-sm" onclick="return confirm('این WorkOrder لغو شود؟');">Cancel</button>
+                    <button type="submit" class="btn btn-outline-secondary btn-sm" onclick="return confirm('این WorkOrder لغو شود؟');">@Localizer["Cancel"]</button>
                 </form>
             }
         </div>
+        }
     </div>
+
+    @if (!isLegacy)
+    {
+        <div class="small mt-2 d-flex flex-wrap gap-3">
+            <span><strong>@Localizer["Originating Discipline"]:</strong> <bdi>@(Model.OriginatingOrganization) / @(ViewBag.OriginatingDisciplineName ?? "-")</bdi></span>
+            <span><strong>@Localizer["Responsible Maintenance Discipline"]:</strong> <bdi>@(ViewBag.ResponsibleDisciplineName != null ? Model.ResponsibleOrganization + " / " + ViewBag.ResponsibleDisciplineName : "-")</bdi></span>
+        </div>
+    }
 
     @if (Model.SourceWorkRequestId.HasValue)
     {
@@ -182,7 +234,7 @@
     }
 
     <div class="row g-3 mt-2">
-        <div class="col-md-3"><strong>Equipment:</strong> <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.Equipment?.TagNumber</a></div>
+        <div class="col-md-3"><strong>@Localizer["Equipment:"]</strong> <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.Equipment?.TagNumber</a></div>
         <div class="col-md-3">
             <strong>Assigned:</strong>
             @if (Model.AssignedTeam != null)
@@ -198,15 +250,152 @@
                 <span class="text-muted">@Model.AssignedTo</span>
             }
         </div>
+        <div class="col-md-3">
+            <strong>@Localizer["Planned"]:</strong>
+            @if (Model.PlannedStart.HasValue && Model.PlannedFinish.HasValue)
+            {
+                <span dir="ltr">@Model.PlannedStart.Value.ToString("yyyy-MM-dd HH:mm") &rarr; @Model.PlannedFinish.Value.ToString("HH:mm")</span>
+            }
+            else
+            {
+                <span class="text-muted">@Localizer["Unscheduled"]</span>
+            }
+        </div>
         <div class="col-md-3"><strong>Started:</strong> @(Model.StartDate?.ToString("yyyy-MM-dd"))</div>
         <div class="col-md-3"><strong>Completed:</strong> @(Model.CompletionDate?.ToString("yyyy-MM-dd"))</div>
         @if (Model.MaintenancePlan != null)
         {
             <div class="col-12"><strong>From Plan:</strong> @Model.MaintenancePlan.PlanNumber - @Model.MaintenancePlan.Title</div>
         }
-        <div class="col-12"><strong>Description:</strong><p class="mb-0">@Model.Description</p></div>
+        <div class="col-12"><strong>@Localizer["Description:"]</strong><p class="mb-0">@Model.Description</p></div>
     </div>
 </div>
+
+@if (!isLegacy)
+{
+    <div class="content-card mb-3">
+        <h6 class="mb-3">@Localizer["Actions"]</h6>
+        <div class="d-flex flex-wrap gap-2 align-items-start">
+            @if (actions.Count > 0)
+            {
+                <form asp-action="WorkflowAction" method="post" class="d-flex flex-column gap-2 w-100">
+                    <input type="hidden" name="id" value="@Model.WorkOrderId" />
+                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                        <input type="text" name="comment" class="form-control form-control-sm" placeholder="@Localizer["Comment (optional)"]" style="width:220px;" />
+                        @foreach (var a in actions)
+                        {
+                            var cls = a.ActionType == "Approve" ? "btn-pems-solid" : a.ActionType is "Reject" or "Cancel" ? "btn-outline-danger" : "btn-outline-primary";
+                            <button type="submit" name="actionType" value="@a.ActionType" class="btn btn-sm @cls" disabled="@(!a.IsAllowed)" title="@(a.IsAllowed ? "" : a.DeniedReason)"
+                                    onclick="@(a.ActionType is "Reject" or "Cancel" ? "return confirm('" + Localizer["Are you sure?"] + "');" : "")">
+                                @ActionLabel(a)@if (!string.IsNullOrWhiteSpace(a.ToStageName)) { <span class="opacity-75"> → @StageByName(a.ToStageName)</span> }
+                            </button>
+                        }
+                    </div>
+                    @if (Model.Status == "InProgress")
+                    {
+                        @* داده‌های تکمیل (قواعد دامنه‌ی Work Order؛ اعتبارسنجی نهایی سمت سرور) *@
+                        <details class="small">
+                            <summary>@Localizer["Completion data"]</summary>
+                            <div class="row g-2 mt-1">
+                                @if (Model.WorkOrderType is "Corrective" or "Emergency")
+                                {
+                                    <div class="col-md-3"><label class="form-label small">@Localizer["Failure Mode"]</label><input name="failureModeCode" class="form-control form-control-sm" /></div>
+                                    <div class="col-md-3"><label class="form-label small">@Localizer["Failure Cause"]</label><input name="failureCauseCode" class="form-control form-control-sm" /></div>
+                                    <div class="col-md-3"><label class="form-label small">@Localizer["Root Cause"]</label><input name="rootCause" class="form-control form-control-sm" /></div>
+                                    <div class="col-md-3"><label class="form-label small">@Localizer["Downtime Hours"]</label><input name="downtimeHours" type="number" step="0.1" class="form-control form-control-sm" /></div>
+                                    <div class="col-md-6"><label class="form-label small">@Localizer["Failure Effect"]</label><input name="failureEffect" class="form-control form-control-sm" /></div>
+                                    <div class="col-md-6"><label class="form-label small">@Localizer["Corrective Action"]</label><input name="correctiveAction" class="form-control form-control-sm" /></div>
+                                }
+                                <div class="col-md-6"><label class="form-label small">@Localizer["Contractor"]</label><input name="contractorName" class="form-control form-control-sm" /></div>
+                                <div class="col-md-6"><label class="form-label small">@Localizer["Contractor Cost"]</label><input name="contractorCost" type="number" step="0.01" class="form-control form-control-sm" /></div>
+                            </div>
+                        </details>
+                    }
+                </form>
+                @foreach (var denied in actions.Where(a => !a.IsAllowed && !string.IsNullOrWhiteSpace(a.DeniedReason)))
+                {
+                    <div class="small text-muted w-100"><i class="bi bi-lock"></i> @ActionLabel(denied): @denied.DeniedReason</div>
+                }
+            }
+            else
+            {
+                <span class="text-muted small">@Localizer["No further actions available."]</span>
+            }
+        </div>
+
+        @if (Model.Status is "Open" or "Assigned")
+        {
+            @* برنامه‌ریزی/تخصیص: داده‌های دامنه‌ی Work Order؛ مجوز، سازمان و دیسیپلین سمت سرور اعمال می‌شود *@
+            <hr class="my-3" />
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <form asp-action="SetPlanning" method="post" class="d-flex gap-2 align-items-end flex-wrap">
+                        <input type="hidden" name="id" value="@Model.WorkOrderId" />
+                        <div><label class="form-label small mb-1">@Localizer["Responsible Maintenance Discipline"]</label>
+                            <select name="responsibleDisciplineId" class="form-select form-select-sm" required>
+                                <option value="">--</option>
+                                @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId" selected="@(Model.ResponsibleDisciplineId == (int)d.DisciplineId)">@d.Name</option> }
+                            </select></div>
+                        <button type="submit" class="btn btn-outline-primary btn-sm">@Localizer["Save"]</button>
+                    </form>
+                </div>
+                @if (Model.Status == "Assigned")
+                {
+                    <div class="col-md-6">
+                        <form asp-action="AssignExecutor" method="post" class="d-flex gap-2 align-items-end flex-wrap">
+                            <input type="hidden" name="id" value="@Model.WorkOrderId" />
+                            <div><label class="form-label small mb-1">@Localizer["Team"]</label>
+                                <select name="teamId" class="form-select form-select-sm"><option value="">--</option>
+                                    @foreach (var c in (IEnumerable<dynamic>)ViewBag.Teams) { <option value="@c.TeamId">@c.Name</option> }
+                                </select></div>
+                            <div><label class="form-label small mb-1">@Localizer["Executor"]</label>
+                                <select name="employeeId" class="form-select form-select-sm"><option value="">--</option>
+                                    @foreach (var e in (IEnumerable<dynamic>)ViewBag.Employees) { <option value="@e.EmployeeId">@e.FullName</option> }
+                                </select></div>
+                            <button type="submit" class="btn btn-outline-primary btn-sm">@Localizer["Assign"]</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        @* طبق «PEMS — Work Request/Work Order Scheduling & Maintenance Calendar»: زمان‌بندی مستقل از
+                           تخصیص تیم/کارمند است (ترتیب الزامی نیست) - همان مرحله/مجوز، فرم جدا. *@
+                        <form asp-action="SetSchedule" method="post" class="d-flex gap-2 align-items-end flex-wrap">
+                            <input type="hidden" name="id" value="@Model.WorkOrderId" />
+                            <div><label class="form-label small mb-1">@Localizer["Planned Start"]</label>
+                                <input type="datetime-local" name="plannedStart" class="form-control form-control-sm"
+                                       value="@(Model.PlannedStart?.ToString("yyyy-MM-ddTHH:mm"))" required /></div>
+                            <div><label class="form-label small mb-1">@Localizer["Planned Finish"]</label>
+                                <input type="datetime-local" name="plannedFinish" class="form-control form-control-sm"
+                                       value="@(Model.PlannedFinish?.ToString("yyyy-MM-ddTHH:mm"))" required /></div>
+                            <button type="submit" class="btn btn-outline-primary btn-sm">@Localizer["Save Schedule"]</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="content-card mb-3">
+        <h6 class="mb-3">@Localizer["Workflow History"]</h6>
+        <div class="table-responsive">
+        <table class="table table-enterprise table-sm mb-0">
+            <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Action"]</th><th>@Localizer["From"]</th><th>@Localizer["To"]</th><th>@Localizer["By"]</th><th>@Localizer["Reason"]</th></tr></thead>
+            <tbody>
+                @foreach (var h in wf!.HistorySummary.OrderByDescending(x => x.ActionDate))
+                {
+                    <tr>
+                        <td class="small"><bdi dir="ltr">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</bdi></td>
+                        <td class="small">@ActionText(h.ActionType)</td>
+                        <td class="small">@StageByName(h.FromStageName)</td>
+                        <td class="small">@StageByName(h.ToStageName)</td>
+                        <td class="small">@Who(h.UserId)</td>
+                        <td class="small text-muted">@h.Comment</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+    </div>
+}
 
 @{
     var reviewStatus = (IEnumerable<PEMS.Application.Interfaces.VdrReviewStatusItemDto>)(ViewBag.ReviewStatus ?? new List<PEMS.Application.Interfaces.VdrReviewStatusItemDto>());
@@ -218,7 +407,7 @@
 @if (statusHistory.Any())
 {
     <div class="content-card mb-3">
-        <h6 class="mb-3"><i class="bi bi-clock-history"></i> Status History</h6>
+        <h6 class="mb-3"><i class="bi bi-clock-history"></i> @(isLegacy ? Localizer["Status History"] : Localizer["Business Audit"])</h6>
         <ul class="list-unstyled mb-0">
             @foreach (var h in statusHistory)
             {
@@ -237,7 +426,7 @@
 }
 
 <div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-people"></i> بازبینی چند-دیسیپلینه</h6>
+    <h6 class="mb-3"><i class="bi bi-people"></i> @Localizer["بازبینی چند-دیسیپلینه"]</h6>
     <p class="text-muted small">
         طبق رویه‌ی استاندارد هماهنگی چند-تخصصی (Multi-Craft Coordination، EN 13460): اگه این
         کار نیاز به تایید/یافته‌ی چند دیسیپلین تعمیراتی داره (مثلاً برق + مکانیک + ابزاردقیق)،
@@ -247,14 +436,14 @@
     @if (!hasPendingReview)
     {
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#requestReviewModal">
-            <i class="bi bi-send"></i> درخواست بازبینی چند-دیسیپلینه
+            <i class="bi bi-send"></i> @Localizer["درخواست بازبینی چند-دیسیپلینه"]
         </button>
 
         <div class="modal fade" id="requestReviewModal" tabindex="-1">
             <div class="modal-dialog"><div class="modal-content">
                 <form asp-action="RequestDisciplineReview" method="post">
                     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-                    <div class="modal-header"><h6 class="modal-title">انتخاب دیسیپلین‌ها</h6></div>
+                    <div class="modal-header"><h6 class="modal-title">@Localizer["انتخاب دیسیپلین‌ها"]</h6></div>
                     <div class="modal-body">
                         @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines)
                         {
@@ -265,8 +454,8 @@
                         }
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                        <button type="submit" class="btn btn-pems-solid btn-sm">شروع بازبینی</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                        <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["شروع بازبینی"]</button>
                     </div>
                 </form>
             </div></div>
@@ -293,42 +482,42 @@
                 <div class="modal-dialog"><div class="modal-content">
                     <form asp-action="RespondDisciplineReview" method="post">
                         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-                        <div class="modal-header"><h6 class="modal-title">ثبت نظر / یافته</h6></div>
+                        <div class="modal-header"><h6 class="modal-title">@Localizer["ثبت نظر / یافته"]</h6></div>
                         <div class="modal-body">
                             <div class="mb-2">
-                                <label class="form-label small">تصمیم</label>
+                                <label class="form-label small">@Localizer["تصمیم"]</label>
                                 <select name="decision" class="form-select form-select-sm" required>
-                                    <option value="Approve">تایید (بدون ایراد)</option>
-                                    <option value="Comment">تایید با یادداشت</option>
-                                    <option value="Reject">ایراد جدی دارد</option>
+                                    <option value="Approve">@Localizer["تایید (بدون ایراد)"]</option>
+                                    <option value="Comment">@Localizer["تایید با یادداشت"]</option>
+                                    <option value="Reject">@Localizer["ایراد جدی دارد"]</option>
                                 </select>
                             </div>
                             <div class="mb-2">
-                                <label class="form-label small">یافته / توضیح</label>
+                                <label class="form-label small">@Localizer["یافته / توضیح"]</label>
                                 <textarea name="findings" class="form-control form-control-sm" rows="3"></textarea>
                             </div>
                             <div class="mb-2">
                                 <label class="form-label small">حالت خرابی (از دید این دیسیپلین - اختیاری)</label>
                                 <select name="failureModeCode" class="form-select form-select-sm">
-                                    <option value="">-- انتخاب --</option>
-                                    <option>Leakage</option><option>Fracture</option><option>Vibration</option>
-                                    <option>Overheating</option><option>Blockage</option><option>ElectricalFault</option>
-                                    <option>Other</option>
+                                    <option value="">@Localizer["-- انتخاب --"]</option>
+                                    <option>@Localizer["Leakage"]</option><option>@Localizer["Fracture"]</option><option>@Localizer["Vibration"]</option>
+                                    <option>@Localizer["Overheating"]</option><option>@Localizer["Blockage"]</option><option>@Localizer["ElectricalFault"]</option>
+                                    <option>@Localizer["Other"]</option>
                                 </select>
                             </div>
                             <div class="mb-2">
                                 <label class="form-label small">علت خرابی (از دید این دیسیپلین - اختیاری)</label>
                                 <select name="failureCauseCode" class="form-select form-select-sm">
-                                    <option value="">-- انتخاب --</option>
-                                    <option>Corrosion</option><option>Fatigue</option><option>Wear</option>
-                                    <option>OperatorError</option><option>DesignDeficiency</option><option>MaterialDefect</option>
-                                    <option>Other</option>
+                                    <option value="">@Localizer["-- انتخاب --"]</option>
+                                    <option>@Localizer["Corrosion"]</option><option>@Localizer["Fatigue"]</option><option>@Localizer["Wear"]</option>
+                                    <option>@Localizer["OperatorError"]</option><option>@Localizer["DesignDeficiency"]</option><option>@Localizer["MaterialDefect"]</option>
+                                    <option>@Localizer["Other"]</option>
                                 </select>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">انصراف</button>
-                            <button type="submit" class="btn btn-pems-solid btn-sm">ثبت</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                            <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت"]</button>
                         </div>
                     </form>
                 </div></div>
@@ -343,7 +532,7 @@
     @if (findings.Any())
     {
         <hr class="my-3" />
-        <h6 class="small fw-bold mb-2">یافته‌های ثبت‌شده</h6>
+        <h6 class="small fw-bold mb-2">@Localizer["یافته‌های ثبت‌شده"]</h6>
         <ul class="list-unstyled mb-0">
             @foreach (var f in findings)
             {
@@ -367,7 +556,7 @@
         var totalLaborCost = (decimal)ViewBag.TotalLaborCost;
         var spareCost = (decimal)ViewBag.SpareCost;
     }
-    <h6 class="mb-3"><i class="bi bi-person-workspace"></i> Labor (ساعت‌کار واقعی)</h6>
+    <h6 class="mb-3"><i class="bi bi-person-workspace"></i> @Localizer["Labor (ساعت‌کار واقعی)"]</h6>
     <p class="text-muted small">
         <strong>Assigned Employee</strong> فقط نشون می‌ده مسئول اجرای این WorkOrder کیه؛ اینجا
         ثبت واقعی می‌شه که کدوم کارمندها، چند ساعت، با چه نرخی واقعاً کار کردن. نرخ موقع ثبت
@@ -376,7 +565,7 @@
 
     <div class="table-responsive" style="max-height:50vh; overflow-y:auto;">
         <table class="table table-enterprise">
-            <thead><tr><th>Employee</th><th>Team</th><th>Date</th><th>Regular Hrs</th><th>OT Hrs</th><th>Rate</th><th>OT Rate</th><th>Cost</th></tr></thead>
+            <thead><tr><th>@Localizer["Employee"]</th><th>Team</th><th>@Localizer["Date"]</th><th>@Localizer["Regular Hrs"]</th><th>OT Hrs</th><th>Rate</th><th>@Localizer["OT Rate"]</th><th>@Localizer["Cost"]</th></tr></thead>
             <tbody>
                 @foreach (var l in laborEntries)
                 {
@@ -394,7 +583,7 @@
             </tbody>
         </table>
     </div>
-    @if (!laborEntries.Any()) { <p class="text-muted small">ساعت‌کاری هنوز ثبت نشده.</p> }
+    @if (!laborEntries.Any()) { <p class="text-muted small">@Localizer["ساعت‌کاری هنوز ثبت نشده."]</p> }
 
     <form asp-action="AddLaborEntry" method="post" class="row g-2 mt-2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
@@ -405,30 +594,30 @@
         </div>
         <div class="col-md-2">
             <select name="teamId" class="form-select form-select-sm">
-                <option value="">Team (optional)</option>
+                <option value="">@Localizer["Team (optional)"]</option>
                 @foreach (var t in (IEnumerable<dynamic>)ViewBag.Teams) { <option value="@t.TeamId">@t.Name</option> }
             </select>
         </div>
         <div class="col-md-2"><input name="workDate" type="date" class="form-control form-control-sm" required /></div>
         <div class="col-md-1"><input name="regularHours" type="number" step="0.5" min="0" class="form-control form-control-sm" placeholder="Reg" /></div>
         <div class="col-md-1"><input name="overtimeHours" type="number" step="0.5" min="0" class="form-control form-control-sm" placeholder="OT" /></div>
-        <div class="col-md-2"><input name="notes" class="form-control form-control-sm" placeholder="Notes (optional)" /></div>
+        <div class="col-md-2"><input name="notes" class="form-control form-control-sm" placeholder="@Localizer["Notes (optional)"]" /></div>
         <div class="col-md-1"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i></button></div>
     </form>
 
     <hr class="my-3" />
     <div class="row g-2 text-center">
-        <div class="col-4"><div class="fw-bold">@totalLaborCost.ToString("N0")</div><div class="text-muted small">Labor Cost</div></div>
-        <div class="col-4"><div class="fw-bold">@spareCost.ToString("N0")</div><div class="text-muted small">Spare Cost</div></div>
-        <div class="col-4"><div class="fw-bold text-success">@((totalLaborCost + spareCost).ToString("N0"))</div><div class="text-muted small">Total Maintenance Cost</div></div>
+        <div class="col-4"><div class="fw-bold">@totalLaborCost.ToString("N0")</div><div class="text-muted small">@Localizer["Labor Cost"]</div></div>
+        <div class="col-4"><div class="fw-bold">@spareCost.ToString("N0")</div><div class="text-muted small">@Localizer["Spare Cost"]</div></div>
+        <div class="col-4"><div class="fw-bold text-success">@((totalLaborCost + spareCost).ToString("N0"))</div><div class="text-muted small">@Localizer["Total Maintenance Cost"]</div></div>
     </div>
 </div>
 
 <div class="content-card">
-    <h6 class="mb-3">Spare Parts Used</h6>
+    <h6 class="mb-3">@Localizer["Spare Parts Used"]</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
     <table class="table table-enterprise">
-        <thead><tr><th>Material Code</th><th>Description</th><th>Qty</th><th>Returned</th><th>Unit Cost</th><th>Total</th><th></th></tr></thead>
+        <thead><tr><th>@Localizer["Material Code"]</th><th>@Localizer["Description"]</th><th>@Localizer["Qty"]</th><th>Returned</th><th>@Localizer["Unit Cost"]</th><th>@Localizer["Total"]</th><th></th></tr></thead>
         <tbody>
             @foreach (var s in sparesUsed)
             {
@@ -446,7 +635,7 @@
                             <form asp-action="ReturnSpareUsage" method="post" class="d-flex gap-1">
                                 <input type="hidden" name="maintenanceSpareUsageId" value="@s.MaintenanceSpareUsageId" />
                                 <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-                                <input type="number" name="returnQuantity" step="0.01" max="@outstanding" class="form-control form-control-sm" style="width:80px;" placeholder="Qty" required />
+                                <input type="number" name="returnQuantity" step="0.01" max="@outstanding" class="form-control form-control-sm" style="width:80px;" placeholder="@Localizer["Qty"]" required />
                                 <button type="submit" class="btn btn-sm btn-outline-secondary" title="Return"><i class="bi bi-arrow-return-left"></i></button>
                             </form>
                         }
@@ -456,12 +645,12 @@
         </tbody>
     </table>
     </div>
-    @if (!sparesUsed.Any()) { <p class="text-muted small">No spare parts recorded yet.</p> }
+    @if (!sparesUsed.Any()) { <p class="text-muted small">@Localizer["No spare parts recorded yet."]</p> }
 
     <div class="input-group input-group-sm mb-2" style="max-width:420px;">
         <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
-        <input type="text" id="spareUsageScanInput" class="form-control" dir="ltr" placeholder="Scan Material barcode..." />
-        <button type="button" class="btn btn-outline-secondary" id="spareUsageScanBtn">Resolve</button>
+        <input type="text" id="spareUsageScanInput" class="form-control" dir="ltr" placeholder="@Localizer["Scan Material barcode..."]" />
+        <button type="button" class="btn btn-outline-secondary" id="spareUsageScanBtn">@Localizer["Resolve"]</button>
     </div>
     <form asp-action="AddSpareUsage" method="post" class="row g-2 mt-2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
@@ -470,9 +659,9 @@
                 @foreach (var p in materialItems) { <option value="@p.MaterialItemId">@p.MaterialCode - @p.Description</option> }
             </select>
         </div>
-        <div class="col-md-3"><input name="quantity" type="number" step="0.01" class="form-control form-control-sm" placeholder="Quantity" required /></div>
-        <div class="col-md-3"><input name="unitCost" type="number" step="0.01" class="form-control form-control-sm" placeholder="Unit cost (optional)" /></div>
-        <div class="col-md-2"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> Add</button></div>
+        <div class="col-md-3"><input name="quantity" type="number" step="0.01" class="form-control form-control-sm" placeholder="@Localizer["Quantity"]" required /></div>
+        <div class="col-md-3"><input name="unitCost" type="number" step="0.01" class="form-control form-control-sm" placeholder="@Localizer["Unit cost (optional)"]" /></div>
+        <div class="col-md-2"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</button></div>
     </form>
 </div>
 
@@ -481,7 +670,7 @@
     <div class="content-card mt-3">
         <h6 class="mb-3"><i class="bi bi-list-ol"></i> Tasks (@tasks.Count(t => t.IsCompleted)/@tasks.Count completed)</h6>
         <table class="table table-enterprise table-sm mb-0">
-            <thead><tr><th style="width:50px;"></th><th style="width:60px;">#</th><th>Title</th><th>Description</th><th>Completed</th></tr></thead>
+            <thead><tr><th style="width:50px;"></th><th style="width:60px;">#</th><th>@Localizer["Title"]</th><th>@Localizer["Description"]</th><th>@Localizer["Completed"]</th></tr></thead>
             <tbody>
                 @foreach (var t in tasks)
                 {
@@ -512,7 +701,7 @@
 }
 
 <div class="content-card mt-3">
-    <h6 class="mb-3"><i class="bi bi-mortarboard"></i> Required Skills</h6>
+    <h6 class="mb-3"><i class="bi bi-mortarboard"></i> @Localizer["Required Skills"]</h6>
     @if (totalPlannedHours > 0 || totalActualHours > 0)
     {
         <p class="small text-muted mb-2">
@@ -529,12 +718,12 @@
                 <form asp-action="RemoveRequiredSkill" method="post" class="d-inline">
                     <input type="hidden" name="requiredSkillId" value="@rs.RequiredSkillId" />
                     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-                    <button type="submit" class="btn btn-sm p-0 border-0 text-white" style="line-height:1;" title="حذف"><i class="bi bi-x"></i></button>
+                    <button type="submit" class="btn btn-sm p-0 border-0 text-white" style="line-height:1;" title="@Localizer["حذف"]"><i class="bi bi-x"></i></button>
                 </form>
             </span>
         }
     </div>
-    @if (!requiredSkills.Any()) { <p class="text-muted small">مهارت موردنیازی ثبت نشده.</p> }
+    @if (!requiredSkills.Any()) { <p class="text-muted small">@Localizer["مهارت موردنیازی ثبت نشده."]</p> }
 
     <form asp-action="AddRequiredSkill" method="post" class="row g-2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
@@ -545,23 +734,23 @@
         </div>
         <div class="col-md-3">
             <select name="minimumProficiencyLevel" class="form-select form-select-sm">
-                <option value="">حداقل سطح (اختیاری)</option>
-                <option value="Basic">Basic</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Advanced">Advanced</option>
-                <option value="Expert">Expert</option>
+                <option value="">@Localizer["حداقل سطح (اختیاری)"]</option>
+                <option value="Basic">@Localizer["Basic"]</option>
+                <option value="Intermediate">@Localizer["Intermediate"]</option>
+                <option value="Advanced">@Localizer["Advanced"]</option>
+                <option value="Expert">@Localizer["Expert"]</option>
             </select>
         </div>
-        <div class="col-md-2"><input name="plannedHours" type="number" step="0.5" class="form-control form-control-sm" placeholder="Planned h" /></div>
-        <div class="col-md-3"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> Add</button></div>
+        <div class="col-md-2"><input name="plannedHours" type="number" step="0.5" class="form-control form-control-sm" placeholder="@Localizer["Planned h"]" /></div>
+        <div class="col-md-3"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</button></div>
     </form>
 </div>
 
 <div class="content-card mt-3">
     @{ var requiredMaterials = (List<PEMS.Domain.Entities.WorkOrderMaterial>)ViewBag.RequiredMaterials; }
-    <h6 class="mb-3"><i class="bi bi-box-seam"></i> Required Materials</h6>
+    <h6 class="mb-3"><i class="bi bi-box-seam"></i> @Localizer["Required Materials"]</h6>
     <table class="table table-enterprise table-sm">
-        <thead><tr><th>Material</th><th>Required Qty</th><th></th></tr></thead>
+        <thead><tr><th>@Localizer["Material"]</th><th>@Localizer["Required Qty"]</th><th></th></tr></thead>
         <tbody>
             @foreach (var rm in requiredMaterials)
             {
@@ -572,19 +761,19 @@
                         <form asp-action="RemoveRequiredMaterial" method="post" class="d-inline">
                             <input type="hidden" name="workOrderMaterialId" value="@rm.WorkOrderMaterialId" />
                             <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-                            <button type="submit" class="btn btn-sm btn-outline-danger" title="حذف"><i class="bi bi-x"></i></button>
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="@Localizer["حذف"]"><i class="bi bi-x"></i></button>
                         </form>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    @if (!requiredMaterials.Any()) { <p class="text-muted small">متریال موردنیازی ثبت نشده.</p> }
+    @if (!requiredMaterials.Any()) { <p class="text-muted small">@Localizer["متریال موردنیازی ثبت نشده."]</p> }
 
     <div class="input-group input-group-sm mb-2" style="max-width:420px;">
         <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
-        <input type="text" id="requiredMaterialScanInput" class="form-control" dir="ltr" placeholder="Scan Material barcode..." />
-        <button type="button" class="btn btn-outline-secondary" id="requiredMaterialScanBtn">Resolve</button>
+        <input type="text" id="requiredMaterialScanInput" class="form-control" dir="ltr" placeholder="@Localizer["Scan Material barcode..."]" />
+        <button type="button" class="btn btn-outline-secondary" id="requiredMaterialScanBtn">@Localizer["Resolve"]</button>
     </div>
     <form asp-action="AddRequiredMaterial" method="post" class="row g-2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
@@ -593,8 +782,8 @@
                 @foreach (var m in materialItems) { <option value="@m.MaterialItemId">@m.MaterialCode - @m.Description</option> }
             </select>
         </div>
-        <div class="col-md-3"><input name="requiredQuantity" type="number" step="0.001" class="form-control form-control-sm" placeholder="Quantity" required /></div>
-        <div class="col-md-3"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> Add</button></div>
+        <div class="col-md-3"><input name="requiredQuantity" type="number" step="0.001" class="form-control form-control-sm" placeholder="@Localizer["Quantity"]" required /></div>
+        <div class="col-md-3"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</button></div>
     </form>
 </div>
 
@@ -608,7 +797,7 @@
             <div class="mb-2">
                 <span class="fw-bold small">@c.Code — @c.Name</span>
                 <span class="text-muted small">(@c.Members.Count(m => m.IsActive) عضو)</span>
-                <a asp-controller="Crew" asp-action="Index" class="small">مدیریت اعضا</a>
+                <a asp-controller="Crew" asp-action="Index" class="small">@Localizer["مدیریت اعضا"]</a>
             </div>
         }
     }
@@ -616,9 +805,9 @@
     {
         <form asp-action="CreateCrewForWorkOrder" method="post" class="row g-2">
             <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
-            <div class="col-md-4"><input name="code" class="form-control form-control-sm" placeholder="کد Crew" required /></div>
-            <div class="col-md-5"><input name="name" class="form-control form-control-sm" placeholder="نام Crew" required /></div>
-            <div class="col-md-3"><button class="btn btn-sm btn-outline-primary w-100"><i class="bi bi-plus-lg"></i> ساخت Crew برای این WorkOrder</button></div>
+            <div class="col-md-4"><input name="code" class="form-control form-control-sm" placeholder="@Localizer["کد Crew"]" required /></div>
+            <div class="col-md-5"><input name="name" class="form-control form-control-sm" placeholder="@Localizer["نام Crew"]" required /></div>
+            <div class="col-md-3"><button class="btn btn-sm btn-outline-primary w-100"><i class="bi bi-plus-lg"></i> @Localizer["ساخت Crew برای این WorkOrder"]</button></div>
         </form>
     }
 </div>

@@ -1,6 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
+using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
 using PEMS.Web.Security;
@@ -19,14 +20,6 @@ public class WorkRequestController : Controller
     private readonly IPermissionService _permissionService;
     private readonly ICurrentUserService _currentUser;
     private readonly IFunctionalLocationService _functionalLocationService;
-
-    private static readonly Dictionary<string, string> NextStatusMap = new()
-    {
-        ["Draft"] = "Submitted",
-        ["Submitted"] = "UnderReview",
-        ["UnderReview"] = "Approved",
-        ["Approved"] = "Planned",
-    };
 
     public WorkRequestController(IWorkRequestService service, PEMSDbContext context,
         IPermissionService permissionService, ICurrentUserService currentUser, IFunctionalLocationService functionalLocationService)
@@ -58,10 +51,18 @@ public class WorkRequestController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public async Task<IActionResult> Create(int? equipmentId)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "Create"))
             return Forbid();
+
+        // پیش‌پر کردن تجهیز وقتی از Digital Equipment Passport آمده (فقط نمایشی؛ ثبت همچنان از همین Action)
+        if (equipmentId.HasValue)
+        {
+            var eq = await _context.Equipments.Where(e => e.EquipmentId == equipmentId.Value)
+                .Select(e => new { e.EquipmentId, e.TagNumber, e.Name }).FirstOrDefaultAsync();
+            if (eq != null) { ViewBag.PrefillEquipmentId = eq.EquipmentId; ViewBag.PrefillEquipmentText = eq.TagNumber + " — " + eq.Name; }
+        }
 
         ViewData["Title"] = "New Work Request";
         ViewData["Section"] = "CMMS Integration";
@@ -84,7 +85,7 @@ public class WorkRequestController : Controller
         var employeeId = await GetCurrentEmployeeIdAsync();
         if (!employeeId.HasValue)
         {
-            TempData["Error"] = "کارمند مرتبط با این کاربر پیدا نشد.";
+            TempData["Error"] = L("کارمند مرتبط با این کاربر پیدا نشد.", "No employee is linked to this user.");
             return RedirectToAction(nameof(Index));
         }
 
@@ -110,14 +111,60 @@ public class WorkRequestController : Controller
         var wr = await _service.GetDetailsAsync(id);
         if (wr == null) return NotFound();
 
+        ViewData["HelpKey"] = "WorkRequests.Details";
         ViewData["Title"] = "Work Request Details";
         ViewData["Section"] = "CMMS Integration";
 
-        ViewBag.NextStatus = NextStatusMap.TryGetValue(wr.Status, out var next) ? next : null;
+        // Phase 2: ساختار گردش‌کار، مرحله‌ی جاری، اکشن‌های مجاز، شرکت‌کنندگان و تاریخچه از مدل خواندنی مرکزی می‌آید.
+        // فقط رکورد Legacy (قبل از مهاجرت، بدون Instance) از مسیر قدیمی نمایش داده می‌شود.
+        var actor = await BuildActorAsync();
+        wr.Workflow = await _service.GetWorkflowViewAsync(id, actor);
+        wr.IsLegacyWithoutWorkflow = wr.Workflow == null && wr.Status != "Draft" && wr.Status is not ("Rejected" or "Cancelled" or "Converted");
+        wr.CanConvert = !wr.LinkedWorkOrderId.HasValue
+                        && wr.Workflow?.AvailableActions.Any(a => a.ActionType == "Complete" && a.IsAllowed) == true;
+
+        var historyUserIds = wr.Workflow?.HistorySummary.Where(h => h.UserId.HasValue).Select(h => h.UserId!.Value).Distinct().ToList() ?? new List<int>();
+        ViewBag.EmployeeNames = historyUserIds.Count == 0 ? new Dictionary<int, string>()
+            : await _context.Employees.Where(e => historyUserIds.Contains(e.EmployeeId))
+                .ToDictionaryAsync(e => e.EmployeeId, e => e.FirstName + " " + e.LastName);
+
+        // LEGACY: «وضعیت بعدی» فقط برای رکورد قدیمی بدون Instance محاسبه می‌شود؛ رکورد تحت گردش‌کار از مدل خواندنی می‌آید
+        ViewBag.NextStatus = wr.IsLegacyWithoutWorkflow ? _service.GetLegacyNextStatus(wr.Status) : null;
+        ViewBag.CanCreate = await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "Create");
 
         return View(wr);
     }
 
+    /// <summary>ارسال پیش‌نویس به گردش‌کار مرکزی (شروع Instance از طریق Binding صریح). مجوز سمت‌سرور در سرویس اعمال می‌شود.</summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Submit(int id)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "View"))
+            return Forbid();
+
+        var (success, error) = await _service.SubmitAsync(id, await BuildActorAsync());
+        TempData[success ? "Message" : "Error"] = success ? L("درخواست به گردش‌کار ارسال شد.", "The request was submitted to the workflow.") : error;
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    /// <summary>
+    /// اجرای اکشن گردش‌کار. actionType از کاربر می‌آید اما «مجاز بودن» را سرور از مدل مرکزی تعیین می‌کند
+    /// (شرکت‌کننده + RequiredPermission + SoD + شرط‌ها)؛ نه مخفی‌بودن دکمه و نه هیچ وضعیتی که کلاینت بفرستد مرجع امنیت نیست.
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> WorkflowAction(int id, string actionType, string? comment)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "View"))
+            return Forbid();
+
+        var (success, error) = await _service.ExecuteWorkflowActionAsync(id, actionType, comment, await BuildActorAsync());
+        TempData[success ? "Message" : "Error"] = success ? L($"اقدام «{actionType}» انجام شد.", $"Action \"{actionType}\" completed.") : error;
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    // --- مسیر Legacy: فقط برای رکوردهای بدون Instance گردش‌کار (سرویس رکوردهای تحت گردش‌کار را رد می‌کند) ---
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AdvanceStatus(int id, string? reason)
@@ -125,9 +172,10 @@ public class WorkRequestController : Controller
         var wr = await _service.GetDetailsAsync(id);
         if (wr == null) return NotFound();
 
-        if (!NextStatusMap.TryGetValue(wr.Status, out var next))
+        var next = _service.GetLegacyNextStatus(wr.Status);
+        if (next == null)
         {
-            TempData["Error"] = "این درخواست در وضعیت نهایی است.";
+            TempData["Error"] = L("این درخواست در وضعیت نهایی است.", "This request is in a final status.");
             return RedirectToAction(nameof(Details), new { id });
         }
 
@@ -139,7 +187,7 @@ public class WorkRequestController : Controller
 
         var (success, error) = await _service.AdvanceStatusAsync(id, next, reason, await GetCurrentEmployeeIdAsync());
 
-        TempData[success ? "Message" : "Error"] = success ? $"وضعیت به {next} تغییر کرد." : error;
+        TempData[success ? "Message" : "Error"] = success ? L($"وضعیت به {next} تغییر کرد.", $"Status changed to {next}.") : error;
         return RedirectToAction(nameof(Details), new { id });
     }
 
@@ -151,7 +199,7 @@ public class WorkRequestController : Controller
             return Forbid();
 
         var (success, error) = await _service.AdvanceStatusAsync(id, "Rejected", reason, await GetCurrentEmployeeIdAsync());
-        TempData[success ? "Message" : "Error"] = success ? "درخواست رد شد." : error;
+        TempData[success ? "Message" : "Error"] = success ? L("درخواست رد شد.", "The request was rejected.") : error;
         return RedirectToAction(nameof(Details), new { id });
     }
 
@@ -163,7 +211,7 @@ public class WorkRequestController : Controller
             return Forbid();
 
         var (success, error) = await _service.AdvanceStatusAsync(id, "Cancelled", reason, await GetCurrentEmployeeIdAsync());
-        TempData[success ? "Message" : "Error"] = success ? "درخواست لغو شد." : error;
+        TempData[success ? "Message" : "Error"] = success ? L("درخواست لغو شد.", "The request was cancelled.") : error;
         return RedirectToAction(nameof(Details), new { id });
     }
 
@@ -174,7 +222,7 @@ public class WorkRequestController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "Approve"))
             return Forbid();
 
-        var (success, error, workOrderId) = await _service.ConvertToWorkOrderAsync(id, workOrderType, _currentUser.UserName);
+        var (success, error, workOrderId) = await _service.ConvertToWorkOrderAsync(id, workOrderType, _currentUser.UserName, await BuildActorAsync());
 
         if (!success)
         {
@@ -182,9 +230,16 @@ public class WorkRequestController : Controller
             return RedirectToAction(nameof(Details), new { id });
         }
 
-        TempData["Message"] = "WorkOrder ساخته شد.";
+        TempData["Message"] = L("WorkOrder ساخته شد.", "Work Order created.");
         return RedirectToAction("Details", "WorkOrder", new { id = workOrderId });
     }
+
+    private static string L(string fa, string en)
+        => System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa" ? fa : en;
+
+    /// <summary>کاربر اجراکننده از سشن سمت‌سرور (هرگز از ورودی فرم).</summary>
+    private async Task<WorkRequestActor> BuildActorAsync()
+        => new(await GetCurrentEmployeeIdAsync(), _currentUser.Roles);
 
     private async Task<int?> GetCurrentEmployeeIdAsync()
     {

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using PEMS.Application.Interfaces;
@@ -6,8 +6,10 @@ using PEMS.Application.Services;
 
 using PEMS.Persistence.Context;
 using PEMS.Persistence.Identity;
+using PEMS.Web.Routing;
 using PEMS.Persistence.Repositories;
 using PEMS.Persistence.Services;
+using PEMS.Persistence.Workflow;
 
 using PEMS.Application.AI.Interfaces;
 using PEMS.Application.AI.OCR;
@@ -229,6 +231,26 @@ builder.Services.AddScoped<
     IDocumentWorkflowService,
     DocumentWorkflowService>();
 
+// طبق ممیزی Package Procurement Contract Finalization (§D، Phase 2.1)
+builder.Services.AddScoped<
+    PEMS.Application.Interfaces.IContractWorkflowService,
+    PEMS.Persistence.Services.ContractWorkflowService>();
+
+// طبق ممیزی Package Procurement Contract Finalization (§C/§D، Phase 3)
+builder.Services.AddScoped<
+    PEMS.Application.Interfaces.ITenderService,
+    PEMS.Persistence.Services.TenderService>();
+
+// طبق ممیزی Package Procurement Contract Finalization (§C/§E، Phase 1.1 + Phase 3)
+builder.Services.AddScoped<
+    PEMS.Application.Interfaces.IVendorQualificationService,
+    PEMS.Persistence.Services.VendorQualificationService>();
+
+// طبق گزارش سخت‌افزاری نهایی Package Procurement (Gap ۳)
+builder.Services.AddScoped<
+    PEMS.Application.Interfaces.IContractApprovalAuthorityRuleService,
+    PEMS.Persistence.Services.ContractApprovalAuthorityRuleService>();
+
 
 // ==============================================================================
 // Workflow Platform (فاز A) - موتور عمومی گردش‌کار، طبق سند Baseline مستقل از هر ماژول.
@@ -238,6 +260,41 @@ builder.Services.AddScoped<
 // ==============================================================================
 builder.Services.AddScoped<IWorkflowDbContext>(sp => sp.GetRequiredService<PEMSDbContext>());
 builder.Services.AddScoped<IWorkflowRuntime, WorkflowRuntimeService>();
+builder.Services.AddScoped<IWorkflowInstanceControl>(sp => (IWorkflowInstanceControl)sp.GetRequiredService<IWorkflowRuntime>());
+// Enterprise Actor Resolution (مشترک بین گردش‌کارها) + اتصال به موتور گردش‌کار
+builder.Services.AddScoped<PEMS.Application.ActorResolution.IEnterpriseActorResolver, PEMS.Persistence.Services.EnterpriseActorResolver>();
+builder.Services.AddScoped<IWorkflowActorResolutionHook, PEMS.Persistence.Workflow.ActorResolutionWorkflowHook>();
+builder.Services.AddScoped<IWorkflowBusinessContextProvider, PEMS.Persistence.Workflow.PartCatalogueWorkflowContextProvider>();
+
+// Phase 1 Hardening: نسخه‌بندی/Binding/اعتبارسنجی/رجیستری/مدل خواندنی. IWorkflowRuntime بدون تغییر امضا؛
+// پارامترهای اختیاری سازنده‌ی WorkflowRuntimeService از همین ثبت‌ها پر می‌شوند.
+builder.Services.AddSingleton<IWorkflowActionRegistry>(_ =>
+{
+    var registry = new WorkflowActionRegistry();
+    // اکشن‌های Legacy ماژول‌های موجود (فقط نام؛ بدون اجرای کد) تا Definition های Seed شده معتبر بمانند
+    var legacy = new (string Module, string[] Actions)[]
+    {
+        ("EngineeringDocument", new[] { "Issue" }),
+        ("MOC", new[] { "Assess", "Close" }),
+        ("TechnicalQuery", new[] { "Confirm", "Reopen", "Respond" }),
+        ("VendorDocument", new[] { "AC", "AP", "CO", "NC", "RE", "Issue" }),
+    };
+    foreach (var (module, actions) in legacy)
+        foreach (var a in actions)
+            registry.RegisterModuleAction(module, a, WorkflowActionKind.Outcome, "Legacy module action");
+    PEMS.Persistence.Workflow.WorkOrderWorkflow.Register(registry);   // Phase 3B: اکشن‌های ماژول WorkOrder (Hold, Comment)
+    return registry;
+});
+// فیلدهای Fact ماژول‌ها (مثلاً Part Catalogue) به گرامر شرط‌ها اضافه می‌شود
+builder.Services.AddSingleton<IWorkflowConditionEvaluator>(_ => new WorkflowConditionEvaluator(PEMS.Persistence.Workflow.PartCatalogueWorkflow.Fields));
+builder.Services.AddSingleton<IWorkflowEventSink, NoOpWorkflowEventSink>();
+builder.Services.AddScoped<IWorkflowReferenceCatalog, PemsWorkflowReferenceCatalog>();
+builder.Services.AddScoped<IWorkflowAuthorizationHook, AccessControlWorkflowAuthorizationHook>();
+builder.Services.AddScoped<IWorkflowVersionValidator, WorkflowVersionValidator>();
+builder.Services.AddScoped<IWorkflowBindingService, WorkflowBindingService>();
+builder.Services.AddScoped<IWorkflowDefinitionService, WorkflowDefinitionService>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkflowAdministrationService, PEMS.Persistence.Services.WorkflowAdministrationService>();
+builder.Services.AddScoped<IWorkflowReadModelService, WorkflowReadModelService>();
 
 builder.Services.AddScoped<IVdrWorkflowService, VdrWorkflowService>();
 builder.Services.AddScoped<ITechnicalQueryService, TechnicalQueryService>();
@@ -250,6 +307,14 @@ builder.Services.AddScoped<IWorkOrderReviewService, WorkOrderReviewService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IWorkOrderLaborService, WorkOrderLaborService>();
 
+// طبق «PEMS Dynamic Maintenance Organization»
+builder.Services.AddScoped<IOrganizationStructureService, OrganizationStructureService>();
+builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationValidationService, OrganizationValidationService>();
+builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationHierarchyService, OrganizationHierarchyService>();
+builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationImportService, OrganizationImportService>();
+builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationResolver, OrganizationResolver>();
+builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationConsistencyService, OrganizationConsistencyService>();
+
 // طبق «PEMS Phase 6 — CMMS Operational Excellence & Maintenance Execution»: باید قبل از
 // WorkOrderLifecycleService ثبت شود چون آن سرویس به IWorkOrderReleaseGateService وابسته است
 // (ترتیب ثبت DI مهم نیست چون Scoped/Constructor Injection است، ولی همین‌جا برای خوانایی کنار هم آمدند)
@@ -258,11 +323,22 @@ builder.Services.AddScoped<IWorkOrderLifecycleService, WorkOrderLifecycleService
 builder.Services.AddScoped<IPMGenerationService, PMGenerationService>();
 builder.Services.AddScoped<IRcmOperationalBridgeService, RcmOperationalBridgeService>();
 builder.Services.AddScoped<IStoreRequisitionLifecycleService, StoreRequisitionLifecycleService>();
+builder.Services.AddScoped<IIrnReceiptService, IrnReceiptService>();
 builder.Services.AddScoped<IReliabilityService, ReliabilityService>();
 builder.Services.AddScoped<IInspectionService, InspectionService>();
 builder.Services.AddScoped<IKpiService, KpiService>();
 builder.Services.AddScoped<IPermitService, PermitService>();
 builder.Services.AddScoped<IAccessControlService, AccessControlService>();
+builder.Services.AddScoped<IUserRoleAssignmentSynchronizer, UserRoleAssignmentSynchronizer>();
+builder.Services.AddScoped<IDisciplineMasterService, DisciplineMasterService>();
+// طبق سند «PEMS Phase 6 — User Module & Navigation Visibility Architecture»: Resolver عمداً
+// Scoped و بدون Interface است (Web-only composition، نه یک سرویس Application/Persistence) -
+// فقط توسط _SidebarMenu.cshtml و کنترلرهای Admin مربوط به Visibility مصرف می‌شود
+builder.Services.AddScoped<PEMS.Application.Interfaces.INavigationVisibilityOverrideService, PEMS.Persistence.Services.NavigationVisibilityOverrideService>();
+builder.Services.AddScoped<PEMS.Web.Security.NavigationVisibilityResolver>();
+// طبق «PEMS — Enterprise User-Centric Authorization Workspace Consolidation»: تنها سرویس تازه‌ی این
+// فاز - هم Admin/Authorization موجود، هم Admin/Users/Details تازه، از همین یک سرویس می‌خوانند
+builder.Services.AddScoped<PEMS.Application.Interfaces.IUserAuthorizationSummaryService, PEMS.Persistence.Services.UserAuthorizationSummaryService>();
 builder.Services.AddScoped<IRoleModuleActionService, RoleModuleActionService>();
 builder.Services.AddScoped<IIsolationService, IsolationService>();
 builder.Services.AddScoped<IGasTestService, GasTestService>();
@@ -314,6 +390,7 @@ builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.ContractSearchProvider>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.DocumentRevisionSearchProvider>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.TechnicalQuerySearchProvider>();
+builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.PartCatalogueRequestSearchProvider>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.MOCSearchProvider>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.SparePartSearchProvider>();
 
@@ -390,6 +467,19 @@ builder.Services.AddScoped<IDocumentHoldService, DocumentHoldService>();
 // جایگزین الگوهای Count()+1 پراکنده در WorkOrder/MaintenancePlan/Instrument/StoreRequisition.
 builder.Services.AddScoped<INumberingService, NumberingService>();
 
+// Warehouse / Part Catalogue Request (درخواست کاتالوگ قطعه): تنظیمات + سرویس‌ها
+builder.Services.AddSingleton(builder.Configuration.GetSection(PartCatalogueOptions.SectionName).Get<PartCatalogueOptions>() ?? new PartCatalogueOptions());
+builder.Services.AddScoped<IPartCatalogueLookupService, PartCatalogueLookupService>();
+builder.Services.AddScoped<IPartCatalogueDuplicateService, PartCatalogueDuplicateService>();
+// Phase 2 (P1-P3): فقط‌خواندنی - موجودی قابل‌استفاده، جمع‌آوری تقاضا و نیاز خالص
+builder.Services.AddScoped<IUsableStockService, UsableStockService>();
+builder.Services.AddScoped<INetDemandCollector, NetDemandCollector>();
+builder.Services.AddScoped<INetDemandService, NetDemandService>();
+// Phase 2 / P5: توصیه‌های تأمین (اجرای دستی؛ فقط روی جدول‌های خودش می‌نویسد)
+builder.Services.AddScoped<IReplenishmentRecommendationService, ReplenishmentRecommendationService>();
+builder.Services.AddScoped<IPartCatalogueService, PartCatalogueService>();
+builder.Services.AddScoped<IPartCatalogueAdminService, PartCatalogueAdminService>();
+
 // طبق CMMS Production Baseline v1 بند ۶ (CMMS-01: Asset Foundation)
 builder.Services.AddScoped<IFunctionalLocationService, FunctionalLocationService>();
 
@@ -402,6 +492,7 @@ builder.Services.AddScoped<IWorkRequestService, WorkRequestService>();
 builder.Services.AddScoped<IUserDashboardService, UserDashboardService>();
 
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IMyWorkService, PEMS.Persistence.Services.MyWorkService>();
 
 builder.Services.AddScoped<ILetterService, LetterService>();
 
@@ -447,6 +538,8 @@ builder.Services.AddScoped<IEquipmentService, EquipmentService>();
 builder.Services.AddScoped<IAssetService, AssetService>();
 
 builder.Services.AddScoped<IInstrumentService, InstrumentService>();
+builder.Services.AddScoped<IMechanicalEquipmentService, MechanicalEquipmentService>();
+builder.Services.AddScoped<IConditionReadingImportService, ConditionReadingImportService>();
 
 builder.Services.AddScoped<ISparePartService, SparePartService>();
 
@@ -485,6 +578,7 @@ builder.Services.AddScoped<ICriticalityAssessmentService, CriticalityAssessmentS
 
 // طبق «PEMS Phase 8 — Operational Maintenance & Reliability Data Activation» بند ۲۱/۲۲
 builder.Services.AddScoped<ICmmsOperationsService, CmmsOperationsService>();
+builder.Services.AddScoped<ICmmsCalendarService, CmmsCalendarService>();
 
 // طبق «PEMS Phase 9 — Enterprise Reliability, RAM & Predictive Maintenance Intelligence»
 builder.Services.AddScoped<IRamWeibullService, RamWeibullService>();
@@ -579,6 +673,13 @@ using (var scope = app.Services.CreateScope())
 {
     await IdentitySeeder.SeedAsync(scope.ServiceProvider);
 
+    // طبق «PEMS Phase 6B Closure Validation» بند ۳: مکانیزم Development-only برای بازنشانی
+    // رمز کاربر admin به مقدار پیش‌فرض مستندشده - فقط وقتی IsDevelopment() و
+    // PEMS_DEV_RESET_ADMIN_PASSWORD=true هر دو برقرار باشند (پیش‌فرض خاموش). جزئیات/دروازه‌های
+    // ایمنی در DevAdminPasswordReset مستند شده.
+    await DevAdminPasswordReset.ResetIfRequestedAsync(
+        scope.ServiceProvider, app.Environment, app.Logger);
+
     // دپارتمان‌های پیش‌فرض
     await PEMS.Persistence.Seed.DepartmentSeeder.SeedAsync(scope.ServiceProvider);
 
@@ -593,6 +694,12 @@ using (var scope = app.Services.CreateScope())
     var roleModuleActionService = scope.ServiceProvider.GetRequiredService<IRoleModuleActionService>();
     await roleModuleActionService.SeedDefaultsAsync();
 
+    // Role Catalog: نقش‌های پایه + متادیتا (فقط افزودنی، Idempotent) - باید قبل از SeedFromLegacyAsync
+    // اجرا شود تا RolePermission های نقش‌های تازه‌ساخته‌شده به Grant همگام شوند.
+    var roleCatalogResult = await PEMS.Persistence.Seed.RoleCatalogSeeder.SeedAsync(scope.ServiceProvider);
+    foreach (var (custom, baseline) in roleCatalogResult.PossibleDuplicates)
+        app.Logger.LogWarning("Role Catalog: custom role '{Custom}' looks like baseline role '{Baseline}' (not merged).", custom, baseline);
+
     // طبق سند RBAC-ABAC Authorization Architecture (فاز ۱): داده‌ی RolePermission/
     // RoleModuleAction/AspNetUserRoles بالا را به مدل عمومی جدید (Permission/RolePermissionGrant/
     // RoleAssignment) کپی می‌کند - باید بعد از دو Seed بالا اجرا شود
@@ -605,6 +712,11 @@ using (var scope = app.Services.CreateScope())
     // طبق فاز ۵ (Governance): سیاست‌های SoD پیش‌فرض برای چند مسیر حساس ساخته می‌شوند تا
     // خودتاییدی و Close/Approve در همان رکورد تا حداقل از سطح داده‌ای جلوگیری شود.
     await PEMS.Persistence.Seed.AccessControlSeeder.SeedPhase5GovernanceAsync(scope.ServiceProvider);
+
+    // Warehouse / Part Catalogue: داده‌های مرجع و گام‌های مسیر (Idempotent، فقط-افزودنی)
+    await PEMS.Persistence.Seed.PartCatalogueSeeder.SeedAsync(scope.ServiceProvider);
+    // گردش‌کار تأیید کاتالوگ قطعه روی PEMS.WorkflowPlatform + مسئولیت‌های ساختاری (بدون کارمند/Position جعلی)
+    await PEMS.Persistence.Seed.PartCatalogueWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 
     var routingRuleService = scope.ServiceProvider.GetRequiredService<IRoutingRuleService>();
     await routingRuleService.SeedDefaultsAsync();
@@ -637,6 +749,7 @@ using (var scope = app.Services.CreateScope())
     await PEMS.Persistence.Seed.MaintenanceStrategyTypeSeeder.SeedAsync(scope.ServiceProvider);
     await PEMS.Persistence.Seed.EquipmentClassSeeder.SeedAsync(scope.ServiceProvider);
     await PEMS.Persistence.Seed.StandardReferenceSeeder.SeedAsync(scope.ServiceProvider);
+    await PEMS.Persistence.Seed.ConditionPriorityMappingSeeder.SeedAsync(scope.ServiceProvider);
     await PEMS.Persistence.Seed.MaintenanceActivitySeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق «PEMS Phase 2 — Equipment Classification + ISO 14224 Failure Taxonomy + PM/Job Plan
@@ -661,6 +774,25 @@ using (var scope = app.Services.CreateScope())
     // طبق درخواست: گردش‌کار بازبینی چند-دیسیپلینه WorkOrder
     await PEMS.Persistence.Seed.WorkOrderReviewWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 
+    // Phase 2 (Workflow Platform): گردش‌کار Work Request روی پلتفرم مرکزی + Binding صریح (Idempotent؛ Instance های موجود دست نمی‌خورند)
+    await PEMS.Persistence.Seed.WorkRequestWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // Phase 3B (Work Order): پایه‌ی حاکمیت (نقش‌ها/مجوزها/دامنه‌ی سازمانی، یک‌بار) سپس تعریف چرخه‌عمر + Binding های صریح (Idempotent).
+    // Work Order های Legacy و Instance های موجود دست نمی‌خورند.
+    await PEMS.Persistence.Seed.WorkOrderGovernanceSeeder.SeedAsync(scope.ServiceProvider);
+    await PEMS.Persistence.Seed.WorkOrderLifecycleWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // طبق «PEMS — Work Order Governance Remediation» F1: ممیزی زنده نشان داد هیچ Department ای با
+    // OrganizationDomain='Operations' وجود ندارد - بدون این، گذار Operations Issue/Release برای هیچ
+    // کاربری قابل اجرا نیست. Idempotent؛ هیچ Employee واقعی تخصیص داده نمی‌شود.
+    await PEMS.Persistence.Seed.OperationsOrganizationSeeder.SeedAsync(scope.ServiceProvider);
+
+    // طبق «PEMS — Work Order Governance Remediation» F2: نسخه‌ی دوم گردش‌کار Work Order که Issue/
+    // Release را از Start Work جدا می‌کند (Instance های در حال اجرا روی نسخه‌ی قبلی دست‌نخورده می‌مانند).
+    await PEMS.Persistence.Seed.WorkOrderLifecycleWorkflowV2Seeder.SeedAsync(scope.ServiceProvider);
+
+    await PEMS.Persistence.Seed.WorkflowManagementSeeder.SeedAsync(scope.ServiceProvider);
+
     // طبق «PEMS Bilingual Help & Knowledge System» - کتابخانه‌ی اولیه‌ی محتوای راهنما (ایدمپوتنت)
     await PEMS.Persistence.Seed.HelpContentSeeder.SeedAsync(scope.ServiceProvider);
 
@@ -673,6 +805,12 @@ using (var scope = app.Services.CreateScope())
     // بخش QC/QA - دیسیپلین‌های استاندارد بازرسی
     await PEMS.Persistence.Seed.QCDisciplineSeeder.SeedAsync(scope.ServiceProvider);
     await PEMS.Persistence.Seed.NcrApprovalWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // طبق ممیزی Material Management (Gap B) + Step 3: زنجیره‌ی تایید Disposition دریافت مادی (IRN)
+    await PEMS.Persistence.Seed.IrnDispositionWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // طبق ممیزی Package Procurement Contract Finalization §D: گردش‌کار نهایی‌سازی قرارداد
+    await PEMS.Persistence.Seed.ContractWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق CMMS-10b: زنجیره‌ی تایید Permit to Work
     await PEMS.Persistence.Seed.PermitApprovalWorkflowSeeder.SeedAsync(scope.ServiceProvider);
@@ -823,6 +961,9 @@ app.UseHangfireDashboard("/hangfire", new DashboardOptions
     Authorization = new[] { new HangfireDashboardAuthFilter() }
 });
 
+
+// آدرس‌های قدیمی انبار/مواد → Area «Warehouse» (باید قبل از Routeهای کنترلری ثبت شود)
+app.MapWarehouseLegacyRedirects();
 
 app.MapControllerRoute(
     name: "areas",

@@ -1,4 +1,7 @@
 ﻿@model PEMS.Web.Models.DashboardViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = "Dashboard";
     ViewData["Section"] = null;
@@ -19,14 +22,14 @@
 {
     <div class="content-card mb-4">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
-            <h6 class="mb-0"><i class="bi bi-rocket-takeoff"></i> System Setup</h6>
+            <h6 class="mb-0"><i class="bi bi-rocket-takeoff"></i> @Localizer["System Setup"]</h6>
             <span class="text-muted small">@setupStatus.CompletedCount of @setupStatus.TotalCount setup areas ready</span>
         </div>
         <div class="progress mb-3" style="height: 18px;" role="progressbar"
              aria-valuenow="@setupStatus.PercentComplete" aria-valuemin="0" aria-valuemax="100">
             <div class="progress-bar" style="width: @setupStatus.PercentComplete%">@setupStatus.PercentComplete%</div>
         </div>
-        <a asp-controller="QuickSetup" asp-action="Index" class="btn btn-sm btn-primary">Continue Setup</a>
+        <a asp-controller="QuickSetup" asp-action="Index" class="btn btn-sm btn-primary">@Localizer["Continue Setup"]</a>
     </div>
 }
 
@@ -36,8 +39,8 @@
 @if (myWork != null && myWork.HasAnyCategory)
 {
     <div class="content-card mb-4">
-        <h6 class="mb-1"><i class="bi bi-check2-square"></i> My Work</h6>
-        <p class="text-muted small mb-3">What requires your attention</p>
+        <h6 class="mb-1"><i class="bi bi-check2-square"></i> @Localizer["My Work"]</h6>
+        <p class="text-muted small mb-3">@Localizer["What requires your attention"]</p>
 
         @if (!myWork.HasAnyActionable)
         {
@@ -91,6 +94,20 @@
                         </a>
                     </div>
                 }
+                @if (myWork.ShowOtherApprovals)
+                {
+                    <div class="col-md-4">
+                        <a asp-controller="MyWork" asp-action="Index"
+                           class="d-flex align-items-center gap-3 p-2 rounded text-decoration-none"
+                           aria-label="@myWork.OtherApprovalsCount @Localizer["MyWork_Card_Other"]">
+                            <div class="kpi-icon bg-icon-teal"><i class="bi bi-list-check"></i></div>
+                            <div>
+                                <div class="kpi-value">@myWork.OtherApprovalsCount</div>
+                                <div class="small text-muted">@Localizer["MyWork_Card_Other"]</div>
+                            </div>
+                        </a>
+                    </div>
+                }
                 @if (myWork.ShowDocumentReviews)
                 {
                     <div class="col-md-4">
@@ -126,14 +143,14 @@
 
     <div class="col-lg-6">
         <div class="content-card">
-            <h6 class="mb-3">Documents by Status</h6>
+            <h6 class="mb-3">@Localizer["Documents by Status"]</h6>
             <canvas id="docsStatusChart" height="220"></canvas>
         </div>
     </div>
 
     <div class="col-lg-6">
         <div class="content-card h-100">
-            <h6 class="mb-3">Discipline Performance</h6>
+            <h6 class="mb-3">@Localizer["Discipline Performance"]</h6>
             <p class="text-muted small">
                 این بخش پس از تکمیل ماژول‌های مهندسی (فاز بعدی) با KPI واقعی هر دیسیپلین پر می‌شود.
             </p>
@@ -154,9 +171,9 @@
 @if (widgetLayout != null && widgetLayout.Any())
 {
     <div class="d-flex justify-content-between align-items-center mt-4 mb-2">
-        <h6 class="mb-0">My Dashboard</h6>
+        <h6 class="mb-0">@Localizer["My Dashboard"]</h6>
         <a asp-controller="DashboardSettings" asp-action="Index" class="btn btn-sm btn-outline-secondary">
-            <i class="bi bi-sliders"></i> Customize
+            <i class="bi bi-sliders"></i> @Localizer["Customize"]
         </a>
     </div>
 
@@ -196,7 +213,8 @@ else
 
 
 @section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+    <script src="~/lib/chartjs/chart-4.4.4.umd.min.js"></script>
+    <script src="~/js/pems-charts.js"></script>
     <script>
         const statusLabels = @Html.Raw(Json.Serialize(Model.DocumentsByStatus.Keys));
         const statusValues = @Html.Raw(Json.Serialize(Model.DocumentsByStatus.Values));
@@ -208,7 +226,7 @@ else
                 labels: statusLabels,
                 datasets: [{
                     data: statusValues,
-                    backgroundColor: ['#94a3b8', '#f59e0b', '#22c55e', '#ef4444', '#3b82f6']
+                    backgroundColor: PemsChartColors.categorical
                 }]
             },
             options: {

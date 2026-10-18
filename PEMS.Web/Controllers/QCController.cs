@@ -81,12 +81,14 @@ public class QCController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> ItpCreate()
+    public async Task<IActionResult> ItpCreate(int? procurementPackageId = null, int? contractId = null)
     {
         ViewData["Title"] = "New ITP";
         ViewData["Section"] = "QC/QA";
 
         await LoadCommonDropdownsAsync();
+        ViewBag.PrefillPackageId = procurementPackageId;
+        ViewBag.PrefillContractId = contractId;
         return View();
     }
 
@@ -94,7 +96,8 @@ public class QCController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ItpCreate(
         string itpNumber, int projectId, int qcDisciplineId, int? equipmentId,
-        string title, string? referenceCodeStandard, string? description)
+        string title, string? referenceCodeStandard, string? description,
+        int? procurementPackageId, int? contractId)
     {
         var itp = new InspectionTestPlan
         {
@@ -102,6 +105,8 @@ public class QCController : Controller
             ProjectId = projectId,
             QCDisciplineId = qcDisciplineId,
             EquipmentId = equipmentId,
+            ProcurementPackageId = procurementPackageId,
+            ContractId = contractId,
             Title = title,
             ReferenceCodeStandard = referenceCodeStandard,
             Description = description,
@@ -126,6 +131,8 @@ public class QCController : Controller
         var itp = await _context.InspectionTestPlans
             .Include(x => x.QCDiscipline)
             .Include(x => x.Equipment)
+            .Include(x => x.ProcurementPackage)
+            .Include(x => x.Contract)
             .Include(x => x.LineItems).ThenInclude(l => l.QCDiscipline)
             .FirstOrDefaultAsync(x => x.InspectionTestPlanId == id);
 
@@ -544,6 +551,19 @@ public class QCController : Controller
             .OrderBy(x => x.TagNumber)
             .Take(300)
             .Select(x => new { x.EquipmentId, x.TagNumber, x.Name })
+            .ToListAsync();
+
+        // طبق ممیزی نهایی Ownership (§3/§13): پیش از این، فیلدهای ProcurementPackageId/ContractId
+        // روی InspectionTestPlan (از Phase 5) هیچ‌جای UI ساخت ITP در دسترس نبودند - ستون‌ها
+        // وجود داشتند ولی هیچ کاربری نمی‌توانست آن‌ها را واقعاً پر کند.
+        ViewBag.ProcurementPackages = await _context.ProcurementPackages.Where(x => x.IsActive)
+            .OrderByDescending(x => x.CreatedDate)
+            .Select(x => new { x.ProcurementPackageId, x.PackageNumber })
+            .ToListAsync();
+
+        ViewBag.Contracts = await _context.Contracts.Where(x => x.IsActive)
+            .OrderByDescending(x => x.CreatedDate)
+            .Select(x => new { x.ContractId, x.ContractNo })
             .ToListAsync();
     }
 }

@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
 }
 
@@ -13,7 +16,7 @@
     <form asp-controller="DocumentUpload" asp-action="Upload" method="post" enctype="multipart/form-data">
         <div class="row g-3">
             <div class="col-md-6">
-                <label class="form-label">Project</label>
+                <label class="form-label">@Localizer["Project"]</label>
                 <select name="projectId" class="form-select" required>
                     @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                 </select>

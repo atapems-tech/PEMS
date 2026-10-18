@@ -144,10 +144,6 @@ public class WorkOrderController : Controller
         ViewData["Section"] = "CMMS Integration";
 
         ViewBag.PreselectedEquipmentId = equipmentId;
-        ViewBag.Teams = await _context.Teams
-            .Where(x => x.IsActive)
-            .Select(x => new { x.TeamId, x.Name })
-            .ToListAsync();
 
         if (equipmentId.HasValue)
         {
@@ -163,7 +159,7 @@ public class WorkOrderController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(int equipmentId, string workOrderType, string priority,
-        string? description, int? assignedTeamId, int? assignedEmployeeId, string? assignedTo)
+        string? description)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Create"))
             return Forbid();
@@ -190,32 +186,22 @@ public class WorkOrderController : Controller
             return RedirectToAction(nameof(Create));
         }
 
-        // طبق CMMS Production Baseline v1 بند P0-04: شماره‌گذاری از NumberingService (اتمیک،
-        // بدون Race) گرفته می‌شود - نه با Count() محلی + Retry Loop دستی روی خطای Unique.
+        // Phase 3B: Work Order جدید همیشه حاکمیتی است (Snapshot دیسیپلین/دامنه‌ی مبدأ + Instance چرخه‌عمر با Binding صریح، یک تراکنش).
+        // شماره‌گذاری از NumberingService (اتمیک، P0-04).
         var workOrderNumber = await _numberingService.GetNextNumberAsync("WorkOrder");
-
-        var workOrder = new WorkOrder
+        var (created, createError, newId) = await _lifecycleService.CreateGovernedAsync(new WorkOrderCreateRequest
         {
-            EquipmentId = equipmentId,
-            WorkOrderNumber = workOrderNumber,
-            WorkOrderType = workOrderType,
-            Priority = priority,
-            Status = "Open",
-            Description = description,
-            AssignedTeamId = assignedTeamId,
-            AssignedEmployeeId = assignedEmployeeId,
-            // طبق PEMS_CMMS_ARCHITECTURE.md بخش ۹: متن آزاد نباید هم‌زمان با تخصیص رابطه‌ای
-            // ذخیره شود - فقط وقتی هیچ Team/Employee انتخاب نشده، به‌عنوان یادداشت جایگزین می‌ماند
-            AssignedTo = (assignedTeamId == null && assignedEmployeeId == null) ? assignedTo : null,
-            IsActive = true,
-            CreatedDate = DateTime.Now
-        };
+            WorkOrderNumber = workOrderNumber, EquipmentId = equipmentId, WorkOrderType = workOrderType, Priority = priority, Description = description
+        }, await BuildActorAsync());
 
-        await _context.WorkOrders.AddAsync(workOrder);
-        await _context.SaveChangesAsync();
+        if (!created)
+        {
+            TempData["Error"] = createError;
+            return RedirectToAction(nameof(Create));
+        }
 
-        TempData["Message"] = $"Work order {workOrder.WorkOrderNumber} created";
-        return RedirectToAction(nameof(Details), new { id = workOrder.WorkOrderId });
+        TempData["Message"] = L($"Work Order {workOrderNumber} ایجاد شد", $"Work order {workOrderNumber} created");
+        return RedirectToAction(nameof(Details), new { id = newId });
     }
 
     public async Task<IActionResult> Details(int id)
@@ -236,19 +222,39 @@ public class WorkOrderController : Controller
 
         if (workOrder == null) return NotFound();
 
-        ViewBag.Teams = await _context.Teams.Where(x => x.IsActive)
-            .Select(x => new { x.TeamId, x.Name }).ToListAsync();
+        // طبق قاعده‌ی دیسیپلین در AssignExecutorAsync/AddLaborEntryAsync (Phase 6D): وقتی دیسیپلین مسئول
+        // مشخص است، فقط تیم/کارمند همان دیسیپلین نمایش داده می‌شود تا انتخابگر با قاعده‌ی واقعی سرور
+        // هم‌خوان باشد (پیش از این هر تیم/کارمند فعالی نمایش داده می‌شد و فقط بعد از Submit رد می‌شد).
+        var teamsQuery = _context.Teams.Where(x => x.IsActive);
+        var employeesQuery = _context.Employees.Where(x => x.IsActive);
+        if (workOrder.ResponsibleDisciplineId.HasValue)
+        {
+            teamsQuery = teamsQuery.Where(x => x.MaintenanceGroup!.DisciplineId == workOrder.ResponsibleDisciplineId);
+            employeesQuery = employeesQuery.Where(x => x.DisciplineId == workOrder.ResponsibleDisciplineId);
+        }
+        ViewBag.Teams = await teamsQuery.Select(x => new { x.TeamId, x.Name }).ToListAsync();
         ViewBag.SparesUsed = await _context.MaintenanceSpareUsages.Include(x => x.MaterialItem)
             .Where(x => x.WorkOrderId == id && x.IsActive).ToListAsync();
         ViewBag.MaterialItems = await _context.MaterialItems.Where(x => x.IsActive && x.IsStockItem)
             .Select(x => new { x.MaterialItemId, x.MaterialCode, x.Description }).ToListAsync();
-        ViewBag.NextStatus = GetNextStatus(workOrder.Status);
+        // Phase 3B: ساختار گردش‌کار/اقدام‌ها/شرکت‌کنندگان/تاریخچه از مدل خواندنی مرکزی؛ فقط Work Order Legacy از مسیر قدیمی نمایش داده می‌شود
+        var actor = await BuildActorAsync();
+        ViewBag.Workflow = await _lifecycleService.GetWorkflowViewAsync(id, actor);
+        ViewBag.IsLegacy = ViewBag.Workflow == null;
+        var historyUserIds = ((PEMS.WorkflowPlatform.Interfaces.WorkflowRuntimeViewModel?)ViewBag.Workflow)?.HistorySummary.Where(h => h.UserId.HasValue).Select(h => h.UserId!.Value).Distinct().ToList() ?? new List<int>();
+        ViewBag.EmployeeNames = historyUserIds.Count == 0 ? new Dictionary<int, string>()
+            : await _context.Employees.Where(e => historyUserIds.Contains(e.EmployeeId)).ToDictionaryAsync(e => e.EmployeeId, e => e.FirstName + " " + e.LastName);
+        ViewBag.OriginatingDisciplineName = workOrder.OriginatingDisciplineId.HasValue
+            ? await _context.Disciplines.Where(d => d.DisciplineId == workOrder.OriginatingDisciplineId).Select(d => d.Name).FirstOrDefaultAsync() : null;
+        ViewBag.ResponsibleDisciplineName = workOrder.ResponsibleDisciplineId.HasValue
+            ? await _context.Disciplines.Where(d => d.DisciplineId == workOrder.ResponsibleDisciplineId).Select(d => d.Name).FirstOrDefaultAsync() : null;
+        ViewBag.NextStatus = ViewBag.IsLegacy ? GetNextStatus(workOrder.Status) : null;
         ViewBag.LaborEntries = await _context.WorkOrderLabors.Include(x => x.Employee).Include(x => x.Team)
             .Where(x => x.WorkOrderId == id && x.IsActive).OrderByDescending(x => x.WorkDate).ToListAsync();
         ViewBag.TotalLaborCost = await _laborService.GetTotalLaborCostAsync(id);
         ViewBag.SpareCost = (await _context.MaintenanceSpareUsages.Where(x => x.WorkOrderId == id && x.IsActive)
             .ToListAsync()).Sum(x => x.TotalCost ?? 0);
-        ViewBag.Employees = await _context.Employees.Where(x => x.IsActive)
+        ViewBag.Employees = await employeesQuery
             .Select(x => new { x.EmployeeId, FullName = x.FirstName + " " + x.LastName }).ToListAsync();
         ViewBag.ReviewStatus = await _reviewService.GetDisciplineReviewStatusAsync(id);
         ViewBag.HasPendingReview = await _reviewService.HasPendingDisciplineReviewAsync(id);
@@ -357,6 +363,58 @@ public class WorkOrderController : Controller
     // اعتبارسنجی واقعی گذار مجاز/غیرمجاز داخل WorkOrderLifecycleService انجام می‌شه.
     // ==============================================================================
 
+    /// <summary>
+    /// اجرای اکشن گردش‌کار (مرحله‌ی جاری از مدل مرکزی). actionType از کاربر می‌آید ولی «مجاز بودن» را سرور (Runtime + هوک Work Order:
+    /// مجوز، سازمان، دیسیپلین، SoD) تعیین می‌کند؛ دکمه‌ی مخفی/غیرفعال هیچ‌گاه مرجع امنیت نیست.
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> WorkflowAction(int id, string actionType, string? comment,
+        string? failureModeCode, string? failureCauseCode, string? rootCause, decimal? downtimeHours,
+        string? failureEffect, string? correctiveAction, decimal? contractorCost, string? contractorName)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
+
+        var (success, error) = await _lifecycleService.ExecuteWorkflowActionAsync(id, actionType, comment, await BuildActorAsync(),
+            new WorkOrderCompletionData
+            {
+                FailureModeCode = failureModeCode, FailureCauseCode = failureCauseCode, RootCause = rootCause, DowntimeHours = downtimeHours,
+                FailureEffect = failureEffect, CorrectiveAction = correctiveAction, ContractorCost = contractorCost, ContractorName = contractorName
+            });
+        TempData[success ? "Message" : "Error"] = success ? L("اقدام با موفقیت انجام شد.", "The action was completed.") : error;
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetPlanning(int id, int responsibleDisciplineId)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
+        var (success, error) = await _lifecycleService.SetPlanningAsync(id, responsibleDisciplineId, await BuildActorAsync());
+        TempData[success ? "Message" : "Error"] = success ? L("دیسیپلین مسئول نگهداری ثبت شد.", "Responsible maintenance discipline saved.") : error;
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AssignExecutor(int id, int? teamId, int? employeeId)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
+        var (success, error) = await _lifecycleService.AssignExecutorAsync(id, teamId, employeeId, await BuildActorAsync());
+        TempData[success ? "Message" : "Error"] = success ? L("مجری تخصیص داده شد.", "Executor assigned.") : error;
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetSchedule(int id, DateTime plannedStart, DateTime plannedFinish)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
+        var (success, error) = await _lifecycleService.ScheduleWorkOrderAsync(id, plannedStart, plannedFinish, await BuildActorAsync());
+        TempData[success ? "Message" : "Error"] = success ? L("زمان‌بندی ثبت شد.", "Schedule saved.") : error;
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Hold(int id, string? reason)
@@ -415,7 +473,7 @@ public class WorkOrderController : Controller
         decimal regularHours, decimal overtimeHours, string? notes)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
-        try { await _laborService.AddLaborEntryAsync(workOrderId, employeeId, teamId, workDate, regularHours, overtimeHours, notes); TempData["Message"] = "ساعت کار ثبت شد."; }
+        try { await _laborService.AddLaborEntryAsync(workOrderId, employeeId, teamId, workDate, regularHours, overtimeHours, notes, await BuildActorAsync()); TempData["Message"] = "ساعت کار ثبت شد."; }
         catch (Exception ex) { TempData["Error"] = ex.Message; }
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }
@@ -433,10 +491,23 @@ public class WorkOrderController : Controller
 
         // طبق سند Inventory بخش ۹-۱۰: بدون انتخاب انبار در فرم فعلی، موجودترین انبار برای
         // این متریال انتخاب می‌شه - Transaction است که رکورد واقعی رو نگه می‌داره، نه این انتخاب.
+        // Phase 2 / P4: ترتیب قطعی (در تساوی کمترین MaterialStockId) و رد ردیف مبهم - قبلاً در تساوی ردیف دلخواه انتخاب می‌شد
         var stock = await _context.MaterialStocks
             .Where(x => x.MaterialItemId == materialItemId && x.IsActive)
             .OrderByDescending(x => x.OnHandQuantity - x.ReservedQuantity)
+            .ThenBy(x => x.MaterialStockId)
             .FirstOrDefaultAsync();
+
+        if (stock != null)
+        {
+            var exact = await PEMS.Persistence.Services.StockRowResolver.FindExactAsync(
+                _context, materialItemId, stock.WarehouseId, stock.StorageLocationId, activeOnly: true);
+            if (exact.IsAmbiguous)
+            {
+                TempData["Error"] = PEMS.Persistence.Services.StockRowResolver.AmbiguousMessage(materialItemId, stock.WarehouseId, stock.StorageLocationId, exact.CandidateIds);
+                return RedirectToAction(nameof(Details), new { id = workOrderId });
+            }
+        }
 
         if (stock == null || stock.AvailableQuantity < quantity)
         {
@@ -465,7 +536,18 @@ public class WorkOrderController : Controller
         stock.OnHandQuantity -= quantity;
         stock.LastUpdated = DateTime.Now;
 
-        await _context.SaveChangesAsync();
+        try
+        {
+            // یک SaveChanges (یک تراکنش): مصرف + تراکنش Issue + کسر موجودی با هم ذخیره می‌شوند یا هیچ‌کدام
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            _context.ChangeTracker.Clear();
+            TempData["Error"] = "موجودی هم‌زمان توسط عملیات دیگری تغییر کرد و مصرف ثبت نشد؛ هیچ تغییری ذخیره نشد. دوباره تلاش کنید.";
+            return RedirectToAction(nameof(Details), new { id = workOrderId });
+        }
+
         TempData["Message"] = "مصرف قطعه ثبت شد" + (stock.IsLowStock ? " - هشدار: موجودی این متریال کمه." : "");
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }
@@ -485,49 +567,18 @@ public class WorkOrderController : Controller
             return RedirectToAction(nameof(Details), new { id = workOrderId });
         }
 
-        var usage = await _context.MaintenanceSpareUsages
-            .Include(x => x.MaterialItem)
-            .FirstOrDefaultAsync(x => x.MaintenanceSpareUsageId == maintenanceSpareUsageId);
-
-        if (usage == null) return NotFound();
-
-        var alreadyReturned = usage.ReturnedQuantity ?? 0;
-        var outstanding = usage.Quantity - alreadyReturned;
-
-        if (returnQuantity > outstanding)
-        {
-            TempData["Error"] = $"حداکثر مقدار قابل‌برگشت {outstanding} است.";
-            return RedirectToAction(nameof(Details), new { id = workOrderId });
-        }
-
-        var stock = await _context.MaterialStocks
-            .Where(x => x.MaterialItemId == usage.MaterialItemId && x.IsActive)
-            .OrderByDescending(x => x.OnHandQuantity)
-            .FirstOrDefaultAsync();
-
-        if (stock == null)
-        {
-            TempData["Error"] = "رکورد موجودی این متریال پیدا نشد.";
-            return RedirectToAction(nameof(Details), new { id = workOrderId });
-        }
-
+        // Phase 2 / P4: مقصد برگشت از تراکنش Issue همان مصرف (انبار/محل مبدأ) خوانده می‌شود، نه «بیشترین موجودی»؛ Usage و موجودی و تراکنش در یک SaveChanges
         var employeeId = await GetCurrentEmployeeIdAsync();
+        var (success, error, notFound) = await PEMS.Persistence.Services.WorkOrderSpareReturn.ReturnAsync(
+            _context, maintenanceSpareUsageId, workOrderId, returnQuantity, reason, employeeId);
 
-        var (success, error) = await _materialStockService.ReturnAsync(
-            usage.MaterialItemId, stock.WarehouseId, stock.StorageLocationId, returnQuantity,
-            reason ?? $"برگشت از WorkOrder #{workOrderId}", employeeId);
+        if (notFound) return NotFound();
 
         if (!success)
         {
             TempData["Error"] = error;
             return RedirectToAction(nameof(Details), new { id = workOrderId });
         }
-
-        usage.ReturnedQuantity = alreadyReturned + returnQuantity;
-        if (usage.UnitCost.HasValue)
-            usage.TotalCost = usage.UnitCost.Value * (usage.Quantity - usage.ReturnedQuantity.Value);
-
-        await _context.SaveChangesAsync();
 
         TempData["Message"] = "برگشت قطعه ثبت شد.";
         return RedirectToAction(nameof(Details), new { id = workOrderId });
@@ -666,6 +717,11 @@ public class WorkOrderController : Controller
 
     private string? GetClientIp() => HttpContext.Connection.RemoteIpAddress?.ToString();
     private string? GetUserAgent() => Request.Headers["User-Agent"].ToString();
+
+    private static string L(string fa, string en)
+        => System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa" ? fa : en;
+
+    private async Task<WorkOrderActor> BuildActorAsync() => new(await GetCurrentEmployeeIdAsync(), _currentUser.Roles);
 
     private static string? GetNextStatus(string current)
     {

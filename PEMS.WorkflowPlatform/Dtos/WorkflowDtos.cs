@@ -46,5 +46,17 @@ public class PendingTaskDto
     public string BusinessObjectType { get; set; } = "";
     public int BusinessObjectId { get; set; }
     public string StageName { get; set; } = "";
+    public string? StageNameFa { get; set; }
     public DateTime AssignedDate { get; set; }
+
+    /// <summary>مهلت مرحله (ساعت) از تعریف Stage؛ null = بدون SLA. فقط برای نمایش (سررسید/عقب‌افتاده) - اجرا/Escalation نیست.</summary>
+    public int? TimeoutHours { get; set; }
+
+    /// <summary>AssignedDate + TimeoutHours (همان قاعده‌ی WorkflowReadModelService)؛ null = بدون SLA.</summary>
+    public DateTime? DueDate { get; set; }
+
+    public bool IsOverdue { get; set; }
+
+    /// <summary>true = کاربر خودش یکی از کاندیدهای انتخاب‌شده‌ی این مرحله است (مرحله‌ی مبتنی بر مسئولیت)؛ false = صف نقش (هر دارنده‌ی نقش می‌تواند اقدام کند).</summary>
+    public bool IsPersonal { get; set; }
 }

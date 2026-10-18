@@ -32,12 +32,34 @@ public class ProcurementPackageControllerAuthorizationTests
 
         var services = new ServiceCollection();
         services.AddSingleton(ctx);
-        await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
+        var provider = services.BuildServiceProvider();
+        await AccessControlSeeder.SeedFromLegacyAsync(provider);
+        // طبق ممیزی Package Procurement Contract Finalization (§F): بدون این، هیچ ردیف
+        // SoDPolicy ای وجود ندارد و تست‌های خودتاییدی زیر چیزی برای بررسی پیدا نمی‌کنند
+        await AccessControlSeeder.SeedPhase5GovernanceAsync(provider);
 
-        var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
+        // طبق AccessControlScopeAndSoDTests: AuthorizeAsync (مسیر SoD-آگاه) از FakeCurrentUserService.
+        // Roles نمی‌خواند - نقش واقعی کاربر را از AspNetUserRoles/RoleAssignments در دیتابیس
+        // می‌خواند. بدون این ردیف، هر بررسی SoD چون کاربر «هیچ نقشی ندارد» رد می‌شود، نه به‌خاطر SoD.
+        var user = new ApplicationUser { UserName = $"user_{dbName}", Email = $"{dbName}@pems.local", FullName = "Test User" };
+        ctx.Users.Add(user);
+        await ctx.SaveChangesAsync();
+
+        if (role != null)
+        {
+            var roleEntity = ctx.Roles.First(r => r.Name == role);
+            ctx.UserRoles.Add(new Microsoft.AspNetCore.Identity.IdentityUserRole<int> { UserId = user.Id, RoleId = roleEntity.Id });
+            await ctx.SaveChangesAsync();
+        }
+
+        var currentUser = new FakeCurrentUserService
+        {
+            UserId = user.Id,
+            Roles = role != null ? new List<string> { role } : new List<string>()
+        };
 
         var service = new ProcurementPackageService(ctx);
-        var controller = new ProcurementPackageController(service, ctx, currentUser, permissionService).WithTempData();
+        var controller = new ProcurementPackageController(service, ctx, currentUser, permissionService, accessControl).WithTempData();
         return (controller, ctx);
     }
 
@@ -200,5 +222,127 @@ public class ProcurementPackageControllerAuthorizationTests
 
         Assert.IsType<RedirectToActionResult>(result);
         Assert.Equal("Open", ctx.ProcurementCommunications.Single(x => x.ProcurementCommunicationId == 10).ActionStatus);
+    }
+
+    // ================= Package Procurement Contract Finalization §F: SoD self-approval =================
+
+    [Fact]
+    public async Task AddApproval_BySameUserWhoCreatedThePackage_IsDeniedBySoD_DoesNotRecordApproval()
+    {
+        // ContractManager دارد هم Create و هم Approve را روی ProcurementPackage - این دقیقاً
+        // همان شکاف زنده‌ای است که ممیزی §F پیدا کرد
+        var (controller, ctx) = await CreateController(
+            nameof(AddApproval_BySameUserWhoCreatedThePackage_IsDeniedBySoD_DoesNotRecordApproval), role: SystemRoles.ContractManager);
+        ctx.Projects.Add(new Project { ProjectId = 1, ProjectCode = "P1", ProjectName = "Project One", IsActive = true });
+        await ctx.SaveChangesAsync();
+
+        var createResult = await controller.Create("PP-001", 1, null, "Title", null);
+        var packageId = ctx.ProcurementPackages.Single().ProcurementPackageId;
+        Assert.IsType<RedirectToActionResult>(createResult);
+
+        var approveResult = await controller.AddApproval(packageId, "Approved", null);
+
+        Assert.IsType<RedirectToActionResult>(approveResult);
+        Assert.Empty(ctx.ProcurementApprovals);
+    }
+
+    [Fact]
+    public async Task AddApproval_ByDifferentUserThanCreator_Succeeds()
+    {
+        var (controller, ctx) = await CreateController(
+            nameof(AddApproval_ByDifferentUserThanCreator_Succeeds), role: SystemRoles.ContractManager);
+        ctx.Projects.Add(new Project { ProjectId = 1, ProjectCode = "P1", ProjectName = "Project One", IsActive = true });
+        await ctx.SaveChangesAsync();
+
+        await controller.Create("PP-001", 1, null, "Title", null);
+        var packageId = ctx.ProcurementPackages.Single().ProcurementPackageId;
+
+        // شبیه‌سازی کاربر دوم (EngineeringManager) که خودش این Package را نساخته - باید یک
+        // ApplicationUser/UserRoles واقعی در دیتابیس داشته باشد تا AuthorizeAsync (SoD-آگاه) او
+        // را به‌عنوان نقش واقعی بشناسد (فقط FakeCurrentUserService.Roles برای این مسیر کافی نیست)
+        var otherUser = new ApplicationUser { UserName = "second_user", Email = "second_user@pems.local", FullName = "Second User" };
+        ctx.Users.Add(otherUser);
+        await ctx.SaveChangesAsync();
+        var engManagerRole = ctx.Roles.First(r => r.Name == SystemRoles.EngineeringManager);
+        ctx.UserRoles.Add(new Microsoft.AspNetCore.Identity.IdentityUserRole<int> { UserId = otherUser.Id, RoleId = engManagerRole.Id });
+        await ctx.SaveChangesAsync();
+
+        var otherController = new ProcurementPackageController(
+            new ProcurementPackageService(ctx), ctx,
+            new FakeCurrentUserService { UserId = otherUser.Id, Roles = new List<string> { SystemRoles.EngineeringManager } },
+            new PermissionService(ctx, new AccessControlService(ctx)),
+            new AccessControlService(ctx)).WithTempData();
+
+        var approveResult = await otherController.AddApproval(packageId, "Approved", null);
+
+        Assert.IsType<RedirectToActionResult>(approveResult);
+        Assert.Single(ctx.ProcurementApprovals);
+    }
+
+    // ================= Final Hardening Gap #2: Commercial/Contractual Clarification =================
+
+    [Theory]
+    [InlineData("TechnicalClarification")]
+    [InlineData("CommercialClarification")]
+    [InlineData("ContractualClarification")]
+    [InlineData("VendorInquiry")]
+    public async Task AddCommunication_SupportsAllClarificationTypes(string type)
+    {
+        var (controller, ctx) = await CreateController(nameof(AddCommunication_SupportsAllClarificationTypes) + type, role: SystemRoles.ContractManager);
+        ctx.ProcurementPackages.Add(new ProcurementPackage { ProcurementPackageId = 1, PackageNumber = "PP-A", ProjectId = 1, Title = "A", IsActive = true });
+        await ctx.SaveChangesAsync();
+
+        var result = await controller.AddCommunication(1, type, "Subject", "Body", null);
+
+        Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal(type, ctx.ProcurementCommunications.Single().Type);
+    }
+
+    [Fact]
+    public async Task RespondCommunication_TwiceInARow_PreservesBothResponsesInHistory_NotJustTheLatest()
+    {
+        var (controller, ctx) = await CreateController(nameof(RespondCommunication_TwiceInARow_PreservesBothResponsesInHistory_NotJustTheLatest));
+        ctx.ProcurementPackages.Add(new ProcurementPackage { ProcurementPackageId = 1, PackageNumber = "PP-A", ProjectId = 1, Title = "A", IsActive = true });
+        ctx.ProcurementCommunications.Add(new ProcurementCommunication
+        {
+            ProcurementCommunicationId = 10,
+            ProcurementPackageId = 1,
+            Type = "CommercialClarification",
+            Subject = "S",
+            Body = "B",
+            ActionStatus = "Open"
+        });
+        await ctx.SaveChangesAsync();
+
+        await controller.RespondCommunication(1, 10, "first response");
+        await controller.RespondCommunication(1, 10, "corrected response");
+
+        // طبق گزارش سخت‌افزاری نهایی (Gap ۲): پاسخ اول نباید بدون اثر گم شده باشد
+        var history = ctx.ProcurementCommunicationResponses
+            .Where(x => x.ProcurementCommunicationId == 10)
+            .OrderBy(x => x.ProcurementCommunicationResponseId)
+            .ToList();
+
+        Assert.Equal(2, history.Count);
+        Assert.Equal("first response", history[0].ResponseText);
+        Assert.Equal("corrected response", history[1].ResponseText);
+
+        // Cache روی خودِ رکورد باید آخرین پاسخ را نشان دهد
+        Assert.Equal("corrected response", ctx.ProcurementCommunications.Single().ResponseText);
+    }
+
+    [Fact]
+    public async Task ProcurementCommunication_Create_IsAuditLogged()
+    {
+        // طبق گزارش سخت‌افزاری نهایی (Gap ۲): ProcurementCommunication اکنون BaseEntity را
+        // ارث می‌برد - تغییرات آن باید مثل بقیه‌ی Entity ها Audit شوند
+        var (controller, ctx) = await CreateController(nameof(ProcurementCommunication_Create_IsAuditLogged), role: SystemRoles.ContractManager);
+        ctx.ProcurementPackages.Add(new ProcurementPackage { ProcurementPackageId = 1, PackageNumber = "PP-A", ProjectId = 1, Title = "A", IsActive = true });
+        await ctx.SaveChangesAsync();
+
+        await controller.AddCommunication(1, "CommercialClarification", "Subject", "Body", null);
+
+        var auditRow = ctx.AuditLogs.FirstOrDefault(x => x.EntityName == nameof(ProcurementCommunication));
+        Assert.NotNull(auditRow);
     }
 }

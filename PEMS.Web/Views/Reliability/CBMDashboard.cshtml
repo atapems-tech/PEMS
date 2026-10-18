@@ -1,0 +1,117 @@
+@model PEMS.Application.DTOs.CbmDashboardDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    string EvalBadge(string status) => status switch
+    {
+        "Critical" => "bg-dark",
+        "Alarm" => "bg-danger",
+        "Warning" => "bg-warning text-dark",
+        "Normal" => "bg-success",
+        "RequiresEngineeringReview" => "bg-info text-dark",
+        _ => "bg-secondary"
+    };
+}
+
+<div class="d-flex justify-content-end align-items-center gap-2 mb-2">
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["← Reliability"]</a>
+</div>
+<p class="text-muted small">
+    طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §3.8: این داشبورد فقط تجمیع
+    (Aggregation) روی داده‌ی واقعی موجود است - هیچ KPI جعلی/شبیه‌سازی‌شده این‌جا نمایش داده نمی‌شود.
+</p>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-3">
+        <div class="content-card text-center">
+            <div class="fs-3 fw-bold">@Model.TotalActivePoints</div>
+            <div class="text-muted small">@Localizer["Monitoring Points"]</div>
+            <div class="small text-muted">@Model.PointsWithEvaluationProfile @Localizer["با پروفایل ارزیابی"] · @Model.PointsWithCbmStrategy @Localizer["با استراتژی CBM"]</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="content-card text-center">
+            <div class="fs-3 fw-bold text-danger">@(Model.CriticalCount + Model.AlarmCount)</div>
+            <div class="text-muted small">@Localizer["Critical"] / @Localizer["Alarm"]</div>
+            <div class="small text-muted">@Model.WarningCount @Localizer["Warning"] · @Model.RequiresEngineeringReviewCount @Localizer["Mark for Engineering Review"]</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="content-card text-center">
+            <div class="fs-3 fw-bold">@Model.OpenFindingCount</div>
+            <div class="text-muted small">@Localizer["Open Findings"]</div>
+            <div class="small text-muted">@Model.LinkedFindingCount @Localizer["Linked"]</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="content-card text-center">
+            <div class="fs-3 fw-bold @(Model.OverdueCbmPlanCount > 0 ? "text-danger" : "")">@Model.OverdueCbmPlanCount</div>
+            <div class="text-muted small">@Localizer["Overdue"] CBM</div>
+            <div class="small text-muted">@Model.DueSoonCbmPlanCount @Localizer["Due Soon"]</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="content-card">
+            <h6 class="mb-2">@Localizer["Needs Attention"]</h6>
+            @if (Model.AttentionPoints.Count == 0)
+            {
+                <p class="text-muted small mb-0">@Localizer["هیچ نقطه‌ی پایشی در حال حاضر نیاز به توجه ندارد."]</p>
+            }
+            else
+            {
+                <table class="table table-sm">
+                    <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Variable"]</th><th>@Localizer["Evaluation"]</th><th>@Localizer["Last Reading"]</th></tr></thead>
+                    <tbody>
+                        @foreach (var p in Model.AttentionPoints)
+                        {
+                            <tr>
+                                <td><a asp-controller="Equipment" asp-action="Details" asp-route-id="@p.EquipmentId">@p.EquipmentTagNumber</a></td>
+                                <td class="small">@p.VariableType — @p.Tag</td>
+                                <td><span class="badge @EvalBadge(p.EvaluationStatus)">@p.EvaluationStatus</span></td>
+                                <td class="small">@(p.LastReadingDate?.ToString("yyyy-MM-dd") ?? "-")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @if (Model.AttentionPointsTruncated)
+                {
+                    <div class="small text-muted">@Localizer["فهرست به بالاترین ۵۰ مورد محدود شده است."]</div>
+                }
+            }
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="content-card">
+            <h6 class="mb-2">@Localizer["Overdue CBM Plans"]</h6>
+            @if (Model.OverdueCbmPlans.Count == 0)
+            {
+                <p class="text-muted small mb-0">@Localizer["هیچ طرح CBM معوقی وجود ندارد."]</p>
+            }
+            else
+            {
+                <table class="table table-sm">
+                    <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Variable"]</th><th>@Localizer["Next Due"]</th><th>@Localizer["Overdue"]</th></tr></thead>
+                    <tbody>
+                        @foreach (var o in Model.OverdueCbmPlans)
+                        {
+                            <tr>
+                                <td><a asp-controller="Equipment" asp-action="Details" asp-route-id="@o.EquipmentId">@o.EquipmentTagNumber</a></td>
+                                <td class="small">@o.VariableType — @o.Tag</td>
+                                <td class="small">@o.NextDueDate.ToString("yyyy-MM-dd")</td>
+                                <td><span class="badge bg-danger">@o.DaysOverdue @Localizer["روز"]</span></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @if (Model.OverdueCbmPlansTruncated)
+                {
+                    <div class="small text-muted">@Localizer["فهرست به بالاترین ۵۰ مورد محدود شده است."]</div>
+                }
+            }
+        </div>
+    </div>
+</div>

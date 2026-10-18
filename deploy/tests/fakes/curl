@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Fake curl: answers the health URLs from the fake docker state. Prints only the HTTP code (the kit always calls it with -w '%{http_code}').
+S=${FAKE_STATE:?}
+echo "curl $*" >> "$S/calls.log"
+url=${@: -1}
+row=$(awk -F'|' '$1=="pems-web"{print; exit}' "$S/containers")
+code=503
+if [ -n "$row" ]; then
+  status=$(echo "$row" | cut -d'|' -f4); tag=$(echo "$row" | cut -d'|' -f2)
+  if [ "$status" = running ] && ! grep -qx "$tag" "$S/bad_images" 2>/dev/null; then code=200; fi
+else code=000; fi
+printf '%s' "$code"

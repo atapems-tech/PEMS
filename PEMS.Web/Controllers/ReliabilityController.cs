@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Interfaces;
+using PEMS.Web.Helpers;
 using PEMS.Web.Security;
 
 namespace PEMS.Web.Controllers;
@@ -286,6 +287,20 @@ public class ReliabilityController : Controller
         return View(result);
     }
 
+    // طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §3.8: داشبورد CBM ناوگانی - فقط
+    // تجمیع روی داده‌ی موجود، بدون هیچ KPI جعلی.
+    public async Task<IActionResult> CBMDashboard()
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "View"))
+            return Forbid();
+
+        ViewData["Title"] = "CBM Dashboard";
+        ViewData["Section"] = "CMMS Integration";
+
+        var dashboard = await _conditionMonitoringService.GetCbmDashboardAsync();
+        return View(dashboard);
+    }
+
     public async Task<IActionResult> ConditionMonitoring(int? equipmentId)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "View"))
@@ -301,6 +316,48 @@ public class ReliabilityController : Controller
         var points = equipmentId.HasValue
             ? await _conditionMonitoringService.GetPointsForEquipmentAsync(equipmentId.Value)
             : new List<Application.DTOs.ConditionMonitoringPointDto>();
+
+        // طبق فاز ۴: نشان دادن این‌که کدام نقطه‌ی پایش از قبل یک استراتژی CBM فعال دارد -
+        // جلوگیری از تکرار بی‌مورد در UI، بدون بار کردن کل جدول MaintenanceStrategies.
+        ViewBag.PointsWithCbmStrategy = equipmentId.HasValue
+            ? (await _context.MaintenanceStrategies
+                .Where(x => x.EquipmentId == equipmentId.Value && x.IsActive && x.ConditionMonitoringPointId != null)
+                .Select(x => x.ConditionMonitoringPointId!.Value)
+                .ToListAsync()).ToHashSet()
+            : new HashSet<int>();
+
+        // طبق فاز ۵: فهرست پروفایل‌های ارزیابی فعال برای انتخاب دستی روی هر نقطه‌ی پایش -
+        // بدون فیلتر روی VariableType (کاربر خودش تشخیص می‌دهد کدام مناسب است).
+        ViewBag.EvaluationProfiles = await _context.EvaluationProfiles.AsNoTracking()
+            .Where(x => x.IsActive)
+            .OrderBy(x => x.VariableType).ThenBy(x => x.Code)
+            .Select(x => new { x.EvaluationProfileId, x.Code, x.VariableType })
+            .ToListAsync();
+
+        // طبق فاز ۶: برای فرم «Raise Finding» - فهرست خوانا و کوتاه، نه بارگذاری کل تجهیز
+        ViewBag.FailureModes = await _context.FailureModes.AsNoTracking()
+            .Where(x => x.IsActive).OrderBy(x => x.Name)
+            .Select(x => new { x.FailureModeId, x.Name }).ToListAsync();
+        ViewBag.FailureCauses = await _context.FailureCauses.AsNoTracking()
+            .Where(x => x.IsActive).OrderBy(x => x.Name)
+            .Select(x => new { x.FailureCauseId, x.Name }).ToListAsync();
+
+        // طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §3.3: فهرست ابزار(های) همین
+        // تجهیز برای انتخاب اختیاری هنگام ثبت قرائت - اختیاری می‌ماند، نه اجباری. هر تجهیز
+        // حداکثر یک Instrument دارد (یک‌به‌یک)؛ TagNumber از Equipment خودش خوانده می‌شود چون
+        // Instrument مقدار جدایی برای آن ذخیره نمی‌کند.
+        if (equipmentId.HasValue)
+        {
+            ViewBag.EquipmentInstruments = await _context.Instruments.AsNoTracking()
+                .Include(x => x.Equipment)
+                .Where(x => x.EquipmentId == equipmentId.Value)
+                .Select(x => new { x.InstrumentId, TagNumber = x.Equipment!.TagNumber, x.InstrumentType })
+                .ToListAsync();
+        }
+        else
+        {
+            ViewBag.EquipmentInstruments = Array.Empty<object>();
+        }
 
         return View(points);
     }
@@ -323,15 +380,160 @@ public class ReliabilityController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> RecordConditionReading(int pointId, int equipmentId, DateTime readingDate,
-        decimal value, string source, string? notes)
+        decimal value, string source, string? notes, int? instrumentId)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "Edit"))
             return Forbid();
 
         var (success, error) = await _conditionMonitoringService.RecordReadingAsync(
-            pointId, readingDate, value, source, notes, _currentUser.UserName);
+            pointId, readingDate, value, source, notes, _currentUser.UserName, instrumentId);
         TempData[success ? "Message" : "Error"] = success ? "قرائت ثبت شد." : error;
 
+        return RedirectToAction(nameof(ConditionMonitoring), new { equipmentId });
+    }
+
+    // طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §3.6: علامت‌گذاری دستی یک قرائت
+    // برای بازبینی مهندسی - یک‌طرفه، دقیقاً مثل Raise Finding، هرگز Un-mark نمی‌شود.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> MarkRequiresEngineeringReview(int readingId, int equipmentId)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "Edit"))
+            return Forbid();
+
+        var (success, error) = await _conditionMonitoringService.MarkRequiresEngineeringReviewAsync(readingId, _currentUser.UserName);
+        TempData[success ? "Message" : "Error"] = success ? "قرائت برای بازبینی مهندسی علامت‌گذاری شد." : error;
+
+        return RedirectToAction(nameof(ConditionMonitoring), new { equipmentId });
+    }
+
+    // طبق فاز ۵: پیوند/تغییر پروفایل ارزیابی یک نقطه‌ی پایش - بعد از این، قرائت‌های تازه
+    // به‌جای فقط IsAlarm دو-سطحی، ارزیابی چندسطحی (Normal/Warning/Alarm/Critical) می‌گیرند.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AssignEvaluationProfile(int equipmentId, int pointId, int? evaluationProfileId)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "Edit"))
+            return Forbid();
+
+        var (success, error) = await _conditionMonitoringService.AssignEvaluationProfileAsync(pointId, evaluationProfileId);
+        TempData[success ? "Message" : "Error"] = success ? "پروفایل ارزیابی به‌روزرسانی شد." : error;
+
+        return RedirectToAction(nameof(ConditionMonitoring), new { equipmentId });
+    }
+
+    // طبق فاز ۸/بند ۳۱: بازه‌ی زمانی همیشه محدود - Preset (7/30/90/365 روز) یا Custom با سقف
+    // ۲ سال، هرگز «همه‌ی تاریخچه» بدون محدودیت.
+    public async Task<IActionResult> Trend(int pointId, string range = "30", DateTime? from = null, DateTime? to = null)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "View"))
+            return Forbid();
+
+        var (fromDate, toDate) = ResolveTrendDateRange(range, from, to);
+
+        var trend = await _conditionMonitoringService.GetTrendAsync(pointId, fromDate, toDate);
+        if (trend == null) return NotFound();
+
+        var point = await _context.ConditionMonitoringPoints.FirstOrDefaultAsync(x => x.ConditionMonitoringPointId == pointId);
+        ViewBag.EquipmentId = point?.EquipmentId;
+        ViewBag.SelectedRange = range;
+
+        ViewData["Title"] = "Condition Monitoring Trend";
+        ViewData["Section"] = "CMMS Integration";
+
+        return View(trend);
+    }
+
+    // طبق فاز ۹/بند ۲۱: «export support reusing existing export infrastructure» - دقیقاً همون
+    // الگوی InstrumentController.Export (ClosedXML + AddStyledHeaderRow/FinalizeExportSheet)،
+    // نه یک زیرساخت Export جدید.
+    public async Task<IActionResult> ExportTrend(int pointId, string range = "30", DateTime? from = null, DateTime? to = null)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "View"))
+            return Forbid();
+
+        var (fromDate, toDate) = ResolveTrendDateRange(range, from, to);
+
+        var trend = await _conditionMonitoringService.GetTrendAsync(pointId, fromDate, toDate);
+        if (trend == null) return NotFound();
+
+        using var workbook = new ClosedXML.Excel.XLWorkbook();
+        var sheet = workbook.Worksheets.Add("Readings");
+        sheet.AddStyledHeaderRow("ReadingDate", "Value", "Unit", "EvaluationStatus", "IsAlarm");
+
+        var row = 2;
+        foreach (var p in trend.Points)
+        {
+            sheet.Cell(row, 1).Value = p.ReadingDate;
+            sheet.Cell(row, 2).Value = p.Value;
+            sheet.Cell(row, 3).Value = trend.Unit;
+            sheet.Cell(row, 4).Value = p.EvaluationStatus;
+            sheet.Cell(row, 5).Value = p.IsAlarm;
+            row++;
+        }
+
+        sheet.FinalizeExportSheet();
+
+        using var stream = new MemoryStream();
+        workbook.SaveAs(stream);
+
+        return File(stream.ToArray(),
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            $"ConditionReadings_{trend.Tag}_{DateTime.Now:yyyyMMdd}.xlsx");
+    }
+
+    private static (DateTime FromDate, DateTime ToDate) ResolveTrendDateRange(string range, DateTime? from, DateTime? to)
+    {
+        if (range == "custom" && from.HasValue && to.HasValue)
+        {
+            var fromDate = from.Value.Date;
+            var toDate = to.Value.Date.AddDays(1).AddTicks(-1);
+            if ((toDate - fromDate).TotalDays > 730)
+                fromDate = toDate.AddDays(-730);
+            return (fromDate, toDate);
+        }
+
+        var days = range switch { "7" => 7, "90" => 90, "365" => 365, _ => 30 };
+        var to2 = DateTime.Now;
+        return (to2.AddDays(-days), to2);
+    }
+
+    // ==============================================================================
+    // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۴:
+    // دقیقاً همون الگوی MaintenanceStrategyController.Create (Equipment+FailureModeCode تشخیص
+    // تکراری) - این‌جا کلید تکراری Equipment+ConditionMonitoringPointId است. هیچ Entity/Plan
+    // تازه‌ای ساخته نمی‌شود؛ فقط یک MaintenanceStrategy با StrategyType="CBM" که به این نقطه‌ی
+    // پایش وصل است - بعداً از همان مسیر موجود MaintenancePlanController به MaintenancePlan تبدیل می‌شود.
+    // ==============================================================================
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateCbmStrategy(int equipmentId, int conditionMonitoringPointId, string? justification)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "Edit"))
+            return Forbid();
+
+        var duplicate = await _context.MaintenanceStrategies.AnyAsync(x =>
+            x.EquipmentId == equipmentId && x.IsActive && x.ConditionMonitoringPointId == conditionMonitoringPointId);
+        if (duplicate)
+        {
+            TempData["Error"] = "یک استراتژی CBM فعال از قبل برای این نقطه‌ی پایش وجود دارد.";
+            return RedirectToAction(nameof(ConditionMonitoring), new { equipmentId });
+        }
+
+        await _context.MaintenanceStrategies.AddAsync(new Domain.Entities.MaintenanceStrategy
+        {
+            EquipmentId = equipmentId,
+            StrategyType = "CBM",
+            ConditionMonitoringPointId = conditionMonitoringPointId,
+            ConsequenceCategory = "Operational",
+            Justification = justification,
+            RecommendedTriggerType = "Calendar",
+            IsActive = true,
+            CreatedDate = DateTime.Now
+        });
+
+        await _context.SaveChangesAsync();
+        TempData["Message"] = "استراتژی CBM ساخته شد - برای زمان‌بندی واقعی، از Maintenance Strategies یک Plan بسازید.";
         return RedirectToAction(nameof(ConditionMonitoring), new { equipmentId });
     }
 

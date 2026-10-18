@@ -69,6 +69,12 @@ public class StandardReferenceConfiguration : IEntityTypeConfiguration<StandardR
         builder.Property(x => x.TitleFa).HasMaxLength(300);
         builder.Property(x => x.Category).HasMaxLength(100);
 
+        // طبق فاز ۱ سند CM: HasDefaultValue صریح، چون فقط CLR-Default (initializer) روی
+        // رکوردهای امروز که این ستون تازه را می‌گیرند اعمال نمی‌شود - Migration بدون این خط
+        // مقدار خالی "" را برای استانداردهای موجود می‌نشاند، نه "Current" (الگوی دقیقاً همان
+        // NodeKind در MaintenanceWorkforceConfigurations).
+        builder.Property(x => x.Status).HasMaxLength(30).IsRequired().HasDefaultValue("Current");
+
         // طبق بند ۱۹: «duplicate standard references are prohibited»
         builder.HasIndex(x => x.Code).IsUnique();
         builder.HasIndex(x => new { x.Organization, x.StandardNumber }).IsUnique();

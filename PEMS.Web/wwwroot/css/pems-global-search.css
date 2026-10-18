@@ -1,4 +1,7 @@
-/* PEMS Global Intelligent Search - استایل پنل نتایج */
+/* PEMS Global Intelligent Search - استایل پنل نتایج
+   طبق «PEMS Global Three-Theme Design System» (بند ۱۶): این پنل قبلاً همیشه سفید/روشن بود -
+   در تم Dark/Turquoise یک پاپ‌آپ روشن ناهماهنگ روی رابط تیره ظاهر می‌شد. حالا از همون توکن‌های
+   موجود (site.css) استفاده می‌کند - نه یک سیستم رنگ جدا. */
 
 .pems-search-panel {
     position: absolute;
@@ -6,8 +9,9 @@
     left: 0;
     right: 0;
     z-index: 1060;
-    background: #fff;
-    border: 1px solid #dee2e6;
+    background: var(--pems-surface, #fff);
+    color: var(--pems-text, #212529);
+    border: 1px solid var(--pems-surface-border, #dee2e6);
     border-radius: 0 0 .375rem .375rem;
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
     max-height: 320px;
@@ -18,7 +22,7 @@
 .pems-search-item {
     padding: .5rem .75rem;
     cursor: pointer;
-    border-bottom: 1px solid #f1f3f5;
+    border-bottom: 1px solid var(--pems-surface-border, #f1f3f5);
 }
 
 .pems-search-item:last-child {
@@ -27,24 +31,25 @@
 
 .pems-search-item:hover,
 .pems-search-item.active {
-    background: #f0f7ff;
+    background: var(--pems-row-hover, #f0f7ff);
 }
 
 .pems-search-item-label {
     font-size: .9rem;
     font-weight: 600;
-    color: #212529;
+    color: var(--pems-text, #212529);
 }
 
 .pems-search-item-label mark {
     background: #fff3cd;
+    color: #212529;
     padding: 0 1px;
     border-radius: 2px;
 }
 
 .pems-search-item-sub {
     font-size: .78rem;
-    color: #868e96;
+    color: var(--pems-text-muted, #868e96);
     margin-top: 2px;
 }
 
@@ -53,7 +58,7 @@
 .pems-search-error {
     padding: .75rem;
     font-size: .85rem;
-    color: #868e96;
+    color: var(--pems-text-muted, #868e96);
     text-align: center;
 }
 
@@ -65,11 +70,11 @@
     padding: .5rem .75rem;
     text-align: center;
     font-size: .82rem;
-    color: #0d6efd;
+    color: var(--pems-primary, #0d6efd);
     cursor: pointer;
-    border-top: 1px solid #f1f3f5;
+    border-top: 1px solid var(--pems-surface-border, #f1f3f5);
 }
 
 .pems-search-loadmore:hover {
-    background: #f0f7ff;
+    background: var(--pems-row-hover, #f0f7ff);
 }

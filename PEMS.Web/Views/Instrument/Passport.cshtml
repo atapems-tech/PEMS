@@ -1,5 +1,8 @@
 @model PEMS.Domain.Entities.Instrument
 @using PEMS.Domain.Entities
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = "Passport - " + Model.Equipment?.TagNumber;
     var status = (string)ViewBag.CalibrationStatus;
@@ -16,7 +19,7 @@
             <span class="text-muted small">@Model.InstrumentType - @Model.Equipment?.Name (@NA(Model.Equipment?.Manufacturer) / @NA(Model.Equipment?.Model))</span>
         </div>
         <div class="d-flex gap-2">
-            <a asp-action="Edit" asp-route-id="@Model.InstrumentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i> Edit</a>
+            <a asp-action="Edit" asp-route-id="@Model.InstrumentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i> @Localizer["Edit"]</a>
             <button onclick="window.print()" class="btn btn-sm btn-outline-secondary"><i class="bi bi-printer"></i> Print</button>
             <form asp-action="GenerateCalibrationWorkOrder" method="post" class="d-inline">
                 <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
@@ -27,46 +30,46 @@
 </div>
 
 <div class="content-card mb-3">
-    <h6 class="mb-3">Passport</h6>
+    <h6 class="mb-3">@Localizer["Passport"]</h6>
     <div class="row g-2 small">
-        <div class="col-md-3"><strong>Loop No.</strong><div>@NA(Model.LoopNumber)</div></div>
-        <div class="col-md-3"><strong>System</strong><div>@NA(Model.System)</div></div>
-        <div class="col-md-3"><strong>Signal Class</strong><div>@NA(Model.SignalClass)</div></div>
-        <div class="col-md-3"><strong>Manufacturer / Model</strong><div>@NA(Model.Equipment?.Manufacturer) / @NA(Model.Equipment?.Model)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Loop No."]</strong><div>@NA(Model.LoopNumber)</div></div>
+        <div class="col-md-3"><strong>@Localizer["System"]</strong><div>@NA(Model.System)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Signal Class"]</strong><div>@NA(Model.SignalClass)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Manufacturer / Model"]</strong><div>@NA(Model.Equipment?.Manufacturer) / @NA(Model.Equipment?.Model)</div></div>
 
-        <div class="col-md-3"><strong>Process Variable</strong><div>@NA(Model.ProcessVariable)</div></div>
-        <div class="col-md-3"><strong>Range</strong><div>@(Model.RangeMin?.ToString() ?? "N/A") - @(Model.RangeMax?.ToString() ?? "N/A") @Model.Unit</div></div>
-        <div class="col-md-3"><strong>Accuracy</strong><div>@NA(Model.Accuracy)</div></div>
-        <div class="col-md-3"><strong>Output Signal</strong><div>@NA(Model.OutputSignal)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Process Variable"]</strong><div>@NA(Model.ProcessVariable)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Range"]</strong><div>@(Model.RangeMin?.ToString() ?? "N/A") - @(Model.RangeMax?.ToString() ?? "N/A") @Model.Unit</div></div>
+        <div class="col-md-3"><strong>@Localizer["Accuracy"]</strong><div>@NA(Model.Accuracy)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Output Signal"]</strong><div>@NA(Model.OutputSignal)</div></div>
 
-        <div class="col-md-3"><strong>Power Supply</strong><div>@NA(Model.PowerSupply)</div></div>
-        <div class="col-md-3"><strong>Communication</strong><div>@NA(Model.Communication)</div></div>
-        <div class="col-md-3"><strong>IP Rating</strong><div>@NA(Model.IPRating)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Power Supply"]</strong><div>@NA(Model.PowerSupply)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Communication"]</strong><div>@NA(Model.Communication)</div></div>
+        <div class="col-md-3"><strong>@Localizer["IP Rating"]</strong><div>@NA(Model.IPRating)</div></div>
         <div class="col-md-3"><strong>Process / Electrical Connection</strong><div>@NA(Model.ProcessConnection) / @NA(Model.ElectricalConnection)</div></div>
 
-        <div class="col-md-3"><strong>Hazardous Area</strong><div>@NA(Model.HazardousArea)</div></div>
-        <div class="col-md-3"><strong>Ex Protection</strong><div>@NA(Model.ExProtection)</div></div>
-        <div class="col-md-2"><strong>Zone</strong><div>@NA(Model.Zone)</div></div>
-        <div class="col-md-2"><strong>Gas Group</strong><div>@NA(Model.GasGroup)</div></div>
-        <div class="col-md-2"><strong>Temp Class</strong><div>@NA(Model.TempClass)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Hazardous Area"]</strong><div>@NA(Model.HazardousArea)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Ex Protection"]</strong><div>@NA(Model.ExProtection)</div></div>
+        <div class="col-md-2"><strong>@Localizer["Zone"]</strong><div>@NA(Model.Zone)</div></div>
+        <div class="col-md-2"><strong>@Localizer["Gas Group"]</strong><div>@NA(Model.GasGroup)</div></div>
+        <div class="col-md-2"><strong>@Localizer["Temp Class"]</strong><div>@NA(Model.TempClass)</div></div>
 
-        <div class="col-md-3"><strong>Fail Action</strong><div>@NA(Model.FailAction)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Fail Action"]</strong><div>@NA(Model.FailAction)</div></div>
         <div class="col-md-3"><strong>Alarm / Trip Setpoint</strong><div>@(Model.AlarmSetpoint?.ToString() ?? "N/A") / @(Model.TripSetpoint?.ToString() ?? "N/A")</div></div>
-        <div class="col-md-3"><strong>SIL</strong><div>@NA(Model.SIL)</div></div>
-        <div class="col-md-3"><strong>Current Status</strong><div>@Model.CurrentStatus</div></div>
+        <div class="col-md-3"><strong>@Localizer["SIL"]</strong><div>@NA(Model.SIL)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Current Status"]</strong><div>@Model.CurrentStatus</div></div>
 
-        <div class="col-md-3"><strong>Junction Box</strong><div>@NA(Model.JunctionBox)</div></div>
-        <div class="col-md-3"><strong>Marshalling Cabinet</strong><div>@NA(Model.MarshallingCabinet)</div></div>
-        <div class="col-md-3"><strong>Cable No.</strong><div>@NA(Model.CableNumber)</div></div>
-        <div class="col-md-3"><strong>Barrier / Relay</strong><div>@NA(Model.BarrierRelay)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Junction Box"]</strong><div>@NA(Model.JunctionBox)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Marshalling Cabinet"]</strong><div>@NA(Model.MarshallingCabinet)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Cable No."]</strong><div>@NA(Model.CableNumber)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Barrier / Relay"]</strong><div>@NA(Model.BarrierRelay)</div></div>
 
-        <div class="col-md-3"><strong>I/O Card / Channel</strong><div>@NA(Model.IOCardChannel)</div></div>
-        <div class="col-md-3"><strong>System Cabinet</strong><div>@NA(Model.SystemCabinet)</div></div>
-        <div class="col-md-3"><strong>Calibration Interval</strong><div>@(Model.CalibrationInterval.HasValue ? Model.CalibrationInterval + " days" : "N/A")</div></div>
+        <div class="col-md-3"><strong>@Localizer["I/O Card / Channel"]</strong><div>@NA(Model.IOCardChannel)</div></div>
+        <div class="col-md-3"><strong>@Localizer["System Cabinet"]</strong><div>@NA(Model.SystemCabinet)</div></div>
+        <div class="col-md-3"><strong>@Localizer["Calibration Interval"]</strong><div>@(Model.CalibrationInterval.HasValue ? Model.CalibrationInterval + " days" : "N/A")</div></div>
     </div>
     @if (!string.IsNullOrWhiteSpace(Model.Equipment?.Description))
     {
-        <div class="mt-2 small"><strong>Description</strong><div>@Model.Equipment.Description</div></div>
+        <div class="mt-2 small"><strong>@Localizer["Description"]</strong><div>@Model.Equipment.Description</div></div>
     }
 </div>
 
@@ -89,7 +92,7 @@
             }
         </div>
         <div class="col-md-6">
-            <h6>Latest Maintenance</h6>
+            <h6>@Localizer["Latest Maintenance"]</h6>
             @if (latestMaint != null)
             {
                 <div class="small">
@@ -110,29 +113,29 @@
     <h6>Record New Calibration</h6>
     <form asp-action="AddCalibration" method="post" class="row g-2 align-items-end mb-4">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
-        <div class="col-md-2"><label class="form-label small">Date</label><input type="date" name="calibrationDate" class="form-control form-control-sm" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
-        <div class="col-md-2"><label class="form-label small">Type</label>
+        <div class="col-md-2"><label class="form-label small">@Localizer["Date"]</label><input type="date" name="calibrationDate" class="form-control form-control-sm" value="@DateTime.Today.ToString("yyyy-MM-dd")" required /></div>
+        <div class="col-md-2"><label class="form-label small">@Localizer["Type"]</label>
             <select name="calibrationType" class="form-select form-select-sm">
                 <option>Routine</option><option>PostRepair</option><option>PreCommissioning</option>
             </select>
         </div>
         <div class="col-md-2"><label class="form-label small">As Found</label><input name="asFound" class="form-control form-control-sm" /></div>
         <div class="col-md-2"><label class="form-label small">As Left</label><input name="asLeft" class="form-control form-control-sm" /></div>
-        <div class="col-md-2"><label class="form-label small">Result</label>
+        <div class="col-md-2"><label class="form-label small">@Localizer["Result"]</label>
             <select name="result" class="form-select form-select-sm">
                 <option>Pass</option><option>Fail</option><option>Adjusted</option>
             </select>
         </div>
         <div class="col-md-2"><label class="form-label small">Certificate No.</label><input name="certificateNo" class="form-control form-control-sm" /></div>
         <div class="col-md-4"><label class="form-label small">Standard Reference</label><input name="standardReference" class="form-control form-control-sm" /></div>
-        <div class="col-md-4"><label class="form-label small">Remarks</label><input name="remarks" class="form-control form-control-sm" /></div>
+        <div class="col-md-4"><label class="form-label small">@Localizer["Remarks"]</label><input name="remarks" class="form-control form-control-sm" /></div>
         <div class="col-md-4"><button type="submit" class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> Record Calibration</button></div>
     </form>
 
     <h6>Calibration History</h6>
     <div class="table-scroll-area" style="max-height:40vh; overflow-y:auto;">
         <table class="table table-enterprise table-sm">
-            <thead><tr><th>Date</th><th>Type</th><th>As Found / As Left</th><th>Result</th><th>Technician</th><th>Certificate</th><th>Next Due</th></tr></thead>
+            <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Type"]</th><th>As Found / As Left</th><th>@Localizer["Result"]</th><th>@Localizer["Technician"]</th><th>Certificate</th><th>@Localizer["Next Due"]</th></tr></thead>
             <tbody>
                 @foreach (var c in (List<CalibrationHistory>)ViewBag.CalibrationHistoryList)
                 {
@@ -164,20 +167,20 @@
     <form asp-action="AddAlarm" method="post" class="row g-2 align-items-end mb-3">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
         <div class="col-md-2"><label class="form-label small">Alarm Tag</label><input name="alarmTag" class="form-control form-control-sm" required /></div>
-        <div class="col-md-2"><label class="form-label small">Type</label>
+        <div class="col-md-2"><label class="form-label small">@Localizer["Type"]</label>
             <select name="alarmType" class="form-select form-select-sm">
-                <option>High</option><option>Low</option><option>HighHigh</option><option>LowLow</option>
+                <option>@Localizer["High"]</option><option>@Localizer["Low"]</option><option>HighHigh</option><option>LowLow</option>
             </select>
         </div>
-        <div class="col-md-2"><label class="form-label small">Priority</label>
+        <div class="col-md-2"><label class="form-label small">@Localizer["Priority"]</label>
             <select name="priority" class="form-select form-select-sm">
-                <option>Low</option><option>Medium</option><option>High</option><option>Critical</option>
+                <option>@Localizer["Low"]</option><option>@Localizer["Medium"]</option><option>@Localizer["High"]</option><option>@Localizer["Critical"]</option>
             </select>
         </div>
         <div class="col-md-2"><label class="form-label small">Set Point</label><input name="setPoint" type="number" step="0.001" class="form-control form-control-sm" /></div>
-        <div class="col-md-1"><label class="form-label small">Unit</label><input name="unit" class="form-control form-control-sm" /></div>
-        <div class="col-md-3"><label class="form-label small">Action</label><input name="action" class="form-control form-control-sm" /></div>
-        <div class="col-md-6"><label class="form-label small">Description</label><input name="description" class="form-control form-control-sm" /></div>
+        <div class="col-md-1"><label class="form-label small">@Localizer["Unit"]</label><input name="unit" class="form-control form-control-sm" /></div>
+        <div class="col-md-3"><label class="form-label small">@Localizer["Action"]</label><input name="action" class="form-control form-control-sm" /></div>
+        <div class="col-md-6"><label class="form-label small">@Localizer["Description"]</label><input name="description" class="form-control form-control-sm" /></div>
         <div class="col-md-3"><button type="submit" class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> Add Alarm</button></div>
     </form>
 
@@ -202,7 +205,7 @@
             @if (!string.IsNullOrWhiteSpace(alarm.Description)) { <div class="small text-muted">@alarm.Description</div> }
 
             <table class="table table-enterprise table-sm mt-2 mb-2">
-                <thead><tr><th>Cause</th><th>Effect</th><th>Action</th><th>Trip Signal</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Cause"]</th><th>@Localizer["Effect"]</th><th>@Localizer["Action"]</th><th>@Localizer["Trip Signal"]</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var ce in ces)
                     {
@@ -225,16 +228,16 @@
             <form asp-action="AddCauseEffect" method="post" class="row g-2 align-items-end d-print-none">
                 <input type="hidden" name="alarmId" value="@alarm.AlarmId" />
                 <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
-                <div class="col-md-2"><input name="cause" class="form-control form-control-sm" placeholder="Cause" required /></div>
-                <div class="col-md-2"><input name="effect" class="form-control form-control-sm" placeholder="Effect" required /></div>
+                <div class="col-md-2"><input name="cause" class="form-control form-control-sm" placeholder="@Localizer["Cause"]" required /></div>
+                <div class="col-md-2"><input name="effect" class="form-control form-control-sm" placeholder="@Localizer["Effect"]" required /></div>
                 <div class="col-md-2">
                     <select name="actionType" class="form-select form-select-sm">
                         <option value="">Action --</option>
-                        <option>Trip</option><option>Shutdown</option><option>Alarm</option><option>Start</option><option>Stop</option>
+                        <option>Trip</option><option>Shutdown</option><option>Alarm</option><option>@Localizer["Start"]</option><option>Stop</option>
                     </select>
                 </div>
-                <div class="col-md-2"><input name="tripSignal" class="form-control form-control-sm" placeholder="Trip Signal" /></div>
-                <div class="col-md-2"><input name="description" class="form-control form-control-sm" placeholder="Description" /></div>
+                <div class="col-md-2"><input name="tripSignal" class="form-control form-control-sm" placeholder="@Localizer["Trip Signal"]" /></div>
+                <div class="col-md-2"><input name="description" class="form-control form-control-sm" placeholder="@Localizer["Description"]" /></div>
                 <div class="col-md-2"><button type="submit" class="btn btn-sm btn-outline-primary w-100">+ C&amp;E</button></div>
             </form>
         </div>
@@ -258,7 +261,7 @@
                 <p class="text-muted small">این Instrument به هیچ Control Loop ای وصل نیست.</p>
                 <form asp-action="AssignControlLoop" method="post" class="row g-2 align-items-end d-print-none">
                     <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
-                    <div class="col-md-6"><input name="loopNumber" class="form-control form-control-sm" placeholder="Loop Number" required /></div>
+                    <div class="col-md-6"><input name="loopNumber" class="form-control form-control-sm" placeholder="@Localizer["Loop Number"]" required /></div>
                     <div class="col-md-6">
                         <select name="controllerType" class="form-select form-select-sm">
                             <option value="">Controller Type --</option>
@@ -267,7 +270,7 @@
                     </div>
                     <div class="col-md-6"><input name="controllerSystem" class="form-control form-control-sm" placeholder="DCS/PLC Name" /></div>
                     <div class="col-md-6"><input name="processArea" class="form-control form-control-sm" placeholder="Process Area" /></div>
-                    <div class="col-md-12"><input name="description" class="form-control form-control-sm" placeholder="Description" /></div>
+                    <div class="col-md-12"><input name="description" class="form-control form-control-sm" placeholder="@Localizer["Description"]" /></div>
                     <div class="col-md-12"><button type="submit" class="btn btn-sm btn-pems-solid w-100">Assign Loop</button></div>
                 </form>
             }
@@ -277,7 +280,7 @@
         <div class="content-card h-100">
             <h6>I/O Points</h6>
             <table class="table table-enterprise table-sm mb-0">
-                <thead><tr><th>Tag</th><th>Type</th><th>PLC / Rack / Slot / Channel</th></tr></thead>
+                <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Type"]</th><th>PLC / Rack / Slot / Channel</th></tr></thead>
                 <tbody>
                     @foreach (var io in ioPoints)
                     {

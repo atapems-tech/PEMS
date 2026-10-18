@@ -107,12 +107,16 @@ public class ReportController : Controller
     }
 
     // طبق درخواست: گزارش‌گیری از بخش تدارکات (Procurement Package/MR/MRQ)
-    public async Task<IActionResult> Procurement(int? projectId, int? disciplineId, DateTime? fromDate, DateTime? toDate)
+    public async Task<IActionResult> Procurement(int? projectId, int? disciplineId, DateTime? fromDate, DateTime? toDate, int page = 1)
     {
         ViewData["Title"] = "Procurement Report";
         ViewData["Section"] = "Engineering Management";
 
         var report = await _procurementReportService.GetReportAsync(projectId, disciplineId, fromDate, toDate);
+
+        // طبق گزارش سخت‌افزاری نهایی (Gap ۵): جدول زنجیره‌ی Tender→Contract→PO→NTP، جداگانه و
+        // صفحه‌بندی‌شده - همان فیلترهای بالا، بدون تغییر رفتار GetReportAsync موجود
+        ViewBag.Pipeline = await _procurementReportService.GetPipelineAsync(projectId, disciplineId, fromDate, toDate, page);
 
         await LoadCommonFiltersAsync(projectId, disciplineId);
         ViewBag.FromDate = fromDate;

@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Ad-hoc dotnet test/publish output directories (not matched by [Oo]ut/ - underscore prefix)
+_irn_out/
+_mrs_out/
+
 # User-specific files
 *.rsuser
 *.suo
@@ -363,3 +367,7 @@ MigrationBackup/
 FodyWeavers.xsd
 # Zaemit AI tool config (auto-generated)
 .mcp.json
+
+# --- Linux VM deployment (deploy/) ---
+deploy/targets.local.json
+deploy/artifacts/

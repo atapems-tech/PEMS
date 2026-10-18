@@ -70,6 +70,8 @@ public class AIPipelineAuthorizationTests
         public Task<RelationshipExplorationDto?> ExploreFromEquipmentAsync(int equipmentId) => Task.FromResult<RelationshipExplorationDto?>(null);
         public Task<RelationshipExplorationDto?> ExploreFromDocumentAsync(int documentId) => Task.FromResult<RelationshipExplorationDto?>(null);
         public Task<RelationshipExplorationDto?> ExploreFromVendorAsync(int vendorId) => Task.FromResult<RelationshipExplorationDto?>(null);
+        public Task<RelationshipExplorationDto?> ExploreFromProcurementPackageAsync(int procurementPackageId) => Task.FromResult<RelationshipExplorationDto?>(null);
+        public Task<RelationshipExplorationDto?> ExploreFromContractAsync(int contractId) => Task.FromResult<RelationshipExplorationDto?>(null);
         public Task<RelationshipExplorationDto?> ExploreByFreeTextAsync(string text) => Task.FromResult<RelationshipExplorationDto?>(null);
         public Task AddAIProposedRelationshipAsync(string sourceType, int sourceId, string targetType, int targetId, string relationshipType, double confidence) => Task.CompletedTask;
         public Task ConfirmSuggestedLinkAsync(int equipmentId, string targetType, int targetId, bool force = false) { ConfirmSuggestedLinkCalled = true; return Task.CompletedTask; }

@@ -83,7 +83,7 @@ public class TeamObjectScopeAuthorizationTests
         f.Ctx.SaveChanges();
 
         var currentUser = new FakeCurrentUserService { UserId = appUser.Id, Roles = new List<string> { role } };
-        var controller = new TeamController(f.Ctx, new TeamService(f.Ctx), currentUser, f.Permissions).WithTempData();
+        var controller = new TeamController(f.Ctx, new TeamService(f.Ctx), new OrganizationStructureService(f.Ctx), currentUser, f.Permissions).WithTempData();
         return (controller, appUser);
     }
 

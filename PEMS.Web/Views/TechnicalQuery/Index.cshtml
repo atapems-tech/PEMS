@@ -3,28 +3,27 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-question-circle"></i> TQ / TSR / RFI</h5>
-    <a asp-action="Raise" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> New</a>
+<div class="d-flex justify-content-end align-items-center mb-2">
+    <a asp-action="Raise" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> @Localizer["New"]</a>
 </div>
 
 <div class="row g-3 mb-3">
     <div class="col-md-3">
         <div class="content-card text-center">
             <div class="fs-3 fw-bold">@Model.TotalCount</div>
-            <div class="text-muted small">کل</div>
+            <div class="text-muted small">@Localizer["کل"]</div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="content-card text-center">
             <div class="fs-3 fw-bold text-warning">@ViewBag.OpenCount</div>
-            <div class="text-muted small">باز / در جریان</div>
+            <div class="text-muted small">@Localizer["باز / در جریان"]</div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="content-card text-center">
             <div class="fs-3 fw-bold text-danger">@ViewBag.OverdueCount</div>
-            <div class="text-muted small"><i class="bi bi-clock-history"></i> از مهلت گذشته</div>
+            <div class="text-muted small"><i class="bi bi-clock-history"></i> @Localizer["از مهلت گذشته"]</div>
         </div>
     </div>
 </div>
@@ -41,7 +40,7 @@
         </div>
         <div class="col-md-2">
             <select name="status" class="form-select form-select-sm">
-                <option value="">All Statuses</option>
+                <option value="">@Localizer["All Statuses"]</option>
                 @foreach (var s in new[] { "Open", "PendingConfirmation", "Reopened", "Closed" })
                 {
                     <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option>
@@ -50,12 +49,12 @@
         </div>
         <div class="col-md-3">
             <select name="projectId" class="form-select form-select-sm">
-                <option value="">All Projects</option>
+                <option value="">@Localizer["All Projects"]</option>
                 @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == (int?)ViewBag.SelectedProjectId)">@p.ProjectName</option> }
             </select>
         </div>
         <div class="col-md-2">
-            <button type="submit" class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-funnel"></i> Filter</button>
+            <button type="submit" class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-funnel"></i> @Localizer["Filter"]</button>
         </div>
     </form>
 </div>
@@ -70,13 +69,13 @@
         <table class="table table-enterprise mb-0 pems-grid-table" data-grid-key="TechnicalQuery">
             <thead>
                 <tr>
-                    <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">Number</th>
-                    <th data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="140" style="width:90px">Type</th>
-                    <th data-col-key="subject" data-resizable="true" data-min-width="180" data-max-width="500" style="width:320px">Subject</th>
-                    <th data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">Discipline</th>
-                    <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="150" style="width:100px">Priority</th>
-                    <th data-col-key="due" data-resizable="true" data-min-width="110" data-max-width="220" style="width:150px">Due</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="200" style="width:140px">Status</th>
+                    <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">@Localizer["Number"]</th>
+                    <th data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="140" style="width:90px">@Localizer["Type"]</th>
+                    <th data-col-key="subject" data-resizable="true" data-min-width="180" data-max-width="500" style="width:320px">@Localizer["Subject"]</th>
+                    <th data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["Discipline"]</th>
+                    <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="150" style="width:100px">@Localizer["Priority"]</th>
+                    <th data-col-key="due" data-resizable="true" data-min-width="110" data-max-width="220" style="width:150px">@Localizer["Due"]</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="200" style="width:140px">@Localizer["Status"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -92,14 +91,14 @@
                         </td>
                         <td class="small">
                             @(t.RequiredResponseDate?.ToString("yyyy-MM-dd"))
-                            @if (t.IsOverdue) { <span class="badge bg-danger ms-1">Overdue</span> }
+                            @if (t.IsOverdue) { <span class="badge bg-danger ms-1">@Localizer["Overdue"]</span> }
                         </td>
                         <td><span class="badge @(t.Status == "Closed" ? "bg-success" : t.Status == "PendingConfirmation" ? "bg-info text-dark" : "bg-warning text-dark")">@t.Status</span></td>
                     </tr>
                 }
             </tbody>
         </table>
-        @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">موردی یافت نشد.</p> }
+        @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["موردی یافت نشد."]</p> }
     </div>
 
     @{

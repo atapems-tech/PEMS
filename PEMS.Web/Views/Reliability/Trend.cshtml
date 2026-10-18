@@ -1,0 +1,114 @@
+@model PEMS.Application.DTOs.ConditionMonitoringTrendDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var selectedRange = (string)ViewBag.SelectedRange;
+    var equipmentId = (int?)ViewBag.EquipmentId;
+
+    string EvalBadge(string status) => status switch
+    {
+        "Critical" => "bg-dark",
+        "Alarm" => "bg-danger",
+        "Warning" => "bg-warning text-dark",
+        "Normal" => "bg-success",
+        _ => "bg-secondary"
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-graph-up"></i> @Model.VariableType — @Model.Tag</h5>
+    <div class="d-flex gap-2">
+        <a asp-action="ExportTrend" asp-route-pointId="@Model.ConditionMonitoringPointId" asp-route-range="@selectedRange"
+           asp-route-from="@(selectedRange == "custom" ? Model.FromDate.ToString("yyyy-MM-dd") : null)"
+           asp-route-to="@(selectedRange == "custom" ? Model.ToDate.ToString("yyyy-MM-dd") : null)"
+           class="btn btn-outline-secondary btn-sm"><i class="bi bi-download"></i> @Localizer["Export"]</a>
+        <a asp-action="ConditionMonitoring" asp-route-equipmentId="@equipmentId" class="btn btn-outline-secondary btn-sm">← @Localizer["Condition Monitoring"]</a>
+    </div>
+</div>
+
+<div class="content-card mb-3">
+    <form method="get" class="d-flex flex-wrap gap-2 align-items-end">
+        <input type="hidden" name="pointId" value="@Model.ConditionMonitoringPointId" />
+        <div>
+            <label class="form-label small mb-0">@Localizer["Range"]</label>
+            <select name="range" class="form-select form-select-sm" onchange="this.form.submit()">
+                @foreach (var r in new[] { "7", "30", "90", "365" })
+                {
+                    <option value="@r" selected="@(r == selectedRange)">@Localizer["Last"] @r @Localizer["days"]</option>
+                }
+                <option value="custom" selected="@(selectedRange == "custom")">@Localizer["Custom"]</option>
+            </select>
+        </div>
+        @if (selectedRange == "custom")
+        {
+            <div><label class="form-label small mb-0">@Localizer["From"]</label><input type="date" name="from" value="@Model.FromDate.ToString("yyyy-MM-dd")" class="form-control form-control-sm" /></div>
+            <div><label class="form-label small mb-0">@Localizer["To"]</label><input type="date" name="to" value="@Model.ToDate.ToString("yyyy-MM-dd")" class="form-control form-control-sm" /></div>
+            <button type="submit" class="btn btn-sm btn-outline-primary">@Localizer["Apply"]</button>
+        }
+    </form>
+    <div class="small text-muted mt-2">
+        @Model.FromDate.ToString("yyyy-MM-dd") → @Model.ToDate.ToString("yyyy-MM-dd") · @Model.TotalInRange readings in range
+        @if (Model.Truncated)
+        {
+            <span class="badge text-bg-warning">Truncated — showing first @Model.Points.Count of @Model.TotalInRange; narrow the range to see all</span>
+        }
+    </div>
+</div>
+
+@if (Model.Points.Any())
+{
+    <div class="content-card mb-3">
+        <canvas id="trendChart" height="80"></canvas>
+    </div>
+}
+
+<div class="content-card">
+    <table class="table table-enterprise table-sm">
+        <thead><tr><th>@Localizer["Date"]</th><th class="text-end">@Localizer["Value"]</th><th>@Localizer["Evaluation"]</th></tr></thead>
+        <tbody>
+            @foreach (var pt in Model.Points.AsEnumerable().Reverse())
+            {
+                <tr class="@(pt.IsAlarm ? "table-danger" : "")">
+                    <td class="small">@pt.ReadingDate.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td class="text-end">@pt.Value @Model.Unit</td>
+                    <td><span class="badge @EvalBadge(pt.EvaluationStatus)">@pt.EvaluationStatus</span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!Model.Points.Any()) { <p class="text-muted text-center py-4">@Localizer["هیچ قرائتی در این بازه ثبت نشده."]</p> }
+</div>
+
+@if (Model.Points.Any())
+{
+    @section Scripts {
+        <script src="~/lib/chartjs/chart-4.4.4.umd.min.js"></script>
+        <script src="~/js/pems-charts.js"></script>
+        <script>
+            const labels = @Html.Raw(Json.Serialize(Model.Points.Select(p => p.ReadingDate.ToString("yyyy-MM-dd HH:mm"))));
+            const values = @Html.Raw(Json.Serialize(Model.Points.Select(p => p.Value)));
+            new Chart(document.getElementById('trendChart'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '@Model.VariableType (@Model.Unit)',
+                        data: values,
+                        borderColor: PemsChartColors.primary,
+                        backgroundColor: PemsChartColors.primary,
+                        tension: 0.2,
+                        pointRadius: 2
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: { grid: { color: PemsChartColors.gridColor }, ticks: { color: PemsChartColors.textColor } },
+                        y: { grid: { color: PemsChartColors.gridColor }, ticks: { color: PemsChartColors.textColor } }
+                    },
+                    plugins: { legend: { display: true } }
+                }
+            });
+        </script>
+    }
+}

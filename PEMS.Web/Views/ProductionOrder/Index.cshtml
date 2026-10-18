@@ -1,10 +1,13 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.ProductionOrderListDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card">
     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
         <form method="get" class="d-flex gap-2">
             <select name="status" class="form-select form-select-sm" onchange="this.form.submit()" style="width:160px">
-                <option value="">All statuses</option>
+                <option value="">@Localizer["All statuses"]</option>
                 @foreach (var s in new[] { "Draft", "Planned", "Released", "InProgress", "OnHold", "Completed", "Closed", "Cancelled" })
                 {
                     <option value="@s" selected="@(ViewBag.StatusFilter == s)">@s</option>
@@ -20,8 +23,8 @@
         <table class="table table-enterprise">
             <thead>
                 <tr>
-                    <th>Order #</th><th>Material</th><th>Planned Qty</th><th>Status</th><th>Work Center</th>
-                    <th>Planned Start</th><th>Planned Finish</th><th>Runs</th><th></th>
+                    <th>Order #</th><th>@Localizer["Material"]</th><th>Planned Qty</th><th>@Localizer["Status"]</th><th>@Localizer["Work Center"]</th>
+                    <th>@Localizer["Planned Start"]</th><th>@Localizer["Planned Finish"]</th><th>Runs</th><th></th>
                 </tr>
             </thead>
             <tbody>

@@ -1,10 +1,13 @@
-﻿<div class="content-card" style="max-width:800px;">
+﻿@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+<div class="content-card" style="max-width:800px;">
     <h6 class="mb-3"><i class="bi bi-arrow-repeat"></i> New MOC (Management of Change)</h6>
 
     <form asp-action="Raise" method="post">
         <div class="row g-3">
             <div class="col-md-6">
-                <label class="form-label">Project</label>
+                <label class="form-label">@Localizer["Project"]</label>
                 <select name="projectId" class="form-select" required>
                     @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                 </select>
@@ -16,8 +19,8 @@
                 </select>
             </div>
 
-            <div class="col-12"><label class="form-label">Title</label><input name="title" class="form-control" required /></div>
-            <div class="col-12"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="3" required></textarea></div>
+            <div class="col-12"><label class="form-label">@Localizer["Title"]</label><input name="title" class="form-control" required /></div>
+            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="3" required></textarea></div>
             <div class="col-12"><label class="form-label">Reason / Justification</label><textarea name="reason" class="form-control" rows="2"></textarea></div>
 
             <div class="col-md-4">
@@ -32,23 +35,23 @@
                 <input name="temporaryExpiryDate" type="date" class="form-control" />
             </div>
             <div class="col-md-4">
-                <label class="form-label">Risk Level</label>
+                <label class="form-label">@Localizer["Risk Level"]</label>
                 <select name="riskLevel" class="form-select" required>
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
+                    <option value="Low">@Localizer["Low"]</option>
+                    <option value="Medium">@Localizer["Medium"]</option>
                     <option value="High">High <span>(نیاز به تایید ارشد اضافه)</span></option>
                 </select>
             </div>
 
             <div class="col-md-6">
-                <label class="form-label"><i class="bi bi-file-earmark-text"></i> مدرک مرتبط <span class="text-muted small">(اختیاری)</span></label>
-                <input type="text" class="form-control" placeholder="جستجوی شماره مدرک، عنوان..."
+                <label class="form-label"><i class="bi bi-file-earmark-text"></i> مدرک مرتبط <span class="text-muted small">@Localizer["(اختیاری)"]</span></label>
+                <input type="text" class="form-control" placeholder="@Localizer["جستجوی شماره مدرک، عنوان..."]"
                        data-pems-search data-search-type="EngineeringDocument" data-search-hidden="#relatedDocumentIdHidden" autocomplete="off" />
                 <input type="hidden" name="relatedDocumentId" id="relatedDocumentIdHidden" />
             </div>
             <div class="col-md-6">
-                <label class="form-label"><i class="bi bi-gear"></i> تجهیز مرتبط <span class="text-muted small">(اختیاری)</span></label>
-                <input type="text" class="form-control" placeholder="جستجوی تگ، نام..."
+                <label class="form-label"><i class="bi bi-gear"></i> تجهیز مرتبط <span class="text-muted small">@Localizer["(اختیاری)"]</span></label>
+                <input type="text" class="form-control" placeholder="@Localizer["جستجوی تگ، نام..."]"
                        value="@ViewBag.PreselectedEquipmentLabel"
                        data-pems-search data-search-type="Equipment" data-search-hidden="#relatedEquipmentIdHidden" autocomplete="off" />
                 <input type="hidden" name="relatedEquipmentId" id="relatedEquipmentIdHidden" value="@ViewBag.PreselectedEquipmentId" />
@@ -63,8 +66,8 @@
         </div>
 
         <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">Submit</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            <button type="submit" class="btn btn-pems-solid">@Localizer["Submit"]</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
         </div>
     </form>
 </div>

@@ -106,11 +106,21 @@ public class WorkOrder : BaseEntity
     public decimal? ContractorCost { get; set; }
     public string? ContractorName { get; set; }
 
-    // تاریخ شروع
+    // تاریخ شروع (واقعی - وقتی کار واقعاً شروع می‌شود، نه زمان‌بندی‌شده)
     public DateTime? StartDate { get; set; }
 
-    // تاریخ پایان
+    // تاریخ پایان (واقعی)
     public DateTime? CompletionDate { get; set; }
+
+    // ==============================================================================
+    // طبق «PEMS — Work Request/Work Order Scheduling & Maintenance Calendar»: زمان‌بندی
+    // برنامه‌ریزی‌شده - جدا از StartDate/CompletionDate (که زمان واقعی اجرا را ثبت می‌کنند،
+    // نه زمان برنامه‌ریزی‌شده). فقط توسط WorkOrderLifecycleService.ScheduleWorkOrderAsync در
+    // مرحله‌ی «آماده‌سازی/تخصیص» تنظیم می‌شود، دقیقاً هم‌الگو با AssignedTeamId/AssignedEmployeeId.
+    // مدت‌زمان از تفاضل این دو محاسبه می‌شود، نه فیلد جداگانه‌ای - برای جلوگیری از ناسازگاری.
+    // ==============================================================================
+    public DateTime? PlannedStart { get; set; }
+    public DateTime? PlannedFinish { get; set; }
 
     // شرح فعالیت
     public string? Description { get; set; }
@@ -118,4 +128,22 @@ public class WorkOrder : BaseEntity
     public DateTime CreatedDate { get; set; } = DateTime.Now;
 
     public bool IsActive { get; set; } = true;
+
+    // ==============================================================================
+    // Phase 3B - حاکمیت Work Order (طبق WORKFLOW_PLATFORM_PHASE3A_WORK_ORDER_GOVERNANCE.md):
+    // دیسیپلین «مبدأ» و دیسیپلین «مسئول نگهداری» دو مفهوم جدا هستند و هرگز جایگزین هم نمی‌شوند. هر دو با دامنه‌ی سازمانی
+    // ذخیره می‌شوند (Engineering/Mechanical ≠ Maintenance/Mechanical). مبدأ در زمان ایجاد/تبدیل Snapshot می‌شود (از کارمند
+    // فعلی بعداً استنتاج نمی‌شود). برنامه‌ریز/صادرکننده/مجری/تاییدکننده در WorkflowHistory (نه ستون تکراری) ثبت می‌شوند.
+    // رکوردهای Legacy (بدون Instance چرخه‌عمر) همه‌ی این ستون‌ها را Null نگه می‌دارند.
+    // ==============================================================================
+    [MaxLength(30)]
+    public string? OriginatingOrganization { get; set; }
+    public int? OriginatingDisciplineId { get; set; }
+    public Discipline? OriginatingDiscipline { get; set; }
+    public int? OriginatingRequestedById { get; set; }
+
+    [MaxLength(30)]
+    public string? ResponsibleOrganization { get; set; }
+    public int? ResponsibleDisciplineId { get; set; }
+    public Discipline? ResponsibleDiscipline { get; set; }
 }

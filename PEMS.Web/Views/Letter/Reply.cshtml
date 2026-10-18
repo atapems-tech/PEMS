@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
     var thread = (List<PEMS.Application.DTOs.ThreadMessageDto>)ViewBag.Thread;
     var parentLetterId = (int)ViewBag.ParentLetterId;
 }
@@ -46,7 +49,7 @@
                 <input name="receiver" class="form-control" value="@ViewBag.DefaultReceiver" />
             </div>
             <div class="col-md-6">
-                <label class="form-label">Subject</label>
+                <label class="form-label">@Localizer["Subject"]</label>
                 <input name="subject" class="form-control" value="@ViewBag.DefaultSubject" required />
             </div>
             <div class="col-12">

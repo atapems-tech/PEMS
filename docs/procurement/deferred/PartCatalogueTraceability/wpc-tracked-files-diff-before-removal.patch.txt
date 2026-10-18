@@ -1,0 +1,619 @@
+diff --git a/PEMS.Application/DTOs/PartCatalogueDtos.cs b/PEMS.Application/DTOs/PartCatalogueDtos.cs
+index ce04e3a..9c21ef9 100644
+--- a/PEMS.Application/DTOs/PartCatalogueDtos.cs
++++ b/PEMS.Application/DTOs/PartCatalogueDtos.cs
+@@ -293,3 +293,59 @@ public sealed class PcAdminOverview
+     public List<(int Id, string Parent, string Child, bool NeedsConfirmation)> Group2Maps { get; set; } = new();
+     public Dictionary<string, int> Counts { get; set; } = new();
+ }
++
++// ---------------------------------------------------------------- جستجوی قطعه‌ی موجود / تکراری‌ها / ردیابی
++
++/// <summary>یک قطعه‌ی موجود (درخواست تکمیل‌شده‌ی کاتالوگ یا ردیف Material Master) که با جستجو/کاندید تکراری مطابقت دارد.</summary>
++public sealed class PcExistingPartHit
++{
++    /// <summary>"CatalogueRequest" | "MaterialItem".</summary>
++    public string Source { get; set; } = string.Empty;
++    public int SourceId { get; set; }
++    public string PartNumber { get; set; } = string.Empty;
++    public string? Description { get; set; }
++    public string? ManufacturerName { get; set; }
++    public string? ManufacturerPartNumber { get; set; }
++    public string? SupplierPartNumber { get; set; }
++
++    /// <summary>فیلدی که مطابقت داده شد: PartNumber | ManufacturerPartNumber | SupplierPartNumber | OldManufacturerPartNumber | Description.</summary>
++    public string MatchedOn { get; set; } = string.Empty;
++
++    /// <summary>
++    /// Exact = مقدار نرمال‌شده برابر؛ Partial = شامل جستجو. برای کاندید تکراری: SameMpnSameManufacturer (قوی) |
++    /// SameMpnOtherManufacturer | SameMpnManufacturerUnknown | SameSupplierPartNumber.
++    /// </summary>
++    public string MatchKind { get; set; } = string.Empty;
++}
++
++public sealed class PcDuplicateProbe
++{
++    public string? ManufacturerPartNumber { get; set; }
++    public string? SupplierPartNumber { get; set; }
++    public int? ManufacturerId { get; set; }
++    public string? NewManufacturerName { get; set; }
++
++    /// <summary>خودِ درخواست در حال ویرایش از نتیجه حذف می‌شود.</summary>
++    public int? ExcludeRequestId { get; set; }
++}
++
++public sealed class PcDuplicateResult
++{
++    public List<PcExistingPartHit> Candidates { get; set; } = new();
++
++    /// <summary>بیش از یک قطعه‌ی تأییدشده با MPN و سازنده‌ی یکسان ⇒ انتخاب خودکار ممنوع؛ تصمیم با انسان.</summary>
++    public bool IsAmbiguous { get; set; }
++
++    /// <summary>تعداد درخواست‌های «در جریان» دیگر با همان MPN (جزئیات عمداً فاش نمی‌شود).</summary>
++    public int InFlightRequestsWithSameMpn { get; set; }
++
++    /// <summary>همیشه false: این سامانه هیچ ادغام خودکاری انجام نمی‌دهد.</summary>
++    public bool AutoMergeAllowed => false;
++}
++
++/// <summary>منشأ تقاضا: نوع (فهرست بسته PartCatalogueDemandOriginTypes) + شناسه‌ی همان موجودیت.</summary>
++public sealed class PcDemandOriginInput
++{
++    public string? Type { get; set; }
++    public int Id { get; set; }
++}
+diff --git a/PEMS.Application/Interfaces/IPartCatalogueServices.cs b/PEMS.Application/Interfaces/IPartCatalogueServices.cs
+index 04d3b18..c88efa2 100644
+--- a/PEMS.Application/Interfaces/IPartCatalogueServices.cs
++++ b/PEMS.Application/Interfaces/IPartCatalogueServices.cs
+@@ -85,6 +85,14 @@ public sealed class PartCatalogueDetailsDto
+     public DateTime? SubmittedDate { get; set; }
+     public DateTime? CompletedDate { get; set; }
+ 
++    /// <summary>پیوند به Material Master (در صورت وجود) و کد آن.</summary>
++    public int? MaterialItemId { get; set; }
++    public string? MaterialCode { get; set; }
++
++    /// <summary>منشأ تقاضا: نوع (PartCatalogueDemandOriginTypes) + شناسه؛ هر دو null یعنی ثبت نشده.</summary>
++    public string? DemandOriginType { get; set; }
++    public int? DemandOriginId { get; set; }
++
+     /// <summary>مقادیر فرم (برای ویرایش و نمایش).</summary>
+     public PartCatalogueFormDto Form { get; set; } = new();
+ 
+diff --git a/PEMS.Domain/Entities/PartCatalogue/PartCatalogueRequest.cs b/PEMS.Domain/Entities/PartCatalogue/PartCatalogueRequest.cs
+index 8a7d2ce..3475383 100644
+--- a/PEMS.Domain/Entities/PartCatalogue/PartCatalogueRequest.cs
++++ b/PEMS.Domain/Entities/PartCatalogue/PartCatalogueRequest.cs
+@@ -155,6 +155,26 @@ public class PartCatalogueRequest : BaseEntity
+ 
+     /// <summary>شماره‌ی قطعه‌ی ثبت‌شده در IFS (توسط Part Cataloguer پس از ثبت در IFS وارد می‌شود).</summary>
+     public string? AssignedPartNumber { get; set; }
++
++    // ---- ردیابی (Procurement Lifecycle Phase 1)
++
++    /// <summary>
++    /// پیوند صریح و قابل‌ردیابی درخواست تکمیل‌شده به ردیف Material Master (MRS). فقط وقتی پر می‌شود که
++    /// MaterialCode دقیقاً با AssignedPartNumber برابر باشد (MaterialCode یکتاست)؛ هرگز ادغام خودکار در حالت
++    /// ابهام انجام نمی‌شود. تاریخچه‌ی پیوند در PartCatalogueRequestApproval (Append-only) ثبت می‌شود.
++    /// </summary>
++    public int? MaterialItemId { get; set; }
++    public MaterialItem? MaterialItem { get; set; }
++
++    // ---- منشأ تقاضا: حداکثر یکی از سه FK تایپ‌دار (بدون ارجاع چندریختی/رشته‌ای) - CHECK در دیتابیس
++    // ثابت می‌کند بیش از یکی پر نشده است؛ وجود/چرخه‌ی‌حیات/مجوز در سرویس اعتبارسنجی می‌شود.
++    public int? SourceWorkOrderId { get; set; }
++    public WorkOrder? SourceWorkOrder { get; set; }
++    public int? SourceStoreRequisitionId { get; set; }
++    public StoreRequisition? SourceStoreRequisition { get; set; }
++    public int? SourceMaterialRequisitionId { get; set; }
++    public MaterialRequisition? SourceMaterialRequisition { get; set; }
++
+     public DateTime? SubmittedDate { get; set; }
+     public DateTime? CompletedDate { get; set; }
+     public DateTime CreatedDate { get; set; } = DateTime.Now;
+@@ -277,4 +297,18 @@ public static class PartCatalogueActions
+     public const string OrgResolutionRequired = "OrgResolutionRequired";
+     /// <summary>تلاش مجدد مسیریابی پس از اصلاح ساختار سازمانی.</summary>
+     public const string RetryRouting = "RetryRouting";
++    /// <summary>پیوند صریح به Material Master توسط کاربر مجاز.</summary>
++    public const string LinkMaterialItem = "LinkMaterialItem";
++    /// <summary>پیوند خودکار فقط وقتی دقیقاً یک MaterialCode برابر AssignedPartNumber وجود دارد.</summary>
++    public const string AutoLinkMaterialItem = "AutoLinkMaterialItem";
++}
++
++/// <summary>انواع مجاز منشأ تقاضا (فهرست بسته؛ هر مقدار یک FK تایپ‌دار مستقل دارد).</summary>
++public static class PartCatalogueDemandOriginTypes
++{
++    public const string WorkOrder = "WorkOrder";
++    public const string StoreRequisition = "StoreRequisition";
++    public const string MaterialRequisition = "MaterialRequisition";
++
++    public static readonly string[] All = { WorkOrder, StoreRequisition, MaterialRequisition };
+ }
+diff --git a/PEMS.Persistence/Configurations/PartCatalogueConfigurations.cs b/PEMS.Persistence/Configurations/PartCatalogueConfigurations.cs
+index ca8c2be..15eed18 100644
+--- a/PEMS.Persistence/Configurations/PartCatalogueConfigurations.cs
++++ b/PEMS.Persistence/Configurations/PartCatalogueConfigurations.cs
+@@ -249,6 +249,18 @@ public class PartCatalogueRequestConfiguration : IEntityTypeConfiguration<PartCa
+         b.HasOne(x => x.TypeDesignation).WithMany().HasForeignKey(x => x.TypeDesignationId).OnDelete(DeleteBehavior.Restrict);
+         b.HasOne(x => x.PlanningMethod).WithMany().HasForeignKey(x => x.PlanningMethodId).OnDelete(DeleteBehavior.Restrict);
+         b.HasOne(x => x.StockGrade).WithMany().HasForeignKey(x => x.StockGradeId).OnDelete(DeleteBehavior.Restrict);
++
++        // ردیابی: پیوند به Material Master + منشأ تقاضا (FKهای تایپ‌دار، Restrict؛ حداکثر یکی)
++        b.HasOne(x => x.MaterialItem).WithMany().HasForeignKey(x => x.MaterialItemId).OnDelete(DeleteBehavior.Restrict);
++        b.HasOne(x => x.SourceWorkOrder).WithMany().HasForeignKey(x => x.SourceWorkOrderId).OnDelete(DeleteBehavior.Restrict);
++        b.HasOne(x => x.SourceStoreRequisition).WithMany().HasForeignKey(x => x.SourceStoreRequisitionId).OnDelete(DeleteBehavior.Restrict);
++        b.HasOne(x => x.SourceMaterialRequisition).WithMany().HasForeignKey(x => x.SourceMaterialRequisitionId).OnDelete(DeleteBehavior.Restrict);
++        b.HasIndex(x => x.MaterialItemId);
++        b.HasIndex(x => x.SourceWorkOrderId);
++        b.HasIndex(x => x.SourceStoreRequisitionId);
++        b.HasIndex(x => x.SourceMaterialRequisitionId);
++        b.ToTable(t => t.HasCheckConstraint("CK_PartCatalogueRequests_SingleDemandOrigin",
++            "(CASE WHEN [SourceWorkOrderId] IS NULL THEN 0 ELSE 1 END + CASE WHEN [SourceStoreRequisitionId] IS NULL THEN 0 ELSE 1 END + CASE WHEN [SourceMaterialRequisitionId] IS NULL THEN 0 ELSE 1 END) <= 1"));
+     }
+ }
+ 
+diff --git a/PEMS.Persistence/Migrations/PEMSDbContextModelSnapshot.cs b/PEMS.Persistence/Migrations/PEMSDbContextModelSnapshot.cs
+index 4466826..12f50c6 100644
+--- a/PEMS.Persistence/Migrations/PEMSDbContextModelSnapshot.cs
++++ b/PEMS.Persistence/Migrations/PEMSDbContextModelSnapshot.cs
+@@ -10761,6 +10761,9 @@ namespace PEMS.Persistence.Migrations
+                         .HasMaxLength(100)
+                         .HasColumnType("nvarchar(100)");
+ 
++                    b.Property<int?>("MaterialItemId")
++                        .HasColumnType("int");
++
+                     b.Property<decimal?>("MaxConsumptionRate")
+                         .HasColumnType("decimal(18,4)");
+ 
+@@ -10818,6 +10821,15 @@ namespace PEMS.Persistence.Migrations
+                     b.Property<int?>("SectionId")
+                         .HasColumnType("int");
+ 
++                    b.Property<int?>("SourceMaterialRequisitionId")
++                        .HasColumnType("int");
++
++                    b.Property<int?>("SourceStoreRequisitionId")
++                        .HasColumnType("int");
++
++                    b.Property<int?>("SourceWorkOrderId")
++                        .HasColumnType("int");
++
+                     b.Property<string>("SparePartSerialNo")
+                         .HasMaxLength(100)
+                         .HasColumnType("nvarchar(100)");
+@@ -10879,6 +10891,8 @@ namespace PEMS.Persistence.Migrations
+ 
+                     b.HasIndex("ManufacturerId");
+ 
++                    b.HasIndex("MaterialItemId");
++
+                     b.HasIndex("PlanningMethodId");
+ 
+                     b.HasIndex("ProductFamilyId");
+@@ -10891,6 +10905,12 @@ namespace PEMS.Persistence.Migrations
+ 
+                     b.HasIndex("SectionId");
+ 
++                    b.HasIndex("SourceMaterialRequisitionId");
++
++                    b.HasIndex("SourceStoreRequisitionId");
++
++                    b.HasIndex("SourceWorkOrderId");
++
+                     b.HasIndex("StockGradeId");
+ 
+                     b.HasIndex("SupplierId");
+@@ -10905,7 +10925,10 @@ namespace PEMS.Persistence.Migrations
+ 
+                     b.HasIndex("Status", "Urgent", "CreatedDate");
+ 
+-                    b.ToTable("PartCatalogueRequests", (string)null);
++                    b.ToTable("PartCatalogueRequests", null, t =>
++                        {
++                            t.HasCheckConstraint("CK_PartCatalogueRequests_SingleDemandOrigin", "(CASE WHEN [SourceWorkOrderId] IS NULL THEN 0 ELSE 1 END + CASE WHEN [SourceStoreRequisitionId] IS NULL THEN 0 ELSE 1 END + CASE WHEN [SourceMaterialRequisitionId] IS NULL THEN 0 ELSE 1 END) <= 1");
++                        });
+                 });
+ 
+             modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueRequestApproval", b =>
+@@ -21759,6 +21782,11 @@ namespace PEMS.Persistence.Migrations
+                         .HasForeignKey("ManufacturerId")
+                         .OnDelete(DeleteBehavior.Restrict);
+ 
++                    b.HasOne("PEMS.Domain.Entities.MaterialItem", "MaterialItem")
++                        .WithMany()
++                        .HasForeignKey("MaterialItemId")
++                        .OnDelete(DeleteBehavior.Restrict);
++
+                     b.HasOne("PEMS.Domain.Entities.PartCataloguePlanningMethod", "PlanningMethod")
+                         .WithMany()
+                         .HasForeignKey("PlanningMethodId")
+@@ -21780,6 +21808,21 @@ namespace PEMS.Persistence.Migrations
+                         .HasForeignKey("SectionId")
+                         .OnDelete(DeleteBehavior.Restrict);
+ 
++                    b.HasOne("PEMS.Domain.Entities.MaterialRequisition", "SourceMaterialRequisition")
++                        .WithMany()
++                        .HasForeignKey("SourceMaterialRequisitionId")
++                        .OnDelete(DeleteBehavior.Restrict);
++
++                    b.HasOne("PEMS.Domain.Entities.StoreRequisition", "SourceStoreRequisition")
++                        .WithMany()
++                        .HasForeignKey("SourceStoreRequisitionId")
++                        .OnDelete(DeleteBehavior.Restrict);
++
++                    b.HasOne("PEMS.Domain.Entities.WorkOrder", "SourceWorkOrder")
++                        .WithMany()
++                        .HasForeignKey("SourceWorkOrderId")
++                        .OnDelete(DeleteBehavior.Restrict);
++
+                     b.HasOne("PEMS.Domain.Entities.PartCatalogueStockGrade", "StockGrade")
+                         .WithMany()
+                         .HasForeignKey("StockGradeId")
+@@ -21813,6 +21856,8 @@ namespace PEMS.Persistence.Migrations
+ 
+                     b.Navigation("Manufacturer");
+ 
++                    b.Navigation("MaterialItem");
++
+                     b.Navigation("PlanningMethod");
+ 
+                     b.Navigation("ProductFamily");
+@@ -21821,6 +21866,12 @@ namespace PEMS.Persistence.Migrations
+ 
+                     b.Navigation("Section");
+ 
++                    b.Navigation("SourceMaterialRequisition");
++
++                    b.Navigation("SourceStoreRequisition");
++
++                    b.Navigation("SourceWorkOrder");
++
+                     b.Navigation("StockGrade");
+ 
+                     b.Navigation("Supplier");
+diff --git a/PEMS.Persistence/Servises/PartCatalogueService.cs b/PEMS.Persistence/Servises/PartCatalogueService.cs
+index 9cb2528..fffcfa7 100644
+--- a/PEMS.Persistence/Servises/PartCatalogueService.cs
++++ b/PEMS.Persistence/Servises/PartCatalogueService.cs
+@@ -801,6 +801,7 @@ public class PartCatalogueService : IPartCatalogueService
+             AddApproval(e, stageName, isReturn ? PartCatalogueActions.Return : kind == PartCatalogueStepKinds.Registration ? PartCatalogueActions.RegisterPartNumber : PartCatalogueActions.Approve,
+                 actor, comment, fromStatus, e.Status, null);
+             if (isReturn) e.Notes.Add(new PartCatalogueRequestNote { Text = comment!, AuthorEmployeeId = actor.EmployeeId, StepKey = stageName });
++            await AutoLinkMaterialItemAsync(e, actor);
+             await SyncProjectionAsync(e);
+         }
+ 
+@@ -899,6 +900,7 @@ public class PartCatalogueService : IPartCatalogueService
+                     overrideUsed ? PartCatalogueActions.AdminOverride
+                         : kind == PartCatalogueStepKinds.Registration ? PartCatalogueActions.RegisterPartNumber : PartCatalogueActions.Approve,
+                     actor, comment, fromStatus, e.Status, overrideUsed ? "Approve" : null);
++                await AutoLinkMaterialItemAsync(e, actor);
+             }
+             else return PcResult.Fail("Id", "Pc_Err_UnknownAction");
+         }
+@@ -911,6 +913,24 @@ public class PartCatalogueService : IPartCatalogueService
+         return PcResult.Ok();
+     }
+ 
++    /// <summary>
++    /// پیوند خودکار فقط در حالت بدون ابهام: درخواست تازه‌تکمیل‌شده و دقیقاً یک MaterialItem فعال با MaterialCode برابر
++    /// AssignedPartNumber. صفر یا چند مورد ⇒ هیچ کاری نمی‌کند (پیوند صریح بعداً از TraceabilityService). ادغام/بازنویسی ندارد.
++    /// </summary>
++    private async Task AutoLinkMaterialItemAsync(PartCatalogueRequest e, PcActor actor)
++    {
++        if (e.Status != PartCatalogueStatuses.Completed || e.MaterialItemId.HasValue || string.IsNullOrWhiteSpace(e.AssignedPartNumber)) return;
++
++        var code = e.AssignedPartNumber.Trim();
++        var ids = await _ctx.MaterialItems.AsNoTracking()
++            .Where(m => m.IsActive && m.MaterialCode.ToUpper() == code.ToUpper())
++            .Select(m => m.MaterialItemId).Take(2).ToListAsync();
++        if (ids.Count != 1) return;
++
++        e.MaterialItemId = ids[0];
++        AddApproval(e, null, PartCatalogueActions.AutoLinkMaterialItem, actor, $"MaterialItem #{ids[0]} ({code})", e.Status, e.Status, null);
++    }
++
+     private static void AddApproval(PartCatalogueRequest e, string? stepKey, string action, PcActor actor, string? comment,
+         string fromStatus, string toStatus, string? overriddenAction)
+     {
+@@ -1168,8 +1188,16 @@ public class PartCatalogueService : IPartCatalogueService
+             Status = e.Status, CurrentStepKey = e.CurrentStepKey, Urgent = e.Urgent, RequesterEmployeeId = e.RequesterEmployeeId,
+             RequesterName = EmpName(e.RequesterEmployeeId, names), AssignedPartNumber = e.AssignedPartNumber,
+             IsCritical = e.IsCritical, IsCapital = e.IsCapital, CreatedDate = e.CreatedDate, SubmittedDate = e.SubmittedDate, CompletedDate = e.CompletedDate,
+-            Form = ToForm(e), TechnicalClassLongDescription = e.TechnicalClass?.LongDescription
++            Form = ToForm(e), TechnicalClassLongDescription = e.TechnicalClass?.LongDescription,
++            MaterialItemId = e.MaterialItemId,
++            DemandOriginType = e.SourceWorkOrderId.HasValue ? PartCatalogueDemandOriginTypes.WorkOrder
++                : e.SourceStoreRequisitionId.HasValue ? PartCatalogueDemandOriginTypes.StoreRequisition
++                : e.SourceMaterialRequisitionId.HasValue ? PartCatalogueDemandOriginTypes.MaterialRequisition : null,
++            DemandOriginId = e.SourceWorkOrderId ?? e.SourceStoreRequisitionId ?? e.SourceMaterialRequisitionId
+         };
++        if (e.MaterialItemId.HasValue)
++            dto.MaterialCode = await _ctx.MaterialItems.AsNoTracking().Where(m => m.MaterialItemId == e.MaterialItemId)
++                .Select(m => m.MaterialCode).FirstOrDefaultAsync();
+ 
+         dto.Labels["SectionId"] = e.Section?.Code ?? "";
+         dto.Labels["TechnicalClassId"] = e.TechnicalClass == null ? "" : $"{e.TechnicalClass.Code} - {e.TechnicalClass.Description}";
+diff --git a/PEMS.Tests/PartCatalogue/PartCatalogueServiceTests.cs b/PEMS.Tests/PartCatalogue/PartCatalogueServiceTests.cs
+index 9406a65..719c2d1 100644
+--- a/PEMS.Tests/PartCatalogue/PartCatalogueServiceTests.cs
++++ b/PEMS.Tests/PartCatalogue/PartCatalogueServiceTests.cs
+@@ -560,4 +560,80 @@ public class PartCatalogueServiceTests
+         Assert.Equal(8, await e.Db.WorkflowActorResponsibilities.CountAsync());
+         Assert.All(await e.Db.WorkflowStages.Where(st => st.ResponsibilityKey != null).ToListAsync(), st => Assert.Equal(st.Name, st.ResponsibilityKey));
+     }
++
++    // ================= Procurement Lifecycle WP-C: پیوند خودکار Material Master فقط بدون ابهام =================
++
++    private static async Task CompleteChainAsync(Env e, int id, string partNumber)
++    {
++        Assert.True((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(DirectMgr))).Success);
++        Assert.True((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(Superior))).Success);
++        Assert.True((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(Pool))).Success);
++        Assert.True((await e.Svc.ExecuteAsync(id, "Approve", null, partNumber, null, e.Actor(Pool))).Success);
++        Assert.True((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(Pool))).Success);
++        Assert.Equal("Completed", await StatusAsync(e, id));
++    }
++
++    [Fact]
++    public async Task Completion_AutoLinksMaterialItem_WhenExactlyOneMaterialCodeMatches()
++    {
++        var e = await NewEnvAsync();
++        var mi = new MaterialItem { MaterialCode = "PN-7000", Description = "existing" };
++        e.Db.MaterialItems.Add(mi);
++        await e.Db.SaveChangesAsync();
++        var id = await SubmittedAsync(e);
++
++        await CompleteChainAsync(e, id, "PN-7000");
++
++        var r = await e.Db.PartCatalogueRequests.AsNoTracking().FirstAsync(x => x.PartCatalogueRequestId == id);
++        Assert.Equal(mi.MaterialItemId, r.MaterialItemId);
++        Assert.True(await e.Db.PartCatalogueRequestApprovals.AnyAsync(a => a.PartCatalogueRequestId == id && a.Action == PartCatalogueActions.AutoLinkMaterialItem));
++    }
++
++    [Fact]
++    public async Task Completion_WithoutMatchingMaterialItem_LeavesLinkEmpty_AndCreatesNothing()
++    {
++        var e = await NewEnvAsync();
++        e.Db.MaterialItems.Add(new MaterialItem { MaterialCode = "PN-7001-OTHER", Description = "different" });
++        await e.Db.SaveChangesAsync();
++        var id = await SubmittedAsync(e);
++
++        await CompleteChainAsync(e, id, "PN-7001");
++
++        var r = await e.Db.PartCatalogueRequests.AsNoTracking().FirstAsync(x => x.PartCatalogueRequestId == id);
++        Assert.Null(r.MaterialItemId);
++        Assert.Equal(1, await e.Db.MaterialItems.CountAsync());   // هیچ MaterialItem خودکار ساخته نشد
++        Assert.False(await e.Db.PartCatalogueRequestApprovals.AnyAsync(a => a.Action == PartCatalogueActions.AutoLinkMaterialItem));
++    }
++
++    [Fact]
++    public async Task Completion_DoesNotAutoLink_AnInactiveMaterialItem()
++    {
++        var e = await NewEnvAsync();
++        e.Db.MaterialItems.Add(new MaterialItem { MaterialCode = "PN-7002", Description = "retired", IsActive = false });
++        await e.Db.SaveChangesAsync();
++        var id = await SubmittedAsync(e);
++
++        await CompleteChainAsync(e, id, "PN-7002");
++
++        Assert.Null((await e.Db.PartCatalogueRequests.AsNoTracking().FirstAsync(x => x.PartCatalogueRequestId == id)).MaterialItemId);
++    }
++
++    [Fact]
++    public async Task Completion_AutoLink_IsCaseInsensitive_AndDoesNotAlterAssignedPartNumberOrExistingHistory()
++    {
++        var e = await NewEnvAsync();
++        var mi = new MaterialItem { MaterialCode = "pn-7003", Description = "lower-case code" };
++        e.Db.MaterialItems.Add(mi);
++        await e.Db.SaveChangesAsync();
++        var id = await SubmittedAsync(e);
++
++        await CompleteChainAsync(e, id, "PN-7003");
++
++        var r = await e.Db.PartCatalogueRequests.AsNoTracking().FirstAsync(x => x.PartCatalogueRequestId == id);
++        Assert.Equal(mi.MaterialItemId, r.MaterialItemId);
++        Assert.Equal("PN-7003", r.AssignedPartNumber);   // شماره‌ی تخصیص‌یافته دست‌نخورده
++        var actions = await e.Db.PartCatalogueRequestApprovals.Where(a => a.PartCatalogueRequestId == id).OrderBy(a => a.RequestApprovalId).Select(a => a.Action).ToListAsync();
++        Assert.Equal("Submit", actions.First());                                     // تاریخچه‌ی قبلی حفظ شده
++        Assert.Single(actions, a => a == PartCatalogueActions.AutoLinkMaterialItem);  // دقیقاً یک ردیف پیوند
++    }
+ }
+diff --git a/PEMS.Web/Areas/Warehouse/Controllers/PartCatalogueRequestController.cs b/PEMS.Web/Areas/Warehouse/Controllers/PartCatalogueRequestController.cs
+index f88390e..8dc79d5 100644
+--- a/PEMS.Web/Areas/Warehouse/Controllers/PartCatalogueRequestController.cs
++++ b/PEMS.Web/Areas/Warehouse/Controllers/PartCatalogueRequestController.cs
+@@ -20,10 +20,13 @@ public class PartCatalogueRequestController : Controller
+     private readonly IRoleModuleActionService _actions;
+     private readonly ICurrentUserContext _user;
+     private readonly IStringLocalizer<SharedResource> _l;
++    private readonly IPartCatalogueTraceabilityService _trace;
+ 
+     public PartCatalogueRequestController(IPartCatalogueService service, IPartCatalogueLookupService lookups,
+-        IRoleModuleActionService actions, ICurrentUserContext user, IStringLocalizer<SharedResource> l)
++        IRoleModuleActionService actions, ICurrentUserContext user, IStringLocalizer<SharedResource> l,
++        IPartCatalogueTraceabilityService trace)
+     {
++        _trace = trace;
+         _service = service;
+         _lookups = lookups;
+         _actions = actions;
+@@ -216,6 +219,9 @@ public class PartCatalogueRequestController : Controller
+ 
+         ViewData["Title"] = "Part Catalogue Request";
+         ViewData["Section"] = "Warehouse";
++        // کاندید پیوند Material Master (فقط پیشنهاد؛ پیوند با اقدام صریح کاربر مجاز انجام می‌شود)
++        if (d.Status == "Completed" && !d.MaterialItemId.HasValue)
++            ViewBag.LinkCandidate = await _trace.FindLinkCandidateAsync(id, actor);
+         return View(d);
+     }
+ 
+diff --git a/PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Details.cshtml b/PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Details.cshtml
+index a50f486..a205b50 100644
+--- a/PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Details.cshtml
++++ b/PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Details.cshtml
+@@ -71,6 +71,46 @@
+         </div>
+     </div>
+ 
++    @* ---------------------------------------------------- Traceability: Material Master + Demand Origin *@
++    @{
++        var linkCandidate = ViewBag.LinkCandidate as PEMS.Application.DTOs.PcLookupItem;
++        string? originUrl = d.DemandOriginType switch
++        {
++            "WorkOrder" => Url.Action("Details", "WorkOrder", new { area = "", id = d.DemandOriginId }),
++            "MaterialRequisition" => Url.Action("Details", "MaterialRequisition", new { area = "", id = d.DemandOriginId }),
++            "StoreRequisition" => Url.Action("Details", "StoreRequisition", new { area = "Warehouse", id = d.DemandOriginId }),
++            _ => null
++        };
++    }
++    <section class="vs-panel pc-card mb-3" aria-labelledby="pcTraceTitle">
++        <h2 class="vs-section__title" id="pcTraceTitle"><i class="bi bi-link-45deg"></i> @Localizer["Pc_Sec_Traceability"]</h2>
++        <dl class="row mb-0 small">
++            <dt class="col-sm-3">@Localizer["Pc_Trace_Origin"]</dt>
++            <dd class="col-sm-9">
++                @if (d.DemandOriginType == null) { <span class="text-muted">@Localizer["Pc_Trace_NoOrigin"]</span> }
++                else if (originUrl != null) { <a href="@originUrl">@Localizer["Pc_Trace_OriginType_" + d.DemandOriginType] #<span class="vs-num">@d.DemandOriginId</span></a> }
++                else { <span>@Localizer["Pc_Trace_OriginType_" + d.DemandOriginType] #<span class="vs-num">@d.DemandOriginId</span></span> }
++            </dd>
++            <dt class="col-sm-3">@Localizer["Pc_Trace_Material"]</dt>
++            <dd class="col-sm-9">
++                @if (d.MaterialItemId.HasValue)
++                {
++                    <span class="vs-num">@d.MaterialCode</span>
++                }
++                else if (d.Status == "Completed" && linkCandidate != null)
++                {
++                    <form asp-area="Warehouse" asp-controller="PartCatalogueTraceability" asp-action="LinkMaterialItem" method="post" class="d-inline">
++                        <input type="hidden" name="id" value="@d.Id" />
++                        <input type="hidden" name="materialItemId" value="@linkCandidate.Id" />
++                        <span class="vs-num">@linkCandidate.Text</span>
++                        <button type="submit" class="vs-btn vs-btn--sm vs-btn--primary ms-2"><i class="bi bi-link-45deg"></i> @Localizer["Pc_Trace_LinkBtn"]</button>
++                    </form>
++                }
++                else { <span class="text-muted">@Localizer["Pc_Trace_NotLinked"]</span> }
++            </dd>
++        </dl>
++    </section>
++
+     @* ---------------------------------------------------- Organization Resolution Required *@
+     @if (a.IsOrganizationBlocked)
+     {
+diff --git a/PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Edit.cshtml b/PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Edit.cshtml
+index ed8112a..b650e79 100644
+--- a/PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Edit.cshtml
++++ b/PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Edit.cshtml
+@@ -344,6 +344,47 @@
+ 
+         @* ------------------------------------------------ Other Info *@
+         <div class="col-lg-4">
++            <section class="vs-panel pc-card mb-3" id="pcDedup"
++                     data-url-existing="/Warehouse/PartCatalogueTraceability/ExistingParts"
++                     data-url-duplicates="/Warehouse/PartCatalogueTraceability/DuplicateCandidates"
++                     data-request-id="@d.Id"
++                     data-txt-none="@Localizer["Pc_Dedup_None"]"
++                     data-txt-ambiguous="@Localizer["Pc_Dedup_Ambiguous"]"
++                     data-txt-inflight="@Localizer["Pc_Dedup_InFlight"]"
++                     data-txt-error="@Localizer["Pc_Dedup_Error"]">
++                <h2 class="vs-section__title"><i class="bi bi-search"></i> @Localizer["Pc_Dedup_Title"]</h2>
++                <p class="form-text">@Localizer["Pc_Dedup_Hint"]</p>
++                <label class="form-label" for="pcDedupQuery">@Localizer["Pc_Dedup_SearchLabel"]</label>
++                <div class="input-group input-group-sm mb-2">
++                    <input id="pcDedupQuery" type="search" class="form-control" maxlength="100" autocomplete="off" />
++                    <button type="button" class="vs-btn vs-btn--sm" id="pcDedupSearch">@Localizer["Pc_Dedup_Search"]</button>
++                </div>
++                <button type="button" class="vs-btn vs-btn--sm mb-2" id="pcDedupCheck">@Localizer["Pc_Dedup_Check"]</button>
++                <div id="pcDedupResult" role="status" aria-live="polite" class="small"></div>
++            </section>
++
++            <section class="vs-panel pc-card mb-3">
++                <h2 class="vs-section__title"><i class="bi bi-link-45deg"></i> @Localizer["Pc_Trace_Origin"]</h2>
++                <form asp-area="Warehouse" asp-controller="PartCatalogueTraceability" asp-action="SetDemandOrigin" method="post">
++                    <input type="hidden" name="id" value="@d.Id" />
++                    <div class="mb-2">
++                        <label class="form-label" for="pcOriginType">@Localizer["Pc_Trace_OriginTypeLabel"]</label>
++                        <select id="pcOriginType" name="type" class="form-select form-select-sm">
++                            <option value="">@Localizer["Pc_Trace_NoOrigin"]</option>
++                            @foreach (var t in new[] { "WorkOrder", "StoreRequisition", "MaterialRequisition" })
++                            {
++                                <option value="@t" selected="@(d.DemandOriginType == t)">@Localizer["Pc_Trace_OriginType_" + t]</option>
++                            }
++                        </select>
++                    </div>
++                    <div class="mb-2">
++                        <label class="form-label" for="pcOriginId">@Localizer["Pc_Trace_OriginId"]</label>
++                        <input id="pcOriginId" name="originId" type="number" min="1" class="form-control form-control-sm vs-num" value="@d.DemandOriginId" />
++                    </div>
++                    <button type="submit" class="vs-btn vs-btn--sm vs-btn--primary">@Localizer["Pc_Trace_SaveOrigin"]</button>
++                </form>
++            </section>
++
+             <section class="vs-panel pc-card">
+                 <h2 class="vs-section__title"><i class="bi bi-paperclip"></i> @Localizer["Pc_Sec_OtherInfo"]</h2>
+                 <div class="mb-2"><label class="form-label" for="pc_SparePartSerialNo">@L("SparePartSerialNo")</label><input id="pc_SparePartSerialNo" form="pcForm" name="SparePartSerialNo" value="@f.SparePartSerialNo" class="form-control form-control-sm" maxlength="100" /></div>
+@@ -512,4 +553,5 @@
+ 
+ @section Scripts {
+     <script src="~/js/pems-part-catalogue.js" asp-append-version="true"></script>
++    <script src="~/js/pems-part-catalogue-dedup.js" asp-append-version="true"></script>
+ }
+diff --git a/PEMS.Web/Program.cs b/PEMS.Web/Program.cs
+index acb2655..265ec13 100644
+--- a/PEMS.Web/Program.cs
++++ b/PEMS.Web/Program.cs
+@@ -470,6 +470,12 @@ builder.Services.AddScoped<INumberingService, NumberingService>();
+ // Warehouse / Part Catalogue Request (درخواست کاتالوگ قطعه): تنظیمات + سرویس‌ها
+ builder.Services.AddSingleton(builder.Configuration.GetSection(PartCatalogueOptions.SectionName).Get<PartCatalogueOptions>() ?? new PartCatalogueOptions());
+ builder.Services.AddScoped<IPartCatalogueLookupService, PartCatalogueLookupService>();
++builder.Services.AddScoped<IPartCatalogueDuplicateService, PartCatalogueDuplicateService>();
++builder.Services.AddScoped<IPartCatalogueTraceabilityService, PartCatalogueTraceabilityService>();
++// Phase 2 (P1-P3): فقط‌خواندنی - موجودی قابل‌استفاده، جمع‌آوری تقاضا و نیاز خالص
++builder.Services.AddScoped<IUsableStockService, UsableStockService>();
++builder.Services.AddScoped<INetDemandCollector, NetDemandCollector>();
++builder.Services.AddScoped<INetDemandService, NetDemandService>();
+ builder.Services.AddScoped<IPartCatalogueService, PartCatalogueService>();
+ builder.Services.AddScoped<IPartCatalogueAdminService, PartCatalogueAdminService>();
+ 
+diff --git a/PEMS.Web/Resources/SharedResource.fa.resx b/PEMS.Web/Resources/SharedResource.fa.resx
+index 2f4c2f2..a53a117 100644
+--- a/PEMS.Web/Resources/SharedResource.fa.resx
++++ b/PEMS.Web/Resources/SharedResource.fa.resx
+@@ -777,6 +777,35 @@
+   <data name="Pc_Err_NotAuthorized" xml:space="preserve"><value>برای این اقدام مجوز ندارید.</value></data>
+   <data name="Pc_Err_NotChangeRequest" xml:space="preserve"><value>این درخواست از نوع Change نیست.</value></data>
+   <data name="Pc_Err_NotEditable" xml:space="preserve"><value>درخواست در وضعیت فعلی قابل ویرایش نیست.</value></data>
++  <data name="Pc_Err_LinkNotCompleted" xml:space="preserve"><value>فقط درخواستِ تکمیل‌شده‌ی دارای شماره‌ی قطعه به Material Master پیوند می‌خورد.</value></data>
++  <data name="Pc_Err_LinkCodeMismatch" xml:space="preserve"><value>کد Material Master با شماره‌ی قطعه‌ی تخصیص‌یافته برابر نیست؛ پیوند انجام نشد.</value></data>
++  <data name="Pc_Err_AlreadyLinked" xml:space="preserve"><value>این درخواست قبلاً به Material Master دیگری پیوند خورده است؛ جایگزینی خودکار انجام نمی‌شود.</value></data>
++  <data name="Pc_Err_OriginTypeInvalid" xml:space="preserve"><value>نوع منشأ تقاضا نامعتبر است.</value></data>
++  <data name="Pc_Err_OriginClosed" xml:space="preserve"><value>منشأ تقاضای انتخاب‌شده بسته/لغو/رد شده و قابل‌استفاده نیست.</value></data>
++  <data name="Pc_Err_OriginNotAuthorized" xml:space="preserve"><value>شما به منشأ تقاضای انتخاب‌شده دسترسی مشاهده ندارید.</value></data>
++  <data name="Pc_Msg_MaterialLinked" xml:space="preserve"><value>درخواست به Material Master پیوند خورد.</value></data>
++  <data name="Pc_Msg_OriginSaved" xml:space="preserve"><value>منشأ تقاضا ذخیره شد.</value></data>
++  <data name="Pc_Sec_Traceability" xml:space="preserve"><value>ردیابی: منشأ تقاضا و Material Master</value></data>
++  <data name="Pc_Trace_Origin" xml:space="preserve"><value>منشأ تقاضا</value></data>
++  <data name="Pc_Trace_OriginTypeLabel" xml:space="preserve"><value>نوع منشأ</value></data>
++  <data name="Pc_Trace_OriginId" xml:space="preserve"><value>شناسه‌ی منشأ</value></data>
++  <data name="Pc_Trace_NoOrigin" xml:space="preserve"><value>ثبت نشده</value></data>
++  <data name="Pc_Trace_SaveOrigin" xml:space="preserve"><value>ذخیره‌ی منشأ</value></data>
++  <data name="Pc_Trace_Material" xml:space="preserve"><value>کالای مرجع (Material Master)</value></data>
++  <data name="Pc_Trace_NotLinked" xml:space="preserve"><value>پیوند نخورده</value></data>
++  <data name="Pc_Trace_LinkBtn" xml:space="preserve"><value>پیوند به Material Master</value></data>
++  <data name="Pc_Trace_OriginType_WorkOrder" xml:space="preserve"><value>دستور کار</value></data>
++  <data name="Pc_Trace_OriginType_StoreRequisition" xml:space="preserve"><value>درخواست انبار</value></data>
++  <data name="Pc_Trace_OriginType_MaterialRequisition" xml:space="preserve"><value>درخواست مواد (MR)</value></data>
++  <data name="Pc_Dedup_Title" xml:space="preserve"><value>جستجوی قطعه‌ی موجود پیش از ثبت</value></data>
++  <data name="Pc_Dedup_Hint" xml:space="preserve"><value>پیش از ثبت قطعه‌ی جدید، قطعات تأییدشده را بررسی کنید. هیچ ادغام خودکاری انجام نمی‌شود؛ تصمیم با شماست.</value></data>
++  <data name="Pc_Dedup_SearchLabel" xml:space="preserve"><value>شماره‌ی قطعه، MPN یا شرح</value></data>
++  <data name="Pc_Dedup_Search" xml:space="preserve"><value>جستجو</value></data>
++  <data name="Pc_Dedup_Check" xml:space="preserve"><value>بررسی تکراری‌بودن MPN فرم</value></data>
++  <data name="Pc_Dedup_None" xml:space="preserve"><value>موردی یافت نشد.</value></data>
++  <data name="Pc_Dedup_Ambiguous" xml:space="preserve"><value>چند قطعه‌ی متمایز با همین MPN و سازنده وجود دارد؛ انتخاب خودکار انجام نمی‌شود.</value></data>
++  <data name="Pc_Dedup_InFlight" xml:space="preserve"><value>درخواست‌های در جریان دیگر با همین MPN:</value></data>
++  <data name="Pc_Dedup_Error" xml:space="preserve"><value>خطا در جستجو.</value></data>
+   <data name="Pc_Err_NotFound" xml:space="preserve"><value>درخواست یافت نشد.</value></data>
+   <data name="Pc_Err_NumberConflict" xml:space="preserve"><value>تداخل در شماره درخواست. دوباره تلاش کنید.</value></data>
+   <data name="Pc_Err_NumberExists" xml:space="preserve"><value>شماره درخواست قبلاً تولید شده است.</value></data>

@@ -1,0 +1,39 @@
+# PEMS.Web RELEASE image - built OFFLINE on the Docker host from a verified publish package.
+#
+# The VM has no outbound internet, so nothing is pulled: the application files are laid over an image that is ALREADY on the host
+# (BASE_IMAGE = the tag/ID recorded in the kit configuration; it carries the ASP.NET Core 10 runtime and the Tesseract/Leptonica
+# system libraries + tessdata). The base is a fixed, immutable layer - each release is "base + new app", so image size does not
+# grow release after release.
+#
+# Build context = the extracted package (publish output + release-manifest.json). User data is never part of an image:
+# uploads, logs, filestore and the DataProtection key ring are Docker volumes mounted by the Compose file.
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+
+ARG RELEASE_ID=unknown
+ARG RELEASE_COMMIT=unknown
+LABEL org.opencontainers.image.title="PEMS.Web" \
+      org.opencontainers.image.revision="${RELEASE_COMMIT}" \
+      pems.release.id="${RELEASE_ID}"
+
+WORKDIR /app
+
+# replace the previous application files completely (volume mount points are re-created below)
+RUN find /app -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+COPY . /app/
+
+# Linux OCR. The Tesseract 5.2.0 .NET wrapper loads native libraries from <app>/x64 using Windows-era names and imports "libdl";
+# the image provides liblept.so.5 / libtesseract.so.5 (Ubuntu 24.04) and only libdl.so.2. Verified by a real OCR run (see
+# tools/PemsLinuxProbe): without these three links the wrapper fails with DllNotFoundException.
+RUN set -eu; L=/usr/lib/x86_64-linux-gnu; \
+    mkdir -p /app/x64 /app/wwwroot/uploads /app/filestore /app/logs; \
+    ln -sfn "$L/liblept.so.5"      /app/x64/libleptonica-1.82.0.so; \
+    ln -sfn "$L/libtesseract.so.5" /app/x64/libtesseract50.so; \
+    [ -e "$L/libdl.so" ] || ln -s "$L/libdl.so.2" "$L/libdl.so"; \
+    test -e "$L/liblept.so.5" && test -e "$L/libtesseract.so.5" && test -d /usr/share/tesseract-ocr/5/tessdata
+
+ENV OCR__TessDataPath=/usr/share/tesseract-ocr/5/tessdata \
+    OCR__Languages=fas+eng
+
+# same listener as the existing image (ASPNETCORE_URLS / ports come from the container environment of the live service)
+ENTRYPOINT ["dotnet", "PEMS.Web.dll"]

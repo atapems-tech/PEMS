@@ -12,6 +12,16 @@ public class MeetingConfiguration : IEntityTypeConfiguration<Meeting>
             .WithMany()
             .HasForeignKey(x => x.ProjectId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.Contract)
+            .WithMany()
+            .HasForeignKey(x => x.ContractId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.ProcurementPackage)
+            .WithMany()
+            .HasForeignKey(x => x.ProcurementPackageId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

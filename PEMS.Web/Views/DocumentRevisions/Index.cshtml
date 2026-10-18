@@ -1,4 +1,7 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.DocumentRevisionDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var documents = (IEnumerable<dynamic>)ViewBag.Documents;
     int? selectedDoc = ViewBag.DocumentId;
@@ -9,7 +12,7 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-2 align-items-end">
         <div class="col-md-4">
-            <label class="form-label small">Document</label>
+            <label class="form-label small">@Localizer["Document"]</label>
             <select name="documentId" class="form-select form-select-sm" onchange="this.form.submit()">
                 <option value="">All Documents</option>
                 @foreach (var d in documents)
@@ -32,22 +35,22 @@
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('DocumentRevisions')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
         <table class="table table-enterprise pems-grid-table" data-grid-key="DocumentRevisions">
             <thead>
                 <tr>
-                    <th data-col-key="docNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">Document No</th>
-                    <th data-col-key="revision" data-resizable="true" data-min-width="70" data-max-width="120" style="width:90px">Revision</th>
+                    <th data-col-key="docNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["Document No"]</th>
+                    <th data-col-key="revision" data-resizable="true" data-min-width="70" data-max-width="120" style="width:90px">@Localizer["Revision"]</th>
                     <th data-col-key="prevRev" data-resizable="true" data-min-width="70" data-max-width="120" style="width:100px">Previous Rev</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">Status</th>
-                    <th data-col-key="issuePurpose" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Issue Purpose</th>
-                    <th data-col-key="preparedBy" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">Prepared By</th>
-                    <th data-col-key="checkedBy" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">Checked By</th>
-                    <th data-col-key="approvedBy" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">Approved By</th>
-                    <th data-col-key="date" data-resizable="true" data-min-width="100" data-max-width="160" style="width:120px">Date</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">@Localizer["Status"]</th>
+                    <th data-col-key="issuePurpose" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Issue Purpose"]</th>
+                    <th data-col-key="preparedBy" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">@Localizer["Prepared By"]</th>
+                    <th data-col-key="checkedBy" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">@Localizer["Checked By"]</th>
+                    <th data-col-key="approvedBy" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">@Localizer["Approved By"]</th>
+                    <th data-col-key="date" data-resizable="true" data-min-width="100" data-max-width="160" style="width:120px">@Localizer["Date"]</th>
                 </tr>
             </thead>
             <tbody>

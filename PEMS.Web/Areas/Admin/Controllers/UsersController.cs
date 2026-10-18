@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
+using PEMS.Application.Interfaces;
 using PEMS.Persistence.Identity;
 using PEMS.Web.Areas.Admin.Models;
 using PEMS.Web.Helpers;
+using PEMS.Web.Security;
 
 namespace PEMS.Web.Areas.Admin.Controllers;
 
@@ -48,7 +50,7 @@ public class UsersController : Controller
         _userManager = userManager;
         _roleManager = roleManager;
         _context = context;
-        _summary_service = summaryService;
+        _summaryService = summaryService;
         _permissionService = permissionService;
         _accessControlService = accessControlService;
         _navigationResolver = navigationResolver;
@@ -360,7 +362,7 @@ public class UsersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(UserFormViewModel model)
     {
-        model.AllRoles = _role_manager.Roles.Select(x => x.Name!).ToList();
+        model.AllRoles = _roleManager.Roles.Select(x => x.Name!).ToList();
 
         await ValidateEmployeeLinkAsync(model, model.Id);
 
@@ -398,33 +400,35 @@ public class UsersController : Controller
 
         if (!string.IsNullOrWhiteSpace(model.Password))
         {
-            var token = await _user_manager.GeneratePasswordResetTokenAsync(user);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            await _user_manager.ResetPasswordAsync(user, token, model.Password);
+            await _userManager.ResetPasswordAsync(user, token, model.Password);
         }
 
 
-        var currentRoles = await _user_manager.GetRolesAsync(user);
+        var currentRoles = await _userManager.GetRolesAsync(user);
 
         var rolesToRemove = currentRoles.Except(model.SelectedRoles).ToList();
 
         var rolesToAdd = model.SelectedRoles.Except(currentRoles).ToList();
 
         if (rolesToRemove.Any())
-            await _user_manager.RemoveFromRolesAsync(user, rolesToRemove);
+            await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
 
+        IdentityResult? roleResult = null;
         if (rolesToAdd.Any())
-        {
-            var roleResult = await _user_manager.AddToRolesAsync(user, rolesToAdd);
-            if (!roleResult.Succeeded)
-            {
-                TempData["Error"] = "User updated, but some role assignments failed: "
-                    + string.Join(", ", roleResult.Errors.Select(e => e.Description));
-                return RedirectToAction(nameof(Index));
-            }
-        }
+            roleResult = await _userManager.AddToRolesAsync(user, rolesToAdd);
 
-        await SyncRoleAssignmentsAsync(user.Id);
+        // نقش حذف‌شده نباید از طریق RoleAssignment آینه‌ایِ باقی‌مانده همچنان دسترسی بدهد؛ Scoped/Delegated/Emergency/Temporary دست�[...]
+        await _roleSync.SyncAsync(user.Id);
+
+        // همگام‌سازی حتی در صورت شکست تخصیص نقش انجام می‌شود تا نقش‌های حذف‌شده دسترسی باقی‌مانده ندهند
+        if (roleResult != null && !roleResult.Succeeded)
+        {
+            TempData["Error"] = "User updated, but some role assignments failed: "
+                + string.Join(", ", roleResult.Errors.Select(e => e.Description));
+            return RedirectToAction(nameof(Index));
+        }
 
         TempData["Message"] = "User updated successfully";
 
@@ -433,63 +437,21 @@ public class UsersController : Controller
 
 
 
-    /// <summary>
-    /// Keeps the live RoleAssignments authorization projection aligned with Identity's direct
-    /// global role membership. Delegated/emergency assignments are intentionally untouched.
-    /// </summary>
-    private async Task SyncRoleAssignmentsAsync(int userId)
-    {
-        var roleIds = await _context.UserRoles
-            .Where(x => x.UserId == userId)
-            .Select(x => x.RoleId)
-            .ToListAsync();
-
-        var assignments = await _context.RoleAssignments
-            .Where(x => x.UserId == userId && x.AssignmentType == "Direct" && x.ScopeType == "Global")
-            .ToListAsync();
-
-        foreach (var assignment in assignments)
-            assignment.IsActive = roleIds.Contains(assignment.RoleId);
-
-        foreach (var roleId in roleIds)
-        {
-            var existing = assignments.FirstOrDefault(x => x.RoleId == roleId);
-            if (existing != null)
-            {
-                existing.IsActive = true;
-                continue;
-            }
-
-            await _context.RoleAssignments.AddAsync(new PEMS.Domain.Entities.RoleAssignment
-            {
-                UserId = userId,
-                RoleId = roleId,
-                ScopeType = "Global",
-                AssignmentType = "Direct",
-                IsActive = true,
-                CreatedDate = DateTime.Now
-            });
-        }
-
-        await _context.SaveChangesAsync();
-    }
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleActive(int id)
     {
-        var user = await _user_manager.FindByIdAsync(id.ToString());
+        var user = await _userManager.FindByIdAsync(id.ToString());
 
         if (user == null)
             return NotFound();
 
         user.IsActive = !user.IsActive;
 
-        await _user_manager.UpdateAsync(user);
+        await _userManager.UpdateAsync(user);
 
         return RedirectToAction(nameof(Index));
     }
-
 
 
     // طبق سند «PEMS — Global Data Grid Standard» بند A-9: Pagination گرید نباید به‌طور
@@ -498,7 +460,7 @@ public class UsersController : Controller
     // (SystemAdmin، سطح کلاس) دست‌نخورده ماند.
     public async Task<IActionResult> Export()
     {
-        var totalUsers = await _user_manager.Users.CountAsync();
+        var totalUsers = await _userManager.Users.CountAsync();
         if (totalUsers > MaxExportRows)
         {
             return BadRequest(
@@ -506,7 +468,7 @@ public class UsersController : Controller
                 "لطفاً با مدیر سیستم برای Export دسته‌ای تماس بگیرید.");
         }
 
-        var users = await _user_manager.Users.ToListAsync();
+        var users = await _userManager.Users.ToListAsync();
 
         var rolesByUserId = (await _context.UserRoles
             .Join(_context.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => new { ur.UserId, r.Name })
@@ -541,7 +503,6 @@ public class UsersController : Controller
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             $"Users_{DateTime.Now:yyyyMMdd}.xlsx");
     }
-
 
 
     // طبق «PEMS — Enterprise User-Centric Authorization Workspace Consolidation": صفحه‌ی تازه -
@@ -606,10 +567,10 @@ public class UsersController : Controller
 
     private async Task<UserWorkspaceVm?> BuildWorkspaceVmAsync(int id)
     {
-        var user = await _user_manager.Users.FirstOrDefaultAsync(u => u.Id == id);
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
         if (user == null) return null;
 
-        var roleNames = (await _user_manager.GetRolesAsync(user)).OrderBy(r => r).ToList();
+        var roleNames = (await _userManager.GetRolesAsync(user)).OrderBy(r => r).ToList();
 
         var employee = user.EmployeeId.HasValue
             ? await _context.Employees
@@ -628,8 +589,8 @@ public class UsersController : Controller
                 disciplineName = await _context.Disciplines.Where(d => d.DisciplineId == employee.DisciplineId).Select(d => d.Name).FirstOrDefaultAsync();
         }
 
-        var effectivePermissions = await _summary_service.GetEffectivePermissionsForRolesAsync(roleNames);
-        var sodExposure = await _summary_service.GetSoDExposureForRolesAsync(roleNames);
+        var effectivePermissions = await _summaryService.GetEffectivePermissionsForRolesAsync(roleNames);
+        var sodExposure = await _summaryService.GetSoDExposureForRolesAsync(roleNames);
 
         var fullMatrix = await _permissionService.GetMatrixAsync();
         var matrixRows = fullMatrix.Where(r => roleNames.Contains(r.RoleName)).ToList();
@@ -652,7 +613,7 @@ public class UsersController : Controller
             })
             .ToListAsync();
 
-        var allUsers = await _user_manager.Users
+        var allUsers = await _userManager.Users
             .Select(u => new { u.Id, u.UserName, u.FullName })
             .OrderBy(u => u.UserName)
             .ToListAsync();

@@ -1,4 +1,7 @@
 ﻿@model PEMS.Web.Areas.Admin.Models.UserFormViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card" style="max-width:640px;">
 
@@ -8,18 +11,18 @@
         <input type="hidden" asp-for="Id" />
 
         <div class="mb-3">
-            <label class="form-label">Username</label>
+            <label class="form-label">@Localizer["Username"]</label>
             <input asp-for="UserName" class="form-control" readonly />
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Full Name</label>
+            <label class="form-label">@Localizer["Full Name"]</label>
             <input asp-for="FullName" class="form-control" />
             <span asp-validation-for="FullName" class="text-danger small"></span>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Email</label>
+            <label class="form-label">@Localizer["Email"]</label>
             <input asp-for="Email" class="form-control" />
             <span asp-validation-for="Email" class="text-danger small"></span>
         </div>
@@ -30,7 +33,7 @@
         </div>
 
         <hr />
-        <h6 class="mb-2">Employee link</h6>
+        <h6 class="mb-2">@Localizer["Employee link"]</h6>
         @if (!Model.ExistingEmployeeId.HasValue)
         {
             <div class="alert alert-warning py-2 px-3 small">
@@ -40,9 +43,9 @@
         }
 
         <div class="mb-3">
-            <label class="form-label">Link to existing employee</label>
+            <label class="form-label">@Localizer["Link to existing employee"]</label>
             <select name="ExistingEmployeeId" class="form-select" id="existingEmployeeSelect">
-                <option value="">-- create a new employee record instead --</option>
+                <option value="">@Localizer["-- create a new employee record instead --"]</option>
                 @foreach (var e in Model.AllEmployees)
                 {
                     <option value="@e.Id" selected="@(Model.ExistingEmployeeId == e.Id)">@e.Name</option>
@@ -52,9 +55,9 @@
 
         <div id="newEmployeeFields" class="row g-3 mb-3">
             <div class="col-md-6">
-                <label class="form-label">Department</label>
+                <label class="form-label">@Localizer["Department"]</label>
                 <select name="DepartmentId" class="form-select">
-                    <option value="">-- select --</option>
+                    <option value="">@Localizer["-- select --"]</option>
                     @foreach (var d in Model.AllDepartments)
                     {
                         <option value="@d.Id" selected="@(Model.DepartmentId == d.Id)">@d.Name</option>
@@ -62,9 +65,9 @@
                 </select>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Discipline</label>
+                <label class="form-label">@Localizer["Discipline"]</label>
                 <select name="DisciplineId" class="form-select">
-                    <option value="">-- none --</option>
+                    <option value="">@Localizer["-- select --"]</option>
                     @foreach (var d in Model.AllDisciplines)
                     {
                         <option value="@d.Id" selected="@(Model.DisciplineId == d.Id)">@d.Name</option>
@@ -72,8 +75,15 @@
                 </select>
             </div>
             <div class="col-12">
-                <label class="form-label">Position / Title</label>
-                <input name="Position" value="@Model.Position" class="form-control" />
+                <label class="form-label">@Localizer["Organizational position"]</label>
+                <select name="PositionId" class="form-select">
+                    <option value="">@Localizer["-- none (assign later) --"]</option>
+                    @foreach (var p in Model.AllPositions)
+                    {
+                        <option value="@p.Id" selected="@(Model.PositionId == p.Id)">@p.Name</option>
+                    }
+                </select>
+                <div class="form-text">@Localizer["Only vacant active positions are listed. The assignment is created through the organization structure."]</div>
             </div>
         </div>
 
@@ -82,11 +92,11 @@
 
         <div class="form-check mb-4">
             <input asp-for="IsActive" class="form-check-input" />
-            <label asp-for="IsActive" class="form-check-label">Active</label>
+            <label asp-for="IsActive" class="form-check-label">@Localizer["Active"]</label>
         </div>
 
-        <button type="submit" class="btn btn-pems-solid">Save</button>
-        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
 
     </form>
 

@@ -1,0 +1,388 @@
+/* =============================================================================
+   PEMS document-workspace design system (.vs-*): shared by Vendor/VDR/Transmittal (Stitch-based) and
+   Engineering Documents (register + document workspace). Reusable pieces: .vs-header, .vs-panel, .vs-pill,
+   .vs-chips, .vs-filters, .vs-info, .vs-tracker, .vs-doc-*, .vs-subnav, .vs-num, .vs-toolbar, .vs-bulkbar.
+   Presentation only: uses the existing --pems-* theme tokens (so dark/other themes still work)
+   and CSS logical properties (so English LTR and Persian RTL both mirror correctly).
+   Everything is namespaced under .vs-* / .vs-page and does not affect other modules.
+   ============================================================================= */
+
+:root, .vs-page {
+    --vs-radius: 6px;
+    --vs-border: var(--pems-surface-border, #edf0f4);
+    --vs-head-bg: var(--pems-table-header-bg, #f5f7fa);
+    --vs-muted: var(--pems-text-muted, #5c6f85);
+    --vs-accent: var(--pems-accent, #d98c2b);
+    --vs-accent-dark: var(--pems-accent-dark, #b8721e);
+    --vs-navy: var(--pems-navy, #142033);
+}
+.vs-page { font-size: 13.5px; }
+
+/* ---------- page header ---------- */
+.vs-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-block-end: 20px; }
+.vs-title { font-size: 24px; line-height: 32px; font-weight: 700; letter-spacing: -.01em; margin: 0; color: var(--pems-text); }
+.vs-subtitle { margin: 2px 0 0; color: var(--vs-muted); font-size: 13.5px; }
+.vs-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ---------- buttons ---------- */
+.vs-btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: var(--vs-radius);
+    border: 1px solid var(--vs-border); background: var(--pems-surface); color: var(--pems-text); font-weight: 600; font-size: 13.5px;
+    text-decoration: none; cursor: pointer; transition: border-color .15s, color .15s, opacity .15s; line-height: 20px; }
+.vs-btn:hover { border-color: var(--vs-accent); color: var(--vs-accent); }
+.vs-btn--primary { background: var(--vs-accent-dark); border-color: transparent; color: #fff; }
+.vs-btn--primary:hover { color: #fff; opacity: .9; border-color: transparent; }
+.vs-btn--danger:hover { border-color: #ba1a1a; color: #ba1a1a; }
+.vs-btn--sm { padding: 4px 10px; font-size: 12px; }
+
+.vs-icon-btn { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 4px;
+    border: 1px solid var(--vs-border); background: var(--vs-head-bg); color: var(--pems-text-muted); text-decoration: none; transition: all .15s; }
+.vs-icon-btn:hover { border-color: var(--vs-accent); color: var(--vs-accent); }
+
+/* compact inline metrics - every real dashboard value stays visible without competing with the table */
+.vs-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-block-end: 20px; }
+.vs-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; background: var(--pems-surface); border: 1px solid var(--vs-border);
+    border-radius: 999px; font-size: 12px; color: var(--vs-muted); }
+.vs-chip--danger { border-color: #ba1a1a; color: #ba1a1a; }
+.vs-chip strong { color: var(--pems-text); font-size: 13px; }
+
+/* ---------- panels ---------- */
+.vs-panel { margin-block-end: 0; }
+/* register tables carry 8 resizable columns - side panel only sits beside them on very wide screens */
+@media (min-width: 1650px) { .vs-layout { grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr); } }
+@media (min-width: 1100px) { .vs-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.vs-panel { background: var(--pems-surface); border: 1px solid var(--vs-border); border-radius: 8px; overflow: hidden; margin-block-end: 16px; }
+.vs-panel__head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 16px;
+    background: var(--vs-head-bg); border-bottom: 1px solid var(--vs-border); }
+.vs-panel__title { margin: 0; font-size: 16px; font-weight: 700; color: var(--pems-text); display: flex; align-items: center; gap: 8px; }
+.vs-panel__title .bi { color: var(--vs-accent); }
+.vs-panel__body { padding: 16px; }
+.vs-panel__foot { padding: 10px 16px; background: var(--vs-head-bg); border-top: 1px solid var(--vs-border); }
+
+/* ---------- filter bar ---------- */
+.vs-filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; padding: 12px 16px; background: var(--pems-surface);
+    border: 1px solid var(--vs-border); border-radius: 8px; margin-block-end: 20px; }
+.vs-filters > div { flex: 0 1 220px; min-width: 150px; }
+.vs-filters label { display: block; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--vs-muted); margin-block-end: 3px; }
+.vs-filters .form-select, .vs-filters .form-control { width: 100%; font-size: 13px; border-color: var(--vs-border); border-radius: var(--vs-radius); }
+.vs-filters__end { margin-inline-start: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+
+.vs-search { position: relative; }
+.vs-filters__search { flex: 1 1 260px !important; max-width: 420px; }
+.vs-filters__search .bi { top: auto; bottom: 8px; transform: none; }
+.vs-collapse > summary { list-style: none; cursor: pointer; }
+.vs-collapse > summary::-webkit-details-marker { display: none; }
+.vs-collapse:not([open]) > summary { border-bottom: 0; }
+.vs-search .bi { z-index: 3; pointer-events: none; position: absolute; inset-inline-start: 12px; top: 50%; transform: translateY(-50%); color: var(--vs-muted); }
+.vs-search .form-control { padding-inline-start: 36px; border-radius: var(--vs-radius); border-color: var(--vs-border); }
+
+/* ---------- tables ---------- */
+.vs-page .table-enterprise thead th { background: var(--vs-head-bg); font-size: 11.5px; font-weight: 700; letter-spacing: .04em;
+    text-transform: uppercase; color: var(--vs-muted); padding: 8px 16px; border-bottom: 1px solid var(--vs-border); white-space: nowrap; }
+.vs-page .table-enterprise tbody td { padding: 8px 16px; font-size: 13px; vertical-align: middle; border-color: color-mix(in srgb, var(--vs-border) 70%, transparent); }
+.vs-page .table-enterprise tbody tr:hover { background: var(--pems-row-hover, rgba(31,78,120,.04)); }
+.vs-page .table-enterprise tr.table-danger > td { background: rgba(186, 26, 26, .06); }
+.vs-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: var(--vs-muted); }
+.vs-cell-strong { font-weight: 600; color: var(--pems-text); }
+.vs-cell-sub { font-size: 11px; color: var(--vs-muted); }
+.vs-empty { text-align: center; padding: 32px 16px; color: var(--vs-muted); }
+.vs-empty .bi { display: block; font-size: 28px; margin-block-end: 6px; opacity: .6; }
+
+/* ---------- status pills ---------- */
+.vs-pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: .02em; line-height: 14px; white-space: nowrap; }
+.vs-pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .85; }
+.vs-pill--neutral { background: #c8dcf5; color: #081d2f; }
+.vs-pill--info    { background: #d1e4ff; color: #00497c; }
+.vs-pill--success { background: #e6f4ea; color: #137333; }
+.vs-pill--warning { background: #fff0d6; color: #6e4100; }
+.vs-pill--danger  { background: #ffdad6; color: #93000a; }
+[data-theme="dark"] .vs-pill--neutral, [data-theme="midnight"] .vs-pill--neutral, [data-theme="turquoise"] .vs-pill--neutral { background: #2a3444; color: #e4e9f0; }
+[data-theme="dark"] .vs-pill--info, [data-theme="midnight"] .vs-pill--info, [data-theme="turquoise"] .vs-pill--info { background: #12365a; color: #cfe4ff; }
+[data-theme="dark"] .vs-pill--success, [data-theme="midnight"] .vs-pill--success, [data-theme="turquoise"] .vs-pill--success { background: #143d24; color: #b8e6c6; }
+[data-theme="dark"] .vs-pill--warning, [data-theme="midnight"] .vs-pill--warning, [data-theme="turquoise"] .vs-pill--warning { background: #4a3210; color: #ffd9a3; }
+[data-theme="dark"] .vs-pill--danger, [data-theme="midnight"] .vs-pill--danger, [data-theme="turquoise"] .vs-pill--danger { background: #5a1d19; color: #ffd0cb; }
+
+
+/* ---------- key/value info grid (package information card) ---------- */
+.vs-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px 24px; }
+.vs-info__label { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--vs-muted); margin: 0 0 2px; }
+.vs-info__value { margin: 0; font-weight: 600; color: var(--pems-text); word-break: break-word; }
+.vs-info__wide { grid-column: 1 / -1; }
+
+/* ---------- workflow lifecycle tracker (package detail) ---------- */
+.vs-tracker { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding-block: 4px; }
+.vs-step { flex: 1 1 0; min-width: 96px; text-align: center; position: relative; }
+.vs-step::before { content: ""; position: absolute; top: 15px; inset-inline-start: -50%; width: 100%; height: 2px; background: var(--vs-border); z-index: 0; }
+.vs-step:first-child::before { display: none; }
+.vs-step--done::before, .vs-step--current::before { background: var(--vs-accent); }
+.vs-step__dot { width: 32px; height: 32px; border-radius: 50%; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center;
+    background: var(--vs-head-bg); border: 2px solid var(--vs-border); color: var(--vs-muted); position: relative; z-index: 1; font-size: 14px; }
+.vs-step--done .vs-step__dot { background: var(--vs-navy); border-color: var(--vs-navy); color: #fff; }
+.vs-step--current .vs-step__dot { background: var(--vs-accent); border-color: var(--vs-accent); color: #fff; box-shadow: 0 0 0 4px color-mix(in srgb, var(--vs-accent) 25%, transparent); }
+.vs-step--rejected .vs-step__dot { background: #ba1a1a; border-color: #ba1a1a; color: #fff; }
+.vs-step__label { font-size: 12px; font-weight: 600; color: var(--pems-text); }
+.vs-step__meta { font-size: 11px; color: var(--vs-muted); }
+
+/* ---------- tabs (Stitch: underline tabs) ---------- */
+.vs-page .nav-tabs { border-bottom: 1px solid var(--vs-border); gap: 4px; }
+.vs-page .nav-tabs .nav-link { border: 0; border-bottom: 2px solid transparent; color: var(--vs-muted); font-weight: 600; font-size: 13.5px; padding: 10px 14px; background: transparent; }
+.vs-page .nav-tabs .nav-link:hover { color: var(--vs-accent); }
+.vs-page .nav-tabs .nav-link.active { color: var(--pems-text); border-bottom-color: var(--vs-accent); background: transparent; }
+
+[dir="rtl"] .vs-btn .bi-arrow-left { transform: scaleX(-1); }
+
+/* ---------- restyle of legacy content-cards that still hold functional forms ---------- */
+.vs-page .content-card { border-radius: 8px; box-shadow: none; border-color: var(--vs-border); padding: 16px 20px; }
+.vs-page .content-card > h6:first-child, .vs-page .content-card > .vs-card-title { font-size: 15px; font-weight: 700; margin-block-end: 12px; }
+.vs-page .content-card p { unicode-bidi: plaintext; }
+.vs-page .form-check { min-width: 0; }
+.vs-page .form-check-label { overflow-wrap: anywhere; }
+.vs-page .form-label { font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--vs-muted); }
+.vs-page .form-control, .vs-page .form-select { border-color: var(--vs-border); border-radius: var(--vs-radius); font-size: 13px; }
+.vs-page .form-control:focus, .vs-page .form-select:focus { border-color: var(--vs-accent); box-shadow: 0 0 0 1px var(--vs-accent); }
+.vs-page .btn-pems-solid { background: linear-gradient(90deg, var(--vs-accent), var(--vs-accent-dark)); border-color: transparent; color: #fff; border-radius: var(--vs-radius); }
+.vs-page .modal-content { border-radius: 10px; border: 1px solid var(--vs-border); }
+.vs-page .modal-header { background: var(--vs-head-bg); border-bottom: 1px solid var(--vs-border); }
+.vs-page .modal-footer { background: var(--vs-head-bg); border-top: 1px solid var(--vs-border); }
+
+/* ---------- import wizard stepper ---------- */
+.vs-stepper { display: flex; align-items: center; margin-block-end: 20px; max-width: 720px; }
+.vs-stepper__item { flex: 1 1 0; display: flex; align-items: center; gap: 8px; color: var(--vs-muted); font-weight: 600; font-size: 13px; white-space: nowrap; }
+.vs-stepper__item:first-child { flex: 0 0 auto; }
+.vs-stepper__item + .vs-stepper__item::before { content: ""; flex: 1 1 auto; min-width: 24px; height: 2px; background: var(--vs-border); margin-inline-end: 4px; }
+.vs-stepper__item--done + .vs-stepper__item::before, .vs-stepper__item--done + .vs-stepper__item--active::before { background: var(--vs-navy); }
+.vs-stepper__num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--vs-head-bg); border: 1px solid var(--vs-border); font-size: 12px; }
+.vs-stepper__item--done .vs-stepper__num { background: var(--vs-navy); color: #fff; border-color: var(--vs-navy); }
+.vs-stepper__item--active { color: var(--pems-text); }
+.vs-stepper__item--active .vs-stepper__num { background: var(--vs-accent); color: #fff; border-color: var(--vs-accent); }
+
+/* ---------- risk mini-list (side panel) ---------- */
+.vs-list { list-style: none; margin: 0; padding: 0; }
+.vs-list li { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 1px solid var(--vs-border); }
+.vs-list li:last-child { border-bottom: 0; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 768px) {
+    .vs-title { font-size: 20px; line-height: 28px; }
+    .vs-filters > div { flex: 1 1 100%; }
+    .vs-filters__end { margin-inline-start: 0; }
+}
+
+/* ---------- document workspace additions (Engineering Documents) ---------- */
+/* technical identifiers (document numbers, revisions, codes) stay left-to-right and readable inside RTL text */
+.vs-num { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; direction: ltr; unicode-bidi: isolate; display: inline-block; font-variant-numeric: tabular-nums; }
+.vs-num--strong { font-weight: 700; color: var(--pems-text); }
+
+/* module sub-navigation: underline links instead of a row of buttons */
+.vs-subnav { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid var(--vs-border); margin-block-end: 12px; }
+.vs-subnav a { padding: 8px 12px; font-weight: 600; font-size: 13px; color: var(--vs-muted); text-decoration: none; border-bottom: 2px solid transparent; margin-block-end: -1px; }
+.vs-subnav a:hover { color: var(--vs-accent); }
+.vs-subnav a.active { color: var(--pems-text); border-bottom-color: var(--vs-accent); }
+.vs-subnav a:focus-visible, .vs-btn:focus-visible, .vs-icon-btn:focus-visible, .vs-page a:focus-visible, .vs-page button:focus-visible { outline: 2px solid var(--vs-accent); outline-offset: 2px; }
+
+/* single toolbar row: search + filter + primary actions */
+.vs-toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-block-end: 10px; }
+.vs-toolbar .pems-search-bar { flex: 1 1 280px; min-width: 200px; }
+.vs-toolbar__end { display: flex; gap: 8px; align-items: center; margin-inline-start: auto; }
+
+/* icon + text status pill (never colour alone) */
+.vs-pill--icon::before { display: none; }
+.vs-pill i { font-size: 11px; }
+
+/* register table: sticky header, compact rows, secondary line under the title */
+.vs-page .table-scroll-area thead th { position: sticky; top: 0; z-index: 2; }
+.vs-page .table-enterprise.vs-dense tbody td { padding-block: 5px; }
+.vs-sub { display: block; font-size: 11.5px; color: var(--vs-muted); line-height: 1.3; }
+.vs-title-cell { display: block; max-width: 46ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vs-row-actions { display: inline-flex; gap: 4px; align-items: center; justify-content: flex-end; }
+.vs-row-actions .dropdown-menu { font-size: 13px; }
+.vs-row-actions .dropdown-item.text-danger:hover { background: rgba(186, 26, 26, .08); }
+
+/* document header (detail workspace) */
+.vs-doc-head { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px 24px; padding-block-end: 12px; margin-block-end: 12px; border-bottom: 1px solid var(--vs-border); }
+.vs-doc-number { font-size: 22px; line-height: 28px; font-weight: 700; margin: 0; }
+.vs-doc-title { color: var(--pems-text); font-size: 14px; margin-block-start: 2px; overflow-wrap: anywhere; }
+.vs-doc-meta { color: var(--vs-muted); font-size: 12.5px; margin-block-start: 2px; }
+.vs-doc-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.vs-doc-actions .vs-sep { align-self: stretch; width: 1px; background: var(--vs-border); margin-inline: 4px; }
+
+/* revision awareness: current vs superseded */
+.vs-rev-current > td { background: color-mix(in srgb, var(--vs-accent) 9%, transparent) !important; }
+.vs-rev-superseded > td { color: var(--vs-muted); }
+.vs-pill--current { background: var(--vs-navy); color: #fff; }
+.vs-pill--current::before { background: #fff; }
+
+/* bulk-action bar (appears only while rows are selected) */
+.vs-bulkbar { display: none; align-items: center; gap: 12px; padding: 8px 16px; background: var(--vs-navy); color: #fff; border-radius: var(--vs-radius); margin-block-end: 8px; }
+.vs-bulkbar.is-active { display: flex; }
+.vs-bulkbar .vs-btn { background: transparent; color: #fff; border-color: rgba(255,255,255,.4); }
+.vs-bulkbar .vs-btn:hover { border-color: var(--vs-accent); color: var(--vs-accent); }
+
+/* flat sections instead of stacked cards */
+.vs-section { margin-block-end: 20px; }
+.vs-section__title { font-size: 15px; font-weight: 700; margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+.vs-section__title .bi { color: var(--vs-accent); }
+
+@media (prefers-reduced-motion: reduce) { .vs-page * { transition: none !important; animation: none !important; } }
+@media (max-width: 992px) { .vs-page .vs-hide-md { display: none; } }
+
+/* Dangerous secondary action: outlined red, visually separated from the dominant primary */
+.vs-btn--dangerline { color: var(--vs-danger, #b42318); border-color: currentColor; background: transparent; }
+.vs-btn--dangerline:hover { background: rgba(180, 35, 24, .08); color: var(--vs-danger, #b42318); }
+.vs-section > h6 { font-size: 14px; font-weight: 700; }
+.vs-section { margin-block-end: 16px; }
+.vs-page .tab-content > .tab-pane > .vs-section { padding-block-start: 8px; }
+/* .vs-num on a table cell must stay a real table-cell (inline-block breaks row borders) */
+td.vs-num, th.vs-num { display: table-cell; white-space: nowrap; }
+html[dir="rtl"] td.vs-num, html[dir="rtl"] th.vs-num { text-align: right; }
+
+/* =====================================================================================================
+   PEMS UNIFIED INDUSTRIAL LAYER (global - loaded by _Layout after admin.css for EVERY page)
+   One place that gives all legacy Bootstrap/PEMS components (cards, KPI, badges, buttons, tables,
+   forms, modals, tabs, focus) the same restrained industrial language. Token-based (--pems-*) so every
+   theme (light/dark/ocean/warm/midnight) keeps working. Rule: fix the shared component here, not per page.
+   ===================================================================================================== */
+.pems-content { padding: 16px 24px 32px; }
+
+/* Cards: sections, not decoration - flat, 8px, hairline border, no shadow/gradient/hover-lift */
+.content-card { border-radius: 8px; padding: 16px; box-shadow: none; }
+.kpi-card { background: var(--pems-surface); border-radius: 8px; padding: 12px 14px; box-shadow: none; gap: 12px; }
+.kpi-card:hover { transform: none; box-shadow: none; border-color: var(--pems-surface-border); }
+.kpi-link:hover .kpi-card { border-color: var(--pems-accent); }
+.kpi-icon { width: 36px; height: 36px; border-radius: 8px; font-size: 16px; }
+.kpi-value { font-size: 20px; line-height: 24px; }
+.kpi-label { font-size: 12px; }
+
+/* One primary colour: btn-pems-solid and Bootstrap btn-primary are the same brand button (flat) */
+.btn-pems-solid { background: var(--pems-accent-dark); border: 1px solid transparent; color: #fff; font-weight: 600; }
+.btn-pems-solid:hover, .btn-pems-solid:focus { background: var(--pems-accent-dark); color: #fff; opacity: .9; }
+.pems-content .btn-primary { --bs-btn-bg: var(--pems-accent-dark); --bs-btn-border-color: var(--pems-accent-dark); --bs-btn-hover-bg: var(--pems-accent-dark); --bs-btn-hover-border-color: var(--pems-accent-dark);
+    --bs-btn-active-bg: var(--pems-accent-dark); --bs-btn-active-border-color: var(--pems-accent-dark); --bs-btn-disabled-bg: var(--pems-accent-dark); --bs-btn-disabled-border-color: var(--pems-accent-dark); font-weight: 600; }
+.pems-content .btn-outline-primary { --bs-btn-color: var(--pems-text); --bs-btn-border-color: var(--pems-surface-border); --bs-btn-hover-bg: var(--pems-row-hover); --bs-btn-hover-color: var(--pems-text);
+    --bs-btn-hover-border-color: var(--pems-accent); --bs-btn-active-bg: var(--pems-row-hover); --bs-btn-active-color: var(--pems-text); --bs-btn-active-border-color: var(--pems-accent); }
+.pems-content .btn-outline-secondary { --bs-btn-color: var(--pems-text-muted); --bs-btn-border-color: var(--pems-surface-border); --bs-btn-hover-bg: var(--pems-row-hover); --bs-btn-hover-color: var(--pems-text); --bs-btn-hover-border-color: var(--pems-steel); }
+.pems-content .btn-sm { --bs-btn-padding-y: .22rem; --bs-btn-padding-x: .6rem; --bs-btn-font-size: .8rem; }
+
+/* Status badges: restrained pill, one vocabulary (matches .vs-pill). Bootstrap bg-* semantics are kept, only restyled.
+   pems-ui.js prepends an icon so a status is never colour-only. Counters (numeric) stay compact. */
+.pems-content .badge, .pems-content .badge[class*="badge-status-"] { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; letter-spacing: .02em; line-height: 14px; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.pems-content .badge.bg-success { background: #e6f4ea !important; color: #137333 !important; }
+.pems-content .badge.bg-danger { background: #ffdad6 !important; color: #93000a !important; }
+.pems-content .badge.bg-warning { background: #fff0d6 !important; color: #6e4100 !important; }
+.pems-content .badge.bg-info, .pems-content .badge.bg-primary { background: #d1e4ff !important; color: #00497c !important; }
+.pems-content .badge.bg-secondary, .pems-content .badge.bg-light, .pems-content .badge.bg-dark { background: #e3e8ef !important; color: #2c3a4d !important; }
+[data-theme="dark"] .pems-content .badge.bg-success, [data-theme="midnight"] .pems-content .badge.bg-success, [data-theme="turquoise"] .pems-content .badge.bg-success { background: #143d24 !important; color: #b8e6c6 !important; }
+[data-theme="dark"] .pems-content .badge.bg-danger, [data-theme="midnight"] .pems-content .badge.bg-danger, [data-theme="turquoise"] .pems-content .badge.bg-danger { background: #5a1d19 !important; color: #ffd0cb !important; }
+[data-theme="dark"] .pems-content .badge.bg-warning, [data-theme="midnight"] .pems-content .badge.bg-warning, [data-theme="turquoise"] .pems-content .badge.bg-warning { background: #4a3210 !important; color: #ffd9a3 !important; }
+[data-theme="dark"] .pems-content .badge.bg-info, [data-theme="midnight"] .pems-content .badge.bg-info, [data-theme="turquoise"] .pems-content .badge.bg-info,
+[data-theme="dark"] .pems-content .badge.bg-primary, [data-theme="midnight"] .pems-content .badge.bg-primary, [data-theme="turquoise"] .pems-content .badge.bg-primary { background: #12365a !important; color: #cfe4ff !important; }
+[data-theme="dark"] .pems-content .badge.bg-secondary, [data-theme="midnight"] .pems-content .badge.bg-secondary, [data-theme="turquoise"] .pems-content .badge.bg-secondary,
+[data-theme="dark"] .pems-content .badge.bg-light, [data-theme="midnight"] .pems-content .badge.bg-light, [data-theme="turquoise"] .pems-content .badge.bg-light,
+[data-theme="dark"] .pems-content .badge.bg-dark, [data-theme="midnight"] .pems-content .badge.bg-dark, [data-theme="turquoise"] .pems-content .badge.bg-dark { background: #2a3444 !important; color: #e4e9f0 !important; }
+.pems-content .badge .bi { font-size: 11px; }
+.nav-tabs .badge { font-size: 10.5px; padding: 2px 7px; }
+
+/* Tables: compact, tabular numerals, no wrapping action clusters */
+.table-enterprise td, .table-enterprise th { padding-top: .38rem; padding-bottom: .38rem; font-variant-numeric: tabular-nums; }
+.table-enterprise td.text-end .btn, .table-enterprise td:last-child .btn-sm { white-space: nowrap; }
+.table-enterprise td .btn-sm + .btn-sm, .table-enterprise td form + .btn-sm, .table-enterprise td .btn-sm + form { margin-inline-start: 4px; }
+
+/* Forms: compact, legible labels, brand focus ring */
+.form-label { font-size: 12.5px; font-weight: 600; color: var(--pems-text-muted); margin-bottom: .25rem; }
+.form-control, .form-select { font-size: 13.5px; padding: .38rem .65rem; border-color: var(--pems-surface-border); }
+.form-control:focus, .form-select:focus { border-color: var(--pems-accent); box-shadow: 0 0 0 3px rgba(217, 140, 43, .18); }
+.form-text { font-size: 11.5px; }
+
+/* Modals + tabs: one structure */
+.modal-content { border-radius: 8px; border: 1px solid var(--pems-surface-border); box-shadow: 0 12px 32px rgba(0, 0, 0, .18); }
+.modal-header { padding: 12px 16px; border-bottom: 1px solid var(--pems-surface-border); }
+.modal-title { font-size: 15px; font-weight: 700; }
+.modal-body { padding: 16px; }
+.modal-footer { padding: 10px 16px; border-top: 1px solid var(--pems-surface-border); }
+.nav-tabs .nav-link { font-size: 13px; padding: .5rem .85rem; }
+
+/* Accessibility: visible focus everywhere, reduced motion honoured */
+a:focus-visible, button:focus-visible, [role="button"]:focus-visible, .btn:focus-visible, summary:focus-visible { outline: 2px solid var(--pems-accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; scroll-behavior: auto !important; } }
+
+/* Shell: sidebar sub-headings must not leak into the collapsed icon rail (desktop hover-expand keeps working) */
+@media (min-width: 992px) {
+    .pems-sidebar .nav-subheading { max-height: 0; padding-top: 0; padding-bottom: 0; margin: 0; opacity: 0; overflow: hidden; white-space: nowrap; transition: max-height 200ms ease, opacity 150ms ease; }
+    .pems-sidebar:hover .nav-subheading, .pems-sidebar:focus-within .nav-subheading { max-height: 32px; padding-top: 6px; padding-bottom: 4px; opacity: 1; }
+}
+/* Shell: topbar must fit on narrow phones (no horizontal page scroll) */
+@media (max-width: 575.98px) {
+    .pems-topbar { padding-inline: 10px; gap: 6px; }
+    .pems-topbar > .d-flex.gap-3 { gap: .55rem !important; }
+    .pems-topbar .fs-5 { font-size: 1.05rem !important; }
+    .pems-content { padding: 12px 12px 24px; }
+}
+
+/* --- Layer 2 (site-wide audit findings) --- */
+/* text-bg-* badges share the same restrained tones as bg-* */
+.pems-content .badge.text-bg-success { background: #e6f4ea !important; color: #137333 !important; }
+.pems-content .badge.text-bg-danger { background: #ffdad6 !important; color: #93000a !important; }
+.pems-content .badge.text-bg-warning { background: #fff0d6 !important; color: #6e4100 !important; }
+.pems-content .badge.text-bg-info, .pems-content .badge.text-bg-primary { background: #d1e4ff !important; color: #00497c !important; }
+.pems-content .badge.text-bg-secondary, .pems-content .badge.text-bg-light, .pems-content .badge.text-bg-dark { background: #e3e8ef !important; color: #2c3a4d !important; }
+[data-theme="dark"] .pems-content .badge.text-bg-success, [data-theme="midnight"] .pems-content .badge.text-bg-success, [data-theme="turquoise"] .pems-content .badge.text-bg-success { background: #143d24 !important; color: #b8e6c6 !important; }
+[data-theme="dark"] .pems-content .badge.text-bg-danger, [data-theme="midnight"] .pems-content .badge.text-bg-danger, [data-theme="turquoise"] .pems-content .badge.text-bg-danger { background: #5a1d19 !important; color: #ffd0cb !important; }
+[data-theme="dark"] .pems-content .badge.text-bg-warning, [data-theme="midnight"] .pems-content .badge.text-bg-warning, [data-theme="turquoise"] .pems-content .badge.text-bg-warning { background: #4a3210 !important; color: #ffd9a3 !important; }
+[data-theme="dark"] .pems-content .badge.text-bg-info, [data-theme="midnight"] .pems-content .badge.text-bg-info, [data-theme="turquoise"] .pems-content .badge.text-bg-info,
+[data-theme="dark"] .pems-content .badge.text-bg-primary, [data-theme="midnight"] .pems-content .badge.text-bg-primary, [data-theme="turquoise"] .pems-content .badge.text-bg-primary { background: #12365a !important; color: #cfe4ff !important; }
+[data-theme="dark"] .pems-content .badge.text-bg-secondary, [data-theme="midnight"] .pems-content .badge.text-bg-secondary, [data-theme="turquoise"] .pems-content .badge.text-bg-secondary,
+[data-theme="dark"] .pems-content .badge.text-bg-light, [data-theme="midnight"] .pems-content .badge.text-bg-light, [data-theme="turquoise"] .pems-content .badge.text-bg-light,
+[data-theme="dark"] .pems-content .badge.text-bg-dark, [data-theme="midnight"] .pems-content .badge.text-bg-dark, [data-theme="turquoise"] .pems-content .badge.text-bg-dark { background: #2a3444 !important; color: #e4e9f0 !important; }
+
+/* Action hierarchy inside tables: row actions are quiet outline buttons, never a column of filled colour blocks */
+.pems-content td .btn-primary, .pems-content td .btn-success, .pems-content td .btn-warning, .pems-content td .btn-info, .pems-content td .btn-danger, .pems-content td .btn-pems-solid {
+    --bs-btn-bg: transparent; --bs-btn-hover-bg: var(--pems-row-hover); --bs-btn-active-bg: var(--pems-row-hover); --bs-btn-disabled-bg: transparent;
+    --bs-btn-color: var(--pems-text); --bs-btn-hover-color: var(--pems-text); --bs-btn-active-color: var(--pems-text);
+    --bs-btn-border-color: var(--pems-surface-border); --bs-btn-hover-border-color: var(--pems-steel); --bs-btn-active-border-color: var(--pems-steel);
+    background: transparent; color: var(--pems-text); border: 1px solid var(--pems-surface-border); font-weight: 500;
+}
+.pems-content td .btn-danger, .pems-content td .btn-outline-danger { color: #b3261e; --bs-btn-color: #b3261e; --bs-btn-hover-color: #b3261e; }
+.pems-content td .btn-danger:hover { border-color: #b3261e; }
+
+/* Media never forces page width */
+.pems-content canvas, .pems-content img, .pems-content svg, .pems-content video { max-width: 100%; }
+.pems-content pre { max-width: 100%; overflow-x: auto; }
+.pems-content .pems-wo-stages, .pems-content .pems-stage-scroll { overflow-x: auto; }
+/* toolbars on non-.vs-page views: compact fixed-width filters instead of full-width stacked selects */
+.vs-toolbar .form-select, .vs-toolbar .form-control:not([data-pems-search]) { width: auto; min-width: 130px; max-width: 200px; flex: 0 1 auto; }
+.vs-toolbar .pems-search-bar { flex: 1 1 260px; }
+.vs-toolbar .pems-search-bar .form-control { width: 100%; max-width: none; }
+
+/* Shell (tablet / phone < 992px): ONE sidebar implementation. The layout script toggles .pems-opened, but the legacy CSS keyed the
+   open state to margin-right (RTL) / .show (LTR), so in LTR the hamburger never revealed the menu. Direction-aware, transform based,
+   and the closed menu is removed from the tab order. */
+@media (max-width: 991.98px) {
+    .pems-sidebar { position: fixed; top: var(--topbar-height); bottom: 0; left: 0; right: auto; margin: 0 !important; width: var(--sidebar-width) !important;
+        transform: translateX(-105%); visibility: hidden; transition: transform .2s ease-in-out, visibility 0s linear .2s; z-index: 1050; overflow-y: auto; }
+    html[dir="rtl"] .pems-sidebar { left: auto; right: 0; transform: translateX(105%); }
+    .pems-sidebar.pems-opened, .pems-sidebar.show, html[dir="rtl"] .pems-sidebar.pems-opened, html[dir="rtl"] .pems-sidebar.show { transform: none; visibility: visible; transition: transform .2s ease-in-out, visibility 0s; box-shadow: 0 0 24px rgba(0, 0, 0, .3); }
+}
+
+/* Folder navigation (Correspondence): the selected folder is a quiet marker, not a second filled primary next to "Compose" */
+.pems-folder-link.active { background: var(--pems-row-hover); color: var(--pems-text); font-weight: 600; box-shadow: inset 3px 0 0 var(--pems-accent); }
+html[dir="rtl"] .pems-folder-link.active { box-shadow: inset -3px 0 0 var(--pems-accent); }
+
+/* Topbar: the three groups (brand | search | tools) share the row without overlapping at any width (the search box used to overlap the brand near 820px) */
+.pems-topbar > :first-child, .pems-topbar > :last-child { flex: 0 0 auto; }
+.pems-topbar .pems-search { flex: 1 1 0; min-width: 0; width: auto; margin-inline: 12px; }
+@media (max-width: 1199.98px) { .pems-topbar .pems-search { max-width: 240px; } }
+
+/* ------------------------------------------------------------------------------------------------------------------------------
+   Dropdown menus (shared; pairs with the Popper `strategy:'fixed'` default in pems-ui.js - see docs/design/PEMS_UI_ENGINEERING_STANDARD.md).
+   With `fixed` a menu is sized against the viewport instead of its narrow container, so (1) a wide menu (discipline filter: ~585px) could
+   be wider than a phone and (2) the Notifications menu (no width of its own) grew to ~583px and left the screen at 600-768px.
+   - every menu is capped to the viewport;
+   - the Notifications menu has a defined width;
+   - topbar menus below the tablet breakpoint open as a full-width sheet under the topbar (never partly off-screen, LTR and RTL). */
+.dropdown-menu { max-width: calc(100vw - 16px); }
+#notifDropdownBody { width: min(360px, calc(100vw - 16px)); }
+@media (max-width: 575.98px) { .dropdown-menu { overflow-x: auto; } }
+@media (max-width: 767.98px) {
+    .pems-topbar .dropdown-menu.show { position: fixed !important; top: var(--topbar-height, 56px) !important; left: 8px !important; right: 8px !important;
+        width: auto !important; max-width: none !important; transform: none !important; }
+}

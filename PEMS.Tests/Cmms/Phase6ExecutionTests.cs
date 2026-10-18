@@ -415,6 +415,90 @@ public class Phase6ExecutionTests
     }
 
     [Fact]
+    public async Task ReleaseGate_BlocksRelease_WhenOnlySomeIsolationPointsAreVerified()
+    {
+        // هم‌راستا با ExecutionGate («Isolation Verified» = همه‌ی نقاط): یک نقطه‌ی Verified در کنار نقطه‌ی Requested کافی نیست
+        var ctx = await SeedFullBaselineAsync(nameof(ReleaseGate_BlocksRelease_WhenOnlySomeIsolationPointsAreVerified));
+        var (_, _, _, _, workOrder) = await SeedGatedWorkOrderAsync(ctx, "3b", permitRequired: false, lotoRequired: true);
+        var permit = new Permit
+        {
+            PermitNumber = "PTW-2b", PermitType = "ColdWork", Title = "Cold Work", WorkOrderId = workOrder.WorkOrderId,
+            RequestedByEmployeeId = 1, Status = "Active", IsActive = true
+        };
+        ctx.Permits.Add(permit);
+        await ctx.SaveChangesAsync();
+        ctx.IsolationPoints.Add(new IsolationPoint { PermitId = permit.PermitId, EnergyType = "Electrical", Location = "MCC-1", Status = "Verified", IsActive = true });
+        ctx.IsolationPoints.Add(new IsolationPoint { PermitId = permit.PermitId, EnergyType = "Mechanical", Location = "V-12", Status = "Requested", IsActive = true });
+        await ctx.SaveChangesAsync();
+
+        var result = await new WorkOrderReleaseGateService(ctx).EvaluateAsync(workOrder.WorkOrderId);
+
+        Assert.False(result.CanRelease);
+        Assert.Contains(result.Reasons, r => r.Contains("1/2"));
+    }
+
+    [Fact]
+    public async Task ReleaseGate_IgnoresCancelledAndInactiveIsolationPoints_WhenRemainingAreVerified()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(ReleaseGate_IgnoresCancelledAndInactiveIsolationPoints_WhenRemainingAreVerified));
+        var (_, _, _, _, workOrder) = await SeedGatedWorkOrderAsync(ctx, "4b", permitRequired: false, lotoRequired: true);
+        var permit = new Permit
+        {
+            PermitNumber = "PTW-3b", PermitType = "ColdWork", Title = "Cold Work", WorkOrderId = workOrder.WorkOrderId,
+            RequestedByEmployeeId = 1, Status = "Active", IsActive = true
+        };
+        ctx.Permits.Add(permit);
+        await ctx.SaveChangesAsync();
+        ctx.IsolationPoints.Add(new IsolationPoint { PermitId = permit.PermitId, EnergyType = "Electrical", Location = "MCC-1", Status = "Verified", IsActive = true });
+        ctx.IsolationPoints.Add(new IsolationPoint { PermitId = permit.PermitId, EnergyType = "Mechanical", Location = "V-12", Status = "Cancelled", IsActive = true });
+        ctx.IsolationPoints.Add(new IsolationPoint { PermitId = permit.PermitId, EnergyType = "Process", Location = "V-13", Status = "Requested", IsActive = false });
+        await ctx.SaveChangesAsync();
+
+        var result = await new WorkOrderReleaseGateService(ctx).EvaluateAsync(workOrder.WorkOrderId);
+
+        Assert.True(result.CanRelease);
+    }
+
+    [Fact]
+    public async Task Lifecycle_LegacyCompletion_RequiresFailureMode_ForCorrectiveWorkOrder()
+    {
+        // ISO 14224: مسیر Legacy نباید ضعیف‌تر از مسیر حاکمیتی باشد
+        var ctx = await SeedFullBaselineAsync(nameof(Lifecycle_LegacyCompletion_RequiresFailureMode_ForCorrectiveWorkOrder));
+        var (_, _, _, _, workOrder) = await SeedGatedWorkOrderAsync(ctx, "iso", permitRequired: false, lotoRequired: false);
+        workOrder.WorkOrderType = "Corrective"; workOrder.Status = "InProgress";
+        await ctx.SaveChangesAsync();
+
+        var lifecycle = new WorkOrderLifecycleService(ctx, new WorkOrderReleaseGateService(ctx));
+        var (ok, error) = await lifecycle.AdvanceStatusAsync(workOrder.WorkOrderId, "Completed", null, null, null, null, null, null, null, null);
+
+        Assert.False(ok);
+        Assert.Contains("ISO 14224", error);
+        Assert.Equal("InProgress", ctx.WorkOrders.Single().Status);
+        Assert.Empty(ctx.MaintenanceHistories);
+
+        var (ok2, error2) = await lifecycle.AdvanceStatusAsync(workOrder.WorkOrderId, "Completed", null, null, null, null, "FTS", "WEAR", "bearing wear", 2m);
+        Assert.True(ok2, error2);
+        Assert.Equal("Completed", ctx.WorkOrders.Single().Status);
+        Assert.Single(ctx.FailureRecords);
+        Assert.Single(ctx.MaintenanceHistories);
+    }
+
+    [Fact]
+    public async Task Lifecycle_LegacyCompletion_DoesNotRequireFailureMode_ForPreventiveWorkOrder()
+    {
+        var ctx = await SeedFullBaselineAsync(nameof(Lifecycle_LegacyCompletion_DoesNotRequireFailureMode_ForPreventiveWorkOrder));
+        var (_, _, _, _, workOrder) = await SeedGatedWorkOrderAsync(ctx, "pm", permitRequired: false, lotoRequired: false);
+        workOrder.Status = "InProgress";
+        await ctx.SaveChangesAsync();
+
+        var lifecycle = new WorkOrderLifecycleService(ctx, new WorkOrderReleaseGateService(ctx));
+        var (ok, error) = await lifecycle.AdvanceStatusAsync(workOrder.WorkOrderId, "Completed", null, null, null, null, null, null, null, null);
+
+        Assert.True(ok, error);
+        Assert.Equal("Completed", ctx.WorkOrders.Single().Status);
+    }
+
+    [Fact]
     public async Task ReleaseGate_AllowsRelease_WhenLOTORequiredAndIsolationVerified()
     {
         var ctx = await SeedFullBaselineAsync(nameof(ReleaseGate_AllowsRelease_WhenLOTORequiredAndIsolationVerified));

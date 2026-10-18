@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.AssetDetailDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card mb-3">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
@@ -7,7 +10,7 @@
             <span class="text-muted small">@Model.EquipmentTagNumber - @Model.EquipmentName</span>
         </div>
         <div class="d-flex gap-2">
-            <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-box-arrow-up-right"></i> Equipment</a>
+            <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-box-arrow-up-right"></i> @Localizer["Equipment"]</a>
             <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back</a>
         </div>
     </div>
@@ -23,8 +26,8 @@
 }
 
 <div class="row g-3 mb-3">
-    <div class="col-md-3"><div class="content-card text-center"><div class="text-muted small">Status</div><div class="fs-5 fw-bold">@Model.Status</div></div></div>
-    <div class="col-md-3"><div class="content-card text-center"><div class="text-muted small">Criticality</div><div class="fs-5 fw-bold">@(Model.CriticalityClass ?? "-")</div></div></div>
+    <div class="col-md-3"><div class="content-card text-center"><div class="text-muted small">@Localizer["Status"]</div><div class="fs-5 fw-bold">@Model.Status</div></div></div>
+    <div class="col-md-3"><div class="content-card text-center"><div class="text-muted small">@Localizer["Criticality"]</div><div class="fs-5 fw-bold">@(Model.CriticalityClass ?? "-")</div></div></div>
     <div class="col-md-3"><div class="content-card text-center"><div class="text-muted small">Open Work Orders</div><div class="fs-5 fw-bold">@Model.WorkOrders.Count(w => w.Status != "Completed" && w.Status != "Closed")</div></div></div>
     <div class="col-md-3"><div class="content-card text-center"><div class="text-muted small">Total Cost</div><div class="fs-5 fw-bold">@Model.TotalCost.ToString("N0")</div></div></div>
 </div>
@@ -34,25 +37,25 @@
         <div class="content-card mb-3">
             <h6 class="mb-3">Asset Info</h6>
             <table class="table table-sm">
-                <tr><th class="text-muted" style="width:40%;">Manufacturer / Model</th><td>@Model.Manufacturer / @Model.Model</td></tr>
-                <tr><th class="text-muted">Functional Location</th><td>@(Model.FunctionalLocationBreadcrumb ?? "not linked")</td></tr>
-                <tr><th class="text-muted">Functional Location (raw text, legacy)</th><td>@(Model.FunctionalLocation ?? "N/A")</td></tr>
-                <tr><th class="text-muted">Maintenance Class</th><td>@(Model.MaintenanceClass ?? "N/A")</td></tr>
-                <tr><th class="text-muted">Commissioning Date</th><td>@(Model.CommissioningDate?.ToString("yyyy-MM-dd") ?? "N/A")</td></tr>
-                <tr><th class="text-muted">Risk Level</th><td>@(Model.RiskLevel ?? "N/A")</td></tr>
-                <tr><th class="text-muted">Description</th><td>@(Model.Description ?? "N/A")</td></tr>
+                <tr><th class="text-muted" style="width:40%;">@Localizer["Manufacturer / Model"]</th><td>@Model.Manufacturer / @Model.Model</td></tr>
+                <tr><th class="text-muted">@Localizer["Functional Location"]</th><td>@(Model.FunctionalLocationBreadcrumb ?? "not linked")</td></tr>
+                <tr><th class="text-muted">@Localizer["Functional Location (raw text, legacy)"]</th><td>@(Model.FunctionalLocation ?? "N/A")</td></tr>
+                <tr><th class="text-muted">@Localizer["Maintenance Class"]</th><td>@(Model.MaintenanceClass ?? "N/A")</td></tr>
+                <tr><th class="text-muted">@Localizer["Commissioning Date"]</th><td>@(Model.CommissioningDate?.ToString("yyyy-MM-dd") ?? "N/A")</td></tr>
+                <tr><th class="text-muted">@Localizer["Risk Level"]</th><td>@(Model.RiskLevel ?? "N/A")</td></tr>
+                <tr><th class="text-muted">@Localizer["Description"]</th><td>@(Model.Description ?? "N/A")</td></tr>
             </table>
-            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editAssetModal"><i class="bi bi-pencil"></i> Edit</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editAssetModal"><i class="bi bi-pencil"></i> @Localizer["Edit"]</button>
         </div>
 
         <div class="content-card">
-            <h6 class="mb-3">Latest Maintenance</h6>
+            <h6 class="mb-3">@Localizer["Latest Maintenance"]</h6>
             @if (Model.LatestMaintenance != null)
             {
                 <table class="table table-sm">
-                    <tr><th class="text-muted" style="width:40%;">Execution Date</th><td>@Model.LatestMaintenance.ExecutionDate.ToString("yyyy-MM-dd")</td></tr>
-                    <tr><th class="text-muted">Action Taken</th><td>@(Model.LatestMaintenance.ActionTaken ?? "N/A")</td></tr>
-                    <tr><th class="text-muted">Technician</th><td>@(Model.LatestMaintenance.Technician ?? "N/A")</td></tr>
+                    <tr><th class="text-muted" style="width:40%;">@Localizer["Execution Date"]</th><td>@Model.LatestMaintenance.ExecutionDate.ToString("yyyy-MM-dd")</td></tr>
+                    <tr><th class="text-muted">@Localizer["Action Taken"]</th><td>@(Model.LatestMaintenance.ActionTaken ?? "N/A")</td></tr>
+                    <tr><th class="text-muted">@Localizer["Technician"]</th><td>@(Model.LatestMaintenance.Technician ?? "N/A")</td></tr>
                     <tr><th class="text-muted">Duration (h)</th><td>@(Model.LatestMaintenance.DurationHours?.ToString("N1") ?? "N/A")</td></tr>
                 </table>
             }
@@ -69,7 +72,7 @@
             @if (Model.WorkOrders.Any())
             {
                 <table class="table table-sm">
-                    <thead><tr><th>No.</th><th>Description</th><th>Status</th><th>Created</th></tr></thead>
+                    <thead><tr><th>No.</th><th>@Localizer["Description"]</th><th>@Localizer["Status"]</th><th>@Localizer["Created"]</th></tr></thead>
                     <tbody>
                         @foreach (var w in Model.WorkOrders.Take(10))
                         {
@@ -85,7 +88,7 @@
             }
             else
             {
-                <p class="text-muted small mb-0">No work orders yet.</p>
+                <p class="text-muted small mb-0">@Localizer["No work orders yet."]</p>
             }
         </div>
 
@@ -94,7 +97,7 @@
             @if (Model.Inspections.Any())
             {
                 <table class="table table-sm">
-                    <thead><tr><th>Type</th><th>Date</th><th>Inspector</th><th>Result</th></tr></thead>
+                    <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Date"]</th><th>@Localizer["Inspector"]</th><th>@Localizer["Result"]</th></tr></thead>
                     <tbody>
                         @foreach (var i in Model.Inspections.Take(10))
                         {
@@ -119,7 +122,7 @@
             @if (Model.Failures.Any())
             {
                 <table class="table table-sm">
-                    <thead><tr><th>Date</th><th>Mode</th><th>Cause</th><th>Downtime (h)</th></tr></thead>
+                    <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Mode"]</th><th>@Localizer["Cause"]</th><th>Downtime (h)</th></tr></thead>
                     <tbody>
                         @foreach (var f in Model.Failures.Take(10))
                         {
@@ -149,14 +152,14 @@
                 <div class="modal-header"><h6 class="modal-title">Edit Asset</h6></div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Asset Number</label>
+                        <label class="form-label">@Localizer["Asset Number"]</label>
                         <input name="assetNumber" class="form-control" value="@Model.AssetNumber" required />
                     </div>
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">Functional Location</label>
+                            <label class="form-label">@Localizer["Functional Location"]</label>
                             <select name="functionalLocationId" class="form-select">
-                                <option value="">-- not linked --</option>
+                                <option value="">@Localizer["-- not linked --"]</option>
                                 @foreach (var fl in (List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations)
                                 {
                                     <option value="@fl.FunctionalLocationId" selected="@(fl.FunctionalLocationId == Model.FunctionalLocationId)">@fl.PathBreadcrumb</option>
@@ -164,21 +167,21 @@
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Maintenance Class</label>
+                            <label class="form-label">@Localizer["Maintenance Class"]</label>
                             <input name="maintenanceClass" class="form-control" value="@Model.MaintenanceClass" />
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Functional Location (raw text, legacy)</label>
+                        <label class="form-label">@Localizer["Functional Location (raw text, legacy)"]</label>
                         <input name="functionalLocation" class="form-control" value="@Model.FunctionalLocation" />
                     </div>
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">Commissioning Date</label>
+                            <label class="form-label">@Localizer["Commissioning Date"]</label>
                             <input name="commissioningDate" type="date" class="form-control" value="@Model.CommissioningDate?.ToString("yyyy-MM-dd")" />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Status</label>
+                            <label class="form-label">@Localizer["Status"]</label>
                             <select name="status" class="form-select">
                                 @foreach (var s in new[] { "Active", "Standby", "Retired" })
                                 {
@@ -188,13 +191,13 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
+                        <label class="form-label">@Localizer["Description"]</label>
                         <textarea name="description" class="form-control" rows="2">@Model.Description</textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-pems-solid">Save</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
                 </div>
             </form>
         </div>

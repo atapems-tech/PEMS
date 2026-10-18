@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.HelpArticleAdminEditDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var categories = (IEnumerable<dynamic>)ViewBag.Categories;
     var allArticles = (IEnumerable<dynamic>)ViewBag.AllArticlesForRelated;
@@ -32,13 +35,13 @@
         </select>
     </div>
     <div class="col-md-3">
-        <label class="form-label">Article Type</label>
+        <label class="form-label">@Localizer["Article Type"]</label>
         <select asp-for="ArticleType" class="form-select">
             @foreach (var t in articleTypes) { <option value="@t">@t</option> }
         </select>
     </div>
     <div class="col-md-3">
-        <label class="form-label">Display Order</label>
+        <label class="form-label">@Localizer["Display Order"]</label>
         <input asp-for="DisplayOrder" type="number" class="form-control" />
     </div>
 
@@ -55,7 +58,7 @@
     <div class="col-12">
         <div class="form-check">
             <input asp-for="IsPublished" type="checkbox" class="form-check-input" />
-            <label asp-for="IsPublished" class="form-check-label">Published (visible to all users)</label>
+            <label asp-for="IsPublished" class="form-check-label">@Localizer["Published (visible to all users)"]</label>
         </div>
     </div>
 
@@ -63,8 +66,8 @@
 
     <div class="col-12">
         <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-en" type="button">English</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-fa" type="button">فارسی</button></li>
+            <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-en" type="button">@Localizer["English"]</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-fa" type="button">@Localizer["فارسی"]</button></li>
         </ul>
         <div class="tab-content border border-top-0 p-3">
             <div class="tab-pane fade show active" id="tab-en">
@@ -82,7 +85,7 @@
                     <div class="form-text">Basic HTML (headings, paragraphs, lists, tables, links) - sanitized automatically on save.</div>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Search Keywords (EN)</label>
+                    <label class="form-label">@Localizer["Search Keywords (EN)"]</label>
                     <input asp-for="SearchKeywordsEn" class="form-control" />
                 </div>
             </div>
@@ -100,7 +103,7 @@
                     <textarea asp-for="ContentFa" class="form-control" rows="10" required></textarea>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">کلیدواژه‌های جستجو (فارسی)</label>
+                    <label class="form-label">@Localizer["کلیدواژه‌های جستجو (فارسی)"]</label>
                     <input asp-for="SearchKeywordsFa" class="form-control" />
                 </div>
             </div>

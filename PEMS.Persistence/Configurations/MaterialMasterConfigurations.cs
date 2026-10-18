@@ -46,7 +46,17 @@ public class MaterialItemConfiguration : IEntityTypeConfiguration<MaterialItem>
         builder.HasKey(x => x.MaterialItemId);
 
         builder.Property(x => x.MaterialCode).HasMaxLength(100).IsRequired();
-        builder.Property(x => x.Description).HasMaxLength(500).IsRequired();
+
+        // طبق ممیزی «MaterialItems.Description String-Length Integrity»: سقف ۵۰۰ کاراکتری قبلی نه
+        // در هیچ Migration/کامنت/Validation Attribute ای مستند بود و نه یک قاعده‌ی کسب‌وکار واقعی
+        // داشت - همون Migration اولیه (MaterialMaster) که آن را ساخته، دقیقاً همان لحظه Description
+        // را روی MaterialCategory و MaterialUOM بدون سقف (nvarchar(max)) گذاشته بود. داده‌ی واقعی
+        // MRS (۱۱٬۸۳۰ ردیف Stage شده) نشان داد شرح‌های واقعی مهندسی (به‌خصوص کابل/ابزار دقیق دوزبانه)
+        // به ۵۴۰ کاراکتر هم می‌رسند و رشد می‌کنند - نه یک مقدار پرت اشتباه. پس به‌جای انتخاب یک عدد
+        // ثابت دلبخواهی دیگر (۱۰۰۰? ۲۰۰۰?)، Description مثل بقیه‌ی فیلدهای متنی آزاد همین Entity
+        // (Specification, Model, Manufacturer, LongDescription, MaterialGrade, Size) بدون سقف
+        // (nvarchar(max)) می‌شود - هماهنگ با الگوی از پیش موجود همین جدول، نه یک استثنا.
+        builder.Property(x => x.Description).IsRequired();
 
         builder.HasIndex(x => x.MaterialCode).IsUnique();
 

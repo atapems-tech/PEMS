@@ -15,4 +15,5 @@ public class ContractDto
     public DateTime? EndDate { get; set; }
     public string Status { get; set; } = "";
     public int PurchaseOrdersCount { get; set; }
+    public bool RequiresInspection { get; set; }
 }

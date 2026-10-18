@@ -77,10 +77,10 @@ public static class EngineeringDocumentWorkflowSeeder
     // ==============================================================================
     private static async Task SeedVersion2Async(PEMSDbContext db, WorkflowDefinition definition)
     {
-        var nextVersionNumber = 1 + await db.WorkflowVersions
-            .Where(v => v.WorkflowDefinitionId == definition.WorkflowDefinitionId)
-            .Select(v => (int?)v.VersionNumber)
-            .MaxAsync() ?? 1;
+        // این نسخه همیشه «نسخه‌ی ۲» است (همان عددی که SeedAsync برای Idempotency بررسی می‌کند). قبلاً با «1 + Max ?? 1» روی دیتابیس
+        // خالی شماره‌ی ۱ می‌گرفت و چون شرط hasIdcVersion (== 2) هرگز برقرار نمی‌شد، در هر بار اجرا یک نسخه‌ی Published جدید اضافه می‌شد
+        // (فقط روی نصب تازه/دیتابیس خالی؛ PEMSDB موجود که نسخه‌ی ۲ دارد تغییری نمی‌کند).
+        const int nextVersionNumber = 2;
 
         var version = new WorkflowVersion
         {

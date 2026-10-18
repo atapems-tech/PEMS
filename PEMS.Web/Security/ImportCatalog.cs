@@ -35,6 +35,7 @@ public static class ImportCatalog
 
     /// <param name="Key">شناسه‌ی پایدار (Localization: IC_{Key}_Title / _Desc / _Flow / _Hint).</param>
     /// <param name="Controller">Controller موجود؛ مسیر و Action تغییر نکرده‌اند.</param>
+    /// <param name="Area">Area صاحب Controller ("" = بدون Area؛ مثلاً MRS Import در Warehouse است).</param>
     /// <param name="Action">Page: Action صفحه‌ی Import (Index). Dialog: Action POST موجود (Import) که فرم مرکز Import به آن Post می‌کند.</param>
     /// <param name="FileTypes">فرمت‌های واقعیِ پذیرفته‌شده (نمایشی).</param>
     /// <param name="Accept">attribute accept فرم Dialog (فقط Mode=Dialog).</param>
@@ -43,7 +44,7 @@ public static class ImportCatalog
     public sealed record ImportEntry(
         string Key, string Category, string Controller, string Action, LaunchMode Mode,
         string FileTypes, string? Accept, bool Staged, string WorkflowType, string? PermissionModule,
-        IReadOnlyList<string[]> RequiredRoleSets, string Icon);
+        IReadOnlyList<string[]> RequiredRoleSets, string Icon, string Area = "");
 
     private static string[][] Sets(params string[][] s) => s;
 
@@ -65,6 +66,9 @@ public static class ImportCatalog
             Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-signpost-split"),
         new("MaintenanceHistory", Category.Cmms, "MaintenanceHistoryImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "MaintenanceHistoryImport",
             Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-clock-history"),
+        // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۹
+        new("ConditionReading", Category.Cmms, "ConditionReadingImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "ConditionReadingImport",
+            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-graph-up-arrow"),
         // Direct import (no staging): the existing POST Instrument/Import, launched from the Import Center dialog.
         // The controller has no module permission - it enforces the same role gate as this card (ImportCatalog.CanUse).
         new("Instrument", Category.Cmms, "Instrument", "Import", LaunchMode.Dialog, ".xlsx", ".xlsx", false, Workflow.Direct, null,
@@ -72,7 +76,7 @@ public static class ImportCatalog
 
         // ---- Inventory
         new("Mrs", Category.Inventory, "MrsImport", "Index", LaunchMode.Page, ".xlsx, .xlsm", null, true, Workflow.StagedReview, "MrsImport",
-            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-file-earmark-excel"),
+            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-file-earmark-excel", "Warehouse"),
 
         // ---- Organization: direct imports (existing POST Department/Import, Employee/Import); controllers carry
         // [Authorize(Roles=SystemAdmin,EngineeringManager)], the card keeps the narrower legacy sidebar exposure (SystemAdmin).
@@ -80,6 +84,10 @@ public static class ImportCatalog
             Sets(MenuAccess.Administration), "bi-building"),
         new("Employee", Category.Organization, "Employee", "Import", LaunchMode.Dialog, ".xlsx", ".xlsx", false, Workflow.Direct, null,
             Sets(MenuAccess.Administration), "bi-people"),
+        // Organization hierarchy (Positions / ParentPosition / holders / effective dates): validate-then-commit, all-or-nothing.
+        // The controller is [Authorize(SystemAdmin)] and also enforces this card's role gate.
+        new("OrganizationStructure", Category.Organization, "OrganizationImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, null,
+            Sets(MenuAccess.Administration), "bi-diagram-3", "Admin"),
 
         // ---- AI intake: multi-file upload into the AI pipeline (page Index + POST Upload); same role gate enforced in the controller.
         new("DocumentUpload", Category.Ai, "DocumentUpload", "Index", LaunchMode.Page, ".pdf, .docx, .xlsx, images", null, false, Workflow.Intake, null,

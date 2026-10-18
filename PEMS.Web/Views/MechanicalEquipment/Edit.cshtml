@@ -1,0 +1,59 @@
+@model PEMS.Domain.Entities.MechanicalEquipment
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = "Edit Mechanical Equipment";
+}
+
+<div class="content-card">
+    <h5 class="mb-3">@Model.TagNumber</h5>
+    <form asp-action="Edit" method="post">
+        <input type="hidden" name="mechanicalEquipmentId" value="@Model.MechanicalEquipmentId" />
+
+        <h6 class="text-muted mb-2">@Localizer["General"]</h6>
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <label class="form-label">@Localizer["Equipment Type"]</label>
+                <input name="EquipmentType" value="@Model.EquipmentType" class="form-control" required />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">@Localizer["Manufacturer"]</label>
+                <input name="Manufacturer" value="@Model.Manufacturer" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">@Localizer["Model"]</label>
+                <input name="Model" value="@Model.Model" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">@Localizer["Material"]</label>
+                <input name="Material" value="@Model.Material" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">@Localizer["Design Pressure"]</label>
+                <input type="number" step="any" name="DesignPressure" value="@Model.DesignPressure" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">@Localizer["Design Temperature"]</label>
+                <input type="number" step="any" name="DesignTemperature" value="@Model.DesignTemperature" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">@Localizer["Operating Pressure"]</label>
+                <input type="number" step="any" name="OperatingPressure" value="@Model.OperatingPressure" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">@Localizer["Operating Temperature"]</label>
+                <input type="number" step="any" name="OperatingTemperature" value="@Model.OperatingTemperature" class="form-control" />
+            </div>
+            <div class="col-12">
+                <label class="form-label">@Localizer["توضیحات (اختیاری)"]</label>
+                <textarea name="Description" class="form-control" rows="2">@Model.Description</textarea>
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-pems-solid"><i class="bi bi-save"></i> @Localizer["ذخیره"]</button>
+            <a asp-action="Passport" asp-route-id="@Model.MechanicalEquipmentId" class="btn btn-outline-secondary">@Localizer["انصراف"]</a>
+        </div>
+    </form>
+</div>

@@ -1,14 +1,16 @@
 @model List<PEMS.Application.DTOs.EquipmentFunctionalLocationAssignmentBatchSummaryDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-signpost-split"></i> Equipment ↔ Functional Location Assignment</h5>
-    <a asp-controller="Equipment" asp-action="Index" class="btn btn-outline-secondary btn-sm">← Equipment</a>
+<div class="d-flex justify-content-end align-items-center mb-2">
+    <a asp-controller="Equipment" asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["← Equipment"]</a>
 </div>
 
 <div class="content-card mb-3">
     <p class="text-muted small">
-        Upload an Excel file with <strong>Equipment Tag</strong> / <strong>Functional Location Code</strong>
-        columns (optional <strong>Plant</strong>/<strong>Area</strong>/<strong>Unit</strong> columns are used
+        Upload an Excel file with <strong>@Localizer["Equipment Tag"]</strong> / <strong>Functional Location Code</strong>
+        columns (optional <strong>@Localizer["Plant"]</strong>/<strong>@Localizer["Area"]</strong>/<strong>@Localizer["Unit"]</strong> columns are used
         only to cross-check the resolved Functional Location). Only exact Tag/Code matches are resolved -
         nothing is written to the live Equipment table until you review the proposed assignments and click
         Commit. Equipment that already has a different Functional Location is never silently overwritten -
@@ -20,7 +22,7 @@
             <input type="file" name="file" class="form-control" accept=".xlsx" required />
         </div>
         <div class="col-md-4">
-            <button type="submit" class="btn btn-pems-solid w-100"><i class="bi bi-cloud-upload"></i> Upload</button>
+            <button type="submit" class="btn btn-pems-solid w-100"><i class="bi bi-cloud-upload"></i> @Localizer["Upload"]</button>
         </div>
     </form>
 </div>
@@ -31,10 +33,10 @@
     <table class="table table-enterprise">
         <thead>
             <tr>
-                <th>File</th><th>Date</th><th>Imported By</th><th class="text-end">Total</th>
-                <th class="text-end">Exact</th><th class="text-end">Already Assigned</th>
-                <th class="text-end">Unresolved</th><th class="text-end">Conflicts</th>
-                <th>Status</th><th></th>
+                <th>@Localizer["File"]</th><th>@Localizer["Date"]</th><th>@Localizer["Imported By"]</th><th class="text-end">@Localizer["Total"]</th>
+                <th class="text-end">@Localizer["Exact"]</th><th class="text-end">Already Assigned</th>
+                <th class="text-end">@Localizer["Unresolved"]</th><th class="text-end">@Localizer["Conflicts"]</th>
+                <th>@Localizer["Status"]</th><th></th>
             </tr>
         </thead>
         <tbody>

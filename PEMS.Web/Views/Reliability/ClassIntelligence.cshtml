@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.ClassIntelligenceProfileDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     string StatusBadge(string status) => status switch
     {
@@ -41,7 +44,7 @@
     <div class="col-md-3">
         <div class="content-card h-100 text-center">
             <div class="fs-4 fw-bold">@Model.FailureCount</div>
-            <div class="text-muted small">Total Failures</div>
+            <div class="text-muted small">@Localizer["Total Failures"]</div>
         </div>
     </div>
 </div>

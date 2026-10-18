@@ -1,4 +1,7 @@
 ﻿@model PEMS.Application.DTOs.MeetingDetailDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var m = Model.Meeting;
     var employees = (IEnumerable<dynamic>)ViewBag.Employees;
@@ -15,7 +18,7 @@
     </div>
     <div class="row g-3 mt-2">
         <div class="col-md-4"><strong>Organizer:</strong> @m.OrganizerName</div>
-        <div class="col-md-4"><strong>Project:</strong> @m.ProjectName</div>
+        <div class="col-md-4"><strong>@Localizer["Project:"]</strong> @m.ProjectName</div>
     </div>
     @if (!string.IsNullOrEmpty(Model.Agenda))
     {
@@ -39,10 +42,10 @@
 </div>
 
 <div class="content-card mb-3">
-    <h6 class="mb-3">Attendees</h6>
+    <h6 class="mb-3">@Localizer["Attendees"]</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
     <table class="table table-enterprise">
-        <thead><tr><th>Name</th><th>Required</th><th>Attended</th></tr></thead>
+        <thead><tr><th>@Localizer["Name"]</th><th>Required</th><th>Attended</th></tr></thead>
         <tbody>
             @foreach (var a in Model.Attendees)
             {
@@ -70,20 +73,20 @@
         <input type="hidden" name="meetingId" value="@m.MeetingId" />
         <div class="col-md-5">
             <select name="employeeId" class="form-select form-select-sm">
-                <option value="">-- Employee --</option>
+                <option value="">@Localizer["-- Employee --"]</option>
                 @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Name</option> }
             </select>
         </div>
         <div class="col-md-4"><input name="externalName" class="form-control form-control-sm" placeholder="or external name" /></div>
-        <div class="col-md-3"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> Add</button></div>
+        <div class="col-md-3"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</button></div>
     </form>
 </div>
 
 <div class="content-card">
-    <h6 class="mb-3">Action Items</h6>
+    <h6 class="mb-3">@Localizer["Action Items"]</h6>
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
     <table class="table table-enterprise">
-        <thead><tr><th>Title</th><th>Assigned To</th><th>Due</th><th>Status</th></tr></thead>
+        <thead><tr><th>@Localizer["Title"]</th><th>@Localizer["Assigned To"]</th><th>@Localizer["Due"]</th><th>@Localizer["Status"]</th></tr></thead>
         <tbody>
             @foreach (var t in Model.ActionItems)
             {
@@ -104,7 +107,7 @@
         <div class="col-md-5"><input name="title" class="form-control form-control-sm" placeholder="Action item" required /></div>
         <div class="col-md-4">
             <select name="assignedToEmployeeId" class="form-select form-select-sm">
-                <option value="">-- Assign to --</option>
+                <option value="">@Localizer["-- Assign to --"]</option>
                 @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Name</option> }
             </select>
         </div>

@@ -13,6 +13,9 @@ public class MaterialReservationConfiguration : IEntityTypeConfiguration<Materia
 
         builder.Property(x => x.Status).HasMaxLength(30).IsRequired();
         builder.Property(x => x.Quantity).HasColumnType("decimal(18,3)");
+        builder.Property(x => x.IssuedQuantity).HasColumnType("decimal(18,3)");
+        builder.HasOne(x => x.StoreRequisitionLine).WithMany().HasForeignKey(x => x.StoreRequisitionLineId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasIndex(x => x.StoreRequisitionLineId);
 
         builder.HasOne(x => x.MaterialItem).WithMany().HasForeignKey(x => x.MaterialItemId).OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(x => x.Warehouse).WithMany().HasForeignKey(x => x.WarehouseId).OnDelete(DeleteBehavior.Restrict);
@@ -70,6 +73,8 @@ public class StoreRequisitionStatusHistoryConfiguration : IEntityTypeConfigurati
 
         builder.Property(x => x.FromStatus).HasMaxLength(30).IsRequired();
         builder.Property(x => x.ToStatus).HasMaxLength(30).IsRequired();
+        builder.Property(x => x.RequestKey).HasMaxLength(64);
+        builder.HasIndex(x => new { x.StoreRequisitionId, x.RequestKey }).IsUnique().HasFilter("[RequestKey] IS NOT NULL");
 
         builder.HasOne(x => x.StoreRequisition).WithMany().HasForeignKey(x => x.StoreRequisitionId).OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(x => x.ChangedBy).WithMany().HasForeignKey(x => x.ChangedById).OnDelete(DeleteBehavior.Restrict);

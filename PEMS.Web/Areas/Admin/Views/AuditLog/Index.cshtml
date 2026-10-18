@@ -11,17 +11,17 @@
 
 <div class="admin-page-shell">
     <div class="admin-hero">
-        <div class="d-flex align-items-center gap-3"><div class="admin-hero-icon"><i class="bi bi-clock-history"></i></div><div><h2>Audit Log</h2><p>Trace administrative changes with user, entity, action and timestamp context.</p></div></div>
+        <div class="d-flex align-items-center gap-3"><div><p>Trace administrative changes with user, entity, action and timestamp context.</p></div></div>
     </div>
     <div class="content-card">
         <form method="get" class="admin-toolbar">
             <div class="admin-toolbar-main">
-                <div><label class="form-label small mb-1">Entity</label><select name="entityName" class="form-select form-select-sm"><option value="">All entities</option>@foreach(var e in entityNames){<option value="@e" selected="@(e == (string?)ViewBag.SelectedEntityName)">@e</option>}</select></div>
-                <div><label class="form-label small mb-1">User</label><input type="search" name="userName" value="@ViewBag.SelectedUserName" class="form-control form-control-sm" placeholder="Username" /></div>
+                <div><label class="form-label small mb-1">@Localizer["Entity"]</label><select name="entityName" class="form-select form-select-sm"><option value="">@Localizer["All entities"]</option>@foreach(var e in entityNames){<option value="@e" selected="@(e == (string?)ViewBag.SelectedEntityName)">@e</option>}</select></div>
+                <div><label class="form-label small mb-1">@Localizer["User"]</label><input type="search" name="userName" value="@ViewBag.SelectedUserName" class="form-control form-control-sm" placeholder="@Localizer["Username"]" /></div>
             </div>
             <div class="admin-toolbar-actions">
-                <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-funnel me-1"></i> Apply filters</button>
-                <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Reset</a>
+                <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-funnel me-1"></i> @Localizer["Apply filters"]</button>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Reset"]</a>
                 <button type="button" class="btn btn-outline-secondary btn-sm" onclick="PemsDataGrid.resetColumns('AuditLogs')"><i class="bi bi-arrow-counterclockwise"></i> @Localizer["ResetColumns"]</button>
             </div>
         </form>
@@ -29,12 +29,12 @@
             <table class="table table-enterprise pems-grid-table" data-grid-key="AuditLogs">
                 <thead>
                     <tr>
-                        <th data-col-key="time" data-resizable="true" data-min-width="130" data-max-width="220" style="width:160px">Time</th>
-                        <th data-col-key="user" data-resizable="true" data-min-width="90" data-max-width="200" style="width:130px">User</th>
-                        <th data-col-key="entity" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">Entity</th>
+                        <th data-col-key="time" data-resizable="true" data-min-width="130" data-max-width="220" style="width:160px">@Localizer["Time"]</th>
+                        <th data-col-key="user" data-resizable="true" data-min-width="90" data-max-width="200" style="width:130px">@Localizer["User"]</th>
+                        <th data-col-key="entity" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["Entity"]</th>
                         <th data-col-key="key" data-resizable="true" data-min-width="80" data-max-width="200" style="width:120px">Key</th>
-                        <th data-col-key="action" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">Action</th>
-                        <th data-col-key="changedFields" data-resizable="true" data-min-width="180" data-max-width="500" style="width:400px">Changed Fields</th>
+                        <th data-col-key="action" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Action"]</th>
+                        <th data-col-key="changedFields" data-resizable="true" data-min-width="180" data-max-width="500" style="width:400px">@Localizer["Changed Fields"]</th>
                     </tr>
                 </thead>
                 <tbody>

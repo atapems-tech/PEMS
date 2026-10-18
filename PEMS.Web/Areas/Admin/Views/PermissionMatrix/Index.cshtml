@@ -1,4 +1,7 @@
 ﻿@model List<PEMS.Application.DTOs.RolePermissionDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var roles = (string[])ViewBag.Roles;
     var modules = (string[])ViewBag.Modules;
@@ -7,21 +10,28 @@
 <div class="admin-page-shell">
     <div class="admin-hero">
         <div class="d-flex align-items-center gap-3">
-            <div class="admin-hero-icon"><i class="bi bi-sliders2-vertical"></i></div>
-            <div><h2>Permission Matrix</h2><p>Configure module-level permissions. Changes are saved per role and module.</p></div>
+            <div><p>Configure module-level permissions. Changes are saved per role and module.</p></div>
         </div>
     </div>
     <div class="content-card">
         <div class="permission-intro"><i class="bi bi-info-circle me-1"></i> <strong>SystemAdmin</strong> has full access and is intentionally excluded. All other roles follow deny-by-default when no permission record exists.</div>
+        <div class="permission-role-jump mb-3">
+            @foreach (var role in roles.Where(r => r != "SystemAdmin"))
+            {
+                var count = Model.Count(x => x.RoleName == role && (x.CanView || x.CanCreate || x.CanEdit || x.CanDelete || x.CanApprove || x.CanManualNumber || x.CanFreeze || x.CanUnfreeze || x.CanHold || x.CanReleaseHold));
+                <a href="#role-@role" class="badge text-decoration-none @(count == 0 ? "text-bg-secondary" : "text-bg-light border")">@role <span class="opacity-75">(@count)</span></a>
+            }
+        </div>
         @foreach (var role in roles.Where(r => r != "SystemAdmin"))
         {
-            <div class="permission-role">
-                <div class="permission-role-title"><span><i class="bi bi-person-badge me-1"></i>@role</span><span class="text-body-secondary small">@modules.Length modules</span></div>
+            var configuredCount = Model.Count(x => x.RoleName == role && (x.CanView || x.CanCreate || x.CanEdit || x.CanDelete || x.CanApprove || x.CanManualNumber || x.CanFreeze || x.CanUnfreeze || x.CanHold || x.CanReleaseHold));
+            <details class="permission-role" id="role-@role" open>
+                <summary class="permission-role-title"><span><i class="bi bi-person-badge me-1"></i>@role</span><span class="text-body-secondary small">@(configuredCount == 0 ? Localizer["No permissions configured"] : $"{configuredCount}/{modules.Length} " + Localizer["modules configured"])</span></summary>
                 <form asp-action="SetRole" method="post">
                     <input type="hidden" name="roleName" value="@role" />
                     <div class="permission-grid">
                         <table class="table table-enterprise">
-                            <thead><tr><th>Module</th><th>View</th><th>Create</th><th>Edit</th><th>Delete</th><th>Approve</th><th>Manual #</th><th>Freeze</th><th>Unfreeze</th><th>Hold</th><th>Release Hold</th></tr></thead>
+                            <thead><tr><th>@Localizer["Module"]</th><th>@Localizer["View"]</th><th>@Localizer["Create"]</th><th>@Localizer["Edit"]</th><th>@Localizer["Delete"]</th><th>@Localizer["Approve"]</th><th>@Localizer["Manual #"]</th><th>@Localizer["Freeze"]</th><th>@Localizer["Unfreeze"]</th><th>@Localizer["Hold"]</th><th>@Localizer["Release Hold"]</th></tr></thead>
                             <tbody>
                             @for (int i = 0; i < modules.Length; i++)
                             {
@@ -45,11 +55,11 @@
                         </table>
                     </div>
                     <div class="text-end mt-2">
-                        <button type="submit" class="btn btn-sm btn-pems-solid permission-save"><i class="bi bi-check2 me-1"></i> Save @role permissions</button>
+                        <button type="submit" class="btn btn-sm btn-pems-solid permission-save"><i class="bi bi-check2 me-1"></i> @Localizer["Save"] @role @Localizer["permissions"]</button>
                     </div>
                 </form>
-            </div>
+            </details>
         }
-        <div class="admin-footer mt-3"><span>Administration / Permission Matrix</span><span>@(roles.Count(r => r != "SystemAdmin")) roles · @modules.Length modules</span></div>
+        <div class="admin-footer mt-3"><span>&nbsp;</span><span>@(roles.Count(r => r != "SystemAdmin")) roles · @modules.Length modules</span></div>
     </div>
 </div>

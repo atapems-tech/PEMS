@@ -132,6 +132,11 @@ public class TaskService : ITaskService
         }
 
         await _context.SaveChangesAsync();
+
+        // کار پایان یافت (Completed/Cancelled) → اعلان‌های فعال مرتبط Resolve می‌شوند؛ باز کردن
+        // صرفِ صفحه‌ی وظایف عمداً اعلان را حذف نمی‌کند. (تست‌های موجود سرویس را null می‌سازند)
+        if (_notificationService != null && (status == "Completed" || status == "Cancelled"))
+            await _notificationService.ResolveRelatedAsync(null, "TaskItem", taskItemId);
     }
 
     public async Task<int> GetOpenActionItemCountAsync(int applicationUserId)

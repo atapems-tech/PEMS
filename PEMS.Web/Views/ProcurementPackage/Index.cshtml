@@ -1,4 +1,7 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.ProcurementPackageDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 
 <div class="content-card">
@@ -10,10 +13,10 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="d-flex gap-2">
             <a asp-controller="MaterialRequisition" asp-action="Index" class="btn btn-sm btn-outline-secondary">
-                <i class="bi bi-cart-check"></i> All MRs <span class="text-muted small">(legacy view)</span>
+                <i class="bi bi-cart-check"></i> All MRs <span class="text-muted small">@Localizer["(legacy view)"]</span>
             </a>
             <a asp-controller="MaterialRequisition" asp-action="Quotations" class="btn btn-sm btn-outline-secondary">
-                <i class="bi bi-file-earmark-spreadsheet"></i> All MRQs <span class="text-muted small">(legacy view)</span>
+                <i class="bi bi-file-earmark-spreadsheet"></i> All MRQs <span class="text-muted small">@Localizer["(legacy view)"]</span>
             </a>
         </div>
         <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createPackageModal">
@@ -22,7 +25,7 @@
     </div>
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('ProcurementPackage')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
@@ -30,13 +33,13 @@
             <thead>
                 <tr>
                     <th data-col-key="packageNo" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">Package No</th>
-                    <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">Title</th>
-                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Project</th>
-                    <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px">Discipline</th>
-                    <th data-col-key="stage" data-resizable="true" data-min-width="80" data-max-width="160" style="width:110px">Stage</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="80" data-max-width="160" style="width:110px">Status</th>
-                    <th data-col-key="mrs" data-resizable="true" data-min-width="60" data-max-width="100" style="width:70px">MRs</th>
-                    <th data-col-key="mrqs" data-resizable="true" data-min-width="60" data-max-width="100" style="width:70px">MRQs</th>
+                    <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Title"]</th>
+                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Project"]</th>
+                    <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px">@Localizer["Discipline"]</th>
+                    <th data-col-key="stage" data-resizable="true" data-min-width="80" data-max-width="160" style="width:110px">@Localizer["Stage"]</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="80" data-max-width="160" style="width:110px">@Localizer["Status"]</th>
+                    <th data-col-key="mrs" data-resizable="true" data-min-width="60" data-max-width="100" style="width:70px">@Localizer["MRs"]</th>
+                    <th data-col-key="mrqs" data-resizable="true" data-min-width="60" data-max-width="100" style="width:70px">@Localizer["MRQs"]</th>
                     <th data-col-key="openComms" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">Open Comms</th>
                     <th data-col-key="actions" data-resizable="false" style="width:60px"></th>
                 </tr>
@@ -94,27 +97,27 @@
                 <div class="modal-header"><h6 class="modal-title">New Procurement Package</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-6"><label class="form-label">Package Number</label><input name="packageNumber" class="form-control" placeholder="e.g. PP-2026-001" required /></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Package Number"]</label><input name="packageNumber" class="form-control" placeholder="e.g. PP-2026-001" required /></div>
                         <div class="col-md-6">
-                            <label class="form-label">Project</label>
+                            <label class="form-label">@Localizer["Project"]</label>
                             <select name="projectId" class="form-select" required>
                                 @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Discipline</label>
+                            <label class="form-label">@Localizer["Discipline"]</label>
                             <select name="disciplineId" class="form-select">
-                                <option value="">-- none --</option>
+                                <option value="">@Localizer["-- none --"]</option>
                                 @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
                             </select>
                         </div>
-                        <div class="col-md-6"><label class="form-label">Title</label><input name="title" class="form-control" required /></div>
-                        <div class="col-12"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+                        <div class="col-md-6"><label class="form-label">@Localizer["Title"]</label><input name="title" class="form-control" required /></div>
+                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-pems-solid">Save</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
                 </div>
             </form>
         </div>

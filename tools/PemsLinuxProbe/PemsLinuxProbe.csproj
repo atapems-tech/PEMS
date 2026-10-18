@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <!-- Diagnostic probe run INSIDE the target container image (framework-dependent; uses the image's ASP.NET runtime):
+           ocr         - exercises the same Tesseract 5.2.0 wrapper as PEMS.AI but REPORTS errors (the app's OCR service swallows them)
+           dp-decrypt  - proves a DataProtection key ring can decrypt a stored provider credential (prints OK/FAIL only, never plaintext)
+         Not part of PEMS.slnx; never shipped in the application package. -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Tesseract" Version="5.2.0" />
+  </ItemGroup>
+
+</Project>

@@ -62,6 +62,11 @@ public class UserFormViewModel
     [Display(Name = "Position / Title")]
     public string? Position { get; set; }
 
+    // سمت سازمانی واقعی (Position موجود). برای کارمند جدید، از طریق EmployeeAssignment اصلیِ فعال اعمال می‌شود؛ متن آزاد Position فقط عنوان نمایشی میراثی است.
+    [Display(Name = "Organizational position")]
+    public int? PositionId { get; set; }
+    public List<(int Id, string Name)> AllPositions { get; set; } = new();
+
     public List<(int Id, string Name)> AllEmployees { get; set; } = new();
     public List<(int Id, string Name)> AllDepartments { get; set; } = new();
     public List<(int Id, string Name)> AllDisciplines { get; set; } = new();

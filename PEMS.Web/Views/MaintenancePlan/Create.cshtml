@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
     var strategies = (IEnumerable<dynamic>)ViewBag.Strategies;
     var jobPlans = (IEnumerable<dynamic>)ViewBag.JobPlans;
 }
@@ -7,14 +10,14 @@
     <form asp-action="Create" method="post">
         <div class="row g-3">
             <div class="col-12">
-                <label class="form-label">Equipment</label>
-                <input type="text" class="form-control" placeholder="جستجوی تگ، نام یا سازنده..."
+                <label class="form-label">@Localizer["Equipment"]</label>
+                <input type="text" class="form-control" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]"
                        value="@ViewBag.PreselectedEquipmentLabel"
                        data-pems-search data-search-type="Equipment" data-search-hidden="#planEquipmentIdHidden" autocomplete="off" />
                 <input type="hidden" name="equipmentId" id="planEquipmentIdHidden" value="@ViewBag.PreselectedEquipmentId" />
             </div>
             <div class="col-12">
-                <label class="form-label">Maintenance Strategy</label>
+                <label class="form-label">@Localizer["Maintenance Strategy"]</label>
                 <select name="maintenanceStrategyId" class="form-select" required id="planStrategySelect">
                     @foreach (var s in strategies)
                     {
@@ -25,7 +28,7 @@
                 </select>
                 <div class="form-text small">Define a strategy for the equipment first if none is listed.</div>
             </div>
-            <div class="col-12"><label class="form-label">Title</label><input name="title" class="form-control" placeholder="e.g. Quarterly lubrication check" required /></div>
+            <div class="col-12"><label class="form-label">@Localizer["Title"]</label><input name="title" class="form-control" placeholder="e.g. Quarterly lubrication check" required /></div>
 
             <div class="col-12">
                 <label class="form-label">Trigger Type</label>
@@ -45,7 +48,7 @@
                 </select>
             </div>
             <div class="col-md-6" id="meterIntervalWrap" style="display:none;">
-                <label class="form-label">Meter Interval (هر چند واحد یک‌بار)</label>
+                <label class="form-label">@Localizer["Meter Interval (هر چند واحد یک‌بار)"]</label>
                 <input name="meterInterval" type="number" step="0.01" class="form-control" placeholder="e.g. 2000" />
             </div>
             <script>
@@ -67,7 +70,7 @@
             </script>
 
             <div class="col-12">
-                <label class="form-label">Job Plan</label>
+                <label class="form-label">@Localizer["Job Plan"]</label>
                 <select name="jobPlanId" class="form-select">
                     <option value="">-- none (WorkOrder Description only) --</option>
                     @foreach (var jp in jobPlans)
@@ -78,11 +81,11 @@
                 <div class="form-text small">When set, generating a WorkOrder from this plan copies the Job Plan's Tasks/Skills/Materials onto it. <a asp-controller="JobPlan" asp-action="Index" target="_blank">Manage Job Plans</a></div>
             </div>
 
-            <div class="col-12"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
         </div>
         <div class="mt-4">
             <button type="submit" class="btn btn-pems-solid">Create Plan</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
         </div>
     </form>
 </div>

@@ -1,0 +1,151 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace PEMS.Persistence.Migrations
+{
+    /// <inheritdoc />
+    public partial class PartCatalogueTraceability : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AddColumn<int>(
+                name: "MaterialItemId",
+                table: "PartCatalogueRequests",
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "SourceMaterialRequisitionId",
+                table: "PartCatalogueRequests",
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "SourceStoreRequisitionId",
+                table: "PartCatalogueRequests",
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "SourceWorkOrderId",
+                table: "PartCatalogueRequests",
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PartCatalogueRequests_MaterialItemId",
+                table: "PartCatalogueRequests",
+                column: "MaterialItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PartCatalogueRequests_SourceMaterialRequisitionId",
+                table: "PartCatalogueRequests",
+                column: "SourceMaterialRequisitionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PartCatalogueRequests_SourceStoreRequisitionId",
+                table: "PartCatalogueRequests",
+                column: "SourceStoreRequisitionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PartCatalogueRequests_SourceWorkOrderId",
+                table: "PartCatalogueRequests",
+                column: "SourceWorkOrderId");
+
+            migrationBuilder.AddCheckConstraint(
+                name: "CK_PartCatalogueRequests_SingleDemandOrigin",
+                table: "PartCatalogueRequests",
+                sql: "(CASE WHEN [SourceWorkOrderId] IS NULL THEN 0 ELSE 1 END + CASE WHEN [SourceStoreRequisitionId] IS NULL THEN 0 ELSE 1 END + CASE WHEN [SourceMaterialRequisitionId] IS NULL THEN 0 ELSE 1 END) <= 1");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_PartCatalogueRequests_MaterialItems_MaterialItemId",
+                table: "PartCatalogueRequests",
+                column: "MaterialItemId",
+                principalTable: "MaterialItems",
+                principalColumn: "MaterialItemId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_PartCatalogueRequests_MaterialRequisitions_SourceMaterialRequisitionId",
+                table: "PartCatalogueRequests",
+                column: "SourceMaterialRequisitionId",
+                principalTable: "MaterialRequisitions",
+                principalColumn: "MRId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_PartCatalogueRequests_StoreRequisitions_SourceStoreRequisitionId",
+                table: "PartCatalogueRequests",
+                column: "SourceStoreRequisitionId",
+                principalTable: "StoreRequisitions",
+                principalColumn: "StoreRequisitionId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_PartCatalogueRequests_WorkOrders_SourceWorkOrderId",
+                table: "PartCatalogueRequests",
+                column: "SourceWorkOrderId",
+                principalTable: "WorkOrders",
+                principalColumn: "WorkOrderId",
+                onDelete: ReferentialAction.Restrict);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_PartCatalogueRequests_MaterialItems_MaterialItemId",
+                table: "PartCatalogueRequests");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_PartCatalogueRequests_MaterialRequisitions_SourceMaterialRequisitionId",
+                table: "PartCatalogueRequests");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_PartCatalogueRequests_StoreRequisitions_SourceStoreRequisitionId",
+                table: "PartCatalogueRequests");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_PartCatalogueRequests_WorkOrders_SourceWorkOrderId",
+                table: "PartCatalogueRequests");
+
+            migrationBuilder.DropIndex(
+                name: "IX_PartCatalogueRequests_MaterialItemId",
+                table: "PartCatalogueRequests");
+
+            migrationBuilder.DropIndex(
+                name: "IX_PartCatalogueRequests_SourceMaterialRequisitionId",
+                table: "PartCatalogueRequests");
+
+            migrationBuilder.DropIndex(
+                name: "IX_PartCatalogueRequests_SourceStoreRequisitionId",
+                table: "PartCatalogueRequests");
+
+            migrationBuilder.DropIndex(
+                name: "IX_PartCatalogueRequests_SourceWorkOrderId",
+                table: "PartCatalogueRequests");
+
+            migrationBuilder.DropCheckConstraint(
+                name: "CK_PartCatalogueRequests_SingleDemandOrigin",
+                table: "PartCatalogueRequests");
+
+            migrationBuilder.DropColumn(
+                name: "MaterialItemId",
+                table: "PartCatalogueRequests");
+
+            migrationBuilder.DropColumn(
+                name: "SourceMaterialRequisitionId",
+                table: "PartCatalogueRequests");
+
+            migrationBuilder.DropColumn(
+                name: "SourceStoreRequisitionId",
+                table: "PartCatalogueRequests");
+
+            migrationBuilder.DropColumn(
+                name: "SourceWorkOrderId",
+                table: "PartCatalogueRequests");
+        }
+    }
+}

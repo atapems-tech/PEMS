@@ -72,13 +72,22 @@ public class WorkOrderReleaseGateService : IWorkOrderReleaseGateService
             }
             else
             {
-                var hasVerifiedIsolation = await _context.IsolationPoints
-                    .AnyAsync(x => x.PermitId == permit.PermitId && x.Status == "Verified");
+                // هم‌راستا با ExecutionGateService («Isolation Verified»): همه‌ی نقاط فعال و غیرلغوشده باید Verified باشند؛
+                // قبلاً وجود «یک» نقطه‌ی Verified کافی بود و نقاط Requested/Isolated دیگر نادیده گرفته می‌شدند.
+                var points = await _context.IsolationPoints.AsNoTracking()
+                    .Where(x => x.PermitId == permit.PermitId && x.IsActive && x.Status != "Cancelled")
+                    .Select(x => x.Status)
+                    .ToListAsync();
 
-                if (!hasVerifiedIsolation)
+                if (points.Count == 0)
                 {
                     result.CanRelease = false;
                     result.Reasons.Add("LOTO (Isolation) is required but no Isolation Point on the linked permit has been Verified.");
+                }
+                else if (points.Any(st => st != "Verified"))
+                {
+                    result.CanRelease = false;
+                    result.Reasons.Add($"LOTO (Isolation) is required but not all Isolation Points are Verified ({points.Count(st => st == "Verified")}/{points.Count}).");
                 }
             }
         }

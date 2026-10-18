@@ -1,9 +1,26 @@
 @model List<PEMS.Application.DTOs.ConditionMonitoringPointDto>
 @using PEMS.Application.DTOs
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var foundation = (ConditionMonitoringFoundationStatusDto)ViewBag.Foundation;
     var equipmentId = (int?)ViewBag.EquipmentId;
     var variableTypes = (string[])ViewBag.SupportedVariableTypes;
+    var pointsWithCbmStrategy = (HashSet<int>)ViewBag.PointsWithCbmStrategy;
+    var evaluationProfiles = (IEnumerable<dynamic>)ViewBag.EvaluationProfiles;
+    var failureModes = (IEnumerable<dynamic>)ViewBag.FailureModes;
+    var failureCauses = (IEnumerable<dynamic>)ViewBag.FailureCauses;
+
+    string EvalBadge(string status) => status switch
+    {
+        "Critical" => "bg-dark",
+        "Alarm" => "bg-danger",
+        "Warning" => "bg-warning text-dark",
+        "Normal" => "bg-success",
+        "RequiresEngineeringReview" => "bg-info text-dark",
+        _ => "bg-secondary"
+    };
 
     string StatusBadge(string status) => status switch
     {
@@ -14,9 +31,9 @@
     };
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-activity"></i> Condition Monitoring</h5>
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">← Reliability</a>
+<div class="d-flex justify-content-end align-items-center gap-2 mb-2">
+    <a asp-controller="Finding" asp-action="Index" asp-route-equipmentId="@equipmentId" class="btn btn-outline-danger btn-sm"><i class="bi bi-flag"></i> @Localizer["Findings"]</a>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["← Reliability"]</a>
 </div>
 <p class="text-muted small">
     طبق «PEMS Phase 9» بند ۱۵: زیرساخت نرم‌افزاری همیشه آماده است - آنچه به داده‌ی واقعی نیاز
@@ -53,7 +70,7 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-2 align-items-end">
         <div class="col-auto">
-            <label class="form-label small mb-0">Equipment ID</label>
+            <label class="form-label small mb-0">@Localizer["Equipment ID"]</label>
             <input type="number" name="equipmentId" value="@equipmentId" class="form-control form-control-sm" style="width:140px" />
         </div>
         <div class="col-auto"><button type="submit" class="btn btn-sm btn-pems-solid">Load Points</button></div>
@@ -65,7 +82,7 @@
     <div class="content-card mb-3">
         <h6 class="mb-2">Monitoring Points — Equipment #@equipmentId</h6>
         <table class="table table-enterprise table-sm mb-0">
-            <thead><tr><th>Variable</th><th>Tag</th><th>Unit</th><th class="text-end">Alarm Range</th><th class="text-end">Readings</th><th>Last Reading</th></tr></thead>
+            <thead><tr><th>@Localizer["Variable"]</th><th>@Localizer["Tag"]</th><th>@Localizer["Unit"]</th><th class="text-end">@Localizer["Alarm Range"]</th><th class="text-end">@Localizer["Readings"]</th><th>@Localizer["Last Reading"]</th><th>@Localizer["Evaluation"]</th><th>@Localizer["CBM Strategy"]</th></tr></thead>
             <tbody>
                 @foreach (var p in Model)
                 {
@@ -74,13 +91,76 @@
                         <td>@p.Tag</td>
                         <td>@p.Unit</td>
                         <td class="text-end small">@p.AlarmThresholdLow – @p.AlarmThresholdHigh</td>
-                        <td class="text-end">@p.ReadingCount</td>
+                        <td class="text-end">
+                            @p.ReadingCount
+                            @if (p.ReadingCount > 0)
+                            {
+                                <a asp-action="Trend" asp-route-pointId="@p.ConditionMonitoringPointId" class="btn btn-sm btn-outline-secondary ms-1" title="@Localizer["Trend"]"><i class="bi bi-graph-up"></i></a>
+                            }
+                        </td>
                         <td class="small">@(p.LastReadingDate.HasValue ? $"{p.LastValue} @ {p.LastReadingDate.Value:yyyy-MM-dd}" : "No readings yet")</td>
+                        <td>
+                            @if (p.EvaluationProfileId.HasValue)
+                            {
+                                <span class="badge @EvalBadge(p.LastReadingEvaluationStatus)">@p.LastReadingEvaluationStatus</span>
+                                <div class="small text-muted">@p.EvaluationProfileCode</div>
+                                @if (p.LastReadingId.HasValue && (p.LastReadingEvaluationStatus == "Warning" || p.LastReadingEvaluationStatus == "Alarm" || p.LastReadingEvaluationStatus == "Critical"))
+                                {
+                                    <button type="button" class="btn btn-sm btn-outline-danger mt-1" data-bs-toggle="modal" data-bs-target="#raiseFindingModal" data-reading-id="@p.LastReadingId" data-point-label="@p.VariableType — @p.Tag">
+                                        <i class="bi bi-flag"></i> @Localizer["Raise Finding"]
+                                    </button>
+                                }
+                            }
+                            else
+                            {
+                                <form method="post" asp-action="AssignEvaluationProfile" class="d-flex gap-1">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="equipmentId" value="@equipmentId" />
+                                    <input type="hidden" name="pointId" value="@p.ConditionMonitoringPointId" />
+                                    <select name="evaluationProfileId" class="form-select form-select-sm" style="max-width:160px;">
+                                        <option value="">@Localizer["-- profile --"]</option>
+                                        @foreach (var ep in evaluationProfiles)
+                                        {
+                                            <option value="@ep.EvaluationProfileId">@ep.Code (@ep.VariableType)</option>
+                                        }
+                                    </select>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["Assign evaluation profile"]"><i class="bi bi-link-45deg"></i></button>
+                                </form>
+                            }
+                            @if (p.LastReadingId.HasValue && p.LastReadingEvaluationStatus != "RequiresEngineeringReview")
+                            {
+                                <form method="post" asp-action="MarkRequiresEngineeringReview" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="equipmentId" value="@equipmentId" />
+                                    <input type="hidden" name="readingId" value="@p.LastReadingId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-info mt-1" title="@Localizer["Mark for Engineering Review"]">
+                                        <i class="bi bi-person-check"></i>
+                                    </button>
+                                </form>
+                            }
+                        </td>
+                        <td>
+                            @if (pointsWithCbmStrategy.Contains(p.ConditionMonitoringPointId))
+                            {
+                                <span class="badge text-bg-success">@Localizer["Linked"]</span>
+                            }
+                            else
+                            {
+                                <form method="post" asp-action="CreateCbmStrategy" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="equipmentId" value="@equipmentId" />
+                                    <input type="hidden" name="conditionMonitoringPointId" value="@p.ConditionMonitoringPointId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-primary" title="@Localizer["ساخت استراتژی CBM برای این نقطه‌ی پایش"]">
+                                        <i class="bi bi-plus-lg"></i> @Localizer["CBM"]
+                                    </button>
+                                </form>
+                            }
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
-        @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">هیچ نقطه‌ی پایشی برای این تجهیز تعریف نشده.</p> }
+        @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هیچ نقطه‌ی پایشی برای این تجهیز تعریف نشده."]</p> }
     </div>
 
     <div class="row g-3">
@@ -96,8 +176,8 @@
                             @foreach (var vt in variableTypes) { <option value="@vt">@vt</option> }
                         </select>
                     </div>
-                    <div class="mb-2"><label class="form-label small">Tag</label><input name="tag" class="form-control form-control-sm" required /></div>
-                    <div class="mb-2"><label class="form-label small">Unit</label><input name="unit" class="form-control form-control-sm" /></div>
+                    <div class="mb-2"><label class="form-label small">@Localizer["Tag"]</label><input name="tag" class="form-control form-control-sm" required /></div>
+                    <div class="mb-2"><label class="form-label small">@Localizer["Unit"]</label><input name="unit" class="form-control form-control-sm" /></div>
                     <div class="row g-2 mb-2">
                         <div class="col"><label class="form-label small">Alarm Low</label><input type="number" step="0.01" name="alarmLow" class="form-control form-control-sm" /></div>
                         <div class="col"><label class="form-label small">Alarm High</label><input type="number" step="0.01" name="alarmHigh" class="form-control form-control-sm" /></div>
@@ -119,13 +199,71 @@
                         </select>
                     </div>
                     <div class="row g-2 mb-2">
-                        <div class="col"><label class="form-label small">Date</label><input type="datetime-local" name="readingDate" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" /></div>
-                        <div class="col"><label class="form-label small">Value</label><input type="number" step="0.01" name="value" class="form-control form-control-sm" required /></div>
+                        <div class="col"><label class="form-label small">@Localizer["Date"]</label><input type="datetime-local" name="readingDate" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" /></div>
+                        <div class="col"><label class="form-label small">@Localizer["Value"]</label><input type="number" step="0.01" name="value" class="form-control form-control-sm" required /></div>
                     </div>
-                    <div class="mb-2"><label class="form-label small">Source</label><input name="source" value="Manual" class="form-control form-control-sm" /></div>
+                    <div class="mb-2"><label class="form-label small">@Localizer["Source"]</label><input name="source" value="Manual" class="form-control form-control-sm" /></div>
+                    @{ var equipmentInstruments = (IEnumerable<dynamic>)ViewBag.EquipmentInstruments; }
+                    @if (equipmentInstruments.Any())
+                    {
+                        <div class="mb-2">
+                            <label class="form-label small">@Localizer["Instrument (اختیاری)"]</label>
+                            <select name="instrumentId" class="form-select form-select-sm">
+                                <option value="">@Localizer["-- ندارد --"]</option>
+                                @foreach (var inst in equipmentInstruments) { <option value="@inst.InstrumentId">@inst.TagNumber — @inst.InstrumentType</option> }
+                            </select>
+                        </div>
+                    }
                     <button type="submit" class="btn btn-sm btn-pems-solid">Record Reading</button>
                 </form>
             </div>
         </div>
     </div>
 }
+
+<div class="modal fade" id="raiseFindingModal" tabindex="-1">
+    <div class="modal-dialog modal-lg"><div class="modal-content">
+        <form asp-controller="Finding" asp-action="CreateFromReading" method="post">
+            <input type="hidden" name="conditionReadingId" id="raiseFindingReadingId" />
+            <div class="modal-header"><h6 class="modal-title">@Localizer["Raise Finding"] — <span id="raiseFindingPointLabel"></span></h6></div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label small">@Localizer["Description"]</label>
+                    <textarea name="description" class="form-control" rows="2" required></textarea>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">@Localizer["Recommended Action (اختیاری)"]</label>
+                    <textarea name="recommendedAction" class="form-control" rows="2"></textarea>
+                </div>
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <label class="form-label small">@Localizer["Failure Mode (ISO 14224، اختیاری)"]</label>
+                        <select name="failureModeId" class="form-select form-select-sm">
+                            <option value="">@Localizer["-- ندارد --"]</option>
+                            @foreach (var fm in failureModes) { <option value="@fm.FailureModeId">@fm.Name</option> }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">@Localizer["Failure Cause (اختیاری)"]</label>
+                        <select name="failureCauseId" class="form-select form-select-sm">
+                            <option value="">@Localizer["-- ندارد --"]</option>
+                            @foreach (var fc in failureCauses) { <option value="@fc.FailureCauseId">@fc.Name</option> }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
+                <button type="submit" class="btn btn-danger btn-sm">@Localizer["Raise Finding"]</button>
+            </div>
+        </form>
+    </div></div>
+</div>
+
+<script>
+    document.getElementById('raiseFindingModal')?.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        document.getElementById('raiseFindingReadingId').value = button.getAttribute('data-reading-id');
+        document.getElementById('raiseFindingPointLabel').textContent = button.getAttribute('data-point-label');
+    });
+</script>

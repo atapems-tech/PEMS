@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.ProductionOrderDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card mb-3">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
@@ -34,7 +37,7 @@
             }
             @if (Model.Status == "Released" || Model.Status == "InProgress")
             {
-                <button class="btn btn-sm btn-outline-warning w-100" type="button" data-bs-toggle="modal" data-bs-target="#holdOrderModal"><i class="bi bi-pause-circle"></i> Hold</button>
+                <button class="btn btn-sm btn-outline-warning w-100" type="button" data-bs-toggle="modal" data-bs-target="#holdOrderModal"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</button>
             }
             @if (Model.Status == "OnHold")
             {
@@ -42,7 +45,7 @@
             }
             @if (Model.Status is "Draft" or "Planned" or "Released" or "OnHold")
             {
-                <button class="btn btn-sm btn-outline-danger w-100" type="button" data-bs-toggle="modal" data-bs-target="#cancelOrderModal"><i class="bi bi-x-circle"></i> Cancel</button>
+                <button class="btn btn-sm btn-outline-danger w-100" type="button" data-bs-toggle="modal" data-bs-target="#cancelOrderModal"><i class="bi bi-x-circle"></i> @Localizer["Cancel"]</button>
             }
             @if (Model.Status == "InProgress")
             {
@@ -64,7 +67,7 @@
     <h6 class="mb-2">Production Runs</h6>
     <div class="table-scroll-area" style="max-height:50vh; overflow-y:auto;">
         <table class="table table-enterprise">
-            <thead><tr><th>Run #</th><th>Status</th><th>Start</th><th>End</th><th>Output Qty</th><th>Loss Qty</th><th></th></tr></thead>
+            <thead><tr><th>Run #</th><th>@Localizer["Status"]</th><th>@Localizer["Start"]</th><th>@Localizer["End"]</th><th>Output Qty</th><th>Loss Qty</th><th></th></tr></thead>
             <tbody>
                 @foreach (var r in Model.Runs)
                 {
@@ -88,8 +91,8 @@
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="Hold" asp-route-id="@Model.ProductionOrderId" method="post">
             <div class="modal-header"><h6 class="modal-title">Hold Production Order</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><label class="form-label">Reason</label><textarea name="reason" class="form-control" required></textarea></div>
-            <div class="modal-footer"><button type="submit" class="btn btn-warning">Hold</button></div>
+            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><textarea name="reason" class="form-control" required></textarea></div>
+            <div class="modal-footer"><button type="submit" class="btn btn-warning">@Localizer["Hold"]</button></div>
         </form>
     </div></div>
 </div>
@@ -98,7 +101,7 @@
     <div class="modal-dialog"><div class="modal-content">
         <form asp-action="Cancel" asp-route-id="@Model.ProductionOrderId" method="post">
             <div class="modal-header"><h6 class="modal-title">Cancel Production Order</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><label class="form-label">Reason</label><textarea name="reason" class="form-control" required></textarea></div>
+            <div class="modal-body"><label class="form-label">@Localizer["Reason"]</label><textarea name="reason" class="form-control" required></textarea></div>
             <div class="modal-footer"><button type="submit" class="btn btn-danger">Cancel Order</button></div>
         </form>
     </div></div>

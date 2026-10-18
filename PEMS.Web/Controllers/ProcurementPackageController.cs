@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
+using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
 using PEMS.Web.Security;
@@ -18,14 +19,16 @@ public class ProcurementPackageController : Controller
     private readonly PEMSDbContext _context;
     private readonly ICurrentUserService _currentUser;
     private readonly IPermissionService _permissionService;
+    private readonly IAccessControlService _accessControlService;
 
     public ProcurementPackageController(IProcurementPackageService service, PEMSDbContext context,
-        ICurrentUserService currentUser, IPermissionService permissionService)
+        ICurrentUserService currentUser, IPermissionService permissionService, IAccessControlService accessControlService)
     {
         _service = service;
         _context = context;
         _currentUser = currentUser;
         _permissionService = permissionService;
+        _accessControlService = accessControlService;
     }
 
     // طبق «PEMS — Final Global Repository Audit» بند ۱۹ (P0): این کنترلر هیچ بررسی مجوزی نداشت -
@@ -70,6 +73,16 @@ public class ProcurementPackageController : Controller
             .Where(x => x.ProcurementPackageId == null)
             .Select(x => new { x.MRId, x.MRNumber }).ToListAsync();
 
+        // طبق ممیزی نهایی Ownership/UI (§7): این‌جا باید چرخه‌ی Package→Tender→Award→Contract
+        // مستقیماً دیده شود - نه این‌که کاربر برای دیدن نتیجه‌ی یک Tender مجبور به کلیک به صفحه‌ی
+        // جدا شود. از همان رابطه‌ی موجود Tender.ProcurementPackageId/AwardedBid/ContractId
+        // می‌خوانیم - هیچ FK تازه‌ای لازم نیست.
+        ViewBag.Tenders = await _context.Tenders
+            .Include(x => x.AwardedBid).ThenInclude(x => x!.Vendor)
+            .Where(x => x.ProcurementPackageId == id)
+            .OrderByDescending(x => x.TenderId)
+            .ToListAsync();
+
         return View(detail);
     }
 
@@ -99,6 +112,22 @@ public class ProcurementPackageController : Controller
             return Forbid();
 
         var id = await _service.CreateAsync(packageNumber, projectId, disciplineId, title, description);
+
+        // طبق ممیزی Package Procurement Contract Finalization (§F): ثبت Allow در
+        // AuthorizationAuditLog تا اگر همین کاربر بعداً بخواهد همین Package را خودش تایید کند،
+        // بررسی SoD در AddApproval زیر آن را مسدود کند.
+        if (_currentUser.UserId.HasValue)
+        {
+            await _accessControlService.AuthorizeAsync(new AccessControlRequest
+            {
+                UserId = _currentUser.UserId.Value,
+                ResourceName = "ProcurementPackage",
+                ActionName = "Create",
+                ResourceId = id.ToString(),
+                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString()
+            });
+        }
+
         TempData["Message"] = "Procurement Package created";
         return RedirectToAction(nameof(Details), new { id });
     }
@@ -110,7 +139,17 @@ public class ProcurementPackageController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "ProcurementPackage", "Edit"))
             return Forbid();
 
-        await _service.AdvanceStageAsync(packageId, newStage);
+        try
+        {
+            await _service.AdvanceStageAsync(packageId, newStage);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Closeout از این مسیر مجاز نیست (فقط از عملیات Closeout با Approve + گیت بازرسی)،
+            // و Package بسته/لغوشده قابل‌احیا نیست - پیام دوستانه به‌جای خطای سرور
+            TempData["Error"] = ex.Message;
+        }
+
         return RedirectToAction(nameof(Details), new { id = packageId });
     }
 
@@ -163,8 +202,16 @@ public class ProcurementPackageController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddApproval(int packageId, string decision, string? comment)
     {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "ProcurementPackage", "Approve"))
-            return Forbid();
+        // طبق ممیزی §F (قاعده‌ی کسب‌وکار ۶) + Phase 1 hardening: گارد مشترک Fail-Closed - مجوز نقش، هویت کاربر،
+        // AuthorizeAsync آگاه-از-کاربر (Scope + SoD + Audit)؛ فقط Allowed صریح عبور می‌دهد و هر رد دیگر Forbid است.
+        var outcome = await ProtectedActionGuard.EvaluateAsync(
+            HttpContext, _permissionService, _accessControlService, _currentUser, "ProcurementPackage", "Approve", packageId.ToString());
+        if (outcome == ProtectedActionOutcome.DeniedBySoD)
+        {
+            TempData["Error"] = "طبق سیاست تفکیک وظایف، شما نمی‌توانید Package ای را که خودتان ایجاد کرده‌اید تایید کنید.";
+            return RedirectToAction(nameof(Details), new { id = packageId });
+        }
+        if (outcome != ProtectedActionOutcome.Allowed) return Forbid();
 
         await _service.AddApprovalAsync(packageId, _currentUser.FullName ?? "Unknown", decision, comment);
         TempData["Message"] = $"Approval recorded: {decision}";
@@ -175,11 +222,28 @@ public class ProcurementPackageController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Closeout(int packageId)
     {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "ProcurementPackage", "Approve"))
-            return Forbid();
+        // Closeout عملاً «تایید نهایی» است و با همان مجوز Approve محافظت می‌شود: همان گارد مشترک Fail-Closed
+        // (نقش + هویت + Scope + SoD + Audit؛ فقط Allowed صریح) پیش از هر تغییر وضعیت.
+        var outcome = await ProtectedActionGuard.EvaluateAsync(
+            HttpContext, _permissionService, _accessControlService, _currentUser, "ProcurementPackage", "Approve", packageId.ToString());
+        if (outcome == ProtectedActionOutcome.DeniedBySoD)
+        {
+            TempData["Error"] = "طبق سیاست تفکیک وظایف، شما نمی‌توانید Package ای را که خودتان ایجاد کرده‌اید ببندید.";
+            return RedirectToAction(nameof(Details), new { id = packageId });
+        }
+        if (outcome != ProtectedActionOutcome.Allowed) return Forbid();
 
-        await _service.CloseoutAsync(packageId);
-        TempData["Message"] = "Package closed out";
+        try
+        {
+            await _service.CloseoutAsync(packageId);
+            TempData["Message"] = "Package closed out";
+        }
+        catch (InvalidOperationException ex)
+        {
+            // طبق §D/§I قاعده‌ی ۱۱: گیت بازرسی الزامی - پیام خطای دوستانه به‌جای خطای سرور
+            TempData["Error"] = ex.Message;
+        }
+
         return RedirectToAction(nameof(Details), new { id = packageId });
     }
 }

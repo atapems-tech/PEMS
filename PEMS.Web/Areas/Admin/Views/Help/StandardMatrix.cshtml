@@ -1,12 +1,15 @@
 @model IReadOnlyList<PEMS.Application.DTOs.HelpStandardReferenceMatrixRowDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["HidePageTitle"] = true;
 }
 
 <div class="content-card">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="mb-0"><i class="bi bi-journal-bookmark"></i> Standards Matrix</h5>
-        <a asp-action="StandardCreate" class="btn btn-sm btn-pems-solid"><i class="bi bi-plus-lg"></i> Add Standard</a>
+        <h5 class="mb-0"><i class="bi bi-journal-bookmark"></i> @Localizer["Standards Matrix"]</h5>
+        <a asp-action="StandardCreate" class="btn btn-sm btn-pems-solid"><i class="bi bi-plus-lg"></i> @Localizer["Add Standard"]</a>
     </div>
 
     @if (!Model.Any())
@@ -19,8 +22,8 @@
             <table class="table table-enterprise">
                 <thead>
                     <tr>
-                        <th>Identifier</th><th>Title</th><th>Issuer</th><th>Related Module</th>
-                        <th>Applicability</th><th>Verification</th><th>PEMS Status</th><th>Status</th><th></th>
+                        <th>@Localizer["Identifier"]</th><th>@Localizer["Title"]</th><th>@Localizer["Issuer"]</th><th>@Localizer["Related Module"]</th>
+                        <th>@Localizer["Applicability"]</th><th>@Localizer["Verification"]</th><th>@Localizer["PEMS Status"]</th><th>@Localizer["Status"]</th><th></th>
                     </tr>
                 </thead>
                 <tbody>

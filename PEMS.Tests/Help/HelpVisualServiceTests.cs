@@ -246,10 +246,13 @@ public class HelpVisualServiceTests
         var def = new WorkflowDefinition { Name = "X", Module = "RealModule", Category = "RealCategory", IsActive = true };
         ctx.WorkflowDefinitions.Add(def);
         await ctx.SaveChangesAsync();
-        var version = new WorkflowVersion { WorkflowDefinitionId = def.WorkflowDefinitionId, VersionNumber = 1, Status = "Published" };
+        var version = new WorkflowVersion { WorkflowDefinitionId = def.WorkflowDefinitionId, VersionNumber = 1, Status = "Draft" };
         ctx.WorkflowVersions.Add(version);
         await ctx.SaveChangesAsync();
         ctx.WorkflowStages.Add(new WorkflowStage { WorkflowVersionId = version.WorkflowVersionId, Name = "OnlyStage", StageOrder = 0 });
+        await ctx.SaveChangesAsync();
+        // Phase 1 Hardening: ساخت روی Draft و سپس انتشار (نسخه‌ی Published تغییرناپذیر است)
+        version.Status = "Published";
         await ctx.SaveChangesAsync();
 
         ctx.HelpVisuals.Add(new HelpVisual

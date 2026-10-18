@@ -55,7 +55,20 @@ public class EquipmentPassportDto
 
     public List<MRDto> RelatedMRs { get; set; } = new();
 
+    /// <summary>Work Orderهای اجراشده‌ی این تجهیز (فقط خواندنی) - جدا از درخواست‌ها.</summary>
     public List<WorkOrderSummaryDto> WorkOrders { get; set; } = new();
+
+    /// <summary>
+    /// Maintenance History = درخواست‌های کار (Work Request) ثبت‌شده برای این تجهیز (مستقیم یا از طریق
+    /// Asset همین تجهیز). Work Order فقط از مسیر رسمی Work Request → ConvertToWorkOrder ساخته می‌شود.
+    /// </summary>
+    public List<WorkRequestSummaryDto> WorkRequests { get; set; } = new();
+
+    /// <summary>استراتژی‌های نگهداری تعریف‌شده برای این تجهیز (MaintenanceStrategy.EquipmentId) - فقط خواندنی.</summary>
+    public List<EquipmentStrategySummaryDto> Strategies { get; set; } = new();
+
+    /// <summary>برنامه‌های PM فعال این تجهیز (MaintenancePlan.EquipmentId) - فقط خواندنی.</summary>
+    public List<EquipmentPlanSummaryDto> Plans { get; set; } = new();
 
     // طبق درخواست: کلیک روی شماره P&ID باید مستقیم به مدرک مهندسی متناظر منتقل کند
     public EngineeringDocumentDto? PIDDocument { get; set; }
@@ -76,6 +89,15 @@ public class EquipmentPassportDto
     // طبق PEMS_CMMS_ARCHITECTURE.md: چرخه‌عمر CMMS این تجهیز (در صورت وجود Asset)، دقیقاً
     // مثل الگوی Instrument بالا - جزئیات کامل روی صفحه‌ی اختصاصی Asset/Details.
     public AssetSummaryDto? Asset { get; set; }
+
+    // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۳:
+    // دقیقاً همون الگوی Instrument بالا - جزئیات کامل روی صفحه‌ی اختصاصی MechanicalEquipment/Passport.
+    public MechanicalEquipmentPassportSummaryDto? MechanicalEquipment { get; set; }
+
+    // طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §2/§5-1: پایش وضعیت (نقاط پایش،
+    // استراتژی CBM، سررسید، یافته‌های باز) باید همین‌جا هم دیده شود، نه فقط از صفحه‌ی جدای
+    // Reliability/ConditionMonitoring. null یعنی این تجهیز هیچ نقطه‌ی پایشی ندارد.
+    public ConditionMonitoringPassportSummaryDto? ConditionMonitoring { get; set; }
 }
 
 /// <summary>
@@ -109,6 +131,72 @@ public class InstrumentPassportSummaryDto
     public DateTime? LastMaintenanceDate { get; set; }
     public DateTime? NextMaintenanceDue { get; set; }
     public string CurrentStatus { get; set; } = "";
+}
+
+/// <summary>
+/// خلاصه‌ی پاسپورت مکانیکال برای نمایش داخل تب Equipment/Details - جزئیات کامل + ویرایش
+/// همچنان روی صفحه‌ی اختصاصی MechanicalEquipment/Passport می‌مانند (طبق الگوی Instrument بالا).
+/// فیلدهای Rotating/Static فقط وقتی پر می‌شوند که زیررده‌ی متناظر ثبت شده باشد (بند ۲ ممیزی).
+/// </summary>
+public class MechanicalEquipmentPassportSummaryDto
+{
+    public int MechanicalEquipmentId { get; set; }
+    public string TagNumber { get; set; } = "";
+    public string EquipmentType { get; set; } = "";
+    public decimal? DesignPressure { get; set; }
+    public decimal? DesignTemperature { get; set; }
+    public decimal? OperatingPressure { get; set; }
+    public decimal? OperatingTemperature { get; set; }
+    public string? Material { get; set; }
+    public string? Manufacturer { get; set; }
+    public string? Model { get; set; }
+
+    // Rotating, Static, Unclassified
+    public string SubType { get; set; } = "Unclassified";
+
+    // فقط وقتی SubType == "Rotating"
+    public decimal? FlowRate { get; set; }
+    public decimal? Head { get; set; }
+    public int? SpeedRPM { get; set; }
+    public decimal? RotatingPowerKW { get; set; }
+    public string? DriverType { get; set; }
+
+    // فقط وقتی SubType == "Static"
+    public decimal? Volume { get; set; }
+    public string? Orientation { get; set; }
+    public string? CodeStandard { get; set; }
+}
+
+public class EquipmentStrategySummaryDto
+{
+    public int MaintenanceStrategyId { get; set; }
+    public string StrategyType { get; set; } = "";
+    public string RecommendedTriggerType { get; set; } = "";
+    public string? Frequency { get; set; }
+    public string ConsequenceCategory { get; set; } = "";
+}
+
+public class EquipmentPlanSummaryDto
+{
+    public int MaintenancePlanId { get; set; }
+    public string PlanNumber { get; set; } = "";
+    public string Title { get; set; } = "";
+    public string TriggerType { get; set; } = "";
+    public int? IntervalDays { get; set; }
+    public DateTime? LastExecutionDate { get; set; }
+    public DateTime? NextDueDate { get; set; }
+}
+
+public class WorkRequestSummaryDto
+{
+    public int WorkRequestId { get; set; }
+    public string RequestNumber { get; set; } = "";
+    public string Title { get; set; } = "";
+    public string Status { get; set; } = "";
+    public string Priority { get; set; } = "";
+    public DateTime RequestedDate { get; set; }
+    public int? LinkedWorkOrderId { get; set; }
+    public string? LinkedWorkOrderNo { get; set; }
 }
 
 public class WorkOrderSummaryDto

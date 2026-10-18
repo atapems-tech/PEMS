@@ -1,31 +1,13 @@
 ﻿@model List<PEMS.Application.DTOs.DisciplineSummaryDto>
-
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div><h5 class="mb-1">Discipline Master Data</h5><p class="text-muted small mb-0">Register and maintain the engineering disciplines used by Employees, Engineering and document imports.</p></div>
-        <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#createDisciplineModal"><i class="bi bi-plus-lg"></i> New Discipline</button>
-    </div>
-    <div class="table-responsive">
-        <table class="table table-enterprise">
-            <thead><tr><th>Code</th><th>Name</th><th>Import Aliases</th><th>Transmittal</th><th>Status</th><th></th></tr></thead>
-            <tbody>
-            @foreach (var d in Model)
-            {
-                <tr>
-                    <td>@d.Code</td><td>@d.Name</td><td class="small text-muted">@d.ImportAliases</td><td>@d.TransmittalCode</td>
-                    <td><span class="badge @(d.IsActive ? "bg-success" : "bg-secondary")">@(d.IsActive ? "Active" : "Inactive")</span></td>
-                    <td class="text-end">
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editDiscipline_@d.DisciplineId"><i class="bi bi-pencil"></i></button>
-                        <form asp-action="ToggleActive" method="post" class="d-inline"><input type="hidden" name="disciplineId" value="@d.DisciplineId" /><button class="btn btn-sm btn-outline-@(d.IsActive ? "danger" : "success")"><i class="bi @(d.IsActive ? "bi-slash-circle" : "bi-check-circle")"></i></button></form>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </div>
-</div>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card">
+    @if (ViewBag.CanManageMaster == true)
+    {
+        <div class="mb-3"><a asp-action="Manage" class="btn btn-sm btn-outline-secondary"><i class="bi bi-sliders"></i> @Localizer["Manage disciplines"]</a></div>
+    }
     <p class="text-muted">
         هر دیسیپلین یک Workspace اختصاصی دارد (Equipment, Documents, VDR, MR/MRQ, Tasks, KPI) —
         دیتابیس مشترک است، فقط نما فیلترشده است.
@@ -33,7 +15,7 @@
     <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
         <table class="table table-enterprise">
             <thead>
-                <tr><th>Code</th><th>Discipline</th><th>Documents</th><th>Pending</th><th>Equipment</th><th>VDR</th><th>Open Tasks</th><th>Overdue</th><th></th></tr>
+                <tr><th>@Localizer["Code"]</th><th>@Localizer["Discipline"]</th><th>@Localizer["Documents"]</th><th>@Localizer["Pending"]</th><th>@Localizer["Equipment"]</th><th>@Localizer["VDR"]</th><th>@Localizer["Open Tasks"]</th><th>@Localizer["Overdue"]</th><th></th></tr>
             </thead>
             <tbody>
                 @foreach (var d in Model)
@@ -60,35 +42,3 @@
         @if (!Model.Any()) { <p class="text-muted text-center py-4">No disciplines configured yet.</p> }
     </div>
 </div>
-
-
-<div class="modal fade" id="createDisciplineModal" tabindex="-1">
- <div class="modal-dialog modal-lg"><div class="modal-content"><form asp-action="Create" method="post">
-  <div class="modal-header"><h6 class="modal-title">New Discipline</h6></div>
-  <div class="modal-body"><div class="row g-3">
-   <div class="col-md-4"><label class="form-label">Code</label><input name="code" class="form-control" required /></div>
-   <div class="col-md-8"><label class="form-label">Name</label><input name="name" class="form-control" required /></div>
-   <div class="col-12"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="2"></textarea></div>
-   <div class="col-md-8"><label class="form-label">Import Aliases</label><input name="importAliases" class="form-control" placeholder="ME, MECH, Mechanical" /></div>
-   <div class="col-md-4"><label class="form-label">Transmittal Code</label><input name="transmittalCode" class="form-control" maxlength="1" /></div>
-  </div></div>
-  <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button><button class="btn btn-pems-solid">Save</button></div>
- </form></div></div>
-</div>
-@foreach (var d in Model)
-{
-<div class="modal fade" id="editDiscipline_@d.DisciplineId" tabindex="-1">
- <div class="modal-dialog modal-lg"><div class="modal-content"><form asp-action="Edit" method="post">
-  <input type="hidden" name="disciplineId" value="@d.DisciplineId" />
-  <div class="modal-header"><h6 class="modal-title">Edit Discipline</h6></div>
-  <div class="modal-body"><div class="row g-3">
-   <div class="col-md-4"><label class="form-label">Code</label><input name="code" value="@d.Code" class="form-control" required /></div>
-   <div class="col-md-8"><label class="form-label">Name</label><input name="name" value="@d.Name" class="form-control" required /></div>
-   <div class="col-12"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="2">@d.Description</textarea></div>
-   <div class="col-md-8"><label class="form-label">Import Aliases</label><input name="importAliases" value="@d.ImportAliases" class="form-control" /></div>
-   <div class="col-md-4"><label class="form-label">Transmittal Code</label><input name="transmittalCode" value="@d.TransmittalCode" class="form-control" maxlength="1" /></div>
-  </div></div>
-  <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button><button class="btn btn-pems-solid">Save</button></div>
- </form></div></div>
-</div>
-}

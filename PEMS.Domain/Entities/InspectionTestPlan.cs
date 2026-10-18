@@ -22,6 +22,15 @@ public class InspectionTestPlan : BaseEntity
     public int? EquipmentId { get; set; }
     public Equipment? Equipment { get; set; }
 
+    // طبق ممیزی Package Procurement Contract Finalization (§C/§E، Phase 5.1): پیش از این ITP
+    // فقط در سطح تجهیز قابل تعریف بود - این دو FK اختیاری (هم‌الگوی EquipmentId بالا) امکان
+    // بازرسی الزامی در سطح بسته/قرارداد را اضافه می‌کنند، بدون شکستن رفتار موجود سطح-تجهیز.
+    public int? ProcurementPackageId { get; set; }
+    public ProcurementPackage? ProcurementPackage { get; set; }
+
+    public int? ContractId { get; set; }
+    public Contract? Contract { get; set; }
+
     public int QCDisciplineId { get; set; }
     public QCDiscipline? QCDiscipline { get; set; }
 

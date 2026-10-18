@@ -1,5 +1,8 @@
 ﻿@model PEMS.Domain.Entities.DocumentAttachment
 @using Microsoft.AspNetCore.Mvc.Rendering
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <p class="text-muted">
     File: <strong>@Model.FileName</strong> &nbsp;|&nbsp;
@@ -26,7 +29,7 @@
     {
         <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
         <table class="table table-enterprise">
-            <tr><th>Tag Number</th><th>Type</th><th>Area</th><th>Service</th><th>Description</th><th>Status</th><th>Action</th></tr>
+            <tr><th>@Localizer["Tag Number"]</th><th>@Localizer["Type"]</th><th>@Localizer["Area"]</th><th>Service</th><th>@Localizer["Description"]</th><th>@Localizer["Status"]</th><th>@Localizer["Action"]</th></tr>
             @foreach (var tag in Model.ExtractedTags)
             {
                 <tr>
@@ -45,15 +48,15 @@
                                 <input type="hidden" name="extractedTagId" value="@tag.ExtractedTagId" />
                                 <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
                                 <input type="text" class="form-control form-control-sm" style="width:160px;"
-                                       placeholder="جستجوی تجهیز..." data-pems-search data-search-type="Equipment"
+                                       placeholder="@Localizer["جستجوی تجهیز..."]" data-pems-search data-search-type="Equipment"
                                        data-search-hidden="#extTagEq_@tag.ExtractedTagId" autocomplete="off" />
                                 <input type="hidden" name="equipmentId" id="extTagEq_@tag.ExtractedTagId" />
-                                <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                                <button type="submit" class="btn btn-sm btn-success">@Localizer["Approve"]</button>
                             </form>
                             <form asp-action="RejectExtractedTag" method="post" class="d-inline mt-1">
                                 <input type="hidden" name="extractedTagId" value="@tag.ExtractedTagId" />
                                 <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Reject</button>
+                                <button type="submit" class="btn btn-sm btn-outline-danger">@Localizer["Reject"]</button>
                             </form>
                         }
                     </td>
@@ -75,7 +78,7 @@
     {
         <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
         <table class="table table-enterprise">
-            <tr><th>Related Tag</th><th>Field</th><th>Value</th><th>Unit</th><th>Status</th><th>Action</th></tr>
+            <tr><th>Related Tag</th><th>Field</th><th>@Localizer["Value"]</th><th>@Localizer["Unit"]</th><th>@Localizer["Status"]</th><th>@Localizer["Action"]</th></tr>
             @foreach (var spec in Model.ExtractedSpecifications)
             {
                 <tr>
@@ -92,12 +95,12 @@
                             <form asp-action="ApproveExtractedSpecification" method="post" class="d-inline">
                                 <input type="hidden" name="extractedSpecificationId" value="@spec.ExtractedSpecificationId" />
                                 <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
-                                <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                                <button type="submit" class="btn btn-sm btn-success">@Localizer["Approve"]</button>
                             </form>
                             <form asp-action="RejectExtractedSpecification" method="post" class="d-inline">
                                 <input type="hidden" name="extractedSpecificationId" value="@spec.ExtractedSpecificationId" />
                                 <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Reject</button>
+                                <button type="submit" class="btn btn-sm btn-outline-danger">@Localizer["Reject"]</button>
                             </form>
                         }
                     </td>

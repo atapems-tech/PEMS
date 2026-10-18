@@ -4,6 +4,91 @@
     --pems-accent: #d98c2b;
     --pems-accent-dark: #b8721e;
     --pems-steel: #445468;
+    /* کارت فرم - برخلاف قاب بیرونی (گرادیان برند، طبق همون الگوی سایدبار همیشه-تیره، ثابت
+       می‌ماند)، این‌جا باید در هر سه تم خوانا بماند */
+    --auth-card-bg: #ffffff;
+    --auth-card-text: #1b2733;
+    --auth-card-text-muted: #6c7a89;
+    --auth-card-label: #33475b;
+    --auth-card-border: #dde3ea;
+}
+
+[data-theme="dark"] {
+    --auth-card-bg: #1a2230;
+    --auth-card-text: #e4e9f0;
+    --auth-card-text-muted: #93a2b8;
+    --auth-card-label: #cbd6e4;
+    --auth-card-border: #2a3444;
+}
+
+[data-theme="turquoise"] {
+    --auth-card-bg: #16202b;
+    --auth-card-text: #e7f2f1;
+    --auth-card-text-muted: #8fa8ab;
+    --auth-card-label: #cfe4e3;
+    --auth-card-border: #223040;
+    --pems-accent: #b5651d;
+    --pems-accent-dark: #9a5217;
+}
+
+/* =========================================================================================
+   طبق «PEMS Premium Three-Theme UI/UX Redesign» (بند ۲۸): صفحه‌ی ورود باید ویترین کامل هویت
+   Persian Turquoise باشد - سیاه‌غالب، الگوی هندسی بسیار کم‌رنگ، پنل شیشه‌ای، فیروزه‌ی محدود.
+   قاب بیرونی (گرادیان برند) طبق همون قاعده‌ی سایدبار (بند ۲.۱ گزارش قبلی) ثابت می‌ماند - فقط
+   خودِ .auth-body و .auth-card برای این تم تغییر می‌کنند.
+   ========================================================================================= */
+[data-theme="turquoise"] .auth-body {
+    background:
+        radial-gradient(900px 480px at 12% -6%, rgba(14,165,166,.07), transparent 58%),
+        radial-gradient(700px 420px at 105% 6%, rgba(28,63,118,.09), transparent 55%),
+        #080c11;
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="turquoise"] .auth-body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .07;
+    background-image: var(--pems-pattern-hero);
+    background-repeat: no-repeat;
+    background-position: center 15%;
+    background-size: 640px 640px;
+}
+
+[data-theme="turquoise"] .auth-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+[data-theme="turquoise"] .auth-card {
+    background: var(--pems-glass-bg-strong, var(--auth-card-bg));
+    border: 1px solid var(--pems-glass-border, var(--auth-card-border));
+    box-shadow: 0 24px 64px rgba(0,0,0,.55), inset 0 1px 0 var(--pems-glass-highlight, transparent);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    [data-theme="turquoise"] .auth-card {
+        backdrop-filter: blur(var(--pems-glass-blur-strong, 20px));
+        -webkit-backdrop-filter: blur(var(--pems-glass-blur-strong, 20px));
+    }
+}
+
+[data-theme="turquoise"] .auth-brand-icon {
+    background: linear-gradient(135deg, var(--pems-turquoise, #0ea5a6), var(--pems-lapis, #1c3f76));
+    box-shadow: 0 0 0 1px rgba(45,212,213,.3), 0 8px 24px rgba(14,165,166,.25);
+}
+
+[data-theme="turquoise"] .btn-pems {
+    background: linear-gradient(135deg, var(--pems-copper, #b5651d), var(--pems-accent-dark, #9a5217));
+    box-shadow: 0 0 0 1px rgba(14,165,166,.18);
+}
+
+[data-theme="turquoise"] .btn-pems:focus-visible {
+    outline: 2px solid var(--pems-turquoise, #2dd4d5);
+    outline-offset: 2px;
 }
 
 * {
@@ -60,7 +145,7 @@
 }
 
 .auth-card {
-    background: #ffffff;
+    background: var(--auth-card-bg);
     border-radius: 12px;
     padding: 32px 30px;
     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
@@ -70,11 +155,11 @@
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 4px;
-    color: #1b2733;
+    color: var(--auth-card-text);
 }
 
 .auth-card p.subtitle {
-    color: #6c7a89;
+    color: var(--auth-card-text-muted);
     font-size: 13px;
     margin-bottom: 24px;
 }
@@ -82,13 +167,15 @@
 .auth-card label {
     font-size: 13px;
     font-weight: 600;
-    color: #33475b;
+    color: var(--auth-card-label);
 }
 
 .auth-card .form-control {
     border-radius: 8px;
     padding: 10px 12px;
-    border: 1px solid #dde3ea;
+    border: 1px solid var(--auth-card-border);
+    background: var(--auth-card-bg);
+    color: var(--auth-card-text);
 }
 
 .auth-card .form-control:focus {

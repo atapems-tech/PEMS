@@ -30,6 +30,26 @@ public class Vendor : BaseEntity
 
     public DateTime? RiskAssessedDate { get; set; }
 
+    // طبق ممیزی Package Procurement Contract Finalization (§I، قاعده ۱ و ۱۴): وضعیت صلاحیت‌سنجی
+    // فروشنده - پیش از این هیچ فیلد Qualification روی Vendor وجود نداشت.
+    // NotQualified, Pending, Qualified, Suspended, Expired
+    public string QualificationStatus { get; set; } = "NotQualified";
+
+    // دسته‌بندی صلاحیت (تعیین‌شده توسط کارفرما/تیم تدارکات - این پروژه مقداری برایش اختراع نمی‌کند)
+    public string? QualificationCategory { get; set; }
+
+    public DateTime? QualificationEffectiveDate { get; set; }
+
+    public DateTime? QualificationExpiryDate { get; set; }
+
+    // مرجع/سند شاهد صلاحیت (گواهی، ارزیابی، ...)
+    public string? QualificationEvidenceReference { get; set; }
+
+    public int? QualificationReviewedById { get; set; }
+    public Employee? QualificationReviewedBy { get; set; }
+
+    public string? QualificationNotes { get; set; }
+
     public bool IsActive { get; set; } = true;
 
     public DateTime CreatedDate { get; set; } = DateTime.Now;
@@ -40,4 +60,7 @@ public class Vendor : BaseEntity
 
     // طبق Phase E-04 (رفع P1 ممیزی Reverse Traceability) - سمت معکوس EngineeringDocument.VendorId
     public ICollection<EngineeringDocument> EngineeringDocuments { get; set; } = new List<EngineeringDocument>();
+
+    // تاریخچه‌ی append-only تغییرات وضعیت صلاحیت - فیلدهای بالا فقط Cache آخرین وضعیت‌اند
+    public ICollection<VendorQualificationHistory> QualificationHistory { get; set; } = new List<VendorQualificationHistory>();
 }

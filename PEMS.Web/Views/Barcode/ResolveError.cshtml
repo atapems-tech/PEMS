@@ -1,3 +1,6 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = "Barcode Not Resolved";
     var errorCode = (string?)ViewBag.ErrorCode;
@@ -9,5 +12,5 @@
         <h6 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> @errorCode</h6>
         <p class="mb-0">@message</p>
     </div>
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm mt-3">← Back to Barcode</a>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm mt-3">@Localizer["← Back to Barcode"]</a>
 </div>

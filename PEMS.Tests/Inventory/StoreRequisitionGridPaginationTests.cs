@@ -1,3 +1,4 @@
+using PEMS.Web.Areas.Warehouse.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using PEMS.Application.DTOs;
 using PEMS.Domain.Entities;

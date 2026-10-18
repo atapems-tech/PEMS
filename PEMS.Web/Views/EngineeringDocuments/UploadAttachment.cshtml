@@ -1,3 +1,6 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = "Upload Attachment";
     var revisions = (IEnumerable<dynamic>)(ViewBag.Revisions ?? Array.Empty<dynamic>());
@@ -44,7 +47,7 @@ Upload Document Attachment
     </div>
 
     <div class="mb-3">
-        <label class="form-label">File Role <span class="text-muted small">(optional)</span></label>
+        <label class="form-label">File Role <span class="text-muted small">@Localizer["(optional)"]</span></label>
         <select name="fileRole" class="form-select">
             <option value="">-- Unspecified --</option>
             <option value="Native">Native / Source File</option>
@@ -59,7 +62,7 @@ Upload Document Attachment
     <button type="submit"
             class="btn btn-primary">
 
-        Upload
+        @Localizer["Upload"]
 
     </button>
 

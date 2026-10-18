@@ -1,4 +1,7 @@
 @model PEMS.Web.Areas.Admin.Models.ProjectIntelligenceReport
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var reportMissing = ViewBag.ReportMissing != null && (bool)ViewBag.ReportMissing;
     var parseError = ViewBag.ParseError != null && (bool)ViewBag.ParseError;
@@ -8,15 +11,13 @@
 <div class="admin-page-shell">
     <div class="admin-hero">
         <div class="d-flex align-items-center gap-3">
-            <div class="admin-hero-icon"><i class="bi bi-graph-up-arrow"></i></div>
             <div>
-                <h2>Project Intelligence</h2>
                 <p>Evidence-based module scan - not a manually estimated progress number. Every bar below is computed from source, DbContext, migrations, views, sidebar nav, tests, docs and git history.</p>
             </div>
         </div>
         <form asp-action="Refresh" method="post" id="refreshForm">
             <button type="submit" class="btn btn-pems-solid" id="refreshBtn">
-                <i class="bi bi-arrow-clockwise"></i> Refresh scan
+                <i class="bi bi-arrow-clockwise"></i> @Localizer["Refresh scan"]
             </button>
         </form>
     </div>
@@ -118,7 +119,7 @@
                         </div>
 
                         <details>
-                            <summary class="small text-primary" style="cursor:pointer;">Evidence checklist</summary>
+                            <summary class="small text-primary" style="cursor:pointer;">@Localizer["Evidence checklist"]</summary>
                             <table class="table table-sm mb-0 mt-2">
                                 <tbody>
                                 @foreach (var kv in m.Evidence)

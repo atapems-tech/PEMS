@@ -15,6 +15,13 @@ public interface IRelationshipService
 
     Task<RelationshipExplorationDto?> ExploreFromVendorAsync(int vendorId);
 
+    // طبق ممیزی نهایی Ownership/Traceability (§16): تا این‌جا کاوشگر فقط از Equipment/Document/Vendor
+    // قابل شروع بود - زنجیره‌ی Package→Tender→Bid→Contract→NTP→Kickoff→ITP هیچ نقطه‌ی ورودی
+    // مستقلی نداشت (فقط از طریق Vendor به‌صورت جزئی قابل مشاهده بود).
+    Task<RelationshipExplorationDto?> ExploreFromProcurementPackageAsync(int procurementPackageId);
+
+    Task<RelationshipExplorationDto?> ExploreFromContractAsync(int contractId);
+
     // جستجوی یک تگ تجهیز/شماره مدرک/نام Vendor آزاد در متن سوال کاربر - برای Chat Assistant
     Task<RelationshipExplorationDto?> ExploreByFreeTextAsync(string text);
 

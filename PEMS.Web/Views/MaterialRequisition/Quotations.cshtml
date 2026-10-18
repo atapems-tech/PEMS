@@ -1,23 +1,26 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MRQDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('MaterialRequisitionQuotations')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="pems-grid-scroll">
     <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="MaterialRequisitionQuotations">
         <thead>
             <tr>
-                <th data-col-key="mrqNo" data-resizable="true" data-min-width="100" data-max-width="200">MRQ No</th>
+                <th data-col-key="mrqNo" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["MRQ No"]</th>
                 <th data-col-key="mrNo" data-resizable="true" data-min-width="100" data-max-width="200">MR No</th>
-                <th data-col-key="vendor" data-resizable="true" data-min-width="120" data-max-width="260">Vendor</th>
-                <th data-col-key="amount" data-resizable="true" data-min-width="100" data-max-width="180">Amount</th>
-                <th data-col-key="quotationStatus" data-resizable="true" data-min-width="100" data-max-width="180">Quotation Status</th>
-                <th data-col-key="technical" data-resizable="true" data-min-width="90" data-max-width="160">Technical</th>
-                <th data-col-key="commercial" data-resizable="true" data-min-width="90" data-max-width="160">Commercial</th>
-                <th data-col-key="approval" data-resizable="true" data-min-width="90" data-max-width="160">Approval</th>
+                <th data-col-key="vendor" data-resizable="true" data-min-width="120" data-max-width="260">@Localizer["Vendor"]</th>
+                <th data-col-key="amount" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Amount"]</th>
+                <th data-col-key="quotationStatus" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Quotation Status"]</th>
+                <th data-col-key="technical" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Technical"]</th>
+                <th data-col-key="commercial" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Commercial"]</th>
+                <th data-col-key="approval" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Approval"]</th>
                 <th></th>
             </tr>
         </thead>

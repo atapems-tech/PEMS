@@ -1,4 +1,7 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.ManufacturerDataBookDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
     var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
@@ -12,7 +15,7 @@
 <div class="content-card mb-3">
     <form method="get" class="row g-3">
         <div class="col-md-4">
-            <label class="form-label">Project</label>
+            <label class="form-label">@Localizer["Project"]</label>
             <select name="projectId" class="form-select" onchange="this.form.submit()">
                 <option value="">-- All Projects --</option>
                 @foreach (var p in projects)
@@ -22,7 +25,7 @@
             </select>
         </div>
         <div class="col-md-4">
-            <label class="form-label">Vendor</label>
+            <label class="form-label">@Localizer["Vendor"]</label>
             <select name="vendorId" class="form-select" onchange="this.form.submit()">
                 <option value="">-- All Vendors --</option>
                 @foreach (var v in vendors)
@@ -40,20 +43,20 @@
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('MDB')">
-            <i class="bi bi-arrow-counterclockwise"></i> Reset columns
+            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
         </button>
     </div>
     <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
         <table class="table table-enterprise pems-grid-table" data-grid-key="MDB">
             <thead>
                 <tr>
-                    <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Equipment</th>
-                    <th data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Vendor</th>
+                    <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Equipment"]</th>
+                    <th data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Vendor"]</th>
                     <th data-col-key="po" data-resizable="true" data-min-width="80" data-max-width="160" style="width:110px">PO</th>
-                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">Project</th>
+                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Project"]</th>
                     <th data-col-key="plannedIssue" data-resizable="true" data-min-width="100" data-max-width="180" style="width:140px">Planned Final Issue</th>
                     <th data-col-key="indexDue" data-resizable="true" data-min-width="100" data-max-width="200" style="width:150px">Index Due</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">Status</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">@Localizer["Status"]</th>
                     <th data-col-key="hardCopy" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">Hard Copy</th>
                     <th data-col-key="softCopy" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">Soft Copy</th>
                 </tr>
@@ -71,7 +74,7 @@
                             @(m.IndexOfContentsDueDate?.ToString("yyyy-MM-dd"))
                             @if (m.IsIndexOverdue)
                             {
-                                <span class="badge bg-danger">overdue</span>
+                                <span class="badge bg-danger">@Localizer["overdue"]</span>
                             }
                         </td>
                         <td><span class="badge bg-secondary">@m.Status</span></td>

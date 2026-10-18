@@ -41,11 +41,20 @@ public class ImportCenterNavigationTests
     // ---------- (1) catalog integrity ----------
 
     [Fact]
-    public void Catalog_HasEleven_UniqueImports()
+    public void Catalog_HasThirteen_UniqueImports()
     {
-        Assert.Equal(11, ImportCatalog.All.Count);
+        // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۹:
+        // یک ورودی تازه («ConditionReading») به کاتالوگ اضافه شد - ۱۱ → ۱۲.
+        // Organization Hierarchy Phase 1: «OrganizationStructure» اضافه شد - ۱۲ → ۱۳.
+        Assert.Equal(13, ImportCatalog.All.Count);
         Assert.Equal(ImportCatalog.All.Count, ImportCatalog.All.Select(e => e.Key).Distinct().Count());
     }
+
+    // MRS Import و مشابه‌ها در Area (مثلاً Warehouse) هستند؛ Namespace از Area کاتالوگ ساخته می‌شود
+    private static Type? ControllerType(System.Reflection.Assembly asm, ImportCatalog.ImportEntry e) =>
+        asm.GetType(string.IsNullOrEmpty(e.Area)
+            ? $"PEMS.Web.Controllers.{e.Controller}Controller"
+            : $"PEMS.Web.Areas.{e.Area}.Controllers.{e.Controller}Controller");
 
     [Fact]
     public void EveryCatalogEntry_PointsToAnExistingControllerAction()
@@ -53,7 +62,7 @@ public class ImportCenterNavigationTests
         var asm = typeof(ImportCenterController).Assembly;
         foreach (var e in ImportCatalog.All)
         {
-            var type = asm.GetType($"PEMS.Web.Controllers.{e.Controller}Controller");
+            var type = ControllerType(asm, e);
             Assert.True(type != null, $"Controller {e.Controller}Controller not found for import '{e.Key}'");
             Assert.True(type!.GetMethods(BindingFlags.Public | BindingFlags.Instance).Any(m => m.Name == e.Action),
                 $"Action {e.Controller}.{e.Action} not found for import '{e.Key}'");
@@ -72,6 +81,8 @@ public class ImportCenterNavigationTests
         ["TechnicalQuery"] = "TQ attachments",
         ["MyProfile"] = "profile photo",
         ["VDR"] = "comment sheet / reply sheet / FTP upload on an existing VDR item",
+        ["PartCatalogueRequest"] = "request attachments (drawings/documents)",
+        ["PartCatalogueAdmin"] = "IFS reference-data upsert (gated by PartCatalogue.Admin on its own admin page, not role-set based)",
     };
 
     [Fact]
@@ -97,14 +108,16 @@ public class ImportCenterNavigationTests
     // ---------- (3) no role sees more than before ----------
 
     // Expected counts are derived from the legacy scattered sidebar gates (section roles AND MenuAccess.ImportCenter):
-    // SystemAdmin all 11; EngineeringManager: MDR, VDR, Equipment, FL, EFLA, MaintHistory, MRS, Instrument + Document Upload (AI roles) = 9;
-    // Viewer: MDR, VDR; DocumentController: MDR, VDR + Document Upload; MaintenanceEngineer: Equipment, FL, EFLA, MaintHistory, MRS, Instrument.
+    // SystemAdmin all 12; EngineeringManager: MDR, VDR, Equipment, FL, EFLA, MaintHistory, ConditionReading, MRS, Instrument + Document Upload (AI roles) = 10;
+    // Viewer: MDR, VDR; DocumentController: MDR, VDR + Document Upload; MaintenanceEngineer: Equipment, FL, EFLA, MaintHistory, ConditionReading, MRS, Instrument.
+    // طبق فاز ۹: «ConditionReading» دقیقاً همون Sets(CmmsIntegration, ImportCenter) را دارد که
+    // MaintenanceHistory دارد - پس هر جا MaintenanceHistory دیده می‌شد، حالا این‌جا هم دیده می‌شود.
     [Theory]
-    [InlineData(SystemRoles.SystemAdmin, 11)]
-    [InlineData(SystemRoles.EngineeringManager, 9)]
+    [InlineData(SystemRoles.SystemAdmin, 13)]
+    [InlineData(SystemRoles.EngineeringManager, 10)]
     [InlineData(SystemRoles.Viewer, 2)]
     [InlineData(SystemRoles.DocumentController, 3)]
-    [InlineData(SystemRoles.MaintenanceEngineer, 6)]
+    [InlineData(SystemRoles.MaintenanceEngineer, 7)]
     [InlineData(SystemRoles.QAManager, 0)]
     public void VisibleByRole_MatchesLegacySidebarGates(string role, int expectedCount)
     {
@@ -166,7 +179,7 @@ public class ImportCenterNavigationTests
         var view = Assert.IsType<ViewResult>(await controller.Index());
         var model = Assert.IsAssignableFrom<IReadOnlyList<ImportCatalog.ImportEntry>>(view.Model);
 
-        Assert.Equal(10, model.Count);
+        Assert.Equal(12, model.Count);
         Assert.DoesNotContain(model, e => e.Key == "Mrs");
     }
 
@@ -245,7 +258,7 @@ public class ImportCenterNavigationTests
         {
             Assert.Equal("Import", e.Action);
             Assert.False(string.IsNullOrEmpty(e.Accept));
-            var type = typeof(ImportCenterController).Assembly.GetType($"PEMS.Web.Controllers.{e.Controller}Controller")!;
+            var type = ControllerType(typeof(ImportCenterController).Assembly, e)!;
             var post = type.GetMethods().Single(m => m.Name == "Import" && m.GetCustomAttributes<HttpPostAttribute>().Any());
             Assert.Contains(post.GetParameters(), p => p.ParameterType == typeof(IFormFile));
         }
