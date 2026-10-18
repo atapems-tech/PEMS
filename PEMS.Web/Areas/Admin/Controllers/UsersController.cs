@@ -62,8 +62,8 @@ public class UsersController : Controller
     {
         var nameParts = model.FullName.Trim().Split(' ', 2);
 
-        // Position متن آزاد دیگر منبع حقیقت نیست: اگر سمت سازمانی انتخاب شده باشد، عنوانش فقط به‌عنوان متن نمایشی (میراثی) ثبت می‌شود
-        // و سمت واقعی از طریق EmployeeAssignment اصلی اعمال می‌شود. DisciplineId/DepartmentId پیش‌تر اعتبارسنجی شده‌اند (هیچ مقدار جادویی/0 وجود ندارد).
+        // Position متن آزاد دیگر منبع حقیقت نیست: اگر سمت سازمانی انتخاب شده باشد، عنوانش فقط به‌عنوان متن نمایشی (م[...]
+        // و سمت واقعی از طریق EmployeeAssignment اصلی اعمال می‌شود. DisciplineId/DepartmentId پیش‌تر اعتبارسنجی شده‌اند (هیچ مقدار [...]
         string? displayTitle = null;
         if (model.PositionId.HasValue)
             displayTitle = await _context.Positions.Where(p => p.PositionId == model.PositionId.Value).Select(p => p.Title).FirstOrDefaultAsync();
@@ -94,7 +94,7 @@ public class UsersController : Controller
         return newEmployee.EmployeeId;
     }
 
-    /// <summary>اعتبارسنجی پیوند/ساخت کارمند (مشترک Create/Edit). خطاها به ModelState اضافه می‌شوند؛ هیچ FK نامعتبر یا مقدار جادویی ذخیره نمی‌شود.</summary>
+    /// <summary>اعتبارسنجی پیوند/ساخت کارمند (مشترک Create/Edit). خطاها به ModelState اضافه می‌شوند؛ هیچ FK نامعتبر یا مقدار ج[...]
     private async Task ValidateEmployeeLinkAsync(UserFormViewModel model, int? currentUserId)
     {
         if (model.ExistingEmployeeId.HasValue)
@@ -297,9 +297,27 @@ public class UsersController : Controller
             return View(model);
         }
 
+        // نقش‌ها را اضافه می‌کنیم و اگر تخصیص نقش به هر دلیلی شکست خورد، کاربر تازه ایجادشده را حذف می‌کنیم
         if (model.SelectedRoles.Any())
-            await _userManager.AddToRolesAsync(user, model.SelectedRoles);
+        {
+            var roleResult = await _userManager.AddToRolesAsync(user, model.SelectedRoles);
+            if (!roleResult.Succeeded)
+            {
+                // سعی می‌کنیم کاربر نیمه‌ساخته را حذف کنیم تا وضعیت دیتابیس سازگار بماند
+                await _userManager.DeleteAsync(user);
 
+                foreach (var error in roleResult.Errors)
+                    ModelState.AddModelError(string.Empty, error.Description);
+
+                ViewData["Title"] = "New User";
+                ViewData["Section"] = "Administration";
+
+                await LoadEmployeeDropdownsAsync(model);
+                return View(model);
+            }
+        }
+
+        // فقط در صورتی همگام‌سازی می‌کنیم که تخصیص نقش موفق بوده (یا نقشی انتخاب نشده باشد)
         await _roleSync.SyncAsync(user.Id);
 
         TempData["Message"] = "User created successfully";
@@ -400,7 +418,7 @@ public class UsersController : Controller
         if (rolesToAdd.Any())
             await _userManager.AddToRolesAsync(user, rolesToAdd);
 
-        // نقش حذف‌شده نباید از طریق RoleAssignment آینه‌ایِ باقی‌مانده همچنان دسترسی بدهد؛ Scoped/Delegated/Emergency/Temporary دست‌نخورده می‌مانند
+        // نقش حذف‌شده نباید از طریق RoleAssignment آینه‌ایِ باقی‌مانده همچنان دسترسی بدهد؛ Scoped/Delegated/Emergency/Temporary دست�[...]
         await _roleSync.SyncAsync(user.Id);
 
         TempData["Message"] = "User updated successfully";
@@ -478,7 +496,7 @@ public class UsersController : Controller
     }
 
 
-    // طبق «PEMS — Enterprise User-Centric Authorization Workspace Consolidation»: صفحه‌ی تازه -
+    // طبق «PEMS — Enterprise User-Centric Authorization Workspace Consolidation": صفحه‌ی تازه -
     // Users → [User] → Access & Authorization. فقط نمایش (Read-only) - Edit موجود بدون تغییر
     // باقی می‌ماند و همچنان تنها مسیر ویرایش است. هر پنج دیدگاه (Effective/Matrix/Simulator/SoD/
     // Navigation) از همان سرویس‌های واقعیِ موجود می‌آیند - هیچ موتور مجوزدهی/SoD/ناوبری تازه‌ای
@@ -495,7 +513,7 @@ public class UsersController : Controller
     }
 
     // طبق بند «Simulator must remain a simulation tool... must never mutate real authorization
-    // state»: عیناً همان AccessControlService.AuthorizeAsync که Admin/Authorization/Simulate
+    // state": عیناً همان AccessControlService.AuthorizeAsync که Admin/Authorization/Simulate
     // موجود صدا می‌زند - نه یک ارزیاب دوم. فقط صفحه‌ی تازه دوباره با نتیجه رندر می‌شود، هیچ‌چیز
     // نوشته نمی‌شود.
     [HttpPost]
