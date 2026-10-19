@@ -455,16 +455,24 @@ public class EmployeeController : Controller
 
             // فقط SystemAdmin مجاز است نقش SystemAdmin را به کاربر جدید تخصیص دهد - جلوگیری
             // از ارتقای دسترسی توسط EngineeringManager از این فرم
+            IdentityResult? roleResult = null;
             if (selectedRoles != null && selectedRoles.Any())
             {
                 if (!User.IsInRole(SystemRoles.SystemAdmin))
                     selectedRoles = selectedRoles.Where(r => r != SystemRoles.SystemAdmin).ToList();
 
                 if (selectedRoles.Any())
-                    await _userManager.AddToRolesAsync(newUser, selectedRoles);
+                    roleResult = await _userManager.AddToRolesAsync(newUser, selectedRoles);
             }
 
             await _roleSync.SyncAsync(newUser.Id);
+
+            if (roleResult != null && !roleResult.Succeeded)
+            {
+                TempData["Error"] = "کارمند و یوزر ساخته شد، اما تخصیص برخی نقش‌ها ناموفق بود: "
+                    + string.Join(", ", roleResult.Errors.Select(e => e.Description));
+                return RedirectToAction(nameof(Index));
+            }
 
             TempData["Message"] = $"کارمند و یوزر «{userName}» ساخته شد (رمز پیش‌فرض: {DefaultNewUserPassword} - باید در اولین ورود عوض بشه).";
         }

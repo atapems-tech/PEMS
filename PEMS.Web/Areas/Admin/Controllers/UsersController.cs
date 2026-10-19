@@ -415,11 +415,20 @@ public class UsersController : Controller
         if (rolesToRemove.Any())
             await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
 
+        IdentityResult? roleResult = null;
         if (rolesToAdd.Any())
-            await _userManager.AddToRolesAsync(user, rolesToAdd);
+            roleResult = await _userManager.AddToRolesAsync(user, rolesToAdd);
 
         // نقش حذف‌شده نباید از طریق RoleAssignment آینه‌ایِ باقی‌مانده همچنان دسترسی بدهد؛ Scoped/Delegated/Emergency/Temporary دست�[...]
         await _roleSync.SyncAsync(user.Id);
+
+        // همگام‌سازی حتی در صورت شکست تخصیص نقش انجام می‌شود تا نقش‌های حذف‌شده دسترسی باقی‌مانده ندهند
+        if (roleResult != null && !roleResult.Succeeded)
+        {
+            TempData["Error"] = "User updated, but some role assignments failed: "
+                + string.Join(", ", roleResult.Errors.Select(e => e.Description));
+            return RedirectToAction(nameof(Index));
+        }
 
         TempData["Message"] = "User updated successfully";
 
