@@ -62,8 +62,8 @@ public class UsersController : Controller
     {
         var nameParts = model.FullName.Trim().Split(' ', 2);
 
-        // Position متن آزاد دیگر منبع حقیقت نیست: اگر سمت سازمانی انتخاب شده باشد، عنوانش فقط به‌عنوان متن نمایشی (م[...]
-        // و سمت واقعی از طریق EmployeeAssignment اصلی اعمال می‌شود. DisciplineId/DepartmentId پیش‌تر اعتبارسنجی شده‌اند (هیچ مقدار [...]
+        // Position متن آزاد دیگر منبع حقیقت نیست: اگر سمت سازمانی انتخاب شده باشد، عنوانش فقط به‌عنوان متن نمایشی (میراثی) ثبت می‌شود
+        // و سمت واقعی از طریق EmployeeAssignment اصلی اعمال می‌شود. DisciplineId/DepartmentId پیش‌تر اعتبارسنجی شده‌اند (هیچ مقدار جادویی/0 وجود ندارد).
         string? displayTitle = null;
         if (model.PositionId.HasValue)
             displayTitle = await _context.Positions.Where(p => p.PositionId == model.PositionId.Value).Select(p => p.Title).FirstOrDefaultAsync();
@@ -94,7 +94,7 @@ public class UsersController : Controller
         return newEmployee.EmployeeId;
     }
 
-    /// <summary>اعتبارسنجی پیوند/ساخت کارمند (مشترک Create/Edit). خطاها به ModelState اضافه می‌شوند؛ هیچ FK نامعتبر یا مقدار ج[...]
+    /// <summary>اعتبارسنجی پیوند/ساخت کارمند (مشترک Create/Edit). خطاها به ModelState اضافه می‌شوند؛ هیچ FK نامعتبر یا مقدار جادویی ذخیره نمی‌شود.</summary>
     private async Task ValidateEmployeeLinkAsync(UserFormViewModel model, int? currentUserId)
     {
         if (model.ExistingEmployeeId.HasValue)
@@ -120,6 +120,44 @@ public class UsersController : Controller
             if (pos == null || !pos.IsActive) ModelState.AddModelError(nameof(model.PositionId), "Select a valid, active position.");
             else if (await _context.EmployeeAssignments.AnyAsync(a => a.PositionId == model.PositionId.Value && a.IsActive))
                 ModelState.AddModelError(nameof(model.PositionId), "This position already has a holder.");
+        }
+    }
+
+    /// <summary>C16: همان اعتبارسنج‌های Identity (کاربر + رمز) را پیش از ساخت کارمند/کاربر اجرا می‌کند و نقش‌های نامعتبر را رد می‌کند.</summary>
+    private async Task ValidateIdentityUpFrontAsync(UserFormViewModel model)
+    {
+        var probe = new ApplicationUser { UserName = model.UserName, Email = model.Email, FullName = model.FullName };
+        foreach (var validator in _userManager.UserValidators)
+        {
+            var r = await validator.ValidateAsync(_userManager, probe);
+            foreach (var e in r.Errors) ModelState.AddModelError(string.Empty, e.Description);
+        }
+        if (!string.IsNullOrWhiteSpace(model.Password))
+            foreach (var validator in _userManager.PasswordValidators)
+            {
+                var r = await validator.ValidateAsync(_userManager, probe, model.Password);
+                foreach (var e in r.Errors) ModelState.AddModelError(nameof(model.Password), e.Description);
+            }
+        var invalidRoles = model.SelectedRoles.Where(r => !model.AllRoles.Contains(r)).ToList();
+        if (invalidRoles.Count > 0) ModelState.AddModelError(string.Empty, "Unknown role(s): " + string.Join(", ", invalidRoles));
+    }
+
+    private async Task RollbackCreatedEmployeeAsync(int? employeeId)
+    {
+        if (!employeeId.HasValue) return;
+        try
+        {
+            _context.ChangeTracker.Clear();
+            var assignments = await _context.EmployeeAssignments.Where(a => a.EmployeeId == employeeId.Value).ToListAsync();
+            _context.EmployeeAssignments.RemoveRange(assignments);
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.EmployeeId == employeeId.Value);
+            if (employee != null) _context.Employees.Remove(employee);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception)
+        {
+            _context.ChangeTracker.Clear();
+            TempData["Warning"] = $"The employee #{employeeId} created for this attempt could not be removed automatically; please deactivate it manually.";
         }
     }
 
@@ -256,21 +294,25 @@ public class UsersController : Controller
             ModelState.AddModelError(nameof(model.DepartmentId), "Select an existing employee or specify a department to create one.");
 
         await ValidateEmployeeLinkAsync(model, null);
+        // C16: سیاست رمز/یکتایی نام‌کاربری و ایمیل/نقش‌ها «قبل از» هر اثر جانبی بررسی می‌شود تا کارمند یتیم (و تکرار آن در ارسال مجدد فرم) ساخته نشود
+        await ValidateIdentityUpFrontAsync(model);
 
         if (!ModelState.IsValid)
         {
             ViewData["Title"] = "New User";
             ViewData["Section"] = "Administration";
 
+            model.Password = null;                    // رمز هرگز در پاسخ برنگردد؛ هر ارسال دوباره رمز می‌خواهد (مقادیر غیرمحرمانه و نقش‌ها حفظ می‌شوند)
             await LoadEmployeeDropdownsAsync(model);
             return View(model);
         }
 
 
         int? employeeId = model.ExistingEmployeeId;
+        int? createdEmployeeId = null;
 
         if (!employeeId.HasValue && model.DepartmentId.HasValue)
-            employeeId = await CreateEmployeeFromModelAsync(model);
+            employeeId = createdEmployeeId = await CreateEmployeeFromModelAsync(model);
 
         var user = new ApplicationUser
         {
@@ -283,16 +325,22 @@ public class UsersController : Controller
             CreatedDate = DateTime.Now
         };
 
-        var result = await _userManager.CreateAsync(user, model.Password!);
+        IdentityResult result;
+        try { result = await _userManager.CreateAsync(user, model.Password!); }
+        catch (Exception ex) { result = IdentityResult.Failed(new IdentityError { Description = ex.GetBaseException().Message }); }
 
         if (!result.Succeeded)
         {
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
 
+            // جبران: کارمندی که همین درخواست ساخته بود حذف می‌شود تا یتیم نماند و در لیست‌ها آلودگی نسازد
+            await RollbackCreatedEmployeeAsync(createdEmployeeId);
+
             ViewData["Title"] = "New User";
             ViewData["Section"] = "Administration";
 
+            model.Password = null;
             await LoadEmployeeDropdownsAsync(model);
             return View(model);
         }
@@ -303,15 +351,14 @@ public class UsersController : Controller
             var roleResult = await _userManager.AddToRolesAsync(user, model.SelectedRoles);
             if (!roleResult.Succeeded)
             {
+                // کاربر بدون نقش‌های انتخاب‌شده رها نمی‌شود: ساخت کامل برگردانده می‌شود
                 // سعی می‌کنیم کاربر نیمه‌ساخته را حذف کنیم تا وضعیت دیتابیس سازگار بماند
+                foreach (var error in roleResult.Errors) ModelState.AddModelError(string.Empty, error.Description);
                 await _userManager.DeleteAsync(user);
-
-                foreach (var error in roleResult.Errors)
-                    ModelState.AddModelError(string.Empty, error.Description);
-
+                await RollbackCreatedEmployeeAsync(createdEmployeeId);
                 ViewData["Title"] = "New User";
                 ViewData["Section"] = "Administration";
-
+                model.Password = null;
                 await LoadEmployeeDropdownsAsync(model);
                 return View(model);
             }
@@ -419,7 +466,7 @@ public class UsersController : Controller
         if (rolesToAdd.Any())
             roleResult = await _userManager.AddToRolesAsync(user, rolesToAdd);
 
-        // نقش حذف‌شده نباید از طریق RoleAssignment آینه‌ایِ باقی‌مانده همچنان دسترسی بدهد؛ Scoped/Delegated/Emergency/Temporary دست�[...]
+        // نقش حذف‌شده نباید از طریق RoleAssignment آینه‌ایِ باقی‌مانده همچنان دسترسی بدهد؛ Scoped/Delegated/Emergency/Temporary دست‌نخورده می‌مانند
         await _roleSync.SyncAsync(user.Id);
 
         // همگام‌سازی حتی در صورت شکست تخصیص نقش انجام می‌شود تا نقش‌های حذف‌شده دسترسی باقی‌مانده ندهند
@@ -505,7 +552,7 @@ public class UsersController : Controller
     }
 
 
-    // طبق «PEMS — Enterprise User-Centric Authorization Workspace Consolidation": صفحه‌ی تازه -
+    // طبق «PEMS — Enterprise User-Centric Authorization Workspace Consolidation»: صفحه‌ی تازه -
     // Users → [User] → Access & Authorization. فقط نمایش (Read-only) - Edit موجود بدون تغییر
     // باقی می‌ماند و همچنان تنها مسیر ویرایش است. هر پنج دیدگاه (Effective/Matrix/Simulator/SoD/
     // Navigation) از همان سرویس‌های واقعیِ موجود می‌آیند - هیچ موتور مجوزدهی/SoD/ناوبری تازه‌ای
@@ -522,7 +569,7 @@ public class UsersController : Controller
     }
 
     // طبق بند «Simulator must remain a simulation tool... must never mutate real authorization
-    // state": عیناً همان AccessControlService.AuthorizeAsync که Admin/Authorization/Simulate
+    // state»: عیناً همان AccessControlService.AuthorizeAsync که Admin/Authorization/Simulate
     // موجود صدا می‌زند - نه یک ارزیاب دوم. فقط صفحه‌ی تازه دوباره با نتیجه رندر می‌شود، هیچ‌چیز
     // نوشته نمی‌شود.
     [HttpPost]

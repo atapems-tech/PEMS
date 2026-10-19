@@ -177,6 +177,11 @@ builder.Services
     .AddDefaultTokenProviders();
 
 
+// نقش‌های کاربر در Claim کوکی هستند؛ پیش‌فرض Identity فقط هر ۳۰ دقیقه آن‌ها را از دیتابیس تازه می‌کند و تغییر نقش/دسترسی
+// در پنل مدیر تا آن زمان (یا خروج/ورود دوباره) در سایدبار همان کاربر دیده نمی‌شد. هر دقیقه تازه‌سازی می‌شود.
+builder.Services.Configure<Microsoft.AspNetCore.Identity.SecurityStampValidatorOptions>(o =>
+    o.ValidationInterval = TimeSpan.FromMinutes(1));
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
@@ -320,6 +325,7 @@ builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationConsistenc
 // (ترتیب ثبت DI مهم نیست چون Scoped/Constructor Injection است، ولی همین‌جا برای خوانایی کنار هم آمدند)
 builder.Services.AddScoped<IWorkOrderReleaseGateService, WorkOrderReleaseGateService>();
 builder.Services.AddScoped<IWorkOrderLifecycleService, WorkOrderLifecycleService>();
+builder.Services.AddScoped<IWorkOrderSectionGuard, WorkOrderSectionGuard>();
 builder.Services.AddScoped<IPMGenerationService, PMGenerationService>();
 builder.Services.AddScoped<IRcmOperationalBridgeService, RcmOperationalBridgeService>();
 builder.Services.AddScoped<IStoreRequisitionLifecycleService, StoreRequisitionLifecycleService>();
@@ -477,6 +483,14 @@ builder.Services.AddScoped<INetDemandCollector, NetDemandCollector>();
 builder.Services.AddScoped<INetDemandService, NetDemandService>();
 // Phase 2 / P5: توصیه‌های تأمین (اجرای دستی؛ فقط روی جدول‌های خودش می‌نویسد)
 builder.Services.AddScoped<IReplenishmentRecommendationService, ReplenishmentRecommendationService>();
+// دروازه‌ی موقت P5: پیش‌فرض غیرفعال تا اعمال Migration تأییدشده؛ فقط Features:ReplenishmentRecommendations:Enabled=true فعال می‌کند
+builder.Services.AddSingleton<PEMS.Web.Security.IReplenishmentAvailability, PEMS.Web.Security.ReplenishmentAvailability>();
+// سایدبار داده‌محور (پشت پرچم Features:DynamicSidebar:Enabled؛ پیش‌فرض سایدبار قدیمی)
+builder.Services.AddSingleton<PEMS.Web.Navigation.IDynamicSidebarAvailability, PEMS.Web.Navigation.DynamicSidebarAvailability>();
+builder.Services.AddScoped<INavigationMenuService, NavigationMenuService>();
+builder.Services.AddScoped<INavigationCountService, NavigationCountService>();
+builder.Services.AddScoped<PEMS.Web.Navigation.DynamicSidebarBuilder>();
+builder.Services.AddScoped<PEMS.Web.Navigation.NavigationBadgeService>();
 builder.Services.AddScoped<IPartCatalogueService, PartCatalogueService>();
 builder.Services.AddScoped<IPartCatalogueAdminService, PartCatalogueAdminService>();
 
@@ -487,6 +501,11 @@ builder.Services.AddScoped<IFunctionalLocationService, FunctionalLocationService
 builder.Services.AddScoped<IJobPlanService, JobPlanService>();
 
 // طبق CMMS Production Baseline v1 بند P0-05 (CMMS-03: Work Management)
+// A3: تفکیک وظایف Work Request - پیش‌فرض روشن؛ برای خاموش کردن: "Cmms": { "WorkRequest": { "EnforceSegregationOfDuties": false } } (SystemAdmin همیشه فقط با ممیزی Override می‌کند)
+builder.Services.AddSingleton(new PEMS.Application.Common.WorkRequestPolicyOptions
+{
+    EnforceSegregationOfDuties = bool.TryParse(builder.Configuration["Cmms:WorkRequest:EnforceSegregationOfDuties"], out var enforceSod) ? enforceSod : true
+});
 builder.Services.AddScoped<IWorkRequestService, WorkRequestService>();
 
 builder.Services.AddScoped<IUserDashboardService, UserDashboardService>();
@@ -501,6 +520,10 @@ builder.Services.AddScoped<ILetterReferralService, LetterReferralService>();
 builder.Services.AddScoped<ITagService, TagService>();
 
 builder.Services.AddScoped<ITaskService, TaskService>();
+
+// Task Manager (فضا/Backlog/Board/Sprint روی همان TaskItem) - دسترسی سطح-شیء در TaskAccess
+builder.Services.AddScoped<ITaskManagerService, PEMS.Persistence.Services.TaskManager.TaskManagerService>();
+builder.Services.AddScoped<IWorkSpaceService, PEMS.Persistence.Services.TaskManager.WorkSpaceService>();
 
 builder.Services.AddScoped<ICorrespondenceReportService, CorrespondenceReportService>();
 
@@ -546,6 +569,14 @@ builder.Services.AddScoped<ISparePartService, SparePartService>();
 builder.Services.AddScoped<IMaintenancePlanService, MaintenancePlanService>();
 
 builder.Services.AddScoped<IMaintenanceStrategyService, MaintenanceStrategyService>();
+
+// RCM کلاس‌محور: الگوی استراتژی + تخصیص به تگ + Plan از تخصیص + پوشش + کاتالوگ حالت خرابی ISO 14224
+builder.Services.AddScoped<IMaintenanceStrategyCommandService, MaintenanceStrategyCommandService>();
+builder.Services.AddScoped<IStrategyAssignmentService, StrategyAssignmentService>();
+builder.Services.AddScoped<IMaintenancePlanCommandService, MaintenancePlanCommandService>();
+builder.Services.AddScoped<IStrategyCoverageService, StrategyCoverageService>();
+builder.Services.AddScoped<IFailureModeCatalogService, FailureModeCatalogService>();
+builder.Services.AddScoped<IStrategyImportService, StrategyImportService>();
 
 builder.Services.AddScoped<IDisciplineWorkspaceService, DisciplineWorkspaceService>();
 
@@ -700,6 +731,9 @@ using (var scope = app.Services.CreateScope())
     foreach (var (custom, baseline) in roleCatalogResult.PossibleDuplicates)
         app.Logger.LogWarning("Role Catalog: custom role '{Custom}' looks like baseline role '{Baseline}' (not merged).", custom, baseline);
 
+    // P0-09: هر نقشی که روی ماژول‌های خرید/انبار مجوز دارد View هم بگیرد (فقط افزایشی) - قبل از SeedFromLegacyAsync
+    await PEMS.Persistence.Seed.ProcurementReadViewSeeder.SeedAsync(scope.ServiceProvider);
+
     // طبق سند RBAC-ABAC Authorization Architecture (فاز ۱): داده‌ی RolePermission/
     // RoleModuleAction/AspNetUserRoles بالا را به مدل عمومی جدید (Permission/RolePermissionGrant/
     // RoleAssignment) کپی می‌کند - باید بعد از دو Seed بالا اجرا شود
@@ -791,6 +825,9 @@ using (var scope = app.Services.CreateScope())
     // Release را از Start Work جدا می‌کند (Instance های در حال اجرا روی نسخه‌ی قبلی دست‌نخورده می‌مانند).
     await PEMS.Persistence.Seed.WorkOrderLifecycleWorkflowV2Seeder.SeedAsync(scope.ServiceProvider);
 
+    // H28: مجوز جدای بازگشایی Work Order بسته‌شده (Idempotent، فقط افزایشی)
+    await PEMS.Persistence.Seed.WorkOrderReopenPermissionSeeder.SeedAsync(scope.ServiceProvider);
+
     await PEMS.Persistence.Seed.WorkflowManagementSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق «PEMS Bilingual Help & Knowledge System» - کتابخانه‌ی اولیه‌ی محتوای راهنما (ایدمپوتنت)
@@ -808,6 +845,9 @@ using (var scope = app.Services.CreateScope())
 
     // طبق ممیزی Material Management (Gap B) + Step 3: زنجیره‌ی تایید Disposition دریافت مادی (IRN)
     await PEMS.Persistence.Seed.IrnDispositionWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // RCM: گردش‌کار تایید استراتژی نگهداری (Draft → InReview → Approved) روی همان موتور مرکزی
+    await PEMS.Persistence.Seed.MaintenanceStrategyWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق ممیزی Package Procurement Contract Finalization §D: گردش‌کار نهایی‌سازی قرارداد
     await PEMS.Persistence.Seed.ContractWorkflowSeeder.SeedAsync(scope.ServiceProvider);
@@ -832,6 +872,10 @@ using (var scope = app.Services.CreateScope())
     // طبق CMMS Production Baseline v1 بند P0-04: شمارنده‌ی WorkOrder را از روی شماره‌های قدیمی
     // (پیش از NumberingService) Seed می‌کند تا شماره‌ی بعدی با آن‌ها برخورد نکند.
     await PEMS.Persistence.Seed.NumberingBackfillSeeder.SeedAsync(scope.ServiceProvider);
+
+    // سایدبار داده‌محور: همگام‌سازی افزایشی کاتالوگ کد (فقط وقتی پرچم فعال است؛ جدول تا اعمال Migration وجود ندارد)
+    if (scope.ServiceProvider.GetRequiredService<PEMS.Web.Navigation.IDynamicSidebarAvailability>().IsEnabled)
+        await scope.ServiceProvider.GetRequiredService<INavigationMenuService>().SyncDefaultsAsync(PEMS.Web.Navigation.NavigationMenuDefaults.All);
 }
 
 

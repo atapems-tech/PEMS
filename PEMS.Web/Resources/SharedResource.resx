@@ -44,7 +44,7 @@
   <data name="تخصیص گروه کاری / مجری پس از برنامه‌ریزی و در مرحله‌ی «تخصیص مجری» انجام می‌شود."><value>Team/executor assignment happens after planning, during the "Assign Executor" stage.</value></data>
   <data name="Maintenance Planning"><value>Maintenance Planning</value></data><data name="Maintenance Backlog"><value>Maintenance Backlog</value></data>
   <data name="Day"><value>Day</value></data><data name="Week"><value>Week</value></data><data name="Month"><value>Month</value></data><data name="Today"><value>Today</value></data><data name="All Teams"><value>All Teams</value></data><data name="Maintenance Team"><value>Maintenance Team</value></data><data name="High/Critical"><value>High/Critical</value></data><data name="Overdue"><value>Overdue</value></data><data name="Conflict"><value>Conflict</value></data><data name="Unassigned Team"><value>Unassigned Team</value></data><data name="No scheduled work this week."><value>No scheduled work this week.</value></data><data name="No scheduled work this day."><value>No scheduled work this day.</value></data><data name="Unscheduled Work"><value>Unscheduled Work</value></data><data name="No team"><value>No team</value></data><data name="more"><value>more</value></data><data name="My Work"><value>My Work</value></data><data name="No work scheduled for you on this day."><value>No work scheduled for you on this day.</value></data><data name="Planned"><value>Planned</value></data><data name="Unscheduled"><value>Unscheduled</value></data><data name="Planned Start"><value>Planned Start</value></data><data name="Planned Finish"><value>Planned Finish</value></data><data name="Save Schedule"><value>Save Schedule</value></data><data name="Work Type"><value>Work Type</value></data><data name="Maintenance Calendar"><value>Maintenance Calendar</value></data>
-  <data name="Active"><value>Active</value></data><data name="Allowed"><value>Allowed</value></data><data name="Always"><value>Always</value></data><data name="Apply filters"><value>Apply filters</value></data><data name="Authorization"><value>Authorization</value></data><data name="By Role"><value>By Role</value></data><data name="By User"><value>By User</value></data><data name="Cannot follow"><value>Cannot follow</value></data><data name="Choose a role above"><value>Choose a role above</value></data><data name="Choose a user above"><value>Choose a user above</value></data><data name="Conflicts with"><value>Conflicts with</value></data><data name="Decision"><value>Decision</value></data><data name="Destructive"><value>Destructive</value></data><data name="Detail"><value>Detail</value></data><data name="Disable"><value>Disable</value></data><data name="Disabled"><value>Disabled</value></data><data name="Effective"><value>Effective</value></data><data name="Enable"><value>Enable</value></data><data name="First permission"><value>First permission</value></data><data name="From"><value>From</value></data><data name="Matched Role"><value>Matched Role</value></data><data name="Matched Scope"><value>Matched Scope</value></data><data name="New Policy"><value>New Policy</value></data><data name="New Role"><value>New Role</value></data><data name="No SoD policies configured"><value>No SoD policies configured</value></data><data name="No authorization events found"><value>No authorization events found</value></data><data name="No permissions configured"><value>No permissions configured</value></data><data name="No roles assigned"><value>No roles assigned</value></data><data name="Not configured"><value>Not configured</value></data><data name="Not granted"><value>Not granted</value></data><data name="Reason"><value>Reason</value></data><data name="Resource"><value>Resource</value></data><data name="Resource ID"><value>Resource ID</value></data><data name="Role"><value>Role</value></data><data name="Roles and scope"><value>Roles and scope</value></data><data name="Run"><value>Run</value></data><data name="Scope"><value>Scope</value></data><data name="Show not-granted permissions"><value>Show not-granted permissions</value></data><data name="System"><value>System</value></data><data name="Time"><value>Time</value></data><data name="Unrestricted"><value>Unrestricted</value></data><data name="User"><value>User</value></data><data name="Why"><value>Why</value></data><data name="With"><value>With</value></data><data name="Yes"><value>Yes</value></data><data name="open"><value>open</value></data><data name="permissions"><value>permissions</value></data><data name="A user who does the first action on a record cannot also do the second on the same record."><value>A user who does the first action on a record cannot also do the second on the same record.</value></data><data name="Every authorization decision - who, what, why."><value>Every authorization decision - who, what, why.</value></data><data name="No permissions configured for this role yet - every action is denied by default"><value>No permissions configured for this role yet - every action is denied by default</value></data><data name="Run a real authorization decision for a hypothetical user and action."><value>Run a real authorization decision for a hypothetical user and action.</value></data><data name="See what a Role can do, read live from the authorization engine."><value>See what a Role can do, read live from the authorization engine.</value></data><data name="See what a User can do, and which Role/Scope grants it."><value>See what a User can do, and which Role/Scope grants it.</value></data><data name="SystemAdmin bypasses the permission matrix by design"><value>SystemAdmin bypasses the permission matrix by design</value></data><data name="SystemAdmin bypasses this matrix by design."><value>SystemAdmin bypasses this matrix by design.</value></data><data name="This user holds SystemAdmin and bypasses the permission matrix by design."><value>This user holds SystemAdmin and bypasses the permission matrix by design.</value></data><data name="This was recorded in the Authorization Audit log."><value>This was recorded in the Authorization Audit log.</value></data><data name="modules configured"><value>modules configured</value></data><data name="permissions allowed"><value>permissions allowed</value></data><data name="permissions allowed, via role membership"><value>permissions allowed, via role membership</value></data><data name="— select a role —"><value>— select a role —</value></data><data name="— select a user —"><value>— select a user —</value></data><data name="— select —"><value>— select —</value></data><data name="Effective Permissions"><value>Effective Permissions</value></data><data name="Permission Simulator"><value>Permission Simulator</value></data><data name="Separation of Duties"><value>Separation of Duties</value></data><data name="Authorization Audit"><value>Authorization Audit</value></data><data name="ALLOW"><value>ALLOW</value></data><data name="DENY"><value>DENY</value></data><data name="Choose which sidebar sections a Role sees. This never changes what a Role is allowed to do - only what it sees by default."><value>Choose which sidebar sections a Role sees. This never changes what a Role is allowed to do - only what it sees by default.</value></data><data name="manual overrides"><value>manual overrides</value></data><data name="Module / Item"><value>Module / Item</value></data><data name="Default"><value>Default</value></data><data name="Source"><value>Source</value></data><data name="Override"><value>Override</value></data><data name="Visible"><value>Visible</value></data><data name="Hidden"><value>Hidden</value></data><data name="Forced visible"><value>Forced visible</value></data><data name="Forced hidden"><value>Forced hidden</value></data><data name="Force visible for this role"><value>Force visible for this role</value></data><data name="Force hidden for this role"><value>Force hidden for this role</value></data><data name="Clear override - back to default"><value>Clear override - back to default</value></data><data name="See exactly what a specific user's sidebar looks like right now - a read-only preview, never a real sign-in as that user."><value>See exactly what a specific user's sidebar looks like right now - a read-only preview, never a real sign-in as that user.</value></data><data name="Preview"><value>Preview</value></data><data name="This is a visualization only - it does not sign in as this user, and hidden items may still be reachable by direct URL if the user is actually authorized (Hidden is not the same as Unauthorized)."><value>This is a visualization only - it does not sign in as this user, and hidden items may still be reachable by direct URL if the user is actually authorized (Hidden is not the same as Unauthorized).</value></data><data name="Visible sidebar sections"><value>Visible sidebar sections</value></data><data name="CMMS Integration items"><value>CMMS Integration items</value></data><data name="Navigation Visibility"><value>Navigation Visibility</value></data><data name="View"><value>View</value></data><data name="Capability"><value>Capability</value></data><data name="Manual override"><value>Manual override</value></data><data name="None - not permission-gated"><value>None - not permission-gated</value></data><data name="This tree mirrors the real sidebar. Expand a section to see its items; expand an item to see which roles see it and why."><value>This tree mirrors the real sidebar. Expand a section to see its items; expand an item to see which roles see it and why.</value></data><data name="Inactive"><value>Inactive</value></data><data name="Employee link"><value>Employee link</value></data><data name="Organization"><value>Organization</value></data><data name="Username"><value>Username</value></data><data name="Full Name"><value>Full Name</value></data><data name="Email"><value>Email</value></data><data name="Department"><value>Department</value></data><data name="Position / Title"><value>Position / Title</value></data><data name="Module"><value>Module</value></data><data name="Locked"><value>Locked</value></data><data name="N/A"><value>N/A</value></data><data name="Potential SoD conflicts"><value>Potential SoD conflicts</value></data><data name="Linked"><value>Linked</value></data><data name="Not linked"><value>Not linked</value></data><data name="Last Login"><value>Last Login</value></data><data name="Never"><value>Never</value></data><data name="Overview"><value>Overview</value></data><data name="Access &amp; Authorization"><value>Access &amp; Authorization</value></data><data name="Audit"><value>Audit</value></data><data name="Role assignment itself is changed from the Edit page."><value>Role assignment itself is changed from the Edit page.</value></data><data name="No matrix rows for this user's roles"><value>No matrix rows for this user's roles</value></data><data name="Rows for this user's own role(s) only, from the same matrix maintained on the full Permission Matrix page."><value>Rows for this user's own role(s) only, from the same matrix maintained on the full Permission Matrix page.</value></data><data name="Open full matrix"><value>Open full matrix</value></data><data name="Resource ID (optional)"><value>Resource ID (optional)</value></data><data name="This runs the real authorization engine for this user - it never writes or changes any permission."><value>This runs the real authorization engine for this user - it never writes or changes any permission.</value></data><data name="Separation of Duties in PEMS is checked dynamically, per record, at the moment of a real action - not as a standing status. The rows below show structural exposure only: this user's roles grant both permissions of an active policy. This is not the same as an actual violation, which can only happen on a specific record."><value>Separation of Duties in PEMS is checked dynamically, per record, at the moment of a real action - not as a standing status. The rows below show structural exposure only: this user's roles grant both permissions of an active policy. This is not the same as an actual violation, which can only happen on a specific record.</value></data><data name="No active SoD policies apply to this user's permissions"><value>No active SoD policies apply to this user's permissions</value></data><data name="Permission A"><value>Permission A</value></data><data name="Permission B"><value>Permission B</value></data><data name="Potential exposure"><value>Potential exposure</value></data><data name="Not exposed"><value>Not exposed</value></data><data name="Manage SoD policies"><value>Manage SoD policies</value></data><data name="Manage navigation visibility by role"><value>Manage navigation visibility by role</value></data><data name="No authorization decisions recorded yet"><value>No authorization decisions recorded yet</value></data><data name="Timestamp"><value>Timestamp</value></data><data name="Open full audit log for this user"><value>Open full audit log for this user</value></data><data name="IC_ConditionReading_Title"><value>Condition Reading Import</value></data><data name="IC_ConditionReading_Desc"><value>Import historical condition monitoring readings from Excel.</value></data><data name="IC_ConditionReading_Flow"><value>Upload → Review (paged) → Commit / Discard.</value></data>
+  <data name="Active"><value>Active</value></data><data name="Allowed"><value>Allowed</value></data><data name="Always"><value>Always</value></data><data name="Apply filters"><value>Apply filters</value></data><data name="Authorization"><value>Authorization</value></data><data name="By Role"><value>By Role</value></data><data name="By User"><value>By User</value></data><data name="Cannot follow"><value>Cannot follow</value></data><data name="Choose a role above"><value>Choose a role above</value></data><data name="Choose a user above"><value>Choose a user above</value></data><data name="Conflicts with"><value>Conflicts with</value></data><data name="Decision"><value>Decision</value></data><data name="Destructive"><value>Destructive</value></data><data name="Detail"><value>Detail</value></data><data name="Disable"><value>Disable</value></data><data name="Disabled"><value>Disabled</value></data><data name="Effective"><value>Effective</value></data><data name="Enable"><value>Enable</value></data><data name="First permission"><value>First permission</value></data><data name="From"><value>From</value></data><data name="Matched Role"><value>Matched Role</value></data><data name="Matched Scope"><value>Matched Scope</value></data><data name="New Policy"><value>New Policy</value></data><data name="New Role"><value>New Role</value></data><data name="No SoD policies configured"><value>No SoD policies configured</value></data><data name="No authorization events found"><value>No authorization events found</value></data><data name="No permissions configured"><value>No permissions configured</value></data><data name="No roles assigned"><value>No roles assigned</value></data><data name="Not configured"><value>Not configured</value></data><data name="Not granted"><value>Not granted</value></data><data name="Reason"><value>Reason</value></data><data name="Resource"><value>Resource</value></data><data name="Resource ID"><value>Resource ID</value></data><data name="Role"><value>Role</value></data><data name="Roles and scope"><value>Roles and scope</value></data><data name="Run"><value>Run</value></data><data name="Scope"><value>Scope</value></data><data name="Show not-granted permissions"><value>Show not-granted permissions</value></data><data name="System"><value>System</value></data><data name="Time"><value>Time</value></data><data name="Unrestricted"><value>Unrestricted</value></data><data name="User"><value>User</value></data><data name="Why"><value>Why</value></data><data name="With"><value>With</value></data><data name="Yes"><value>Yes</value></data><data name="Open"><value>Open</value></data><data name="permissions"><value>permissions</value></data><data name="A user who does the first action on a record cannot also do the second on the same record."><value>A user who does the first action on a record cannot also do the second on the same record.</value></data><data name="Every authorization decision - who, what, why."><value>Every authorization decision - who, what, why.</value></data><data name="No permissions configured for this role yet - every action is denied by default"><value>No permissions configured for this role yet - every action is denied by default</value></data><data name="Run a real authorization decision for a hypothetical user and action."><value>Run a real authorization decision for a hypothetical user and action.</value></data><data name="See what a Role can do, read live from the authorization engine."><value>See what a Role can do, read live from the authorization engine.</value></data><data name="See what a User can do, and which Role/Scope grants it."><value>See what a User can do, and which Role/Scope grants it.</value></data><data name="SystemAdmin bypasses the permission matrix by design"><value>SystemAdmin bypasses the permission matrix by design</value></data><data name="SystemAdmin bypasses this matrix by design."><value>SystemAdmin bypasses this matrix by design.</value></data><data name="This user holds SystemAdmin and bypasses the permission matrix by design."><value>This user holds SystemAdmin and bypasses the permission matrix by design.</value></data><data name="This was recorded in the Authorization Audit log."><value>This was recorded in the Authorization Audit log.</value></data><data name="modules configured"><value>modules configured</value></data><data name="permissions allowed"><value>permissions allowed</value></data><data name="permissions allowed, via role membership"><value>permissions allowed, via role membership</value></data><data name="— select a role —"><value>— select a role —</value></data><data name="— select a user —"><value>— select a user —</value></data><data name="— select —"><value>— select —</value></data><data name="Effective Permissions"><value>Effective Permissions</value></data><data name="Permission Simulator"><value>Permission Simulator</value></data><data name="Separation of Duties"><value>Separation of Duties</value></data><data name="Authorization Audit"><value>Authorization Audit</value></data><data name="ALLOW"><value>ALLOW</value></data><data name="DENY"><value>DENY</value></data><data name="Choose which sidebar sections a Role sees. This never changes what a Role is allowed to do - only what it sees by default."><value>Choose which sidebar sections a Role sees. This never changes what a Role is allowed to do - only what it sees by default.</value></data><data name="manual overrides"><value>manual overrides</value></data><data name="Module / Item"><value>Module / Item</value></data><data name="Default"><value>Default</value></data><data name="Source"><value>Source</value></data><data name="Override"><value>Override</value></data><data name="Visible"><value>Visible</value></data><data name="Hidden"><value>Hidden</value></data><data name="Forced visible"><value>Forced visible</value></data><data name="Forced hidden"><value>Forced hidden</value></data><data name="Force visible for this role"><value>Force visible for this role</value></data><data name="Force hidden for this role"><value>Force hidden for this role</value></data><data name="Clear override - back to default"><value>Clear override - back to default</value></data><data name="See exactly what a specific user's sidebar looks like right now - a read-only preview, never a real sign-in as that user."><value>See exactly what a specific user's sidebar looks like right now - a read-only preview, never a real sign-in as that user.</value></data><data name="Preview"><value>Preview</value></data><data name="This is a visualization only - it does not sign in as this user, and hidden items may still be reachable by direct URL if the user is actually authorized (Hidden is not the same as Unauthorized)."><value>This is a visualization only - it does not sign in as this user, and hidden items may still be reachable by direct URL if the user is actually authorized (Hidden is not the same as Unauthorized).</value></data><data name="Visible sidebar sections"><value>Visible sidebar sections</value></data><data name="CMMS Integration items"><value>CMMS Integration items</value></data><data name="Navigation Visibility"><value>Navigation Visibility</value></data><data name="View"><value>View</value></data><data name="Capability"><value>Capability</value></data><data name="Manual override"><value>Manual override</value></data><data name="None - not permission-gated"><value>None - not permission-gated</value></data><data name="This tree mirrors the real sidebar. Expand a section to see its items; expand an item to see which roles see it and why."><value>This tree mirrors the real sidebar. Expand a section to see its items; expand an item to see which roles see it and why.</value></data><data name="Inactive"><value>Inactive</value></data><data name="Employee link"><value>Employee link</value></data><data name="Organization"><value>Organization</value></data><data name="Username"><value>Username</value></data><data name="Full Name"><value>Full Name</value></data><data name="Email"><value>Email</value></data><data name="Department"><value>Department</value></data><data name="Position / Title"><value>Position / Title</value></data><data name="Module"><value>Module</value></data><data name="Locked"><value>Locked</value></data><data name="N/A"><value>N/A</value></data><data name="Potential SoD conflicts"><value>Potential SoD conflicts</value></data><data name="Linked"><value>Linked</value></data><data name="Not linked"><value>Not linked</value></data><data name="Last Login"><value>Last Login</value></data><data name="Never"><value>Never</value></data><data name="Overview"><value>Overview</value></data><data name="Access &amp; Authorization"><value>Access &amp; Authorization</value></data><data name="Audit"><value>Audit</value></data><data name="Role assignment itself is changed from the Edit page."><value>Role assignment itself is changed from the Edit page.</value></data><data name="No matrix rows for this user's roles"><value>No matrix rows for this user's roles</value></data><data name="Rows for this user's own role(s) only, from the same matrix maintained on the full Permission Matrix page."><value>Rows for this user's own role(s) only, from the same matrix maintained on the full Permission Matrix page.</value></data><data name="Open full matrix"><value>Open full matrix</value></data><data name="Resource ID (optional)"><value>Resource ID (optional)</value></data><data name="This runs the real authorization engine for this user - it never writes or changes any permission."><value>This runs the real authorization engine for this user - it never writes or changes any permission.</value></data><data name="Separation of Duties in PEMS is checked dynamically, per record, at the moment of a real action - not as a standing status. The rows below show structural exposure only: this user's roles grant both permissions of an active policy. This is not the same as an actual violation, which can only happen on a specific record."><value>Separation of Duties in PEMS is checked dynamically, per record, at the moment of a real action - not as a standing status. The rows below show structural exposure only: this user's roles grant both permissions of an active policy. This is not the same as an actual violation, which can only happen on a specific record.</value></data><data name="No active SoD policies apply to this user's permissions"><value>No active SoD policies apply to this user's permissions</value></data><data name="Permission A"><value>Permission A</value></data><data name="Permission B"><value>Permission B</value></data><data name="Potential exposure"><value>Potential exposure</value></data><data name="Not exposed"><value>Not exposed</value></data><data name="Manage SoD policies"><value>Manage SoD policies</value></data><data name="Manage navigation visibility by role"><value>Manage navigation visibility by role</value></data><data name="No authorization decisions recorded yet"><value>No authorization decisions recorded yet</value></data><data name="Timestamp"><value>Timestamp</value></data><data name="Open full audit log for this user"><value>Open full audit log for this user</value></data><data name="IC_ConditionReading_Title"><value>Condition Reading Import</value></data><data name="IC_ConditionReading_Desc"><value>Import historical condition monitoring readings from Excel.</value></data><data name="IC_ConditionReading_Flow"><value>Upload → Review (paged) → Commit / Discard.</value></data>
 <data name="Notif_MarkAllRead"><value>Mark all as read</value></data><data name="Notif_Dismiss"><value>Dismiss</value></data><data name="Notif_DismissAll"><value>Dismiss all</value></data><data name="Notif_ViewAll"><value>View all notifications</value></data><data name="Notif_NoNew"><value>No notifications</value></data><data name="Notif_Empty"><value>No notifications.</value></data><data name="Notif_All"><value>All</value></data><data name="Notif_Unread"><value>Unread</value></data><data name="Notif_Read"><value>Read</value></data><data name="Notif_Dismissed"><value>Dismissed</value></data>
 <data name="Role_SystemAdmin_Name"><value>System Admin</value></data><data name="Role_SystemAdmin_Desc"><value>Platform administration: users, roles, permissions and configuration. Bypasses the permission matrix by design.</value></data><data name="Role_EngineeringManager_Name"><value>Engineering Manager</value></data><data name="Role_EngineeringManager_Desc"><value>Leads Engineering: document approval, cross-discipline review and final approval of Work Orders originating in Engineering.</value></data><data name="Role_EngineeringSupervisor_Name"><value>Engineering Supervisor</value></data><data name="Role_EngineeringSupervisor_Desc"><value>Supervises Engineering work: document checks, work request approval and Work Order final approval.</value></data><data name="Role_DisciplineEngineer_Name"><value>Discipline Engineer</value></data><data name="Role_DisciplineEngineer_Desc"><value>Engineering discipline specialist: prepares documents and verifies completed work for the originating discipline.</value></data><data name="Role_DocumentController_Name"><value>Document Controller</value></data><data name="Role_DocumentController_Desc"><value>Controls engineering documents and correspondence: issue, transmittals and client responses.</value></data><data name="Role_MaintenanceEngineer_Name"><value>Maintenance Engineer</value></data><data name="Role_MaintenanceEngineer_Desc"><value>Maintenance engineering: equipment, plans, strategies, inspections and condition monitoring.</value></data><data name="Role_ContractManager_Name"><value>Contract Manager</value></data><data name="Role_ContractManager_Desc"><value>Manages contracts, procurement packages and tenders, including their approval.</value></data><data name="Role_QAManager_Name"><value>QA Manager</value></data><data name="Role_QAManager_Desc"><value>Quality assurance: IRN disposition, NCR, MOC closure and permit health/safety review.</value></data><data name="Role_Viewer_Name"><value>Viewer</value></data><data name="Role_Viewer_Desc"><value>Read-only access to Engineering, CMMS and import status information. Cannot change data.</value></data><data name="Role_Legal_Name"><value>Legal</value></data><data name="Role_Legal_Desc"><value>Legal review participant in multi-discipline contract review.</value></data><data name="Role_Finance_Name"><value>Finance</value></data><data name="Role_Finance_Desc"><value>Finance review participant in multi-discipline contract review.</value></data><data name="Role_HSE_Name"><value>HSE</value></data><data name="Role_HSE_Desc"><value>Health, safety and environment review participant in multi-discipline contract review.</value></data><data name="Role_MNT_Manager_Name"><value>Maintenance Manager</value></data><data name="Role_MNT_Manager_Desc"><value>Heads Maintenance: rejects or cancels Work Orders and gives final approval for Work Orders originating in Maintenance.</value></data><data name="Role_MNT_PlanningHead_Name"><value>Maintenance Planning Head</value></data><data name="Role_MNT_PlanningHead_Desc"><value>Leads maintenance planning: creates, plans and prepares Work Orders and approves work requests.</value></data><data name="Role_MNT_PlanningExpert_Name"><value>Maintenance Planning Expert</value></data><data name="Role_MNT_PlanningExpert_Desc"><value>Maintenance planner: creates, plans and prepares Work Orders.</value></data><data name="Role_MNT_DisciplineHead_Name"><value>Maintenance Discipline Head</value></data><data name="Role_MNT_DisciplineHead_Desc"><value>Leads a maintenance discipline: assigns executors, starts and executes work, verifies and gives final approval.</value></data><data name="Role_MNT_SeniorExpert_Name"><value>Maintenance Senior Expert</value></data><data name="Role_MNT_SeniorExpert_Desc"><value>Senior maintenance technician: executes and verifies work within the responsible discipline.</value></data><data name="Role_MNT_Expert_Name"><value>Maintenance Expert</value></data><data name="Role_MNT_Expert_Desc"><value>Maintenance technician: executes assigned work within the responsible discipline.</value></data><data name="Role_OPS_IssueAuthority_Name"><value>Operations Issue Authority</value></data><data name="Role_OPS_IssueAuthority_Desc"><value>Operations authority that issues (releases) Work Orders after permit/isolation/gas-test gates and verifies completed work.</value></data><data name="Role_WH_Manager_Name"><value>Warehouse Manager</value></data><data name="Role_WH_Manager_Desc"><value>Heads the warehouse: approves store requisitions. Separate from the storekeeper who creates them; cannot approve IRN quality dispositions.</value></data><data name="Role_WH_Storekeeper_Name"><value>Storekeeper</value></data><data name="Role_WH_Storekeeper_Desc"><value>Warehouse operator: creates store requisitions, records receipts and maintains stock master data. Cannot approve requisitions or IRN quality dispositions.</value></data><data name="RoleDomain_Platform"><value>Platform</value></data><data name="RoleDomain_Engineering"><value>Engineering</value></data><data name="RoleDomain_DocumentControl"><value>Document Control</value></data><data name="RoleDomain_Maintenance"><value>Maintenance</value></data><data name="RoleDomain_Operations"><value>Operations</value></data><data name="RoleDomain_Warehouse"><value>Warehouse</value></data><data name="RoleDomain_Contracts"><value>Contracts</value></data><data name="RoleDomain_Quality"><value>Quality</value></data><data name="RoleDomain_HSE"><value>HSE</value></data><data name="RoleDomain_Finance"><value>Finance</value></data><data name="RoleDomain_Legal"><value>Legal</value></data><data name="RoleDomain_General"><value>General</value></data><data name="RoleCategory_Platform"><value>Platform</value></data><data name="RoleCategory_Domain"><value>Domain</value></data><data name="RoleCategory_Functional"><value>Functional</value></data><data name="RoleCategory_ReadOnly"><value>Read-only</value></data><data name="Role_Domain"><value>Domain</value></data><data name="Role_Category"><value>Category</value></data><data name="Role_PossibleDuplicates"><value>Possible duplicates of baseline roles (not merged — review manually):</value></data>
   <data name="Pc_Menu" xml:space="preserve"><value>Part Catalogue</value></data>
@@ -672,4 +672,673 @@
   <data name="Repl_FreshnessDisclaimer" xml:space="preserve"><value>Inputs are read one after another without snapshot isolation, so this does not establish that the figures are current. "Unknown" means the timestamp is not recorded for at least one input.</value></data>
   <data name="Repl_RequiresAttribution" xml:space="preserve"><value>Requires warehouse attribution</value></data>
   <data name="Repl_RequiresAttributionHelp" xml:space="preserve"><value>Work Order material demand has no warehouse and is never assigned to one by inference. Until a verified warehouse attribution exists, the affected materials are reported here and no recommendation is created for them.</value></data>
+  <data name="Error_Title" xml:space="preserve"><value>An error occurred</value></data>
+  <data name="Error_Message" xml:space="preserve"><value>The request could not be completed. Please try again; if the problem continues, contact the system administrator and quote the request ID below.</value></data>
+  <data name="Error_RequestId" xml:space="preserve"><value>Request ID</value></data>
+  <data name="Error_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Rcm_Back" xml:space="preserve"><value>Back</value></data>
+  <data name="Rcm_All" xml:space="preserve"><value>All</value></data>
+  <data name="Rcm_AllLive" xml:space="preserve"><value>Open (excl. retired/superseded)</value></data>
+  <data name="Rcm_AllClasses" xml:space="preserve"><value>All classes (generic)</value></data>
+  <data name="Rcm_SelectPlaceholder" xml:space="preserve"><value>— select —</value></data>
+  <data name="Rcm_Search" xml:space="preserve"><value>Search</value></data>
+  <data name="Rcm_ClearFilter" xml:space="preserve"><value>Clear filter</value></data>
+  <data name="Rcm_FilterByEquipment" xml:space="preserve"><value>Filter by equipment</value></data>
+  <data name="Rcm_SearchEquipmentPlaceholder" xml:space="preserve"><value>Search by tag, name or manufacturer…</value></data>
+  <data name="Rcm_Code" xml:space="preserve"><value>Code</value></data>
+  <data name="Rcm_Comment" xml:space="preserve"><value>Comment</value></data>
+  <data name="Rcm_Description" xml:space="preserve"><value>Description</value></data>
+  <data name="Rcm_Title" xml:space="preserve"><value>Title</value></data>
+  <data name="Rcm_Total" xml:space="preserve"><value>Total</value></data>
+  <data name="Rcm_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Rcm_Deactivate" xml:space="preserve"><value>Deactivate</value></data>
+  <data name="Rcm_Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Rcm_Messages" xml:space="preserve"><value>Messages</value></data>
+  <data name="Rcm_Reference" xml:space="preserve"><value>Reference</value></data>
+  <data name="Rcm_When" xml:space="preserve"><value>When</value></data>
+  <data name="Rcm_Who" xml:space="preserve"><value>By</value></data>
+  <data name="Rcm_Action" xml:space="preserve"><value>Action</value></data>
+  <data name="Rcm_Changes" xml:space="preserve"><value>Changes</value></data>
+  <data name="Rcm_History" xml:space="preserve"><value>Change history</value></data>
+  <data name="Rcm_Version" xml:space="preserve"><value>Version</value></data>
+  <data name="Rcm_Versions" xml:space="preserve"><value>Versions</value></data>
+  <data name="Rcm_NameEn" xml:space="preserve"><value>Name (English)</value></data>
+  <data name="Rcm_NameFa" xml:space="preserve"><value>Name (Persian)</value></data>
+  <data name="Rcm_Tag" xml:space="preserve"><value>Tag</value></data>
+  <data name="Rcm_Tags" xml:space="preserve"><value>Tags</value></data>
+  <data name="Rcm_EquipmentName" xml:space="preserve"><value>Equipment name</value></data>
+  <data name="Rcm_EquipmentClass" xml:space="preserve"><value>Equipment class (ISO 14224)</value></data>
+  <data name="Rcm_Unclassified" xml:space="preserve"><value>Unclassified</value></data>
+  <data name="Rcm_AreaUnit" xml:space="preserve"><value>Area / Unit</value></data>
+  <data name="Rcm_Criticality" xml:space="preserve"><value>Criticality</value></data>
+  <data name="Rcm_Unrated" xml:space="preserve"><value>Not rated</value></data>
+  <data name="Rcm_LegacyTag" xml:space="preserve"><value>Legacy single-tag scope</value></data>
+  <data name="Rcm_StartedFromTag" xml:space="preserve"><value>Started from tag (read-only, from the equipment register):</value></data>
+  <data name="Rcm_Strategy" xml:space="preserve"><value>Strategy</value></data>
+  <data name="Rcm_Strategies" xml:space="preserve"><value>Strategies</value></data>
+  <data name="Rcm_NewStrategy" xml:space="preserve"><value>New strategy</value></data>
+  <data name="Rcm_EditStrategy" xml:space="preserve"><value>Edit strategy</value></data>
+  <data name="Rcm_StrategyType" xml:space="preserve"><value>Strategy type</value></data>
+  <data name="Rcm_FailureMode" xml:space="preserve"><value>Failure mode (ISO 14224)</value></data>
+  <data name="Rcm_FailureCause" xml:space="preserve"><value>Failure cause</value></data>
+  <data name="Rcm_FailureCauses" xml:space="preserve"><value>Failure causes</value></data>
+  <data name="Rcm_FunctionalFailure" xml:space="preserve"><value>Functional failure</value></data>
+  <data name="Rcm_FailureEffect" xml:space="preserve"><value>Failure effect</value></data>
+  <data name="Rcm_HiddenFailure" xml:space="preserve"><value>Hidden failure</value></data>
+  <data name="Rcm_Consequence" xml:space="preserve"><value>Consequence (SAE JA1011)</value></data>
+  <data name="Rcm_Frequency" xml:space="preserve"><value>Frequency</value></data>
+  <data name="Rcm_DefaultIntervalDays" xml:space="preserve"><value>Default interval (days)</value></data>
+  <data name="Rcm_RecommendedTrigger" xml:space="preserve"><value>Recommended trigger</value></data>
+  <data name="Rcm_TaskType" xml:space="preserve"><value>Task type</value></data>
+  <data name="Rcm_OwnerDiscipline" xml:space="preserve"><value>Responsible discipline</value></data>
+  <data name="Rcm_RequiredSkills" xml:space="preserve"><value>Required skills</value></data>
+  <data name="Rcm_EstimatedHours" xml:space="preserve"><value>Estimated duration (h)</value></data>
+  <data name="Rcm_Source" xml:space="preserve"><value>Source</value></data>
+  <data name="Rcm_ReviewDate" xml:space="preserve"><value>Next review date</value></data>
+  <data name="Rcm_StartDate" xml:space="preserve"><value>Start date</value></data>
+  <data name="Rcm_Justification" xml:space="preserve"><value>Justification</value></data>
+  <data name="Rcm_JustificationPlaceholder" xml:space="preserve"><value>Why is this the applicable and effective strategy for this failure mode?</value></data>
+  <data name="Rcm_JustificationHint" xml:space="preserve"><value>Mandatory, at least 20 characters. Cite the evidence (OEM manual, failure history, RCM study).</value></data>
+  <data name="Rcm_CbmSection" xml:space="preserve"><value>Condition monitoring / P-F parameters</value></data>
+  <data name="Rcm_CbmParameter" xml:space="preserve"><value>Measured parameter</value></data>
+  <data name="Rcm_Unit" xml:space="preserve"><value>Unit</value></data>
+  <data name="Rcm_AlarmThreshold" xml:space="preserve"><value>Alarm threshold</value></data>
+  <data name="Rcm_TripThreshold" xml:space="preserve"><value>Trip threshold</value></data>
+  <data name="Rcm_PfInterval" xml:space="preserve"><value>P-F interval (days)</value></data>
+  <data name="Rcm_InspectionInterval" xml:space="preserve"><value>Inspection interval (days)</value></data>
+  <data name="Rcm_PfHint" xml:space="preserve"><value>The inspection interval must not exceed the P-F interval; half of it is the usual practice.</value></data>
+  <data name="Rcm_IndexHint" xml:space="preserve"><value>Each strategy is a template defined per equipment class and failure mode (SAE JA1011). It is assigned to tags only after review and approval.</value></data>
+  <data name="Rcm_FormHint" xml:space="preserve"><value>Select the equipment class, then the failure mode from the controlled ISO 14224 catalogue. Run-to-failure and corrective strategies are not permitted for safety, environmental or hidden-failure consequences.</value></data>
+  <data name="Rcm_FailureModeHint" xml:space="preserve"><value>Mandatory. The list is filtered by the selected class.</value></data>
+  <data name="Rcm_SearchFailureMode" xml:space="preserve"><value>Search failure modes…</value></data>
+  <data name="Rcm_RtfWarning" xml:space="preserve"><value>This type is not allowed for the selected consequence; the server will reject it.</value></data>
+  <data name="Rcm_NewVersionNotice" xml:space="preserve"><value>This strategy is approved. Saving creates a new draft version; the approved version remains unchanged for audit until the new one is approved and activated.</value></data>
+  <data name="Rcm_SaveNewVersion" xml:space="preserve"><value>Save as new version</value></data>
+  <data name="Rcm_NewVersion" xml:space="preserve"><value>New version</value></data>
+  <data name="Rcm_NotInCatalog" xml:space="preserve"><value>Legacy value not found in the ISO 14224 catalogue; edit the strategy to select a catalogue failure mode.</value></data>
+  <data name="Rcm_MissingFailureMode" xml:space="preserve"><value>Missing failure mode</value></data>
+  <data name="Rcm_NoStrategies" xml:space="preserve"><value>No maintenance strategies match the current filter.</value></data>
+  <data name="Rcm_ReviewOverdue" xml:space="preserve"><value>Review overdue</value></data>
+  <data name="Rcm_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Rcm_SubmitForReview" xml:space="preserve"><value>Submit for review</value></data>
+  <data name="Rcm_Approve" xml:space="preserve"><value>Approve</value></data>
+  <data name="Rcm_Reject" xml:space="preserve"><value>Reject</value></data>
+  <data name="Rcm_Activate" xml:space="preserve"><value>Activate</value></data>
+  <data name="Rcm_Retire" xml:space="preserve"><value>Retire</value></data>
+  <data name="Rcm_MoveAssignments" xml:space="preserve"><value>Move tag assignments from the previous version</value></data>
+  <data name="Rcm_ConfirmRetire" xml:space="preserve"><value>Retire this strategy? Its tag assignments will be closed and linked plans will stop generating work orders.</value></data>
+  <data name="Rcm_SodNotice" xml:space="preserve"><value>Separation of duties: the author or submitter cannot approve their own strategy.</value></data>
+  <data name="Rcm_ApprovedBy" xml:space="preserve"><value>Approved by</value></data>
+  <data name="Rcm_AssignedTags" xml:space="preserve"><value>Assigned tags</value></data>
+  <data name="Rcm_AssignedStrategies" xml:space="preserve"><value>Assigned strategies</value></data>
+  <data name="Rcm_AssignTag" xml:space="preserve"><value>Assign tag</value></data>
+  <data name="Rcm_BulkAssign" xml:space="preserve"><value>Bulk assign to tags</value></data>
+  <data name="Rcm_AssignRequiresApproval" xml:space="preserve"><value>Only an approved or active strategy can be assigned to tags.</value></data>
+  <data name="Rcm_NoAssignments" xml:space="preserve"><value>No tags are assigned to this strategy.</value></data>
+  <data name="Rcm_ConfirmUnassign" xml:space="preserve"><value>Remove this tag assignment?</value></data>
+  <data name="Rcm_Override" xml:space="preserve"><value>Tag-level override</value></data>
+  <data name="Rcm_RequestOverride" xml:space="preserve"><value>Request override</value></data>
+  <data name="Rcm_OverrideHint" xml:space="preserve"><value>A documented deviation for this tag only (interval or task note). It takes effect only after independent approval.</value></data>
+  <data name="Rcm_OverrideInterval" xml:space="preserve"><value>Interval override (days)</value></data>
+  <data name="Rcm_OverrideTaskNote" xml:space="preserve"><value>Task note</value></data>
+  <data name="Rcm_BulkHint" xml:space="preserve"><value>A strategy is defined once per equipment class and assigned to many tags. Filter the tags, select an approved strategy and review criticality and conflicts before assigning. The assignment is atomic: either all conflict-free tags are assigned or none.</value></data>
+  <data name="Rcm_ApprovedOrActive" xml:space="preserve"><value>approved or active</value></data>
+  <data name="Rcm_IncludesSubclasses" xml:space="preserve"><value>includes sub-classes</value></data>
+  <data name="Rcm_PickStrategyFirst" xml:space="preserve"><value>Select a strategy above to preview conflicts and assign.</value></data>
+  <data name="Rcm_AssignSummary" xml:space="preserve"><value>Assignment summary</value></data>
+  <data name="Rcm_WillReceive" xml:space="preserve"><value>Tags that will receive the strategy</value></data>
+  <data name="Rcm_HasConflict" xml:space="preserve"><value>Tags with conflicts</value></data>
+  <data name="Rcm_ConflictsSkipped" xml:space="preserve"><value>skipped automatically</value></data>
+  <data name="Rcm_AssignAtomicNote" xml:space="preserve"><value>The result report is shown after assignment.</value></data>
+  <data name="Rcm_AssignSelected" xml:space="preserve"><value>Assign to selected tags</value></data>
+  <data name="Rcm_ConfirmBulkAssign" xml:space="preserve"><value>Assign the selected strategy to all selected tags?</value></data>
+  <data name="Rcm_NeedTemplate" xml:space="preserve"><value>No suitable strategy?</value></data>
+  <data name="Rcm_Bulk_AlreadyAssigned" xml:space="preserve"><value>Already assigned</value></data>
+  <data name="Rcm_Bulk_ConflictingStrategy" xml:space="preserve"><value>Conflicting strategy for the same failure mode</value></data>
+  <data name="Rcm_Bulk_CriticalityBlocks" xml:space="preserve"><value>Blocked by criticality</value></data>
+  <data name="Rcm_Bulk_ClassMismatch" xml:space="preserve"><value>Outside the strategy class</value></data>
+  <data name="Rcm_Err_Bulk_AlreadyAssigned" xml:space="preserve"><value>Tag {0} is already assigned to this strategy.</value></data>
+  <data name="Rcm_Err_Bulk_ConflictingStrategy" xml:space="preserve"><value>Tag {0} already has another strategy for the same failure mode.</value></data>
+  <data name="Rcm_Err_Bulk_CriticalityBlocks" xml:space="preserve"><value>Tag {0} is class A; run-to-failure and corrective strategies are not allowed.</value></data>
+  <data name="Rcm_Err_Bulk_ClassMismatch" xml:space="preserve"><value>Tag {0} is outside the strategy equipment class.</value></data>
+  <data name="Rcm_TagMaintenance" xml:space="preserve"><value>Maintenance of tag</value></data>
+  <data name="Rcm_OpenWorkOrders" xml:space="preserve"><value>Open work orders</value></data>
+  <data name="Rcm_NoOpenWorkOrders" xml:space="preserve"><value>No open work orders.</value></data>
+  <data name="Rcm_Plans" xml:space="preserve"><value>Plans</value></data>
+  <data name="Rcm_NoPlans" xml:space="preserve"><value>No maintenance plans.</value></data>
+  <data name="Rcm_PlansByVersion" xml:space="preserve"><value>Plans and the strategy version they use</value></data>
+  <data name="Rcm_PlanNumber" xml:space="preserve"><value>Plan No.</value></data>
+  <data name="Rcm_OutOfSync" xml:space="preserve"><value>Out of sync</value></data>
+  <data name="Rcm_PlanOutOfSync" xml:space="preserve"><value>This plan still uses an older strategy version than the current assignment.</value></data>
+  <data name="Rcm_Coverage" xml:space="preserve"><value>Strategy coverage</value></data>
+  <data name="Rcm_CoverageHint" xml:space="preserve"><value>Coverage is based on assignments: equipment counts as covered when it has an active assignment to an approved or active strategy.</value></data>
+  <data name="Rcm_TotalEquipment" xml:space="preserve"><value>Active equipment</value></data>
+  <data name="Rcm_CoveredEquipment" xml:space="preserve"><value>Covered equipment</value></data>
+  <data name="Rcm_ByCriticality" xml:space="preserve"><value>Coverage by criticality</value></data>
+  <data name="Rcm_ByClass" xml:space="preserve"><value>Coverage by equipment class</value></data>
+  <data name="Rcm_WithStrategy" xml:space="preserve"><value>With strategy</value></data>
+  <data name="Rcm_WithoutStrategy" xml:space="preserve"><value>Without strategy</value></data>
+  <data name="Rcm_CriticalWithoutStrategy" xml:space="preserve"><value>Critical (class A) equipment without a strategy</value></data>
+  <data name="Rcm_NoUncoveredCritical" xml:space="preserve"><value>No critical equipment without a strategy.</value></data>
+  <data name="Rcm_NoCriticalityData" xml:space="preserve"><value>No criticality assessments exist, so every item is shown as not rated and critical equipment cannot be identified. Complete the equipment criticality assessment first.</value></data>
+  <data name="Rcm_FailureModeCatalog" xml:space="preserve"><value>Failure mode catalogue</value></data>
+  <data name="Rcm_NewFailureMode" xml:space="preserve"><value>New failure mode</value></data>
+  <data name="Rcm_CatalogHint" xml:space="preserve"><value>Controlled ISO 14224 catalogue (failure mode → causes) per equipment class. The same list feeds strategies and work order completion.</value></data>
+  <data name="Rcm_NoFailureModes" xml:space="preserve"><value>No failure modes found.</value></data>
+  <data name="Rcm_PickAssignment" xml:space="preserve"><value>Select the tag and strategy for the new plan</value></data>
+  <data name="Rcm_NoEligibleAssignments" xml:space="preserve"><value>No eligible assignments. A plan can only be created from a tag assigned to an approved or active scheduled strategy.</value></data>
+  <data name="Rcm_PlanHint" xml:space="preserve"><value>The equipment is taken from the assignment and cannot be changed here.</value></data>
+  <data name="Rcm_TriggerType" xml:space="preserve"><value>Trigger type</value></data>
+  <data name="Rcm_IntervalDays" xml:space="preserve"><value>Interval (days)</value></data>
+  <data name="Rcm_NextDueDate" xml:space="preserve"><value>Next due date</value></data>
+  <data name="Rcm_AllowPastDue" xml:space="preserve"><value>Allow a due date in the past (explicit confirmation)</value></data>
+  <data name="Rcm_MeterType" xml:space="preserve"><value>Meter type</value></data>
+  <data name="Rcm_MeterInterval" xml:space="preserve"><value>Meter interval (per service)</value></data>
+  <data name="Rcm_ScheduleMode" xml:space="preserve"><value>Schedule policy</value></data>
+  <data name="Rcm_ScheduleModeHint" xml:space="preserve"><value>Fixed: the next due date is anchored on the previous one. Floating: it is calculated from the actual completion of the work order.</value></data>
+  <data name="Rcm_JobPlanHint" xml:space="preserve"><value>Mandatory for scheduled strategies: its tasks, skills and materials are copied to every generated work order.</value></data>
+  <data name="Rcm_ManageJobPlans" xml:space="preserve"><value>Manage job plans</value></data>
+  <data name="Rcm_CreatePlan" xml:space="preserve"><value>Create plan</value></data>
+  <data name="Rcm_SuggestedInterval" xml:space="preserve"><value>Suggested: {0} days (criticality {1})</value></data>
+  <data name="Rcm_Import" xml:space="preserve"><value>Excel import</value></data>
+  <data name="Rcm_ImportHint" xml:space="preserve"><value>Upload a workbook, review the row-by-row validation, then commit the valid rows. Imported strategies are created as drafts and must still pass review and approval.</value></data>
+  <data name="Rcm_ImportStrategies" xml:space="preserve"><value>Strategy templates</value></data>
+  <data name="Rcm_ImportAssignments" xml:space="preserve"><value>Tag assignments</value></data>
+  <data name="Rcm_Validate" xml:space="preserve"><value>Validate</value></data>
+  <data name="Rcm_DownloadTemplate" xml:space="preserve"><value>Download template</value></data>
+  <data name="Rcm_ImportPreview" xml:space="preserve"><value>Preview (nothing saved yet)</value></data>
+  <data name="Rcm_ImportCommitted" xml:space="preserve"><value>Import committed</value></data>
+  <data name="Rcm_RowsRead" xml:space="preserve"><value>Rows read</value></data>
+  <data name="Rcm_RowsAccepted" xml:space="preserve"><value>accepted</value></data>
+  <data name="Rcm_RowsRejected" xml:space="preserve"><value>rejected</value></data>
+  <data name="Rcm_RowAccepted" xml:space="preserve"><value>Accepted</value></data>
+  <data name="Rcm_RowRejected" xml:space="preserve"><value>Rejected</value></data>
+  <data name="Rcm_CommitValidRows" xml:space="preserve"><value>Commit valid rows</value></data>
+  <data name="Rcm_ConfirmImport" xml:space="preserve"><value>Commit all valid rows? Rejected rows will be skipped.</value></data>
+  <data name="Rcm_ErrorReport" xml:space="preserve"><value>Error report</value></data>
+  <data name="Rcm_Info_StrategyCreated" xml:space="preserve"><value>Strategy created as a draft.</value></data>
+  <data name="Rcm_Info_StrategySaved" xml:space="preserve"><value>Strategy saved.</value></data>
+  <data name="Rcm_Info_NewVersionCreated" xml:space="preserve"><value>A new draft version was created; the approved version is unchanged.</value></data>
+  <data name="Rcm_Info_Submitted" xml:space="preserve"><value>Submitted for review.</value></data>
+  <data name="Rcm_Info_Approved" xml:space="preserve"><value>Strategy approved.</value></data>
+  <data name="Rcm_Info_Rejected" xml:space="preserve"><value>Strategy returned to draft.</value></data>
+  <data name="Rcm_Info_Activated" xml:space="preserve"><value>Strategy activated.</value></data>
+  <data name="Rcm_Info_Retired" xml:space="preserve"><value>Strategy retired.</value></data>
+  <data name="Rcm_Info_Unassigned" xml:space="preserve"><value>Tag assignment removed.</value></data>
+  <data name="Rcm_Info_OverrideRequested" xml:space="preserve"><value>Override requested; awaiting independent approval.</value></data>
+  <data name="Rcm_Info_OverrideApproved" xml:space="preserve"><value>Override approved.</value></data>
+  <data name="Rcm_Info_OverrideRejected" xml:space="preserve"><value>Override rejected.</value></data>
+  <data name="Rcm_Info_AssignedCount" xml:space="preserve"><value>{0} tag(s) assigned</value></data>
+  <data name="Rcm_Info_SkippedAlready" xml:space="preserve"><value>{0} already assigned</value></data>
+  <data name="Rcm_Info_SkippedConflict" xml:space="preserve"><value>{0} skipped for conflicting strategy</value></data>
+  <data name="Rcm_Info_SkippedCriticality" xml:space="preserve"><value>{0} skipped by criticality rule</value></data>
+  <data name="Rcm_Info_SkippedNotFound" xml:space="preserve"><value>{0} inactive or not found</value></data>
+  <data name="Rcm_Info_PlanCreated" xml:space="preserve"><value>Maintenance plan created.</value></data>
+  <data name="Rcm_Info_CatalogSaved" xml:space="preserve"><value>Failure mode catalogue updated.</value></data>
+  <data name="Rcm_Info_ImportDone" xml:space="preserve"><value>Import finished: {0} accepted, {1} rejected.</value></data>
+  <data name="Rcm_Err_UnknownStrategyType" xml:space="preserve"><value>The strategy type is not valid.</value></data>
+  <data name="Rcm_Err_UnknownConsequence" xml:space="preserve"><value>The consequence category is not valid.</value></data>
+  <data name="Rcm_Err_UnknownFrequency" xml:space="preserve"><value>The frequency is not valid.</value></data>
+  <data name="Rcm_Err_UnknownTrigger" xml:space="preserve"><value>The trigger type is not valid.</value></data>
+  <data name="Rcm_Err_UnknownTaskType" xml:space="preserve"><value>The task type is not valid.</value></data>
+  <data name="Rcm_Err_UnknownSource" xml:space="preserve"><value>The source is not valid.</value></data>
+  <data name="Rcm_Err_UnknownScheduleMode" xml:space="preserve"><value>The schedule policy is not valid.</value></data>
+  <data name="Rcm_Err_FailureModeRequired" xml:space="preserve"><value>A failure mode from the ISO 14224 catalogue is required for every strategy.</value></data>
+  <data name="Rcm_Err_JustificationTooShort" xml:space="preserve"><value>The justification is mandatory and must be at least {0} characters.</value></data>
+  <data name="Rcm_Err_StartDateInPast" xml:space="preserve"><value>The start date cannot be in the past.</value></data>
+  <data name="Rcm_Err_IntervalMustBePositive" xml:space="preserve"><value>The interval must be greater than zero.</value></data>
+  <data name="Rcm_Err_NegativeValue" xml:space="preserve"><value>The value cannot be negative.</value></data>
+  <data name="Rcm_Err_RtfNotAllowedForConsequence" xml:space="preserve"><value>Run-to-failure is not permitted when the consequence is {0}. Select a proactive task or a redesign recommendation.</value></data>
+  <data name="Rcm_Err_ProactiveTaskRequired" xml:space="preserve"><value>A corrective-only strategy is not permitted for a {0} consequence. A proactive task or redesign is required.</value></data>
+  <data name="Rcm_Err_IntervalRequired" xml:space="preserve"><value>A frequency or a default interval is required for this strategy type.</value></data>
+  <data name="Rcm_Err_CbmParameterRequired" xml:space="preserve"><value>The measured parameter is required for condition-based strategies.</value></data>
+  <data name="Rcm_Err_InspectionIntervalRequired" xml:space="preserve"><value>An inspection interval (or frequency) is required for condition-based strategies.</value></data>
+  <data name="Rcm_Err_InspectionExceedsPf" xml:space="preserve"><value>The inspection interval cannot exceed the P-F interval.</value></data>
+  <data name="Rcm_Err_ClassRequired" xml:space="preserve"><value>The equipment class is required.</value></data>
+  <data name="Rcm_Err_ClassNotFound" xml:space="preserve"><value>The equipment class was not found or is inactive.</value></data>
+  <data name="Rcm_Err_FailureModeNotFound" xml:space="preserve"><value>The failure mode was not found in the catalogue or is inactive.</value></data>
+  <data name="Rcm_Err_FailureModeClassMismatch" xml:space="preserve"><value>The failure mode does not belong to the selected equipment class.</value></data>
+  <data name="Rcm_Err_FailureCauseNotFound" xml:space="preserve"><value>The failure cause was not found or is inactive.</value></data>
+  <data name="Rcm_Err_DisciplineNotFound" xml:space="preserve"><value>The discipline was not found or is inactive.</value></data>
+  <data name="Rcm_Err_DuplicateStrategy" xml:space="preserve"><value>An active strategy with the same class, failure mode and type already exists.</value></data>
+  <data name="Rcm_Err_StrategyNotFound" xml:space="preserve"><value>The strategy was not found.</value></data>
+  <data name="Rcm_Err_LockedInReview" xml:space="preserve"><value>The strategy is under review and cannot be edited.</value></data>
+  <data name="Rcm_Err_NotEditableStatus" xml:space="preserve"><value>A strategy with status {0} cannot be edited.</value></data>
+  <data name="Rcm_Err_DraftVersionExists" xml:space="preserve"><value>A draft or in-review version of this strategy already exists.</value></data>
+  <data name="Rcm_Err_ConcurrencyConflict" xml:space="preserve"><value>The strategy was changed by another user. Reload the page and apply your changes again.</value></data>
+  <data name="Rcm_Err_InvalidTransition" xml:space="preserve"><value>The transition from {0} to {1} is not allowed.</value></data>
+  <data name="Rcm_Err_SeparationOfDuties" xml:space="preserve"><value>Separation of duties: you cannot approve or reject your own work.</value></data>
+  <data name="Rcm_Err_RejectCommentRequired" xml:space="preserve"><value>A comment is required when rejecting.</value></data>
+  <data name="Rcm_Err_WorkflowUnavailable" xml:space="preserve"><value>The approval workflow is unavailable or not configured.</value></data>
+  <data name="Rcm_Err_WorkflowActorNotAllowed" xml:space="preserve"><value>Your role is not permitted to perform this workflow action.</value></data>
+  <data name="Rcm_Err_AlreadyRetired" xml:space="preserve"><value>The strategy is already retired.</value></data>
+  <data name="Rcm_Err_StrategyNotApproved" xml:space="preserve"><value>Only an approved or active strategy can be used.</value></data>
+  <data name="Rcm_Err_CriticalityADisallowsReactive" xml:space="preserve"><value>Class A (critical) equipment cannot use a {0} strategy.</value></data>
+  <data name="Rcm_Err_NoEquipmentSelected" xml:space="preserve"><value>Select at least one tag.</value></data>
+  <data name="Rcm_Err_AssignBatchTooLarge" xml:space="preserve"><value>At most {0} tags can be assigned in one operation.</value></data>
+  <data name="Rcm_Err_TagClassMismatch" xml:space="preserve"><value>Tag {0} is outside the equipment class of this strategy.</value></data>
+  <data name="Rcm_Err_AssignRolledBack" xml:space="preserve"><value>The assignment failed and was rolled back; no tag was assigned.</value></data>
+  <data name="Rcm_Err_AssignmentNotFound" xml:space="preserve"><value>The assignment was not found.</value></data>
+  <data name="Rcm_Err_AssignmentNotActive" xml:space="preserve"><value>The assignment is not active.</value></data>
+  <data name="Rcm_Err_OverrideEmpty" xml:space="preserve"><value>Provide an interval or a task note for the override.</value></data>
+  <data name="Rcm_Err_NoPendingOverride" xml:space="preserve"><value>There is no pending override.</value></data>
+  <data name="Rcm_Err_PlanNotAllowedForType" xml:space="preserve"><value>A maintenance plan cannot be created for a {0} strategy: it has no scheduled task.</value></data>
+  <data name="Rcm_Err_PlanNotFound" xml:space="preserve"><value>The plan was not found.</value></data>
+  <data name="Rcm_Err_PlanTitleInvalid" xml:space="preserve"><value>The plan title must be at least {0} characters and contain letters.</value></data>
+  <data name="Rcm_Err_PlanTitleDuplicate" xml:space="preserve"><value>A plan with this title already exists for this equipment.</value></data>
+  <data name="Rcm_Err_NextDueInPast" xml:space="preserve"><value>The next due date is in the past. Confirm explicitly to allow it.</value></data>
+  <data name="Rcm_Err_MeterTypeRequired" xml:space="preserve"><value>The meter type is required for a meter-based trigger.</value></data>
+  <data name="Rcm_Err_MeterIntervalMustBePositive" xml:space="preserve"><value>The meter interval must be greater than zero.</value></data>
+  <data name="Rcm_Err_ConditionBasedCalendarOnly" xml:space="preserve"><value>Condition-based strategies use a calendar inspection interval only; a meter trigger is not allowed.</value></data>
+  <data name="Rcm_Err_PlanIntervalExceedsInspection" xml:space="preserve"><value>The plan interval cannot exceed the strategy inspection interval ({0} days).</value></data>
+  <data name="Rcm_Err_JobPlanRequired" xml:space="preserve"><value>A job plan is required for this strategy type.</value></data>
+  <data name="Rcm_Err_JobPlanNotFound" xml:space="preserve"><value>The job plan was not found or is inactive.</value></data>
+  <data name="Rcm_Err_CatalogCodeInvalid" xml:space="preserve"><value>The code must be at least 3 characters.</value></data>
+  <data name="Rcm_Err_CatalogNameRequired" xml:space="preserve"><value>The name is required.</value></data>
+  <data name="Rcm_Err_CatalogCodeDuplicate" xml:space="preserve"><value>This code is already used.</value></data>
+  <data name="Rcm_Err_ImportEmpty" xml:space="preserve"><value>The file contains no data rows.</value></data>
+  <data name="Rcm_Err_ImportMissingColumns" xml:space="preserve"><value>Required columns are missing: {0}</value></data>
+  <data name="Rcm_Err_ImportUnreadable" xml:space="preserve"><value>The file could not be read as an Excel workbook.</value></data>
+  <data name="Rcm_Err_ImportFileInvalid" xml:space="preserve"><value>Upload a non-empty .xlsx file of at most 5 MB.</value></data>
+  <data name="Rcm_Err_ImportTokenExpired" xml:space="preserve"><value>The import session expired. Upload the file again.</value></data>
+  <data name="Rcm_Err_InvalidNumber" xml:space="preserve"><value>{0} is not a valid number.</value></data>
+  <data name="Rcm_Err_InvalidDate" xml:space="preserve"><value>{0} is not a valid date.</value></data>
+  <data name="Rcm_Err_DuplicateInFile" xml:space="preserve"><value>Duplicate of an earlier row in the same file.</value></data>
+  <data name="Rcm_Err_TagNotFound" xml:space="preserve"><value>Tag {0} was not found among active equipment.</value></data>
+  <data name="Rcm_Err_TagAmbiguous" xml:space="preserve"><value>Tag {0} matches more than one equipment record.</value></data>
+  <data name="Rcm_Err_StrategyReferenceMissing" xml:space="preserve"><value>Provide StrategyId, or class code + failure mode code + type.</value></data>
+  <data name="Rcm_Err_StrategyAmbiguous" xml:space="preserve"><value>More than one approved strategy matches; use StrategyId.</value></data>
+  <data name="Rcm_StrategyType_Preventive" xml:space="preserve"><value>Preventive (scheduled restoration/discard)</value></data>
+  <data name="Rcm_StrategyType_Predictive" xml:space="preserve"><value>Predictive</value></data>
+  <data name="Rcm_StrategyType_CBM" xml:space="preserve"><value>Condition-based (on-condition)</value></data>
+  <data name="Rcm_StrategyType_Corrective" xml:space="preserve"><value>Corrective</value></data>
+  <data name="Rcm_StrategyType_RunToFailure" xml:space="preserve"><value>Run to failure</value></data>
+  <data name="Rcm_StrategyType_FailureFinding" xml:space="preserve"><value>Failure-finding</value></data>
+  <data name="Rcm_StrategyType_Redesign" xml:space="preserve"><value>Redesign</value></data>
+  <data name="Rcm_Consequence_Hidden" xml:space="preserve"><value>Hidden</value></data>
+  <data name="Rcm_Consequence_Safety" xml:space="preserve"><value>Safety</value></data>
+  <data name="Rcm_Consequence_Environmental" xml:space="preserve"><value>Environmental</value></data>
+  <data name="Rcm_Consequence_Operational" xml:space="preserve"><value>Operational</value></data>
+  <data name="Rcm_Consequence_NonOperational" xml:space="preserve"><value>Non-operational</value></data>
+  <data name="Rcm_Frequency_Daily" xml:space="preserve"><value>Daily</value></data>
+  <data name="Rcm_Frequency_Weekly" xml:space="preserve"><value>Weekly</value></data>
+  <data name="Rcm_Frequency_Monthly" xml:space="preserve"><value>Monthly</value></data>
+  <data name="Rcm_Frequency_Quarterly" xml:space="preserve"><value>Quarterly</value></data>
+  <data name="Rcm_Frequency_SemiAnnual" xml:space="preserve"><value>Semi-annual</value></data>
+  <data name="Rcm_Frequency_Yearly" xml:space="preserve"><value>Yearly</value></data>
+  <data name="Rcm_Trigger_Calendar" xml:space="preserve"><value>Calendar</value></data>
+  <data name="Rcm_Trigger_Meter" xml:space="preserve"><value>Meter (hours/cycles)</value></data>
+  <data name="Rcm_Trigger_Both" xml:space="preserve"><value>Both</value></data>
+  <data name="Rcm_MeterType_RunningHours" xml:space="preserve"><value>Running hours</value></data>
+  <data name="Rcm_MeterType_Cycles" xml:space="preserve"><value>Cycles</value></data>
+  <data name="Rcm_MeterType_ProductionUnits" xml:space="preserve"><value>Production units</value></data>
+  <data name="Rcm_TaskType_Inspection" xml:space="preserve"><value>Inspection</value></data>
+  <data name="Rcm_TaskType_Lubrication" xml:space="preserve"><value>Lubrication</value></data>
+  <data name="Rcm_TaskType_Calibration" xml:space="preserve"><value>Calibration</value></data>
+  <data name="Rcm_TaskType_FunctionTest" xml:space="preserve"><value>Function test</value></data>
+  <data name="Rcm_TaskType_Restoration" xml:space="preserve"><value>Restoration</value></data>
+  <data name="Rcm_TaskType_Replacement" xml:space="preserve"><value>Replacement</value></data>
+  <data name="Rcm_TaskType_ConditionMonitoring" xml:space="preserve"><value>Condition monitoring</value></data>
+  <data name="Rcm_TaskType_Overhaul" xml:space="preserve"><value>Overhaul</value></data>
+  <data name="Rcm_Source_OEM" xml:space="preserve"><value>OEM recommendation</value></data>
+  <data name="Rcm_Source_RcmStudy" xml:space="preserve"><value>RCM study</value></data>
+  <data name="Rcm_Source_History" xml:space="preserve"><value>Failure history</value></data>
+  <data name="Rcm_Source_Standard" xml:space="preserve"><value>Standard / code</value></data>
+  <data name="Rcm_Source_Regulation" xml:space="preserve"><value>Regulation</value></data>
+  <data name="Rcm_Status_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Rcm_Status_InReview" xml:space="preserve"><value>In review</value></data>
+  <data name="Rcm_Status_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Rcm_Status_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Rcm_Status_Superseded" xml:space="preserve"><value>Superseded</value></data>
+  <data name="Rcm_Status_Retired" xml:space="preserve"><value>Retired</value></data>
+  <data name="Rcm_Criticality_A" xml:space="preserve"><value>A – critical</value></data>
+  <data name="Rcm_Criticality_B" xml:space="preserve"><value>B – important</value></data>
+  <data name="Rcm_Criticality_C" xml:space="preserve"><value>C – standard</value></data>
+  <data name="Rcm_Criticality_Unrated" xml:space="preserve"><value>Not rated</value></data>
+  <data name="Rcm_ScheduleMode_Fixed" xml:space="preserve"><value>Fixed schedule</value></data>
+  <data name="Rcm_ScheduleMode_Floating" xml:space="preserve"><value>Floating (from completion)</value></data>
+  <data name="Rcm_OverrideStatus_None" xml:space="preserve"><value>None</value></data>
+  <data name="Rcm_OverrideStatus_Pending" xml:space="preserve"><value>Pending approval</value></data>
+  <data name="Rcm_OverrideStatus_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Rcm_OverrideStatus_Rejected" xml:space="preserve"><value>Rejected</value></data>
+  <data name="Rcm_HistoryAction_Created" xml:space="preserve"><value>Created</value></data>
+  <data name="Rcm_HistoryAction_Edited" xml:space="preserve"><value>Edited</value></data>
+  <data name="Rcm_HistoryAction_Submitted" xml:space="preserve"><value>Submitted for review</value></data>
+  <data name="Rcm_HistoryAction_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Rcm_HistoryAction_Rejected" xml:space="preserve"><value>Rejected</value></data>
+  <data name="Rcm_HistoryAction_Activated" xml:space="preserve"><value>Activated</value></data>
+  <data name="Rcm_HistoryAction_NewVersion" xml:space="preserve"><value>New version</value></data>
+  <data name="Rcm_HistoryAction_Superseded" xml:space="preserve"><value>Superseded</value></data>
+  <data name="Rcm_HistoryAction_Retired" xml:space="preserve"><value>Retired</value></data>
+  <data name="Rcm_HistoryAction_Deactivated" xml:space="preserve"><value>Deactivated</value></data>
+  <data name="Rcm_HistoryAction_Assigned" xml:space="preserve"><value>Tags assigned</value></data>
+  <data name="Rcm_HistoryAction_Unassigned" xml:space="preserve"><value>Tag unassigned</value></data>
+  <data name="Rcm_HistoryAction_OverrideRequested" xml:space="preserve"><value>Override requested</value></data>
+  <data name="Rcm_HistoryAction_OverrideApproved" xml:space="preserve"><value>Override approved</value></data>
+  <data name="Rcm_HistoryAction_OverrideRejected" xml:space="preserve"><value>Override rejected</value></data>
+  <data name="Rcm_NewPlan" xml:space="preserve"><value>New plan</value></data>
+  <data name="Rcm_NoAssignmentBadge" xml:space="preserve"><value>Not linked</value></data>
+  <data name="Rcm_PlanNoAssignment" xml:space="preserve"><value>This legacy plan is not linked to a strategy assignment; review it and re-create it from an assignment.</value></data>
+  <data name="Rcm_AssignReport" xml:space="preserve"><value>Assignment result report (skipped tags)</value></data>
+  <data name="Rcm_SkipReason" xml:space="preserve"><value>Reason</value></data>
+  <data name="Rcm_Bulk_NotFound" xml:space="preserve"><value>Inactive or not found</value></data>
+  <data name="IC_RcmStrategy_Title" xml:space="preserve"><value>Maintenance Strategy Import</value></data>
+  <data name="IC_RcmStrategy_Desc" xml:space="preserve"><value>Import class-level RCM strategy templates and tag assignments from Excel.</value></data>
+  <data name="IC_RcmStrategy_Flow" xml:space="preserve"><value>Upload → Validate (row report) → Commit valid rows; strategies are created as drafts.</value></data>
+  <data name="Failure Mode Catalog" xml:space="preserve"><value>Failure Mode Catalog</value></data>
+  <data name="New Maintenance Strategy (RCM)" xml:space="preserve"><value>New Maintenance Strategy (RCM)</value></data>
+  <data name="Edit Maintenance Strategy" xml:space="preserve"><value>Edit Maintenance Strategy</value></data>
+  <data name="Tag Maintenance" xml:space="preserve"><value>Tag Maintenance</value></data>
+  <data name="Import Strategies" xml:space="preserve"><value>Import Strategies</value></data>
+  <data name="Nav_Admin_Title" xml:space="preserve"><value>Navigation Menu</value></data>
+  <data name="Nav_Admin_Edit" xml:space="preserve"><value>Edit menu item</value></data>
+  <data name="Nav_Admin_AddLink" xml:space="preserve"><value>Add link</value></data>
+  <data name="Nav_Admin_Intro" xml:space="preserve"><value>Arrange, rename, hide and badge the sidebar items. Changes apply to all users immediately; what each user sees still depends on their permissions.</value></data>
+  <data name="Nav_Admin_RuleNote" xml:space="preserve"><value>The visibility rule of built-in items comes from the code and matches the permission the target page enforces. Hiding an item does not remove access to the page.</value></data>
+  <data name="Nav_Col_Item" xml:space="preserve"><value>Item</value></data>
+  <data name="Nav_Col_Route" xml:space="preserve"><value>Route</value></data>
+  <data name="Nav_Col_Rule" xml:space="preserve"><value>Visibility rule</value></data>
+  <data name="Nav_Col_Badge" xml:space="preserve"><value>Badge</value></data>
+  <data name="Nav_Col_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Nav_Col_Actions" xml:space="preserve"><value>Actions</value></data>
+  <data name="Nav_Kind_Section" xml:space="preserve"><value>Section</value></data>
+  <data name="Nav_Kind_Subheading" xml:space="preserve"><value>Subheading</value></data>
+  <data name="Nav_Kind_Link" xml:space="preserve"><value>Link</value></data>
+  <data name="Nav_Custom" xml:space="preserve"><value>Custom</value></data>
+  <data name="Nav_NoPermissionSignal" xml:space="preserve"><value>No permission signal</value></data>
+  <data name="Nav_Visible" xml:space="preserve"><value>Visible</value></data>
+  <data name="Nav_Hidden" xml:space="preserve"><value>Hidden</value></data>
+  <data name="Nav_MoveUp" xml:space="preserve"><value>Move up</value></data>
+  <data name="Nav_MoveDown" xml:space="preserve"><value>Move down</value></data>
+  <data name="Nav_ConfirmDelete" xml:space="preserve"><value>Delete this custom link?</value></data>
+  <data name="Nav_Saved" xml:space="preserve"><value>Menu saved.</value></data>
+  <data name="Nav_Deleted" xml:space="preserve"><value>Custom link deleted.</value></data>
+  <data name="Nav_Field_Parent" xml:space="preserve"><value>Parent</value></data>
+  <data name="Nav_Field_TitleFa" xml:space="preserve"><value>Persian title</value></data>
+  <data name="Nav_Field_TitleEn" xml:space="preserve"><value>English title</value></data>
+  <data name="Nav_Field_Icon" xml:space="preserve"><value>Icon</value></data>
+  <data name="Nav_Field_Badge" xml:space="preserve"><value>Badge</value></data>
+  <data name="Nav_Field_Visible" xml:space="preserve"><value>Visible in the sidebar</value></data>
+  <data name="Nav_Field_Route" xml:space="preserve"><value>Target page</value></data>
+  <data name="Nav_Field_Area" xml:space="preserve"><value>Area</value></data>
+  <data name="Nav_Field_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="Nav_Field_Action" xml:space="preserve"><value>Action</value></data>
+  <data name="Nav_Field_Permission" xml:space="preserve"><value>Required permission</value></data>
+  <data name="Nav_TopLevel" xml:space="preserve"><value>(Top level)</value></data>
+  <data name="Nav_SectionTopLevelOnly" xml:space="preserve"><value>Sections always stay at the top level.</value></data>
+  <data name="Nav_TitleHelp" xml:space="preserve"><value>Leave empty to use the default title.</value></data>
+  <data name="Nav_IconHelp" xml:space="preserve"><value>A Bootstrap Icons class, for example bi-gear.</value></data>
+  <data name="Nav_NoBadge" xml:space="preserve"><value>(No badge)</value></data>
+  <data name="Nav_BadgeHelp" xml:space="preserve"><value>Module counts are shown only to users who hold the related permission.</value></data>
+  <data name="Nav_AddLinkIntro" xml:space="preserve"><value>Links can only point to an existing page of this application.</value></data>
+  <data name="Nav_RouteHelp" xml:space="preserve"><value>The page must exist and accept GET requests. Leave Area empty for pages outside an area.</value></data>
+  <data name="Nav_NoPermission" xml:space="preserve"><value>(No permission condition)</value></data>
+  <data name="Nav_PermissionHelp" xml:space="preserve"><value>Users without this permission will not see the link. The target page still enforces its own permissions.</value></data>
+  <data name="Nav_Err_NotFound" xml:space="preserve"><value>The menu item was not found.</value></data>
+  <data name="Nav_Err_Icon" xml:space="preserve"><value>The icon must be a Bootstrap Icons class such as bi-gear.</value></data>
+  <data name="Nav_Err_TitleTooLong" xml:space="preserve"><value>Titles can be at most 200 characters.</value></data>
+  <data name="Nav_Err_TitleRequired" xml:space="preserve"><value>Both Persian and English titles are required.</value></data>
+  <data name="Nav_Err_Parent" xml:space="preserve"><value>This parent is not allowed for this kind of item.</value></data>
+  <data name="Nav_Err_Route" xml:space="preserve"><value>The target page does not exist or does not accept GET requests.</value></data>
+  <data name="Nav_Err_Permission" xml:space="preserve"><value>The selected permission does not exist.</value></data>
+  <data name="Nav_Err_Badge" xml:space="preserve"><value>The selected badge does not exist.</value></data>
+  <data name="Nav_Err_SystemItem" xml:space="preserve"><value>Built-in items cannot be deleted; hide them instead.</value></data>
+  <data name="Nav_Err_Concurrency" xml:space="preserve"><value>Someone else changed this item. Reload the page and try again.</value></data>
+  <data name="Nav_Badge_MyWorkPending" xml:space="preserve"><value>My Work: pending</value></data>
+  <data name="Nav_Badge_MyWorkOverdue" xml:space="preserve"><value>My Work: overdue</value></data>
+  <data name="Nav_Badge_NotificationsUnread" xml:space="preserve"><value>Unread notifications</value></data>
+  <data name="Nav_Badge_TasksOpen" xml:space="preserve"><value>My open action items</value></data>
+  <data name="Nav_Badge_MyWorkPartCatalogue" xml:space="preserve"><value>My Work: Part Catalogue</value></data>
+  <data name="Nav_Badge_MyWorkWorkOrder" xml:space="preserve"><value>My Work: Work Orders</value></data>
+  <data name="Nav_Badge_MyWorkWorkRequest" xml:space="preserve"><value>My Work: Work Requests</value></data>
+  <data name="Nav_Badge_MyWorkContract" xml:space="preserve"><value>My Work: Contracts</value></data>
+  <data name="Nav_Badge_MyWorkIrn" xml:space="preserve"><value>My Work: IRN</value></data>
+  <data name="Nav_Badge_WorkOrdersOpen" xml:space="preserve"><value>Open Work Orders</value></data>
+  <data name="Nav_Badge_SrAwaitingApproval" xml:space="preserve"><value>Store requisitions awaiting approval</value></data>
+  <data name="Tm_Title" xml:space="preserve"><value>Task Manager</value></data>
+  <data name="Tm_Index_Hint" xml:space="preserve"><value>Plan, track and deliver team work in spaces. You only see spaces you belong to and tasks you are involved in.</value></data>
+  <data name="Tm_NoEmployeeLink" xml:space="preserve"><value>Your user account is not linked to an employee record, so space membership and assignments cannot be resolved. Ask an administrator to link it.</value></data>
+  <data name="Tm_Spaces" xml:space="preserve"><value>Spaces</value></data>
+  <data name="Tm_NoSpaces" xml:space="preserve"><value>No spaces are available to you yet.</value></data>
+  <data name="Tm_MyTasks" xml:space="preserve"><value>My tasks</value></data>
+  <data name="Tm_AssignedByMe" xml:space="preserve"><value>Assigned by me</value></data>
+  <data name="Tm_AllWork" xml:space="preserve"><value>All work</value></data>
+  <data name="Tm_Backlog" xml:space="preserve"><value>Backlog</value></data>
+  <data name="Tm_Board" xml:space="preserve"><value>Board</value></data>
+  <data name="Tm_View" xml:space="preserve"><value>View</value></data>
+  <data name="Tm_OpenItems" xml:space="preserve"><value>Open items</value></data>
+  <data name="Tm_Create" xml:space="preserve"><value>Create</value></data>
+  <data name="Tm_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Tm_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Tm_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Tm_Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Tm_Add" xml:space="preserve"><value>Add</value></data>
+  <data name="Tm_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Tm_Apply" xml:space="preserve"><value>Apply</value></data>
+  <data name="Tm_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Tm_Filter" xml:space="preserve"><value>Filter</value></data>
+  <data name="Tm_Reset" xml:space="preserve"><value>Reset</value></data>
+  <data name="Tm_Yes" xml:space="preserve"><value>Yes</value></data>
+  <data name="Tm_No" xml:space="preserve"><value>No</value></data>
+  <data name="Tm_Any" xml:space="preserve"><value>Any</value></data>
+  <data name="Tm_Me" xml:space="preserve"><value>Me</value></data>
+  <data name="Tm_Actions" xml:space="preserve"><value>Actions</value></data>
+  <data name="Tm_Details" xml:space="preserve"><value>Details</value></data>
+  <data name="Tm_Configure" xml:space="preserve"><value>Configure</value></data>
+  <data name="Tm_Personal" xml:space="preserve"><value>Personal</value></data>
+  <data name="Tm_Unassigned" xml:space="preserve"><value>Unassigned</value></data>
+  <data name="Tm_Archived" xml:space="preserve"><value>Archived</value></data>
+  <data name="Tm_Archive" xml:space="preserve"><value>Archive</value></data>
+  <data name="Tm_Restore" xml:space="preserve"><value>Restore</value></data>
+  <data name="Tm_ArchiveConfirm" xml:space="preserve"><value>Archive this task? It will be hidden from lists but its history is kept.</value></data>
+  <data name="Tm_RestoreConfirm" xml:space="preserve"><value>Restore this task?</value></data>
+  <data name="Tm_Watch" xml:space="preserve"><value>Watch</value></data>
+  <data name="Tm_Unwatch" xml:space="preserve"><value>Stop watching</value></data>
+  <data name="Tm_Watchers" xml:space="preserve"><value>Watchers</value></data>
+  <data name="Tm_Reporter" xml:space="preserve"><value>Reporter</value></data>
+  <data name="Tm_AssignedBy" xml:space="preserve"><value>Assigned by</value></data>
+  <data name="Tm_Created" xml:space="preserve"><value>Created</value></data>
+  <data name="Tm_Completed" xml:space="preserve"><value>Completed</value></data>
+  <data name="Tm_Related" xml:space="preserve"><value>Related</value></data>
+  <data name="Tm_Related_Letter" xml:space="preserve"><value>Letter</value></data>
+  <data name="Tm_Related_Meeting" xml:space="preserve"><value>Meeting</value></data>
+  <data name="Tm_Role_Member" xml:space="preserve"><value>Member</value></data>
+  <data name="Tm_Role_Lead" xml:space="preserve"><value>Lead</value></data>
+  <data name="Tm_Field_Key" xml:space="preserve"><value>Key</value></data>
+  <data name="Tm_Field_Space" xml:space="preserve"><value>Space</value></data>
+  <data name="Tm_Field_Title" xml:space="preserve"><value>Title</value></data>
+  <data name="Tm_Field_Description" xml:space="preserve"><value>Description</value></data>
+  <data name="Tm_Field_Type" xml:space="preserve"><value>Type</value></data>
+  <data name="Tm_Field_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Tm_Field_Priority" xml:space="preserve"><value>Priority</value></data>
+  <data name="Tm_Field_Assignee" xml:space="preserve"><value>Assignee</value></data>
+  <data name="Tm_Field_Sprint" xml:space="preserve"><value>Sprint</value></data>
+  <data name="Tm_Field_StartDate" xml:space="preserve"><value>Start date</value></data>
+  <data name="Tm_Field_DueDate" xml:space="preserve"><value>Due date</value></data>
+  <data name="Tm_Field_EndDate" xml:space="preserve"><value>End date</value></data>
+  <data name="Tm_Field_StoryPoints" xml:space="preserve"><value>Story points</value></data>
+  <data name="Tm_Field_StoryPointsShort" xml:space="preserve"><value>Pts</value></data>
+  <data name="Tm_Field_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Tm_Field_NameFa" xml:space="preserve"><value>Persian name</value></data>
+  <data name="Tm_Field_Goal" xml:space="preserve"><value>Goal</value></data>
+  <data name="Tm_Field_Department" xml:space="preserve"><value>Owner department</value></data>
+  <data name="Tm_Field_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Tm_Field_Role" xml:space="preserve"><value>Role</value></data>
+  <data name="Tm_Field_Category" xml:space="preserve"><value>Category</value></data>
+  <data name="Tm_Field_Order" xml:space="preserve"><value>Order</value></data>
+  <data name="Tm_Field_Icon" xml:space="preserve"><value>Icon (Bootstrap Icons class)</value></data>
+  <data name="Tm_Status_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Tm_Status_InProgress" xml:space="preserve"><value>In progress</value></data>
+  <data name="Tm_Status_Completed" xml:space="preserve"><value>Completed</value></data>
+  <data name="Tm_Status_Cancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Tm_Priority_Low" xml:space="preserve"><value>Low</value></data>
+  <data name="Tm_Priority_Normal" xml:space="preserve"><value>Normal</value></data>
+  <data name="Tm_Priority_High" xml:space="preserve"><value>High</value></data>
+  <data name="Tm_Priority_Urgent" xml:space="preserve"><value>Urgent</value></data>
+  <data name="Tm_Category_ToDo" xml:space="preserve"><value>To do</value></data>
+  <data name="Tm_Category_InProgress" xml:space="preserve"><value>In progress</value></data>
+  <data name="Tm_Category_Done" xml:space="preserve"><value>Done</value></data>
+  <data name="Tm_Category_NotDone" xml:space="preserve"><value>Not done</value></data>
+  <data name="Tm_SprintState_Future" xml:space="preserve"><value>Planned</value></data>
+  <data name="Tm_SprintState_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Tm_SprintState_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Tm_SprintCounts" xml:space="preserve"><value>To do {0} · In progress {1} · Done {2}</value></data>
+  <data name="Tm_StartSprint" xml:space="preserve"><value>Start sprint</value></data>
+  <data name="Tm_CompleteSprint" xml:space="preserve"><value>Complete sprint</value></data>
+  <data name="Tm_CompleteSprintConfirm" xml:space="preserve"><value>Complete this sprint? Unfinished tasks move to the selected destination.</value></data>
+  <data name="Tm_MoveUnfinishedTo" xml:space="preserve"><value>Move unfinished to</value></data>
+  <data name="Tm_CreateSprint" xml:space="preserve"><value>Create sprint</value></data>
+  <data name="Tm_RankHint" xml:space="preserve"><value>Leads can reorder by dragging rows or with the up/down buttons.</value></data>
+  <data name="Tm_MoveUp" xml:space="preserve"><value>Move up</value></data>
+  <data name="Tm_MoveDown" xml:space="preserve"><value>Move down</value></data>
+  <data name="Tm_MoveToSprint" xml:space="preserve"><value>Move to sprint</value></data>
+  <data name="Tm_MoveTo" xml:space="preserve"><value>Move to</value></data>
+  <data name="Tm_Move" xml:space="preserve"><value>Move</value></data>
+  <data name="Tm_EmptyList" xml:space="preserve"><value>No tasks here.</value></data>
+  <data name="Tm_EmptyColumn" xml:space="preserve"><value>No items</value></data>
+  <data name="Tm_Select" xml:space="preserve"><value>Select</value></data>
+  <data name="Tm_SelectAll" xml:space="preserve"><value>Select all</value></data>
+  <data name="Tm_Selected" xml:space="preserve"><value>selected</value></data>
+  <data name="Tm_BulkAction" xml:space="preserve"><value>Bulk action</value></data>
+  <data name="Tm_Bulk_Status" xml:space="preserve"><value>Change status</value></data>
+  <data name="Tm_Bulk_Assign" xml:space="preserve"><value>Assign</value></data>
+  <data name="Tm_Bulk_Sprint" xml:space="preserve"><value>Move to sprint</value></data>
+  <data name="Tm_Bulk_Archive" xml:space="preserve"><value>Archive</value></data>
+  <data name="Tm_BulkConfirm" xml:space="preserve"><value>Apply this action to the selected tasks? Each task is checked individually.</value></data>
+  <data name="Tm_BulkHint" xml:space="preserve"><value>Select rows to change status, assignee or sprint together.</value></data>
+  <data name="Tm_BulkHintNoSpace" xml:space="preserve"><value>Filter by one space to enable bulk status, assignee and sprint changes; without it only archive is available.</value></data>
+  <data name="Tm_Msg_BulkDone" xml:space="preserve"><value>{0} task(s) updated.</value></data>
+  <data name="Tm_Msg_BulkFailed" xml:space="preserve"><value>{0} task(s) were not changed:</value></data>
+  <data name="Tm_CreateAnother" xml:space="preserve"><value>Create another</value></data>
+  <data name="Tm_CtrlEnterHint" xml:space="preserve"><value>Ctrl+Enter to submit</value></data>
+  <data name="Tm_Diag_NO_CONFIGURATION" xml:space="preserve"><value>No members or owner department are configured for this space. Ask an administrator to configure it; no assignee is chosen automatically.</value></data>
+  <data name="Tm_Diag_NO_ELIGIBLE_ACTOR" xml:space="preserve"><value>No active eligible employee was found for this space.</value></data>
+  <data name="Tm_NotEligible" xml:space="preserve"><value>not eligible</value></data>
+  <data name="Tm_BoardNoSprint" xml:space="preserve"><value>No active sprint: the board shows all active tasks of this space.</value></data>
+  <data name="Tm_BoardHint" xml:space="preserve"><value>Drag a card to another column, or use its Move to control. Only allowed transitions are accepted.</value></data>
+  <data name="Tm_Search" xml:space="preserve"><value>Search</value></data>
+  <data name="Tm_SearchPlaceholder" xml:space="preserve"><value>Key, title or description</value></data>
+  <data name="Tm_IncludeArchived" xml:space="preserve"><value>Include archived</value></data>
+  <data name="Tm_SortBy" xml:space="preserve"><value>Sort by</value></data>
+  <data name="Tm_Sort_updated" xml:space="preserve"><value>Updated</value></data>
+  <data name="Tm_Sort_rank" xml:space="preserve"><value>Rank</value></data>
+  <data name="Tm_Sort_due" xml:space="preserve"><value>Due date</value></data>
+  <data name="Tm_Sort_priority" xml:space="preserve"><value>Priority</value></data>
+  <data name="Tm_Sort_created" xml:space="preserve"><value>Created</value></data>
+  <data name="Tm_Sort_key" xml:space="preserve"><value>Key</value></data>
+  <data name="Tm_ResultCount" xml:space="preserve"><value>{0} result(s)</value></data>
+  <data name="Tm_NoDescription" xml:space="preserve"><value>No description.</value></data>
+  <data name="Tm_Subtasks" xml:space="preserve"><value>Subtasks</value></data>
+  <data name="Tm_Subtask" xml:space="preserve"><value>Subtask</value></data>
+  <data name="Tm_NewSubtask" xml:space="preserve"><value>New subtask title</value></data>
+  <data name="Tm_Links" xml:space="preserve"><value>Links</value></data>
+  <data name="Tm_NoLinks" xml:space="preserve"><value>No linked tasks.</value></data>
+  <data name="Tm_LinkType" xml:space="preserve"><value>Link type</value></data>
+  <data name="Tm_LinkTarget" xml:space="preserve"><value>Target task</value></data>
+  <data name="Tm_LinkTargetPlaceholder" xml:space="preserve"><value>Task key, e.g. MNT-12</value></data>
+  <data name="Tm_AddLink" xml:space="preserve"><value>Add link</value></data>
+  <data name="Tm_RemoveLink" xml:space="preserve"><value>Remove link</value></data>
+  <data name="Tm_RemoveLinkConfirm" xml:space="preserve"><value>Remove this link?</value></data>
+  <data name="Tm_RestrictedItem" xml:space="preserve"><value>Restricted item</value></data>
+  <data name="Tm_Link_Blocks_Out" xml:space="preserve"><value>blocks</value></data>
+  <data name="Tm_Link_Blocks_In" xml:space="preserve"><value>is blocked by</value></data>
+  <data name="Tm_Link_RelatesTo_Out" xml:space="preserve"><value>relates to</value></data>
+  <data name="Tm_Link_RelatesTo_In" xml:space="preserve"><value>relates to</value></data>
+  <data name="Tm_Link_Duplicates_Out" xml:space="preserve"><value>duplicates</value></data>
+  <data name="Tm_Link_Duplicates_In" xml:space="preserve"><value>is duplicated by</value></data>
+  <data name="Tm_Comments" xml:space="preserve"><value>Comments</value></data>
+  <data name="Tm_AddComment" xml:space="preserve"><value>Add comment</value></data>
+  <data name="Tm_NoComments" xml:space="preserve"><value>No comments yet.</value></data>
+  <data name="Tm_CommentDeleted" xml:space="preserve"><value>This comment was deleted.</value></data>
+  <data name="Tm_DeleteCommentConfirm" xml:space="preserve"><value>Delete this comment?</value></data>
+  <data name="Tm_History" xml:space="preserve"><value>History</value></data>
+  <data name="Tm_NoHistory" xml:space="preserve"><value>No recorded changes.</value></data>
+  <data name="Tm_When" xml:space="preserve"><value>When</value></data>
+  <data name="Tm_Who" xml:space="preserve"><value>Who</value></data>
+  <data name="Tm_Action" xml:space="preserve"><value>Action</value></data>
+  <data name="Tm_Changes" xml:space="preserve"><value>Changes</value></data>
+  <data name="Tm_Audit_Insert" xml:space="preserve"><value>Created</value></data>
+  <data name="Tm_Audit_Update" xml:space="preserve"><value>Updated</value></data>
+  <data name="Tm_Audit_Delete" xml:space="preserve"><value>Deleted</value></data>
+  <data name="Tm_ChangeStatus" xml:space="preserve"><value>Change status</value></data>
+  <data name="Tm_CompletionNote" xml:space="preserve"><value>Completion note</value></data>
+  <data name="Tm_CompletionNoteOptional" xml:space="preserve"><value>Note (optional)</value></data>
+  <data name="Tm_Tab_Action" xml:space="preserve"><value>Action items (assigned to me)</value></data>
+  <data name="Tm_Tab_Followup" xml:space="preserve"><value>Follow-up (assigned by me)</value></data>
+  <data name="Tm_NewPersonalTask" xml:space="preserve"><value>New personal task</value></data>
+  <data name="Tm_Admin_Title" xml:space="preserve"><value>Task spaces administration</value></data>
+  <data name="Tm_Admin_Hint" xml:space="preserve"><value>Create spaces for organizational units, add members and leads, and configure statuses, transitions and types. Nothing is inferred: membership comes only from explicit members and the owner department.</value></data>
+  <data name="Tm_Admin_CreateSpace" xml:space="preserve"><value>Create space</value></data>
+  <data name="Tm_KeyHelp" xml:space="preserve"><value>2–10 letters/digits, starting with a letter. Cannot be changed later.</value></data>
+  <data name="Tm_KeyImmutable" xml:space="preserve"><value>The key is fixed because existing task keys depend on it.</value></data>
+  <data name="Tm_NoDepartment" xml:space="preserve"><value>No owner department</value></data>
+  <data name="Tm_DepartmentHelp" xml:space="preserve"><value>Active employees of this department become members automatically.</value></data>
+  <data name="Tm_Members" xml:space="preserve"><value>Members</value></data>
+  <data name="Tm_MembersHint" xml:space="preserve"><value>Explicit members. Leads manage sprints, ranking, assignment and archiving in this space.</value></data>
+  <data name="Tm_NoMembers" xml:space="preserve"><value>No explicit members.</value></data>
+  <data name="Tm_Employee" xml:space="preserve"><value>Employee</value></data>
+  <data name="Tm_SelectEmployee" xml:space="preserve"><value>Select an employee</value></data>
+  <data name="Tm_Types" xml:space="preserve"><value>Work item types</value></data>
+  <data name="Tm_Activate" xml:space="preserve"><value>Activate</value></data>
+  <data name="Tm_Deactivate" xml:space="preserve"><value>Deactivate</value></data>
+  <data name="Tm_Statuses" xml:space="preserve"><value>Statuses</value></data>
+  <data name="Tm_StatusesHint" xml:space="preserve"><value>Status category drives My Work counters and the Done state. A status in use cannot be deactivated or change category.</value></data>
+  <data name="Tm_Transitions" xml:space="preserve"><value>Allowed transitions</value></data>
+  <data name="Tm_TransitionsHint" xml:space="preserve"><value>Plain status changes only. Formal approvals use the workflow platform.</value></data>
+  <data name="Tm_FromTo" xml:space="preserve"><value>From \ To</value></data>
+  <data name="Tm_Allowed" xml:space="preserve"><value>allowed</value></data>
+  <data name="Tm_NotAllowed" xml:space="preserve"><value>not allowed</value></data>
+  <data name="Tm_Msg_Saved" xml:space="preserve"><value>Saved.</value></data>
+  <data name="Tm_Msg_Created" xml:space="preserve"><value>Task created.</value></data>
+  <data name="Tm_Msg_Archived" xml:space="preserve"><value>Task archived.</value></data>
+  <data name="Tm_Msg_Restored" xml:space="preserve"><value>Task restored.</value></data>
+  <data name="Tm_Msg_CommentAdded" xml:space="preserve"><value>Comment added.</value></data>
+  <data name="Tm_Msg_CommentDeleted" xml:space="preserve"><value>Comment deleted.</value></data>
+  <data name="Tm_Msg_SprintStarted" xml:space="preserve"><value>Sprint started.</value></data>
+  <data name="Tm_Msg_SprintCompleted" xml:space="preserve"><value>Sprint completed.</value></data>
+  <data name="Tm_Err_NotFound" xml:space="preserve"><value>Not found.</value></data>
+  <data name="Tm_Err_NotAuthorized" xml:space="preserve"><value>You are not allowed to do this.</value></data>
+  <data name="Tm_Err_Concurrency" xml:space="preserve"><value>Someone else changed this task. Reload and try again.</value></data>
+  <data name="Tm_Err_TitleRequired" xml:space="preserve"><value>Title is required.</value></data>
+  <data name="Tm_Err_TitleTooLong" xml:space="preserve"><value>Title is too long (max 300).</value></data>
+  <data name="Tm_Err_DescriptionTooLong" xml:space="preserve"><value>Description is too long (max 8000).</value></data>
+  <data name="Tm_Err_InvalidPriority" xml:space="preserve"><value>Invalid priority.</value></data>
+  <data name="Tm_Err_StartAfterDue" xml:space="preserve"><value>Start date must not be after the end/due date.</value></data>
+  <data name="Tm_Err_InvalidPoints" xml:space="preserve"><value>Story points must be between 0 and 1000.</value></data>
+  <data name="Tm_Err_InvalidType" xml:space="preserve"><value>Invalid work item type.</value></data>
+  <data name="Tm_Err_NoInitialStatus" xml:space="preserve"><value>The space has no active To do status.</value></data>
+  <data name="Tm_Err_SubtaskNeedsParent" xml:space="preserve"><value>A subtask needs a parent task.</value></data>
+  <data name="Tm_Err_InvalidParent" xml:space="preserve"><value>Invalid parent task.</value></data>
+  <data name="Tm_Err_InvalidSprint" xml:space="preserve"><value>Invalid sprint.</value></data>
+  <data name="Tm_Err_PersonalTaskFields" xml:space="preserve"><value>Type, parent, sprint and story points apply only to space tasks.</value></data>
+  <data name="Tm_Err_AssigneeNotEligible" xml:space="preserve"><value>The selected assignee is not eligible for this task.</value></data>
+  <data name="Tm_Err_InvalidTransition" xml:space="preserve"><value>This status change is not allowed.</value></data>
+  <data name="Tm_Err_NoteTooLong" xml:space="preserve"><value>Note is too long (max 2000).</value></data>
+  <data name="Tm_Err_StaleOrder" xml:space="preserve"><value>The list changed meanwhile. Reload and try again.</value></data>
+  <data name="Tm_Err_InvalidAction" xml:space="preserve"><value>Invalid action.</value></data>
+  <data name="Tm_Err_NothingSelected" xml:space="preserve"><value>Select at least one task.</value></data>
+  <data name="Tm_Err_CommentRequired" xml:space="preserve"><value>Comment text is required.</value></data>
+  <data name="Tm_Err_CommentTooLong" xml:space="preserve"><value>Comment is too long (max 5000).</value></data>
+  <data name="Tm_Err_InvalidLinkType" xml:space="preserve"><value>Invalid link type.</value></data>
+  <data name="Tm_Err_LinkTargetNotFound" xml:space="preserve"><value>Target task not found.</value></data>
+  <data name="Tm_Err_SelfLink" xml:space="preserve"><value>A task cannot link to itself.</value></data>
+  <data name="Tm_Err_LinkExists" xml:space="preserve"><value>This link already exists.</value></data>
+  <data name="Tm_Err_NoEmployee" xml:space="preserve"><value>Your account is not linked to an employee.</value></data>
+  <data name="Tm_Err_SaveFailed" xml:space="preserve"><value>The change could not be saved. Reload and try again.</value></data>
+  <data name="Tm_Err_NameRequired" xml:space="preserve"><value>Name is required (max 150).</value></data>
+  <data name="Tm_Err_TooLong" xml:space="preserve"><value>A value is too long.</value></data>
+  <data name="Tm_Err_InvalidDepartment" xml:space="preserve"><value>Invalid department.</value></data>
+  <data name="Tm_Err_InvalidKey" xml:space="preserve"><value>Key must be 2–10 letters/digits starting with a letter.</value></data>
+  <data name="Tm_Err_KeyExists" xml:space="preserve"><value>This key is already used.</value></data>
+  <data name="Tm_Err_InvalidRole" xml:space="preserve"><value>Invalid role.</value></data>
+  <data name="Tm_Err_InvalidEmployee" xml:space="preserve"><value>Employee not found or inactive.</value></data>
+  <data name="Tm_Err_InvalidCategory" xml:space="preserve"><value>Invalid status category.</value></data>
+  <data name="Tm_Err_NameExists" xml:space="preserve"><value>This name already exists in the space.</value></data>
+  <data name="Tm_Err_StatusInUse" xml:space="preserve"><value>This status is used by active tasks; it cannot be deactivated or change category.</value></data>
+  <data name="Tm_Err_InvalidIcon" xml:space="preserve"><value>Icon must be a Bootstrap Icons class such as bi-bug.</value></data>
+  <data name="Tm_Err_LastType" xml:space="preserve"><value>At least one active non-subtask type is required.</value></data>
+  <data name="Tm_Err_SprintClosed" xml:space="preserve"><value>The sprint is closed.</value></data>
+  <data name="Tm_Err_SprintState" xml:space="preserve"><value>The sprint is not in the right state for this action.</value></data>
+  <data name="Tm_Err_ActiveSprintExists" xml:space="preserve"><value>This space already has an active sprint.</value></data>
+  <data name="Nav_TaskManager" xml:space="preserve"><value>Task Manager</value></data>
 </root>

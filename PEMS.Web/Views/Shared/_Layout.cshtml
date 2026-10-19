@@ -7,6 +7,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @inject INotificationService NotificationService
 @inject ICurrentUserService CurrentUser
+@inject PEMS.Web.Navigation.IDynamicSidebarAvailability DynamicSidebar
 @{
     var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
     string LocalizedPageTitle(string? s) { if (string.IsNullOrWhiteSpace(s)) return s ?? ""; var l = Localizer[s]; return l.ResourceNotFound ? s : l.Value; }
@@ -166,7 +167,8 @@
     @await Html.PartialAsync("_ContextualHelpDrawer")
 
     <div class="pems-shell">
-        <partial name="_SidebarMenu" />
+        @* سایدبار داده‌محور پشت پرچم Features:DynamicSidebar:Enabled (پیش‌فرض: سایدبار قدیمی) *@
+        <partial name="@(DynamicSidebar.IsEnabled ? "_DynamicSidebarMenu" : "_SidebarMenu")" />
         <main class="pems-content">
             @* هدر عمومی صفحه: فقط یک ردیف فشرده (عنوان + برچسب ماژول) - بدون مسیر/URL و بدون Breadcrumb تکراری.
                صفحاتی که هدر اختصاصی دارند ViewData["HidePageTitle"]=true می‌گذارند. *@
