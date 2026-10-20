@@ -26,6 +26,10 @@ public class UsersController : Controller
     private readonly NavigationVisibilityResolver _navigationResolver;
     private readonly IUserRoleAssignmentSynchronizer _roleSync;
     private readonly PEMS.Application.Organization.IOrganizationHierarchyService? _hierarchy;
+    private readonly IRolePermissionAdminService _permissionAdmin;
+
+    // سقف امن برای یک درخواست دسته‌ای تب Effective (کل کاتالوگ مجوزها کمتر از این است)
+    private const int MaxPermissionChangesPerRequest = 1000;
 
     // طبق سند «PEMS — Global Data Grid Standard» بند ۶: Export هم باید یک سقف امن داشته باشد
     // (همون الگوی DocumentRegisterController.MaxExportRows) - نه واقعاً نامحدود. تعداد کاربران
@@ -45,7 +49,8 @@ public class UsersController : Controller
         IAccessControlService accessControlService,
         NavigationVisibilityResolver navigationResolver,
         IUserRoleAssignmentSynchronizer? roleSync = null,
-        PEMS.Application.Organization.IOrganizationHierarchyService? hierarchy = null)
+        PEMS.Application.Organization.IOrganizationHierarchyService? hierarchy = null,
+        IRolePermissionAdminService? permissionAdmin = null)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -56,6 +61,7 @@ public class UsersController : Controller
         _navigationResolver = navigationResolver;
         _roleSync = roleSync ?? new PEMS.Persistence.Services.UserRoleAssignmentSynchronizer(context);
         _hierarchy = hierarchy;
+        _permissionAdmin = permissionAdmin ?? new PEMS.Persistence.Services.RolePermissionAdminService(context);
     }
 
     private async Task<int> CreateEmployeeFromModelAsync(UserFormViewModel model)
@@ -553,10 +559,11 @@ public class UsersController : Controller
 
 
     // طبق «PEMS — Enterprise User-Centric Authorization Workspace Consolidation»: صفحه‌ی تازه -
-    // Users → [User] → Access & Authorization. فقط نمایش (Read-only) - Edit موجود بدون تغییر
-    // باقی می‌ماند و همچنان تنها مسیر ویرایش است. هر پنج دیدگاه (Effective/Matrix/Simulator/SoD/
-    // Navigation) از همان سرویس‌های واقعیِ موجود می‌آیند - هیچ موتور مجوزدهی/SoD/ناوبری تازه‌ای
-    // این‌جا نوشته نشده.
+    // Users → [User] → Access & Authorization. نمایشی است - Edit موجود همچنان تنها مسیر تخصیص نقش
+    // به کاربر است. تنها استثنا تب Effective است که با SetPermissionAccess مجوزها را روی Grant
+    // نقش‌های کاربر تغییر می‌دهد (نه مجوز به‌ازای کاربر). هر پنج دیدگاه (Effective/Matrix/Simulator/
+    // SoD/Navigation) از همان سرویس‌های واقعیِ موجود می‌آیند - هیچ موتور مجوزدهی/SoD/ناوبری
+    // تازه‌ای این‌جا نوشته نشده.
     public async Task<IActionResult> Details(int id)
     {
         var vm = await BuildWorkspaceVmAsync(id);
@@ -612,6 +619,47 @@ public class UsersController : Controller
         return View("Details", vm);
     }
 
+    // ذخیره‌ی خودکار تب Effective (تک‌ردیف یا دسته‌ای). مجوز مؤثر کاربر از Grant نقش‌هایش می‌آید،
+    // پس تغییر روی Grant همان نقش(ها) اعمال می‌شود و همه‌ی کاربران آن نقش را شامل می‌شود؛ منطق در
+    // IRolePermissionAdminService است، این‌جا فقط اعتبارسنجی ورودی و بازگرداندن وضعیت تازه.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetPermissionAccess(int id, [FromBody] SetPermissionAccessRequest request)
+    {
+        if (request?.Changes == null || request.Changes.Count == 0)
+            return BadRequest(new { error = "NoChanges" });
+        if (request.Changes.Count > MaxPermissionChangesPerRequest)
+            return BadRequest(new { error = "TooManyChanges" });
+
+        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
+        if (user == null) return NotFound();
+
+        var roleNames = (await _userManager.GetRolesAsync(user)).OrderBy(r => r).ToList();
+        if (!string.IsNullOrWhiteSpace(request.TargetRole) && !roleNames.Contains(request.TargetRole))
+            return BadRequest(new { error = "InvalidTargetRole" });
+
+        var result = await _permissionAdmin.ApplyAsync(
+            roleNames,
+            string.IsNullOrWhiteSpace(request.TargetRole) ? null : request.TargetRole,
+            request.Changes,
+            User.Identity?.Name ?? "unknown");
+
+        // وضعیت تازه‌ی همان مجوزها از همان منبع صفحه (نه حدس سمت کلاینت)
+        var rows = await _summaryService.GetEffectivePermissionsForRolesAsync(roleNames);
+        var requested = result.Items.Select(i => i.PermissionName).ToHashSet(StringComparer.Ordinal);
+
+        return Json(new
+        {
+            applied = result.AppliedCount,
+            affectedRoles = result.AffectedRoles,
+            items = result.Items.Select(i => new { permission = i.PermissionName, applied = i.Applied, reason = i.Reason }),
+            states = rows.Where(r => requested.Contains(r.PermissionName))
+                .Select(r => new { permission = r.PermissionName, allowed = r.Allowed }),
+            allowedCount = rows.Count(r => r.Allowed),
+            totalCount = rows.Count
+        });
+    }
+
     private async Task<UserWorkspaceVm?> BuildWorkspaceVmAsync(int id)
     {
         var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
@@ -637,6 +685,10 @@ public class UsersController : Controller
         }
 
         var effectivePermissions = await _summaryService.GetEffectivePermissionsForRolesAsync(roleNames);
+        var nonEditable = await _permissionAdmin.GetNonEditableAsync(roleNames);
+        var roleUserCounts = new Dictionary<string, int>();
+        foreach (var roleName in roleNames)
+            roleUserCounts[roleName] = (await _userManager.GetUsersInRoleAsync(roleName)).Count;
         var sodExposure = await _summaryService.GetSoDExposureForRolesAsync(roleNames);
 
         var fullMatrix = await _permissionService.GetMatrixAsync();
@@ -680,6 +732,8 @@ public class UsersController : Controller
             HasLinkedEmployee = user.EmployeeId.HasValue,
             RoleNames = roleNames,
             EffectivePermissions = effectivePermissions,
+            NonEditablePermissions = nonEditable,
+            RoleUserCounts = roleUserCounts,
             MatrixRows = matrixRows,
             SoDExposure = sodExposure,
             NavigationTree = navigationTree,

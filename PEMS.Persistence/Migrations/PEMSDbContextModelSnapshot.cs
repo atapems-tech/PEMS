@@ -7495,6 +7495,58 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("KnowledgeBaseEntries");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.KpiTarget", b =>
+                {
+                    b.Property<int>("KpiTargetId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("KpiTargetId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("KpiKey")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<decimal>("TargetValue")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("WarnValue")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.HasKey("KpiTargetId");
+
+                    b.HasIndex("KpiKey")
+                        .IsUnique();
+
+                    b.ToTable("KpiTargets", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Letter", b =>
                 {
                     b.Property<int>("LetterId")
@@ -11817,6 +11869,61 @@ namespace PEMS.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("PartCatalogueSectionCommodityGroups", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueSettings", b =>
+                {
+                    b.Property<int>("PartCatalogueSettingsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PartCatalogueSettingsId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PartNoFormat")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PartNoGenerationMethod")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("MANUAL");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("SingletonKey")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PartCatalogueSettingsId");
+
+                    b.HasIndex("SingletonKey")
+                        .IsUnique();
+
+                    b.ToTable("PartCatalogueSettings", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_PartCatalogueSettings_Method", "[PartNoGenerationMethod] IN ('MANUAL','API')");
+                        });
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueStockGrade", b =>

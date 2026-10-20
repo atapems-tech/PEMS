@@ -156,6 +156,8 @@ public class PEMSDbContext
     public DbSet<PartCatalogueApproverAssignment> PartCatalogueApproverAssignments { get; set; }
     public DbSet<PartCatalogueOrgLink> PartCatalogueOrgLinks { get; set; }
     public DbSet<PartCatalogueRequest> PartCatalogueRequests { get; set; }
+    public DbSet<PartCatalogueSettings> PartCatalogueSettings { get; set; }
+    public DbSet<KpiTarget> KpiTargets { get; set; }
     public DbSet<PartCatalogueRequestEquipment> PartCatalogueRequestEquipment { get; set; }
     public DbSet<PartCatalogueRequestAttribute> PartCatalogueRequestAttributes { get; set; }
     public DbSet<PartCatalogueRequestNote> PartCatalogueRequestNotes { get; set; }

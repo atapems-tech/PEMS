@@ -1341,4 +1341,181 @@
   <data name="Tm_Err_SprintState" xml:space="preserve"><value>The sprint is not in the right state for this action.</value></data>
   <data name="Tm_Err_ActiveSprintExists" xml:space="preserve"><value>This space already has an active sprint.</value></data>
   <data name="Nav_TaskManager" xml:space="preserve"><value>Task Manager</value></data>
+  <data name="PermAdmin_SelectAll" xml:space="preserve"><value>Select All</value></data>
+  <data name="PermAdmin_DeselectAll" xml:space="preserve"><value>Deselect All</value></data>
+  <data name="PermAdmin_SelectAllInTable" xml:space="preserve"><value>Select all rows in this table</value></data>
+  <data name="PermAdmin_EnableSelected" xml:space="preserve"><value>Enable Selected</value></data>
+  <data name="PermAdmin_DisableSelected" xml:space="preserve"><value>Disable Selected</value></data>
+  <data name="PermAdmin_SelectedCount" xml:space="preserve"><value>{0} selected</value></data>
+  <data name="PermAdmin_TargetRole" xml:space="preserve"><value>Grant newly enabled permissions to role:</value></data>
+  <data name="PermAdmin_RoleScopeNote" xml:space="preserve"><value>Changes save immediately to the role's permissions, so they apply to every user holding the role, not only this user. Roles:</value></data>
+  <data name="PermAdmin_RoleUsersFormat" xml:space="preserve"><value>{0} ({1} users)</value></data>
+  <data name="PermAdmin_Saving" xml:space="preserve"><value>Saving...</value></data>
+  <data name="PermAdmin_Saved" xml:space="preserve"><value>{0} permission(s) updated.</value></data>
+  <data name="PermAdmin_RowSaved" xml:space="preserve"><value>Saved</value></data>
+  <data name="PermAdmin_NoChange" xml:space="preserve"><value>No change was needed.</value></data>
+  <data name="PermAdmin_SomeSkipped" xml:space="preserve"><value>{0} not changed.</value></data>
+  <data name="PermAdmin_Failed" xml:space="preserve"><value>Saving failed. Nothing was changed.</value></data>
+  <data name="PermAdmin_ConfirmBatch" xml:space="preserve"><value>Change {0} permission(s)? This applies to every user in the affected role(s).</value></data>
+  <data name="PermAdmin_NothingSelected" xml:space="preserve"><value>Select at least one permission whose state would change.</value></data>
+  <data name="PermAdmin_SelectRow" xml:space="preserve"><value>Select {0}</value></data>
+  <data name="PermAdmin_ToggleRow" xml:space="preserve"><value>Toggle permission {0}</value></data>
+  <data name="PermAdmin_Locked_SystemAdmin" xml:space="preserve"><value>SystemAdmin has full access by design, so permissions cannot be edited here.</value></data>
+  <data name="PermAdmin_Locked_NoRoles" xml:space="preserve"><value>This user has no roles, so there is no role to edit.</value></data>
+  <data name="PermAdmin_Locked_OutsideMatrix" xml:space="preserve"><value>This permission is managed outside the Permission Matrix and cannot be edited here.</value></data>
+  <data name="PermAdmin_Locked_RoleModuleAction" xml:space="preserve"><value>This permission comes from a role module action and would be restored on restart.</value></data>
+  <data name="PermAdmin_Reason_Unknown" xml:space="preserve"><value>Unknown permission.</value></data>
+  <data name="PermAdmin_Reason_NoChange" xml:space="preserve"><value>Already in the requested state.</value></data>
+  <data name="PermAdmin_Reason_TargetRoleRequired" xml:space="preserve"><value>Choose a role to grant this permission to.</value></data>
+  <data name="PermMx_Intro" xml:space="preserve"><value>Configure module-level permissions. Changes save automatically as you tick a box.</value></data>
+  <data name="PermMx_SearchRoles" xml:space="preserve"><value>Search roles...</value></data>
+  <data name="PermMx_SearchModules" xml:space="preserve"><value>Search modules...</value></data>
+  <data name="PermMx_FilterLabel" xml:space="preserve"><value>Filter modules by configuration status</value></data>
+  <data name="PermMx_FilterAll" xml:space="preserve"><value>All modules</value></data>
+  <data name="PermMx_FilterConfigured" xml:space="preserve"><value>Configured only</value></data>
+  <data name="PermMx_FilterUnconfigured" xml:space="preserve"><value>Not configured only</value></data>
+  <data name="PermMx_ExpandAll" xml:space="preserve"><value>Expand all</value></data>
+  <data name="PermMx_CollapseAll" xml:space="preserve"><value>Collapse all</value></data>
+  <data name="PermMx_Saving" xml:space="preserve"><value>Saving...</value></data>
+  <data name="PermMx_Saved" xml:space="preserve"><value>All changes saved</value></data>
+  <data name="PermMx_SaveFailed" xml:space="preserve"><value>Could not save.</value></data>
+  <data name="PermMx_Retry" xml:space="preserve"><value>Retry</value></data>
+  <data name="PermMx_Dismiss" xml:space="preserve"><value>Dismiss</value></data>
+  <data name="PermMx_SavedCount" xml:space="preserve"><value>{0} permissions saved.</value></data>
+  <data name="PermMx_ModulesFormat" xml:space="preserve"><value>{0}/{1} modules configured</value></data>
+  <data name="PermMx_RolesShown" xml:space="preserve"><value>{0} of {1} roles shown</value></data>
+  <data name="PermMx_NoRoleMatch" xml:space="preserve"><value>No role matches the current filters.</value></data>
+  <data name="PermMx_Error_Generic" xml:space="preserve"><value>Please try again.</value></data>
+  <data name="PermMx_Error_UnknownRole" xml:space="preserve"><value>The role no longer exists.</value></data>
+  <data name="PermMx_Error_SystemAdmin" xml:space="preserve"><value>SystemAdmin cannot be edited here.</value></data>
+  <data name="PermMx_Error_UnknownModule" xml:space="preserve"><value>Unknown module.</value></data>
+  <data name="PermMx_ColToggle" xml:space="preserve"><value>Toggle {0} for all visible modules</value></data>
+  <data name="PermMx_RowToggle" xml:space="preserve"><value>Toggle all permissions for {0}</value></data>
+  <data name="PermMx_Tip_View" xml:space="preserve"><value>View: open and read records</value></data>
+  <data name="PermMx_Tip_Create" xml:space="preserve"><value>Create: add new records</value></data>
+  <data name="PermMx_Tip_Edit" xml:space="preserve"><value>Edit: change existing records</value></data>
+  <data name="PermMx_Tip_Delete" xml:space="preserve"><value>Delete: remove or cancel records (high risk)</value></data>
+  <data name="PermMx_Tip_Approve" xml:space="preserve"><value>Approve: final approval decisions (high risk)</value></data>
+  <data name="PermMx_Tip_ManualNumber" xml:space="preserve"><value>Manual #: enter document numbers by hand</value></data>
+  <data name="PermMx_Tip_Freeze" xml:space="preserve"><value>Freeze: lock a record against changes</value></data>
+  <data name="PermMx_Tip_Unfreeze" xml:space="preserve"><value>Unfreeze: unlock a frozen record</value></data>
+  <data name="PermMx_Tip_Hold" xml:space="preserve"><value>Hold: put a record on hold</value></data>
+  <data name="PermMx_Tip_ReleaseHold" xml:space="preserve"><value>Release Hold: resume a record on hold</value></data>
+  <data name="Pc_Adm_PartNoTitle" xml:space="preserve"><value>Part number generation</value></data>
+  <data name="Pc_Adm_PartNoHint" xml:space="preserve"><value>Choose how part numbers are produced for catalogue requests.</value></data>
+  <data name="Pc_Adm_PartNoMethod" xml:space="preserve"><value>Generation method</value></data>
+  <data name="Pc_Adm_PartNoManual" xml:space="preserve"><value>Manual - the Part Cataloguer enters the IFS number</value></data>
+  <data name="Pc_Adm_PartNoApi" xml:space="preserve"><value>Automatic via API</value></data>
+  <data name="Pc_Adm_PartNoFormat" xml:space="preserve"><value>Part number format</value></data>
+  <data name="Pc_Adm_PartNoFormatHelp" xml:space="preserve"><value>YYYY = year, NNNN = sequence number (at least 3 N). Letters, digits and . _ / # - only. Required for API, optional for Manual.</value></data>
+  <data name="Pc_Adm_PartNoNote" xml:space="preserve"><value>This only saves the setting. Part numbers are still entered manually until automatic generation is available (Phase 2).</value></data>
+  <data name="Pc_Adm_PartNoModified" xml:space="preserve"><value>Last changed</value></data>
+  <data name="Pc_Err_PartNoMethodInvalid" xml:space="preserve"><value>Choose Manual or API.</value></data>
+  <data name="Pc_Err_PartNoFormatInvalid" xml:space="preserve"><value>Use only letters, digits and . _ / # - (no spaces).</value></data>
+  <data name="Pc_Err_PartNoFormatRequired" xml:space="preserve"><value>A format is required for automatic generation.</value></data>
+  <data name="Pc_Err_PartNoFormatNeedsSequence" xml:space="preserve"><value>The format must contain a sequence of at least 3 N characters (e.g. NNNN).</value></data>
+  <data name="Pc_F_PartNoGenerationMethod" xml:space="preserve"><value>Generation method</value></data>
+  <data name="Pc_F_PartNoFormat" xml:space="preserve"><value>Part number format</value></data>
+  <data name="جستجوی دیسیپلین..." xml:space="preserve"><value>Search disciplines...</value></data>
+  <data name="هیچ دیسیپلینی یافت نشد" xml:space="preserve"><value>No discipline found</value></data>
+  <data name="هیچ سمتی با این فیلتر وجود ندارد." xml:space="preserve"><value>No positions match this filter.</value></data>
+  <data name="خلاصه‌ی اشغال سمت‌ها" xml:space="preserve"><value>Position staffing summary</value></data>
+  <data name="نمایش سمت‌ها" xml:space="preserve"><value>Show positions</value></data>
+  <data name="خالی" xml:space="preserve"><value>Vacant</value></data>
+  <data name="کل سمت‌ها" xml:space="preserve"><value>Total positions</value></data>
+  <data name="نرخ اشغال" xml:space="preserve"><value>Occupancy</value></data>
+  <data name="سمت‌های غیرفعال در شمارش نیامده‌اند." xml:space="preserve"><value>Inactive positions are not counted.</value></data>
+  <data name="راهنمای نمودار" xml:space="preserve"><value>Chart legend</value></data>
+  <data name="گروه نگهداری" xml:space="preserve"><value>Maintenance group</value></data>
+  <data name="تیم" xml:space="preserve"><value>Team</value></data>
+  <data name="شیفت / زیرتیم / واحد" xml:space="preserve"><value>Shift / Sub-team / Unit</value></data>
+  <data name="سمت تکمیل‌شده" xml:space="preserve"><value>Filled position</value></data>
+  <data name="سمت خالی" xml:space="preserve"><value>Vacant position</value></data>
+  <data name="Kpi_Exec_Title" xml:space="preserve"><value>Executive KPI Dashboard</value></data>
+  <data name="Kpi_Exec_ClassicLink" xml:space="preserve"><value>Maintenance &amp; cost KPIs</value></data>
+  <data name="Kpi_Exec_Intro" xml:space="preserve"><value>Only indicators that PEMS actually records are shown. Where there is not enough data a tile says so instead of showing zero; categories PEMS has no data for are listed at the bottom.</value></data>
+  <data name="Kpi_Exec_Generated" xml:space="preserve"><value>Generated</value></data>
+  <data name="Kpi_Exec_Overview" xml:space="preserve"><value>Status against targets</value></data>
+  <data name="Kpi_Exec_Target" xml:space="preserve"><value>Target</value></data>
+  <data name="Kpi_Exec_NoDataHint" xml:space="preserve"><value>Not enough data to calculate.</value></data>
+  <data name="Kpi_Exec_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Kpi_Exec_Count" xml:space="preserve"><value>Count</value></data>
+  <data name="Kpi_Exec_TopCost" xml:space="preserve"><value>Top equipment by cost</value></data>
+  <data name="Kpi_Exec_NotTracked" xml:space="preserve"><value>Not tracked in PEMS yet</value></data>
+  <data name="Kpi_Exec_NotTrackedHint" xml:space="preserve"><value>The KPI framework lists these, but PEMS has no data source for them, so they are not shown with sample values.</value></data>
+  <data name="Kpi_Exec_EditTargets" xml:space="preserve"><value>Edit targets</value></data>
+  <data name="Kpi_Exec_EditTargetsHint" xml:space="preserve"><value>Clear the target to remove it. 'Near target' marks values that miss the target but pass this threshold.</value></data>
+  <data name="Kpi_Exec_Kpi" xml:space="preserve"><value>KPI</value></data>
+  <data name="Kpi_Exec_Direction" xml:space="preserve"><value>Better when</value></data>
+  <data name="Kpi_Exec_Warn" xml:space="preserve"><value>Near target</value></data>
+  <data name="Kpi_Exec_Source" xml:space="preserve"><value>Source</value></data>
+  <data name="Kpi_Exec_Custom" xml:space="preserve"><value>Custom</value></data>
+  <data name="Kpi_Exec_Default" xml:space="preserve"><value>Default</value></data>
+  <data name="Kpi_Status_Met" xml:space="preserve"><value>Met</value></data>
+  <data name="Kpi_Status_Near" xml:space="preserve"><value>Near target</value></data>
+  <data name="Kpi_Status_Missed" xml:space="preserve"><value>Missed</value></data>
+  <data name="Kpi_Status_NoTarget" xml:space="preserve"><value>No target</value></data>
+  <data name="Kpi_Status_NoData" xml:space="preserve"><value>No data</value></data>
+  <data name="Kpi_Msg_TargetSaved" xml:space="preserve"><value>Target saved.</value></data>
+  <data name="Kpi_Err_UnknownKpi" xml:space="preserve"><value>Unknown KPI.</value></data>
+  <data name="Kpi_Err_TargetRange" xml:space="preserve"><value>Value is out of range (0-100 for percentages).</value></data>
+  <data name="Kpi_Err_WarnAboveTarget" xml:space="preserve"><value>For a lower-is-better KPI the near-target threshold must be at or above the target.</value></data>
+  <data name="Kpi_Err_WarnBelowTarget" xml:space="preserve"><value>For a higher-is-better KPI the near-target threshold must be at or below the target.</value></data>
+  <data name="Kpi_Err_SaveFailed" xml:space="preserve"><value>Could not save the target. Nothing was changed.</value></data>
+  <data name="Kpi_Err_NotANumber" xml:space="preserve"><value>Enter numbers only.</value></data>
+  <data name="Kpi_Section_Cost" xml:space="preserve"><value>Cost</value></data>
+  <data name="Kpi_Section_Maintenance" xml:space="preserve"><value>Maintenance</value></data>
+  <data name="Kpi_Section_Reliability" xml:space="preserve"><value>Reliability</value></data>
+  <data name="Kpi_Section_Equipment" xml:space="preserve"><value>Equipment</value></data>
+  <data name="Kpi_Section_Inventory" xml:space="preserve"><value>Inventory</value></data>
+  <data name="Kpi_Section_Production" xml:space="preserve"><value>Production</value></data>
+  <data name="Kpi_Section_Documents" xml:space="preserve"><value>Engineering documents</value></data>
+  <data name="Kpi_Name_cost_total" xml:space="preserve"><value>Total maintenance cost</value></data>
+  <data name="Kpi_Name_cost_labor_share" xml:space="preserve"><value>Labor share of cost</value></data>
+  <data name="Kpi_Name_cost_material_share" xml:space="preserve"><value>Spare parts share of cost</value></data>
+  <data name="Kpi_Name_cost_contractor_share" xml:space="preserve"><value>Contractor share of cost</value></data>
+  <data name="Kpi_Name_cost_corrective_share" xml:space="preserve"><value>Corrective + emergency share of cost</value></data>
+  <data name="Kpi_Name_pm_compliance" xml:space="preserve"><value>PM compliance (plans not overdue)</value></data>
+  <data name="Kpi_Name_pm_overdue" xml:space="preserve"><value>Overdue PM plans</value></data>
+  <data name="Kpi_Name_wo_completion_rate" xml:space="preserve"><value>Work order completion rate</value></data>
+  <data name="Kpi_Name_backlog_count" xml:space="preserve"><value>Open backlog (work orders)</value></data>
+  <data name="Kpi_Name_backlog_hours" xml:space="preserve"><value>Backlog planned hours</value></data>
+  <data name="Kpi_Name_backlog_overdue_pct" xml:space="preserve"><value>Backlog past due date</value></data>
+  <data name="Kpi_Name_wo_aging_days" xml:space="preserve"><value>Average backlog age</value></data>
+  <data name="Kpi_Name_emergency_share" xml:space="preserve"><value>Emergency work order share</value></data>
+  <data name="Kpi_Name_fleet_mtbf" xml:space="preserve"><value>Mean MTBF</value></data>
+  <data name="Kpi_Name_fleet_mttr" xml:space="preserve"><value>Mean MTTR</value></data>
+  <data name="Kpi_Name_fleet_availability" xml:space="preserve"><value>Mean availability</value></data>
+  <data name="Kpi_Name_failure_count" xml:space="preserve"><value>Recorded failures</value></data>
+  <data name="Kpi_Name_repeat_failure_groups" xml:space="preserve"><value>Repeat failure groups</value></data>
+  <data name="Kpi_Name_uncovered_critical_equipment" xml:space="preserve"><value>Class A equipment without strategy</value></data>
+  <data name="Kpi_Name_equipment_total" xml:space="preserve"><value>Active equipment</value></data>
+  <data name="Kpi_Name_stock_in_rate" xml:space="preserve"><value>Items in stock</value></data>
+  <data name="Kpi_Name_low_stock_items" xml:space="preserve"><value>Low-stock items</value></data>
+  <data name="Kpi_Name_out_of_stock_items" xml:space="preserve"><value>Out-of-stock items</value></data>
+  <data name="Kpi_Name_po_on_time_rate" xml:space="preserve"><value>Production orders finished on time</value></data>
+  <data name="Kpi_Name_po_overdue_open" xml:space="preserve"><value>Open production orders past due</value></data>
+  <data name="Kpi_Name_po_completed" xml:space="preserve"><value>Production orders completed</value></data>
+  <data name="Kpi_Name_production_downtime_hours" xml:space="preserve"><value>Production downtime</value></data>
+  <data name="Kpi_Name_docs_total" xml:space="preserve"><value>Engineering documents</value></data>
+  <data name="Kpi_Name_docs_under_review" xml:space="preserve"><value>Documents under review</value></data>
+  <data name="Kpi_Name_docs_rejected" xml:space="preserve"><value>Rejected documents</value></data>
+  <data name="Kpi_NT_budget" xml:space="preserve"><value>Budget, variance and forecast</value></data>
+  <data name="Kpi_NTD_budget" xml:space="preserve"><value>needs an annual maintenance budget per cost center</value></data>
+  <data name="Kpi_NT_safety" xml:space="preserve"><value>Safety incidents and near misses</value></data>
+  <data name="Kpi_NTD_safety" xml:space="preserve"><value>needs an incident / near-miss log (only the permit workflow exists)</value></data>
+  <data name="Kpi_NT_energy" xml:space="preserve"><value>Energy and environment</value></data>
+  <data name="Kpi_NTD_energy" xml:space="preserve"><value>needs meter readings and waste records</value></data>
+  <data name="Kpi_NT_workforce" xml:space="preserve"><value>Workforce: attendance, turnover, training</value></data>
+  <data name="Kpi_NTD_workforce" xml:space="preserve"><value>needs attendance, training and performance records</value></data>
+  <data name="Kpi_NT_customer" xml:space="preserve"><value>Customer satisfaction / NPS</value></data>
+  <data name="Kpi_NTD_customer" xml:space="preserve"><value>needs survey results</value></data>
+  <data name="Kpi_NT_risk_register" xml:space="preserve"><value>Enterprise risk register</value></data>
+  <data name="Kpi_NTD_risk_register" xml:space="preserve"><value>needs a risk register (only equipment criticality and RCM exist)</value></data>
+  <data name="Kpi_NT_earned_value" xml:space="preserve"><value>Project earned value (SPI / CPI)</value></data>
+  <data name="Kpi_NTD_earned_value" xml:space="preserve"><value>needs project cost baselines and progress</value></data>
+  <data name="Kpi_NT_oee" xml:space="preserve"><value>OEE (availability x performance x quality)</value></data>
+  <data name="Kpi_NTD_oee" xml:space="preserve"><value>needs ideal rates and good/total counts per machine</value></data>
+  <data name="Kpi_NT_pm_roi" xml:space="preserve"><value>Preventive maintenance ROI</value></data>
+  <data name="Kpi_NTD_pm_roi" xml:space="preserve"><value>avoided failure cost cannot be measured from the recorded data</value></data>
 </root>

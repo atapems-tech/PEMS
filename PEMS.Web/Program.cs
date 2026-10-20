@@ -333,6 +333,8 @@ builder.Services.AddScoped<IIrnReceiptService, IrnReceiptService>();
 builder.Services.AddScoped<IReliabilityService, ReliabilityService>();
 builder.Services.AddScoped<IInspectionService, InspectionService>();
 builder.Services.AddScoped<IKpiService, KpiService>();
+builder.Services.AddScoped<IKpiTargetService, KpiTargetService>();
+builder.Services.AddScoped<IExecutiveKpiService, ExecutiveKpiService>();
 builder.Services.AddScoped<IPermitService, PermitService>();
 builder.Services.AddScoped<IAccessControlService, AccessControlService>();
 builder.Services.AddScoped<IUserRoleAssignmentSynchronizer, UserRoleAssignmentSynchronizer>();
@@ -345,6 +347,8 @@ builder.Services.AddScoped<PEMS.Web.Security.NavigationVisibilityResolver>();
 // طبق «PEMS — Enterprise User-Centric Authorization Workspace Consolidation»: تنها سرویس تازه‌ی این
 // فاز - هم Admin/Authorization موجود، هم Admin/Users/Details تازه، از همین یک سرویس می‌خوانند
 builder.Services.AddScoped<PEMS.Application.Interfaces.IUserAuthorizationSummaryService, PEMS.Persistence.Services.UserAuthorizationSummaryService>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IRolePermissionAdminService, PEMS.Persistence.Services.RolePermissionAdminService>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IPermissionMatrixEditor, PEMS.Persistence.Services.PermissionMatrixEditor>();
 builder.Services.AddScoped<IRoleModuleActionService, RoleModuleActionService>();
 builder.Services.AddScoped<IIsolationService, IsolationService>();
 builder.Services.AddScoped<IGasTestService, GasTestService>();
@@ -493,6 +497,7 @@ builder.Services.AddScoped<PEMS.Web.Navigation.DynamicSidebarBuilder>();
 builder.Services.AddScoped<PEMS.Web.Navigation.NavigationBadgeService>();
 builder.Services.AddScoped<IPartCatalogueService, PartCatalogueService>();
 builder.Services.AddScoped<IPartCatalogueAdminService, PartCatalogueAdminService>();
+builder.Services.AddScoped<IPartCatalogueSettingsService, PartCatalogueSettingsService>();
 
 // طبق CMMS Production Baseline v1 بند ۶ (CMMS-01: Asset Foundation)
 builder.Services.AddScoped<IFunctionalLocationService, FunctionalLocationService>();

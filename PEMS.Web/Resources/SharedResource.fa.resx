@@ -2135,4 +2135,181 @@
   <data name="Tm_Err_SprintState" xml:space="preserve"><value>اسپرینت در وضعیت مناسب این عملیات نیست.</value></data>
   <data name="Tm_Err_ActiveSprintExists" xml:space="preserve"><value>این فضا از قبل یک اسپرینت فعال دارد.</value></data>
   <data name="Nav_TaskManager" xml:space="preserve"><value>مدیریت وظایف</value></data>
+  <data name="PermAdmin_SelectAll" xml:space="preserve"><value>انتخاب همه</value></data>
+  <data name="PermAdmin_DeselectAll" xml:space="preserve"><value>لغو انتخاب همه</value></data>
+  <data name="PermAdmin_SelectAllInTable" xml:space="preserve"><value>انتخاب همه‌ی ردیف‌های این جدول</value></data>
+  <data name="PermAdmin_EnableSelected" xml:space="preserve"><value>فعال‌سازی انتخاب‌شده‌ها</value></data>
+  <data name="PermAdmin_DisableSelected" xml:space="preserve"><value>غیرفعال‌سازی انتخاب‌شده‌ها</value></data>
+  <data name="PermAdmin_SelectedCount" xml:space="preserve"><value>{0} مورد انتخاب شده</value></data>
+  <data name="PermAdmin_TargetRole" xml:space="preserve"><value>مجوزهای تازه‌فعال‌شده به این نقش داده شود:</value></data>
+  <data name="PermAdmin_RoleScopeNote" xml:space="preserve"><value>تغییرها بلافاصله روی مجوزهای نقش ذخیره می‌شوند؛ پس برای همه‌ی کاربران دارای آن نقش اعمال می‌شوند، نه فقط این کاربر. نقش‌ها:</value></data>
+  <data name="PermAdmin_RoleUsersFormat" xml:space="preserve"><value>{0} ({1} کاربر)</value></data>
+  <data name="PermAdmin_Saving" xml:space="preserve"><value>در حال ذخیره...</value></data>
+  <data name="PermAdmin_Saved" xml:space="preserve"><value>{0} مجوز به‌روزرسانی شد.</value></data>
+  <data name="PermAdmin_RowSaved" xml:space="preserve"><value>ذخیره شد</value></data>
+  <data name="PermAdmin_NoChange" xml:space="preserve"><value>تغییری لازم نبود.</value></data>
+  <data name="PermAdmin_SomeSkipped" xml:space="preserve"><value>{0} مورد تغییر نکرد.</value></data>
+  <data name="PermAdmin_Failed" xml:space="preserve"><value>ذخیره ناموفق بود. چیزی تغییر نکرد.</value></data>
+  <data name="PermAdmin_ConfirmBatch" xml:space="preserve"><value>{0} مجوز تغییر کند؟ این تغییر برای همه‌ی کاربران نقش‌های مربوط اعمال می‌شود.</value></data>
+  <data name="PermAdmin_NothingSelected" xml:space="preserve"><value>حداقل یک مجوز را انتخاب کنید که وضعیتش تغییر کند.</value></data>
+  <data name="PermAdmin_SelectRow" xml:space="preserve"><value>انتخاب {0}</value></data>
+  <data name="PermAdmin_ToggleRow" xml:space="preserve"><value>تغییر وضعیت مجوز {0}</value></data>
+  <data name="PermAdmin_Locked_SystemAdmin" xml:space="preserve"><value>SystemAdmin طبق طراحی دسترسی کامل دارد؛ مجوزها از این‌جا قابل ویرایش نیستند.</value></data>
+  <data name="PermAdmin_Locked_NoRoles" xml:space="preserve"><value>این کاربر نقشی ندارد؛ نقشی برای ویرایش وجود ندارد.</value></data>
+  <data name="PermAdmin_Locked_OutsideMatrix" xml:space="preserve"><value>این مجوز خارج از Permission Matrix مدیریت می‌شود و از این‌جا قابل ویرایش نیست.</value></data>
+  <data name="PermAdmin_Locked_RoleModuleAction" xml:space="preserve"><value>این مجوز از RoleModuleAction می‌آید و با راه‌اندازی مجدد برمی‌گردد.</value></data>
+  <data name="PermAdmin_Reason_Unknown" xml:space="preserve"><value>مجوز ناشناخته.</value></data>
+  <data name="PermAdmin_Reason_NoChange" xml:space="preserve"><value>از قبل در وضعیت درخواستی است.</value></data>
+  <data name="PermAdmin_Reason_TargetRoleRequired" xml:space="preserve"><value>نقشی را برای دریافت این مجوز انتخاب کنید.</value></data>
+  <data name="PermMx_Intro" xml:space="preserve"><value>مجوزهای سطح ماژول را تنظیم کنید. تغییرها با علامت‌زدن هر خانه خودکار ذخیره می‌شوند.</value></data>
+  <data name="PermMx_SearchRoles" xml:space="preserve"><value>جستجوی نقش...</value></data>
+  <data name="PermMx_SearchModules" xml:space="preserve"><value>جستجوی ماژول...</value></data>
+  <data name="PermMx_FilterLabel" xml:space="preserve"><value>فیلتر ماژول‌ها بر اساس وضعیت تنظیم</value></data>
+  <data name="PermMx_FilterAll" xml:space="preserve"><value>همه‌ی ماژول‌ها</value></data>
+  <data name="PermMx_FilterConfigured" xml:space="preserve"><value>فقط تنظیم‌شده‌ها</value></data>
+  <data name="PermMx_FilterUnconfigured" xml:space="preserve"><value>فقط تنظیم‌نشده‌ها</value></data>
+  <data name="PermMx_ExpandAll" xml:space="preserve"><value>باز کردن همه</value></data>
+  <data name="PermMx_CollapseAll" xml:space="preserve"><value>بستن همه</value></data>
+  <data name="PermMx_Saving" xml:space="preserve"><value>در حال ذخیره...</value></data>
+  <data name="PermMx_Saved" xml:space="preserve"><value>همه‌ی تغییرها ذخیره شد</value></data>
+  <data name="PermMx_SaveFailed" xml:space="preserve"><value>ذخیره ناموفق بود.</value></data>
+  <data name="PermMx_Retry" xml:space="preserve"><value>تلاش دوباره</value></data>
+  <data name="PermMx_Dismiss" xml:space="preserve"><value>بستن</value></data>
+  <data name="PermMx_SavedCount" xml:space="preserve"><value>{0} مجوز ذخیره شد.</value></data>
+  <data name="PermMx_ModulesFormat" xml:space="preserve"><value>{0}/{1} ماژول تنظیم شده</value></data>
+  <data name="PermMx_RolesShown" xml:space="preserve"><value>{0} از {1} نقش نمایش داده می‌شود</value></data>
+  <data name="PermMx_NoRoleMatch" xml:space="preserve"><value>هیچ نقشی با فیلترهای فعلی مطابقت ندارد.</value></data>
+  <data name="PermMx_Error_Generic" xml:space="preserve"><value>لطفاً دوباره تلاش کنید.</value></data>
+  <data name="PermMx_Error_UnknownRole" xml:space="preserve"><value>این نقش دیگر وجود ندارد.</value></data>
+  <data name="PermMx_Error_SystemAdmin" xml:space="preserve"><value>SystemAdmin از این‌جا قابل ویرایش نیست.</value></data>
+  <data name="PermMx_Error_UnknownModule" xml:space="preserve"><value>ماژول ناشناخته.</value></data>
+  <data name="PermMx_ColToggle" xml:space="preserve"><value>تغییر {0} برای همه‌ی ماژول‌های نمایان</value></data>
+  <data name="PermMx_RowToggle" xml:space="preserve"><value>تغییر همه‌ی مجوزهای {0}</value></data>
+  <data name="PermMx_Tip_View" xml:space="preserve"><value>مشاهده: باز کردن و خواندن رکوردها</value></data>
+  <data name="PermMx_Tip_Create" xml:space="preserve"><value>ایجاد: افزودن رکورد جدید</value></data>
+  <data name="PermMx_Tip_Edit" xml:space="preserve"><value>ویرایش: تغییر رکوردهای موجود</value></data>
+  <data name="PermMx_Tip_Delete" xml:space="preserve"><value>حذف: حذف یا لغو رکورد (پرخطر)</value></data>
+  <data name="PermMx_Tip_Approve" xml:space="preserve"><value>تأیید: تصمیم‌های نهایی تأیید (پرخطر)</value></data>
+  <data name="PermMx_Tip_ManualNumber" xml:space="preserve"><value>شماره‌ی دستی: ورود دستی شماره‌ی مدرک</value></data>
+  <data name="PermMx_Tip_Freeze" xml:space="preserve"><value>فریز: قفل‌کردن رکورد در برابر تغییر</value></data>
+  <data name="PermMx_Tip_Unfreeze" xml:space="preserve"><value>آنفریز: باز کردن قفل رکورد فریزشده</value></data>
+  <data name="PermMx_Tip_Hold" xml:space="preserve"><value>توقف: قرار دادن رکورد در حالت توقف</value></data>
+  <data name="PermMx_Tip_ReleaseHold" xml:space="preserve"><value>رفع توقف: ازسرگیری رکورد متوقف‌شده</value></data>
+  <data name="Pc_Adm_PartNoTitle" xml:space="preserve"><value>تولید شماره‌ی قطعه</value></data>
+  <data name="Pc_Adm_PartNoHint" xml:space="preserve"><value>نحوه‌ی تولید شماره‌ی قطعه برای درخواست‌های کاتالوگ را مشخص کنید.</value></data>
+  <data name="Pc_Adm_PartNoMethod" xml:space="preserve"><value>روش تولید</value></data>
+  <data name="Pc_Adm_PartNoManual" xml:space="preserve"><value>دستی - Part Cataloguer شماره‌ی IFS را وارد می‌کند</value></data>
+  <data name="Pc_Adm_PartNoApi" xml:space="preserve"><value>خودکار از طریق API</value></data>
+  <data name="Pc_Adm_PartNoFormat" xml:space="preserve"><value>قالب شماره‌ی قطعه</value></data>
+  <data name="Pc_Adm_PartNoFormatHelp" xml:space="preserve"><value>YYYY = سال، NNNN = شماره‌ی ترتیبی (حداقل ۳ حرف N). فقط حروف، ارقام و . _ / # - . برای API الزامی و برای دستی اختیاری است.</value></data>
+  <data name="Pc_Adm_PartNoNote" xml:space="preserve"><value>این‌جا فقط تنظیم ذخیره می‌شود. تا زمان آماده‌شدن تولید خودکار (فاز ۲)، شماره‌ی قطعه همچنان دستی وارد می‌شود.</value></data>
+  <data name="Pc_Adm_PartNoModified" xml:space="preserve"><value>آخرین تغییر</value></data>
+  <data name="Pc_Err_PartNoMethodInvalid" xml:space="preserve"><value>روش «دستی» یا «API» را انتخاب کنید.</value></data>
+  <data name="Pc_Err_PartNoFormatInvalid" xml:space="preserve"><value>فقط از حروف، ارقام و . _ / # - استفاده کنید (بدون فاصله).</value></data>
+  <data name="Pc_Err_PartNoFormatRequired" xml:space="preserve"><value>برای تولید خودکار، قالب الزامی است.</value></data>
+  <data name="Pc_Err_PartNoFormatNeedsSequence" xml:space="preserve"><value>قالب باید شامل دنباله‌ای از حداقل ۳ حرف N باشد (مثلاً NNNN).</value></data>
+  <data name="Pc_F_PartNoGenerationMethod" xml:space="preserve"><value>روش تولید</value></data>
+  <data name="Pc_F_PartNoFormat" xml:space="preserve"><value>قالب شماره‌ی قطعه</value></data>
+  <data name="جستجوی دیسیپلین..." xml:space="preserve"><value>جستجوی دیسیپلین...</value></data>
+  <data name="هیچ دیسیپلینی یافت نشد" xml:space="preserve"><value>هیچ دیسیپلینی یافت نشد</value></data>
+  <data name="هیچ سمتی با این فیلتر وجود ندارد." xml:space="preserve"><value>هیچ سمتی با این فیلتر وجود ندارد.</value></data>
+  <data name="خلاصه‌ی اشغال سمت‌ها" xml:space="preserve"><value>خلاصه‌ی اشغال سمت‌ها</value></data>
+  <data name="نمایش سمت‌ها" xml:space="preserve"><value>نمایش سمت‌ها</value></data>
+  <data name="خالی" xml:space="preserve"><value>خالی</value></data>
+  <data name="کل سمت‌ها" xml:space="preserve"><value>کل سمت‌ها</value></data>
+  <data name="نرخ اشغال" xml:space="preserve"><value>نرخ اشغال</value></data>
+  <data name="سمت‌های غیرفعال در شمارش نیامده‌اند." xml:space="preserve"><value>سمت‌های غیرفعال در شمارش نیامده‌اند.</value></data>
+  <data name="راهنمای نمودار" xml:space="preserve"><value>راهنمای نمودار</value></data>
+  <data name="گروه نگهداری" xml:space="preserve"><value>گروه نگهداری</value></data>
+  <data name="تیم" xml:space="preserve"><value>تیم</value></data>
+  <data name="شیفت / زیرتیم / واحد" xml:space="preserve"><value>شیفت / زیرتیم / واحد</value></data>
+  <data name="سمت تکمیل‌شده" xml:space="preserve"><value>سمت تکمیل‌شده</value></data>
+  <data name="سمت خالی" xml:space="preserve"><value>سمت خالی</value></data>
+  <data name="Kpi_Exec_Title" xml:space="preserve"><value>داشبورد مدیریتی شاخص‌ها (KPI)</value></data>
+  <data name="Kpi_Exec_ClassicLink" xml:space="preserve"><value>شاخص‌های نگهداری و هزینه</value></data>
+  <data name="Kpi_Exec_Intro" xml:space="preserve"><value>فقط شاخص‌هایی نمایش داده می‌شوند که PEMS واقعاً ثبت می‌کند. اگر داده‌ی کافی نباشد، به‌جای صفر همین را اعلام می‌کند؛ دسته‌هایی که PEMS برایشان داده ندارد در پایین فهرست شده‌اند.</value></data>
+  <data name="Kpi_Exec_Generated" xml:space="preserve"><value>زمان تولید</value></data>
+  <data name="Kpi_Exec_Overview" xml:space="preserve"><value>وضعیت نسبت به هدف</value></data>
+  <data name="Kpi_Exec_Target" xml:space="preserve"><value>هدف</value></data>
+  <data name="Kpi_Exec_NoDataHint" xml:space="preserve"><value>داده‌ی کافی برای محاسبه نیست.</value></data>
+  <data name="Kpi_Exec_Status" xml:space="preserve"><value>وضعیت</value></data>
+  <data name="Kpi_Exec_Count" xml:space="preserve"><value>تعداد</value></data>
+  <data name="Kpi_Exec_TopCost" xml:space="preserve"><value>پرهزینه‌ترین تجهیزها</value></data>
+  <data name="Kpi_Exec_NotTracked" xml:space="preserve"><value>هنوز در PEMS ردیابی نمی‌شود</value></data>
+  <data name="Kpi_Exec_NotTrackedHint" xml:space="preserve"><value>چارچوب KPI این موارد را فهرست کرده، اما PEMS منبع داده‌ای برایشان ندارد؛ پس با مقدار نمونه نمایش داده نمی‌شوند.</value></data>
+  <data name="Kpi_Exec_EditTargets" xml:space="preserve"><value>ویرایش اهداف</value></data>
+  <data name="Kpi_Exec_EditTargetsHint" xml:space="preserve"><value>برای حذف هدف، آن را خالی بگذارید. «نزدیک به هدف» مقادیری است که هدف را برآورده نمی‌کنند اما از این آستانه عبور کرده‌اند.</value></data>
+  <data name="Kpi_Exec_Kpi" xml:space="preserve"><value>شاخص</value></data>
+  <data name="Kpi_Exec_Direction" xml:space="preserve"><value>بهتر وقتی</value></data>
+  <data name="Kpi_Exec_Warn" xml:space="preserve"><value>نزدیک به هدف</value></data>
+  <data name="Kpi_Exec_Source" xml:space="preserve"><value>منبع</value></data>
+  <data name="Kpi_Exec_Custom" xml:space="preserve"><value>سفارشی</value></data>
+  <data name="Kpi_Exec_Default" xml:space="preserve"><value>پیش‌فرض</value></data>
+  <data name="Kpi_Status_Met" xml:space="preserve"><value>محقق</value></data>
+  <data name="Kpi_Status_Near" xml:space="preserve"><value>نزدیک به هدف</value></data>
+  <data name="Kpi_Status_Missed" xml:space="preserve"><value>محقق نشده</value></data>
+  <data name="Kpi_Status_NoTarget" xml:space="preserve"><value>بدون هدف</value></data>
+  <data name="Kpi_Status_NoData" xml:space="preserve"><value>بدون داده</value></data>
+  <data name="Kpi_Msg_TargetSaved" xml:space="preserve"><value>هدف ذخیره شد.</value></data>
+  <data name="Kpi_Err_UnknownKpi" xml:space="preserve"><value>شاخص ناشناخته.</value></data>
+  <data name="Kpi_Err_TargetRange" xml:space="preserve"><value>مقدار خارج از محدوده است (برای درصد ۰ تا ۱۰۰).</value></data>
+  <data name="Kpi_Err_WarnAboveTarget" xml:space="preserve"><value>برای شاخصی که کمتر بهتر است، آستانه‌ی نزدیک به هدف باید برابر یا بیشتر از هدف باشد.</value></data>
+  <data name="Kpi_Err_WarnBelowTarget" xml:space="preserve"><value>برای شاخصی که بیشتر بهتر است، آستانه‌ی نزدیک به هدف باید برابر یا کمتر از هدف باشد.</value></data>
+  <data name="Kpi_Err_SaveFailed" xml:space="preserve"><value>ذخیره‌ی هدف ناموفق بود. چیزی تغییر نکرد.</value></data>
+  <data name="Kpi_Err_NotANumber" xml:space="preserve"><value>فقط عدد وارد کنید.</value></data>
+  <data name="Kpi_Section_Cost" xml:space="preserve"><value>هزینه</value></data>
+  <data name="Kpi_Section_Maintenance" xml:space="preserve"><value>نگهداری و تعمیرات</value></data>
+  <data name="Kpi_Section_Reliability" xml:space="preserve"><value>قابلیت اطمینان</value></data>
+  <data name="Kpi_Section_Equipment" xml:space="preserve"><value>تجهیزات</value></data>
+  <data name="Kpi_Section_Inventory" xml:space="preserve"><value>موجودی</value></data>
+  <data name="Kpi_Section_Production" xml:space="preserve"><value>تولید</value></data>
+  <data name="Kpi_Section_Documents" xml:space="preserve"><value>مدارک مهندسی</value></data>
+  <data name="Kpi_Name_cost_total" xml:space="preserve"><value>هزینه‌ی کل نگهداری</value></data>
+  <data name="Kpi_Name_cost_labor_share" xml:space="preserve"><value>سهم نیروی کار از هزینه</value></data>
+  <data name="Kpi_Name_cost_material_share" xml:space="preserve"><value>سهم قطعات یدکی از هزینه</value></data>
+  <data name="Kpi_Name_cost_contractor_share" xml:space="preserve"><value>سهم پیمانکار از هزینه</value></data>
+  <data name="Kpi_Name_cost_corrective_share" xml:space="preserve"><value>سهم هزینه‌ی اصلاحی و اضطراری</value></data>
+  <data name="Kpi_Name_pm_compliance" xml:space="preserve"><value>تبعیت از PM (برنامه‌های بدون تأخیر)</value></data>
+  <data name="Kpi_Name_pm_overdue" xml:space="preserve"><value>برنامه‌های PM معوق</value></data>
+  <data name="Kpi_Name_wo_completion_rate" xml:space="preserve"><value>نرخ تکمیل دستورکار</value></data>
+  <data name="Kpi_Name_backlog_count" xml:space="preserve"><value>دستورکارهای باز (Backlog)</value></data>
+  <data name="Kpi_Name_backlog_hours" xml:space="preserve"><value>ساعت برنامه‌ریزی‌شده‌ی Backlog</value></data>
+  <data name="Kpi_Name_backlog_overdue_pct" xml:space="preserve"><value>سهم Backlog عقب‌افتاده</value></data>
+  <data name="Kpi_Name_wo_aging_days" xml:space="preserve"><value>میانگین سن Backlog</value></data>
+  <data name="Kpi_Name_emergency_share" xml:space="preserve"><value>سهم دستورکار اضطراری</value></data>
+  <data name="Kpi_Name_fleet_mtbf" xml:space="preserve"><value>میانگین MTBF</value></data>
+  <data name="Kpi_Name_fleet_mttr" xml:space="preserve"><value>میانگین MTTR</value></data>
+  <data name="Kpi_Name_fleet_availability" xml:space="preserve"><value>میانگین دسترس‌پذیری</value></data>
+  <data name="Kpi_Name_failure_count" xml:space="preserve"><value>خرابی‌های ثبت‌شده</value></data>
+  <data name="Kpi_Name_repeat_failure_groups" xml:space="preserve"><value>گروه‌های خرابی تکراری</value></data>
+  <data name="Kpi_Name_uncovered_critical_equipment" xml:space="preserve"><value>تجهیز کلاس A بدون استراتژی</value></data>
+  <data name="Kpi_Name_equipment_total" xml:space="preserve"><value>تجهیزات فعال</value></data>
+  <data name="Kpi_Name_stock_in_rate" xml:space="preserve"><value>سهم اقلام موجود</value></data>
+  <data name="Kpi_Name_low_stock_items" xml:space="preserve"><value>اقلام کم‌موجودی</value></data>
+  <data name="Kpi_Name_out_of_stock_items" xml:space="preserve"><value>اقلام ناموجود</value></data>
+  <data name="Kpi_Name_po_on_time_rate" xml:space="preserve"><value>سفارش‌های تولید به‌موقع تکمیل‌شده</value></data>
+  <data name="Kpi_Name_po_overdue_open" xml:space="preserve"><value>سفارش‌های تولید باز و عقب‌افتاده</value></data>
+  <data name="Kpi_Name_po_completed" xml:space="preserve"><value>سفارش‌های تولید تکمیل‌شده</value></data>
+  <data name="Kpi_Name_production_downtime_hours" xml:space="preserve"><value>توقف تولید</value></data>
+  <data name="Kpi_Name_docs_total" xml:space="preserve"><value>مدارک مهندسی</value></data>
+  <data name="Kpi_Name_docs_under_review" xml:space="preserve"><value>مدارک در حال بازبینی</value></data>
+  <data name="Kpi_Name_docs_rejected" xml:space="preserve"><value>مدارک ردشده</value></data>
+  <data name="Kpi_NT_budget" xml:space="preserve"><value>بودجه، انحراف و پیش‌بینی</value></data>
+  <data name="Kpi_NTD_budget" xml:space="preserve"><value>به بودجه‌ی سالانه‌ی نگهداری به تفکیک مرکز هزینه نیاز دارد</value></data>
+  <data name="Kpi_NT_safety" xml:space="preserve"><value>حوادث ایمنی و شبه‌حادثه</value></data>
+  <data name="Kpi_NTD_safety" xml:space="preserve"><value>به ثبت حوادث و شبه‌حادثه نیاز دارد (فقط گردش‌کار مجوز کار وجود دارد)</value></data>
+  <data name="Kpi_NT_energy" xml:space="preserve"><value>انرژی و محیط‌زیست</value></data>
+  <data name="Kpi_NTD_energy" xml:space="preserve"><value>به قرائت کنتور و ثبت پسماند نیاز دارد</value></data>
+  <data name="Kpi_NT_workforce" xml:space="preserve"><value>نیروی انسانی: حضور، جابه‌جایی، آموزش</value></data>
+  <data name="Kpi_NTD_workforce" xml:space="preserve"><value>به سوابق حضور، آموزش و ارزیابی عملکرد نیاز دارد</value></data>
+  <data name="Kpi_NT_customer" xml:space="preserve"><value>رضایت مشتری / NPS</value></data>
+  <data name="Kpi_NTD_customer" xml:space="preserve"><value>به نتایج نظرسنجی نیاز دارد</value></data>
+  <data name="Kpi_NT_risk_register" xml:space="preserve"><value>ثبت ریسک سازمانی</value></data>
+  <data name="Kpi_NTD_risk_register" xml:space="preserve"><value>به دفتر ثبت ریسک نیاز دارد (فقط بحرانیت تجهیز و RCM وجود دارد)</value></data>
+  <data name="Kpi_NT_earned_value" xml:space="preserve"><value>ارزش کسب‌شده‌ی پروژه (SPI / CPI)</value></data>
+  <data name="Kpi_NTD_earned_value" xml:space="preserve"><value>به خط مبنای هزینه و پیشرفت پروژه نیاز دارد</value></data>
+  <data name="Kpi_NT_oee" xml:space="preserve"><value>OEE (دسترس‌پذیری × عملکرد × کیفیت)</value></data>
+  <data name="Kpi_NTD_oee" xml:space="preserve"><value>به نرخ ایده‌آل و تعداد سالم/کل هر ماشین نیاز دارد</value></data>
+  <data name="Kpi_NT_pm_roi" xml:space="preserve"><value>بازگشت سرمایه‌ی نگهداری پیشگیرانه</value></data>
+  <data name="Kpi_NTD_pm_roi" xml:space="preserve"><value>هزینه‌ی خرابی‌های اجتناب‌شده از داده‌ی ثبت‌شده قابل اندازه‌گیری نیست</value></data>
 </root>

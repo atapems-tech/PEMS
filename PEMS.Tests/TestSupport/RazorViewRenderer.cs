@@ -41,6 +41,9 @@ public static class RazorViewRenderer
         var routeData = new RouteData();
         routeData.Values["controller"] = controller.GetType().Name.Replace("Controller", "");
         routeData.Values["action"] = "Details";
+        // Area-Viewها: partialهای هم‌پوشه (Areas/{area}/Views/{controller}/_X) فقط با مقدار area پیدا می‌شوند
+        var area = controller.GetType().GetCustomAttributes(typeof(AreaAttribute), inherit: true).OfType<AreaAttribute>().FirstOrDefault();
+        if (area != null) routeData.Values["area"] = area.RouteValue;
         var actionContext = new ActionContext(http, routeData, new ActionDescriptor());
 
         var engine = provider.GetRequiredService<IRazorViewEngine>();
