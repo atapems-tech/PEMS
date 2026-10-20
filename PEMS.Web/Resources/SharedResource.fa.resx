@@ -2312,4 +2312,18 @@
   <data name="Kpi_NTD_oee" xml:space="preserve"><value>به نرخ ایده‌آل و تعداد سالم/کل هر ماشین نیاز دارد</value></data>
   <data name="Kpi_NT_pm_roi" xml:space="preserve"><value>بازگشت سرمایه‌ی نگهداری پیشگیرانه</value></data>
   <data name="Kpi_NTD_pm_roi" xml:space="preserve"><value>هزینه‌ی خرابی‌های اجتناب‌شده از داده‌ی ثبت‌شده قابل اندازه‌گیری نیست</value></data>
+  <data name="Shell_SkipToContent" xml:space="preserve"><value>رفتن به محتوای اصلی</value></data>
+  <data name="Shell_SidebarSearch" xml:space="preserve"><value>جستجو در منو...</value></data>
+  <data name="Shell_SidebarSearchResults" xml:space="preserve"><value>{0} مورد در منو یافت شد</value></data>
+  <data name="Shell_SidebarSearchEmpty" xml:space="preserve"><value>هیچ آیتمی در منو مطابقت ندارد.</value></data>
+  <data name="Status_NotFound_Title" xml:space="preserve"><value>صفحه پیدا نشد</value></data>
+  <data name="Status_NotFound_Text" xml:space="preserve"><value>صفحه‌ی درخواستی وجود ندارد یا جابه‌جا شده است.</value></data>
+  <data name="Status_Forbidden_Title" xml:space="preserve"><value>دسترسی مجاز نیست</value></data>
+  <data name="Status_Forbidden_Text" xml:space="preserve"><value>اجازه‌ی باز کردن این صفحه را ندارید. در صورت نیاز به دسترسی، با مدیر سیستم تماس بگیرید.</value></data>
+  <data name="Status_Generic_Title" xml:space="preserve"><value>مشکلی پیش آمد</value></data>
+  <data name="Status_Generic_Text" xml:space="preserve"><value>درخواست انجام نشد. دوباره تلاش کنید؛ اگر تکرار شد، شناسه‌ی درخواست زیر را گزارش دهید.</value></data>
+  <data name="Status_Back" xml:space="preserve"><value>بازگشت</value></data>
+  <data name="Status_Home" xml:space="preserve"><value>رفتن به صفحه‌ی اصلی</value></data>
+  <data name="Status_Code" xml:space="preserve"><value>کد خطا</value></data>
+  <data name="Status_RequestId" xml:space="preserve"><value>شناسه‌ی درخواست</value></data>
 </root>

@@ -328,6 +328,17 @@ namespace PEMS.Web.Controllers
         }
 
 
+        // صفحه‌ی دوستانه برای پاسخ‌های 4xx/5xx بدون بدنه (مثلاً NotFound()): Program.cs آن را با
+        // UseStatusCodePagesWithReExecute صدا می‌زند و کد HTTP اصلی حفظ می‌شود. بدون احراز هویت هم باید باز شود
+        // (وگرنه 404 برای کاربر ناشناس به Login منحرف می‌شد).
+        [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult StatusPage(int code = 500)
+        {
+            if (code < 400 || code > 599) code = 500;
+            return View(new StatusPageViewModel { Code = code, RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -1518,4 +1518,18 @@
   <data name="Kpi_NTD_oee" xml:space="preserve"><value>needs ideal rates and good/total counts per machine</value></data>
   <data name="Kpi_NT_pm_roi" xml:space="preserve"><value>Preventive maintenance ROI</value></data>
   <data name="Kpi_NTD_pm_roi" xml:space="preserve"><value>avoided failure cost cannot be measured from the recorded data</value></data>
+  <data name="Shell_SkipToContent" xml:space="preserve"><value>Skip to main content</value></data>
+  <data name="Shell_SidebarSearch" xml:space="preserve"><value>Search menu...</value></data>
+  <data name="Shell_SidebarSearchResults" xml:space="preserve"><value>{0} menu items found</value></data>
+  <data name="Shell_SidebarSearchEmpty" xml:space="preserve"><value>No menu item matches.</value></data>
+  <data name="Status_NotFound_Title" xml:space="preserve"><value>Page not found</value></data>
+  <data name="Status_NotFound_Text" xml:space="preserve"><value>The page you asked for does not exist or has been moved.</value></data>
+  <data name="Status_Forbidden_Title" xml:space="preserve"><value>Access denied</value></data>
+  <data name="Status_Forbidden_Text" xml:space="preserve"><value>You do not have permission to open this page. Ask an administrator if you need access.</value></data>
+  <data name="Status_Generic_Title" xml:space="preserve"><value>Something went wrong</value></data>
+  <data name="Status_Generic_Text" xml:space="preserve"><value>The request could not be completed. Please try again; if it keeps happening, report the request ID below.</value></data>
+  <data name="Status_Back" xml:space="preserve"><value>Go back</value></data>
+  <data name="Status_Home" xml:space="preserve"><value>Go to the home page</value></data>
+  <data name="Status_Code" xml:space="preserve"><value>Error code</value></data>
+  <data name="Status_RequestId" xml:space="preserve"><value>Request ID</value></data>
 </root>

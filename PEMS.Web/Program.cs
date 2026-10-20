@@ -920,6 +920,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// صفحه‌ی خطای دوستانه برای 4xx/5xx بدون بدنه (NotFound() و ...)؛ کد HTTP اصلی حفظ می‌شود و پاسخ‌های دارای بدنه
+// (مثلاً BadRequest(new { error })) دست‌نخورده می‌مانند.
+app.UseStatusCodePagesWithReExecute("/Home/StatusPage", "?code={0}");
+
 
 
 app.UseHttpsRedirection();

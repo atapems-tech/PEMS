@@ -180,11 +180,11 @@ html[dir="rtl"] .pems-orgchart-canvas {
 }
 
 .pems-org-node-meta .pems-org-badge-vacant {
-    color: var(--pems-chart-warning);
+    color: var(--pems-chart-warning-text, var(--pems-chart-warning));
     font-weight: 650;
     padding: 0 7px;
     border-radius: 999px;
-    border: 1px solid var(--pems-chart-warning);
+    border: 1px solid var(--pems-chart-warning-text, var(--pems-chart-warning));
 }
 
 /* Node-kind accent bar (color communicated alongside text/icon, never color alone) */
@@ -271,7 +271,7 @@ html[dir="rtl"] .pems-orgchart-canvas {
 .pems-org-stat-label { font-size: .74rem; color: var(--pems-text-muted); display: inline-flex; align-items: center; gap: 4px; }
 .pems-org-stat-filled { border-inline-start: 3px solid var(--pems-chart-positive); }
 .pems-org-stat-vacant { border-inline-start: 3px dashed var(--pems-chart-warning); }
-.pems-org-stat-vacant .pems-org-stat-value { color: var(--pems-chart-warning); }
+.pems-org-stat-vacant .pems-org-stat-value { color: var(--pems-chart-warning-text, var(--pems-chart-warning)); }
 
 .pems-org-progress {
     display: flex;

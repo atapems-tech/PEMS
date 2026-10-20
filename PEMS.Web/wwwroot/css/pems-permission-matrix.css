@@ -7,6 +7,12 @@
     --pm-warn: #b7791f;
     --pm-caution: #d9822b;
     --pm-danger: #dc3545;
+    /* header icon/label TEXT uses the AA-safe theme tokens; the raw colours above stay for checkbox fills */
+    --pm-safe-text: var(--pems-chart-positive-text, #15803d);
+    --pm-normal-text: var(--pems-chart-info-text, #1d4ed8);
+    --pm-warn-text: var(--pems-chart-warning-text, #b45309);
+    --pm-caution-text: var(--pems-chart-caution-text, #c2410c);
+    --pm-danger-text: var(--pems-chart-danger-text, #b91c1c);
 }
 
 /* ---- toolbar ---- */
@@ -45,11 +51,11 @@
 .admin-area .pm-table tbody tr:hover td.pm-module-cell { background: var(--pems-surface); }
 
 /* ---- risk colours: header/icon tint + checked colour ---- */
-.admin-area .pm-col.pm-risk-safe .pm-col-label { color: var(--pm-safe); }
-.admin-area .pm-col.pm-risk-normal .pm-col-label { color: var(--pm-normal); }
-.admin-area .pm-col.pm-risk-warn .pm-col-label { color: var(--pm-warn); }
-.admin-area .pm-col.pm-risk-caution .pm-col-label { color: var(--pm-caution); }
-.admin-area .pm-col.pm-risk-danger .pm-col-label { color: var(--pm-danger); }
+.admin-area .pm-col.pm-risk-safe .pm-col-label { color: var(--pm-safe-text); }
+.admin-area .pm-col.pm-risk-normal .pm-col-label { color: var(--pm-normal-text); }
+.admin-area .pm-col.pm-risk-warn .pm-col-label { color: var(--pm-warn-text); }
+.admin-area .pm-col.pm-risk-caution .pm-col-label { color: var(--pm-caution-text); }
+.admin-area .pm-col.pm-risk-danger .pm-col-label { color: var(--pm-danger-text); }
 .admin-area .pm-cell.pm-risk-safe .form-check-input:checked { background-color: var(--pm-safe); border-color: var(--pm-safe); }
 .admin-area .pm-cell.pm-risk-warn .form-check-input:checked { background-color: var(--pm-warn); border-color: var(--pm-warn); }
 .admin-area .pm-cell.pm-risk-caution .form-check-input:checked { background-color: var(--pm-caution); border-color: var(--pm-caution); }

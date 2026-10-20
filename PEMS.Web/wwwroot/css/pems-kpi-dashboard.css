@@ -35,15 +35,15 @@ details.pems-kpi-targets > summary.pems-kpi-section-title { cursor: pointer; }
 /* status colours: tile accent bar + chip colour (the text label and icon always accompany them) */
 .pems-kpi-tile.pems-kpi-status-met { border-inline-start-color: var(--pems-chart-positive); }
 .pems-kpi-tile.pems-kpi-status-near { border-inline-start-color: var(--pems-chart-warning); }
-.pems-kpi-tile.pems-kpi-status-missed { border-inline-start-color: var(--pems-danger, #c0392b); }
+.pems-kpi-tile.pems-kpi-status-missed { border-inline-start-color: var(--pems-chart-negative, #ef4444); }
 .pems-kpi-tile.pems-kpi-status-notarget,
 .pems-kpi-tile.pems-kpi-status-nodata { border-inline-start-color: var(--pems-surface-border); }
 .pems-kpi-tile.pems-kpi-status-nodata .pems-kpi-value { color: var(--pems-text-muted); }
 .pems-kpi-tile.pems-kpi-status-nodata { border-inline-start-style: dashed; }
 
-.pems-kpi-chip.pems-kpi-status-met { color: var(--pems-chart-positive); }
-.pems-kpi-chip.pems-kpi-status-near { color: var(--pems-chart-warning); }
-.pems-kpi-chip.pems-kpi-status-missed { color: var(--pems-danger, #c0392b); }
+.pems-kpi-chip.pems-kpi-status-met { color: var(--pems-chart-positive-text, var(--pems-chart-positive)); }
+.pems-kpi-chip.pems-kpi-status-near { color: var(--pems-chart-warning-text, var(--pems-chart-warning)); }
+.pems-kpi-chip.pems-kpi-status-missed { color: var(--pems-chart-danger-text, #b91c1c); }
 .pems-kpi-chip.pems-kpi-status-notarget,
 .pems-kpi-chip.pems-kpi-status-nodata { color: var(--pems-text-muted); }
 
