@@ -15,20 +15,74 @@ public class LetterService : ILetterService
     private readonly PEMSDbContext _context;
     private readonly IRichTextSanitizerService _sanitizer;
     private readonly IKnowledgeBaseService _knowledgeBaseService;
+    private readonly INotificationService? _notifications;
 
     private static readonly string[] OutgoingStageOrder = { "Draft", "PendingApproval", "Approved", "Issued" };
 
-    public LetterService(PEMSDbContext context, IRichTextSanitizerService sanitizer, IKnowledgeBaseService knowledgeBaseService)
+    public LetterService(PEMSDbContext context, IRichTextSanitizerService sanitizer, IKnowledgeBaseService knowledgeBaseService,
+        INotificationService? notifications = null)
     {
         _context = context;
         _sanitizer = sanitizer;
         _knowledgeBaseService = knowledgeBaseService;
+        _notifications = notifications;
     }
 
     public async Task<PagedResult<LetterDto>> SearchAsync(string? letterType, string? letterNumber, string? subject,
         string? sender, string? receiver, int? projectId, int? disciplineId, string? status,
         DateTime? fromDate, DateTime? toDate, int page, int pageSize,
-        bool canViewConfidential, int? requestingApplicationUserId, bool starredOnly = false)
+        bool canViewConfidential, int? requestingApplicationUserId, bool starredOnly = false,
+        LetterAdvancedFilter? advanced = null)
+    {
+        var query = await BuildFilteredQueryAsync(letterType, letterNumber, subject, sender, receiver, projectId,
+            disciplineId, status, fromDate, toDate, canViewConfidential, requestingApplicationUserId, starredOnly, advanced);
+
+        var totalCount = await query.CountAsync();
+
+        page = page < 1 ? 1 : page;
+        // Defense-in-depth طبق سند Global Data Grid Standard - حتی اگر Controller قبلاً
+        // Normalize کرده باشد، Service هم دوباره فقط ۲۰/۵۰/۱۰۰ را می‌پذیرد.
+        pageSize = DataGridPageSize.Normalize(pageSize);
+
+        var letters = await query
+            .OrderByDescending(x => x.LetterDate)
+            .ThenByDescending(x => x.LetterId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PagedResult<LetterDto>
+        {
+            Items = await BuildDtosAsync(letters, requestingApplicationUserId),
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+    }
+
+    // خروجی دقیقاً با همان فیلتر و همان قانون محرمانگی Index ساخته می‌شود (یک مسیر Query مشترک)،
+    // پس چیزی که کاربر در جدول نمی‌بیند هرگز وارد فایل خروجی نمی‌شود. سقف ردیف برای جلوگیری از بار بی‌رویه.
+    public async Task<List<LetterDto>> ExportAsync(string? letterType, string? letterNumber, string? subject,
+        string? sender, string? receiver, int? projectId, int? disciplineId, string? status,
+        DateTime? fromDate, DateTime? toDate, bool canViewConfidential, int? requestingApplicationUserId,
+        bool starredOnly, LetterAdvancedFilter? advanced, int maxRows = 5000)
+    {
+        var query = await BuildFilteredQueryAsync(letterType, letterNumber, subject, sender, receiver, projectId,
+            disciplineId, status, fromDate, toDate, canViewConfidential, requestingApplicationUserId, starredOnly, advanced);
+
+        var letters = await query
+            .OrderByDescending(x => x.LetterDate)
+            .ThenByDescending(x => x.LetterId)
+            .Take(Math.Clamp(maxRows, 1, 20000))
+            .ToListAsync();
+
+        return await BuildDtosAsync(letters, requestingApplicationUserId);
+    }
+
+    private async Task<IQueryable<Letter>> BuildFilteredQueryAsync(string? letterType, string? letterNumber, string? subject,
+        string? sender, string? receiver, int? projectId, int? disciplineId, string? status,
+        DateTime? fromDate, DateTime? toDate, bool canViewConfidential, int? requestingApplicationUserId,
+        bool starredOnly, LetterAdvancedFilter? advanced)
     {
         var query = _context.Letters
             .AsNoTracking()
@@ -57,46 +111,83 @@ public class LetterService : ILetterService
         if (fromDate.HasValue) query = query.Where(x => x.LetterDate >= fromDate.Value);
         if (toDate.HasValue) query = query.Where(x => x.LetterDate <= toDate.Value);
 
-        // طبق گزارش ممیزی (بند ۶.۵): محدودیت محرمانگی باید در خودِ Query اعمال شود، نه فقط
-        // در نمایش. کاربر بدون مجوز بالا فقط نامه‌های Public/Internal، یا نامه‌هایی که خودش
-        // ثبت کرده، یا نامه‌هایی که به او ارجاع شده را می‌بیند.
-        if (!canViewConfidential)
+        if (advanced != null)
         {
-            var employeeId = requestingApplicationUserId.HasValue
-                ? await _context.Users.Where(x => x.Id == requestingApplicationUserId.Value)
-                    .Select(x => x.EmployeeId).FirstOrDefaultAsync()
-                : null;
+            if (!string.IsNullOrWhiteSpace(advanced.Priority))
+            {
+                var priority = advanced.Priority.Trim();
+                query = query.Where(x => x.Priority == priority);
+            }
 
-            var referredLetterIds = employeeId.HasValue
-                ? await _context.LetterReferrals.Where(x => x.ReferredToEmployeeId == employeeId.Value)
-                    .Select(x => x.LetterId).ToListAsync()
-                : new List<int>();
+            if (advanced.HasAttachments == true)
+                query = query.Where(x => _context.DocumentAttachments.Any(a => a.LetterId == x.LetterId));
+            else if (advanced.HasAttachments == false)
+                query = query.Where(x => !_context.DocumentAttachments.Any(a => a.LetterId == x.LetterId));
 
-            query = query.Where(x =>
-                x.ConfidentialityLevel == "Public" || x.ConfidentialityLevel == "Internal" ||
-                (requestingApplicationUserId.HasValue && x.RegisteredById == requestingApplicationUserId.Value) ||
-                referredLetterIds.Contains(x.LetterId));
+            if (advanced.HasReferrals == true)
+                query = query.Where(x => _context.LetterReferrals.Any(r => r.LetterId == x.LetterId));
+            else if (advanced.HasReferrals == false)
+                query = query.Where(x => !_context.LetterReferrals.Any(r => r.LetterId == x.LetterId));
+
+            // پاسخ‌خواهی سطح نامه: لازم + مهلت گذشته + نه Closed/Rejected + هنوز نامه‌ی فرزند صادرشده ندارد (محاسبه‌شده)
+            if (advanced.OverdueResponseOnly)
+            {
+                var today = DateTime.Today;
+                query = query.Where(x => x.ResponseRequired && x.ResponseDueDate != null && x.ResponseDueDate < today
+                    && !LetterResponseRules.FinishedStatuses.Contains(x.Status)
+                    && !_context.Letters.Any(c => c.IsActive && c.ParentLetterId == x.LetterId
+                        && LetterResponseRules.AnsweredChildStatuses.Contains(c.Status)));
+            }
+
+            // «معوق» محاسبه می‌شود (ارجاع باز با مهلت گذشته) - عمداً فیلد ذخیره‌شده‌ی جدا ندارد
+            if (advanced.OverdueReferralOnly)
+            {
+                var now = DateTime.Now;
+                query = query.Where(x => _context.LetterReferrals.Any(r => r.LetterId == x.LetterId
+                    && r.Status != "Completed" && r.DueDate != null && r.DueDate < now));
+            }
         }
 
-        var totalCount = await query.CountAsync();
+        return await ApplyConfidentialityAsync(query, canViewConfidential, requestingApplicationUserId);
+    }
 
-        page = page < 1 ? 1 : page;
-        // Defense-in-depth طبق سند Global Data Grid Standard - حتی اگر Controller قبلاً
-        // Normalize کرده باشد، Service هم دوباره فقط ۲۰/۵۰/۱۰۰ را می‌پذیرد.
-        pageSize = DataGridPageSize.Normalize(pageSize);
+    // طبق گزارش ممیزی (بند ۶.۵): محدودیت محرمانگی باید در خودِ Query اعمال شود، نه فقط
+    // در نمایش. کاربر بدون مجوز بالا فقط نامه‌های Public/Internal، یا نامه‌هایی که خودش
+    // ثبت کرده، یا نامه‌هایی که به او ارجاع شده را می‌بیند.
+    private async Task<IQueryable<Letter>> ApplyConfidentialityAsync(IQueryable<Letter> query,
+        bool canViewConfidential, int? requestingApplicationUserId)
+    {
+        if (canViewConfidential) return query;
 
-        var letters = await query
-            .OrderByDescending(x => x.LetterDate)
-            .ThenByDescending(x => x.LetterId)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
+        var employeeId = requestingApplicationUserId.HasValue
+            ? await _context.Users.Where(x => x.Id == requestingApplicationUserId.Value)
+                .Select(x => x.EmployeeId).FirstOrDefaultAsync()
+            : null;
 
+        var referredLetterIds = employeeId.HasValue
+            ? await _context.LetterReferrals.Where(x => x.ReferredToEmployeeId == employeeId.Value)
+                .Select(x => x.LetterId).ToListAsync()
+            : new List<int>();
+
+        return query.Where(x =>
+            x.ConfidentialityLevel == "Public" || x.ConfidentialityLevel == "Internal" ||
+            (requestingApplicationUserId.HasValue && x.RegisteredById == requestingApplicationUserId.Value) ||
+            referredLetterIds.Contains(x.LetterId));
+    }
+
+    private async Task<List<LetterDto>> BuildDtosAsync(List<Letter> letters, int? requestingApplicationUserId)
+    {
         var letterIds = letters.Select(x => x.LetterId).ToList();
 
         var referralStats = await _context.LetterReferrals
             .Where(x => letterIds.Contains(x.LetterId))
             .ToListAsync();
+
+        var reviewActivity = await _context.LetterReviews
+            .Where(x => letterIds.Contains(x.LetterId))
+            .GroupBy(x => x.LetterId)
+            .Select(g => new { LetterId = g.Key, Last = g.Max(r => r.CreatedDate) })
+            .ToDictionaryAsync(x => x.LetterId, x => x.Last);
 
         var starredIds = requestingApplicationUserId.HasValue
             ? await _context.LetterStars
@@ -136,46 +227,221 @@ public class LetterService : ILetterService
             .Select(g => new { LetterId = g.Key, Count = g.Count() })
             .ToDictionaryAsync(x => x.LetterId, x => x.Count);
 
-        var items = letters.Select(l => new LetterDto
-        {
-            LetterId = l.LetterId,
-            LetterType = l.LetterType,
-            LetterNumber = l.LetterNumber,
-            LetterDate = l.LetterDate,
-            Sender = l.Sender,
-            Receiver = l.Receiver,
-            Subject = l.Subject,
-            Priority = l.Priority,
-            ConfidentialityLevel = l.ConfidentialityLevel,
-            ProjectName = l.Project?.ProjectName,
-            DisciplineName = l.Discipline?.Name,
-            RelatedDocumentId = l.RelatedDocumentId,
-            RelatedDocumentNo = l.RelatedDocument?.DocumentNo,
-            RelatedMRId = l.RelatedMRId,
-            RelatedMRNumber = l.RelatedMR?.MRNumber,
-            Status = l.Status,
-            CreatedDate = l.CreatedDate,
-            AttachmentsCount = attachmentCounts.TryGetValue(l.LetterId, out var ac) ? ac : 0,
-            OpenReferralsCount = referralStats.Count(r => r.LetterId == l.LetterId && r.Status != "Completed"),
-            HasOverdueReferral = referralStats.Any(r => r.LetterId == l.LetterId && r.Status != "Completed"
-                && r.DueDate.HasValue && r.DueDate.Value < DateTime.Now),
-            IsStarred = starredIds.Contains(l.LetterId),
-            MyRecipientType = myRecipientTypes.TryGetValue(l.LetterId, out var rt) ? rt : null,
-            Tags = letterTags.Where(lt => lt.LetterId == l.LetterId).Select(lt => new TagDto
-            {
-                TagId = lt.Tag!.TagId,
-                Name = lt.Tag.Name,
-                Color = lt.Tag.Color
-            }).ToList()
-        }).ToList();
+        var now = DateTime.Now;
+        var today = DateTime.Today;
 
-        return new PagedResult<LetterDto>
+        var answeredParentIds = (await _context.Letters
+            .Where(c => c.IsActive && c.ParentLetterId != null && letterIds.Contains(c.ParentLetterId.Value)
+                && LetterResponseRules.AnsweredChildStatuses.Contains(c.Status))
+            .Select(c => c.ParentLetterId!.Value)
+            .Distinct()
+            .ToListAsync()).ToHashSet();
+
+        return letters.Select(l =>
         {
-            Items = items,
-            Page = page,
-            PageSize = pageSize,
-            TotalCount = totalCount
-        };
+            var referrals = referralStats.Where(r => r.LetterId == l.LetterId).ToList();
+            var open = referrals.Where(r => r.Status != "Completed").ToList();
+
+            // آخرین فعالیت: بیشینه‌ی همه‌ی رویدادهای ثبت‌شده‌ی نامه (بدون ستون ذخیره‌شده‌ی جدید)
+            var activity = new List<DateTime?>
+            {
+                l.CreatedDate, l.ApprovedDate, l.IssuedDate, l.ClosedDate, l.SignedDate, l.ReturnedDate, l.RejectedDate,
+                reviewActivity.TryGetValue(l.LetterId, out var rv) ? rv : null
+            };
+            foreach (var r in referrals) { activity.Add(r.ReferredDate); activity.Add(r.ReadDate); activity.Add(r.CompletedDate); }
+
+            var answered = answeredParentIds.Contains(l.LetterId);
+            var responseOpen = l.ResponseRequired && l.ResponseDueDate.HasValue && !answered
+                && !LetterResponseRules.FinishedStatuses.Contains(l.Status);
+
+            var dueDates = open.Where(r => r.DueDate.HasValue).Select(r => r.DueDate!.Value).ToList();
+            if (responseOpen) dueDates.Add(l.ResponseDueDate!.Value);
+            DateTime? nextDue = dueDates.Count > 0 ? dueDates.Min() : null;
+
+            return new LetterDto
+            {
+                LetterId = l.LetterId,
+                LetterType = l.LetterType,
+                LetterNumber = l.LetterNumber,
+                LetterDate = l.LetterDate,
+                Sender = l.Sender,
+                Receiver = l.Receiver,
+                Subject = l.Subject,
+                Priority = l.Priority,
+                ConfidentialityLevel = l.ConfidentialityLevel,
+                ProjectName = l.Project?.ProjectName,
+                DisciplineName = l.Discipline?.Name,
+                RelatedDocumentId = l.RelatedDocumentId,
+                RelatedDocumentNo = l.RelatedDocument?.DocumentNo,
+                RelatedMRId = l.RelatedMRId,
+                RelatedMRNumber = l.RelatedMR?.MRNumber,
+                Status = l.Status,
+                CreatedDate = l.CreatedDate,
+                AttachmentsCount = attachmentCounts.TryGetValue(l.LetterId, out var ac) ? ac : 0,
+                OpenReferralsCount = open.Count,
+                HasOverdueReferral = open.Any(r => r.DueDate.HasValue && r.DueDate.Value < now),
+                NextResponseDue = nextDue,
+                ResponseRequired = l.ResponseRequired,
+                ResponseDueDate = l.ResponseDueDate,
+                ResponseAnswered = answered,
+                ResponseOverdue = LetterResponseRules.IsOverdue(l.ResponseRequired, l.ResponseDueDate, answered, l.Status, today),
+                LastActivityDate = activity.Where(d => d.HasValue).Select(d => d!.Value).DefaultIfEmpty(l.CreatedDate).Max(),
+                IsStarred = starredIds.Contains(l.LetterId),
+                MyRecipientType = myRecipientTypes.TryGetValue(l.LetterId, out var rt) ? rt : null,
+                Tags = letterTags.Where(lt => lt.LetterId == l.LetterId).Select(lt => new TagDto
+                {
+                    TagId = lt.Tag!.TagId,
+                    Name = lt.Tag.Name,
+                    Color = lt.Tag.Color
+                }).ToList()
+            };
+        }).ToList();
+    }
+
+    // ==============================================================================
+    // عملیات گروهی امن. سیاست: فقط اقداماتی که با گردش‌کار کنترل‌شده و تفکیک وظایف در تعارض نیستند.
+    // تایید/صدور/بستن گروهی نیست؛ حذف فیزیکی هم نیست (نامه‌ی رسمی تغییرناپذیر است) - فقط آرشیو نرم.
+    // ==============================================================================
+    private const int BulkMaxItems = 200;
+
+    private static List<int> NormalizeIds(IReadOnlyCollection<int>? ids) =>
+        (ids ?? Array.Empty<int>()).Where(x => x > 0).Distinct().Take(BulkMaxItems).ToList();
+
+    public async Task<LetterBulkResult> BulkSetStarAsync(IReadOnlyCollection<int> letterIds, int applicationUserId,
+        bool starred, bool canViewConfidential)
+    {
+        var ids = NormalizeIds(letterIds);
+        var result = new LetterBulkResult();
+        if (ids.Count == 0) return result;
+
+        // ستاره فقط برای نامه‌هایی که کاربر اجازه‌ی دیدنشان را دارد (همان فیلتر محرمانگی Index)
+        var visibleQuery = await ApplyConfidentialityAsync(
+            _context.Letters.AsNoTracking().Where(x => x.IsActive && ids.Contains(x.LetterId)),
+            canViewConfidential, applicationUserId);
+        var visible = await visibleQuery.Select(x => new { x.LetterId, x.LetterNumber }).ToListAsync();
+        var visibleIds = visible.Select(x => x.LetterId).ToHashSet();
+
+        var existing = await _context.LetterStars
+            .Where(x => x.ApplicationUserId == applicationUserId && ids.Contains(x.LetterId))
+            .ToListAsync();
+        var existingIds = existing.Select(x => x.LetterId).ToHashSet();
+
+        foreach (var id in ids)
+        {
+            if (!visibleIds.Contains(id))
+            {
+                result.Failed.Add(new LetterBulkFailure { LetterId = id, Reason = "نامه یافت نشد یا دسترسی مشاهده‌ی آن را ندارید." });
+                continue;
+            }
+
+            if (starred && !existingIds.Contains(id))
+                await _context.LetterStars.AddAsync(new LetterStar { LetterId = id, ApplicationUserId = applicationUserId, CreatedDate = DateTime.Now });
+            else if (!starred && existingIds.Contains(id))
+                _context.LetterStars.RemoveRange(existing.Where(x => x.LetterId == id));
+
+            result.Succeeded++;
+        }
+
+        await _context.SaveChangesAsync();
+        return result;
+    }
+
+    public async Task<LetterBulkResult> BulkSubmitForReviewAsync(IReadOnlyCollection<int> letterIds, int? actorApplicationUserId)
+    {
+        var ids = NormalizeIds(letterIds);
+        var result = new LetterBulkResult();
+        if (ids.Count == 0) return result;
+
+        var numbers = await _context.Letters.AsNoTracking()
+            .Where(x => ids.Contains(x.LetterId))
+            .ToDictionaryAsync(x => x.LetterId, x => x.LetterNumber);
+
+        // هر نامه از همان اقدام تکی عبور می‌کند، پس قانون «فقط Draft» و «فقط نویسنده‌ی اصلی» دور زده نمی‌شود
+        foreach (var id in ids)
+        {
+            var (ok, error) = await SubmitForReviewAsync(id, actorApplicationUserId);
+            if (ok) result.Succeeded++;
+            else result.Failed.Add(new LetterBulkFailure
+            {
+                LetterId = id,
+                LetterNumber = numbers.TryGetValue(id, out var no) ? no : null,
+                Reason = error ?? "ارسال انجام نشد."
+            });
+        }
+
+        return result;
+    }
+
+    private static readonly string[] ArchivableStatuses = { "Draft", "Rejected" };
+
+    public async Task<LetterBulkResult> BulkArchiveAsync(IReadOnlyCollection<int> letterIds, int? actorApplicationUserId,
+        string? actorUserName, bool isSystemAdmin, string reason)
+    {
+        var result = new LetterBulkResult();
+        var ids = NormalizeIds(letterIds);
+        if (ids.Count == 0) return result;
+
+        reason = (reason ?? "").Trim();
+        if (reason.Length == 0)
+        {
+            foreach (var id in ids)
+                result.Failed.Add(new LetterBulkFailure { LetterId = id, Reason = "دلیل آرشیو الزامی است." });
+            return result;
+        }
+        if (reason.Length > 500) reason = reason[..500];
+
+        foreach (var id in ids)
+        {
+            var letter = await _context.Letters.FirstOrDefaultAsync(x => x.LetterId == id && x.IsActive);
+            if (letter == null)
+            {
+                result.Failed.Add(new LetterBulkFailure { LetterId = id, Reason = "نامه یافت نشد یا قبلاً آرشیو شده است." });
+                continue;
+            }
+
+            if (!ArchivableStatuses.Contains(letter.Status))
+            {
+                result.Failed.Add(new LetterBulkFailure { LetterId = id, LetterNumber = letter.LetterNumber,
+                    Reason = $"فقط نامه‌های «Draft» یا «Rejected» قابل آرشیو هستند - وضعیت فعلی «{letter.Status}» است." });
+                continue;
+            }
+
+            if (!isSystemAdmin && letter.RegisteredById != actorApplicationUserId)
+            {
+                result.Failed.Add(new LetterBulkFailure { LetterId = id, LetterNumber = letter.LetterNumber,
+                    Reason = "فقط نویسنده‌ی اصلی یا مدیر سیستم می‌تواند این نامه را آرشیو کند." });
+                continue;
+            }
+
+            var status = letter.Status;
+            letter.IsActive = false;
+            // علاوه بر ردیف خودکار Update، یک ردیف صریح با دلیل و عملگر ثبت می‌شود
+            await _context.AuditLogs.AddAsync(new AuditLog
+            {
+                EntityName = nameof(Letter),
+                EntityKeyValue = letter.LetterId.ToString(),
+                Action = "Archive",
+                ChangedFieldsSummary = $"IsActive: True -> False\nStatus: {status}\nReason: {reason}",
+                UserId = actorApplicationUserId,
+                UserName = actorUserName,
+                Timestamp = DateTime.Now
+            });
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                result.Succeeded++;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                // نامه هم‌زمان توسط کاربر دیگری تغییر کرد - فقط همین مورد رد می‌شود
+                _context.ChangeTracker.Clear();
+                result.Failed.Add(new LetterBulkFailure { LetterId = id, LetterNumber = letter.LetterNumber,
+                    Reason = "نامه هم‌زمان توسط کاربر دیگری تغییر کرد؛ صفحه را تازه کنید و دوباره تلاش کنید." });
+            }
+        }
+
+        return result;
     }
 
     public async Task<LetterDetailDto?> GetDetailAsync(int letterId)
@@ -321,10 +587,17 @@ public class LetterService : ILetterService
 
     public async Task<int> CreateAsync(string letterType, string letterNumber, DateTime letterDate, string? sender,
         string? receiver, string subject, string? body, string priority, string confidentialityLevel,
-        int? projectId, int? disciplineId, int? relatedDocumentId, int? relatedMRId, int? registeredById)
+        int? projectId, int? disciplineId, int? relatedDocumentId, int? relatedMRId, int? registeredById,
+        bool responseRequired = false, DateTime? responseDueDate = null)
     {
+        // Controller قبلاً اعتبارسنجی می‌کند؛ این‌جا دفاع در عمق است تا هیچ مسیر دیگری (DCC/VDR/...) نامه‌ی ناسازگار نسازد
+        var responseError = LetterResponseRules.Validate(responseRequired, responseDueDate, letterDate);
+        if (responseError != null) throw new ArgumentException(responseError, nameof(responseDueDate));
+
         var letter = new Letter
         {
+            ResponseRequired = responseRequired,
+            ResponseDueDate = responseRequired ? responseDueDate!.Value.Date : null,
             LetterType = letterType,
             LetterNumber = letterNumber,
             LetterDate = letterDate,
@@ -450,6 +723,7 @@ public class LetterService : ILetterService
 
         letter.Status = "PendingApproval";
         await _context.SaveChangesAsync();
+        await NotifyTransitionAsync(letter, "Submitted", actorApplicationUserId, null);
         return (true, null);
     }
 
@@ -472,7 +746,7 @@ public class LetterService : ILetterService
             IsActive = true
         });
 
-        return await SaveWithConcurrencyCheckAsync();
+        return await FinishTransitionAsync(letter, "Approved", reviewerApplicationUserId, comment);
     }
 
     public async Task<(bool Success, string? Error)> ReturnForRevisionAsync(int letterId, int? reviewerApplicationUserId, string reason)
@@ -501,7 +775,7 @@ public class LetterService : ILetterService
         letter.ReturnedDate = DateTime.Now;
         letter.ReturnReason = reason;
 
-        return await SaveWithConcurrencyCheckAsync();
+        return await FinishTransitionAsync(letter, "ReturnedForRevision", reviewerApplicationUserId, reason);
     }
 
     public async Task<(bool Success, string? Error)> RejectAsync(int letterId, int? reviewerApplicationUserId, string reason)
@@ -527,7 +801,7 @@ public class LetterService : ILetterService
             IsActive = true
         });
 
-        return await SaveWithConcurrencyCheckAsync();
+        return await FinishTransitionAsync(letter, "Rejected", reviewerApplicationUserId, reason);
     }
 
     public async Task<(bool Success, string? Error)> IssueAsync(int letterId, int? actorApplicationUserId)
@@ -538,7 +812,7 @@ public class LetterService : ILetterService
         letter.Status = "Issued";
         letter.IssuedDate = DateTime.Now;
 
-        return await SaveWithConcurrencyCheckAsync();
+        return await FinishTransitionAsync(letter, "Issued", actorApplicationUserId, null);
     }
 
     public async Task<(bool Success, string? Error)> CloseAsync(int letterId, int? actorApplicationUserId)
@@ -638,6 +912,7 @@ public class LetterService : ILetterService
             return (false, "این نامه هم‌زمان توسط کاربر دیگری تغییر کرده است. لطفاً صفحه را رفرش کنید و دوباره تلاش کنید.");
         }
 
+        await NotifyTransitionAsync(letter, "Resubmitted", currentApplicationUserId, null);
         return (true, null);
     }
 
@@ -673,10 +948,108 @@ public class LetterService : ILetterService
         }
     }
 
-    public async Task<LetterDashboardDto> GetDashboardAsync(int? currentApplicationUserId = null)
+    // ==============================================================================
+    // اعلان‌های چرخه‌ی حیات (Phase 2). بهترین‌تلاش و فقط بعد از Commit موفق؛ شکست اعلان هرگز گذار نامه را برنمی‌گرداند.
+    //   Submitted/Resubmitted -> بازبین‌ها (نقش‌هایی که Correspondence/Approve دارند)
+    //   Approved/ReturnedForRevision/Rejected/Issued -> نویسنده‌ی اصلی (RegisteredById)
+    // خود عامل هرگز برای کار خودش اعلان نمی‌گیرد.
+    // ==============================================================================
+    private async Task<(bool Success, string? Error)> FinishTransitionAsync(Letter letter, string kind, int? actorUserId, string? detail)
     {
-        var letters = await _context.Letters.Where(x => x.IsActive).ToListAsync();
-        var referrals = await _context.LetterReferrals.ToListAsync();
+        var result = await SaveWithConcurrencyCheckAsync();
+        if (result.Success) await NotifyTransitionAsync(letter, kind, actorUserId, detail);
+        return result;
+    }
+
+    private async Task NotifyTransitionAsync(Letter letter, string kind, int? actorUserId, string? detail)
+    {
+        if (_notifications == null) return;
+
+        try
+        {
+            var link = $"/Letter/Details/{letter.LetterId}";
+            var label = $"{letter.LetterNumber} - {letter.Subject}";
+            var reasonSuffix = string.IsNullOrWhiteSpace(detail) ? "" : $" Reason/comment: {detail.Trim()}";
+
+            if (kind is "Submitted" or "Resubmitted")
+            {
+                var title = kind == "Submitted" ? "Letter awaiting your approval" : "Revised letter awaiting your approval";
+                foreach (var userId in await GetApproverUserIdsAsync())
+                {
+                    if (userId == actorUserId) continue;
+                    await _notifications.CreateAsync(userId, title, label, link, "Letter", letter.LetterId);
+                }
+                return;
+            }
+
+            if (!letter.RegisteredById.HasValue || letter.RegisteredById == actorUserId) return;
+
+            var (authorTitle, authorMessage) = kind switch
+            {
+                "Approved" => ("Your letter was approved", label),
+                "ReturnedForRevision" => ("Your letter was returned for revision", label + reasonSuffix),
+                "Rejected" => ("Your letter was rejected", label + reasonSuffix),
+                "Issued" => ("Your letter was issued", label),
+                _ => (null, null)
+            };
+
+            if (authorTitle != null)
+                await _notifications.CreateAsync(letter.RegisteredById.Value, authorTitle, authorMessage!, link, "Letter", letter.LetterId);
+        }
+        catch (Exception)
+        {
+            // اعلان بهترین‌تلاش است
+        }
+    }
+
+    // کاربران فعالِ نقش‌هایی که در ماتریس مجوز، Approve ماژول Correspondence را دارند
+    private async Task<List<int>> GetApproverUserIdsAsync()
+    {
+        var roleNames = _context.RolePermissions
+            .Where(p => p.ModuleName == "Correspondence" && p.CanApprove)
+            .Select(p => p.RoleName);
+
+        return await (from ur in _context.UserRoles
+                      join r in _context.Roles on ur.RoleId equals r.Id
+                      join u in _context.Users on ur.UserId equals u.Id
+                      where roleNames.Contains(r.Name!) && u.IsActive
+                      select u.Id).Distinct().ToListAsync();
+    }
+
+    // ==============================================================================
+    // پاسخ‌خواهی (Phase 2)
+    // ==============================================================================
+    public async Task<(bool Success, string? Error)> SetResponseDueAsync(int letterId, bool responseRequired, DateTime? dueDate,
+        int? actorApplicationUserId, bool canManageAny)
+    {
+        var letter = await _context.Letters.FirstOrDefaultAsync(x => x.LetterId == letterId && x.IsActive);
+        if (letter == null) return (false, "نامه یافت نشد.");
+
+        if (LetterResponseRules.FinishedStatuses.Contains(letter.Status))
+            return (false, $"پاسخ‌خواهی نامه‌ی «{letter.Status}» قابل تغییر نیست.");
+
+        if (!canManageAny && (!actorApplicationUserId.HasValue || letter.RegisteredById != actorApplicationUserId))
+            return (false, "فقط ثبت‌کننده‌ی نامه یا کاربر دارای اختیار مدیریت می‌تواند پاسخ‌خواهی را تغییر دهد.");
+
+        var error = LetterResponseRules.Validate(responseRequired, dueDate, letter.LetterDate);
+        if (error != null) return (false, error);
+
+        letter.ResponseRequired = responseRequired;
+        letter.ResponseDueDate = responseRequired ? dueDate!.Value.Date : null;
+
+        return await SaveWithConcurrencyCheckAsync();
+    }
+
+    // ==============================================================================
+    // داشبوردها. هر دو از همان فیلتر محرمانگی فهرست عبور می‌کنند (قبلاً شمارنده‌ها همه‌ی نامه‌ها را بدون محدودیت می‌شمردند).
+    // ==============================================================================
+    public async Task<LetterDashboardDto> GetDashboardAsync(int? currentApplicationUserId = null, bool canViewConfidential = false)
+    {
+        var visible = await ApplyConfidentialityAsync(
+            _context.Letters.AsNoTracking().Where(x => x.IsActive), canViewConfidential, currentApplicationUserId);
+        var letters = await visible.ToListAsync();
+        var visibleIds = letters.Select(x => x.LetterId).ToList();
+        var referrals = await _context.LetterReferrals.Where(r => visibleIds.Contains(r.LetterId)).ToListAsync();
 
         var dashboard = new LetterDashboardDto
         {
@@ -703,6 +1076,97 @@ public class LetterService : ILetterService
         }
 
         return dashboard;
+    }
+
+    private static readonly string[] ClosedLikeStatuses = { "Closed", "Rejected", "Issued" };
+
+    public async Task<LetterWorkspaceDashboardDto> GetWorkspaceDashboardAsync(bool canViewConfidential, int? applicationUserId, bool canReview)
+    {
+        var visible = await ApplyConfidentialityAsync(
+            _context.Letters.AsNoTracking().Where(x => x.IsActive), canViewConfidential, applicationUserId);
+        var letters = await visible.Select(x => new
+        {
+            x.LetterId, x.LetterNumber, x.Subject, x.LetterType, x.Status, x.Priority, x.LetterDate, x.IssuedDate,
+            x.RegisteredById, x.ResponseRequired, x.ResponseDueDate
+        }).ToListAsync();
+
+        var ids = letters.Select(x => x.LetterId).ToList();
+        var openReferrals = await _context.LetterReferrals
+            .Where(r => ids.Contains(r.LetterId) && r.Status != "Completed")
+            .Select(r => new { r.LetterId, r.DueDate, r.ReferredToEmployeeId })
+            .ToListAsync();
+
+        var answered = (await _context.Letters
+            .Where(c => c.IsActive && c.ParentLetterId != null && ids.Contains(c.ParentLetterId.Value)
+                && LetterResponseRules.AnsweredChildStatuses.Contains(c.Status))
+            .Select(c => c.ParentLetterId!.Value).Distinct().ToListAsync()).ToHashSet();
+
+        var now = DateTime.Now;
+        var today = DateTime.Today;
+        var d = new LetterWorkspaceDashboardDto
+        {
+            TotalActive = letters.Count,
+            ReceivedLast30Days = letters.Count(x => x.LetterType == "Incoming" && x.LetterDate >= today.AddDays(-30)),
+            IssuedLast30Days = letters.Count(x => x.Status == "Issued" && x.IssuedDate >= today.AddDays(-30)),
+            OpenReferrals = openReferrals.Count,
+            OverdueReferrals = openReferrals.Count(r => r.DueDate.HasValue && r.DueDate.Value < now),
+            ByStatus = letters.GroupBy(x => x.Status).ToDictionary(g => g.Key, g => g.Count()),
+            ByType = letters.GroupBy(x => x.LetterType).ToDictionary(g => g.Key, g => g.Count()),
+            ByPriority = letters.GroupBy(x => x.Priority).ToDictionary(g => g.Key, g => g.Count()),
+            AwaitingApproval = canReview ? letters.Count(x => x.Status == "PendingApproval") : 0
+        };
+
+        if (applicationUserId.HasValue)
+        {
+            d.MyDrafts = letters.Count(x => x.Status == "Draft" && x.RegisteredById == applicationUserId);
+            d.MyReturnedForRevision = letters.Count(x => x.Status == "ReturnedForRevision" && x.RegisteredById == applicationUserId);
+
+            var employeeId = await _context.Users.Where(x => x.Id == applicationUserId.Value)
+                .Select(x => x.EmployeeId).FirstOrDefaultAsync();
+            if (employeeId.HasValue)
+                d.MyOpenReferrals = openReferrals.Count(r => r.ReferredToEmployeeId == employeeId.Value);
+        }
+
+        var open = letters.Where(x => !ClosedLikeStatuses.Contains(x.Status)).ToList();
+        d.OpenLetters = open.Count;
+
+        int Age(DateTime date) => Math.Max(0, (int)(today - date.Date).TotalDays);
+        d.Aging = new List<LetterAgingBucketDto>
+        {
+            new() { Key = "0-7", Count = open.Count(x => Age(x.LetterDate) <= 7) },
+            new() { Key = "8-30", Count = open.Count(x => Age(x.LetterDate) is > 7 and <= 30) },
+            new() { Key = "31-90", Count = open.Count(x => Age(x.LetterDate) is > 30 and <= 90) },
+            new() { Key = "90+", Count = open.Count(x => Age(x.LetterDate) > 90) }
+        };
+
+        var overdueResponses = letters
+            .Where(x => LetterResponseRules.IsOverdue(x.ResponseRequired, x.ResponseDueDate, answered.Contains(x.LetterId), x.Status, today))
+            .ToList();
+        d.OverdueResponses = overdueResponses.Count;
+
+        var byId = letters.ToDictionary(x => x.LetterId);
+        var attention = new List<LetterAttentionItemDto>();
+        foreach (var g in openReferrals.Where(r => r.DueDate.HasValue && r.DueDate.Value < now).GroupBy(r => r.LetterId))
+        {
+            var due = g.Min(r => r.DueDate!.Value);
+            var l = byId[g.Key];
+            attention.Add(new LetterAttentionItemDto
+            {
+                LetterId = l.LetterId, LetterNumber = l.LetterNumber, Subject = l.Subject, Reason = "OverdueReferral",
+                DueDate = due, DaysOverdue = Math.Max(1, (int)(today - due.Date).TotalDays)
+            });
+        }
+        foreach (var l in overdueResponses)
+        {
+            attention.Add(new LetterAttentionItemDto
+            {
+                LetterId = l.LetterId, LetterNumber = l.LetterNumber, Subject = l.Subject, Reason = "OverdueResponse",
+                DueDate = l.ResponseDueDate!.Value, DaysOverdue = Math.Max(1, (int)(today - l.ResponseDueDate!.Value.Date).TotalDays)
+            });
+        }
+        d.NeedsAttention = attention.OrderByDescending(a => a.DaysOverdue).ThenBy(a => a.LetterId).Take(10).ToList();
+
+        return d;
     }
 
     public async Task ToggleStarAsync(int letterId, int applicationUserId)
@@ -902,6 +1366,30 @@ public class LetterService : ILetterService
                 Description = $"Electronically acknowledged by {letter.SignedByName}",
                 Icon = "bi-patch-check-fill",
                 Color = "success"
+            });
+        }
+
+        // تاریخچه‌ی پاسخ‌خواهی (Phase 3): چه کسی، چه زمانی، الزام پاسخ/مهلت را تنظیم، تغییر یا حذف کرد - از ممیزی خودکار خوانده می‌شود
+        var key = letterId.ToString();
+        var audits = await _context.AuditLogs.AsNoTracking()
+            .Where(a => a.EntityName == nameof(Letter) && a.EntityKeyValue == key && a.Action == "Update"
+                && a.ChangedFieldsSummary != null
+                && (a.ChangedFieldsSummary.Contains("ResponseRequired:") || a.ChangedFieldsSummary.Contains("ResponseDueDate:")))
+            .ToListAsync();
+
+        foreach (var audit in audits)
+        {
+            var description = LetterResponseHistory.Describe(audit.ChangedFieldsSummary);
+            if (description == null) continue;
+
+            events.Add(new LetterTimelineEventDto
+            {
+                EventDate = audit.Timestamp,
+                EventType = "Response",
+                Description = description,
+                ActorName = audit.UserName,
+                Icon = "bi-reply",
+                Color = "info"
             });
         }
 

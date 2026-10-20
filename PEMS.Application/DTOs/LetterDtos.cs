@@ -24,6 +24,16 @@ public class LetterDto
     public bool HasOverdueReferral { get; set; }
     public bool IsStarred { get; set; }
 
+    // مشتق‌شده (بدون تغییر Schema): نزدیک‌ترین مهلت پاسخ در بین ارجاع‌های باز، و آخرین فعالیت روی نامه
+    public DateTime? NextResponseDue { get; set; }
+
+    // پاسخ‌خواهی سطح نامه (Phase 2). Answered/Overdue محاسبه‌شده‌اند، نه ذخیره‌شده.
+    public bool ResponseRequired { get; set; }
+    public DateTime? ResponseDueDate { get; set; }
+    public bool ResponseAnswered { get; set; }
+    public bool ResponseOverdue { get; set; }
+    public DateTime LastActivityDate { get; set; }
+
     // To / Cc از دید کاربر جاری (اگر گیرنده‌ی این نامه باشد) - طبق نمونه‌ی کارتابل مرجع
     // ("نامه" در برابر "رونوشت")
     public string? MyRecipientType { get; set; }
@@ -145,4 +155,34 @@ public class NotificationDto
     public bool IsRead { get; set; }
     public DateTime? DismissedDate { get; set; }
     public DateTime CreatedDate { get; set; }
+}
+
+/// <summary>
+/// فیلترهای پیشرفته‌ی فهرست مکاتبات. Overdue «محاسبه‌شده» است (ارجاع باز با مهلت گذشته) و ذخیره نمی‌شود.
+/// </summary>
+public class LetterAdvancedFilter
+{
+    public string? Priority { get; set; }
+    public bool? HasAttachments { get; set; }
+    public bool? HasReferrals { get; set; }
+    public bool OverdueReferralOnly { get; set; }
+    // پاسخ‌خواهی سطح نامه که مهلتش گذشته و هنوز پاسخ صادر نشده (محاسبه‌شده، Phase 2)
+    public bool OverdueResponseOnly { get; set; }
+
+    public bool IsEmpty => string.IsNullOrWhiteSpace(Priority) && !HasAttachments.HasValue
+        && !HasReferrals.HasValue && !OverdueReferralOnly && !OverdueResponseOnly;
+}
+
+/// <summary>نتیجه‌ی عملیات گروهی: هر نامه جداگانه ارزیابی می‌شود و دلیل رد هر کدام برگردانده می‌شود.</summary>
+public class LetterBulkResult
+{
+    public int Succeeded { get; set; }
+    public List<LetterBulkFailure> Failed { get; set; } = new();
+}
+
+public class LetterBulkFailure
+{
+    public int LetterId { get; set; }
+    public string? LetterNumber { get; set; }
+    public string Reason { get; set; } = "";
 }

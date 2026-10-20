@@ -1532,4 +1532,102 @@
   <data name="Status_Home" xml:space="preserve"><value>Go to the home page</value></data>
   <data name="Status_Code" xml:space="preserve"><value>Error code</value></data>
   <data name="Status_RequestId" xml:space="preserve"><value>Request ID</value></data>
+  <data name="Lt_HasAttachments" xml:space="preserve"><value>Has attachments</value></data>
+  <data name="Lt_HasReferrals" xml:space="preserve"><value>Has referrals</value></data>
+  <data name="Lt_OverdueReferralOnly" xml:space="preserve"><value>Overdue referral only</value></data>
+  <data name="Lt_Any" xml:space="preserve"><value>Any</value></data>
+  <data name="Lt_Yes" xml:space="preserve"><value>Yes</value></data>
+  <data name="Lt_No" xml:space="preserve"><value>No</value></data>
+  <data name="Lt_ActiveFilters" xml:space="preserve"><value>Active filters</value></data>
+  <data name="Lt_ClearAll" xml:space="preserve"><value>Clear all</value></data>
+  <data name="Lt_RemoveFilter" xml:space="preserve"><value>Remove filter</value></data>
+  <data name="Lt_ApplyFilters" xml:space="preserve"><value>Apply filters</value></data>
+  <data name="Lt_ColAttachments" xml:space="preserve"><value>Attachments</value></data>
+  <data name="Lt_ColResponseDue" xml:space="preserve"><value>Response due</value></data>
+  <data name="Lt_ColLastActivity" xml:space="preserve"><value>Last activity</value></data>
+  <data name="Lt_Overdue" xml:space="preserve"><value>overdue</value></data>
+  <data name="Lt_Columns" xml:space="preserve"><value>Columns</value></data>
+  <data name="Lt_SelectAll" xml:space="preserve"><value>Select all letters</value></data>
+  <data name="Lt_SelectedCount" xml:space="preserve"><value>{0} selected</value></data>
+  <data name="Lt_BulkActions" xml:space="preserve"><value>Bulk actions</value></data>
+  <data name="Lt_BulkStar" xml:space="preserve"><value>Star</value></data>
+  <data name="Lt_BulkUnstar" xml:space="preserve"><value>Unstar</value></data>
+  <data name="Lt_BulkSubmit" xml:space="preserve"><value>Submit for review</value></data>
+  <data name="Lt_BulkSubmitConfirm" xml:space="preserve"><value>Submit the selected drafts for review? Only your own drafts are submitted, and they cannot be edited afterwards.</value></data>
+  <data name="Lt_BulkArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="Lt_ExportMatching" xml:space="preserve"><value>Export all matching letters</value></data>
+  <data name="Lt_ArchiveTitle" xml:space="preserve"><value>Archive selected letters</value></data>
+  <data name="Lt_ArchiveHelp" xml:space="preserve"><value>Only Draft and Rejected letters can be archived, by their author or a system administrator. Archived letters are hidden from the list but never deleted; the action and your reason are recorded in the audit log.</value></data>
+  <data name="Lt_ArchiveReason" xml:space="preserve"><value>Reason (required)</value></data>
+  <data name="Lt_ArchiveReasonRequired" xml:space="preserve"><value>Please enter a reason for archiving.</value></data>
+  <data name="Lt_ArchiveConfirm" xml:space="preserve"><value>Archive letters</value></data>
+  <data name="Correspondence Dashboard" xml:space="preserve"><value>Correspondence Dashboard</value></data>
+  <data name="Letter Templates" xml:space="preserve"><value>Letter Templates</value></data>
+  <data name="Letter Template" xml:space="preserve"><value>Letter Template</value></data>
+  <data name="Lt_OverdueResponseOnly" xml:space="preserve"><value>Overdue response only</value></data>
+  <data name="Lt_ResponseRequired" xml:space="preserve"><value>A response is required</value></data>
+  <data name="Lt_ResponseDueDate" xml:space="preserve"><value>Response due</value></data>
+  <data name="Lt_ResponseAnswered" xml:space="preserve"><value>Answered</value></data>
+  <data name="Lt_ResponsePending" xml:space="preserve"><value>Awaiting response</value></data>
+  <data name="Lt_ResponseEdit" xml:space="preserve"><value>Change response requirement</value></data>
+  <data name="Lt_DashboardLink" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="LtT_Manage" xml:space="preserve"><value>Letter templates</value></data>
+  <data name="LtT_Help" xml:space="preserve"><value>Templates pre-fill the subject, body, priority and confidentiality of a new letter. A registered letter never changes when its template is edited or deactivated.</value></data>
+  <data name="LtT_New" xml:space="preserve"><value>New template</value></data>
+  <data name="LtT_Empty" xml:space="preserve"><value>No templates yet.</value></data>
+  <data name="LtT_Name" xml:space="preserve"><value>Template name</value></data>
+  <data name="LtT_AllTypes" xml:space="preserve"><value>All letter types</value></data>
+  <data name="LtT_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="LtT_Inactive" xml:space="preserve"><value>Inactive</value></data>
+  <data name="LtT_Activate" xml:space="preserve"><value>Activate</value></data>
+  <data name="LtT_Deactivate" xml:space="preserve"><value>Deactivate</value></data>
+  <data name="LtT_PrefillNote" xml:space="preserve"><value>The subject and body are only starting values: the user can edit them before registering the letter.</value></data>
+  <data name="LtT_UseTemplate" xml:space="preserve"><value>Start from a template</value></data>
+  <data name="LtT_Apply" xml:space="preserve"><value>Apply template</value></data>
+  <data name="Lt_Dash_NeedsAction" xml:space="preserve"><value>Needs action</value></data>
+  <data name="Lt_Dash_Scope" xml:space="preserve"><value>Counts include only the letters you are allowed to see.</value></data>
+  <data name="Lt_Dash_Summary" xml:space="preserve"><value>Summary</value></data>
+  <data name="Lt_Dash_TotalActive" xml:space="preserve"><value>Active letters</value></data>
+  <data name="Lt_Dash_Open" xml:space="preserve"><value>Open letters</value></data>
+  <data name="Lt_Dash_AwaitingApproval" xml:space="preserve"><value>Awaiting approval</value></data>
+  <data name="Lt_Dash_MyDrafts" xml:space="preserve"><value>My drafts</value></data>
+  <data name="Lt_Dash_MyReturned" xml:space="preserve"><value>Returned to me</value></data>
+  <data name="Lt_Dash_MyReferrals" xml:space="preserve"><value>My open referrals</value></data>
+  <data name="Lt_Dash_OpenReferrals" xml:space="preserve"><value>Open referrals</value></data>
+  <data name="Lt_Dash_OverdueReferrals" xml:space="preserve"><value>Overdue referrals</value></data>
+  <data name="Lt_Dash_OverdueResponses" xml:space="preserve"><value>Overdue responses</value></data>
+  <data name="Lt_Dash_Received30" xml:space="preserve"><value>Received (30d)</value></data>
+  <data name="Lt_Dash_Issued30" xml:space="preserve"><value>Issued (30d)</value></data>
+  <data name="Lt_Dash_NeedsAttention" xml:space="preserve"><value>Needs attention</value></data>
+  <data name="Lt_Dash_NothingOverdue" xml:space="preserve"><value>No overdue referrals or responses.</value></data>
+  <data name="Lt_Dash_Reason" xml:space="preserve"><value>Reason</value></data>
+  <data name="Lt_Dash_DaysOverdue" xml:space="preserve"><value>Days overdue</value></data>
+  <data name="Lt_Dash_ReasonReferral" xml:space="preserve"><value>Overdue referral</value></data>
+  <data name="Lt_Dash_ReasonResponse" xml:space="preserve"><value>Overdue response</value></data>
+  <data name="Lt_Dash_Aging" xml:space="preserve"><value>Aging of open letters</value></data>
+  <data name="Lt_Dash_AgingNote" xml:space="preserve"><value>Days since the letter date; closed, rejected and issued letters are excluded.</value></data>
+  <data name="Lt_Dash_Age_0-7" xml:space="preserve"><value>0-7 days</value></data>
+  <data name="Lt_Dash_Age_8-30" xml:space="preserve"><value>8-30 days</value></data>
+  <data name="Lt_Dash_Age_31-90" xml:space="preserve"><value>31-90 days</value></data>
+  <data name="Lt_Dash_Age_90+" xml:space="preserve"><value>Over 90 days</value></data>
+  <data name="Lt_Dash_ByStatus" xml:space="preserve"><value>By status</value></data>
+  <data name="Lt_Dash_ByType" xml:space="preserve"><value>By type</value></data>
+  <data name="Lt_Dash_ByPriority" xml:space="preserve"><value>By priority</value></data>
+  <data name="Letter Template Preview" xml:space="preserve"><value>Letter Template Preview</value></data>
+  <data name="Lt_ReplyParentDue" xml:space="preserve"><value>This letter needs a response by</value></data>
+  <data name="Lt_RemindersRun" xml:space="preserve"><value>Send overdue reminders now</value></data>
+  <data name="Lt_RemindersConfirm" xml:space="preserve"><value>Send overdue reminders now? Reminders already sent today are not repeated.</value></data>
+  <data name="LtT_Preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="LtT_PreviewNote" xml:space="preserve"><value>Shown with sample values; real values are filled in when the template is used.</value></data>
+  <data name="LtT_PlaceholdersTitle" xml:space="preserve"><value>Placeholders you can use</value></data>
+  <data name="LtT_PlaceholdersHelp" xml:space="preserve"><value>Type a token such as {{Date}} in the subject or body; it is replaced when the template is applied. Unknown tokens are rejected when you save.</value></data>
+  <data name="LtT_PlaceholdersReply" xml:space="preserve"><value>Only filled on the Reply screen (left as typed when creating a new letter):</value></data>
+  <data name="LtT_Token_Date" xml:space="preserve"><value>today's date</value></data>
+  <data name="LtT_Token_UserName" xml:space="preserve"><value>your full name</value></data>
+  <data name="LtT_Token_LetterType" xml:space="preserve"><value>Incoming, Outgoing or Internal</value></data>
+  <data name="LtT_Token_ParentNumber" xml:space="preserve"><value>number of the letter being answered</value></data>
+  <data name="LtT_Token_ParentSubject" xml:space="preserve"><value>subject of the letter being answered</value></data>
+  <data name="LtT_Token_ParentDate" xml:space="preserve"><value>date of the letter being answered</value></data>
+  <data name="LtT_Token_Counterparty" xml:space="preserve"><value>the other party of that letter</value></data>
+  <data name="LtT_Token_ParentProject" xml:space="preserve"><value>project of that letter</value></data>
 </root>

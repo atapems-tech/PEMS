@@ -2326,4 +2326,103 @@
   <data name="Status_Home" xml:space="preserve"><value>رفتن به صفحه‌ی اصلی</value></data>
   <data name="Status_Code" xml:space="preserve"><value>کد خطا</value></data>
   <data name="Status_RequestId" xml:space="preserve"><value>شناسه‌ی درخواست</value></data>
+  <data name="Lt_HasAttachments" xml:space="preserve"><value>دارای پیوست</value></data>
+  <data name="Lt_HasReferrals" xml:space="preserve"><value>دارای ارجاع</value></data>
+  <data name="Lt_OverdueReferralOnly" xml:space="preserve"><value>فقط ارجاع‌های معوق</value></data>
+  <data name="Lt_Any" xml:space="preserve"><value>همه</value></data>
+  <data name="Lt_Yes" xml:space="preserve"><value>بله</value></data>
+  <data name="Lt_No" xml:space="preserve"><value>خیر</value></data>
+  <data name="Lt_ActiveFilters" xml:space="preserve"><value>فیلترهای فعال</value></data>
+  <data name="Lt_ClearAll" xml:space="preserve"><value>پاک کردن همه</value></data>
+  <data name="Lt_RemoveFilter" xml:space="preserve"><value>حذف فیلتر</value></data>
+  <data name="Lt_ApplyFilters" xml:space="preserve"><value>اعمال فیلتر</value></data>
+  <data name="Lt_ColAttachments" xml:space="preserve"><value>پیوست‌ها</value></data>
+  <data name="Lt_ColResponseDue" xml:space="preserve"><value>مهلت پاسخ</value></data>
+  <data name="Lt_ColLastActivity" xml:space="preserve"><value>آخرین فعالیت</value></data>
+  <data name="Lt_Overdue" xml:space="preserve"><value>معوق</value></data>
+  <data name="Lt_Columns" xml:space="preserve"><value>ستون‌ها</value></data>
+  <data name="Lt_SelectAll" xml:space="preserve"><value>انتخاب همه‌ی نامه‌ها</value></data>
+  <data name="Lt_SelectedCount" xml:space="preserve"><value>{0} نامه انتخاب شد</value></data>
+  <data name="Lt_BulkActions" xml:space="preserve"><value>عملیات گروهی</value></data>
+  <data name="Lt_BulkStar" xml:space="preserve"><value>ستاره‌دار کردن</value></data>
+  <data name="Lt_BulkUnstar" xml:space="preserve"><value>حذف ستاره</value></data>
+  <data name="Lt_BulkSubmit" xml:space="preserve"><value>ارسال برای بازبینی</value></data>
+  <data name="Lt_BulkSubmitConfirm" xml:space="preserve"><value>پیش‌نویس‌های انتخاب‌شده برای بازبینی ارسال شوند؟ فقط پیش‌نویس‌های خود شما ارسال می‌شود و پس از آن قابل ویرایش نیستند.</value></data>
+  <data name="Lt_BulkArchive" xml:space="preserve"><value>آرشیو</value></data>
+  <data name="Lt_ExportMatching" xml:space="preserve"><value>خروجی همه‌ی نامه‌های مطابق فیلتر</value></data>
+  <data name="Lt_ArchiveTitle" xml:space="preserve"><value>آرشیو نامه‌های انتخاب‌شده</value></data>
+  <data name="Lt_ArchiveHelp" xml:space="preserve"><value>فقط نامه‌های Draft و Rejected و فقط توسط نویسنده یا مدیر سیستم قابل آرشیو هستند. نامه‌ی آرشیوشده از فهرست پنهان می‌شود اما هرگز حذف نمی‌شود؛ اقدام و دلیل شما در گزارش ممیزی ثبت می‌شود.</value></data>
+  <data name="Lt_ArchiveReason" xml:space="preserve"><value>دلیل (الزامی)</value></data>
+  <data name="Lt_ArchiveReasonRequired" xml:space="preserve"><value>لطفاً دلیل آرشیو را وارد کنید.</value></data>
+  <data name="Lt_ArchiveConfirm" xml:space="preserve"><value>آرشیو نامه‌ها</value></data>
+  <data name="Executive KPI Dashboard" xml:space="preserve"><value>داشبورد KPI مدیریتی</value></data>
+  <data name="Correspondence Dashboard" xml:space="preserve"><value>داشبورد مکاتبات</value></data>
+  <data name="Letter Templates" xml:space="preserve"><value>قالب‌های نامه</value></data>
+  <data name="Letter Template" xml:space="preserve"><value>قالب نامه</value></data>
+  <data name="Lt_OverdueResponseOnly" xml:space="preserve"><value>فقط پاسخ‌های معوق</value></data>
+  <data name="Lt_ResponseRequired" xml:space="preserve"><value>این نامه نیاز به پاسخ دارد</value></data>
+  <data name="Lt_ResponseDueDate" xml:space="preserve"><value>مهلت پاسخ</value></data>
+  <data name="Lt_ResponseAnswered" xml:space="preserve"><value>پاسخ داده شد</value></data>
+  <data name="Lt_ResponsePending" xml:space="preserve"><value>در انتظار پاسخ</value></data>
+  <data name="Lt_ResponseEdit" xml:space="preserve"><value>تغییر پاسخ‌خواهی</value></data>
+  <data name="Lt_DashboardLink" xml:space="preserve"><value>داشبورد</value></data>
+  <data name="LtT_Manage" xml:space="preserve"><value>قالب‌های نامه</value></data>
+  <data name="LtT_Help" xml:space="preserve"><value>قالب‌ها موضوع، متن، اولویت و محرمانگی نامه‌ی جدید را پیش‌پر می‌کنند. ویرایش یا غیرفعال‌کردن قالب هرگز نامه‌ی ثبت‌شده را تغییر نمی‌دهد.</value></data>
+  <data name="LtT_New" xml:space="preserve"><value>قالب جدید</value></data>
+  <data name="LtT_Empty" xml:space="preserve"><value>هنوز قالبی تعریف نشده است.</value></data>
+  <data name="LtT_Name" xml:space="preserve"><value>نام قالب</value></data>
+  <data name="LtT_AllTypes" xml:space="preserve"><value>همه‌ی انواع نامه</value></data>
+  <data name="LtT_Active" xml:space="preserve"><value>فعال</value></data>
+  <data name="LtT_Inactive" xml:space="preserve"><value>غیرفعال</value></data>
+  <data name="LtT_Activate" xml:space="preserve"><value>فعال‌سازی</value></data>
+  <data name="LtT_Deactivate" xml:space="preserve"><value>غیرفعال‌سازی</value></data>
+  <data name="LtT_PrefillNote" xml:space="preserve"><value>موضوع و متن فقط مقدار اولیه‌اند؛ کاربر پیش از ثبت نامه می‌تواند آن‌ها را ویرایش کند.</value></data>
+  <data name="LtT_UseTemplate" xml:space="preserve"><value>شروع از روی یک قالب</value></data>
+  <data name="LtT_Apply" xml:space="preserve"><value>اعمال قالب</value></data>
+  <data name="Lt_Dash_NeedsAction" xml:space="preserve"><value>نیازمند اقدام</value></data>
+  <data name="Lt_Dash_Scope" xml:space="preserve"><value>اعداد فقط شامل نامه‌هایی است که اجازه‌ی دیدنشان را دارید.</value></data>
+  <data name="Lt_Dash_Summary" xml:space="preserve"><value>خلاصه</value></data>
+  <data name="Lt_Dash_TotalActive" xml:space="preserve"><value>نامه‌های فعال</value></data>
+  <data name="Lt_Dash_Open" xml:space="preserve"><value>نامه‌های باز</value></data>
+  <data name="Lt_Dash_AwaitingApproval" xml:space="preserve"><value>در انتظار تایید</value></data>
+  <data name="Lt_Dash_MyDrafts" xml:space="preserve"><value>پیش‌نویس‌های من</value></data>
+  <data name="Lt_Dash_MyReturned" xml:space="preserve"><value>برگشتی برای اصلاح</value></data>
+  <data name="Lt_Dash_MyReferrals" xml:space="preserve"><value>ارجاع‌های باز من</value></data>
+  <data name="Lt_Dash_OpenReferrals" xml:space="preserve"><value>ارجاع‌های باز</value></data>
+  <data name="Lt_Dash_OverdueReferrals" xml:space="preserve"><value>ارجاع‌های معوق</value></data>
+  <data name="Lt_Dash_OverdueResponses" xml:space="preserve"><value>پاسخ‌های معوق</value></data>
+  <data name="Lt_Dash_Received30" xml:space="preserve"><value>دریافتی (۳۰ روز)</value></data>
+  <data name="Lt_Dash_Issued30" xml:space="preserve"><value>صادرشده (۳۰ روز)</value></data>
+  <data name="Lt_Dash_NeedsAttention" xml:space="preserve"><value>نیازمند توجه</value></data>
+  <data name="Lt_Dash_NothingOverdue" xml:space="preserve"><value>ارجاع یا پاسخ معوقی وجود ندارد.</value></data>
+  <data name="Lt_Dash_Reason" xml:space="preserve"><value>علت</value></data>
+  <data name="Lt_Dash_DaysOverdue" xml:space="preserve"><value>روز تاخیر</value></data>
+  <data name="Lt_Dash_ReasonReferral" xml:space="preserve"><value>ارجاع معوق</value></data>
+  <data name="Lt_Dash_ReasonResponse" xml:space="preserve"><value>پاسخ معوق</value></data>
+  <data name="Lt_Dash_Aging" xml:space="preserve"><value>قدمت نامه‌های باز</value></data>
+  <data name="Lt_Dash_AgingNote" xml:space="preserve"><value>روز از تاریخ نامه؛ نامه‌های بسته، ردشده و صادرشده محاسبه نمی‌شوند.</value></data>
+  <data name="Lt_Dash_Age_0-7" xml:space="preserve"><value>۰ تا ۷ روز</value></data>
+  <data name="Lt_Dash_Age_8-30" xml:space="preserve"><value>۸ تا ۳۰ روز</value></data>
+  <data name="Lt_Dash_Age_31-90" xml:space="preserve"><value>۳۱ تا ۹۰ روز</value></data>
+  <data name="Lt_Dash_Age_90+" xml:space="preserve"><value>بیش از ۹۰ روز</value></data>
+  <data name="Lt_Dash_ByStatus" xml:space="preserve"><value>بر اساس وضعیت</value></data>
+  <data name="Lt_Dash_ByType" xml:space="preserve"><value>بر اساس نوع</value></data>
+  <data name="Lt_Dash_ByPriority" xml:space="preserve"><value>بر اساس اولویت</value></data>
+  <data name="Letter Template Preview" xml:space="preserve"><value>پیش‌نمایش قالب نامه</value></data>
+  <data name="Lt_ReplyParentDue" xml:space="preserve"><value>این نامه تا این تاریخ نیاز به پاسخ دارد:</value></data>
+  <data name="Lt_RemindersRun" xml:space="preserve"><value>ارسال یادآوری معوقات اکنون</value></data>
+  <data name="Lt_RemindersConfirm" xml:space="preserve"><value>یادآوری معوقات اکنون ارسال شود؟ یادآوری‌هایی که امروز ارسال شده‌اند تکرار نمی‌شوند.</value></data>
+  <data name="LtT_Preview" xml:space="preserve"><value>پیش‌نمایش</value></data>
+  <data name="LtT_PreviewNote" xml:space="preserve"><value>با مقادیر نمونه نمایش داده می‌شود؛ مقدار واقعی هنگام استفاده از قالب جایگزین می‌شود.</value></data>
+  <data name="LtT_PlaceholdersTitle" xml:space="preserve"><value>نشانه‌های قابل استفاده</value></data>
+  <data name="LtT_PlaceholdersHelp" xml:space="preserve"><value>نشانه‌ای مانند {{Date}} را در موضوع یا متن بنویسید؛ هنگام اعمال قالب جایگزین می‌شود. نشانه‌ی ناشناخته هنگام ذخیره رد می‌شود.</value></data>
+  <data name="LtT_PlaceholdersReply" xml:space="preserve"><value>فقط در صفحه‌ی پاسخ مقدار می‌گیرند (در ایجاد نامه‌ی جدید همان‌طور که تایپ شده می‌مانند):</value></data>
+  <data name="LtT_Token_Date" xml:space="preserve"><value>تاریخ امروز</value></data>
+  <data name="LtT_Token_UserName" xml:space="preserve"><value>نام کامل شما</value></data>
+  <data name="LtT_Token_LetterType" xml:space="preserve"><value>نوع نامه (Incoming/Outgoing/Internal)</value></data>
+  <data name="LtT_Token_ParentNumber" xml:space="preserve"><value>شماره‌ی نامه‌ای که به آن پاسخ می‌دهید</value></data>
+  <data name="LtT_Token_ParentSubject" xml:space="preserve"><value>موضوع نامه‌ای که به آن پاسخ می‌دهید</value></data>
+  <data name="LtT_Token_ParentDate" xml:space="preserve"><value>تاریخ نامه‌ای که به آن پاسخ می‌دهید</value></data>
+  <data name="LtT_Token_Counterparty" xml:space="preserve"><value>طرف مقابل آن نامه</value></data>
+  <data name="LtT_Token_ParentProject" xml:space="preserve"><value>پروژه‌ی آن نامه</value></data>
 </root>

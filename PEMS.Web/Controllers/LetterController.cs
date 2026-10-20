@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
+using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
+using PEMS.Web.Helpers;
 using PEMS.Web.Security;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -27,13 +29,18 @@ public class LetterController : Controller
     private readonly ILetterNumberingService _numberingService;
     private readonly IFileStorageService _fileStorage;
     private readonly INotificationService _notifications;
+    private readonly ILetterTemplateService? _templates;
+    private readonly ILetterReminderService? _reminders;
 
     public LetterController(ILetterService letterService, ILetterReferralService referralService,
         PEMSDbContext context, ICurrentUserService currentUser, IPermissionService permissionService,
         ITagService tagService, IRichTextSanitizerService richTextSanitizer, ICacheService cache,
         ILetterNumberingService numberingService, IFileStorageService fileStorage,
-        INotificationService notifications)
+        INotificationService notifications, ILetterTemplateService? templateService = null,
+        ILetterReminderService? reminderService = null)
     {
+        _templates = templateService;
+        _reminders = reminderService;
         _notifications = notifications;
         _letterService = letterService;
         _referralService = referralService;
@@ -51,7 +58,9 @@ public class LetterController : Controller
     // بدون Normalize پاس داده می‌شد و از QueryString هم پذیرفته نمی‌شد.
     public async Task<IActionResult> Index(string? letterType, string? letterNumber, string? subject,
         string? sender, string? receiver, int? projectId, int? disciplineId, string? status,
-        DateTime? fromDate, DateTime? toDate, bool starred = false, int page = 1, int? pageSize = null)
+        DateTime? fromDate, DateTime? toDate, bool starred = false, int page = 1, int? pageSize = null,
+        string? priority = null, bool? hasAttachments = null, bool? hasReferrals = null, bool overdueReferral = false,
+        bool overdueResponse = false)
     {
         ViewData["Title"] = "Correspondence";
         ViewData["Section"] = "Correspondence Management";
@@ -64,9 +73,10 @@ public class LetterController : Controller
         var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
         var result = await _letterService.SearchAsync(letterType, letterNumber, subject, sender,
             receiver, projectId, disciplineId, status, fromDate, toDate, page, normalizedPageSize,
-            canViewConfidential, _currentUser.UserId, starredOnly: starred);
+            canViewConfidential, _currentUser.UserId, starredOnly: starred,
+            advanced: BuildAdvancedFilter(priority, hasAttachments, hasReferrals, overdueReferral, overdueResponse));
 
-        var dashboard = await _letterService.GetDashboardAsync(_currentUser.UserId);
+        var dashboard = await _letterService.GetDashboardAsync(_currentUser.UserId, canViewConfidential);
 
         ViewBag.Dashboard = dashboard;
 
@@ -75,9 +85,158 @@ public class LetterController : Controller
         // می‌زد و همه‌ی این‌ها را بی‌فایده بارگذاری می‌کرد
         await LoadIndexDropdownsAsync();
 
-        ViewBag.Filters = new { letterType, letterNumber, subject, sender, receiver, projectId, disciplineId, status, fromDate, toDate, starred };
+        ViewBag.Filters = new
+        {
+            letterType, letterNumber, subject, sender, receiver, projectId, disciplineId, status, fromDate, toDate, starred,
+            priority = NormalizePriority(priority), hasAttachments, hasReferrals, overdueReferral, overdueResponse
+        };
+
+        // دکمه‌ی آرشیو گروهی فقط برای کسی که مجوز Delete ماژول مکاتبات را دارد دیده می‌شود (سرور دوباره بررسی می‌کند)
+        ViewBag.CanManageTemplates = canViewConfidential;   // = SystemAdmin أو Correspondence/Approve
+        ViewBag.CanBulkArchive = isSystemAdmin ||
+            await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Delete");
 
         return View(result);
+    }
+
+    private static readonly string[] KnownPriorities = { "Low", "Normal", "High", "Urgent" };
+
+    private static string? NormalizePriority(string? priority)
+        => KnownPriorities.FirstOrDefault(p => string.Equals(p, priority?.Trim(), StringComparison.OrdinalIgnoreCase));
+
+    private static LetterAdvancedFilter BuildAdvancedFilter(string? priority, bool? hasAttachments, bool? hasReferrals,
+        bool overdueReferral, bool overdueResponse = false)
+        => new()
+        {
+            Priority = NormalizePriority(priority),
+            HasAttachments = hasAttachments,
+            HasReferrals = hasReferrals,
+            OverdueReferralOnly = overdueReferral,
+            OverdueResponseOnly = overdueResponse
+        };
+
+    // خروجی همان فیلترهای Index (CSV یا Excel) - سرویس همان قانون محرمانگی Index را اعمال می‌کند
+    [HttpGet]
+    public async Task<IActionResult> Export(string format, string? letterType, string? letterNumber, string? subject,
+        string? sender, string? receiver, int? projectId, int? disciplineId, string? status,
+        DateTime? fromDate, DateTime? toDate, bool starred = false,
+        string? priority = null, bool? hasAttachments = null, bool? hasReferrals = null, bool overdueReferral = false,
+        bool overdueResponse = false)
+    {
+        var isSystemAdmin = _currentUser.Roles.Contains("SystemAdmin");
+        var canViewConfidential = isSystemAdmin ||
+            await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Approve");
+
+        var items = await _letterService.ExportAsync(letterType, letterNumber, subject, sender, receiver, projectId,
+            disciplineId, status, fromDate, toDate, canViewConfidential, _currentUser.UserId, starred,
+            BuildAdvancedFilter(priority, hasAttachments, hasReferrals, overdueReferral, overdueResponse));
+
+        var stamp = DateTime.Now.ToString("yyyyMMdd_HHmm");
+        return string.Equals(format, "csv", StringComparison.OrdinalIgnoreCase)
+            ? File(LetterListExport.BuildCsv(items), "text/csv; charset=utf-8", $"Correspondence_{stamp}.csv")
+            : File(LetterListExport.BuildExcel(items),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"Correspondence_{stamp}.xlsx");
+    }
+
+    // عملیات گروهی امن روی ردیف‌های انتخاب‌شده. تایید/صدور/بستن عمداً اینجا نیست (تفکیک وظایف).
+    //   star / unstar  - فقط ستاره‌ی خود کاربر
+    //   submit         - فقط پیش‌نویس‌های خود کاربر (همان قانون اقدام تکی)
+    //   archive        - آرشیو نرم Draft/Rejected با دلیل الزامی، نیازمند مجوز Delete، ثبت در AuditLog
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Bulk(string op, int[]? ids, string? reason, string? returnUrl)
+    {
+        string Back() => string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl) ? Url.Action(nameof(Index))! : returnUrl;
+
+        if (ids == null || ids.Length == 0 || !_currentUser.UserId.HasValue)
+        {
+            TempData["Error"] = "No letters were selected.";
+            return LocalRedirect(Back());
+        }
+
+        var isSystemAdmin = _currentUser.Roles.Contains("SystemAdmin");
+        LetterBulkResult result;
+        string done;
+
+        switch ((op ?? "").ToLowerInvariant())
+        {
+            case "star":
+            case "unstar":
+                var canViewConfidential = isSystemAdmin ||
+                    await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Approve");
+                var starring = string.Equals(op, "star", StringComparison.OrdinalIgnoreCase);
+                result = await _letterService.BulkSetStarAsync(ids, _currentUser.UserId.Value, starring, canViewConfidential);
+                done = starring ? "starred" : "unstarred";
+                break;
+
+            case "submit":
+                result = await _letterService.BulkSubmitForReviewAsync(ids, _currentUser.UserId);
+                done = "submitted for review";
+                break;
+
+            case "archive":
+                if (!isSystemAdmin && !await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Delete"))
+                    return Forbid();
+                result = await _letterService.BulkArchiveAsync(ids, _currentUser.UserId, _currentUser.UserName, isSystemAdmin, reason ?? "");
+                done = "archived";
+                break;
+
+            default:
+                TempData["Error"] = "Unknown bulk action.";
+                return LocalRedirect(Back());
+        }
+
+        if (result.Succeeded > 0) TempData["Message"] = $"{result.Succeeded} letter(s) {done}.";
+        if (result.Failed.Count > 0)
+        {
+            var detail = string.Join(" | ", result.Failed.Take(5).Select(f =>
+                $"{(string.IsNullOrEmpty(f.LetterNumber) ? "#" + f.LetterId : f.LetterNumber)}: {f.Reason}"));
+            TempData["Error"] = $"{result.Failed.Count} letter(s) skipped. {detail}" + (result.Failed.Count > 5 ? " ..." : "");
+        }
+
+        return LocalRedirect(Back());
+    }
+
+    // داشبورد اختصاصی مکاتبات (Phase 2): فقط داده‌ی واقعی و با همان قانون محرمانگی فهرست
+    public async Task<IActionResult> Dashboard()
+    {
+        ViewData["Title"] = "Correspondence Dashboard";
+        ViewData["Section"] = "Correspondence Management";
+
+        var isSystemAdmin = _currentUser.Roles.Contains("SystemAdmin");
+        var canReview = isSystemAdmin ||
+            await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Approve");
+
+        var model = await _letterService.GetWorkspaceDashboardAsync(canReview, _currentUser.UserId, canReview);
+        ViewBag.CanReview = canReview;
+        ViewBag.CanRunReminders = isSystemAdmin && _reminders != null;
+        return View(model);
+    }
+
+    // اجرای دستی یادآوری معوقات (فقط SystemAdmin): برای راستی‌آزمایی بدون انتظار تا ساعت زمان‌بندی؛ ضد تکرار روزانه سرویس همچنان برقرار است
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SendReminders()
+    {
+        if (!_currentUser.Roles.Contains("SystemAdmin")) return Forbid();
+        if (_reminders == null) return NotFound();
+
+        var result = await _reminders.SendDueRemindersAsync();
+        TempData["Message"] = $"Reminders sent: {result.ReferralReminders} referral, {result.ResponseReminders} response ({result.SkippedDuplicates} already sent today)";
+        if (result.Failed > 0) TempData["Error"] = $"{result.Failed} reminder(s) could not be delivered.";
+        return RedirectToAction(nameof(Dashboard));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetResponseDue(int letterId, bool responseRequired, DateTime? responseDueDate)
+    {
+        var canManageAny = _currentUser.Roles.Contains("SystemAdmin") ||
+            await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Approve");
+
+        var (success, error) = await _letterService.SetResponseDueAsync(letterId, responseRequired, responseDueDate, _currentUser.UserId, canManageAny);
+        TempData[success ? "Message" : "Error"] = success ? "Response requirement updated" : error;
+        return RedirectToAction(nameof(Details), new { id = letterId });
     }
 
     [HttpPost]
@@ -172,6 +331,12 @@ public class LetterController : Controller
 
         ViewBag.CanReview = await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Approve");
 
+        // پاسخ‌خواهی: ثبت‌کننده یا کسی با اختیار Approve/SystemAdmin (سرویس دوباره بررسی می‌کند)
+        ViewBag.CanManageResponse = _currentUser.UserId.HasValue
+            && (_currentUser.UserId.Value == detail.Letter.RegisteredById
+                || _currentUser.Roles.Contains("SystemAdmin") || (bool)ViewBag.CanReview)
+            && !LetterResponseRules.FinishedStatuses.Contains(detail.Letter.Status);
+
         // طبق بند ۲۶: صفحه‌ی جزئیات (عمدتاً فقط-خواندنی) نباید Dropdown های سنگین (همه‌ی
         // Employee/Document/MR) را بارگذاری کند - فقط زمانی که کاربر واقعاً دیالوگ افزودن
         // گیرنده/ارجاع/تگ را باز می‌کند، لازم است. این‌جا فقط موارد سبک (Department/Tag) از قبل
@@ -182,7 +347,7 @@ public class LetterController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Reply(int id)
+    public async Task<IActionResult> Reply(int id, int? templateId = null)
     {
         ViewData["Title"] = "Reply";
         ViewData["Section"] = "Correspondence Management";
@@ -194,6 +359,21 @@ public class LetterController : Controller
         ViewBag.ParentLetterId = id;
         ViewBag.DefaultSubject = "Re: " + parent.Letter.Subject;
         ViewBag.DefaultReceiver = parent.Letter.LetterType == "Incoming" ? parent.Letter.Sender : parent.Letter.Receiver;
+        ViewBag.ParentLetter = parent.Letter;
+
+        // پاسخ همیشه یک نامه‌ی Outgoing است، پس قالب‌های Outgoing و «همه‌ی انواع» پیشنهاد می‌شوند
+        await LoadTemplatesAsync("Outgoing");
+        if (templateId.HasValue && _templates != null)
+        {
+            var template = await _templates.GetAsync(templateId.Value);
+            if (template != null && template.IsActive && (template.LetterType == null || template.LetterType == "Outgoing"))
+            {
+                var applied = ApplyPlaceholders(template, PlaceholderValues("Outgoing", parent));
+                ViewBag.Prefill = applied;
+                ViewBag.SelectedTemplateId = template.LetterTemplateId;
+                if (!string.IsNullOrWhiteSpace(applied.Subject)) ViewBag.DefaultSubject = applied.Subject;
+            }
+        }
 
         return View();
     }
@@ -211,7 +391,7 @@ public class LetterController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Create(string letterType = "Incoming")
+    public async Task<IActionResult> Create(string letterType = "Incoming", int? templateId = null)
     {
         ViewData["Title"] = "New Letter";
         ViewData["Section"] = "Correspondence Management";
@@ -219,8 +399,62 @@ public class LetterController : Controller
         ViewBag.LetterType = letterType;
         ViewBag.CanManualNumber = await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "ManualNumber");
         await LoadCreateDropdownsAsync();
+        await LoadTemplatesAsync(letterType);
+
+        // قالب فقط مقدار اولیه‌ی فرم را پر می‌کند؛ قالب غیرفعال یا نامناسب برای این نوع نادیده گرفته می‌شود
+        if (templateId.HasValue && _templates != null)
+        {
+            var template = await _templates.GetAsync(templateId.Value);
+            if (template != null && template.IsActive && (template.LetterType == null || template.LetterType == letterType))
+            {
+                ViewBag.Prefill = ApplyPlaceholders(template, PlaceholderValues(letterType, null));
+                ViewBag.SelectedTemplateId = template.LetterTemplateId;
+            }
+        }
 
         return View();
+    }
+
+    // مقادیر نشانه‌های قالب. نشانه‌های پاسخ (Parent*) فقط وقتی نامه‌ی مادر هست مقدار می‌گیرند؛ در ایجاد نامه دست‌نخورده می‌مانند.
+    private Dictionary<string, string> PlaceholderValues(string letterType, LetterDetailDto? parent)
+    {
+        var values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["Date"] = DateTime.Today.ToString("yyyy-MM-dd"),
+            ["UserName"] = _currentUser.FullName ?? _currentUser.UserName ?? "",
+            ["LetterType"] = letterType
+        };
+
+        if (parent != null)
+        {
+            var p = parent.Letter;
+            values["ParentNumber"] = p.LetterNumber;
+            values["ParentSubject"] = p.Subject;
+            values["ParentDate"] = p.LetterDate.ToString("yyyy-MM-dd");
+            values["Counterparty"] = (p.LetterType == "Incoming" ? p.Sender : p.Receiver) ?? "";
+            values["ParentProject"] = p.ProjectName ?? "";
+        }
+
+        return values;
+    }
+
+    private static LetterTemplateDto ApplyPlaceholders(LetterTemplateDto template, IReadOnlyDictionary<string, string> values) => new()
+    {
+        LetterTemplateId = template.LetterTemplateId,
+        Name = template.Name,
+        LetterType = template.LetterType,
+        Subject = LetterTemplatePlaceholders.Apply(template.Subject, values, htmlEncode: false),
+        Body = LetterTemplatePlaceholders.Apply(template.Body, values, htmlEncode: true),
+        Priority = template.Priority,
+        ConfidentialityLevel = template.ConfidentialityLevel,
+        IsActive = template.IsActive
+    };
+
+    private async Task LoadTemplatesAsync(string letterType)
+    {
+        ViewBag.Templates = _templates == null
+            ? new List<LetterTemplateDto>()
+            : await _templates.ListAsync(letterType, includeInactive: false);
     }
 
     [HttpPost]
@@ -228,8 +462,29 @@ public class LetterController : Controller
     public async Task<IActionResult> Create(string letterType, string? letterNumber, DateTime letterDate,
         string? sender, string? receiver, string subject, string? body, string priority,
         string confidentialityLevel, int? projectId, int? disciplineId, int? relatedDocumentId, int? relatedMRId,
-        bool useManualNumber = false)
+        bool useManualNumber = false, bool responseRequired = false, DateTime? responseDueDate = null)
     {
+        // اعتبارسنجی پاسخ‌خواهی پیش از هر تولید شماره؛ در خطا، فرم با همان مقادیر تایپ‌شده دوباره نمایش داده می‌شود (متن نامه از دست نمی‌رود)
+        var responseError = LetterResponseRules.Validate(responseRequired, responseDueDate, letterDate);
+        if (responseError != null)
+        {
+            ViewData["Title"] = "New Letter";
+            ViewData["Section"] = "Correspondence Management";
+            ModelState.AddModelError("responseDueDate", responseError);
+            ViewBag.LetterType = letterType;
+            ViewBag.CanManualNumber = await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "ManualNumber");
+            await LoadCreateDropdownsAsync();
+            await LoadTemplatesAsync(letterType);
+            ViewBag.Prefill = new LetterTemplateDto { Subject = subject, Body = body, Priority = priority, ConfidentialityLevel = confidentialityLevel };
+            ViewBag.PrefillSender = sender;
+            ViewBag.PrefillReceiver = receiver;
+            ViewBag.PrefillDate = letterDate;
+            ViewBag.PrefillResponseRequired = responseRequired;
+            ViewBag.PrefillResponseDue = responseDueDate;
+            ViewBag.ResponseError = responseError;
+            return View();
+        }
+
         var canManualNumber = await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "ManualNumber");
 
         if (!useManualNumber || !canManualNumber || string.IsNullOrWhiteSpace(letterNumber))
@@ -237,7 +492,7 @@ public class LetterController : Controller
 
         var id = await _letterService.CreateAsync(letterType, letterNumber, letterDate, sender, receiver,
             subject, body, priority, confidentialityLevel, projectId, disciplineId, relatedDocumentId,
-            relatedMRId, _currentUser.UserId);
+            relatedMRId, _currentUser.UserId, responseRequired, responseDueDate);
 
         TempData["Message"] = "Letter registered successfully";
         return RedirectToAction(nameof(Details), new { id });

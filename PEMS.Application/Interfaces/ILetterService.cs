@@ -9,13 +9,40 @@ public interface ILetterService
     Task<PagedResult<LetterDto>> SearchAsync(string? letterType, string? letterNumber, string? subject,
         string? sender, string? receiver, int? projectId, int? disciplineId, string? status,
         DateTime? fromDate, DateTime? toDate, int page, int pageSize,
-        bool canViewConfidential, int? requestingApplicationUserId, bool starredOnly = false);
+        bool canViewConfidential, int? requestingApplicationUserId, bool starredOnly = false,
+        LetterAdvancedFilter? advanced = null);
+
+    // خروجی همان فیلترهای Index (بدون صفحه‌بندی، سقف maxRows) با همان قانون محرمانگی
+    Task<List<LetterDto>> ExportAsync(string? letterType, string? letterNumber, string? subject,
+        string? sender, string? receiver, int? projectId, int? disciplineId, string? status,
+        DateTime? fromDate, DateTime? toDate, bool canViewConfidential, int? requestingApplicationUserId,
+        bool starredOnly, LetterAdvancedFilter? advanced, int maxRows = 5000);
+
+    // عملیات گروهی امن: فقط نامه‌هایی که کاربر اجازه‌ی دیدنشان را دارد؛ هر نامه جداگانه ارزیابی می‌شود.
+    // تایید/صدور/بستن عمداً گروهی نیست (تفکیک وظایف و گردش‌کار کنترل‌شده).
+    Task<LetterBulkResult> BulkSetStarAsync(IReadOnlyCollection<int> letterIds, int applicationUserId,
+        bool starred, bool canViewConfidential);
+
+    Task<LetterBulkResult> BulkSubmitForReviewAsync(IReadOnlyCollection<int> letterIds, int? actorApplicationUserId);
+
+    // آرشیو نرم (IsActive=false) فقط برای Draft/Rejected، فقط توسط نویسنده یا SystemAdmin، با دلیل الزامی
+    // و ثبت صریح در AuditLog. هرگز حذف فیزیکی نیست (نامه‌های رسمی تغییرناپذیرند).
+    Task<LetterBulkResult> BulkArchiveAsync(IReadOnlyCollection<int> letterIds, int? actorApplicationUserId,
+        string? actorUserName, bool isSystemAdmin, string reason);
 
     Task<LetterDetailDto?> GetDetailAsync(int letterId);
 
     Task<int> CreateAsync(string letterType, string letterNumber, DateTime letterDate, string? sender,
         string? receiver, string subject, string? body, string priority, string confidentialityLevel,
-        int? projectId, int? disciplineId, int? relatedDocumentId, int? relatedMRId, int? registeredById);
+        int? projectId, int? disciplineId, int? relatedDocumentId, int? relatedMRId, int? registeredById,
+        bool responseRequired = false, DateTime? responseDueDate = null);
+
+    // تنظیم/اصلاح پاسخ‌خواهی بعد از ثبت. فقط ثبت‌کننده‌ی نامه یا کسی با اختیار مدیریت (canManageAny)؛ نه برای نامه‌ی Closed/Rejected.
+    // اگر پاسخ لازم است، مهلت الزامی است و نباید قبل از تاریخ نامه باشد. تغییر در AuditLog خودکار ثبت می‌شود.
+    Task<(bool Success, string? Error)> SetResponseDueAsync(int letterId, bool responseRequired, DateTime? dueDate,
+        int? actorApplicationUserId, bool canManageAny);
+
+    Task<LetterWorkspaceDashboardDto> GetWorkspaceDashboardAsync(bool canViewConfidential, int? applicationUserId, bool canReview);
 
     // برای نمایش دوطرفه: لیست نامه‌های مرتبط با یک مدرک مهندسی/Vendor یا یک MR مشخص
     Task<List<RelatedLetterDto>> GetRelatedToDocumentAsync(int documentId);
@@ -54,7 +81,7 @@ public interface ILetterService
     Task<(bool Success, string? Error)> ResubmitAsync(int letterId, string subject, string body,
         int currentApplicationUserId, byte[]? rowVersion);
 
-    Task<LetterDashboardDto> GetDashboardAsync(int? currentApplicationUserId = null);
+    Task<LetterDashboardDto> GetDashboardAsync(int? currentApplicationUserId = null, bool canViewConfidential = false);
 
     Task ToggleStarAsync(int letterId, int applicationUserId);
 
