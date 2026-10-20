@@ -7637,6 +7637,12 @@ namespace PEMS.Persistence.Migrations
                     b.Property<int?>("RelatedMRId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("ResponseDueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("ResponseRequired")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ReturnReason")
                         .HasColumnType("nvarchar(max)");
 
@@ -7933,6 +7939,70 @@ namespace PEMS.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("LetterTags");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.LetterTemplate", b =>
+                {
+                    b.Property<int>("LetterTemplateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LetterTemplateId"));
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConfidentialityLevel")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LetterType")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LetterTemplateId");
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("IsActive", "LetterType");
+
+                    b.ToTable("LetterTemplates");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.MDBDocument", b =>

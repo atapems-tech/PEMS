@@ -101,6 +101,13 @@ public class Letter : BaseEntity
     // نمایش «رویژن N» به کاربر، بدون نیاز به شمارش دستی ردیف‌های LetterReview
     public int RevisionCount { get; set; }
 
+    // پاسخ‌خواهی (Phase 2): آیا این نامه نیاز به پاسخ دارد و تا چه تاریخی. «پاسخ‌داده‌شده» ذخیره نمی‌شود، از وجود نامه‌ی
+    // فرزند صادرشده (ParentLetterId = این نامه) محاسبه می‌شود تا هیچ پرچم دستی با واقعیت ناسازگار نشود؛
+    // «معوق» هم محاسبه‌شده است (ResponseRequired && ResponseDueDate گذشته && هنوز بی‌پاسخ && نامه بسته نشده).
+    public bool ResponseRequired { get; set; }
+
+    public DateTime? ResponseDueDate { get; set; }
+
     public ICollection<LetterReview> Reviews { get; set; } = new List<LetterReview>();
 
     public bool IsActive { get; set; } = true;

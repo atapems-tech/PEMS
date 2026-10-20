@@ -444,6 +444,8 @@ public class PEMSDbContext
 
     public DbSet<LetterStar> LetterStars { get; set; }
 
+    public DbSet<LetterTemplate> LetterTemplates { get; set; }
+
     public DbSet<LetterRecipient> LetterRecipients { get; set; }
 
     public DbSet<Tag> Tags { get; set; }
