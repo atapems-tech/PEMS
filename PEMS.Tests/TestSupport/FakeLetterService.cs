@@ -63,6 +63,7 @@ public class FakeLetterService : ILetterService
     public Task<(bool Success, string? Error)> SendAsync(int letterId, int? actorApplicationUserId) => throw new NotSupportedException();
     public Task<(bool Success, string? Error)> ArchiveAsync(int letterId, int? actorApplicationUserId, bool canArchiveAny) => throw new NotSupportedException();
     public Task<(bool Success, string? Error)> ReassignApprovalStepAsync(int letterId, int stepOrder, int newApproverUserId, int? actorApplicationUserId, bool isAdmin) => throw new NotSupportedException();
+    public Task<LetterFolderCountsDto> GetFolderCountsAsync(bool canViewConfidential, int? requestingApplicationUserId) => Task.FromResult(new LetterFolderCountsDto());
     public Task<LetterDashboardDto> GetDashboardAsync(int? currentApplicationUserId = null, bool canViewConfidential = false) => throw new NotSupportedException();
     public Task<(bool Success, string? Error)> SetResponseDueAsync(int letterId, bool responseRequired, DateTime? dueDate, int? actorApplicationUserId, bool canManageAny) => throw new NotSupportedException();
     public Task<LetterWorkspaceDashboardDto> GetWorkspaceDashboardAsync(bool canViewConfidential, int? applicationUserId, bool canReview) => throw new NotSupportedException();

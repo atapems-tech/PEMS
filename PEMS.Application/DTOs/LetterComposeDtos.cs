@@ -6,6 +6,9 @@ public class LetterComposeInput
     public int? LetterId { get; set; }
     public byte[]? RowVersion { get; set; }
 
+    // پاسخ به این نامه (پیش‌نویس جدید یا ویرایش پاسخ)؛ سطح محرمانگی پاسخ هرگز کمتر از نامه‌ی اصلی نمی‌شود
+    public int? ParentLetterId { get; set; }
+
     // Internal | Outgoing
     public string LetterType { get; set; } = "Internal";
     public string? Category { get; set; }
@@ -26,6 +29,8 @@ public class LetterComposeInput
     public List<int> BccEmployeeIds { get; set; } = new();
     // فقط Outgoing (گیرنده‌ی بیرونی سازمان)
     public string? ExternalReceiver { get; set; }
+    // طرف مکاتبه‌ی ثبت‌شده‌ی گیرنده (اختیاری): نامه‌ی صادره را در «رشته‌ی مکاتبه»ی همان طرف در DCC می‌آورد؛ بدون آن فقط تطبیق نام انجام می‌شود
+    public int? CorrespondentPartyId { get; set; }
 
     public bool ResponseRequired { get; set; }
     public DateTime? ResponseDueDate { get; set; }

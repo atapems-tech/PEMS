@@ -113,6 +113,34 @@ public class LetterComposeService : ILetterComposeService
             ? await _context.Employees.Include(e => e.PositionRef).Include(e => e.Department).FirstOrDefaultAsync(e => e.EmployeeId == actor.EmployeeId)
             : null;
 
+        // پاسخ: نامه‌ی اصلی باید وجود داشته باشد و پاسخ نباید محرمانگی کمتری از آن داشته باشد (وگرنه پاسخ یک نامه‌ی محرمانه برای همه باز می‌شد)
+        var parentId = input.LetterId.HasValue
+            ? await _context.Letters.Where(l => l.LetterId == input.LetterId).Select(l => l.ParentLetterId).FirstOrDefaultAsync()
+            : input.ParentLetterId;
+        Letter? parent = null;
+        if (parentId.HasValue)
+        {
+            parent = await _context.Letters.FirstOrDefaultAsync(l => l.LetterId == parentId && l.IsActive);
+            if (parent == null) { result.Errors.Add(new("ParentNotFound")); return result; }
+            if (LetterComposeRules.ConfidentialityRank(input.ConfidentialityLevel) < LetterComposeRules.ConfidentialityRank(parent.ConfidentialityLevel))
+            {
+                result.Errors.Add(new("ConfidentialityBelowParent", "confidentialityLevel", parent.ConfidentialityLevel));
+                return result;
+            }
+        }
+
+        // طرف مکاتبه (فقط نامه‌ی صادره): باید فعال و موجود باشد؛ پیش از ساختن/تغییر هر ردیفی بررسی می‌شود
+        int? partyId = null;
+        if (input.LetterType == "Outgoing" && input.CorrespondentPartyId.HasValue)
+        {
+            partyId = input.CorrespondentPartyId.Value;
+            if (!await _context.CorrespondentParties.AnyAsync(p => p.CorrespondentPartyId == partyId && p.IsActive))
+            {
+                result.Errors.Add(new("PartyNotFound", "correspondentPartyId"));
+                return result;
+            }
+        }
+
         Letter letter;
         if (!input.LetterId.HasValue)
         {
@@ -143,9 +171,12 @@ public class LetterComposeService : ILetterComposeService
                 SenderEmployeeId = employee?.EmployeeId,
                 SenderTitle = TitleOf(employee),
                 SenderDepartmentId = departmentId,
-                Sender = FullName(employee)
+                Sender = FullName(employee),
+                ParentLetterId = parent?.LetterId
             };
             _context.Letters.Add(letter);
+            // مثل ReplyAsync قدیمی: نامه‌ی ثبت‌شده‌ای که پاسخ می‌گیرد «ارجاع‌شده» می‌شود
+            if (parent is { Status: "Registered" }) parent.Status = "Referred";
         }
         else
         {
@@ -177,6 +208,7 @@ public class LetterComposeService : ILetterComposeService
         var toNames = input.ToEmployeeIds.Where(check.Employees.ContainsKey).Select(id => FullName(check.Employees[id])).ToList();
         letter.Receiver = input.LetterType == "Outgoing" ? input.ExternalReceiver?.Trim() : string.Join(", ", toNames);
         letter.ReceiverEmployeeId = input.LetterType == "Internal" ? input.ToEmployeeIds.Cast<int?>().FirstOrDefault() : null;
+        letter.CorrespondentPartyId = partyId;
 
         try
         {
@@ -250,6 +282,7 @@ public class LetterComposeService : ILetterComposeService
         {
             LetterId = letter.LetterId,
             RowVersion = letter.RowVersion,
+            ParentLetterId = letter.ParentLetterId,
             LetterType = letter.LetterType,
             Category = letter.Category,
             Subject = letter.Subject,
@@ -266,6 +299,7 @@ public class LetterComposeService : ILetterComposeService
             CcEmployeeIds = recipients.Where(r => r.RecipientType == "Cc").Select(r => r.EmployeeId!.Value).ToList(),
             BccEmployeeIds = recipients.Where(r => r.RecipientType == "Bcc").Select(r => r.EmployeeId!.Value).ToList(),
             ExternalReceiver = letter.LetterType == "Outgoing" ? letter.Receiver : null,
+            CorrespondentPartyId = letter.LetterType == "Outgoing" ? letter.CorrespondentPartyId : null,
             ResponseRequired = letter.ResponseRequired,
             ResponseDueDate = letter.ResponseDueDate,
             ApprovalRequired = letter.ApprovalRequired,
@@ -293,6 +327,59 @@ public class LetterComposeService : ILetterComposeService
     }
 
     // ------------------------------------------------------------------ directory
+
+    public async Task<LetterComposeInput?> BuildReplyInputAsync(int parentLetterId, LetterComposeActor actor)
+    {
+        var parent = await _context.Letters.AsNoTracking().FirstOrDefaultAsync(l => l.LetterId == parentLetterId && l.IsActive);
+        if (parent == null) return null;
+
+        var internalReply = parent.LetterType == "Internal";
+        var input = new LetterComposeInput
+        {
+            ParentLetterId = parent.LetterId,
+            LetterType = internalReply ? "Internal" : "Outgoing",
+            Category = LetterComposeRules.Categories.Contains(parent.Category ?? "") ? parent.Category : null,
+            Subject = ReplySubject(parent.Subject),
+            Priority = LetterComposeRules.Priorities.Contains(parent.Priority) ? parent.Priority : "Normal",
+            ConfidentialityLevel = LetterComposeRules.Confidentialities.Contains(parent.ConfidentialityLevel) ? parent.ConfidentialityLevel : "Internal",
+            ReferenceNumber = parent.LetterNumber,
+            ProjectId = parent.ProjectId,
+            DisciplineId = parent.DisciplineId,
+            RelatedDepartmentId = parent.RelatedDepartmentId,
+            ApprovalRequired = !internalReply
+        };
+
+        if (!internalReply)
+        {
+            input.ExternalReceiver = parent.LetterType == "Incoming" ? parent.Sender : parent.Receiver;
+            input.CorrespondentPartyId = parent.CorrespondentPartyId;
+            return input;
+        }
+
+        // پاسخ به نویسنده‌ی نامه؛ اگر پاسخ‌دهنده خودِ نویسنده است، به گیرندگان «To» همان نامه
+        var senderEmployeeId = parent.SenderEmployeeId
+            ?? (parent.RegisteredById.HasValue
+                ? await _context.Users.Where(u => u.Id == parent.RegisteredById.Value).Select(u => u.EmployeeId).FirstOrDefaultAsync()
+                : null);
+
+        var targets = new List<int>();
+        if (senderEmployeeId.HasValue && senderEmployeeId != actor.EmployeeId) targets.Add(senderEmployeeId.Value);
+        else
+            targets.AddRange(await _context.LetterRecipients.AsNoTracking()
+                .Where(r => r.LetterId == parent.LetterId && r.RecipientType == "To" && r.EmployeeId != null && r.EmployeeId != actor.EmployeeId)
+                .Select(r => r.EmployeeId!.Value).ToListAsync());
+
+        var active = (await LoadDirectoryAsync()).Select(d => d.EmployeeId).ToHashSet();
+        input.ToEmployeeIds = targets.Distinct().Where(active.Contains).ToList();
+        return input;
+    }
+
+    private static string ReplySubject(string? subject)
+    {
+        var text = (subject ?? "").Trim();
+        if (!text.StartsWith("Re:", StringComparison.OrdinalIgnoreCase)) text = "Re: " + text;
+        return text.Length > LetterComposeRules.MaxSubjectLength ? text[..LetterComposeRules.MaxSubjectLength].TrimEnd() : text;
+    }
 
     public async Task<LetterSenderBlockDto> GetSenderBlockAsync(int userId)
     {

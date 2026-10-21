@@ -57,6 +57,7 @@
         var manual = $('lcManual') ? $('lcManual').value.trim() : '';
         return {
             letterId: state.letterId,
+            parentLetterId: boot.parentLetterId,
             letterType: boot.letterType,
             category: val('lcCategory') || null,
             subject: val('lcSubject'),
@@ -72,6 +73,7 @@
             ccEmployeeIds: ids(state.recipients.cc),
             bccEmployeeIds: ids(state.recipients.bcc),
             externalReceiver: boot.isOutgoing ? val('lcExternal') : null,
+            correspondentPartyId: boot.isOutgoing ? intOrNull('lcParty') : null,
             responseRequired: respReq,
             responseDueDate: respReq ? (val('lcRespDue') || null) : null,
             approvalRequired: apprReq,
@@ -334,9 +336,21 @@
         state.dirty = true;
         if (!state.saving) setSaveState('dirty', T.unsaved);
     }
-    ['lcSubject', 'lcCategory', 'lcPriority', 'lcConf', 'lcDate', 'lcRef', 'lcRelDept', 'lcProject', 'lcDiscipline', 'lcManual', 'lcExternal', 'lcRespDue']
+    ['lcSubject', 'lcCategory', 'lcPriority', 'lcConf', 'lcDate', 'lcRef', 'lcRelDept', 'lcProject', 'lcDiscipline', 'lcManual', 'lcExternal', 'lcParty', 'lcRespDue']
         .forEach(function (id) { var el = $(id); if (el) { el.addEventListener('input', markDirty); el.addEventListener('change', markDirty); } });
     $('composeBody').addEventListener('rte-change', markDirty);
+
+    // choosing a registered organisation fills the receiver name (still editable); a name typed by hand is never overwritten
+    var partySel = $('lcParty'), extInput = $('lcExternal');
+    if (partySel && extInput) {
+        partySel.addEventListener('change', function () {
+            var opt = partySel.options[partySel.selectedIndex];
+            if (partySel.value && (!extInput.value.trim() || extInput.dataset.fromParty === '1')) {
+                extInput.value = opt.text; extInput.dataset.fromParty = '1'; markDirty();
+            }
+        });
+        extInput.addEventListener('input', function () { extInput.dataset.fromParty = ''; });
+    }
 
     function applyResult(res, autoSave) {
         if (res.rowVersion) state.rowVersion = res.rowVersion;

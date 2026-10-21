@@ -135,6 +135,26 @@ public class Letter : BaseEntity
     // وضعیت Archived با این تاریخ (آرشیو دستی بعد از ارسال، یا خودکار پس از بی‌فعالیتیِ طولانی). حذف فیزیکی ندارد.
     public DateTime? ArchivedDate { get; set; }
 
+    // ---- ثبت مکاتبه‌ی وارده (DCC) ----
+    // شماره‌ی نامه‌ی فرستنده (مرجع خودِ طرف مقابل) - کلید تشخیص ثبت تکراری همراه با طرف مکاتبه
+    [MaxLength(100)]
+    public string? SenderReference { get; set; }
+
+    // تاریخ روی نامه (DocumentDate) و تاریخ دریافت در DCC (ReceivedDate) دو چیز جدا هستند؛ LetterDate برای Incoming همان تاریخ دریافت است
+    public DateTime? DocumentDate { get; set; }
+
+    public DateTime? ReceivedDate { get; set; }
+
+    // OfficialLetter, Email, Portal, Hand - قبلاً به‌صورت «[منبع: …]» در ابتدای متن نامه ثبت می‌شد
+    [MaxLength(30)]
+    public string? ReceiptChannel { get; set; }
+
+    public int? CorrespondentPartyId { get; set; }
+    public CorrespondentParty? CorrespondentParty { get; set; }
+
+    public int? ContractId { get; set; }
+    public Contract? Contract { get; set; }
+
     public ICollection<LetterReview> Reviews { get; set; } = new List<LetterReview>();
 
     public bool IsActive { get; set; } = true;
@@ -148,4 +168,6 @@ public class Letter : BaseEntity
     public ICollection<LetterRecipient> Recipients { get; set; } = new List<LetterRecipient>();
 
     public ICollection<LetterTag> Tags { get; set; } = new List<LetterTag>();
+
+    public ICollection<LetterLink> Links { get; set; } = new List<LetterLink>();
 }

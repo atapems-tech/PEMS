@@ -17,6 +17,9 @@ public interface ILetterComposeService
     // بارگذاری پیش‌نویس برای ویرایش؛ null اگر نامه نیست، متعلق به کاربر نیست یا دیگر قابل‌ویرایش نیست
     Task<LetterComposeInput?> LoadForEditAsync(int letterId, LetterComposeActor actor);
 
+    // مقدار اولیه‌ی فرم پاسخ از نامه‌ی اصلی (گیرنده، موضوع «Re:»، دسته، اولویت، محرمانگی، پروژه...)؛ null اگر نامه‌ی اصلی نیست. دسترسی را فراخوان بررسی می‌کند
+    Task<LetterComposeInput?> BuildReplyInputAsync(int parentLetterId, LetterComposeActor actor);
+
     Task<LetterSenderBlockDto> GetSenderBlockAsync(int userId);
 
     // جستجوی دایرکتوری کارکنان فعال (کش‌شده؛ فیلتر در حافظه)

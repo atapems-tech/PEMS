@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Common;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
@@ -26,14 +27,28 @@ public class LetterNumberingService : ILetterNumberingService
     public async Task<string> GenerateNextNumberAsync(string letterType, int? projectId, int? departmentId = null)
     {
         var scope = await ResolveScopeAsync(departmentId);
-        var year = DateTime.Now.Year;
+        return await AllocateAsync(scope, DateTime.Now.Year, 5);
+    }
 
+    public async Task<string> GenerateNextIncomingNumberAsync(int? projectId, DateTime receivedDate)
+    {
+        string? code = null;
+        if (projectId.HasValue)
+            code = await _context.Projects.Where(p => p.ProjectId == projectId.Value).Select(p => p.ProjectCode).FirstOrDefaultAsync();
+
+        // شمارنده‌ی ورودی‌ها با دامنه‌ی «{PROJECT}-IN» و سال شمسی جدا از شمارنده‌ی نامه‌های دپارتمانی است
+        var scope = SanitizeScope(code) + "-IN";
+        return await AllocateAsync(scope, JalaliDate.Year(receivedDate), 4);
+    }
+
+    private async Task<string> AllocateAsync(string scope, int year, int digits)
+    {
         for (var attempt = 0; attempt < MaxAttempts; attempt++)
         {
             var sequence = await _context.LetterNumberSequences.FirstOrDefaultAsync(s => s.Scope == scope && s.Year == year);
             if (sequence == null)
             {
-                // اولین بار برای این (دپارتمان، سال): از بزرگ‌ترین شماره‌ی موجود با همین الگو ادامه می‌دهد، نه از صفر
+                // اولین بار برای این (دامنه، سال): از بزرگ‌ترین شماره‌ی موجود با همین الگو ادامه می‌دهد، نه از صفر
                 sequence = new LetterNumberSequence { Scope = scope, Year = year, LastValue = await ExistingMaxAsync(scope, year) };
                 _context.LetterNumberSequences.Add(sequence);
             }
@@ -52,7 +67,7 @@ public class LetterNumberingService : ILetterNumberingService
                 continue;
             }
 
-            var candidate = Format(scope, year, sequence.LastValue);
+            var candidate = Format(scope, year, sequence.LastValue, digits);
 
             // شماره‌ی دستی (مجوز ManualNumber) یا داده‌ی قدیمی ممکن است همین شماره را داشته باشد؛ به شماره‌ی بعدی می‌رود
             if (!await _context.Letters.AnyAsync(l => l.LetterNumber == candidate))
@@ -62,7 +77,8 @@ public class LetterNumberingService : ILetterNumberingService
         throw new InvalidOperationException("Could not allocate a unique letter number; please retry.");
     }
 
-    public static string Format(string scope, int year, int sequence) => $"{scope}-{year}-{sequence:D5}";
+    public static string Format(string scope, int year, int sequence, int digits = 5)
+        => $"{scope}-{year}-{sequence.ToString("D" + digits)}";
 
     /// <summary>کد دپارتمان تمیزشده برای پیشوند شماره: فقط حروف/ارقام لاتین بزرگ، حداکثر ۱۰ نویسه؛ خالی → GEN.</summary>
     public static string SanitizeScope(string? code)

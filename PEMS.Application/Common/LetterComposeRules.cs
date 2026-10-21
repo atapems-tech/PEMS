@@ -20,6 +20,13 @@ public static class LetterComposeRules
     public static readonly string[] Priorities = { "Low", "Normal", "High", "Urgent" };
     public static readonly string[] Confidentialities = { "Public", "Internal", "Confidential", "Restricted", "HighlyConfidential" };
 
+    /// <summary>رتبه‌ی سطح محرمانگی (Public=0 ... HighlyConfidential=4)؛ مقدار ناشناخته مثل Internal حساب می‌شود.</summary>
+    public static int ConfidentialityRank(string? level)
+    {
+        var i = Array.IndexOf(Confidentialities, level);
+        return i < 0 ? 1 : i;
+    }
+
     // پسوندهای مجاز پیوست (فایل اجرایی/اسکریپت هرگز پذیرفته نمی‌شود)
     public static readonly string[] AllowedAttachmentExtensions =
         { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".csv", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".zip", ".dwg", ".dxf" };

@@ -13,6 +13,7 @@
     var boot = new
     {
         letterId = input.LetterId,
+        parentLetterId = input.ParentLetterId,
         letterType = input.LetterType,
         rowVersion = input.RowVersion == null ? null : Convert.ToBase64String(input.RowVersion),
         isOutgoing,
@@ -64,7 +65,7 @@
     <script type="application/json" id="lcBoot">@Html.Raw(JsonSerializer.Serialize(boot))</script>
 
     <div class="lc-header">
-        <h2 class="vs-section__title mb-0">@Localizer[isOutgoing ? "Lc_TitleOutgoing" : "Lc_TitleInternal"]</h2>
+        <h2 class="vs-section__title mb-0">@Localizer[Model.ParentLetterId.HasValue ? "Lc_TitleReply" : isOutgoing ? "Lc_TitleOutgoing" : "Lc_TitleInternal"]</h2>
         <span class="lc-number" id="lcNumber" title="@Localizer["Lt_Number"]">@(Model.LetterNumber ?? Localizer["Lc_NumberPending"].Value)</span>
         <span class="badge text-bg-secondary" id="lcStatus">@Model.Status</span>
         <span class="lc-savestate" id="lcSaveState" data-state="idle" role="status" aria-live="polite">
@@ -75,6 +76,15 @@
     @if (!string.IsNullOrEmpty(Model.ExistingErrors))
     {
         <div class="alert alert-danger" role="alert">@Model.ExistingErrors</div>
+    }
+
+    @if (Model.ParentLetterId.HasValue)
+    {
+        <div class="alert alert-info d-flex flex-wrap align-items-center gap-2 py-2" role="note">
+            <i class="bi bi-reply" aria-hidden="true"></i>
+            <span>@Localizer["Lc_ReplyingTo"]: <strong>@Model.ParentNumber</strong> &mdash; @Model.ParentSubject</span>
+            <a class="ms-auto" asp-controller="Letter" asp-action="Details" asp-route-id="@Model.ParentLetterId" target="_blank" rel="noopener">@Localizer["Lc_ViewOriginal"]</a>
+        </div>
     }
 
     <div class="lc-alerts" id="lcAlerts" role="region" aria-label="@Localizer["Lc_AlertsRegion"]" aria-live="polite"></div>
@@ -108,6 +118,18 @@
                         <input id="lcExternal" class="form-control" maxlength="250" value="@input.ExternalReceiver" autocomplete="off" />
                         <div class="lc-error" data-error-for="externalReceiver" role="alert" hidden></div>
                     </div>
+                    @if (Model.Parties.Count > 0)
+                    {
+                        <div class="lc-field">
+                            <label for="lcParty">@Localizer["Lc_Party"]</label>
+                            <select id="lcParty" class="form-select">
+                                <option value="">—</option>
+                                @foreach (var p in Model.Parties) { <option value="@p.Id" selected="@(input.CorrespondentPartyId == p.Id)">@p.Name</option> }
+                            </select>
+                            <div class="lc-help">@Localizer["Lc_PartyHelp"]</div>
+                            <div class="lc-error" data-error-for="correspondentPartyId" role="alert" hidden></div>
+                        </div>
+                    }
                 }
 
                 @foreach (var f in new[] { ("to", "Lc_To", true), ("cc", "Lc_Cc", false), ("bcc", "Lc_Bcc", false) })
@@ -180,6 +202,7 @@
                     <h3><i class="bi bi-file-earmark-text" aria-hidden="true"></i> @Localizer["LtT_UseTemplate"]</h3>
                     <form method="get" asp-action="Compose" class="d-flex gap-2">
                         <input type="hidden" name="letterType" value="@input.LetterType" />
+                        @if (Model.ParentLetterId.HasValue) { <input type="hidden" name="replyTo" value="@Model.ParentLetterId" /> }
                         <select name="templateId" class="form-select" aria-label="@Localizer["LtT_UseTemplate"]">
                             <option value="">@Localizer["Ed_None"]</option>
                             @foreach (var t in Model.Templates)
@@ -218,8 +241,12 @@
                     <div class="col-6 lc-field">
                         <label for="lcConf">@Localizer["Lt_Confidentiality"]</label>
                         <select id="lcConf" class="form-select">
-                            @foreach (var c in LetterComposeRules.Confidentialities) { <option value="@c" selected="@(input.ConfidentialityLevel == c)">@Localizer["Lt_C_" + c]</option> }
+                            @foreach (var c in LetterComposeRules.Confidentialities) { <option value="@c" selected="@(input.ConfidentialityLevel == c)" disabled="@(LetterComposeRules.ConfidentialityRank(c) < Model.MinConfidentialityRank)">@Localizer["Lt_C_" + c]</option> }
                         </select>
+                        @if (Model.ParentLetterId.HasValue)
+                        {
+                            <div class="lc-help">@Localizer["Lc_ConfidentialityMin"].Value.Replace("{0}", Localizer["Lt_C_" + Model.MinConfidentiality].Value)</div>
+                        }
                     </div>
                 </div>
 
