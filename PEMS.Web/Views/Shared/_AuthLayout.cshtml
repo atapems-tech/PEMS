@@ -9,7 +9,7 @@
     var currentTheme = PEMS.Web.Controllers.ThemeController.Normalize(Context.Request.Cookies[PEMS.Web.Controllers.ThemeController.CookieName]);
 }
 <!DOCTYPE html>
-<html lang="en" data-theme="@currentTheme">
+<html lang="en" data-theme="@currentTheme" data-bs-theme="@(currentTheme is "turquoise" or "dark" ? "dark" : null)">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -1341,4 +1341,442 @@
   <data name="Tm_Err_SprintState" xml:space="preserve"><value>The sprint is not in the right state for this action.</value></data>
   <data name="Tm_Err_ActiveSprintExists" xml:space="preserve"><value>This space already has an active sprint.</value></data>
   <data name="Nav_TaskManager" xml:space="preserve"><value>Task Manager</value></data>
+  <data name="PermAdmin_SelectAll" xml:space="preserve"><value>Select All</value></data>
+  <data name="PermAdmin_DeselectAll" xml:space="preserve"><value>Deselect All</value></data>
+  <data name="PermAdmin_SelectAllInTable" xml:space="preserve"><value>Select all rows in this table</value></data>
+  <data name="PermAdmin_EnableSelected" xml:space="preserve"><value>Enable Selected</value></data>
+  <data name="PermAdmin_DisableSelected" xml:space="preserve"><value>Disable Selected</value></data>
+  <data name="PermAdmin_SelectedCount" xml:space="preserve"><value>{0} selected</value></data>
+  <data name="PermAdmin_TargetRole" xml:space="preserve"><value>Grant newly enabled permissions to role:</value></data>
+  <data name="PermAdmin_RoleScopeNote" xml:space="preserve"><value>Changes save immediately to the role's permissions, so they apply to every user holding the role, not only this user. Roles:</value></data>
+  <data name="PermAdmin_RoleUsersFormat" xml:space="preserve"><value>{0} ({1} users)</value></data>
+  <data name="PermAdmin_Saving" xml:space="preserve"><value>Saving...</value></data>
+  <data name="PermAdmin_Saved" xml:space="preserve"><value>{0} permission(s) updated.</value></data>
+  <data name="PermAdmin_RowSaved" xml:space="preserve"><value>Saved</value></data>
+  <data name="PermAdmin_NoChange" xml:space="preserve"><value>No change was needed.</value></data>
+  <data name="PermAdmin_SomeSkipped" xml:space="preserve"><value>{0} not changed.</value></data>
+  <data name="PermAdmin_Failed" xml:space="preserve"><value>Saving failed. Nothing was changed.</value></data>
+  <data name="PermAdmin_ConfirmBatch" xml:space="preserve"><value>Change {0} permission(s)? This applies to every user in the affected role(s).</value></data>
+  <data name="PermAdmin_NothingSelected" xml:space="preserve"><value>Select at least one permission whose state would change.</value></data>
+  <data name="PermAdmin_SelectRow" xml:space="preserve"><value>Select {0}</value></data>
+  <data name="PermAdmin_ToggleRow" xml:space="preserve"><value>Toggle permission {0}</value></data>
+  <data name="PermAdmin_Locked_SystemAdmin" xml:space="preserve"><value>SystemAdmin has full access by design, so permissions cannot be edited here.</value></data>
+  <data name="PermAdmin_Locked_NoRoles" xml:space="preserve"><value>This user has no roles, so there is no role to edit.</value></data>
+  <data name="PermAdmin_Locked_OutsideMatrix" xml:space="preserve"><value>This permission is managed outside the Permission Matrix and cannot be edited here.</value></data>
+  <data name="PermAdmin_Locked_RoleModuleAction" xml:space="preserve"><value>This permission comes from a role module action and would be restored on restart.</value></data>
+  <data name="PermAdmin_Reason_Unknown" xml:space="preserve"><value>Unknown permission.</value></data>
+  <data name="PermAdmin_Reason_NoChange" xml:space="preserve"><value>Already in the requested state.</value></data>
+  <data name="PermAdmin_Reason_TargetRoleRequired" xml:space="preserve"><value>Choose a role to grant this permission to.</value></data>
+  <data name="PermMx_Intro" xml:space="preserve"><value>Configure module-level permissions. Changes save automatically as you tick a box.</value></data>
+  <data name="PermMx_SearchRoles" xml:space="preserve"><value>Search roles...</value></data>
+  <data name="PermMx_SearchModules" xml:space="preserve"><value>Search modules...</value></data>
+  <data name="PermMx_FilterLabel" xml:space="preserve"><value>Filter modules by configuration status</value></data>
+  <data name="PermMx_FilterAll" xml:space="preserve"><value>All modules</value></data>
+  <data name="PermMx_FilterConfigured" xml:space="preserve"><value>Configured only</value></data>
+  <data name="PermMx_FilterUnconfigured" xml:space="preserve"><value>Not configured only</value></data>
+  <data name="PermMx_ExpandAll" xml:space="preserve"><value>Expand all</value></data>
+  <data name="PermMx_CollapseAll" xml:space="preserve"><value>Collapse all</value></data>
+  <data name="PermMx_Saving" xml:space="preserve"><value>Saving...</value></data>
+  <data name="PermMx_Saved" xml:space="preserve"><value>All changes saved</value></data>
+  <data name="PermMx_SaveFailed" xml:space="preserve"><value>Could not save.</value></data>
+  <data name="PermMx_Retry" xml:space="preserve"><value>Retry</value></data>
+  <data name="PermMx_Dismiss" xml:space="preserve"><value>Dismiss</value></data>
+  <data name="PermMx_SavedCount" xml:space="preserve"><value>{0} permissions saved.</value></data>
+  <data name="PermMx_ModulesFormat" xml:space="preserve"><value>{0}/{1} modules configured</value></data>
+  <data name="PermMx_RolesShown" xml:space="preserve"><value>{0} of {1} roles shown</value></data>
+  <data name="PermMx_NoRoleMatch" xml:space="preserve"><value>No role matches the current filters.</value></data>
+  <data name="PermMx_Error_Generic" xml:space="preserve"><value>Please try again.</value></data>
+  <data name="PermMx_Error_UnknownRole" xml:space="preserve"><value>The role no longer exists.</value></data>
+  <data name="PermMx_Error_SystemAdmin" xml:space="preserve"><value>SystemAdmin cannot be edited here.</value></data>
+  <data name="PermMx_Error_UnknownModule" xml:space="preserve"><value>Unknown module.</value></data>
+  <data name="PermMx_ColToggle" xml:space="preserve"><value>Toggle {0} for all visible modules</value></data>
+  <data name="PermMx_RowToggle" xml:space="preserve"><value>Toggle all permissions for {0}</value></data>
+  <data name="PermMx_Tip_View" xml:space="preserve"><value>View: open and read records</value></data>
+  <data name="PermMx_Tip_Create" xml:space="preserve"><value>Create: add new records</value></data>
+  <data name="PermMx_Tip_Edit" xml:space="preserve"><value>Edit: change existing records</value></data>
+  <data name="PermMx_Tip_Delete" xml:space="preserve"><value>Delete: remove or cancel records (high risk)</value></data>
+  <data name="PermMx_Tip_Approve" xml:space="preserve"><value>Approve: final approval decisions (high risk)</value></data>
+  <data name="PermMx_Tip_ManualNumber" xml:space="preserve"><value>Manual #: enter document numbers by hand</value></data>
+  <data name="PermMx_Tip_Freeze" xml:space="preserve"><value>Freeze: lock a record against changes</value></data>
+  <data name="PermMx_Tip_Unfreeze" xml:space="preserve"><value>Unfreeze: unlock a frozen record</value></data>
+  <data name="PermMx_Tip_Hold" xml:space="preserve"><value>Hold: put a record on hold</value></data>
+  <data name="PermMx_Tip_ReleaseHold" xml:space="preserve"><value>Release Hold: resume a record on hold</value></data>
+  <data name="Pc_Adm_PartNoTitle" xml:space="preserve"><value>Part number generation</value></data>
+  <data name="Pc_Adm_PartNoHint" xml:space="preserve"><value>Choose how part numbers are produced for catalogue requests.</value></data>
+  <data name="Pc_Adm_PartNoMethod" xml:space="preserve"><value>Generation method</value></data>
+  <data name="Pc_Adm_PartNoManual" xml:space="preserve"><value>Manual - the Part Cataloguer enters the IFS number</value></data>
+  <data name="Pc_Adm_PartNoApi" xml:space="preserve"><value>Automatic via API</value></data>
+  <data name="Pc_Adm_PartNoFormat" xml:space="preserve"><value>Part number format</value></data>
+  <data name="Pc_Adm_PartNoFormatHelp" xml:space="preserve"><value>YYYY = year, NNNN = sequence number (at least 3 N). Letters, digits and . _ / # - only. Required for API, optional for Manual.</value></data>
+  <data name="Pc_Adm_PartNoNote" xml:space="preserve"><value>This only saves the setting. Part numbers are still entered manually until automatic generation is available (Phase 2).</value></data>
+  <data name="Pc_Adm_PartNoModified" xml:space="preserve"><value>Last changed</value></data>
+  <data name="Pc_Err_PartNoMethodInvalid" xml:space="preserve"><value>Choose Manual or API.</value></data>
+  <data name="Pc_Err_PartNoFormatInvalid" xml:space="preserve"><value>Use only letters, digits and . _ / # - (no spaces).</value></data>
+  <data name="Pc_Err_PartNoFormatRequired" xml:space="preserve"><value>A format is required for automatic generation.</value></data>
+  <data name="Pc_Err_PartNoFormatNeedsSequence" xml:space="preserve"><value>The format must contain a sequence of at least 3 N characters (e.g. NNNN).</value></data>
+  <data name="Pc_F_PartNoGenerationMethod" xml:space="preserve"><value>Generation method</value></data>
+  <data name="Pc_F_PartNoFormat" xml:space="preserve"><value>Part number format</value></data>
+  <data name="جستجوی دیسیپلین..." xml:space="preserve"><value>Search disciplines...</value></data>
+  <data name="هیچ دیسیپلینی یافت نشد" xml:space="preserve"><value>No discipline found</value></data>
+  <data name="هیچ سمتی با این فیلتر وجود ندارد." xml:space="preserve"><value>No positions match this filter.</value></data>
+  <data name="خلاصه‌ی اشغال سمت‌ها" xml:space="preserve"><value>Position staffing summary</value></data>
+  <data name="نمایش سمت‌ها" xml:space="preserve"><value>Show positions</value></data>
+  <data name="خالی" xml:space="preserve"><value>Vacant</value></data>
+  <data name="کل سمت‌ها" xml:space="preserve"><value>Total positions</value></data>
+  <data name="نرخ اشغال" xml:space="preserve"><value>Occupancy</value></data>
+  <data name="سمت‌های غیرفعال در شمارش نیامده‌اند." xml:space="preserve"><value>Inactive positions are not counted.</value></data>
+  <data name="راهنمای نمودار" xml:space="preserve"><value>Chart legend</value></data>
+  <data name="گروه نگهداری" xml:space="preserve"><value>Maintenance group</value></data>
+  <data name="تیم" xml:space="preserve"><value>Team</value></data>
+  <data name="شیفت / زیرتیم / واحد" xml:space="preserve"><value>Shift / Sub-team / Unit</value></data>
+  <data name="سمت تکمیل‌شده" xml:space="preserve"><value>Filled position</value></data>
+  <data name="سمت خالی" xml:space="preserve"><value>Vacant position</value></data>
+  <data name="Kpi_Exec_Title" xml:space="preserve"><value>Executive KPI Dashboard</value></data>
+  <data name="Kpi_Exec_ClassicLink" xml:space="preserve"><value>Maintenance &amp; cost KPIs</value></data>
+  <data name="Kpi_Exec_Intro" xml:space="preserve"><value>Only indicators that PEMS actually records are shown. Where there is not enough data a tile says so instead of showing zero; categories PEMS has no data for are listed at the bottom.</value></data>
+  <data name="Kpi_Exec_Generated" xml:space="preserve"><value>Generated</value></data>
+  <data name="Kpi_Exec_Overview" xml:space="preserve"><value>Status against targets</value></data>
+  <data name="Kpi_Exec_Target" xml:space="preserve"><value>Target</value></data>
+  <data name="Kpi_Exec_NoDataHint" xml:space="preserve"><value>Not enough data to calculate.</value></data>
+  <data name="Kpi_Exec_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Kpi_Exec_Count" xml:space="preserve"><value>Count</value></data>
+  <data name="Kpi_Exec_TopCost" xml:space="preserve"><value>Top equipment by cost</value></data>
+  <data name="Kpi_Exec_NotTracked" xml:space="preserve"><value>Not tracked in PEMS yet</value></data>
+  <data name="Kpi_Exec_NotTrackedHint" xml:space="preserve"><value>The KPI framework lists these, but PEMS has no data source for them, so they are not shown with sample values.</value></data>
+  <data name="Kpi_Exec_EditTargets" xml:space="preserve"><value>Edit targets</value></data>
+  <data name="Kpi_Exec_EditTargetsHint" xml:space="preserve"><value>Clear the target to remove it. 'Near target' marks values that miss the target but pass this threshold.</value></data>
+  <data name="Kpi_Exec_Kpi" xml:space="preserve"><value>KPI</value></data>
+  <data name="Kpi_Exec_Direction" xml:space="preserve"><value>Better when</value></data>
+  <data name="Kpi_Exec_Warn" xml:space="preserve"><value>Near target</value></data>
+  <data name="Kpi_Exec_Source" xml:space="preserve"><value>Source</value></data>
+  <data name="Kpi_Exec_Custom" xml:space="preserve"><value>Custom</value></data>
+  <data name="Kpi_Exec_Default" xml:space="preserve"><value>Default</value></data>
+  <data name="Kpi_Status_Met" xml:space="preserve"><value>Met</value></data>
+  <data name="Kpi_Status_Near" xml:space="preserve"><value>Near target</value></data>
+  <data name="Kpi_Status_Missed" xml:space="preserve"><value>Missed</value></data>
+  <data name="Kpi_Status_NoTarget" xml:space="preserve"><value>No target</value></data>
+  <data name="Kpi_Status_NoData" xml:space="preserve"><value>No data</value></data>
+  <data name="Kpi_Msg_TargetSaved" xml:space="preserve"><value>Target saved.</value></data>
+  <data name="Kpi_Err_UnknownKpi" xml:space="preserve"><value>Unknown KPI.</value></data>
+  <data name="Kpi_Err_TargetRange" xml:space="preserve"><value>Value is out of range (0-100 for percentages).</value></data>
+  <data name="Kpi_Err_WarnAboveTarget" xml:space="preserve"><value>For a lower-is-better KPI the near-target threshold must be at or above the target.</value></data>
+  <data name="Kpi_Err_WarnBelowTarget" xml:space="preserve"><value>For a higher-is-better KPI the near-target threshold must be at or below the target.</value></data>
+  <data name="Kpi_Err_SaveFailed" xml:space="preserve"><value>Could not save the target. Nothing was changed.</value></data>
+  <data name="Kpi_Err_NotANumber" xml:space="preserve"><value>Enter numbers only.</value></data>
+  <data name="Kpi_Section_Cost" xml:space="preserve"><value>Cost</value></data>
+  <data name="Kpi_Section_Maintenance" xml:space="preserve"><value>Maintenance</value></data>
+  <data name="Kpi_Section_Reliability" xml:space="preserve"><value>Reliability</value></data>
+  <data name="Kpi_Section_Equipment" xml:space="preserve"><value>Equipment</value></data>
+  <data name="Kpi_Section_Inventory" xml:space="preserve"><value>Inventory</value></data>
+  <data name="Kpi_Section_Production" xml:space="preserve"><value>Production</value></data>
+  <data name="Kpi_Section_Documents" xml:space="preserve"><value>Engineering documents</value></data>
+  <data name="Kpi_Name_cost_total" xml:space="preserve"><value>Total maintenance cost</value></data>
+  <data name="Kpi_Name_cost_labor_share" xml:space="preserve"><value>Labor share of cost</value></data>
+  <data name="Kpi_Name_cost_material_share" xml:space="preserve"><value>Spare parts share of cost</value></data>
+  <data name="Kpi_Name_cost_contractor_share" xml:space="preserve"><value>Contractor share of cost</value></data>
+  <data name="Kpi_Name_cost_corrective_share" xml:space="preserve"><value>Corrective + emergency share of cost</value></data>
+  <data name="Kpi_Name_pm_compliance" xml:space="preserve"><value>PM compliance (plans not overdue)</value></data>
+  <data name="Kpi_Name_pm_overdue" xml:space="preserve"><value>Overdue PM plans</value></data>
+  <data name="Kpi_Name_wo_completion_rate" xml:space="preserve"><value>Work order completion rate</value></data>
+  <data name="Kpi_Name_backlog_count" xml:space="preserve"><value>Open backlog (work orders)</value></data>
+  <data name="Kpi_Name_backlog_hours" xml:space="preserve"><value>Backlog planned hours</value></data>
+  <data name="Kpi_Name_backlog_overdue_pct" xml:space="preserve"><value>Backlog past due date</value></data>
+  <data name="Kpi_Name_wo_aging_days" xml:space="preserve"><value>Average backlog age</value></data>
+  <data name="Kpi_Name_emergency_share" xml:space="preserve"><value>Emergency work order share</value></data>
+  <data name="Kpi_Name_fleet_mtbf" xml:space="preserve"><value>Mean MTBF</value></data>
+  <data name="Kpi_Name_fleet_mttr" xml:space="preserve"><value>Mean MTTR</value></data>
+  <data name="Kpi_Name_fleet_availability" xml:space="preserve"><value>Mean availability</value></data>
+  <data name="Kpi_Name_failure_count" xml:space="preserve"><value>Recorded failures</value></data>
+  <data name="Kpi_Name_repeat_failure_groups" xml:space="preserve"><value>Repeat failure groups</value></data>
+  <data name="Kpi_Name_uncovered_critical_equipment" xml:space="preserve"><value>Class A equipment without strategy</value></data>
+  <data name="Kpi_Name_equipment_total" xml:space="preserve"><value>Active equipment</value></data>
+  <data name="Kpi_Name_stock_in_rate" xml:space="preserve"><value>Items in stock</value></data>
+  <data name="Kpi_Name_low_stock_items" xml:space="preserve"><value>Low-stock items</value></data>
+  <data name="Kpi_Name_out_of_stock_items" xml:space="preserve"><value>Out-of-stock items</value></data>
+  <data name="Kpi_Name_po_on_time_rate" xml:space="preserve"><value>Production orders finished on time</value></data>
+  <data name="Kpi_Name_po_overdue_open" xml:space="preserve"><value>Open production orders past due</value></data>
+  <data name="Kpi_Name_po_completed" xml:space="preserve"><value>Production orders completed</value></data>
+  <data name="Kpi_Name_production_downtime_hours" xml:space="preserve"><value>Production downtime</value></data>
+  <data name="Kpi_Name_docs_total" xml:space="preserve"><value>Engineering documents</value></data>
+  <data name="Kpi_Name_docs_under_review" xml:space="preserve"><value>Documents under review</value></data>
+  <data name="Kpi_Name_docs_rejected" xml:space="preserve"><value>Rejected documents</value></data>
+  <data name="Kpi_NT_budget" xml:space="preserve"><value>Budget, variance and forecast</value></data>
+  <data name="Kpi_NTD_budget" xml:space="preserve"><value>needs an annual maintenance budget per cost center</value></data>
+  <data name="Kpi_NT_safety" xml:space="preserve"><value>Safety incidents and near misses</value></data>
+  <data name="Kpi_NTD_safety" xml:space="preserve"><value>needs an incident / near-miss log (only the permit workflow exists)</value></data>
+  <data name="Kpi_NT_energy" xml:space="preserve"><value>Energy and environment</value></data>
+  <data name="Kpi_NTD_energy" xml:space="preserve"><value>needs meter readings and waste records</value></data>
+  <data name="Kpi_NT_workforce" xml:space="preserve"><value>Workforce: attendance, turnover, training</value></data>
+  <data name="Kpi_NTD_workforce" xml:space="preserve"><value>needs attendance, training and performance records</value></data>
+  <data name="Kpi_NT_customer" xml:space="preserve"><value>Customer satisfaction / NPS</value></data>
+  <data name="Kpi_NTD_customer" xml:space="preserve"><value>needs survey results</value></data>
+  <data name="Kpi_NT_risk_register" xml:space="preserve"><value>Enterprise risk register</value></data>
+  <data name="Kpi_NTD_risk_register" xml:space="preserve"><value>needs a risk register (only equipment criticality and RCM exist)</value></data>
+  <data name="Kpi_NT_earned_value" xml:space="preserve"><value>Project earned value (SPI / CPI)</value></data>
+  <data name="Kpi_NTD_earned_value" xml:space="preserve"><value>needs project cost baselines and progress</value></data>
+  <data name="Kpi_NT_oee" xml:space="preserve"><value>OEE (availability x performance x quality)</value></data>
+  <data name="Kpi_NTD_oee" xml:space="preserve"><value>needs ideal rates and good/total counts per machine</value></data>
+  <data name="Kpi_NT_pm_roi" xml:space="preserve"><value>Preventive maintenance ROI</value></data>
+  <data name="Kpi_NTD_pm_roi" xml:space="preserve"><value>avoided failure cost cannot be measured from the recorded data</value></data>
+  <data name="Shell_SkipToContent" xml:space="preserve"><value>Skip to main content</value></data>
+  <data name="Shell_SidebarSearch" xml:space="preserve"><value>Search menu...</value></data>
+  <data name="Shell_SidebarSearchResults" xml:space="preserve"><value>{0} menu items found</value></data>
+  <data name="Shell_SidebarSearchEmpty" xml:space="preserve"><value>No menu item matches.</value></data>
+  <data name="Status_NotFound_Title" xml:space="preserve"><value>Page not found</value></data>
+  <data name="Status_NotFound_Text" xml:space="preserve"><value>The page you asked for does not exist or has been moved.</value></data>
+  <data name="Status_Forbidden_Title" xml:space="preserve"><value>Access denied</value></data>
+  <data name="Status_Forbidden_Text" xml:space="preserve"><value>You do not have permission to open this page. Ask an administrator if you need access.</value></data>
+  <data name="Status_Generic_Title" xml:space="preserve"><value>Something went wrong</value></data>
+  <data name="Status_Generic_Text" xml:space="preserve"><value>The request could not be completed. Please try again; if it keeps happening, report the request ID below.</value></data>
+  <data name="Status_Back" xml:space="preserve"><value>Go back</value></data>
+  <data name="Status_Home" xml:space="preserve"><value>Go to the home page</value></data>
+  <data name="Status_Code" xml:space="preserve"><value>Error code</value></data>
+  <data name="Status_RequestId" xml:space="preserve"><value>Request ID</value></data>
+  <data name="Lt_HasAttachments" xml:space="preserve"><value>Has attachments</value></data>
+  <data name="Lt_HasReferrals" xml:space="preserve"><value>Has referrals</value></data>
+  <data name="Lt_OverdueReferralOnly" xml:space="preserve"><value>Overdue referral only</value></data>
+  <data name="Lt_Any" xml:space="preserve"><value>Any</value></data>
+  <data name="Lt_Yes" xml:space="preserve"><value>Yes</value></data>
+  <data name="Lt_No" xml:space="preserve"><value>No</value></data>
+  <data name="Lt_ActiveFilters" xml:space="preserve"><value>Active filters</value></data>
+  <data name="Lt_ClearAll" xml:space="preserve"><value>Clear all</value></data>
+  <data name="Lt_RemoveFilter" xml:space="preserve"><value>Remove filter</value></data>
+  <data name="Lt_ApplyFilters" xml:space="preserve"><value>Apply filters</value></data>
+  <data name="Lt_ColAttachments" xml:space="preserve"><value>Attachments</value></data>
+  <data name="Lt_ColResponseDue" xml:space="preserve"><value>Response due</value></data>
+  <data name="Lt_ColLastActivity" xml:space="preserve"><value>Last activity</value></data>
+  <data name="Lt_Overdue" xml:space="preserve"><value>overdue</value></data>
+  <data name="Lt_Columns" xml:space="preserve"><value>Columns</value></data>
+  <data name="Lt_SelectAll" xml:space="preserve"><value>Select all letters</value></data>
+  <data name="Lt_SelectedCount" xml:space="preserve"><value>{0} selected</value></data>
+  <data name="Lt_BulkActions" xml:space="preserve"><value>Bulk actions</value></data>
+  <data name="Lt_BulkStar" xml:space="preserve"><value>Star</value></data>
+  <data name="Lt_BulkUnstar" xml:space="preserve"><value>Unstar</value></data>
+  <data name="Lt_BulkSubmit" xml:space="preserve"><value>Submit for review</value></data>
+  <data name="Lt_BulkSubmitConfirm" xml:space="preserve"><value>Submit the selected drafts for review? Only your own drafts are submitted, and they cannot be edited afterwards.</value></data>
+  <data name="Lt_BulkArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="Lt_ExportMatching" xml:space="preserve"><value>Export all matching letters</value></data>
+  <data name="Lt_ArchiveTitle" xml:space="preserve"><value>Archive selected letters</value></data>
+  <data name="Lt_ArchiveHelp" xml:space="preserve"><value>Only Draft and Rejected letters can be archived, by their author or a system administrator. Archived letters are hidden from the list but never deleted; the action and your reason are recorded in the audit log.</value></data>
+  <data name="Lt_ArchiveReason" xml:space="preserve"><value>Reason (required)</value></data>
+  <data name="Lt_ArchiveReasonRequired" xml:space="preserve"><value>Please enter a reason for archiving.</value></data>
+  <data name="Lt_ArchiveConfirm" xml:space="preserve"><value>Archive letters</value></data>
+  <data name="Correspondence Dashboard" xml:space="preserve"><value>Correspondence Dashboard</value></data>
+  <data name="Letter Templates" xml:space="preserve"><value>Letter Templates</value></data>
+  <data name="Letter Template" xml:space="preserve"><value>Letter Template</value></data>
+  <data name="Lt_OverdueResponseOnly" xml:space="preserve"><value>Overdue response only</value></data>
+  <data name="Lt_ResponseRequired" xml:space="preserve"><value>A response is required</value></data>
+  <data name="Lt_ResponseDueDate" xml:space="preserve"><value>Response due</value></data>
+  <data name="Lt_ResponseAnswered" xml:space="preserve"><value>Answered</value></data>
+  <data name="Lt_ResponsePending" xml:space="preserve"><value>Awaiting response</value></data>
+  <data name="Lt_ResponseEdit" xml:space="preserve"><value>Change response requirement</value></data>
+  <data name="Lt_DashboardLink" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="LtT_Manage" xml:space="preserve"><value>Letter templates</value></data>
+  <data name="LtT_Help" xml:space="preserve"><value>Templates pre-fill the subject, body, priority and confidentiality of a new letter. A registered letter never changes when its template is edited or deactivated.</value></data>
+  <data name="LtT_New" xml:space="preserve"><value>New template</value></data>
+  <data name="LtT_Empty" xml:space="preserve"><value>No templates yet.</value></data>
+  <data name="LtT_Name" xml:space="preserve"><value>Template name</value></data>
+  <data name="LtT_AllTypes" xml:space="preserve"><value>All letter types</value></data>
+  <data name="LtT_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="LtT_Inactive" xml:space="preserve"><value>Inactive</value></data>
+  <data name="LtT_Activate" xml:space="preserve"><value>Activate</value></data>
+  <data name="LtT_Deactivate" xml:space="preserve"><value>Deactivate</value></data>
+  <data name="LtT_PrefillNote" xml:space="preserve"><value>The subject and body are only starting values: the user can edit them before registering the letter.</value></data>
+  <data name="LtT_UseTemplate" xml:space="preserve"><value>Start from a template</value></data>
+  <data name="LtT_Apply" xml:space="preserve"><value>Apply template</value></data>
+  <data name="Lt_Dash_NeedsAction" xml:space="preserve"><value>Needs action</value></data>
+  <data name="Lt_Dash_Scope" xml:space="preserve"><value>Counts include only the letters you are allowed to see.</value></data>
+  <data name="Lt_Dash_Summary" xml:space="preserve"><value>Summary</value></data>
+  <data name="Lt_Dash_TotalActive" xml:space="preserve"><value>Active letters</value></data>
+  <data name="Lt_Dash_Open" xml:space="preserve"><value>Open letters</value></data>
+  <data name="Lt_Dash_AwaitingApproval" xml:space="preserve"><value>Awaiting approval</value></data>
+  <data name="Lt_Dash_MyDrafts" xml:space="preserve"><value>My drafts</value></data>
+  <data name="Lt_Dash_MyReturned" xml:space="preserve"><value>Returned to me</value></data>
+  <data name="Lt_Dash_MyReferrals" xml:space="preserve"><value>My open referrals</value></data>
+  <data name="Lt_Dash_OpenReferrals" xml:space="preserve"><value>Open referrals</value></data>
+  <data name="Lt_Dash_OverdueReferrals" xml:space="preserve"><value>Overdue referrals</value></data>
+  <data name="Lt_Dash_OverdueResponses" xml:space="preserve"><value>Overdue responses</value></data>
+  <data name="Lt_Dash_Received30" xml:space="preserve"><value>Received (30d)</value></data>
+  <data name="Lt_Dash_Issued30" xml:space="preserve"><value>Issued (30d)</value></data>
+  <data name="Lt_Dash_NeedsAttention" xml:space="preserve"><value>Needs attention</value></data>
+  <data name="Lt_Dash_NothingOverdue" xml:space="preserve"><value>No overdue referrals or responses.</value></data>
+  <data name="Lt_Dash_Reason" xml:space="preserve"><value>Reason</value></data>
+  <data name="Lt_Dash_DaysOverdue" xml:space="preserve"><value>Days overdue</value></data>
+  <data name="Lt_Dash_ReasonReferral" xml:space="preserve"><value>Overdue referral</value></data>
+  <data name="Lt_Dash_ReasonResponse" xml:space="preserve"><value>Overdue response</value></data>
+  <data name="Lt_Dash_Aging" xml:space="preserve"><value>Aging of open letters</value></data>
+  <data name="Lt_Dash_AgingNote" xml:space="preserve"><value>Days since the letter date; closed, rejected and issued letters are excluded.</value></data>
+  <data name="Lt_Dash_Age_0-7" xml:space="preserve"><value>0-7 days</value></data>
+  <data name="Lt_Dash_Age_8-30" xml:space="preserve"><value>8-30 days</value></data>
+  <data name="Lt_Dash_Age_31-90" xml:space="preserve"><value>31-90 days</value></data>
+  <data name="Lt_Dash_Age_90+" xml:space="preserve"><value>Over 90 days</value></data>
+  <data name="Lt_Dash_ByStatus" xml:space="preserve"><value>By status</value></data>
+  <data name="Lt_Dash_ByType" xml:space="preserve"><value>By type</value></data>
+  <data name="Lt_Dash_ByPriority" xml:space="preserve"><value>By priority</value></data>
+  <data name="Letter Template Preview" xml:space="preserve"><value>Letter Template Preview</value></data>
+  <data name="Lt_ReplyParentDue" xml:space="preserve"><value>This letter needs a response by</value></data>
+  <data name="Lt_RemindersRun" xml:space="preserve"><value>Send overdue reminders now</value></data>
+  <data name="Lt_RemindersConfirm" xml:space="preserve"><value>Send overdue reminders now? Reminders already sent today are not repeated.</value></data>
+  <data name="LtT_Preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="LtT_PreviewNote" xml:space="preserve"><value>Shown with sample values; real values are filled in when the template is used.</value></data>
+  <data name="LtT_PlaceholdersTitle" xml:space="preserve"><value>Placeholders you can use</value></data>
+  <data name="LtT_PlaceholdersHelp" xml:space="preserve"><value>Type a token such as {{Date}} in the subject or body; it is replaced when the template is applied. Unknown tokens are rejected when you save.</value></data>
+  <data name="LtT_PlaceholdersReply" xml:space="preserve"><value>Only filled on the Reply screen (left as typed when creating a new letter):</value></data>
+  <data name="LtT_Token_Date" xml:space="preserve"><value>today's date</value></data>
+  <data name="LtT_Token_UserName" xml:space="preserve"><value>your full name</value></data>
+  <data name="LtT_Token_LetterType" xml:space="preserve"><value>Incoming, Outgoing or Internal</value></data>
+  <data name="LtT_Token_ParentNumber" xml:space="preserve"><value>number of the letter being answered</value></data>
+  <data name="LtT_Token_ParentSubject" xml:space="preserve"><value>subject of the letter being answered</value></data>
+  <data name="LtT_Token_ParentDate" xml:space="preserve"><value>date of the letter being answered</value></data>
+  <data name="LtT_Token_Counterparty" xml:space="preserve"><value>the other party of that letter</value></data>
+  <data name="LtT_Token_ParentProject" xml:space="preserve"><value>project of that letter</value></data>
+  <data name="Compose Letter" xml:space="preserve"><value>Compose Letter</value></data>
+  <data name="Letter History" xml:space="preserve"><value>Letter History</value></data>
+  <data name="Draft discarded" xml:space="preserve"><value>Draft discarded</value></data>
+  <data name="Letter sent" xml:space="preserve"><value>Letter sent</value></data>
+  <data name="Letter archived" xml:space="preserve"><value>Letter archived</value></data>
+  <data name="Approver reassigned" xml:space="preserve"><value>Approver reassigned</value></data>
+  <data name="Lc_TitleInternal" xml:space="preserve"><value>New internal letter</value></data>
+  <data name="Lc_TitleOutgoing" xml:space="preserve"><value>New outgoing letter</value></data>
+  <data name="Lc_NumberPending" xml:space="preserve"><value>Number assigned on first save</value></data>
+  <data name="Lc_Saved" xml:space="preserve"><value>Saved</value></data>
+  <data name="Lc_Saving" xml:space="preserve"><value>Saving…</value></data>
+  <data name="Lc_Unsaved" xml:space="preserve"><value>Unsaved changes</value></data>
+  <data name="Lc_SaveFailed" xml:space="preserve"><value>Could not save – check the messages above</value></data>
+  <data name="Lc_NotSavedYet" xml:space="preserve"><value>Not saved yet</value></data>
+  <data name="Lc_AlertsRegion" xml:space="preserve"><value>Form messages</value></data>
+  <data name="Lc_Sender" xml:space="preserve"><value>Sender</value></data>
+  <data name="Lc_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Lc_JobTitle" xml:space="preserve"><value>Job title</value></data>
+  <data name="Lc_Department" xml:space="preserve"><value>Department</value></data>
+  <data name="Lc_Email" xml:space="preserve"><value>Email</value></data>
+  <data name="Lc_Phone" xml:space="preserve"><value>Phone</value></data>
+  <data name="Lc_NoEmployeeLink" xml:space="preserve"><value>Your user account is not linked to an employee record, so the sender block is incomplete and the number uses the generic prefix.</value></data>
+  <data name="Lc_Recipients" xml:space="preserve"><value>Recipients</value></data>
+  <data name="Lc_ExternalReceiver" xml:space="preserve"><value>External recipient (organisation / person)</value></data>
+  <data name="Lc_To" xml:space="preserve"><value>To</value></data>
+  <data name="Lc_Cc" xml:space="preserve"><value>Cc</value></data>
+  <data name="Lc_Bcc" xml:space="preserve"><value>Bcc (hidden)</value></data>
+  <data name="Lc_SearchPeople" xml:space="preserve"><value>Search by name, code or email…</value></data>
+  <data name="Lc_AddBcc" xml:space="preserve"><value>Add Bcc</value></data>
+  <data name="Lc_ImportList" xml:space="preserve"><value>Import list (CSV)</value></data>
+  <data name="Lc_ImportHelp" xml:space="preserve"><value>CSV or text: one person per line – personnel code, email or full name. Up to 500 recipients.</value></data>
+  <data name="Lc_Content" xml:space="preserve"><value>Subject and message</value></data>
+  <data name="Lc_Attachments" xml:space="preserve"><value>Attachments</value></data>
+  <data name="Lc_DropHere" xml:space="preserve"><value>Drop files here or click to choose</value></data>
+  <data name="Lc_AttachmentRules" xml:space="preserve"><value>Up to 25 MB per file. PDF, Office, images, text/CSV, ZIP and DWG/DXF.</value></data>
+  <data name="Lc_AttachNeedsDraft" xml:space="preserve"><value>The first attachment saves the draft and assigns the letter number.</value></data>
+  <data name="Lc_Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="Lc_MoveUp" xml:space="preserve"><value>Move up</value></data>
+  <data name="Lc_MoveDown" xml:space="preserve"><value>Move down</value></data>
+  <data name="Lc_Details" xml:space="preserve"><value>Letter details</value></data>
+  <data name="Lc_Category" xml:space="preserve"><value>Category</value></data>
+  <data name="Lc_ChooseCategory" xml:space="preserve"><value>Choose a category…</value></data>
+  <data name="Lc_Cat_Information" xml:space="preserve"><value>Information</value></data>
+  <data name="Lc_Cat_Request" xml:space="preserve"><value>Request</value></data>
+  <data name="Lc_Cat_Instruction" xml:space="preserve"><value>Instruction</value></data>
+  <data name="Lc_Cat_Approval" xml:space="preserve"><value>Approval</value></data>
+  <data name="Lc_Cat_Recommendation" xml:space="preserve"><value>Recommendation</value></data>
+  <data name="Lc_Cat_Notice" xml:space="preserve"><value>Formal notice</value></data>
+  <data name="Lc_Cat_StatusReport" xml:space="preserve"><value>Status report</value></data>
+  <data name="Lc_Reference" xml:space="preserve"><value>Reference no.</value></data>
+  <data name="Lc_ReferenceHelp" xml:space="preserve"><value>Optional – number of a related letter or document.</value></data>
+  <data name="Lc_RelatedDepartment" xml:space="preserve"><value>Related department</value></data>
+  <data name="Lc_ManualNumber" xml:space="preserve"><value>Manual letter number</value></data>
+  <data name="Lc_ManualNumberHelp" xml:space="preserve"><value>Leave empty to use the automatic number (DEPT-YEAR-SEQ).</value></data>
+  <data name="Lc_Response" xml:space="preserve"><value>Response</value></data>
+  <data name="Lc_Approval" xml:space="preserve"><value>Approval</value></data>
+  <data name="Lc_ApprovalRequired" xml:space="preserve"><value>Approval required before sending</value></data>
+  <data name="Lc_OutgoingNeedsApproval" xml:space="preserve"><value>Outgoing letters always require approval.</value></data>
+  <data name="Lc_ApprovalChain" xml:space="preserve"><value>Approval chain</value></data>
+  <data name="Lc_AddApprover" xml:space="preserve"><value>Add approver…</value></data>
+  <data name="Lc_ChainHelp" xml:space="preserve"><value>Approvers decide in this order. You cannot approve your own letter.</value></data>
+  <data name="Lc_TemplateWarn" xml:space="preserve"><value>Choosing a template reloads the form with its text.</value></data>
+  <data name="Lc_Actions" xml:space="preserve"><value>Letter actions</value></data>
+  <data name="Lc_Preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="Lc_PreviewFailed" xml:space="preserve"><value>Preview could not be created.</value></data>
+  <data name="Lc_Discard" xml:space="preserve"><value>Discard draft</value></data>
+  <data name="Lc_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Lc_SubmitForApproval" xml:space="preserve"><value>Submit for approval</value></data>
+  <data name="Lc_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Lc_Print" xml:space="preserve"><value>Print</value></data>
+  <data name="Lc_Loading" xml:space="preserve"><value>Loading…</value></data>
+  <data name="Lc_NoResults" xml:space="preserve"><value>No matching people</value></data>
+  <data name="Lc_ExternalTag" xml:space="preserve"><value>external</value></data>
+  <data name="Lc_UnmatchedLines" xml:space="preserve"><value>{0} line(s) could not be matched</value></data>
+  <data name="Lc_CsvTruncated" xml:space="preserve"><value>Only the first {0} recipients were taken.</value></data>
+  <data name="Lc_Imported" xml:space="preserve"><value>{0} recipient(s) added.</value></data>
+  <data name="Lc_UploadFailed" xml:space="preserve"><value>Upload failed</value></data>
+  <data name="Lc_ConfirmDiscard" xml:space="preserve"><value>Discard this draft? This cannot be undone from the screen.</value></data>
+  <data name="Lc_ConfirmSubmit" xml:space="preserve"><value>Submit this letter for approval?</value></data>
+  <data name="Lc_ConfirmSend" xml:space="preserve"><value>Send this letter now?</value></data>
+  <data name="Lc_ConfirmArchive" xml:space="preserve"><value>Archive this letter?</value></data>
+  <data name="Lc_ErrorsTitle" xml:space="preserve"><value>Please fix the following</value></data>
+  <data name="Lc_WarningsTitle" xml:space="preserve"><value>Please note</value></data>
+  <data name="Lc_EditInComposer" xml:space="preserve"><value>Edit in composer</value></data>
+  <data name="Lc_Archive" xml:space="preserve"><value>Archive</value></data>
+  <data name="Lc_Reassign" xml:space="preserve"><value>Reassign approver</value></data>
+  <data name="Lc_StepCurrent" xml:space="preserve"><value>Waiting</value></data>
+  <data name="Lc_HistoryTitle" xml:space="preserve"><value>Letter history &amp; audit</value></data>
+  <data name="Lc_BackToLetter" xml:space="preserve"><value>Back to letter</value></data>
+  <data name="Lc_ExportCsv" xml:space="preserve"><value>Export CSV</value></data>
+  <data name="Lc_WhoViewed" xml:space="preserve"><value>Who viewed this letter</value></data>
+  <data name="Lc_NobodyViewed" xml:space="preserve"><value>Nobody has opened this letter yet.</value></data>
+  <data name="Lc_FirstViewed" xml:space="preserve"><value>First viewed</value></data>
+  <data name="Lc_LastViewed" xml:space="preserve"><value>Last viewed</value></data>
+  <data name="Lc_ViewCount" xml:space="preserve"><value>Views</value></data>
+  <data name="Lc_Versions" xml:space="preserve"><value>Version history</value></data>
+  <data name="Lc_NoVersions" xml:space="preserve"><value>No versions saved yet.</value></data>
+  <data name="Lc_AuditTrail" xml:space="preserve"><value>Audit trail</value></data>
+  <data name="Lc_When" xml:space="preserve"><value>When</value></data>
+  <data name="Lc_Who" xml:space="preserve"><value>Who</value></data>
+  <data name="Lc_Event" xml:space="preserve"><value>Event</value></data>
+  <data name="Lc_DetailCol" xml:space="preserve"><value>Detail</value></data>
+  <data name="Lc_DraftWatermark" xml:space="preserve"><value>DRAFT – PREVIEW</value></data>
+  <data name="Lc_PrintNumber" xml:space="preserve"><value>No.</value></data>
+  <data name="Lc_PrintFrom" xml:space="preserve"><value>From</value></data>
+  <data name="Lc_PrintTo" xml:space="preserve"><value>To</value></data>
+  <data name="Lc_PrintCc" xml:space="preserve"><value>Cc</value></data>
+  <data name="Lc_PrintRegards" xml:space="preserve"><value>With regards,</value></data>
+  <data name="Lc_Signature" xml:space="preserve"><value>Signature</value></data>
+  <data name="Lc_Err_AttachmentEmpty" xml:space="preserve"><value>The file is empty.</value></data>
+  <data name="Lc_Err_AttachmentTooLarge" xml:space="preserve"><value>The file is larger than 25 MB.</value></data>
+  <data name="Lc_Err_AttachmentTypeNotAllowed" xml:space="preserve"><value>This file type is not allowed.</value></data>
+  <data name="Lc_Err_CsvTooLarge" xml:space="preserve"><value>The list file is too large (max 1 MB).</value></data>
+  <data name="Lc_Err_SubjectRequired" xml:space="preserve"><value>Subject is required.</value></data>
+  <data name="Lc_Err_SubjectTooLong" xml:space="preserve"><value>Subject is longer than {0} characters.</value></data>
+  <data name="Lc_Err_TooManyRecipients" xml:space="preserve"><value>A letter can have at most {0} recipients.</value></data>
+  <data name="Lc_Err_ApprovalChainDuplicate" xml:space="preserve"><value>An approver appears more than once in the chain.</value></data>
+  <data name="Lc_Err_ApprovalChainRequired" xml:space="preserve"><value>Add at least one approver.</value></data>
+  <data name="Lc_Err_ApproverIsAuthor" xml:space="preserve"><value>You cannot be an approver of your own letter.</value></data>
+  <data name="Lc_Err_ApproverNotAllowed" xml:space="preserve"><value>Approver {0} is not allowed to approve correspondence.</value></data>
+  <data name="Lc_Err_BodyRequired" xml:space="preserve"><value>The message body is empty.</value></data>
+  <data name="Lc_Err_CategoryInvalid" xml:space="preserve"><value>The category is not valid.</value></data>
+  <data name="Lc_Err_CategoryRequired" xml:space="preserve"><value>Choose a category.</value></data>
+  <data name="Lc_Err_Concurrency" xml:space="preserve"><value>This draft was changed elsewhere. Reload the page to continue.</value></data>
+  <data name="Lc_Err_ConfidentialityInvalid" xml:space="preserve"><value>The confidentiality level is not valid.</value></data>
+  <data name="Lc_Err_ExternalReceiverRequired" xml:space="preserve"><value>Enter the external recipient.</value></data>
+  <data name="Lc_Err_LetterNotFound" xml:space="preserve"><value>The letter was not found.</value></data>
+  <data name="Lc_Err_NotAuthor" xml:space="preserve"><value>Only the author can edit this letter.</value></data>
+  <data name="Lc_Err_NotEditable" xml:space="preserve"><value>This letter can no longer be edited.</value></data>
+  <data name="Lc_Err_NumberInUse" xml:space="preserve"><value>This letter number is already used.</value></data>
+  <data name="Lc_Err_PriorityInvalid" xml:space="preserve"><value>The priority is not valid.</value></data>
+  <data name="Lc_Err_RecipientDuplicate" xml:space="preserve"><value>The same person is listed more than once (To / Cc / Bcc).</value></data>
+  <data name="Lc_Err_RecipientInactive" xml:space="preserve"><value>Recipient {0} is inactive.</value></data>
+  <data name="Lc_Err_RecipientNotFound" xml:space="preserve"><value>Recipient {0} was not found.</value></data>
+  <data name="Lc_Err_RecipientRequired" xml:space="preserve"><value>Add at least one recipient in “To”.</value></data>
+  <data name="Lc_Err_ReferenceTooLong" xml:space="preserve"><value>The reference number is too long.</value></data>
+  <data name="Lc_Err_ResponseDueBeforeLetterDate" xml:space="preserve"><value>The response due date is before the letter date.</value></data>
+  <data name="Lc_Err_ResponseDueRequired" xml:space="preserve"><value>Enter the response due date.</value></data>
+  <data name="Lc_Err_TypeInvalid" xml:space="preserve"><value>Only internal and outgoing letters use this form.</value></data>
+  <data name="Lc_Err_SubmitFailed" xml:space="preserve"><value>The letter could not be submitted: {0}</value></data>
+  <data name="Lc_Warn_ManyRecipients" xml:space="preserve"><value>This letter goes to {0} recipients.</value></data>
+  <data name="Lc_Warn_ExternalRecipient" xml:space="preserve"><value>Some recipients are outside the organisation: {0}</value></data>
+  <data name="Lc_Warn_SenderInRecipients" xml:space="preserve"><value>You are listed as a recipient of your own letter.</value></data>
+  <data name="Lc_Warn_RecipientPendingWork" xml:space="preserve"><value>{0} already has pending work on this subject.</value></data>
+  <data name="LtT_Token_SenderName" xml:space="preserve"><value>your full name</value></data>
+  <data name="LtT_Token_SenderTitle" xml:space="preserve"><value>your job title</value></data>
+  <data name="LtT_Token_SenderDepartment" xml:space="preserve"><value>your department</value></data>
+  <data name="Lc_FolderSent" xml:space="preserve"><value>Sent</value></data>
+  <data name="Lc_FolderArchived" xml:space="preserve"><value>Archived</value></data>
 </root>

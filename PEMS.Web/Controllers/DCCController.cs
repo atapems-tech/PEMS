@@ -111,7 +111,9 @@ public class DCCController : Controller
 
         var employeeId = await GetCurrentEmployeeIdAsync();
 
-        var letterNumber = await _numberingService.GenerateNextNumberAsync("Incoming", projectId);
+        var letterNumber = await _numberingService.GenerateNextNumberAsync("Incoming", projectId, employeeId.HasValue
+            ? await _context.Employees.Where(e => e.EmployeeId == employeeId.Value).Select(e => (int?)e.DepartmentId).FirstOrDefaultAsync()
+            : null);
 
         // منبع (ایمیل/نامه‌ی رسمی/مکاتبه‌ی وندور) در ابتدای متن ثبت می‌شود - طبق تصمیم فعلی
         // بدون افزودن ستون جدید به Letter (Priority/Subject/Body برای این سطح دسته‌بندی کافی‌اند)

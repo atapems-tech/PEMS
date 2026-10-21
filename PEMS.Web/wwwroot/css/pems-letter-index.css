@@ -1,0 +1,24 @@
+/* Correspondence list: active-filter chips, bulk bar, optional columns. Uses theme tokens only (light/dark/turquoise). */
+.pems-col-hidden { display: none !important; }
+
+.pems-filter-chips { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin-top: .5rem; }
+.pems-filter-chip {
+    display: inline-flex; align-items: center; gap: .35rem; padding: .15rem .25rem .15rem .6rem;
+    border: 1px solid var(--pems-surface-border); border-radius: 999px; background: var(--pems-surface-hover);
+    color: var(--pems-text); font-size: .8rem;
+}
+.pems-filter-chip a {
+    display: inline-flex; align-items: center; justify-content: center; width: 1.4rem; height: 1.4rem;
+    border-radius: 50%; color: var(--pems-text-muted, inherit); text-decoration: none;
+}
+.pems-filter-chip a:hover, .pems-filter-chip a:focus-visible { background: var(--pems-surface-border); color: var(--pems-text); }
+
+.pems-bulk-bar {
+    display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .5rem .75rem; margin-bottom: .5rem;
+    border: 1px solid var(--pems-surface-border); border-radius: .5rem; background: var(--pems-surface-hover);
+}
+.pems-bulk-bar.pems-bulk-active { border-color: var(--pems-primary); }
+.pems-bulk-bar .pems-bulk-count { font-weight: 600; min-width: 6rem; }
+.pems-bulk-bar .pems-bulk-spacer { flex: 1 1 auto; }
+
+.pems-due-overdue { color: var(--pems-chart-danger-text); font-weight: 600; }

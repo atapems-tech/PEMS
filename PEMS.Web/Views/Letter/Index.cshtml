@@ -11,7 +11,50 @@
     string currentStatus = f.status ?? "";
     bool currentStarred = f.starred;
     bool isAllFolder = string.IsNullOrEmpty(currentStatus) && string.IsNullOrEmpty(currentType) && !currentStarred;
-    bool hasAdvancedFilter = !string.IsNullOrEmpty((string?)f.letterNumber) || !string.IsNullOrEmpty((string?)f.subject) || f.projectId != null;
+    string currentPriority = f.priority ?? "";
+    bool? hasAtt = f.hasAttachments;
+    bool? hasRef = f.hasReferrals;
+    bool overdueRef = f.overdueReferral;
+    bool overdueResp = f.overdueResponse;
+    bool canBulkArchive = ViewBag.CanBulkArchive == true;
+    bool hasAdvancedFilter = !string.IsNullOrEmpty((string?)f.letterNumber) || !string.IsNullOrEmpty((string?)f.subject) || f.projectId != null
+        || !string.IsNullOrEmpty(currentPriority) || hasAtt.HasValue || hasRef.HasValue || overdueRef || overdueResp;
+
+    // URL of this list without the given query keys (page is always dropped: the result set changes)
+    string Without(params string[] keys)
+    {
+        var parts = Context.Request.Query
+            .Where(q => !keys.Contains(q.Key, StringComparer.OrdinalIgnoreCase) && !string.Equals(q.Key, "page", StringComparison.OrdinalIgnoreCase))
+            .SelectMany(q => q.Value.Select(v => Uri.EscapeDataString(q.Key) + "=" + Uri.EscapeDataString(v ?? "")))
+            .ToList();
+        return Url.Action("Index") + (parts.Count > 0 ? "?" + string.Join("&", parts) : "");
+    }
+
+    var advancedKeys = new[] { "letterNumber", "subject", "projectId", "priority", "hasAttachments", "hasReferrals", "overdueReferral", "overdueResponse" };
+    var chips = new List<(string Label, string RemoveUrl)>();
+    if (!string.IsNullOrEmpty((string?)f.letterNumber)) chips.Add((Localizer["Letter No"].Value + ": " + (string)f.letterNumber, Without("letterNumber")));
+    if (!string.IsNullOrEmpty((string?)f.subject)) chips.Add((Localizer["Subject"].Value + ": " + (string)f.subject, Without("subject")));
+    if (f.projectId != null)
+    {
+        var projectName = projects.Where(p => p.ProjectId == f.projectId).Select(p => (string)p.ProjectName).FirstOrDefault() ?? ("#" + (int)f.projectId);
+        chips.Add((Localizer["Lt_Project"].Value + ": " + projectName, Without("projectId")));
+    }
+    if (!string.IsNullOrEmpty(currentPriority)) chips.Add((Localizer["Lt_Priority"].Value + ": " + Localizer["Lt_P_" + currentPriority].Value, Without("priority")));
+    if (hasAtt.HasValue) chips.Add((Localizer["Lt_HasAttachments"].Value + ": " + Localizer[hasAtt.Value ? "Lt_Yes" : "Lt_No"].Value, Without("hasAttachments")));
+    if (hasRef.HasValue) chips.Add((Localizer["Lt_HasReferrals"].Value + ": " + Localizer[hasRef.Value ? "Lt_Yes" : "Lt_No"].Value, Without("hasReferrals")));
+    if (overdueRef) chips.Add((Localizer["Lt_OverdueReferralOnly"].Value, Without("overdueReferral")));
+    if (overdueResp) chips.Add((Localizer["Lt_OverdueResponseOnly"].Value, Without("overdueResponse")));
+
+    // export = the same filters (page/paging dropped); the service re-applies the confidentiality rule
+    var exportQs = string.Join("&", Context.Request.Query
+        .Where(q => !new[] { "page", "pageSize", "format" }.Contains(q.Key, StringComparer.OrdinalIgnoreCase))
+        .SelectMany(q => q.Value.Select(v => Uri.EscapeDataString(q.Key) + "=" + Uri.EscapeDataString(v ?? ""))));
+    string ExportUrl(string format) => Url.Action("Export") + "?format=" + format + (exportQs.Length > 0 ? "&" + exportQs : "");
+    var today = DateTime.Today;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-letter-index.css" asp-append-version="true" />
 }
 
 @* Re-composed: quick-search card + 5 KPI cards + a stray button became one chip strip and one toolbar (semantic quick search kept). *@
@@ -21,6 +64,14 @@
     <a class="vs-chip text-decoration-none" asp-action="MyReferrals"><i class="bi bi-person-check" aria-hidden="true"></i> @Localizer["Lt_MyOpenReferrals"] <strong>@dash.MyOpenReferrals</strong></a>
     <span class="vs-chip"><i class="bi bi-inbox-fill" aria-hidden="true"></i> @Localizer["Lt_Received7"] <strong>@dash.RecentlyReceived</strong></span>
     <span class="vs-chip"><i class="bi bi-send-fill" aria-hidden="true"></i> @Localizer["Lt_Sent7"] <strong>@dash.RecentlySent</strong></span>
+</div>
+
+<div class="d-flex flex-wrap gap-2 mb-2">
+    <a class="btn btn-sm btn-outline-secondary" asp-action="Dashboard"><i class="bi bi-speedometer2" aria-hidden="true"></i> @Localizer["Lt_DashboardLink"]</a>
+    @if (ViewBag.CanManageTemplates == true)
+    {
+        <a class="btn btn-sm btn-outline-secondary" asp-controller="LetterTemplate" asp-action="Index"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> @Localizer["LtT_Manage"]</a>
+    }
 </div>
 
 <div class="vs-toolbar" role="search">
@@ -63,6 +114,8 @@
                 <a asp-action="Index" asp-route-status="Approved" class="pems-folder-link @(currentStatus == "Approved" ? "active" : "")"><i class="bi bi-check2-square"></i> @Localizer["Approved"]</a>
                 <a asp-action="Index" asp-route-status="Issued" class="pems-folder-link @(currentStatus == "Issued" ? "active" : "")"><i class="bi bi-send-check"></i> Issued</a>
                 <a asp-action="Index" asp-route-status="Closed" class="pems-folder-link @(currentStatus == "Closed" ? "active" : "")"><i class="bi bi-archive"></i> @Localizer["Closed"]</a>
+                <a asp-action="Index" asp-route-status="Sent" class="pems-folder-link @(currentStatus == "Sent" ? "active" : "")"><i class="bi bi-send"></i> @Localizer["Lc_FolderSent"]</a>
+                <a asp-action="Index" asp-route-status="Archived" class="pems-folder-link @(currentStatus == "Archived" ? "active" : "")"><i class="bi bi-box-seam"></i> @Localizer["Lc_FolderArchived"]</a>
                 <a asp-action="Index" asp-route-starred="true" class="pems-folder-link @(currentStarred ? "active" : "")"><i class="bi bi-star-fill text-warning"></i> Starred</a>
             </div>
 
@@ -93,49 +146,156 @@
 
     <div class="col-lg-9">
         <div class="content-card mb-3">
-            <div class="d-flex justify-content-between align-items-center @(hasAdvancedFilter ? "mb-2" : "")">
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#advancedFilters">
-                    <i class="bi bi-funnel"></i> @Localizer["Advanced Filters"]
+            <div class="d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#advancedFilters"
+                        aria-expanded="@(hasAdvancedFilter ? "true" : "false")" aria-controls="advancedFilters">
+                    <i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Advanced Filters"]
+                    @if (chips.Count > 0) { <span class="badge bg-secondary ms-1">@chips.Count</span> }
                 </button>
                 @if (hasAdvancedFilter)
                 {
-                    <a asp-action="Index" class="btn btn-sm btn-outline-danger" title="Clear filters"><i class="bi bi-x-lg"></i> @Localizer["Clear"]</a>
+                    <a href="@Without(advancedKeys)" class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg" aria-hidden="true"></i> @Localizer["Lt_ClearAll"]</a>
                 }
             </div>
+            @if (chips.Count > 0)
+            {
+                <ul class="pems-filter-chips list-unstyled mb-0" aria-label="@Localizer["Lt_ActiveFilters"]">
+                    @foreach (var chip in chips)
+                    {
+                        <li class="pems-filter-chip">
+                            <span>@chip.Label</span>
+                            <a href="@chip.RemoveUrl" aria-label="@Localizer["Lt_RemoveFilter"]: @chip.Label" title="@Localizer["Lt_RemoveFilter"]"><i class="bi bi-x" aria-hidden="true"></i></a>
+                        </li>
+                    }
+                </ul>
+            }
             <div class="collapse @(hasAdvancedFilter ? "show" : "")" id="advancedFilters">
                 <form method="get" class="row g-2 mt-1">
                     <input type="hidden" name="letterType" value="@currentType" />
                     <input type="hidden" name="status" value="@currentStatus" />
                     <input type="hidden" name="starred" value="@currentStarred" />
-                    <div class="col-md-4"><input name="letterNumber" value="@f.letterNumber" class="form-control form-control-sm" placeholder="@Localizer["Letter No"]" /></div>
-                    <div class="col-md-4"><input name="subject" value="@f.subject" class="form-control form-control-sm" placeholder="@Localizer["Subject"]" /></div>
-                    <div class="col-md-3">
-                        <select name="projectId" class="form-select form-select-sm">
+                    <div class="col-md-4"><input name="letterNumber" value="@f.letterNumber" class="form-control form-control-sm" placeholder="@Localizer["Letter No"]" aria-label="@Localizer["Letter No"]" /></div>
+                    <div class="col-md-4"><input name="subject" value="@f.subject" class="form-control form-control-sm" placeholder="@Localizer["Subject"]" aria-label="@Localizer["Subject"]" /></div>
+                    <div class="col-md-4">
+                        <select name="projectId" class="form-select form-select-sm" aria-label="@Localizer["Lt_Project"]">
                             <option value="">@Localizer["All Projects"]</option>
                             @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == f.projectId)">@p.ProjectName</option> }
                         </select>
                     </div>
-                    <div class="col-md-1"><button type="submit" class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-funnel"></i></button></div>
+                    <div class="col-md-3">
+                        <select name="priority" class="form-select form-select-sm" aria-label="@Localizer["Lt_Priority"]">
+                            <option value="">@Localizer["Lt_Priority"]: @Localizer["Lt_Any"]</option>
+                            @foreach (var pr in new[] { "Urgent", "High", "Normal", "Low" }) { <option value="@pr" selected="@(currentPriority == pr)">@Localizer["Lt_P_" + pr]</option> }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="hasAttachments" class="form-select form-select-sm" aria-label="@Localizer["Lt_HasAttachments"]">
+                            <option value="">@Localizer["Lt_HasAttachments"]: @Localizer["Lt_Any"]</option>
+                            <option value="true" selected="@(hasAtt == true)">@Localizer["Lt_HasAttachments"]: @Localizer["Lt_Yes"]</option>
+                            <option value="false" selected="@(hasAtt == false)">@Localizer["Lt_HasAttachments"]: @Localizer["Lt_No"]</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="hasReferrals" class="form-select form-select-sm" aria-label="@Localizer["Lt_HasReferrals"]">
+                            <option value="">@Localizer["Lt_HasReferrals"]: @Localizer["Lt_Any"]</option>
+                            <option value="true" selected="@(hasRef == true)">@Localizer["Lt_HasReferrals"]: @Localizer["Lt_Yes"]</option>
+                            <option value="false" selected="@(hasRef == false)">@Localizer["Lt_HasReferrals"]: @Localizer["Lt_No"]</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="overdueReferral" value="true" id="fltOverdueReferral" checked="@overdueRef" />
+                            <label class="form-check-label small" for="fltOverdueReferral">@Localizer["Lt_OverdueReferralOnly"]</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="overdueResponse" value="true" id="fltOverdueResponse" checked="@overdueResp" />
+                            <label class="form-check-label small" for="fltOverdueResponse">@Localizer["Lt_OverdueResponseOnly"]</label>
+                        </div>
+                    </div>
+                    <div class="col-12 text-end"><button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Lt_ApplyFilters"]</button></div>
                 </form>
             </div>
         </div>
 
         <div class="content-card">
-            <div class="d-flex justify-content-end mb-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Letter')">
-                    <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-                </button>
-            </div>
+            <form id="letterBulkForm" method="post" asp-action="Bulk">
+                <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                <div id="letterBulkIds"></div>
+                <div class="pems-bulk-bar" id="letterBulkBar" role="toolbar" aria-label="@Localizer["Lt_BulkActions"]">
+                    <span id="letterBulkCount" class="pems-bulk-count" role="status" aria-live="polite" data-template="@Localizer["Lt_SelectedCount"]"></span>
+                    <button type="submit" name="op" value="star" class="btn btn-sm btn-outline-secondary" data-bulk-op="star" disabled><i class="bi bi-star" aria-hidden="true"></i> @Localizer["Lt_BulkStar"]</button>
+                    <button type="submit" name="op" value="unstar" class="btn btn-sm btn-outline-secondary" data-bulk-op="unstar" disabled><i class="bi bi-star-half" aria-hidden="true"></i> @Localizer["Lt_BulkUnstar"]</button>
+                    <button type="submit" name="op" value="submit" class="btn btn-sm btn-outline-secondary" data-bulk-op="submit" data-confirm="@Localizer["Lt_BulkSubmitConfirm"]" disabled><i class="bi bi-send-check" aria-hidden="true"></i> @Localizer["Lt_BulkSubmit"]</button>
+                    @if (canBulkArchive)
+                    {
+                        <button type="button" class="btn btn-sm btn-outline-danger" data-bulk-op="archive-open" data-bs-toggle="modal" data-bs-target="#letterArchiveModal" disabled><i class="bi bi-archive" aria-hidden="true"></i> @Localizer["Lt_BulkArchive"]</button>
+                    }
+                    <span class="pems-bulk-spacer"></span>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="bi bi-download" aria-hidden="true"></i> @Localizer["Export"]</button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><h6 class="dropdown-header">@Localizer["Lt_ExportMatching"]</h6></li>
+                            <li><a class="dropdown-item" href="@ExportUrl("csv")"><i class="bi bi-filetype-csv" aria-hidden="true"></i> CSV</a></li>
+                            <li><a class="dropdown-item" href="@ExportUrl("xlsx")"><i class="bi bi-file-earmark-excel" aria-hidden="true"></i> Excel</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="bi bi-layout-three-columns" aria-hidden="true"></i> @Localizer["Lt_Columns"]</button>
+                        <ul class="dropdown-menu dropdown-menu-end p-2">
+                            @foreach (var col in new[] { ("priority", "Lt_Priority", false), ("discipline", "Lt_Discipline", true), ("attachments", "Lt_ColAttachments", false), ("responseDue", "Lt_ColResponseDue", false), ("lastActivity", "Lt_ColLastActivity", true) })
+                            {
+                                <li class="form-check ms-2">
+                                    <input class="form-check-input" type="checkbox" id="col_@col.Item1" data-col-toggle="@col.Item1" data-default-hidden="@(col.Item3 ? "true" : "false")" checked />
+                                    <label class="form-check-label small" for="col_@col.Item1">@Localizer[col.Item2]</label>
+                                </li>
+                            }
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><button type="button" id="letterColumnsReset" class="dropdown-item small"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> @Localizer["Reset columns"]</button></li>
+                        </ul>
+                    </div>
+                </div>
+
+                @if (canBulkArchive)
+                {
+                    <div class="modal fade" id="letterArchiveModal" tabindex="-1" aria-labelledby="letterArchiveTitle" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="modal-title h5" id="letterArchiveTitle">@Localizer["Lt_ArchiveTitle"]</h2>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Cancel"]"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="small text-muted">@Localizer["Lt_ArchiveHelp"]</p>
+                                    <label for="letterArchiveReason" class="form-label">@Localizer["Lt_ArchiveReason"]</label>
+                                    <textarea id="letterArchiveReason" name="reason" class="form-control" rows="3" maxlength="500" aria-describedby="letterArchiveReasonError"></textarea>
+                                    <div id="letterArchiveReasonError" class="text-danger small mt-1" hidden><i class="bi bi-exclamation-circle" aria-hidden="true"></i> @Localizer["Lt_ArchiveReasonRequired"]</div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                                    <button type="submit" name="op" value="archive" class="btn btn-danger"><i class="bi bi-archive" aria-hidden="true"></i> @Localizer["Lt_ArchiveConfirm"]</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </form>
             <div class="table-responsive pems-grid-scroll table-scroll-area">
                 <table class="table table-enterprise pems-grid-table pems-compact-rows mb-0" data-grid-key="Letter">
                     <thead>
                         <tr>
-                            <th data-col-key="select" data-resizable="false" style="width:30px;"><input type="checkbox" id="selectAllLetters" /></th>
+                            <th data-col-key="select" data-resizable="false" style="width:30px;"><input type="checkbox" id="selectAllLetters" aria-label="@Localizer["Lt_SelectAll"]" /></th>
                             <th data-col-key="star" data-resizable="false" style="width:30px;"></th>
                             <th data-col-key="subject" data-resizable="true" data-min-width="200" data-max-width="600">@Localizer["Subject"]</th>
                             <th data-col-key="letterNo" data-resizable="true" data-min-width="90" data-max-width="200" style="width:110px;">@Localizer["Letter No"]</th>
                             <th data-col-key="senderReceiver" data-resizable="true" data-min-width="120" data-max-width="260" style="width:160px;">@Localizer["Sender / Receiver"]</th>
                             <th data-col-key="date" data-resizable="true" data-min-width="90" data-max-width="160" style="width:100px;">@Localizer["Date"]</th>
+                            <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140" style="width:95px;">@Localizer["Lt_Priority"]</th>
+                            <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px;">@Localizer["Lt_Discipline"]</th>
+                            <th data-col-key="attachments" data-resizable="false" style="width:70px;"><i class="bi bi-paperclip" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Lt_ColAttachments"]</span></th>
+                            <th data-col-key="responseDue" data-resizable="true" data-min-width="100" data-max-width="180" style="width:120px;">@Localizer["Lt_ColResponseDue"]</th>
+                            <th data-col-key="lastActivity" data-resizable="true" data-min-width="100" data-max-width="180" style="width:110px;">@Localizer["Lt_ColLastActivity"]</th>
                             <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px;">@Localizer["Status"]</th>
                             <th data-col-key="actions" data-resizable="false" style="width:60px;"></th>
                         </tr>
@@ -178,6 +338,26 @@
                                 <td class="small">@l.LetterNumber</td>
                                 <td class="small">@(l.LetterType == "Incoming" ? l.Sender : l.Receiver)</td>
                                 <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
+                                <td class="small">
+                                    @{
+                                        var prIcon = l.Priority switch { "Urgent" => "bi-exclamation-octagon", "High" => "bi-arrow-up-circle", "Low" => "bi-arrow-down-circle", _ => "bi-dash-circle" };
+                                    }
+                                    <i class="bi @prIcon" aria-hidden="true"></i> @Localizer["Lt_P_" + l.Priority]
+                                </td>
+                                <td class="small">@(string.IsNullOrEmpty(l.DisciplineName) ? "—" : l.DisciplineName)</td>
+                                <td class="small">@if (l.AttachmentsCount > 0) { <span title="@Localizer["Lt_ColAttachments"]"><i class="bi bi-paperclip" aria-hidden="true"></i> @l.AttachmentsCount</span> } else { <span class="text-muted">—</span> }</td>
+                                <td class="small">
+                                    @if (l.NextResponseDue.HasValue)
+                                    {
+                                        if (l.NextResponseDue.Value.Date < today)
+                                        {
+                                            <span class="pems-due-overdue"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @l.NextResponseDue.Value.ToString("yyyy-MM-dd") <span>(@Localizer["Lt_Overdue"])</span></span>
+                                        }
+                                        else { <span>@l.NextResponseDue.Value.ToString("yyyy-MM-dd")</span> }
+                                    }
+                                    else { <span class="text-muted">—</span> }
+                                </td>
+                                <td class="small text-muted">@l.LastActivityDate.ToString("yyyy-MM-dd")</td>
                                 <td><span class="badge @PEMS.Web.Helpers.LetterStatusBadge.CssClass(l.Status)">@l.Status</span></td>
                                 <td><a asp-action="Details" asp-route-id="@l.LetterId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
                             </tr>
@@ -194,6 +374,11 @@
                     if (f.projectId != null) qsParts.Add($"projectId={f.projectId}");
                     if (!string.IsNullOrEmpty((string?)f.status)) qsParts.Add($"status={f.status}");
                     if (currentStarred) qsParts.Add("starred=true");
+                    if (!string.IsNullOrEmpty(currentPriority)) qsParts.Add($"priority={Uri.EscapeDataString(currentPriority)}");
+                    if (hasAtt.HasValue) qsParts.Add($"hasAttachments={(hasAtt.Value ? "true" : "false")}");
+                    if (hasRef.HasValue) qsParts.Add($"hasReferrals={(hasRef.Value ? "true" : "false")}");
+                    if (overdueRef) qsParts.Add("overdueReferral=true");
+                    if (overdueResp) qsParts.Add("overdueResponse=true");
                 }
                 @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
                 {
@@ -206,14 +391,8 @@
     </div>
 </div>
 
+<script src="~/js/pems-letter-index.js" asp-append-version="true" data-selected="@Localizer["Lt_SelectedCount"]"></script>
 <script>
-    var selectAllLetters = document.getElementById('selectAllLetters');
-    var letterChecks = document.querySelectorAll('.letter-select');
-    if (selectAllLetters) {
-        selectAllLetters.addEventListener('change', function () {
-            letterChecks.forEach(function (c) { c.checked = selectAllLetters.checked; });
-        });
-    }
     document.addEventListener('DOMContentLoaded', function () {
         PemsDataGrid.initColumnResize('Letter');
     });

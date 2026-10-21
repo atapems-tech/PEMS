@@ -156,6 +156,8 @@ public class PEMSDbContext
     public DbSet<PartCatalogueApproverAssignment> PartCatalogueApproverAssignments { get; set; }
     public DbSet<PartCatalogueOrgLink> PartCatalogueOrgLinks { get; set; }
     public DbSet<PartCatalogueRequest> PartCatalogueRequests { get; set; }
+    public DbSet<PartCatalogueSettings> PartCatalogueSettings { get; set; }
+    public DbSet<KpiTarget> KpiTargets { get; set; }
     public DbSet<PartCatalogueRequestEquipment> PartCatalogueRequestEquipment { get; set; }
     public DbSet<PartCatalogueRequestAttribute> PartCatalogueRequestAttributes { get; set; }
     public DbSet<PartCatalogueRequestNote> PartCatalogueRequestNotes { get; set; }
@@ -441,6 +443,13 @@ public class PEMSDbContext
     public DbSet<UserDashboardWidget> UserDashboardWidgets { get; set; }
 
     public DbSet<LetterStar> LetterStars { get; set; }
+
+    public DbSet<LetterTemplate> LetterTemplates { get; set; }
+
+    public DbSet<LetterApprovalStep> LetterApprovalSteps { get; set; }
+    public DbSet<LetterVersion> LetterVersions { get; set; }
+    public DbSet<LetterViewLog> LetterViewLogs { get; set; }
+    public DbSet<LetterNumberSequence> LetterNumberSequences { get; set; }
 
     public DbSet<LetterRecipient> LetterRecipients { get; set; }
 

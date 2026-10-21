@@ -7495,6 +7495,58 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("KnowledgeBaseEntries");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.KpiTarget", b =>
+                {
+                    b.Property<int>("KpiTargetId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("KpiTargetId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("KpiKey")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<decimal>("TargetValue")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("WarnValue")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.HasKey("KpiTargetId");
+
+                    b.HasIndex("KpiKey")
+                        .IsUnique();
+
+                    b.ToTable("KpiTargets", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Letter", b =>
                 {
                     b.Property<int>("LetterId")
@@ -7503,14 +7555,24 @@ namespace PEMS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LetterId"));
 
+                    b.Property<bool>("ApprovalRequired")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("ApprovedById")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ApprovedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("ArchivedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Body")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Category")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime?>("ClosedDate")
                         .HasColumnType("datetime2");
@@ -7567,6 +7629,10 @@ namespace PEMS.Persistence.Migrations
                     b.Property<int?>("ReceiverEmployeeId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ReferenceNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<int?>("RegisteredById")
                         .HasColumnType("int");
 
@@ -7579,11 +7645,20 @@ namespace PEMS.Persistence.Migrations
                     b.Property<DateTime?>("RejectedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("RelatedDepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("RelatedDocumentId")
                         .HasColumnType("int");
 
                     b.Property<int?>("RelatedMRId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("ResponseDueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("ResponseRequired")
+                        .HasColumnType("bit");
 
                     b.Property<string>("ReturnReason")
                         .HasColumnType("nvarchar(max)");
@@ -7604,6 +7679,16 @@ namespace PEMS.Persistence.Migrations
 
                     b.Property<string>("Sender")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SenderDepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SenderEmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SenderTitle")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("SignedByName")
                         .HasColumnType("nvarchar(max)");
@@ -7638,15 +7723,95 @@ namespace PEMS.Persistence.Migrations
 
                     b.HasIndex("ReceiverEmployeeId");
 
+                    b.HasIndex("RegisteredById");
+
                     b.HasIndex("RelatedDocumentId");
 
                     b.HasIndex("RelatedMRId");
+
+                    b.HasIndex("SenderEmployeeId");
 
                     b.HasIndex("Status");
 
                     b.HasIndex("IsActive", "LetterDate");
 
+                    b.HasIndex("Status", "IsActive");
+
                     b.ToTable("Letters");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.LetterApprovalStep", b =>
+                {
+                    b.Property<int>("LetterApprovalStepId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LetterApprovalStepId"));
+
+                    b.Property<int>("ApproverUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DecidedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LetterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("StepOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("LetterApprovalStepId");
+
+                    b.HasIndex("ApproverUserId", "Status");
+
+                    b.HasIndex("LetterId", "StepOrder")
+                        .IsUnique();
+
+                    b.ToTable("LetterApprovalSteps");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.LetterNumberSequence", b =>
+                {
+                    b.Property<int>("LetterNumberSequenceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LetterNumberSequenceId"));
+
+                    b.Property<int>("LastValue")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Scope")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("LetterNumberSequenceId");
+
+                    b.HasIndex("Scope", "Year")
+                        .IsUnique();
+
+                    b.ToTable("LetterNumberSequences");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.LetterRecipient", b =>
@@ -7881,6 +8046,146 @@ namespace PEMS.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("LetterTags");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.LetterTemplate", b =>
+                {
+                    b.Property<int>("LetterTemplateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LetterTemplateId"));
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConfidentialityLevel")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LetterType")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LetterTemplateId");
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("IsActive", "LetterType");
+
+                    b.ToTable("LetterTemplates");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.LetterVersion", b =>
+                {
+                    b.Property<int>("LetterVersionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LetterVersionId"));
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LetterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int?>("SavedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SavedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("VersionNo")
+                        .HasColumnType("int");
+
+                    b.HasKey("LetterVersionId");
+
+                    b.HasIndex("LetterId", "VersionNo")
+                        .IsUnique();
+
+                    b.ToTable("LetterVersions");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.LetterViewLog", b =>
+                {
+                    b.Property<int>("LetterViewLogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LetterViewLogId"));
+
+                    b.Property<DateTime>("FirstViewedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastViewedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LetterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("LetterViewLogId");
+
+                    b.HasIndex("LetterId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("LetterViewLogs");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.MDBDocument", b =>
@@ -11817,6 +12122,61 @@ namespace PEMS.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("PartCatalogueSectionCommodityGroups", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueSettings", b =>
+                {
+                    b.Property<int>("PartCatalogueSettingsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PartCatalogueSettingsId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PartNoFormat")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PartNoGenerationMethod")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("MANUAL");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("SingletonKey")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PartCatalogueSettingsId");
+
+                    b.HasIndex("SingletonKey")
+                        .IsUnique();
+
+                    b.ToTable("PartCatalogueSettings", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_PartCatalogueSettings_Method", "[PartNoGenerationMethod] IN ('MANUAL','API')");
+                        });
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.PartCatalogueStockGrade", b =>
@@ -22245,6 +22605,17 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("RelatedMR");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.LetterApprovalStep", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Letter", "Letter")
+                        .WithMany()
+                        .HasForeignKey("LetterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Letter");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.LetterRecipient", b =>
                 {
                     b.HasOne("PEMS.Domain.Entities.Department", "Department")
@@ -22334,6 +22705,28 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Letter");
 
                     b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.LetterVersion", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Letter", "Letter")
+                        .WithMany()
+                        .HasForeignKey("LetterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Letter");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.LetterViewLog", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Letter", "Letter")
+                        .WithMany()
+                        .HasForeignKey("LetterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Letter");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.MDBDocument", b =>

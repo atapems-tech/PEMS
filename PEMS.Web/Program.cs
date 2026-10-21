@@ -333,6 +333,8 @@ builder.Services.AddScoped<IIrnReceiptService, IrnReceiptService>();
 builder.Services.AddScoped<IReliabilityService, ReliabilityService>();
 builder.Services.AddScoped<IInspectionService, InspectionService>();
 builder.Services.AddScoped<IKpiService, KpiService>();
+builder.Services.AddScoped<IKpiTargetService, KpiTargetService>();
+builder.Services.AddScoped<IExecutiveKpiService, ExecutiveKpiService>();
 builder.Services.AddScoped<IPermitService, PermitService>();
 builder.Services.AddScoped<IAccessControlService, AccessControlService>();
 builder.Services.AddScoped<IUserRoleAssignmentSynchronizer, UserRoleAssignmentSynchronizer>();
@@ -345,6 +347,8 @@ builder.Services.AddScoped<PEMS.Web.Security.NavigationVisibilityResolver>();
 // طبق «PEMS — Enterprise User-Centric Authorization Workspace Consolidation»: تنها سرویس تازه‌ی این
 // فاز - هم Admin/Authorization موجود، هم Admin/Users/Details تازه، از همین یک سرویس می‌خوانند
 builder.Services.AddScoped<PEMS.Application.Interfaces.IUserAuthorizationSummaryService, PEMS.Persistence.Services.UserAuthorizationSummaryService>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IRolePermissionAdminService, PEMS.Persistence.Services.RolePermissionAdminService>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IPermissionMatrixEditor, PEMS.Persistence.Services.PermissionMatrixEditor>();
 builder.Services.AddScoped<IRoleModuleActionService, RoleModuleActionService>();
 builder.Services.AddScoped<IIsolationService, IsolationService>();
 builder.Services.AddScoped<IGasTestService, GasTestService>();
@@ -493,6 +497,7 @@ builder.Services.AddScoped<PEMS.Web.Navigation.DynamicSidebarBuilder>();
 builder.Services.AddScoped<PEMS.Web.Navigation.NavigationBadgeService>();
 builder.Services.AddScoped<IPartCatalogueService, PartCatalogueService>();
 builder.Services.AddScoped<IPartCatalogueAdminService, PartCatalogueAdminService>();
+builder.Services.AddScoped<IPartCatalogueSettingsService, PartCatalogueSettingsService>();
 
 // طبق CMMS Production Baseline v1 بند ۶ (CMMS-01: Asset Foundation)
 builder.Services.AddScoped<IFunctionalLocationService, FunctionalLocationService>();
@@ -514,6 +519,12 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IMyWorkService, PEMS.Persistence.Services.MyWorkService>();
 
 builder.Services.AddScoped<ILetterService, LetterService>();
+builder.Services.AddScoped<ILetterTemplateService, LetterTemplateService>();
+builder.Services.AddScoped<ILetterReminderService, LetterReminderService>();
+builder.Services.AddScoped<ILetterComposeService, LetterComposeService>();
+builder.Services.AddScoped<ILetterComplianceService, LetterComplianceService>();
+builder.Services.Configure<PEMS.Web.BackgroundJobs.LetterReminderOptions>(builder.Configuration.GetSection("LetterReminders"));
+builder.Services.AddHostedService<PEMS.Web.BackgroundJobs.LetterReminderBackgroundService>();
 
 builder.Services.AddScoped<ILetterReferralService, LetterReferralService>();
 
@@ -713,6 +724,9 @@ using (var scope = app.Services.CreateScope())
 
     // دپارتمان‌های پیش‌فرض
     await PEMS.Persistence.Seed.DepartmentSeeder.SeedAsync(scope.ServiceProvider);
+
+    // قالب‌های آماده‌ی نامه‌ی داخلی (افزودنی و Idempotent)
+    await PEMS.Persistence.Seed.LetterTemplateSeeder.SeedAsync(scope.ServiceProvider);
 
     // دیسیپلین‌های مهندسی پیش‌فرض - بدون این Seed، پس از پاک‌سازی دیتابیس Workspace دیسیپلین‌ها
     // خالی می‌شوند و UI مربوط به default items/discipline list هیچ آیتمی نشان نمی‌دهد.
@@ -914,6 +928,10 @@ if (!app.Environment.IsDevelopment())
 
     app.UseHsts();
 }
+
+// صفحه‌ی خطای دوستانه برای 4xx/5xx بدون بدنه (NotFound() و ...)؛ کد HTTP اصلی حفظ می‌شود و پاسخ‌های دارای بدنه
+// (مثلاً BadRequest(new { error })) دست‌نخورده می‌مانند.
+app.UseStatusCodePagesWithReExecute("/Home/StatusPage", "?code={0}");
 
 
 

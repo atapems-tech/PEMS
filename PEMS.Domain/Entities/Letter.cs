@@ -101,6 +101,40 @@ public class Letter : BaseEntity
     // نمایش «رویژن N» به کاربر، بدون نیاز به شمارش دستی ردیف‌های LetterReview
     public int RevisionCount { get; set; }
 
+    // پاسخ‌خواهی (Phase 2): آیا این نامه نیاز به پاسخ دارد و تا چه تاریخی. «پاسخ‌داده‌شده» ذخیره نمی‌شود، از وجود نامه‌ی
+    // فرزند صادرشده (ParentLetterId = این نامه) محاسبه می‌شود تا هیچ پرچم دستی با واقعیت ناسازگار نشود؛
+    // «معوق» هم محاسبه‌شده است (ResponseRequired && ResponseDueDate گذشته && هنوز بی‌پاسخ && نامه بسته نشده).
+    public bool ResponseRequired { get; set; }
+
+    public DateTime? ResponseDueDate { get; set; }
+
+    // ---- بازطراحی مکاتبات داخلی (Formal Internal Letter) ----
+    // نوع محتوایی نامه (Information, Request, Instruction, Approval, Recommendation, Notice, StatusReport) - جدا از LetterType
+    // که «جهت» نامه است (Incoming/Outgoing/Internal).
+    [MaxLength(30)]
+    public string? Category { get; set; }
+
+    // شماره‌ی مرجع نامه‌ی مرتبط (اختیاری)
+    [MaxLength(100)]
+    public string? ReferenceNumber { get; set; }
+
+    // بلوک فرستنده به‌صورت «عکس لحظه‌ای» (Snapshot) در زمان نوشتن: ارتقای بعدیِ سمت/انتقال دپارتمان فرستنده نباید متن
+    // نامه‌ی قبلاً صادرشده را عوض کند.
+    public int? SenderEmployeeId { get; set; }
+
+    [MaxLength(150)]
+    public string? SenderTitle { get; set; }
+
+    public int? SenderDepartmentId { get; set; }
+
+    public int? RelatedDepartmentId { get; set; }
+
+    // آیا قبل از ارسال، زنجیره‌ی تایید لازم است (برای Outgoing همیشه true؛ برای Internal انتخابی). مراحل در LetterApprovalStep.
+    public bool ApprovalRequired { get; set; }
+
+    // وضعیت Archived با این تاریخ (آرشیو دستی بعد از ارسال، یا خودکار پس از بی‌فعالیتیِ طولانی). حذف فیزیکی ندارد.
+    public DateTime? ArchivedDate { get; set; }
+
     public ICollection<LetterReview> Reviews { get; set; } = new List<LetterReview>();
 
     public bool IsActive { get; set; } = true;

@@ -2135,4 +2135,443 @@
   <data name="Tm_Err_SprintState" xml:space="preserve"><value>اسپرینت در وضعیت مناسب این عملیات نیست.</value></data>
   <data name="Tm_Err_ActiveSprintExists" xml:space="preserve"><value>این فضا از قبل یک اسپرینت فعال دارد.</value></data>
   <data name="Nav_TaskManager" xml:space="preserve"><value>مدیریت وظایف</value></data>
+  <data name="PermAdmin_SelectAll" xml:space="preserve"><value>انتخاب همه</value></data>
+  <data name="PermAdmin_DeselectAll" xml:space="preserve"><value>لغو انتخاب همه</value></data>
+  <data name="PermAdmin_SelectAllInTable" xml:space="preserve"><value>انتخاب همه‌ی ردیف‌های این جدول</value></data>
+  <data name="PermAdmin_EnableSelected" xml:space="preserve"><value>فعال‌سازی انتخاب‌شده‌ها</value></data>
+  <data name="PermAdmin_DisableSelected" xml:space="preserve"><value>غیرفعال‌سازی انتخاب‌شده‌ها</value></data>
+  <data name="PermAdmin_SelectedCount" xml:space="preserve"><value>{0} مورد انتخاب شده</value></data>
+  <data name="PermAdmin_TargetRole" xml:space="preserve"><value>مجوزهای تازه‌فعال‌شده به این نقش داده شود:</value></data>
+  <data name="PermAdmin_RoleScopeNote" xml:space="preserve"><value>تغییرها بلافاصله روی مجوزهای نقش ذخیره می‌شوند؛ پس برای همه‌ی کاربران دارای آن نقش اعمال می‌شوند، نه فقط این کاربر. نقش‌ها:</value></data>
+  <data name="PermAdmin_RoleUsersFormat" xml:space="preserve"><value>{0} ({1} کاربر)</value></data>
+  <data name="PermAdmin_Saving" xml:space="preserve"><value>در حال ذخیره...</value></data>
+  <data name="PermAdmin_Saved" xml:space="preserve"><value>{0} مجوز به‌روزرسانی شد.</value></data>
+  <data name="PermAdmin_RowSaved" xml:space="preserve"><value>ذخیره شد</value></data>
+  <data name="PermAdmin_NoChange" xml:space="preserve"><value>تغییری لازم نبود.</value></data>
+  <data name="PermAdmin_SomeSkipped" xml:space="preserve"><value>{0} مورد تغییر نکرد.</value></data>
+  <data name="PermAdmin_Failed" xml:space="preserve"><value>ذخیره ناموفق بود. چیزی تغییر نکرد.</value></data>
+  <data name="PermAdmin_ConfirmBatch" xml:space="preserve"><value>{0} مجوز تغییر کند؟ این تغییر برای همه‌ی کاربران نقش‌های مربوط اعمال می‌شود.</value></data>
+  <data name="PermAdmin_NothingSelected" xml:space="preserve"><value>حداقل یک مجوز را انتخاب کنید که وضعیتش تغییر کند.</value></data>
+  <data name="PermAdmin_SelectRow" xml:space="preserve"><value>انتخاب {0}</value></data>
+  <data name="PermAdmin_ToggleRow" xml:space="preserve"><value>تغییر وضعیت مجوز {0}</value></data>
+  <data name="PermAdmin_Locked_SystemAdmin" xml:space="preserve"><value>SystemAdmin طبق طراحی دسترسی کامل دارد؛ مجوزها از این‌جا قابل ویرایش نیستند.</value></data>
+  <data name="PermAdmin_Locked_NoRoles" xml:space="preserve"><value>این کاربر نقشی ندارد؛ نقشی برای ویرایش وجود ندارد.</value></data>
+  <data name="PermAdmin_Locked_OutsideMatrix" xml:space="preserve"><value>این مجوز خارج از Permission Matrix مدیریت می‌شود و از این‌جا قابل ویرایش نیست.</value></data>
+  <data name="PermAdmin_Locked_RoleModuleAction" xml:space="preserve"><value>این مجوز از RoleModuleAction می‌آید و با راه‌اندازی مجدد برمی‌گردد.</value></data>
+  <data name="PermAdmin_Reason_Unknown" xml:space="preserve"><value>مجوز ناشناخته.</value></data>
+  <data name="PermAdmin_Reason_NoChange" xml:space="preserve"><value>از قبل در وضعیت درخواستی است.</value></data>
+  <data name="PermAdmin_Reason_TargetRoleRequired" xml:space="preserve"><value>نقشی را برای دریافت این مجوز انتخاب کنید.</value></data>
+  <data name="PermMx_Intro" xml:space="preserve"><value>مجوزهای سطح ماژول را تنظیم کنید. تغییرها با علامت‌زدن هر خانه خودکار ذخیره می‌شوند.</value></data>
+  <data name="PermMx_SearchRoles" xml:space="preserve"><value>جستجوی نقش...</value></data>
+  <data name="PermMx_SearchModules" xml:space="preserve"><value>جستجوی ماژول...</value></data>
+  <data name="PermMx_FilterLabel" xml:space="preserve"><value>فیلتر ماژول‌ها بر اساس وضعیت تنظیم</value></data>
+  <data name="PermMx_FilterAll" xml:space="preserve"><value>همه‌ی ماژول‌ها</value></data>
+  <data name="PermMx_FilterConfigured" xml:space="preserve"><value>فقط تنظیم‌شده‌ها</value></data>
+  <data name="PermMx_FilterUnconfigured" xml:space="preserve"><value>فقط تنظیم‌نشده‌ها</value></data>
+  <data name="PermMx_ExpandAll" xml:space="preserve"><value>باز کردن همه</value></data>
+  <data name="PermMx_CollapseAll" xml:space="preserve"><value>بستن همه</value></data>
+  <data name="PermMx_Saving" xml:space="preserve"><value>در حال ذخیره...</value></data>
+  <data name="PermMx_Saved" xml:space="preserve"><value>همه‌ی تغییرها ذخیره شد</value></data>
+  <data name="PermMx_SaveFailed" xml:space="preserve"><value>ذخیره ناموفق بود.</value></data>
+  <data name="PermMx_Retry" xml:space="preserve"><value>تلاش دوباره</value></data>
+  <data name="PermMx_Dismiss" xml:space="preserve"><value>بستن</value></data>
+  <data name="PermMx_SavedCount" xml:space="preserve"><value>{0} مجوز ذخیره شد.</value></data>
+  <data name="PermMx_ModulesFormat" xml:space="preserve"><value>{0}/{1} ماژول تنظیم شده</value></data>
+  <data name="PermMx_RolesShown" xml:space="preserve"><value>{0} از {1} نقش نمایش داده می‌شود</value></data>
+  <data name="PermMx_NoRoleMatch" xml:space="preserve"><value>هیچ نقشی با فیلترهای فعلی مطابقت ندارد.</value></data>
+  <data name="PermMx_Error_Generic" xml:space="preserve"><value>لطفاً دوباره تلاش کنید.</value></data>
+  <data name="PermMx_Error_UnknownRole" xml:space="preserve"><value>این نقش دیگر وجود ندارد.</value></data>
+  <data name="PermMx_Error_SystemAdmin" xml:space="preserve"><value>SystemAdmin از این‌جا قابل ویرایش نیست.</value></data>
+  <data name="PermMx_Error_UnknownModule" xml:space="preserve"><value>ماژول ناشناخته.</value></data>
+  <data name="PermMx_ColToggle" xml:space="preserve"><value>تغییر {0} برای همه‌ی ماژول‌های نمایان</value></data>
+  <data name="PermMx_RowToggle" xml:space="preserve"><value>تغییر همه‌ی مجوزهای {0}</value></data>
+  <data name="PermMx_Tip_View" xml:space="preserve"><value>مشاهده: باز کردن و خواندن رکوردها</value></data>
+  <data name="PermMx_Tip_Create" xml:space="preserve"><value>ایجاد: افزودن رکورد جدید</value></data>
+  <data name="PermMx_Tip_Edit" xml:space="preserve"><value>ویرایش: تغییر رکوردهای موجود</value></data>
+  <data name="PermMx_Tip_Delete" xml:space="preserve"><value>حذف: حذف یا لغو رکورد (پرخطر)</value></data>
+  <data name="PermMx_Tip_Approve" xml:space="preserve"><value>تأیید: تصمیم‌های نهایی تأیید (پرخطر)</value></data>
+  <data name="PermMx_Tip_ManualNumber" xml:space="preserve"><value>شماره‌ی دستی: ورود دستی شماره‌ی مدرک</value></data>
+  <data name="PermMx_Tip_Freeze" xml:space="preserve"><value>فریز: قفل‌کردن رکورد در برابر تغییر</value></data>
+  <data name="PermMx_Tip_Unfreeze" xml:space="preserve"><value>آنفریز: باز کردن قفل رکورد فریزشده</value></data>
+  <data name="PermMx_Tip_Hold" xml:space="preserve"><value>توقف: قرار دادن رکورد در حالت توقف</value></data>
+  <data name="PermMx_Tip_ReleaseHold" xml:space="preserve"><value>رفع توقف: ازسرگیری رکورد متوقف‌شده</value></data>
+  <data name="Pc_Adm_PartNoTitle" xml:space="preserve"><value>تولید شماره‌ی قطعه</value></data>
+  <data name="Pc_Adm_PartNoHint" xml:space="preserve"><value>نحوه‌ی تولید شماره‌ی قطعه برای درخواست‌های کاتالوگ را مشخص کنید.</value></data>
+  <data name="Pc_Adm_PartNoMethod" xml:space="preserve"><value>روش تولید</value></data>
+  <data name="Pc_Adm_PartNoManual" xml:space="preserve"><value>دستی - Part Cataloguer شماره‌ی IFS را وارد می‌کند</value></data>
+  <data name="Pc_Adm_PartNoApi" xml:space="preserve"><value>خودکار از طریق API</value></data>
+  <data name="Pc_Adm_PartNoFormat" xml:space="preserve"><value>قالب شماره‌ی قطعه</value></data>
+  <data name="Pc_Adm_PartNoFormatHelp" xml:space="preserve"><value>YYYY = سال، NNNN = شماره‌ی ترتیبی (حداقل ۳ حرف N). فقط حروف، ارقام و . _ / # - . برای API الزامی و برای دستی اختیاری است.</value></data>
+  <data name="Pc_Adm_PartNoNote" xml:space="preserve"><value>این‌جا فقط تنظیم ذخیره می‌شود. تا زمان آماده‌شدن تولید خودکار (فاز ۲)، شماره‌ی قطعه همچنان دستی وارد می‌شود.</value></data>
+  <data name="Pc_Adm_PartNoModified" xml:space="preserve"><value>آخرین تغییر</value></data>
+  <data name="Pc_Err_PartNoMethodInvalid" xml:space="preserve"><value>روش «دستی» یا «API» را انتخاب کنید.</value></data>
+  <data name="Pc_Err_PartNoFormatInvalid" xml:space="preserve"><value>فقط از حروف، ارقام و . _ / # - استفاده کنید (بدون فاصله).</value></data>
+  <data name="Pc_Err_PartNoFormatRequired" xml:space="preserve"><value>برای تولید خودکار، قالب الزامی است.</value></data>
+  <data name="Pc_Err_PartNoFormatNeedsSequence" xml:space="preserve"><value>قالب باید شامل دنباله‌ای از حداقل ۳ حرف N باشد (مثلاً NNNN).</value></data>
+  <data name="Pc_F_PartNoGenerationMethod" xml:space="preserve"><value>روش تولید</value></data>
+  <data name="Pc_F_PartNoFormat" xml:space="preserve"><value>قالب شماره‌ی قطعه</value></data>
+  <data name="جستجوی دیسیپلین..." xml:space="preserve"><value>جستجوی دیسیپلین...</value></data>
+  <data name="هیچ دیسیپلینی یافت نشد" xml:space="preserve"><value>هیچ دیسیپلینی یافت نشد</value></data>
+  <data name="هیچ سمتی با این فیلتر وجود ندارد." xml:space="preserve"><value>هیچ سمتی با این فیلتر وجود ندارد.</value></data>
+  <data name="خلاصه‌ی اشغال سمت‌ها" xml:space="preserve"><value>خلاصه‌ی اشغال سمت‌ها</value></data>
+  <data name="نمایش سمت‌ها" xml:space="preserve"><value>نمایش سمت‌ها</value></data>
+  <data name="خالی" xml:space="preserve"><value>خالی</value></data>
+  <data name="کل سمت‌ها" xml:space="preserve"><value>کل سمت‌ها</value></data>
+  <data name="نرخ اشغال" xml:space="preserve"><value>نرخ اشغال</value></data>
+  <data name="سمت‌های غیرفعال در شمارش نیامده‌اند." xml:space="preserve"><value>سمت‌های غیرفعال در شمارش نیامده‌اند.</value></data>
+  <data name="راهنمای نمودار" xml:space="preserve"><value>راهنمای نمودار</value></data>
+  <data name="گروه نگهداری" xml:space="preserve"><value>گروه نگهداری</value></data>
+  <data name="تیم" xml:space="preserve"><value>تیم</value></data>
+  <data name="شیفت / زیرتیم / واحد" xml:space="preserve"><value>شیفت / زیرتیم / واحد</value></data>
+  <data name="سمت تکمیل‌شده" xml:space="preserve"><value>سمت تکمیل‌شده</value></data>
+  <data name="سمت خالی" xml:space="preserve"><value>سمت خالی</value></data>
+  <data name="Kpi_Exec_Title" xml:space="preserve"><value>داشبورد مدیریتی شاخص‌ها (KPI)</value></data>
+  <data name="Kpi_Exec_ClassicLink" xml:space="preserve"><value>شاخص‌های نگهداری و هزینه</value></data>
+  <data name="Kpi_Exec_Intro" xml:space="preserve"><value>فقط شاخص‌هایی نمایش داده می‌شوند که PEMS واقعاً ثبت می‌کند. اگر داده‌ی کافی نباشد، به‌جای صفر همین را اعلام می‌کند؛ دسته‌هایی که PEMS برایشان داده ندارد در پایین فهرست شده‌اند.</value></data>
+  <data name="Kpi_Exec_Generated" xml:space="preserve"><value>زمان تولید</value></data>
+  <data name="Kpi_Exec_Overview" xml:space="preserve"><value>وضعیت نسبت به هدف</value></data>
+  <data name="Kpi_Exec_Target" xml:space="preserve"><value>هدف</value></data>
+  <data name="Kpi_Exec_NoDataHint" xml:space="preserve"><value>داده‌ی کافی برای محاسبه نیست.</value></data>
+  <data name="Kpi_Exec_Status" xml:space="preserve"><value>وضعیت</value></data>
+  <data name="Kpi_Exec_Count" xml:space="preserve"><value>تعداد</value></data>
+  <data name="Kpi_Exec_TopCost" xml:space="preserve"><value>پرهزینه‌ترین تجهیزها</value></data>
+  <data name="Kpi_Exec_NotTracked" xml:space="preserve"><value>هنوز در PEMS ردیابی نمی‌شود</value></data>
+  <data name="Kpi_Exec_NotTrackedHint" xml:space="preserve"><value>چارچوب KPI این موارد را فهرست کرده، اما PEMS منبع داده‌ای برایشان ندارد؛ پس با مقدار نمونه نمایش داده نمی‌شوند.</value></data>
+  <data name="Kpi_Exec_EditTargets" xml:space="preserve"><value>ویرایش اهداف</value></data>
+  <data name="Kpi_Exec_EditTargetsHint" xml:space="preserve"><value>برای حذف هدف، آن را خالی بگذارید. «نزدیک به هدف» مقادیری است که هدف را برآورده نمی‌کنند اما از این آستانه عبور کرده‌اند.</value></data>
+  <data name="Kpi_Exec_Kpi" xml:space="preserve"><value>شاخص</value></data>
+  <data name="Kpi_Exec_Direction" xml:space="preserve"><value>بهتر وقتی</value></data>
+  <data name="Kpi_Exec_Warn" xml:space="preserve"><value>نزدیک به هدف</value></data>
+  <data name="Kpi_Exec_Source" xml:space="preserve"><value>منبع</value></data>
+  <data name="Kpi_Exec_Custom" xml:space="preserve"><value>سفارشی</value></data>
+  <data name="Kpi_Exec_Default" xml:space="preserve"><value>پیش‌فرض</value></data>
+  <data name="Kpi_Status_Met" xml:space="preserve"><value>محقق</value></data>
+  <data name="Kpi_Status_Near" xml:space="preserve"><value>نزدیک به هدف</value></data>
+  <data name="Kpi_Status_Missed" xml:space="preserve"><value>محقق نشده</value></data>
+  <data name="Kpi_Status_NoTarget" xml:space="preserve"><value>بدون هدف</value></data>
+  <data name="Kpi_Status_NoData" xml:space="preserve"><value>بدون داده</value></data>
+  <data name="Kpi_Msg_TargetSaved" xml:space="preserve"><value>هدف ذخیره شد.</value></data>
+  <data name="Kpi_Err_UnknownKpi" xml:space="preserve"><value>شاخص ناشناخته.</value></data>
+  <data name="Kpi_Err_TargetRange" xml:space="preserve"><value>مقدار خارج از محدوده است (برای درصد ۰ تا ۱۰۰).</value></data>
+  <data name="Kpi_Err_WarnAboveTarget" xml:space="preserve"><value>برای شاخصی که کمتر بهتر است، آستانه‌ی نزدیک به هدف باید برابر یا بیشتر از هدف باشد.</value></data>
+  <data name="Kpi_Err_WarnBelowTarget" xml:space="preserve"><value>برای شاخصی که بیشتر بهتر است، آستانه‌ی نزدیک به هدف باید برابر یا کمتر از هدف باشد.</value></data>
+  <data name="Kpi_Err_SaveFailed" xml:space="preserve"><value>ذخیره‌ی هدف ناموفق بود. چیزی تغییر نکرد.</value></data>
+  <data name="Kpi_Err_NotANumber" xml:space="preserve"><value>فقط عدد وارد کنید.</value></data>
+  <data name="Kpi_Section_Cost" xml:space="preserve"><value>هزینه</value></data>
+  <data name="Kpi_Section_Maintenance" xml:space="preserve"><value>نگهداری و تعمیرات</value></data>
+  <data name="Kpi_Section_Reliability" xml:space="preserve"><value>قابلیت اطمینان</value></data>
+  <data name="Kpi_Section_Equipment" xml:space="preserve"><value>تجهیزات</value></data>
+  <data name="Kpi_Section_Inventory" xml:space="preserve"><value>موجودی</value></data>
+  <data name="Kpi_Section_Production" xml:space="preserve"><value>تولید</value></data>
+  <data name="Kpi_Section_Documents" xml:space="preserve"><value>مدارک مهندسی</value></data>
+  <data name="Kpi_Name_cost_total" xml:space="preserve"><value>هزینه‌ی کل نگهداری</value></data>
+  <data name="Kpi_Name_cost_labor_share" xml:space="preserve"><value>سهم نیروی کار از هزینه</value></data>
+  <data name="Kpi_Name_cost_material_share" xml:space="preserve"><value>سهم قطعات یدکی از هزینه</value></data>
+  <data name="Kpi_Name_cost_contractor_share" xml:space="preserve"><value>سهم پیمانکار از هزینه</value></data>
+  <data name="Kpi_Name_cost_corrective_share" xml:space="preserve"><value>سهم هزینه‌ی اصلاحی و اضطراری</value></data>
+  <data name="Kpi_Name_pm_compliance" xml:space="preserve"><value>تبعیت از PM (برنامه‌های بدون تأخیر)</value></data>
+  <data name="Kpi_Name_pm_overdue" xml:space="preserve"><value>برنامه‌های PM معوق</value></data>
+  <data name="Kpi_Name_wo_completion_rate" xml:space="preserve"><value>نرخ تکمیل دستورکار</value></data>
+  <data name="Kpi_Name_backlog_count" xml:space="preserve"><value>دستورکارهای باز (Backlog)</value></data>
+  <data name="Kpi_Name_backlog_hours" xml:space="preserve"><value>ساعت برنامه‌ریزی‌شده‌ی Backlog</value></data>
+  <data name="Kpi_Name_backlog_overdue_pct" xml:space="preserve"><value>سهم Backlog عقب‌افتاده</value></data>
+  <data name="Kpi_Name_wo_aging_days" xml:space="preserve"><value>میانگین سن Backlog</value></data>
+  <data name="Kpi_Name_emergency_share" xml:space="preserve"><value>سهم دستورکار اضطراری</value></data>
+  <data name="Kpi_Name_fleet_mtbf" xml:space="preserve"><value>میانگین MTBF</value></data>
+  <data name="Kpi_Name_fleet_mttr" xml:space="preserve"><value>میانگین MTTR</value></data>
+  <data name="Kpi_Name_fleet_availability" xml:space="preserve"><value>میانگین دسترس‌پذیری</value></data>
+  <data name="Kpi_Name_failure_count" xml:space="preserve"><value>خرابی‌های ثبت‌شده</value></data>
+  <data name="Kpi_Name_repeat_failure_groups" xml:space="preserve"><value>گروه‌های خرابی تکراری</value></data>
+  <data name="Kpi_Name_uncovered_critical_equipment" xml:space="preserve"><value>تجهیز کلاس A بدون استراتژی</value></data>
+  <data name="Kpi_Name_equipment_total" xml:space="preserve"><value>تجهیزات فعال</value></data>
+  <data name="Kpi_Name_stock_in_rate" xml:space="preserve"><value>سهم اقلام موجود</value></data>
+  <data name="Kpi_Name_low_stock_items" xml:space="preserve"><value>اقلام کم‌موجودی</value></data>
+  <data name="Kpi_Name_out_of_stock_items" xml:space="preserve"><value>اقلام ناموجود</value></data>
+  <data name="Kpi_Name_po_on_time_rate" xml:space="preserve"><value>سفارش‌های تولید به‌موقع تکمیل‌شده</value></data>
+  <data name="Kpi_Name_po_overdue_open" xml:space="preserve"><value>سفارش‌های تولید باز و عقب‌افتاده</value></data>
+  <data name="Kpi_Name_po_completed" xml:space="preserve"><value>سفارش‌های تولید تکمیل‌شده</value></data>
+  <data name="Kpi_Name_production_downtime_hours" xml:space="preserve"><value>توقف تولید</value></data>
+  <data name="Kpi_Name_docs_total" xml:space="preserve"><value>مدارک مهندسی</value></data>
+  <data name="Kpi_Name_docs_under_review" xml:space="preserve"><value>مدارک در حال بازبینی</value></data>
+  <data name="Kpi_Name_docs_rejected" xml:space="preserve"><value>مدارک ردشده</value></data>
+  <data name="Kpi_NT_budget" xml:space="preserve"><value>بودجه، انحراف و پیش‌بینی</value></data>
+  <data name="Kpi_NTD_budget" xml:space="preserve"><value>به بودجه‌ی سالانه‌ی نگهداری به تفکیک مرکز هزینه نیاز دارد</value></data>
+  <data name="Kpi_NT_safety" xml:space="preserve"><value>حوادث ایمنی و شبه‌حادثه</value></data>
+  <data name="Kpi_NTD_safety" xml:space="preserve"><value>به ثبت حوادث و شبه‌حادثه نیاز دارد (فقط گردش‌کار مجوز کار وجود دارد)</value></data>
+  <data name="Kpi_NT_energy" xml:space="preserve"><value>انرژی و محیط‌زیست</value></data>
+  <data name="Kpi_NTD_energy" xml:space="preserve"><value>به قرائت کنتور و ثبت پسماند نیاز دارد</value></data>
+  <data name="Kpi_NT_workforce" xml:space="preserve"><value>نیروی انسانی: حضور، جابه‌جایی، آموزش</value></data>
+  <data name="Kpi_NTD_workforce" xml:space="preserve"><value>به سوابق حضور، آموزش و ارزیابی عملکرد نیاز دارد</value></data>
+  <data name="Kpi_NT_customer" xml:space="preserve"><value>رضایت مشتری / NPS</value></data>
+  <data name="Kpi_NTD_customer" xml:space="preserve"><value>به نتایج نظرسنجی نیاز دارد</value></data>
+  <data name="Kpi_NT_risk_register" xml:space="preserve"><value>ثبت ریسک سازمانی</value></data>
+  <data name="Kpi_NTD_risk_register" xml:space="preserve"><value>به دفتر ثبت ریسک نیاز دارد (فقط بحرانیت تجهیز و RCM وجود دارد)</value></data>
+  <data name="Kpi_NT_earned_value" xml:space="preserve"><value>ارزش کسب‌شده‌ی پروژه (SPI / CPI)</value></data>
+  <data name="Kpi_NTD_earned_value" xml:space="preserve"><value>به خط مبنای هزینه و پیشرفت پروژه نیاز دارد</value></data>
+  <data name="Kpi_NT_oee" xml:space="preserve"><value>OEE (دسترس‌پذیری × عملکرد × کیفیت)</value></data>
+  <data name="Kpi_NTD_oee" xml:space="preserve"><value>به نرخ ایده‌آل و تعداد سالم/کل هر ماشین نیاز دارد</value></data>
+  <data name="Kpi_NT_pm_roi" xml:space="preserve"><value>بازگشت سرمایه‌ی نگهداری پیشگیرانه</value></data>
+  <data name="Kpi_NTD_pm_roi" xml:space="preserve"><value>هزینه‌ی خرابی‌های اجتناب‌شده از داده‌ی ثبت‌شده قابل اندازه‌گیری نیست</value></data>
+  <data name="Shell_SkipToContent" xml:space="preserve"><value>رفتن به محتوای اصلی</value></data>
+  <data name="Shell_SidebarSearch" xml:space="preserve"><value>جستجو در منو...</value></data>
+  <data name="Shell_SidebarSearchResults" xml:space="preserve"><value>{0} مورد در منو یافت شد</value></data>
+  <data name="Shell_SidebarSearchEmpty" xml:space="preserve"><value>هیچ آیتمی در منو مطابقت ندارد.</value></data>
+  <data name="Status_NotFound_Title" xml:space="preserve"><value>صفحه پیدا نشد</value></data>
+  <data name="Status_NotFound_Text" xml:space="preserve"><value>صفحه‌ی درخواستی وجود ندارد یا جابه‌جا شده است.</value></data>
+  <data name="Status_Forbidden_Title" xml:space="preserve"><value>دسترسی مجاز نیست</value></data>
+  <data name="Status_Forbidden_Text" xml:space="preserve"><value>اجازه‌ی باز کردن این صفحه را ندارید. در صورت نیاز به دسترسی، با مدیر سیستم تماس بگیرید.</value></data>
+  <data name="Status_Generic_Title" xml:space="preserve"><value>مشکلی پیش آمد</value></data>
+  <data name="Status_Generic_Text" xml:space="preserve"><value>درخواست انجام نشد. دوباره تلاش کنید؛ اگر تکرار شد، شناسه‌ی درخواست زیر را گزارش دهید.</value></data>
+  <data name="Status_Back" xml:space="preserve"><value>بازگشت</value></data>
+  <data name="Status_Home" xml:space="preserve"><value>رفتن به صفحه‌ی اصلی</value></data>
+  <data name="Status_Code" xml:space="preserve"><value>کد خطا</value></data>
+  <data name="Status_RequestId" xml:space="preserve"><value>شناسه‌ی درخواست</value></data>
+  <data name="Lt_HasAttachments" xml:space="preserve"><value>دارای پیوست</value></data>
+  <data name="Lt_HasReferrals" xml:space="preserve"><value>دارای ارجاع</value></data>
+  <data name="Lt_OverdueReferralOnly" xml:space="preserve"><value>فقط ارجاع‌های معوق</value></data>
+  <data name="Lt_Any" xml:space="preserve"><value>همه</value></data>
+  <data name="Lt_Yes" xml:space="preserve"><value>بله</value></data>
+  <data name="Lt_No" xml:space="preserve"><value>خیر</value></data>
+  <data name="Lt_ActiveFilters" xml:space="preserve"><value>فیلترهای فعال</value></data>
+  <data name="Lt_ClearAll" xml:space="preserve"><value>پاک کردن همه</value></data>
+  <data name="Lt_RemoveFilter" xml:space="preserve"><value>حذف فیلتر</value></data>
+  <data name="Lt_ApplyFilters" xml:space="preserve"><value>اعمال فیلتر</value></data>
+  <data name="Lt_ColAttachments" xml:space="preserve"><value>پیوست‌ها</value></data>
+  <data name="Lt_ColResponseDue" xml:space="preserve"><value>مهلت پاسخ</value></data>
+  <data name="Lt_ColLastActivity" xml:space="preserve"><value>آخرین فعالیت</value></data>
+  <data name="Lt_Overdue" xml:space="preserve"><value>معوق</value></data>
+  <data name="Lt_Columns" xml:space="preserve"><value>ستون‌ها</value></data>
+  <data name="Lt_SelectAll" xml:space="preserve"><value>انتخاب همه‌ی نامه‌ها</value></data>
+  <data name="Lt_SelectedCount" xml:space="preserve"><value>{0} نامه انتخاب شد</value></data>
+  <data name="Lt_BulkActions" xml:space="preserve"><value>عملیات گروهی</value></data>
+  <data name="Lt_BulkStar" xml:space="preserve"><value>ستاره‌دار کردن</value></data>
+  <data name="Lt_BulkUnstar" xml:space="preserve"><value>حذف ستاره</value></data>
+  <data name="Lt_BulkSubmit" xml:space="preserve"><value>ارسال برای بازبینی</value></data>
+  <data name="Lt_BulkSubmitConfirm" xml:space="preserve"><value>پیش‌نویس‌های انتخاب‌شده برای بازبینی ارسال شوند؟ فقط پیش‌نویس‌های خود شما ارسال می‌شود و پس از آن قابل ویرایش نیستند.</value></data>
+  <data name="Lt_BulkArchive" xml:space="preserve"><value>آرشیو</value></data>
+  <data name="Lt_ExportMatching" xml:space="preserve"><value>خروجی همه‌ی نامه‌های مطابق فیلتر</value></data>
+  <data name="Lt_ArchiveTitle" xml:space="preserve"><value>آرشیو نامه‌های انتخاب‌شده</value></data>
+  <data name="Lt_ArchiveHelp" xml:space="preserve"><value>فقط نامه‌های Draft و Rejected و فقط توسط نویسنده یا مدیر سیستم قابل آرشیو هستند. نامه‌ی آرشیوشده از فهرست پنهان می‌شود اما هرگز حذف نمی‌شود؛ اقدام و دلیل شما در گزارش ممیزی ثبت می‌شود.</value></data>
+  <data name="Lt_ArchiveReason" xml:space="preserve"><value>دلیل (الزامی)</value></data>
+  <data name="Lt_ArchiveReasonRequired" xml:space="preserve"><value>لطفاً دلیل آرشیو را وارد کنید.</value></data>
+  <data name="Lt_ArchiveConfirm" xml:space="preserve"><value>آرشیو نامه‌ها</value></data>
+  <data name="Executive KPI Dashboard" xml:space="preserve"><value>داشبورد KPI مدیریتی</value></data>
+  <data name="Correspondence Dashboard" xml:space="preserve"><value>داشبورد مکاتبات</value></data>
+  <data name="Letter Templates" xml:space="preserve"><value>قالب‌های نامه</value></data>
+  <data name="Letter Template" xml:space="preserve"><value>قالب نامه</value></data>
+  <data name="Lt_OverdueResponseOnly" xml:space="preserve"><value>فقط پاسخ‌های معوق</value></data>
+  <data name="Lt_ResponseRequired" xml:space="preserve"><value>این نامه نیاز به پاسخ دارد</value></data>
+  <data name="Lt_ResponseDueDate" xml:space="preserve"><value>مهلت پاسخ</value></data>
+  <data name="Lt_ResponseAnswered" xml:space="preserve"><value>پاسخ داده شد</value></data>
+  <data name="Lt_ResponsePending" xml:space="preserve"><value>در انتظار پاسخ</value></data>
+  <data name="Lt_ResponseEdit" xml:space="preserve"><value>تغییر پاسخ‌خواهی</value></data>
+  <data name="Lt_DashboardLink" xml:space="preserve"><value>داشبورد</value></data>
+  <data name="LtT_Manage" xml:space="preserve"><value>قالب‌های نامه</value></data>
+  <data name="LtT_Help" xml:space="preserve"><value>قالب‌ها موضوع، متن، اولویت و محرمانگی نامه‌ی جدید را پیش‌پر می‌کنند. ویرایش یا غیرفعال‌کردن قالب هرگز نامه‌ی ثبت‌شده را تغییر نمی‌دهد.</value></data>
+  <data name="LtT_New" xml:space="preserve"><value>قالب جدید</value></data>
+  <data name="LtT_Empty" xml:space="preserve"><value>هنوز قالبی تعریف نشده است.</value></data>
+  <data name="LtT_Name" xml:space="preserve"><value>نام قالب</value></data>
+  <data name="LtT_AllTypes" xml:space="preserve"><value>همه‌ی انواع نامه</value></data>
+  <data name="LtT_Active" xml:space="preserve"><value>فعال</value></data>
+  <data name="LtT_Inactive" xml:space="preserve"><value>غیرفعال</value></data>
+  <data name="LtT_Activate" xml:space="preserve"><value>فعال‌سازی</value></data>
+  <data name="LtT_Deactivate" xml:space="preserve"><value>غیرفعال‌سازی</value></data>
+  <data name="LtT_PrefillNote" xml:space="preserve"><value>موضوع و متن فقط مقدار اولیه‌اند؛ کاربر پیش از ثبت نامه می‌تواند آن‌ها را ویرایش کند.</value></data>
+  <data name="LtT_UseTemplate" xml:space="preserve"><value>شروع از روی یک قالب</value></data>
+  <data name="LtT_Apply" xml:space="preserve"><value>اعمال قالب</value></data>
+  <data name="Lt_Dash_NeedsAction" xml:space="preserve"><value>نیازمند اقدام</value></data>
+  <data name="Lt_Dash_Scope" xml:space="preserve"><value>اعداد فقط شامل نامه‌هایی است که اجازه‌ی دیدنشان را دارید.</value></data>
+  <data name="Lt_Dash_Summary" xml:space="preserve"><value>خلاصه</value></data>
+  <data name="Lt_Dash_TotalActive" xml:space="preserve"><value>نامه‌های فعال</value></data>
+  <data name="Lt_Dash_Open" xml:space="preserve"><value>نامه‌های باز</value></data>
+  <data name="Lt_Dash_AwaitingApproval" xml:space="preserve"><value>در انتظار تایید</value></data>
+  <data name="Lt_Dash_MyDrafts" xml:space="preserve"><value>پیش‌نویس‌های من</value></data>
+  <data name="Lt_Dash_MyReturned" xml:space="preserve"><value>برگشتی برای اصلاح</value></data>
+  <data name="Lt_Dash_MyReferrals" xml:space="preserve"><value>ارجاع‌های باز من</value></data>
+  <data name="Lt_Dash_OpenReferrals" xml:space="preserve"><value>ارجاع‌های باز</value></data>
+  <data name="Lt_Dash_OverdueReferrals" xml:space="preserve"><value>ارجاع‌های معوق</value></data>
+  <data name="Lt_Dash_OverdueResponses" xml:space="preserve"><value>پاسخ‌های معوق</value></data>
+  <data name="Lt_Dash_Received30" xml:space="preserve"><value>دریافتی (۳۰ روز)</value></data>
+  <data name="Lt_Dash_Issued30" xml:space="preserve"><value>صادرشده (۳۰ روز)</value></data>
+  <data name="Lt_Dash_NeedsAttention" xml:space="preserve"><value>نیازمند توجه</value></data>
+  <data name="Lt_Dash_NothingOverdue" xml:space="preserve"><value>ارجاع یا پاسخ معوقی وجود ندارد.</value></data>
+  <data name="Lt_Dash_Reason" xml:space="preserve"><value>علت</value></data>
+  <data name="Lt_Dash_DaysOverdue" xml:space="preserve"><value>روز تاخیر</value></data>
+  <data name="Lt_Dash_ReasonReferral" xml:space="preserve"><value>ارجاع معوق</value></data>
+  <data name="Lt_Dash_ReasonResponse" xml:space="preserve"><value>پاسخ معوق</value></data>
+  <data name="Lt_Dash_Aging" xml:space="preserve"><value>قدمت نامه‌های باز</value></data>
+  <data name="Lt_Dash_AgingNote" xml:space="preserve"><value>روز از تاریخ نامه؛ نامه‌های بسته، ردشده و صادرشده محاسبه نمی‌شوند.</value></data>
+  <data name="Lt_Dash_Age_0-7" xml:space="preserve"><value>۰ تا ۷ روز</value></data>
+  <data name="Lt_Dash_Age_8-30" xml:space="preserve"><value>۸ تا ۳۰ روز</value></data>
+  <data name="Lt_Dash_Age_31-90" xml:space="preserve"><value>۳۱ تا ۹۰ روز</value></data>
+  <data name="Lt_Dash_Age_90+" xml:space="preserve"><value>بیش از ۹۰ روز</value></data>
+  <data name="Lt_Dash_ByStatus" xml:space="preserve"><value>بر اساس وضعیت</value></data>
+  <data name="Lt_Dash_ByType" xml:space="preserve"><value>بر اساس نوع</value></data>
+  <data name="Lt_Dash_ByPriority" xml:space="preserve"><value>بر اساس اولویت</value></data>
+  <data name="Letter Template Preview" xml:space="preserve"><value>پیش‌نمایش قالب نامه</value></data>
+  <data name="Lt_ReplyParentDue" xml:space="preserve"><value>این نامه تا این تاریخ نیاز به پاسخ دارد:</value></data>
+  <data name="Lt_RemindersRun" xml:space="preserve"><value>ارسال یادآوری معوقات اکنون</value></data>
+  <data name="Lt_RemindersConfirm" xml:space="preserve"><value>یادآوری معوقات اکنون ارسال شود؟ یادآوری‌هایی که امروز ارسال شده‌اند تکرار نمی‌شوند.</value></data>
+  <data name="LtT_Preview" xml:space="preserve"><value>پیش‌نمایش</value></data>
+  <data name="LtT_PreviewNote" xml:space="preserve"><value>با مقادیر نمونه نمایش داده می‌شود؛ مقدار واقعی هنگام استفاده از قالب جایگزین می‌شود.</value></data>
+  <data name="LtT_PlaceholdersTitle" xml:space="preserve"><value>نشانه‌های قابل استفاده</value></data>
+  <data name="LtT_PlaceholdersHelp" xml:space="preserve"><value>نشانه‌ای مانند {{Date}} را در موضوع یا متن بنویسید؛ هنگام اعمال قالب جایگزین می‌شود. نشانه‌ی ناشناخته هنگام ذخیره رد می‌شود.</value></data>
+  <data name="LtT_PlaceholdersReply" xml:space="preserve"><value>فقط در صفحه‌ی پاسخ مقدار می‌گیرند (در ایجاد نامه‌ی جدید همان‌طور که تایپ شده می‌مانند):</value></data>
+  <data name="LtT_Token_Date" xml:space="preserve"><value>تاریخ امروز</value></data>
+  <data name="LtT_Token_UserName" xml:space="preserve"><value>نام کامل شما</value></data>
+  <data name="LtT_Token_LetterType" xml:space="preserve"><value>نوع نامه (Incoming/Outgoing/Internal)</value></data>
+  <data name="LtT_Token_ParentNumber" xml:space="preserve"><value>شماره‌ی نامه‌ای که به آن پاسخ می‌دهید</value></data>
+  <data name="LtT_Token_ParentSubject" xml:space="preserve"><value>موضوع نامه‌ای که به آن پاسخ می‌دهید</value></data>
+  <data name="LtT_Token_ParentDate" xml:space="preserve"><value>تاریخ نامه‌ای که به آن پاسخ می‌دهید</value></data>
+  <data name="LtT_Token_Counterparty" xml:space="preserve"><value>طرف مقابل آن نامه</value></data>
+  <data name="LtT_Token_ParentProject" xml:space="preserve"><value>پروژه‌ی آن نامه</value></data>
+  <data name="Compose Letter" xml:space="preserve"><value>نوشتن نامه</value></data>
+  <data name="Letter History" xml:space="preserve"><value>تاریخچه‌ی نامه</value></data>
+  <data name="Draft discarded" xml:space="preserve"><value>پیش‌نویس حذف شد</value></data>
+  <data name="Letter sent" xml:space="preserve"><value>نامه ارسال شد</value></data>
+  <data name="Letter archived" xml:space="preserve"><value>نامه آرشیو شد</value></data>
+  <data name="Approver reassigned" xml:space="preserve"><value>تاییدکننده جایگزین شد</value></data>
+  <data name="Lc_TitleInternal" xml:space="preserve"><value>نامه‌ی داخلی جدید</value></data>
+  <data name="Lc_TitleOutgoing" xml:space="preserve"><value>نامه‌ی صادره‌ی جدید</value></data>
+  <data name="Lc_NumberPending" xml:space="preserve"><value>شماره هنگام اولین ذخیره داده می‌شود</value></data>
+  <data name="Lc_Saved" xml:space="preserve"><value>ذخیره شد</value></data>
+  <data name="Lc_Saving" xml:space="preserve"><value>در حال ذخیره…</value></data>
+  <data name="Lc_Unsaved" xml:space="preserve"><value>تغییرات ذخیره‌نشده</value></data>
+  <data name="Lc_SaveFailed" xml:space="preserve"><value>ذخیره انجام نشد – پیام‌های بالا را ببینید</value></data>
+  <data name="Lc_NotSavedYet" xml:space="preserve"><value>هنوز ذخیره نشده</value></data>
+  <data name="Lc_AlertsRegion" xml:space="preserve"><value>پیام‌های فرم</value></data>
+  <data name="Lc_Sender" xml:space="preserve"><value>فرستنده</value></data>
+  <data name="Lc_Name" xml:space="preserve"><value>نام</value></data>
+  <data name="Lc_JobTitle" xml:space="preserve"><value>سمت</value></data>
+  <data name="Lc_Department" xml:space="preserve"><value>واحد</value></data>
+  <data name="Lc_Email" xml:space="preserve"><value>ایمیل</value></data>
+  <data name="Lc_Phone" xml:space="preserve"><value>تلفن</value></data>
+  <data name="Lc_NoEmployeeLink" xml:space="preserve"><value>حساب کاربری شما به پرونده‌ی کارمندی وصل نیست؛ بلوک فرستنده ناقص است و شماره با پیشوند عمومی ساخته می‌شود.</value></data>
+  <data name="Lc_Recipients" xml:space="preserve"><value>گیرندگان</value></data>
+  <data name="Lc_ExternalReceiver" xml:space="preserve"><value>گیرنده‌ی بیرونی (سازمان / شخص)</value></data>
+  <data name="Lc_To" xml:space="preserve"><value>به</value></data>
+  <data name="Lc_Cc" xml:space="preserve"><value>رونوشت</value></data>
+  <data name="Lc_Bcc" xml:space="preserve"><value>رونوشت پنهان</value></data>
+  <data name="Lc_SearchPeople" xml:space="preserve"><value>جستجو با نام، کد یا ایمیل…</value></data>
+  <data name="Lc_AddBcc" xml:space="preserve"><value>افزودن رونوشت پنهان</value></data>
+  <data name="Lc_ImportList" xml:space="preserve"><value>ورود فهرست (CSV)</value></data>
+  <data name="Lc_ImportHelp" xml:space="preserve"><value>CSV یا متن: در هر خط یک نفر – کد پرسنلی، ایمیل یا نام کامل. حداکثر ۵۰۰ گیرنده.</value></data>
+  <data name="Lc_Content" xml:space="preserve"><value>موضوع و متن</value></data>
+  <data name="Lc_Attachments" xml:space="preserve"><value>پیوست‌ها</value></data>
+  <data name="Lc_DropHere" xml:space="preserve"><value>فایل‌ها را اینجا رها کنید یا برای انتخاب کلیک کنید</value></data>
+  <data name="Lc_AttachmentRules" xml:space="preserve"><value>حداکثر ۲۵ مگابایت برای هر فایل. PDF، آفیس، تصویر، متن/CSV، ZIP و DWG/DXF.</value></data>
+  <data name="Lc_AttachNeedsDraft" xml:space="preserve"><value>با اولین پیوست، پیش‌نویس ذخیره می‌شود و شماره‌ی نامه داده می‌شود.</value></data>
+  <data name="Lc_Remove" xml:space="preserve"><value>حذف</value></data>
+  <data name="Lc_MoveUp" xml:space="preserve"><value>بالا</value></data>
+  <data name="Lc_MoveDown" xml:space="preserve"><value>پایین</value></data>
+  <data name="Lc_Details" xml:space="preserve"><value>مشخصات نامه</value></data>
+  <data name="Lc_Category" xml:space="preserve"><value>نوع نامه</value></data>
+  <data name="Lc_ChooseCategory" xml:space="preserve"><value>یک نوع انتخاب کنید…</value></data>
+  <data name="Lc_Cat_Information" xml:space="preserve"><value>اطلاع‌رسانی</value></data>
+  <data name="Lc_Cat_Request" xml:space="preserve"><value>درخواست</value></data>
+  <data name="Lc_Cat_Instruction" xml:space="preserve"><value>دستور</value></data>
+  <data name="Lc_Cat_Approval" xml:space="preserve"><value>تایید</value></data>
+  <data name="Lc_Cat_Recommendation" xml:space="preserve"><value>پیشنهاد</value></data>
+  <data name="Lc_Cat_Notice" xml:space="preserve"><value>ابلاغیه</value></data>
+  <data name="Lc_Cat_StatusReport" xml:space="preserve"><value>گزارش وضعیت</value></data>
+  <data name="Lc_Reference" xml:space="preserve"><value>شماره‌ی ارجاع</value></data>
+  <data name="Lc_ReferenceHelp" xml:space="preserve"><value>اختیاری – شماره‌ی نامه یا مدرک مرتبط.</value></data>
+  <data name="Lc_RelatedDepartment" xml:space="preserve"><value>واحد مرتبط</value></data>
+  <data name="Lc_ManualNumber" xml:space="preserve"><value>شماره‌ی دستی نامه</value></data>
+  <data name="Lc_ManualNumberHelp" xml:space="preserve"><value>برای شماره‌ی خودکار (واحد-سال-ترتیب) خالی بگذارید.</value></data>
+  <data name="Lc_Response" xml:space="preserve"><value>پاسخ</value></data>
+  <data name="Lc_Approval" xml:space="preserve"><value>تایید</value></data>
+  <data name="Lc_ApprovalRequired" xml:space="preserve"><value>نیاز به تایید پیش از ارسال</value></data>
+  <data name="Lc_OutgoingNeedsApproval" xml:space="preserve"><value>نامه‌ی صادره همیشه نیاز به تایید دارد.</value></data>
+  <data name="Lc_ApprovalChain" xml:space="preserve"><value>زنجیره‌ی تایید</value></data>
+  <data name="Lc_AddApprover" xml:space="preserve"><value>افزودن تاییدکننده…</value></data>
+  <data name="Lc_ChainHelp" xml:space="preserve"><value>تاییدکنندگان به همین ترتیب تصمیم می‌گیرند. نویسنده نمی‌تواند نامه‌ی خود را تایید کند.</value></data>
+  <data name="Lc_TemplateWarn" xml:space="preserve"><value>انتخاب قالب فرم را با متن آن دوباره بارگذاری می‌کند.</value></data>
+  <data name="Lc_Actions" xml:space="preserve"><value>اقدامات نامه</value></data>
+  <data name="Lc_Preview" xml:space="preserve"><value>پیش‌نمایش</value></data>
+  <data name="Lc_PreviewFailed" xml:space="preserve"><value>پیش‌نمایش ساخته نشد.</value></data>
+  <data name="Lc_Discard" xml:space="preserve"><value>حذف پیش‌نویس</value></data>
+  <data name="Lc_Cancel" xml:space="preserve"><value>انصراف</value></data>
+  <data name="Lc_SubmitForApproval" xml:space="preserve"><value>ارسال برای تایید</value></data>
+  <data name="Lc_Close" xml:space="preserve"><value>بستن</value></data>
+  <data name="Lc_Print" xml:space="preserve"><value>چاپ</value></data>
+  <data name="Lc_Loading" xml:space="preserve"><value>در حال بارگذاری…</value></data>
+  <data name="Lc_NoResults" xml:space="preserve"><value>فردی پیدا نشد</value></data>
+  <data name="Lc_ExternalTag" xml:space="preserve"><value>خارج از سازمان</value></data>
+  <data name="Lc_UnmatchedLines" xml:space="preserve"><value>{0} خط پیدا نشد</value></data>
+  <data name="Lc_CsvTruncated" xml:space="preserve"><value>فقط {0} گیرنده‌ی اول گرفته شد.</value></data>
+  <data name="Lc_Imported" xml:space="preserve"><value>{0} گیرنده افزوده شد.</value></data>
+  <data name="Lc_UploadFailed" xml:space="preserve"><value>بارگذاری ناموفق بود</value></data>
+  <data name="Lc_ConfirmDiscard" xml:space="preserve"><value>این پیش‌نویس حذف شود؟</value></data>
+  <data name="Lc_ConfirmSubmit" xml:space="preserve"><value>نامه برای تایید ارسال شود؟</value></data>
+  <data name="Lc_ConfirmSend" xml:space="preserve"><value>نامه الان ارسال شود؟</value></data>
+  <data name="Lc_ConfirmArchive" xml:space="preserve"><value>نامه آرشیو شود؟</value></data>
+  <data name="Lc_ErrorsTitle" xml:space="preserve"><value>لطفاً موارد زیر را اصلاح کنید</value></data>
+  <data name="Lc_WarningsTitle" xml:space="preserve"><value>توجه</value></data>
+  <data name="Lc_EditInComposer" xml:space="preserve"><value>ویرایش در فرم نامه</value></data>
+  <data name="Lc_Archive" xml:space="preserve"><value>آرشیو</value></data>
+  <data name="Lc_Reassign" xml:space="preserve"><value>تغییر تاییدکننده</value></data>
+  <data name="Lc_StepCurrent" xml:space="preserve"><value>منتظر تصمیم</value></data>
+  <data name="Lc_HistoryTitle" xml:space="preserve"><value>تاریخچه و ممیزی نامه</value></data>
+  <data name="Lc_BackToLetter" xml:space="preserve"><value>بازگشت به نامه</value></data>
+  <data name="Lc_ExportCsv" xml:space="preserve"><value>خروجی CSV</value></data>
+  <data name="Lc_WhoViewed" xml:space="preserve"><value>چه کسی نامه را دید</value></data>
+  <data name="Lc_NobodyViewed" xml:space="preserve"><value>هنوز کسی این نامه را باز نکرده است.</value></data>
+  <data name="Lc_FirstViewed" xml:space="preserve"><value>اولین بازدید</value></data>
+  <data name="Lc_LastViewed" xml:space="preserve"><value>آخرین بازدید</value></data>
+  <data name="Lc_ViewCount" xml:space="preserve"><value>تعداد بازدید</value></data>
+  <data name="Lc_Versions" xml:space="preserve"><value>تاریخچه‌ی نسخه‌ها</value></data>
+  <data name="Lc_NoVersions" xml:space="preserve"><value>هنوز نسخه‌ای ذخیره نشده است.</value></data>
+  <data name="Lc_AuditTrail" xml:space="preserve"><value>گزارش ممیزی</value></data>
+  <data name="Lc_When" xml:space="preserve"><value>زمان</value></data>
+  <data name="Lc_Who" xml:space="preserve"><value>چه کسی</value></data>
+  <data name="Lc_Event" xml:space="preserve"><value>رویداد</value></data>
+  <data name="Lc_DetailCol" xml:space="preserve"><value>جزئیات</value></data>
+  <data name="Lc_DraftWatermark" xml:space="preserve"><value>پیش‌نویس – پیش‌نمایش</value></data>
+  <data name="Lc_PrintNumber" xml:space="preserve"><value>شماره</value></data>
+  <data name="Lc_PrintFrom" xml:space="preserve"><value>از</value></data>
+  <data name="Lc_PrintTo" xml:space="preserve"><value>به</value></data>
+  <data name="Lc_PrintCc" xml:space="preserve"><value>رونوشت</value></data>
+  <data name="Lc_PrintRegards" xml:space="preserve"><value>با احترام،</value></data>
+  <data name="Lc_Signature" xml:space="preserve"><value>امضا</value></data>
+  <data name="Lc_Err_AttachmentEmpty" xml:space="preserve"><value>فایل خالی است.</value></data>
+  <data name="Lc_Err_AttachmentTooLarge" xml:space="preserve"><value>حجم فایل بیشتر از ۲۵ مگابایت است.</value></data>
+  <data name="Lc_Err_AttachmentTypeNotAllowed" xml:space="preserve"><value>این نوع فایل مجاز نیست.</value></data>
+  <data name="Lc_Err_CsvTooLarge" xml:space="preserve"><value>فایل فهرست بزرگ است (حداکثر ۱ مگابایت).</value></data>
+  <data name="Lc_Err_SubjectRequired" xml:space="preserve"><value>موضوع الزامی است.</value></data>
+  <data name="Lc_Err_SubjectTooLong" xml:space="preserve"><value>موضوع بیشتر از {0} کاراکتر است.</value></data>
+  <data name="Lc_Err_TooManyRecipients" xml:space="preserve"><value>هر نامه حداکثر {0} گیرنده می‌تواند داشته باشد.</value></data>
+  <data name="Lc_Err_ApprovalChainDuplicate" xml:space="preserve"><value>یک تاییدکننده بیش از یک بار در زنجیره آمده است.</value></data>
+  <data name="Lc_Err_ApprovalChainRequired" xml:space="preserve"><value>دست‌کم یک تاییدکننده اضافه کنید.</value></data>
+  <data name="Lc_Err_ApproverIsAuthor" xml:space="preserve"><value>نویسنده نمی‌تواند تاییدکننده‌ی نامه‌ی خود باشد.</value></data>
+  <data name="Lc_Err_ApproverNotAllowed" xml:space="preserve"><value>تاییدکننده‌ی {0} اجازه‌ی تایید مکاتبات را ندارد.</value></data>
+  <data name="Lc_Err_BodyRequired" xml:space="preserve"><value>متن نامه خالی است.</value></data>
+  <data name="Lc_Err_CategoryInvalid" xml:space="preserve"><value>نوع نامه معتبر نیست.</value></data>
+  <data name="Lc_Err_CategoryRequired" xml:space="preserve"><value>نوع نامه را انتخاب کنید.</value></data>
+  <data name="Lc_Err_Concurrency" xml:space="preserve"><value>این پیش‌نویس جای دیگری تغییر کرده است. صفحه را دوباره بارگذاری کنید.</value></data>
+  <data name="Lc_Err_ConfidentialityInvalid" xml:space="preserve"><value>سطح محرمانگی معتبر نیست.</value></data>
+  <data name="Lc_Err_ExternalReceiverRequired" xml:space="preserve"><value>گیرنده‌ی بیرونی را وارد کنید.</value></data>
+  <data name="Lc_Err_LetterNotFound" xml:space="preserve"><value>نامه پیدا نشد.</value></data>
+  <data name="Lc_Err_NotAuthor" xml:space="preserve"><value>فقط نویسنده می‌تواند این نامه را ویرایش کند.</value></data>
+  <data name="Lc_Err_NotEditable" xml:space="preserve"><value>این نامه دیگر قابل ویرایش نیست.</value></data>
+  <data name="Lc_Err_NumberInUse" xml:space="preserve"><value>این شماره‌ی نامه قبلاً استفاده شده است.</value></data>
+  <data name="Lc_Err_PriorityInvalid" xml:space="preserve"><value>اولویت معتبر نیست.</value></data>
+  <data name="Lc_Err_RecipientDuplicate" xml:space="preserve"><value>یک نفر بیش از یک بار در گیرندگان آمده است.</value></data>
+  <data name="Lc_Err_RecipientInactive" xml:space="preserve"><value>گیرنده‌ی {0} غیرفعال است.</value></data>
+  <data name="Lc_Err_RecipientNotFound" xml:space="preserve"><value>گیرنده‌ی {0} پیدا نشد.</value></data>
+  <data name="Lc_Err_RecipientRequired" xml:space="preserve"><value>دست‌کم یک گیرنده در «به» اضافه کنید.</value></data>
+  <data name="Lc_Err_ReferenceTooLong" xml:space="preserve"><value>شماره‌ی ارجاع بیش از حد طولانی است.</value></data>
+  <data name="Lc_Err_ResponseDueBeforeLetterDate" xml:space="preserve"><value>مهلت پاسخ پیش از تاریخ نامه است.</value></data>
+  <data name="Lc_Err_ResponseDueRequired" xml:space="preserve"><value>مهلت پاسخ را وارد کنید.</value></data>
+  <data name="Lc_Err_TypeInvalid" xml:space="preserve"><value>این فرم فقط برای نامه‌ی داخلی و صادره است.</value></data>
+  <data name="Lc_Err_SubmitFailed" xml:space="preserve"><value>ارسال نامه ممکن نشد: {0}</value></data>
+  <data name="Lc_Warn_ManyRecipients" xml:space="preserve"><value>این نامه برای {0} گیرنده ارسال می‌شود.</value></data>
+  <data name="Lc_Warn_ExternalRecipient" xml:space="preserve"><value>برخی گیرندگان خارج از سازمان هستند: {0}</value></data>
+  <data name="Lc_Warn_SenderInRecipients" xml:space="preserve"><value>نام شما در گیرندگان نامه‌ی خودتان آمده است.</value></data>
+  <data name="Lc_Warn_RecipientPendingWork" xml:space="preserve"><value>{0} در همین زمینه کار در انتظار دارد.</value></data>
+  <data name="LtT_Token_SenderName" xml:space="preserve"><value>نام کامل شما</value></data>
+  <data name="LtT_Token_SenderTitle" xml:space="preserve"><value>سمت شما</value></data>
+  <data name="LtT_Token_SenderDepartment" xml:space="preserve"><value>واحد سازمانی شما</value></data>
+  <data name="Lc_FolderSent" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Lc_FolderArchived" xml:space="preserve"><value>آرشیو</value></data>
 </root>
