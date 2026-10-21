@@ -1797,6 +1797,24 @@
   <data name="Lc_ConfidentialityMin" xml:space="preserve"><value>A reply cannot be less restricted than the original letter ({0}).</value></data>
   <data name="Lc_Err_ParentNotFound" xml:space="preserve"><value>The original letter was not found.</value></data>
   <data name="Lc_Err_ConfidentialityBelowParent" xml:space="preserve"><value>A reply cannot be less restricted than the original letter ({0}).</value></data>
+  <data name="Ed_TabTransmittals" xml:space="preserve"><value>Transmittals</value></data>
+  <data name="Ed_TabComments" xml:space="preserve"><value>Comments</value></data>
+  <data name="Ed_OpenComments" xml:space="preserve"><value>open comments</value></data>
+  <data name="Ed_NextStep" xml:space="preserve"><value>Next step:</value></data>
+  <data name="Ed_Next_Draft" xml:space="preserve"><value>Submit for review to start the Check stage. Any IDC disciplines you select in the submit dialog review the document before Approval.</value></data>
+  <data name="Ed_Next_Submitted" xml:space="preserve"><value>Waiting for the Check by the Eng. Supervisor / Manager.</value></data>
+  <data name="Ed_Next_Idc" xml:space="preserve"><value>Waiting for {0} discipline(s) to finish their IDC review.</value></data>
+  <data name="Ed_Next_Checked" xml:space="preserve"><value>Waiting for Approval by the Eng. Manager.</value></data>
+  <data name="Ed_Next_Approved" xml:space="preserve"><value>Ready to issue. The Document Controller issues it and picks the receiving unit.</value></data>
+  <data name="Ed_Next_Issued" xml:space="preserve"><value>Issued. Record the client response when it arrives.</value></data>
+  <data name="Ed_Next_Revise" xml:space="preserve"><value>Revise the document and resubmit it.</value></data>
+  <data name="Ed_OpenClosed" xml:space="preserve"><value>{0} open · {1} closed</value></data>
+  <data name="Ed_NoCommentsHint" xml:space="preserve"><value>No comments yet. Add the first comment to start the review register.</value></data>
+  <data name="Ed_NoFilesHint" xml:space="preserve"><value>No files yet. PDF, Office, image and DWG files up to 25 MB.</value></data>
+  <data name="Ed_FilesCount" xml:space="preserve"><value>{0} file(s) attached.</value></data>
+  <data name="Ed_ViewAll" xml:space="preserve"><value>View all</value></data>
+  <data name="Ed_NotSet" xml:space="preserve"><value>Not set</value></data>
+  <data name="Ed_Assign" xml:space="preserve"><value>Assign</value></data>
   <data name="Lt_Select" xml:space="preserve"><value>Select</value></data>
   <data name="Lp_SearchChip" xml:space="preserve"><value>Search</value></data>
   <data name="Lp_SearchPlaceholder" xml:space="preserve"><value>Search number, subject, sender or receiver…</value></data>

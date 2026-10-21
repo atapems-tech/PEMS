@@ -2592,6 +2592,24 @@
   <data name="Lc_ConfidentialityMin" xml:space="preserve"><value>سطح محرمانگی پاسخ نمی‌تواند کمتر از نامه‌ی اصلی ({0}) باشد.</value></data>
   <data name="Lc_Err_ParentNotFound" xml:space="preserve"><value>نامه‌ی اصلی پیدا نشد.</value></data>
   <data name="Lc_Err_ConfidentialityBelowParent" xml:space="preserve"><value>سطح محرمانگی پاسخ نمی‌تواند کمتر از نامه‌ی اصلی ({0}) باشد.</value></data>
+  <data name="Ed_TabTransmittals" xml:space="preserve"><value>ترنسمیتال‌ها</value></data>
+  <data name="Ed_TabComments" xml:space="preserve"><value>کامنت‌ها</value></data>
+  <data name="Ed_OpenComments" xml:space="preserve"><value>کامنت باز</value></data>
+  <data name="Ed_NextStep" xml:space="preserve"><value>مرحله‌ی بعد:</value></data>
+  <data name="Ed_Next_Draft" xml:space="preserve"><value>برای شروع مرحله‌ی Check، مدرک را برای بازبینی ارسال کنید. دیسیپلین‌هایی که در پنجره‌ی ارسال برای IDC انتخاب کنید، پیش از تایید مدرک را بررسی می‌کنند.</value></data>
+  <data name="Ed_Next_Submitted" xml:space="preserve"><value>منتظر بررسی (Check) توسط سرپرست / مدیر مهندسی.</value></data>
+  <data name="Ed_Next_Idc" xml:space="preserve"><value>منتظر پایان بازبینی IDC توسط {0} دیسیپلین.</value></data>
+  <data name="Ed_Next_Checked" xml:space="preserve"><value>منتظر تایید توسط مدیر مهندسی.</value></data>
+  <data name="Ed_Next_Approved" xml:space="preserve"><value>آماده‌ی صدور است. کنترل مدارک آن را صادر و واحد دریافت‌کننده را انتخاب می‌کند.</value></data>
+  <data name="Ed_Next_Issued" xml:space="preserve"><value>صادر شد. پاسخ کارفرما را هنگام دریافت ثبت کنید.</value></data>
+  <data name="Ed_Next_Revise" xml:space="preserve"><value>مدرک را اصلاح کنید و دوباره ارسال کنید.</value></data>
+  <data name="Ed_OpenClosed" xml:space="preserve"><value>{0} باز · {1} بسته</value></data>
+  <data name="Ed_NoCommentsHint" xml:space="preserve"><value>هنوز کامنتی ثبت نشده است. اولین کامنت را برای شروع ثبت بازبینی اضافه کنید.</value></data>
+  <data name="Ed_NoFilesHint" xml:space="preserve"><value>هنوز فایلی نیست. فایل PDF، آفیس، تصویر و DWG تا ۲۵ مگابایت.</value></data>
+  <data name="Ed_FilesCount" xml:space="preserve"><value>{0} فایل پیوست شده است.</value></data>
+  <data name="Ed_ViewAll" xml:space="preserve"><value>مشاهده‌ی همه</value></data>
+  <data name="Ed_NotSet" xml:space="preserve"><value>تعیین نشده</value></data>
+  <data name="Ed_Assign" xml:space="preserve"><value>تعیین</value></data>
   <data name="Lt_Select" xml:space="preserve"><value>انتخاب</value></data>
   <data name="Lp_SearchChip" xml:space="preserve"><value>جستجو</value></data>
   <data name="Lp_SearchPlaceholder" xml:space="preserve"><value>جستجو در شماره، موضوع، فرستنده یا گیرنده…</value></data>
