@@ -1815,6 +1815,34 @@
   <data name="Ed_ViewAll" xml:space="preserve"><value>View all</value></data>
   <data name="Ed_NotSet" xml:space="preserve"><value>Not set</value></data>
   <data name="Ed_Assign" xml:space="preserve"><value>Assign</value></data>
+  <data name="Vd_Breadcrumb" xml:space="preserve"><value>Breadcrumb</value></data>
+  <data name="Vd_VendorLabel" xml:space="preserve"><value>Vendor</value></data>
+  <data name="Vd_ReviewStages" xml:space="preserve"><value>Review stages</value></data>
+  <data name="Vd_Step1Title" xml:space="preserve"><value>Record vendor transmittal</value></data>
+  <data name="Vd_Step1Of" xml:space="preserve"><value>Step 1 of 2 · Required</value></data>
+  <data name="Vd_Step1Hint" xml:space="preserve"><value>Enter the transmittal the vendor sent with this document. The review cycle starts after this step.</value></data>
+  <data name="Vd_TransmittalHelp" xml:space="preserve"><value>Shown on the vendor cover letter.</value></data>
+  <data name="Vd_IssuedDateHelp" xml:space="preserve"><value>Pick from the calendar or type an ISO date (YYYY-MM-DD).</value></data>
+  <data name="Vd_PoiFull" xml:space="preserve"><value>Purpose of issue (POI)</value></data>
+  <data name="Vd_SelectPurpose" xml:space="preserve"><value>Select purpose</value></data>
+  <data name="Vd_PoiOpt_IFA" xml:space="preserve"><value>IFA: Issued for approval</value></data>
+  <data name="Vd_PoiOpt_IFR" xml:space="preserve"><value>IFR: Issued for review</value></data>
+  <data name="Vd_PoiOpt_IFI" xml:space="preserve"><value>IFI: Issued for information</value></data>
+  <data name="Vd_PoiOpt_FI" xml:space="preserve"><value>FI: For information</value></data>
+  <data name="Vd_PoiHelp" xml:space="preserve"><value>Records why the vendor issued this revision.</value></data>
+  <data name="Vd_SystemSetRev" xml:space="preserve"><value>Set by the system. The next revision is assigned on resubmission.</value></data>
+  <data name="Vd_Step2Title" xml:space="preserve"><value>Other disciplines</value></data>
+  <data name="Vd_NoDiscSelected" xml:space="preserve"><value>None selected. The document goes straight to the final decision.</value></data>
+  <data name="Vd_DiscSelected" xml:space="preserve"><value>{0} selected: {1}</value></data>
+  <data name="Vd_ChooseDisciplines" xml:space="preserve"><value>Choose disciplines</value></data>
+  <data name="Vd_ReviewSummary" xml:space="preserve"><value>Review summary</value></data>
+  <data name="Vd_Reviewers" xml:space="preserve"><value>Reviewers</value></data>
+  <data name="Vd_None" xml:space="preserve"><value>None</value></data>
+  <data name="Vd_EnterTransmittalToEnable" xml:space="preserve"><value>Enter the vendor transmittal to enable this action.</value></data>
+  <data name="Vs_VdrRegisterHeading" xml:space="preserve"><value>Vendor Document Register</value></data>
+  <data name="Vs_NewVendorDocument" xml:space="preserve"><value>New vendor document</value></data>
+  <data name="Vs_FilterToggle" xml:space="preserve"><value>Filters</value></data>
+  <data name="Vs_ActiveFilters" xml:space="preserve"><value>active filters</value></data>
   <data name="Lt_Select" xml:space="preserve"><value>Select</value></data>
   <data name="Lp_SearchChip" xml:space="preserve"><value>Search</value></data>
   <data name="Lp_SearchPlaceholder" xml:space="preserve"><value>Search number, subject, sender or receiver…</value></data>

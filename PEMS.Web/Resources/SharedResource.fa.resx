@@ -2610,6 +2610,34 @@
   <data name="Ed_ViewAll" xml:space="preserve"><value>مشاهده‌ی همه</value></data>
   <data name="Ed_NotSet" xml:space="preserve"><value>تعیین نشده</value></data>
   <data name="Ed_Assign" xml:space="preserve"><value>تعیین</value></data>
+  <data name="Vd_Breadcrumb" xml:space="preserve"><value>مسیر صفحه</value></data>
+  <data name="Vd_VendorLabel" xml:space="preserve"><value>فروشنده</value></data>
+  <data name="Vd_ReviewStages" xml:space="preserve"><value>مراحل بازبینی</value></data>
+  <data name="Vd_Step1Title" xml:space="preserve"><value>ثبت ترنسمیتال فروشنده</value></data>
+  <data name="Vd_Step1Of" xml:space="preserve"><value>مرحله‌ی ۱ از ۲ · الزامی</value></data>
+  <data name="Vd_Step1Hint" xml:space="preserve"><value>ترنسمیتالی را وارد کنید که فروشنده همراه این مدرک فرستاده است. چرخه‌ی بازبینی بعد از این مرحله شروع می‌شود.</value></data>
+  <data name="Vd_TransmittalHelp" xml:space="preserve"><value>روی نامه‌ی همراه فروشنده دیده می‌شود.</value></data>
+  <data name="Vd_IssuedDateHelp" xml:space="preserve"><value>از تقویم انتخاب کنید یا تاریخ را به‌صورت YYYY-MM-DD بنویسید.</value></data>
+  <data name="Vd_PoiFull" xml:space="preserve"><value>هدف صدور (POI)</value></data>
+  <data name="Vd_SelectPurpose" xml:space="preserve"><value>هدف را انتخاب کنید</value></data>
+  <data name="Vd_PoiOpt_IFA" xml:space="preserve"><value>IFA: صادرشده برای تایید</value></data>
+  <data name="Vd_PoiOpt_IFR" xml:space="preserve"><value>IFR: صادرشده برای بازبینی</value></data>
+  <data name="Vd_PoiOpt_IFI" xml:space="preserve"><value>IFI: صادرشده برای اطلاع</value></data>
+  <data name="Vd_PoiOpt_FI" xml:space="preserve"><value>FI: جهت اطلاع</value></data>
+  <data name="Vd_PoiHelp" xml:space="preserve"><value>دلیل صدور این بازنگری توسط فروشنده را ثبت می‌کند.</value></data>
+  <data name="Vd_SystemSetRev" xml:space="preserve"><value>توسط سیستم تعیین می‌شود. بازنگری بعدی هنگام ارسال مجدد داده می‌شود.</value></data>
+  <data name="Vd_Step2Title" xml:space="preserve"><value>سایر دیسیپلین‌ها</value></data>
+  <data name="Vd_NoDiscSelected" xml:space="preserve"><value>هیچ‌کدام انتخاب نشده است. مدرک مستقیم به تصمیم نهایی می‌رود.</value></data>
+  <data name="Vd_DiscSelected" xml:space="preserve"><value>{0} انتخاب‌شده: {1}</value></data>
+  <data name="Vd_ChooseDisciplines" xml:space="preserve"><value>انتخاب دیسیپلین‌ها</value></data>
+  <data name="Vd_ReviewSummary" xml:space="preserve"><value>خلاصه‌ی بازبینی</value></data>
+  <data name="Vd_Reviewers" xml:space="preserve"><value>بازبینان</value></data>
+  <data name="Vd_None" xml:space="preserve"><value>هیچ</value></data>
+  <data name="Vd_EnterTransmittalToEnable" xml:space="preserve"><value>برای فعال‌شدن این اقدام، ترنسمیتال فروشنده را وارد کنید.</value></data>
+  <data name="Vs_VdrRegisterHeading" xml:space="preserve"><value>ثبت مدارک فروشندگان</value></data>
+  <data name="Vs_NewVendorDocument" xml:space="preserve"><value>مدرک فروشنده‌ی جدید</value></data>
+  <data name="Vs_FilterToggle" xml:space="preserve"><value>فیلترها</value></data>
+  <data name="Vs_ActiveFilters" xml:space="preserve"><value>فیلتر فعال</value></data>
   <data name="Lt_Select" xml:space="preserve"><value>انتخاب</value></data>
   <data name="Lp_SearchChip" xml:space="preserve"><value>جستجو</value></data>
   <data name="Lp_SearchPlaceholder" xml:space="preserve"><value>جستجو در شماره، موضوع، فرستنده یا گیرنده…</value></data>
