@@ -31,14 +31,19 @@ public class LetterController : Controller
     private readonly INotificationService _notifications;
     private readonly ILetterTemplateService? _templates;
     private readonly ILetterReminderService? _reminders;
+    private readonly ILetterComposeService? _composeService;
+    private readonly IConfiguration _configuration;
 
     public LetterController(ILetterService letterService, ILetterReferralService referralService,
         PEMSDbContext context, ICurrentUserService currentUser, IPermissionService permissionService,
         ITagService tagService, IRichTextSanitizerService richTextSanitizer, ICacheService cache,
         ILetterNumberingService numberingService, IFileStorageService fileStorage,
         INotificationService notifications, ILetterTemplateService? templateService = null,
-        ILetterReminderService? reminderService = null)
+        ILetterReminderService? reminderService = null, ILetterComposeService? composeService = null,
+        IConfiguration? configuration = null)
     {
+        _composeService = composeService;
+        _configuration = configuration ?? new ConfigurationBuilder().Build();
         _templates = templateService;
         _reminders = reminderService;
         _notifications = notifications;
@@ -227,10 +232,41 @@ public class LetterController : Controller
         return RedirectToAction(nameof(Dashboard));
     }
 
+    // بیننده‌ی فعلی برای قاعده‌ی دسترسی نامه (LetterAccessRules): کاربر، کارمند مرتبط، و «دسترسی کامل» (SystemAdmin یا Approve)
+    private async Task<LetterViewer> BuildViewerAsync()
+    {
+        var userId = _currentUser.UserId;
+        int? employeeId = userId.HasValue
+            ? await _context.Users.Where(u => u.Id == userId.Value).Select(u => u.EmployeeId).FirstOrDefaultAsync()
+            : null;
+        var canSeeAll = _currentUser.Roles.Contains("SystemAdmin")
+            || await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Approve");
+
+        return new LetterViewer(userId, employeeId, canSeeAll, _currentUser.UserName);
+    }
+
+    // هر اقدام روی یک نامه‌ی مشخص (ستاره، گیرنده، برچسب، پیوست، ارجاع، امضا، پاسخ...) پیش از اجرا حق دیدن همان نامه را می‌سنجد؛
+    // قبلاً فقط باز کردن صفحه کنترل نمی‌شد و ID حدس‌زده‌شده برای نامه‌ی محرمانه‌ی دیگران هم کار می‌کرد.
+    // بخش کاربر جاری برای پیشوند شماره‌ی نامه ([DEPT]-[YEAR]-[SEQ])؛ بدون کارمند/بخش → null و شمارنده GEN را می‌گذارد
+    private async Task<int?> GetCurrentDepartmentIdAsync()
+    {
+        var userId = _currentUser.UserId;
+        if (!userId.HasValue) return null;
+        var employeeId = await _context.Users.Where(u => u.Id == userId.Value).Select(u => u.EmployeeId).FirstOrDefaultAsync();
+        if (!employeeId.HasValue) return null;
+        return await _context.Employees.Where(e => e.EmployeeId == employeeId.Value).Select(e => (int?)e.DepartmentId).FirstOrDefaultAsync();
+    }
+
+    private async Task<IActionResult?> DenyIfNoAccessAsync(int letterId)
+        => await _letterService.CanViewAsync(letterId, await BuildViewerAsync()) ? null : Forbid();
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> SetResponseDue(int letterId, bool responseRequired, DateTime? responseDueDate)
     {
+        var denied = await DenyIfNoAccessAsync(letterId);
+        if (denied != null) return denied;
+
         var canManageAny = _currentUser.Roles.Contains("SystemAdmin") ||
             await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Approve");
 
@@ -243,6 +279,9 @@ public class LetterController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleStar(int letterId, string? returnUrl)
     {
+        var denied = await DenyIfNoAccessAsync(letterId);
+        if (denied != null) return denied;
+
         if (_currentUser.UserId.HasValue)
             await _letterService.ToggleStarAsync(letterId, _currentUser.UserId.Value);
 
@@ -253,6 +292,9 @@ public class LetterController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddRecipient(int letterId, string recipientType, int? employeeId, int? departmentId, string? externalName)
     {
+        var denied = await DenyIfNoAccessAsync(letterId);
+        if (denied != null) return denied;
+
         await _letterService.AddRecipientAsync(letterId, recipientType, employeeId, departmentId, externalName);
         TempData["Message"] = "Recipient added";
         return RedirectToAction(nameof(Details), new { id = letterId });
@@ -262,6 +304,9 @@ public class LetterController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> MarkRecipientRead(int letterId, int letterRecipientId)
     {
+        var denied = await DenyIfNoAccessAsync(letterId);
+        if (denied != null) return denied;
+
         if (_currentUser.UserId.HasValue)
             await _letterService.MarkRecipientReadAsync(letterRecipientId, _currentUser.UserId.Value);
 
@@ -272,6 +317,9 @@ public class LetterController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AttachTag(int letterId, int? tagId, string? newTagName, string? newTagColor)
     {
+        var denied = await DenyIfNoAccessAsync(letterId);
+        if (denied != null) return denied;
+
         var idToAttach = tagId;
 
         if (!idToAttach.HasValue && !string.IsNullOrWhiteSpace(newTagName))
@@ -287,6 +335,9 @@ public class LetterController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DetachTag(int letterId, int tagId)
     {
+        var denied = await DenyIfNoAccessAsync(letterId);
+        if (denied != null) return denied;
+
         await _tagService.DetachFromLetterAsync(letterId, tagId);
         return RedirectToAction(nameof(Details), new { id = letterId });
     }
@@ -308,14 +359,17 @@ public class LetterController : Controller
         ViewData["Title"] = "Letter Details";
         ViewData["Section"] = "Correspondence Management";
 
-        var detail = await _letterService.GetDetailAsync(id);
-        if (detail == null) return NotFound();
+        var viewer = await BuildViewerAsync();
+        var access = await _letterService.GetDetailForViewerAsync(id, viewer);
+        if (access.Outcome == LetterAccessOutcome.Forbidden) return Forbid();
+        if (access.Outcome != LetterAccessOutcome.Ok) return NotFound();
+        var detail = access.Detail!;
 
         // باز کردن مستقیم نامه (نه فقط از روی اعلان) هم اعلان‌های مرتبطِ همین کاربر را Read می‌کند
         if (_currentUser.UserId.HasValue)
             await _notifications.MarkRelatedReadAsync(_currentUser.UserId.Value, "Letter", id);
 
-        ViewBag.Timeline = await _letterService.GetTimelineAsync(id);
+        ViewBag.Timeline = await _letterService.GetTimelineAsync(id, viewer);
         // طبق بند ۱۹: ParentLetterId/Thread از قبل در سرویس وجود داشت اما هرگز از Details
         // فراخوانی نمی‌شد - نمای مکالمه‌ای (Gmail-Inspired) دقیقاً به همین داده نیاز دارد
         ViewBag.Thread = await _letterService.GetThreadAsync(id);
@@ -330,6 +384,16 @@ public class LetterController : Controller
             && detail.Letter.Status == "Draft";
 
         ViewBag.CanReview = await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Approve");
+
+        // flags for the formal-workflow buttons (send / archive / reassign approver / history); services re-check every rule
+        var isAuthor = _currentUser.UserId.HasValue && _currentUser.UserId.Value == detail.Letter.RegisteredById;
+        var isAdmin = _currentUser.Roles.Contains("SystemAdmin");
+        ViewBag.IsAuthor = isAuthor;
+        ViewBag.IsAdmin = isAdmin;
+        ViewBag.CanArchive = isAuthor || isAdmin || (bool)ViewBag.CanReview;
+        ViewBag.CanAudit = isAuthor || isAdmin || (bool)ViewBag.CanReview;
+        if (isAdmin && _composeService != null && detail.ApprovalSteps.Any(x => x.Status == "Pending"))
+            ViewBag.ApproverOptions = await _composeService.GetApproverOptionsAsync();
 
         // پاسخ‌خواهی: ثبت‌کننده یا کسی با اختیار Approve/SystemAdmin (سرویس دوباره بررسی می‌کند)
         ViewBag.CanManageResponse = _currentUser.UserId.HasValue
@@ -352,8 +416,10 @@ public class LetterController : Controller
         ViewData["Title"] = "Reply";
         ViewData["Section"] = "Correspondence Management";
 
-        var parent = await _letterService.GetDetailAsync(id);
-        if (parent == null) return NotFound();
+        var parentAccess = await _letterService.GetDetailForViewerAsync(id, await BuildViewerAsync());
+        if (parentAccess.Outcome == LetterAccessOutcome.Forbidden) return Forbid();
+        if (parentAccess.Outcome != LetterAccessOutcome.Ok) return NotFound();
+        var parent = parentAccess.Detail!;
 
         ViewBag.Thread = await _letterService.GetThreadAsync(id);
         ViewBag.ParentLetterId = id;
@@ -382,7 +448,10 @@ public class LetterController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Reply(int parentLetterId, string subject, string? body, string? receiver)
     {
-        var letterNumber = await _numberingService.GenerateNextNumberAsync("Outgoing", null);
+        var denied = await DenyIfNoAccessAsync(parentLetterId);
+        if (denied != null) return denied;
+
+        var letterNumber = await _numberingService.GenerateNextNumberAsync("Outgoing", null, await GetCurrentDepartmentIdAsync());
 
         var id = await _letterService.ReplyAsync(parentLetterId, letterNumber, subject, body, receiver, _currentUser.UserId);
 
@@ -393,6 +462,10 @@ public class LetterController : Controller
     [HttpGet]
     public async Task<IActionResult> Create(string letterType = "Incoming", int? templateId = null)
     {
+        // Internal / Outgoing letters are written in the formal composer (sender block, To/Cc/Bcc, category, approval chain, auto-save)
+        if (letterType is "Internal" or "Outgoing")
+            return RedirectToAction("Compose", "LetterCompose", new { letterType, templateId });
+
         ViewData["Title"] = "New Letter";
         ViewData["Section"] = "Correspondence Management";
 
@@ -488,7 +561,7 @@ public class LetterController : Controller
         var canManualNumber = await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "ManualNumber");
 
         if (!useManualNumber || !canManualNumber || string.IsNullOrWhiteSpace(letterNumber))
-            letterNumber = await _numberingService.GenerateNextNumberAsync(letterType, projectId);
+            letterNumber = await _numberingService.GenerateNextNumberAsync(letterType, projectId, await GetCurrentDepartmentIdAsync());
 
         var id = await _letterService.CreateAsync(letterType, letterNumber, letterDate, sender, receiver,
             subject, body, priority, confidentialityLevel, projectId, disciplineId, relatedDocumentId,
@@ -525,6 +598,9 @@ public class LetterController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UploadAttachment(int letterId, IFormFile file)
     {
+        var denied = await DenyIfNoAccessAsync(letterId);
+        if (denied != null) return denied;
+
         if (file != null && file.Length > 0)
         {
             string storageKey;
@@ -650,6 +726,9 @@ public class LetterController : Controller
     public async Task<IActionResult> Refer(int letterId, int? referredToEmployeeId,
         int? referredToDepartmentId, string? instructions, DateTime? dueDate)
     {
+        var denied = await DenyIfNoAccessAsync(letterId);
+        if (denied != null) return denied;
+
         await _referralService.CreateAsync(letterId, referredToEmployeeId, referredToDepartmentId,
             instructions, dueDate, _currentUser.FullName);
 
@@ -661,6 +740,9 @@ public class LetterController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> MarkReferralRead(int referralId, int letterId)
     {
+        var denied = await DenyIfNoAccessAsync(letterId);
+        if (denied != null) return denied;
+
         if (_currentUser.UserId != null)
             await _referralService.MarkReadAsync(referralId, _currentUser.UserId.Value);
 
@@ -671,6 +753,9 @@ public class LetterController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CompleteReferral(int referralId, int letterId, string? responseNote)
     {
+        var denied = await DenyIfNoAccessAsync(letterId);
+        if (denied != null) return denied;
+
         await _referralService.CompleteAsync(referralId, responseNote);
         TempData["Message"] = "Referral marked as completed";
         return RedirectToAction(nameof(Details), new { id = letterId });
@@ -680,6 +765,9 @@ public class LetterController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Sign(int letterId, string signedByName)
     {
+        var denied = await DenyIfNoAccessAsync(letterId);
+        if (denied != null) return denied;
+
         await _letterService.SignAsync(letterId, signedByName);
         TempData["Message"] = "Letter signed";
         return RedirectToAction(nameof(Details), new { id = letterId });
@@ -687,8 +775,23 @@ public class LetterController : Controller
 
     public async Task<IActionResult> ExportPdf(int id)
     {
-        var detail = await _letterService.GetDetailAsync(id);
-        if (detail == null) return NotFound();
+        var pdfAccess = await _letterService.GetDetailForViewerAsync(id, await BuildViewerAsync());
+        if (pdfAccess.Outcome == LetterAccessOutcome.Forbidden) return Forbid();
+        if (pdfAccess.Outcome != LetterAccessOutcome.Ok) return NotFound();
+        var detail = pdfAccess.Detail!;
+
+        var letter = detail.Letter;
+        var letterhead = LetterheadSettings.From(_configuration);
+
+        // Bcc is never printed (not even for the author); To/Cc come from the stored recipients, falling back to the free-text receiver
+        string Names(string type) => string.Join("\u060C ", detail.Recipients.Where(r => r.RecipientType == type).Select(r => r.DisplayName));
+        var toLine = Names("To");
+        if (string.IsNullOrWhiteSpace(toLine)) toLine = letter.Receiver ?? "";
+        var ccLine = Names("Cc");
+        var fromLine = !string.IsNullOrWhiteSpace(letter.SenderName)
+            ? letter.SenderName + (string.IsNullOrWhiteSpace(letter.SenderTitle) ? "" : " - " + letter.SenderTitle)
+                + (string.IsNullOrWhiteSpace(letter.SenderDepartmentName) ? "" : " (" + letter.SenderDepartmentName + ")")
+            : letter.Sender ?? "";
 
         var document = QuestPDF.Fluent.Document.Create(container =>
         {
@@ -696,26 +799,59 @@ public class LetterController : Controller
             {
                 page.Size(PageSizes.A4);
                 page.Margin(2, Unit.Centimetre);
-                page.DefaultTextStyle(x => x.FontSize(12));
+                page.DefaultTextStyle(x => x.FontSize(11));
 
                 page.Header().Column(col =>
                 {
-                    col.Item().Text("PEMS - Official Correspondence").FontSize(16).Bold();
-                    col.Item().Text($"Letter No: {detail.Letter.LetterNumber}");
-                    col.Item().Text($"Date: {detail.Letter.LetterDate:yyyy-MM-dd}");
+                    col.Item().Row(row =>
+                    {
+                        row.RelativeItem().Column(c =>
+                        {
+                            c.Item().Text(letterhead.CompanyName).FontSize(16).Bold();
+                            if (!string.IsNullOrWhiteSpace(letterhead.Address)) c.Item().Text(letterhead.Address).FontSize(9);
+                            var contact = string.Join("  ", new[] { letterhead.Phone, letterhead.Website }.Where(v => !string.IsNullOrWhiteSpace(v)));
+                            if (contact.Length > 0) c.Item().Text(contact).FontSize(9);
+                        });
+                        row.ConstantItem(190).AlignRight().Column(c =>
+                        {
+                            c.Item().Text($"No: {letter.LetterNumber}").Bold();
+                            c.Item().Text($"Date: {letter.LetterDate:yyyy-MM-dd}");
+                            if (!string.IsNullOrWhiteSpace(letter.ReferenceNumber)) c.Item().Text($"Ref: {letter.ReferenceNumber}");
+                            if (!string.IsNullOrWhiteSpace(letter.Category)) c.Item().Text($"Category: {letter.Category}");
+                        });
+                    });
+                    col.Item().PaddingTop(6).LineHorizontal(1.5f);
                 });
 
-                page.Content().PaddingVertical(15).Column(col =>
+                page.Content().PaddingVertical(12).Column(col =>
                 {
-                    col.Item().Text($"To: {detail.Letter.Receiver}");
-                    col.Item().Text($"Subject: {detail.Letter.Subject}").Bold();
-                    col.Item().PaddingTop(10).Text(_richTextSanitizer.ToPlainText(detail.Body));
+                    if (fromLine.Length > 0) col.Item().Text(t => { t.Span("From: ").Bold(); t.Span(fromLine); });
+                    if (toLine.Length > 0) col.Item().Text(t => { t.Span("To: ").Bold(); t.Span(toLine); });
+                    if (ccLine.Length > 0) col.Item().Text(t => { t.Span("Cc: ").Bold(); t.Span(ccLine); });
+                    col.Item().PaddingVertical(8).Text($"Subject: {letter.Subject}").Bold().FontSize(12);
+                    col.Item().PaddingTop(4).Text(_richTextSanitizer.ToPlainText(detail.Body));
+
+                    col.Item().PaddingTop(28).Column(sign =>
+                    {
+                        if (!string.IsNullOrWhiteSpace(letter.SenderName)) sign.Item().Text(letter.SenderName).Bold();
+                        if (!string.IsNullOrWhiteSpace(letter.SenderTitle)) sign.Item().Text(letter.SenderTitle);
+                        if (!string.IsNullOrWhiteSpace(letter.SenderDepartmentName)) sign.Item().Text(letter.SenderDepartmentName);
+                        if (!string.IsNullOrWhiteSpace(letter.SignedByName))
+                            sign.Item().PaddingTop(4).Text($"Signed: {letter.SignedByName} {letter.SignedDate:yyyy-MM-dd}").FontSize(9);
+                    });
                 });
 
-                page.Footer().AlignCenter().Text(x =>
+                page.Footer().Row(row =>
                 {
-                    x.Span("Generated by PEMS - ");
-                    x.Span(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+                    row.RelativeItem().Text($"Confidentiality: {letter.ConfidentialityLevel}  |  Priority: {letter.Priority}").FontSize(8);
+                    row.RelativeItem().AlignRight().Text(x =>
+                    {
+                        x.DefaultTextStyle(t => t.FontSize(8));
+                        x.Span($"{DateTime.Now:yyyy-MM-dd HH:mm}  -  Page ");
+                        x.CurrentPageNumber();
+                        x.Span(" / ");
+                        x.TotalPages();
+                    });
                 });
             });
         });

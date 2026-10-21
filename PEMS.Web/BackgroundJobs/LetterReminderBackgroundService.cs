@@ -10,6 +10,10 @@ public class LetterReminderOptions
 
     // ساعت اجرای روزانه به وقت محلی سرور، قالب HH:mm
     public string RunAtLocalTime { get; set; } = "07:30";
+
+    // آرشیو خودکار نامه‌های ارسال‌شده/بسته‌شده‌ای که این‌قدر سال هیچ فعالیتی نداشته‌اند (۰ = خاموش، پیش‌فرض). مقدار پیشنهادی طبق سند: ۲.
+    // مستقل از Enabled (یادآوری) است، ولی هر دو در همین اجرای روزانه انجام می‌شوند.
+    public int AutoArchiveAfterYears { get; set; }
 }
 
 public static class LetterReminderSchedule
@@ -52,9 +56,9 @@ public class LetterReminderBackgroundService : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var options = _options.Value;
-        if (!options.Enabled)
+        if (!options.Enabled && options.AutoArchiveAfterYears <= 0)
         {
-            _logger.LogInformation("Letter reminders are disabled (LetterReminders:Enabled=false).");
+            _logger.LogInformation("Letter daily job is disabled (LetterReminders:Enabled=false and AutoArchiveAfterYears=0).");
             return;
         }
 
@@ -73,18 +77,47 @@ public class LetterReminderBackgroundService : BackgroundService
                 break;
             }
 
+            IServiceScope scope;
             try
             {
-                using var scope = _scopes.CreateScope();
-                var service = scope.ServiceProvider.GetRequiredService<ILetterReminderService>();
-                var result = await service.SendDueRemindersAsync();
-                _logger.LogInformation("Letter reminders sent: {Referral} referral, {Response} response, {Skipped} duplicate(s) skipped, {Failed} failed.",
-                    result.ReferralReminders, result.ResponseReminders, result.SkippedDuplicates, result.Failed);
+                scope = _scopes.CreateScope();
             }
             catch (Exception ex)
             {
-                // یک اجرای ناموفق نباید حلقه‌ی روزهای بعد را بکشد
-                _logger.LogError(ex, "Letter reminder run failed.");
+                _logger.LogError(ex, "Letter daily job could not create a service scope.");
+                continue;
+            }
+
+            using var _ = scope;
+
+            // هر مرحله جدا خطا را می‌گیرد: شکست یادآوری، آرشیو همان روز را (و هیچ‌کدام حلقه‌ی روزهای بعد را) نمی‌کشد
+            if (options.Enabled)
+            {
+                try
+                {
+                    var service = scope.ServiceProvider.GetRequiredService<ILetterReminderService>();
+                    var result = await service.SendDueRemindersAsync();
+                    _logger.LogInformation("Letter reminders sent: {Referral} referral, {Response} response, {Skipped} duplicate(s) skipped, {Failed} failed.",
+                        result.ReferralReminders, result.ResponseReminders, result.SkippedDuplicates, result.Failed);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Letter reminder run failed.");
+                }
+            }
+
+            if (options.AutoArchiveAfterYears > 0)
+            {
+                try
+                {
+                    var archive = scope.ServiceProvider.GetRequiredService<ILetterComplianceService>();
+                    var count = await archive.ArchiveInactiveAsync(DateTime.Now, options.AutoArchiveAfterYears);
+                    _logger.LogInformation("Letters auto-archived after {Years} year(s) of inactivity: {Count}.", options.AutoArchiveAfterYears, count);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Letter auto-archive run failed.");
+                }
             }
         }
     }

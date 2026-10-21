@@ -32,6 +32,12 @@ public interface ILetterService
 
     Task<LetterDetailDto?> GetDetailAsync(int letterId);
 
+    // نسخه‌ی «با کنترل دسترسی» برای صفحه‌ی جزئیات: Forbidden اگر بیننده حق دیدن ندارد؛ BCC فقط برای نویسنده/Approve/خودِ گیرنده دیده می‌شود؛
+    // باز کردن نامه‌ی ارسال‌شده در گزارش «چه کسی دیده» ثبت و گیرنده‌ی همان کاربر «خوانده‌شده» می‌شود.
+    Task<LetterDetailAccessResult> GetDetailForViewerAsync(int letterId, LetterViewer viewer);
+
+    Task<bool> CanViewAsync(int letterId, LetterViewer viewer);
+
     Task<int> CreateAsync(string letterType, string letterNumber, DateTime letterDate, string? sender,
         string? receiver, string subject, string? body, string priority, string confidentialityLevel,
         int? projectId, int? disciplineId, int? relatedDocumentId, int? relatedMRId, int? registeredById,
@@ -73,6 +79,16 @@ public interface ILetterService
 
     Task<(bool Success, string? Error)> IssueAsync(int letterId, int? actorApplicationUserId);
 
+    // ارسال نامه‌ی داخلی (Internal): Approved -> Sent، یا مستقیماً Draft -> Sent وقتی تایید لازم نیست. فقط نویسنده. نامه‌ی خارجی (Outgoing) با IssueAsync صادر می‌شود.
+    // پس از ارسال: اعلان درون‌برنامه‌ای برای گیرندگان (To/Cc/Bcc)، ثبت نسخه‌ی «Sent»، و بستن خودکار نامه‌ی مادر اگر پاسخ‌خواه بوده است.
+    Task<(bool Success, string? Error)> SendAsync(int letterId, int? actorApplicationUserId);
+
+    // آرشیو دستی نامه‌ی ارسال‌شده/بسته‌شده (Status=Archived)؛ فقط نویسنده یا کسی با اختیار مدیریت. بدون حذف فیزیکی.
+    Task<(bool Success, string? Error)> ArchiveAsync(int letterId, int? actorApplicationUserId, bool canArchiveAny);
+
+    // جایگزینی تاییدکننده‌ی یک مرحله‌ی هنوز Pending (مثلاً تاییدکننده در دسترس نیست) - فقط مدیر سیستم
+    Task<(bool Success, string? Error)> ReassignApprovalStepAsync(int letterId, int stepOrder, int newApproverUserId, int? actorApplicationUserId, bool isAdmin);
+
     Task<(bool Success, string? Error)> CloseAsync(int letterId, int? actorApplicationUserId);
 
     // طبق بند ۷: فقط نویسنده‌ی اصلی (RegisteredById) و فقط وقتی Status == ReturnedForRevision
@@ -103,7 +119,7 @@ public interface ILetterService
         int currentApplicationUserId, byte[]? rowVersion);
 
     // نمایش گردش کامل پیام (ایجاد، ارجاع، خوانده‌شدن، تکمیل، امضا) به‌ترتیب زمانی یکجا
-    Task<List<LetterTimelineEventDto>> GetTimelineAsync(int letterId);
+    Task<List<LetterTimelineEventDto>> GetTimelineAsync(int letterId, LetterViewer? viewer = null);
 
     // Thread View: زنجیره‌ی کامل پیام‌های قبلی این نامه (والدها، از قدیم به جدید)
     Task<List<ThreadMessageDto>> GetThreadAsync(int letterId);

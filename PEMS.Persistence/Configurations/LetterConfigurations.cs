@@ -48,6 +48,9 @@ public class LetterConfiguration : IEntityTypeConfiguration<Letter>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(x => x.LetterNumber);
+        builder.HasIndex(x => new { x.Status, x.IsActive });
+        builder.HasIndex(x => x.RegisteredById);
+        builder.HasIndex(x => x.SenderEmployeeId);
 
         // طبق بهینه‌سازی عملکرد: این‌ها دقیقاً همان فیلدهایی هستند که SearchAsync همیشه
         // با آن‌ها فیلتر/مرتب‌سازی می‌کند

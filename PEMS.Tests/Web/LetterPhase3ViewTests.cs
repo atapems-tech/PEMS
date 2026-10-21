@@ -49,7 +49,7 @@ public class LetterPhase3ViewTests
     private static LetterController NewController(FakeLetterService letters, FakeTemplates? templates = null, ILetterReminderService? reminders = null,
         ICurrentUserService? user = null)
     {
-        var c = new LetterController(letters, null!, null!, user ?? new FakeUser(), null!, null!, null!, null!, null!, null!, null!, templates, reminders);
+        var c = new LetterController(letters, null!, PemsDbContextFactory.CreateInMemory("LetterCtl_" + Guid.NewGuid()), user ?? new FakeUser(), new FakePermissionService(), null!, null!, null!, null!, null!, null!, templates, reminders);
         return c.WithTempData();
     }
 

@@ -521,6 +521,8 @@ builder.Services.AddScoped<IMyWorkService, PEMS.Persistence.Services.MyWorkServi
 builder.Services.AddScoped<ILetterService, LetterService>();
 builder.Services.AddScoped<ILetterTemplateService, LetterTemplateService>();
 builder.Services.AddScoped<ILetterReminderService, LetterReminderService>();
+builder.Services.AddScoped<ILetterComposeService, LetterComposeService>();
+builder.Services.AddScoped<ILetterComplianceService, LetterComplianceService>();
 builder.Services.Configure<PEMS.Web.BackgroundJobs.LetterReminderOptions>(builder.Configuration.GetSection("LetterReminders"));
 builder.Services.AddHostedService<PEMS.Web.BackgroundJobs.LetterReminderBackgroundService>();
 
@@ -722,6 +724,9 @@ using (var scope = app.Services.CreateScope())
 
     // دپارتمان‌های پیش‌فرض
     await PEMS.Persistence.Seed.DepartmentSeeder.SeedAsync(scope.ServiceProvider);
+
+    // قالب‌های آماده‌ی نامه‌ی داخلی (افزودنی و Idempotent)
+    await PEMS.Persistence.Seed.LetterTemplateSeeder.SeedAsync(scope.ServiceProvider);
 
     // دیسیپلین‌های مهندسی پیش‌فرض - بدون این Seed، پس از پاک‌سازی دیتابیس Workspace دیسیپلین‌ها
     // خالی می‌شوند و UI مربوط به default items/discipline list هیچ آیتمی نشان نمی‌دهد.

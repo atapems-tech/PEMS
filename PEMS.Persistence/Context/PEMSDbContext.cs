@@ -446,6 +446,11 @@ public class PEMSDbContext
 
     public DbSet<LetterTemplate> LetterTemplates { get; set; }
 
+    public DbSet<LetterApprovalStep> LetterApprovalSteps { get; set; }
+    public DbSet<LetterVersion> LetterVersions { get; set; }
+    public DbSet<LetterViewLog> LetterViewLogs { get; set; }
+    public DbSet<LetterNumberSequence> LetterNumberSequences { get; set; }
+
     public DbSet<LetterRecipient> LetterRecipients { get; set; }
 
     public DbSet<Tag> Tags { get; set; }

@@ -2425,4 +2425,153 @@
   <data name="LtT_Token_ParentDate" xml:space="preserve"><value>تاریخ نامه‌ای که به آن پاسخ می‌دهید</value></data>
   <data name="LtT_Token_Counterparty" xml:space="preserve"><value>طرف مقابل آن نامه</value></data>
   <data name="LtT_Token_ParentProject" xml:space="preserve"><value>پروژه‌ی آن نامه</value></data>
+  <data name="Compose Letter" xml:space="preserve"><value>نوشتن نامه</value></data>
+  <data name="Letter History" xml:space="preserve"><value>تاریخچه‌ی نامه</value></data>
+  <data name="Draft discarded" xml:space="preserve"><value>پیش‌نویس حذف شد</value></data>
+  <data name="Letter sent" xml:space="preserve"><value>نامه ارسال شد</value></data>
+  <data name="Letter archived" xml:space="preserve"><value>نامه آرشیو شد</value></data>
+  <data name="Approver reassigned" xml:space="preserve"><value>تاییدکننده جایگزین شد</value></data>
+  <data name="Lc_TitleInternal" xml:space="preserve"><value>نامه‌ی داخلی جدید</value></data>
+  <data name="Lc_TitleOutgoing" xml:space="preserve"><value>نامه‌ی صادره‌ی جدید</value></data>
+  <data name="Lc_NumberPending" xml:space="preserve"><value>شماره هنگام اولین ذخیره داده می‌شود</value></data>
+  <data name="Lc_Saved" xml:space="preserve"><value>ذخیره شد</value></data>
+  <data name="Lc_Saving" xml:space="preserve"><value>در حال ذخیره…</value></data>
+  <data name="Lc_Unsaved" xml:space="preserve"><value>تغییرات ذخیره‌نشده</value></data>
+  <data name="Lc_SaveFailed" xml:space="preserve"><value>ذخیره انجام نشد – پیام‌های بالا را ببینید</value></data>
+  <data name="Lc_NotSavedYet" xml:space="preserve"><value>هنوز ذخیره نشده</value></data>
+  <data name="Lc_AlertsRegion" xml:space="preserve"><value>پیام‌های فرم</value></data>
+  <data name="Lc_Sender" xml:space="preserve"><value>فرستنده</value></data>
+  <data name="Lc_Name" xml:space="preserve"><value>نام</value></data>
+  <data name="Lc_JobTitle" xml:space="preserve"><value>سمت</value></data>
+  <data name="Lc_Department" xml:space="preserve"><value>واحد</value></data>
+  <data name="Lc_Email" xml:space="preserve"><value>ایمیل</value></data>
+  <data name="Lc_Phone" xml:space="preserve"><value>تلفن</value></data>
+  <data name="Lc_NoEmployeeLink" xml:space="preserve"><value>حساب کاربری شما به پرونده‌ی کارمندی وصل نیست؛ بلوک فرستنده ناقص است و شماره با پیشوند عمومی ساخته می‌شود.</value></data>
+  <data name="Lc_Recipients" xml:space="preserve"><value>گیرندگان</value></data>
+  <data name="Lc_ExternalReceiver" xml:space="preserve"><value>گیرنده‌ی بیرونی (سازمان / شخص)</value></data>
+  <data name="Lc_To" xml:space="preserve"><value>به</value></data>
+  <data name="Lc_Cc" xml:space="preserve"><value>رونوشت</value></data>
+  <data name="Lc_Bcc" xml:space="preserve"><value>رونوشت پنهان</value></data>
+  <data name="Lc_SearchPeople" xml:space="preserve"><value>جستجو با نام، کد یا ایمیل…</value></data>
+  <data name="Lc_AddBcc" xml:space="preserve"><value>افزودن رونوشت پنهان</value></data>
+  <data name="Lc_ImportList" xml:space="preserve"><value>ورود فهرست (CSV)</value></data>
+  <data name="Lc_ImportHelp" xml:space="preserve"><value>CSV یا متن: در هر خط یک نفر – کد پرسنلی، ایمیل یا نام کامل. حداکثر ۵۰۰ گیرنده.</value></data>
+  <data name="Lc_Content" xml:space="preserve"><value>موضوع و متن</value></data>
+  <data name="Lc_Attachments" xml:space="preserve"><value>پیوست‌ها</value></data>
+  <data name="Lc_DropHere" xml:space="preserve"><value>فایل‌ها را اینجا رها کنید یا برای انتخاب کلیک کنید</value></data>
+  <data name="Lc_AttachmentRules" xml:space="preserve"><value>حداکثر ۲۵ مگابایت برای هر فایل. PDF، آفیس، تصویر، متن/CSV، ZIP و DWG/DXF.</value></data>
+  <data name="Lc_AttachNeedsDraft" xml:space="preserve"><value>با اولین پیوست، پیش‌نویس ذخیره می‌شود و شماره‌ی نامه داده می‌شود.</value></data>
+  <data name="Lc_Remove" xml:space="preserve"><value>حذف</value></data>
+  <data name="Lc_MoveUp" xml:space="preserve"><value>بالا</value></data>
+  <data name="Lc_MoveDown" xml:space="preserve"><value>پایین</value></data>
+  <data name="Lc_Details" xml:space="preserve"><value>مشخصات نامه</value></data>
+  <data name="Lc_Category" xml:space="preserve"><value>نوع نامه</value></data>
+  <data name="Lc_ChooseCategory" xml:space="preserve"><value>یک نوع انتخاب کنید…</value></data>
+  <data name="Lc_Cat_Information" xml:space="preserve"><value>اطلاع‌رسانی</value></data>
+  <data name="Lc_Cat_Request" xml:space="preserve"><value>درخواست</value></data>
+  <data name="Lc_Cat_Instruction" xml:space="preserve"><value>دستور</value></data>
+  <data name="Lc_Cat_Approval" xml:space="preserve"><value>تایید</value></data>
+  <data name="Lc_Cat_Recommendation" xml:space="preserve"><value>پیشنهاد</value></data>
+  <data name="Lc_Cat_Notice" xml:space="preserve"><value>ابلاغیه</value></data>
+  <data name="Lc_Cat_StatusReport" xml:space="preserve"><value>گزارش وضعیت</value></data>
+  <data name="Lc_Reference" xml:space="preserve"><value>شماره‌ی ارجاع</value></data>
+  <data name="Lc_ReferenceHelp" xml:space="preserve"><value>اختیاری – شماره‌ی نامه یا مدرک مرتبط.</value></data>
+  <data name="Lc_RelatedDepartment" xml:space="preserve"><value>واحد مرتبط</value></data>
+  <data name="Lc_ManualNumber" xml:space="preserve"><value>شماره‌ی دستی نامه</value></data>
+  <data name="Lc_ManualNumberHelp" xml:space="preserve"><value>برای شماره‌ی خودکار (واحد-سال-ترتیب) خالی بگذارید.</value></data>
+  <data name="Lc_Response" xml:space="preserve"><value>پاسخ</value></data>
+  <data name="Lc_Approval" xml:space="preserve"><value>تایید</value></data>
+  <data name="Lc_ApprovalRequired" xml:space="preserve"><value>نیاز به تایید پیش از ارسال</value></data>
+  <data name="Lc_OutgoingNeedsApproval" xml:space="preserve"><value>نامه‌ی صادره همیشه نیاز به تایید دارد.</value></data>
+  <data name="Lc_ApprovalChain" xml:space="preserve"><value>زنجیره‌ی تایید</value></data>
+  <data name="Lc_AddApprover" xml:space="preserve"><value>افزودن تاییدکننده…</value></data>
+  <data name="Lc_ChainHelp" xml:space="preserve"><value>تاییدکنندگان به همین ترتیب تصمیم می‌گیرند. نویسنده نمی‌تواند نامه‌ی خود را تایید کند.</value></data>
+  <data name="Lc_TemplateWarn" xml:space="preserve"><value>انتخاب قالب فرم را با متن آن دوباره بارگذاری می‌کند.</value></data>
+  <data name="Lc_Actions" xml:space="preserve"><value>اقدامات نامه</value></data>
+  <data name="Lc_Preview" xml:space="preserve"><value>پیش‌نمایش</value></data>
+  <data name="Lc_PreviewFailed" xml:space="preserve"><value>پیش‌نمایش ساخته نشد.</value></data>
+  <data name="Lc_Discard" xml:space="preserve"><value>حذف پیش‌نویس</value></data>
+  <data name="Lc_Cancel" xml:space="preserve"><value>انصراف</value></data>
+  <data name="Lc_SubmitForApproval" xml:space="preserve"><value>ارسال برای تایید</value></data>
+  <data name="Lc_Close" xml:space="preserve"><value>بستن</value></data>
+  <data name="Lc_Print" xml:space="preserve"><value>چاپ</value></data>
+  <data name="Lc_Loading" xml:space="preserve"><value>در حال بارگذاری…</value></data>
+  <data name="Lc_NoResults" xml:space="preserve"><value>فردی پیدا نشد</value></data>
+  <data name="Lc_ExternalTag" xml:space="preserve"><value>خارج از سازمان</value></data>
+  <data name="Lc_UnmatchedLines" xml:space="preserve"><value>{0} خط پیدا نشد</value></data>
+  <data name="Lc_CsvTruncated" xml:space="preserve"><value>فقط {0} گیرنده‌ی اول گرفته شد.</value></data>
+  <data name="Lc_Imported" xml:space="preserve"><value>{0} گیرنده افزوده شد.</value></data>
+  <data name="Lc_UploadFailed" xml:space="preserve"><value>بارگذاری ناموفق بود</value></data>
+  <data name="Lc_ConfirmDiscard" xml:space="preserve"><value>این پیش‌نویس حذف شود؟</value></data>
+  <data name="Lc_ConfirmSubmit" xml:space="preserve"><value>نامه برای تایید ارسال شود؟</value></data>
+  <data name="Lc_ConfirmSend" xml:space="preserve"><value>نامه الان ارسال شود؟</value></data>
+  <data name="Lc_ConfirmArchive" xml:space="preserve"><value>نامه آرشیو شود؟</value></data>
+  <data name="Lc_ErrorsTitle" xml:space="preserve"><value>لطفاً موارد زیر را اصلاح کنید</value></data>
+  <data name="Lc_WarningsTitle" xml:space="preserve"><value>توجه</value></data>
+  <data name="Lc_EditInComposer" xml:space="preserve"><value>ویرایش در فرم نامه</value></data>
+  <data name="Lc_Archive" xml:space="preserve"><value>آرشیو</value></data>
+  <data name="Lc_Reassign" xml:space="preserve"><value>تغییر تاییدکننده</value></data>
+  <data name="Lc_StepCurrent" xml:space="preserve"><value>منتظر تصمیم</value></data>
+  <data name="Lc_HistoryTitle" xml:space="preserve"><value>تاریخچه و ممیزی نامه</value></data>
+  <data name="Lc_BackToLetter" xml:space="preserve"><value>بازگشت به نامه</value></data>
+  <data name="Lc_ExportCsv" xml:space="preserve"><value>خروجی CSV</value></data>
+  <data name="Lc_WhoViewed" xml:space="preserve"><value>چه کسی نامه را دید</value></data>
+  <data name="Lc_NobodyViewed" xml:space="preserve"><value>هنوز کسی این نامه را باز نکرده است.</value></data>
+  <data name="Lc_FirstViewed" xml:space="preserve"><value>اولین بازدید</value></data>
+  <data name="Lc_LastViewed" xml:space="preserve"><value>آخرین بازدید</value></data>
+  <data name="Lc_ViewCount" xml:space="preserve"><value>تعداد بازدید</value></data>
+  <data name="Lc_Versions" xml:space="preserve"><value>تاریخچه‌ی نسخه‌ها</value></data>
+  <data name="Lc_NoVersions" xml:space="preserve"><value>هنوز نسخه‌ای ذخیره نشده است.</value></data>
+  <data name="Lc_AuditTrail" xml:space="preserve"><value>گزارش ممیزی</value></data>
+  <data name="Lc_When" xml:space="preserve"><value>زمان</value></data>
+  <data name="Lc_Who" xml:space="preserve"><value>چه کسی</value></data>
+  <data name="Lc_Event" xml:space="preserve"><value>رویداد</value></data>
+  <data name="Lc_DetailCol" xml:space="preserve"><value>جزئیات</value></data>
+  <data name="Lc_DraftWatermark" xml:space="preserve"><value>پیش‌نویس – پیش‌نمایش</value></data>
+  <data name="Lc_PrintNumber" xml:space="preserve"><value>شماره</value></data>
+  <data name="Lc_PrintFrom" xml:space="preserve"><value>از</value></data>
+  <data name="Lc_PrintTo" xml:space="preserve"><value>به</value></data>
+  <data name="Lc_PrintCc" xml:space="preserve"><value>رونوشت</value></data>
+  <data name="Lc_PrintRegards" xml:space="preserve"><value>با احترام،</value></data>
+  <data name="Lc_Signature" xml:space="preserve"><value>امضا</value></data>
+  <data name="Lc_Err_AttachmentEmpty" xml:space="preserve"><value>فایل خالی است.</value></data>
+  <data name="Lc_Err_AttachmentTooLarge" xml:space="preserve"><value>حجم فایل بیشتر از ۲۵ مگابایت است.</value></data>
+  <data name="Lc_Err_AttachmentTypeNotAllowed" xml:space="preserve"><value>این نوع فایل مجاز نیست.</value></data>
+  <data name="Lc_Err_CsvTooLarge" xml:space="preserve"><value>فایل فهرست بزرگ است (حداکثر ۱ مگابایت).</value></data>
+  <data name="Lc_Err_SubjectRequired" xml:space="preserve"><value>موضوع الزامی است.</value></data>
+  <data name="Lc_Err_SubjectTooLong" xml:space="preserve"><value>موضوع بیشتر از {0} کاراکتر است.</value></data>
+  <data name="Lc_Err_TooManyRecipients" xml:space="preserve"><value>هر نامه حداکثر {0} گیرنده می‌تواند داشته باشد.</value></data>
+  <data name="Lc_Err_ApprovalChainDuplicate" xml:space="preserve"><value>یک تاییدکننده بیش از یک بار در زنجیره آمده است.</value></data>
+  <data name="Lc_Err_ApprovalChainRequired" xml:space="preserve"><value>دست‌کم یک تاییدکننده اضافه کنید.</value></data>
+  <data name="Lc_Err_ApproverIsAuthor" xml:space="preserve"><value>نویسنده نمی‌تواند تاییدکننده‌ی نامه‌ی خود باشد.</value></data>
+  <data name="Lc_Err_ApproverNotAllowed" xml:space="preserve"><value>تاییدکننده‌ی {0} اجازه‌ی تایید مکاتبات را ندارد.</value></data>
+  <data name="Lc_Err_BodyRequired" xml:space="preserve"><value>متن نامه خالی است.</value></data>
+  <data name="Lc_Err_CategoryInvalid" xml:space="preserve"><value>نوع نامه معتبر نیست.</value></data>
+  <data name="Lc_Err_CategoryRequired" xml:space="preserve"><value>نوع نامه را انتخاب کنید.</value></data>
+  <data name="Lc_Err_Concurrency" xml:space="preserve"><value>این پیش‌نویس جای دیگری تغییر کرده است. صفحه را دوباره بارگذاری کنید.</value></data>
+  <data name="Lc_Err_ConfidentialityInvalid" xml:space="preserve"><value>سطح محرمانگی معتبر نیست.</value></data>
+  <data name="Lc_Err_ExternalReceiverRequired" xml:space="preserve"><value>گیرنده‌ی بیرونی را وارد کنید.</value></data>
+  <data name="Lc_Err_LetterNotFound" xml:space="preserve"><value>نامه پیدا نشد.</value></data>
+  <data name="Lc_Err_NotAuthor" xml:space="preserve"><value>فقط نویسنده می‌تواند این نامه را ویرایش کند.</value></data>
+  <data name="Lc_Err_NotEditable" xml:space="preserve"><value>این نامه دیگر قابل ویرایش نیست.</value></data>
+  <data name="Lc_Err_NumberInUse" xml:space="preserve"><value>این شماره‌ی نامه قبلاً استفاده شده است.</value></data>
+  <data name="Lc_Err_PriorityInvalid" xml:space="preserve"><value>اولویت معتبر نیست.</value></data>
+  <data name="Lc_Err_RecipientDuplicate" xml:space="preserve"><value>یک نفر بیش از یک بار در گیرندگان آمده است.</value></data>
+  <data name="Lc_Err_RecipientInactive" xml:space="preserve"><value>گیرنده‌ی {0} غیرفعال است.</value></data>
+  <data name="Lc_Err_RecipientNotFound" xml:space="preserve"><value>گیرنده‌ی {0} پیدا نشد.</value></data>
+  <data name="Lc_Err_RecipientRequired" xml:space="preserve"><value>دست‌کم یک گیرنده در «به» اضافه کنید.</value></data>
+  <data name="Lc_Err_ReferenceTooLong" xml:space="preserve"><value>شماره‌ی ارجاع بیش از حد طولانی است.</value></data>
+  <data name="Lc_Err_ResponseDueBeforeLetterDate" xml:space="preserve"><value>مهلت پاسخ پیش از تاریخ نامه است.</value></data>
+  <data name="Lc_Err_ResponseDueRequired" xml:space="preserve"><value>مهلت پاسخ را وارد کنید.</value></data>
+  <data name="Lc_Err_TypeInvalid" xml:space="preserve"><value>این فرم فقط برای نامه‌ی داخلی و صادره است.</value></data>
+  <data name="Lc_Err_SubmitFailed" xml:space="preserve"><value>ارسال نامه ممکن نشد: {0}</value></data>
+  <data name="Lc_Warn_ManyRecipients" xml:space="preserve"><value>این نامه برای {0} گیرنده ارسال می‌شود.</value></data>
+  <data name="Lc_Warn_ExternalRecipient" xml:space="preserve"><value>برخی گیرندگان خارج از سازمان هستند: {0}</value></data>
+  <data name="Lc_Warn_SenderInRecipients" xml:space="preserve"><value>نام شما در گیرندگان نامه‌ی خودتان آمده است.</value></data>
+  <data name="Lc_Warn_RecipientPendingWork" xml:space="preserve"><value>{0} در همین زمینه کار در انتظار دارد.</value></data>
+  <data name="LtT_Token_SenderName" xml:space="preserve"><value>نام کامل شما</value></data>
+  <data name="LtT_Token_SenderTitle" xml:space="preserve"><value>سمت شما</value></data>
+  <data name="LtT_Token_SenderDepartment" xml:space="preserve"><value>واحد سازمانی شما</value></data>
+  <data name="Lc_FolderSent" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Lc_FolderArchived" xml:space="preserve"><value>آرشیو</value></data>
 </root>

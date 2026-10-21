@@ -52,9 +52,17 @@ public class FakeLetterService : ILetterService
 
     // قابل‌تنظیم برای تست‌های Controller (Reply/Details)؛ بدون تنظیم، مثل قبل NotSupported است
     public Func<int, LetterDetailDto?>? DetailProvider { get; set; }
+    public Task<LetterDetailAccessResult> GetDetailForViewerAsync(int letterId, LetterViewer viewer)
+        => DetailProvider != null
+            ? Task.FromResult(DetailProvider(letterId) is { } d ? new LetterDetailAccessResult { Outcome = LetterAccessOutcome.Ok, Detail = d } : new LetterDetailAccessResult { Outcome = LetterAccessOutcome.NotFound })
+            : throw new NotSupportedException();
+    public Task<bool> CanViewAsync(int letterId, LetterViewer viewer) => Task.FromResult(true);
     public Task<LetterDetailDto?> GetDetailAsync(int letterId)
         => DetailProvider != null ? Task.FromResult(DetailProvider(letterId)) : throw new NotSupportedException();
     public Task<List<RelatedLetterDto>> GetRelatedToMRAsync(int mrId) => throw new NotSupportedException();
+    public Task<(bool Success, string? Error)> SendAsync(int letterId, int? actorApplicationUserId) => throw new NotSupportedException();
+    public Task<(bool Success, string? Error)> ArchiveAsync(int letterId, int? actorApplicationUserId, bool canArchiveAny) => throw new NotSupportedException();
+    public Task<(bool Success, string? Error)> ReassignApprovalStepAsync(int letterId, int stepOrder, int newApproverUserId, int? actorApplicationUserId, bool isAdmin) => throw new NotSupportedException();
     public Task<LetterDashboardDto> GetDashboardAsync(int? currentApplicationUserId = null, bool canViewConfidential = false) => throw new NotSupportedException();
     public Task<(bool Success, string? Error)> SetResponseDueAsync(int letterId, bool responseRequired, DateTime? dueDate, int? actorApplicationUserId, bool canManageAny) => throw new NotSupportedException();
     public Task<LetterWorkspaceDashboardDto> GetWorkspaceDashboardAsync(bool canViewConfidential, int? applicationUserId, bool canReview) => throw new NotSupportedException();
@@ -69,7 +77,7 @@ public class FakeLetterService : ILetterService
     public Task<(bool Success, string? Error)> CloseAsync(int letterId, int? actorApplicationUserId) => throw new NotSupportedException();
     public Task<(bool Success, string? Error)> ResubmitAsync(int letterId, string subject, string body, int currentApplicationUserId, byte[]? rowVersion) => throw new NotSupportedException();
     public Task<(bool Success, string? Error)> SaveDraftEditAsync(int letterId, string subject, string body, int currentApplicationUserId, byte[]? rowVersion) => throw new NotSupportedException();
-    public Task<List<LetterTimelineEventDto>> GetTimelineAsync(int letterId) => throw new NotSupportedException();
+    public Task<List<LetterTimelineEventDto>> GetTimelineAsync(int letterId, LetterViewer? viewer = null) => throw new NotSupportedException();
     public Task<List<ThreadMessageDto>> GetThreadAsync(int letterId)
         => DetailProvider != null ? Task.FromResult(new List<ThreadMessageDto>()) : throw new NotSupportedException();
     public Task<int> ReplyAsync(int parentLetterId, string letterNumber, string subject, string? body, string? receiver,

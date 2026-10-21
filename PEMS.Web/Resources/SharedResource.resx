@@ -1630,4 +1630,153 @@
   <data name="LtT_Token_ParentDate" xml:space="preserve"><value>date of the letter being answered</value></data>
   <data name="LtT_Token_Counterparty" xml:space="preserve"><value>the other party of that letter</value></data>
   <data name="LtT_Token_ParentProject" xml:space="preserve"><value>project of that letter</value></data>
+  <data name="Compose Letter" xml:space="preserve"><value>Compose Letter</value></data>
+  <data name="Letter History" xml:space="preserve"><value>Letter History</value></data>
+  <data name="Draft discarded" xml:space="preserve"><value>Draft discarded</value></data>
+  <data name="Letter sent" xml:space="preserve"><value>Letter sent</value></data>
+  <data name="Letter archived" xml:space="preserve"><value>Letter archived</value></data>
+  <data name="Approver reassigned" xml:space="preserve"><value>Approver reassigned</value></data>
+  <data name="Lc_TitleInternal" xml:space="preserve"><value>New internal letter</value></data>
+  <data name="Lc_TitleOutgoing" xml:space="preserve"><value>New outgoing letter</value></data>
+  <data name="Lc_NumberPending" xml:space="preserve"><value>Number assigned on first save</value></data>
+  <data name="Lc_Saved" xml:space="preserve"><value>Saved</value></data>
+  <data name="Lc_Saving" xml:space="preserve"><value>Saving…</value></data>
+  <data name="Lc_Unsaved" xml:space="preserve"><value>Unsaved changes</value></data>
+  <data name="Lc_SaveFailed" xml:space="preserve"><value>Could not save – check the messages above</value></data>
+  <data name="Lc_NotSavedYet" xml:space="preserve"><value>Not saved yet</value></data>
+  <data name="Lc_AlertsRegion" xml:space="preserve"><value>Form messages</value></data>
+  <data name="Lc_Sender" xml:space="preserve"><value>Sender</value></data>
+  <data name="Lc_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Lc_JobTitle" xml:space="preserve"><value>Job title</value></data>
+  <data name="Lc_Department" xml:space="preserve"><value>Department</value></data>
+  <data name="Lc_Email" xml:space="preserve"><value>Email</value></data>
+  <data name="Lc_Phone" xml:space="preserve"><value>Phone</value></data>
+  <data name="Lc_NoEmployeeLink" xml:space="preserve"><value>Your user account is not linked to an employee record, so the sender block is incomplete and the number uses the generic prefix.</value></data>
+  <data name="Lc_Recipients" xml:space="preserve"><value>Recipients</value></data>
+  <data name="Lc_ExternalReceiver" xml:space="preserve"><value>External recipient (organisation / person)</value></data>
+  <data name="Lc_To" xml:space="preserve"><value>To</value></data>
+  <data name="Lc_Cc" xml:space="preserve"><value>Cc</value></data>
+  <data name="Lc_Bcc" xml:space="preserve"><value>Bcc (hidden)</value></data>
+  <data name="Lc_SearchPeople" xml:space="preserve"><value>Search by name, code or email…</value></data>
+  <data name="Lc_AddBcc" xml:space="preserve"><value>Add Bcc</value></data>
+  <data name="Lc_ImportList" xml:space="preserve"><value>Import list (CSV)</value></data>
+  <data name="Lc_ImportHelp" xml:space="preserve"><value>CSV or text: one person per line – personnel code, email or full name. Up to 500 recipients.</value></data>
+  <data name="Lc_Content" xml:space="preserve"><value>Subject and message</value></data>
+  <data name="Lc_Attachments" xml:space="preserve"><value>Attachments</value></data>
+  <data name="Lc_DropHere" xml:space="preserve"><value>Drop files here or click to choose</value></data>
+  <data name="Lc_AttachmentRules" xml:space="preserve"><value>Up to 25 MB per file. PDF, Office, images, text/CSV, ZIP and DWG/DXF.</value></data>
+  <data name="Lc_AttachNeedsDraft" xml:space="preserve"><value>The first attachment saves the draft and assigns the letter number.</value></data>
+  <data name="Lc_Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="Lc_MoveUp" xml:space="preserve"><value>Move up</value></data>
+  <data name="Lc_MoveDown" xml:space="preserve"><value>Move down</value></data>
+  <data name="Lc_Details" xml:space="preserve"><value>Letter details</value></data>
+  <data name="Lc_Category" xml:space="preserve"><value>Category</value></data>
+  <data name="Lc_ChooseCategory" xml:space="preserve"><value>Choose a category…</value></data>
+  <data name="Lc_Cat_Information" xml:space="preserve"><value>Information</value></data>
+  <data name="Lc_Cat_Request" xml:space="preserve"><value>Request</value></data>
+  <data name="Lc_Cat_Instruction" xml:space="preserve"><value>Instruction</value></data>
+  <data name="Lc_Cat_Approval" xml:space="preserve"><value>Approval</value></data>
+  <data name="Lc_Cat_Recommendation" xml:space="preserve"><value>Recommendation</value></data>
+  <data name="Lc_Cat_Notice" xml:space="preserve"><value>Formal notice</value></data>
+  <data name="Lc_Cat_StatusReport" xml:space="preserve"><value>Status report</value></data>
+  <data name="Lc_Reference" xml:space="preserve"><value>Reference no.</value></data>
+  <data name="Lc_ReferenceHelp" xml:space="preserve"><value>Optional – number of a related letter or document.</value></data>
+  <data name="Lc_RelatedDepartment" xml:space="preserve"><value>Related department</value></data>
+  <data name="Lc_ManualNumber" xml:space="preserve"><value>Manual letter number</value></data>
+  <data name="Lc_ManualNumberHelp" xml:space="preserve"><value>Leave empty to use the automatic number (DEPT-YEAR-SEQ).</value></data>
+  <data name="Lc_Response" xml:space="preserve"><value>Response</value></data>
+  <data name="Lc_Approval" xml:space="preserve"><value>Approval</value></data>
+  <data name="Lc_ApprovalRequired" xml:space="preserve"><value>Approval required before sending</value></data>
+  <data name="Lc_OutgoingNeedsApproval" xml:space="preserve"><value>Outgoing letters always require approval.</value></data>
+  <data name="Lc_ApprovalChain" xml:space="preserve"><value>Approval chain</value></data>
+  <data name="Lc_AddApprover" xml:space="preserve"><value>Add approver…</value></data>
+  <data name="Lc_ChainHelp" xml:space="preserve"><value>Approvers decide in this order. You cannot approve your own letter.</value></data>
+  <data name="Lc_TemplateWarn" xml:space="preserve"><value>Choosing a template reloads the form with its text.</value></data>
+  <data name="Lc_Actions" xml:space="preserve"><value>Letter actions</value></data>
+  <data name="Lc_Preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="Lc_PreviewFailed" xml:space="preserve"><value>Preview could not be created.</value></data>
+  <data name="Lc_Discard" xml:space="preserve"><value>Discard draft</value></data>
+  <data name="Lc_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Lc_SubmitForApproval" xml:space="preserve"><value>Submit for approval</value></data>
+  <data name="Lc_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Lc_Print" xml:space="preserve"><value>Print</value></data>
+  <data name="Lc_Loading" xml:space="preserve"><value>Loading…</value></data>
+  <data name="Lc_NoResults" xml:space="preserve"><value>No matching people</value></data>
+  <data name="Lc_ExternalTag" xml:space="preserve"><value>external</value></data>
+  <data name="Lc_UnmatchedLines" xml:space="preserve"><value>{0} line(s) could not be matched</value></data>
+  <data name="Lc_CsvTruncated" xml:space="preserve"><value>Only the first {0} recipients were taken.</value></data>
+  <data name="Lc_Imported" xml:space="preserve"><value>{0} recipient(s) added.</value></data>
+  <data name="Lc_UploadFailed" xml:space="preserve"><value>Upload failed</value></data>
+  <data name="Lc_ConfirmDiscard" xml:space="preserve"><value>Discard this draft? This cannot be undone from the screen.</value></data>
+  <data name="Lc_ConfirmSubmit" xml:space="preserve"><value>Submit this letter for approval?</value></data>
+  <data name="Lc_ConfirmSend" xml:space="preserve"><value>Send this letter now?</value></data>
+  <data name="Lc_ConfirmArchive" xml:space="preserve"><value>Archive this letter?</value></data>
+  <data name="Lc_ErrorsTitle" xml:space="preserve"><value>Please fix the following</value></data>
+  <data name="Lc_WarningsTitle" xml:space="preserve"><value>Please note</value></data>
+  <data name="Lc_EditInComposer" xml:space="preserve"><value>Edit in composer</value></data>
+  <data name="Lc_Archive" xml:space="preserve"><value>Archive</value></data>
+  <data name="Lc_Reassign" xml:space="preserve"><value>Reassign approver</value></data>
+  <data name="Lc_StepCurrent" xml:space="preserve"><value>Waiting</value></data>
+  <data name="Lc_HistoryTitle" xml:space="preserve"><value>Letter history &amp; audit</value></data>
+  <data name="Lc_BackToLetter" xml:space="preserve"><value>Back to letter</value></data>
+  <data name="Lc_ExportCsv" xml:space="preserve"><value>Export CSV</value></data>
+  <data name="Lc_WhoViewed" xml:space="preserve"><value>Who viewed this letter</value></data>
+  <data name="Lc_NobodyViewed" xml:space="preserve"><value>Nobody has opened this letter yet.</value></data>
+  <data name="Lc_FirstViewed" xml:space="preserve"><value>First viewed</value></data>
+  <data name="Lc_LastViewed" xml:space="preserve"><value>Last viewed</value></data>
+  <data name="Lc_ViewCount" xml:space="preserve"><value>Views</value></data>
+  <data name="Lc_Versions" xml:space="preserve"><value>Version history</value></data>
+  <data name="Lc_NoVersions" xml:space="preserve"><value>No versions saved yet.</value></data>
+  <data name="Lc_AuditTrail" xml:space="preserve"><value>Audit trail</value></data>
+  <data name="Lc_When" xml:space="preserve"><value>When</value></data>
+  <data name="Lc_Who" xml:space="preserve"><value>Who</value></data>
+  <data name="Lc_Event" xml:space="preserve"><value>Event</value></data>
+  <data name="Lc_DetailCol" xml:space="preserve"><value>Detail</value></data>
+  <data name="Lc_DraftWatermark" xml:space="preserve"><value>DRAFT – PREVIEW</value></data>
+  <data name="Lc_PrintNumber" xml:space="preserve"><value>No.</value></data>
+  <data name="Lc_PrintFrom" xml:space="preserve"><value>From</value></data>
+  <data name="Lc_PrintTo" xml:space="preserve"><value>To</value></data>
+  <data name="Lc_PrintCc" xml:space="preserve"><value>Cc</value></data>
+  <data name="Lc_PrintRegards" xml:space="preserve"><value>With regards,</value></data>
+  <data name="Lc_Signature" xml:space="preserve"><value>Signature</value></data>
+  <data name="Lc_Err_AttachmentEmpty" xml:space="preserve"><value>The file is empty.</value></data>
+  <data name="Lc_Err_AttachmentTooLarge" xml:space="preserve"><value>The file is larger than 25 MB.</value></data>
+  <data name="Lc_Err_AttachmentTypeNotAllowed" xml:space="preserve"><value>This file type is not allowed.</value></data>
+  <data name="Lc_Err_CsvTooLarge" xml:space="preserve"><value>The list file is too large (max 1 MB).</value></data>
+  <data name="Lc_Err_SubjectRequired" xml:space="preserve"><value>Subject is required.</value></data>
+  <data name="Lc_Err_SubjectTooLong" xml:space="preserve"><value>Subject is longer than {0} characters.</value></data>
+  <data name="Lc_Err_TooManyRecipients" xml:space="preserve"><value>A letter can have at most {0} recipients.</value></data>
+  <data name="Lc_Err_ApprovalChainDuplicate" xml:space="preserve"><value>An approver appears more than once in the chain.</value></data>
+  <data name="Lc_Err_ApprovalChainRequired" xml:space="preserve"><value>Add at least one approver.</value></data>
+  <data name="Lc_Err_ApproverIsAuthor" xml:space="preserve"><value>You cannot be an approver of your own letter.</value></data>
+  <data name="Lc_Err_ApproverNotAllowed" xml:space="preserve"><value>Approver {0} is not allowed to approve correspondence.</value></data>
+  <data name="Lc_Err_BodyRequired" xml:space="preserve"><value>The message body is empty.</value></data>
+  <data name="Lc_Err_CategoryInvalid" xml:space="preserve"><value>The category is not valid.</value></data>
+  <data name="Lc_Err_CategoryRequired" xml:space="preserve"><value>Choose a category.</value></data>
+  <data name="Lc_Err_Concurrency" xml:space="preserve"><value>This draft was changed elsewhere. Reload the page to continue.</value></data>
+  <data name="Lc_Err_ConfidentialityInvalid" xml:space="preserve"><value>The confidentiality level is not valid.</value></data>
+  <data name="Lc_Err_ExternalReceiverRequired" xml:space="preserve"><value>Enter the external recipient.</value></data>
+  <data name="Lc_Err_LetterNotFound" xml:space="preserve"><value>The letter was not found.</value></data>
+  <data name="Lc_Err_NotAuthor" xml:space="preserve"><value>Only the author can edit this letter.</value></data>
+  <data name="Lc_Err_NotEditable" xml:space="preserve"><value>This letter can no longer be edited.</value></data>
+  <data name="Lc_Err_NumberInUse" xml:space="preserve"><value>This letter number is already used.</value></data>
+  <data name="Lc_Err_PriorityInvalid" xml:space="preserve"><value>The priority is not valid.</value></data>
+  <data name="Lc_Err_RecipientDuplicate" xml:space="preserve"><value>The same person is listed more than once (To / Cc / Bcc).</value></data>
+  <data name="Lc_Err_RecipientInactive" xml:space="preserve"><value>Recipient {0} is inactive.</value></data>
+  <data name="Lc_Err_RecipientNotFound" xml:space="preserve"><value>Recipient {0} was not found.</value></data>
+  <data name="Lc_Err_RecipientRequired" xml:space="preserve"><value>Add at least one recipient in “To”.</value></data>
+  <data name="Lc_Err_ReferenceTooLong" xml:space="preserve"><value>The reference number is too long.</value></data>
+  <data name="Lc_Err_ResponseDueBeforeLetterDate" xml:space="preserve"><value>The response due date is before the letter date.</value></data>
+  <data name="Lc_Err_ResponseDueRequired" xml:space="preserve"><value>Enter the response due date.</value></data>
+  <data name="Lc_Err_TypeInvalid" xml:space="preserve"><value>Only internal and outgoing letters use this form.</value></data>
+  <data name="Lc_Err_SubmitFailed" xml:space="preserve"><value>The letter could not be submitted: {0}</value></data>
+  <data name="Lc_Warn_ManyRecipients" xml:space="preserve"><value>This letter goes to {0} recipients.</value></data>
+  <data name="Lc_Warn_ExternalRecipient" xml:space="preserve"><value>Some recipients are outside the organisation: {0}</value></data>
+  <data name="Lc_Warn_SenderInRecipients" xml:space="preserve"><value>You are listed as a recipient of your own letter.</value></data>
+  <data name="Lc_Warn_RecipientPendingWork" xml:space="preserve"><value>{0} already has pending work on this subject.</value></data>
+  <data name="LtT_Token_SenderName" xml:space="preserve"><value>your full name</value></data>
+  <data name="LtT_Token_SenderTitle" xml:space="preserve"><value>your job title</value></data>
+  <data name="LtT_Token_SenderDepartment" xml:space="preserve"><value>your department</value></data>
+  <data name="Lc_FolderSent" xml:space="preserve"><value>Sent</value></data>
+  <data name="Lc_FolderArchived" xml:space="preserve"><value>Archived</value></data>
 </root>

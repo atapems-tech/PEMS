@@ -11,7 +11,7 @@ namespace PEMS.Application.Common;
 public static class LetterTemplatePlaceholders
 {
     // در ایجاد نامه و پاسخ هر دو در دسترس‌اند
-    public static readonly string[] General = { "Date", "UserName", "LetterType" };
+    public static readonly string[] General = { "Date", "UserName", "LetterType", "SenderName", "SenderTitle", "SenderDepartment" };
 
     // فقط در صفحه‌ی پاسخ (نامه‌ی مادر وجود دارد)
     public static readonly string[] Reply = { "ParentNumber", "ParentSubject", "ParentDate", "Counterparty", "ParentProject" };

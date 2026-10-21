@@ -169,10 +169,28 @@ public class LetterService : ILetterService
                 .Select(x => x.LetterId).ToListAsync()
             : new List<int>();
 
+        // گیرنده‌ی To/Cc/Bcc نامه (قبلاً گیرنده‌ی نامه‌ی محرمانه بدون ارجاع جدا آن را در فهرست نمی‌دید)
+        var recipientLetterIds = employeeId.HasValue
+            ? await _context.LetterRecipients.Where(x => x.EmployeeId == employeeId.Value)
+                .Select(x => x.LetterId).Distinct().ToListAsync()
+            : new List<int>();
+
+        // عضو زنجیره‌ی تایید، نامه‌ی در انتظار تاییدش را می‌بیند
+        var chainLetterIds = requestingApplicationUserId.HasValue
+            ? await _context.LetterApprovalSteps.Where(x => x.ApproverUserId == requestingApplicationUserId.Value)
+                .Select(x => x.LetterId).Distinct().ToListAsync()
+            : new List<int>();
+
+        var preSend = LetterAccessRules.PreSendStatuses;
+
+        // قاعده‌ی هم‌ارز LetterAccessRules.CanView (پیش‌نویس/در انتظار تایید فقط نویسنده و زنجیره‌ی تایید؛ نامه‌ی منتشرشده بر اساس سطح
+        // محرمانگی یا گیرنده/ارجاع‌گیرنده‌بودن)
         return query.Where(x =>
-            x.ConfidentialityLevel == "Public" || x.ConfidentialityLevel == "Internal" ||
             (requestingApplicationUserId.HasValue && x.RegisteredById == requestingApplicationUserId.Value) ||
-            referredLetterIds.Contains(x.LetterId));
+            chainLetterIds.Contains(x.LetterId) ||
+            (!preSend.Contains(x.Status) &&
+                (x.ConfidentialityLevel == "Public" || x.ConfidentialityLevel == "Internal" ||
+                 referredLetterIds.Contains(x.LetterId) || recipientLetterIds.Contains(x.LetterId))));
     }
 
     private async Task<List<LetterDto>> BuildDtosAsync(List<Letter> letters, int? requestingApplicationUserId)
@@ -207,11 +225,16 @@ public class LetterService : ILetterService
 
             if (myEmployeeId.HasValue)
             {
-                myRecipientTypes = await _context.LetterRecipients
+                var myRows = await _context.LetterRecipients
                     .Where(x => letterIds.Contains(x.LetterId) && x.EmployeeId == myEmployeeId.Value)
+                    .Select(x => new { x.LetterId, x.RecipientType })
+                    .ToListAsync();
+
+                // گروه‌بندی سمت کلاینت (مستقل از Provider: GroupBy+ToDictionaryAsync روی InMemory ترجمه نمی‌شد).
+                // اگر هم To و هم Cc باشد، To اولویت دارد؛ BCC برای خودِ گیرنده «Bcc» نمایش داده می‌شود.
+                myRecipientTypes = myRows
                     .GroupBy(x => x.LetterId)
-                    // اگر هم To و هم Cc باشد، To اولویت دارد (گیرنده‌ی اصلی مهم‌تر است)
-                    .ToDictionaryAsync(g => g.Key, g => g.Any(r => r.RecipientType == "To") ? "To" : "Cc");
+                    .ToDictionary(g => g.Key, g => g.Any(r => r.RecipientType == "To") ? "To" : g.Any(r => r.RecipientType == "Cc") ? "Cc" : "Bcc");
             }
         }
 
@@ -226,6 +249,8 @@ public class LetterService : ILetterService
             .GroupBy(x => x.LetterId!.Value)
             .Select(g => new { LetterId = g.Key, Count = g.Count() })
             .ToDictionaryAsync(x => x.LetterId, x => x.Count);
+
+        var senderNames = await ResolveSenderNamesAsync(letters.Select(l => l.SenderEmployeeId), letters.Select(l => l.SenderDepartmentId));
 
         var now = DateTime.Now;
         var today = DateTime.Today;
@@ -285,6 +310,15 @@ public class LetterService : ILetterService
                 ResponseDueDate = l.ResponseDueDate,
                 ResponseAnswered = answered,
                 ResponseOverdue = LetterResponseRules.IsOverdue(l.ResponseRequired, l.ResponseDueDate, answered, l.Status, today),
+                Category = l.Category,
+                ReferenceNumber = l.ReferenceNumber,
+                SenderEmployeeId = l.SenderEmployeeId,
+                SenderName = l.SenderEmployeeId.HasValue && senderNames.Employees.TryGetValue(l.SenderEmployeeId.Value, out var lsn) ? lsn : l.Sender,
+                SenderTitle = l.SenderTitle,
+                SenderDepartmentId = l.SenderDepartmentId,
+                SenderDepartmentName = l.SenderDepartmentId.HasValue && senderNames.Departments.TryGetValue(l.SenderDepartmentId.Value, out var lsd) ? lsd : null,
+                ApprovalRequired = l.ApprovalRequired,
+                ArchivedDate = l.ArchivedDate,
                 LastActivityDate = activity.Where(d => d.HasValue).Select(d => d!.Value).DefaultIfEmpty(l.CreatedDate).Max(),
                 IsStarred = starredIds.Contains(l.LetterId),
                 MyRecipientType = myRecipientTypes.TryGetValue(l.LetterId, out var rt) ? rt : null,
@@ -444,6 +478,117 @@ public class LetterService : ILetterService
         return result;
     }
 
+    // ==============================================================================
+    // کنترل دسترسی و ردگیری (بازطراحی مکاتبات داخلی) - قاعده: LetterAccessRules
+    // ==============================================================================
+    private async Task<LetterAccessFacts> BuildFactsAsync(Letter letter, LetterViewer viewer)
+    {
+        var isAuthor = viewer.UserId.HasValue && letter.RegisteredById == viewer.UserId;
+        var isRecipient = viewer.EmployeeId.HasValue
+            && await _context.LetterRecipients.AnyAsync(r => r.LetterId == letter.LetterId && r.EmployeeId == viewer.EmployeeId);
+        var isReferral = viewer.EmployeeId.HasValue
+            && await _context.LetterReferrals.AnyAsync(r => r.LetterId == letter.LetterId && r.ReferredToEmployeeId == viewer.EmployeeId);
+        var isChain = viewer.UserId.HasValue
+            && await _context.LetterApprovalSteps.AnyAsync(s => s.LetterId == letter.LetterId && s.ApproverUserId == viewer.UserId);
+
+        return new LetterAccessFacts(letter.Status, letter.ConfidentialityLevel, isAuthor, isRecipient, isReferral, isChain, viewer.CanSeeAll);
+    }
+
+    public async Task<bool> CanViewAsync(int letterId, LetterViewer viewer)
+    {
+        var letter = await _context.Letters.AsNoTracking().FirstOrDefaultAsync(x => x.LetterId == letterId && x.IsActive);
+        return letter != null && LetterAccessRules.CanView(await BuildFactsAsync(letter, viewer));
+    }
+
+    public async Task<LetterDetailAccessResult> GetDetailForViewerAsync(int letterId, LetterViewer viewer)
+    {
+        var letter = await _context.Letters.AsNoTracking().FirstOrDefaultAsync(x => x.LetterId == letterId && x.IsActive);
+        if (letter == null) return new LetterDetailAccessResult { Outcome = LetterAccessOutcome.NotFound };
+
+        var facts = await BuildFactsAsync(letter, viewer);
+        if (!LetterAccessRules.CanView(facts)) return new LetterDetailAccessResult { Outcome = LetterAccessOutcome.Forbidden };
+
+        var detail = await GetDetailAsync(letterId);
+        if (detail == null) return new LetterDetailAccessResult { Outcome = LetterAccessOutcome.NotFound };
+
+        // BCC: فقط نویسنده، کسی با دسترسی کامل، و خودِ همان گیرنده
+        var mayListBcc = viewer.CanSeeAll || facts.IsAuthor;
+        detail.Recipients = detail.Recipients
+            .Where(r => r.RecipientType != "Bcc" || mayListBcc || (viewer.EmployeeId.HasValue && r.EmployeeId == viewer.EmployeeId))
+            .ToList();
+
+        await RecordViewAsync(letter, viewer);
+        return new LetterDetailAccessResult { Outcome = LetterAccessOutcome.Ok, Detail = detail };
+    }
+
+    // ثبت «چه کسی دیده» + خوانده‌شدن گیرنده؛ فقط برای نامه‌ی ارسال‌شده. شکست ثبت هرگز نمایش نامه را خراب نمی‌کند.
+    private async Task RecordViewAsync(Letter letter, LetterViewer viewer)
+    {
+        if (!viewer.UserId.HasValue || LetterAccessRules.IsPreSend(letter.Status)) return;
+
+        try
+        {
+            var now = DateTime.Now;
+            var log = await _context.LetterViewLogs.FirstOrDefaultAsync(x => x.LetterId == letter.LetterId && x.UserId == viewer.UserId.Value);
+            if (log == null)
+                _context.LetterViewLogs.Add(new LetterViewLog { LetterId = letter.LetterId, UserId = viewer.UserId.Value, UserName = viewer.UserName, FirstViewedDate = now, LastViewedDate = now, ViewCount = 1 });
+            else
+            {
+                log.LastViewedDate = now;
+                log.ViewCount++;
+            }
+
+            if (viewer.EmployeeId.HasValue)
+                foreach (var r in await _context.LetterRecipients.Where(x => x.LetterId == letter.LetterId && x.EmployeeId == viewer.EmployeeId && !x.IsRead).ToListAsync())
+                {
+                    r.IsRead = true;
+                    r.ReadDate = now;
+                }
+
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            // دو بازکردن هم‌زمان ممکن است هر دو ردیف اول را بسازند (Unique)؛ ثبت فقط بهترین‌تلاش است
+        }
+    }
+
+    private async Task<(Dictionary<int, string> Employees, Dictionary<int, string> Departments)> ResolveSenderNamesAsync(
+        IEnumerable<int?> employeeIds, IEnumerable<int?> departmentIds)
+    {
+        var emp = employeeIds.Where(x => x.HasValue).Select(x => x!.Value).Distinct().ToList();
+        var dep = departmentIds.Where(x => x.HasValue).Select(x => x!.Value).Distinct().ToList();
+
+        var employees = emp.Count == 0 ? new Dictionary<int, string>()
+            : (await _context.Employees.Where(e => emp.Contains(e.EmployeeId)).Select(e => new { e.EmployeeId, e.FirstName, e.LastName }).ToListAsync())
+                .ToDictionary(e => e.EmployeeId, e => (e.FirstName + " " + e.LastName).Trim());
+        var departments = dep.Count == 0 ? new Dictionary<int, string>()
+            : await _context.Departments.Where(d => dep.Contains(d.DepartmentId)).ToDictionaryAsync(d => d.DepartmentId, d => d.Name);
+
+        return (employees, departments);
+    }
+
+    private async Task<List<LetterApprovalStepDto>> LoadApprovalStepsAsync(int letterId, string letterStatus)
+    {
+        var steps = await _context.LetterApprovalSteps.AsNoTracking().Where(s => s.LetterId == letterId).OrderBy(s => s.StepOrder).ToListAsync();
+        if (steps.Count == 0) return new List<LetterApprovalStepDto>();
+
+        var ids = steps.Select(s => s.ApproverUserId).Distinct().ToList();
+        var names = await _context.Users.Where(u => ids.Contains(u.Id)).ToDictionaryAsync(u => u.Id, u => u.FullName ?? u.UserName ?? "-");
+        var currentOrder = letterStatus == "PendingApproval" ? steps.FirstOrDefault(s => s.Status == "Pending")?.StepOrder : null;
+
+        return steps.Select(s => new LetterApprovalStepDto
+        {
+            StepOrder = s.StepOrder,
+            ApproverUserId = s.ApproverUserId,
+            ApproverName = names.TryGetValue(s.ApproverUserId, out var n) ? n : "-",
+            Status = s.Status,
+            DecidedDate = s.DecidedDate,
+            Comment = s.Comment,
+            IsCurrent = currentOrder == s.StepOrder
+        }).ToList();
+    }
+
     public async Task<LetterDetailDto?> GetDetailAsync(int letterId)
     {
         var letter = await _context.Letters
@@ -497,10 +642,29 @@ public class LetterService : ILetterService
 
         string? NameOf(int? userId) => userId.HasValue && actorNames.TryGetValue(userId.Value, out var n) ? n : null;
 
+        var detailAnswered = await _context.Letters.AnyAsync(c => c.IsActive && c.ParentLetterId == letterId
+            && LetterResponseRules.AnsweredChildStatuses.Contains(c.Status));
+        var detailSenderNames = await ResolveSenderNamesAsync(new[] { letter.SenderEmployeeId }, new[] { letter.SenderDepartmentId });
+        var approvalSteps = await LoadApprovalStepsAsync(letterId, letter.Status);
+
         return new LetterDetailDto
         {
+            ApprovalSteps = approvalSteps,
             Letter = new LetterDto
             {
+                ResponseRequired = letter.ResponseRequired,
+                ResponseDueDate = letter.ResponseDueDate,
+                ResponseAnswered = detailAnswered,
+                ResponseOverdue = LetterResponseRules.IsOverdue(letter.ResponseRequired, letter.ResponseDueDate, detailAnswered, letter.Status, DateTime.Today),
+                Category = letter.Category,
+                ReferenceNumber = letter.ReferenceNumber,
+                SenderEmployeeId = letter.SenderEmployeeId,
+                SenderName = letter.SenderEmployeeId.HasValue && detailSenderNames.Employees.TryGetValue(letter.SenderEmployeeId.Value, out var sn) ? sn : letter.Sender,
+                SenderTitle = letter.SenderTitle,
+                SenderDepartmentId = letter.SenderDepartmentId,
+                SenderDepartmentName = letter.SenderDepartmentId.HasValue && detailSenderNames.Departments.TryGetValue(letter.SenderDepartmentId.Value, out var sd) ? sd : null,
+                ApprovalRequired = letter.ApprovalRequired,
+                ArchivedDate = letter.ArchivedDate,
                 LetterId = letter.LetterId,
                 LetterType = letter.LetterType,
                 LetterNumber = letter.LetterNumber,
@@ -575,6 +739,7 @@ public class LetterService : ILetterService
             Recipients = recipients.Select(r => new LetterRecipientDto
             {
                 LetterRecipientId = r.LetterRecipientId,
+                EmployeeId = r.EmployeeId,
                 RecipientType = r.RecipientType,
                 DisplayName = r.Employee != null
                     ? r.Employee.FirstName + " " + r.Employee.LastName
@@ -713,6 +878,53 @@ public class LetterService : ILetterService
     // طبق بند ۱۳: «مالکیت» یکی از چک‌های الزامی برای هر عملیات مهم است - فقط نویسنده‌ی اصلی
     // (RegisteredById) می‌تواند پیش‌نویس خودش را برای بازبینی ارسال کند؛ در غیر این‌صورت هر
     // کاربر احرازهویت‌شده‌ای می‌توانست پیش‌نویس نامه‌ی شخص دیگری را زودتر از موعد ارسال کند.
+    // ==============================================================================
+    // زنجیره‌ی تایید ترتیبی (بازطراحی مکاتبات داخلی). نامه‌ی بدون زنجیره (همه‌ی نامه‌های قدیمی) دقیقاً مثل قبل رفتار می‌کند: هر کسی با مجوز
+    // Approve یک‌مرحله تایید می‌کند. نامه‌ی دارای زنجیره: فقط تاییدکننده‌ی «مرحله‌ی جاری» (اولین Pending)، و نویسنده هرگز تاییدکننده‌ی نامه‌ی
+    // خودش نیست. «تایید دوری» (A برای B و B برای A روی هم‌دیگر) با دو قید جلوگیری می‌شود: نویسنده در زنجیره‌ی نامه‌ی خودش نیست، و هر نفر
+    // فقط یک بار در یک زنجیره می‌آید (هر دو در LetterComposeService اعتبارسنجی می‌شوند؛ این‌جا هم دوباره اعمال می‌شود).
+    // ==============================================================================
+    private sealed record ApprovalGate(List<LetterApprovalStep> Steps, LetterApprovalStep? Current, string? Error);
+
+    private async Task<ApprovalGate> GateApproverAsync(Letter letter, int? reviewerUserId)
+    {
+        var steps = await _context.LetterApprovalSteps.Where(s => s.LetterId == letter.LetterId).OrderBy(s => s.StepOrder).ToListAsync();
+        if (steps.Count == 0) return new ApprovalGate(steps, null, null);
+
+        var current = steps.FirstOrDefault(s => s.Status == "Pending");
+        if (current == null) return new ApprovalGate(steps, null, "برای این نامه مرحله‌ی در انتظار تاییدی باقی نمانده است.");
+        if (letter.RegisteredById.HasValue && letter.RegisteredById == reviewerUserId)
+            return new ApprovalGate(steps, current, "نویسنده‌ی نامه نمی‌تواند نامه‌ی خودش را تایید یا رد کند (تفکیک وظایف).");
+        if (!reviewerUserId.HasValue || current.ApproverUserId != reviewerUserId.Value)
+            return new ApprovalGate(steps, current, "نوبت تصمیم‌گیری روی این نامه با شما نیست؛ فقط تاییدکننده‌ی مرحله‌ی جاری مجاز است.");
+
+        return new ApprovalGate(steps, current, null);
+    }
+
+    // آماده‌بودن نامه‌ی «فرمال» (ساخته‌شده با فرم نوشتن؛ Category دارد) برای ارسال به تایید/ارسال. نامه‌ی قدیمی (بدون Category) سخت‌گیری جدید ندارد.
+    private async Task<string?> CheckReadyAsync(Letter letter)
+    {
+        if (letter.Category == null) return null;
+
+        if (string.IsNullOrWhiteSpace(letter.Subject)) return "موضوع نامه الزامی است.";
+        if (letter.Subject.Trim().Length > LetterComposeRules.MaxSubjectLength) return $"موضوع نامه حداکثر {LetterComposeRules.MaxSubjectLength} نویسه است.";
+        if (LetterComposeRules.PlainText(letter.Body).Length == 0) return "متن نامه خالی است.";
+
+        if (letter.LetterType == "Internal"
+            && !await _context.LetterRecipients.AnyAsync(r => r.LetterId == letter.LetterId && r.RecipientType == "To" && r.EmployeeId != null))
+            return "حداقل یک گیرنده‌ی اصلی (To) لازم است.";
+        if (letter.LetterType == "Outgoing" && string.IsNullOrWhiteSpace(letter.Receiver)) return "گیرنده‌ی نامه‌ی خارجی الزامی است.";
+
+        if (letter.ApprovalRequired)
+        {
+            var steps = await _context.LetterApprovalSteps.Where(s => s.LetterId == letter.LetterId).ToListAsync();
+            if (steps.Count == 0) return "زنجیره‌ی تایید تعریف نشده است.";
+            if (steps.Any(s => s.ApproverUserId == letter.RegisteredById)) return "نویسنده نمی‌تواند در زنجیره‌ی تایید نامه‌ی خودش باشد.";
+        }
+
+        return null;
+    }
+
     public async Task<(bool Success, string? Error)> SubmitForReviewAsync(int letterId, int? actorApplicationUserId)
     {
         var (letter, error) = await LoadForTransitionAsync(letterId, RequiredFromStatus[nameof(SubmitForReviewAsync)], "Submit for Review");
@@ -720,6 +932,21 @@ public class LetterService : ILetterService
 
         if (letter.RegisteredById != actorApplicationUserId)
             return (false, "فقط نویسنده‌ی اصلی این نامه مجاز به ارسال آن برای بازبینی است.");
+
+        if (letter.Category != null)
+        {
+            if (!letter.ApprovalRequired) return (false, "این نامه نیاز به تایید ندارد؛ مستقیماً «ارسال» کنید.");
+            var notReady = await CheckReadyAsync(letter);
+            if (notReady != null) return (false, notReady);
+
+            foreach (var step in await _context.LetterApprovalSteps.Where(s => s.LetterId == letterId).ToListAsync())
+            {
+                step.Status = "Pending";
+                step.DecidedDate = null;
+                step.Comment = null;
+            }
+            await LetterVersioning.SnapshotAsync(_context, letter, actorApplicationUserId, "Submitted");
+        }
 
         letter.Status = "PendingApproval";
         await _context.SaveChangesAsync();
@@ -732,9 +959,8 @@ public class LetterService : ILetterService
         var (letter, error) = await LoadForTransitionAsync(letterId, RequiredFromStatus[nameof(ApproveAsync)], "Approve");
         if (letter == null) return (false, error);
 
-        letter.Status = "Approved";
-        letter.ApprovedDate = DateTime.Now;
-        letter.ApprovedById = reviewerApplicationUserId;
+        var gate = await GateApproverAsync(letter, reviewerApplicationUserId);
+        if (gate.Error != null) return (false, gate.Error);
 
         await _context.LetterReviews.AddAsync(new LetterReview
         {
@@ -746,6 +972,25 @@ public class LetterService : ILetterService
             IsActive = true
         });
 
+        if (gate.Current != null)
+        {
+            gate.Current.Status = "Approved";
+            gate.Current.DecidedDate = DateTime.Now;
+            gate.Current.Comment = comment;
+
+            // مرحله‌ی میانی: نامه PendingApproval می‌ماند و نوبت به تاییدکننده‌ی بعدی می‌رسد
+            if (gate.Steps.Any(s => s.StepOrder > gate.Current.StepOrder && s.Status == "Pending"))
+            {
+                var interim = await SaveWithConcurrencyCheckAsync();
+                if (interim.Success) await NotifyTransitionAsync(letter, "StepApproved", reviewerApplicationUserId, comment);
+                return interim;
+            }
+        }
+
+        letter.Status = "Approved";
+        letter.ApprovedDate = DateTime.Now;
+        letter.ApprovedById = reviewerApplicationUserId;
+
         return await FinishTransitionAsync(letter, "Approved", reviewerApplicationUserId, comment);
     }
 
@@ -756,6 +1001,9 @@ public class LetterService : ILetterService
 
         var (letter, error) = await LoadForTransitionAsync(letterId, RequiredFromStatus[nameof(ReturnForRevisionAsync)], "Return for Revision");
         if (letter == null) return (false, error);
+
+        var gate = await GateApproverAsync(letter, reviewerApplicationUserId);
+        if (gate.Error != null) return (false, gate.Error);
 
         // طبق بند ۱۱: Snapshot محتوایی که بازبین همین الان دیده - پیش از این‌که نویسنده آن را ویرایش کند
         await _context.LetterReviews.AddAsync(new LetterReview
@@ -769,6 +1017,13 @@ public class LetterService : ILetterService
             CreatedDate = DateTime.Now,
             IsActive = true
         });
+
+        if (gate.Current != null)
+        {
+            gate.Current.Status = "Returned";
+            gate.Current.DecidedDate = DateTime.Now;
+            gate.Current.Comment = reason;
+        }
 
         letter.Status = "ReturnedForRevision";
         letter.ReturnedByUserId = reviewerApplicationUserId;
@@ -785,6 +1040,16 @@ public class LetterService : ILetterService
 
         var (letter, error) = await LoadForTransitionAsync(letterId, RequiredFromStatus[nameof(RejectAsync)], "Reject");
         if (letter == null) return (false, error);
+
+        var gate = await GateApproverAsync(letter, reviewerApplicationUserId);
+        if (gate.Error != null) return (false, gate.Error);
+
+        if (gate.Current != null)
+        {
+            gate.Current.Status = "Rejected";
+            gate.Current.DecidedDate = DateTime.Now;
+            gate.Current.Comment = reason;
+        }
 
         letter.Status = "Rejected";
         letter.RejectedByUserId = reviewerApplicationUserId;
@@ -804,6 +1069,37 @@ public class LetterService : ILetterService
         return await FinishTransitionAsync(letter, "Rejected", reviewerApplicationUserId, reason);
     }
 
+    public async Task<(bool Success, string? Error)> ReassignApprovalStepAsync(int letterId, int stepOrder, int newApproverUserId,
+        int? actorApplicationUserId, bool isAdmin)
+    {
+        if (!isAdmin) return (false, "فقط مدیر سیستم می‌تواند تاییدکننده‌ی یک مرحله را جایگزین کند.");
+
+        var letter = await _context.Letters.FirstOrDefaultAsync(x => x.LetterId == letterId && x.IsActive);
+        if (letter == null) return (false, "نامه یافت نشد.");
+        if (letter.Status != "PendingApproval") return (false, $"فقط نامه‌ی در انتظار تایید قابل تغییر است - وضعیت فعلی «{letter.Status}» است.");
+
+        var steps = await _context.LetterApprovalSteps.Where(s => s.LetterId == letterId).ToListAsync();
+        var step = steps.FirstOrDefault(s => s.StepOrder == stepOrder);
+        if (step == null) return (false, "مرحله یافت نشد.");
+        if (step.Status != "Pending") return (false, "فقط مرحله‌ی هنوز بلاتکلیف (Pending) قابل جایگزینی است.");
+        if (newApproverUserId == letter.RegisteredById) return (false, "نویسنده نمی‌تواند تاییدکننده‌ی نامه‌ی خودش باشد.");
+        if (steps.Any(s => s.StepOrder != stepOrder && s.ApproverUserId == newApproverUserId)) return (false, "این کاربر قبلاً در زنجیره‌ی این نامه هست.");
+        if (!(await LetterDirectoryQueries.ApproverUserIdsAsync(_context)).Contains(newApproverUserId)) return (false, "این کاربر مجوز Approve مکاتبات را ندارد.");
+
+        var previous = step.ApproverUserId;
+        step.ApproverUserId = newApproverUserId;
+        await _context.AuditLogs.AddAsync(new AuditLog
+        {
+            EntityName = nameof(Letter), EntityKeyValue = letterId.ToString(), Action = "ReassignApprover",
+            ChangedFieldsSummary = $"Step {stepOrder}: approver {previous} -> {newApproverUserId}", UserId = actorApplicationUserId, Timestamp = DateTime.Now
+        });
+
+        var saved = await SaveWithConcurrencyCheckAsync();
+        if (saved.Success && steps.Where(s => s.Status == "Pending").OrderBy(s => s.StepOrder).FirstOrDefault()?.StepOrder == stepOrder)
+            await NotifyTransitionAsync(letter, "StepApproved", actorApplicationUserId, null);   // نوبت فعلی به تاییدکننده‌ی جدید اعلان می‌شود
+        return saved;
+    }
+
     public async Task<(bool Success, string? Error)> IssueAsync(int letterId, int? actorApplicationUserId)
     {
         var (letter, error) = await LoadForTransitionAsync(letterId, RequiredFromStatus[nameof(IssueAsync)], "Issue");
@@ -811,8 +1107,89 @@ public class LetterService : ILetterService
 
         letter.Status = "Issued";
         letter.IssuedDate = DateTime.Now;
+        await LetterVersioning.SnapshotAsync(_context, letter, actorApplicationUserId, "Sent");
+        await CloseParentIfAnsweredAsync(letter);
 
         return await FinishTransitionAsync(letter, "Issued", actorApplicationUserId, null);
+    }
+
+    // ارسال نامه‌ی داخلی - Approved -> Sent (یا Draft -> Sent وقتی تایید لازم نیست). فقط نویسنده.
+    public async Task<(bool Success, string? Error)> SendAsync(int letterId, int? actorApplicationUserId)
+    {
+        var letter = await _context.Letters.FirstOrDefaultAsync(x => x.LetterId == letterId && x.IsActive);
+        if (letter == null) return (false, "نامه یافت نشد.");
+        if (letter.LetterType != "Internal") return (false, "فقط نامه‌ی داخلی «ارسال» می‌شود؛ نامه‌ی خارجی با «صدور» (Issue) منتشر می‌شود.");
+        if (letter.RegisteredById != actorApplicationUserId) return (false, "فقط نویسنده‌ی اصلی این نامه مجاز به ارسال آن است.");
+
+        var allowed = letter.Status == "Approved" || (letter.Status == "Draft" && !letter.ApprovalRequired);
+        if (!allowed)
+            return (false, letter.Status == "Draft"
+                ? "این نامه نیاز به تایید دارد؛ ابتدا آن را «برای تایید ارسال» کنید."
+                : $"«ارسال» از وضعیت فعلی «{letter.Status}» ممکن نیست.");
+
+        var notReady = await CheckReadyAsync(letter);
+        if (notReady != null) return (false, notReady);
+
+        letter.Status = "Sent";
+        letter.IssuedDate = DateTime.Now;
+        await LetterVersioning.SnapshotAsync(_context, letter, actorApplicationUserId, "Sent");
+        await CloseParentIfAnsweredAsync(letter);
+
+        var saved = await SaveWithConcurrencyCheckAsync();
+        if (saved.Success) await NotifyRecipientsOfSentLetterAsync(letter, actorApplicationUserId);
+        return saved;
+    }
+
+    private static readonly string[] ClosableParentStatuses = { "Registered", "UnderReview", "Referred", "Sent", "Acknowledged", "Issued" };
+
+    // پاسخ رسیده/ارسال شده -> نامه‌ی مادرِ پاسخ‌خواه بسته می‌شود («Waiting for Response -> Received Response -> Closed»)
+    private async Task CloseParentIfAnsweredAsync(Letter child)
+    {
+        if (!child.ParentLetterId.HasValue) return;
+
+        var parent = await _context.Letters.FirstOrDefaultAsync(x => x.LetterId == child.ParentLetterId.Value && x.IsActive);
+        if (parent == null || !parent.ResponseRequired || !ClosableParentStatuses.Contains(parent.Status)) return;
+
+        parent.Status = "Closed";
+        parent.ClosedDate = DateTime.Now;
+    }
+
+    private async Task NotifyRecipientsOfSentLetterAsync(Letter letter, int? actorUserId)
+    {
+        if (_notifications == null) return;
+
+        try
+        {
+            var employeeIds = await _context.LetterRecipients.Where(r => r.LetterId == letter.LetterId && r.EmployeeId != null)
+                .Select(r => r.EmployeeId!.Value).Distinct().ToListAsync();
+            var userIds = await _context.Users.Where(u => u.IsActive && u.EmployeeId != null && employeeIds.Contains(u.EmployeeId.Value)).Select(u => u.Id).ToListAsync();
+
+            var message = $"{letter.LetterNumber} - {letter.Subject}"
+                + (letter.ResponseRequired && letter.ResponseDueDate.HasValue ? $" (response required by {letter.ResponseDueDate:yyyy-MM-dd})" : "");
+
+            foreach (var userId in userIds.Where(u => u != actorUserId))
+                await _notifications.CreateAsync(userId, "New letter received", message, $"/Letter/Details/{letter.LetterId}", "Letter", letter.LetterId);
+        }
+        catch (Exception)
+        {
+            // اعلان بهترین‌تلاش است
+        }
+    }
+
+    public async Task<(bool Success, string? Error)> ArchiveAsync(int letterId, int? actorApplicationUserId, bool canArchiveAny)
+    {
+        var letter = await _context.Letters.FirstOrDefaultAsync(x => x.LetterId == letterId && x.IsActive);
+        if (letter == null) return (false, "نامه یافت نشد.");
+        if (!canArchiveAny && letter.RegisteredById != actorApplicationUserId)
+            return (false, "فقط نویسنده یا کاربر دارای اختیار مدیریت می‌تواند نامه را آرشیو کند.");
+
+        var archivable = new[] { "Registered", "UnderReview", "Referred", "Sent", "Acknowledged", "Issued", "Closed" };
+        if (!archivable.Contains(letter.Status))
+            return (false, $"فقط نامه‌ی ارسال‌شده/بسته‌شده قابل آرشیو است - وضعیت فعلی «{letter.Status}» است.");
+
+        letter.Status = "Archived";
+        letter.ArchivedDate = DateTime.Now;
+        return await SaveWithConcurrencyCheckAsync();
     }
 
     public async Task<(bool Success, string? Error)> CloseAsync(int letterId, int? actorApplicationUserId)
@@ -903,6 +1280,15 @@ public class LetterService : ILetterService
         letter.ReturnedDate = null;
         letter.ReturnReason = null;
 
+        // زنجیره‌ی تایید از مرحله‌ی اول دوباره شروع می‌شود + نسخه‌ی «Resubmitted» در تاریخچه
+        foreach (var step in await _context.LetterApprovalSteps.Where(s => s.LetterId == letterId).ToListAsync())
+        {
+            step.Status = "Pending";
+            step.DecidedDate = null;
+            step.Comment = null;
+        }
+        await LetterVersioning.SnapshotAsync(_context, letter, currentApplicationUserId, "Resubmitted");
+
         try
         {
             await _context.SaveChangesAsync();
@@ -971,14 +1357,24 @@ public class LetterService : ILetterService
             var label = $"{letter.LetterNumber} - {letter.Subject}";
             var reasonSuffix = string.IsNullOrWhiteSpace(detail) ? "" : $" Reason/comment: {detail.Trim()}";
 
-            if (kind is "Submitted" or "Resubmitted")
+            if (kind is "Submitted" or "Resubmitted" or "StepApproved")
             {
-                var title = kind == "Submitted" ? "Letter awaiting your approval" : "Revised letter awaiting your approval";
-                foreach (var userId in await GetApproverUserIdsAsync())
+                var title = kind == "Resubmitted" ? "Revised letter awaiting your approval" : "Letter awaiting your approval";
+
+                // با زنجیره‌ی تایید فقط تاییدکننده‌ی مرحله‌ی جاری اعلان می‌گیرد؛ بدون زنجیره (نامه‌ی قدیمی) همه‌ی دارندگان مجوز Approve
+                var current = await _context.LetterApprovalSteps.Where(s => s.LetterId == letter.LetterId && s.Status == "Pending")
+                    .OrderBy(s => s.StepOrder).Select(s => (int?)s.ApproverUserId).FirstOrDefaultAsync();
+                var targets = current.HasValue ? new List<int> { current.Value } : await GetApproverUserIdsAsync();
+
+                foreach (var userId in targets)
                 {
                     if (userId == actorUserId) continue;
                     await _notifications.CreateAsync(userId, title, label, link, "Letter", letter.LetterId);
                 }
+
+                // نویسنده از پیشرفت زنجیره باخبر می‌شود (یک مرحله تایید شد و نوبت نفر بعد است)
+                if (kind == "StepApproved" && letter.RegisteredById.HasValue && letter.RegisteredById != actorUserId)
+                    await _notifications.CreateAsync(letter.RegisteredById.Value, "Your letter passed an approval step", label, link, "Letter", letter.LetterId);
                 return;
             }
 
@@ -1002,19 +1398,7 @@ public class LetterService : ILetterService
         }
     }
 
-    // کاربران فعالِ نقش‌هایی که در ماتریس مجوز، Approve ماژول Correspondence را دارند
-    private async Task<List<int>> GetApproverUserIdsAsync()
-    {
-        var roleNames = _context.RolePermissions
-            .Where(p => p.ModuleName == "Correspondence" && p.CanApprove)
-            .Select(p => p.RoleName);
-
-        return await (from ur in _context.UserRoles
-                      join r in _context.Roles on ur.RoleId equals r.Id
-                      join u in _context.Users on ur.UserId equals u.Id
-                      where roleNames.Contains(r.Name!) && u.IsActive
-                      select u.Id).Distinct().ToListAsync();
-    }
+    private Task<List<int>> GetApproverUserIdsAsync() => LetterDirectoryQueries.ApproverUserIdsAsync(_context);
 
     // ==============================================================================
     // پاسخ‌خواهی (Phase 2)
@@ -1237,7 +1621,7 @@ public class LetterService : ILetterService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<LetterTimelineEventDto>> GetTimelineAsync(int letterId)
+    public async Task<List<LetterTimelineEventDto>> GetTimelineAsync(int letterId, LetterViewer? viewer = null)
     {
         var letter = await _context.Letters.FirstOrDefaultAsync(x => x.LetterId == letterId);
         if (letter == null) return new List<LetterTimelineEventDto>();
@@ -1260,6 +1644,12 @@ public class LetterService : ILetterService
             .Where(x => x.LetterId == letterId)
             .ToListAsync();
 
+        // BCC در تایم‌لاین هم فقط برای نویسنده/دسترسی کامل/خودِ گیرنده دیده می‌شود (بدون viewer: پنهان)
+        var mayListBcc = viewer != null && (viewer.CanSeeAll || (viewer.UserId.HasValue && letter.RegisteredById == viewer.UserId));
+        recipients = recipients
+            .Where(r => r.RecipientType != "Bcc" || mayListBcc || (viewer?.EmployeeId.HasValue == true && r.EmployeeId == viewer.EmployeeId))
+            .ToList();
+
         foreach (var r in recipients)
         {
             var name = r.Employee != null ? r.Employee.FirstName + " " + r.Employee.LastName : (r.Department?.Name ?? r.ExternalName ?? "-");
@@ -1268,7 +1658,7 @@ public class LetterService : ILetterService
             {
                 EventDate = r.CreatedDate,
                 EventType = "Recipient",
-                Description = $"Added as {(r.RecipientType == "To" ? "recipient (To)" : "Cc")}: {name}",
+                Description = $"Added as {(r.RecipientType == "To" ? "recipient (To)" : r.RecipientType == "Bcc" ? "Bcc" : "Cc")}: {name}",
                 Icon = "bi-person-plus",
                 Color = "secondary"
             });

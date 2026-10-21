@@ -114,6 +114,8 @@
                 <a asp-action="Index" asp-route-status="Approved" class="pems-folder-link @(currentStatus == "Approved" ? "active" : "")"><i class="bi bi-check2-square"></i> @Localizer["Approved"]</a>
                 <a asp-action="Index" asp-route-status="Issued" class="pems-folder-link @(currentStatus == "Issued" ? "active" : "")"><i class="bi bi-send-check"></i> Issued</a>
                 <a asp-action="Index" asp-route-status="Closed" class="pems-folder-link @(currentStatus == "Closed" ? "active" : "")"><i class="bi bi-archive"></i> @Localizer["Closed"]</a>
+                <a asp-action="Index" asp-route-status="Sent" class="pems-folder-link @(currentStatus == "Sent" ? "active" : "")"><i class="bi bi-send"></i> @Localizer["Lc_FolderSent"]</a>
+                <a asp-action="Index" asp-route-status="Archived" class="pems-folder-link @(currentStatus == "Archived" ? "active" : "")"><i class="bi bi-box-seam"></i> @Localizer["Lc_FolderArchived"]</a>
                 <a asp-action="Index" asp-route-starred="true" class="pems-folder-link @(currentStarred ? "active" : "")"><i class="bi bi-star-fill text-warning"></i> Starred</a>
             </div>
 
