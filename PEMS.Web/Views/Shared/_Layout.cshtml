@@ -22,7 +22,7 @@
         : 0;
 }
 <!DOCTYPE html>
-<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" dir="@(isRtl ? "rtl" : "ltr")" data-theme="@currentTheme">
+<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" dir="@(isRtl ? "rtl" : "ltr")" data-theme="@currentTheme" data-bs-theme="@(currentTheme is "turquoise" or "dark" ? "dark" : null)">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -53,6 +53,7 @@
        بعد از همه‌ی فایل‌های دیگر بارگذاری می‌شود تا بتواند override های محدود و هدفمند خودش
        را (فقط روی Turquoise + کلاس‌های Loading/Skeleton سراسری) اعمال کند. *@
     <link rel="stylesheet" href="~/css/pems-glass.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-themes.css" asp-append-version="true" />
 
     @if (isRtl)
     {
