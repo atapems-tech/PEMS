@@ -94,6 +94,16 @@ builder.Services.AddControllersWithViews(options =>
 // Database
 // =========================
 
+// Code-first bootstrap: the database is created (if missing) before anything connects to it
+// (Hangfire storage below installs its own schema on configuration) and migrated before seeding.
+var databaseOptions = builder.Configuration
+    .GetSection(PEMS.Persistence.Initialization.DatabaseInitializationOptions.SectionName)
+    .Get<PEMS.Persistence.Initialization.DatabaseInitializationOptions>()
+    ?? new PEMS.Persistence.Initialization.DatabaseInitializationOptions();
+var databaseLogger = new Serilog.Extensions.Logging.SerilogLoggerFactory(Log.Logger).CreateLogger("DatabaseInitializer");
+await PEMS.Persistence.Initialization.DatabaseInitializer.EnsureDatabaseExistsAsync(
+    builder.Configuration.GetConnectionString("PEMSConnection"), databaseOptions, databaseLogger);
+
 builder.Services.AddDbContext<PEMSDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("PEMSConnection"),
@@ -710,6 +720,9 @@ var app = builder.Build();
 // =========================
 // Seed Roles / Default Admin User
 // =========================
+
+// Apply pending EF migrations (+ full-text search objects) before any seeder touches the schema.
+await PEMS.Persistence.Initialization.DatabaseInitializer.MigrateAsync(app.Services, databaseOptions, databaseLogger);
 
 using (var scope = app.Services.CreateScope())
 {

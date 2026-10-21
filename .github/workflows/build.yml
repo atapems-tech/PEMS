@@ -28,6 +28,13 @@ jobs:
       - name: Build
         run: dotnet build PEMS.slnx --no-restore --configuration Release
 
+      # Code-first gate: the entity model and the migrations must agree, otherwise the
+      # startup migrator (Database:MigrateOnStartup) cannot apply a complete schema.
+      - name: Model drift gate (no entity change without a migration)
+        run: |
+          dotnet tool install --global dotnet-ef --version 10.0.10
+          dotnet ef migrations has-pending-model-changes --project PEMS.Persistence --startup-project PEMS.Web --no-build --configuration Release
+
       - name: Test (when PEMS.Tests has real tests)
         run: dotnet test PEMS.slnx --no-build --configuration Release --verbosity normal
         continue-on-error: true
