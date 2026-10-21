@@ -118,6 +118,18 @@
                         <input id="lcExternal" class="form-control" maxlength="250" value="@input.ExternalReceiver" autocomplete="off" />
                         <div class="lc-error" data-error-for="externalReceiver" role="alert" hidden></div>
                     </div>
+                    @if (Model.Parties.Count > 0)
+                    {
+                        <div class="lc-field">
+                            <label for="lcParty">@Localizer["Lc_Party"]</label>
+                            <select id="lcParty" class="form-select">
+                                <option value="">—</option>
+                                @foreach (var p in Model.Parties) { <option value="@p.Id" selected="@(input.CorrespondentPartyId == p.Id)">@p.Name</option> }
+                            </select>
+                            <div class="lc-help">@Localizer["Lc_PartyHelp"]</div>
+                            <div class="lc-error" data-error-for="correspondentPartyId" role="alert" hidden></div>
+                        </div>
+                    }
                 }
 
                 @foreach (var f in new[] { ("to", "Lc_To", true), ("cc", "Lc_Cc", false), ("bcc", "Lc_Bcc", false) })

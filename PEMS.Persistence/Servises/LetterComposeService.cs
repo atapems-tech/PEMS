@@ -129,6 +129,18 @@ public class LetterComposeService : ILetterComposeService
             }
         }
 
+        // طرف مکاتبه (فقط نامه‌ی صادره): باید فعال و موجود باشد؛ پیش از ساختن/تغییر هر ردیفی بررسی می‌شود
+        int? partyId = null;
+        if (input.LetterType == "Outgoing" && input.CorrespondentPartyId.HasValue)
+        {
+            partyId = input.CorrespondentPartyId.Value;
+            if (!await _context.CorrespondentParties.AnyAsync(p => p.CorrespondentPartyId == partyId && p.IsActive))
+            {
+                result.Errors.Add(new("PartyNotFound", "correspondentPartyId"));
+                return result;
+            }
+        }
+
         Letter letter;
         if (!input.LetterId.HasValue)
         {
@@ -196,6 +208,7 @@ public class LetterComposeService : ILetterComposeService
         var toNames = input.ToEmployeeIds.Where(check.Employees.ContainsKey).Select(id => FullName(check.Employees[id])).ToList();
         letter.Receiver = input.LetterType == "Outgoing" ? input.ExternalReceiver?.Trim() : string.Join(", ", toNames);
         letter.ReceiverEmployeeId = input.LetterType == "Internal" ? input.ToEmployeeIds.Cast<int?>().FirstOrDefault() : null;
+        letter.CorrespondentPartyId = partyId;
 
         try
         {
@@ -286,6 +299,7 @@ public class LetterComposeService : ILetterComposeService
             CcEmployeeIds = recipients.Where(r => r.RecipientType == "Cc").Select(r => r.EmployeeId!.Value).ToList(),
             BccEmployeeIds = recipients.Where(r => r.RecipientType == "Bcc").Select(r => r.EmployeeId!.Value).ToList(),
             ExternalReceiver = letter.LetterType == "Outgoing" ? letter.Receiver : null,
+            CorrespondentPartyId = letter.LetterType == "Outgoing" ? letter.CorrespondentPartyId : null,
             ResponseRequired = letter.ResponseRequired,
             ResponseDueDate = letter.ResponseDueDate,
             ApprovalRequired = letter.ApprovalRequired,
@@ -338,6 +352,7 @@ public class LetterComposeService : ILetterComposeService
         if (!internalReply)
         {
             input.ExternalReceiver = parent.LetterType == "Incoming" ? parent.Sender : parent.Receiver;
+            input.CorrespondentPartyId = parent.CorrespondentPartyId;
             return input;
         }
 

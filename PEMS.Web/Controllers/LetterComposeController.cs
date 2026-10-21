@@ -189,6 +189,9 @@ public class LetterComposeController : Controller
             Projects = await _context.Projects.Where(x => x.IsActive).OrderBy(x => x.ProjectName).Select(x => new ComposeLookup(x.ProjectId, x.ProjectName)).ToListAsync(),
             Disciplines = await _context.Disciplines.Where(x => x.IsActive).OrderBy(x => x.Name).Select(x => new ComposeLookup(x.DisciplineId, x.Name)).ToListAsync(),
             Departments = await _context.Departments.Where(x => x.IsActive).OrderBy(x => x.Name).Select(x => new ComposeLookup(x.DepartmentId, x.Name)).ToListAsync(),
+            Parties = input.LetterType == "Outgoing"
+                ? await _context.CorrespondentParties.Where(x => x.IsActive).OrderBy(x => x.Name).Select(x => new ComposeLookup(x.CorrespondentPartyId, x.Name)).ToListAsync()
+                : new List<ComposeLookup>(),
             ExistingErrors = TempData["ComposeError"] as string,
             ParentLetterId = parentInfo?.LetterId,
             ParentNumber = parentInfo?.LetterNumber,
@@ -493,6 +496,7 @@ public class LetterComposeViewModel
     public List<ComposeLookup> Projects { get; set; } = new();
     public List<ComposeLookup> Disciplines { get; set; } = new();
     public List<ComposeLookup> Departments { get; set; } = new();
+    public List<ComposeLookup> Parties { get; set; } = new();
     public bool CanManualNumber { get; set; }
     public string? LetterNumber { get; set; }
     public string Status { get; set; } = "Draft";

@@ -29,6 +29,8 @@ public class LetterComposeInput
     public List<int> BccEmployeeIds { get; set; } = new();
     // فقط Outgoing (گیرنده‌ی بیرونی سازمان)
     public string? ExternalReceiver { get; set; }
+    // طرف مکاتبه‌ی ثبت‌شده‌ی گیرنده (اختیاری): نامه‌ی صادره را در «رشته‌ی مکاتبه»ی همان طرف در DCC می‌آورد؛ بدون آن فقط تطبیق نام انجام می‌شود
+    public int? CorrespondentPartyId { get; set; }
 
     public bool ResponseRequired { get; set; }
     public DateTime? ResponseDueDate { get; set; }

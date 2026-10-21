@@ -452,6 +452,8 @@ public class PEMSDbContext
     public DbSet<LetterNumberSequence> LetterNumberSequences { get; set; }
 
     public DbSet<LetterRecipient> LetterRecipients { get; set; }
+    public DbSet<CorrespondentParty> CorrespondentParties { get; set; }
+    public DbSet<LetterLink> LetterLinks { get; set; }
 
     public DbSet<Tag> Tags { get; set; }
     public DbSet<LetterTag> LetterTags { get; set; }

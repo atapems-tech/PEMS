@@ -1880,4 +1880,159 @@
   <data name="Lp_KeyArchive" xml:space="preserve"><value>Archive</value></data>
   <data name="Lp_KeyDensity" xml:space="preserve"><value>Compact rows</value></data>
   <data name="Lp_KeyClose" xml:space="preserve"><value>Close / clear selection</value></data>
+  <data name="Dcc_Crumb" xml:space="preserve"><value>DCC</value></data>
+  <data name="Dcc_PageTitle" xml:space="preserve"><value>Register incoming correspondence</value></data>
+  <data name="Dcc_PageSubtitle" xml:space="preserve"><value>Log a letter, email or portal message from an external party: scan, sender reference, due date and owner in one step.</value></data>
+  <data name="Dcc_NextNumber" xml:space="preserve"><value>Next number</value></data>
+  <data name="Dcc_NumberHint" xml:space="preserve"><value>Preview only. The final number is assigned when the letter is registered; the counter restarts on 1 Farvardin.</value></data>
+  <data name="Dcc_SidePanel" xml:space="preserve"><value>Scan preview and correspondence thread</value></data>
+  <data name="Dcc_Optional" xml:space="preserve"><value>(optional)</value></data>
+  <data name="Dcc_Choose" xml:space="preserve"><value>Choose…</value></data>
+  <data name="Dcc_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Dcc_Register" xml:space="preserve"><value>Register</value></data>
+  <data name="Dcc_RegisterNext" xml:space="preserve"><value>Register &amp; next</value></data>
+  <data name="Dcc_Registering" xml:space="preserve"><value>Registering…</value></data>
+  <data name="Dcc_KeepSender" xml:space="preserve"><value>Keep sender for the next letter</value></data>
+  <data name="Dcc_ShortcutHint" xml:space="preserve"><value>Ctrl+Enter registers · Ctrl+Shift+Enter registers and starts the next one</value></data>
+  <data name="Dcc_SavedNext" xml:space="preserve"><value>Registered as {0}. Ready for the next letter.</value></data>
+  <data name="Dcc_OpenLetter" xml:space="preserve"><value>Open the letter</value></data>
+  <data name="Dcc_FixErrors" xml:space="preserve"><value>Please fix these before registering:</value></data>
+  <data name="Dcc_NetworkError" xml:space="preserve"><value>The server could not be reached. Nothing was registered; try again.</value></data>
+  <data name="Dcc_Unsaved" xml:space="preserve"><value>This form has unsaved data.</value></data>
+  <data name="Dcc_SecSender" xml:space="preserve"><value>Sender</value></data>
+  <data name="Dcc_SecLetter" xml:space="preserve"><value>Letter details</value></data>
+  <data name="Dcc_SecAction" xml:space="preserve"><value>Action</value></data>
+  <data name="Dcc_SecFiles" xml:space="preserve"><value>Files</value></data>
+  <data name="Dcc_SecLinks" xml:space="preserve"><value>Related items</value></data>
+  <data name="Dcc_Party" xml:space="preserve"><value>Sender organisation</value></data>
+  <data name="Dcc_PartyPlaceholder" xml:space="preserve"><value>Search by name or code…</value></data>
+  <data name="Dcc_PartyType" xml:space="preserve"><value>Type</value></data>
+  <data name="Dcc_PartyType_Client" xml:space="preserve"><value>Client</value></data>
+  <data name="Dcc_PartyType_Consultant" xml:space="preserve"><value>Consultant</value></data>
+  <data name="Dcc_PartyType_Contractor" xml:space="preserve"><value>Contractor</value></data>
+  <data name="Dcc_PartyType_Vendor" xml:space="preserve"><value>Vendor</value></data>
+  <data name="Dcc_NewPartyHint" xml:space="preserve"><value>A new organisation is saved as provisional until a supervisor confirms it.</value></data>
+  <data name="Dcc_AddNewParty" xml:space="preserve"><value>Add “{0}” as a new organisation</value></data>
+  <data name="Dcc_Provisional" xml:space="preserve"><value>Provisional</value></data>
+  <data name="Dcc_Project" xml:space="preserve"><value>Project</value></data>
+  <data name="Dcc_Contract" xml:space="preserve"><value>Contract</value></data>
+  <data name="Dcc_NoContracts" xml:space="preserve"><value>No contract for this project</value></data>
+  <data name="Dcc_ChooseContract" xml:space="preserve"><value>No contract</value></data>
+  <data name="Dcc_SenderRef" xml:space="preserve"><value>Sender's letter number</value></data>
+  <data name="Dcc_SenderRefPlaceholder" xml:space="preserve"><value>e.g. JPC-OUT-0452</value></data>
+  <data name="Dcc_Channel" xml:space="preserve"><value>Received by</value></data>
+  <data name="Dcc_Channel_OfficialLetter" xml:space="preserve"><value>Official letter</value></data>
+  <data name="Dcc_Channel_Email" xml:space="preserve"><value>Email</value></data>
+  <data name="Dcc_Channel_Portal" xml:space="preserve"><value>Portal</value></data>
+  <data name="Dcc_Channel_Hand" xml:space="preserve"><value>Hand delivery</value></data>
+  <data name="Dcc_Subject" xml:space="preserve"><value>Subject</value></data>
+  <data name="Dcc_DocumentDate" xml:space="preserve"><value>Date on the letter</value></data>
+  <data name="Dcc_ReceivedDate" xml:space="preserve"><value>Date received</value></data>
+  <data name="Dcc_PickDate" xml:space="preserve"><value>Pick a date</value></data>
+  <data name="Dcc_DateFormatHint" xml:space="preserve"><value>Use yyyy/mm/dd (Jalali)</value></data>
+  <data name="Dcc_PrevMonth" xml:space="preserve"><value>Previous month</value></data>
+  <data name="Dcc_NextMonth" xml:space="preserve"><value>Next month</value></data>
+  <data name="Dcc_Today" xml:space="preserve"><value>Today</value></data>
+  <data name="Dcc_Priority" xml:space="preserve"><value>Priority</value></data>
+  <data name="Dcc_Category" xml:space="preserve"><value>Category</value></data>
+  <data name="Dcc_Confidentiality" xml:space="preserve"><value>Confidentiality</value></data>
+  <data name="Dcc_ConfidentialityHint" xml:space="preserve"><value>Controls who can open this letter.</value></data>
+  <data name="Dcc_Discipline" xml:space="preserve"><value>Discipline</value></data>
+  <data name="Dcc_InReplyTo" xml:space="preserve"><value>In reply to</value></data>
+  <data name="Dcc_InReplyToHint" xml:space="preserve"><value>Choose one of our outgoing letters to this sender. Registering closes that letter if it asked for a reply.</value></data>
+  <data name="Dcc_ReplyChooseParty" xml:space="preserve"><value>Choose the sender first</value></data>
+  <data name="Dcc_ReplyChoose" xml:space="preserve"><value>Not a reply</value></data>
+  <data name="Dcc_ReplyNone" xml:space="preserve"><value>No outgoing letters to this sender</value></data>
+  <data name="Dcc_ReplyAwaiting" xml:space="preserve"><value>Awaiting reply</value></data>
+  <data name="Dcc_Summary" xml:space="preserve"><value>Summary</value></data>
+  <data name="Dcc_SummaryPlaceholder" xml:space="preserve"><value>One or two lines on what the letter asks or states…</value></data>
+  <data name="Dcc_ResponseRequired" xml:space="preserve"><value>This letter requires a response</value></data>
+  <data name="Dcc_ResponseDue" xml:space="preserve"><value>Respond by</value></data>
+  <data name="Dcc_Days" xml:space="preserve"><value>days</value></data>
+  <data name="Dcc_Owner" xml:space="preserve"><value>Owner</value></data>
+  <data name="Dcc_OwnerPlaceholder" xml:space="preserve"><value>Search colleagues…</value></data>
+  <data name="Dcc_Cc" xml:space="preserve"><value>Copy to</value></data>
+  <data name="Dcc_CcPlaceholder" xml:space="preserve"><value>Add a colleague…</value></data>
+  <data name="Dcc_Instruction" xml:space="preserve"><value>Instruction to the owner</value></data>
+  <data name="Dcc_InstructionPlaceholder" xml:space="preserve"><value>What should the owner do?</value></data>
+  <data name="Dcc_Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="Dcc_DropTitle" xml:space="preserve"><value>Drop files here or click to browse</value></data>
+  <data name="Dcc_DropHint" xml:space="preserve"><value>PDF, Office, images, email (.eml/.msg), zip · up to 25 MB each · mark exactly one as the original scan</value></data>
+  <data name="Dcc_RoleOriginal" xml:space="preserve"><value>Original letter</value></data>
+  <data name="Dcc_RoleAttachment" xml:space="preserve"><value>Attachment</value></data>
+  <data name="Dcc_RoleEmailCopy" xml:space="preserve"><value>Email copy</value></data>
+  <data name="Dcc_RemoveFile" xml:space="preserve"><value>Remove file</value></data>
+  <data name="Dcc_NoFilePreview" xml:space="preserve"><value>No preview for this file type</value></data>
+  <data name="Dcc_PreviewEmpty" xml:space="preserve"><value>Add the scan and it appears here.</value></data>
+  <data name="Dcc_LinkType" xml:space="preserve"><value>Item type</value></data>
+  <data name="Dcc_LinkEngineeringDocument" xml:space="preserve"><value>Engineering document</value></data>
+  <data name="Dcc_LinkVdrItem" xml:space="preserve"><value>Vendor document (VDR)</value></data>
+  <data name="Dcc_LinkMaterialRequisition" xml:space="preserve"><value>Material requisition</value></data>
+  <data name="Dcc_LinkTransmittal" xml:space="preserve"><value>Transmittal</value></data>
+  <data name="Dcc_LinkSearch" xml:space="preserve"><value>Search by number or title…</value></data>
+  <data name="Dcc_NoLinks" xml:space="preserve"><value>No related items</value></data>
+  <data name="Dcc_TabDocuments" xml:space="preserve"><value>Documents</value></data>
+  <data name="Dcc_TabThread" xml:space="preserve"><value>Correspondence</value></data>
+  <data name="Dcc_ThreadPickParty" xml:space="preserve"><value>Choose the sender to see the letters exchanged with them.</value></data>
+  <data name="Dcc_ThreadEmpty" xml:space="preserve"><value>No earlier correspondence with this sender.</value></data>
+  <data name="Dcc_ThreadAwaitingUs" xml:space="preserve"><value>Awaiting our reply</value></data>
+  <data name="Dcc_ThreadAwaitingThem" xml:space="preserve"><value>Awaiting their reply</value></data>
+  <data name="Dcc_ThreadLast" xml:space="preserve"><value>Last contact</value></data>
+  <data name="Dcc_ThreadTotal" xml:space="preserve"><value>{0} letters</value></data>
+  <data name="Dcc_Incoming" xml:space="preserve"><value>Incoming</value></data>
+  <data name="Dcc_Outgoing" xml:space="preserve"><value>Outgoing</value></data>
+  <data name="Dcc_Overdue" xml:space="preserve"><value>Overdue</value></data>
+  <data name="Dcc_Answered" xml:space="preserve"><value>Answered</value></data>
+  <data name="Dcc_DueOn" xml:space="preserve"><value>Due</value></data>
+  <data name="Dcc_Searching" xml:space="preserve"><value>Searching…</value></data>
+  <data name="Dcc_NoResults" xml:space="preserve"><value>No matches</value></data>
+  <data name="Dcc_DuplicateFound" xml:space="preserve"><value>This sender number was already registered as {0}.</value></data>
+  <data name="Dcc_RegisterAnyway" xml:space="preserve"><value>Register anyway</value></data>
+  <data name="Dcc_Err_ProjectRequired" xml:space="preserve"><value>Choose the project.</value></data>
+  <data name="Dcc_Err_ProjectNotFound" xml:space="preserve"><value>The project was not found.</value></data>
+  <data name="Dcc_Err_PartyRequired" xml:space="preserve"><value>Choose or add the sender organisation.</value></data>
+  <data name="Dcc_Err_PartyNotFound" xml:space="preserve"><value>The sender organisation was not found.</value></data>
+  <data name="Dcc_Err_PartyNameTooLong" xml:space="preserve"><value>The organisation name is too long.</value></data>
+  <data name="Dcc_Err_PartyTypeInvalid" xml:space="preserve"><value>Choose the type of the new organisation.</value></data>
+  <data name="Dcc_Err_ContractInvalid" xml:space="preserve"><value>The contract does not belong to this project.</value></data>
+  <data name="Dcc_Err_DisciplineNotFound" xml:space="preserve"><value>The discipline was not found.</value></data>
+  <data name="Dcc_Err_SubjectRequired" xml:space="preserve"><value>Enter the subject.</value></data>
+  <data name="Dcc_Err_SubjectTooLong" xml:space="preserve"><value>The subject can be at most {0} characters.</value></data>
+  <data name="Dcc_Err_ChannelInvalid" xml:space="preserve"><value>The receiving method is not valid.</value></data>
+  <data name="Dcc_Err_SenderReferenceRequired" xml:space="preserve"><value>Enter the sender's letter number.</value></data>
+  <data name="Dcc_Err_SenderReferenceTooLong" xml:space="preserve"><value>The sender's letter number is too long.</value></data>
+  <data name="Dcc_Err_DocumentDateRequired" xml:space="preserve"><value>Enter the date on the letter.</value></data>
+  <data name="Dcc_Err_DocumentDateFuture" xml:space="preserve"><value>The date on the letter cannot be in the future.</value></data>
+  <data name="Dcc_Err_ReceivedDateFuture" xml:space="preserve"><value>The received date cannot be in the future.</value></data>
+  <data name="Dcc_Err_ReceivedBeforeDocument" xml:space="preserve"><value>The received date cannot be before the date on the letter.</value></data>
+  <data name="Dcc_Err_DateInvalid" xml:space="preserve"><value>The date is not valid. Use yyyy/mm/dd (Jalali).</value></data>
+  <data name="Dcc_Err_PriorityInvalid" xml:space="preserve"><value>The priority is not valid.</value></data>
+  <data name="Dcc_Err_CategoryInvalid" xml:space="preserve"><value>The category is not valid.</value></data>
+  <data name="Dcc_Err_ConfidentialityInvalid" xml:space="preserve"><value>The confidentiality level is not valid.</value></data>
+  <data name="Dcc_Err_SummaryTooLong" xml:space="preserve"><value>The summary can be at most {0} characters.</value></data>
+  <data name="Dcc_Err_ResponseDueRequired" xml:space="preserve"><value>Enter the response deadline.</value></data>
+  <data name="Dcc_Err_ResponseDueBeforeReceived" xml:space="preserve"><value>The deadline cannot be before the received date.</value></data>
+  <data name="Dcc_Err_OwnerRequired" xml:space="preserve"><value>Choose who will follow up on this letter.</value></data>
+  <data name="Dcc_Err_OwnerNotFound" xml:space="preserve"><value>The owner was not found.</value></data>
+  <data name="Dcc_Err_CcNotFound" xml:space="preserve"><value>One of the copy recipients was not found.</value></data>
+  <data name="Dcc_Err_TooManyCc" xml:space="preserve"><value>At most {0} copy recipients are allowed.</value></data>
+  <data name="Dcc_Err_InstructionTooLong" xml:space="preserve"><value>The instruction can be at most {0} characters.</value></data>
+  <data name="Dcc_Err_ParentInvalid" xml:space="preserve"><value>The selected letter cannot be replied to.</value></data>
+  <data name="Dcc_Err_ParentPartyMismatch" xml:space="preserve"><value>The selected letter was sent to a different organisation.</value></data>
+  <data name="Dcc_Err_LinkInvalid" xml:space="preserve"><value>A related item is not valid.</value></data>
+  <data name="Dcc_Err_LinkNotFound" xml:space="preserve"><value>A related item was not found: {0}</value></data>
+  <data name="Dcc_Err_TooManyLinks" xml:space="preserve"><value>At most {0} related items are allowed.</value></data>
+  <data name="Dcc_Err_OriginalRequired" xml:space="preserve"><value>Add the scan of the original letter.</value></data>
+  <data name="Dcc_Err_OneOriginalOnly" xml:space="preserve"><value>Only one file can be the original letter.</value></data>
+  <data name="Dcc_Err_TooManyFiles" xml:space="preserve"><value>At most {0} files are allowed.</value></data>
+  <data name="Dcc_Err_FilesTooLarge" xml:space="preserve"><value>The files are too large together.</value></data>
+  <data name="Dcc_Err_FileRoleInvalid" xml:space="preserve"><value>The role of this file is not valid: {0}</value></data>
+  <data name="Dcc_Err_FileEmpty" xml:space="preserve"><value>The file is empty: {0}</value></data>
+  <data name="Dcc_Err_FileTooLarge" xml:space="preserve"><value>The file is larger than 25 MB: {0}</value></data>
+  <data name="Dcc_Err_FileTypeNotAllowed" xml:space="preserve"><value>This file type is not allowed: {0}</value></data>
+  <data name="Dcc_Err_FileContentMismatch" xml:space="preserve"><value>The file content does not match its extension: {0}</value></data>
+  <data name="Dcc_Err_Duplicate" xml:space="preserve"><value>This sender number was already registered.</value></data>
+  <data name="Lc_Party" xml:space="preserve"><value>Organisation (optional)</value></data>
+  <data name="Lc_PartyHelp" xml:space="preserve"><value>Pick a registered organisation so this letter shows in its correspondence thread in DCC.</value></data>
+  <data name="Lc_Err_PartyNotFound" xml:space="preserve"><value>The selected organisation was not found.</value></data>
 </root>

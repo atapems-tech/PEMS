@@ -172,44 +172,9 @@ public class LetterService : ILetterService
     // طبق گزارش ممیزی (بند ۶.۵): محدودیت محرمانگی باید در خودِ Query اعمال شود، نه فقط
     // در نمایش. کاربر بدون مجوز بالا فقط نامه‌های Public/Internal، یا نامه‌هایی که خودش
     // ثبت کرده، یا نامه‌هایی که به او ارجاع شده را می‌بیند.
-    private async Task<IQueryable<Letter>> ApplyConfidentialityAsync(IQueryable<Letter> query,
+    private Task<IQueryable<Letter>> ApplyConfidentialityAsync(IQueryable<Letter> query,
         bool canViewConfidential, int? requestingApplicationUserId)
-    {
-        if (canViewConfidential) return query;
-
-        var employeeId = requestingApplicationUserId.HasValue
-            ? await _context.Users.Where(x => x.Id == requestingApplicationUserId.Value)
-                .Select(x => x.EmployeeId).FirstOrDefaultAsync()
-            : null;
-
-        var referredLetterIds = employeeId.HasValue
-            ? await _context.LetterReferrals.Where(x => x.ReferredToEmployeeId == employeeId.Value)
-                .Select(x => x.LetterId).ToListAsync()
-            : new List<int>();
-
-        // گیرنده‌ی To/Cc/Bcc نامه (قبلاً گیرنده‌ی نامه‌ی محرمانه بدون ارجاع جدا آن را در فهرست نمی‌دید)
-        var recipientLetterIds = employeeId.HasValue
-            ? await _context.LetterRecipients.Where(x => x.EmployeeId == employeeId.Value)
-                .Select(x => x.LetterId).Distinct().ToListAsync()
-            : new List<int>();
-
-        // عضو زنجیره‌ی تایید، نامه‌ی در انتظار تاییدش را می‌بیند
-        var chainLetterIds = requestingApplicationUserId.HasValue
-            ? await _context.LetterApprovalSteps.Where(x => x.ApproverUserId == requestingApplicationUserId.Value)
-                .Select(x => x.LetterId).Distinct().ToListAsync()
-            : new List<int>();
-
-        var preSend = LetterAccessRules.PreSendStatuses;
-
-        // قاعده‌ی هم‌ارز LetterAccessRules.CanView (پیش‌نویس/در انتظار تایید فقط نویسنده و زنجیره‌ی تایید؛ نامه‌ی منتشرشده بر اساس سطح
-        // محرمانگی یا گیرنده/ارجاع‌گیرنده‌بودن)
-        return query.Where(x =>
-            (requestingApplicationUserId.HasValue && x.RegisteredById == requestingApplicationUserId.Value) ||
-            chainLetterIds.Contains(x.LetterId) ||
-            (!preSend.Contains(x.Status) &&
-                (x.ConfidentialityLevel == "Public" || x.ConfidentialityLevel == "Internal" ||
-                 referredLetterIds.Contains(x.LetterId) || recipientLetterIds.Contains(x.LetterId))));
-    }
+        => LetterVisibility.ApplyAsync(_context, query, canViewConfidential, requestingApplicationUserId);
 
     private string? MakeSnippet(string? body)
     {

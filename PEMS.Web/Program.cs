@@ -523,6 +523,7 @@ builder.Services.AddScoped<ILetterTemplateService, LetterTemplateService>();
 builder.Services.AddScoped<ILetterReminderService, LetterReminderService>();
 builder.Services.AddScoped<ILetterComposeService, LetterComposeService>();
 builder.Services.AddScoped<ILetterComplianceService, LetterComplianceService>();
+builder.Services.AddScoped<IIncomingCorrespondenceService, IncomingCorrespondenceService>();
 builder.Services.Configure<PEMS.Web.BackgroundJobs.LetterReminderOptions>(builder.Configuration.GetSection("LetterReminders"));
 builder.Services.AddHostedService<PEMS.Web.BackgroundJobs.LetterReminderBackgroundService>();
 
@@ -727,6 +728,16 @@ using (var scope = app.Services.CreateScope())
 
     // قالب‌های آماده‌ی نامه‌ی داخلی (افزودنی و Idempotent)
     await PEMS.Persistence.Seed.LetterTemplateSeeder.SeedAsync(scope.ServiceProvider);
+
+    // طرف‌های مکاتبه از روی وندورها (Idempotent). اگر مایگریشن هنوز اعمال نشده باشد، برنامه به‌خاطر آن بالا نیامدنی نیست.
+    try
+    {
+        await scope.ServiceProvider.GetRequiredService<IIncomingCorrespondenceService>().SeedPartiesFromVendorsAsync();
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogWarning(ex, "Correspondent party seeding from vendors was skipped (is the latest migration applied?)");
+    }
 
     // دیسیپلین‌های مهندسی پیش‌فرض - بدون این Seed، پس از پاک‌سازی دیتابیس Workspace دیسیپلین‌ها
     // خالی می‌شوند و UI مربوط به default items/discipline list هیچ آیتمی نشان نمی‌دهد.

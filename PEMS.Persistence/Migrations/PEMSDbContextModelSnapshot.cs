@@ -1950,6 +1950,63 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("ControlLoops");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.CorrespondentParty", b =>
+                {
+                    b.Property<int>("CorrespondentPartyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CorrespondentPartyId"));
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsProvisional")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("PartyType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("VendorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CorrespondentPartyId");
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("VendorId");
+
+                    b.ToTable("CorrespondentParties");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Crew", b =>
                 {
                     b.Property<int>("CrewId")
@@ -7581,6 +7638,12 @@ namespace PEMS.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ContractId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CorrespondentPartyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -7589,6 +7652,9 @@ namespace PEMS.Persistence.Migrations
 
                     b.Property<int?>("DisciplineId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("DocumentDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -7619,6 +7685,13 @@ namespace PEMS.Persistence.Migrations
 
                     b.Property<int?>("ProjectId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ReceiptChannel")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime?>("ReceivedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Receiver")
                         .HasColumnType("nvarchar(max)");
@@ -7686,6 +7759,10 @@ namespace PEMS.Persistence.Migrations
                     b.Property<int?>("SenderEmployeeId")
                         .HasColumnType("int");
 
+                    b.Property<string>("SenderReference")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("SenderTitle")
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
@@ -7708,6 +7785,8 @@ namespace PEMS.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("LetterId");
+
+                    b.HasIndex("ContractId");
 
                     b.HasIndex("DisciplineId");
 
@@ -7732,6 +7811,8 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("SenderEmployeeId");
 
                     b.HasIndex("Status");
+
+                    b.HasIndex("CorrespondentPartyId", "SenderReference");
 
                     b.HasIndex("IsActive", "LetterDate");
 
@@ -7780,6 +7861,42 @@ namespace PEMS.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("LetterApprovalSteps");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.LetterLink", b =>
+                {
+                    b.Property<int>("LetterLinkId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LetterLinkId"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LetterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LinkType")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("TargetId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TargetNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("LetterLinkId");
+
+                    b.HasIndex("LinkType", "TargetId");
+
+                    b.HasIndex("LetterId", "LinkType", "TargetId")
+                        .IsUnique();
+
+                    b.ToTable("LetterLinks");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.LetterNumberSequence", b =>
@@ -20989,6 +21106,16 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Instrument");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.CorrespondentParty", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Vendor", "Vendor")
+                        .WithMany()
+                        .HasForeignKey("VendorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Vendor");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Crew", b =>
                 {
                     b.HasOne("PEMS.Domain.Entities.WorkOrder", "WorkOrder")
@@ -22555,6 +22682,16 @@ namespace PEMS.Persistence.Migrations
 
             modelBuilder.Entity("PEMS.Domain.Entities.Letter", b =>
                 {
+                    b.HasOne("PEMS.Domain.Entities.Contract", "Contract")
+                        .WithMany()
+                        .HasForeignKey("ContractId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.CorrespondentParty", "CorrespondentParty")
+                        .WithMany()
+                        .HasForeignKey("CorrespondentPartyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("PEMS.Domain.Entities.Discipline", "Discipline")
                         .WithMany()
                         .HasForeignKey("DisciplineId")
@@ -22590,6 +22727,10 @@ namespace PEMS.Persistence.Migrations
                         .HasForeignKey("RelatedMRId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.Navigation("Contract");
+
+                    b.Navigation("CorrespondentParty");
+
                     b.Navigation("Discipline");
 
                     b.Navigation("ParentLetter");
@@ -22609,6 +22750,17 @@ namespace PEMS.Persistence.Migrations
                 {
                     b.HasOne("PEMS.Domain.Entities.Letter", "Letter")
                         .WithMany()
+                        .HasForeignKey("LetterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Letter");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.LetterLink", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Letter", "Letter")
+                        .WithMany("Links")
                         .HasForeignKey("LetterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -26115,6 +26267,8 @@ namespace PEMS.Persistence.Migrations
             modelBuilder.Entity("PEMS.Domain.Entities.Letter", b =>
                 {
                     b.Navigation("Attachments");
+
+                    b.Navigation("Links");
 
                     b.Navigation("Recipients");
 

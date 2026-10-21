@@ -2675,4 +2675,159 @@
   <data name="Lp_KeyArchive" xml:space="preserve"><value>بایگانی</value></data>
   <data name="Lp_KeyDensity" xml:space="preserve"><value>ردیف‌های فشرده</value></data>
   <data name="Lp_KeyClose" xml:space="preserve"><value>بستن / لغو انتخاب</value></data>
+  <data name="Dcc_Crumb" xml:space="preserve"><value>مرکز کنترل مدارک (DCC)</value></data>
+  <data name="Dcc_PageTitle" xml:space="preserve"><value>ثبت مکاتبه‌ی وارده</value></data>
+  <data name="Dcc_PageSubtitle" xml:space="preserve"><value>ثبت نامه، ایمیل یا پیام پورتالِ دریافتی از طرف بیرونی: اسکن، شماره‌ی نامه‌ی فرستنده، مهلت پاسخ و مسئول در یک مرحله.</value></data>
+  <data name="Dcc_NextNumber" xml:space="preserve"><value>شماره‌ی بعدی</value></data>
+  <data name="Dcc_NumberHint" xml:space="preserve"><value>فقط پیش‌نمایش است. شماره‌ی نهایی هنگام ثبت داده می‌شود و شمارنده از ۱ فروردین از نو شروع می‌شود.</value></data>
+  <data name="Dcc_SidePanel" xml:space="preserve"><value>پیش‌نمایش اسکن و رشته‌ی مکاتبه</value></data>
+  <data name="Dcc_Optional" xml:space="preserve"><value>(اختیاری)</value></data>
+  <data name="Dcc_Choose" xml:space="preserve"><value>انتخاب کنید…</value></data>
+  <data name="Dcc_Cancel" xml:space="preserve"><value>انصراف</value></data>
+  <data name="Dcc_Register" xml:space="preserve"><value>ثبت</value></data>
+  <data name="Dcc_RegisterNext" xml:space="preserve"><value>ثبت و بعدی</value></data>
+  <data name="Dcc_Registering" xml:space="preserve"><value>در حال ثبت…</value></data>
+  <data name="Dcc_KeepSender" xml:space="preserve"><value>نگه‌داشتن فرستنده برای نامه‌ی بعد</value></data>
+  <data name="Dcc_ShortcutHint" xml:space="preserve"><value>Ctrl+Enter ثبت · Ctrl+Shift+Enter ثبت و شروع نامه‌ی بعد</value></data>
+  <data name="Dcc_SavedNext" xml:space="preserve"><value>با شماره‌ی {0} ثبت شد. آماده‌ی نامه‌ی بعدی.</value></data>
+  <data name="Dcc_OpenLetter" xml:space="preserve"><value>باز کردن نامه</value></data>
+  <data name="Dcc_FixErrors" xml:space="preserve"><value>پیش از ثبت این موارد را اصلاح کنید:</value></data>
+  <data name="Dcc_NetworkError" xml:space="preserve"><value>ارتباط با سرور برقرار نشد. چیزی ثبت نشد؛ دوباره تلاش کنید.</value></data>
+  <data name="Dcc_Unsaved" xml:space="preserve"><value>اطلاعات این فرم ذخیره نشده است.</value></data>
+  <data name="Dcc_SecSender" xml:space="preserve"><value>فرستنده</value></data>
+  <data name="Dcc_SecLetter" xml:space="preserve"><value>مشخصات نامه</value></data>
+  <data name="Dcc_SecAction" xml:space="preserve"><value>اقدام</value></data>
+  <data name="Dcc_SecFiles" xml:space="preserve"><value>فایل‌ها</value></data>
+  <data name="Dcc_SecLinks" xml:space="preserve"><value>موارد مرتبط</value></data>
+  <data name="Dcc_Party" xml:space="preserve"><value>سازمان فرستنده</value></data>
+  <data name="Dcc_PartyPlaceholder" xml:space="preserve"><value>جستجو با نام یا کد…</value></data>
+  <data name="Dcc_PartyType" xml:space="preserve"><value>نوع</value></data>
+  <data name="Dcc_PartyType_Client" xml:space="preserve"><value>کارفرما</value></data>
+  <data name="Dcc_PartyType_Consultant" xml:space="preserve"><value>مشاور</value></data>
+  <data name="Dcc_PartyType_Contractor" xml:space="preserve"><value>پیمانکار</value></data>
+  <data name="Dcc_PartyType_Vendor" xml:space="preserve"><value>وندور</value></data>
+  <data name="Dcc_NewPartyHint" xml:space="preserve"><value>سازمان جدید به‌صورت موقت ثبت می‌شود تا سرپرست آن را تایید کند.</value></data>
+  <data name="Dcc_AddNewParty" xml:space="preserve"><value>افزودن «{0}» به‌عنوان سازمان جدید</value></data>
+  <data name="Dcc_Provisional" xml:space="preserve"><value>موقت</value></data>
+  <data name="Dcc_Project" xml:space="preserve"><value>پروژه</value></data>
+  <data name="Dcc_Contract" xml:space="preserve"><value>قرارداد</value></data>
+  <data name="Dcc_NoContracts" xml:space="preserve"><value>قراردادی برای این پروژه نیست</value></data>
+  <data name="Dcc_ChooseContract" xml:space="preserve"><value>بدون قرارداد</value></data>
+  <data name="Dcc_SenderRef" xml:space="preserve"><value>شماره‌ی نامه‌ی فرستنده</value></data>
+  <data name="Dcc_SenderRefPlaceholder" xml:space="preserve"><value>مثلاً JPC-OUT-0452</value></data>
+  <data name="Dcc_Channel" xml:space="preserve"><value>روش دریافت</value></data>
+  <data name="Dcc_Channel_OfficialLetter" xml:space="preserve"><value>نامه‌ی رسمی</value></data>
+  <data name="Dcc_Channel_Email" xml:space="preserve"><value>ایمیل</value></data>
+  <data name="Dcc_Channel_Portal" xml:space="preserve"><value>پورتال</value></data>
+  <data name="Dcc_Channel_Hand" xml:space="preserve"><value>تحویل دستی</value></data>
+  <data name="Dcc_Subject" xml:space="preserve"><value>موضوع</value></data>
+  <data name="Dcc_DocumentDate" xml:space="preserve"><value>تاریخ روی نامه</value></data>
+  <data name="Dcc_ReceivedDate" xml:space="preserve"><value>تاریخ دریافت</value></data>
+  <data name="Dcc_PickDate" xml:space="preserve"><value>انتخاب تاریخ</value></data>
+  <data name="Dcc_DateFormatHint" xml:space="preserve"><value>قالب سال/ماه/روز (شمسی)</value></data>
+  <data name="Dcc_PrevMonth" xml:space="preserve"><value>ماه قبل</value></data>
+  <data name="Dcc_NextMonth" xml:space="preserve"><value>ماه بعد</value></data>
+  <data name="Dcc_Today" xml:space="preserve"><value>امروز</value></data>
+  <data name="Dcc_Priority" xml:space="preserve"><value>اولویت</value></data>
+  <data name="Dcc_Category" xml:space="preserve"><value>دسته</value></data>
+  <data name="Dcc_Confidentiality" xml:space="preserve"><value>سطح محرمانگی</value></data>
+  <data name="Dcc_ConfidentialityHint" xml:space="preserve"><value>تعیین می‌کند چه کسانی نامه را می‌بینند.</value></data>
+  <data name="Dcc_Discipline" xml:space="preserve"><value>دیسیپلین</value></data>
+  <data name="Dcc_InReplyTo" xml:space="preserve"><value>در پاسخ به</value></data>
+  <data name="Dcc_InReplyToHint" xml:space="preserve"><value>یکی از نامه‌های صادره‌ی ما به این فرستنده را انتخاب کنید. اگر آن نامه پاسخ می‌خواست، با ثبت بسته می‌شود.</value></data>
+  <data name="Dcc_ReplyChooseParty" xml:space="preserve"><value>ابتدا فرستنده را انتخاب کنید</value></data>
+  <data name="Dcc_ReplyChoose" xml:space="preserve"><value>پاسخ نیست</value></data>
+  <data name="Dcc_ReplyNone" xml:space="preserve"><value>نامه‌ی صادره‌ای به این فرستنده نیست</value></data>
+  <data name="Dcc_ReplyAwaiting" xml:space="preserve"><value>منتظر پاسخ</value></data>
+  <data name="Dcc_Summary" xml:space="preserve"><value>خلاصه</value></data>
+  <data name="Dcc_SummaryPlaceholder" xml:space="preserve"><value>یکی دو خط درباره‌ی درخواست یا موضوع نامه…</value></data>
+  <data name="Dcc_ResponseRequired" xml:space="preserve"><value>این نامه نیاز به پاسخ دارد</value></data>
+  <data name="Dcc_ResponseDue" xml:space="preserve"><value>مهلت پاسخ</value></data>
+  <data name="Dcc_Days" xml:space="preserve"><value>روز</value></data>
+  <data name="Dcc_Owner" xml:space="preserve"><value>مسئول پیگیری</value></data>
+  <data name="Dcc_OwnerPlaceholder" xml:space="preserve"><value>جستجوی همکار…</value></data>
+  <data name="Dcc_Cc" xml:space="preserve"><value>رونوشت به</value></data>
+  <data name="Dcc_CcPlaceholder" xml:space="preserve"><value>افزودن همکار…</value></data>
+  <data name="Dcc_Instruction" xml:space="preserve"><value>دستور به مسئول</value></data>
+  <data name="Dcc_InstructionPlaceholder" xml:space="preserve"><value>مسئول چه کاری باید انجام دهد؟</value></data>
+  <data name="Dcc_Remove" xml:space="preserve"><value>حذف</value></data>
+  <data name="Dcc_DropTitle" xml:space="preserve"><value>فایل‌ها را اینجا رها کنید یا کلیک کنید</value></data>
+  <data name="Dcc_DropHint" xml:space="preserve"><value>PDF، آفیس، تصویر، ایمیل (eml/msg)، zip · تا ۲۵ مگابایت برای هر فایل · دقیقاً یک فایل را به‌عنوان اسکن اصلی مشخص کنید</value></data>
+  <data name="Dcc_RoleOriginal" xml:space="preserve"><value>نامه‌ی اصلی</value></data>
+  <data name="Dcc_RoleAttachment" xml:space="preserve"><value>پیوست</value></data>
+  <data name="Dcc_RoleEmailCopy" xml:space="preserve"><value>نسخه‌ی ایمیل</value></data>
+  <data name="Dcc_RemoveFile" xml:space="preserve"><value>حذف فایل</value></data>
+  <data name="Dcc_NoFilePreview" xml:space="preserve"><value>پیش‌نمایشی برای این نوع فایل نیست</value></data>
+  <data name="Dcc_PreviewEmpty" xml:space="preserve"><value>اسکن را اضافه کنید تا اینجا نمایش داده شود.</value></data>
+  <data name="Dcc_LinkType" xml:space="preserve"><value>نوع مورد</value></data>
+  <data name="Dcc_LinkEngineeringDocument" xml:space="preserve"><value>مدرک مهندسی</value></data>
+  <data name="Dcc_LinkVdrItem" xml:space="preserve"><value>مدرک وندور (VDR)</value></data>
+  <data name="Dcc_LinkMaterialRequisition" xml:space="preserve"><value>درخواست مواد (MR)</value></data>
+  <data name="Dcc_LinkTransmittal" xml:space="preserve"><value>ترنسمیتال</value></data>
+  <data name="Dcc_LinkSearch" xml:space="preserve"><value>جستجو با شماره یا عنوان…</value></data>
+  <data name="Dcc_NoLinks" xml:space="preserve"><value>مورد مرتبطی نیست</value></data>
+  <data name="Dcc_TabDocuments" xml:space="preserve"><value>اسناد</value></data>
+  <data name="Dcc_TabThread" xml:space="preserve"><value>مکاتبات</value></data>
+  <data name="Dcc_ThreadPickParty" xml:space="preserve"><value>فرستنده را انتخاب کنید تا مکاتبات رد و بدل‌شده با او دیده شود.</value></data>
+  <data name="Dcc_ThreadEmpty" xml:space="preserve"><value>مکاتبه‌ی قبلی با این فرستنده نیست.</value></data>
+  <data name="Dcc_ThreadAwaitingUs" xml:space="preserve"><value>منتظر پاسخ ما</value></data>
+  <data name="Dcc_ThreadAwaitingThem" xml:space="preserve"><value>منتظر پاسخ آن‌ها</value></data>
+  <data name="Dcc_ThreadLast" xml:space="preserve"><value>آخرین مکاتبه</value></data>
+  <data name="Dcc_ThreadTotal" xml:space="preserve"><value>{0} نامه</value></data>
+  <data name="Dcc_Incoming" xml:space="preserve"><value>وارده</value></data>
+  <data name="Dcc_Outgoing" xml:space="preserve"><value>صادره</value></data>
+  <data name="Dcc_Overdue" xml:space="preserve"><value>معوق</value></data>
+  <data name="Dcc_Answered" xml:space="preserve"><value>پاسخ داده شده</value></data>
+  <data name="Dcc_DueOn" xml:space="preserve"><value>مهلت</value></data>
+  <data name="Dcc_Searching" xml:space="preserve"><value>در حال جستجو…</value></data>
+  <data name="Dcc_NoResults" xml:space="preserve"><value>موردی پیدا نشد</value></data>
+  <data name="Dcc_DuplicateFound" xml:space="preserve"><value>این شماره‌ی فرستنده قبلاً با شماره‌ی {0} ثبت شده است.</value></data>
+  <data name="Dcc_RegisterAnyway" xml:space="preserve"><value>با این حال ثبت شود</value></data>
+  <data name="Dcc_Err_ProjectRequired" xml:space="preserve"><value>پروژه را انتخاب کنید.</value></data>
+  <data name="Dcc_Err_ProjectNotFound" xml:space="preserve"><value>پروژه پیدا نشد.</value></data>
+  <data name="Dcc_Err_PartyRequired" xml:space="preserve"><value>سازمان فرستنده را انتخاب یا اضافه کنید.</value></data>
+  <data name="Dcc_Err_PartyNotFound" xml:space="preserve"><value>سازمان فرستنده پیدا نشد.</value></data>
+  <data name="Dcc_Err_PartyNameTooLong" xml:space="preserve"><value>نام سازمان بیش از حد بلند است.</value></data>
+  <data name="Dcc_Err_PartyTypeInvalid" xml:space="preserve"><value>نوع سازمان جدید را انتخاب کنید.</value></data>
+  <data name="Dcc_Err_ContractInvalid" xml:space="preserve"><value>این قرارداد متعلق به این پروژه نیست.</value></data>
+  <data name="Dcc_Err_DisciplineNotFound" xml:space="preserve"><value>دیسیپلین پیدا نشد.</value></data>
+  <data name="Dcc_Err_SubjectRequired" xml:space="preserve"><value>موضوع را وارد کنید.</value></data>
+  <data name="Dcc_Err_SubjectTooLong" xml:space="preserve"><value>موضوع حداکثر {0} نویسه می‌تواند باشد.</value></data>
+  <data name="Dcc_Err_ChannelInvalid" xml:space="preserve"><value>روش دریافت معتبر نیست.</value></data>
+  <data name="Dcc_Err_SenderReferenceRequired" xml:space="preserve"><value>شماره‌ی نامه‌ی فرستنده را وارد کنید.</value></data>
+  <data name="Dcc_Err_SenderReferenceTooLong" xml:space="preserve"><value>شماره‌ی نامه‌ی فرستنده بیش از حد بلند است.</value></data>
+  <data name="Dcc_Err_DocumentDateRequired" xml:space="preserve"><value>تاریخ روی نامه را وارد کنید.</value></data>
+  <data name="Dcc_Err_DocumentDateFuture" xml:space="preserve"><value>تاریخ روی نامه نمی‌تواند در آینده باشد.</value></data>
+  <data name="Dcc_Err_ReceivedDateFuture" xml:space="preserve"><value>تاریخ دریافت نمی‌تواند در آینده باشد.</value></data>
+  <data name="Dcc_Err_ReceivedBeforeDocument" xml:space="preserve"><value>تاریخ دریافت نمی‌تواند قبل از تاریخ روی نامه باشد.</value></data>
+  <data name="Dcc_Err_DateInvalid" xml:space="preserve"><value>تاریخ معتبر نیست. از قالب سال/ماه/روز (شمسی) استفاده کنید.</value></data>
+  <data name="Dcc_Err_PriorityInvalid" xml:space="preserve"><value>اولویت معتبر نیست.</value></data>
+  <data name="Dcc_Err_CategoryInvalid" xml:space="preserve"><value>دسته معتبر نیست.</value></data>
+  <data name="Dcc_Err_ConfidentialityInvalid" xml:space="preserve"><value>سطح محرمانگی معتبر نیست.</value></data>
+  <data name="Dcc_Err_SummaryTooLong" xml:space="preserve"><value>خلاصه حداکثر {0} نویسه می‌تواند باشد.</value></data>
+  <data name="Dcc_Err_ResponseDueRequired" xml:space="preserve"><value>مهلت پاسخ را وارد کنید.</value></data>
+  <data name="Dcc_Err_ResponseDueBeforeReceived" xml:space="preserve"><value>مهلت پاسخ نمی‌تواند قبل از تاریخ دریافت باشد.</value></data>
+  <data name="Dcc_Err_OwnerRequired" xml:space="preserve"><value>مسئول پیگیری نامه را انتخاب کنید.</value></data>
+  <data name="Dcc_Err_OwnerNotFound" xml:space="preserve"><value>مسئول پیگیری پیدا نشد.</value></data>
+  <data name="Dcc_Err_CcNotFound" xml:space="preserve"><value>یکی از گیرندگان رونوشت پیدا نشد.</value></data>
+  <data name="Dcc_Err_TooManyCc" xml:space="preserve"><value>حداکثر {0} گیرنده‌ی رونوشت مجاز است.</value></data>
+  <data name="Dcc_Err_InstructionTooLong" xml:space="preserve"><value>دستور حداکثر {0} نویسه می‌تواند باشد.</value></data>
+  <data name="Dcc_Err_ParentInvalid" xml:space="preserve"><value>به نامه‌ی انتخاب‌شده نمی‌توان پاسخ داد.</value></data>
+  <data name="Dcc_Err_ParentPartyMismatch" xml:space="preserve"><value>نامه‌ی انتخاب‌شده به سازمان دیگری ارسال شده است.</value></data>
+  <data name="Dcc_Err_LinkInvalid" xml:space="preserve"><value>یکی از موارد مرتبط معتبر نیست.</value></data>
+  <data name="Dcc_Err_LinkNotFound" xml:space="preserve"><value>یکی از موارد مرتبط پیدا نشد: {0}</value></data>
+  <data name="Dcc_Err_TooManyLinks" xml:space="preserve"><value>حداکثر {0} مورد مرتبط مجاز است.</value></data>
+  <data name="Dcc_Err_OriginalRequired" xml:space="preserve"><value>اسکن نامه‌ی اصلی را اضافه کنید.</value></data>
+  <data name="Dcc_Err_OneOriginalOnly" xml:space="preserve"><value>فقط یک فایل می‌تواند نامه‌ی اصلی باشد.</value></data>
+  <data name="Dcc_Err_TooManyFiles" xml:space="preserve"><value>حداکثر {0} فایل مجاز است.</value></data>
+  <data name="Dcc_Err_FilesTooLarge" xml:space="preserve"><value>حجم کل فایل‌ها بیش از حد است.</value></data>
+  <data name="Dcc_Err_FileRoleInvalid" xml:space="preserve"><value>نقش این فایل معتبر نیست: {0}</value></data>
+  <data name="Dcc_Err_FileEmpty" xml:space="preserve"><value>فایل خالی است: {0}</value></data>
+  <data name="Dcc_Err_FileTooLarge" xml:space="preserve"><value>حجم فایل بیش از ۲۵ مگابایت است: {0}</value></data>
+  <data name="Dcc_Err_FileTypeNotAllowed" xml:space="preserve"><value>این نوع فایل مجاز نیست: {0}</value></data>
+  <data name="Dcc_Err_FileContentMismatch" xml:space="preserve"><value>محتوای فایل با پسوند آن هم‌خوان نیست: {0}</value></data>
+  <data name="Dcc_Err_Duplicate" xml:space="preserve"><value>این شماره‌ی فرستنده قبلاً ثبت شده است.</value></data>
+  <data name="Lc_Party" xml:space="preserve"><value>سازمان گیرنده (اختیاری)</value></data>
+  <data name="Lc_PartyHelp" xml:space="preserve"><value>سازمان ثبت‌شده را انتخاب کنید تا این نامه در «رشته‌ی مکاتبه»ی همان طرف در DCC دیده شود.</value></data>
+  <data name="Lc_Err_PartyNotFound" xml:space="preserve"><value>سازمان انتخاب‌شده پیدا نشد.</value></data>
 </root>

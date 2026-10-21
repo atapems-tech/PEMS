@@ -2,11 +2,12 @@ namespace PEMS.Application.Common;
 
 /// <summary>
 /// قواعد پاسخ‌خواهی نامه (Phase 2) در یک‌جا تا سرویس، Controller و تست‌ها یک تعریف واحد از «پاسخ‌داده‌شده» و «معوق» داشته باشند.
+/// «Registered/UnderReview/Referred» وضعیت نامه‌ی واردِ ثبت‌شده در DCC به‌عنوان پاسخِ یک نامه‌ی صادره است (فقط Incoming این وضعیت‌ها را دارد).
 /// پاسخ‌داده‌شده ذخیره نمی‌شود: نامه‌ی فرزند (ParentLetterId) با یکی از وضعیت‌های AnsweredChildStatuses یعنی پاسخ صادر شده است.
 /// </summary>
 public static class LetterResponseRules
 {
-    public static readonly string[] AnsweredChildStatuses = { "Issued", "Sent", "Acknowledged", "Closed" };
+    public static readonly string[] AnsweredChildStatuses = { "Issued", "Sent", "Acknowledged", "Closed", "Registered", "UnderReview", "Referred" };
 
     // نامه‌ی بسته یا ردشده دیگر پاسخ‌خواه نیست
     public static readonly string[] FinishedStatuses = { "Closed", "Rejected" };
