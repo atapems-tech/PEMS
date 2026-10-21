@@ -2574,4 +2574,59 @@
   <data name="LtT_Token_SenderDepartment" xml:space="preserve"><value>واحد سازمانی شما</value></data>
   <data name="Lc_FolderSent" xml:space="preserve"><value>ارسال‌شده</value></data>
   <data name="Lc_FolderArchived" xml:space="preserve"><value>آرشیو</value></data>
+  <data name="Lt_NavMenu" xml:space="preserve"><value>منوی پوشه‌ها</value></data>
+  <data name="Lt_QueueNav" xml:space="preserve"><value>صف‌های کاری</value></data>
+  <data name="Lt_QueueAll" xml:space="preserve"><value>همه</value></data>
+  <data name="Lt_QueueDrafts" xml:space="preserve"><value>پیش‌نویس‌ها</value></data>
+  <data name="Lt_QueueReview" xml:space="preserve"><value>در بررسی</value></data>
+  <data name="Lt_QueueReturned" xml:space="preserve"><value>برگشتی</value></data>
+  <data name="Lt_QueueApproved" xml:space="preserve"><value>تاییدشده</value></data>
+  <data name="Lt_QueueStarred" xml:space="preserve"><value>ستاره‌دار</value></data>
+  <data name="Lt_ComposeNew" xml:space="preserve"><value>نوشتن</value></data>
+  <data name="Lt_TypeAll" xml:space="preserve"><value>همه‌ی انواع</value></data>
+  <data name="Lt_Open" xml:space="preserve"><value>مشاهده</value></data>
+  <data name="Lt_RowActions" xml:space="preserve"><value>عملیات بیشتر</value></data>
+  <data name="Lc_TitleReply" xml:space="preserve"><value>پاسخ به نامه</value></data>
+  <data name="Lc_ReplyingTo" xml:space="preserve"><value>پاسخ به</value></data>
+  <data name="Lc_ViewOriginal" xml:space="preserve"><value>مشاهده‌ی نامه‌ی اصلی</value></data>
+  <data name="Lc_ConfidentialityMin" xml:space="preserve"><value>سطح محرمانگی پاسخ نمی‌تواند کمتر از نامه‌ی اصلی ({0}) باشد.</value></data>
+  <data name="Lc_Err_ParentNotFound" xml:space="preserve"><value>نامه‌ی اصلی پیدا نشد.</value></data>
+  <data name="Lc_Err_ConfidentialityBelowParent" xml:space="preserve"><value>سطح محرمانگی پاسخ نمی‌تواند کمتر از نامه‌ی اصلی ({0}) باشد.</value></data>
+  <data name="Lt_Select" xml:space="preserve"><value>انتخاب</value></data>
+  <data name="Lp_SearchChip" xml:space="preserve"><value>جستجو</value></data>
+  <data name="Lp_SearchPlaceholder" xml:space="preserve"><value>جستجو در شماره، موضوع، فرستنده یا گیرنده…</value></data>
+  <data name="Lp_SearchOpen" xml:space="preserve"><value>جستجو ( / )</value></data>
+  <data name="Lp_SearchClose" xml:space="preserve"><value>بستن جستجو</value></data>
+  <data name="Lp_Filters" xml:space="preserve"><value>فیلترها</value></data>
+  <data name="Lp_ActiveFilters" xml:space="preserve"><value>فیلتر فعال</value></data>
+  <data name="Lp_From" xml:space="preserve"><value>از تاریخ</value></data>
+  <data name="Lp_To" xml:space="preserve"><value>تا تاریخ</value></data>
+  <data name="Lp_UnreadOnly" xml:space="preserve"><value>فقط خوانده‌نشده‌ها</value></data>
+  <data name="Lp_Unread" xml:space="preserve"><value>خوانده‌نشده</value></data>
+  <data name="Lp_ReferredToMe" xml:space="preserve"><value>ارجاع به من</value></data>
+  <data name="Lp_More" xml:space="preserve"><value>بیشتر</value></data>
+  <data name="Lp_GoTo" xml:space="preserve"><value>رفتن به</value></data>
+  <data name="Lp_AllFolders" xml:space="preserve"><value>همه‌ی پوشه‌ها</value></data>
+  <data name="Lp_View" xml:space="preserve"><value>نمایش</value></data>
+  <data name="Lp_Compact" xml:space="preserve"><value>ردیف‌های فشرده</value></data>
+  <data name="Lp_Refresh" xml:space="preserve"><value>بروزرسانی</value></data>
+  <data name="Lp_Shortcuts" xml:space="preserve"><value>میانبرهای صفحه‌کلید</value></data>
+  <data name="Lp_ResultCount" xml:space="preserve"><value>{0} نتیجه</value></data>
+  <data name="Lp_CancelSelection" xml:space="preserve"><value>لغو انتخاب (Esc)</value></data>
+  <data name="Lp_RowReply" xml:space="preserve"><value>پاسخ</value></data>
+  <data name="Lp_RowRefer" xml:space="preserve"><value>ارجاع</value></data>
+  <data name="Lp_DueOverdue" xml:space="preserve"><value>{0} روز گذشته</value></data>
+  <data name="Lp_DueToday" xml:space="preserve"><value>مهلت امروز</value></data>
+  <data name="Lp_DueLeft" xml:space="preserve"><value>{0} روز مانده</value></data>
+  <data name="Lp_NoResults" xml:space="preserve"><value>نامه‌ای پیدا نشد</value></data>
+  <data name="Lp_NoResultsHint" xml:space="preserve"><value>فیلترها یا عبارت جستجو را تغییر دهید.</value></data>
+  <data name="Lp_KeySearch" xml:space="preserve"><value>جستجو</value></data>
+  <data name="Lp_KeyCompose" xml:space="preserve"><value>نامه‌ی جدید</value></data>
+  <data name="Lp_KeyMove" xml:space="preserve"><value>ردیف بعدی / قبلی</value></data>
+  <data name="Lp_KeySelect" xml:space="preserve"><value>انتخاب ردیف</value></data>
+  <data name="Lp_KeyStar" xml:space="preserve"><value>ستاره‌دار کردن</value></data>
+  <data name="Lp_KeyOpen" xml:space="preserve"><value>باز کردن نامه</value></data>
+  <data name="Lp_KeyArchive" xml:space="preserve"><value>بایگانی</value></data>
+  <data name="Lp_KeyDensity" xml:space="preserve"><value>ردیف‌های فشرده</value></data>
+  <data name="Lp_KeyClose" xml:space="preserve"><value>بستن / لغو انتخاب</value></data>
 </root>

@@ -1779,4 +1779,59 @@
   <data name="LtT_Token_SenderDepartment" xml:space="preserve"><value>your department</value></data>
   <data name="Lc_FolderSent" xml:space="preserve"><value>Sent</value></data>
   <data name="Lc_FolderArchived" xml:space="preserve"><value>Archived</value></data>
+  <data name="Lt_NavMenu" xml:space="preserve"><value>Folder menu</value></data>
+  <data name="Lt_QueueNav" xml:space="preserve"><value>Work queues</value></data>
+  <data name="Lt_QueueAll" xml:space="preserve"><value>All</value></data>
+  <data name="Lt_QueueDrafts" xml:space="preserve"><value>Drafts</value></data>
+  <data name="Lt_QueueReview" xml:space="preserve"><value>Under review</value></data>
+  <data name="Lt_QueueReturned" xml:space="preserve"><value>Returned</value></data>
+  <data name="Lt_QueueApproved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Lt_QueueStarred" xml:space="preserve"><value>Starred</value></data>
+  <data name="Lt_ComposeNew" xml:space="preserve"><value>Compose</value></data>
+  <data name="Lt_TypeAll" xml:space="preserve"><value>All types</value></data>
+  <data name="Lt_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Lt_RowActions" xml:space="preserve"><value>More actions</value></data>
+  <data name="Lc_TitleReply" xml:space="preserve"><value>Reply to letter</value></data>
+  <data name="Lc_ReplyingTo" xml:space="preserve"><value>Replying to</value></data>
+  <data name="Lc_ViewOriginal" xml:space="preserve"><value>View original</value></data>
+  <data name="Lc_ConfidentialityMin" xml:space="preserve"><value>A reply cannot be less restricted than the original letter ({0}).</value></data>
+  <data name="Lc_Err_ParentNotFound" xml:space="preserve"><value>The original letter was not found.</value></data>
+  <data name="Lc_Err_ConfidentialityBelowParent" xml:space="preserve"><value>A reply cannot be less restricted than the original letter ({0}).</value></data>
+  <data name="Lt_Select" xml:space="preserve"><value>Select</value></data>
+  <data name="Lp_SearchChip" xml:space="preserve"><value>Search</value></data>
+  <data name="Lp_SearchPlaceholder" xml:space="preserve"><value>Search number, subject, sender or receiver…</value></data>
+  <data name="Lp_SearchOpen" xml:space="preserve"><value>Search ( / )</value></data>
+  <data name="Lp_SearchClose" xml:space="preserve"><value>Close search</value></data>
+  <data name="Lp_Filters" xml:space="preserve"><value>Filters</value></data>
+  <data name="Lp_ActiveFilters" xml:space="preserve"><value>active filters</value></data>
+  <data name="Lp_From" xml:space="preserve"><value>From date</value></data>
+  <data name="Lp_To" xml:space="preserve"><value>To date</value></data>
+  <data name="Lp_UnreadOnly" xml:space="preserve"><value>Unread only</value></data>
+  <data name="Lp_Unread" xml:space="preserve"><value>Unread</value></data>
+  <data name="Lp_ReferredToMe" xml:space="preserve"><value>Referred to me</value></data>
+  <data name="Lp_More" xml:space="preserve"><value>More</value></data>
+  <data name="Lp_GoTo" xml:space="preserve"><value>Go to</value></data>
+  <data name="Lp_AllFolders" xml:space="preserve"><value>All folders</value></data>
+  <data name="Lp_View" xml:space="preserve"><value>View</value></data>
+  <data name="Lp_Compact" xml:space="preserve"><value>Compact rows</value></data>
+  <data name="Lp_Refresh" xml:space="preserve"><value>Refresh</value></data>
+  <data name="Lp_Shortcuts" xml:space="preserve"><value>Keyboard shortcuts</value></data>
+  <data name="Lp_ResultCount" xml:space="preserve"><value>{0} results</value></data>
+  <data name="Lp_CancelSelection" xml:space="preserve"><value>Clear selection (Esc)</value></data>
+  <data name="Lp_RowReply" xml:space="preserve"><value>Reply</value></data>
+  <data name="Lp_RowRefer" xml:space="preserve"><value>Refer</value></data>
+  <data name="Lp_DueOverdue" xml:space="preserve"><value>{0} days overdue</value></data>
+  <data name="Lp_DueToday" xml:space="preserve"><value>Due today</value></data>
+  <data name="Lp_DueLeft" xml:space="preserve"><value>{0} days left</value></data>
+  <data name="Lp_NoResults" xml:space="preserve"><value>No letters found</value></data>
+  <data name="Lp_NoResultsHint" xml:space="preserve"><value>Change the filters or the search text.</value></data>
+  <data name="Lp_KeySearch" xml:space="preserve"><value>Search</value></data>
+  <data name="Lp_KeyCompose" xml:space="preserve"><value>New letter</value></data>
+  <data name="Lp_KeyMove" xml:space="preserve"><value>Next / previous row</value></data>
+  <data name="Lp_KeySelect" xml:space="preserve"><value>Select row</value></data>
+  <data name="Lp_KeyStar" xml:space="preserve"><value>Star / unstar</value></data>
+  <data name="Lp_KeyOpen" xml:space="preserve"><value>Open letter</value></data>
+  <data name="Lp_KeyArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="Lp_KeyDensity" xml:space="preserve"><value>Compact rows</value></data>
+  <data name="Lp_KeyClose" xml:space="preserve"><value>Close / clear selection</value></data>
 </root>

@@ -109,9 +109,10 @@ public class LetterIndexViewRenderTests
 
         var rows = Regex.Matches(html, "<tr\\b.*?</tr>", RegexOptions.Singleline).Select(m => m.Value).Where(r => r.Contains("LTR-")).ToList();
         Assert.Contains("pems-due-overdue", rows[0]);
-        Assert.Contains("(overdue)", rows[0]);
+        Assert.Contains("3 days overdue", rows[0]);        // a sentence now, not just "(overdue)"
         Assert.Contains("bi-exclamation-triangle", rows[0]);
         Assert.DoesNotContain("pems-due-overdue", rows[1]);
+        Assert.Contains("4 days left", rows[1]);
     }
 
     [Fact]

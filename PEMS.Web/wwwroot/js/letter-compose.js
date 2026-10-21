@@ -57,6 +57,7 @@
         var manual = $('lcManual') ? $('lcManual').value.trim() : '';
         return {
             letterId: state.letterId,
+            parentLetterId: boot.parentLetterId,
             letterType: boot.letterType,
             category: val('lcCategory') || null,
             subject: val('lcSubject'),

@@ -6,6 +6,9 @@ public class LetterComposeInput
     public int? LetterId { get; set; }
     public byte[]? RowVersion { get; set; }
 
+    // پاسخ به این نامه (پیش‌نویس جدید یا ویرایش پاسخ)؛ سطح محرمانگی پاسخ هرگز کمتر از نامه‌ی اصلی نمی‌شود
+    public int? ParentLetterId { get; set; }
+
     // Internal | Outgoing
     public string LetterType { get; set; } = "Internal";
     public string? Category { get; set; }

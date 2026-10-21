@@ -97,6 +97,9 @@ public interface ILetterService
     Task<(bool Success, string? Error)> ResubmitAsync(int letterId, string subject, string body,
         int currentApplicationUserId, byte[]? rowVersion);
 
+    // شمارنده‌ی تب‌های فهرست؛ با همان قانون محرمانگی SearchAsync ساخته می‌شود
+    Task<LetterFolderCountsDto> GetFolderCountsAsync(bool canViewConfidential, int? requestingApplicationUserId);
+
     Task<LetterDashboardDto> GetDashboardAsync(int? currentApplicationUserId = null, bool canViewConfidential = false);
 
     Task ToggleStarAsync(int letterId, int applicationUserId);

@@ -80,7 +80,7 @@ public class LetterComposeControllerTests
         public FakePermissionService Permissions = null!;
     }
 
-    private static Rig NewRig(int? userId = LetterTestWorld.Author, bool approverPermission = false, string[]? roles = null, string name = "ctl")
+    private static Rig NewRig(int? userId = LetterTestWorld.Author, bool approverPermission = false, string[]? roles = null, string name = "ctl", ILetterTemplateService? templates = null)
     {
         var (compose, letters, ctx, _) = LetterTestWorld.Services(name);
         var permissions = new FakePermissionService { AllowAll = true };
@@ -89,7 +89,7 @@ public class LetterComposeControllerTests
         var user = new FakeUser { UserId = userId, UserName = userId.HasValue ? "u" + (userId.Value - 100) : null, Roles = roles ?? new[] { "Staff" } };
         var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?> { ["Letterhead:CompanyName"] = "Acme <Corp>", ["Letterhead:Address"] = "1 Main St" }).Build();
         var controller = new LetterComposeController(compose, letters, new LetterComplianceService(ctx), ctx, user, permissions,
-            new RichTextSanitizerService(), files, new ResxLocalizer(LoadResx("SharedResource.fa.resx")), config).WithTempData().WithUrlHelper();
+            new RichTextSanitizerService(), files, new ResxLocalizer(LoadResx("SharedResource.fa.resx")), config, templates).WithTempData().WithUrlHelper();
         return new Rig { Controller = controller, Ctx = ctx, Letters = letters, Compose = compose, Files = files, Permissions = permissions };
     }
 
@@ -445,6 +445,137 @@ public class LetterComposeControllerTests
             new ResxLocalizer(new Dictionary<string, string>()), new ConfigurationBuilder().Build()).WithTempData().WithUrlHelper();
         await admin.ReassignApprover(id, 1, LetterTestWorld.Approver2);
         Assert.Equal(LetterTestWorld.Approver2, rig.Ctx.LetterApprovalSteps.Single(s => s.LetterId == id).ApproverUserId);
+    }
+
+    // ------------------------------------------------------------------ reply in the composer
+
+    private sealed class OneTemplate : ILetterTemplateService
+    {
+        public LetterTemplateDto Template { get; init; } = new();
+        public Task<List<LetterTemplateDto>> ListAsync(string? letterType, bool includeInactive) => Task.FromResult(new List<LetterTemplateDto> { Template });
+        public Task<LetterTemplateDto?> GetAsync(int id) => Task.FromResult<LetterTemplateDto?>(Template);
+        public Task<(bool Success, string? Error, int TemplateId)> SaveAsync(LetterTemplateDto template) => throw new NotSupportedException();
+        public Task<bool> SetActiveAsync(int id, bool active) => throw new NotSupportedException();
+    }
+
+    private static LetterComposeController As(Rig rig, int userId, ILetterTemplateService? templates = null)
+        => new LetterComposeController(rig.Compose, rig.Letters, new LetterComplianceService(rig.Ctx), rig.Ctx,
+            new FakeUser { UserId = userId, UserName = "u" + (userId - 100) }, rig.Permissions, new RichTextSanitizerService(), rig.Files,
+            new ResxLocalizer(LoadResx("SharedResource.fa.resx")), new ConfigurationBuilder().Build(), templates).WithTempData().WithUrlHelper();
+
+    // author (user 101 / employee 1) sends a letter to employee 2 (user 102) with the given level
+    private static async Task<int> SentToE2Async(Rig rig, string confidentiality)
+    {
+        var input = LetterTestWorld.ValidInput();
+        input.Subject = "Budget review";
+        input.ConfidentialityLevel = confidentiality;
+        return J(await rig.Controller.Submit(Req(input))).GetProperty("letterId").GetInt32();
+    }
+
+    [Fact]
+    public async Task ComposeReply_PrefillsFromTheParent_AndLocksLowerConfidentialityLevels()
+    {
+        var rig = NewRig();
+        var parentId = await SentToE2Async(rig, "Confidential");
+
+        var replier = As(rig, 102);
+        var view = Assert.IsType<ViewResult>(await replier.Compose(null, "Internal", null, parentId));
+        var model = Assert.IsType<LetterComposeViewModel>(view.Model);
+
+        Assert.Equal(parentId, model.Input.ParentLetterId);
+        Assert.Equal(new[] { 1 }, model.Input.ToEmployeeIds);                 // the original sender
+        Assert.Equal("Re: Budget review", model.Input.Subject);
+        Assert.Equal("Confidential", model.Input.ConfidentialityLevel);
+        Assert.Equal(2, model.MinConfidentialityRank);
+
+        var html = await RazorViewRenderer.RenderAsync(replier, view, "~/Views/LetterCompose/Compose.cshtml");
+        Assert.Matches(@"<option value=""Public""[^>]*disabled", html);      // cannot drop below the original level
+        Assert.Matches(@"<option value=""Internal""[^>]*disabled", html);
+        Assert.DoesNotMatch(@"<option value=""Restricted""[^>]*disabled", html);
+        Assert.Contains("Budget review", html);                              // banner names the original letter
+    }
+
+    [Fact]
+    public async Task ComposeReply_ToALetterTheUserCannotSee_IsForbidden()
+    {
+        var rig = NewRig();
+        var parentId = await SentToE2Async(rig, "Confidential");
+
+        // user 105 is neither author, recipient, referral target nor approver
+        Assert.IsType<ForbidResult>(await As(rig, LetterTestWorld.Other).Compose(null, "Internal", null, parentId));
+        // a letter that does not exist answers like one the user may not see (no existence oracle)
+        Assert.IsType<ForbidResult>(await As(rig, 102).Compose(null, "Internal", null, 99999));
+    }
+
+    [Fact]
+    public async Task Reply_ToAConfidentialLetter_StaysVisibleToTheOriginalSender_AndHiddenFromOthers()
+    {
+        var rig = NewRig();
+        var parentId = await SentToE2Async(rig, "Confidential");
+
+        var replier = As(rig, 102);
+        var prefill = ((LetterComposeViewModel)((ViewResult)await replier.Compose(null, "Internal", null, parentId)).Model!).Input;
+        prefill.Body = "<p>Noted, will do.</p>";
+        var sent = J(await replier.Submit(Req(prefill)));
+        Assert.True(sent.GetProperty("success").GetBoolean());
+        var replyId = sent.GetProperty("letterId").GetInt32();
+
+        var reply = rig.Ctx.Letters.Single(l => l.LetterId == replyId);
+        Assert.Equal(parentId, reply.ParentLetterId);
+        Assert.Equal("Confidential", reply.ConfidentialityLevel);
+        Assert.Equal("Sent", reply.Status);
+        Assert.Single(rig.Ctx.LetterRecipients.Where(r => r.LetterId == replyId && r.EmployeeId == 1 && r.RecipientType == "To"));
+
+        Assert.True(await rig.Letters.CanViewAsync(replyId, new LetterViewer(101, 1, false)));    // original sender is now a recipient
+        Assert.False(await rig.Letters.CanViewAsync(replyId, new LetterViewer(105, 5, false)));   // everyone else stays out
+    }
+
+    [Fact]
+    public async Task Save_OfAReply_RefusesALowerConfidentialityLevel_WithATranslatedMessage()
+    {
+        var rig = NewRig();
+        var parentId = await SentToE2Async(rig, "Restricted");
+
+        var replier = As(rig, 102);
+        var prefill = ((LetterComposeViewModel)((ViewResult)await replier.Compose(null, "Internal", null, parentId)).Model!).Input;
+        prefill.ConfidentialityLevel = "Public";
+
+        var json = J(await replier.Save(Req(prefill)));
+
+        Assert.False(json.GetProperty("success").GetBoolean());
+        var error = json.GetProperty("errors").EnumerateArray().Single();
+        Assert.Equal("ConfidentialityBelowParent", error.GetProperty("code").GetString());
+        Assert.Equal("confidentialityLevel", error.GetProperty("field").GetString());
+        Assert.DoesNotContain("{0}", error.GetProperty("message").GetString());
+        Assert.DoesNotContain("Restricted", error.GetProperty("message").GetString());           // the level is shown in the user's language
+        Assert.Empty(rig.Ctx.Letters.Where(l => l.ParentLetterId == parentId));                   // nothing was created
+
+        prefill.ConfidentialityLevel = "HighlyConfidential";                                      // raising it is fine
+        Assert.True(J(await replier.Save(Req(prefill))).GetProperty("success").GetBoolean());
+    }
+
+    [Fact]
+    public async Task ComposeReply_AppliesTheParentPlaceholdersOfATemplate()
+    {
+        var rig = NewRig();
+        var parentId = await SentToE2Async(rig, "Internal");
+        var number = rig.Ctx.Letters.Single(l => l.LetterId == parentId).LetterNumber;
+        var templates = new OneTemplate
+        {
+            Template = new LetterTemplateDto
+            {
+                LetterTemplateId = 1, Name = "T", LetterType = null, Subject = "Re: {{ParentSubject}}", Priority = "High", ConfidentialityLevel = "Internal", IsActive = true,
+                Body = "<p>Ref {{ParentNumber}} from {{SenderName}} {{Unknown}}</p>"
+            }
+        };
+
+        var view = Assert.IsType<ViewResult>(await As(rig, 102, templates).Compose(null, "Internal", 1, parentId));
+        var input = ((LetterComposeViewModel)view.Model!).Input;
+
+        Assert.Equal("Re: Budget review", input.Subject);
+        Assert.Contains("Ref " + number, input.Body);
+        Assert.Contains("E2 L2", input.Body);                      // sender tokens come from the replying employee
+        Assert.Contains("{{Unknown}}", input.Body);                // unknown tokens stay visible
     }
 
     // ------------------------------------------------------------------ localization coverage
