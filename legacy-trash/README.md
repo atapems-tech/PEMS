@@ -10,6 +10,7 @@ Admin > Database Update page). The same path layout as the original location is 
 
 | Moved script | Replaced by |
 |---|---|
+| `InitialCreate.sql` (repository root; generated full-schema script) | the whole migration chain, applied automatically on first run |
 | `PEMS.Persistence/Scripts/EnableFullTextSearch.sql` | migration `FullTextSearch` |
 | `docs/procurement/MaterialStockNoLocationUniqueness.migration.sql` | EF migrations of the procurement phases |
 | `docs/procurement/P4_P5_delta_after_20261008075704.sql` | EF migrations of the procurement phases |
