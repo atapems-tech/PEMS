@@ -40,9 +40,6 @@
 
   <ItemGroup>
     <!-- مرجع‌های IFS ماژول Part Catalogue (Seed ایدمپوتنت): داخل Assembly تا مسیر فایل/Deploy مسئله نشود -->
-    <EmbeddedResource Include="Seed\Data\PartCatalogue\*.xlsx" LogicalName="PEMS.Seed.PartCatalogue.%(Filename)%(Extension)" />
-    <!-- Full-text catalog/indexes: run by DatabaseInitializer after migrations (code-first, no manual SSMS step) -->
-    <EmbeddedResource Include="Scripts\EnableFullTextSearch.sql" LogicalName="PEMS.Scripts.EnableFullTextSearch.sql" />
-  </ItemGroup>
+    <EmbeddedResource Include="Seed\Data\PartCatalogue\*.xlsx" LogicalName="PEMS.Seed.PartCatalogue.%(Filename)%(Extension)" />  </ItemGroup>
 
 </Project>

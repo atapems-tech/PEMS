@@ -36,7 +36,7 @@ public class EquipmentSearchProvider : ISearchableEntityProvider
         var matches = await TryFullTextSearchAsync(query, projectId);
 
         // ==============================================================================
-        // فاز C: اگر Full-Text Search فعال باشه (اسکریپت EnableFullTextSearch.sql اجرا شده)
+        // فاز C: اگر Full-Text Search فعال باشه (Migration با نام FullTextSearch اجرا شده)
         // از همون‌جا نتیجه می‌گیریم - دقیق‌تر و برای Fuzzy واقعی بهتره. اگر null برگشت یعنی
         // یا نصب نیست یا هنوز Index ساخته نشده - بدون هیچ خطایی به روش LIKE قبلی برمی‌گردیم.
         // ==============================================================================
@@ -106,7 +106,7 @@ public class EquipmentSearchProvider : ISearchableEntityProvider
 
     // ==============================================================================
     // فاز C: تلاش با CONTAINS واقعی SQL Server Full-Text Search (اگه اسکریپت
-    // EnableFullTextSearch.sql اجرا شده باشه). اگه Index هنوز نساخته شده یا FTS نصب نیست،
+    // FullTextSearch migration اجرا شده باشه). اگه Index هنوز نساخته شده یا FTS نصب نیست،
     // SQL Server خطا می‌ده (مثلاً "Cannot use a CONTAINS or FREETEXT predicate on column
     // ... because it is not full-text indexed") - این‌جا امن گرفته می‌شه و null برمی‌گرده
     // تا مسیر LIKE قبلی (که همیشه کار می‌کنه) جایگزینش بشه.

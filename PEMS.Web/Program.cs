@@ -69,6 +69,9 @@ builder.Services.AddSignalR();
 
 builder.Services.AddScoped<PEMS.Application.Interfaces.INotificationBroadcaster, PEMS.Web.Hubs.SignalRNotificationBroadcaster>();
 
+// Code-first install/update of the database (startup bootstrap + Admin > Database Update page)
+builder.Services.AddScoped<PEMS.Application.Interfaces.IDatabaseUpdateService, PEMS.Persistence.Services.DatabaseUpdateService>();
+
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند
 // (مثل صفحه‌ی Login) بدون ورود قابل دسترسی هستند.
 builder.Services.AddControllersWithViews(options =>
@@ -1075,6 +1078,24 @@ app.MapGet("/health", async (PEMS.Persistence.Context.PEMSDbContext db) =>
 });
 
 
+
+// Anonymous, details-free schema state for deployment pipelines/monitors: 200 only when every shipped
+// migration is applied; 503 otherwise (body is just the state name).
+app.MapGet("/health/database", async (PEMS.Application.Interfaces.IDatabaseUpdateService updates) =>
+{
+    try
+    {
+        var status = await updates.GetStatusAsync();
+        return Results.Text(status.State.ToString(),
+            statusCode: status.State == PEMS.Application.DTOs.DatabaseSetupState.UpToDate
+                ? StatusCodes.Status200OK
+                : StatusCodes.Status503ServiceUnavailable);
+    }
+    catch
+    {
+        return Results.Text("Unreachable", statusCode: StatusCodes.Status503ServiceUnavailable);
+    }
+});
 
 app.Run();
 

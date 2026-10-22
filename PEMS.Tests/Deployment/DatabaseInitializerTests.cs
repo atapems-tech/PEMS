@@ -1,46 +1,52 @@
+using System.Reflection;
+using Microsoft.EntityFrameworkCore.Migrations;
+using PEMS.Application.DTOs;
+using PEMS.Persistence.Context;
 using PEMS.Persistence.Initialization;
 
 namespace PEMS.Tests.Deployment;
 
 /// <summary>
-/// Code-first bootstrap: the full-text script ships inside the assembly and is split into
-/// executable batches (no hand-run SSMS step, no hardcoded database name).
+/// Code-first database: pure rules (install vs update classification, options defaults) and the shape of
+/// the migration chain. The real-SQL behaviour lives in <see cref="DatabaseUpdateServiceSqlTests"/>.
 /// </summary>
 public class DatabaseInitializerTests
 {
+    private static readonly string[] Known = { "M1", "M2", "M3" };
+
     [Fact]
-    public void SplitBatches_removes_USE_statements_and_splits_on_GO()
+    public void Empty_database_without_tables_is_a_first_run()
     {
-        var script = "USE PEMSDB;\nGO\n\nSELECT 1;\nGO\n  go  \nSELECT 2;\nGO\n";
-
-        var batches = DatabaseInitializer.SplitBatches(script);
-
-        Assert.Equal(new[] { "SELECT 1;", "SELECT 2;" }, batches);
+        Assert.Equal(DatabaseSetupState.FirstRun,
+            DatabaseSetupClassifier.Classify(hasUserTables: false, Array.Empty<string>(), Known));
     }
 
     [Fact]
-    public void SplitBatches_does_not_split_on_words_that_merely_start_with_GO()
+    public void Tables_without_migration_history_are_never_treated_as_an_install()
     {
-        var batches = DatabaseInitializer.SplitBatches("SELECT 'GOOD';\nGOTO_LABEL: SELECT 2;\n");
-
-        Assert.Single(batches);
+        Assert.Equal(DatabaseSetupState.UnmanagedSchema,
+            DatabaseSetupClassifier.Classify(hasUserTables: true, Array.Empty<string>(), Known));
     }
 
     [Fact]
-    public void Embedded_full_text_script_is_present_database_agnostic_and_idempotent()
+    public void Existing_database_with_missing_migrations_is_an_update()
     {
-        var assembly = typeof(DatabaseInitializer).Assembly;
-        using var stream = assembly.GetManifestResourceStream(DatabaseInitializer.FullTextResourceName);
-        Assert.NotNull(stream);
+        Assert.Equal(DatabaseSetupState.UpdateAvailable,
+            DatabaseSetupClassifier.Classify(true, new[] { "M1" }, Known));
+    }
 
-        var script = new StreamReader(stream!).ReadToEnd();
-        var batches = DatabaseInitializer.SplitBatches(script);
+    [Fact]
+    public void All_migrations_applied_is_up_to_date()
+    {
+        Assert.Equal(DatabaseSetupState.UpToDate,
+            DatabaseSetupClassifier.Classify(true, Known, Known));
+    }
 
-        Assert.NotEmpty(batches);
-        Assert.DoesNotContain(batches, b => b.Contains("USE PEMSDB", StringComparison.OrdinalIgnoreCase));
-        Assert.Contains(batches, b => b.Contains("FULLTEXTSERVICEPROPERTY", StringComparison.OrdinalIgnoreCase));
-        Assert.All(batches.Where(b => b.Contains("CREATE FULLTEXT INDEX", StringComparison.OrdinalIgnoreCase)),
-            b => Assert.Contains("NOT EXISTS", b, StringComparison.OrdinalIgnoreCase));
+    [Fact]
+    public void Database_with_unknown_migrations_is_newer_than_the_application()
+    {
+        Assert.Equal(DatabaseSetupState.DatabaseNewerThanApplication,
+            DatabaseSetupClassifier.Classify(true, new[] { "M1", "M99" }, Known));
     }
 
     [Fact]
@@ -50,7 +56,22 @@ public class DatabaseInitializerTests
 
         Assert.True(options.CreateIfMissing);
         Assert.True(options.MigrateOnStartup);
-        Assert.True(options.ApplyFullTextSearch);
-        Assert.True(options.CommandTimeoutSeconds >= 60);
+    }
+
+    [Fact]
+    public void Migration_chain_is_ordered_unique_and_ends_with_the_code_first_additions()
+    {
+        var ids = typeof(PEMSDbContext).Assembly.GetTypes()
+            .Where(t => typeof(Migration).IsAssignableFrom(t) && !t.IsAbstract)
+            .Select(t => t.GetCustomAttribute<MigrationAttribute>()?.Id)
+            .Where(id => id != null)
+            .Cast<string>()
+            .ToList();
+
+        Assert.Equal(ids.Count, ids.Distinct().Count());
+
+        var ordered = ids.OrderBy(i => i, StringComparer.Ordinal).ToList();
+        Assert.EndsWith("_FullTextSearch", ordered[^1]);
+        Assert.EndsWith("_DatabaseUpdateRuns", ordered[^2]);
     }
 }
