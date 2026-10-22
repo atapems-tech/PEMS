@@ -1,0 +1,110 @@
+# Deploys PEMS.Web to the company demo subdomain over FTP/FTPS on every push or merge to `demo`.
+# The database is code-first: the first start after the upload INSTALLS the schema on an empty demo database and
+# every later deploy UPDATES it (migrations apply automatically at startup, see docs/deployment/CODE_FIRST_DATABASE.md).
+# This pipeline gates on model/migration drift before deploying and waits for /health/database to report UpToDate after.
+#
+# No credentials live in this file. Define these in GitHub (Settings -> Secrets and variables -> Actions):
+#   DEMO_FTP_HOST       - FTP host, e.g. parmisata.ir
+#   DEMO_FTP_USER       - FTP username
+#   DEMO_FTP_PASSWORD   - FTP password
+#   DEMO_FTP_DIR        - remote folder the demo subdomain serves from, with trailing slash (this host: /)
+#   DEMO_FTP_PROTOCOL   - optional: ftp | ftps | ftps-legacy (default ftps; this host currently works with ftp only)
+#   DEMO_FTP_PORT       - optional (default 21)
+#   DEMO_SQL_CONNECTION_STRING - connection string of the separate DEMO database (never the live PEMSDB),
+#                       e.g. Server=<host>;Database=<db>;User Id=<user>;Password=<pwd>;TrustServerCertificate=True
+#   DEMO_SITE_URL       - public URL of the demo site, e.g. https://demo.parmisata.ir (enables the post-deploy database check)
+
+name: PEMS Demo Deploy (FTP)
+
+on:
+  push:
+    branches: [demo]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-demo
+  cancel-in-progress: false
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore PEMS.slnx
+
+      - name: Build
+        run: dotnet build PEMS.slnx --no-restore --configuration Release
+
+      # Code-first gate: the entity model and the migrations must agree, otherwise the startup migrator cannot
+      # apply a complete schema on the demo database.
+      - name: Model drift gate (no entity change without a migration)
+        run: |
+          dotnet tool install --global dotnet-ef --version 10.0.10
+          export PATH="$PATH:$HOME/.dotnet/tools"
+          dotnet ef migrations has-pending-model-changes --project PEMS.Persistence --startup-project PEMS.Web --no-build --configuration Release
+
+      - name: Test
+        run: dotnet test PEMS.slnx --no-build --configuration Release --verbosity normal
+
+      # Plesk/IIS on Windows: self-contained win-x64 so the host does not need the .NET 10 runtime
+      # installed (it still needs the ASP.NET Core Module). The SDK emits web.config on publish.
+      - name: Publish
+        run: dotnet publish PEMS.Web/PEMS.Web.csproj -c Release -r win-x64 --self-contained true -o ./publish
+
+      # Runtime configuration for the demo without storing secrets in Git:
+      #  - connection string of the demo database,
+      #  - Database section: migrate at startup (install on first run, update afterwards); the hosting login cannot
+      #    CREATE DATABASE, the database is created in the hosting panel,
+      #  - a longer IIS startup limit: the first run installs the whole schema before the app starts serving.
+      - name: Configure demo runtime
+        env:
+          CONN: ${{ secrets.DEMO_SQL_CONNECTION_STRING }}
+        run: |
+          jq --arg c "$CONN" '.ConnectionStrings.PEMSConnection = $c | .Database = {"CreateIfMissing": false, "MigrateOnStartup": true}' publish/appsettings.json > publish/appsettings.tmp
+          mv publish/appsettings.tmp publish/appsettings.json
+          sed -i 's/<aspNetCore /<aspNetCore startupTimeLimit="900" /' publish/web.config
+          grep -q 'startupTimeLimit="900"' publish/web.config
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.DEMO_FTP_HOST }}
+          username: ${{ secrets.DEMO_FTP_USER }}
+          password: ${{ secrets.DEMO_FTP_PASSWORD }}
+          protocol: ${{ secrets.DEMO_FTP_PROTOCOL || 'ftps' }}
+          port: ${{ secrets.DEMO_FTP_PORT || 21 }}
+          local-dir: ./publish/
+          server-dir: ${{ secrets.DEMO_FTP_DIR }}
+
+      # The first request starts the app, which installs/updates the schema before serving. /health/database is
+      # anonymous and returns 200 only when every shipped migration is applied (503 + state name otherwise).
+      - name: Wait for database install/update to finish
+        timeout-minutes: 30
+        env:
+          SITE: ${{ secrets.DEMO_SITE_URL }}
+        run: |
+          if [ -z "$SITE" ]; then
+            echo "::warning::DEMO_SITE_URL is not set; skipping the post-deploy database check."
+            exit 0
+          fi
+          state="no response"
+          for i in $(seq 1 60); do
+            code=$(curl -s -o health.txt -w '%{http_code}' --max-time 90 "$SITE/health/database" || echo 000)
+            state=$(head -c 80 health.txt 2>/dev/null || true)
+            echo "attempt $i: HTTP $code ${state}"
+            if [ "$code" = "200" ]; then
+              echo "Database is up to date on the demo site."
+              exit 0
+            fi
+            sleep 20
+          done
+          echo "::error::Demo database did not reach UpToDate (last: ${state}). See Admin > Database Update on the demo site."
+          exit 1
