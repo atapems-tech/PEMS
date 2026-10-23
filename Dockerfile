@@ -40,6 +40,10 @@ RUN apt-get update \
 
 COPY --from=build /app/publish .
 
+# Non-secret settings files (env/*.env). env/*.secrets.env is excluded by .dockerignore; choose the environment at
+# run time with PEMS_ENV (docker-compose.yml sets it) and provide secrets via env_file/environment variables.
+COPY env/*.env /app/env/
+
 # پوشه‌ی آپلود فایل‌ها و Intake Queue باید Persistent باشد - در docker-compose.yml به یک Volume وصل می‌شود
 RUN mkdir -p /app/wwwroot/uploads
 

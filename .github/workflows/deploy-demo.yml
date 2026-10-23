@@ -12,6 +12,8 @@
 #   DEMO_FTP_PORT       - optional (default 21)
 #   DEMO_SQL_CONNECTION_STRING - connection string of the separate DEMO database (never the live PEMSDB),
 #                       e.g. Server=<host>;Database=<db>;User Id=<user>;Password=<pwd>;TrustServerCertificate=True
+#   DEMO_ADMIN_PASSWORD - password of the first administrator seeded on the empty demo database
+# Non-secret settings of the demo are in env/demo.env (committed); secrets are written to env/demo.secrets.env on the server.
 #   DEMO_SITE_URL       - public URL of the demo site, e.g. https://demo.parmisata.ir (enables the post-deploy database check)
 
 name: PEMS Demo Deploy (FTP)
@@ -56,21 +58,29 @@ jobs:
 
       # Plesk/IIS on Windows: self-contained win-x64 so the host does not need the .NET 10 runtime
       # installed (it still needs the ASP.NET Core Module). The SDK emits web.config on publish.
+      # -p:PemsEnv=demo ships env/demo.env (non-secret settings) as publish/env/demo.env.
       - name: Publish
-        run: dotnet publish PEMS.Web/PEMS.Web.csproj -c Release -r win-x64 --self-contained true -o ./publish
+        run: dotnet publish PEMS.Web/PEMS.Web.csproj -c Release -r win-x64 --self-contained true -p:PemsEnv=demo -o ./publish
 
-      # Runtime configuration for the demo without storing secrets in Git:
-      #  - connection string of the demo database,
-      #  - Database section: migrate at startup (install on first run, update afterwards); the hosting login cannot
-      #    CREATE DATABASE, the database is created in the hosting panel,
+      # Environment selection and secrets, without storing anything in Git:
+      #  - PEMS_ENV=demo is set for the app in web.config (the app then reads env/demo.env + env/demo.secrets.env),
+      #  - env/demo.secrets.env is generated here from GitHub secrets and uploaded next to the app (never packaged by the build),
       #  - a longer IIS startup limit: the first run installs the whole schema before the app starts serving.
       - name: Configure demo runtime
         env:
           CONN: ${{ secrets.DEMO_SQL_CONNECTION_STRING }}
+          ADMIN_PASSWORD: ${{ secrets.DEMO_ADMIN_PASSWORD }}
         run: |
-          jq --arg c "$CONN" '.ConnectionStrings.PEMSConnection = $c | .Database = {"CreateIfMissing": false, "MigrateOnStartup": true}' publish/appsettings.json > publish/appsettings.tmp
-          mv publish/appsettings.tmp publish/appsettings.json
+          test -n "$CONN" && test -n "$ADMIN_PASSWORD"
+          test -f publish/env/demo.env
+          umask 077
+          {
+            printf 'ConnectionStrings__PEMSConnection=%s\n' "$CONN"
+            printf 'Seed__Admin__Password=%s\n' "$ADMIN_PASSWORD"
+          } > publish/env/demo.secrets.env
+          sed -i 's#hostingModel="inprocess" />#hostingModel="inprocess"><environmentVariables><environmentVariable name="PEMS_ENV" value="demo" /></environmentVariables></aspNetCore>#' publish/web.config
           sed -i 's/<aspNetCore /<aspNetCore startupTimeLimit="900" /' publish/web.config
+          grep -q 'name="PEMS_ENV" value="demo"' publish/web.config
           grep -q 'startupTimeLimit="900"' publish/web.config
 
       - name: Deploy via FTP

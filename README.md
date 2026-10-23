@@ -32,30 +32,44 @@ English; AI runs on-premise and nothing leaves the organization.
 
 Other folders: `docs/` (architecture, audits, deployment, per-module specs), `deploy/` (Docker deployment kit and
 scripts), `scripts/` (operator data-repair and report tools), `plan/` (backlog and roadmap workbook),
-`legacy-trash/` (retired material kept for reference), `tools/`, `dev/`.
+`env/` (settings and secret templates), `legacy-trash/` (retired material kept for reference), `tools/`, `dev/`.
+
+## Settings and secrets
+
+All settings live in `env/` (see [env/README.md](env/README.md)); `appsettings.json` is intentionally empty and the
+code has no hard-coded environment settings.
+
+| File | Content | In git |
+|---|---|---|
+| `env/<name>.env` | non-secret settings | yes |
+| `env/<name>.secrets.env` | connection string, admin password, FTP/Redis credentials | no (git-ignored) |
+| `env/<name>.secrets.env.example` | template of the secret keys | yes |
+
+Environments: `local`, `docker`, `demo`, `uat`, `production-kangan`. `PEMS_ENV` selects one (Development means `local`);
+real environment variables override the files.
 
 ## Run locally
 
 Requirements: .NET 10 SDK and a SQL Server instance (LocalDB, SQL Express or a container).
 
 ```bash
+cp env/local.secrets.env.example env/local.secrets.env    # edit the connection string and the admin password
 dotnet run --project PEMS.Web
 ```
 
-The app listens on `http://localhost:5089`. The default connection string in `PEMS.Web/appsettings.json` targets
-`localhost\SQLEXPRESS`, database `PEMSDB`; override it without editing the file:
-
-```bash
-ConnectionStrings__PEMSConnection="Server=(localdb)\MSSQLLocalDB;Database=PEMSDB;Trusted_Connection=True;TrustServerCertificate=True" dotnet run --project PEMS.Web
-```
-
-On an empty or missing database the first start creates it, installs the full schema and runs the seeders, which
-takes a few minutes. When no user exists a default System Administrator is seeded; change its password at first
-sign-in. Local AI needs Ollama (`Ollama:Url`, default `http://localhost:11434`).
+The app listens on `http://localhost:5089`. On an empty or missing database the first start creates it, installs the
+full schema and runs the seeders, which takes a few minutes. A System Administrator is created on an empty database
+from `Seed__Admin__UserName/Email` (settings file) and `Seed__Admin__Password` (secrets file); change the password at
+first sign-in. Local AI needs Ollama (`Ollama__Url`).
 
 ### Docker
 
-`docker-compose.yml` starts `pems-web` (port 8080), SQL Server and Ollama. See
+```bash
+cp env/docker.secrets.env.example env/docker.secrets.env   # choose the sa and admin passwords
+docker compose --env-file env/docker.secrets.env up --build
+```
+
+Starts `pems-web` (port 8080), SQL Server and Ollama. See
 [docs/deployment/LINUX_VM_DEPLOYMENT.md](docs/deployment/LINUX_VM_DEPLOYMENT.md) for the Linux VM kit and
 [docs/deployment/PEMS_UAT_DEPLOYMENT_RUNBOOK.md](docs/deployment/PEMS_UAT_DEPLOYMENT_RUNBOOK.md) for UAT.
 
@@ -67,7 +81,7 @@ The schema is built and upgraded only from code. No hand-run SQL is needed.
 - A schema that has tables but no migration history is reported and never changed automatically.
 - Admin > System Monitoring > **Database Update** shows the state and applies updates on demand.
 - `GET /health/database` returns 200 only when every migration is applied.
-- Settings (`Database` section): `CreateIfMissing`, `MigrateOnStartup`. Set `Database__MigrateOnStartup=false` for
+- Settings (`Database__*` in the env files): `CreateIfMissing`, `MigrateOnStartup`. Set `Database__MigrateOnStartup=false` for
   environments that want reviewed scripts (`deploy/deploy.ps1 -Action MigrationScript`).
 
 Add a migration after changing the model; never edit an applied one:
@@ -99,7 +113,7 @@ Many tests need a real SQL Server and use the isolated database `PEMSDB_Regressi
 - Business logic lives in `PEMS.Application` and `PEMS.Persistence`, never in controllers.
 - Code, identifiers and documentation are in English; domain comments may be Persian.
 - New entities inherit `BaseEntity` when possible; every schema change comes with a migration.
-- Secrets never go into the repository; use environment variables or the CI secret store.
+- No hard-coded settings in code: add each new setting to every `env/*.env` file and read it with `Required*`; secrets only in `env/*.secrets.env` or environment variables.
 
 ## More
 

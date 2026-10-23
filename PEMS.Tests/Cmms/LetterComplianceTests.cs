@@ -215,16 +215,18 @@ public class LetterComplianceTests
         Assert.Equal(0, new LetterReminderOptions().AutoArchiveAfterYears);
 
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
-        string? file = null;
-        while (dir != null && file == null)
+        string? envDir = null;
+        while (dir != null && envDir == null)
         {
-            var c = Path.Combine(dir.FullName, "PEMS.Web", "appsettings.json");
-            if (File.Exists(c)) file = c;
+            var c = Path.Combine(dir.FullName, "env");
+            if (File.Exists(Path.Combine(c, "local.env"))) envDir = c;
             dir = dir.Parent;
         }
-        file ??= Path.Combine(Environment.GetEnvironmentVariable("PEMS_REPO_ROOT") ?? "", "PEMS.Web", "appsettings.json");
-        using var doc = System.Text.Json.JsonDocument.Parse(File.ReadAllText(file), new System.Text.Json.JsonDocumentOptions { AllowTrailingCommas = true });
-        Assert.Equal(0, doc.RootElement.GetProperty("LetterReminders").GetProperty("AutoArchiveAfterYears").GetInt32());
+        envDir ??= Path.Combine(Environment.GetEnvironmentVariable("PEMS_REPO_ROOT") ?? "", "env");
+        var shipped = Directory.EnumerateFiles(envDir, "*.env").Where(f => !f.EndsWith(".secrets.env")).ToList();
+        Assert.NotEmpty(shipped);
+        foreach (var file in shipped)
+            Assert.Equal("0", PEMS.Shared.Configuration.EnvFiles.Parse(File.ReadAllLines(file))["LetterReminders:AutoArchiveAfterYears"]);
     }
 
     [Fact]

@@ -3,6 +3,28 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-23 - Environment settings and secrets files
+
+### Added
+- `env/<name>.env` (all non-secret settings, committed) and `env/<name>.secrets.env` (secrets, git-ignored) for
+  `local`, `docker`, `demo`, `uat` and `production-kangan`, plus `*.secrets.env.example` templates and `env/README.md`.
+- `PEMS_ENV` selects the environment; precedence is env file < secrets file < real environment variables < command line.
+  Loader: `PEMS.Shared.Configuration.EnvFiles` and `AddPemsEnvFiles` (fails fast on a missing file or required setting).
+- Demo pipeline writes `env/demo.secrets.env` from GitHub secrets (`DEMO_SQL_CONNECTION_STRING`, `DEMO_ADMIN_PASSWORD`)
+  and sets `PEMS_ENV=demo` in `web.config`; `dotnet publish -p:PemsEnv=<name>` ships the matching non-secret file.
+- Tests: file format, precedence, identical key sets in every environment, no secrets in the committed files.
+- Backlog #314: "What's new" panel on the login page (planned).
+
+### Changed
+- `appsettings.json` is empty; `appsettings.Development.json` and `appsettings.UAT.json` are removed (moved to env files).
+- Hard-coded settings moved out of the code: log level/path/retention, password policy, auth cookie name/lifetime,
+  security-stamp interval, WebAuthn domain/name/origins/drift, Ollama URL/models/timeout, default and supported
+  cultures, Work Request segregation-of-duties flag, and the first administrator (user name, email, password).
+- No first administrator is created unless `Seed:Admin:*` is configured (the built-in default account is gone).
+- The design-time EF factory reads the env files and no longer has a hard-coded connection string.
+- `docker-compose.yml` reads `env/docker.env` and `env/docker.secrets.env`; the default SQL Server password is gone.
+- Linux release package (`deploy/Build-Package.ps1`) ships `env/*.env`; the VM must set `PEMS_ENV`.
+
 ## 2026-10-22 / 2026-10-23 - Fully code-first database
 
 ### Added

@@ -34,7 +34,7 @@ Every attempt is written to `DatabaseUpdateRuns` (trigger, mode, from/to migrati
 3. **`GET /health/database`** (anonymous, no details): `200` + `UpToDate`, otherwise `503` + the state name. Used by
    the demo pipeline to wait for the install/update to finish.
 
-## Settings (`appsettings*.json`, section `Database`)
+## Settings (`Database__*` in `env/<name>.env`)
 
 | Key | Default | Meaning |
 |---|---|---|

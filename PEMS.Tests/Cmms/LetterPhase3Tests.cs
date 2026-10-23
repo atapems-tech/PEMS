@@ -366,19 +366,22 @@ public class LetterPhase3Tests
     public void ShippedConfiguration_KeepsRemindersOff_UntilAnAdministratorEnablesThem()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
-        string? file = null;
-        while (dir != null && file == null)
+        string? envDir = null;
+        while (dir != null && envDir == null)
         {
-            var c = Path.Combine(dir.FullName, "PEMS.Web", "appsettings.json");
-            if (File.Exists(c)) file = c;
+            var c = Path.Combine(dir.FullName, "env");
+            if (File.Exists(Path.Combine(c, "local.env"))) envDir = c;
             dir = dir.Parent;
         }
-        file ??= Path.Combine(Environment.GetEnvironmentVariable("PEMS_REPO_ROOT") ?? "", "PEMS.Web", "appsettings.json");
+        envDir ??= Path.Combine(Environment.GetEnvironmentVariable("PEMS_REPO_ROOT") ?? "", "env");
+        var shipped = Directory.EnumerateFiles(envDir, "*.env").Where(f => !f.EndsWith(".secrets.env")).ToList();
+        Assert.NotEmpty(shipped);
 
-        using var doc = System.Text.Json.JsonDocument.Parse(File.ReadAllText(file), new System.Text.Json.JsonDocumentOptions { CommentHandling = System.Text.Json.JsonCommentHandling.Skip, AllowTrailingCommas = true });
-        var section = doc.RootElement.GetProperty("LetterReminders");
-
-        Assert.False(section.GetProperty("Enabled").GetBoolean());
-        Assert.Equal("07:30", section.GetProperty("RunAtLocalTime").GetString());
+        foreach (var file in shipped)
+        {
+            var values = PEMS.Shared.Configuration.EnvFiles.Parse(File.ReadAllLines(file));
+            Assert.Equal("false", values["LetterReminders:Enabled"]);
+            Assert.Equal("07:30", values["LetterReminders:RunAtLocalTime"]);
+        }
     }
 }
