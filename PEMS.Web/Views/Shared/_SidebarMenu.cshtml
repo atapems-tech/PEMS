@@ -93,6 +93,10 @@
         <i class="bi bi-speedometer2"></i> @Localizer["Dashboard"]
     </a>
 
+    <a class="nav-link @(IsActive("ExecutiveDashboard") ? "active" : "")" asp-controller="ExecutiveDashboard" asp-action="Index" asp-area="">
+        <i class="bi bi-graph-up-arrow"></i> @Localizer["Exec_NavTitle"]
+    </a>
+
     <a class="nav-link @(IsActive("MyWork") ? "active" : "")" asp-controller="MyWork" asp-action="Index" asp-area="">
         <i class="bi bi-list-check"></i> @Localizer["My Work"]
     </a>

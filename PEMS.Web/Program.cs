@@ -524,6 +524,7 @@ builder.Services.AddScoped<ILetterReminderService, LetterReminderService>();
 builder.Services.AddScoped<ILetterComposeService, LetterComposeService>();
 builder.Services.AddScoped<ILetterComplianceService, LetterComplianceService>();
 builder.Services.AddScoped<IIncomingCorrespondenceService, IncomingCorrespondenceService>();
+builder.Services.AddScoped<IExecutiveDashboardService, ExecutiveDashboardService>();
 builder.Services.Configure<PEMS.Web.BackgroundJobs.LetterReminderOptions>(builder.Configuration.GetSection("LetterReminders"));
 builder.Services.AddHostedService<PEMS.Web.BackgroundJobs.LetterReminderBackgroundService>();
 

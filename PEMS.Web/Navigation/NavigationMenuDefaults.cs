@@ -37,6 +37,7 @@ public static class NavigationMenuDefaults
     {
         // ---- سطح بالا
         Link("home", null, 10, "Dashboard", "bi-speedometer2", "Home"),
+        Link("exec.dashboard", null, 15, "Exec_NavTitle", "bi-graph-up-arrow", "ExecutiveDashboard", rule: "Perm:EngineeringDocuments.View"),
         Link("mywork", null, 20, "My Work", "bi-list-check", "MyWork", badge: NavigationBadges.MyWorkPending),
         Link("quicksetup", null, 30, "Quick Setup", "bi-rocket-takeoff", "QuickSetup", rule: "Module:QuickSetup"),
         Link("importcenter", null, 40, "IC_Title", "bi-cloud-arrow-up", "ImportCenter", rule: "Module:ImportCenter",

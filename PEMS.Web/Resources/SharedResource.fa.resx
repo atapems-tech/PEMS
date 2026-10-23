@@ -2830,4 +2830,100 @@
   <data name="Lc_Party" xml:space="preserve"><value>سازمان گیرنده (اختیاری)</value></data>
   <data name="Lc_PartyHelp" xml:space="preserve"><value>سازمان ثبت‌شده را انتخاب کنید تا این نامه در «رشته‌ی مکاتبه»ی همان طرف در DCC دیده شود.</value></data>
   <data name="Lc_Err_PartyNotFound" xml:space="preserve"><value>سازمان انتخاب‌شده پیدا نشد.</value></data>
+  <data name="No documents to chart yet." xml:space="preserve"><value>هنوز مدرکی برای نمایش در نمودار نیست.</value></data>
+  <data name="Exec_NavTitle" xml:space="preserve"><value>داشبورد مدیریتی</value></data>
+  <data name="Exec_Title" xml:space="preserve"><value>داشبورد مدیریتی</value></data>
+  <data name="Exec_Subtitle" xml:space="preserve"><value>نمای زنده‌ی پرتفوی در مهندسی، فروشندگان، خرید و بهره‌برداری</value></data>
+  <data name="Exec_Updated" xml:space="preserve"><value>بروزرسانی {time}</value></data>
+  <data name="Exec_Project" xml:space="preserve"><value>پروژه</value></data>
+  <data name="Exec_AllProjects" xml:space="preserve"><value>همه‌ی پروژه‌ها</value></data>
+  <data name="Exec_Refresh" xml:space="preserve"><value>بروزرسانی</value></data>
+  <data name="Exec_Loading" xml:space="preserve"><value>در حال بارگذاری داشبورد…</value></data>
+  <data name="Exec_LoadError" xml:space="preserve"><value>داده‌های داشبورد بارگذاری نشد. دوباره بروزرسانی کنید.</value></data>
+  <data name="Exec_SectionsFailed" xml:space="preserve"><value>برخی بخش‌ها خوانده نشد ({sections})؛ بقیه نمایش داده می‌شود.</value></data>
+  <data name="Exec_NoData" xml:space="preserve"><value>هنوز داده‌ای نیست</value></data>
+  <data name="Exec_Documents" xml:space="preserve"><value>مدارک</value></data>
+  <data name="Exec_Items" xml:space="preserve"><value>آیتم‌ها</value></data>
+  <data name="Exec_Unassigned" xml:space="preserve"><value>بدون دیسیپلین</value></data>
+  <data name="Exec_NotApproved" xml:space="preserve"><value>تایید نشده</value></data>
+  <data name="Exec_OtherProjects" xml:space="preserve"><value>سایر پروژه‌ها ({count})</value></data>
+  <data name="Exec_KpiDocuments" xml:space="preserve"><value>مدارک مهندسی</value></data>
+  <data name="Exec_KpiDocumentsSub" xml:space="preserve"><value>پروژه‌ها: {projects}</value></data>
+  <data name="Exec_KpiApproved" xml:space="preserve"><value>تاییدشده / صادرشده</value></data>
+  <data name="Exec_KpiApprovedSub" xml:space="preserve"><value>{approved} از {total} مدرک</value></data>
+  <data name="Exec_KpiInReview" xml:space="preserve"><value>در بازبینی</value></data>
+  <data name="Exec_KpiInReviewSub" xml:space="preserve"><value>{draft} هنوز پیش‌نویس</value></data>
+  <data name="Exec_KpiRework" xml:space="preserve"><value>نیازمند اصلاح</value></data>
+  <data name="Exec_KpiReworkSub" xml:space="preserve"><value>{rejected} ردشده · {commented} بازگشته با کامنت</value></data>
+  <data name="Exec_KpiRevisions" xml:space="preserve"><value>رویژن‌ها</value></data>
+  <data name="Exec_KpiRevisionsSub" xml:space="preserve"><value>میانگین {avg} به‌ازای هر مدرک</value></data>
+  <data name="Exec_KpiProcurement" xml:space="preserve"><value>سفارش‌های خرید</value></data>
+  <data name="Exec_KpiProcurementSub" xml:space="preserve"><value>{mr} درخواست مواد باز</value></data>
+  <data name="Exec_KpiProcurementValue" xml:space="preserve"><value>{value} · {mr} MR باز</value></data>
+  <data name="Exec_KpiEquipment" xml:space="preserve"><value>فهرست تجهیزات</value></data>
+  <data name="Exec_KpiEquipmentSub" xml:space="preserve"><value>{open} دستور کار باز · {critical} بحرانی</value></data>
+  <data name="Exec_Bucket_Approved" xml:space="preserve"><value>تاییدشده</value></data>
+  <data name="Exec_Bucket_InReview" xml:space="preserve"><value>در بازبینی</value></data>
+  <data name="Exec_Bucket_Returned" xml:space="preserve"><value>ردشده / بازگشته</value></data>
+  <data name="Exec_Bucket_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="Exec_Bucket_Other" xml:space="preserve"><value>سایر</value></data>
+  <data name="Exec_StatusTitle" xml:space="preserve"><value>وضعیت مدارک</value></data>
+  <data name="Exec_StatusSub" xml:space="preserve"><value>{total} مدرک مهندسی</value></data>
+  <data name="Exec_TimelineTitle" xml:space="preserve"><value>روند صدور رویژن‌ها در طول زمان</value></data>
+  <data name="Exec_TimelineSub" xml:space="preserve"><value>{from} تا {to} · {total} رویژن صادرشده</value></data>
+  <data name="Exec_Cumulative" xml:space="preserve"><value>جمع تجمعی صدور</value></data>
+  <data name="Exec_IssuedInMonth" xml:space="preserve"><value>صادرشده در این ماه</value></data>
+  <data name="Exec_DisciplineTitle" xml:space="preserve"><value>پیشرفت به‌تفکیک دیسیپلین</value></data>
+  <data name="Exec_DisciplineSub" xml:space="preserve"><value>ده دیسیپلین بزرگ بر اساس تعداد مدرک</value></data>
+  <data name="Exec_ResponsesTitle" xml:space="preserve"><value>کدهای پاسخ کارفرما</value></data>
+  <data name="Exec_ResponsesSub" xml:space="preserve"><value>پرتکرارترین کدها در رجیستر</value></data>
+  <data name="Exec_ProjectsTitle" xml:space="preserve"><value>پروژه‌ها بر اساس مدارک</value></data>
+  <data name="Exec_ProjectsSub" xml:space="preserve"><value>بزرگ‌ترین پروژه‌ها و سهم تایید</value></data>
+  <data name="Exec_VdrTitle" xml:space="preserve"><value>مدارک فروشندگان (VDR)</value></data>
+  <data name="Exec_VdrSub" xml:space="preserve"><value>{total} آیتم · {submissions} ارسال</value></data>
+  <data name="Exec_Wf_Closed" xml:space="preserve"><value>بسته</value></data>
+  <data name="Exec_Wf_Submitted" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Exec_Wf_PendingResubmission" xml:space="preserve"><value>منتظر ارسال مجدد</value></data>
+  <data name="Exec_Wf_UnderReview" xml:space="preserve"><value>در حال بازبینی</value></data>
+  <data name="Exec_ProcurementTitle" xml:space="preserve"><value>خرید</value></data>
+  <data name="Exec_ProcurementSub" xml:space="preserve"><value>شمارش مراحل خرید و درخواست مواد به‌تفکیک وضعیت</value></data>
+  <data name="Exec_Packages" xml:space="preserve"><value>پکیج‌ها</value></data>
+  <data name="Exec_Tenders" xml:space="preserve"><value>مناقصه‌ها</value></data>
+  <data name="Exec_Contracts" xml:space="preserve"><value>قراردادها</value></data>
+  <data name="Exec_PurchaseOrders" xml:space="preserve"><value>سفارش‌های خرید</value></data>
+  <data name="Exec_Bids" xml:space="preserve"><value>پیشنهادها</value></data>
+  <data name="Exec_Ntps" xml:space="preserve"><value>ابلاغ شروع (NTP)</value></data>
+  <data name="Exec_Mr_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="Exec_Mr_Closed" xml:space="preserve"><value>بسته</value></data>
+  <data name="Exec_MaterialRequisitions" xml:space="preserve"><value>درخواست مواد</value></data>
+  <data name="Exec_AttentionTitle" xml:space="preserve"><value>نیازمند توجه مدیریت</value></data>
+  <data name="Exec_AttentionSub" xml:space="preserve"><value>به ترتیب شدت؛ هر مورد فهرست مربوطه را باز می‌کند</value></data>
+  <data name="Exec_AttentionNone" xml:space="preserve"><value>اکنون موردی نیازمند توجه نیست.</value></data>
+  <data name="Exec_Attn_EngRejected" xml:space="preserve"><value>مدارک ردشده در انتظار اصلاح</value></data>
+  <data name="Exec_Attn_EngReturned" xml:space="preserve"><value>مدارک بازگشته با کامنت کارفرما (CO/AC)</value></data>
+  <data name="Exec_Attn_EngOverdue" xml:space="preserve"><value>مدارک با تاریخ برنامه‌ریزی گذشته</value></data>
+  <data name="Exec_Attn_EngInReview" xml:space="preserve"><value>مدارک در حال بازبینی</value></data>
+  <data name="Exec_Attn_VdrOverdue" xml:space="preserve"><value>مدارک فروشنده با تاخیر</value></data>
+  <data name="Exec_Attn_VdrResubmission" xml:space="preserve"><value>مدارک فروشنده در انتظار ارسال مجدد</value></data>
+  <data name="Exec_Attn_LetterResponseOverdue" xml:space="preserve"><value>نامه‌های دارای مهلت پاسخ گذشته</value></data>
+  <data name="Exec_Attn_ReferralOverdue" xml:space="preserve"><value>ارجاعات با مهلت گذشته</value></data>
+  <data name="Exec_Attn_CriticalWorkOrders" xml:space="preserve"><value>دستور کارهای بحرانی</value></data>
+  <data name="Exec_Attn_MrDraft" xml:space="preserve"><value>درخواست‌های مواد هنوز پیش‌نویس</value></data>
+  <data name="Exec_PressureTitle" xml:space="preserve"><value>فشار رویژن</value></data>
+  <data name="Exec_PressureSub" xml:space="preserve"><value>مدارکی که بیشترین بار بازصادر شده‌اند</value></data>
+  <data name="Exec_QualityTitle" xml:space="preserve"><value>کامل بودن داده</value></data>
+  <data name="Exec_QualitySub" xml:space="preserve"><value>چه بخشی از رجیستر از هر شاخص پشتیبانی می‌کند</value></data>
+  <data name="Exec_QDiscipline" xml:space="preserve"><value>دیسیپلین دارد</value></data>
+  <data name="Exec_QIssued" xml:space="preserve"><value>رویژن صادرشده دارد</value></data>
+  <data name="Exec_QResponse" xml:space="preserve"><value>کد پاسخ کارفرما دارد</value></data>
+  <data name="Exec_QPlanned" xml:space="preserve"><value>تاریخ برنامه‌ریزی دارد</value></data>
+  <data name="Exec_QPlannedNote" xml:space="preserve"><value>هیچ مدرکی تاریخ برنامه‌ریزی ندارد؛ پس انحراف زمان‌بندی و تاخیر قابل اندازه‌گیری نیست. تاریخ برنامه را در MDR وارد کنید.</value></data>
+  <data name="Exec_OtherTitle" xml:space="preserve"><value>سایر شاخص‌ها</value></data>
+  <data name="Exec_Transmittals" xml:space="preserve"><value>ترنسمیتال‌های ارسال‌شده</value></data>
+  <data name="Exec_Letters" xml:space="preserve"><value>نامه‌ها</value></data>
+  <data name="Exec_ResponsesOverdue" xml:space="preserve"><value>پاسخ‌ها و ارجاعات معوق</value></data>
+  <data name="Exec_OpenWorkOrders" xml:space="preserve"><value>دستور کارهای باز</value></data>
+  <data name="Exec_VdrOverdue" xml:space="preserve"><value>مدارک فروشنده معوق</value></data>
+  <data name="Chart_NoData" xml:space="preserve"><value>برای این بازه داده‌ای نیست</value></data>
+  <data name="Chart_Other" xml:space="preserve"><value>سایر</value></data>
 </root>

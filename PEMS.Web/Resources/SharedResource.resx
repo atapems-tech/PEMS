@@ -2035,4 +2035,100 @@
   <data name="Lc_Party" xml:space="preserve"><value>Organisation (optional)</value></data>
   <data name="Lc_PartyHelp" xml:space="preserve"><value>Pick a registered organisation so this letter shows in its correspondence thread in DCC.</value></data>
   <data name="Lc_Err_PartyNotFound" xml:space="preserve"><value>The selected organisation was not found.</value></data>
+  <data name="No documents to chart yet." xml:space="preserve"><value>No documents to chart yet.</value></data>
+  <data name="Exec_NavTitle" xml:space="preserve"><value>Executive Dashboard</value></data>
+  <data name="Exec_Title" xml:space="preserve"><value>Executive Dashboard</value></data>
+  <data name="Exec_Subtitle" xml:space="preserve"><value>Live portfolio view across engineering, vendors, procurement and operations</value></data>
+  <data name="Exec_Updated" xml:space="preserve"><value>Updated {time}</value></data>
+  <data name="Exec_Project" xml:space="preserve"><value>Project</value></data>
+  <data name="Exec_AllProjects" xml:space="preserve"><value>All projects</value></data>
+  <data name="Exec_Refresh" xml:space="preserve"><value>Refresh</value></data>
+  <data name="Exec_Loading" xml:space="preserve"><value>Loading dashboard…</value></data>
+  <data name="Exec_LoadError" xml:space="preserve"><value>The dashboard data could not be loaded. Try refreshing.</value></data>
+  <data name="Exec_SectionsFailed" xml:space="preserve"><value>Some sections could not be read ({sections}); the rest is shown.</value></data>
+  <data name="Exec_NoData" xml:space="preserve"><value>No data yet</value></data>
+  <data name="Exec_Documents" xml:space="preserve"><value>Documents</value></data>
+  <data name="Exec_Items" xml:space="preserve"><value>Items</value></data>
+  <data name="Exec_Unassigned" xml:space="preserve"><value>Unassigned</value></data>
+  <data name="Exec_NotApproved" xml:space="preserve"><value>Not approved</value></data>
+  <data name="Exec_OtherProjects" xml:space="preserve"><value>Other projects ({count})</value></data>
+  <data name="Exec_KpiDocuments" xml:space="preserve"><value>Engineering documents</value></data>
+  <data name="Exec_KpiDocumentsSub" xml:space="preserve"><value>Projects: {projects}</value></data>
+  <data name="Exec_KpiApproved" xml:space="preserve"><value>Approved / issued</value></data>
+  <data name="Exec_KpiApprovedSub" xml:space="preserve"><value>{approved} of {total} documents</value></data>
+  <data name="Exec_KpiInReview" xml:space="preserve"><value>In review</value></data>
+  <data name="Exec_KpiInReviewSub" xml:space="preserve"><value>{draft} still in draft</value></data>
+  <data name="Exec_KpiRework" xml:space="preserve"><value>Needs rework</value></data>
+  <data name="Exec_KpiReworkSub" xml:space="preserve"><value>{rejected} rejected · {commented} returned with comments</value></data>
+  <data name="Exec_KpiRevisions" xml:space="preserve"><value>Revisions</value></data>
+  <data name="Exec_KpiRevisionsSub" xml:space="preserve"><value>{avg} per document on average</value></data>
+  <data name="Exec_KpiProcurement" xml:space="preserve"><value>Purchase orders</value></data>
+  <data name="Exec_KpiProcurementSub" xml:space="preserve"><value>{mr} open material requisitions</value></data>
+  <data name="Exec_KpiProcurementValue" xml:space="preserve"><value>{value} · {mr} open MRs</value></data>
+  <data name="Exec_KpiEquipment" xml:space="preserve"><value>Equipment register</value></data>
+  <data name="Exec_KpiEquipmentSub" xml:space="preserve"><value>{open} open work orders · {critical} critical</value></data>
+  <data name="Exec_Bucket_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Exec_Bucket_InReview" xml:space="preserve"><value>In review</value></data>
+  <data name="Exec_Bucket_Returned" xml:space="preserve"><value>Rejected / returned</value></data>
+  <data name="Exec_Bucket_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Exec_Bucket_Other" xml:space="preserve"><value>Other</value></data>
+  <data name="Exec_StatusTitle" xml:space="preserve"><value>Document status</value></data>
+  <data name="Exec_StatusSub" xml:space="preserve"><value>{total} engineering documents</value></data>
+  <data name="Exec_TimelineTitle" xml:space="preserve"><value>Revision issuance over time</value></data>
+  <data name="Exec_TimelineSub" xml:space="preserve"><value>{from} to {to} · {total} revisions issued</value></data>
+  <data name="Exec_Cumulative" xml:space="preserve"><value>Cumulative issued</value></data>
+  <data name="Exec_IssuedInMonth" xml:space="preserve"><value>Issued this month</value></data>
+  <data name="Exec_DisciplineTitle" xml:space="preserve"><value>Progress by discipline</value></data>
+  <data name="Exec_DisciplineSub" xml:space="preserve"><value>The ten largest disciplines by document count</value></data>
+  <data name="Exec_ResponsesTitle" xml:space="preserve"><value>Client response codes</value></data>
+  <data name="Exec_ResponsesSub" xml:space="preserve"><value>Most frequent codes in the register</value></data>
+  <data name="Exec_ProjectsTitle" xml:space="preserve"><value>Projects by documents</value></data>
+  <data name="Exec_ProjectsSub" xml:space="preserve"><value>Largest projects and their approval share</value></data>
+  <data name="Exec_VdrTitle" xml:space="preserve"><value>Vendor documents (VDR)</value></data>
+  <data name="Exec_VdrSub" xml:space="preserve"><value>{total} items · {submissions} submissions</value></data>
+  <data name="Exec_Wf_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Exec_Wf_Submitted" xml:space="preserve"><value>Submitted</value></data>
+  <data name="Exec_Wf_PendingResubmission" xml:space="preserve"><value>Pending resubmission</value></data>
+  <data name="Exec_Wf_UnderReview" xml:space="preserve"><value>Under review</value></data>
+  <data name="Exec_ProcurementTitle" xml:space="preserve"><value>Procurement</value></data>
+  <data name="Exec_ProcurementSub" xml:space="preserve"><value>Pipeline counts and material requisitions by status</value></data>
+  <data name="Exec_Packages" xml:space="preserve"><value>Packages</value></data>
+  <data name="Exec_Tenders" xml:space="preserve"><value>Tenders</value></data>
+  <data name="Exec_Contracts" xml:space="preserve"><value>Contracts</value></data>
+  <data name="Exec_PurchaseOrders" xml:space="preserve"><value>Purchase orders</value></data>
+  <data name="Exec_Bids" xml:space="preserve"><value>Bids</value></data>
+  <data name="Exec_Ntps" xml:space="preserve"><value>NTPs issued</value></data>
+  <data name="Exec_Mr_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Exec_Mr_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Exec_MaterialRequisitions" xml:space="preserve"><value>Material requisitions</value></data>
+  <data name="Exec_AttentionTitle" xml:space="preserve"><value>Needs management attention</value></data>
+  <data name="Exec_AttentionSub" xml:space="preserve"><value>Ordered by severity; each item opens the matching list</value></data>
+  <data name="Exec_AttentionNone" xml:space="preserve"><value>Nothing needs attention right now.</value></data>
+  <data name="Exec_Attn_EngRejected" xml:space="preserve"><value>Documents rejected and waiting for rework</value></data>
+  <data name="Exec_Attn_EngReturned" xml:space="preserve"><value>Documents returned with client comments (CO/AC)</value></data>
+  <data name="Exec_Attn_EngOverdue" xml:space="preserve"><value>Documents past their planned date</value></data>
+  <data name="Exec_Attn_EngInReview" xml:space="preserve"><value>Documents currently in review</value></data>
+  <data name="Exec_Attn_VdrOverdue" xml:space="preserve"><value>Vendor documents overdue</value></data>
+  <data name="Exec_Attn_VdrResubmission" xml:space="preserve"><value>Vendor documents waiting for resubmission</value></data>
+  <data name="Exec_Attn_LetterResponseOverdue" xml:space="preserve"><value>Letters with an overdue response</value></data>
+  <data name="Exec_Attn_ReferralOverdue" xml:space="preserve"><value>Referrals past their due date</value></data>
+  <data name="Exec_Attn_CriticalWorkOrders" xml:space="preserve"><value>Critical work orders</value></data>
+  <data name="Exec_Attn_MrDraft" xml:space="preserve"><value>Material requisitions still in draft</value></data>
+  <data name="Exec_PressureTitle" xml:space="preserve"><value>Revision pressure</value></data>
+  <data name="Exec_PressureSub" xml:space="preserve"><value>Documents re-issued most often</value></data>
+  <data name="Exec_QualityTitle" xml:space="preserve"><value>Data completeness</value></data>
+  <data name="Exec_QualitySub" xml:space="preserve"><value>How much of the register supports each metric</value></data>
+  <data name="Exec_QDiscipline" xml:space="preserve"><value>Has a discipline</value></data>
+  <data name="Exec_QIssued" xml:space="preserve"><value>Has an issued revision</value></data>
+  <data name="Exec_QResponse" xml:space="preserve"><value>Has a client response code</value></data>
+  <data name="Exec_QPlanned" xml:space="preserve"><value>Has a planned date</value></data>
+  <data name="Exec_QPlannedNote" xml:space="preserve"><value>No document has a planned date, so schedule variance and overdue counts cannot be measured. Fill planned dates in the MDR to unlock them.</value></data>
+  <data name="Exec_OtherTitle" xml:space="preserve"><value>Other indicators</value></data>
+  <data name="Exec_Transmittals" xml:space="preserve"><value>Transmittals sent</value></data>
+  <data name="Exec_Letters" xml:space="preserve"><value>Letters</value></data>
+  <data name="Exec_ResponsesOverdue" xml:space="preserve"><value>Overdue responses and referrals</value></data>
+  <data name="Exec_OpenWorkOrders" xml:space="preserve"><value>Open work orders</value></data>
+  <data name="Exec_VdrOverdue" xml:space="preserve"><value>Overdue vendor documents</value></data>
+  <data name="Chart_NoData" xml:space="preserve"><value>No data for this period</value></data>
+  <data name="Chart_Other" xml:space="preserve"><value>Other</value></data>
 </root>
