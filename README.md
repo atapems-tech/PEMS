@@ -118,5 +118,7 @@ Many tests need a real SQL Server and use the isolated database `PEMSDB_Regressi
 ## More
 
 - [CHANGELOG.md](CHANGELOG.md) - what changed and when.
-- `plan/PEMS_Backlog_Roadmap.xlsx` - backlog, roadmap, test plan, supportability matrix.
+- `plan/PEMS_Backlog_Roadmap.xlsx` - backlog, roadmap, test plan, supportability matrix; `plan/backlog.csv` is its text mirror.
+- [docs/design/COMPONENT_LIBRARY_PLAN.md](docs/design/COMPONENT_LIBRARY_PLAN.md) - UI component library plan; [docs/design/UI_PATTERN_AUDIT.md](docs/design/UI_PATTERN_AUDIT.md) - audit of all views.
+- [docs/process/PLAN_JIRA_WORKFLOW.md](docs/process/PLAN_JIRA_WORKFLOW.md) - how the plan file, Jira and developers stay consistent (`tools/plan-sync`).
 - `docs/` - architecture notes, audits and module specifications.

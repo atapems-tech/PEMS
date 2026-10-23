@@ -377,3 +377,7 @@ graphify-out/cache/
 
 # Environment secrets (never commit): real values live in env/<name>.secrets.env, templates are *.secrets.env.example
 env/*.secrets.env
+
+# Generated Jira import files (plan/backlog.csv is the committed text mirror)
+plan/jira-import.csv
+plan/jira-links.csv
