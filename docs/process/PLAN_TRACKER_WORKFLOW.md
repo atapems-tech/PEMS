@@ -13,7 +13,7 @@ checked by a script in CI, not by memory.
 | Concept | Workbook column | Jira field | Owner | Direction |
 |---|---|---|---|---|
 | Identity | # (Plan ID) | custom field "Plan ID" (text, unique) | Workbook | workbook -> Jira |
-| Jira key | Jira Key (new column T) | issue key | Jira | Jira -> workbook |
+| Jira key | - (the workbook stays tracker-free) | issue key | Jira | kept in Jira and in `plan/tracker-map.csv` written by `push` |
 | Title | Task | Summary | Workbook | -> Jira |
 | What and why | Evidence, Prompt | Description | Workbook | -> Jira |
 | Acceptance criteria | Requirement | Description section "Acceptance" | Workbook | -> Jira |
@@ -50,9 +50,9 @@ pull from Jira **and** a closing PR that fills Evidence (rule 13: no Done withou
 | Command | What it does |
 |---|---|
 | `export` | writes `plan/backlog.csv` (text mirror, reviewable diff) and `plan/jira-import.csv` (Jira CSV import format: Summary, Description, Priority, Issue type, Component, Fix version, labels, Plan ID, Work item key for updates; parents before children; max ~1,500 rows per file) |
-| `push` (needs Jira API) | creates/updates issues by Plan ID, sets links; writes the new Jira keys into the workbook column T |
+| `push` (needs Jira API) | creates/updates issues by Plan ID, sets links; writes the Plan ID -> issue key map to `plan/tracker-map.csv` (the workbook itself is never given tracker fields) |
 | `pull` (needs Jira API) | reads Status (and key) of every issue and updates the workbook Status column via a bot pull request |
-| `check` (CI, nightly + on PR) | fails when: a Plan ID is duplicated; a Done row has no Evidence; a workbook row has no Jira issue (after the first push); a Jira issue has no Plan ID; statuses disagree; a commit/PR in the range has no Jira key |
+| `check` (CI, nightly + on PR) | fails when: a Plan ID is duplicated; a Done row has no Evidence; a workbook row has no Jira issue (checked through `plan/tracker-map.csv`); a Jira issue has no Plan ID; statuses disagree; a commit/PR in the range has no Jira key |
 
 Today only `export` exists (no Jira connector is installed here). Credentials for push/pull/check are **CI secrets, never app settings or
 files in git**: `JIRA_BASE_URL`, `JIRA_PROJECT_KEY`, `JIRA_USER_EMAIL`, `JIRA_API_TOKEN`.
@@ -75,3 +75,21 @@ Secrets already set in GitHub: `JIRA_BASE_URL`, `JIRA_PROJECT_KEY`; still to add
 Project key; issue types Story/Task/Bug; workflow statuses To Do, In Progress, On Hold, Done, Won't Do; custom field "Plan ID" (text,
 unique); components = the 27 plan areas; fix versions = M0-M6; GitHub-for-Jira connection so commits and PRs show on issues; an API token
 for a bot user stored as the CI secrets above.
+
+## 7. Sprints, owners and the generated import file
+
+The workbook is tracker-free: it carries only planning facts. Two planning columns exist on the Backlog sheet: **Sprint** (`Sprint 1`,
+`Sprint 1 stretch`, empty = backlog) and **Owner** (the accountable person, `Member A` / `Member B` until real names are mapped). The `Sprint 1`
+sheet holds the goal, dates, capacity and the committed list.
+
+`python tools/plan-sync/plan_sync.py export` turns the workbook into the Jira import file (`plan/jira-import.csv`, not committed):
+- every row becomes a work item whose summary is `[#<Plan ID>] <task>` and whose description has fixed sections: identity line (area, group,
+  milestone, priority, effort, owner), *Why*, *What to do*, *Done when*, *Depends on* (with the titles of the blocking tasks) and *Report*;
+- milestones M0-M6 become epics and parents; rows with Sprint `Sprint 1` get the Sprint field, `Sprint 1 stretch` rows stay in the backlog with
+  the label `sprint-1-stretch`;
+- Assignee is filled from `plan/members.json` (copy `plan/members.example.json`; the real file with e-mail addresses is git-ignored);
+- the area becomes the label `area-<name>` (team-managed spaces have no Components); effort, doer, PM confirmation and sales-blocker become labels.
+
+Import: Jira -> project SCRUM -> Space settings (or the "..." menu) -> Import work items -> CSV; map Summary, Description, Priority, Status,
+Fix Version, Plan ID, Sprint, Assignee and the repeated Labels columns; keep "Work item ID / Parent" so tasks attach to their epic.
+
