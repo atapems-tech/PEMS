@@ -31,6 +31,9 @@ jobs:
       # Code-first gate: the entity model and the migrations must agree, otherwise the
       # startup migrator (Database:MigrateOnStartup) cannot apply a complete schema.
       - name: Model drift gate (no entity change without a migration)
+        env:
+          # model-only comparison: the design-time factory needs a connection string but no connection is opened
+          ConnectionStrings__PEMSConnection: Server=localhost;Database=PEMS_ModelCheck;Trusted_Connection=True;TrustServerCertificate=True
         run: |
           dotnet tool install --global dotnet-ef --version 10.0.10
           dotnet ef migrations has-pending-model-changes --project PEMS.Persistence --startup-project PEMS.Web --no-build --configuration Release
