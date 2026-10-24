@@ -87,10 +87,14 @@ jobs:
           } > publish/env/demo.secrets.env
           sed -i 's#hostingModel="inprocess" />#hostingModel="inprocess"><environmentVariables><environmentVariable name="PEMS_ENV" value="demo" /></environmentVariables></aspNetCore>#' publish/web.config
           sed -i 's/<aspNetCore /<aspNetCore startupTimeLimit="900" /' publish/web.config
+          # startup output is written to logs/stdout* on the server so a failed first run can be diagnosed from the hosting panel
+          sed -i 's/stdoutLogEnabled="false"/stdoutLogEnabled="true"/' publish/web.config
+          grep -q 'stdoutLogEnabled="true"' publish/web.config
           grep -q 'name="PEMS_ENV" value="demo"' publish/web.config
           grep -q 'startupTimeLimit="900"' publish/web.config
 
       - name: Deploy via FTP
+        timeout-minutes: 60
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.DEMO_FTP_HOST }}
@@ -102,9 +106,11 @@ jobs:
           server-dir: ${{ secrets.DEMO_FTP_DIR }}
 
       # The first request starts the app, which installs/updates the schema before serving. /health/database is
-      # anonymous and returns 200 only when every shipped migration is applied (503 + state name otherwise).
+      # anonymous and returns 200 only when every migration is applied (503 + state name otherwise).
+      # The probe uses --insecure so a missing/invalid TLS certificate (Plesk "Domain not secured") does not hide the app state;
+      # the certificate itself is reported by the separate non-fatal check below.
       - name: Wait for database install/update to finish
-        timeout-minutes: 30
+        timeout-minutes: 35
         env:
           SITE: ${{ secrets.DEMO_SITE_URL }}
         run: |
@@ -113,15 +119,27 @@ jobs:
             exit 0
           fi
           state="no response"
-          for i in $(seq 1 60); do
-            code=$(curl -s -o health.txt -w '%{http_code}' --max-time 90 "$SITE/health/database" || echo 000)
+          for i in $(seq 1 70); do
+            code=$(curl -sS -k -o health.txt -w '%{http_code}' --max-time 90 "$SITE/health/database" 2> curl.err) || true
             state=$(head -c 80 health.txt 2>/dev/null || true)
-            echo "attempt $i: HTTP $code ${state}"
+            echo "attempt $i: HTTP ${code:-000} ${state} $(head -c 120 curl.err 2>/dev/null)"
             if [ "$code" = "200" ]; then
               echo "Database is up to date on the demo site."
               exit 0
             fi
             sleep 20
           done
-          echo "::error::Demo database did not reach UpToDate (last: ${state}). See Admin > Database Update on the demo site."
+          echo "::error::Demo database did not reach UpToDate (last: HTTP ${code:-000} ${state}). Read logs/stdout* and logs/pems-*.log on the server (Plesk > Files) and Admin > Database Update on the demo site."
           exit 1
+
+      - name: TLS certificate of the demo site (informational)
+        if: always()
+        env:
+          SITE: ${{ secrets.DEMO_SITE_URL }}
+        run: |
+          [ -z "$SITE" ] && exit 0
+          if curl -sS -o /dev/null --max-time 30 "$SITE/health" 2> tls.err; then
+            echo "TLS certificate is valid."
+          else
+            echo "::warning::TLS verification failed for $SITE ($(head -c 200 tls.err)). Issue a certificate for the subdomain in Plesk (SSL/TLS Certificates > Let's Encrypt)."
+          fi
