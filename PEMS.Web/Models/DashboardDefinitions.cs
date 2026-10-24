@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using PEMS.Application.Common;
 using PEMS.Domain.Entities;
 
 namespace PEMS.Web.Models;
@@ -12,16 +13,16 @@ namespace PEMS.Web.Models;
 public static class DashboardDefinitions
 {
     /// <summary>منتظر اقدام در گردش‌کار داخلی (Submitted یا Checked).</summary>
-    public static readonly Expression<Func<EngineeringDocument, bool>> PendingApproval = x => x.Status == "Submitted" || x.Status == "Checked";
+    public static readonly Expression<Func<EngineeringDocument, bool>> PendingApproval = EngineeringDocumentDefinitions.PendingApproval;
 
     /// <summary>ردشده‌ی واقعی: وضعیت Rejected و پاسخ کارفرما RE (یا بدون کد پاسخ، یعنی رد داخلی).</summary>
-    public static readonly Expression<Func<EngineeringDocument, bool>> Rejected = x => x.Status == "Rejected" && (x.CommentStatus == null || x.CommentStatus == "" || x.CommentStatus == "RE");
+    public static readonly Expression<Func<EngineeringDocument, bool>> Rejected = EngineeringDocumentDefinitions.Rejected;
 
     /// <summary>بازگشته با کامنت کارفرما (CO یا AC): نیاز به اصلاح و ارسال مجدد دارد ولی «رد» نیست.</summary>
-    public static readonly Expression<Func<EngineeringDocument, bool>> ReturnedWithComments = x => x.Status == "Rejected" && (x.CommentStatus == "CO" || x.CommentStatus == "AC");
+    public static readonly Expression<Func<EngineeringDocument, bool>> ReturnedWithComments = EngineeringDocumentDefinitions.ReturnedWithComments;
 
     /// <summary>قراردادهای در اجرا: Effective، یا Active میراثی (پیش از معماری گردش‌کار).</summary>
-    public static readonly Expression<Func<Contract, bool>> ActiveContract = c => c.Status == "Effective" || c.Status == "Active";
+    public static readonly Expression<Func<Contract, bool>> ActiveContract = EngineeringDocumentDefinitions.ActiveContract;
 }
 
 public sealed record DisciplinePerformanceRow(string Discipline, int Total, int Approved, int Open, int PendingApproval)

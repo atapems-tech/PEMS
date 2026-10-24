@@ -2830,4 +2830,344 @@
   <data name="Lc_Party" xml:space="preserve"><value>سازمان گیرنده (اختیاری)</value></data>
   <data name="Lc_PartyHelp" xml:space="preserve"><value>سازمان ثبت‌شده را انتخاب کنید تا این نامه در «رشته‌ی مکاتبه»ی همان طرف در DCC دیده شود.</value></data>
   <data name="Lc_Err_PartyNotFound" xml:space="preserve"><value>سازمان انتخاب‌شده پیدا نشد.</value></data>
+  <data name="No documents to chart yet." xml:space="preserve"><value>هنوز مدرکی برای نمایش در نمودار نیست.</value></data>
+  <data name="Exec_NavTitle" xml:space="preserve"><value>داشبورد مدیریتی</value></data>
+  <data name="Exec_Title" xml:space="preserve"><value>داشبورد مدیریتی</value></data>
+  <data name="Exec_Subtitle" xml:space="preserve"><value>نمای زنده‌ی پرتفوی در مهندسی، فروشندگان، خرید و بهره‌برداری</value></data>
+  <data name="Exec_Updated" xml:space="preserve"><value>بروزرسانی {time}</value></data>
+  <data name="Exec_Project" xml:space="preserve"><value>پروژه</value></data>
+  <data name="Exec_AllProjects" xml:space="preserve"><value>همه‌ی پروژه‌ها</value></data>
+  <data name="Exec_Refresh" xml:space="preserve"><value>بروزرسانی</value></data>
+  <data name="Exec_Loading" xml:space="preserve"><value>در حال بارگذاری داشبورد…</value></data>
+  <data name="Exec_LoadError" xml:space="preserve"><value>داده‌های داشبورد بارگذاری نشد. دوباره بروزرسانی کنید.</value></data>
+  <data name="Exec_SectionsFailed" xml:space="preserve"><value>برخی بخش‌ها خوانده نشد ({sections})؛ بقیه نمایش داده می‌شود.</value></data>
+  <data name="Exec_NoData" xml:space="preserve"><value>هنوز داده‌ای نیست</value></data>
+  <data name="Exec_Documents" xml:space="preserve"><value>مدارک</value></data>
+  <data name="Exec_Items" xml:space="preserve"><value>آیتم‌ها</value></data>
+  <data name="Exec_Unassigned" xml:space="preserve"><value>بدون دیسیپلین</value></data>
+  <data name="Exec_NotApproved" xml:space="preserve"><value>تایید نشده</value></data>
+  <data name="Exec_OtherProjects" xml:space="preserve"><value>سایر پروژه‌ها ({count})</value></data>
+  <data name="Exec_KpiDocuments" xml:space="preserve"><value>مدارک مهندسی</value></data>
+  <data name="Exec_KpiDocumentsSub" xml:space="preserve"><value>پروژه‌ها: {projects}</value></data>
+  <data name="Exec_KpiApproved" xml:space="preserve"><value>تاییدشده / صادرشده</value></data>
+  <data name="Exec_KpiApprovedSub" xml:space="preserve"><value>{approved} از {total} مدرک</value></data>
+  <data name="Exec_KpiInReview" xml:space="preserve"><value>در بازبینی</value></data>
+  <data name="Exec_KpiInReviewSub" xml:space="preserve"><value>{draft} هنوز پیش‌نویس</value></data>
+  <data name="Exec_KpiRework" xml:space="preserve"><value>نیازمند اصلاح</value></data>
+  <data name="Exec_KpiReworkSub" xml:space="preserve"><value>{rejected} ردشده · {commented} بازگشته با کامنت</value></data>
+  <data name="Exec_KpiRevisions" xml:space="preserve"><value>رویژن‌ها</value></data>
+  <data name="Exec_KpiRevisionsSub" xml:space="preserve"><value>میانگین {avg} به‌ازای هر مدرک</value></data>
+  <data name="Exec_KpiProcurement" xml:space="preserve"><value>سفارش‌های خرید</value></data>
+  <data name="Exec_KpiProcurementSub" xml:space="preserve"><value>{mr} درخواست مواد باز</value></data>
+  <data name="Exec_KpiProcurementValue" xml:space="preserve"><value>{value} · {mr} MR باز</value></data>
+  <data name="Exec_KpiEquipment" xml:space="preserve"><value>فهرست تجهیزات</value></data>
+  <data name="Exec_KpiEquipmentSub" xml:space="preserve"><value>{open} دستور کار باز · {critical} بحرانی</value></data>
+  <data name="Exec_Bucket_Approved" xml:space="preserve"><value>تاییدشده</value></data>
+  <data name="Exec_Bucket_InReview" xml:space="preserve"><value>در بازبینی</value></data>
+  <data name="Exec_Bucket_Returned" xml:space="preserve"><value>ردشده / بازگشته</value></data>
+  <data name="Exec_Bucket_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="Exec_Bucket_Other" xml:space="preserve"><value>سایر</value></data>
+  <data name="Exec_StatusTitle" xml:space="preserve"><value>وضعیت مدارک</value></data>
+  <data name="Exec_StatusSub" xml:space="preserve"><value>{total} مدرک مهندسی</value></data>
+  <data name="Exec_TimelineTitle" xml:space="preserve"><value>روند صدور رویژن‌ها در طول زمان</value></data>
+  <data name="Exec_TimelineSub" xml:space="preserve"><value>{from} تا {to} · {total} رویژن صادرشده</value></data>
+  <data name="Exec_Cumulative" xml:space="preserve"><value>جمع تجمعی صدور</value></data>
+  <data name="Exec_IssuedInMonth" xml:space="preserve"><value>صادرشده در این ماه</value></data>
+  <data name="Exec_DisciplineTitle" xml:space="preserve"><value>پیشرفت به‌تفکیک دیسیپلین</value></data>
+  <data name="Exec_DisciplineSub" xml:space="preserve"><value>ده دیسیپلین بزرگ بر اساس تعداد مدرک</value></data>
+  <data name="Exec_ResponsesTitle" xml:space="preserve"><value>کدهای پاسخ کارفرما</value></data>
+  <data name="Exec_ResponsesSub" xml:space="preserve"><value>پرتکرارترین کدها در رجیستر</value></data>
+  <data name="Exec_ProjectsTitle" xml:space="preserve"><value>پروژه‌ها بر اساس مدارک</value></data>
+  <data name="Exec_ProjectsSub" xml:space="preserve"><value>بزرگ‌ترین پروژه‌ها و سهم تایید</value></data>
+  <data name="Exec_VdrTitle" xml:space="preserve"><value>مدارک فروشندگان (VDR)</value></data>
+  <data name="Exec_VdrSub" xml:space="preserve"><value>{total} آیتم · {submissions} ارسال</value></data>
+  <data name="Exec_Wf_Closed" xml:space="preserve"><value>بسته</value></data>
+  <data name="Exec_Wf_Submitted" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Exec_Wf_PendingResubmission" xml:space="preserve"><value>منتظر ارسال مجدد</value></data>
+  <data name="Exec_Wf_UnderReview" xml:space="preserve"><value>در حال بازبینی</value></data>
+  <data name="Exec_ProcurementTitle" xml:space="preserve"><value>خرید</value></data>
+  <data name="Exec_ProcurementSub" xml:space="preserve"><value>شمارش مراحل خرید و درخواست مواد به‌تفکیک وضعیت</value></data>
+  <data name="Exec_Packages" xml:space="preserve"><value>پکیج‌ها</value></data>
+  <data name="Exec_Tenders" xml:space="preserve"><value>مناقصه‌ها</value></data>
+  <data name="Exec_Contracts" xml:space="preserve"><value>قراردادها</value></data>
+  <data name="Exec_PurchaseOrders" xml:space="preserve"><value>سفارش‌های خرید</value></data>
+  <data name="Exec_Bids" xml:space="preserve"><value>پیشنهادها</value></data>
+  <data name="Exec_Ntps" xml:space="preserve"><value>ابلاغ شروع (NTP)</value></data>
+  <data name="Exec_Mr_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="Exec_Mr_Closed" xml:space="preserve"><value>بسته</value></data>
+  <data name="Exec_MaterialRequisitions" xml:space="preserve"><value>درخواست مواد</value></data>
+  <data name="Exec_AttentionTitle" xml:space="preserve"><value>نیازمند توجه مدیریت</value></data>
+  <data name="Exec_AttentionSub" xml:space="preserve"><value>به ترتیب شدت؛ هر مورد فهرست مربوطه را باز می‌کند</value></data>
+  <data name="Exec_AttentionNone" xml:space="preserve"><value>اکنون موردی نیازمند توجه نیست.</value></data>
+  <data name="Exec_Attn_EngRejected" xml:space="preserve"><value>مدارک ردشده در انتظار اصلاح</value></data>
+  <data name="Exec_Attn_EngReturned" xml:space="preserve"><value>مدارک بازگشته با کامنت کارفرما (CO/AC)</value></data>
+  <data name="Exec_Attn_EngOverdue" xml:space="preserve"><value>مدارک با تاریخ برنامه‌ریزی گذشته</value></data>
+  <data name="Exec_Attn_EngInReview" xml:space="preserve"><value>مدارک در حال بازبینی</value></data>
+  <data name="Exec_Attn_VdrOverdue" xml:space="preserve"><value>مدارک فروشنده با تاخیر</value></data>
+  <data name="Exec_Attn_VdrResubmission" xml:space="preserve"><value>مدارک فروشنده در انتظار ارسال مجدد</value></data>
+  <data name="Exec_Attn_LetterResponseOverdue" xml:space="preserve"><value>نامه‌های دارای مهلت پاسخ گذشته</value></data>
+  <data name="Exec_Attn_ReferralOverdue" xml:space="preserve"><value>ارجاعات با مهلت گذشته</value></data>
+  <data name="Exec_Attn_CriticalWorkOrders" xml:space="preserve"><value>دستور کارهای بحرانی</value></data>
+  <data name="Exec_Attn_MrDraft" xml:space="preserve"><value>درخواست‌های مواد هنوز پیش‌نویس</value></data>
+  <data name="Exec_PressureTitle" xml:space="preserve"><value>فشار رویژن</value></data>
+  <data name="Exec_PressureSub" xml:space="preserve"><value>مدارکی که بیشترین بار بازصادر شده‌اند</value></data>
+  <data name="Exec_QualityTitle" xml:space="preserve"><value>کامل بودن داده</value></data>
+  <data name="Exec_QualitySub" xml:space="preserve"><value>چه بخشی از رجیستر از هر شاخص پشتیبانی می‌کند</value></data>
+  <data name="Exec_QDiscipline" xml:space="preserve"><value>دیسیپلین دارد</value></data>
+  <data name="Exec_QIssued" xml:space="preserve"><value>رویژن صادرشده دارد</value></data>
+  <data name="Exec_QResponse" xml:space="preserve"><value>کد پاسخ کارفرما دارد</value></data>
+  <data name="Exec_QPlanned" xml:space="preserve"><value>تاریخ برنامه‌ریزی دارد</value></data>
+  <data name="Exec_QPlannedNote" xml:space="preserve"><value>هیچ مدرکی تاریخ برنامه‌ریزی ندارد؛ پس انحراف زمان‌بندی و تاخیر قابل اندازه‌گیری نیست. تاریخ برنامه را در MDR وارد کنید.</value></data>
+  <data name="Exec_OtherTitle" xml:space="preserve"><value>سایر شاخص‌ها</value></data>
+  <data name="Exec_Transmittals" xml:space="preserve"><value>ترنسمیتال‌های ارسال‌شده</value></data>
+  <data name="Exec_Letters" xml:space="preserve"><value>نامه‌ها</value></data>
+  <data name="Exec_ResponsesOverdue" xml:space="preserve"><value>پاسخ‌ها و ارجاعات معوق</value></data>
+  <data name="Exec_OpenWorkOrders" xml:space="preserve"><value>دستور کارهای باز</value></data>
+  <data name="Exec_VdrOverdue" xml:space="preserve"><value>مدارک فروشنده معوق</value></data>
+  <data name="Chart_NoData" xml:space="preserve"><value>برای این بازه داده‌ای نیست</value></data>
+  <data name="Chart_Other" xml:space="preserve"><value>سایر</value></data>
+  <data name="Ct_Folders" xml:space="preserve"><value>پوشه‌ها</value></data>
+  <data name="Ct_FolderActive" xml:space="preserve"><value>مکاتبات جاری</value></data>
+  <data name="Ct_FolderInbox" xml:space="preserve"><value>صندوق ورودی</value></data>
+  <data name="Ct_FolderShared" xml:space="preserve"><value>ارجاع‌شده به من</value></data>
+  <data name="Ct_FolderSent" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Ct_FolderDrafts" xml:space="preserve"><value>پیش‌نویس‌ها</value></data>
+  <data name="Ct_FolderStarred" xml:space="preserve"><value>ستاره‌دار</value></data>
+  <data name="Ct_FolderArchive" xml:space="preserve"><value>بایگانی من</value></data>
+  <data name="Ct_FolderTrash" xml:space="preserve"><value>سطل زباله</value></data>
+  <data name="Ct_FolderAll" xml:space="preserve"><value>همه پیام‌ها</value></data>
+  <data name="Ct_FolderDelegated" xml:space="preserve"><value>تفویض‌شده به من</value></data>
+  <data name="Ct_Workflow" xml:space="preserve"><value>گردش تأیید</value></data>
+  <data name="Ct_ToggleFolders" xml:space="preserve"><value>نمایش یا پنهان‌کردن پوشه‌ها</value></data>
+  <data name="Ct_ViewMode" xml:space="preserve"><value>نحوه نمایش فهرست</value></data>
+  <data name="Ct_ViewFlat" xml:space="preserve"><value>تخت</value></data>
+  <data name="Ct_ViewThread" xml:space="preserve"><value>رشته‌ای</value></data>
+  <data name="Ct_SortBy" xml:space="preserve"><value>مرتب‌سازی بر اساس</value></data>
+  <data name="Ct_Settings" xml:space="preserve"><value>تنظیمات</value></data>
+  <data name="Ct_ReportShort" xml:space="preserve"><value>گزارش‌ها</value></data>
+  <data name="Ct_ReportTitle" xml:space="preserve"><value>گزارش کارتابل و SLA</value></data>
+  <data name="Ct_DetailPane" xml:space="preserve"><value>جزئیات نامه</value></data>
+  <data name="Ct_OpenFull" xml:space="preserve"><value>باز کردن در صفحه کامل</value></data>
+  <data name="Ct_Status_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="Ct_Status_PendingApproval" xml:space="preserve"><value>در انتظار تأیید</value></data>
+  <data name="Ct_Status_ReturnedForRevision" xml:space="preserve"><value>عودت جهت اصلاح</value></data>
+  <data name="Ct_Status_Approved" xml:space="preserve"><value>تأییدشده</value></data>
+  <data name="Ct_Status_Issued" xml:space="preserve"><value>صادرشده</value></data>
+  <data name="Ct_Status_Closed" xml:space="preserve"><value>بسته‌شده</value></data>
+  <data name="Ct_Status_Sent" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Ct_Status_Archived" xml:space="preserve"><value>بایگانی‌شده</value></data>
+  <data name="Ct_Status_Rejected" xml:space="preserve"><value>ردشده</value></data>
+  <data name="Ct_Status_Registered" xml:space="preserve"><value>ثبت‌شده</value></data>
+  <data name="Ct_Status_UnderReview" xml:space="preserve"><value>در حال بررسی</value></data>
+  <data name="Ct_Status_Referred" xml:space="preserve"><value>ارجاع‌شده</value></data>
+  <data name="Ct_Status_Acknowledged" xml:space="preserve"><value>رؤیت‌شده</value></data>
+  <data name="Ct_Tags" xml:space="preserve"><value>برچسب‌ها</value></data>
+  <data name="Ct_Tag" xml:space="preserve"><value>برچسب</value></data>
+  <data name="Ct_ManageTags" xml:space="preserve"><value>مدیریت برچسب‌ها</value></data>
+  <data name="Ct_NoTagsYet" xml:space="preserve"><value>هنوز برچسبی ساخته نشده</value></data>
+  <data name="Ct_ToggleBranch" xml:space="preserve"><value>باز یا بسته‌کردن شاخه</value></data>
+  <data name="Ct_PersonalTag" xml:space="preserve"><value>شخصی</value></data>
+  <data name="Ct_OrgTag" xml:space="preserve"><value>سازمانی</value></data>
+  <data name="Ct_RootTag" xml:space="preserve"><value>— سطح اول —</value></data>
+  <data name="Ct_TagName" xml:space="preserve"><value>نام برچسب</value></data>
+  <data name="Ct_ParentTag" xml:space="preserve"><value>برچسب والد</value></data>
+  <data name="Ct_AddTag" xml:space="preserve"><value>افزودن برچسب</value></data>
+  <data name="Ct_ApplyTag" xml:space="preserve"><value>افزودن برچسب به انتخاب‌شده‌ها</value></data>
+  <data name="Ct_RemoveTag" xml:space="preserve"><value>برداشتن برچسب از انتخاب‌شده‌ها</value></data>
+  <data name="Ct_Colour" xml:space="preserve"><value>رنگ</value></data>
+  <data name="Ct_SortOrder" xml:space="preserve"><value>ترتیب</value></data>
+  <data name="Ct_Confidentiality" xml:space="preserve"><value>سطح محرمانگی</value></data>
+  <data name="Ct_MarkRead" xml:space="preserve"><value>علامت خوانده‌شده</value></data>
+  <data name="Ct_MarkUnread" xml:space="preserve"><value>علامت نخوانده</value></data>
+  <data name="Ct_ArchiveForMe" xml:space="preserve"><value>بایگانی برای من</value></data>
+  <data name="Ct_Unarchive" xml:space="preserve"><value>بازگرداندن از بایگانی</value></data>
+  <data name="Ct_MoveToTrash" xml:space="preserve"><value>انتقال به سطل زباله</value></data>
+  <data name="Ct_Restore" xml:space="preserve"><value>بازیابی</value></data>
+  <data name="Ct_PurgeForever" xml:space="preserve"><value>حذف دائم</value></data>
+  <data name="Ct_EmptyTrash" xml:space="preserve"><value>خالی‌کردن سطل</value></data>
+  <data name="Ct_ConfirmTrash" xml:space="preserve"><value>نامه‌های انتخاب‌شده به سطل زباله شما منتقل شوند؟ (خود نامه‌ها حذف نمی‌شوند.)</value></data>
+  <data name="Ct_ConfirmPurge" xml:space="preserve"><value>نامه‌های انتخاب‌شده برای همیشه از سطل شما حذف شوند؟ قابل بازیابی نخواهد بود. نامه‌ها برای دیگران در سیستم باقی می‌مانند.</value></data>
+  <data name="Ct_ConfirmEmptyTrash" xml:space="preserve"><value>همه‌ی نامه‌های سطل زباله برای همیشه حذف شوند؟</value></data>
+  <data name="Ct_ConfirmDelete" xml:space="preserve"><value>این مورد حذف شود؟</value></data>
+  <data name="Ct_TrashHint" xml:space="preserve"><value>نامه‌های این‌جا فقط برای شما پنهان شده‌اند. بازیابی آن‌ها را برمی‌گرداند و حذف دائم برای همیشه از دید شما پنهان‌شان می‌کند (خود نامه رسمی هرگز حذف نمی‌شود).</value></data>
+  <data name="Ct_TrashEmpty" xml:space="preserve"><value>سطل زباله خالی است</value></data>
+  <data name="Ct_TrashEmptyHint" xml:space="preserve"><value>نامه‌هایی که به سطل زباله می‌فرستید این‌جا نمایش داده می‌شوند.</value></data>
+  <data name="Ct_KeyTrash" xml:space="preserve"><value>انتقال به سطل زباله</value></data>
+  <data name="Ct_ReturnedChip" xml:space="preserve"><value>عودت جهت اصلاح</value></data>
+  <data name="Ct_RevivedChip" xml:space="preserve"><value>احیاشده از بایگانی</value></data>
+  <data name="Ct_ThreadMembers" xml:space="preserve"><value>نمایش گفتگو</value></data>
+  <data name="Ct_ThreadMessages" xml:space="preserve"><value>پیام در گفتگو</value></data>
+  <data name="Ct_AddReminder" xml:space="preserve"><value>افزودن یادآور</value></data>
+  <data name="Ct_RemindAt" xml:space="preserve"><value>یادآوری در</value></data>
+  <data name="Ct_Note" xml:space="preserve"><value>یادداشت</value></data>
+  <data name="Ct_ReminderAdded" xml:space="preserve"><value>یادآور ثبت شد</value></data>
+  <data name="Ct_PickDate" xml:space="preserve"><value>تاریخ و ساعت را انتخاب کنید</value></data>
+  <data name="Ct_SetGeneral" xml:space="preserve"><value>عمومی</value></data>
+  <data name="Ct_SetGeneralHint" xml:space="preserve"><value>ترجیحات نمایشی شخصی. این تنظیمات هرگز دسترسی شما به نامه‌ها را تغییر نمی‌دهد.</value></data>
+  <data name="Ct_SetColumns" xml:space="preserve"><value>ستون‌ها</value></data>
+  <data name="Ct_SetColumnsHint" xml:space="preserve"><value>ستون‌های نمایان را انتخاب کنید و ستون‌های ابتدایی را هنگام پیمایش افقی ثابت نگه دارید.</value></data>
+  <data name="Ct_SetDelegation" xml:space="preserve"><value>تفویض اختیار</value></data>
+  <data name="Ct_SetRules" xml:space="preserve"><value>قوانین مسیریابی خودکار</value></data>
+  <data name="Ct_SetContacts" xml:space="preserve"><value>مخاطبین و گروه‌ها</value></data>
+  <data name="Ct_SetReminders" xml:space="preserve"><value>یادآورها</value></data>
+  <data name="Ct_DefaultView" xml:space="preserve"><value>نمای پیش‌فرض فهرست</value></data>
+  <data name="Ct_Density" xml:space="preserve"><value>تراکم ردیف‌ها</value></data>
+  <data name="Ct_DensityNormal" xml:space="preserve"><value>معمولی</value></data>
+  <data name="Ct_PageSize" xml:space="preserve"><value>تعداد ردیف در صفحه</value></data>
+  <data name="Ct_SetPreview" xml:space="preserve"><value>باز کردن نامه در پنل کناری به‌جای ترک فهرست</value></data>
+  <data name="Ct_SetConfirmTrash" xml:space="preserve"><value>قبل از انتقال به سطل زباله تأیید بگیر</value></data>
+  <data name="Ct_SetMarkRead" xml:space="preserve"><value>با باز کردن نامه آن را خوانده‌شده کن</value></data>
+  <data name="Ct_FrozenColumns" xml:space="preserve"><value>ستون‌های ثابت</value></data>
+  <data name="Ct_None" xml:space="preserve"><value>هیچ</value></data>
+  <data name="Ct_Saved" xml:space="preserve"><value>ذخیره شد</value></data>
+  <data name="Ct_RequestFailed" xml:space="preserve"><value>درخواست ناموفق بود. دوباره تلاش کنید.</value></data>
+  <data name="Ct_NoItems" xml:space="preserve"><value>هنوز موردی وجود ندارد</value></data>
+  <data name="Ct_Edit" xml:space="preserve"><value>ویرایش</value></data>
+  <data name="Ct_Remove" xml:space="preserve"><value>حذف</value></data>
+  <data name="Ct_Enabled" xml:space="preserve"><value>فعال</value></data>
+  <data name="Ct_Done" xml:space="preserve"><value>انجام شد</value></data>
+  <data name="Ct_Due" xml:space="preserve"><value>سررسیده</value></data>
+  <data name="Ct_Employee" xml:space="preserve"><value>کارمند</value></data>
+  <data name="Ct_Party" xml:space="preserve"><value>طرف‌حساب خارجی</value></data>
+  <data name="Ct_ScopePersonal" xml:space="preserve"><value>شخصی</value></data>
+  <data name="Ct_ScopeOrg" xml:space="preserve"><value>سازمانی (برای همه)</value></data>
+  <data name="Ct_DelegationsGiven" xml:space="preserve"><value>تفویض‌هایی که داده‌ام</value></data>
+  <data name="Ct_DelegationsReceived" xml:space="preserve"><value>تفویض‌هایی که به من داده شده</value></data>
+  <data name="Ct_DelegateTo" xml:space="preserve"><value>تفویض کارتابل من به</value></data>
+  <data name="Ct_CreateDelegation" xml:space="preserve"><value>تفویض (فقط مشاهده)</value></data>
+  <data name="Ct_ActiveNow" xml:space="preserve"><value>هم‌اکنون فعال</value></data>
+  <data name="Ct_Revoke" xml:space="preserve"><value>لغو</value></data>
+  <data name="Ct_Revoked" xml:space="preserve"><value>لغوشده</value></data>
+  <data name="Ct_RelManager" xml:space="preserve"><value>مافوق</value></data>
+  <data name="Ct_RelSubordinate" xml:space="preserve"><value>زیردست</value></data>
+  <data name="Ct_RelPeer" xml:space="preserve"><value>هم‌تراز</value></data>
+  <data name="Ct_RelOther" xml:space="preserve"><value>سایر</value></data>
+  <data name="Ct_RuleName" xml:space="preserve"><value>نام قانون</value></data>
+  <data name="Ct_RuleIf" xml:space="preserve"><value>اگر نامه با این شرط‌ها بخواند</value></data>
+  <data name="Ct_RuleThen" xml:space="preserve"><value>آنگاه</value></data>
+  <data name="Ct_SenderContains" xml:space="preserve"><value>فرستنده شامل</value></data>
+  <data name="Ct_SubjectContains" xml:space="preserve"><value>موضوع شامل</value></data>
+  <data name="Ct_RuleApplyTag" xml:space="preserve"><value>برچسب بزن</value></data>
+  <data name="Ct_RuleStar" xml:space="preserve"><value>ستاره بزن</value></data>
+  <data name="Ct_RuleReferTo" xml:space="preserve"><value>ارجاع به</value></data>
+  <data name="Ct_RuleReferNote" xml:space="preserve"><value>دستورالعمل ارجاع</value></data>
+  <data name="Ct_RuleMatches" xml:space="preserve"><value>تعداد تطبیق</value></data>
+  <data name="Ct_AddRule" xml:space="preserve"><value>افزودن قانون</value></data>
+  <data name="Ct_SubordinatesOnly" xml:space="preserve"><value>فقط زیردستان شما در چارت سازمانی</value></data>
+  <data name="Ct_GroupName" xml:space="preserve"><value>نام گروه</value></data>
+  <data name="Ct_Members" xml:space="preserve"><value>اعضا</value></data>
+  <data name="Ct_AddGroup" xml:space="preserve"><value>افزودن گروه</value></data>
+  <data name="Ct_SearchContacts" xml:space="preserve"><value>جستجوی کارمندان و طرف‌حساب‌ها</value></data>
+  <data name="Ct_HistoryOrder" xml:space="preserve"><value>ترتیب</value></data>
+  <data name="Ct_HistoryOldest" xml:space="preserve"><value>قدیمی‌ترین اول</value></data>
+  <data name="Ct_HistoryNewest" xml:space="preserve"><value>جدیدترین اول</value></data>
+  <data name="Ct_HistoryWho" xml:space="preserve"><value>اقدام‌کننده</value></data>
+  <data name="Ct_HistoryAll" xml:space="preserve"><value>همه</value></data>
+  <data name="Ct_HistoryMe" xml:space="preserve"><value>من</value></data>
+  <data name="Ct_HistoryManager" xml:space="preserve"><value>مدیر من</value></data>
+  <data name="Ct_HistorySubordinates" xml:space="preserve"><value>زیردستان من</value></data>
+  <data name="Ct_ReportPersonal" xml:space="preserve"><value>کارتابل من</value></data>
+  <data name="Ct_Received" xml:space="preserve"><value>دریافت‌شده</value></data>
+  <data name="Ct_Unread" xml:space="preserve"><value>نخوانده</value></data>
+  <data name="Ct_OpenReferrals" xml:space="preserve"><value>ارجاع‌های باز</value></data>
+  <data name="Ct_OverdueReferrals" xml:space="preserve"><value>ارجاع‌های معوق</value></data>
+  <data name="Ct_CompletedReferrals" xml:space="preserve"><value>ارجاع‌های انجام‌شده</value></data>
+  <data name="Ct_AvgReferralDays" xml:space="preserve"><value>میانگین زمان ارجاع (روز)</value></data>
+  <data name="Ct_AvgResponseDays" xml:space="preserve"><value>میانگین زمان پاسخ (روز)</value></data>
+  <data name="Ct_SlaTitle" xml:space="preserve"><value>SLA پاسخ‌گویی</value></data>
+  <data name="Ct_SlaHint" xml:space="preserve"><value>نامه‌هایی که پاسخ خواسته‌اند: پاسخ به‌موقع، پاسخ دیرهنگام، بی‌پاسخ و سررسیده‌گذشته، بی‌پاسخ ولی در مهلت.</value></data>
+  <data name="Ct_SlaOnTime" xml:space="preserve"><value>پاسخ به‌موقع</value></data>
+  <data name="Ct_SlaLate" xml:space="preserve"><value>پاسخ دیرهنگام</value></data>
+  <data name="Ct_SlaOpenOverdue" xml:space="preserve"><value>بی‌پاسخ و معوق</value></data>
+  <data name="Ct_SlaOpenWithin" xml:space="preserve"><value>بی‌پاسخ در مهلت</value></data>
+  <data name="Ct_SlaOnTimePercent" xml:space="preserve"><value>درصد به‌موقع</value></data>
+  <data name="Ct_SlaRequired" xml:space="preserve"><value>نیازمند پاسخ</value></data>
+  <data name="Ct_ByMonth" xml:space="preserve"><value>دریافتی به تفکیک ماه</value></data>
+  <data name="Ct_ByDiscipline" xml:space="preserve"><value>دریافتی به تفکیک دیسیپلین</value></data>
+  <data name="Ct_SubordinatesTitle" xml:space="preserve"><value>عملکرد زیردستان</value></data>
+  <data name="Ct_SubordinatesHint" xml:space="preserve"><value>بر پایه‌ی چارت سازمانی (زیردستان مستقیم و غیرمستقیم). فقط شمارش است؛ نامه‌هایی که اجازه‌ی دیدنشان را ندارید شمرده نمی‌شوند.</value></data>
+  <data name="Cart_Err_NoEmployee" xml:space="preserve"><value>حساب کاربری شما به پرونده‌ی کارمندی متصل نیست.</value></data>
+  <data name="Cart_Err_NothingToDo" xml:space="preserve"><value>برای نامه‌های انتخاب‌شده تغییری لازم نیست.</value></data>
+  <data name="Tag_Err_SelfParent" xml:space="preserve"><value>یک برچسب نمی‌تواند والد خودش باشد.</value></data>
+  <data name="Tag_Err_Cycle" xml:space="preserve"><value>برچسب را نمی‌توان زیر یکی از زیرمجموعه‌های خودش برد.</value></data>
+  <data name="Tag_Err_TooDeep" xml:space="preserve"><value>درخت برچسب حداکثر چهار سطح دارد.</value></data>
+  <data name="Tag_Err_ParentMissing" xml:space="preserve"><value>برچسب والد وجود ندارد یا غیرفعال است.</value></data>
+  <data name="Tag_Err_ScopeMismatch" xml:space="preserve"><value>برچسب سازمانی را نمی‌توان زیر برچسب شخصی گذاشت و برچسب شخصی را نمی‌توان زیر برچسب شخصیِ دیگری گذاشت.</value></data>
+  <data name="Tag_Err_Name" xml:space="preserve"><value>نام برچسب را وارد کنید (حداکثر ۱۰۰ نویسه).</value></data>
+  <data name="Tag_Err_NoPermission" xml:space="preserve"><value>اجازه‌ی تغییر این برچسب را ندارید.</value></data>
+  <data name="Tag_Err_Duplicate" xml:space="preserve"><value>برچسبی با این نام در همین جایگاه وجود دارد.</value></data>
+  <data name="Tag_Err_NotFound" xml:space="preserve"><value>برچسب پیدا نشد.</value></data>
+  <data name="Tag_Err_HasChildren" xml:space="preserve"><value>ابتدا زیرمجموعه‌های برچسب را حذف یا منتقل کنید.</value></data>
+  <data name="Del_Err_Self" xml:space="preserve"><value>نمی‌توانید به خودتان تفویض کنید.</value></data>
+  <data name="Del_Err_Dates" xml:space="preserve"><value>تاریخ پایان قبل از تاریخ شروع است.</value></data>
+  <data name="Del_Err_Past" xml:space="preserve"><value>بازه‌ی تفویض از قبل تمام شده است.</value></data>
+  <data name="Del_Err_TooLong" xml:space="preserve"><value>یک تفویض حداکثر ۱۸۰ روز می‌تواند باشد.</value></data>
+  <data name="Del_Err_Overlap" xml:space="preserve"><value>در بازه‌ی هم‌پوشان قبلاً به همین فرد تفویض داده‌اید.</value></data>
+  <data name="Del_Err_Circular" xml:space="preserve"><value>آن فرد در بازه‌ی هم‌پوشان به شما تفویض داده است.</value></data>
+  <data name="Del_Err_DelegateInvalid" xml:space="preserve"><value>فرد انتخاب‌شده کارمند فعال دارای حساب کاربری نیست.</value></data>
+  <data name="Del_Err_NotFound" xml:space="preserve"><value>تفویض پیدا نشد.</value></data>
+  <data name="Rule_Err_Name" xml:space="preserve"><value>نام قانون را وارد کنید.</value></data>
+  <data name="Rule_Err_NoCondition" xml:space="preserve"><value>حداقل یک شرط تعیین کنید؛ قانون بدون شرط روی همه‌ی نامه‌ها اجرا می‌شد.</value></data>
+  <data name="Rule_Err_NoAction" xml:space="preserve"><value>حداقل یک اقدام انتخاب کنید.</value></data>
+  <data name="Rule_Err_Tag" xml:space="preserve"><value>برچسب انتخاب‌شده برای شما در دسترس نیست.</value></data>
+  <data name="Rule_Err_NotSubordinate" xml:space="preserve"><value>ارجاع خودکار فقط به زیردستان شما در چارت سازمانی مجاز است.</value></data>
+  <data name="Rule_Err_NotFound" xml:space="preserve"><value>قانون پیدا نشد.</value></data>
+  <data name="Rule_Err_TooMany" xml:space="preserve"><value>حداکثر ۳۰ قانون می‌توانید داشته باشید.</value></data>
+  <data name="Grp_Err_Name" xml:space="preserve"><value>نام گروه را وارد کنید (حداکثر ۱۲۰ نویسه).</value></data>
+  <data name="Grp_Err_Empty" xml:space="preserve"><value>حداقل یک عضو اضافه کنید.</value></data>
+  <data name="Grp_Err_TooMany" xml:space="preserve"><value>یک گروه حداکثر ۲۰۰ عضو دارد.</value></data>
+  <data name="Grp_Err_TooManyGroups" xml:space="preserve"><value>حداکثر ۵۰ گروه شخصی می‌توانید داشته باشید.</value></data>
+  <data name="Grp_Err_InvalidMember" xml:space="preserve"><value>یکی از اعضای انتخاب‌شده فعال نیست یا وجود ندارد.</value></data>
+  <data name="Grp_Err_NoPermission" xml:space="preserve"><value>اجازه‌ی تغییر این گروه را ندارید.</value></data>
+  <data name="Grp_Err_NotFound" xml:space="preserve"><value>گروه پیدا نشد.</value></data>
+  <data name="Grp_Err_Duplicate" xml:space="preserve"><value>گروهی با این نام وجود دارد.</value></data>
+  <data name="Rem_Err_Past" xml:space="preserve"><value>زمانی در آینده انتخاب کنید.</value></data>
+  <data name="Rem_Err_TooFar" xml:space="preserve"><value>یادآور حداکثر دو سال آینده می‌تواند باشد.</value></data>
+  <data name="Rem_Err_NoLetter" xml:space="preserve"><value>نامه پیدا نشد یا اجازه‌ی دیدن آن را ندارید.</value></data>
+  <data name="Rem_Err_TooMany" xml:space="preserve"><value>حداکثر ۲۰۰ یادآور باز می‌توانید داشته باشید.</value></data>
+  <data name="Rem_Err_NotFound" xml:space="preserve"><value>یادآور پیدا نشد.</value></data>
+  <data name="Ct_St_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="Ct_St_PendingApproval" xml:space="preserve"><value>در انتظار تأیید</value></data>
+  <data name="Ct_St_ReturnedForRevision" xml:space="preserve"><value>عودت جهت اصلاح</value></data>
+  <data name="Ct_St_Approved" xml:space="preserve"><value>تأییدشده</value></data>
+  <data name="Ct_St_Issued" xml:space="preserve"><value>صادرشده</value></data>
+  <data name="Ct_St_Closed" xml:space="preserve"><value>بسته‌شده</value></data>
+  <data name="Ct_St_Sent" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Ct_St_Archived" xml:space="preserve"><value>بایگانی‌شده</value></data>
+  <data name="Ct_St_Rejected" xml:space="preserve"><value>ردشده</value></data>
+  <data name="Ct_St_Registered" xml:space="preserve"><value>ثبت‌شده</value></data>
+  <data name="Ct_St_UnderReview" xml:space="preserve"><value>در حال بررسی</value></data>
+  <data name="Ct_St_Referred" xml:space="preserve"><value>ارجاع‌شده</value></data>
+  <data name="Ct_St_Acknowledged" xml:space="preserve"><value>رؤیت‌شده</value></data>
+  <data name="Ct_AddFromGroup" xml:space="preserve"><value>افزودن گروه</value></data>
+  <data name="Ct_GroupAdded" xml:space="preserve"><value>{0} نفر از گروه اضافه شدند</value></data>
+  <data name="Ct_NoGroups" xml:space="preserve"><value>هنوز گروه مخاطبی ندارید (تنظیمات ← مخاطبین و گروه‌ها).</value></data>
+  <data name="Ct_TitleReferral" xml:space="preserve"><value>ارجاع نامه</value></data>
+  <data name="Ct_ReferringTo" xml:space="preserve"><value>ارجاع نامه</value></data>
+  <data name="Ct_SwitchToReply" xml:space="preserve"><value>پاسخ دادن به‌جای ارجاع</value></data>
+  <data name="Ct_SwitchToReferral" xml:space="preserve"><value>ارجاع دادن به‌جای پاسخ</value></data>
+  <data name="Ct_SubjectLocked" xml:space="preserve"><value>موضوع همان موضوع نامه‌ی اصلی است و قابل تغییر نیست. این نامه فقط برچسب «ارجاع» می‌گیرد.</value></data>
+  <data name="Ct_ReferralInstruction" xml:space="preserve"><value>دستورالعمل ارجاع</value></data>
+  <data name="Ct_ReferralInstructionHelp" xml:space="preserve"><value>بنویسید گیرندگان چه اقدامی انجام دهند. نامه‌ی اصلی در پایین نقل شده است.</value></data>
+  <data name="Ct_ReferralDeadline" xml:space="preserve"><value>مهلت اقدام</value></data>
+  <data name="Ct_ReferralDeadlineSet" xml:space="preserve"><value>برای اقدام مهلت تعیین شود</value></data>
+  <data name="Ct_SendReferral" xml:space="preserve"><value>ارسال ارجاع</value></data>
+  <data name="Ct_Reply" xml:space="preserve"><value>پاسخ</value></data>
+  <data name="Ct_Refer" xml:space="preserve"><value>ارجاع</value></data>
+  <data name="Ct_ReferToPerson" xml:space="preserve"><value>ارجاع به شخص دیگر</value></data>
+  <data name="Ct_ReferToPersonHint" xml:space="preserve"><value>نامه‌ی جدیدی با همان موضوع باز می‌شود که فقط برچسب «ارجاع» می‌گیرد.</value></data>
+  <data name="Ct_ReferToDepartment" xml:space="preserve"><value>ارجاع به یک دپارتمان (فرم سریع)</value></data>
+  <data name="Ct_ChooseDepartment" xml:space="preserve"><value>-- دپارتمان --</value></data>
+  <data name="Ct_ConversationTitle" xml:space="preserve"><value>گردش پیام‌ها</value></data>
+  <data name="Ct_ExpandAll" xml:space="preserve"><value>باز کردن همه</value></data>
+  <data name="Ct_CollapseAll" xml:space="preserve"><value>بستن همه</value></data>
+  <data name="Ct_ThisLetter" xml:space="preserve"><value>همین نامه</value></data>
+  <data name="Ct_Kind_Original" xml:space="preserve"><value>نامه‌ی اصلی</value></data>
+  <data name="Ct_Kind_Reply" xml:space="preserve"><value>پاسخ</value></data>
+  <data name="Ct_Kind_Referral" xml:space="preserve"><value>ارجاع</value></data>
+  <data name="Ct_NoSelection" xml:space="preserve"><value>برای اقدام، نامه‌ها را انتخاب کنید</value></data>
+  <data name="Ct_ApproverManagers" xml:space="preserve"><value>مافوق‌های شما (چارت سازمانی)</value></data>
+  <data name="Ct_ApproverEligible" xml:space="preserve"><value>دارندگان مجوز تایید</value></data>
+  <data name="Ct_ApproverOthers" xml:space="preserve"><value>سایر کارکنان</value></data>
+  <data name="Lc_Err_ReferralNeedsParent" xml:space="preserve"><value>ارجاع باید از روی یک نامه‌ی موجود انجام شود.</value></data>
 </root>

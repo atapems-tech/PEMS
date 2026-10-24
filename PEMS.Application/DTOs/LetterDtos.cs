@@ -65,6 +65,16 @@ public class LetterDto
 
     public int? RegisteredById { get; set; }
 
+    // کارتابل: رشته‌ی گفتگو و وضعیت شخصی بیننده (سطل/آرشیو/یادآور) - همه مشتق‌شده یا شخصی، نه تغییر خود نامه
+    public int? ParentLetterId { get; set; }
+    public int ThreadRootId { get; set; }
+    public int ThreadCount { get; set; } = 1;
+    public bool IsTrashed { get; set; }
+    public bool IsArchivedByMe { get; set; }
+    // بعد از آرشیو شخصی، فعالیت تازه‌ای روی نامه ثبت شده است
+    public bool IsRevived { get; set; }
+    public DateTime? MyReminderAt { get; set; }
+
     public string? ReturnedByName { get; set; }
     public DateTime? ReturnedDate { get; set; }
     public string? ReturnReason { get; set; }
@@ -192,8 +202,19 @@ public class LetterAdvancedFilter
     // جستجوی یکجا در شماره، موضوع، فرستنده و گیرنده
     public string? Query { get; set; }
 
+    // کارتابل: پوشه‌ی شخصی (LetterFolders)، برچسب (با زیرمجموعه‌ها)، سطح محرمانگی، فقط ریشه‌ی هر رشته، و ترتیب نمایش
+    public string? Folder { get; set; }
+    public int? TagId { get; set; }
+    public string? Confidentiality { get; set; }
+    public bool ThreadRootsOnly { get; set; }
+    // date | subject | number | status | priority | sender | received (پیش‌فرض date)
+    public string? SortBy { get; set; }
+    public bool SortDescending { get; set; } = true;
+
     public bool IsEmpty => string.IsNullOrWhiteSpace(Priority) && !HasAttachments.HasValue
-        && !HasReferrals.HasValue && !OverdueReferralOnly && !OverdueResponseOnly && !UnreadOnly && string.IsNullOrWhiteSpace(Query);
+        && !HasReferrals.HasValue && !OverdueReferralOnly && !OverdueResponseOnly && !UnreadOnly && string.IsNullOrWhiteSpace(Query)
+        && string.IsNullOrWhiteSpace(Folder) && !TagId.HasValue && string.IsNullOrWhiteSpace(Confidentiality) && !ThreadRootsOnly
+        && string.IsNullOrWhiteSpace(SortBy);
 }
 
 /// <summary>شمارنده‌ی تب‌های پوشه (فقط نامه‌هایی که بیننده اجازه‌ی دیدنشان را دارد).</summary>
