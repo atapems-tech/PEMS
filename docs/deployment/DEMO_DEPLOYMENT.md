@@ -33,7 +33,9 @@ Secrets: `DEMO_FTP_HOST`, `DEMO_FTP_USER`, `DEMO_FTP_PASSWORD`, `DEMO_FTP_DIR` (
    `app_offline.htm` first (the ASP.NET Core Module stops the app and releases the files), syncs the files, then deletes `app_offline.htm`
    (only after a successful upload; a failed upload leaves the demo showing the "being updated" page instead of a half-updated app).
    If a deploy ever fails and the page stays offline, delete `app_offline.htm` in Plesk > Files, or re-run the workflow.
-4. **Upload time:** the first upload is ~280 MB over plain FTP; later runs send only changed files. The step now has a 60-minute limit.
+4. **Run 4 - FTP `Timeout (control socket)`:** the host sometimes needs more than the action's 30 s default to accept the FTP control connection (the same
+   happened once in FileZilla). The upload now uses a 180 s timeout and one automatic retry.
+5. **Upload time:** the first upload is ~280 MB over plain FTP; later runs send only changed files. The step now has a 60-minute limit.
 
 ## Checking by hand
 

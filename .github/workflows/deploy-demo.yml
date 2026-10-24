@@ -110,7 +110,10 @@ jobs:
           echo "app_offline.htm uploaded; waiting for IIS to stop the app"
           sleep 25
 
+      # The host is slow to accept FTP connections intermittently (control-socket timeouts), so the upload gets a long timeout and one retry.
       - name: Deploy via FTP
+        id: ftp1
+        continue-on-error: true
         timeout-minutes: 60
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -121,6 +124,21 @@ jobs:
           port: ${{ secrets.DEMO_FTP_PORT || 21 }}
           local-dir: ./publish/
           server-dir: ${{ secrets.DEMO_FTP_DIR }}
+          timeout: 180000
+
+      - name: Deploy via FTP (retry)
+        if: steps.ftp1.outcome == 'failure'
+        timeout-minutes: 60
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.DEMO_FTP_HOST }}
+          username: ${{ secrets.DEMO_FTP_USER }}
+          password: ${{ secrets.DEMO_FTP_PASSWORD }}
+          protocol: ${{ secrets.DEMO_FTP_PROTOCOL || 'ftps' }}
+          port: ${{ secrets.DEMO_FTP_PORT || 21 }}
+          local-dir: ./publish/
+          server-dir: ${{ secrets.DEMO_FTP_DIR }}
+          timeout: 180000
 
       - name: Bring the demo app back online
         if: success()
