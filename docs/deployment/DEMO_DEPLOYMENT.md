@@ -28,7 +28,12 @@ Secrets: `DEMO_FTP_HOST`, `DEMO_FTP_USER`, `DEMO_FTP_PASSWORD`, `DEMO_FTP_DIR` (
      **Action:** after the next deploy read those two files in Plesk > Files > `logs`. The usual causes, in order: the database is not reachable from the web host with
      the connection string in `DEMO_SQL_CONNECTION_STRING` (the host shows `10.45.12.3`; use `Server=10.45.12.3` without `:0`, try `,1433`); the ASP.NET Core Module is not
      installed or the app pool is stopped (HTTP 500.19/502.5 in the log); SQL Full-Text is not installed (only warns).
-3. **Upload time:** the first upload is ~280 MB over plain FTP; later runs send only changed files. The step now has a 60-minute limit.
+3. **Run 3 - FTP upload failed: `550 The process cannot access the file because it is being used by another process`.** The first deploy
+   worked because nothing was running; once the app runs, IIS keeps `PEMS.AI.dll` and the other assemblies locked. Fixed: the pipeline uploads
+   `app_offline.htm` first (the ASP.NET Core Module stops the app and releases the files), syncs the files, then deletes `app_offline.htm`
+   (only after a successful upload; a failed upload leaves the demo showing the "being updated" page instead of a half-updated app).
+   If a deploy ever fails and the page stays offline, delete `app_offline.htm` in Plesk > Files, or re-run the workflow.
+4. **Upload time:** the first upload is ~280 MB over plain FTP; later runs send only changed files. The step now has a 60-minute limit.
 
 ## Checking by hand
 
