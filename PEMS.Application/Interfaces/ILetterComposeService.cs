@@ -20,6 +20,12 @@ public interface ILetterComposeService
     // مقدار اولیه‌ی فرم پاسخ از نامه‌ی اصلی (گیرنده، موضوع «Re:»، دسته، اولویت، محرمانگی، پروژه...)؛ null اگر نامه‌ی اصلی نیست. دسترسی را فراخوان بررسی می‌کند
     Task<LetterComposeInput?> BuildReplyInputAsync(int parentLetterId, LetterComposeActor actor);
 
+    /// <summary>
+    /// ارجاع نامه به شخص دیگر در قالب یک نامه‌ی داخلی تازه: موضوع همان موضوع نامه‌ی اصلی (ثابت)، متن = دستورالعمل ارجاع + نقل نامه‌ی اصلی،
+    /// بدون تایید و دسته‌بندی؛ فقط برچسب «ارجاع» می‌گیرد. گیرنده‌ها را کاربر انتخاب می‌کند.
+    /// </summary>
+    Task<LetterComposeInput?> BuildReferralInputAsync(int parentLetterId, LetterComposeActor actor);
+
     Task<LetterSenderBlockDto> GetSenderBlockAsync(int userId);
 
     // جستجوی دایرکتوری کارکنان فعال (کش‌شده؛ فیلتر در حافظه)
@@ -32,7 +38,12 @@ public interface ILetterComposeService
     Task<RecipientResolveResult> ResolveRecipientsAsync(string? text, int max = 500);
 
     // کاربرانی که مجوز Approve ماژول مکاتبات را دارند (برای ساخت زنجیره‌ی تایید)
-    Task<List<ApproverOptionDto>> GetApproverOptionsAsync();
+    /// <summary>
+    /// فهرست قابل‌انتخاب برای زنجیره‌ی تایید: همه‌ی کارکنان فعال دارای حساب کاربری (به‌علاوه‌ی دارندگان مجوز تایید که کارمند نیستند).
+    /// ترتیب: مافوق‌های نویسنده در چارت سازمانی (نزدیک‌ترین اول) ← دارندگان مجوز تایید ← سایرین. خودِ نویسنده هرگز در فهرست نیست.
+    /// تاییدکننده‌ی تعیین‌شده در زنجیره، برای همان مرحله اختیار تایید/برگشت/رد دارد (بدون نیاز به نقش جدا).
+    /// </summary>
+    Task<List<ApproverOptionDto>> GetApproverOptionsAsync(int? authorUserId = null);
 
     Task<List<LetterVersionDto>> GetVersionsAsync(int letterId);
 

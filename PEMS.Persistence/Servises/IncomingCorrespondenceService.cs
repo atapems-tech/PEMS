@@ -24,15 +24,17 @@ public class IncomingCorrespondenceService : IIncomingCorrespondenceService
     private readonly IFileStorageService _storage;
     private readonly IKnowledgeBaseService _knowledgeBase;
     private readonly INotificationService? _notifications;
+    private readonly ILetterRoutingRuleService? _routingRules;
 
     public IncomingCorrespondenceService(PEMSDbContext context, ILetterNumberingService numbering, IFileStorageService storage,
-        IKnowledgeBaseService knowledgeBase, INotificationService? notifications = null)
+        IKnowledgeBaseService knowledgeBase, INotificationService? notifications = null, ILetterRoutingRuleService? routingRules = null)
     {
         _context = context;
         _numbering = numbering;
         _storage = storage;
         _knowledgeBase = knowledgeBase;
         _notifications = notifications;
+        _routingRules = routingRules;
     }
 
     // ------------------------------------------------------------------ ثبت
@@ -247,6 +249,8 @@ public class IncomingCorrespondenceService : IIncomingCorrespondenceService
         }
 
         await NotifyAsync(letter, owner, ccIds);
+        // قوانین مسیریابی خودکارِ گیرنده/ارجاع‌گیرنده‌ی نامه‌ی وارده؛ هرگز ثبت را نمی‌شکند
+        if (_routingRules != null) await _routingRules.ApplyToArrivedLetterAsync(letter.LetterId);
         await IndexAsync(letter);
 
         return new IncomingRegistrationResult { Success = true, LetterId = letter.LetterId, LetterNumber = letter.LetterNumber };

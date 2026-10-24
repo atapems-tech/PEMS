@@ -8,6 +8,7 @@
     var input = Model.Input;
     var isOutgoing = input.LetterType == "Outgoing";
     var isNew = !input.LetterId.HasValue;
+    var isReferral = Model.IsReferral;
     var inputDate = input.LetterDate.ToString("yyyy-MM-dd");
     var dueDate = input.ResponseDueDate?.ToString("yyyy-MM-dd") ?? "";
     var boot = new
@@ -15,6 +16,7 @@
         letterId = input.LetterId,
         parentLetterId = input.ParentLetterId,
         letterType = input.LetterType,
+        isReferral,
         rowVersion = input.RowVersion == null ? null : Convert.ToBase64String(input.RowVersion),
         isOutgoing,
         maxSubject = LetterComposeRules.MaxSubjectLength,
@@ -37,7 +39,8 @@
             resolve = Url.Action("ResolveRecipients", "LetterCompose"),
             upload = Url.Action("UploadAttachment", "LetterCompose"),
             removeAttachment = Url.Action("RemoveAttachment", "LetterCompose"),
-            compose = Url.Action("Compose", "LetterCompose")
+            compose = Url.Action("Compose", "LetterCompose"),
+            groups = Url.Action("Groups", "LetterCartable")
         },
         t = new Dictionary<string, string>
         {
@@ -51,7 +54,7 @@
             ["confirmSend"] = Localizer["Lc_ConfirmSend"].Value, ["errorsTitle"] = Localizer["Lc_ErrorsTitle"].Value, ["warningsTitle"] = Localizer["Lc_WarningsTitle"].Value,
             ["manyRecipients"] = Localizer["Lc_Warn_ManyRecipients"].Value, ["externalWarn"] = Localizer["Lc_Warn_ExternalRecipient"].Value,
             ["previewFailed"] = Localizer["Lc_PreviewFailed"].Value, ["addApprover"] = Localizer["Lc_AddApprover"].Value, ["subjectRequired"] = Localizer["Lc_Err_SubjectRequired"].Value,
-            ["loading"] = Localizer["Lc_Loading"].Value
+            ["loading"] = Localizer["Lc_Loading"].Value, ["groupAdded"] = Localizer["Ct_GroupAdded"].Value, ["noGroups"] = Localizer["Ct_NoGroups"].Value
         }
     };
 }
@@ -65,7 +68,7 @@
     <script type="application/json" id="lcBoot">@Html.Raw(JsonSerializer.Serialize(boot))</script>
 
     <div class="lc-header">
-        <h2 class="vs-section__title mb-0">@Localizer[Model.ParentLetterId.HasValue ? "Lc_TitleReply" : isOutgoing ? "Lc_TitleOutgoing" : "Lc_TitleInternal"]</h2>
+        <h2 class="vs-section__title mb-0">@Localizer[isReferral ? "Ct_TitleReferral" : Model.ParentLetterId.HasValue ? "Lc_TitleReply" : isOutgoing ? "Lc_TitleOutgoing" : "Lc_TitleInternal"]</h2>
         <span class="lc-number" id="lcNumber" title="@Localizer["Lt_Number"]">@(Model.LetterNumber ?? Localizer["Lc_NumberPending"].Value)</span>
         <span class="badge text-bg-secondary" id="lcStatus">@Model.Status</span>
         <span class="lc-savestate" id="lcSaveState" data-state="idle" role="status" aria-live="polite">
@@ -81,9 +84,17 @@
     @if (Model.ParentLetterId.HasValue)
     {
         <div class="alert alert-info d-flex flex-wrap align-items-center gap-2 py-2" role="note">
-            <i class="bi bi-reply" aria-hidden="true"></i>
-            <span>@Localizer["Lc_ReplyingTo"]: <strong>@Model.ParentNumber</strong> &mdash; @Model.ParentSubject</span>
-            <a class="ms-auto" asp-controller="Letter" asp-action="Details" asp-route-id="@Model.ParentLetterId" target="_blank" rel="noopener">@Localizer["Lc_ViewOriginal"]</a>
+            <i class="bi @(isReferral ? "bi-signpost-split" : "bi-reply")" aria-hidden="true"></i>
+            <span>@Localizer[isReferral ? "Ct_ReferringTo" : "Lc_ReplyingTo"]: <strong>@Model.ParentNumber</strong> &mdash; @Model.ParentSubject</span>
+            <span class="ms-auto d-inline-flex gap-3">
+                @if (isNew)
+                {
+                    @* reply and referral are two modes of the same form: switch before writing anything *@
+                    if (isReferral) { <a asp-action="Compose" asp-route-replyTo="@Model.ParentLetterId">@Localizer["Ct_SwitchToReply"]</a> }
+                    else if (input.LetterType == "Internal") { <a asp-action="Compose" asp-route-referTo="@Model.ParentLetterId">@Localizer["Ct_SwitchToReferral"]</a> }
+                }
+                <a asp-controller="Letter" asp-action="Details" asp-route-id="@Model.ParentLetterId" target="_blank" rel="noopener">@Localizer["Lc_ViewOriginal"]</a>
+            </span>
         </div>
     }
 
@@ -150,6 +161,10 @@
                     <button type="button" class="btn btn-sm btn-outline-secondary" id="lcToggleBcc"><i class="bi bi-eye-slash" aria-hidden="true"></i> @Localizer["Lc_AddBcc"]</button>
                     <button type="button" class="btn btn-sm btn-outline-secondary" id="lcImportBtn"><i class="bi bi-file-earmark-spreadsheet" aria-hidden="true"></i> @Localizer["Lc_ImportList"]</button>
                     <input type="file" id="lcImportFile" accept=".csv,.txt,text/csv,text/plain" hidden />
+                    <div class="dropdown d-inline-block">
+                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="lcGroupBtn" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-lines-fill" aria-hidden="true"></i> @Localizer["Ct_AddFromGroup"]</button>
+                        <ul class="dropdown-menu" id="lcGroupMenu" aria-labelledby="lcGroupBtn"></ul>
+                    </div>
                     <span class="lc-help align-self-center" id="lcRcptCount"></span>
                 </div>
                 <div class="lc-help">@Localizer["Lc_ImportHelp"]</div>
@@ -160,12 +175,14 @@
                 <h3 id="lcContentTitle"><i class="bi bi-pencil-square" aria-hidden="true"></i> @Localizer["Lc_Content"]</h3>
                 <div class="lc-field">
                     <label for="lcSubject" class="lc-req">@Localizer["Lt_Subject"]</label>
-                    <input id="lcSubject" class="form-control" maxlength="200" value="@input.Subject" autocomplete="off" aria-describedby="lcSubjectCount" />
-                    <div class="lc-counter" id="lcSubjectCount" aria-live="off"><span id="lcSubjectLen">0</span>/@LetterComposeRules.MaxSubjectLength</div>
+                    <input id="lcSubject" class="form-control" maxlength="@(isReferral ? 500 : 200)" value="@input.Subject" autocomplete="off" aria-describedby="lcSubjectCount" readonly="@isReferral" />
+                    @if (isReferral) { <div class="lc-help" id="lcSubjectCount"><i class="bi bi-lock" aria-hidden="true"></i> @Localizer["Ct_SubjectLocked"]</div> }
+                    else { <div class="lc-counter" id="lcSubjectCount" aria-live="off"><span id="lcSubjectLen">0</span>/@LetterComposeRules.MaxSubjectLength</div> }
                     <div class="lc-error" data-error-for="subject" role="alert" hidden></div>
                 </div>
                 <div class="lc-field">
-                    <label for="composeBody" class="lc-req">@Localizer["Lt_Body"]</label>
+                    <label for="composeBody" class="lc-req">@Localizer[isReferral ? "Ct_ReferralInstruction" : "Lt_Body"]</label>
+                    @if (isReferral) { <div class="lc-help">@Localizer["Ct_ReferralInstructionHelp"]</div> }
                     <textarea id="composeBody" class="form-control" rows="10">@input.Body</textarea>
                     <div class="lc-error" data-error-for="body" role="alert" hidden></div>
                 </div>
@@ -196,7 +213,7 @@
         </div>
 
         <aside>
-            @if (isNew && Model.Templates.Any())
+            @if (isNew && !isReferral && Model.Templates.Any())
             {
                 <section class="lc-card">
                     <h3><i class="bi bi-file-earmark-text" aria-hidden="true"></i> @Localizer["LtT_UseTemplate"]</h3>
@@ -219,7 +236,7 @@
             <section class="lc-card" aria-labelledby="lcDetailsTitle">
                 <h3 id="lcDetailsTitle"><i class="bi bi-sliders" aria-hidden="true"></i> @Localizer["Lc_Details"]</h3>
 
-                <div class="lc-field">
+                <div class="lc-field" @(isReferral ? "hidden" : "")>
                     <label for="lcCategory" class="lc-req">@Localizer["Lc_Category"]</label>
                     <select id="lcCategory" class="form-select">
                         <option value="">@Localizer["Lc_ChooseCategory"]</option>
@@ -297,10 +314,10 @@
             </section>
 
             <section class="lc-card" aria-labelledby="lcRespTitle">
-                <h3 id="lcRespTitle"><i class="bi bi-reply" aria-hidden="true"></i> @Localizer["Lc_Response"]</h3>
+                <h3 id="lcRespTitle"><i class="bi bi-reply" aria-hidden="true"></i> @Localizer[isReferral ? "Ct_ReferralDeadline" : "Lc_Response"]</h3>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="lcRespReq" checked="@input.ResponseRequired" />
-                    <label class="form-check-label" for="lcRespReq">@Localizer["Lt_ResponseRequired"]</label>
+                    <label class="form-check-label" for="lcRespReq">@Localizer[isReferral ? "Ct_ReferralDeadlineSet" : "Lt_ResponseRequired"]</label>
                 </div>
                 <div class="lc-field mt-2" id="lcRespWrap" @(input.ResponseRequired ? "" : "hidden")>
                     <label for="lcRespDue" class="lc-req">@Localizer["Lt_ResponseDueDate"]</label>
@@ -309,7 +326,7 @@
                 </div>
             </section>
 
-            <section class="lc-card" aria-labelledby="lcApprTitle">
+            <section class="lc-card" aria-labelledby="lcApprTitle" @(isReferral ? "hidden" : "")>
                 <h3 id="lcApprTitle"><i class="bi bi-diagram-3" aria-hidden="true"></i> @Localizer["Lc_Approval"]</h3>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="lcApprReq" checked="@input.ApprovalRequired" disabled="@isOutgoing" />
@@ -321,7 +338,14 @@
                     <div class="d-flex gap-2">
                         <select id="lcApproverPick" class="form-select" aria-label="@Localizer["Lc_AddApprover"]">
                             <option value="">@Localizer["Lc_AddApprover"]</option>
-                            @foreach (var a in Model.Approvers) { <option value="@a.UserId">@a.FullName@(string.IsNullOrWhiteSpace(a.Position) ? "" : " — " + a.Position)</option> }
+                            @foreach (var grp in new[] { ("Manager", "Ct_ApproverManagers"), ("Eligible", "Ct_ApproverEligible"), ("Other", "Ct_ApproverOthers") })
+                            {
+                                var items = Model.Approvers.Where(a => a.Group == grp.Item1).ToList();
+                                if (items.Count == 0) { continue; }
+                                <optgroup label="@Localizer[grp.Item2]">
+                                    @foreach (var a in items) { <option value="@a.UserId">@a.FullName@(string.IsNullOrWhiteSpace(a.Position) ? "" : " — " + a.Position)@(string.IsNullOrWhiteSpace(a.Department) ? "" : " (" + a.Department + ")")</option> }
+                                </optgroup>
+                            }
                         </select>
                         <button type="button" class="btn btn-outline-secondary" id="lcApproverAdd" aria-label="@Localizer["Lc_AddApprover"]"><i class="bi bi-plus-lg" aria-hidden="true"></i></button>
                     </div>
@@ -346,7 +370,7 @@
         <a class="btn btn-link" asp-controller="Letter" asp-action="Index">@Localizer["Lc_Cancel"]</a>
         <button type="button" class="btn btn-primary" id="lcSubmitBtn">
             <i class="bi bi-send" aria-hidden="true"></i>
-            <span id="lcSubmitText" data-approval="@Localizer["Lc_SubmitForApproval"]" data-send="@Localizer["Lt_Send"]">@Localizer[input.ApprovalRequired || isOutgoing ? "Lc_SubmitForApproval" : "Lt_Send"]</span>
+            <span id="lcSubmitText" data-approval="@Localizer["Lc_SubmitForApproval"]" data-send="@Localizer["Lt_Send"]">@Localizer[isReferral ? "Ct_SendReferral" : input.ApprovalRequired || isOutgoing ? "Lc_SubmitForApproval" : "Lt_Send"]</span>
         </button>
     </div>
 </div>

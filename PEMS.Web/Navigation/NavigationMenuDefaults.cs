@@ -12,6 +12,12 @@ namespace PEMS.Web.Navigation;
 /// </summary>
 public static class NavigationMenuDefaults
 {
+    /// <summary>
+    /// کلیدهای سیستمیِ حذف‌شده از منو. همگام‌سازی پیش‌فرض‌ها ردیف قدیمی آن‌ها را در دیتابیس غیرفعال می‌کند (حذف نمی‌شود).
+    /// «برچسب‌ها» از منو رفت: درخت برچسب حالا داخل کارتابل نامه‌نگاری (پنل کناری و تنظیمات) مدیریت می‌شود.
+    /// </summary>
+    public static readonly IReadOnlyList<string> RetiredKeys = new[] { "proj.tags" };
+
     private const string S = NavigationMenuItemKinds.Section;
     private const string H = NavigationMenuItemKinds.Subheading;
     private const string L = NavigationMenuItemKinds.Link;
@@ -95,7 +101,6 @@ public static class NavigationMenuDefaults
         Link("proj.taskmanager", "sec.projctrl", 15, "Nav_TaskManager", "bi-kanban", "TaskManager", rule: "Perm:Task.View"),
         Link("proj.meetings", "sec.projctrl", 20, "Meetings", "bi-people", "Meeting"),
         Link("proj.reports", "sec.projctrl", 30, "Reports", "bi-graph-up", "Report"),
-        Link("proj.tags", "sec.projctrl", 40, "Tags", "bi-tags", "Tag"),
 
         // ---- CMMS (قاعده‌ی هر آیتم همان IsCmmsItemVisible: مجوز + Override مدیر)
         Section("sec.cmms", 700, "CmmsIntegration", "bi-tools", "Module:CmmsIntegration",
