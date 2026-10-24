@@ -68,64 +68,16 @@ public class LetterPhase3ViewTests
     // ------------------------------------------------------------------ Reply behaviour
 
     [Fact]
-    public async Task ReplyGet_AppliesPlaceholders_FromTheParentLetterAndTheCurrentUser()
+    public void ReplyGet_OpensTheComposer_WithTheParentAndTheChosenTemplate()
     {
-        var letters = new FakeLetterService { DetailProvider = _ => Parent() };
-        var templates = new FakeTemplates();
-        templates.Items.Add(Tpl(1, "Outgoing"));
-        var c = NewController(letters, templates);
+        var c = NewController(new FakeLetterService { DetailProvider = _ => Parent() });
 
-        var result = Assert.IsType<ViewResult>(await c.Reply(40, templateId: 1));
+        var redirect = Assert.IsType<RedirectToActionResult>(c.Reply(40, templateId: 7));
 
-        var prefill = Assert.IsType<LetterTemplateDto>(c.ViewBag.Prefill);
-        Assert.Equal("Re: Please advise", prefill.Subject);
-        Assert.Equal("Re: Please advise", (string)c.ViewBag.DefaultSubject);
-        Assert.Contains("Dear ACME Ltd", prefill.Body);
-        Assert.Contains("ref IN-40 of 2026-03-01 (Alpha)", prefill.Body);
-        Assert.Contains("Sara &lt;Admin&gt;", prefill.Body);                       // user text is HTML-encoded
-        Assert.Contains(DateTime.Today.ToString("yyyy-MM-dd"), prefill.Body);
-        Assert.Contains("{{Unknown}}", prefill.Body);                              // unknown tokens stay visible
-        Assert.Equal(1, (int)c.ViewBag.SelectedTemplateId);
-        Assert.Equal(40, (int)c.ViewBag.ParentLetterId);
-        Assert.NotNull(result);
-    }
-
-    [Fact]
-    public async Task ReplyGet_IgnoresTemplatesThatAreInactive_OrForAnotherLetterType()
-    {
-        var letters = new FakeLetterService { DetailProvider = _ => Parent() };
-        var templates = new FakeTemplates();
-        templates.Items.Add(Tpl(1, "Incoming"));                                   // a reply is Outgoing
-        var inactive = Tpl(2, null); inactive.IsActive = false;
-        templates.Items.Add(inactive);
-        var c = NewController(letters, templates);
-
-        await c.Reply(40, templateId: 1);
-        Assert.Null((object?)c.ViewBag.Prefill);
-        Assert.Equal("Re: Please advise", (string)c.ViewBag.DefaultSubject);
-
-        await c.Reply(40, templateId: 2);
-        Assert.Null((object?)c.ViewBag.Prefill);
-
-        await c.Reply(40, templateId: 999);
-        Assert.Null((object?)c.ViewBag.Prefill);
-    }
-
-    [Fact]
-    public async Task ReplyGet_OffersOnlyTemplatesValidForOutgoing_AndWorksWithoutAnyTemplateService()
-    {
-        var letters = new FakeLetterService { DetailProvider = _ => Parent() };
-        var templates = new FakeTemplates();
-        templates.Items.Add(Tpl(1, "Outgoing")); templates.Items.Add(Tpl(2, "Incoming")); templates.Items.Add(Tpl(3, null));
-
-        var c = NewController(letters, templates);
-        await c.Reply(40);
-        List<LetterTemplateDto> offered = Assert.IsType<List<LetterTemplateDto>>((object)c.ViewBag.Templates);
-        Assert.Equal(new[] { 1, 3 }, offered.Select(t => t.LetterTemplateId).OrderBy(x => x));
-
-        var bare = NewController(letters, null);
-        await bare.Reply(40, templateId: 1);
-        Assert.Empty(Assert.IsType<List<LetterTemplateDto>>(bare.ViewBag.Templates));
+        Assert.Equal("Compose", redirect.ActionName);
+        Assert.Equal("LetterCompose", redirect.ControllerName);
+        Assert.Equal(40, redirect.RouteValues!["replyTo"]);
+        Assert.Equal(7, redirect.RouteValues["templateId"]);
     }
 
     // ------------------------------------------------------------------ Reply view

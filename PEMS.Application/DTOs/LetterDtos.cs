@@ -24,6 +24,11 @@ public class LetterDto
     public bool HasOverdueReferral { get; set; }
     public bool IsStarred { get; set; }
 
+    // برای بیننده‌ی جاری گیرنده است و هنوز نخوانده؛ نامه‌ی پیش‌ازارسال هرگز «نخوانده» نیست
+    public bool IsUnread { get; set; }
+    // چند کلمه‌ی اول متن ساده‌ی نامه برای نمایش کنار موضوع در فهرست (در خروجی Excel/CSV پر نمی‌شود)
+    public string? Snippet { get; set; }
+
     // مشتق‌شده (بدون تغییر Schema): نزدیک‌ترین مهلت پاسخ در بین ارجاع‌های باز، و آخرین فعالیت روی نامه
     public DateTime? NextResponseDue { get; set; }
 
@@ -182,9 +187,23 @@ public class LetterAdvancedFilter
     public bool OverdueReferralOnly { get; set; }
     // پاسخ‌خواهی سطح نامه که مهلتش گذشته و هنوز پاسخ صادر نشده (محاسبه‌شده، Phase 2)
     public bool OverdueResponseOnly { get; set; }
+    // فقط نامه‌هایی که بیننده گیرنده‌ی آن‌هاست و هنوز نخوانده
+    public bool UnreadOnly { get; set; }
+    // جستجوی یکجا در شماره، موضوع، فرستنده و گیرنده
+    public string? Query { get; set; }
 
     public bool IsEmpty => string.IsNullOrWhiteSpace(Priority) && !HasAttachments.HasValue
-        && !HasReferrals.HasValue && !OverdueReferralOnly && !OverdueResponseOnly;
+        && !HasReferrals.HasValue && !OverdueReferralOnly && !OverdueResponseOnly && !UnreadOnly && string.IsNullOrWhiteSpace(Query);
+}
+
+/// <summary>شمارنده‌ی تب‌های پوشه (فقط نامه‌هایی که بیننده اجازه‌ی دیدنشان را دارد).</summary>
+public class LetterFolderCountsDto
+{
+    public int Draft { get; set; }
+    public int PendingApproval { get; set; }
+    public int ReturnedForRevision { get; set; }
+    public int Approved { get; set; }
+    public int Starred { get; set; }
 }
 
 /// <summary>نتیجه‌ی عملیات گروهی: هر نامه جداگانه ارزیابی می‌شود و دلیل رد هر کدام برگردانده می‌شود.</summary>

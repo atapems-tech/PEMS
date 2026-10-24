@@ -87,7 +87,13 @@ public class LetterComposeController : Controller
         var key = (warning ? "Lc_Warn_" : "Lc_Err_") + issue.Code;
         var text = _localizer[key];
         var message = text.ResourceNotFound ? issue.Code : text.Value;
-        return message.Replace("{0}", issue.Detail ?? "").Trim();
+        var detail = issue.Detail ?? "";
+        if (issue.Code == "ConfidentialityBelowParent")
+        {
+            var level = _localizer["Lt_C_" + detail];
+            if (!level.ResourceNotFound) detail = level.Value;
+        }
+        return message.Replace("{0}", detail).Trim();
     }
 
     private object ToJson(LetterComposeResult r) => new
@@ -105,7 +111,7 @@ public class LetterComposeController : Controller
     // ------------------------------------------------------------------ compose page
 
     [HttpGet]
-    public async Task<IActionResult> Compose(int? id, string letterType = "Internal", int? templateId = null)
+    public async Task<IActionResult> Compose(int? id, string letterType = "Internal", int? templateId = null, int? replyTo = null)
     {
         ViewData["Title"] = "Compose Letter";
         ViewData["Section"] = "Correspondence Management";
@@ -121,10 +127,24 @@ public class LetterComposeController : Controller
             if (loaded == null) return NotFound();
             input = loaded;
         }
+        else if (replyTo.HasValue)
+        {
+            // پاسخ: همان قاعده‌ی دیدن نامه‌ی اصلی؛ نامه‌ای که کاربر نمی‌بیند، پاسخ هم نمی‌گیرد
+            if (!await _letters.CanViewAsync(replyTo.Value, await BuildViewerAsync())) return Forbid();
+            var reply = await _compose.BuildReplyInputAsync(replyTo.Value, actor);
+            if (reply == null) return NotFound();
+            input = reply;
+            letterType = input.LetterType;
+        }
         else
         {
             input = new LetterComposeInput { LetterType = letterType, ApprovalRequired = letterType == "Outgoing" };
         }
+
+        var parentInfo = input.ParentLetterId.HasValue
+            ? await _context.Letters.AsNoTracking().Where(l => l.LetterId == input.ParentLetterId.Value)
+                .Select(l => new { l.LetterId, l.LetterNumber, l.Subject, l.ConfidentialityLevel, l.LetterDate, l.ProjectId, l.Sender, l.LetterType }).FirstOrDefaultAsync()
+            : null;
 
         var sender = await _compose.GetSenderBlockAsync(actor.UserId);
         if (!id.HasValue) input.SenderDepartmentId ??= sender.DepartmentId;
@@ -139,6 +159,14 @@ public class LetterComposeController : Controller
             if (template is { IsActive: true } && (template.LetterType == null || template.LetterType == input.LetterType))
             {
                 var values = TemplateValues(input.LetterType, sender);
+                if (parentInfo != null)
+                {
+                    values["ParentNumber"] = parentInfo.LetterNumber;
+                    values["ParentSubject"] = parentInfo.Subject;
+                    values["ParentDate"] = parentInfo.LetterDate.ToString("yyyy-MM-dd");
+                    values["Counterparty"] = parentInfo.Sender ?? "";
+                    values["ParentProject"] = await _context.Projects.Where(x => x.ProjectId == parentInfo.ProjectId).Select(x => x.ProjectName).FirstOrDefaultAsync() ?? "";
+                }
                 input.Subject = LetterTemplatePlaceholders.Apply(template.Subject, values, htmlEncode: false);
                 input.Body = LetterTemplatePlaceholders.Apply(template.Body, values, htmlEncode: true);
                 input.Priority = template.Priority;
@@ -161,7 +189,15 @@ public class LetterComposeController : Controller
             Projects = await _context.Projects.Where(x => x.IsActive).OrderBy(x => x.ProjectName).Select(x => new ComposeLookup(x.ProjectId, x.ProjectName)).ToListAsync(),
             Disciplines = await _context.Disciplines.Where(x => x.IsActive).OrderBy(x => x.Name).Select(x => new ComposeLookup(x.DisciplineId, x.Name)).ToListAsync(),
             Departments = await _context.Departments.Where(x => x.IsActive).OrderBy(x => x.Name).Select(x => new ComposeLookup(x.DepartmentId, x.Name)).ToListAsync(),
-            ExistingErrors = TempData["ComposeError"] as string
+            Parties = input.LetterType == "Outgoing"
+                ? await _context.CorrespondentParties.Where(x => x.IsActive).OrderBy(x => x.Name).Select(x => new ComposeLookup(x.CorrespondentPartyId, x.Name)).ToListAsync()
+                : new List<ComposeLookup>(),
+            ExistingErrors = TempData["ComposeError"] as string,
+            ParentLetterId = parentInfo?.LetterId,
+            ParentNumber = parentInfo?.LetterNumber,
+            ParentSubject = parentInfo?.Subject,
+            MinConfidentialityRank = parentInfo == null ? 0 : LetterComposeRules.ConfidentialityRank(parentInfo.ConfidentialityLevel),
+            MinConfidentiality = parentInfo?.ConfidentialityLevel
         };
 
         return View(model);
@@ -460,10 +496,18 @@ public class LetterComposeViewModel
     public List<ComposeLookup> Projects { get; set; } = new();
     public List<ComposeLookup> Disciplines { get; set; } = new();
     public List<ComposeLookup> Departments { get; set; } = new();
+    public List<ComposeLookup> Parties { get; set; } = new();
     public bool CanManualNumber { get; set; }
     public string? LetterNumber { get; set; }
     public string Status { get; set; } = "Draft";
     public string? ExistingErrors { get; set; }
+
+    // پاسخ: نامه‌ی اصلی و کمترین سطح محرمانگی مجاز (پایین‌تر از آن انتخاب‌شدنی نیست)
+    public int? ParentLetterId { get; set; }
+    public string? ParentNumber { get; set; }
+    public string? ParentSubject { get; set; }
+    public int MinConfidentialityRank { get; set; }
+    public string? MinConfidentiality { get; set; }
 }
 
 public class LetterHistoryViewModel

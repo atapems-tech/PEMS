@@ -53,7 +53,7 @@ public class LetterService : ILetterService
 
         return new PagedResult<LetterDto>
         {
-            Items = await BuildDtosAsync(letters, requestingApplicationUserId),
+            Items = await BuildDtosAsync(letters, requestingApplicationUserId, includeSnippet: true),
             Page = page,
             PageSize = pageSize,
             TotalCount = totalCount
@@ -113,6 +113,24 @@ public class LetterService : ILetterService
 
         if (advanced != null)
         {
+            if (!string.IsNullOrWhiteSpace(advanced.Query))
+            {
+                var q = advanced.Query.Trim();
+                query = query.Where(x => x.LetterNumber.Contains(q) || x.Subject.Contains(q)
+                    || (x.Sender != null && x.Sender.Contains(q)) || (x.Receiver != null && x.Receiver.Contains(q)));
+            }
+
+            // نخوانده = بیننده گیرنده‌ی نامه است و ردیف گیرنده‌اش هنوز IsRead نشده؛ بدون کارمند مرتبط، چیزی نخوانده حساب نمی‌شود
+            if (advanced.UnreadOnly)
+            {
+                var myEmployeeId = requestingApplicationUserId.HasValue
+                    ? await _context.Users.Where(u => u.Id == requestingApplicationUserId.Value).Select(u => u.EmployeeId).FirstOrDefaultAsync()
+                    : null;
+                query = myEmployeeId.HasValue
+                    ? query.Where(x => _context.LetterRecipients.Any(r => r.LetterId == x.LetterId && r.EmployeeId == myEmployeeId.Value && !r.IsRead))
+                    : query.Where(x => false);
+            }
+
             if (!string.IsNullOrWhiteSpace(advanced.Priority))
             {
                 var priority = advanced.Priority.Trim();
@@ -154,46 +172,37 @@ public class LetterService : ILetterService
     // طبق گزارش ممیزی (بند ۶.۵): محدودیت محرمانگی باید در خودِ Query اعمال شود، نه فقط
     // در نمایش. کاربر بدون مجوز بالا فقط نامه‌های Public/Internal، یا نامه‌هایی که خودش
     // ثبت کرده، یا نامه‌هایی که به او ارجاع شده را می‌بیند.
-    private async Task<IQueryable<Letter>> ApplyConfidentialityAsync(IQueryable<Letter> query,
+    private Task<IQueryable<Letter>> ApplyConfidentialityAsync(IQueryable<Letter> query,
         bool canViewConfidential, int? requestingApplicationUserId)
+        => LetterVisibility.ApplyAsync(_context, query, canViewConfidential, requestingApplicationUserId);
+
+    private string? MakeSnippet(string? body)
     {
-        if (canViewConfidential) return query;
-
-        var employeeId = requestingApplicationUserId.HasValue
-            ? await _context.Users.Where(x => x.Id == requestingApplicationUserId.Value)
-                .Select(x => x.EmployeeId).FirstOrDefaultAsync()
-            : null;
-
-        var referredLetterIds = employeeId.HasValue
-            ? await _context.LetterReferrals.Where(x => x.ReferredToEmployeeId == employeeId.Value)
-                .Select(x => x.LetterId).ToListAsync()
-            : new List<int>();
-
-        // گیرنده‌ی To/Cc/Bcc نامه (قبلاً گیرنده‌ی نامه‌ی محرمانه بدون ارجاع جدا آن را در فهرست نمی‌دید)
-        var recipientLetterIds = employeeId.HasValue
-            ? await _context.LetterRecipients.Where(x => x.EmployeeId == employeeId.Value)
-                .Select(x => x.LetterId).Distinct().ToListAsync()
-            : new List<int>();
-
-        // عضو زنجیره‌ی تایید، نامه‌ی در انتظار تاییدش را می‌بیند
-        var chainLetterIds = requestingApplicationUserId.HasValue
-            ? await _context.LetterApprovalSteps.Where(x => x.ApproverUserId == requestingApplicationUserId.Value)
-                .Select(x => x.LetterId).Distinct().ToListAsync()
-            : new List<int>();
-
-        var preSend = LetterAccessRules.PreSendStatuses;
-
-        // قاعده‌ی هم‌ارز LetterAccessRules.CanView (پیش‌نویس/در انتظار تایید فقط نویسنده و زنجیره‌ی تایید؛ نامه‌ی منتشرشده بر اساس سطح
-        // محرمانگی یا گیرنده/ارجاع‌گیرنده‌بودن)
-        return query.Where(x =>
-            (requestingApplicationUserId.HasValue && x.RegisteredById == requestingApplicationUserId.Value) ||
-            chainLetterIds.Contains(x.LetterId) ||
-            (!preSend.Contains(x.Status) &&
-                (x.ConfidentialityLevel == "Public" || x.ConfidentialityLevel == "Internal" ||
-                 referredLetterIds.Contains(x.LetterId) || recipientLetterIds.Contains(x.LetterId))));
+        // بدون Sanitizer (سرویس ساخته‌شده‌ی ساده در تست‌ها) از تبدیل متن ساده‌ی خالص قواعد استفاده می‌شود؛ در برنامه همیشه Sanitizer هست
+        var plain = _sanitizer != null ? _sanitizer.ToPlainText(body) : LetterComposeRules.PlainText(body);
+        var text = System.Text.RegularExpressions.Regex.Replace(plain ?? "", @"\s+", " ").Trim();
+        return text.Length == 0 ? null : text.Length > 120 ? text[..120].TrimEnd() + "…" : text;
     }
 
-    private async Task<List<LetterDto>> BuildDtosAsync(List<Letter> letters, int? requestingApplicationUserId)
+    // شمارنده‌ی تب‌ها: هر شمارش از همان پرس‌وجوی محرمانگی‌دارِ فهرست می‌آید، پس عددی که کاربر می‌بیند همان چیزی است که با کلیک می‌بیند
+    public async Task<LetterFolderCountsDto> GetFolderCountsAsync(bool canViewConfidential, int? requestingApplicationUserId)
+    {
+        var visible = await BuildFilteredQueryAsync(null, null, null, null, null, null, null, null, null, null,
+            canViewConfidential, requestingApplicationUserId, false, null);
+        var starred = await BuildFilteredQueryAsync(null, null, null, null, null, null, null, null, null, null,
+            canViewConfidential, requestingApplicationUserId, true, null);
+
+        return new LetterFolderCountsDto
+        {
+            Draft = await visible.CountAsync(x => x.Status == "Draft"),
+            PendingApproval = await visible.CountAsync(x => x.Status == "PendingApproval"),
+            ReturnedForRevision = await visible.CountAsync(x => x.Status == "ReturnedForRevision"),
+            Approved = await visible.CountAsync(x => x.Status == "Approved"),
+            Starred = await starred.CountAsync()
+        };
+    }
+
+    private async Task<List<LetterDto>> BuildDtosAsync(List<Letter> letters, int? requestingApplicationUserId, bool includeSnippet = false)
     {
         var letterIds = letters.Select(x => x.LetterId).ToList();
 
@@ -215,6 +224,7 @@ public class LetterService : ILetterService
             : new List<int>();
 
         Dictionary<int, string> myRecipientTypes = new();
+        var myUnreadIds = new HashSet<int>();
 
         if (requestingApplicationUserId.HasValue)
         {
@@ -227,8 +237,10 @@ public class LetterService : ILetterService
             {
                 var myRows = await _context.LetterRecipients
                     .Where(x => letterIds.Contains(x.LetterId) && x.EmployeeId == myEmployeeId.Value)
-                    .Select(x => new { x.LetterId, x.RecipientType })
+                    .Select(x => new { x.LetterId, x.RecipientType, x.IsRead })
                     .ToListAsync();
+
+                myUnreadIds = myRows.Where(r => !r.IsRead).Select(r => r.LetterId).ToHashSet();
 
                 // گروه‌بندی سمت کلاینت (مستقل از Provider: GroupBy+ToDictionaryAsync روی InMemory ترجمه نمی‌شد).
                 // اگر هم To و هم Cc باشد، To اولویت دارد؛ BCC برای خودِ گیرنده «Bcc» نمایش داده می‌شود.
@@ -321,6 +333,8 @@ public class LetterService : ILetterService
                 ArchivedDate = l.ArchivedDate,
                 LastActivityDate = activity.Where(d => d.HasValue).Select(d => d!.Value).DefaultIfEmpty(l.CreatedDate).Max(),
                 IsStarred = starredIds.Contains(l.LetterId),
+                IsUnread = myUnreadIds.Contains(l.LetterId) && !LetterAccessRules.PreSendStatuses.Contains(l.Status),
+                Snippet = includeSnippet ? MakeSnippet(l.Body) : null,
                 MyRecipientType = myRecipientTypes.TryGetValue(l.LetterId, out var rt) ? rt : null,
                 Tags = letterTags.Where(lt => lt.LetterId == l.LetterId).Select(lt => new TagDto
                 {

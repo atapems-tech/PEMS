@@ -65,7 +65,7 @@ public class LetterController : Controller
         string? sender, string? receiver, int? projectId, int? disciplineId, string? status,
         DateTime? fromDate, DateTime? toDate, bool starred = false, int page = 1, int? pageSize = null,
         string? priority = null, bool? hasAttachments = null, bool? hasReferrals = null, bool overdueReferral = false,
-        bool overdueResponse = false)
+        bool overdueResponse = false, bool unread = false, string? q = null)
     {
         ViewData["Title"] = "Correspondence";
         ViewData["Section"] = "Correspondence Management";
@@ -79,11 +79,14 @@ public class LetterController : Controller
         var result = await _letterService.SearchAsync(letterType, letterNumber, subject, sender,
             receiver, projectId, disciplineId, status, fromDate, toDate, page, normalizedPageSize,
             canViewConfidential, _currentUser.UserId, starredOnly: starred,
-            advanced: BuildAdvancedFilter(priority, hasAttachments, hasReferrals, overdueReferral, overdueResponse));
+            advanced: BuildAdvancedFilter(priority, hasAttachments, hasReferrals, overdueReferral, overdueResponse, unread, q));
 
         var dashboard = await _letterService.GetDashboardAsync(_currentUser.UserId, canViewConfidential);
 
         ViewBag.Dashboard = dashboard;
+        ViewBag.FolderCounts = await _letterService.GetFolderCountsAsync(canViewConfidential, _currentUser.UserId);
+        ViewBag.Unread = unread;
+        ViewBag.SearchQuery = string.IsNullOrWhiteSpace(q) ? null : q.Trim();
 
         // طبق بند ۲۴/۲۸: Index هرگز از Employee/Document/MR/Tag استفاده نمی‌کند (فقط Project و
         // Discipline برای فیلتر/میانبر) - قبلاً همون LoadDropdownsAsync سنگین Create را صدا
@@ -110,14 +113,16 @@ public class LetterController : Controller
         => KnownPriorities.FirstOrDefault(p => string.Equals(p, priority?.Trim(), StringComparison.OrdinalIgnoreCase));
 
     private static LetterAdvancedFilter BuildAdvancedFilter(string? priority, bool? hasAttachments, bool? hasReferrals,
-        bool overdueReferral, bool overdueResponse = false)
+        bool overdueReferral, bool overdueResponse = false, bool unread = false, string? query = null)
         => new()
         {
             Priority = NormalizePriority(priority),
             HasAttachments = hasAttachments,
             HasReferrals = hasReferrals,
             OverdueReferralOnly = overdueReferral,
-            OverdueResponseOnly = overdueResponse
+            OverdueResponseOnly = overdueResponse,
+            UnreadOnly = unread,
+            Query = string.IsNullOrWhiteSpace(query) ? null : query.Trim()
         };
 
     // خروجی همان فیلترهای Index (CSV یا Excel) - سرویس همان قانون محرمانگی Index را اعمال می‌کند
@@ -126,7 +131,7 @@ public class LetterController : Controller
         string? sender, string? receiver, int? projectId, int? disciplineId, string? status,
         DateTime? fromDate, DateTime? toDate, bool starred = false,
         string? priority = null, bool? hasAttachments = null, bool? hasReferrals = null, bool overdueReferral = false,
-        bool overdueResponse = false)
+        bool overdueResponse = false, bool unread = false, string? q = null)
     {
         var isSystemAdmin = _currentUser.Roles.Contains("SystemAdmin");
         var canViewConfidential = isSystemAdmin ||
@@ -134,7 +139,7 @@ public class LetterController : Controller
 
         var items = await _letterService.ExportAsync(letterType, letterNumber, subject, sender, receiver, projectId,
             disciplineId, status, fromDate, toDate, canViewConfidential, _currentUser.UserId, starred,
-            BuildAdvancedFilter(priority, hasAttachments, hasReferrals, overdueReferral, overdueResponse));
+            BuildAdvancedFilter(priority, hasAttachments, hasReferrals, overdueReferral, overdueResponse, unread, q));
 
         var stamp = DateTime.Now.ToString("yyyyMMdd_HHmm");
         return string.Equals(format, "csv", StringComparison.OrdinalIgnoreCase)
@@ -410,39 +415,10 @@ public class LetterController : Controller
         return View(detail);
     }
 
+    // پاسخ در همان فرم رسمی نوشتن نامه باز می‌شود (پیوست، تایید، محرمانگی، ذخیره‌ی خودکار)؛ دسترسی به نامه‌ی اصلی آنجا بررسی می‌شود
     [HttpGet]
-    public async Task<IActionResult> Reply(int id, int? templateId = null)
-    {
-        ViewData["Title"] = "Reply";
-        ViewData["Section"] = "Correspondence Management";
-
-        var parentAccess = await _letterService.GetDetailForViewerAsync(id, await BuildViewerAsync());
-        if (parentAccess.Outcome == LetterAccessOutcome.Forbidden) return Forbid();
-        if (parentAccess.Outcome != LetterAccessOutcome.Ok) return NotFound();
-        var parent = parentAccess.Detail!;
-
-        ViewBag.Thread = await _letterService.GetThreadAsync(id);
-        ViewBag.ParentLetterId = id;
-        ViewBag.DefaultSubject = "Re: " + parent.Letter.Subject;
-        ViewBag.DefaultReceiver = parent.Letter.LetterType == "Incoming" ? parent.Letter.Sender : parent.Letter.Receiver;
-        ViewBag.ParentLetter = parent.Letter;
-
-        // پاسخ همیشه یک نامه‌ی Outgoing است، پس قالب‌های Outgoing و «همه‌ی انواع» پیشنهاد می‌شوند
-        await LoadTemplatesAsync("Outgoing");
-        if (templateId.HasValue && _templates != null)
-        {
-            var template = await _templates.GetAsync(templateId.Value);
-            if (template != null && template.IsActive && (template.LetterType == null || template.LetterType == "Outgoing"))
-            {
-                var applied = ApplyPlaceholders(template, PlaceholderValues("Outgoing", parent));
-                ViewBag.Prefill = applied;
-                ViewBag.SelectedTemplateId = template.LetterTemplateId;
-                if (!string.IsNullOrWhiteSpace(applied.Subject)) ViewBag.DefaultSubject = applied.Subject;
-            }
-        }
-
-        return View();
-    }
+    public IActionResult Reply(int id, int? templateId = null)
+        => RedirectToAction("Compose", "LetterCompose", new { replyTo = id, templateId });
 
     [HttpPost]
     [ValidateAntiForgeryToken]
