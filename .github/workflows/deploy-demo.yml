@@ -21,6 +21,7 @@ name: PEMS Demo Deploy (FTP)
 on:
   push:
     branches: [demo]
+    paths-ignore: ['docs/**', 'plan/**', 'legacy-trash/**', '*.md']      # documentation-only pushes do not redeploy the demo
   workflow_dispatch:
 
 concurrency:

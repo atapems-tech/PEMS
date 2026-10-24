@@ -7,13 +7,15 @@ uploads by FTP and waits for `GET /health/database` to report `UpToDate` (first 
 Secrets: `DEMO_FTP_HOST`, `DEMO_FTP_USER`, `DEMO_FTP_PASSWORD`, `DEMO_FTP_DIR` (`/`), `DEMO_FTP_PROTOCOL` (`ftp`; FTPS fails on this host),
 `DEMO_FTP_PORT`, `DEMO_SQL_CONNECTION_STRING`, `DEMO_ADMIN_PASSWORD`, `DEMO_SITE_URL`.
 
-## Status on 2026-10-24
+## Status on 2026-10-24 (updated after run 5)
 
 | Step | Result |
 |---|---|
 | Build, drift gate, database-free tests, publish, runtime configuration | pass |
 | FTP upload from the GitHub runner to `parmisata.ir` | **pass** (the runner can reach the host) |
-| `/health/database` on `demo.parmisata.ir` | **fails: no valid answer** (see below) |
+| `app_offline.htm`, FTP upload (with retry), bring online | **pass** |
+| `/health/database` from the runner | **pass: `attempt 1: HTTP 200 UpToDate`** - the demo database was installed and the app answers |
+| Valid TLS certificate on `demo.parmisata.ir` | **open** (informational warning remains; owner action in Plesk) |
 
 ## Why the first runs failed and what to do
 

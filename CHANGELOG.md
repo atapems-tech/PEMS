@@ -3,6 +3,19 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-24 - Demo pipeline works end to end
+
+### Fixed
+- Model-drift gate failed in CI (design-time factory needs a connection string): dummy value for the model-only check.
+- FTP upload failed with `550 ... being used by another process` (IIS file locks): `app_offline.htm` is uploaded first and removed after a successful upload.
+- FTP `Timeout (control socket)`: 180 s timeout and one automatic retry.
+- Health check could not see the app state behind a missing TLS certificate: probe uses `--insecure`; the certificate is reported separately.
+- `demo` pushes that only change docs/plan no longer redeploy.
+
+### Added
+- Startup output of the demo app is logged to `logs/stdout*`; `docs/deployment/DEMO_DEPLOYMENT.md` records the runs, causes and fixes.
+- Result: run 5 on `demo` is green and the runner's check reports `HTTP 200 UpToDate` (demo database installed). Open: TLS certificate (#340).
+
 ## 2026-10-24 - Tracker-free plan workbook, Sprint 1, clearer task text
 
 ### Changed
