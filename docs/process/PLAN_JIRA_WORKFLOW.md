@@ -17,7 +17,7 @@ checked by a script in CI, not by memory.
 | Title | Task | Summary | Workbook | -> Jira |
 | What and why | Evidence, Prompt | Description | Workbook | -> Jira |
 | Acceptance criteria | Requirement | Description section "Acceptance" | Workbook | -> Jira |
-| Area | Area | Component | Workbook | -> Jira |
+| Area | Area | Component (company-managed projects) or label `area-<name>` (team-managed, e.g. SCRUM) | Workbook | -> Jira |
 | Type | Track | Issue type (Feature->Story, Bug Fix->Bug, other->Task) | Workbook | -> Jira |
 | Priority | Priority P0-P3 | Priority Highest/High/Medium/Low | Workbook | -> Jira |
 | Milestone | Milestone M0-M6 | Fix version / Epic | Workbook | -> Jira |
@@ -66,6 +66,11 @@ files in git**: `JIRA_BASE_URL`, `JIRA_PROJECT_KEY`, `JIRA_USER_EMAIL`, `JIRA_AP
 - If the workbook ever becomes the bottleneck, revisit: make `plan/backlog.csv` the canonical file and generate the workbook from it.
 
 ## 6. One-time Jira setup (owner task, #337)
+
+Site and project (2026-10-24): `https://atapems.atlassian.net`, project key **SCRUM** (a team-managed Scrum space). Team-managed spaces have
+no Components, so the plan area is exported as the label `area-<name>`; custom fields, statuses and releases (fix versions) are available.
+Secrets already set in GitHub: `JIRA_BASE_URL`, `JIRA_PROJECT_KEY`; still to add by the owner: `JIRA_USER_EMAIL`, `JIRA_API_TOKEN`.
+
 
 Project key; issue types Story/Task/Bug; workflow statuses To Do, In Progress, On Hold, Done, Won't Do; custom field "Plan ID" (text,
 unique); components = the 27 plan areas; fix versions = M0-M6; GitHub-for-Jira connection so commits and PRs show on issues; an API token

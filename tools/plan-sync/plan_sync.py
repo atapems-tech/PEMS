@@ -55,6 +55,9 @@ def labels(r):
     if clean(r.get("Status")) == "Partial": out.append("partial")
     if clean(r.get("Status")) == "Later": out.append("later")
     if clean(r.get("Commercial")) == "Sales blocker": out.append("sales-blocker")
+    # team-managed Jira projects (like SCRUM) have no Components: the plan area travels as a label instead
+    area = re.sub(r"[^a-z0-9]+", "-", clean(r.get("Area")).lower()).strip("-")
+    if area: out.append("area-" + area[:60])
     return out
 
 
@@ -80,20 +83,18 @@ def export():
             w.writerow([clean(r.get(h)) for h in header])
 
     milestones = sorted({clean(r.get("Milestone")) or "-" for r in rows})
-    fieldnames = ["Work item ID", "Work type", "Parent", "Summary", "Description", "Priority", "Status", "Component", "Fix Version",
-                  "Plan ID", "Labels", "Labels ", "Labels  ", "Labels   "]
     with (OUT_DIR / "jira-import.csv").open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["Work item ID", "Work type", "Parent", "Summary", "Description", "Priority", "Status", "Component", "Fix Version",
-                    "Plan ID", "Labels", "Labels", "Labels", "Labels"])                   # repeated header = multi-value Labels
+                    "Plan ID", "Labels", "Labels", "Labels", "Labels", "Labels", "Labels"])   # repeated header = multi-value Labels
         epic_id = {}
         for i, m in enumerate(milestones, start=1):                                     # epics first (parents before children)
             epic_id[m] = i
-            w.writerow([i, "Epic", "", EPICS.get(m, m), f"Milestone {m}", "", "", "", m, "", "", "", "", ""])
+            w.writerow([i, "Epic", "", EPICS.get(m, m), f"Milestone {m}", "", "", "", m, "", "", "", "", "", "", ""])
         next_id = len(milestones) + 1
         for r in rows:
             m = clean(r.get("Milestone")) or "-"
-            lab = (labels(r) + [""] * 4)[:4]
+            lab = (labels(r) + [""] * 6)[:6]
             w.writerow([next_id, ISSUE_TYPE.get(clean(r.get("Track")), "Task"), epic_id[m], clean(r.get("Task")), description(r),
                         PRIORITY.get(clean(r.get("Priority")), "Medium"), STATUS.get(clean(r.get("Status")), "To Do"),
                         clean(r.get("Area")), m, r["#"]] + lab)
