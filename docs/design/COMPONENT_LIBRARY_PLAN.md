@@ -56,7 +56,7 @@ component API. That is why the same field, table and badge exist in hundreds of 
 | D2 | Separate Razor Class Library **`PEMS.UI`** (components, tokens, CSS/JS, localization, catalog, tests); `PEMS.Web` only consumes it | *decided* 2026-10-23 |
 | D3 | **Component technology** - see 4.1 | recommendation, gated by spike #319 |
 | D4 | Study the whole project first (done: audit), then pilot on the **Admin area** (+ account pages and the shared shell) | *decided* 2026-10-23 |
-| D5 | Plan workbook, Jira and developers stay consistent through field ownership and a scripted sync | *decided* 2026-10-23, see [../process/PLAN_JIRA_WORKFLOW.md](../process/PLAN_JIRA_WORKFLOW.md) |
+| D5 | Plan workbook, Jira and developers stay consistent through field ownership and a scripted sync | *decided* 2026-10-23, see [../process/PLAN_TRACKER_WORKFLOW.md](../process/PLAN_TRACKER_WORKFLOW.md) |
 | D6 | No CDN or internet dependency in any component (Instructions rule 1) | standing |
 | D7 | Components use tokens only (no hex), logical CSS only (RTL), no inline styles, all text through localization keys | proposed rule |
 | D8 | A "no new raw markup" ratchet in CI: the audit counts may only go down | proposed rule |

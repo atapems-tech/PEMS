@@ -381,3 +381,4 @@ env/*.secrets.env
 # Generated Jira import files (plan/backlog.csv is the committed text mirror)
 plan/jira-import.csv
 plan/jira-links.csv
+plan/members.json
