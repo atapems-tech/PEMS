@@ -10,7 +10,8 @@ Clean Architecture; dependencies point inward.
 |---|---|
 | `PEMS.Domain` | entities, enums, `BaseEntity`; **no dependencies** |
 | `PEMS.Application` | DTOs (`DTOs/`), interfaces (`Interfaces/`), application services (`Services/`) |
-| `PEMS.Persistence` | `PEMSDbContext`, EF configurations (`Configurations/`), migrations, seeders, repositories, installer/updater |
+| `PEMS.Persistence` | `PEMSDbContext`, EF configurations (`Configurations/`), seeders, repositories, installer/updater |
+| `PEMS.Migrations` | EF migrations, model snapshot, design-time factory (references Persistence; Web and Tests reference it; the context defaults `MigrationsAssembly` to it) |
 | `PEMS.Infrastructure` | cache, external integrations |
 | `PEMS.AI` | Ollama, OCR, parsing, extraction (local only) |
 | `PEMS.WorkflowPlatform` | the one workflow engine |
@@ -41,7 +42,7 @@ Rules:
 
 ## 3. Database [R6, R23]
 
-- **Schema only through migrations.** `dotnet ef migrations add <Name> --project PEMS.Persistence --startup-project PEMS.Web`. Never edit an applied migration; add a new one. DDL EF cannot model goes into `migrationBuilder.Sql`.
+- **Schema only through migrations.** `dotnet ef migrations add <Name> --project PEMS.Migrations --startup-project PEMS.Web`. Never edit an applied migration; add a new one. DDL EF cannot model goes into `migrationBuilder.Sql`.
 - The app applies migrations itself (startup migrator / Admin > Database Update). No hand-run SQL for schema setup or update.
 - CI "model drift" gate: `dotnet ef migrations has-pending-model-changes` must be clean - an entity change without a migration fails the build.
 - Seeders are idempotent. Reference data goes in seeders or migrations, not in hand scripts.

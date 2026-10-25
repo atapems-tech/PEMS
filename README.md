@@ -23,6 +23,7 @@ English; AI runs on-premise and nothing leaves the organization.
 | `PEMS.Domain` | entities and enums, no dependencies |
 | `PEMS.Application` | DTOs, interfaces, application services |
 | `PEMS.Persistence` | `PEMSDbContext`, configurations, migrations, seeders, repositories, database installer/updater |
+| `PEMS.Migrations` | EF Core migrations, model snapshot and design-time factory (kept apart so `PEMS.Persistence.dll` changes only with its own code) |
 | `PEMS.Infrastructure` | cache, external integrations |
 | `PEMS.AI` | Ollama, OCR, document parsing, extraction |
 | `PEMS.WorkflowPlatform` | central workflow engine |
@@ -87,7 +88,7 @@ The schema is built and upgraded only from code. No hand-run SQL is needed.
 Add a migration after changing the model; never edit an applied one:
 
 ```bash
-dotnet ef migrations add <Name> --project PEMS.Persistence --startup-project PEMS.Web
+dotnet ef migrations add <Name> --project PEMS.Migrations --startup-project PEMS.Web
 ```
 
 Details: [docs/deployment/CODE_FIRST_DATABASE.md](docs/deployment/CODE_FIRST_DATABASE.md).
