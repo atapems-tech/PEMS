@@ -75,6 +75,13 @@ jobs:
           echo "::error::FTP check failed: $(head -c 300 ftp.err). ${P}_FTP_DIR is relative to the FTP account home and must be the folder the site is served from, with a trailing slash (use / only when the account home IS the site folder)."
           echo "Entries visible at the FTP account root (names only; pick the site folder from this list):"
           cred | curl -sS -K - $TLS --max-time 60 --list-only "ftp://${FTP_HOST}/" || true
+          echo "Write test at the FTP account root (/): "
+          if cred | curl -sS -K - $TLS --max-time 60 -T pems-write-probe.txt "ftp://${FTP_HOST}/pems-write-probe.txt" 2> root.err; then
+            cred | curl -sS -K - $TLS --max-time 60 -Q "DELE pems-write-probe.txt" "ftp://${FTP_HOST}/" -o /dev/null || true
+            echo "-> the root IS writable, so ${P}_FTP_DIR points to a folder that is missing or read-only: set it to / if the root listing above is the site folder."
+          else
+            echo "-> the root is NOT writable either ($(head -c 150 root.err)): the FTP account has no write permission (Plesk > FTP > account > Permissions: Read and Write)."
+          fi
           exit 1
 
       - uses: actions/checkout@v4
