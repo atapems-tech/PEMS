@@ -9,7 +9,7 @@ It is short on purpose. The rules live in [docs/guidelines/](docs/guidelines/REA
    Then read the Jira issue (and its parent, dependencies and similar open issues). Say in your first message that you did both.
 2. **PLAN** - research best practice, look for existing code/components to reuse, check for similar tasks to batch
    (the user approves a batch before you start; an approved batch goes into the current sprint, assigned to you). Never start or edit an issue that is assigned to someone else or already started without that person's confirmation - no collisions. Move the issue to In Progress and comment your plan.
-3. **WORK** - on **one branch per task or approved batch** (`feature/SCRUM-123-short-name`, from `dev`); follow the guideline while you code. Reuse and modify what exists; do not duplicate.
+3. **WORK** - on **one branch per task or approved batch** (`feature/SCRUM-123-short-name`, from `main`); follow the guideline while you code. Reuse and modify what exists; do not duplicate.
 4. **CLOSE** - after merging, **delete the working branch** (local and remote); tests green, PR opened -> Jira **In Review** (conditional done); merged -> **Done**, six artefacts updated (rule 22), Jira comment, Jira status. Then **update the guideline** if you learned
    something durable ([chapter 6](docs/guidelines/06-knowledge-and-guideline-maintenance.md)). Propose next tasks and wait.
 
