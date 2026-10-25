@@ -24,7 +24,13 @@ if (!connectionString.Contains("PEMSDB", StringComparison.OrdinalIgnoreCase) ||
     return 1;
 }
 
-const string TestUserPassword = "LoadTest#2026";
+// SCRUM-17: no password in source. The same value must be given to the k6 script (tools/loadtest/pems-baseline.js).
+var testUserPassword = Environment.GetEnvironmentVariable("PEMS_LOADTEST_PASSWORD") ?? string.Empty;
+if (string.IsNullOrWhiteSpace(testUserPassword))
+{
+    Console.Error.WriteLine("Set PEMS_LOADTEST_PASSWORD (a throw-away password for the LoadTest accounts; never commit it).");
+    return 1;
+}
 const int GeneralUserCount = 200; // یک VU مستقل به‌ازای هر سطح همزمانی تا ۲۰۰ کاربر
 const int AdminUserCount = 10;    // فقط برای سناریوی AuditLog (نیازمند نقش SystemAdmin واقعی)
 
@@ -71,7 +77,7 @@ async Task<bool> EnsureUserAsync(string userName, string role)
         CreatedDate = DateTime.Now
     };
 
-    var result = await userManager.CreateAsync(user, TestUserPassword);
+    var result = await userManager.CreateAsync(user, testUserPassword);
     if (!result.Succeeded)
     {
         Console.Error.WriteLine($"شکست در ساخت {userName}: {string.Join(", ", result.Errors.Select(e => e.Description))}");
@@ -95,7 +101,7 @@ for (var i = 1; i <= GeneralUserCount; i++)
 for (var i = 1; i <= AdminUserCount; i++)
     await EnsureUserAsync($"loadtestadmin{i:00}", SystemRoles.SystemAdmin);
 
-Console.WriteLine($"تمام شد. ساخته‌شده: {created}, از قبل موجود: {alreadyExisted}, رمز مشترک: {TestUserPassword}");
+Console.WriteLine($"تمام شد. ساخته‌شده: {created}, از قبل موجود: {alreadyExisted}");
 Console.WriteLine($"کاربران عمومی: loadtest001..loadtest{GeneralUserCount:000} (نقش {SystemRoles.EngineeringManager})");
 Console.WriteLine($"کاربران ادمین: loadtestadmin01..loadtestadmin{AdminUserCount:00} (نقش {SystemRoles.SystemAdmin})");
 
