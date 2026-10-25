@@ -17,6 +17,15 @@ Field ownership between the plan workbook and Jira: [PLAN_TRACKER_WORKFLOW.md](.
    library, same research), propose doing them together. **Ask the user and wait for approval before starting a batch.** State: which
    issues, why they belong together, what changes in scope, and what each issue's "Done when" will be checked against.
    Never silently widen the scope of one issue to swallow another.
+   **When the user approves a batch:** every issue in the package is moved into the **current (active) sprint** and its **assignee is set to the person
+   doing the work** (the Jira user of the developer running the session; get the account id with `atlassianUserInfo`). Do this before step 2 of section 2,
+   using `editJiraIssue` (assignee) and `transitionJiraIssue` with the active sprint id (`listJiraBoardSprints`, state `active`).
+5a. **Ownership check - no collisions.** Before starting any issue (alone or in a batch) look at its assignee and status:
+   - assignee is another person, **or** the issue is already In Progress / In Review, **or** a branch/PR for it exists -> **do not touch it**. Ask that person (through the user, or a Jira comment mentioning them)
+     and get an explicit yes before starting. Keep the confirmation in a comment (who agreed, when). Until then work on something else.
+   - the same applies to files and areas that another person's in-progress issue changes: if your task overlaps with it (same files, same migration, same component), stop and coordinate first.
+   - an unassigned To Do issue may be taken; assign it to yourself in the same step.
+   Never reassign, move, close or edit an issue that belongs to someone else without their confirmation.
 6. **Research best practice before designing** ([chapter 03](03-libraries-tools-and-research.md) section 3) and look for what already
    exists in the repo (section 3 below). Write the findings in the plan comment, not in your head.
 7. **Plan** in 3-5 lines. If the task is large, uncertain or touches shared engines, share the plan with the user first.
