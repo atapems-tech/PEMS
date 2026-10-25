@@ -1,4 +1,6 @@
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using PEMS.Application.DTOs;
 using PEMS.Persistence.Context;
@@ -61,7 +63,7 @@ public class DatabaseInitializerTests
     [Fact]
     public void Migration_chain_is_ordered_unique_and_contains_the_code_first_additions_in_order()
     {
-        var ids = typeof(PEMSDbContext).Assembly.GetTypes()
+        var ids = System.Reflection.Assembly.Load(PEMSDbContext.MigrationsAssemblyName).GetTypes()
             .Where(t => typeof(Migration).IsAssignableFrom(t) && !t.IsAbstract)
             .Select(t => t.GetCustomAttribute<MigrationAttribute>()?.Id)
             .Where(id => id != null)
@@ -78,5 +80,18 @@ public class DatabaseInitializerTests
         Assert.True(updateRuns >= 0, "migration *_DatabaseUpdateRuns is missing");
         Assert.True(fullText >= 0, "migration *_FullTextSearch is missing");
         Assert.True(updateRuns < fullText, "DatabaseUpdateRuns must precede FullTextSearch");
+    }
+
+    [Fact]
+    public void Plain_UseSqlServer_finds_the_migrations_in_the_separate_migrations_assembly()
+    {
+        // No connection is opened: only the service graph is built. Tests, tools and the host all configure the context this way.
+        var options = new DbContextOptionsBuilder<PEMSDbContext>()
+            .UseSqlServer("Server=localhost;Database=NOPE;Trusted_Connection=True;TrustServerCertificate=True").Options;
+        using var ctx = new PEMSDbContext(options);
+        var migrations = ctx.GetService<IMigrationsAssembly>();
+        Assert.Equal(PEMSDbContext.MigrationsAssemblyName, migrations.Assembly.GetName().Name);
+        Assert.True(migrations.Migrations.Count > 100, "the migrations must be found without any call-site configuration");
+        Assert.NotEqual(typeof(PEMSDbContext).Assembly, migrations.Assembly);
     }
 }

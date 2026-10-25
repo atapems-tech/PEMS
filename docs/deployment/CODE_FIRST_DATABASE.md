@@ -61,7 +61,7 @@ connection string and `Database` settings, FTP upload, then poll `/health/databa
 ## Rules for developers
 
 - Change the model, then add a migration:
-  `dotnet ef migrations add <Name> --project PEMS.Persistence --startup-project PEMS.Web`
+  `dotnet ef migrations add <Name> --project PEMS.Migrations --startup-project PEMS.Web`
 - Never edit an applied migration; always add a new one (also for data fixes and non-model DDL such as the
   full-text objects: use `migrationBuilder.Sql`).
 - CI fails (`Model drift gate`) when an entity change has no migration, and EF Core refuses to migrate a drifted

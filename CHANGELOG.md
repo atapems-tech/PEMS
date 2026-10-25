@@ -3,6 +3,13 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-25 - EF migrations in their own assembly (SCRUM-371)
+
+### Changed
+- New project `PEMS.Migrations` holds the 119 migrations, the model snapshot and the design-time factory; `PEMS.Persistence.dll` shrinks from 29 MB to 6 MB and `PEMS.Migrations.dll` (23 MB) stays byte-identical when only data-layer code changes, so deploys no longer re-upload the migrations.
+- `PEMSDbContext` defaults `MigrationsAssembly` to `PEMS.Migrations`; Web and Tests reference the project. Add a migration with `dotnet ef migrations add <Name> --project PEMS.Migrations --startup-project PEMS.Web`; the drift gate, `deploy.ps1`, the Dockerfile and the docs use the new project.
+- Tests: the update-run test no longer assumes the last two migrations are the code-first ones; a new database-free test checks that a plain `UseSqlServer` finds the migrations.
+
 ## 2026-10-25 - Smaller deployment package
 
 ### Changed
