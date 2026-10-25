@@ -25,7 +25,7 @@ Do the same for `demo` and for `staging`; only the names differ.
 
 ### 2.1 Create the subdomain (Plesk)
 1. Plesk > **Websites & Domains** > the main domain (`parmisata.ir`) > **Add Subdomain**.
-2. Subdomain name `demo` (or `staging`). Keep the suggested document root (for example `/demo.parmisata.ir`) and note it: it is `<P>_FTP_DIR`.
+2. Subdomain name `demo` (or `staging`). Keep the suggested document root (for example `/demo.parmisata.ir`); it is the home folder of the FTP account in 2.3.
 3. If DNS is not managed by Plesk, add an **A record** (`demo`, `staging`) pointing to the server IP at your DNS provider.
 4. Subdomain > **Hosting Settings**: make sure the ASP.NET Core Module / IIS site is active; tick **Permanent SEO-safe 301 redirect from HTTP to HTTPS** after the certificate exists.
 5. Subdomain > **SSL/TLS Certificates** > **Let's Encrypt** (DNS must already resolve) > get the free certificate. WebAuthn/passkeys need HTTPS.
@@ -49,7 +49,7 @@ Repository > **Settings > Secrets and variables > Actions > New repository secre
 |---|---|
 | `<P>_FTP_HOST` | FTP host name, for example `parmisata.ir` |
 | `<P>_FTP_USER` / `<P>_FTP_PASSWORD` | the FTP account of 2.3 |
-| `<P>_FTP_DIR` | remote folder of the subdomain **with trailing slash** (this host: `/`) |
+| `<P>_FTP_DIR` | remote folder **relative to the FTP account's home**, with trailing slash. If the account home is the subdomain folder (section 2.3) this is `/` (this host). A wrong value fails with `550 The system cannot find the file specified`; the pipeline's early FTP check then lists the folders it can see |
 | `<P>_FTP_PROTOCOL` | optional: `ftp`, `ftps` or `ftps-legacy` (default `ftps`; this host works with `ftp` only) |
 | `<P>_FTP_PORT` | optional, default 21 |
 | `<P>_SQL_CONNECTION_STRING` | connection string of 2.2 |
