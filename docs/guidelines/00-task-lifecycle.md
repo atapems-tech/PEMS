@@ -46,7 +46,11 @@ Never change the status of issues you were not asked to work on (except the pare
 ## 3. While you work
 
 - **Reuse before you write.** Search the repo first (`graphify query`, grep, existing services/components). Extend or modify what exists; do not create a parallel concept (rule 3). See chapters 01 and 02.
-- **Branch / commits / PR** start with the Jira key: branch `feature/SCRUM-123-short-name`; commit `SCRUM-123 feat(scope): message`; PR title `SCRUM-123 ...`.
+- **One working branch per task, or per approved batch.** Create it from the integration branch (`dev`, unless the user names another) right after the issue(s) move to In Progress and before the first edit; never work directly on `dev`/`main`/`demo`.
+  - Single task: `feature/SCRUM-123-short-name` (use `fix/`, `docs/`, `refactor/`, `chore/` by change type).
+  - Batch of conceptually related tasks approved together: **one** branch named after the primary issue (`feature/SCRUM-123-short-name`); every batch partner's key appears in the commit messages (`SCRUM-123 SCRUM-124 feat(scope): ...`) and in the PR description. Do not create one branch per partner, and do not mix unrelated tasks into a branch.
+  - Commit `SCRUM-123 feat(scope): message`; PR title `SCRUM-123 ...`.
+  - Keep the branch short-lived: merge as soon as the issue(s) meet *Done when*; do not stack unrelated work on it.
   Stage specific files only: `git add <path>`, never `git add -A` / `git add .` (the user may commit in another terminal - re-run `git status` before committing).
 - **Fix anti-patterns in scope** (rule 15). Large or risky fixes get their own issue - create or propose it, do not hide it in this one.
 - **Stay in scope; record discoveries.** Anything useful you notice outside scope goes to the user as a proposed new issue, not into the diff.
@@ -74,8 +78,9 @@ Then:
 1. **Comment** with: what changed, files/areas touched, tests added, commit hash or PR link, Supportability Matrix rows added, guideline entries added.
 2. **Transition to In Review** with `transitionJiraIssue`; after the merge, **transition to Done** (same comment rules: add the merge commit).
 3. **Parent rules** (apply to Done, not In Review): a Story with Sub-tasks is Done only when all its Sub-tasks are Done; an Epic only when all child issues are Done. When you close the last open child, check the parent and close it too if its own "Done when" is met.
-4. **Update the guideline** if the task produced a durable lesson, decision, helper or pattern (chapter 06).
-5. **Finish, then stop** (rule 16): propose a short list of next tasks (mention batchable ones) and wait for the user's choice.
+4. **Clean up the branch.** When the work is merged into its target (`dev`, then `main` as the user directs), **delete the working branch** locally (`git branch -d <name>`) and on the remote if it was pushed (`git push origin --delete <name>`); use `-d`, which refuses unmerged work, and never delete `main`, `dev`, `demo` or someone else's branch. Mention the deletion in the Jira comment. Then run `git branch --merged` to see leftovers and report them.
+5. **Update the guideline** if the task produced a durable lesson, decision, helper or pattern (chapter 06).
+6. **Finish, then stop** (rule 16): propose a short list of next tasks (mention batchable ones) and wait for the user's choice.
 
 ## 5. When you cannot finish
 
@@ -90,7 +95,7 @@ Then:
 - Never change statuses of issues you were not asked to work on (parent rules and approved batches excepted).
 - Never set "Confirmed by PM" yourself except to record a decision the owner just gave (rule 19).
 - Never claim a feature externally (sales, website, demo) that is not Done with evidence (rule 13).
-- Never push to `main`/`develop`/`demo` directly; never skip hooks; never force-push shared branches.
+- Never commit to `main`/`dev`/`demo` directly or leave merged working branches behind; changes reach them only by merging a working branch (the user decides the merge target and whether a PR is needed); never skip hooks; never force-push shared branches.
 
 ## 7. Working with the user
 
