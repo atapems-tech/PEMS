@@ -18,6 +18,11 @@ on:
         description: 'Prefix of the GitHub secrets: DEMO or STAGING'
         required: true
         type: string
+      force_gate:
+        description: 'Run the build, drift and test gate even when this exact source tree already passed it'
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   group: deploy-${{ inputs.target }}
@@ -26,6 +31,8 @@ concurrency:
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write      # only to record the gate-pass tag (see 'Record that this exact tree passed the gate')
     env:
       TARGET: ${{ inputs.target }}
 
@@ -86,20 +93,48 @@ jobs:
 
       - uses: actions/checkout@v4
 
+      # Identical code is not tested twice. After the gate passes, the tag gate-pass/<hash of the whole source tree> is pushed; a later deploy of a tree
+      # with the same hash (for example demo after staging) finds the tag and skips restore, build, drift gate and tests. Any change gives a new hash,
+      # so the gate runs again. Failed gates leave no tag. force_gate or a manual run with force_tests ignores the tag.
+      - name: Decide whether the test gate is needed
+        id: gate
+        env:
+          FORCE: ${{ inputs.force_gate }}
+        run: |
+          tree=$(git rev-parse 'HEAD^{tree}')
+          echo "tree=$tree" >> "$GITHUB_OUTPUT"
+          if [ "$FORCE" != "true" ] && git ls-remote --exit-code --tags origin "refs/tags/gate-pass/$tree" > /dev/null 2>&1; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "This exact source tree ($tree) already passed the gate: build, drift gate and tests are skipped."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "Gate needed for source tree $tree."
+          fi
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ hashFiles('**/*.csproj', 'Directory.Build.props') }}
+          restore-keys: nuget-
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
 
       - name: Restore
+        if: steps.gate.outputs.skip != 'true'
         run: dotnet restore PEMS.slnx
 
       - name: Build
+        if: steps.gate.outputs.skip != 'true'
         run: dotnet build PEMS.slnx --no-restore --configuration Release
 
       # Code-first gate: the entity model and the migrations must agree, otherwise the startup migrator cannot
       # apply a complete schema on the target database.
       - name: Model drift gate (no entity change without a migration)
+        if: steps.gate.outputs.skip != 'true'
         env:
           # model-only comparison: the design-time factory needs a connection string but no connection is opened
           ConnectionStrings__PEMSConnection: Server=localhost;Database=PEMS_ModelCheck;Trusted_Connection=True;TrustServerCertificate=True
@@ -111,6 +146,7 @@ jobs:
       # The full suite needs a real SQL Server (and Windows paths) and runs in build.yml. This runner has neither, so the deploy
       # gate runs the tests that need no database: code-first/migration chain rules, environment files, localization parity, sidebar.
       - name: Test (database-free gate)
+        if: steps.gate.outputs.skip != 'true'
         run: >
           dotnet test PEMS.Tests/PEMS.Tests.csproj --no-build --configuration Release --verbosity normal
           --filter "FullyQualifiedName~PEMS.Tests.Deployment.DatabaseInitializerTests|FullyQualifiedName~PEMS.Tests.Deployment.EnvironmentFilesTests|FullyQualifiedName~LocalizationKeyCoverageTests|FullyQualifiedName~PEMS.Tests.Web.DynamicSidebarTests"
@@ -118,6 +154,12 @@ jobs:
       # Plesk/IIS on Windows: self-contained win-x64 so the host does not need the .NET 10 runtime
       # installed (it still needs the ASP.NET Core Module). The SDK emits web.config on publish.
       # -p:PemsEnv=${{ inputs.target }} ships env/<target>.env (non-secret settings) as publish/env/<target>.env.
+      - name: Record that this exact tree passed the gate
+        if: steps.gate.outputs.skip != 'true'
+        run: |
+          git tag "gate-pass/${{ steps.gate.outputs.tree }}"
+          git push origin "gate-pass/${{ steps.gate.outputs.tree }}" || echo "::warning::could not record the gate-pass tag (the next deploy will run the gate again)"
+
       - name: Publish
         run: dotnet publish PEMS.Web/PEMS.Web.csproj -c Release -r win-x64 --self-contained true -p:PemsEnv=${{ inputs.target }} -p:DebugType=none -p:DebugSymbols=false -o ./publish
 
