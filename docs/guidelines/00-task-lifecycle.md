@@ -32,6 +32,9 @@ Field ownership between the plan workbook and Jira: [PLAN_TRACKER_WORKFLOW.md](.
 
 ## 2. Starting the issue (Jira, mandatory)
 
+0. **No started issue without an assignee.** Before (or in the same step as) moving an issue to In Progress, it must have an assignee: the person doing the work.
+   Assign it to the developer running the session (`atlassianUserInfo` for the account id). If you are unsure whose it is, or it is not the current user's, assign it to **Saber** (Jira user `saberahmadi48`) and tell the user.
+   If you find any In Progress / In Review issue with no assignee, fix it the same way (JQL: `project = SCRUM AND statusCategory = "In Progress" AND assignee is EMPTY`) and mention it in your report.
 1. Move the issue to **In Progress** with `transitionJiraIssue` *before writing any code*.
    Use the transition named "In Progress"; if that fails, list the issue's transitions and pick the one leading to the In Progress status.
 2. Parents: Sub-task with a parent Story still To Do -> move the Story to In Progress too. Story inside an Epic still To Do -> move the Epic too.
@@ -83,6 +86,7 @@ Then:
 ## 6. Never
 
 - Never mark In Review or Done because the session is ending or the code "looks finished" without passing tests. Never mark Done before the merge.
+- Never leave an issue In Progress / In Review without an assignee.
 - Never change statuses of issues you were not asked to work on (parent rules and approved batches excepted).
 - Never set "Confirmed by PM" yourself except to record a decision the owner just gave (rule 19).
 - Never claim a feature externally (sales, website, demo) that is not Done with evidence (rule 13).

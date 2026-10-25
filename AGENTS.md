@@ -15,7 +15,7 @@ It is short on purpose. The rules live in [docs/guidelines/](docs/guidelines/REA
 
 ## Five rules you must never forget
 
-- Jira project `SCRUM` (https://atapems.atlassian.net). Never write code before the issue is In Progress. Never mark In Review/Done without green tests, never Done before merge.
+- Jira project `SCRUM` (https://atapems.atlassian.net). Never write code before the issue is In Progress, and never leave a started issue without an assignee (yourself, or Saber if it is not yours). Never mark In Review/Done without green tests, never Done before merge.
 - No new static module; no new hand-written UI markup when a component exists; no logic in controllers.
 - Offline product: no CDN, no external call, no telemetry. Settings only in `env/*.env`, secrets only in `*.secrets.env`.
 - Schema only through new migrations (never edit an applied one). Stage specific files only (`git add <path>`, never `-A`).
