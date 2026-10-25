@@ -213,20 +213,31 @@ jobs:
       - name: Wait for database install/update to finish
         timeout-minutes: 35
         env:
+          PREFIX: ${{ inputs.prefix }}
           SITE: ${{ secrets[format('{0}_SITE_URL', inputs.prefix)] }}
         run: |
           if [ -z "$SITE" ]; then
             echo "::warning::<PREFIX>_SITE_URL is not set; skipping the post-deploy database check."
             exit 0
           fi
-          state="no response"
+          # Shows the readable text of an HTML error page (IIS / ASP.NET Core Module) instead of its first raw bytes, so the cause is in the run log.
+          page_text() { sed -e 's/<style[^>]*>.*<\/style>//g' -e 's/<[^>]*>/ /g' health.txt 2>/dev/null | tr -s ' 
+	' ' ' | head -c "${1:-300}"; }
+          state="no response"; fails5xx=0
           for i in $(seq 1 70); do
             code=$(curl -sS -k -o health.txt -w '%{http_code}' --max-time 90 "$SITE/health/database" 2> curl.err) || true
-            state=$(head -c 80 health.txt 2>/dev/null || true)
+            state=$(page_text 300)
             echo "attempt $i: HTTP ${code:-000} ${state} $(head -c 120 curl.err 2>/dev/null)"
             if [ "$code" = "200" ]; then
               echo "Database is up to date on the ${TARGET} site."
               exit 0
+            fi
+            # A schema install hangs or times out; it does not answer 5xx. Twenty 5xx answers in a row (about 7 minutes) mean the application failed to start.
+            case "$code" in 5??) fails5xx=$((fails5xx+1));; *) fails5xx=0;; esac
+            if [ "$fails5xx" -ge 20 ]; then
+              echo "::error::The ${TARGET} application answers HTTP $code and does not start: $(page_text 500)"
+              echo "Likely causes, in order: the database is not reachable or the login in ${PREFIX}_SQL_CONNECTION_STRING is wrong or lacks rights to create tables; the app pool or ASP.NET Core Module is missing or stopped; an environment file or setting is missing. Read logs/stdout* and logs/pems-*.log in Plesk > Files for the real error."
+              exit 1
             fi
             sleep 20
           done
