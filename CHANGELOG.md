@@ -3,6 +3,12 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-25 - Faster deploys: no repeated tests, health check shows the real error
+
+### Changed
+- The deploy pipeline records `gate-pass/<source tree hash>` after build, drift gate and tests pass and skips them when the same tree is deployed again (for example demo after staging); NuGet packages are cached; `force_tests` runs the gate anyway.
+- The post-deploy health check prints the readable error page and, after 20 consecutive 5xx answers, the newest `logs/stdout*` and `logs/pems-*.log` lines read over FTP, then fails.
+
 ## 2026-10-25 - EF migrations in their own assembly (SCRUM-371)
 
 ### Changed
