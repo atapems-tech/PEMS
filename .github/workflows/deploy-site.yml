@@ -1,0 +1,192 @@
+# Reusable deploy of PEMS.Web to a Plesk/IIS subdomain over FTP. Called by deploy-demo.yml (push to `demo`) and deploy-staging.yml (push to `staging`).
+# It never runs by itself. Secrets are read by prefix (inputs.prefix): DEMO_* for the demo, STAGING_* for staging (see docs/deployment/DEPLOYMENT_README.md):
+#   <P>_FTP_HOST, <P>_FTP_USER, <P>_FTP_PASSWORD, <P>_FTP_DIR (trailing slash), <P>_FTP_PROTOCOL (optional), <P>_FTP_PORT (optional),
+#   <P>_SQL_CONNECTION_STRING (the separate database of that environment, never a live one), <P>_ADMIN_PASSWORD, <P>_SITE_URL (health check).
+# The database is code-first: the first start after the upload installs the schema, later deploys update it
+# (docs/deployment/CODE_FIRST_DATABASE.md). The pipeline gates on model/migration drift and waits for /health/database to report UpToDate.
+
+name: PEMS Deploy Site (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      target:
+        description: 'Environment to deploy: demo or staging (selects env/<target>.env and PEMS_ENV)'
+        required: true
+        type: string
+      prefix:
+        description: 'Prefix of the GitHub secrets: DEMO or STAGING'
+        required: true
+        type: string
+
+concurrency:
+  group: deploy-${{ inputs.target }}
+  cancel-in-progress: false
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    env:
+      TARGET: ${{ inputs.target }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore PEMS.slnx
+
+      - name: Build
+        run: dotnet build PEMS.slnx --no-restore --configuration Release
+
+      # Code-first gate: the entity model and the migrations must agree, otherwise the startup migrator cannot
+      # apply a complete schema on the target database.
+      - name: Model drift gate (no entity change without a migration)
+        env:
+          # model-only comparison: the design-time factory needs a connection string but no connection is opened
+          ConnectionStrings__PEMSConnection: Server=localhost;Database=PEMS_ModelCheck;Trusted_Connection=True;TrustServerCertificate=True
+        run: |
+          dotnet tool install --global dotnet-ef --version 10.0.10
+          export PATH="$PATH:$HOME/.dotnet/tools"
+          dotnet ef migrations has-pending-model-changes --project PEMS.Persistence --startup-project PEMS.Web --no-build --configuration Release
+
+      # The full suite needs a real SQL Server (and Windows paths) and runs in build.yml. This runner has neither, so the deploy
+      # gate runs the tests that need no database: code-first/migration chain rules, environment files, localization parity, sidebar.
+      - name: Test (database-free gate)
+        run: >
+          dotnet test PEMS.Tests/PEMS.Tests.csproj --no-build --configuration Release --verbosity normal
+          --filter "FullyQualifiedName~PEMS.Tests.Deployment.DatabaseInitializerTests|FullyQualifiedName~PEMS.Tests.Deployment.EnvironmentFilesTests|FullyQualifiedName~LocalizationKeyCoverageTests|FullyQualifiedName~PEMS.Tests.Web.DynamicSidebarTests"
+
+      # Plesk/IIS on Windows: self-contained win-x64 so the host does not need the .NET 10 runtime
+      # installed (it still needs the ASP.NET Core Module). The SDK emits web.config on publish.
+      # -p:PemsEnv=${{ inputs.target }} ships env/<target>.env (non-secret settings) as publish/env/<target>.env.
+      - name: Publish
+        run: dotnet publish PEMS.Web/PEMS.Web.csproj -c Release -r win-x64 --self-contained true -p:PemsEnv=${{ inputs.target }} -o ./publish
+
+      # Environment selection and secrets, without storing anything in Git:
+      #  - PEMS_ENV=<target> is set for the app in web.config (the app then reads env/<target>.env + env/<target>.secrets.env),
+      #  - env/<target>.secrets.env is generated here from GitHub secrets and uploaded next to the app (never packaged by the build),
+      #  - a longer IIS startup limit: the first run installs the whole schema before the app starts serving.
+      - name: Configure runtime
+        env:
+          CONN: ${{ secrets[format('{0}_SQL_CONNECTION_STRING', inputs.prefix)] }}
+          ADMIN_PASSWORD: ${{ secrets[format('{0}_ADMIN_PASSWORD', inputs.prefix)] }}
+        run: |
+          test -n "$CONN" && test -n "$ADMIN_PASSWORD"
+          test -f "publish/env/${TARGET}.env"
+          umask 077
+          {
+            printf 'ConnectionStrings__PEMSConnection=%s\n' "$CONN"
+            printf 'Seed__Admin__Password=%s\n' "$ADMIN_PASSWORD"
+          } > "publish/env/${TARGET}.secrets.env"
+          sed -i 's#hostingModel="inprocess" />#hostingModel="inprocess"><environmentVariables><environmentVariable name="PEMS_ENV" value="'"${TARGET}"'" /></environmentVariables></aspNetCore>#' publish/web.config
+          sed -i 's/<aspNetCore /<aspNetCore startupTimeLimit="900" /' publish/web.config
+          # startup output is written to logs/stdout* on the server so a failed first run can be diagnosed from the hosting panel
+          sed -i 's/stdoutLogEnabled="false"/stdoutLogEnabled="true"/' publish/web.config
+          grep -q 'stdoutLogEnabled="true"' publish/web.config
+          grep -q "name=\"PEMS_ENV\" value=\"${TARGET}\"" publish/web.config
+          grep -q 'startupTimeLimit="900"' publish/web.config
+
+      # IIS keeps the application DLLs locked while the app runs (FTP error 550 "being used by another process").
+      # Uploading app_offline.htm makes the ASP.NET Core Module stop the app and release the files; it is removed after a successful upload.
+      - name: Take the app offline (release file locks)
+        continue-on-error: true
+        env:
+          FTP_HOST: ${{ secrets[format('{0}_FTP_HOST', inputs.prefix)] }}
+          FTP_USER: ${{ secrets[format('{0}_FTP_USER', inputs.prefix)] }}
+          FTP_PASS: ${{ secrets[format('{0}_FTP_PASSWORD', inputs.prefix)] }}
+          FTP_DIR: ${{ secrets[format('{0}_FTP_DIR', inputs.prefix)] }}
+          FTP_PROTO: ${{ secrets[format('{0}_FTP_PROTOCOL', inputs.prefix)] }}
+        run: |
+          printf '<html><body><h3>PEMS %s is being updated, back in a few minutes.</h3></body></html>' "$TARGET" > app_offline.htm
+          TLS=""; [ "$FTP_PROTO" = "ftps" ] && TLS="--ssl-reqd --insecure"
+          printf 'user = "%s:%s"\n' "$FTP_USER" "$FTP_PASS" | curl -sS -K - $TLS --max-time 90 -T app_offline.htm "ftp://${FTP_HOST}${FTP_DIR}app_offline.htm"
+          echo "app_offline.htm uploaded; waiting for IIS to stop the app"
+          sleep 25
+
+      # The host is slow to accept FTP connections intermittently (control-socket timeouts), so the upload gets a long timeout and one retry.
+      - name: Deploy via FTP
+        id: ftp1
+        continue-on-error: true
+        timeout-minutes: 60
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets[format('{0}_FTP_HOST', inputs.prefix)] }}
+          username: ${{ secrets[format('{0}_FTP_USER', inputs.prefix)] }}
+          password: ${{ secrets[format('{0}_FTP_PASSWORD', inputs.prefix)] }}
+          protocol: ${{ secrets[format('{0}_FTP_PROTOCOL', inputs.prefix)] || 'ftps' }}
+          port: ${{ secrets[format('{0}_FTP_PORT', inputs.prefix)] || 21 }}
+          local-dir: ./publish/
+          server-dir: ${{ secrets[format('{0}_FTP_DIR', inputs.prefix)] }}
+          timeout: 180000
+
+      - name: Deploy via FTP (retry)
+        if: steps.ftp1.outcome == 'failure'
+        timeout-minutes: 60
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets[format('{0}_FTP_HOST', inputs.prefix)] }}
+          username: ${{ secrets[format('{0}_FTP_USER', inputs.prefix)] }}
+          password: ${{ secrets[format('{0}_FTP_PASSWORD', inputs.prefix)] }}
+          protocol: ${{ secrets[format('{0}_FTP_PROTOCOL', inputs.prefix)] || 'ftps' }}
+          port: ${{ secrets[format('{0}_FTP_PORT', inputs.prefix)] || 21 }}
+          local-dir: ./publish/
+          server-dir: ${{ secrets[format('{0}_FTP_DIR', inputs.prefix)] }}
+          timeout: 180000
+
+      - name: Bring the app back online
+        if: success()
+        env:
+          FTP_HOST: ${{ secrets[format('{0}_FTP_HOST', inputs.prefix)] }}
+          FTP_USER: ${{ secrets[format('{0}_FTP_USER', inputs.prefix)] }}
+          FTP_PASS: ${{ secrets[format('{0}_FTP_PASSWORD', inputs.prefix)] }}
+          FTP_DIR: ${{ secrets[format('{0}_FTP_DIR', inputs.prefix)] }}
+          FTP_PROTO: ${{ secrets[format('{0}_FTP_PROTOCOL', inputs.prefix)] }}
+        run: |
+          TLS=""; [ "$FTP_PROTO" = "ftps" ] && TLS="--ssl-reqd --insecure"
+          REL="${FTP_DIR#/}app_offline.htm"
+          printf 'user = "%s:%s"\n' "$FTP_USER" "$FTP_PASS" | curl -sS -K - $TLS --max-time 90 -Q "DELE ${REL}" "ftp://${FTP_HOST}/" -o /dev/null
+          echo "app_offline.htm removed; the next request starts the application"
+
+      # The first request starts the app, which installs/updates the schema before serving. /health/database is
+      # anonymous and returns 200 only when every migration is applied (503 + state name otherwise).
+      # The probe uses --insecure so a missing/invalid TLS certificate (Plesk "Domain not secured") does not hide the app state;
+      # the certificate itself is reported by the separate non-fatal check below.
+      - name: Wait for database install/update to finish
+        timeout-minutes: 35
+        env:
+          SITE: ${{ secrets[format('{0}_SITE_URL', inputs.prefix)] }}
+        run: |
+          if [ -z "$SITE" ]; then
+            echo "::warning::<PREFIX>_SITE_URL is not set; skipping the post-deploy database check."
+            exit 0
+          fi
+          state="no response"
+          for i in $(seq 1 70); do
+            code=$(curl -sS -k -o health.txt -w '%{http_code}' --max-time 90 "$SITE/health/database" 2> curl.err) || true
+            state=$(head -c 80 health.txt 2>/dev/null || true)
+            echo "attempt $i: HTTP ${code:-000} ${state} $(head -c 120 curl.err 2>/dev/null)"
+            if [ "$code" = "200" ]; then
+              echo "Database is up to date on the ${TARGET} site."
+              exit 0
+            fi
+            sleep 20
+          done
+          echo "::error::${TARGET} database did not reach UpToDate (last: HTTP ${code:-000} ${state}). Read logs/stdout* and logs/pems-*.log on the server (Plesk > Files) and Admin > Database Update on the site."
+          exit 1
+
+      - name: TLS certificate of the site (informational)
+        if: always()
+        env:
+          SITE: ${{ secrets[format('{0}_SITE_URL', inputs.prefix)] }}
+        run: |
+          [ -z "$SITE" ] && exit 0
+          if curl -sS -o /dev/null --max-time 30 "$SITE/health" 2> tls.err; then
+            echo "TLS certificate is valid."
+          else
+            echo "::warning::TLS verification failed for $SITE ($(head -c 200 tls.err)). Issue a certificate for the subdomain in Plesk (SSL/TLS Certificates > Let's Encrypt)."
+          fi

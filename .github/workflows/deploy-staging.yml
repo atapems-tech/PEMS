@@ -1,0 +1,18 @@
+# Deploys the staging subdomain on every push or merge to the `staging` branch (and on manual run).
+# The build, tests, publish and upload are in deploy-site.yml. Secrets: STAGING_* (docs/deployment/DEPLOYMENT_README.md).
+
+name: PEMS Staging Deploy
+
+on:
+  push:
+    branches: [staging]
+    paths-ignore: ['docs/**', 'plan/**', 'legacy-trash/**', '*.md']      # documentation-only pushes do not redeploy
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/deploy-site.yml
+    with:
+      target: staging
+      prefix: STAGING
+    secrets: inherit

@@ -1,13 +1,10 @@
 # طبق PEMS Architecture & Development Bible (Volume X - DevOps): CI پایه.
 # فقط Build و Restore را بررسی می‌کند - افزودن Test واقعی وقتی PEMS.Tests محتوا داشته باشد.
 
-name: PEMS Build
+name: PEMS Build (manual)
 
 on:
-  push:
-    branches: [ "main", "develop" ]
-  pull_request:
-    branches: [ "main", "develop" ]
+  workflow_dispatch:   # manual only: no pipeline runs on pushes or pull requests to main or any working branch (docs/guidelines/00, DEPLOYMENT_README.md)
 
 jobs:
   build:
