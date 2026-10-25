@@ -106,7 +106,7 @@ jobs:
         run: |
           dotnet tool install --global dotnet-ef --version 10.0.10
           export PATH="$PATH:$HOME/.dotnet/tools"
-          dotnet ef migrations has-pending-model-changes --project PEMS.Persistence --startup-project PEMS.Web --no-build --configuration Release
+          dotnet ef migrations has-pending-model-changes --project PEMS.Migrations --startup-project PEMS.Web --no-build --configuration Release
 
       # The full suite needs a real SQL Server (and Windows paths) and runs in build.yml. This runner has neither, so the deploy
       # gate runs the tests that need no database: code-first/migration chain rules, environment files, localization parity, sidebar.

@@ -27,8 +27,8 @@
 - Use existing patterns for DTOs, Services, Controllers, Views.
 - Prefer Persian comments in domain entities when explaining business rules (project convention).
 - After schema changes:  
-  `dotnet ef migrations add <Name> --project PEMS.Persistence --startup-project PEMS.Web`  
-  `dotnet ef database update --project PEMS.Persistence --startup-project PEMS.Web`
+  `dotnet ef migrations add <Name> --project PEMS.Migrations --startup-project PEMS.Web`  
+  `dotnet ef database update --project PEMS.Migrations --startup-project PEMS.Web`
 
 ---
 

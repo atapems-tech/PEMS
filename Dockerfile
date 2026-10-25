@@ -13,6 +13,7 @@ WORKDIR /src
 COPY PEMS.Domain/*.csproj PEMS.Domain/
 COPY PEMS.Application/*.csproj PEMS.Application/
 COPY PEMS.Persistence/*.csproj PEMS.Persistence/
+COPY PEMS.Migrations/*.csproj PEMS.Migrations/
 COPY PEMS.Infrastructure/*.csproj PEMS.Infrastructure/
 COPY PEMS.AI/*.csproj PEMS.AI/
 COPY PEMS.Shared/*.csproj PEMS.Shared/

@@ -42,7 +42,7 @@ dotnet run --project PEMS.Web
   `dotnet publish -p:PemsEnv=demo`.
 - **Kangan production:** fill every `REPLACE` value in `env/production-kangan.env` (it is a normal reviewed commit),
   create `env/production-kangan.secrets.env` on the server (mode 600) and start with `PEMS_ENV=production-kangan`.
-- **dotnet ef:** the design-time factory reads `ConnectionStrings__PEMSConnection` from the environment or from
+- **dotnet ef:** (project `PEMS.Migrations`) the design-time factory reads `ConnectionStrings__PEMSConnection` from the environment or from
   `env/<PEMS_ENV or local>.secrets.env`; it has no fallback and always prints its target database.
 
 ## Rules
