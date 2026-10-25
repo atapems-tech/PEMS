@@ -3191,4 +3191,22 @@
   <data name="Ct_ApproverEligible" xml:space="preserve"><value>دارندگان مجوز تایید</value></data>
   <data name="Ct_ApproverOthers" xml:space="preserve"><value>سایر کارکنان</value></data>
   <data name="Lc_Err_ReferralNeedsParent" xml:space="preserve"><value>ارجاع باید از روی یک نامه‌ی موجود انجام شود.</value></data>
+  <data name="Admin account recovery attempts: who, which method, from where, and whether it succeeded. Records are append-only." xml:space="preserve"><value>تلاش‌های بازیابی حساب مدیر: چه کسی، با چه روشی، از کجا و با چه نتیجه‌ای. رکوردها فقط‌افزودنی‌اند.</value></data>
+  <data name="Method" xml:space="preserve"><value>روش</value></data>
+  <data name="All methods" xml:space="preserve"><value>همه‌ی روش‌ها</value></data>
+  <data name="All results" xml:space="preserve"><value>همه‌ی نتایج</value></data>
+  <data name="Success" xml:space="preserve"><value>موفق</value></data>
+  <data name="Failure" xml:space="preserve"><value>ناموفق</value></data>
+  <data name="Actor" xml:space="preserve"><value>انجام‌دهنده</value></data>
+  <data name="IP address" xml:space="preserve"><value>نشانی IP</value></data>
+  <data name="Forwarded" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="No security events" xml:space="preserve"><value>رویداد امنیتی‌ای ثبت نشده است</value></data>
+  <data name="No admin recovery has been attempted, or the filters match nothing." xml:space="preserve"><value>هیچ بازیابی حساب مدیری انجام نشده یا فیلترها نتیجه‌ای ندارند.</value></data>
+  <data name="Reset by another administrator" xml:space="preserve"><value>ریست توسط مدیر دیگر</value></data>
+  <data name="Recovery code" xml:space="preserve"><value>کد بازیابی</value></data>
+  <data name="Server break-glass" xml:space="preserve"><value>break-glass روی سرور</value></data>
+  <data name="Vendor token" xml:space="preserve"><value>توکن فروشنده</value></data>
+  <data name="User edit in the admin panel" xml:space="preserve"><value>ویرایش کاربر در پنل مدیریت</value></data>
+  <data name="The password was changed but recording or session revocation failed." xml:space="preserve"><value>رمز عوض شد اما ثبت رویداد یا بستن نشست‌ها ناموفق بود.</value></data>
+  <data name="User updated, but the password was not changed" xml:space="preserve"><value>کاربر به‌روزرسانی شد اما رمز عوض نشد</value></data>
 </root>

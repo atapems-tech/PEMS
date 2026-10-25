@@ -549,6 +549,8 @@ builder.Services.AddScoped<IWorkRequestService, WorkRequestService>();
 builder.Services.AddScoped<IUserDashboardService, UserDashboardService>();
 
 builder.Services.AddScoped<INotificationService, NotificationService>();
+// SCRUM-357: ممیزی + ابطال نشست + اعلان مشترک مسیرهای بازیابی حساب مدیر
+builder.Services.AddScoped<IRecoveryEventService, RecoveryEventService>();
 builder.Services.AddScoped<IMyWorkService, PEMS.Persistence.Services.MyWorkService>();
 
 builder.Services.AddScoped<ILetterService, LetterService>();

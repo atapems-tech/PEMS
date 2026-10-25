@@ -15496,6 +15496,68 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("SavedFilters");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.SecurityEvent", b =>
+                {
+                    b.Property<int>("SecurityEventId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SecurityEventId"));
+
+                    b.Property<int?>("ActorUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ActorUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("EventType")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("FailureReason")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime?>("ForwardedToSiemAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IpAddress")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<DateTime>("OccurredAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Result")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<int?>("TargetUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TargetUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("SecurityEventId");
+
+                    b.HasIndex("ForwardedToSiemAt");
+
+                    b.HasIndex("OccurredAtUtc");
+
+                    b.HasIndex("Method", "Result");
+
+                    b.ToTable("SecurityEvents");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.ShiftDefinition", b =>
                 {
                     b.Property<int>("ShiftDefinitionId")

@@ -522,12 +522,33 @@ public class PEMSDbContext
 
     public DbSet<DisciplineTask> DisciplineTasks { get; set; }
 
+    /// <summary>رویدادهای امنیتی بازیابی حساب مدیر (SCRUM-357)؛ فقط‌افزودنی.</summary>
+    public DbSet<SecurityEvent> SecurityEvents { get; set; }
+
+
+    /// <summary>
+    /// SecurityEvent فقط‌افزودنی است: ویرایش یا حذف رد می‌شود. تنها فیلد قابل تغییر ForwardedToSiemAt است (علامت تحویل به SIEM، SCRUM-212).
+    /// </summary>
+    private void EnforceSecurityEventAppendOnly()
+    {
+        foreach (var entry in ChangeTracker.Entries<SecurityEvent>())
+        {
+            if (entry.State == EntityState.Deleted)
+                throw new InvalidOperationException("SecurityEvent records are append-only and cannot be deleted.");
+
+            if (entry.State == EntityState.Modified &&
+                entry.Properties.Any(p => p.IsModified && p.Metadata.Name != nameof(SecurityEvent.ForwardedToSiemAt)))
+                throw new InvalidOperationException("SecurityEvent records are append-only and cannot be modified.");
+        }
+    }
 
 
     public override int SaveChanges()
     {
         // Phase 1 Hardening: نسخه‌ی Published/Retired گردش‌کار تغییرناپذیر است (ساختار، مراحل، گذارها)
         WorkflowVersionImmutabilityGuard.Enforce(this);
+
+        EnforceSecurityEventAppendOnly();
 
         ApplyCreatedDate();
 
@@ -548,6 +569,8 @@ public class PEMSDbContext
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         await WorkflowVersionImmutabilityGuard.EnforceAsync(this, cancellationToken);
+
+        EnforceSecurityEventAppendOnly();
 
         ApplyCreatedDate();
 

@@ -2400,4 +2400,25 @@
   <data name="Ct_ApproverEligible" xml:space="preserve"><value>Holders of the approve permission</value></data>
   <data name="Ct_ApproverOthers" xml:space="preserve"><value>Other staff</value></data>
   <data name="Lc_Err_ReferralNeedsParent" xml:space="preserve"><value>A referral must be made from an existing letter.</value></data>
+  <data name="Admin account recovery attempts: who, which method, from where, and whether it succeeded. Records are append-only." xml:space="preserve"><value>Admin account recovery attempts: who, which method, from where, and whether it succeeded. Records are append-only.</value></data>
+  <data name="Method" xml:space="preserve"><value>Method</value></data>
+  <data name="All methods" xml:space="preserve"><value>All methods</value></data>
+  <data name="All results" xml:space="preserve"><value>All results</value></data>
+  <data name="Success" xml:space="preserve"><value>Success</value></data>
+  <data name="Failure" xml:space="preserve"><value>Failure</value></data>
+  <data name="Actor" xml:space="preserve"><value>Actor</value></data>
+  <data name="Target" xml:space="preserve"><value>Target</value></data>
+  <data name="IP address" xml:space="preserve"><value>IP address</value></data>
+  <data name="Forwarded" xml:space="preserve"><value>Forwarded</value></data>
+  <data name="Pending" xml:space="preserve"><value>Pending</value></data>
+  <data name="No security events" xml:space="preserve"><value>No security events</value></data>
+  <data name="No admin recovery has been attempted, or the filters match nothing." xml:space="preserve"><value>No admin recovery has been attempted, or the filters match nothing.</value></data>
+  <data name="Reset by another administrator" xml:space="preserve"><value>Reset by another administrator</value></data>
+  <data name="Recovery code" xml:space="preserve"><value>Recovery code</value></data>
+  <data name="Server break-glass" xml:space="preserve"><value>Server break-glass</value></data>
+  <data name="Vendor token" xml:space="preserve"><value>Vendor token</value></data>
+  <data name="User edit in the admin panel" xml:space="preserve"><value>User edit in the admin panel</value></data>
+  <data name="The password was changed but recording or session revocation failed." xml:space="preserve"><value>The password was changed but recording or session revocation failed.</value></data>
+  <data name="User updated, but the password was not changed" xml:space="preserve"><value>User updated, but the password was not changed</value></data>
+  <data name="Password" xml:space="preserve"><value>Password</value></data>
 </root>

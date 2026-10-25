@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Identity;
 using PEMS.Web.Areas.Admin.Models;
 using PEMS.Web.Helpers;
+using PEMS.Web.Resources;
 using PEMS.Web.Security;
 
 namespace PEMS.Web.Areas.Admin.Controllers;
@@ -27,6 +29,8 @@ public class UsersController : Controller
     private readonly IUserRoleAssignmentSynchronizer _roleSync;
     private readonly PEMS.Application.Organization.IOrganizationHierarchyService? _hierarchy;
     private readonly IRolePermissionAdminService _permissionAdmin;
+    private readonly IRecoveryEventService _recoveryEvents;
+    private readonly IStringLocalizer<SharedResource>? _localizer;
 
     // سقف امن برای یک درخواست دسته‌ای تب Effective (کل کاتالوگ مجوزها کمتر از این است)
     private const int MaxPermissionChangesPerRequest = 1000;
@@ -50,7 +54,9 @@ public class UsersController : Controller
         NavigationVisibilityResolver navigationResolver,
         IUserRoleAssignmentSynchronizer? roleSync = null,
         PEMS.Application.Organization.IOrganizationHierarchyService? hierarchy = null,
-        IRolePermissionAdminService? permissionAdmin = null)
+        IRolePermissionAdminService? permissionAdmin = null,
+        IRecoveryEventService? recoveryEvents = null,
+        IStringLocalizer<SharedResource>? localizer = null)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -62,7 +68,12 @@ public class UsersController : Controller
         _roleSync = roleSync ?? new PEMS.Persistence.Services.UserRoleAssignmentSynchronizer(context);
         _hierarchy = hierarchy;
         _permissionAdmin = permissionAdmin ?? new PEMS.Persistence.Services.RolePermissionAdminService(context);
+        _recoveryEvents = recoveryEvents ?? new PEMS.Persistence.Services.RecoveryEventService(context, userManager);
+        _localizer = localizer;
     }
+
+    // ترجمه‌ی پیام کاربر؛ بدون Localizer (تست‌های واحد) خودِ کلید انگلیسی برمی‌گردد
+    private string T(string key) => _localizer?[key].Value ?? key;
 
     private async Task<int> CreateEmployeeFromModelAsync(UserFormViewModel model)
     {
@@ -451,11 +462,35 @@ public class UsersController : Controller
         await _userManager.UpdateAsync(user);
 
 
+        string? passwordError = null;
         if (!string.IsNullOrWhiteSpace(model.Password))
         {
+            // SCRUM-357: ریست رمز یک حساب مدیر ممیزی/ابطال نشست/اعلان مشترک دارد؛ نقش پیش از تغییر نقش‌های همین درخواست سنجیده می‌شود
+            var targetIsAdmin = await _userManager.IsInRoleAsync(user, SystemRoles.SystemAdmin);
+            var attempt = new RecoveryAttempt(
+                RecoveryMethods.AdminConsole, user.Id, user.UserName,
+                int.TryParse(_userManager.GetUserId(User), out var actorId) ? actorId : null,
+                User.Identity?.Name,
+                HttpContext.Connection.RemoteIpAddress?.ToString());
+
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            await _userManager.ResetPasswordAsync(user, token, model.Password);
+            var resetResult = await _userManager.ResetPasswordAsync(user, token, model.Password);
+
+            if (!resetResult.Succeeded)
+            {
+                passwordError = string.Join(", ", resetResult.Errors.Select(e => e.Description));
+                if (targetIsAdmin)
+                    await _recoveryEvents.RecordFailureAsync(attempt, RecoveryFailureReasons.PasswordRejected);
+            }
+            else if (targetIsAdmin)
+            {
+                try { await _recoveryEvents.CompleteSuccessAsync(attempt); }
+                catch (InvalidOperationException)
+                {
+                    passwordError = T("The password was changed but recording or session revocation failed.");
+                }
+            }
         }
 
 
@@ -479,7 +514,14 @@ public class UsersController : Controller
         if (roleResult != null && !roleResult.Succeeded)
         {
             TempData["Error"] = "User updated, but some role assignments failed: "
-                + string.Join(", ", roleResult.Errors.Select(e => e.Description));
+                + string.Join(", ", roleResult.Errors.Select(e => e.Description))
+                + (passwordError == null ? "" : " " + T("Password") + ": " + passwordError);
+            return RedirectToAction(nameof(Index));
+        }
+
+        if (passwordError != null)
+        {
+            TempData["Error"] = T("User updated, but the password was not changed") + ": " + passwordError;
             return RedirectToAction(nameof(Index));
         }
 
