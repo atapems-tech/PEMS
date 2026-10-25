@@ -221,8 +221,7 @@ jobs:
             exit 0
           fi
           # Shows the readable text of an HTML error page (IIS / ASP.NET Core Module) instead of its first raw bytes, so the cause is in the run log.
-          page_text() { sed -e 's/<style[^>]*>.*<\/style>//g' -e 's/<[^>]*>/ /g' health.txt 2>/dev/null | tr -s ' 
-	' ' ' | head -c "${1:-300}"; }
+          page_text() { sed -e 's/<style[^>]*>.*<\/style>//g' -e 's/<[^>]*>/ /g' health.txt 2>/dev/null | tr -s '[:space:]' ' ' | head -c "${1:-300}"; }
           state="no response"; fails5xx=0
           for i in $(seq 1 70); do
             code=$(curl -sS -k -o health.txt -w '%{http_code}' --max-time 90 "$SITE/health/database" 2> curl.err) || true
