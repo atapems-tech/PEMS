@@ -93,7 +93,7 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      # Identical code is not tested twice. After the gate passes, the tag gate-pass/<hash of the whole source tree> is pushed; a later deploy of a tree
+      # Identical code is not tested twice. After the gate passes, the tag gate-pass/<hash of all tracked files except docs, plan and *.md> is pushed; a later deploy of a tree
       # with the same hash (for example demo after staging) finds the tag and skips restore, build, drift gate and tests. Any change gives a new hash,
       # so the gate runs again. Failed gates leave no tag. force_gate or a manual run with force_tests ignores the tag.
       - name: Decide whether the test gate is needed
@@ -101,7 +101,8 @@ jobs:
         env:
           FORCE: ${{ inputs.force_gate }}
         run: |
-          tree=$(git rev-parse 'HEAD^{tree}')
+          # hash of every tracked file except documentation, plan files and retired material, so a docs-only difference never forces the gate
+          tree=$(git ls-files -s -- . ':!docs' ':!plan' ':!legacy-trash' ':!*.md' | sha1sum | cut -c1-40)
           echo "tree=$tree" >> "$GITHUB_OUTPUT"
           if [ "$FORCE" != "true" ] && git ls-remote --exit-code --tags origin "refs/tags/gate-pass/$tree" > /dev/null 2>&1; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
