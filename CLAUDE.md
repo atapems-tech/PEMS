@@ -1,3 +1,10 @@
+# Read first (mandatory for every task)
+
+Read [AGENTS.md](AGENTS.md) and [docs/guidelines/README.md](docs/guidelines/README.md) before doing any task, then the Jira issue and
+related issues. Follow the guideline while working; update it at the end if you learned something durable. Say in your first message that you did.
+
+@AGENTS.md
+
 ## graphify
 
 This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.

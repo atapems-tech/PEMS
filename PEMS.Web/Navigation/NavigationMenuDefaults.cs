@@ -154,7 +154,7 @@ public static class NavigationMenuDefaults
 
         // ---- مدیریت سیستم (برای دارنده‌ی DisciplineMaster بدون Administration فقط زیرگروه سازمان/دیسیپلین دیده می‌شود)
         Section("sec.admin", 1000, "Administration", "bi-gear", "Module:Administration|Flag:DisciplineMaster",
-            "Settings,Users,Roles,PermissionMatrix,AuditLog,RoutingRules,ContractApprovalAuthority,Department,Employee,Authorization,SoDPolicy,AuthorizationAudit,NavigationVisibility,NavigationMenu,Organization,OrganizationImport,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
+            "Settings,Users,Roles,PermissionMatrix,AuditLog,RoutingRules,ContractApprovalAuthority,Department,Employee,Authorization,SoDPolicy,AuthorizationAudit,NavigationVisibility,NavigationMenu,Organization,OrganizationImport,DatabaseUpdate,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
             activeArea: "Admin"),
         Link("admin.settings", "sec.admin", 10, "Settings", "bi-gear", "Settings", rule: "Module:Administration"),
         Sub("admin.sub.access", "sec.admin", 20, "User & Access"),
@@ -180,6 +180,7 @@ public static class NavigationMenuDefaults
         Sub("admin.sub.monitoring", "sec.admin", 50, "System Monitoring"),
         Link("admin.auditlog", "admin.sub.monitoring", 10, "AuditLog", "bi-clock-history", "AuditLog", area: "Admin", rule: "Module:Administration"),
         Link("admin.authaudit", "admin.sub.monitoring", 20, "Authorization Audit", "bi-journal-check", "AuthorizationAudit", area: "Admin", rule: "Module:Administration"),
+        Link("admin.dbupdate", "admin.sub.monitoring", 25, "Database Update", "bi-database-up", "DatabaseUpdate", area: "Admin", rule: "Module:Administration"),
         Link("admin.performance", "admin.sub.monitoring", 30, "Performance Testing", "bi-speedometer2", "Performance", rule: "Module:Administration"),
         new("admin.hangfire", "admin.sub.monitoring", L, 40, "Background Jobs Dashboard", "bi-hdd-stack", "Module:Administration",
             ExternalPath: "/hangfire", OpenInNewTab: true),

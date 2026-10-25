@@ -80,7 +80,7 @@
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
     var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
-    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "ContractApprovalAuthority", "Department", "Employee", "Authorization", "SoDPolicy", "AuthorizationAudit", "NavigationVisibility", "Organization", "OrganizationImport" };
+    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "ContractApprovalAuthority", "Department", "Employee", "Authorization", "SoDPolicy", "AuthorizationAudit", "NavigationVisibility", "Organization", "OrganizationImport", "DatabaseUpdate" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
     // Warehouse یک Area مستقل است؛ کنترلرهای هم‌نام در Areaهای دیگر نباید بخش را فعال کنند
@@ -782,6 +782,11 @@
                 <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("AuthorizationAudit", "Admin") ? "active" : "")"
                    asp-area="Admin" asp-controller="AuthorizationAudit" asp-action="Index">
                     <i class="bi bi-journal-check"></i> @Localizer["Authorization Audit"]
+                </a>
+
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("DatabaseUpdate") ? "active" : "")"
+                   asp-area="Admin" asp-controller="DatabaseUpdate" asp-action="Index">
+                    <i class="bi bi-database-up"></i> @Localizer["Database Update"]
                 </a>
 
                 <a class="nav-link nav-subitem @(IsActive("Performance") ? "active" : "")"

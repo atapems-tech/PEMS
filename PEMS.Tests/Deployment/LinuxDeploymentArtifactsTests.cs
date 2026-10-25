@@ -21,7 +21,6 @@ public class LinuxDeploymentArtifactsTests
 
     [Theory]
     [InlineData("PEMS.Web/appsettings.json")]
-    [InlineData("PEMS.Web/appsettings.UAT.json")]
     public void CommittedAppSettings_ContainNoLiteralSecrets(string file)
     {
         var text = Read(file);

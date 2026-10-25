@@ -1,35 +1,25 @@
-using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using PEMS.Shared.Configuration;
 
 namespace PEMS.Persistence.Context;
 
 /// <summary>
-/// طبق «PEMS Correspondence Workspace» بند ۲: این کارخانه‌ی Design-Time قبلاً رشته‌ی اتصال را
-/// مستقیماً Hardcode می‌کرد (همیشه PEMSDB زنده)، پس هر override با متغیر محیطی
-/// (ConnectionStrings__PEMSConnection) که برای هدف‌گیری یک دیتابیس Repro یک‌بارمصرف تنظیم
-/// می‌شد، بی‌صدا نادیده گرفته می‌شد - دقیقاً همان مشکلی که در فاز قبل باعث شد Migration
-/// «LetterControlledLifecycle» به‌جای یک دیتابیس Repro، مستقیم روی PEMSDB زنده اجرا شود.
-///
-/// اصلاح: حالا اول متغیر محیطی ConnectionStrings__PEMSConnection (همون قرارداد Binding
-/// استاندارد ASP.NET Core برای کلید تودرتوی ConnectionStrings:PEMSConnection) بررسی می‌شود؛
-/// اگر نبود، همان appsettings.json واقعی PEMS.Web خوانده می‌شود (dotnet-ef پوشه‌ی جاری را به
-/// --startup-project تغییر می‌دهد، پس این فایل همان‌جا در دسترس است)؛ رشته‌ی Hardcode قبلی فقط
-/// به‌عنوان آخرین Fallback باقی مانده، نه رفتار پیش‌فرض بی‌صدا. (توجه: از Microsoft.Extensions.
-/// Configuration.* استفاده نشده - یک تعارض Assembly در گراف وابستگی‌های این پروژه باعث خطای
-/// کامپایل CS1929 روی متدهای الحاقی IConfigurationBuilder می‌شد؛ System.Text.Json مستقیم و
-/// بدون هیچ وابستگی جدیدی همون نتیجه را می‌دهد.)
+/// Design-time DbContext factory (dotnet ef). It never guesses the target database: the connection string comes from
+/// the environment variable ConnectionStrings__PEMSConnection, or from the environment files (env/&lt;name&gt;.env and
+/// env/&lt;name&gt;.secrets.env, name = PEMS_ENV, default "local"). There is no hard-coded fallback; the selected
+/// target is always printed so a migration is never run against an unintended database.
+/// (Microsoft.Extensions.Configuration.* is deliberately not used here: an assembly conflict in this project's
+/// dependency graph breaks the IConfigurationBuilder extension methods, so the dependency-free EnvFiles reader is used.)
 /// </summary>
 public class PEMSDbContextFactory : IDesignTimeDbContextFactory<PEMSDbContext>
 {
-    private const string FallbackConnectionString =
-        "Server=localhost\\SQLEXPRESS;Database=PEMSDB;Trusted_Connection=True;TrustServerCertificate=True;";
+    private const string ConnectionKey = "ConnectionStrings:PEMSConnection";
 
     public PEMSDbContext CreateDbContext(string[] args)
     {
         var connectionString = ResolveConnectionString();
 
-        // طبق بند ۲: هرگز بی‌صدا فرض نکن هدف کدام دیتابیس است - همیشه صریحاً روی خروجی طراحی‌زمان چاپ کن
         var target = new Microsoft.Data.SqlClient.SqlConnectionStringBuilder(connectionString);
         Console.WriteLine($"[PEMSDbContextFactory] Design-time DbContext target database: '{target.InitialCatalog}' on server '{target.DataSource}'");
 
@@ -45,27 +35,22 @@ public class PEMSDbContextFactory : IDesignTimeDbContextFactory<PEMSDbContext>
         if (!string.IsNullOrWhiteSpace(envOverride))
             return envOverride;
 
-        foreach (var fileName in new[] { "appsettings.Development.json", "appsettings.json" })
-        {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), fileName);
-            if (!File.Exists(path)) continue;
+        // dotnet ef runs outside a web host: treat it as the development environment unless PEMS_ENV says otherwise.
+        var name = EnvFiles.ResolveName(Environment.GetEnvironmentVariable(EnvFiles.EnvNameVariable), "Development");
+        var directory = EnvFiles.FindDirectory(
+            Environment.GetEnvironmentVariable(EnvFiles.DirectoryVariable),
+            Directory.GetCurrentDirectory(), AppContext.BaseDirectory);
 
-            try
-            {
-                using var doc = JsonDocument.Parse(File.ReadAllText(path));
-                if (doc.RootElement.TryGetProperty("ConnectionStrings", out var connStrings) &&
-                    connStrings.TryGetProperty("PEMSConnection", out var pemsConn) &&
-                    pemsConn.GetString() is { Length: > 0 } value)
-                {
-                    return value;
-                }
-            }
-            catch (JsonException)
-            {
-                // فایل Config نامعتبر - نادیده گرفته می‌شود، به Fallback زیر می‌رود
-            }
+        if (name != null && directory != null)
+        {
+            var set = EnvFiles.Load(name, directory);
+            if (set.Values.TryGetValue(ConnectionKey, out var value) && !string.IsNullOrWhiteSpace(value))
+                return value;
         }
 
-        return FallbackConnectionString;
+        throw new InvalidOperationException(
+            "No database connection string for the design-time factory. Set ConnectionStrings__PEMSConnection or define " +
+            "ConnectionStrings__PEMSConnection in env/<name>.secrets.env (PEMS_ENV, default 'local'; copy " +
+            "env/local.secrets.env.example to env/local.secrets.env).");
     }
 }

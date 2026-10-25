@@ -11,3 +11,5 @@ logs/
 Dockerfile
 docker-compose*.yml
 .dockerignore
+env/*.secrets.env
+env/*.example

@@ -1779,6 +1779,31 @@
   <data name="LtT_Token_SenderDepartment" xml:space="preserve"><value>your department</value></data>
   <data name="Lc_FolderSent" xml:space="preserve"><value>Sent</value></data>
   <data name="Lc_FolderArchived" xml:space="preserve"><value>Archived</value></data>
+  <data name="A database backup has been taken" xml:space="preserve"><value>A database backup has been taken</value></data>
+  <data name="Applied" xml:space="preserve"><value>Applied</value></data>
+  <data name="Database Update" xml:space="preserve"><value>Database Update</value></data>
+  <data name="Database install and update: the schema is built and upgraded from code (migrations). Check the state, then apply." xml:space="preserve"><value>Database install and update: the schema is built and upgraded from code (migrations). Check the state, then apply.</value></data>
+  <data name="Last applied" xml:space="preserve"><value>Last applied</value></data>
+  <data name="Latest in this application" xml:space="preserve"><value>Latest in this application</value></data>
+  <data name="Migrations applied" xml:space="preserve"><value>Migrations applied</value></data>
+  <data name="No runs recorded yet." xml:space="preserve"><value>No runs recorded yet.</value></data>
+  <data name="Pending migrations" xml:space="preserve"><value>Pending migrations</value></data>
+  <data name="Recent runs" xml:space="preserve"><value>Recent runs</value></data>
+  <data name="Seconds" xml:space="preserve"><value>Seconds</value></data>
+  <data name="Started (UTC)" xml:space="preserve"><value>Started (UTC)</value></data>
+  <data name="Succeeded" xml:space="preserve"><value>Succeeded</value></data>
+  <data name="Up to date" xml:space="preserve"><value>Up to date</value></data>
+  <data name="Update available" xml:space="preserve"><value>Update available</value></data>
+  <data name="First run (install)" xml:space="preserve"><value>First run (install)</value></data>
+  <data name="Unmanaged schema" xml:space="preserve"><value>Unmanaged schema</value></data>
+  <data name="Database newer than application" xml:space="preserve"><value>Database newer than application</value></data>
+  <data name="Unreachable" xml:space="preserve"><value>Unreachable</value></data>
+  <data name="Install database" xml:space="preserve"><value>Install database</value></data>
+  <data name="Apply updates" xml:space="preserve"><value>Apply updates</value></data>
+  <data name="Failed" xml:space="preserve"><value>Failed</value></data>
+  <data name="Trigger" xml:space="preserve"><value>Trigger</value></data>
+  <data name="Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Result" xml:space="preserve"><value>Result</value></data>
   <data name="Lt_NavMenu" xml:space="preserve"><value>Folder menu</value></data>
   <data name="Lt_QueueNav" xml:space="preserve"><value>Work queues</value></data>
   <data name="Lt_QueueAll" xml:space="preserve"><value>All</value></data>

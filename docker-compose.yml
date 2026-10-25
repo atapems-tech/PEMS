@@ -11,7 +11,7 @@ services:
     container_name: pems-sqlserver
     environment:
       ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "${SQL_SA_PASSWORD:-Pems@2026StrongPass}"
+      MSSQL_SA_PASSWORD: "${SQL_SA_PASSWORD:?SQL_SA_PASSWORD is not set - put it in env/docker.secrets.env and run: docker compose --env-file env/docker.secrets.env up}"
     ports:
       - "1433:1433"
     volumes:
@@ -44,11 +44,13 @@ services:
         condition: service_started
     ports:
       - "8080:8080"
+    # Settings: env/docker.env; secrets: env/docker.secrets.env (copy env/docker.secrets.env.example). Nothing is hard-coded here.
+    env_file:
+      - env/docker.env
+      - env/docker.secrets.env
     environment:
       ASPNETCORE_ENVIRONMENT: "Production"
-      ConnectionStrings__PEMSConnection: "Server=sqlserver;Database=PEMSDB;User Id=sa;Password=${SQL_SA_PASSWORD:-Pems@2026StrongPass};TrustServerCertificate=True"
-      Ollama__Url: "http://ollama:11434"
-      Ollama__Model: "${OLLAMA_MODEL:-qwen2.5:3b}"
+      PEMS_ENV: "docker"
     volumes:
       - pems-uploads:/app/wwwroot/uploads
       - pems-logs:/app/logs

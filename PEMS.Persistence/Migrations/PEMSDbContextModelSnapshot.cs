@@ -2234,6 +2234,60 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("CriticalityAssessmentEvidences");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.DatabaseUpdateRun", b =>
+                {
+                    b.Property<int>("DatabaseUpdateRunId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DatabaseUpdateRunId"));
+
+                    b.Property<DateTime>("CompletedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Error")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("FromMigration")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("MigrationsApplied")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Mode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("PerformedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("StartedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Succeeded")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ToMigration")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Trigger")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("DatabaseUpdateRunId");
+
+                    b.HasIndex("StartedAtUtc")
+                        .HasDatabaseName("IX_DatabaseUpdateRuns_StartedAtUtc");
+
+                    b.ToTable("DatabaseUpdateRuns");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Department", b =>
                 {
                     b.Property<int>("DepartmentId")

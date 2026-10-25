@@ -63,4 +63,11 @@
     <EmbeddedResource Include="Templates\PartCatalogue\INWH-PLA-FO-001.xlsx" LogicalName="PEMS.Templates.INWH-PLA-FO-001.xlsx" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Non-secret settings of ONE environment ship with a publish: dotnet publish -p:PemsEnv=demo (env/demo.env -> publish/env/).
+         Secret files (env/*.secrets.env) are never packaged; they are placed on the server separately. -->
+    <Content Include="..\env\$(PemsEnv).env" Link="env\$(PemsEnv).env" Condition="'$(PemsEnv)' != ''"
+             CopyToOutputDirectory="Never" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

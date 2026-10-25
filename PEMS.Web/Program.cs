@@ -35,17 +35,30 @@ QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
 // Structured Logging (طبق تکنولوژی‌های تعیین‌شده در Bible - Volume II): جایگزین Logging پیش‌فرض
 // برای عیب‌یابی بهتر در Production - خروجی هم روی Console هم فایل روزانه
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Information()
-    .Enrich.FromLogContext()
-    .WriteTo.Console()
-    .WriteTo.File("logs/pems-.log", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 30)
-    .CreateLogger();
-
-
+// All settings come from env/<name>.env + env/<name>.secrets.env (PEMS_ENV; see env/README.md), loaded before anything
+// reads configuration so logging itself is configurable per environment.
 var builder = WebApplication.CreateBuilder(args);
 
+var envFiles = PEMS.Web.Configuration.PemsConfigurationExtensions.AddPemsEnvFiles(
+    builder.Configuration, builder.Environment.EnvironmentName, builder.Environment.ContentRootPath);
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Is(Enum.Parse<Serilog.Events.LogEventLevel>(
+        PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Serilog:MinimumLevel"), ignoreCase: true))
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File(
+        PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Serilog:File:Path"),
+        rollingInterval: RollingInterval.Day,
+        retainedFileCountLimit: PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Serilog:File:RetainedFiles"))
+    .CreateLogger();
+
 builder.Host.UseSerilog();
+
+if (envFiles is not null)
+    Log.Information("Settings loaded for environment '{Env}' from {Files}{Secrets}",
+        envFiles.EnvName, string.Join(", ", envFiles.LoadedFiles.Select(Path.GetFileName)),
+        envFiles.SecretsFileFound ? "" : " (no secrets file: secrets must come from environment variables)");
 
 
 
@@ -68,6 +81,9 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "");
 builder.Services.AddSignalR();
 
 builder.Services.AddScoped<PEMS.Application.Interfaces.INotificationBroadcaster, PEMS.Web.Hubs.SignalRNotificationBroadcaster>();
+
+// Code-first install/update of the database (startup bootstrap + Admin > Database Update page)
+builder.Services.AddScoped<PEMS.Application.Interfaces.IDatabaseUpdateService, PEMS.Persistence.Services.DatabaseUpdateService>();
 
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند
 // (مثل صفحه‌ی Login) بدون ورود قابل دسترسی هستند.
@@ -93,6 +109,16 @@ builder.Services.AddControllersWithViews(options =>
 // =========================
 // Database
 // =========================
+
+// Code-first bootstrap: the database is created (if missing) before anything connects to it
+// (Hangfire storage below installs its own schema on configuration) and migrated before seeding.
+var databaseOptions = builder.Configuration
+    .GetSection(PEMS.Persistence.Initialization.DatabaseInitializationOptions.SectionName)
+    .Get<PEMS.Persistence.Initialization.DatabaseInitializationOptions>()
+    ?? new PEMS.Persistence.Initialization.DatabaseInitializationOptions();
+var databaseLogger = new Serilog.Extensions.Logging.SerilogLoggerFactory(Log.Logger).CreateLogger("DatabaseInitializer");
+await PEMS.Persistence.Initialization.DatabaseInitializer.EnsureDatabaseExistsAsync(
+    builder.Configuration.GetConnectionString("PEMSConnection"), databaseOptions, databaseLogger);
 
 builder.Services.AddDbContext<PEMSDbContext>(options =>
     options.UseSqlServer(
@@ -153,19 +179,25 @@ else
 // ASP.NET Core Identity (Authentication / Authorization)
 // =========================
 
-var authLockoutSection = builder.Configuration.GetSection("Authentication:Lockout");
-var maxFailedAccessAttempts = authLockoutSection.GetValue<int?>("MaxFailedAccessAttempts") ?? 5;
-var defaultLockoutMinutes = authLockoutSection.GetValue<int?>("DefaultLockoutMinutes") ?? 10;
+var maxFailedAccessAttempts = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Authentication:Lockout:MaxFailedAccessAttempts");
+var defaultLockoutMinutes = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Authentication:Lockout:DefaultLockoutMinutes");
+var passwordRequiredLength = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Authentication:Password:RequiredLength");
+var passwordRequireDigit = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Authentication:Password:RequireDigit");
+var passwordRequireUppercase = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Authentication:Password:RequireUppercase");
+var passwordRequireNonAlphanumeric = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Authentication:Password:RequireNonAlphanumeric");
+var authCookieName = PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Authentication:Cookie:Name");
+var authCookieExpireHours = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredDouble(builder.Configuration, "Authentication:Cookie:ExpireHours");
+var securityStampValidationMinutes = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredDouble(builder.Configuration, "Authentication:SecurityStampValidationMinutes");
 var cookieSecurePolicy = builder.Environment.IsDevelopment() ? CookieSecurePolicy.SameAsRequest : CookieSecurePolicy.Always;
 
 builder.Services
     .AddIdentity<ApplicationUser, ApplicationRole>(options =>
     {
         // سیاست رمز عبور - برای محیط سازمانی داخلی؛ در صورت نیاز سخت‌گیرانه‌تر شود
-        options.Password.RequiredLength = 8;
-        options.Password.RequireDigit = true;
-        options.Password.RequireUppercase = false;
-        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequiredLength = passwordRequiredLength;
+        options.Password.RequireDigit = passwordRequireDigit;
+        options.Password.RequireUppercase = passwordRequireUppercase;
+        options.Password.RequireNonAlphanumeric = passwordRequireNonAlphanumeric;
 
         options.User.RequireUniqueEmail = true;
 
@@ -180,7 +212,7 @@ builder.Services
 // نقش‌های کاربر در Claim کوکی هستند؛ پیش‌فرض Identity فقط هر ۳۰ دقیقه آن‌ها را از دیتابیس تازه می‌کند و تغییر نقش/دسترسی
 // در پنل مدیر تا آن زمان (یا خروج/ورود دوباره) در سایدبار همان کاربر دیده نمی‌شد. هر دقیقه تازه‌سازی می‌شود.
 builder.Services.Configure<Microsoft.AspNetCore.Identity.SecurityStampValidatorOptions>(o =>
-    o.ValidationInterval = TimeSpan.FromMinutes(1));
+    o.ValidationInterval = TimeSpan.FromMinutes(securityStampValidationMinutes));
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -188,10 +220,10 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LogoutPath = "/Account/Logout";
     options.AccessDeniedPath = "/Account/AccessDenied";
 
-    options.ExpireTimeSpan = TimeSpan.FromHours(8);
+    options.ExpireTimeSpan = TimeSpan.FromHours(authCookieExpireHours);
     options.SlidingExpiration = true;
 
-    options.Cookie.Name = "PEMS.Auth";
+    options.Cookie.Name = authCookieName;
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
     options.Cookie.SameSite = SameSiteMode.Lax;
@@ -206,10 +238,11 @@ builder.Services.ConfigureApplicationCookie(options =>
 // =========================
 builder.Services.AddFido2(options =>
 {
-    options.ServerDomain = builder.Configuration["Fido2:ServerDomain"] ?? "localhost";
-    options.ServerName = builder.Configuration["Fido2:ServerName"] ?? "PEMS";
-    options.Origins = (builder.Configuration.GetSection("Fido2:Origins").Get<string[]>() ?? new[] { "http://localhost:5089" }).ToHashSet();
-    options.TimestampDriftTolerance = 300000;
+    options.ServerDomain = PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Fido2:ServerDomain");
+    options.ServerName = PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Fido2:ServerName");
+    options.Origins = (builder.Configuration.GetSection("Fido2:Origins").Get<string[]>()
+        ?? throw new InvalidOperationException("Missing required setting 'Fido2:Origins' (Fido2__Origins__0 in env/<name>.env).")).ToHashSet();
+    options.TimestampDriftTolerance = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Fido2:TimestampDriftToleranceMs");
 });
 
 builder.Services.AddHttpContextAccessor();
@@ -509,7 +542,7 @@ builder.Services.AddScoped<IJobPlanService, JobPlanService>();
 // A3: تفکیک وظایف Work Request - پیش‌فرض روشن؛ برای خاموش کردن: "Cmms": { "WorkRequest": { "EnforceSegregationOfDuties": false } } (SystemAdmin همیشه فقط با ممیزی Override می‌کند)
 builder.Services.AddSingleton(new PEMS.Application.Common.WorkRequestPolicyOptions
 {
-    EnforceSegregationOfDuties = bool.TryParse(builder.Configuration["Cmms:WorkRequest:EnforceSegregationOfDuties"], out var enforceSod) ? enforceSod : true
+    EnforceSegregationOfDuties = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Cmms:WorkRequest:EnforceSegregationOfDuties")
 });
 builder.Services.AddScoped<IWorkRequestService, WorkRequestService>();
 
@@ -702,10 +735,10 @@ builder.Services.AddScoped<IDocumentAIIngestionService, DocumentAIIngestionServi
 builder.Services.AddScoped<IDocumentSearchAIService, DocumentSearchAIService>();
 
 
-var ollamaUrl = builder.Configuration["Ollama:Url"] ?? "http://localhost:11434/";
+var ollamaUrl = PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Ollama:Url");
 if (!ollamaUrl.EndsWith('/')) ollamaUrl += "/";
 
-var ollamaTimeoutMinutes = builder.Configuration.GetValue<double?>("Ollama:TimeoutMinutes") ?? 15;
+var ollamaTimeoutMinutes = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredDouble(builder.Configuration, "Ollama:TimeoutMinutes");
 
 builder.Services.AddHttpClient<IOllamaService, OllamaService>(client =>
 {
@@ -724,6 +757,9 @@ var app = builder.Build();
 // =========================
 // Seed Roles / Default Admin User
 // =========================
+
+// Apply pending EF migrations (+ full-text search objects) before any seeder touches the schema.
+await PEMS.Persistence.Initialization.DatabaseInitializer.MigrateAsync(app.Services, databaseOptions, databaseLogger);
 
 using (var scope = app.Services.CreateScope())
 {
@@ -1000,14 +1036,23 @@ app.UseStaticFiles();
 // مثل Timestamp های AuditLog یا نام فایل‌های Export) خاموش به تقویم شمسی تبدیل می‌شود، چون
 // همه‌ی تاریخ‌های دیتابیس میلادی ذخیره شده‌اند. فارسی فقط باید متن/جهت RTL را عوض کند، تقویم
 // را نه؛ پس تقویم روی همان CultureInfo("fa") به‌صراحت میلادی نگه داشته می‌شود.
-var faCulture = new System.Globalization.CultureInfo("fa");
-faCulture.DateTimeFormat.Calendar = new System.Globalization.GregorianCalendar();
-var enCulture = new System.Globalization.CultureInfo("en");
-var supportedCultureInfos = new List<System.Globalization.CultureInfo> { enCulture, faCulture };
+var supportedCultureInfos = (app.Configuration.GetSection("Localization:SupportedCultures").Get<string[]>()
+        ?? throw new InvalidOperationException("Missing required setting 'Localization:SupportedCultures' (Localization__SupportedCultures__0 in env/<name>.env)."))
+    .Select(name =>
+    {
+        var culture = new System.Globalization.CultureInfo(name);
+        if (culture.TwoLetterISOLanguageName == "fa")
+            culture.DateTimeFormat.Calendar = new System.Globalization.GregorianCalendar();
+        return culture;
+    })
+    .ToList();
+var defaultCultureName = PEMS.Web.Configuration.PemsConfigurationExtensions.Required(app.Configuration, "Localization:DefaultCulture");
+var defaultCulture = supportedCultureInfos.FirstOrDefault(c => c.Name == defaultCultureName)
+    ?? throw new InvalidOperationException($"Localization:DefaultCulture '{defaultCultureName}' is not in Localization:SupportedCultures.");
 
 var localizationOptions = new Microsoft.AspNetCore.Builder.RequestLocalizationOptions
 {
-    DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(enCulture, enCulture),
+    DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(defaultCulture, defaultCulture),
     SupportedCultures = supportedCultureInfos,
     SupportedUICultures = supportedCultureInfos
 };
@@ -1086,6 +1131,24 @@ app.MapGet("/health", async (PEMS.Persistence.Context.PEMSDbContext db) =>
 });
 
 
+
+// Anonymous, details-free schema state for deployment pipelines/monitors: 200 only when every shipped
+// migration is applied; 503 otherwise (body is just the state name).
+app.MapGet("/health/database", async (PEMS.Application.Interfaces.IDatabaseUpdateService updates) =>
+{
+    try
+    {
+        var status = await updates.GetStatusAsync();
+        return Results.Text(status.State.ToString(),
+            statusCode: status.State == PEMS.Application.DTOs.DatabaseSetupState.UpToDate
+                ? StatusCodes.Status200OK
+                : StatusCodes.Status503ServiceUnavailable);
+    }
+    catch
+    {
+        return Results.Text("Unreachable", statusCode: StatusCodes.Status503ServiceUnavailable);
+    }
+});
 
 app.Run();
 

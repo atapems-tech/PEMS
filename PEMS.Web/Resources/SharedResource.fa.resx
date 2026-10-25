@@ -2574,6 +2574,27 @@
   <data name="LtT_Token_SenderDepartment" xml:space="preserve"><value>واحد سازمانی شما</value></data>
   <data name="Lc_FolderSent" xml:space="preserve"><value>ارسال‌شده</value></data>
   <data name="Lc_FolderArchived" xml:space="preserve"><value>آرشیو</value></data>
+  <data name="A database backup has been taken" xml:space="preserve"><value>از پایگاه داده نسخه پشتیبان تهیه شده است</value></data>
+  <data name="Applied" xml:space="preserve"><value>اعمال‌شده</value></data>
+  <data name="Database Update" xml:space="preserve"><value>به‌روزرسانی پایگاه داده</value></data>
+  <data name="Database install and update: the schema is built and upgraded from code (migrations). Check the state, then apply." xml:space="preserve"><value>نصب و به‌روزرسانی پایگاه داده: ساختار پایگاه داده از روی کد (Migration ها) ساخته و ارتقا داده می‌شود. وضعیت را بررسی و سپس اعمال کنید.</value></data>
+  <data name="Last applied" xml:space="preserve"><value>آخرین مورد اعمال‌شده</value></data>
+  <data name="Latest in this application" xml:space="preserve"><value>آخرین مورد در این نسخه از برنامه</value></data>
+  <data name="Migrations applied" xml:space="preserve"><value>Migration های اعمال‌شده</value></data>
+  <data name="No runs recorded yet." xml:space="preserve"><value>هنوز هیچ اجرایی ثبت نشده است.</value></data>
+  <data name="Pending migrations" xml:space="preserve"><value>Migration های در انتظار</value></data>
+  <data name="Recent runs" xml:space="preserve"><value>اجراهای اخیر</value></data>
+  <data name="Seconds" xml:space="preserve"><value>ثانیه</value></data>
+  <data name="Started (UTC)" xml:space="preserve"><value>زمان شروع (UTC)</value></data>
+  <data name="Succeeded" xml:space="preserve"><value>موفق</value></data>
+  <data name="Up to date" xml:space="preserve"><value>به‌روز</value></data>
+  <data name="Update available" xml:space="preserve"><value>به‌روزرسانی موجود است</value></data>
+  <data name="First run (install)" xml:space="preserve"><value>اجرای اول (نصب)</value></data>
+  <data name="Unmanaged schema" xml:space="preserve"><value>ساختار بدون تاریخچه Migration</value></data>
+  <data name="Database newer than application" xml:space="preserve"><value>پایگاه داده جدیدتر از برنامه است</value></data>
+  <data name="Unreachable" xml:space="preserve"><value>در دسترس نیست</value></data>
+  <data name="Install database" xml:space="preserve"><value>نصب پایگاه داده</value></data>
+  <data name="Apply updates" xml:space="preserve"><value>اعمال به‌روزرسانی‌ها</value></data>
   <data name="Lt_NavMenu" xml:space="preserve"><value>منوی پوشه‌ها</value></data>
   <data name="Lt_QueueNav" xml:space="preserve"><value>صف‌های کاری</value></data>
   <data name="Lt_QueueAll" xml:space="preserve"><value>همه</value></data>
