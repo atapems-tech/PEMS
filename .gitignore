@@ -382,3 +382,7 @@ env/*.secrets.env
 plan/jira-import.csv
 plan/jira-links.csv
 plan/members.json
+
+# Runtime user uploads (documents, signatures, intake files): created by the running app, never committed or shipped in a package
+PEMS.Web/wwwroot/uploads/*
+!PEMS.Web/wwwroot/uploads/.gitkeep
