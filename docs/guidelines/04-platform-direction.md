@@ -10,6 +10,8 @@ Direction (owner, 2026-10-15/18): turn static MVC modules into a **dynamic BPMS*
 
 ## 2. Decisions to build on (do not re-litigate; change only with the owner)
 
+The reasoning behind each decision is in the ADR log: [plan/adr](../../plan/adr/README.md) (storage 0001, UI 0002, database 0003, settings 0004, licensing 0005, demo/staging branches 0006).
+
 | Topic | Decision |
 |---|---|
 | Name | PEMS (closed) |

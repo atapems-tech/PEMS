@@ -12,6 +12,8 @@ Each environment has two files:
 Environments: `local` (developer machine), `docker` (docker-compose), `demo` (online demo), `staging` (pre-production copy of the demo), `uat` (Azure UAT),
 `production-kangan` (Kangan production). All files define exactly the same keys; a test enforces it.
 
+Decision record: [ADR-0004](../plan/adr/0004-environment-and-secrets-files.md) (Instructions rule 24).
+
 ## Which environment is used
 
 `PEMS_ENV=<name>` selects it. Without it, `ASPNETCORE_ENVIRONMENT=Development` means `local` and `UAT` means `uat`;

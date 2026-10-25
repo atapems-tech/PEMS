@@ -4,6 +4,8 @@ How the two online environments are built, deployed, secured, reset and recovere
 (`parmisata.ir`); the same steps apply to any Windows host with IIS, the ASP.NET Core Module and SQL Server.
 Background and failure history of the pipeline: [DEMO_DEPLOYMENT.md](DEMO_DEPLOYMENT.md). Database behaviour: [CODE_FIRST_DATABASE.md](CODE_FIRST_DATABASE.md).
 
+Decision record for the branch model: [ADR-0006](../../plan/adr/0006-demo-and-staging-branch-policy.md).
+
 ## 1. The model in one table
 
 | Branch | What a push does | Subdomain | Database | Settings file | Secrets prefix |
