@@ -8,6 +8,14 @@ on:
     branches: [staging]
     paths-ignore: ['docs/**', 'plan/**', 'legacy-trash/**', '*.md']      # documentation-only pushes do not redeploy
   workflow_dispatch:
+    inputs:
+      force_tests:
+        description: 'Run the test gate even if this exact source tree already passed it'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
 
 jobs:
   deploy:
@@ -15,4 +23,5 @@ jobs:
     with:
       target: staging
       prefix: STAGING
+      force_gate: ${{ github.event.inputs.force_tests == 'true' }}
     secrets: inherit

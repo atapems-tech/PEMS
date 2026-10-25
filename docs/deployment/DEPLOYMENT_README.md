@@ -69,6 +69,8 @@ Rotate any secret that was ever pasted into chat, a ticket or a commit.
 4. Uploads `app_offline.htm` (the app releases its file locks), uploads the files by FTP (180 s timeout, one retry), removes `app_offline.htm`.
 5. Polls `GET <SITE_URL>/health/database` until `200 UpToDate` (the first start installs the schema, later starts apply new migrations), then reports the TLS certificate state.
 
+**Identical code is not tested twice.** After build, drift gate and tests pass, the pipeline pushes the tag `gate-pass/<hash of the whole source tree>`. A later deploy of a tree with the same hash (typically `demo` right after `staging`, because the promotion is a plain merge) finds the tag, skips restore, build, drift gate and tests, and goes straight to publish and upload (about 6 minutes less). Any change in any file gives a new hash, so the gate runs again; a failed gate leaves no tag. To force the gate, run the workflow by hand with *Run workflow > force_tests* ticked, or delete the tag (`git push origin --delete gate-pass/<hash>`). NuGet packages are cached between runs. Old tags can be removed in bulk once a month: `git tag -l "gate-pass/*"`.
+
 Watch a run: GitHub > **Actions**, or `gh run watch`. Slack (`#pems-github`) posts every run. Documentation-only pushes (`docs/**`, `plan/**`, `*.md`) do not redeploy.
 Run it by hand: Actions > the workflow > **Run workflow** (choose the branch), or `gh workflow run deploy-staging.yml --ref staging`.
 
