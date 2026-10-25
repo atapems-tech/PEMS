@@ -51,6 +51,29 @@ jobs:
             exit 1
           fi
 
+      # Cheap early check of the FTP login and the remote folder (seconds, before the long build). A wrong <P>_FTP_DIR gives
+      # "550 The system cannot find the file specified" only after the whole build; here the folders at the FTP root are listed instead.
+      - name: Check FTP login and remote directory
+        env:
+          P: ${{ inputs.prefix }}
+          FTP_HOST: ${{ secrets[format('{0}_FTP_HOST', inputs.prefix)] }}
+          FTP_USER: ${{ secrets[format('{0}_FTP_USER', inputs.prefix)] }}
+          FTP_PASS: ${{ secrets[format('{0}_FTP_PASSWORD', inputs.prefix)] }}
+          FTP_DIR: ${{ secrets[format('{0}_FTP_DIR', inputs.prefix)] }}
+          FTP_PROTO: ${{ secrets[format('{0}_FTP_PROTOCOL', inputs.prefix)] }}
+        run: |
+          TLS=""; [ "$FTP_PROTO" = "ftps" ] && TLS="--ssl-reqd --insecure"
+          if printf 'user = "%s:%s"
+' "$FTP_USER" "$FTP_PASS" | curl -sS -K - $TLS --max-time 60 --list-only "ftp://${FTP_HOST}${FTP_DIR}" > ftp-dir.txt 2> ftp.err; then
+            echo "FTP login works and the remote folder exists ($(wc -l < ftp-dir.txt) entries)."
+            exit 0
+          fi
+          echo "::error::FTP check failed: $(head -c 200 ftp.err). ${P}_FTP_DIR is relative to the FTP account's home folder: use / when the account home is already the subdomain folder, otherwise the sub-folder path with a trailing slash."
+          echo "Entries visible at the FTP account root (login worked if this list is not empty):"
+          printf 'user = "%s:%s"
+' "$FTP_USER" "$FTP_PASS" | curl -sS -K - $TLS --max-time 60 --list-only "ftp://${FTP_HOST}/" || true
+          exit 1
+
       - uses: actions/checkout@v4
 
       - name: Setup .NET
