@@ -157,6 +157,13 @@ public class Letter : BaseEntity
 
     public ICollection<LetterReview> Reviews { get; set; } = new List<LetterReview>();
 
+    /// <summary>
+    /// این نامه یک «ارجاع» است: نامه‌ی داخلی تازه‌ای که ParentLetterId آن نامه‌ی ارجاع‌شده است، موضوعش همان موضوع نامه‌ی اصلی است و فقط برچسب «ارجاع» می‌گیرد.
+    /// هنگام ارسال برای هر گیرنده‌ی «To» یک LetterReferral روی نامه‌ی اصلی ثبت می‌شود (پیگیری مهلت/معوق‌ها همان قبلی می‌ماند) که با
+    /// LetterReferral.ReferralLetterId به همین نامه وصل است؛ ارجاع و پاسخ هر دو در یک رشته‌ی مکاتبه دیده می‌شوند.
+    /// </summary>
+    public bool IsReferral { get; set; }
+
     public bool IsActive { get; set; } = true;
 
     public DateTime CreatedDate { get; set; } = DateTime.Now;

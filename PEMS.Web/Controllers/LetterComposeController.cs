@@ -111,7 +111,7 @@ public class LetterComposeController : Controller
     // ------------------------------------------------------------------ compose page
 
     [HttpGet]
-    public async Task<IActionResult> Compose(int? id, string letterType = "Internal", int? templateId = null, int? replyTo = null)
+    public async Task<IActionResult> Compose(int? id, string letterType = "Internal", int? templateId = null, int? replyTo = null, int? referTo = null)
     {
         ViewData["Title"] = "Compose Letter";
         ViewData["Section"] = "Correspondence Management";
@@ -126,6 +126,15 @@ public class LetterComposeController : Controller
             var loaded = await _compose.LoadForEditAsync(id.Value, actor);
             if (loaded == null) return NotFound();
             input = loaded;
+        }
+        else if (referTo.HasValue)
+        {
+            // ارجاع به شخص دیگر: همان قاعده‌ی دیدن نامه‌ی اصلی؛ خروجی یک نامه‌ی داخلی با موضوع ثابت است
+            if (!await _letters.CanViewAsync(referTo.Value, await BuildViewerAsync())) return Forbid();
+            var referral = await _compose.BuildReferralInputAsync(referTo.Value, actor);
+            if (referral == null) return NotFound();
+            input = referral;
+            letterType = input.LetterType;
         }
         else if (replyTo.HasValue)
         {
@@ -180,7 +189,7 @@ public class LetterComposeController : Controller
             Input = input,
             Sender = sender,
             Recipients = directory,
-            Approvers = await _compose.GetApproverOptionsAsync(),
+            Approvers = await _compose.GetApproverOptionsAsync(actor.UserId),
             Templates = templates,
             CanManualNumber = actor.CanManualNumber,
             LetterNumber = id.HasValue ? await _context.Letters.Where(l => l.LetterId == id.Value).Select(l => l.LetterNumber).FirstOrDefaultAsync() : null,
@@ -196,6 +205,7 @@ public class LetterComposeController : Controller
             ParentLetterId = parentInfo?.LetterId,
             ParentNumber = parentInfo?.LetterNumber,
             ParentSubject = parentInfo?.Subject,
+            IsReferral = input.IsReferral,
             MinConfidentialityRank = parentInfo == null ? 0 : LetterComposeRules.ConfidentialityRank(parentInfo.ConfidentialityLevel),
             MinConfidentiality = parentInfo?.ConfidentialityLevel
         };
@@ -506,6 +516,8 @@ public class LetterComposeViewModel
     public int? ParentLetterId { get; set; }
     public string? ParentNumber { get; set; }
     public string? ParentSubject { get; set; }
+    // ارجاع: موضوع ثابت، بدون تایید/دسته‌بندی، فقط برچسب «ارجاع»
+    public bool IsReferral { get; set; }
     public int MinConfidentialityRank { get; set; }
     public string? MinConfidentiality { get; set; }
 }

@@ -456,6 +456,15 @@ public class PEMSDbContext
     public DbSet<CorrespondentParty> CorrespondentParties { get; set; }
     public DbSet<LetterLink> LetterLinks { get; set; }
 
+    // کارتابل نامه‌نگاری: وضعیت شخصی (سطل/آرشیو)، تفویض، قانون مسیریابی، گروه مخاطبین، یادآور، تنظیمات
+    public DbSet<LetterUserState> LetterUserStates { get; set; }
+    public DbSet<LetterDelegation> LetterDelegations { get; set; }
+    public DbSet<LetterRoutingRule> LetterRoutingRules { get; set; }
+    public DbSet<LetterContactGroup> LetterContactGroups { get; set; }
+    public DbSet<LetterContactGroupMember> LetterContactGroupMembers { get; set; }
+    public DbSet<LetterReminder> LetterReminders { get; set; }
+    public DbSet<LetterUserSetting> LetterUserSettings { get; set; }
+
     public DbSet<Tag> Tags { get; set; }
     public DbSet<LetterTag> LetterTags { get; set; }
     public DbSet<TaskItem> TaskItems { get; set; }

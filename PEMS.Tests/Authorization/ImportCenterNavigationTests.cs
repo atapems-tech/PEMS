@@ -78,6 +78,7 @@ public class ImportCenterNavigationTests
         ["DCC"] = "attachment on incoming correspondence",
         ["EngineeringDocuments"] = "document attachments",
         ["Letter"] = "letter attachments / editor images",
+        ["LetterCompose"] = "draft attachments and the recipient list (CSV/text is only resolved to employees; nothing is imported)",
         ["MOC"] = "MOC attachments",
         ["TechnicalQuery"] = "TQ attachments",
         ["MyProfile"] = "profile photo",

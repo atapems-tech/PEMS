@@ -9,6 +9,9 @@ public class LetterComposeInput
     // پاسخ به این نامه (پیش‌نویس جدید یا ویرایش پاسخ)؛ سطح محرمانگی پاسخ هرگز کمتر از نامه‌ی اصلی نمی‌شود
     public int? ParentLetterId { get; set; }
 
+    // ارجاع به شخص دیگر: نامه‌ی داخلی با موضوع ثابتِ نامه‌ی اصلی که برچسب «ارجاع» می‌گیرد (ParentLetterId الزامی). تایید/دسته‌بندی ندارد.
+    public bool IsReferral { get; set; }
+
     // Internal | Outgoing
     public string LetterType { get; set; } = "Internal";
     public string? Category { get; set; }
@@ -89,6 +92,11 @@ public class ApproverOptionDto
     public int UserId { get; set; }
     public string FullName { get; set; } = "";
     public string? Position { get; set; }
+    public string? Department { get; set; }
+    /// <summary>Manager = مافوق نویسنده در چارت سازمانی (به‌ترتیب نزدیکی) | Eligible = دارنده‌ی مجوز تایید ماژول | Other = سایر کارکنان فعال.</summary>
+    public string Group { get; set; } = "Other";
+    /// <summary>برای Manager: ۱ = مدیر مستقیم، ۲ = مافوقِ مدیر و ...</summary>
+    public int ManagerLevel { get; set; }
 }
 
 public class LetterVersionDto

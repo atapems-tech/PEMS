@@ -15,7 +15,7 @@ public interface INavigationMenuService
     Task<IReadOnlyList<NavigationMenuItemDto>> GetAllForAdminAsync(CancellationToken ct = default);
 
     /// <summary>همگام‌سازی افزایشی کاتالوگ کد؛ تعداد آیتم‌های درج/به‌روزشده را برمی‌گرداند.</summary>
-    Task<int> SyncDefaultsAsync(IReadOnlyList<NavigationMenuItemDefinition> definitions, CancellationToken ct = default);
+    Task<int> SyncDefaultsAsync(IReadOnlyList<NavigationMenuItemDefinition> definitions, CancellationToken ct = default, IReadOnlyCollection<string>? retiredKeys = null);
 
     Task<NavigationMenuResult> UpdateAsync(NavigationMenuItemEditInput input, CancellationToken ct = default);
 
