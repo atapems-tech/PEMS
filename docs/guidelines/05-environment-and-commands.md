@@ -29,3 +29,9 @@ Primary shell is PowerShell on Windows 11; Git Bash is available. Quote paths wi
 
 ## Atlassian MCP
 Site `atapems.atlassian.net`, cloudId `9290a713-17c1-44bd-99fc-f1b83705cc69`, project `SCRUM`. Tools: `getJiraIssue`, `searchJiraIssuesUsingJql`, `transitionJiraIssue`, `addOrEditJiraIssueComment`, `createJiraIssue`, `editJiraIssue`. Slim large responses with `responseFields`. Custom fields (Plan ID) need `view: evidence/full` or the site's `customfield_*` id.
+
+## Slack notifications (set up 2026-10-25)
+Workspace `pems` (pems-corp.slack.com).
+- `#pems-jira`: Jira Cloud app, project SCRUM, all event groups (issue created/updated/deleted including description and sprint changes, comments, assignee, status, issue links, worklogs), full-text style. Manage it in Jira: space PEMS > Slack integration.
+- `#pems-github`: GitHub app, repo `atapems-tech/PEMS`: issues, pulls, reviews, comments, commits on all branches, branches, releases, deployments, workflows (push, pull_request, workflow_dispatch). Change it with `/github subscribe|unsubscribe atapems-tech/PEMS <features>` in the channel; `/github subscribe list features` lists the options.
+- New team members join both channels; the GitHub app links per person with `/github signin`.
