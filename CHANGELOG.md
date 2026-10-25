@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-25 - Staging environment live
+
+### Added
+- Staging deploys from the `staging` branch: run 40208748572 is green, the database installed (HTTP 200, up to date) and only the changed files (33.8 MB) were uploaded. Root causes found on the way: stale migration-chain test, FTP protocol default, SQL login with a wrong user name.
+
 ## 2026-10-25 - Faster deploys: no repeated tests, health check shows the real error
 
 ### Changed
