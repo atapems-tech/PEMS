@@ -59,7 +59,7 @@ public class DatabaseInitializerTests
     }
 
     [Fact]
-    public void Migration_chain_is_ordered_unique_and_ends_with_the_code_first_additions()
+    public void Migration_chain_is_ordered_unique_and_contains_the_code_first_additions_in_order()
     {
         var ids = typeof(PEMSDbContext).Assembly.GetTypes()
             .Where(t => typeof(Migration).IsAssignableFrom(t) && !t.IsAbstract)
@@ -71,7 +71,12 @@ public class DatabaseInitializerTests
         Assert.Equal(ids.Count, ids.Distinct().Count());
 
         var ordered = ids.OrderBy(i => i, StringComparer.Ordinal).ToList();
-        Assert.EndsWith("_FullTextSearch", ordered[^1]);
-        Assert.EndsWith("_DatabaseUpdateRuns", ordered[^2]);
+        // Newer migrations may follow (the chain grows with every release); the code-first additions must exist
+        // and keep their relative order: DatabaseUpdateRuns first, then FullTextSearch.
+        var updateRuns = ordered.FindIndex(i => i.EndsWith("_DatabaseUpdateRuns", StringComparison.Ordinal));
+        var fullText = ordered.FindIndex(i => i.EndsWith("_FullTextSearch", StringComparison.Ordinal));
+        Assert.True(updateRuns >= 0, "migration *_DatabaseUpdateRuns is missing");
+        Assert.True(fullText >= 0, "migration *_FullTextSearch is missing");
+        Assert.True(updateRuns < fullText, "DatabaseUpdateRuns must precede FullTextSearch");
     }
 }
