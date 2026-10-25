@@ -87,6 +87,7 @@ A task is **done** only when:
 ## 9. Git
 
 - One logical change per commit; message `SCRUM-123 type(scope): summary` (types: feat, fix, refactor, docs, test, chore, ci). *Note:* Instructions rule 7 still says `vX.Y.Z: description`; rule 25 (2026-10-23, issue key first) is newer and was confirmed by the owner on 2026-10-25 (chapter 06, decisions).
+- One short-lived working branch per task or approved batch, created from `dev`; delete it (local and remote) once merged - details in chapter 00 sections 3-4.
 - Stage specific files only. Re-run `git status` before every commit.
 - Version bumps: system = CalVer `YYYY.MM.PATCH`, components = SemVer; editing the plan workbook does not change a version [R9].
 - Plan workbook changes only by pull request; regenerate `plan/backlog.csv` with `python tools/plan-sync/plan_sync.py export`.
