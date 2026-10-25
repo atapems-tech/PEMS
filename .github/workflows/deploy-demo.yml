@@ -1,195 +1,27 @@
-# Deploys PEMS.Web to the company demo subdomain over FTP/FTPS on every push or merge to `demo`.
-# The database is code-first: the first start after the upload INSTALLS the schema on an empty demo database and
-# every later deploy UPDATES it (migrations apply automatically at startup, see docs/deployment/CODE_FIRST_DATABASE.md).
-# This pipeline gates on model/migration drift before deploying and waits for /health/database to report UpToDate after.
-#
-# No credentials live in this file. Define these in GitHub (Settings -> Secrets and variables -> Actions):
-#   DEMO_FTP_HOST       - FTP host, e.g. parmisata.ir
-#   DEMO_FTP_USER       - FTP username
-#   DEMO_FTP_PASSWORD   - FTP password
-#   DEMO_FTP_DIR        - remote folder the demo subdomain serves from, with trailing slash (this host: /)
-#   DEMO_FTP_PROTOCOL   - optional: ftp | ftps | ftps-legacy (default ftps; this host currently works with ftp only)
-#   DEMO_FTP_PORT       - optional (default 21)
-#   DEMO_SQL_CONNECTION_STRING - connection string of the separate DEMO database (never the live PEMSDB),
-#                       e.g. Server=<host>;Database=<db>;User Id=<user>;Password=<pwd>;TrustServerCertificate=True
-#   DEMO_ADMIN_PASSWORD - password of the first administrator seeded on the empty demo database
-# Non-secret settings of the demo are in env/demo.env (committed); secrets are written to env/demo.secrets.env on the server.
-#   DEMO_SITE_URL       - public URL of the demo site, e.g. https://demo.parmisata.ir (enables the post-deploy database check)
+# Deploys the demo subdomain on every push or merge to the `demo` branch (and on manual run).
+# The build, tests, publish and upload are in deploy-site.yml. Secrets: DEMO_* (docs/deployment/DEPLOYMENT_README.md).
 
-name: PEMS Demo Deploy (FTP)
+name: PEMS Demo Deploy
 
 on:
   push:
     branches: [demo]
-    paths-ignore: ['docs/**', 'plan/**', 'legacy-trash/**', '*.md']      # documentation-only pushes do not redeploy the demo
+    paths-ignore: ['docs/**', 'plan/**', 'legacy-trash/**', '*.md']      # documentation-only pushes do not redeploy
   workflow_dispatch:
+    inputs:
+      force_tests:
+        description: 'Run the test gate even if this exact source tree already passed it'
+        type: boolean
+        default: false
 
-concurrency:
-  group: deploy-demo
-  cancel-in-progress: false
+permissions:
+  contents: write
 
 jobs:
-  build-test-deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-
-      - name: Restore
-        run: dotnet restore PEMS.slnx
-
-      - name: Build
-        run: dotnet build PEMS.slnx --no-restore --configuration Release
-
-      # Code-first gate: the entity model and the migrations must agree, otherwise the startup migrator cannot
-      # apply a complete schema on the demo database.
-      - name: Model drift gate (no entity change without a migration)
-        env:
-          # model-only comparison: the design-time factory needs a connection string but no connection is opened
-          ConnectionStrings__PEMSConnection: Server=localhost;Database=PEMS_ModelCheck;Trusted_Connection=True;TrustServerCertificate=True
-        run: |
-          dotnet tool install --global dotnet-ef --version 10.0.10
-          export PATH="$PATH:$HOME/.dotnet/tools"
-          dotnet ef migrations has-pending-model-changes --project PEMS.Persistence --startup-project PEMS.Web --no-build --configuration Release
-
-      # The full suite needs a real SQL Server (and Windows paths) and runs in build.yml. This runner has neither, so the deploy
-      # gate runs the tests that need no database: code-first/migration chain rules, environment files, localization parity, sidebar.
-      - name: Test (database-free gate)
-        run: >
-          dotnet test PEMS.Tests/PEMS.Tests.csproj --no-build --configuration Release --verbosity normal
-          --filter "FullyQualifiedName~PEMS.Tests.Deployment.DatabaseInitializerTests|FullyQualifiedName~PEMS.Tests.Deployment.EnvironmentFilesTests|FullyQualifiedName~LocalizationKeyCoverageTests|FullyQualifiedName~PEMS.Tests.Web.DynamicSidebarTests"
-
-      # Plesk/IIS on Windows: self-contained win-x64 so the host does not need the .NET 10 runtime
-      # installed (it still needs the ASP.NET Core Module). The SDK emits web.config on publish.
-      # -p:PemsEnv=demo ships env/demo.env (non-secret settings) as publish/env/demo.env.
-      - name: Publish
-        run: dotnet publish PEMS.Web/PEMS.Web.csproj -c Release -r win-x64 --self-contained true -p:PemsEnv=demo -o ./publish
-
-      # Environment selection and secrets, without storing anything in Git:
-      #  - PEMS_ENV=demo is set for the app in web.config (the app then reads env/demo.env + env/demo.secrets.env),
-      #  - env/demo.secrets.env is generated here from GitHub secrets and uploaded next to the app (never packaged by the build),
-      #  - a longer IIS startup limit: the first run installs the whole schema before the app starts serving.
-      - name: Configure demo runtime
-        env:
-          CONN: ${{ secrets.DEMO_SQL_CONNECTION_STRING }}
-          ADMIN_PASSWORD: ${{ secrets.DEMO_ADMIN_PASSWORD }}
-        run: |
-          test -n "$CONN" && test -n "$ADMIN_PASSWORD"
-          test -f publish/env/demo.env
-          umask 077
-          {
-            printf 'ConnectionStrings__PEMSConnection=%s\n' "$CONN"
-            printf 'Seed__Admin__Password=%s\n' "$ADMIN_PASSWORD"
-          } > publish/env/demo.secrets.env
-          sed -i 's#hostingModel="inprocess" />#hostingModel="inprocess"><environmentVariables><environmentVariable name="PEMS_ENV" value="demo" /></environmentVariables></aspNetCore>#' publish/web.config
-          sed -i 's/<aspNetCore /<aspNetCore startupTimeLimit="900" /' publish/web.config
-          # startup output is written to logs/stdout* on the server so a failed first run can be diagnosed from the hosting panel
-          sed -i 's/stdoutLogEnabled="false"/stdoutLogEnabled="true"/' publish/web.config
-          grep -q 'stdoutLogEnabled="true"' publish/web.config
-          grep -q 'name="PEMS_ENV" value="demo"' publish/web.config
-          grep -q 'startupTimeLimit="900"' publish/web.config
-
-      # IIS keeps the application DLLs locked while the app runs (FTP error 550 "being used by another process").
-      # Uploading app_offline.htm makes the ASP.NET Core Module stop the app and release the files; it is removed after a successful upload.
-      - name: Take the demo app offline (release file locks)
-        continue-on-error: true
-        env:
-          FTP_HOST: ${{ secrets.DEMO_FTP_HOST }}
-          FTP_USER: ${{ secrets.DEMO_FTP_USER }}
-          FTP_PASS: ${{ secrets.DEMO_FTP_PASSWORD }}
-          FTP_DIR: ${{ secrets.DEMO_FTP_DIR }}
-          FTP_PROTO: ${{ secrets.DEMO_FTP_PROTOCOL }}
-        run: |
-          printf '<html><body><h3>PEMS demo is being updated, back in a few minutes.</h3></body></html>' > app_offline.htm
-          TLS=""; [ "$FTP_PROTO" = "ftps" ] && TLS="--ssl-reqd --insecure"
-          printf 'user = "%s:%s"\n' "$FTP_USER" "$FTP_PASS" | curl -sS -K - $TLS --max-time 90 -T app_offline.htm "ftp://${FTP_HOST}${FTP_DIR}app_offline.htm"
-          echo "app_offline.htm uploaded; waiting for IIS to stop the app"
-          sleep 25
-
-      # The host is slow to accept FTP connections intermittently (control-socket timeouts), so the upload gets a long timeout and one retry.
-      - name: Deploy via FTP
-        id: ftp1
-        continue-on-error: true
-        timeout-minutes: 60
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.DEMO_FTP_HOST }}
-          username: ${{ secrets.DEMO_FTP_USER }}
-          password: ${{ secrets.DEMO_FTP_PASSWORD }}
-          protocol: ${{ secrets.DEMO_FTP_PROTOCOL || 'ftps' }}
-          port: ${{ secrets.DEMO_FTP_PORT || 21 }}
-          local-dir: ./publish/
-          server-dir: ${{ secrets.DEMO_FTP_DIR }}
-          timeout: 180000
-
-      - name: Deploy via FTP (retry)
-        if: steps.ftp1.outcome == 'failure'
-        timeout-minutes: 60
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.DEMO_FTP_HOST }}
-          username: ${{ secrets.DEMO_FTP_USER }}
-          password: ${{ secrets.DEMO_FTP_PASSWORD }}
-          protocol: ${{ secrets.DEMO_FTP_PROTOCOL || 'ftps' }}
-          port: ${{ secrets.DEMO_FTP_PORT || 21 }}
-          local-dir: ./publish/
-          server-dir: ${{ secrets.DEMO_FTP_DIR }}
-          timeout: 180000
-
-      - name: Bring the demo app back online
-        if: success()
-        env:
-          FTP_HOST: ${{ secrets.DEMO_FTP_HOST }}
-          FTP_USER: ${{ secrets.DEMO_FTP_USER }}
-          FTP_PASS: ${{ secrets.DEMO_FTP_PASSWORD }}
-          FTP_DIR: ${{ secrets.DEMO_FTP_DIR }}
-          FTP_PROTO: ${{ secrets.DEMO_FTP_PROTOCOL }}
-        run: |
-          TLS=""; [ "$FTP_PROTO" = "ftps" ] && TLS="--ssl-reqd --insecure"
-          REL="${FTP_DIR#/}app_offline.htm"
-          printf 'user = "%s:%s"\n' "$FTP_USER" "$FTP_PASS" | curl -sS -K - $TLS --max-time 90 -Q "DELE ${REL}" "ftp://${FTP_HOST}/" -o /dev/null
-          echo "app_offline.htm removed; the next request starts the application"
-
-      # The first request starts the app, which installs/updates the schema before serving. /health/database is
-      # anonymous and returns 200 only when every migration is applied (503 + state name otherwise).
-      # The probe uses --insecure so a missing/invalid TLS certificate (Plesk "Domain not secured") does not hide the app state;
-      # the certificate itself is reported by the separate non-fatal check below.
-      - name: Wait for database install/update to finish
-        timeout-minutes: 35
-        env:
-          SITE: ${{ secrets.DEMO_SITE_URL }}
-        run: |
-          if [ -z "$SITE" ]; then
-            echo "::warning::DEMO_SITE_URL is not set; skipping the post-deploy database check."
-            exit 0
-          fi
-          state="no response"
-          for i in $(seq 1 70); do
-            code=$(curl -sS -k -o health.txt -w '%{http_code}' --max-time 90 "$SITE/health/database" 2> curl.err) || true
-            state=$(head -c 80 health.txt 2>/dev/null || true)
-            echo "attempt $i: HTTP ${code:-000} ${state} $(head -c 120 curl.err 2>/dev/null)"
-            if [ "$code" = "200" ]; then
-              echo "Database is up to date on the demo site."
-              exit 0
-            fi
-            sleep 20
-          done
-          echo "::error::Demo database did not reach UpToDate (last: HTTP ${code:-000} ${state}). Read logs/stdout* and logs/pems-*.log on the server (Plesk > Files) and Admin > Database Update on the demo site."
-          exit 1
-
-      - name: TLS certificate of the demo site (informational)
-        if: always()
-        env:
-          SITE: ${{ secrets.DEMO_SITE_URL }}
-        run: |
-          [ -z "$SITE" ] && exit 0
-          if curl -sS -o /dev/null --max-time 30 "$SITE/health" 2> tls.err; then
-            echo "TLS certificate is valid."
-          else
-            echo "::warning::TLS verification failed for $SITE ($(head -c 200 tls.err)). Issue a certificate for the subdomain in Plesk (SSL/TLS Certificates > Let's Encrypt)."
-          fi
+  deploy:
+    uses: ./.github/workflows/deploy-site.yml
+    with:
+      target: demo
+      prefix: DEMO
+      force_gate: ${{ github.event.inputs.force_tests == 'true' }}
+    secrets: inherit

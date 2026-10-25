@@ -9,7 +9,7 @@ Each environment has two files:
 | `env/<name>.secrets.env` | secrets only: database connection string, Redis, FTP account, first administrator password | **no** (git-ignored, never packaged) |
 | `env/<name>.secrets.env.example` | template listing the secret keys of that environment | yes |
 
-Environments: `local` (developer machine), `docker` (docker-compose), `demo` (online demo), `uat` (Azure UAT),
+Environments: `local` (developer machine), `docker` (docker-compose), `demo` (online demo), `staging` (pre-production copy of the demo), `uat` (Azure UAT),
 `production-kangan` (Kangan production). All files define exactly the same keys; a test enforces it.
 
 ## Which environment is used
@@ -37,12 +37,12 @@ dotnet run --project PEMS.Web
 
 - **Docker:** `cp env/docker.secrets.env.example env/docker.secrets.env`, then
   `docker compose --env-file env/docker.secrets.env up --build`.
-- **Demo:** the pipeline writes `env/demo.secrets.env` from GitHub secrets (`DEMO_SQL_CONNECTION_STRING`,
+- **Demo and staging:** see [../docs/deployment/DEPLOYMENT_README.md](../docs/deployment/DEPLOYMENT_README.md). The pipeline writes `env/<name>.secrets.env` from GitHub secrets (`DEMO_SQL_CONNECTION_STRING`,
   `DEMO_ADMIN_PASSWORD`) and sets `PEMS_ENV=demo` in `web.config`; `env/demo.env` ships with
   `dotnet publish -p:PemsEnv=demo`.
 - **Kangan production:** fill every `REPLACE` value in `env/production-kangan.env` (it is a normal reviewed commit),
   create `env/production-kangan.secrets.env` on the server (mode 600) and start with `PEMS_ENV=production-kangan`.
-- **dotnet ef:** the design-time factory reads `ConnectionStrings__PEMSConnection` from the environment or from
+- **dotnet ef:** (project `PEMS.Migrations`) the design-time factory reads `ConnectionStrings__PEMSConnection` from the environment or from
   `env/<PEMS_ENV or local>.secrets.env`; it has no fallback and always prints its target database.
 
 ## Rules

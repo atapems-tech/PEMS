@@ -172,18 +172,15 @@
         @* سایدبار داده‌محور پشت پرچم Features:DynamicSidebar:Enabled (پیش‌فرض: سایدبار قدیمی) *@
         <partial name="@(DynamicSidebar.IsEnabled ? "_DynamicSidebarMenu" : "_SidebarMenu")" />
         <main class="pems-content" id="pemsMainContent" tabindex="-1">
-            @* هدر عمومی صفحه: فقط یک ردیف فشرده (عنوان + برچسب ماژول) - بدون مسیر/URL و بدون Breadcrumb تکراری.
-               صفحاتی که هدر اختصاصی دارند ViewData["HidePageTitle"]=true می‌گذارند. *@
+            @* هدر عمومی صفحه (عنوان + برچسب ماژول) حذف شده است: عنوان صفحه در تب مرورگر و منوی کناری می‌آید و صفحه‌ها فضای بیشتری برای کار دارند. *@
             @if (isAdminArea)
             {
                 <div class="admin-ui-surface">
-                    <partial name="_PageHeader" />
                     @RenderBody()
                 </div>
             }
             else
             {
-                <partial name="_PageHeader" />
                 @RenderBody()
             }
         </main>

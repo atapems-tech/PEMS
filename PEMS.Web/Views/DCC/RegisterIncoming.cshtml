@@ -4,6 +4,7 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 @{
+    ViewData["HidePageTitle"] = true;   // the page renders its own title row (h1.dcr-title); the global one would duplicate it
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
     var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
     var presetParty = ViewBag.PresetParty as PEMS.Application.DTOs.PartySearchItemDto;

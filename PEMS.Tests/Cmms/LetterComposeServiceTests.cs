@@ -396,15 +396,16 @@ public class LetterComposeServiceTests
     }
 
     [Fact]
-    public async Task ApproverOptions_AreOnlyActiveUsersWithTheApproveRole()
+    public async Task ApproverOptions_AreAllActiveStaff_NotOnlyTheApproveRoleHolders()
     {
-        var (compose, _, ctx, _) = Services(nameof(ApproverOptions_AreOnlyActiveUsersWithTheApproveRole));
+        var (compose, _, ctx, _) = Services(nameof(ApproverOptions_AreAllActiveStaff_NotOnlyTheApproveRoleHolders));
         ctx.Users.Single(u => u.Id == Approver2).IsActive = false;
         await ctx.SaveChangesAsync();
 
         var options = await compose.GetApproverOptionsAsync();
 
-        Assert.Equal(new[] { Other, Approver1 }, options.Select(o => o.UserId).OrderBy(x => x));
+        Assert.Equal(new[] { 101, 102, 103, 104, Other, Approver1 }, options.Select(o => o.UserId).OrderBy(x => x));   // every active employee with an account; inactive users stay out
+        Assert.Equal(new[] { Other, Approver1 }, options.Where(o => o.Group == "Eligible").Select(o => o.UserId).OrderBy(x => x));
         Assert.All(options, o => Assert.False(string.IsNullOrWhiteSpace(o.FullName)));
     }
 

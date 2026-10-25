@@ -85,7 +85,7 @@
         if (densityItem) densityItem.addEventListener("click", function () { setCompact(!body.classList.contains("lp-compact"), true); });
 
         // ---------------------------------------------------------------- selection helpers (drive the real checkboxes)
-        function rows() { return Array.prototype.slice.call(doc.querySelectorAll("table[data-grid-key='Letter'] tbody tr.lp-row")); }
+        function rows() { return Array.prototype.slice.call(doc.querySelectorAll("table[data-grid-key='Letter'] tbody tr.lp-row:not(.ct-reply-row)")); }
         function checkbox(tr) { return tr && tr.querySelector(".letter-select"); }
         function fire(el) { el.dispatchEvent(new Event("change", { bubbles: true })); }
 

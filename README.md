@@ -23,6 +23,7 @@ English; AI runs on-premise and nothing leaves the organization.
 | `PEMS.Domain` | entities and enums, no dependencies |
 | `PEMS.Application` | DTOs, interfaces, application services |
 | `PEMS.Persistence` | `PEMSDbContext`, configurations, migrations, seeders, repositories, database installer/updater |
+| `PEMS.Migrations` | EF Core migrations, model snapshot and design-time factory (kept apart so `PEMS.Persistence.dll` changes only with its own code) |
 | `PEMS.Infrastructure` | cache, external integrations |
 | `PEMS.AI` | Ollama, OCR, document parsing, extraction |
 | `PEMS.WorkflowPlatform` | central workflow engine |
@@ -87,7 +88,7 @@ The schema is built and upgraded only from code. No hand-run SQL is needed.
 Add a migration after changing the model; never edit an applied one:
 
 ```bash
-dotnet ef migrations add <Name> --project PEMS.Persistence --startup-project PEMS.Web
+dotnet ef migrations add <Name> --project PEMS.Migrations --startup-project PEMS.Web
 ```
 
 Details: [docs/deployment/CODE_FIRST_DATABASE.md](docs/deployment/CODE_FIRST_DATABASE.md).
@@ -103,9 +104,10 @@ Many tests need a real SQL Server and use the isolated database `PEMSDB_Regressi
 
 ## CI and demo
 
-- `.github/workflows/build.yml`: restore, build, model-drift gate, tests.
-- `.github/workflows/deploy-demo.yml`: push or merge to the `demo` branch builds, publishes and uploads to the demo
-  subdomain by FTP, then waits for the database to report up to date (secrets are listed in the file header).
+- Only pushes to `demo` and `staging` start a pipeline; `main` and working branches run nothing.
+- `.github/workflows/deploy-site.yml`: the reusable pipeline (restore, build, model-drift gate, tests, publish, FTP upload, wait for the database to report up to date).
+  `deploy-demo.yml` (push to `demo`) and `deploy-staging.yml` (push to `staging`) call it; secrets are `DEMO_*` and `STAGING_*`.
+- `.github/workflows/build.yml`: manual build and test run (`workflow_dispatch`).
 - `.github/workflows/deploy-uat.yml`: manual UAT deployment to Azure Container Apps.
 
 ## Conventions
@@ -118,6 +120,7 @@ Many tests need a real SQL Server and use the isolated database `PEMSDB_Regressi
 ## More
 
 - [CHANGELOG.md](CHANGELOG.md) - what changed and when.
+- [docs/deployment/DEPLOYMENT_README.md](docs/deployment/DEPLOYMENT_README.md) - demo and staging: subdomains, databases, secrets, GitHub Actions, manual deploy and reset.
 - `plan/PEMS_Backlog_Roadmap.xlsx` - backlog, roadmap, test plan, supportability matrix; `plan/backlog.csv` is its text mirror.
 - [docs/design/COMPONENT_LIBRARY_PLAN.md](docs/design/COMPONENT_LIBRARY_PLAN.md) - UI component library plan; [docs/design/UI_PATTERN_AUDIT.md](docs/design/UI_PATTERN_AUDIT.md) - audit of all views.
 - [docs/process/PLAN_TRACKER_WORKFLOW.md](docs/process/PLAN_TRACKER_WORKFLOW.md) - how the plan file, Jira and developers stay consistent (`tools/plan-sync`).

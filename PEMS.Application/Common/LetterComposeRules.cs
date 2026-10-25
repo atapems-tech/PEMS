@@ -9,6 +9,9 @@ namespace PEMS.Application.Common;
 /// </summary>
 public static class LetterComposeRules
 {
+    /// <summary>نام برچسب سازمانی که هر نامه‌ی ارجاعی خودکار می‌گیرد.</summary>
+    public const string ReferralTagName = "ارجاع";
+
     public const int MaxSubjectLength = 80;
     public const int MaxReferenceLength = 100;
     public const int MaxRecipients = 500;
@@ -59,7 +62,8 @@ public static class LetterComposeRules
         if (i.Category != null && !Categories.Contains(i.Category)) e.Add(new("CategoryInvalid", "category"));
         if (!Priorities.Contains(i.Priority)) e.Add(new("PriorityInvalid", "priority"));
         if (!Confidentialities.Contains(i.ConfidentialityLevel)) e.Add(new("ConfidentialityInvalid", "confidentialityLevel"));
-        if ((i.Subject ?? "").Trim().Length > MaxSubjectLength) e.Add(new("SubjectTooLong", "subject", MaxSubjectLength.ToString()));
+        // موضوع ارجاع همان موضوع نامه‌ی اصلی است و کاربر آن را نمی‌نویسد؛ پس سقف طول فقط برای نامه‌ی عادی است
+        if (!i.IsReferral && (i.Subject ?? "").Trim().Length > MaxSubjectLength) e.Add(new("SubjectTooLong", "subject", MaxSubjectLength.ToString()));
         if ((i.ReferenceNumber ?? "").Length > MaxReferenceLength) e.Add(new("ReferenceTooLong", "referenceNumber"));
 
         var all = AllRecipientIds(i);

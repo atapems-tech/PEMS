@@ -85,7 +85,7 @@ def description(r, titles):
     head = (f"*Plan ID:* #{r['#']}   *Area:* {clean(r.get('Area'))}   *Group:* {clean(r.get('Group'))}   "
             f"*Milestone:* {clean(r.get('Milestone')) or '-'}   *Priority:* {clean(r.get('Priority'))}   "
             f"*Effort:* {clean(r.get('Effort'))}   *Owner:* {clean(r.get('Owner')) or '-'}   *Doer:* {clean(r.get('Doer'))}")
-    parts = [head]
+    parts = [head, "*Step 0:* read AGENTS.md and docs/guidelines/README.md, then the related Jira issues, before starting."]
     for title, key in (("Why", "Evidence"), ("What to do", "Prompt"), ("Done when", "Requirement")):
         if clean(r.get(key)):
             text = clean(r[key])

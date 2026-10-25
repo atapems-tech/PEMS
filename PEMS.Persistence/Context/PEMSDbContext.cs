@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Identity;
 using PEMS.WorkflowPlatform.Entities;
@@ -12,12 +13,26 @@ namespace PEMS.Persistence.Context;
 public class PEMSDbContext
     : IdentityDbContext<ApplicationUser, ApplicationRole, int>, IWorkflowDbContext
 {
+    /// <summary>Assembly that holds the migrations (project PEMS.Migrations), so this assembly changes only with its own code.</summary>
+    public const string MigrationsAssemblyName = "PEMS.Migrations";
+
     public PEMSDbContext(DbContextOptions<PEMSDbContext> options)
         : base(options)
     {
 
     }
 
+
+    /// <summary>
+    /// Points every relational provider configuration (host, tests, tools) at the migrations assembly unless the caller already chose one,
+    /// so a plain UseSqlServer(...) finds the migrations and no call site has to know where they live.
+    /// </summary>
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        var relational = optionsBuilder.Options.Extensions.OfType<RelationalOptionsExtension>().FirstOrDefault();
+        if (relational is { MigrationsAssembly: null })
+            ((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(relational.WithMigrationsAssembly(MigrationsAssemblyName));
+    }
 
     // این دو مقدار توسط یک Middleware ساده در PEMS.Web ابتدای هر Request از روی کاربر لاگین‌شده
     // پر می‌شوند (نه از طریق IHttpContextAccessor داخل خود Persistence، تا وابستگی اضافه به
@@ -455,6 +470,15 @@ public class PEMSDbContext
     public DbSet<LetterRecipient> LetterRecipients { get; set; }
     public DbSet<CorrespondentParty> CorrespondentParties { get; set; }
     public DbSet<LetterLink> LetterLinks { get; set; }
+
+    // کارتابل نامه‌نگاری: وضعیت شخصی (سطل/آرشیو)، تفویض، قانون مسیریابی، گروه مخاطبین، یادآور، تنظیمات
+    public DbSet<LetterUserState> LetterUserStates { get; set; }
+    public DbSet<LetterDelegation> LetterDelegations { get; set; }
+    public DbSet<LetterRoutingRule> LetterRoutingRules { get; set; }
+    public DbSet<LetterContactGroup> LetterContactGroups { get; set; }
+    public DbSet<LetterContactGroupMember> LetterContactGroupMembers { get; set; }
+    public DbSet<LetterReminder> LetterReminders { get; set; }
+    public DbSet<LetterUserSetting> LetterUserSettings { get; set; }
 
     public DbSet<Tag> Tags { get; set; }
     public DbSet<LetterTag> LetterTags { get; set; }

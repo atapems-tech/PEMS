@@ -8,7 +8,7 @@ namespace PEMS.Tests.Deployment;
 /// </summary>
 public class EnvironmentFilesTests
 {
-    private static readonly string[] Environments = { "local", "docker", "demo", "uat", "production-kangan" };
+    private static readonly string[] Environments = { "local", "docker", "demo", "staging", "uat", "production-kangan" };
 
     private static string EnvDir()
     {

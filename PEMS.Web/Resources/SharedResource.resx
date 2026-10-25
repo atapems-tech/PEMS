@@ -2060,4 +2060,344 @@
   <data name="Lc_Party" xml:space="preserve"><value>Organisation (optional)</value></data>
   <data name="Lc_PartyHelp" xml:space="preserve"><value>Pick a registered organisation so this letter shows in its correspondence thread in DCC.</value></data>
   <data name="Lc_Err_PartyNotFound" xml:space="preserve"><value>The selected organisation was not found.</value></data>
+  <data name="No documents to chart yet." xml:space="preserve"><value>No documents to chart yet.</value></data>
+  <data name="Exec_NavTitle" xml:space="preserve"><value>Executive Dashboard</value></data>
+  <data name="Exec_Title" xml:space="preserve"><value>Executive Dashboard</value></data>
+  <data name="Exec_Subtitle" xml:space="preserve"><value>Live portfolio view across engineering, vendors, procurement and operations</value></data>
+  <data name="Exec_Updated" xml:space="preserve"><value>Updated {time}</value></data>
+  <data name="Exec_Project" xml:space="preserve"><value>Project</value></data>
+  <data name="Exec_AllProjects" xml:space="preserve"><value>All projects</value></data>
+  <data name="Exec_Refresh" xml:space="preserve"><value>Refresh</value></data>
+  <data name="Exec_Loading" xml:space="preserve"><value>Loading dashboard…</value></data>
+  <data name="Exec_LoadError" xml:space="preserve"><value>The dashboard data could not be loaded. Try refreshing.</value></data>
+  <data name="Exec_SectionsFailed" xml:space="preserve"><value>Some sections could not be read ({sections}); the rest is shown.</value></data>
+  <data name="Exec_NoData" xml:space="preserve"><value>No data yet</value></data>
+  <data name="Exec_Documents" xml:space="preserve"><value>Documents</value></data>
+  <data name="Exec_Items" xml:space="preserve"><value>Items</value></data>
+  <data name="Exec_Unassigned" xml:space="preserve"><value>Unassigned</value></data>
+  <data name="Exec_NotApproved" xml:space="preserve"><value>Not approved</value></data>
+  <data name="Exec_OtherProjects" xml:space="preserve"><value>Other projects ({count})</value></data>
+  <data name="Exec_KpiDocuments" xml:space="preserve"><value>Engineering documents</value></data>
+  <data name="Exec_KpiDocumentsSub" xml:space="preserve"><value>Projects: {projects}</value></data>
+  <data name="Exec_KpiApproved" xml:space="preserve"><value>Approved / issued</value></data>
+  <data name="Exec_KpiApprovedSub" xml:space="preserve"><value>{approved} of {total} documents</value></data>
+  <data name="Exec_KpiInReview" xml:space="preserve"><value>In review</value></data>
+  <data name="Exec_KpiInReviewSub" xml:space="preserve"><value>{draft} still in draft</value></data>
+  <data name="Exec_KpiRework" xml:space="preserve"><value>Needs rework</value></data>
+  <data name="Exec_KpiReworkSub" xml:space="preserve"><value>{rejected} rejected · {commented} returned with comments</value></data>
+  <data name="Exec_KpiRevisions" xml:space="preserve"><value>Revisions</value></data>
+  <data name="Exec_KpiRevisionsSub" xml:space="preserve"><value>{avg} per document on average</value></data>
+  <data name="Exec_KpiProcurement" xml:space="preserve"><value>Purchase orders</value></data>
+  <data name="Exec_KpiProcurementSub" xml:space="preserve"><value>{mr} open material requisitions</value></data>
+  <data name="Exec_KpiProcurementValue" xml:space="preserve"><value>{value} · {mr} open MRs</value></data>
+  <data name="Exec_KpiEquipment" xml:space="preserve"><value>Equipment register</value></data>
+  <data name="Exec_KpiEquipmentSub" xml:space="preserve"><value>{open} open work orders · {critical} critical</value></data>
+  <data name="Exec_Bucket_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Exec_Bucket_InReview" xml:space="preserve"><value>In review</value></data>
+  <data name="Exec_Bucket_Returned" xml:space="preserve"><value>Rejected / returned</value></data>
+  <data name="Exec_Bucket_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Exec_Bucket_Other" xml:space="preserve"><value>Other</value></data>
+  <data name="Exec_StatusTitle" xml:space="preserve"><value>Document status</value></data>
+  <data name="Exec_StatusSub" xml:space="preserve"><value>{total} engineering documents</value></data>
+  <data name="Exec_TimelineTitle" xml:space="preserve"><value>Revision issuance over time</value></data>
+  <data name="Exec_TimelineSub" xml:space="preserve"><value>{from} to {to} · {total} revisions issued</value></data>
+  <data name="Exec_Cumulative" xml:space="preserve"><value>Cumulative issued</value></data>
+  <data name="Exec_IssuedInMonth" xml:space="preserve"><value>Issued this month</value></data>
+  <data name="Exec_DisciplineTitle" xml:space="preserve"><value>Progress by discipline</value></data>
+  <data name="Exec_DisciplineSub" xml:space="preserve"><value>The ten largest disciplines by document count</value></data>
+  <data name="Exec_ResponsesTitle" xml:space="preserve"><value>Client response codes</value></data>
+  <data name="Exec_ResponsesSub" xml:space="preserve"><value>Most frequent codes in the register</value></data>
+  <data name="Exec_ProjectsTitle" xml:space="preserve"><value>Projects by documents</value></data>
+  <data name="Exec_ProjectsSub" xml:space="preserve"><value>Largest projects and their approval share</value></data>
+  <data name="Exec_VdrTitle" xml:space="preserve"><value>Vendor documents (VDR)</value></data>
+  <data name="Exec_VdrSub" xml:space="preserve"><value>{total} items · {submissions} submissions</value></data>
+  <data name="Exec_Wf_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Exec_Wf_Submitted" xml:space="preserve"><value>Submitted</value></data>
+  <data name="Exec_Wf_PendingResubmission" xml:space="preserve"><value>Pending resubmission</value></data>
+  <data name="Exec_Wf_UnderReview" xml:space="preserve"><value>Under review</value></data>
+  <data name="Exec_ProcurementTitle" xml:space="preserve"><value>Procurement</value></data>
+  <data name="Exec_ProcurementSub" xml:space="preserve"><value>Pipeline counts and material requisitions by status</value></data>
+  <data name="Exec_Packages" xml:space="preserve"><value>Packages</value></data>
+  <data name="Exec_Tenders" xml:space="preserve"><value>Tenders</value></data>
+  <data name="Exec_Contracts" xml:space="preserve"><value>Contracts</value></data>
+  <data name="Exec_PurchaseOrders" xml:space="preserve"><value>Purchase orders</value></data>
+  <data name="Exec_Bids" xml:space="preserve"><value>Bids</value></data>
+  <data name="Exec_Ntps" xml:space="preserve"><value>NTPs issued</value></data>
+  <data name="Exec_Mr_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Exec_Mr_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Exec_MaterialRequisitions" xml:space="preserve"><value>Material requisitions</value></data>
+  <data name="Exec_AttentionTitle" xml:space="preserve"><value>Needs management attention</value></data>
+  <data name="Exec_AttentionSub" xml:space="preserve"><value>Ordered by severity; each item opens the matching list</value></data>
+  <data name="Exec_AttentionNone" xml:space="preserve"><value>Nothing needs attention right now.</value></data>
+  <data name="Exec_Attn_EngRejected" xml:space="preserve"><value>Documents rejected and waiting for rework</value></data>
+  <data name="Exec_Attn_EngReturned" xml:space="preserve"><value>Documents returned with client comments (CO/AC)</value></data>
+  <data name="Exec_Attn_EngOverdue" xml:space="preserve"><value>Documents past their planned date</value></data>
+  <data name="Exec_Attn_EngInReview" xml:space="preserve"><value>Documents currently in review</value></data>
+  <data name="Exec_Attn_VdrOverdue" xml:space="preserve"><value>Vendor documents overdue</value></data>
+  <data name="Exec_Attn_VdrResubmission" xml:space="preserve"><value>Vendor documents waiting for resubmission</value></data>
+  <data name="Exec_Attn_LetterResponseOverdue" xml:space="preserve"><value>Letters with an overdue response</value></data>
+  <data name="Exec_Attn_ReferralOverdue" xml:space="preserve"><value>Referrals past their due date</value></data>
+  <data name="Exec_Attn_CriticalWorkOrders" xml:space="preserve"><value>Critical work orders</value></data>
+  <data name="Exec_Attn_MrDraft" xml:space="preserve"><value>Material requisitions still in draft</value></data>
+  <data name="Exec_PressureTitle" xml:space="preserve"><value>Revision pressure</value></data>
+  <data name="Exec_PressureSub" xml:space="preserve"><value>Documents re-issued most often</value></data>
+  <data name="Exec_QualityTitle" xml:space="preserve"><value>Data completeness</value></data>
+  <data name="Exec_QualitySub" xml:space="preserve"><value>How much of the register supports each metric</value></data>
+  <data name="Exec_QDiscipline" xml:space="preserve"><value>Has a discipline</value></data>
+  <data name="Exec_QIssued" xml:space="preserve"><value>Has an issued revision</value></data>
+  <data name="Exec_QResponse" xml:space="preserve"><value>Has a client response code</value></data>
+  <data name="Exec_QPlanned" xml:space="preserve"><value>Has a planned date</value></data>
+  <data name="Exec_QPlannedNote" xml:space="preserve"><value>No document has a planned date, so schedule variance and overdue counts cannot be measured. Fill planned dates in the MDR to unlock them.</value></data>
+  <data name="Exec_OtherTitle" xml:space="preserve"><value>Other indicators</value></data>
+  <data name="Exec_Transmittals" xml:space="preserve"><value>Transmittals sent</value></data>
+  <data name="Exec_Letters" xml:space="preserve"><value>Letters</value></data>
+  <data name="Exec_ResponsesOverdue" xml:space="preserve"><value>Overdue responses and referrals</value></data>
+  <data name="Exec_OpenWorkOrders" xml:space="preserve"><value>Open work orders</value></data>
+  <data name="Exec_VdrOverdue" xml:space="preserve"><value>Overdue vendor documents</value></data>
+  <data name="Chart_NoData" xml:space="preserve"><value>No data for this period</value></data>
+  <data name="Chart_Other" xml:space="preserve"><value>Other</value></data>
+  <data name="Ct_Folders" xml:space="preserve"><value>Folders</value></data>
+  <data name="Ct_FolderActive" xml:space="preserve"><value>Active correspondence</value></data>
+  <data name="Ct_FolderInbox" xml:space="preserve"><value>Inbox</value></data>
+  <data name="Ct_FolderShared" xml:space="preserve"><value>Referred to me</value></data>
+  <data name="Ct_FolderSent" xml:space="preserve"><value>Sent</value></data>
+  <data name="Ct_FolderDrafts" xml:space="preserve"><value>Drafts</value></data>
+  <data name="Ct_FolderStarred" xml:space="preserve"><value>Starred</value></data>
+  <data name="Ct_FolderArchive" xml:space="preserve"><value>My archive</value></data>
+  <data name="Ct_FolderTrash" xml:space="preserve"><value>Trash</value></data>
+  <data name="Ct_FolderAll" xml:space="preserve"><value>All messages</value></data>
+  <data name="Ct_FolderDelegated" xml:space="preserve"><value>Delegated to me</value></data>
+  <data name="Ct_Workflow" xml:space="preserve"><value>Approval workflow</value></data>
+  <data name="Ct_ToggleFolders" xml:space="preserve"><value>Show or hide folders</value></data>
+  <data name="Ct_ViewMode" xml:space="preserve"><value>List view</value></data>
+  <data name="Ct_ViewFlat" xml:space="preserve"><value>Flat</value></data>
+  <data name="Ct_ViewThread" xml:space="preserve"><value>Threads</value></data>
+  <data name="Ct_SortBy" xml:space="preserve"><value>Sort by</value></data>
+  <data name="Ct_Settings" xml:space="preserve"><value>Settings</value></data>
+  <data name="Ct_ReportShort" xml:space="preserve"><value>Reports</value></data>
+  <data name="Ct_ReportTitle" xml:space="preserve"><value>Cartable report and SLA</value></data>
+  <data name="Ct_DetailPane" xml:space="preserve"><value>Letter details</value></data>
+  <data name="Ct_OpenFull" xml:space="preserve"><value>Open full page</value></data>
+  <data name="Ct_Status_Draft" xml:space="preserve"><value>Drafts</value></data>
+  <data name="Ct_Status_PendingApproval" xml:space="preserve"><value>Under review</value></data>
+  <data name="Ct_Status_ReturnedForRevision" xml:space="preserve"><value>Returned for revision</value></data>
+  <data name="Ct_Status_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Ct_Status_Issued" xml:space="preserve"><value>Issued</value></data>
+  <data name="Ct_Status_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Ct_Status_Sent" xml:space="preserve"><value>Sent</value></data>
+  <data name="Ct_Status_Archived" xml:space="preserve"><value>Archived</value></data>
+  <data name="Ct_Status_Rejected" xml:space="preserve"><value>Rejected</value></data>
+  <data name="Ct_Status_Registered" xml:space="preserve"><value>Registered</value></data>
+  <data name="Ct_Status_UnderReview" xml:space="preserve"><value>Under review</value></data>
+  <data name="Ct_Status_Referred" xml:space="preserve"><value>Referred</value></data>
+  <data name="Ct_Status_Acknowledged" xml:space="preserve"><value>Acknowledged</value></data>
+  <data name="Ct_Tags" xml:space="preserve"><value>Tags</value></data>
+  <data name="Ct_Tag" xml:space="preserve"><value>Tag</value></data>
+  <data name="Ct_ManageTags" xml:space="preserve"><value>Manage tags</value></data>
+  <data name="Ct_NoTagsYet" xml:space="preserve"><value>No tags yet</value></data>
+  <data name="Ct_ToggleBranch" xml:space="preserve"><value>Expand or collapse</value></data>
+  <data name="Ct_PersonalTag" xml:space="preserve"><value>Personal</value></data>
+  <data name="Ct_OrgTag" xml:space="preserve"><value>Organizational</value></data>
+  <data name="Ct_RootTag" xml:space="preserve"><value>— Top level —</value></data>
+  <data name="Ct_TagName" xml:space="preserve"><value>Tag name</value></data>
+  <data name="Ct_ParentTag" xml:space="preserve"><value>Parent tag</value></data>
+  <data name="Ct_AddTag" xml:space="preserve"><value>Add tag</value></data>
+  <data name="Ct_ApplyTag" xml:space="preserve"><value>Add tag to selected</value></data>
+  <data name="Ct_RemoveTag" xml:space="preserve"><value>Remove tag from selected</value></data>
+  <data name="Ct_Colour" xml:space="preserve"><value>Colour</value></data>
+  <data name="Ct_SortOrder" xml:space="preserve"><value>Order</value></data>
+  <data name="Ct_Confidentiality" xml:space="preserve"><value>Confidentiality</value></data>
+  <data name="Ct_MarkRead" xml:space="preserve"><value>Mark as read</value></data>
+  <data name="Ct_MarkUnread" xml:space="preserve"><value>Mark as unread</value></data>
+  <data name="Ct_ArchiveForMe" xml:space="preserve"><value>Archive for me</value></data>
+  <data name="Ct_Unarchive" xml:space="preserve"><value>Move back to inbox</value></data>
+  <data name="Ct_MoveToTrash" xml:space="preserve"><value>Move to trash</value></data>
+  <data name="Ct_Restore" xml:space="preserve"><value>Restore</value></data>
+  <data name="Ct_PurgeForever" xml:space="preserve"><value>Remove for good</value></data>
+  <data name="Ct_EmptyTrash" xml:space="preserve"><value>Empty trash</value></data>
+  <data name="Ct_ConfirmTrash" xml:space="preserve"><value>Move the selected letters to your trash? (The letters themselves are not deleted.)</value></data>
+  <data name="Ct_ConfirmPurge" xml:space="preserve"><value>Remove the selected letters from your trash for good? You will not be able to restore them. The letters stay in the system for everyone else.</value></data>
+  <data name="Ct_ConfirmEmptyTrash" xml:space="preserve"><value>Remove everything in your trash for good?</value></data>
+  <data name="Ct_ConfirmDelete" xml:space="preserve"><value>Delete this item?</value></data>
+  <data name="Ct_TrashHint" xml:space="preserve"><value>Letters here are hidden only for you. Restoring brings them back; removing for good hides them from you permanently (the official letter is never deleted).</value></data>
+  <data name="Ct_TrashEmpty" xml:space="preserve"><value>The trash is empty</value></data>
+  <data name="Ct_TrashEmptyHint" xml:space="preserve"><value>Letters you move to the trash appear here.</value></data>
+  <data name="Ct_KeyTrash" xml:space="preserve"><value>Move to trash</value></data>
+  <data name="Ct_ReturnedChip" xml:space="preserve"><value>Returned for revision</value></data>
+  <data name="Ct_RevivedChip" xml:space="preserve"><value>Revived from archive</value></data>
+  <data name="Ct_ThreadMembers" xml:space="preserve"><value>Show the conversation</value></data>
+  <data name="Ct_ThreadMessages" xml:space="preserve"><value>messages in the conversation</value></data>
+  <data name="Ct_AddReminder" xml:space="preserve"><value>Add reminder</value></data>
+  <data name="Ct_RemindAt" xml:space="preserve"><value>Remind me at</value></data>
+  <data name="Ct_Note" xml:space="preserve"><value>Note</value></data>
+  <data name="Ct_ReminderAdded" xml:space="preserve"><value>Reminder added</value></data>
+  <data name="Ct_PickDate" xml:space="preserve"><value>Choose a date and time</value></data>
+  <data name="Ct_SetGeneral" xml:space="preserve"><value>General</value></data>
+  <data name="Ct_SetGeneralHint" xml:space="preserve"><value>Personal display preferences. They never change what you are allowed to see.</value></data>
+  <data name="Ct_SetColumns" xml:space="preserve"><value>Columns</value></data>
+  <data name="Ct_SetColumnsHint" xml:space="preserve"><value>Choose the visible columns and freeze the leading ones while scrolling sideways.</value></data>
+  <data name="Ct_SetDelegation" xml:space="preserve"><value>Delegation</value></data>
+  <data name="Ct_SetRules" xml:space="preserve"><value>Auto-routing rules</value></data>
+  <data name="Ct_SetContacts" xml:space="preserve"><value>Contacts and groups</value></data>
+  <data name="Ct_SetReminders" xml:space="preserve"><value>Reminders</value></data>
+  <data name="Ct_DefaultView" xml:space="preserve"><value>Default list view</value></data>
+  <data name="Ct_Density" xml:space="preserve"><value>Row density</value></data>
+  <data name="Ct_DensityNormal" xml:space="preserve"><value>Comfortable</value></data>
+  <data name="Ct_PageSize" xml:space="preserve"><value>Rows per page</value></data>
+  <data name="Ct_SetPreview" xml:space="preserve"><value>Open a letter in the side pane instead of leaving the list</value></data>
+  <data name="Ct_SetConfirmTrash" xml:space="preserve"><value>Ask before moving letters to the trash</value></data>
+  <data name="Ct_SetMarkRead" xml:space="preserve"><value>Mark a letter as read when I open it</value></data>
+  <data name="Ct_FrozenColumns" xml:space="preserve"><value>Frozen columns</value></data>
+  <data name="Ct_None" xml:space="preserve"><value>None</value></data>
+  <data name="Ct_Saved" xml:space="preserve"><value>Saved</value></data>
+  <data name="Ct_RequestFailed" xml:space="preserve"><value>The request failed. Please try again.</value></data>
+  <data name="Ct_NoItems" xml:space="preserve"><value>Nothing here yet</value></data>
+  <data name="Ct_Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Ct_Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="Ct_Enabled" xml:space="preserve"><value>Enabled</value></data>
+  <data name="Ct_Done" xml:space="preserve"><value>Done</value></data>
+  <data name="Ct_Due" xml:space="preserve"><value>Due</value></data>
+  <data name="Ct_Employee" xml:space="preserve"><value>Employee</value></data>
+  <data name="Ct_Party" xml:space="preserve"><value>External party</value></data>
+  <data name="Ct_ScopePersonal" xml:space="preserve"><value>Personal</value></data>
+  <data name="Ct_ScopeOrg" xml:space="preserve"><value>Organizational (everyone)</value></data>
+  <data name="Ct_DelegationsGiven" xml:space="preserve"><value>Delegations I gave</value></data>
+  <data name="Ct_DelegationsReceived" xml:space="preserve"><value>Delegations given to me</value></data>
+  <data name="Ct_DelegateTo" xml:space="preserve"><value>Delegate my cartable to</value></data>
+  <data name="Ct_CreateDelegation" xml:space="preserve"><value>Delegate (view only)</value></data>
+  <data name="Ct_ActiveNow" xml:space="preserve"><value>Active now</value></data>
+  <data name="Ct_Revoke" xml:space="preserve"><value>Revoke</value></data>
+  <data name="Ct_Revoked" xml:space="preserve"><value>Revoked</value></data>
+  <data name="Ct_RelManager" xml:space="preserve"><value>Manager</value></data>
+  <data name="Ct_RelSubordinate" xml:space="preserve"><value>Subordinate</value></data>
+  <data name="Ct_RelPeer" xml:space="preserve"><value>Peer</value></data>
+  <data name="Ct_RelOther" xml:space="preserve"><value>Others</value></data>
+  <data name="Ct_RuleName" xml:space="preserve"><value>Rule name</value></data>
+  <data name="Ct_RuleIf" xml:space="preserve"><value>If the letter matches</value></data>
+  <data name="Ct_RuleThen" xml:space="preserve"><value>Then</value></data>
+  <data name="Ct_SenderContains" xml:space="preserve"><value>Sender contains</value></data>
+  <data name="Ct_SubjectContains" xml:space="preserve"><value>Subject contains</value></data>
+  <data name="Ct_RuleApplyTag" xml:space="preserve"><value>Add tag</value></data>
+  <data name="Ct_RuleStar" xml:space="preserve"><value>Star it</value></data>
+  <data name="Ct_RuleReferTo" xml:space="preserve"><value>Refer to</value></data>
+  <data name="Ct_RuleReferNote" xml:space="preserve"><value>Instruction</value></data>
+  <data name="Ct_RuleMatches" xml:space="preserve"><value>Matched</value></data>
+  <data name="Ct_AddRule" xml:space="preserve"><value>Add rule</value></data>
+  <data name="Ct_SubordinatesOnly" xml:space="preserve"><value>your subordinates in the org chart</value></data>
+  <data name="Ct_GroupName" xml:space="preserve"><value>Group name</value></data>
+  <data name="Ct_Members" xml:space="preserve"><value>Members</value></data>
+  <data name="Ct_AddGroup" xml:space="preserve"><value>Add group</value></data>
+  <data name="Ct_SearchContacts" xml:space="preserve"><value>Search employees and external parties</value></data>
+  <data name="Ct_HistoryOrder" xml:space="preserve"><value>Order</value></data>
+  <data name="Ct_HistoryOldest" xml:space="preserve"><value>Oldest first</value></data>
+  <data name="Ct_HistoryNewest" xml:space="preserve"><value>Newest first</value></data>
+  <data name="Ct_HistoryWho" xml:space="preserve"><value>Done by</value></data>
+  <data name="Ct_HistoryAll" xml:space="preserve"><value>Everyone</value></data>
+  <data name="Ct_HistoryMe" xml:space="preserve"><value>Me</value></data>
+  <data name="Ct_HistoryManager" xml:space="preserve"><value>My manager</value></data>
+  <data name="Ct_HistorySubordinates" xml:space="preserve"><value>My subordinates</value></data>
+  <data name="Ct_ReportPersonal" xml:space="preserve"><value>My cartable</value></data>
+  <data name="Ct_Received" xml:space="preserve"><value>Received</value></data>
+  <data name="Ct_Unread" xml:space="preserve"><value>Unread</value></data>
+  <data name="Ct_OpenReferrals" xml:space="preserve"><value>Open referrals</value></data>
+  <data name="Ct_OverdueReferrals" xml:space="preserve"><value>Overdue referrals</value></data>
+  <data name="Ct_CompletedReferrals" xml:space="preserve"><value>Completed referrals</value></data>
+  <data name="Ct_AvgReferralDays" xml:space="preserve"><value>Average referral time (days)</value></data>
+  <data name="Ct_AvgResponseDays" xml:space="preserve"><value>Average response time (days)</value></data>
+  <data name="Ct_SlaTitle" xml:space="preserve"><value>Response SLA</value></data>
+  <data name="Ct_SlaHint" xml:space="preserve"><value>Letters that asked for a response: answered on time, answered late, still open past the due date, still open within the deadline.</value></data>
+  <data name="Ct_SlaOnTime" xml:space="preserve"><value>Answered on time</value></data>
+  <data name="Ct_SlaLate" xml:space="preserve"><value>Answered late</value></data>
+  <data name="Ct_SlaOpenOverdue" xml:space="preserve"><value>Open and overdue</value></data>
+  <data name="Ct_SlaOpenWithin" xml:space="preserve"><value>Open within deadline</value></data>
+  <data name="Ct_SlaOnTimePercent" xml:space="preserve"><value>On-time rate</value></data>
+  <data name="Ct_SlaRequired" xml:space="preserve"><value>Response required</value></data>
+  <data name="Ct_ByMonth" xml:space="preserve"><value>Received by month</value></data>
+  <data name="Ct_ByDiscipline" xml:space="preserve"><value>Received by discipline</value></data>
+  <data name="Ct_SubordinatesTitle" xml:space="preserve"><value>Subordinates' performance</value></data>
+  <data name="Ct_SubordinatesHint" xml:space="preserve"><value>From the organization chart (direct and indirect reports). Counts only; letters you may not see are not counted.</value></data>
+  <data name="Cart_Err_NoEmployee" xml:space="preserve"><value>Your account is not linked to an employee record.</value></data>
+  <data name="Cart_Err_NothingToDo" xml:space="preserve"><value>Nothing to change for the selected letters.</value></data>
+  <data name="Tag_Err_SelfParent" xml:space="preserve"><value>A tag cannot be its own parent.</value></data>
+  <data name="Tag_Err_Cycle" xml:space="preserve"><value>A tag cannot be moved under one of its own sub-tags.</value></data>
+  <data name="Tag_Err_TooDeep" xml:space="preserve"><value>The tag tree can have at most four levels.</value></data>
+  <data name="Tag_Err_ParentMissing" xml:space="preserve"><value>The parent tag does not exist or is inactive.</value></data>
+  <data name="Tag_Err_ScopeMismatch" xml:space="preserve"><value>An organizational tag cannot sit under a personal tag, and personal tags cannot sit under another person's tag.</value></data>
+  <data name="Tag_Err_Name" xml:space="preserve"><value>Enter a tag name (up to 100 characters).</value></data>
+  <data name="Tag_Err_NoPermission" xml:space="preserve"><value>You are not allowed to change this tag.</value></data>
+  <data name="Tag_Err_Duplicate" xml:space="preserve"><value>A tag with this name already exists here.</value></data>
+  <data name="Tag_Err_NotFound" xml:space="preserve"><value>The tag was not found.</value></data>
+  <data name="Tag_Err_HasChildren" xml:space="preserve"><value>Remove or move the sub-tags first.</value></data>
+  <data name="Del_Err_Self" xml:space="preserve"><value>You cannot delegate to yourself.</value></data>
+  <data name="Del_Err_Dates" xml:space="preserve"><value>The end date is before the start date.</value></data>
+  <data name="Del_Err_Past" xml:space="preserve"><value>The delegation has already ended.</value></data>
+  <data name="Del_Err_TooLong" xml:space="preserve"><value>A delegation can last at most 180 days.</value></data>
+  <data name="Del_Err_Overlap" xml:space="preserve"><value>You already delegated to this person in an overlapping period.</value></data>
+  <data name="Del_Err_Circular" xml:space="preserve"><value>That person has delegated to you in an overlapping period.</value></data>
+  <data name="Del_Err_DelegateInvalid" xml:space="preserve"><value>The chosen person is not an active employee with an account.</value></data>
+  <data name="Del_Err_NotFound" xml:space="preserve"><value>The delegation was not found.</value></data>
+  <data name="Rule_Err_Name" xml:space="preserve"><value>Enter a rule name.</value></data>
+  <data name="Rule_Err_NoCondition" xml:space="preserve"><value>Set at least one condition; a rule without conditions would match every letter.</value></data>
+  <data name="Rule_Err_NoAction" xml:space="preserve"><value>Choose at least one action.</value></data>
+  <data name="Rule_Err_Tag" xml:space="preserve"><value>The chosen tag is not available to you.</value></data>
+  <data name="Rule_Err_NotSubordinate" xml:space="preserve"><value>Automatic referral is only allowed to your subordinates in the organization chart.</value></data>
+  <data name="Rule_Err_NotFound" xml:space="preserve"><value>The rule was not found.</value></data>
+  <data name="Rule_Err_TooMany" xml:space="preserve"><value>You can keep at most 30 rules.</value></data>
+  <data name="Grp_Err_Name" xml:space="preserve"><value>Enter a group name (up to 120 characters).</value></data>
+  <data name="Grp_Err_Empty" xml:space="preserve"><value>Add at least one member.</value></data>
+  <data name="Grp_Err_TooMany" xml:space="preserve"><value>A group can have at most 200 members.</value></data>
+  <data name="Grp_Err_TooManyGroups" xml:space="preserve"><value>You can keep at most 50 personal groups.</value></data>
+  <data name="Grp_Err_InvalidMember" xml:space="preserve"><value>A chosen member is not active or does not exist.</value></data>
+  <data name="Grp_Err_NoPermission" xml:space="preserve"><value>You are not allowed to change this group.</value></data>
+  <data name="Grp_Err_NotFound" xml:space="preserve"><value>The group was not found.</value></data>
+  <data name="Grp_Err_Duplicate" xml:space="preserve"><value>A group with this name already exists.</value></data>
+  <data name="Rem_Err_Past" xml:space="preserve"><value>Choose a time in the future.</value></data>
+  <data name="Rem_Err_TooFar" xml:space="preserve"><value>A reminder can be at most two years ahead.</value></data>
+  <data name="Rem_Err_NoLetter" xml:space="preserve"><value>The letter was not found or you may not view it.</value></data>
+  <data name="Rem_Err_TooMany" xml:space="preserve"><value>You can keep at most 200 open reminders.</value></data>
+  <data name="Rem_Err_NotFound" xml:space="preserve"><value>The reminder was not found.</value></data>
+  <data name="Ct_St_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Ct_St_PendingApproval" xml:space="preserve"><value>Pending approval</value></data>
+  <data name="Ct_St_ReturnedForRevision" xml:space="preserve"><value>Returned for revision</value></data>
+  <data name="Ct_St_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Ct_St_Issued" xml:space="preserve"><value>Issued</value></data>
+  <data name="Ct_St_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Ct_St_Sent" xml:space="preserve"><value>Sent</value></data>
+  <data name="Ct_St_Archived" xml:space="preserve"><value>Archived</value></data>
+  <data name="Ct_St_Rejected" xml:space="preserve"><value>Rejected</value></data>
+  <data name="Ct_St_Registered" xml:space="preserve"><value>Registered</value></data>
+  <data name="Ct_St_UnderReview" xml:space="preserve"><value>Under review</value></data>
+  <data name="Ct_St_Referred" xml:space="preserve"><value>Referred</value></data>
+  <data name="Ct_St_Acknowledged" xml:space="preserve"><value>Acknowledged</value></data>
+  <data name="Ct_AddFromGroup" xml:space="preserve"><value>Add a group</value></data>
+  <data name="Ct_GroupAdded" xml:space="preserve"><value>{0} people added from the group</value></data>
+  <data name="Ct_NoGroups" xml:space="preserve"><value>You have no contact groups yet (Settings → Contacts and groups).</value></data>
+  <data name="Ct_TitleReferral" xml:space="preserve"><value>Refer letter</value></data>
+  <data name="Ct_ReferringTo" xml:space="preserve"><value>Referring</value></data>
+  <data name="Ct_SwitchToReply" xml:space="preserve"><value>Reply instead</value></data>
+  <data name="Ct_SwitchToReferral" xml:space="preserve"><value>Refer instead</value></data>
+  <data name="Ct_SubjectLocked" xml:space="preserve"><value>The subject is the original letter's subject and cannot be changed. This letter only gets the «Referral» tag.</value></data>
+  <data name="Ct_ReferralInstruction" xml:space="preserve"><value>Referral instruction</value></data>
+  <data name="Ct_ReferralInstructionHelp" xml:space="preserve"><value>Write what the recipients should do. The original letter is quoted below.</value></data>
+  <data name="Ct_ReferralDeadline" xml:space="preserve"><value>Action deadline</value></data>
+  <data name="Ct_ReferralDeadlineSet" xml:space="preserve"><value>Set a deadline for the action</value></data>
+  <data name="Ct_SendReferral" xml:space="preserve"><value>Send referral</value></data>
+  <data name="Ct_Reply" xml:space="preserve"><value>Reply</value></data>
+  <data name="Ct_Refer" xml:space="preserve"><value>Refer</value></data>
+  <data name="Ct_ReferToPerson" xml:space="preserve"><value>Refer to a person</value></data>
+  <data name="Ct_ReferToPersonHint" xml:space="preserve"><value>Opens a new letter with the same subject; it only takes the «Referral» tag.</value></data>
+  <data name="Ct_ReferToDepartment" xml:space="preserve"><value>Refer to a whole department (quick form)</value></data>
+  <data name="Ct_ChooseDepartment" xml:space="preserve"><value>-- Department --</value></data>
+  <data name="Ct_ConversationTitle" xml:space="preserve"><value>Message flow</value></data>
+  <data name="Ct_ExpandAll" xml:space="preserve"><value>Expand all</value></data>
+  <data name="Ct_CollapseAll" xml:space="preserve"><value>Collapse all</value></data>
+  <data name="Ct_ThisLetter" xml:space="preserve"><value>This letter</value></data>
+  <data name="Ct_Kind_Original" xml:space="preserve"><value>Original</value></data>
+  <data name="Ct_Kind_Reply" xml:space="preserve"><value>Reply</value></data>
+  <data name="Ct_Kind_Referral" xml:space="preserve"><value>Referral</value></data>
+  <data name="Ct_NoSelection" xml:space="preserve"><value>Select letters to act on them</value></data>
+  <data name="Ct_ApproverManagers" xml:space="preserve"><value>Your managers (org chart)</value></data>
+  <data name="Ct_ApproverEligible" xml:space="preserve"><value>Holders of the approve permission</value></data>
+  <data name="Ct_ApproverOthers" xml:space="preserve"><value>Other staff</value></data>
+  <data name="Lc_Err_ReferralNeedsParent" xml:space="preserve"><value>A referral must be made from an existing letter.</value></data>
 </root>

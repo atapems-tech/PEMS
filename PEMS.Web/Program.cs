@@ -557,12 +557,25 @@ builder.Services.AddScoped<ILetterReminderService, LetterReminderService>();
 builder.Services.AddScoped<ILetterComposeService, LetterComposeService>();
 builder.Services.AddScoped<ILetterComplianceService, LetterComplianceService>();
 builder.Services.AddScoped<IIncomingCorrespondenceService, IncomingCorrespondenceService>();
+builder.Services.AddScoped<IExecutiveDashboardService, ExecutiveDashboardService>();
 builder.Services.Configure<PEMS.Web.BackgroundJobs.LetterReminderOptions>(builder.Configuration.GetSection("LetterReminders"));
 builder.Services.AddHostedService<PEMS.Web.BackgroundJobs.LetterReminderBackgroundService>();
 
 builder.Services.AddScoped<ILetterReferralService, LetterReferralService>();
 
 builder.Services.AddScoped<ITagService, TagService>();
+
+// کارتابل نامه‌نگاری: پوشه/سطل/آرشیو شخصی، درخت برچسب، تفویض، قانون مسیریابی، مخاطبین، یادآور شخصی، گزارش (روی چارت سازمانی)
+builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationSubordinateResolver, PEMS.Persistence.Services.OrganizationSubordinateResolver>();
+builder.Services.AddScoped<ILetterCartableService, LetterCartableService>();
+builder.Services.AddScoped<ILetterTagTreeService, LetterTagTreeService>();
+builder.Services.AddScoped<ILetterUserSettingsService, LetterUserSettingsService>();
+builder.Services.AddScoped<ILetterDelegationService, LetterDelegationService>();
+builder.Services.AddScoped<ILetterRoutingRuleService, LetterRoutingRuleService>();
+builder.Services.AddScoped<ILetterContactService, LetterContactService>();
+builder.Services.AddScoped<ILetterPersonalReminderService, LetterPersonalReminderService>();
+builder.Services.AddScoped<ILetterReportService, LetterReportService>();
+builder.Services.AddHostedService<PEMS.Web.BackgroundJobs.LetterPersonalReminderBackgroundService>();
 
 builder.Services.AddScoped<ITaskService, TaskService>();
 
@@ -936,7 +949,7 @@ using (var scope = app.Services.CreateScope())
 
     // سایدبار داده‌محور: همگام‌سازی افزایشی کاتالوگ کد (فقط وقتی پرچم فعال است؛ جدول تا اعمال Migration وجود ندارد)
     if (scope.ServiceProvider.GetRequiredService<PEMS.Web.Navigation.IDynamicSidebarAvailability>().IsEnabled)
-        await scope.ServiceProvider.GetRequiredService<INavigationMenuService>().SyncDefaultsAsync(PEMS.Web.Navigation.NavigationMenuDefaults.All);
+        await scope.ServiceProvider.GetRequiredService<INavigationMenuService>().SyncDefaultsAsync(PEMS.Web.Navigation.NavigationMenuDefaults.All, default, PEMS.Web.Navigation.NavigationMenuDefaults.RetiredKeys);
 }
 
 

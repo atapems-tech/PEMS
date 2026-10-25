@@ -89,18 +89,22 @@ public class DatabaseUpdateServiceSqlTests
             Assert.True(again.Succeeded);
             Assert.True(again.NothingToDo);
 
-            // 5. simulate "a new release adds migrations": roll the last two back, then update
+            // 5. simulate "a new release adds migrations": roll back to just before DatabaseUpdateRuns (the table that keeps the run log,
+            //    so the log starts empty again), whatever migrations were added after it, then update
             var migrations = ctx.Database.GetMigrations().ToList();
-            await ctx.GetService<IMigrator>().MigrateAsync(migrations[^3]);
+            var runsIndex = migrations.FindIndex(m => m.EndsWith("_DatabaseUpdateRuns", StringComparison.Ordinal));
+            Assert.True(runsIndex > 0);
+            var expectedPending = migrations.Count - runsIndex;
+            await ctx.GetService<IMigrator>().MigrateAsync(migrations[runsIndex - 1]);
             ctx.ChangeTracker.Clear();
 
             var behind = await service.GetStatusAsync();
             Assert.Equal(DatabaseSetupState.UpdateAvailable, behind.State);
-            Assert.Equal(2, behind.PendingMigrations.Count);
+            Assert.Equal(expectedPending, behind.PendingMigrations.Count);
 
             var update = await service.ApplyAsync("Admin", "tester");
             Assert.True(update.Succeeded, update.Message);
-            Assert.Equal(2, update.MigrationsApplied);
+            Assert.Equal(expectedPending, update.MigrationsApplied);
 
             var afterUpdate = await service.GetStatusAsync();
             Assert.Equal(DatabaseSetupState.UpToDate, afterUpdate.State);

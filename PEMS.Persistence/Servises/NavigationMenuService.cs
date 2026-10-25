@@ -52,7 +52,7 @@ public class NavigationMenuService : INavigationMenuService
                 .ToListAsync(ct))
             .Select(Map).ToList();
 
-    public async Task<int> SyncDefaultsAsync(IReadOnlyList<NavigationMenuItemDefinition> definitions, CancellationToken ct = default)
+    public async Task<int> SyncDefaultsAsync(IReadOnlyList<NavigationMenuItemDefinition> definitions, CancellationToken ct = default, IReadOnlyCollection<string>? retiredKeys = null)
     {
         var existing = await _ctx.NavigationMenuItems.ToDictionaryAsync(x => x.Key, StringComparer.OrdinalIgnoreCase, ct);
         var changed = 0;
@@ -91,6 +91,13 @@ public class NavigationMenuService : INavigationMenuService
             Set(row.ActiveArea, d.ActiveArea, v => row.ActiveArea = v);
             if (dirty) { row.ModifiedDate = DateTime.Now; changed++; }
         }
+
+        // کلیدهای بازنشسته: ردیف سیستمیِ قدیمی غیرفعال می‌شود (حذف نه)
+        foreach (var key in retiredKeys ?? Array.Empty<string>())
+            if (existing.TryGetValue(key, out var old) && old.IsSystem && old.IsActive)
+            {
+                old.IsActive = false; old.ModifiedDate = DateTime.Now; changed++;
+            }
 
         if (changed > 0)
         {

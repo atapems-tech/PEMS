@@ -35,7 +35,7 @@ public class LetterWorkspaceIndexTests
     };
 
     private static async Task<string> Render(object filters, IEnumerable<LetterDto> rows, bool canArchive = false, LetterFolderCountsDto? counts = null,
-        int myReferrals = 0, bool unread = false, string? query = null, int total = -1)
+        int myReferrals = 0, bool unread = false, string? query = null, int total = -1, CartableCountsDto? cartable = null)
     {
         var c = new LetterController(null!, null!, null!, null!, null!, null!, null!, null!, null!, null!, null!)
         {
@@ -43,6 +43,7 @@ public class LetterWorkspaceIndexTests
         };
         c.ViewBag.Dashboard = new LetterDashboardDto { MyOpenReferrals = myReferrals };
         c.ViewBag.FolderCounts = counts ?? new LetterFolderCountsDto();
+        c.ViewBag.Cartable = cartable ?? new CartableCountsDto();
         c.ViewBag.Projects = new List<object> { Obj(("ProjectId", 7), ("ProjectName", "Alpha")) };
         c.ViewBag.Disciplines = new List<object> { Obj(("DisciplineId", 1), ("Name", "Mech")) };
         c.ViewBag.CanBulkArchive = canArchive;
@@ -69,36 +70,48 @@ public class LetterWorkspaceIndexTests
 
     // ------------------------------------------------------------------ toolbar tabs
 
-    [Fact]
-    public async Task Tabs_ShowCounts_OnlyWhereSomethingIsWaiting_AndMarkTheReturnedAndReferralTabsAsAlerts()
-    {
-        var html = await Render(NoFilters(), new[] { Row(1) }, counts: new LetterFolderCountsDto { Draft = 3, ReturnedForRevision = 2, Starred = 0 }, myReferrals: 5);
+    // ------------------------------------------------------------------ folder tree (the cartable side panel replaced the toolbar tabs)
 
-        Assert.Matches(@">\s*All\s*</a>", html);                                  // "All" never carries a count
-        Assert.Matches(@">\s*Drafts\s*<span class=""lp-count "">3</span>", html);
-        Assert.Matches(@">\s*Returned\s*<span class=""lp-count alert"">2</span>", html);
-        Assert.Matches(@">\s*Referred to me\s*<span class=""lp-count alert"">5</span>", html);
-        Assert.DoesNotMatch(@">\s*Starred\s*<span class=""lp-count", html);        // zero = no badge
-        Assert.DoesNotMatch(@">\s*Approved\s*<span class=""lp-count", html);
+    [Fact]
+    public async Task Folders_ShowCounts_OnlyWhereSomethingIsWaiting_AndMarkTheReturnedAndReferralFoldersAsAlerts()
+    {
+        var html = await Render(NoFilters(), new[] { Row(1) }, counts: new LetterFolderCountsDto { ReturnedForRevision = 2, Starred = 0 }, myReferrals: 5,
+            cartable: new CartableCountsDto { Drafts = 3, InboxUnread = 4 });
+
+        Assert.Matches(@"<span class=""ct-label"">Active correspondence</span>\s*</a>", html);   // the default view never carries a count
+        Assert.Matches(@"<span class=""ct-label"">Inbox</span>\s*<span class=""ct-count ct-count--hot"">4</span>", html);
+        Assert.Matches(@"<span class=""ct-label"">Drafts</span>\s*<span class=""ct-count "">3</span>", html);
+        Assert.Matches(@"<span class=""ct-label"">Returned</span>\s*<span class=""ct-count ct-count--alert"">2</span>", html);
+        Assert.Matches(@"<span class=""ct-label"">Referred to me</span>\s*<span class=""ct-count ct-count--alert"">5</span>", html);
+        Assert.DoesNotMatch(@"<span class=""ct-label"">Starred</span>\s*<span class=""ct-count", html);   // zero = no badge
+        Assert.DoesNotMatch(@"<span class=""ct-label"">Approved</span>\s*<span class=""ct-count", html);
     }
 
     [Theory]
-    [InlineData("Draft", "Drafts")]
     [InlineData("PendingApproval", "Under review")]
+    [InlineData("ReturnedForRevision", "Returned")]
     [InlineData("Approved", "Approved")]
-    public async Task ActiveFolder_IsMarkedWithAriaCurrent(string status, string label)
+    public async Task ActiveWorkflowFolder_IsMarkedWithAriaCurrent(string status, string label)
     {
         var html = await Render(NoFilters(status), new[] { Row(1) });
 
-        Assert.Matches(@"class=""lp-tab active"" aria-current=""page"">\s*" + label + @"\s*", html);
+        Assert.Matches(@"class=""ct-folder active""[^>]*aria-current=""page""[^>]*>\s*<i class=""bi [^""]+"" aria-hidden=""true""></i>\s*<span class=""ct-label"">" + label + "</span>", html);
         Assert.Equal(1, Regex.Matches(html, "aria-current=\"page\"").Count);
     }
 
     [Fact]
-    public async Task AllFolder_IsActive_WhenNoStatusOrStarFilterIsSet_EvenWithATypeFilter()
+    public async Task DraftStatusLink_KeepsWorking_AndTitlesTheList()
+    {
+        var html = await Render(NoFilters("Draft"), new[] { Row(1) });
+        Assert.Matches(@"<h2>Drafts</h2>", html);
+        Assert.DoesNotContain("aria-current=\"page\"", html);   // no sidebar item stands for the legacy status filter
+    }
+
+    [Fact]
+    public async Task DefaultFolder_IsActive_WhenNoStatusOrStarFilterIsSet_EvenWithATypeFilter()
     {
         var html = await Render(NoFilters(type: "Incoming"), new[] { Row(1) });
-        Assert.Matches(@"class=""lp-tab active"" aria-current=""page"">\s*All", html);
+        Assert.Matches(@"class=""ct-folder active""[^>]*aria-current=""page""[^>]*>\s*<i class=""bi bi-collection""", html);
     }
 
     // ------------------------------------------------------------------ filter popover + chips
@@ -190,8 +203,8 @@ public class LetterWorkspaceIndexTests
             Assert.Contains("lp-act lp-act--always", html);          // open + more stay visible without hovering
         }
         Assert.DoesNotContain("data-row-archive", without);
-        // links have no href in the render harness (no routes), so the target section is checked in the source
-        Assert.Contains("asp-fragment=\"accReferrals\"", File.ReadAllText(Path.Combine(Root(), "PEMS.Web", "Views", "Letter", "Index.cshtml")));
+        // links have no href in the render harness (no routes), so the target is checked in the source: a referral is now a letter written in the composer
+        Assert.Contains("asp-route-referTo=\"@l.LetterId\"", File.ReadAllText(Path.Combine(Root(), "PEMS.Web", "Views", "Letter", "Index.cshtml")));
         Assert.Matches(@"data-row-archive=""1""", with);
     }
 

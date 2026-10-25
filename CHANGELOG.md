@@ -3,6 +3,44 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-25 - Staging environment live
+
+### Added
+- Staging deploys from the `staging` branch: run 40208748572 is green, the database installed (HTTP 200, up to date) and only the changed files (33.8 MB) were uploaded. Root causes found on the way: stale migration-chain test, FTP protocol default, SQL login with a wrong user name.
+
+## 2026-10-25 - Faster deploys: no repeated tests, health check shows the real error
+
+### Changed
+- The deploy pipeline records `gate-pass/<source tree hash>` after build, drift gate and tests pass and skips them when the same tree is deployed again (for example demo after staging); NuGet packages are cached; `force_tests` runs the gate anyway.
+- The post-deploy health check prints the readable error page and, after 20 consecutive 5xx answers, the newest `logs/stdout*` and `logs/pems-*.log` lines read over FTP, then fails.
+
+## 2026-10-25 - EF migrations in their own assembly (SCRUM-371)
+
+### Changed
+- New project `PEMS.Migrations` holds the 119 migrations, the model snapshot and the design-time factory; `PEMS.Persistence.dll` shrinks from 29 MB to 6 MB and `PEMS.Migrations.dll` (23 MB) stays byte-identical when only data-layer code changes, so deploys no longer re-upload the migrations.
+- `PEMSDbContext` defaults `MigrationsAssembly` to `PEMS.Migrations`; Web and Tests reference the project. Add a migration with `dotnet ef migrations add <Name> --project PEMS.Migrations --startup-project PEMS.Web`; the drift gate, `deploy.ps1`, the Dockerfile and the docs use the new project.
+- Tests: the update-run test no longer assumes the last two migrations are the code-first ones; a new database-free test checks that a plain `UseSqlServer` finds the migrations.
+
+## 2026-10-25 - Smaller deployment package
+
+### Changed
+- `Directory.Build.props`: the git commit hash is no longer written into assembly versions, so unchanged PEMS assemblies stay byte-identical between commits and the FTP difference upload skips them.
+- Environment packages (`-p:PemsEnv=<name>`) drop debug symbols, satellite resources of languages other than en/fa and the x86 native libraries: 285 MB -> 245 MB. `wwwroot/uploads` is excluded from publishes.
+- `wwwroot/uploads` (17 runtime files incl. signatures and documents) is no longer tracked: added to `.gitignore`, files stay on disk.
+- FTP steps treat an empty `<P>_FTP_PROTOCOL` as `ftps` everywhere; the pipeline checks FTP login, folder and write access before the long build; the migration-chain test no longer requires `FullTextSearch` to be the last migration.
+
+## 2026-10-25 - Pipelines only on demo and staging, staging environment, deployment README
+
+### Changed
+- No workflow runs on pushes or pull requests to `main` or working branches: `build.yml` is manual (`workflow_dispatch`).
+- The demo pipeline is now a reusable workflow `deploy-site.yml` (target and secrets prefix as inputs); `deploy-demo.yml` (push to `demo`) and the new `deploy-staging.yml` (push to `staging`) call it.
+
+### Added
+- `env/staging.env` and `env/staging.secrets.env.example` (same keys as every environment; the environment-files test includes `staging`); secrets `STAGING_*`.
+- `docs/deployment/DEPLOYMENT_README.md`: subdomains, databases, FTP, secrets, Actions, manual deploy and manual reset, rollback, new-environment checklist.
+- Plan rows #351 (this work), #352 (versioned, hashed, importable data package in the admin UI) and #353 (reset on deploy with compatibility precheck); the two data features are not built yet.
+- Branch `staging` (main + demo + dev); branch `dev` retired after merging into `main`.
+
 ## 2026-10-24 - Demo pipeline works end to end
 
 ### Fixed

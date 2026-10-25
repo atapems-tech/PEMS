@@ -58,6 +58,7 @@
         return {
             letterId: state.letterId,
             parentLetterId: boot.parentLetterId,
+            isReferral: !!boot.isReferral,
             letterType: boot.letterType,
             category: val('lcCategory') || null,
             subject: val('lcSubject'),
@@ -277,6 +278,35 @@
             .catch(function (e) { renderIssues([{ message: e.message || T.uploadFailed }], []); });
     });
 
+    // contact groups (personal / organizational lists kept in the cartable settings): employees go to "To"; an external party pre-selects the outgoing party
+    var groupBtn = $('lcGroupBtn'), groupMenu = $('lcGroupMenu'), groupsLoaded = false;
+    function loadGroups() {
+        if (groupsLoaded || !boot.urls.groups) return;
+        groupsLoaded = true;
+        text(groupMenu, '');
+        fetch(boot.urls.groups, { credentials: 'same-origin' }).then(function (r) { return r.ok ? r.json() : []; }).then(function (groups) {
+            if (!groups.length) { var empty = document.createElement('li'); var s = document.createElement('span'); s.className = 'dropdown-item-text small text-muted'; s.textContent = T.noGroups; empty.appendChild(s); groupMenu.appendChild(empty); return; }
+            groups.forEach(function (g) {
+                var li = document.createElement('li'), b = document.createElement('button');
+                b.type = 'button'; b.className = 'dropdown-item'; b.textContent = g.name + ' (' + g.members.length + ')';
+                b.addEventListener('click', function () {
+                    var added = 0;
+                    g.members.forEach(function (m) {
+                        if (m.employeeId) { if (addRecipient('to', { id: m.employeeId, name: m.name, position: m.subtitle })) added++; }
+                        else if (m.correspondentPartyId && $('lcParty')) {
+                            var sel = $('lcParty'), opt = sel.querySelector('option[value="' + m.correspondentPartyId + '"]');
+                            if (opt && !sel.value) { sel.value = String(m.correspondentPartyId); sel.dispatchEvent(new Event('change', { bubbles: true })); }
+                        }
+                    });
+                    renderIssues([], [{ message: T.groupAdded.replace('{0}', added) }]);
+                    updateRecipientSummary();
+                });
+                li.appendChild(b); groupMenu.appendChild(li);
+            });
+        }).catch(function () { groupsLoaded = false; });
+    }
+    if (groupBtn && groupMenu) groupBtn.parentNode.addEventListener('show.bs.dropdown', loadGroups);
+
     // ---------------------------------------------------------------- approval chain
     function renderChain() {
         var ol = $('lcChain'); ol.innerHTML = '';
@@ -326,6 +356,7 @@
     // ---------------------------------------------------------------- subject counter
     var subj = $('lcSubject'), subjLen = $('lcSubjectLen');
     function updateSubject() {
+        if (!subjLen) return;   // a referral has a fixed subject and shows no counter
         var n = subj.value.trim().length; subjLen.textContent = n;
         subjLen.parentNode.classList.toggle('over', n > boot.maxSubject);
     }

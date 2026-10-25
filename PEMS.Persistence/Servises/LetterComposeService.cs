@@ -118,6 +118,7 @@ public class LetterComposeService : ILetterComposeService
             ? await _context.Letters.Where(l => l.LetterId == input.LetterId).Select(l => l.ParentLetterId).FirstOrDefaultAsync()
             : input.ParentLetterId;
         Letter? parent = null;
+        if (input.IsReferral && !parentId.HasValue) { result.Errors.Add(new("ReferralNeedsParent", "parentLetterId")); return result; }
         if (parentId.HasValue)
         {
             parent = await _context.Letters.FirstOrDefaultAsync(l => l.LetterId == parentId && l.IsActive);
@@ -190,8 +191,10 @@ public class LetterComposeService : ILetterComposeService
             if (input.SenderDepartmentId.HasValue) letter.SenderDepartmentId = input.SenderDepartmentId;
         }
 
-        letter.Category = input.Category;
-        letter.Subject = (input.Subject ?? "").Trim();
+        // ارجاع: موضوع همان موضوع نامه‌ی اصلی است (هر مقدار ارسالی نادیده گرفته می‌شود)، تایید ندارد و دسته‌اش «دستور» است
+        letter.IsReferral = input.IsReferral && parent != null && input.LetterType == "Internal";
+        letter.Category = letter.IsReferral ? "Instruction" : input.Category;
+        letter.Subject = letter.IsReferral ? parent!.Subject : (input.Subject ?? "").Trim();
         letter.Body = _sanitizer.Sanitize(input.Body);
         letter.Priority = input.Priority;
         letter.ConfidentialityLevel = input.ConfidentialityLevel;
@@ -203,7 +206,7 @@ public class LetterComposeService : ILetterComposeService
         letter.ResponseRequired = input.ResponseRequired;
         letter.ResponseDueDate = input.ResponseRequired ? input.ResponseDueDate!.Value.Date : null;
         // نامه‌ی خارجی (Outgoing) همیشه تایید می‌خواهد؛ داخلی انتخابی است
-        letter.ApprovalRequired = input.LetterType == "Outgoing" || input.ApprovalRequired;
+        letter.ApprovalRequired = !letter.IsReferral && (input.LetterType == "Outgoing" || input.ApprovalRequired);
 
         var toNames = input.ToEmployeeIds.Where(check.Employees.ContainsKey).Select(id => FullName(check.Employees[id])).ToList();
         letter.Receiver = input.LetterType == "Outgoing" ? input.ExternalReceiver?.Trim() : string.Join(", ", toNames);
@@ -215,6 +218,7 @@ public class LetterComposeService : ILetterComposeService
             await _context.SaveChangesAsync();   // شناسه‌ی نامه‌ی جدید را برای ردیف‌های وابسته می‌گیرد
             await SyncRecipientsAsync(letter, input);
             await SyncApprovalStepsAsync(letter, input);
+            if (letter.IsReferral) await EnsureReferralTagAsync(letter, actor.UserId);
             var version = await LetterVersioning.SnapshotAsync(_context, letter, actor.UserId, autoSave ? "AutoSave" : "Draft");
             await _context.SaveChangesAsync();
 
@@ -283,6 +287,7 @@ public class LetterComposeService : ILetterComposeService
             LetterId = letter.LetterId,
             RowVersion = letter.RowVersion,
             ParentLetterId = letter.ParentLetterId,
+            IsReferral = letter.IsReferral,
             LetterType = letter.LetterType,
             Category = letter.Category,
             Subject = letter.Subject,
@@ -374,6 +379,52 @@ public class LetterComposeService : ILetterComposeService
         return input;
     }
 
+    public async Task<LetterComposeInput?> BuildReferralInputAsync(int parentLetterId, LetterComposeActor actor)
+    {
+        var parent = await _context.Letters.AsNoTracking().FirstOrDefaultAsync(l => l.LetterId == parentLetterId && l.IsActive);
+        if (parent == null) return null;
+
+        var senderName = parent.SenderEmployeeId.HasValue
+            ? await _context.Employees.Where(e => e.EmployeeId == parent.SenderEmployeeId).Select(e => e.FirstName + " " + e.LastName).FirstOrDefaultAsync()
+            : null;
+        var from = System.Net.WebUtility.HtmlEncode(senderName ?? parent.Sender ?? "");
+        var number = System.Net.WebUtility.HtmlEncode(parent.LetterNumber);
+
+        return new LetterComposeInput
+        {
+            ParentLetterId = parent.LetterId,
+            IsReferral = true,
+            LetterType = "Internal",
+            Category = "Instruction",
+            Subject = parent.Subject,
+            Priority = LetterComposeRules.Priorities.Contains(parent.Priority) ? parent.Priority : "Normal",
+            ConfidentialityLevel = LetterComposeRules.Confidentialities.Contains(parent.ConfidentialityLevel) ? parent.ConfidentialityLevel : "Internal",
+            ReferenceNumber = parent.LetterNumber,
+            ProjectId = parent.ProjectId,
+            DisciplineId = parent.DisciplineId,
+            RelatedDepartmentId = parent.RelatedDepartmentId,
+            ApprovalRequired = false,
+            // دستورالعمل ارجاع بالا، نقل نامه‌ی اصلی پایین (نقل با ReferralInstructionText از دستورالعمل جدا می‌شود)
+            Body = "<p></p><blockquote><p><strong>" + number + "</strong> &middot; " + parent.LetterDate.ToString("yyyy-MM-dd") + (from.Length > 0 ? " &middot; " + from : "") + "</p>" + (parent.Body ?? "") + "</blockquote>"
+        };
+    }
+
+    /// <summary>برچسب سازمانی «ارجاع» را (اگر نبود) می‌سازد و روی نامه می‌زند؛ تکراری نمی‌سازد.</summary>
+    private async Task EnsureReferralTagAsync(Letter letter, int userId)
+    {
+        var tag = await _context.Tags.FirstOrDefaultAsync(t => t.Name == LetterComposeRules.ReferralTagName && t.OwnerUserId == null && t.ParentTagId == null);
+        if (tag == null)
+        {
+            tag = new Tag { Name = LetterComposeRules.ReferralTagName, Color = "warning", CreatedById = userId, IsActive = true, CreatedDate = DateTime.Now };
+            _context.Tags.Add(tag);
+            await _context.SaveChangesAsync();
+        }
+        else if (!tag.IsActive) { tag.IsActive = true; await _context.SaveChangesAsync(); }
+
+        if (!await _context.LetterTags.AnyAsync(lt => lt.LetterId == letter.LetterId && lt.TagId == tag.TagId))
+            _context.LetterTags.Add(new LetterTag { LetterId = letter.LetterId, TagId = tag.TagId, CreatedDate = DateTime.Now });
+    }
+
     private static string ReplySubject(string? subject)
     {
         var text = (subject ?? "").Trim();
@@ -458,20 +509,48 @@ public class LetterComposeService : ILetterComposeService
         return result;
     }
 
-    public async Task<List<ApproverOptionDto>> GetApproverOptionsAsync()
+    public async Task<List<ApproverOptionDto>> GetApproverOptionsAsync(int? authorUserId = null)
     {
-        var ids = (await LetterDirectoryQueries.ApproverUserIdsAsync(_context)).ToList();
-        var users = await _context.Users.AsNoTracking().Where(u => ids.Contains(u.Id)).OrderBy(u => u.FullName).ToListAsync();
-        var empIds = users.Where(u => u.EmployeeId.HasValue).Select(u => u.EmployeeId!.Value).ToList();
-        var titles = await _context.Employees.AsNoTracking().Include(e => e.PositionRef).Where(e => empIds.Contains(e.EmployeeId))
-            .ToDictionaryAsync(e => e.EmployeeId, e => TitleOf(e));
+        var eligible = (await LetterDirectoryQueries.ApproverUserIdsAsync(_context)).ToHashSet();
+        var staff = await (from u in _context.Users.AsNoTracking()
+                           join e in _context.Employees.AsNoTracking() on u.EmployeeId equals e.EmployeeId
+                           where u.IsActive && e.IsActive
+                           select u.Id).ToListAsync();
+        var ids = eligible.Union(staff).Where(id => id != authorUserId).ToList();
 
-        return users.Select(u => new ApproverOptionDto
+        var users = await _context.Users.AsNoTracking().Where(u => ids.Contains(u.Id) && u.IsActive).ToListAsync();
+        var empIds = users.Where(u => u.EmployeeId.HasValue).Select(u => u.EmployeeId!.Value).ToList();
+        var employees = await _context.Employees.AsNoTracking().Include(e => e.PositionRef).Include(e => e.Department)
+            .Where(e => empIds.Contains(e.EmployeeId)).ToDictionaryAsync(e => e.EmployeeId);
+
+        // مافوق‌های نویسنده از چارت سازمانی (سمت اصلی ← سمت مافوق ← دارنده)، تا پنج سطح
+        var managerLevelByEmployee = new Dictionary<int, int>();
+        var authorEmployeeId = authorUserId.HasValue ? users.FirstOrDefault(u => u.Id == authorUserId)?.EmployeeId
+            ?? await _context.Users.AsNoTracking().Where(u => u.Id == authorUserId).Select(u => u.EmployeeId).FirstOrDefaultAsync() : null;
+        if (authorEmployeeId.HasValue)
+            for (var level = 1; level <= 5; level++)
+            {
+                var chain = await OrganizationManagerChain.WalkAsync(_context, authorEmployeeId.Value, level, DateTime.Now);
+                if (!chain.Resolved) break;
+                foreach (var holder in chain.HolderEmployeeIds) managerLevelByEmployee.TryAdd(holder, level);
+            }
+
+        return users.Select(u =>
         {
-            UserId = u.Id,
-            FullName = string.IsNullOrWhiteSpace(u.FullName) ? (u.UserName ?? "") : u.FullName,
-            Position = u.EmployeeId.HasValue && titles.TryGetValue(u.EmployeeId.Value, out var t) ? t : null
-        }).ToList();
+            employees.TryGetValue(u.EmployeeId ?? 0, out var e);
+            var level = u.EmployeeId.HasValue && managerLevelByEmployee.TryGetValue(u.EmployeeId.Value, out var l) ? l : 0;
+            return new ApproverOptionDto
+            {
+                UserId = u.Id,
+                FullName = string.IsNullOrWhiteSpace(u.FullName) ? (u.UserName ?? "") : u.FullName,
+                Position = e == null ? null : TitleOf(e),
+                Department = e?.Department?.Name,
+                ManagerLevel = level,
+                Group = level > 0 ? "Manager" : eligible.Contains(u.Id) ? "Eligible" : "Other"
+            };
+        })
+        .OrderBy(o => o.Group == "Manager" ? 0 : o.Group == "Eligible" ? 1 : 2).ThenBy(o => o.ManagerLevel).ThenBy(o => o.FullName)
+        .ToList();
     }
 
     // ------------------------------------------------------------------ versions / discard
