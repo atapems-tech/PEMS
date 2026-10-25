@@ -1,0 +1,30 @@
+@model PEMS.Web.Areas.Admin.Models.AdminResetViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+
+<div class="admin-page-shell">
+    <div class="admin-hero">
+        <div class="d-flex align-items-center gap-3"><div><p>@Localizer["Reset the account of another administrator. This cannot be undone."]</p></div></div>
+    </div>
+
+    <div class="content-card">
+        <h2 class="h5 mb-3"><i class="bi bi-shield-exclamation me-1"></i> @Localizer["Reset administrator account"]: <strong>@Model.UserName</strong> @(string.IsNullOrWhiteSpace(Model.FullName) ? "" : $"({Model.FullName})")</h2>
+
+        <p class="mb-2">@Localizer["Confirming will:"]</p>
+        <ul>
+            <li>@Localizer["issue a random temporary password, shown once on the next page and valid for 24 hours;"]</li>
+            <li>@Localizer["force a password change at the next sign-in;"]</li>
+            <li>@Localizer["unlock the account and reset MFA (passkeys and authenticator key are removed; the administrator must enroll again);"]</li>
+            <li>@Localizer["sign the account out everywhere within about one minute;"]</li>
+            <li>@Localizer["record the reset (who, when, from which IP) and notify every active administrator."]</li>
+        </ul>
+        <p class="text-body-secondary small">@Localizer["You cannot reset your own account this way. Hand the temporary password to the administrator in person or over a trusted channel; it is not stored anywhere."]</p>
+
+        <form asp-action="ResetAdmin" asp-route-id="@Model.Id" method="post" class="d-flex gap-2 mt-3">
+            <input type="hidden" name="confirm" value="true" />
+            <button type="submit" class="btn btn-danger"><i class="bi bi-key me-1"></i> @Localizer["Reset account"]</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
+        </form>
+    </div>
+</div>

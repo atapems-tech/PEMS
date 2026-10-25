@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PEMS.Application.Common;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Identity;
 using PEMS.Web.Models.Account;
@@ -86,6 +87,17 @@ public class AccountController : Controller
             ModelState.AddModelError(
                 string.Empty,
                 "نام کاربری یا رمز عبور نادرست است.");
+
+            return View(model);
+        }
+
+        // SCRUM-354: رمز موقتِ ریست حساب مدیر ۲۴ ساعت اعتبار دارد. بعد از آن ورود با همان پیام عمومی رد می‌شود
+        // (تفاوتی بین «رمز غلط» و «رمز موقت منقضی» به بیرون نشان داده نمی‌شود) و مدیر دیگری باید دوباره ریست کند.
+        if (AdminAccountRules.IsTemporaryPasswordExpired(user.MustChangePassword, user.TemporaryPasswordExpiresAt, DateTime.UtcNow))
+        {
+            _logger.LogWarning("Login refused for {UserName}: temporary password expired.", user.UserName);
+
+            ModelState.AddModelError(string.Empty, "نام کاربری یا رمز عبور نادرست است.");
 
             return View(model);
         }
@@ -185,6 +197,7 @@ public class AccountController : Controller
         }
 
         user.MustChangePassword = false;
+        user.TemporaryPasswordExpiresAt = null;
         await _userManager.UpdateAsync(user);
 
         await _signInManager.RefreshSignInAsync(user);

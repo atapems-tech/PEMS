@@ -3,6 +3,20 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-25 - Administrator recovery: audit trail, last-admin guard, second-admin reset (SCRUM-357, SCRUM-354)
+
+### Added
+- `SecurityEvents` table (migration `SecurityEventsRecoveryAudit`): append-only record of every administrator recovery attempt (actor, target, method, IP, UTC time, result, fixed failure-reason code); only the SIEM marker `ForwardedToSiemAt` may change. Read-only list at Admin > Security Events (fa/en).
+- `IRecoveryEventService`: one service for all recovery paths. A successful recovery revokes all sessions and remember-me cookies of the target (security stamp), writes the audit record, notifies every active SystemAdmin and logs under `PEMS.Security`; a failure only audits.
+- Last-admin guard: the last active SystemAdmin cannot be deactivated or removed from the role (checked on the server in the user edit and activate/deactivate actions).
+- Second-admin reset (Admin > Users, key button on other administrators): random temporary password shown once and valid for 24 hours, forced password change, lockout cleared, passkeys and authenticator key removed, `MfaEnrollmentRequired` set (migration `AdminRecoveryUserFlags`). Resetting your own account is refused. An expired temporary password is refused at sign-in with the generic message.
+
+### Changed
+- A password change of an administrator in the user edit form is audited (method `AdminConsole`) and its Identity result is no longer ignored.
+
+### Notes
+- Recovery codes (SCRUM-355) and the server break-glass path (SCRUM-356) are not built yet; they will call the same service. `MfaEnrollmentRequired` is only a flag until MFA at sign-in exists (SCRUM-188 / SCRUM-206).
+
 ## 2026-10-25 - Staging environment live
 
 ### Added

@@ -551,6 +551,8 @@ builder.Services.AddScoped<IUserDashboardService, UserDashboardService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 // SCRUM-357: ممیزی + ابطال نشست + اعلان مشترک مسیرهای بازیابی حساب مدیر
 builder.Services.AddScoped<IRecoveryEventService, RecoveryEventService>();
+// SCRUM-354: محافظ آخرین مدیر فعال + ریست حساب مدیر توسط مدیر دیگر
+builder.Services.AddScoped<IAdminAccountService, AdminAccountService>();
 builder.Services.AddScoped<IMyWorkService, PEMS.Persistence.Services.MyWorkService>();
 
 builder.Services.AddScoped<ILetterService, LetterService>();

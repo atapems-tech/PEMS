@@ -3209,4 +3209,30 @@
   <data name="User edit in the admin panel" xml:space="preserve"><value>ویرایش کاربر در پنل مدیریت</value></data>
   <data name="The password was changed but recording or session revocation failed." xml:space="preserve"><value>رمز عوض شد اما ثبت رویداد یا بستن نشست‌ها ناموفق بود.</value></data>
   <data name="User updated, but the password was not changed" xml:space="preserve"><value>کاربر به‌روزرسانی شد اما رمز عوض نشد</value></data>
+  <data name="This is the last active administrator. It cannot be deactivated or removed from the SystemAdmin role. Create or activate another administrator first." xml:space="preserve"><value>این آخرین مدیر فعال است. نمی‌توان آن را غیرفعال کرد یا از نقش SystemAdmin خارج کرد. ابتدا مدیر دیگری بسازید یا فعال کنید.</value></data>
+  <data name="Only another administrator's account can be reset this way." xml:space="preserve"><value>فقط حساب مدیر دیگر را می‌توان از این راه ریست کرد.</value></data>
+  <data name="You cannot reset your own account this way. Ask another administrator." xml:space="preserve"><value>نمی‌توانید حساب خودتان را از این راه ریست کنید. از مدیر دیگری بخواهید.</value></data>
+  <data name="The account was not found." xml:space="preserve"><value>حساب پیدا نشد.</value></data>
+  <data name="Only an active administrator can reset an administrator account." xml:space="preserve"><value>فقط یک مدیر فعال می‌تواند حساب مدیر را ریست کند.</value></data>
+  <data name="The password was changed but recording or session revocation failed. No temporary password is shown; run the reset again." xml:space="preserve"><value>رمز عوض شد اما ثبت رویداد یا بستن نشست‌ها ناموفق بود. رمز موقتی نمایش داده نمی‌شود؛ ریست را دوباره انجام دهید.</value></data>
+  <data name="The reset failed. Nothing was shown; try again." xml:space="preserve"><value>ریست ناموفق بود. چیزی نمایش داده نشد؛ دوباره تلاش کنید.</value></data>
+  <data name="Reset the account of another administrator. This cannot be undone." xml:space="preserve"><value>حساب مدیر دیگری را ریست می‌کنید. این کار قابل بازگشت نیست.</value></data>
+  <data name="Reset administrator account" xml:space="preserve"><value>ریست حساب مدیر</value></data>
+  <data name="Confirming will:" xml:space="preserve"><value>با تأیید، این اتفاق‌ها می‌افتد:</value></data>
+  <data name="issue a random temporary password, shown once on the next page and valid for 24 hours;" xml:space="preserve"><value>یک رمز موقت تصادفی صادر می‌شود که فقط یک بار در صفحه‌ی بعد نمایش داده می‌شود و ۲۴ ساعت اعتبار دارد؛</value></data>
+  <data name="force a password change at the next sign-in;" xml:space="preserve"><value>در ورود بعدی تغییر رمز اجباری است؛</value></data>
+  <data name="unlock the account and reset MFA (passkeys and authenticator key are removed; the administrator must enroll again);" xml:space="preserve"><value>قفل حساب باز و MFA ریست می‌شود (passkeyها و کلید authenticator حذف می‌شوند و مدیر باید دوباره ثبت‌نام کند)؛</value></data>
+  <data name="sign the account out everywhere within about one minute;" xml:space="preserve"><value>ظرف حدود یک دقیقه حساب از همه‌ی نشست‌ها خارج می‌شود؛</value></data>
+  <data name="record the reset (who, when, from which IP) and notify every active administrator." xml:space="preserve"><value>ریست ثبت می‌شود (چه کسی، چه زمانی، از کدام IP) و همه‌ی مدیران فعال مطلع می‌شوند.</value></data>
+  <data name="You cannot reset your own account this way. Hand the temporary password to the administrator in person or over a trusted channel; it is not stored anywhere." xml:space="preserve"><value>نمی‌توانید حساب خودتان را از این راه ریست کنید. رمز موقت را حضوری یا از کانال مطمئن به مدیر بدهید؛ در هیچ‌جا ذخیره نمی‌شود.</value></data>
+  <data name="Reset account" xml:space="preserve"><value>ریست حساب</value></data>
+  <data name="The account was reset. The temporary password below is shown only now." xml:space="preserve"><value>حساب ریست شد. رمز موقت زیر فقط همین حالا نمایش داده می‌شود.</value></data>
+  <data name="Account reset" xml:space="preserve"><value>حساب ریست شد</value></data>
+  <data name="Copy or print this password now. It cannot be shown again; if it is lost, reset the account again." xml:space="preserve"><value>همین حالا این رمز را کپی یا چاپ کنید. دوباره نمایش داده نمی‌شود؛ اگر گم شد حساب را دوباره ریست کنید.</value></data>
+  <data name="Copied" xml:space="preserve"><value>کپی شد</value></data>
+  <data name="Copy" xml:space="preserve"><value>کپی</value></data>
+  <data name="Expires" xml:space="preserve"><value>انقضا</value></data>
+  <data name="The administrator must change it at the first sign-in and enroll MFA again. All of their sessions were signed out, and every active administrator was notified." xml:space="preserve"><value>مدیر باید در اولین ورود آن را عوض کند و MFA را دوباره ثبت کند. همه‌ی نشست‌های او بسته شد و همه‌ی مدیران فعال مطلع شدند.</value></data>
+  <data name="Back to users" xml:space="preserve"><value>بازگشت به کاربران</value></data>
+  <data name="Security Events" xml:space="preserve"><value>رویدادهای امنیتی</value></data>
 </root>

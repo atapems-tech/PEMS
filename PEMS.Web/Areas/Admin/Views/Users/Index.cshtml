@@ -4,6 +4,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var qs = string.IsNullOrEmpty((string?)ViewBag.SearchTerm) ? "" : $"search={Uri.EscapeDataString((string)ViewBag.SearchTerm)}";
+    int.TryParse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value, out var currentUserId);
 }
 
 <div class="admin-page-shell">
@@ -65,6 +66,10 @@
                         <td><div class="admin-actions">
                             <a asp-action="Details" asp-route-id="@u.Id" class="btn btn-sm btn-outline-secondary" title="@Localizer["Access & Authorization"]" aria-label="View @u.UserName"><i class="bi bi-shield-lock"></i></a>
                             <a asp-action="Edit" asp-route-id="@u.Id" class="btn btn-sm btn-outline-secondary" title="@Localizer["Edit"]" aria-label="Edit @u.UserName"><i class="bi bi-pencil"></i></a>
+                            @if (u.Roles.Contains("SystemAdmin") && u.Id != currentUserId)
+                            {
+                                <a asp-action="ResetAdmin" asp-route-id="@u.Id" class="btn btn-sm btn-outline-danger" title="@Localizer["Reset administrator account"]" aria-label="@Localizer["Reset administrator account"] @u.UserName"><i class="bi bi-key"></i></a>
+                            }
                             <form asp-action="ToggleActive" asp-route-id="@u.Id" method="post" class="d-inline" onsubmit="return confirm('@(u.IsActive ? "Deactivate" : "Activate") user @u.UserName?')"><button class="btn btn-sm btn-outline-warning" title="Activate / Deactivate" aria-label="Toggle active status for @u.UserName"><i class="bi bi-power"></i></button></form>
                         </div></td>
                     </tr>

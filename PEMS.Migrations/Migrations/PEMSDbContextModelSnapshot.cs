@@ -20188,6 +20188,9 @@ namespace PEMS.Persistence.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<bool>("MfaEnrollmentRequired")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("MustChangePassword")
                         .HasColumnType("bit");
 
@@ -20210,6 +20213,9 @@ namespace PEMS.Persistence.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("TemporaryPasswordExpiresAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");

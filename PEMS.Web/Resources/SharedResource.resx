@@ -2421,4 +2421,31 @@
   <data name="The password was changed but recording or session revocation failed." xml:space="preserve"><value>The password was changed but recording or session revocation failed.</value></data>
   <data name="User updated, but the password was not changed" xml:space="preserve"><value>User updated, but the password was not changed</value></data>
   <data name="Password" xml:space="preserve"><value>Password</value></data>
+  <data name="This is the last active administrator. It cannot be deactivated or removed from the SystemAdmin role. Create or activate another administrator first." xml:space="preserve"><value>This is the last active administrator. It cannot be deactivated or removed from the SystemAdmin role. Create or activate another administrator first.</value></data>
+  <data name="Only another administrator's account can be reset this way." xml:space="preserve"><value>Only another administrator's account can be reset this way.</value></data>
+  <data name="You cannot reset your own account this way. Ask another administrator." xml:space="preserve"><value>You cannot reset your own account this way. Ask another administrator.</value></data>
+  <data name="The account was not found." xml:space="preserve"><value>The account was not found.</value></data>
+  <data name="Only an active administrator can reset an administrator account." xml:space="preserve"><value>Only an active administrator can reset an administrator account.</value></data>
+  <data name="The password was changed but recording or session revocation failed. No temporary password is shown; run the reset again." xml:space="preserve"><value>The password was changed but recording or session revocation failed. No temporary password is shown; run the reset again.</value></data>
+  <data name="The reset failed. Nothing was shown; try again." xml:space="preserve"><value>The reset failed. Nothing was shown; try again.</value></data>
+  <data name="Reset the account of another administrator. This cannot be undone." xml:space="preserve"><value>Reset the account of another administrator. This cannot be undone.</value></data>
+  <data name="Reset administrator account" xml:space="preserve"><value>Reset administrator account</value></data>
+  <data name="Confirming will:" xml:space="preserve"><value>Confirming will:</value></data>
+  <data name="issue a random temporary password, shown once on the next page and valid for 24 hours;" xml:space="preserve"><value>issue a random temporary password, shown once on the next page and valid for 24 hours;</value></data>
+  <data name="force a password change at the next sign-in;" xml:space="preserve"><value>force a password change at the next sign-in;</value></data>
+  <data name="unlock the account and reset MFA (passkeys and authenticator key are removed; the administrator must enroll again);" xml:space="preserve"><value>unlock the account and reset MFA (passkeys and authenticator key are removed; the administrator must enroll again);</value></data>
+  <data name="sign the account out everywhere within about one minute;" xml:space="preserve"><value>sign the account out everywhere within about one minute;</value></data>
+  <data name="record the reset (who, when, from which IP) and notify every active administrator." xml:space="preserve"><value>record the reset (who, when, from which IP) and notify every active administrator.</value></data>
+  <data name="You cannot reset your own account this way. Hand the temporary password to the administrator in person or over a trusted channel; it is not stored anywhere." xml:space="preserve"><value>You cannot reset your own account this way. Hand the temporary password to the administrator in person or over a trusted channel; it is not stored anywhere.</value></data>
+  <data name="Reset account" xml:space="preserve"><value>Reset account</value></data>
+  <data name="The account was reset. The temporary password below is shown only now." xml:space="preserve"><value>The account was reset. The temporary password below is shown only now.</value></data>
+  <data name="Account reset" xml:space="preserve"><value>Account reset</value></data>
+  <data name="Copy or print this password now. It cannot be shown again; if it is lost, reset the account again." xml:space="preserve"><value>Copy or print this password now. It cannot be shown again; if it is lost, reset the account again.</value></data>
+  <data name="Copied" xml:space="preserve"><value>Copied</value></data>
+  <data name="Copy" xml:space="preserve"><value>Copy</value></data>
+  <data name="Print" xml:space="preserve"><value>Print</value></data>
+  <data name="Expires" xml:space="preserve"><value>Expires</value></data>
+  <data name="The administrator must change it at the first sign-in and enroll MFA again. All of their sessions were signed out, and every active administrator was notified." xml:space="preserve"><value>The administrator must change it at the first sign-in and enroll MFA again. All of their sessions were signed out, and every active administrator was notified.</value></data>
+  <data name="Back to users" xml:space="preserve"><value>Back to users</value></data>
+  <data name="Security Events" xml:space="preserve"><value>Security Events</value></data>
 </root>
