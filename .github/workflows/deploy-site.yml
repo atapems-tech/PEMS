@@ -62,7 +62,7 @@ jobs:
           FTP_DIR: ${{ secrets[format('{0}_FTP_DIR', inputs.prefix)] }}
           FTP_PROTO: ${{ secrets[format('{0}_FTP_PROTOCOL', inputs.prefix)] }}
         run: |
-          TLS=""; [ "$FTP_PROTO" = "ftps" ] && TLS="--ssl-reqd --insecure"
+          TLS=""; [ "${FTP_PROTO:-ftps}" = "ftps" ] && TLS="--ssl-reqd --insecure"   # empty protocol = ftps, the same default as the upload action
           cred() { printf 'user = "%s:%s"\n' "$FTP_USER" "$FTP_PASS"; }
           URL="ftp://${FTP_HOST}${FTP_DIR}"
           echo probe > pems-write-probe.txt
@@ -72,7 +72,7 @@ jobs:
             echo "FTP login works, the remote folder exists and is writable (${P}_FTP_DIR is correct)."
             exit 0
           fi
-          echo "::error::FTP check failed: $(head -c 300 ftp.err). ${P}_FTP_DIR is relative to the FTP account home and must be the folder the site is served from, with a trailing slash (use / only when the account home IS the site folder)."
+          echo "::error::FTP check failed: $(head -c 300 ftp.err). ${P}_FTP_PROTOCOL must be ftp when the host does not support FTPS (this host). ${P}_FTP_DIR is relative to the FTP account home and must be the folder the site is served from, with a trailing slash (use / only when the account home IS the site folder)."
           echo "Entries visible at the FTP account root (names only; pick the site folder from this list):"
           cred | curl -sS -K - $TLS --max-time 60 --list-only "ftp://${FTP_HOST}/" || true
           echo "Write test at the FTP account root (/): "
@@ -157,7 +157,7 @@ jobs:
           FTP_PROTO: ${{ secrets[format('{0}_FTP_PROTOCOL', inputs.prefix)] }}
         run: |
           printf '<html><body><h3>PEMS %s is being updated, back in a few minutes.</h3></body></html>' "$TARGET" > app_offline.htm
-          TLS=""; [ "$FTP_PROTO" = "ftps" ] && TLS="--ssl-reqd --insecure"
+          TLS=""; [ "${FTP_PROTO:-ftps}" = "ftps" ] && TLS="--ssl-reqd --insecure"   # empty protocol = ftps, the same default as the upload action
           printf 'user = "%s:%s"\n' "$FTP_USER" "$FTP_PASS" | curl -sS -K - $TLS --max-time 90 -T app_offline.htm "ftp://${FTP_HOST}${FTP_DIR}app_offline.htm"
           echo "app_offline.htm uploaded; waiting for IIS to stop the app"
           sleep 25
@@ -201,7 +201,7 @@ jobs:
           FTP_DIR: ${{ secrets[format('{0}_FTP_DIR', inputs.prefix)] }}
           FTP_PROTO: ${{ secrets[format('{0}_FTP_PROTOCOL', inputs.prefix)] }}
         run: |
-          TLS=""; [ "$FTP_PROTO" = "ftps" ] && TLS="--ssl-reqd --insecure"
+          TLS=""; [ "${FTP_PROTO:-ftps}" = "ftps" ] && TLS="--ssl-reqd --insecure"   # empty protocol = ftps, the same default as the upload action
           REL="${FTP_DIR#/}app_offline.htm"
           printf 'user = "%s:%s"\n' "$FTP_USER" "$FTP_PASS" | curl -sS -K - $TLS --max-time 90 -Q "DELE ${REL}" "ftp://${FTP_HOST}/" -o /dev/null
           echo "app_offline.htm removed; the next request starts the application"

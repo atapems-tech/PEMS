@@ -50,8 +50,8 @@ Repository > **Settings > Secrets and variables > Actions > New repository secre
 | `<P>_FTP_HOST` | FTP host name, for example `parmisata.ir` |
 | `<P>_FTP_USER` / `<P>_FTP_PASSWORD` | the FTP account of 2.3 |
 | `<P>_FTP_DIR` | remote folder **relative to the FTP account's home**, with trailing slash. If the account home is the subdomain folder (section 2.3) this is `/` (this host). A wrong value fails with `550 The system cannot find the file specified`; the pipeline's early FTP check then lists the folders it can see |
-| `<P>_FTP_PROTOCOL` | optional: `ftp`, `ftps` or `ftps-legacy` (default `ftps`; this host works with `ftp` only) |
-| `<P>_FTP_PORT` | optional, default 21 |
+| `<P>_FTP_PROTOCOL` | `ftp`, `ftps` or `ftps-legacy`. Empty means `ftps` everywhere in the pipeline. **This host needs `ftp`**: without it the file upload dies with `ECONNRESET ... before secure TLS connection was established` |
+| `<P>_FTP_PORT` | optional, default 21 (set it to 21 explicitly, as demo does) |
 | `<P>_SQL_CONNECTION_STRING` | connection string of 2.2 |
 | `<P>_ADMIN_PASSWORD` | password of the first administrator, used only on an empty database; change it at first sign-in |
 | `<P>_SITE_URL` | `https://demo.parmisata.ir` / `https://staging.parmisata.ir` (enables the post-deploy health check) |
