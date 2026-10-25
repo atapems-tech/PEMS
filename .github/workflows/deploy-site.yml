@@ -30,6 +30,27 @@ jobs:
       TARGET: ${{ inputs.target }}
 
     steps:
+      # Fail fast and clearly when the environment has not been configured yet (for example a brand-new `staging` branch before its secrets exist).
+      - name: Check required secrets
+        env:
+          P: ${{ inputs.prefix }}
+          FTP_HOST: ${{ secrets[format('{0}_FTP_HOST', inputs.prefix)] }}
+          FTP_USER: ${{ secrets[format('{0}_FTP_USER', inputs.prefix)] }}
+          FTP_PASSWORD: ${{ secrets[format('{0}_FTP_PASSWORD', inputs.prefix)] }}
+          FTP_DIR: ${{ secrets[format('{0}_FTP_DIR', inputs.prefix)] }}
+          SQL_CONNECTION_STRING: ${{ secrets[format('{0}_SQL_CONNECTION_STRING', inputs.prefix)] }}
+          ADMIN_PASSWORD: ${{ secrets[format('{0}_ADMIN_PASSWORD', inputs.prefix)] }}
+          SITE_URL: ${{ secrets[format('{0}_SITE_URL', inputs.prefix)] }}
+        run: |
+          missing=""
+          for n in FTP_HOST FTP_USER FTP_PASSWORD FTP_DIR SQL_CONNECTION_STRING ADMIN_PASSWORD SITE_URL; do
+            [ -n "${!n}" ] || missing="$missing ${P}_$n"
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::Missing GitHub secrets:$missing. Create them (see docs/deployment/DEPLOYMENT_README.md, section 2.4) and re-run the workflow."
+            exit 1
+          fi
+
       - uses: actions/checkout@v4
 
       - name: Setup .NET
