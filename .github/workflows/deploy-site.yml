@@ -63,13 +63,18 @@ jobs:
           FTP_PROTO: ${{ secrets[format('{0}_FTP_PROTOCOL', inputs.prefix)] }}
         run: |
           TLS=""; [ "$FTP_PROTO" = "ftps" ] && TLS="--ssl-reqd --insecure"
-          if printf 'user = "%s:%s"\n' "$FTP_USER" "$FTP_PASS" | curl -sS -K - $TLS --max-time 60 --list-only "ftp://${FTP_HOST}${FTP_DIR}" > ftp-dir.txt 2> ftp.err; then
-            echo "FTP login works and the remote folder exists ($(wc -l < ftp-dir.txt) entries)."
+          cred() { printf 'user = "%s:%s"\n' "$FTP_USER" "$FTP_PASS"; }
+          URL="ftp://${FTP_HOST}${FTP_DIR}"
+          echo probe > pems-write-probe.txt
+          if cred | curl -sS -K - $TLS --max-time 60 --list-only "$URL" > ftp-dir.txt 2> ftp.err \
+             && cred | curl -sS -K - $TLS --max-time 60 -T pems-write-probe.txt "${URL}pems-write-probe.txt" 2>> ftp.err \
+             && cred | curl -sS -K - $TLS --max-time 60 -Q "DELE ${FTP_DIR#/}pems-write-probe.txt" "ftp://${FTP_HOST}/" -o /dev/null 2>> ftp.err; then
+            echo "FTP login works, the remote folder exists and is writable (${P}_FTP_DIR is correct)."
             exit 0
           fi
-          echo "::error::FTP check failed: $(head -c 200 ftp.err). ${P}_FTP_DIR is relative to the FTP account's home folder: use / when the account home is already the subdomain folder, otherwise the sub-folder path with a trailing slash."
-          echo "Entries visible at the FTP account root (login worked if this list is not empty):"
-          printf 'user = "%s:%s"\n' "$FTP_USER" "$FTP_PASS" | curl -sS -K - $TLS --max-time 60 --list-only "ftp://${FTP_HOST}/" || true
+          echo "::error::FTP check failed: $(head -c 300 ftp.err). ${P}_FTP_DIR is relative to the FTP account home and must be the folder the site is served from, with a trailing slash (use / only when the account home IS the site folder)."
+          echo "Entries visible at the FTP account root (names only; pick the site folder from this list):"
+          cred | curl -sS -K - $TLS --max-time 60 --list-only "ftp://${FTP_HOST}/" || true
           exit 1
 
       - uses: actions/checkout@v4
