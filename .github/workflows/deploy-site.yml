@@ -119,7 +119,7 @@ jobs:
       # installed (it still needs the ASP.NET Core Module). The SDK emits web.config on publish.
       # -p:PemsEnv=${{ inputs.target }} ships env/<target>.env (non-secret settings) as publish/env/<target>.env.
       - name: Publish
-        run: dotnet publish PEMS.Web/PEMS.Web.csproj -c Release -r win-x64 --self-contained true -p:PemsEnv=${{ inputs.target }} -o ./publish
+        run: dotnet publish PEMS.Web/PEMS.Web.csproj -c Release -r win-x64 --self-contained true -p:PemsEnv=${{ inputs.target }} -p:DebugType=none -p:DebugSymbols=false -o ./publish
 
       # Environment selection and secrets, without storing anything in Git:
       #  - PEMS_ENV=<target> is set for the app in web.config (the app then reads env/<target>.env + env/<target>.secrets.env),
