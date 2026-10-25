@@ -85,8 +85,13 @@ The package is a **self-contained win-x64** build, so the host needs no .NET run
 | Lato fonts for PDFs | 12 MB | |
 
 Removed for environment packages (`-p:PemsEnv=<name>`, in `PEMS.Web.csproj` and the workflow): debug symbols (`.pdb`), satellite resource folders of third-party libraries for languages other than `en;fa` (14 MB), the x86 native libraries (the hosts are x64 only), and `wwwroot/uploads` (runtime user data; it is git-ignored and never shipped).
+**How an upload stays small.** The upload is a *difference* upload, not a full copy: `FTP-Deploy-Action` stores `.ftp-deploy-sync-state.json` on the server (name, size and hash of every file it sent) and on the next run sends only new or changed files and deletes removed ones. The runtime and third-party libraries (about 170 MB) are byte-identical between builds, so after the first deploy they are never sent again; each deploy sends only the PEMS assemblies that really changed, views and static files, and a ~1 MB generated `staticwebassets.endpoints.json`. Two things make this work and must not be undone:
+- `Directory.Build.props` sets `IncludeSourceRevisionInInformationalVersion=false`. Without it the SDK writes the git commit hash into every PEMS assembly, so every commit changed the bytes of **all** PEMS assemblies (about 70 MB) even when their source was untouched. Verified: two builds of an unchanged project with different revisions now give identical files.
+- The sync state file stays on the server; if it is lost the next run uploads everything again (about 245 MB).
+Typical later deploy: a few MB to ~45 MB (`PEMS.Persistence.dll` alone is 29 MB whenever data-layer code changes).
+
 Only the **first** upload is big: the FTP action keeps `.ftp-deploy-sync-state.json` on the server and later runs upload only changed files (normally the PEMS assemblies, a few MB). Do not delete that file.
-Further saving, if ever needed: a framework-dependent publish (about 75 MB less) once the host has the .NET 10 Hosting Bundle installed; trimming is not safe for MVC/EF here.
+Further savings, if ever needed: move the EF migrations into their own assembly so `PEMS.Persistence.dll` (29 MB) changes only when the schema does; publish with IIS Web Deploy (delta + compression) if the host offers it; or a framework-dependent publish (about 75 MB less) once the host has the .NET 10 Hosting Bundle installed; trimming is not safe for MVC/EF here.
 
 ## 4. Manual deploy (when the host is unreachable from GitHub or the pipeline is broken)
 
