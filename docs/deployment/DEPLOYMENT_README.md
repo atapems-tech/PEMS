@@ -72,6 +72,22 @@ Rotate any secret that was ever pasted into chat, a ticket or a commit.
 Watch a run: GitHub > **Actions**, or `gh run watch`. Slack (`#pems-github`) posts every run. Documentation-only pushes (`docs/**`, `plan/**`, `*.md`) do not redeploy.
 Run it by hand: Actions > the workflow > **Run workflow** (choose the branch), or `gh workflow run deploy-staging.yml --ref staging`.
 
+## 3a. Package size (why the first upload is large)
+
+The package is a **self-contained win-x64** build, so the host needs no .NET runtime. Measured on 2026-10-25: 285 MB before optimisation, **245 MB** after.
+
+| Part | Size | Note |
+|---|---|---|
+| .NET runtime + framework (self-contained) | ~75 MB | the price of not installing the runtime on the host |
+| PEMS assemblies (`PEMS.Persistence.dll` alone is 29 MB: 120 migrations and their snapshots) | ~70 MB | |
+| Third-party (QuestPDF/qpdf, OpenXml, BouncyCastle, PdfPig, Tesseract/Leptonica ...) | ~60 MB | |
+| `wwwroot` (vendored libraries, no CDN) | ~18 MB | |
+| Lato fonts for PDFs | 12 MB | |
+
+Removed for environment packages (`-p:PemsEnv=<name>`, in `PEMS.Web.csproj` and the workflow): debug symbols (`.pdb`), satellite resource folders of third-party libraries for languages other than `en;fa` (14 MB), the x86 native libraries (the hosts are x64 only), and `wwwroot/uploads` (runtime user data; it is git-ignored and never shipped).
+Only the **first** upload is big: the FTP action keeps `.ftp-deploy-sync-state.json` on the server and later runs upload only changed files (normally the PEMS assemblies, a few MB). Do not delete that file.
+Further saving, if ever needed: a framework-dependent publish (about 75 MB less) once the host has the .NET 10 Hosting Bundle installed; trimming is not safe for MVC/EF here.
+
 ## 4. Manual deploy (when the host is unreachable from GitHub or the pipeline is broken)
 
 ```powershell
