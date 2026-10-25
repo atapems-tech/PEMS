@@ -3,6 +3,18 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-25 - Pipelines only on demo and staging, staging environment, deployment README
+
+### Changed
+- No workflow runs on pushes or pull requests to `main` or working branches: `build.yml` is manual (`workflow_dispatch`).
+- The demo pipeline is now a reusable workflow `deploy-site.yml` (target and secrets prefix as inputs); `deploy-demo.yml` (push to `demo`) and the new `deploy-staging.yml` (push to `staging`) call it.
+
+### Added
+- `env/staging.env` and `env/staging.secrets.env.example` (same keys as every environment; the environment-files test includes `staging`); secrets `STAGING_*`.
+- `docs/deployment/DEPLOYMENT_README.md`: subdomains, databases, FTP, secrets, Actions, manual deploy and manual reset, rollback, new-environment checklist.
+- Plan rows #351 (this work), #352 (versioned, hashed, importable data package in the admin UI) and #353 (reset on deploy with compatibility precheck); the two data features are not built yet.
+- Branch `staging` (main + demo + dev); branch `dev` retired after merging into `main`.
+
 ## 2026-10-24 - Demo pipeline works end to end
 
 ### Fixed
