@@ -1,6 +1,6 @@
 # Demo deployment (branch `demo`, https://demo.parmisata.ir)
 
-Pipeline: `.github/workflows/deploy-demo.yml`. Push or merge to `demo` builds, runs the model-drift gate and a database-free test gate, publishes
+Setup, secrets, manual deploy and reset: [DEPLOYMENT_README.md](DEPLOYMENT_README.md). Pipeline: `.github/workflows/deploy-site.yml` (reusable), called by `deploy-demo.yml`. Push or merge to `demo` builds, runs the model-drift gate and a database-free test gate, publishes
 a self-contained win-x64 build with `env/demo.env`, writes `env/demo.secrets.env` from GitHub secrets, sets `PEMS_ENV=demo` in `web.config`,
 uploads by FTP and waits for `GET /health/database` to report `UpToDate` (first deploy installs the database, later deploys update it).
 
