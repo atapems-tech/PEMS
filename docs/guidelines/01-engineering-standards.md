@@ -85,6 +85,7 @@ A task is **done** only when:
 4. Offline, settings, RLS, localization checks above hold.
 5. The six artefacts (R22) are updated: guideline/memory, plan file, **Supportability Matrix** [R21], Instructions (only if a rule changed), `CHANGELOG.md`, commit.
 6. Test Plan: a Done row whose Test Plan status is "Needs QA" is not trustworthy [R14] - add or update the case.
+7. After the merge and the move to In Review, the QA check in the UI passes ([chapter 07](07-qa-check-in-the-ui.md)); only then the issue is Done.
 
 ## 9. Git
 

@@ -63,24 +63,26 @@ Never change the status of issues you were not asked to work on (except the pare
 
 | Level | Jira status | Meaning | Who/when |
 |---|---|---|---|
-| **Conditional done** | **In Review** | Work is complete and verified by the author: every *Done when* item met, build and tests green, committed, PR opened. Waiting for review and merge. | The agent or developer moves it when the PR is opened |
-| **Done** | **Done** | The PR is merged into its target branch and the closing PR updated the plan row Evidence. | Moved after merge (by the reviewer/merger, or by the agent when it performs the merge on the user's instruction) |
+| **Conditional done** | **In Review** | Work is complete and verified by the author: every *Done when* item met, build and tests green, **the PR is merged into `main`**. Waiting for the QA check in the UI ([chapter 07](07-qa-check-in-the-ui.md)). | The agent or developer moves it **right after the merge** and sets the label `qa-pending` |
+| **Done** | **Done** | The QA check passed (label `qa-passed`) and the plan row Evidence / Test Plan status are updated. | Moved by the tester or the owner after the QA verdict |
 
-An issue never skips In Review when a PR exists. If the user tells you to merge yourself, do both moves in order and say so in the comment.
+Order (owner decision 2026-10-26): tests green -> PR -> **merge into `main`** -> In Review + `qa-pending` -> QA check -> Done. An issue never skips In Review.
+A task whose *Done when* needs the owner's or a member's approval of a document gets that approval as the review of the PR; the merge follows the approval.
+If the QA check fails, the issue goes back to In Progress and the fix reaches `main` through a new branch and PR (fix forward), then it goes to In Review again.
 
 **Move to In Review (conditional done)** only when **all** are true:
 
 - every item in *Done when* is met (check them one by one in your closing comment);
 - build passes and **all** tests pass, including the new tests the issue asks for (chapter 01, "Definition of done");
-- changes are committed, pushed, and a PR is opened (our flow);
+- changes are committed, pushed, a PR is opened and **merged into `main`** (the merge is the step right before In Review; promotion to `staging`/`demo` stays a separate decision);
 - the six artefacts of rule 22 are updated (chapter 06): memory/guideline, plan file, Supportability Matrix, Instructions (only if a rule changed), CHANGELOG, commit.
 
 Then:
 
 1. **Comment** with: what changed, files/areas touched, tests added, tests run and **not** run (and why), commit hash or PR link, evidence for each *Done when* item, Supportability Matrix rows added, guideline entries added, open items for the owner.
-2. **Transition to In Review** with `transitionJiraIssue`; after the merge, **transition to Done** (same comment rules: add the merge commit).
-3. **Parent rules** (apply to Done, not In Review): a Story with Sub-tasks is Done only when all its Sub-tasks are Done; an Epic only when all child issues are Done. When you close the last open child, check the parent and close it too if its own "Done when" is met.
-4. **Clean up the branch.** When the work is merged into its target (`main`; promotion to `staging` and `demo` is a separate merge the user directs, because those pushes deploy), **delete the working branch** locally (`git branch -d <name>`) and on the remote if it was pushed (`git push origin --delete <name>`); use `-d`, which refuses unmerged work, and never delete `main`, `staging`, `demo` or someone else's branch. Mention the deletion in the Jira comment. Then run `git branch --merged` to see leftovers and report them. **Since 2026-10-26 the repository deletes the head branch automatically when its pull request is merged** (GitHub setting "Automatically delete head branches"); a cloud session cannot delete remote branches, so it deletes only its local branch and checks with `git fetch --prune` that the remote one is gone.
+2. **Transition to In Review** with `transitionJiraIssue` right after the merge, add the label `qa-pending` and add the merge commit to the comment; the QA check ([chapter 07](07-qa-check-in-the-ui.md)) then decides: `qa-passed` -> **Done**, `qa-failed` -> back to In Progress.
+3. **Parent rules** (apply to Done, not In Review; Done means the QA check passed): a Story with Sub-tasks is Done only when all its Sub-tasks are Done; an Epic only when all child issues are Done. When you close the last open child, check the parent and close it too if its own "Done when" is met.
+4. **Clean up the branch.** When the work is merged into its target (this happens before In Review) (`main`; promotion to `staging` and `demo` is a separate merge the user directs, because those pushes deploy), **delete the working branch** locally (`git branch -d <name>`) and on the remote if it was pushed (`git push origin --delete <name>`); use `-d`, which refuses unmerged work, and never delete `main`, `staging`, `demo` or someone else's branch. Mention the deletion in the Jira comment. Then run `git branch --merged` to see leftovers and report them. **Since 2026-10-26 the repository deletes the head branch automatically when its pull request is merged** (GitHub setting "Automatically delete head branches"); a cloud session cannot delete remote branches, so it deletes only its local branch and checks with `git fetch --prune` that the remote one is gone.
 5. **Update the guideline** if the task produced a durable lesson, decision, helper or pattern (chapter 06).
 6. **Finish, then stop** (rule 16): propose a short list of next tasks (mention batchable ones) and wait for the user's choice.
 
@@ -92,7 +94,7 @@ Then:
 
 ## 6. Never
 
-- Never mark In Review or Done because the session is ending or the code "looks finished" without passing tests. Never mark Done before the merge.
+- Never mark In Review or Done because the session is ending or the code "looks finished" without passing tests. Never mark In Review before the PR is merged into `main`, and never mark Done before the QA check passed.
 - Never leave an issue In Progress / In Review without an assignee.
 - Never change statuses of issues you were not asked to work on (parent rules and approved batches excepted).
 - Never set "Confirmed by PM" yourself except to record a decision the owner just gave (rule 19).
