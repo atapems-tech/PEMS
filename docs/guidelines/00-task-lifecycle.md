@@ -75,6 +75,7 @@ If the QA check fails, the issue goes **back to To Do** with the label `qa-faile
 
 - every item in *Done when* is met (check them one by one in your closing comment);
 - the build and **all** tests passed, including the new tests the issue asks for (chapter 01, "Definition of done"), **or** they could not be run in your session (for example a cloud session without the .NET SDK or SQL Server): then the comment says so, lists the commands that were not run, and the test run becomes line 1 of the QA checklist (README.md "Local tests"). **Tests and review are one step for now** (owner decision 2026-10-26, no CI gate exists yet, #7): a person runs the tests and the UI checks together; Done needs both green;
+- the issue carries the **QA checklist comment and a Tests paragraph** (how to test by README references; commands run or not run) - on the first move and on every re-entry after a failed QA, re-checked and updated as in [chapter 07](07-qa-check-in-the-ui.md) section 1a;
 - changes are committed, pushed, a PR is opened and **merged into `main`** (the merge is the step right before In Review; promotion to `staging`/`demo` stays a separate decision);
 - the six artefacts of rule 22 are updated (chapter 06): memory/guideline, plan file, Supportability Matrix, Instructions (only if a rule changed), CHANGELOG, commit.
 
