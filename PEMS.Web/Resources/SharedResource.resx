@@ -2495,4 +2495,5 @@
   <data name="No matching role" xml:space="preserve"><value>No matching role</value></data>
   <data name="Remove" xml:space="preserve"><value>Remove</value></data>
   <data name="Type to search; select several roles. Remove a role with its ×." xml:space="preserve"><value>Type to search; select several roles. Remove a role with its ×.</value></data>
+  <data name="Ed_Kpis" xml:space="preserve"><value>Summary counts</value></data>
 </root>

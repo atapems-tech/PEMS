@@ -3282,4 +3282,5 @@
   <data name="No matching role" xml:space="preserve"><value>نقشی پیدا نشد</value></data>
   <data name="Remove" xml:space="preserve"><value>حذف</value></data>
   <data name="Type to search; select several roles. Remove a role with its ×." xml:space="preserve"><value>برای جستجو تایپ کنید؛ می‌توانید چند نقش انتخاب کنید. هر نقش را با × کنارش حذف کنید.</value></data>
+  <data name="Ed_Kpis" xml:space="preserve"><value>شمارش‌ها</value></data>
 </root>

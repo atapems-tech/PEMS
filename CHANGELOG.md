@@ -3,6 +3,12 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-26 - Engineering Documents list with the correspondence look (SCRUM-408)
+
+### Changed
+- Engineering Documents list: same frame as the correspondence list - the table fills the window (sticky header, scrolls inside, pager at the bottom), one icon toolbar (title with count, search over the title, filters, KPIs, Excel, reset columns, New), filters in a dropdown with a count badge and chips instead of the side panel, KPI chips hidden by default and shown on demand (remembered per browser).
+- `pems-letter-index.css` gained a generic full-page frame `.lp-page` (the cartable frame without the folder column) and `wwwroot/js/pems-list-page.js` (search open/close, KPI toggle) for list pages that follow this look.
+
 ## 2026-10-26 - Searchable multi-select for user roles (SCRUM-407)
 
 ### Added
