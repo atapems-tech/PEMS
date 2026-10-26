@@ -81,7 +81,7 @@ A task is **done** only when:
 
 1. Every *Done when* item is met and demonstrated (file:line, commit, test name or screenshot) [R13].
 2. New behaviour has tests: unit tests for logic, integration tests for persistence/query paths, a regression test for each fixed bug. UI changes are verified in a real browser (EN + FA, desktop + 375 px) - not just compiled.
-3. `dotnet build PEMS.slnx -c Release` and `dotnet test PEMS.slnx` are green; the model-drift gate is clean; nothing previously passing is now skipped or deleted.
+3. `dotnet build PEMS.slnx -c Release` and `dotnet test PEMS.slnx` are green; the model-drift gate is clean; nothing previously passing is now skipped or deleted. If the author cannot run them (no SDK in a cloud session), the run is line 1 of the QA checklist and the issue is not Done until it is green ([chapter 07](07-qa-check-in-the-ui.md) section 2a).
 4. Offline, settings, RLS, localization checks above hold.
 5. The six artefacts (R22) are updated: guideline/memory, plan file, **Supportability Matrix** [R21], Instructions (only if a rule changed), `CHANGELOG.md`, commit.
 6. Test Plan: a Done row whose Test Plan status is "Needs QA" is not trustworthy [R14] - add or update the case.

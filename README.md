@@ -95,7 +95,7 @@ Details: [docs/deployment/CODE_FIRST_DATABASE.md](docs/deployment/CODE_FIRST_DAT
 
 ## Tests
 
-### Local tests (run before a task is merged and moved to In Review)
+### Local tests (line 1 of every QA checklist; run them before the merge when you can)
 
 ```powershell
 dotnet --version                                   # 10.x

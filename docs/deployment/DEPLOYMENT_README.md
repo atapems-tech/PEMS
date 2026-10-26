@@ -150,4 +150,4 @@ Used after a deploy and by the QA check ([../guidelines/07-qa-check-in-the-ui.md
 3. DevTools > Network > the page request: the response has `Strict-Transport-Security` with `max-age` = `Hosting__HstsMaxAgeDays` x 86400, and the padlock shows a valid certificate.
 4. Admin > Database Update shows "up to date" and the latest migration.
 5. Smoke: open the home page, one list, one form and one dashboard in `fa` (RTL) and `en`, at desktop width and 375 px; the console has no errors.
-6. For a task being QA-checked: run its checklist (Jira comment) and the README checks it references; record the result in the Jira issue.
+6. For a task being QA-checked: run its checklist (Jira comment; line 1 is the local test run, [../../README.md](../../README.md) "Local tests") and the README checks it references; record the result in the Jira issue.

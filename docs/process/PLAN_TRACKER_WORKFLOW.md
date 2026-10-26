@@ -29,7 +29,7 @@ checked by a script in CI, not by memory.
 | Done evidence | Evidence/Report (written at close) | comment + development panel | Developer | workbook (in the closing PR) |
 | PM confirmation | Confirmed by PM | label `pm-confirmed` | Workbook | -> Jira |
 
-Status mapping: In Review (conditional done: work verified, PR merged into `main`, waiting for the QA check in the UI) = workbook In Progress; Not Started = To Do; In Progress and Partial = In Progress (Partial adds label `partial`); Done = Done;
+Status mapping: In Review (conditional done: work verified, PR merged into `main`, waiting for the tests and the QA check in the UI, which are one step for now) = workbook In Progress; Not Started = To Do; In Progress and Partial = In Progress (Partial adds label `partial`); Done = Done;
 Hold = On Hold; Later = Backlog (label `later`); Cancelled and Obsolete = Won't Do. A row becomes Done in the workbook only through the
 pull from Jira **and** a closing PR that fills Evidence (rule 13: no Done without evidence).
 
