@@ -3278,4 +3278,8 @@
   <data name="Recovery Codes" xml:space="preserve"><value>کدهای بازیابی</value></data>
   <data name="Administrator Recovery" xml:space="preserve"><value>بازیابی حساب مدیر</value></data>
   <data name="Break-glass Recovery" xml:space="preserve"><value>بازیابی اضطراری (break-glass)</value></data>
+  <data name="Search roles..." xml:space="preserve"><value>جستجوی نقش...</value></data>
+  <data name="No matching role" xml:space="preserve"><value>نقشی پیدا نشد</value></data>
+  <data name="Remove" xml:space="preserve"><value>حذف</value></data>
+  <data name="Type to search; select several roles. Remove a role with its ×." xml:space="preserve"><value>برای جستجو تایپ کنید؛ می‌توانید چند نقش انتخاب کنید. هر نقش را با × کنارش حذف کنید.</value></data>
 </root>

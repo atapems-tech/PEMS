@@ -20,3 +20,11 @@ Admin > Database Update page). The same path layout as the original location is 
 
 Do not run these against a database managed by the migrator: the migration history already covers them.
 Delete this folder once the team agrees it is no longer needed.
+
+## views/
+
+Razor views replaced by a newer component; the original path is kept below `views/`.
+
+| Moved view | Replaced by |
+|---|---|
+| `PEMS.Web/Areas/Admin/Views/Users/_RoleCheckboxes.cshtml` (role checkboxes, 2026-10-26) | `_RoleSelect.cshtml`: searchable multi-select with Tom Select (SCRUM-407) |

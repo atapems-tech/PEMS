@@ -1,0 +1,35 @@
+@model PEMS.Web.Areas.Admin.Models.UserFormViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@* SCRUM-407: نقش‌ها در یک فهرست چندانتخابی با جستجو (pems-multiselect.js + Tom Select)؛ بدون جاوااسکریپت همان select چندانتخابی بومی ارسال می‌شود.
+   صفحه‌ی میزبان باید tom-select.bootstrap5.min.css، tom-select.complete.min.js و pems-multiselect.js را بارگذاری کند. *@
+@{
+    var responsibleRoles = new[] { "SystemAdmin", "EngineeringManager", "EngineeringSupervisor", "DocumentController", "ContractManager" };
+    var expertRoles = new[] { "DisciplineEngineer", "MaintenanceEngineer", "Viewer" };
+    var groups = new[]
+    {
+        (Label: Localizer["مسئول (approval / oversight authority)"].Value, Roles: Model.AllRoles.Where(r => responsibleRoles.Contains(r)).ToList()),
+        (Label: Localizer["کارشناس (day-to-day execution, no approval authority)"].Value, Roles: Model.AllRoles.Where(r => expertRoles.Contains(r)).ToList()),
+        (Label: Localizer["سایر نقش‌های سفارشی"].Value, Roles: Model.AllRoles.Where(r => !responsibleRoles.Contains(r) && !expertRoles.Contains(r)).ToList())
+    };
+}
+<div class="mb-3">
+    <label class="form-label d-block" for="SelectedRoles">@Localizer["Roles"]</label>
+    <select id="SelectedRoles" name="SelectedRoles" multiple class="form-select" size="8"
+            data-pems-multiselect
+            data-placeholder="@Localizer["Search roles..."]"
+            data-no-results="@Localizer["No matching role"]"
+            data-remove-title="@Localizer["Remove"]">
+        @foreach (var group in groups.Where(g => g.Roles.Count > 0))
+        {
+            <optgroup label="@group.Label">
+                @foreach (var role in group.Roles)
+                {
+                    <option value="@role" selected="@(Model.SelectedRoles.Contains(role))">@role</option>
+                }
+            </optgroup>
+        }
+    </select>
+    <div class="form-text">@Localizer["Type to search; select several roles. Remove a role with its ×."]</div>
+</div>
