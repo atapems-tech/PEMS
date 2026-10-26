@@ -2400,4 +2400,95 @@
   <data name="Ct_ApproverEligible" xml:space="preserve"><value>Holders of the approve permission</value></data>
   <data name="Ct_ApproverOthers" xml:space="preserve"><value>Other staff</value></data>
   <data name="Lc_Err_ReferralNeedsParent" xml:space="preserve"><value>A referral must be made from an existing letter.</value></data>
+  <data name="Admin account recovery attempts: who, which method, from where, and whether it succeeded. Records are append-only." xml:space="preserve"><value>Admin account recovery attempts: who, which method, from where, and whether it succeeded. Records are append-only.</value></data>
+  <data name="Method" xml:space="preserve"><value>Method</value></data>
+  <data name="All methods" xml:space="preserve"><value>All methods</value></data>
+  <data name="All results" xml:space="preserve"><value>All results</value></data>
+  <data name="Success" xml:space="preserve"><value>Success</value></data>
+  <data name="Failure" xml:space="preserve"><value>Failure</value></data>
+  <data name="Actor" xml:space="preserve"><value>Actor</value></data>
+  <data name="Target" xml:space="preserve"><value>Target</value></data>
+  <data name="IP address" xml:space="preserve"><value>IP address</value></data>
+  <data name="Forwarded" xml:space="preserve"><value>Forwarded</value></data>
+  <data name="Pending" xml:space="preserve"><value>Pending</value></data>
+  <data name="No security events" xml:space="preserve"><value>No security events</value></data>
+  <data name="No admin recovery has been attempted, or the filters match nothing." xml:space="preserve"><value>No admin recovery has been attempted, or the filters match nothing.</value></data>
+  <data name="Reset by another administrator" xml:space="preserve"><value>Reset by another administrator</value></data>
+  <data name="Recovery code" xml:space="preserve"><value>Recovery code</value></data>
+  <data name="Server break-glass" xml:space="preserve"><value>Server break-glass</value></data>
+  <data name="Vendor token" xml:space="preserve"><value>Vendor token</value></data>
+  <data name="User edit in the admin panel" xml:space="preserve"><value>User edit in the admin panel</value></data>
+  <data name="The password was changed but recording or session revocation failed." xml:space="preserve"><value>The password was changed but recording or session revocation failed.</value></data>
+  <data name="User updated, but the password was not changed" xml:space="preserve"><value>User updated, but the password was not changed</value></data>
+  <data name="Password" xml:space="preserve"><value>Password</value></data>
+  <data name="This is the last active administrator. It cannot be deactivated or removed from the SystemAdmin role. Create or activate another administrator first." xml:space="preserve"><value>This is the last active administrator. It cannot be deactivated or removed from the SystemAdmin role. Create or activate another administrator first.</value></data>
+  <data name="Only another administrator's account can be reset this way." xml:space="preserve"><value>Only another administrator's account can be reset this way.</value></data>
+  <data name="You cannot reset your own account this way. Ask another administrator." xml:space="preserve"><value>You cannot reset your own account this way. Ask another administrator.</value></data>
+  <data name="The account was not found." xml:space="preserve"><value>The account was not found.</value></data>
+  <data name="Only an active administrator can reset an administrator account." xml:space="preserve"><value>Only an active administrator can reset an administrator account.</value></data>
+  <data name="The password was changed but recording or session revocation failed. No temporary password is shown; run the reset again." xml:space="preserve"><value>The password was changed but recording or session revocation failed. No temporary password is shown; run the reset again.</value></data>
+  <data name="The reset failed. Nothing was shown; try again." xml:space="preserve"><value>The reset failed. Nothing was shown; try again.</value></data>
+  <data name="Reset the account of another administrator. This cannot be undone." xml:space="preserve"><value>Reset the account of another administrator. This cannot be undone.</value></data>
+  <data name="Reset administrator account" xml:space="preserve"><value>Reset administrator account</value></data>
+  <data name="Confirming will:" xml:space="preserve"><value>Confirming will:</value></data>
+  <data name="issue a random temporary password, shown once on the next page and valid for 24 hours;" xml:space="preserve"><value>issue a random temporary password, shown once on the next page and valid for 24 hours;</value></data>
+  <data name="force a password change at the next sign-in;" xml:space="preserve"><value>force a password change at the next sign-in;</value></data>
+  <data name="unlock the account and reset MFA (passkeys and authenticator key are removed; the administrator must enroll again);" xml:space="preserve"><value>unlock the account and reset MFA (passkeys and authenticator key are removed; the administrator must enroll again);</value></data>
+  <data name="sign the account out everywhere within about one minute;" xml:space="preserve"><value>sign the account out everywhere within about one minute;</value></data>
+  <data name="record the reset (who, when, from which IP) and notify every active administrator." xml:space="preserve"><value>record the reset (who, when, from which IP) and notify every active administrator.</value></data>
+  <data name="You cannot reset your own account this way. Hand the temporary password to the administrator in person or over a trusted channel; it is not stored anywhere." xml:space="preserve"><value>You cannot reset your own account this way. Hand the temporary password to the administrator in person or over a trusted channel; it is not stored anywhere.</value></data>
+  <data name="Reset account" xml:space="preserve"><value>Reset account</value></data>
+  <data name="The account was reset. The temporary password below is shown only now." xml:space="preserve"><value>The account was reset. The temporary password below is shown only now.</value></data>
+  <data name="Account reset" xml:space="preserve"><value>Account reset</value></data>
+  <data name="Copy or print this password now. It cannot be shown again; if it is lost, reset the account again." xml:space="preserve"><value>Copy or print this password now. It cannot be shown again; if it is lost, reset the account again.</value></data>
+  <data name="Copied" xml:space="preserve"><value>Copied</value></data>
+  <data name="Copy" xml:space="preserve"><value>Copy</value></data>
+  <data name="Print" xml:space="preserve"><value>Print</value></data>
+  <data name="Expires" xml:space="preserve"><value>Expires</value></data>
+  <data name="The administrator must change it at the first sign-in and enroll MFA again. All of their sessions were signed out, and every active administrator was notified." xml:space="preserve"><value>The administrator must change it at the first sign-in and enroll MFA again. All of their sessions were signed out, and every active administrator was notified.</value></data>
+  <data name="Back to users" xml:space="preserve"><value>Back to users</value></data>
+  <data name="Security Events" xml:space="preserve"><value>Security Events</value></data>
+  <data name="Account recovered" xml:space="preserve"><value>Account recovered</value></data>
+  <data name="The new password is set and the recovery code is used up. Sign in with the new password and enroll MFA again." xml:space="preserve"><value>The new password is set and the recovery code is used up. Sign in with the new password and enroll MFA again.</value></data>
+  <data name="Recovery codes left" xml:space="preserve"><value>Recovery codes left</value></data>
+  <data name="Few recovery codes are left. Generate a new set from your profile after signing in." xml:space="preserve"><value>Few recovery codes are left. Generate a new set from your profile after signing in.</value></data>
+  <data name="Sign in" xml:space="preserve"><value>Sign in</value></data>
+  <data name="Administrator recovery" xml:space="preserve"><value>Administrator recovery</value></data>
+  <data name="Use one of your printed recovery codes to set a new password. Each code works only once." xml:space="preserve"><value>Use one of your printed recovery codes to set a new password. Each code works only once.</value></data>
+  <data name="New password" xml:space="preserve"><value>New password</value></data>
+  <data name="Confirm new password" xml:space="preserve"><value>Confirm new password</value></data>
+  <data name="Recover account" xml:space="preserve"><value>Recover account</value></data>
+  <data name="After recovery, all sessions of the account are signed out, every administrator is notified and MFA must be enrolled again." xml:space="preserve"><value>After recovery, all sessions of the account are signed out, every administrator is notified and MFA must be enrolled again.</value></data>
+  <data name="Back to sign in" xml:space="preserve"><value>Back to sign in</value></data>
+  <data name="New recovery codes" xml:space="preserve"><value>New recovery codes</value></data>
+  <data name="Print or download these codes now and keep them offline. They are shown only once; the previous codes no longer work." xml:space="preserve"><value>Print or download these codes now and keep them offline. They are shown only once; the previous codes no longer work.</value></data>
+  <data name="Download" xml:space="preserve"><value>Download</value></data>
+  <data name="Generated" xml:space="preserve"><value>Generated</value></data>
+  <data name="Done" xml:space="preserve"><value>Done</value></data>
+  <data name="Recovery codes" xml:space="preserve"><value>Recovery codes</value></data>
+  <data name="If you lose your password or MFA device, one recovery code lets you set a new password from the sign-in page. Each code works once." xml:space="preserve"><value>If you lose your password or MFA device, one recovery code lets you set a new password from the sign-in page. Each code works once.</value></data>
+  <data name="You have no recovery codes. Generate a set now and keep it in a safe place." xml:space="preserve"><value>You have no recovery codes. Generate a set now and keep it in a safe place.</value></data>
+  <data name="Current password" xml:space="preserve"><value>Current password</value></data>
+  <data name="Generate new codes" xml:space="preserve"><value>Generate new codes</value></data>
+  <data name="Generating a new set invalidates every code you have not used yet." xml:space="preserve"><value>Generating a new set invalidates every code you have not used yet.</value></data>
+  <data name="Break-glass recovery" xml:space="preserve"><value>Break-glass recovery</value></data>
+  <data name="A recovery request file is present on the server. This page closes at" xml:space="preserve"><value>A recovery request file is present on the server. This page closes at</value></data>
+  <data name="No recovery request file is present. Paste a vendor recovery token issued for this server." xml:space="preserve"><value>No recovery request file is present. Paste a vendor recovery token issued for this server.</value></data>
+  <data name="There is no active administrator account to reset." xml:space="preserve"><value>There is no active administrator account to reset.</value></data>
+  <data name="Administrator account" xml:space="preserve"><value>Administrator account</value></data>
+  <data name="Vendor recovery token" xml:space="preserve"><value>Vendor recovery token</value></data>
+  <data name="The reset issues a temporary password shown once, forces a password change, resets MFA, signs the account out everywhere and notifies every administrator. The request can be used only once." xml:space="preserve"><value>The reset issues a temporary password shown once, forces a password change, resets MFA, signs the account out everywhere and notifies every administrator. The request can be used only once.</value></data>
+  <data name="The request was used up and the recovery page is closed." xml:space="preserve"><value>The request was used up and the recovery page is closed.</value></data>
+  <data name="Too many failed attempts. The account is locked for a while; try again later." xml:space="preserve"><value>Too many failed attempts. The account is locked for a while; try again later.</value></data>
+  <data name="The user name or recovery code is not valid." xml:space="preserve"><value>The user name or recovery code is not valid.</value></data>
+  <data name="The current password is not correct." xml:space="preserve"><value>The current password is not correct.</value></data>
+  <data name="Choose the administrator account to reset." xml:space="preserve"><value>Choose the administrator account to reset.</value></data>
+  <data name="The vendor recovery token is not valid for this server, has expired or was already used." xml:space="preserve"><value>The vendor recovery token is not valid for this server, has expired or was already used.</value></data>
+  <data name="Only an active administrator account can be reset here." xml:space="preserve"><value>Only an active administrator account can be reset here.</value></data>
+  <data name="The password was changed but recording or session revocation failed. No temporary password is shown; place a new request file and run the reset again." xml:space="preserve"><value>The password was changed but recording or session revocation failed. No temporary password is shown; place a new request file and run the reset again.</value></data>
+  <data name="The recovery window is closed. Place a new request file on the server." xml:space="preserve"><value>The recovery window is closed. Place a new request file on the server.</value></data>
+  <data name="Use a recovery code" xml:space="preserve"><value>Use a recovery code</value></data>
+  <data name="Recovery Codes" xml:space="preserve"><value>Recovery Codes</value></data>
+  <data name="Administrator Recovery" xml:space="preserve"><value>Administrator Recovery</value></data>
+  <data name="Break-glass Recovery" xml:space="preserve"><value>Break-glass Recovery</value></data>
 </root>

@@ -386,6 +386,8 @@ plan/members.json
 # Runtime user uploads (documents, signatures, intake files): created by the running app, never committed or shipped in a package
 PEMS.Web/wwwroot/uploads/*
 !PEMS.Web/wwwroot/uploads/.gitkeep
+# SCRUM-356: break-glass request folder (an operator drops pems-recovery.request here on the server); never committed
+PEMS.Web/break-glass/
 
 # SCRUM-17: runtime file store (letters, documents, imports) is user data - never committed or shipped; files committed earlier stay listed in docs/audits/SECRETS_AUDIT_2026-10.md
 PEMS.Web/filestore/

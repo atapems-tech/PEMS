@@ -435,6 +435,48 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("AIReliabilityInsights");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.AdminRecoveryCode", b =>
+                {
+                    b.Property<int>("AdminRecoveryCodeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminRecoveryCodeId"));
+
+                    b.Property<Guid>("BatchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("CodeHash")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("varbinary(32)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RevokedAtUtc")
+                        .IsConcurrencyToken()
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("Salt")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varbinary(16)");
+
+                    b.Property<DateTime?>("UsedAtUtc")
+                        .IsConcurrencyToken()
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AdminRecoveryCodeId");
+
+                    b.HasIndex("UserId", "UsedAtUtc", "RevokedAtUtc");
+
+                    b.ToTable("AdminRecoveryCodes");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Alarm", b =>
                 {
                     b.Property<int>("AlarmId")
@@ -15496,6 +15538,68 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("SavedFilters");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.SecurityEvent", b =>
+                {
+                    b.Property<int>("SecurityEventId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SecurityEventId"));
+
+                    b.Property<int?>("ActorUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ActorUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("EventType")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("FailureReason")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime?>("ForwardedToSiemAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IpAddress")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<DateTime>("OccurredAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Result")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<int?>("TargetUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TargetUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("SecurityEventId");
+
+                    b.HasIndex("ForwardedToSiemAt");
+
+                    b.HasIndex("OccurredAtUtc");
+
+                    b.HasIndex("Method", "Result");
+
+                    b.ToTable("SecurityEvents");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.ShiftDefinition", b =>
                 {
                     b.Property<int>("ShiftDefinitionId")
@@ -20126,6 +20230,9 @@ namespace PEMS.Persistence.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<bool>("MfaEnrollmentRequired")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("MustChangePassword")
                         .HasColumnType("bit");
 
@@ -20148,6 +20255,9 @@ namespace PEMS.Persistence.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("TemporaryPasswordExpiresAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");

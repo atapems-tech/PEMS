@@ -1,0 +1,98 @@
+@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.SecurityEventDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Application.Common
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@functions {
+    // برچسب روش بازیابی از کلیدهای ثابت (تا تست پوشش ترجمه همه را ببیند)
+    string MethodLabel(string method) => method switch
+    {
+        RecoveryMethods.SecondAdminReset => Localizer["Reset by another administrator"].Value,
+        RecoveryMethods.RecoveryCode => Localizer["Recovery code"].Value,
+        RecoveryMethods.BreakGlass => Localizer["Server break-glass"].Value,
+        RecoveryMethods.VendorToken => Localizer["Vendor token"].Value,
+        RecoveryMethods.AdminConsole => Localizer["User edit in the admin panel"].Value,
+        _ => method
+    };
+}
+@{
+    var selMethod = (string?)ViewBag.Method;
+    var selResult = (string?)ViewBag.Result;
+    var qsParts = new List<string>();
+    if (!string.IsNullOrEmpty(selMethod)) qsParts.Add($"method={Uri.EscapeDataString(selMethod)}");
+    if (!string.IsNullOrEmpty(selResult)) qsParts.Add($"result={Uri.EscapeDataString(selResult)}");
+}
+
+<div class="admin-page-shell">
+    <div class="admin-hero">
+        <div class="d-flex align-items-center gap-3"><div><p>@Localizer["Admin account recovery attempts: who, which method, from where, and whether it succeeded. Records are append-only."]</p></div></div>
+    </div>
+    <div class="content-card">
+        <form method="get" class="admin-toolbar">
+            <div class="admin-toolbar-main">
+                <div>
+                    <label class="form-label small mb-1" for="seMethod">@Localizer["Method"]</label>
+                    <select id="seMethod" name="method" class="form-select form-select-sm">
+                        <option value="">@Localizer["All methods"]</option>
+                        @foreach (var m in RecoveryMethods.All) { <option value="@m" selected="@(m == selMethod)">@MethodLabel(m)</option> }
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label small mb-1" for="seResult">@Localizer["Result"]</label>
+                    <select id="seResult" name="result" class="form-select form-select-sm">
+                        <option value="">@Localizer["All results"]</option>
+                        <option value="@RecoveryResults.Success" selected="@(selResult == RecoveryResults.Success)">@Localizer["Success"]</option>
+                        <option value="@RecoveryResults.Failure" selected="@(selResult == RecoveryResults.Failure)">@Localizer["Failure"]</option>
+                    </select>
+                </div>
+            </div>
+            <div class="admin-toolbar-actions">
+                <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-funnel me-1"></i> @Localizer["Apply filters"]</button>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Reset"]</a>
+            </div>
+        </form>
+        <div class="table-responsive pems-grid-scroll">
+            <table class="table table-enterprise pems-grid-table" data-grid-key="SecurityEvents">
+                <thead>
+                    <tr>
+                        <th data-col-key="time">@Localizer["Time"] (UTC)</th>
+                        <th data-col-key="method">@Localizer["Method"]</th>
+                        <th data-col-key="result">@Localizer["Result"]</th>
+                        <th data-col-key="actor">@Localizer["Actor"]</th>
+                        <th data-col-key="target">@Localizer["Target"]</th>
+                        <th data-col-key="ip">@Localizer["IP address"]</th>
+                        <th data-col-key="siem">SIEM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var e in Model.Items)
+                    {
+                        <tr>
+                            <td class="row-secondary" dir="ltr">@e.OccurredAtUtc.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <td title="@e.Method">@MethodLabel(e.Method)</td>
+                            <td>
+                                @if (e.Result == RecoveryResults.Success) { <span class="admin-status active"><i class="bi bi-check-circle-fill"></i> @Localizer["Success"]</span> }
+                                else { <span class="admin-status locked" title="@e.FailureReason"><i class="bi bi-x-circle-fill"></i> @Localizer["Failure"]@(string.IsNullOrEmpty(e.FailureReason) ? "" : " · " + e.FailureReason)</span> }
+                            </td>
+                            <td class="row-primary">@(e.ActorUserName ?? "—")</td>
+                            <td class="row-primary">@(e.TargetUserName ?? "—")</td>
+                            <td class="row-secondary" dir="ltr">@(e.IpAddress ?? "—")</td>
+                            <td class="row-secondary">@(e.Forwarded ? Localizer["Forwarded"] : Localizer["Pending"])</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (Model.Items.Count == 0) { <div class="admin-empty"><i class="bi bi-shield-check"></i><strong>@Localizer["No security events"]</strong><div>@Localizer["No admin recovery has been attempted, or the filters match nothing."]</div></div> }
+        </div>
+        @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+        {
+            Page = Model.Page,
+            TotalPages = Model.TotalPages,
+            TotalCount = Model.TotalCount,
+            PageSize = Model.PageSize,
+            GridKey = "SecurityEvents",
+            BaseUrl = Url.Action("Index") ?? "",
+            ExistingQueryString = string.Join("&", qsParts)
+        })
+    </div>
+</div>

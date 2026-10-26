@@ -3,6 +3,21 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-26 - Administrator recovery: one-time recovery codes and server break-glass (SCRUM-355, SCRUM-356)
+
+### Added
+- One-time recovery codes for administrators (migration `AdminRecoveryCodes`): 10 codes per set, 80 bits each, stored only as PBKDF2 hash + salt, append-only rows (use/revoke recorded once). User menu > Recovery codes shows how many are left and generates a new set (current password required; unused old codes are revoked); the codes are shown once (no-store) with copy, print and download.
+- `/AccountRecovery` (link on the sign-in page): user name + recovery code + new password. The code is consumed once, the password is set, MFA is reset for re-enrolment, all sessions are revoked, the event is audited and all administrators are notified. Wrong codes count toward the Identity lockout; a locked account is refused even with a valid code.
+- Rate limit for the sign-in-free recovery pages: 5 POSTs per client IP per 15 minutes (`Security:Recovery:RateLimit:*`), answer 429.
+- Server break-glass (`/break-glass`): placing `pems-recovery.request` in `Security:BreakGlass:RequestFolder` opens the page for 15 minutes, reachable only from localhost or `Security:BreakGlass:ManagementNetworks` (every X-Forwarded-For/Forwarded hop must be allowed too); anything else is 404. One administrator is reset (temporary password shown once, forced change, MFA reset); the file is deleted after use or on expiry.
+- Optional vendor-signed recovery token (ECDSA P-256, at most 24 hours, bound to a machine fingerprint, single use), off by default (`Security:BreakGlass:VendorRecovery:Enabled=false`).
+
+### Changed
+- The MFA reset and unlock step of the second-admin reset moved into a shared helper used by all three recovery paths.
+
+### Notes
+- The first-run wizard (SCRUM-188) does not exist yet; it will call the same recovery-code service. Until a licence engine exists, the vendor-token machine fingerprint is a setting.
+
 ## 2026-10-26 - QA check in the UI, merge before In Review (SCRUM-394)
 
 ### Changed
@@ -30,6 +45,19 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - Workflow: the SCRUM project has an On Hold status; the Jira report is kept current during the work (Instructions rule 27); existing tasks are studied before a new one is added (rule 28).
 
+## 2026-10-25 - Administrator recovery: audit trail, last-admin guard, second-admin reset (SCRUM-357, SCRUM-354)
+
+### Added
+- `SecurityEvents` table (migration `SecurityEventsRecoveryAudit`): append-only record of every administrator recovery attempt (actor, target, method, IP, UTC time, result, fixed failure-reason code); only the SIEM marker `ForwardedToSiemAt` may change. Read-only list at Admin > Security Events (fa/en).
+- `IRecoveryEventService`: one service for all recovery paths. A successful recovery revokes all sessions and remember-me cookies of the target (security stamp), writes the audit record, notifies every active SystemAdmin and logs under `PEMS.Security`; a failure only audits.
+- Last-admin guard: the last active SystemAdmin cannot be deactivated or removed from the role (checked on the server in the user edit and activate/deactivate actions).
+- Second-admin reset (Admin > Users, key button on other administrators): random temporary password shown once and valid for 24 hours, forced password change, lockout cleared, passkeys and authenticator key removed, `MfaEnrollmentRequired` set (migration `AdminRecoveryUserFlags`). Resetting your own account is refused. An expired temporary password is refused at sign-in with the generic message.
+
+### Changed
+- A password change of an administrator in the user edit form is audited (method `AdminConsole`) and its Identity result is no longer ignored.
+
+### Notes
+- `MfaEnrollmentRequired` is only a flag until MFA at sign-in exists (SCRUM-188 / SCRUM-206).
 ## 2026-10-25 - Staging environment live
 
 ### Added
