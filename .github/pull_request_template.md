@@ -15,3 +15,4 @@ Jira: SCRUM-___    Plan ID (#): ___
 - [ ] Schema change has a migration (never edit an applied one); new settings are in every `env/*.env` file
 - [ ] New UI uses PEMS.UI components only (no new raw form/table/modal/badge markup, inline styles or CDN references)
 - [ ] After the merge I move the issue to In Review with the label `qa-pending`; the QA check in the UI (guideline chapter 07) decides Done
+- [ ] Before the move to In Review (and again after every failed QA) the Jira issue has the QA checklist comment and the Tests paragraph, checked against this change (guideline chapter 07 section 1a)

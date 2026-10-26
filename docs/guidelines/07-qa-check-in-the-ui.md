@@ -13,6 +13,16 @@ Instructions rules 13 (no Done without evidence) and 14 (a row whose Test Plan s
 
 Labels: `qa-pending`, `qa-passed`, `qa-failed` (one at a time; the author sets `qa-pending` when moving to In Review after the merge, the tester replaces it).
 
+## 1a. Entering and re-entering In Review (author's duty)
+
+Whoever moves the issue to In Review - the first time **and every time after a failed QA** - checks, in this order, and says so in the move comment:
+
+1. **QA checklist present.** The issue has a Jira comment "QA checklist" (template in section 5) with line 1 = local tests, one line per *Done when* item, the standard lines, and the **how to test** as references to the README sections of section 5a (never copied steps). The author drafts it; the tester completes and runs it.
+2. **Test note present.** The move comment has a "Tests" paragraph: the commands that were run with their counts, or the exact commands that were **not** run and why (section 2a). Docs-only tasks say "n/a (docs only)" and name the read-through of section 6.
+3. **README up to date.** Any new manual check or local test of this task is already in the right existing README (section 5a) and the checklist refers to it.
+4. **Re-entry after `qa-failed`** (the issue came back through To Do): do not edit or delete the earlier checklist. Re-check it against the new commit and add a new comment "QA checklist - round N" with: every failed line to retest, one regression line per defect (Bug keys), lines for the areas the fix touched, and two neighbouring checks; update the Tests paragraph with the new commit and counts; replace `qa-failed` by `qa-pending`.
+5. If one of these is missing the issue is not ready: the tester starts nothing, marks the checklist line "Blocked: no QA/test note" and asks the author (the issue does not count as In Review for planning until fixed).
+
 ## 2. Who and where
 
 - **Who:** a person other than the author: the owner, the other member, or a named tester. An AI agent may write the checklist and drive a browser to collect evidence, but the verdict
@@ -38,7 +48,7 @@ update and version operations to be UI-completable) and is recorded as a defect 
 ## 4. Procedure
 
 1. **Prepare (10 min).** Read the issue (*Done when*), the PR description and the Test Plan rows of the backlog row. Fresh browser profile; open the console and network tab.
-2. **Write the checklist as a Jira comment "QA checklist"** (template in section 5) before testing: one line per *Done when* item, plus the standard lines below.
+2. **Complete the checklist** the author drafted when moving to In Review (section 1a; write it yourself if it is missing, and tell the author): one line per *Done when* item, plus the standard lines below.
    **Do not copy steps that already exist: refer to them** (section 5a). If the task introduces a manual check or a local test, add it to the right existing README (never a new file) and refer to it from the checklist.
 3. **Execute in the browser** and mark each line Pass / Fail / Blocked with evidence (screenshot file name, Test Plan case id, or the URL of the rendered page).
    Line 1 is always the local test run (section 2a). Standard lines for any UI change: golden path; one edge case and one invalid input; every role that must be allowed and one that must be denied; **fa (RTL) and en**;
