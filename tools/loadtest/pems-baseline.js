@@ -27,7 +27,11 @@ import { check, sleep } from 'k6';
 import { Counter, Trend, Rate } from 'k6/metrics';
 
 const BASE = __ENV.BASE_URL || 'http://localhost:5089';
-const PASSWORD = 'LoadTest#2026';
+// SCRUM-17: no password in source; use the one given to tools/LoadTestSeed (k6 run -e PEMS_LOADTEST_PASSWORD=...).
+const PASSWORD = __ENV.PEMS_LOADTEST_PASSWORD;
+if (!PASSWORD) {
+    throw new Error('Set PEMS_LOADTEST_PASSWORD (k6 run -e PEMS_LOADTEST_PASSWORD=...).');
+}
 const GENERAL_USER_COUNT = 200;
 const ADMIN_USER_COUNT = 10;
 

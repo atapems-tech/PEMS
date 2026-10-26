@@ -52,6 +52,7 @@ Never change the status of issues you were not asked to work on (except the pare
   - Commit `SCRUM-123 feat(scope): message`; PR title `SCRUM-123 ...`.
   - Keep the branch short-lived: merge as soon as the issue(s) meet *Done when*; do not stack unrelated work on it.
   Stage specific files only: `git add <path>`, never `git add -A` / `git add .` (the user may commit in another terminal - re-run `git status` before committing).
+- **Keep the Jira report current while you work** (Instructions rule 27, owner decision 2026-10-26). Besides the start comment (section 2) and the closing comment (section 4), add a short comment at every milestone, decision, blocker or change of scope and before any hand-over or stop: what is done, what is next, what blocks, tests run and not run. The report is the record the owner reads; the PR description repeats it. Never put a secret value in it (mask to two characters at most).
 - **Fix anti-patterns in scope** (rule 15). Large or risky fixes get their own issue - create or propose it, do not hide it in this one.
 - **Stay in scope; record discoveries.** Anything useful you notice outside scope goes to the user as a proposed new issue, not into the diff.
 - **Unclear requirement?** Ask the user one concrete question before building on a guess. Open decisions are listed in the plan (Decision Needed rows).
@@ -75,7 +76,7 @@ An issue never skips In Review when a PR exists. If the user tells you to merge 
 
 Then:
 
-1. **Comment** with: what changed, files/areas touched, tests added, commit hash or PR link, Supportability Matrix rows added, guideline entries added.
+1. **Comment** with: what changed, files/areas touched, tests added, tests run and **not** run (and why), commit hash or PR link, evidence for each *Done when* item, Supportability Matrix rows added, guideline entries added, open items for the owner.
 2. **Transition to In Review** with `transitionJiraIssue`; after the merge, **transition to Done** (same comment rules: add the merge commit).
 3. **Parent rules** (apply to Done, not In Review): a Story with Sub-tasks is Done only when all its Sub-tasks are Done; an Epic only when all child issues are Done. When you close the last open child, check the parent and close it too if its own "Done when" is met.
 4. **Clean up the branch.** When the work is merged into its target (`main`; promotion to `staging` and `demo` is a separate merge the user directs, because those pushes deploy), **delete the working branch** locally (`git branch -d <name>`) and on the remote if it was pushed (`git push origin --delete <name>`); use `-d`, which refuses unmerged work, and never delete `main`, `staging`, `demo` or someone else's branch. Mention the deletion in the Jira comment. Then run `git branch --merged` to see leftovers and report them.
