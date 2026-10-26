@@ -57,6 +57,7 @@ Four layers (README section 3). Maintainers check periodically:
 4. Repository setting "Automatically delete head branches" is on (owner, 2026-10-26): merged pull-request branches disappear without anyone deleting them.
 5. Secrets-audit follow-ups: history purge (#374) and FTPS certificate verification (#375) are held; test review (#376), test-maintenance procedure (#377) and review of Claude's roles and setup (#378) are open.
 6. **Merge before In Review, QA before Done** (owner, 2026-10-26): the PR is merged into `main` right before the issue moves to In Review (label `qa-pending`); In Review means "merged, waiting for the QA check"; the QA check is done fully in the UI by a person other than the author ([chapter 07](07-qa-check-in-the-ui.md)); Done means the QA check passed. A failed check returns the issue to In Progress and the fix goes through a new PR (fix forward).
+7. **Tests and review are one step for now** (owner, 2026-10-26): the local test run is line 1 of every QA checklist; In Review is allowed when the tests could not be run in the session if the comment says which and why; Done needs the tests green and the QA check passed. Revisit when CI gates every merge (#7).
 
 ## 6. Open points
 

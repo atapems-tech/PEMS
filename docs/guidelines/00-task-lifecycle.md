@@ -63,17 +63,17 @@ Never change the status of issues you were not asked to work on (except the pare
 
 | Level | Jira status | Meaning | Who/when |
 |---|---|---|---|
-| **Conditional done** | **In Review** | Work is complete and verified by the author: every *Done when* item met, build and tests green, **the PR is merged into `main`**. Waiting for the QA check in the UI ([chapter 07](07-qa-check-in-the-ui.md)). | The agent or developer moves it **right after the merge** and sets the label `qa-pending` |
+| **Conditional done** | **In Review** | Work is complete and verified by the author: every *Done when* item met, **the PR is merged into `main`**, and the build and tests have run green **or** the comment says exactly why they could not run (see "Tests and review are one step" below). Waiting for the QA check in the UI ([chapter 07](07-qa-check-in-the-ui.md)). | The agent or developer moves it **right after the merge** and sets the label `qa-pending` |
 | **Done** | **Done** | The QA check passed (label `qa-passed`) and the plan row Evidence / Test Plan status are updated. | Moved by the tester or the owner after the QA verdict |
 
-Order (owner decision 2026-10-26): tests green -> PR -> **merge into `main`** -> In Review + `qa-pending` -> QA check -> Done. An issue never skips In Review.
+Order (owner decision 2026-10-26): tests (if you can run them) -> PR -> **merge into `main`** -> In Review + `qa-pending` -> QA check, whose **line 1 is the local test run** -> Done. An issue never skips In Review.
 A task whose *Done when* needs the owner's or a member's approval of a document gets that approval as the review of the PR; the merge follows the approval.
 If the QA check fails, the issue goes back to In Progress and the fix reaches `main` through a new branch and PR (fix forward), then it goes to In Review again.
 
 **Move to In Review (conditional done)** only when **all** are true:
 
 - every item in *Done when* is met (check them one by one in your closing comment);
-- build passes and **all** tests pass, including the new tests the issue asks for (chapter 01, "Definition of done");
+- the build and **all** tests passed, including the new tests the issue asks for (chapter 01, "Definition of done"), **or** they could not be run in your session (for example a cloud session without the .NET SDK or SQL Server): then the comment says so, lists the commands that were not run, and the test run becomes line 1 of the QA checklist (README.md "Local tests"). **Tests and review are one step for now** (owner decision 2026-10-26, no CI gate exists yet, #7): a person runs the tests and the UI checks together; Done needs both green;
 - changes are committed, pushed, a PR is opened and **merged into `main`** (the merge is the step right before In Review; promotion to `staging`/`demo` stays a separate decision);
 - the six artefacts of rule 22 are updated (chapter 06): memory/guideline, plan file, Supportability Matrix, Instructions (only if a rule changed), CHANGELOG, commit.
 
@@ -94,7 +94,7 @@ Then:
 
 ## 6. Never
 
-- Never mark In Review or Done because the session is ending or the code "looks finished" without passing tests. Never mark In Review before the PR is merged into `main`, and never mark Done before the QA check passed.
+- Never mark In Review because the session is ending or the code "looks finished" unless the tests passed or the comment states exactly which tests could not run and why. Never mark In Review before the PR is merged into `main`, and never mark Done before the tests are green and the QA check passed.
 - Never delete, overwrite or collapse a QA checklist or QA result comment, not even after Done; they stay on the issue as organisational knowledge ([chapter 07](07-qa-check-in-the-ui.md) section 7).
 - Never leave an issue In Progress / In Review without an assignee.
 - Never change statuses of issues you were not asked to work on (parent rules and approved batches excepted).

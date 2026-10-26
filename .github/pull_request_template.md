@@ -11,7 +11,7 @@ Jira: SCRUM-___    Plan ID (#): ___
 - [ ] Plan workbook row updated (Status via Jira; Evidence/Report written if closing) and `python tools/plan-sync/plan_sync.py export` rerun so `plan/backlog.csv` is current
 - [ ] Supportability Matrix row added or changed
 - [ ] CHANGELOG.md entry
-- [ ] Tests added or updated; the affected groups pass
+- [ ] Tests added or updated; the affected groups pass - or this PR lists the commands I could not run (they become line 1 of the QA checklist)
 - [ ] Schema change has a migration (never edit an applied one); new settings are in every `env/*.env` file
 - [ ] New UI uses PEMS.UI components only (no new raw form/table/modal/badge markup, inline styles or CDN references)
 - [ ] After the merge I move the issue to In Review with the label `qa-pending`; the QA check in the UI (guideline chapter 07) decides Done
