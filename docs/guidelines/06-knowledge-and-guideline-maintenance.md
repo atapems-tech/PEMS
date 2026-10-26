@@ -45,7 +45,7 @@ Four layers (README section 3). Maintainers check periodically:
 
 1. Issue key prefix is `SCRUM` everywhere (docs, templates, branches, commits).
 2. Commit messages and PR titles start with the Jira key (`SCRUM-123 feat(scope): ...`), following Instructions rule 25. Rule 7's `vX.Y.Z:` wording in the workbook is superseded; update the workbook Instructions sheet at the next plan PR.
-3. Two levels of done: **In Review** = conditional done (everything verified, PR opened); **Done** = merged. The SCRUM workflow today has the statuses To Do, In Progress, In Review, Done, Bugs.
+3. Two levels of done (superseded in part on 2026-10-26, see section 5a item 6): **In Review** = conditional done; **Done** = finished. The SCRUM workflow today has the statuses To Do, In Progress, In Review, Done, Bugs.
 4. `.claude/CLAUDE.md` is a pointer to `AGENTS.md`; the old Instrument Passport directive moved to `docs/cmms/INSTRUMENT_PASSPORT_DIRECTIVE.md`.
 5. `.claude/settings.json` calls `graphify` from PATH instead of a per-user absolute path.
 
@@ -56,6 +56,7 @@ Four layers (README section 3). Maintainers check periodically:
 3. Instructions rule 28: study existing tasks before adding one; modify a fitting task instead (chapter 00, step 5b). Held tasks count as not open.
 4. Repository setting "Automatically delete head branches" is on (owner, 2026-10-26): merged pull-request branches disappear without anyone deleting them.
 5. Secrets-audit follow-ups: history purge (#374) and FTPS certificate verification (#375) are held; test review (#376), test-maintenance procedure (#377) and review of Claude's roles and setup (#378) are open.
+6. **Merge before In Review, QA before Done** (owner, 2026-10-26): the PR is merged into `main` right before the issue moves to In Review (label `qa-pending`); In Review means "merged, waiting for the QA check"; the QA check is done fully in the UI by a person other than the author ([chapter 07](07-qa-check-in-the-ui.md)); Done means the QA check passed. A failed check returns the issue to In Progress and the fix goes through a new PR (fix forward).
 
 ## 6. Open points
 

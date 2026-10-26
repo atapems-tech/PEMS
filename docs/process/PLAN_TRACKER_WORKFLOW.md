@@ -29,7 +29,7 @@ checked by a script in CI, not by memory.
 | Done evidence | Evidence/Report (written at close) | comment + development panel | Developer | workbook (in the closing PR) |
 | PM confirmation | Confirmed by PM | label `pm-confirmed` | Workbook | -> Jira |
 
-Status mapping: In Review (conditional done: work verified and PR opened, waiting for merge) = workbook In Progress; Not Started = To Do; In Progress and Partial = In Progress (Partial adds label `partial`); Done = Done;
+Status mapping: In Review (conditional done: work verified, PR merged into `main`, waiting for the QA check in the UI) = workbook In Progress; Not Started = To Do; In Progress and Partial = In Progress (Partial adds label `partial`); Done = Done;
 Hold = On Hold; Later = Backlog (label `later`); Cancelled and Obsolete = Won't Do. A row becomes Done in the workbook only through the
 pull from Jira **and** a closing PR that fills Evidence (rule 13: no Done without evidence).
 
@@ -41,7 +41,7 @@ pull from Jira **and** a closing PR that fills Evidence (rule 13: no Done withou
    avoid smart commands in squash-merge titles, which re-run them).
 4. Pull request title: `PEMS-123 ...`; description lists the Plan ID and ticks the checklist: plan row updated (Evidence/Report),
    Supportability Matrix row, CHANGELOG, tests, migration/seed if the schema changed (rule 22).
-5. PR opened: Jira moves to In Review (conditional done). Merge: Jira moves to Done; the nightly sync writes the status back; the closing PR (or the same PR) updates Evidence.
+5. PR merged into `main`: Jira moves to In Review (conditional done, label `qa-pending`). QA check in the UI passed (`docs/guidelines/07-qa-check-in-the-ui.md`): Jira moves to Done; the nightly sync writes the status back; a small PR updates Evidence and the Test Plan status.
 6. Changing scope, priority or milestone happens **in the workbook** by pull request; the sync pushes it to Jira. Never edit those
    fields in Jira (the sync would overwrite them and report the conflict).
 
