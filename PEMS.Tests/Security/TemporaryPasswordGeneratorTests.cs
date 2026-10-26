@@ -12,10 +12,10 @@ public class TemporaryPasswordGeneratorTests
         {
             var password = TemporaryPasswordGenerator.Generate();
             Assert.Equal(TemporaryPasswordGenerator.Length, password.Length);
-            Assert.Contains(password, char.IsUpper);
-            Assert.Contains(password, char.IsLower);
-            Assert.Contains(password, char.IsDigit);
-            Assert.Contains(password, c => !char.IsLetterOrDigit(c));
+            Assert.True(password.Any(c => char.IsUpper(c)));
+            Assert.True(password.Any(c => char.IsLower(c)));
+            Assert.True(password.Any(c => char.IsDigit(c)));
+            Assert.True(password.Any(c => !char.IsLetterOrDigit(c)));
         }
     }
 
