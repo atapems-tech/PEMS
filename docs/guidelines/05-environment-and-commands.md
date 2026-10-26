@@ -18,6 +18,12 @@ dotnet ef migrations add <Name> --project PEMS.Migrations --startup-project PEMS
 dotnet ef migrations has-pending-model-changes --project PEMS.Migrations --startup-project PEMS.Web   # drift gate
 ```
 
+## Licensing settings and the vendor tool
+`Licensing__*` keys are in every `env/*.env` (see LICENSING_TECHNICAL_DESIGN.md section 14.1); `Licensing__Enforce` stays `false` until rollout. The vendor tool runs on an owner computer only: `cp tools/PemsVendorTool/vendor.env.example vendor.env`, then `VENDOR_ENV_FILE=./vendor.env dotnet run --project tools/PemsVendorTool` (loopback only, http://127.0.0.1:5290). Its tests run with the normal `dotnet test PEMS.slnx` (`PEMS.Tests/Licensing`, no SQL Server needed).
+
+## Cloud sessions
+A fresh cloud container has no .NET SDK: `apt-get update && apt-get install -y dotnet-sdk-10.0` works through the proxy (the `dot.net` install script host is blocked). `dotnet ef` needs `dotnet tool install -g dotnet-ef --version 10.0.10` and a Debug build of `PEMS.Web` first; `ConnectionStrings__PEMSConnection` can be a dummy value because `migrations add` does not connect. A full build takes about 4 minutes.
+
 ## Docker / deploy
 `docker compose --env-file env/docker.secrets.env up --build`; docs in `docs/deployment/` (CODE_FIRST_DATABASE, DEMO_DEPLOYMENT, LINUX_VM_DEPLOYMENT, PEMS_UAT_DEPLOYMENT_RUNBOOK). Pipelines in `.github/workflows`: only pushes to `demo` and `staging` start one (`deploy-demo.yml`, `deploy-staging.yml`, both calling the reusable `deploy-site.yml`); `build.yml` and `deploy-uat.yml` are manual; `main` and working branches run nothing. Full setup and manual deploy/reset: `docs/deployment/DEPLOYMENT_README.md`. Do not deploy, push to protected branches or change pipeline secrets without the user's explicit go-ahead.
 

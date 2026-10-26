@@ -1,7 +1,7 @@
 # PEMS licensing - technical design
 
-Status: **DRAFT for approval by Member A** - Jira SCRUM-26, plan row #339 - 2026-10-25.
-Scope: design only, no code. It makes rows #98-#106 estimable and reviewable and fixes the formats that #108, #115, #116, #161, #170 and #341-#349 also use.
+Status: **DRAFT for approval by Member A** - Jira SCRUM-26, plan row #339 - 2026-10-25, implementation notes added 2026-10-26 (section 14).
+Scope: the design of rows #98-#106, and it fixes the formats that #108, #115, #116, #161, #170 and #341-#349 also use. The first implementation of this design is in the repository **behind the flag `Licensing__Enforce=false`** (section 14): nothing is checked or blocked in any environment until the rollout tasks switch it on.
 Every example value in this file is obviously fake (`FAKE...`, `0000...`). No real key, signature, serial or licence appears here, and none may be added (rule 10).
 
 Terms: **decided** = recorded in the plan (#96, #97, Licensing Design sheet, Instructions). **Recommended** = this document's proposal, needs Member A's approval. **Open** = listed in section 12 with a suggested owner. Nothing marked recommended is a decision yet.
@@ -33,9 +33,8 @@ Principles that follow:
 
 | Component | Role | Notes |
 |---|---|---|
-| `Licensing contracts` | DTOs and interfaces for fingerprint, seal, request, licence, state | Recommended in `PEMS.Application` (guideline ch. 01 section 1) |
-| `Licensing core` | canonical file reader/writer, signature verification, fingerprint comparison, state machine | One shared library, referenced by the product **and** the vendor tool. Contains no private key code path in the product build |
-| `Platform signal providers` | read Windows / Linux / container signals; DPAPI / CNG / TPM access | Recommended in `PEMS.Infrastructure` behind an interface; one provider per platform |
+| `Licensing contracts` and `Licensing core` | file formats, signature verification, fingerprint comparison, seal, state machine, the one `LicenseManager` | **Built as one library `PEMS.Licensing`** (no dependency on any other PEMS project), referenced by the product, the persistence layer (database seal store) and the vendor tool. The product build contains **no signing or key-generation code** (a test enforces it) |
+| `Platform signal providers` | read Windows / Linux / container signals; CNG key | In `PEMS.Licensing` behind `ISignalSource` / `IInstallKeyStore`, one provider per platform; TPM access is not built yet (section 14.3) |
 | `Seal store` | DB table + protected file + optional TPM counter | Table by new migration only (guideline ch. 01 section 3); never edit an applied migration |
 | `Verification points` | startup gate, middleware, Hangfire job, sensitive-operation guard | All call the one verifier (section 7) |
 | `Customer licence page` | status, fingerprint, request download, licence / zip upload, expiry warnings (#108) | Razor, component library, no logic in controllers; localization keys, Persian first |
@@ -75,8 +74,8 @@ Let `A` = signals available at enrolment (non-empty hash), `M` = the subset of `
 | Result | Condition (recommended) | Behaviour |
 |---|---|---|
 | **Match** | `C` is empty | Active |
-| **Tolerated** | `|C| = 1` **and** `W(M) / W(A) >= 0.60` **and** at least one S1 signal in `M` | Active, internal event `fp_drift`, warning shown on the licence page for administrators |
-| **Degraded** | `|C| = 2` **and** `W(M) / W(A) >= 0.60` **and** at least one S1 signal in `M` | Active with a visible warning and a prompt to request a refreshed licence (renewal request, type `refresh`). Restricted after the grace setting. **Open Q1** (the plan states one change is tolerated and three or more invalidate; two is not stated) |
+| **Tolerated** | `|C| = 1` **and** `W(M) / W(A) >= 0.60` **and** at least one S1 signal in `M` (this anchor applies only if an S1 signal was available at enrolment; VMs and containers may have none) | Active, internal event `fp_drift`, warning shown on the licence page for administrators |
+| **Degraded** | `|C| = 2` **and** `W(M) / W(A) >= 0.60` **and** at least one S1 signal in `M` | Active with a visible warning and a prompt to request a refreshed licence (renewal request, type `refresh`). Restricted after a grace period (**not built yet**, section 14.3). **Open Q1** (the plan states one change is tolerated and three or more invalidate; two is not stated) |
 | **Invalid** | `|C| >= 3`, or the other conditions fail | Restricted mode (section 7.3); licence page offers a transfer or restore request |
 
 Rules that make the tolerance safe:
@@ -356,13 +355,15 @@ This is a casual-copy measure (C6): a skilled attacker can patch every site. Ris
 
 ### 7.2 States
 
+Code order of severity: `NotEnforced < Active < ActiveWarning < Restricted < ActivationRequired`; the evaluator keeps the greatest state any finding raises.
+
 | State | Meaning | Surfaces available |
 |---|---|---|
-| `ActivationRequired` | no valid licence (fresh install, seal invalid, new volume) | allowlist only |
+| `ActivationRequired` | no valid licence, or the seal is invalid / was moved to other hardware (new volume, missing install key) | allowlist only |
 | `Active` | valid, no warnings | all licensed |
 | `ActiveWarning` | valid with `fp_drift`/degraded fingerprint, term expiring (warning window a setting), `ClockSoftLock` pending confirmation | all licensed, banners |
-| `Restricted` | term/trial/demo expired, fingerprint Invalid, `RestoreSuspected` after grace, seal invalid, licence revoked | allowlist + **read-only** for licensed surfaces |
-| `RestoreSuspected` | counter/chain mismatch (4.4) | as `ActiveWarning`; becomes `Restricted` when the grace setting elapses (Q5) |
+| `Restricted` | term/trial/demo expired or not yet valid, fingerprint Invalid, restore grace elapsed | allowlist + **read-only** for licensed surfaces |
+| restore suspected | counter/chain mismatch (4.4); not a separate state in code but the reason `restore_suspected` on `ActiveWarning` | becomes `Restricted` (reason `restore_grace_expired`) when `Licensing__RestoreGraceHours` elapse (Q5) |
 
 **Read-only** means: reads and navigation work; writes are refused; authentication, the licence page and a data export of the customer's own data stay available (Q8: the export right needs the owner's confirmation and a EULA statement). Hangfire jobs that write business data are paused.
 
@@ -589,3 +590,46 @@ Nothing here is decided. "Suggested owner" is who should answer, not who has.
 - #104's third scenario ("warning and re-activation") needs the request type `restore` (5.2) and the restore sequence (10.3), which add a field to the request and a vendor-tool check. They are included in this design.
 - #117 (revocation list, Hold) and #118 (code protection, Hold) lower the strength of R7 and R10 until built; both are called out so the owner can reprioritise.
 - Supportability Matrix rows, the plan Report text and the CHANGELOG line are proposed in the pull request description (parallel sessions edit the workbook, so this branch does not).
+
+## 14. Implementation notes (added 2026-10-26)
+
+The design is implemented for local use behind one switch, so that developers who merge `main` see no change.
+
+### 14.1 The enforcement flag
+
+- `Licensing__Enforce` (settings key `Licensing:Enforce`) exists in **all six** `env/*.env` files and is `false` in all of them. Eight further keys (`SealDirectory`, `PeriodicCheckHours`, `HeartbeatHours`, `ClockToleranceMinutes`, `WarningDays`, `RestoreGraceHours`, `HostMachineIdPath`) are read with `Required*` like every setting.
+- With `Enforce=false`: the startup check does nothing (no seal, key, file or event is created), the request middleware is not added to the pipeline, the Hangfire job is not scheduled, and `IsBuildEntitledAsync` / `IsModuleGrantedAsync` return true. The licence page still opens and can create a request and verify an uploaded licence, so the flow can be tried; creating a request is the only action that writes a seal.
+- The only change a developer sees after merging is an automatic migration that adds two tables (`LicenseSeal`, `LicenseEvent`) and a new menu entry *Administration > System Monitoring > Licence*.
+- With `Enforce=true` the full design applies. Switching it on per environment is the rollout tasks, not this change.
+
+### 14.2 What is built, where
+
+| Design item | Code |
+|---|---|
+| Formats, codec, distinct failure codes, zip reader | `PEMS.Licensing/Formats`, `Evaluation/LicenceArchive.cs` |
+| Ed25519 verification (no signing in the product), embedded trusted keys (empty until #107), install key (ES256, CNG / file) | `PEMS.Licensing/Crypto` |
+| Fingerprint signals, hashing, tolerance, Linux / Docker / Windows sources | `PEMS.Licensing/Fingerprint` |
+| Seal record, file store, event hash chain, clock guard, `SealService` | `PEMS.Licensing/Seal` |
+| Licence verification, state evaluation, Jalali end-of-day dates | `PEMS.Licensing/Evaluation` |
+| `LicenseManager` (check, request, apply, entitlement tests) | `PEMS.Licensing/LicenseManager.cs` |
+| Database seal and event mirror, migration `LicensingSeal` | `PEMS.Persistence/Licensing`, `PEMS.Domain/Entities/LicenseSealRecord.cs` |
+| V1 startup, V2 middleware, V3 Hangfire job, allowlist, wiring | `PEMS.Web/Licensing` |
+| V4 update guard (build date vs `updates_until`) | `DatabaseUpdateController.Apply` |
+| Customer licence page (request download, zip / licence upload, status) | `Areas/Admin/Controllers/LicenseController.cs`, `Areas/Admin/Views/License` |
+| Vendor tool: key store, ledger, validator, issuer, revoke, import, CSV, audit chain, pages | `tools/PemsVendorTool` (settings in `vendor.env.example`) |
+| Tests | `PEMS.Tests/Licensing` |
+
+Deviations from the sections above, all small: the install-seal pending-request list is part of the signed record; the file sink of the event chain is authoritative and the database sink a mirror; the vendor ledger is a SQLite file (Microsoft.Data.Sqlite) and the vendor key file is encrypted with PBKDF2-HMAC-SHA256 (600 000 iterations) and AES-256-GCM.
+
+### 14.3 Not built yet (each has a rollout task)
+
+1. TPM-backed install key and TPM NV counter (design 4.3, 4.4); today the Windows key is a non-exportable CNG software key and the Linux key a mode-0600 file.
+2. Calibration of signal weights and the 0.60 threshold on real hardware, and the per-hypervisor clone matrix (Q2, 3.5).
+3. Docker deployment contract in `docker-compose.yml` and `env/docker.env` (host machine-id bind mount, seal volume), design 3.4.
+4. First-run licence page before login with a one-time token (#109, #169); today the licence page needs a signed-in system administrator.
+5. EULA acceptance step and the `eula` field (#120); requests currently carry no EULA record.
+6. Grace period for a Degraded fingerprint (Q1) and for the restore state beyond `Licensing__RestoreGraceHours`.
+7. Signing-key ceremony and the real public key in `trusted-keys.json` (#107); development / CI licences (Q11).
+8. Sensitive-operation guards for module publishing and feature enabling (the engines do not exist yet); only the update guard is wired.
+9. Revocation list (#117) and code protection (#118) stay on Hold; package allowlist scan as a release step (#119) needs the release workflow (#7). Today a unit test checks that the product does not reference the vendor tool, has no signing code, no bypass symbol and no committed private key.
+10. Licence ledger exchange between the two owner computers (Q13) and a graphical launcher for the vendor tool.

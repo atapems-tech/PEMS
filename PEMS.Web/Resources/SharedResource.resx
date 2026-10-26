@@ -2400,4 +2400,68 @@
   <data name="Ct_ApproverEligible" xml:space="preserve"><value>Holders of the approve permission</value></data>
   <data name="Ct_ApproverOthers" xml:space="preserve"><value>Other staff</value></data>
   <data name="Lc_Err_ReferralNeedsParent" xml:space="preserve"><value>A referral must be made from an existing letter.</value></data>
+  <data name="Lic_Intro" xml:space="preserve"><value>Licence status, activation request and licence upload. Everything happens in this page; no terminal step is needed.</value></data>
+  <data name="Lic_EnforceOff" xml:space="preserve"><value>Licence enforcement is switched off for this environment (Licensing:Enforce=false). You can still create a request and upload a licence to try the flow; nothing is blocked.</value></data>
+  <data name="Lic_State_NotEnforced" xml:space="preserve"><value>Not enforced</value></data>
+  <data name="Lic_State_ActivationRequired" xml:space="preserve"><value>Activation required</value></data>
+  <data name="Lic_State_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Lic_State_ActiveWarning" xml:space="preserve"><value>Active (attention needed)</value></data>
+  <data name="Lic_State_Restricted" xml:space="preserve"><value>Restricted (read-only)</value></data>
+  <data name="Lic_Reason_no_licence" xml:space="preserve"><value>No licence is installed</value></data>
+  <data name="Lic_Reason_seal_invalid" xml:space="preserve"><value>The install seal is invalid or was moved to other hardware</value></data>
+  <data name="Lic_Reason_restore_suspected" xml:space="preserve"><value>A restore from backup or image is suspected: request re-activation</value></data>
+  <data name="Lic_Reason_restore_grace_expired" xml:space="preserve"><value>Re-activation was not completed in time</value></data>
+  <data name="Lic_Reason_fingerprint_invalid" xml:space="preserve"><value>This machine does not match the licensed machine</value></data>
+  <data name="Lic_Reason_fingerprint_degraded" xml:space="preserve"><value>Several hardware parts changed: request a refreshed licence</value></data>
+  <data name="Lic_Reason_fingerprint_drift" xml:space="preserve"><value>One hardware part changed (tolerated)</value></data>
+  <data name="Lic_Reason_not_yet_valid" xml:space="preserve"><value>The licence is not valid yet</value></data>
+  <data name="Lic_Reason_expired" xml:space="preserve"><value>The licence has expired: upload a renewal</value></data>
+  <data name="Lic_Reason_expiring" xml:space="preserve"><value>The licence expires soon: request a renewal</value></data>
+  <data name="Lic_Reason_clock_backward" xml:space="preserve"><value>The system clock moved backwards</value></data>
+  <data name="Lic_Reason_licence_unverifiable" xml:space="preserve"><value>The stored licence could not be verified</value></data>
+  <data name="Lic_InstallId" xml:space="preserve"><value>Install ID</value></data>
+  <data name="Lic_Fingerprint" xml:space="preserve"><value>Fingerprint (short)</value></data>
+  <data name="Lic_Type" xml:space="preserve"><value>Licence type</value></data>
+  <data name="Lic_NoExpiry" xml:space="preserve"><value>No expiry</value></data>
+  <data name="Lic_ValidUntil" xml:space="preserve"><value>Valid until (Jalali)</value></data>
+  <data name="Lic_UpdatesUntil" xml:space="preserve"><value>Updates until (Jalali)</value></data>
+  <data name="Lic_RequestTitle" xml:space="preserve"><value>Request a licence</value></data>
+  <data name="Lic_RequestHelp" xml:space="preserve"><value>Download the request file and send it to the vendor. The product never contacts the vendor by itself.</value></data>
+  <data name="Lic_RequestType" xml:space="preserve"><value>Request type</value></data>
+  <data name="Lic_Req_activation" xml:space="preserve"><value>First activation</value></data>
+  <data name="Lic_Req_renewal" xml:space="preserve"><value>Renewal</value></data>
+  <data name="Lic_Req_refresh" xml:space="preserve"><value>Refresh after hardware change</value></data>
+  <data name="Lic_Req_transfer" xml:space="preserve"><value>Transfer to new hardware</value></data>
+  <data name="Lic_Req_restore" xml:space="preserve"><value>Re-activation after a restore</value></data>
+  <data name="Lic_CustomerRef" xml:space="preserve"><value>Customer reference</value></data>
+  <data name="Lic_OrderRef" xml:space="preserve"><value>Order reference</value></data>
+  <data name="Lic_Reason" xml:space="preserve"><value>Reason (optional)</value></data>
+  <data name="Lic_DownloadRequest" xml:space="preserve"><value>Download request file</value></data>
+  <data name="Lic_UploadTitle" xml:space="preserve"><value>Upload a licence</value></data>
+  <data name="Lic_UploadHelp" xml:space="preserve"><value>Upload the .pemslic file (or the zip) the vendor sent back.</value></data>
+  <data name="Lic_Upload" xml:space="preserve"><value>Upload and activate</value></data>
+  <data name="Lic_Applied" xml:space="preserve"><value>Licence installed.</value></data>
+  <data name="Lic_Err_RequestFields" xml:space="preserve"><value>Choose a request type and enter the customer reference.</value></data>
+  <data name="Lic_Err_NoFile" xml:space="preserve"><value>Choose a file.</value></data>
+  <data name="Lic_Fail_UnknownFormat" xml:space="preserve"><value>This is not a PEMS licence file.</value></data>
+  <data name="Lic_Fail_UnknownVersion" xml:space="preserve"><value>This licence file version is not supported by this product version.</value></data>
+  <data name="Lic_Fail_BadEncoding" xml:space="preserve"><value>The file is damaged.</value></data>
+  <data name="Lic_Fail_TooLarge" xml:space="preserve"><value>The file is too large.</value></data>
+  <data name="Lic_Fail_UnknownAlgorithm" xml:space="preserve"><value>The licence uses an unsupported signature algorithm.</value></data>
+  <data name="Lic_Fail_UnknownKey" xml:space="preserve"><value>The licence was signed with an unknown key.</value></data>
+  <data name="Lic_Fail_BadSignature" xml:space="preserve"><value>The signature is invalid; the file was changed or is not genuine.</value></data>
+  <data name="Lic_Fail_KeyRetired" xml:space="preserve"><value>The signing key of this licence is retired.</value></data>
+  <data name="Lic_Fail_UnsupportedCriticalField" xml:space="preserve"><value>The licence needs a newer product version.</value></data>
+  <data name="Lic_Fail_NotYetValid" xml:space="preserve"><value>The licence is not valid yet.</value></data>
+  <data name="Lic_Fail_Expired" xml:space="preserve"><value>The licence has already expired.</value></data>
+  <data name="Lic_Fail_NonceMismatch" xml:space="preserve"><value>This licence answers a different request. Use the latest request you downloaded.</value></data>
+  <data name="Lic_Fail_NonceUnknown" xml:space="preserve"><value>No request is waiting for an answer. Download a request first.</value></data>
+  <data name="Lic_Fail_RequestMismatch" xml:space="preserve"><value>This licence does not match the request you made.</value></data>
+  <data name="Lic_Fail_InstallMismatch" xml:space="preserve"><value>This licence was issued for another installation.</value></data>
+  <data name="Lic_Fail_FingerprintInvalid" xml:space="preserve"><value>This machine does not match the one the licence was issued for.</value></data>
+  <data name="Lic_Fail_DeploymentNotAllowed" xml:space="preserve"><value>The licence does not allow this kind of deployment (physical, virtual machine or container).</value></data>
+  <data name="Lic_Fail_NotNewer" xml:space="preserve"><value>A newer licence is already installed.</value></data>
+  <data name="Lic_Fail_UnsafeArchive" xml:space="preserve"><value>The zip file is not acceptable.</value></data>
+  <data name="Lic_Fail_NoLicenceInArchive" xml:space="preserve"><value>The zip file contains no licence.</value></data>
+  <data name="Lic_Fail_SealInvalid" xml:space="preserve"><value>The install seal is missing or invalid. Download a request first.</value></data>
 </root>

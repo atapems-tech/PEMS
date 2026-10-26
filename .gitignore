@@ -386,3 +386,8 @@ plan/members.json
 # Runtime user uploads (documents, signatures, intake files): created by the running app, never committed or shipped in a package
 PEMS.Web/wwwroot/uploads/*
 !PEMS.Web/wwwroot/uploads/.gitkeep
+
+# Licence vendor tool: local settings, ledger and encrypted keys never go to git
+vendor.env
+vendor-data/
+vendor-key-*.json

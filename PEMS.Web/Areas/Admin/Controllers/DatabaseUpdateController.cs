@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PEMS.Application.Interfaces;
+using PEMS.Licensing;
 using PEMS.Persistence.Identity;
 
 namespace PEMS.Web.Areas.Admin.Controllers;
@@ -14,10 +15,12 @@ namespace PEMS.Web.Areas.Admin.Controllers;
 public class DatabaseUpdateController : Controller
 {
     private readonly IDatabaseUpdateService _updates;
+    private readonly LicenseManager _licence;
 
-    public DatabaseUpdateController(IDatabaseUpdateService updates)
+    public DatabaseUpdateController(IDatabaseUpdateService updates, LicenseManager licence)
     {
         _updates = updates;
+        _licence = licence;
     }
 
     public async Task<IActionResult> Index(CancellationToken ct)
@@ -34,6 +37,14 @@ public class DatabaseUpdateController : Controller
         if (!backupConfirmed)
         {
             TempData["Error"] = "Confirm that a database backup has been taken before applying.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        // Licence verification point V4: a build is applied only while the maintenance entitlement covers its build date.
+        // Always true when Licensing:Enforce is false.
+        if (!await _licence.IsBuildEntitledAsync(DateTimeOffset.Parse(_licence.Settings.BuildDate, System.Globalization.CultureInfo.InvariantCulture), ct))
+        {
+            TempData["Error"] = "This build is not covered by the licence maintenance period or the licence is not active. Open the Licence page.";
             return RedirectToAction(nameof(Index));
         }
 

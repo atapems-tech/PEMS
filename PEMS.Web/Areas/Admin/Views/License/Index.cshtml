@@ -1,0 +1,82 @@
+@model PEMS.Web.Licensing.LicensePageModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Licensing.Evaluation
+@using PEMS.Licensing.Formats
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var s = Model.Status;
+    var badge = s.State switch
+    {
+        LicenseState.Active => "bg-success",
+        LicenseState.ActiveWarning => "bg-warning text-dark",
+        LicenseState.NotEnforced => "bg-secondary",
+        _ => "bg-danger"
+    };
+    var message = TempData["Message"] as string;
+    var error = TempData["Error"] as string;
+}
+
+<div class="admin-page-shell">
+    <div class="admin-hero">
+        <div><p>@Localizer["Lic_Intro"]</p></div>
+    </div>
+
+    @if (message != null) { <div class="alert alert-success">@Localizer[message]</div> }
+    @if (error != null) { <div class="alert alert-danger">@Localizer[error]</div> }
+    @if (!Model.Enforce)
+    {
+        <div class="alert alert-info">@Localizer["Lic_EnforceOff"]</div>
+    }
+
+    <div class="content-card mb-3">
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+            <span class="badge fs-6 @badge">@Localizer["Lic_State_" + s.State]</span>
+            @foreach (var r in s.Reasons) { <span class="badge bg-light text-dark border">@Localizer["Lic_Reason_" + r]</span> }
+        </div>
+        <div class="row g-3 mt-2">
+            <div class="col-md-4 col-12"><div class="small fw-bold"><code>@(s.InstallId ?? "-")</code></div><div class="text-muted small">@Localizer["Lic_InstallId"]</div></div>
+            <div class="col-md-2 col-6"><div class="small fw-bold"><code>@(s.FingerprintShort ?? "-")</code></div><div class="text-muted small">@Localizer["Lic_Fingerprint"]</div></div>
+            <div class="col-md-2 col-6"><div class="small fw-bold">@(s.LicenceType ?? "-")</div><div class="text-muted small">@Localizer["Lic_Type"]</div></div>
+            <div class="col-md-2 col-6"><div class="small fw-bold">@(s.ExpiresUtc is null ? Localizer["Lic_NoExpiry"].Value : LicenseDates.ToJalaliString(s.ExpiresUtc.Value.AddSeconds(-1)))</div><div class="text-muted small">@Localizer["Lic_ValidUntil"]</div></div>
+            <div class="col-md-2 col-6"><div class="small fw-bold">@(s.UpdatesUntil is null ? "-" : LicenseDates.ToJalaliString(s.UpdatesUntil.Value.AddSeconds(-1)))</div><div class="text-muted small">@Localizer["Lic_UpdatesUntil"]</div></div>
+        </div>
+    </div>
+
+    <div class="content-card mb-3">
+        <h6>@Localizer["Lic_RequestTitle"]</h6>
+        <p class="text-muted small">@Localizer["Lic_RequestHelp"]</p>
+        <form asp-action="Request" method="post" class="row g-2 align-items-end">
+            @Html.AntiForgeryToken()
+            <div class="col-md-3 col-12">
+                <label class="form-label" for="requestType">@Localizer["Lic_RequestType"]</label>
+                <select class="form-select" id="requestType" name="requestType">
+                    @foreach (var t in RequestTypes.All) { <option value="@t">@Localizer["Lic_Req_" + t]</option> }
+                </select>
+            </div>
+            <div class="col-md-3 col-6">
+                <label class="form-label" for="customerRef">@Localizer["Lic_CustomerRef"]</label>
+                <input class="form-control" id="customerRef" name="customerRef" maxlength="64" required />
+            </div>
+            <div class="col-md-3 col-6">
+                <label class="form-label" for="orderRef">@Localizer["Lic_OrderRef"]</label>
+                <input class="form-control" id="orderRef" name="orderRef" maxlength="64" />
+            </div>
+            <div class="col-md-3 col-12">
+                <label class="form-label" for="reason">@Localizer["Lic_Reason"]</label>
+                <input class="form-control" id="reason" name="reason" maxlength="500" />
+            </div>
+            <div class="col-12"><button type="submit" class="btn btn-pems-solid"><i class="bi bi-download me-1"></i> @Localizer["Lic_DownloadRequest"]</button></div>
+        </form>
+    </div>
+
+    <div class="content-card">
+        <h6>@Localizer["Lic_UploadTitle"]</h6>
+        <p class="text-muted small">@Localizer["Lic_UploadHelp"]</p>
+        <form asp-action="Upload" method="post" enctype="multipart/form-data" class="d-flex align-items-center gap-3 flex-wrap">
+            @Html.AntiForgeryToken()
+            <input class="form-control w-auto" type="file" name="file" accept=".pemslic,.zip" required aria-label="@Localizer["Lic_UploadTitle"]" />
+            <button type="submit" class="btn btn-pems-solid"><i class="bi bi-upload me-1"></i> @Localizer["Lic_Upload"]</button>
+        </form>
+    </div>
+</div>

@@ -3191,4 +3191,68 @@
   <data name="Ct_ApproverEligible" xml:space="preserve"><value>دارندگان مجوز تایید</value></data>
   <data name="Ct_ApproverOthers" xml:space="preserve"><value>سایر کارکنان</value></data>
   <data name="Lc_Err_ReferralNeedsParent" xml:space="preserve"><value>ارجاع باید از روی یک نامه‌ی موجود انجام شود.</value></data>
+  <data name="Lic_Intro" xml:space="preserve"><value>وضعیت مجوز، درخواست فعال‌سازی و بارگذاری مجوز. همه‌ی مراحل در همین صفحه انجام می‌شود و نیازی به ترمینال نیست.</value></data>
+  <data name="Lic_EnforceOff" xml:space="preserve"><value>اجرای مجوز در این محیط خاموش است (Licensing:Enforce=false). می‌توانید درخواست بسازید و مجوز بارگذاری کنید؛ چیزی مسدود نمی‌شود.</value></data>
+  <data name="Lic_State_NotEnforced" xml:space="preserve"><value>اعمال نمی‌شود</value></data>
+  <data name="Lic_State_ActivationRequired" xml:space="preserve"><value>نیاز به فعال‌سازی</value></data>
+  <data name="Lic_State_Active" xml:space="preserve"><value>فعال</value></data>
+  <data name="Lic_State_ActiveWarning" xml:space="preserve"><value>فعال (نیاز به توجه)</value></data>
+  <data name="Lic_State_Restricted" xml:space="preserve"><value>محدود (فقط خواندنی)</value></data>
+  <data name="Lic_Reason_no_licence" xml:space="preserve"><value>مجوزی نصب نشده است</value></data>
+  <data name="Lic_Reason_seal_invalid" xml:space="preserve"><value>مهر نصب نامعتبر است یا به سخت‌افزار دیگری منتقل شده</value></data>
+  <data name="Lic_Reason_restore_suspected" xml:space="preserve"><value>بازیابی از پشتیبان یا ایمیج مشکوک است: فعال‌سازی مجدد را درخواست کنید</value></data>
+  <data name="Lic_Reason_restore_grace_expired" xml:space="preserve"><value>فعال‌سازی مجدد به‌موقع انجام نشد</value></data>
+  <data name="Lic_Reason_fingerprint_invalid" xml:space="preserve"><value>این دستگاه با دستگاه مجاز مطابقت ندارد</value></data>
+  <data name="Lic_Reason_fingerprint_degraded" xml:space="preserve"><value>چند قطعه‌ی سخت‌افزار تغییر کرده است: مجوز تازه‌شده درخواست کنید</value></data>
+  <data name="Lic_Reason_fingerprint_drift" xml:space="preserve"><value>یک قطعه‌ی سخت‌افزار تغییر کرده است (قابل‌تحمل)</value></data>
+  <data name="Lic_Reason_not_yet_valid" xml:space="preserve"><value>مجوز هنوز معتبر نشده است</value></data>
+  <data name="Lic_Reason_expired" xml:space="preserve"><value>مجوز منقضی شده است: تمدید را بارگذاری کنید</value></data>
+  <data name="Lic_Reason_expiring" xml:space="preserve"><value>مجوز به‌زودی منقضی می‌شود: تمدید درخواست کنید</value></data>
+  <data name="Lic_Reason_clock_backward" xml:space="preserve"><value>ساعت سیستم به عقب برگشته است</value></data>
+  <data name="Lic_Reason_licence_unverifiable" xml:space="preserve"><value>مجوز ذخیره‌شده قابل تایید نبود</value></data>
+  <data name="Lic_InstallId" xml:space="preserve"><value>شناسه‌ی نصب</value></data>
+  <data name="Lic_Fingerprint" xml:space="preserve"><value>اثر انگشت دستگاه (کوتاه)</value></data>
+  <data name="Lic_Type" xml:space="preserve"><value>نوع مجوز</value></data>
+  <data name="Lic_NoExpiry" xml:space="preserve"><value>بدون انقضا</value></data>
+  <data name="Lic_ValidUntil" xml:space="preserve"><value>معتبر تا (شمسی)</value></data>
+  <data name="Lic_UpdatesUntil" xml:space="preserve"><value>به‌روزرسانی تا (شمسی)</value></data>
+  <data name="Lic_RequestTitle" xml:space="preserve"><value>درخواست مجوز</value></data>
+  <data name="Lic_RequestHelp" xml:space="preserve"><value>فایل درخواست را دانلود و برای فروشنده بفرستید. محصول هرگز خودش با فروشنده تماس نمی‌گیرد.</value></data>
+  <data name="Lic_RequestType" xml:space="preserve"><value>نوع درخواست</value></data>
+  <data name="Lic_Req_activation" xml:space="preserve"><value>فعال‌سازی اولیه</value></data>
+  <data name="Lic_Req_renewal" xml:space="preserve"><value>تمدید</value></data>
+  <data name="Lic_Req_refresh" xml:space="preserve"><value>تازه‌سازی پس از تغییر سخت‌افزار</value></data>
+  <data name="Lic_Req_transfer" xml:space="preserve"><value>انتقال به سخت‌افزار جدید</value></data>
+  <data name="Lic_Req_restore" xml:space="preserve"><value>فعال‌سازی مجدد پس از بازیابی</value></data>
+  <data name="Lic_CustomerRef" xml:space="preserve"><value>شناسه‌ی مشتری</value></data>
+  <data name="Lic_OrderRef" xml:space="preserve"><value>شناسه‌ی سفارش</value></data>
+  <data name="Lic_Reason" xml:space="preserve"><value>دلیل (اختیاری)</value></data>
+  <data name="Lic_DownloadRequest" xml:space="preserve"><value>دانلود فایل درخواست</value></data>
+  <data name="Lic_UploadTitle" xml:space="preserve"><value>بارگذاری مجوز</value></data>
+  <data name="Lic_UploadHelp" xml:space="preserve"><value>فایل pemslic. (یا فایل zip) را که فروشنده برگردانده بارگذاری کنید.</value></data>
+  <data name="Lic_Upload" xml:space="preserve"><value>بارگذاری و فعال‌سازی</value></data>
+  <data name="Lic_Applied" xml:space="preserve"><value>مجوز نصب شد.</value></data>
+  <data name="Lic_Err_RequestFields" xml:space="preserve"><value>نوع درخواست را انتخاب و شناسه‌ی مشتری را وارد کنید.</value></data>
+  <data name="Lic_Err_NoFile" xml:space="preserve"><value>یک فایل انتخاب کنید.</value></data>
+  <data name="Lic_Fail_UnknownFormat" xml:space="preserve"><value>این فایل یک مجوز PEMS نیست.</value></data>
+  <data name="Lic_Fail_UnknownVersion" xml:space="preserve"><value>نسخه‌ی این فایل مجوز توسط این نسخه از محصول پشتیبانی نمی‌شود.</value></data>
+  <data name="Lic_Fail_BadEncoding" xml:space="preserve"><value>فایل آسیب دیده است.</value></data>
+  <data name="Lic_Fail_TooLarge" xml:space="preserve"><value>حجم فایل بیش از حد است.</value></data>
+  <data name="Lic_Fail_UnknownAlgorithm" xml:space="preserve"><value>الگوریتم امضای مجوز پشتیبانی نمی‌شود.</value></data>
+  <data name="Lic_Fail_UnknownKey" xml:space="preserve"><value>مجوز با کلید ناشناخته امضا شده است.</value></data>
+  <data name="Lic_Fail_BadSignature" xml:space="preserve"><value>امضا نامعتبر است؛ فایل تغییر کرده یا اصل نیست.</value></data>
+  <data name="Lic_Fail_KeyRetired" xml:space="preserve"><value>کلید امضای این مجوز بازنشسته شده است.</value></data>
+  <data name="Lic_Fail_UnsupportedCriticalField" xml:space="preserve"><value>این مجوز به نسخه‌ی جدیدتر محصول نیاز دارد.</value></data>
+  <data name="Lic_Fail_NotYetValid" xml:space="preserve"><value>مجوز هنوز معتبر نشده است.</value></data>
+  <data name="Lic_Fail_Expired" xml:space="preserve"><value>مجوز قبلاً منقضی شده است.</value></data>
+  <data name="Lic_Fail_NonceMismatch" xml:space="preserve"><value>این مجوز پاسخ درخواست دیگری است. از آخرین درخواست دانلودشده استفاده کنید.</value></data>
+  <data name="Lic_Fail_NonceUnknown" xml:space="preserve"><value>درخواستی در انتظار پاسخ نیست. ابتدا یک درخواست دانلود کنید.</value></data>
+  <data name="Lic_Fail_RequestMismatch" xml:space="preserve"><value>این مجوز با درخواست شما مطابقت ندارد.</value></data>
+  <data name="Lic_Fail_InstallMismatch" xml:space="preserve"><value>این مجوز برای نصب دیگری صادر شده است.</value></data>
+  <data name="Lic_Fail_FingerprintInvalid" xml:space="preserve"><value>این دستگاه با دستگاهی که مجوز برایش صادر شده مطابقت ندارد.</value></data>
+  <data name="Lic_Fail_DeploymentNotAllowed" xml:space="preserve"><value>مجوز این نوع استقرار (فیزیکی، ماشین مجازی یا کانتینر) را مجاز نکرده است.</value></data>
+  <data name="Lic_Fail_NotNewer" xml:space="preserve"><value>مجوز جدیدتری قبلاً نصب شده است.</value></data>
+  <data name="Lic_Fail_UnsafeArchive" xml:space="preserve"><value>فایل zip قابل قبول نیست.</value></data>
+  <data name="Lic_Fail_NoLicenceInArchive" xml:space="preserve"><value>فایل zip مجوزی ندارد.</value></data>
+  <data name="Lic_Fail_SealInvalid" xml:space="preserve"><value>مهر نصب وجود ندارد یا نامعتبر است. ابتدا یک درخواست دانلود کنید.</value></data>
 </root>
