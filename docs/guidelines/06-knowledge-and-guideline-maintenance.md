@@ -52,9 +52,9 @@ Four layers (README section 3). Maintainers check periodically:
 ## 5a. Decisions recorded on 2026-10-26 (owner)
 
 1. Instructions rule 27: the Jira report of a task is kept current during the work and at the end (chapter 00, section 3).
-2. A held task is a Jira issue with the label `on-hold` and workbook Status `Hold`, with the reason and date in its Report (the SCRUM workflow still has no On Hold status).
+2. A held task has workbook Status `Hold` and, in Jira, the status `On Hold` (added to the SCRUM workflow by the owner on 2026-10-26) plus the label `on-hold` (kept for the plan sync), with the reason and date in its Report.
 3. Secrets-audit follow-ups: history purge (#374) and FTPS certificate verification (#375) are held; test review (#376), test-maintenance procedure (#377) and review of Claude's roles and setup (#378) are open.
 
 ## 6. Open points
 
-- `PLAN_TRACKER_WORKFLOW.md` maps statuses On Hold, Backlog and Won't Do, but the SCRUM project does not have them yet (only To Do, In Progress, In Review, Done, Bugs). Add them in Jira or change the mapping.
+- `PLAN_TRACKER_WORKFLOW.md` maps statuses On Hold, Backlog and Won't Do. SCRUM now has On Hold (2026-10-26; the 13 held issues were moved into it); Backlog and Won't Do are still missing (project statuses: To Do, On Hold, In Progress, In Review, Done, Bugs). Add them in Jira or change the mapping.
