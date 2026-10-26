@@ -4,6 +4,8 @@ The database is built and upgraded entirely from code. An empty SQL Server login
 no `InitialCreate.sql`, no `dotnet ef database update`, no SSMS script. The old hand-run SQL is kept for reference
 in `legacy-trash/manual-sql/` (see its README); nothing there is executed.
 
+Decision record: [ADR-0003](../../plan/adr/0003-code-first-database.md) (Instructions rule 23).
+
 ## First run vs update
 
 `IDatabaseUpdateService` (`PEMS.Persistence/Servises/DatabaseUpdateService.cs`) looks at the migration history and

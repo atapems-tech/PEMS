@@ -10,7 +10,7 @@ Agent "memory" is per person and per machine - the team never sees it. Anything 
 | A durable fact, pitfall or pattern from a task | [learnings-log.md](learnings-log.md) (append), and workbook *Lessons* if it is cross-cutting |
 | What is now supported / limited | workbook *Supportability Matrix* [R21] |
 | Scope, evidence, report of the task | workbook Backlog row (Evidence/Report) via PR; status stays in Jira |
-| A design decision | ADR/spec under `docs/` + Decision row in the plan |
+| A design decision | ADR under [plan/adr](../../plan/adr/README.md) (spec under `docs/`) + Decision row in the plan |
 | What changed for users/devs | `CHANGELOG.md` |
 | Personal preference of one developer | your own agent memory, not the repo |
 

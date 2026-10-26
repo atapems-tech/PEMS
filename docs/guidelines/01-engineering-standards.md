@@ -23,7 +23,7 @@ Rules:
 
 - **Business logic never in controllers or views.** Controllers are thin: bind, authorize, call a service, map to a view model.
 - **Engines once** [R3]: metadata, forms, workflow, access/RLS, events, reporting and licensing each have exactly one implementation. Modules call it. Parallel concepts (a second workflow, a second permission model, a second grid) are forbidden.
-- **No new static modules** [R4]: a new module starts as metadata (form/view/workflow). If impossible, write an ADR stating the reason and the missing extension point *before* building.
+- **No new static modules** [R4]: a new module starts as metadata (form/view/workflow). If impossible, write an ADR ([plan/adr](../../plan/adr/README.md)) stating the reason and the missing extension point *before* building.
 - **Extend, don't duplicate.** Inspect existing entities and controllers first; follow existing folder structure and naming exactly. (Example: Equipment -> Instrument hierarchy is extended, not paralleled.)
 - **Central RLS** [R12]: every data path (list, search, report, export, API, AI) goes through the central row-level filter. No direct role checks.
 - **Go forward, not backward-compatible** [R6]: no compatibility shims unless a live customer needs one.
