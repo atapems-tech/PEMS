@@ -7,6 +7,7 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 ### Changed
 - Workflow (owner decision): the PR is merged into `main` right before the issue moves to In Review (label `qa-pending`); In Review means merged and waiting for the QA check; Done means the QA check in the UI passed.
+- Manual checks and local tests are documented in the existing READMEs (root `README.md` "Local tests" and "Manual checks in the UI", `env/README.md` "Verifying settings", `docs/deployment/DEPLOYMENT_README.md` section 8); QA checklists refer to them and stay on the Jira issue after Done.
 - New guideline chapter `docs/guidelines/07-qa-check-in-the-ui.md` (who, where, "fully in the UI", checklist template, defects, tasks without a screen); chapters 00, 01, 06, README, `AGENTS.md`, `PLAN_TRACKER_WORKFLOW.md` and the PR template updated.
 
 ## 2026-10-26 - Configuration constants second pass (SCRUM-335)

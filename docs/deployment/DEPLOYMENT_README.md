@@ -140,3 +140,14 @@ Re-run the deploy workflow on the previous good commit (`git revert` on the bran
 - [ ] `env/<name>.env` and `env/<name>.secrets.env.example` exist and have the same keys as the others (a test checks this)
 - [ ] seven required GitHub secrets (2.4; protocol and port are optional), branch created and protected (2.5)
 - [ ] first push -> green run -> `/health/database` is `UpToDate` -> administrator signs in
+
+## 8. Verifying a deployed environment in the browser (manual checks)
+
+Used after a deploy and by the QA check ([../guidelines/07-qa-check-in-the-ui.md](../guidelines/07-qa-check-in-the-ui.md)). Everything is done in the browser.
+
+1. Open `<SITE_URL>/health/database`: `200 UpToDate`.
+2. Sign in as the administrator; the first sign-in forces a password change that follows the environment's password policy ([../../env/README.md](../../env/README.md) "Verifying settings").
+3. DevTools > Network > the page request: the response has `Strict-Transport-Security` with `max-age` = `Hosting__HstsMaxAgeDays` x 86400, and the padlock shows a valid certificate.
+4. Admin > Database Update shows "up to date" and the latest migration.
+5. Smoke: open the home page, one list, one form and one dashboard in `fa` (RTL) and `en`, at desktop width and 375 px; the console has no errors.
+6. For a task being QA-checked: run its checklist (Jira comment) and the README checks it references; record the result in the Jira issue.
