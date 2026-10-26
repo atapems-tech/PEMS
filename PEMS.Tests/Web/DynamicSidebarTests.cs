@@ -95,7 +95,7 @@ public class DynamicSidebarTests
     private static string Target(NavigationMenuItemDefinition d) => d.ExternalPath ?? $"{d.Area ?? ""}/{d.Controller}/{d.Action}";
 
     /// <summary>تنها پیوند تازه‌ی کاتالوگ نسبت به سایدبار قدیمی: ورودی همین صفحه‌ی مدیریت منو.</summary>
-    private static readonly string[] IntentionalAdditions = { "admin.navmenu" };
+    private static readonly string[] IntentionalAdditions = { "admin.navmenu", "admin.license" };
 
     [Fact]
     public void Catalog_ReproducesEveryLegacyLink_WithTheSameTargetIconTitleAndOrder()

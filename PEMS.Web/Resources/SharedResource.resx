@@ -2464,4 +2464,5 @@
   <data name="Lic_Fail_UnsafeArchive" xml:space="preserve"><value>The zip file is not acceptable.</value></data>
   <data name="Lic_Fail_NoLicenceInArchive" xml:space="preserve"><value>The zip file contains no licence.</value></data>
   <data name="Lic_Fail_SealInvalid" xml:space="preserve"><value>The install seal is missing or invalid. Download a request first.</value></data>
+  <data name="Licence" xml:space="preserve"><value>Licence</value></data>
 </root>
