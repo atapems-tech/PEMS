@@ -41,7 +41,7 @@ pull from Jira **and** a closing PR that fills Evidence (rule 13: no Done withou
    avoid smart commands in squash-merge titles, which re-run them).
 4. Pull request title: `PEMS-123 ...`; description lists the Plan ID and ticks the checklist: plan row updated (Evidence/Report),
    Supportability Matrix row, CHANGELOG, tests, migration/seed if the schema changed (rule 22).
-5. PR merged into `main`: Jira moves to In Review (conditional done, label `qa-pending`). QA check in the UI passed (`docs/guidelines/07-qa-check-in-the-ui.md`): Jira moves to Done; the nightly sync writes the status back; a small PR updates Evidence and the Test Plan status.
+5. PR merged into `main`: Jira moves to In Review (conditional done, label `qa-pending`). QA check in the UI failed: Jira moves back to To Do (label `qa-failed`; the workbook shows Not Started, the label tells why). QA check passed (`docs/guidelines/07-qa-check-in-the-ui.md`): Jira moves to Done; the nightly sync writes the status back; a small PR updates Evidence and the Test Plan status.
 6. Changing scope, priority or milestone happens **in the workbook** by pull request; the sync pushes it to Jira. Never edit those
    fields in Jira (the sync would overwrite them and report the conflict).
 

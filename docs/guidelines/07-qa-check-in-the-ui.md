@@ -9,7 +9,7 @@ Instructions rules 13 (no Done without evidence) and 14 (a row whose Test Plan s
 ## 1. Flow
 
 `In Progress` -> author finishes, runs the tests if the session can, PR open -> **merge into `main`** -> **`In Review` + label `qa-pending`** (right after the merge) -> QA check (this chapter) ->
-`qa-passed`: `Done` | `qa-failed`: back to `In Progress` with the defects listed; the fix goes through a new branch and PR to `main`, then In Review again.
+`qa-passed`: `Done` | `qa-failed`: back to **`To Do`** with the defects listed (owner decision 2026-10-26); whoever takes it up moves it to In Progress, the fix goes through a new branch and PR to `main`, then In Review again.
 
 Labels: `qa-pending`, `qa-passed`, `qa-failed` (one at a time; the author sets `qa-pending` when moving to In Review after the merge, the tester replaces it).
 
@@ -26,7 +26,7 @@ Labels: `qa-pending`, `qa-passed`, `qa-failed` (one at a time; the author sets `
 Owner decision 2026-10-26, until a CI gate exists (plan row #7): the local test run is **line 1 of every QA checklist** ([README.md](../../README.md) "Local tests"), done by the tester together with the UI checks.
 - An author who can run the tests does so before the merge and writes the counts in the report; the tester repeats the run (line 1).
 - An author who cannot (cloud session without the .NET SDK or SQL Server) merges, moves the issue to In Review and lists the exact commands that were not run; line 1 then carries the first run.
-- **Done needs both**: line 1 green (only the known failures of README.md "Local tests" may stay red) and all other lines Pass. A red test is a defect like any other: `qa-failed`, back to In Progress, fix by a new PR.
+- **Done needs both**: line 1 green (only the known failures of README.md "Local tests" may stay red) and all other lines Pass. A red test is a defect like any other: `qa-failed`, back to To Do, fix by a new PR.
 - When CI runs the tests on every merge, line 1 becomes "CI run on the merge commit is green" and this section is removed.
 
 ## 3. "Fully in the UI"
@@ -43,7 +43,7 @@ update and version operations to be UI-completable) and is recorded as a defect 
 3. **Execute in the browser** and mark each line Pass / Fail / Blocked with evidence (screenshot file name, Test Plan case id, or the URL of the rendered page).
    Line 1 is always the local test run (section 2a). Standard lines for any UI change: golden path; one edge case and one invalid input; every role that must be allowed and one that must be denied; **fa (RTL) and en**;
    **desktop and 375 px**; reload and back-button state; console and network free of errors; two neighbouring screens still work; keyboard focus and Escape on dialogs.
-4. **Defects.** Each failure becomes a Jira Bug (or a one-line comment if trivial), linked to the task; set `qa-failed`, move the task back to In Progress; the fix is a new PR to `main` and the task returns to In Review. Retest only the failed lines and their neighbours.
+4. **Defects.** Each failure becomes a Jira Bug (or a one-line comment if trivial), linked to the task; set `qa-failed` (replacing `qa-pending`), add the defect list as a comment and move the task **back to To Do**; it keeps its assignee and all QA comments. The fix is a new PR to `main` and the task returns to In Review. Retest only the failed lines and their neighbours.
 5. **Pass.** Set `qa-passed`, add the result comment, update the Test Plan row (`Needs QA` -> `Passed` with date and tester) in a small PR to `main`, and move the issue to Done.
 6. **Time-box.** Effort S: 15-30 minutes; M: about 1 hour; L: split into sessions. QA that finds the checklist cannot be executed is a defect in the task description.
 
