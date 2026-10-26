@@ -25,6 +25,7 @@ Field ownership between the plan workbook and Jira: [PLAN_TRACKER_WORKFLOW.md](.
      and get an explicit yes before starting. Keep the confirmation in a comment (who agreed, when). Until then work on something else.
    - the same applies to files and areas that another person's in-progress issue changes: if your task overlaps with it (same files, same migration, same component), stop and coordinate first.
    - an unassigned To Do issue may be taken; assign it to yourself in the same step.
+   - a To Do issue labelled `qa-failed` keeps its previous assignee: if that is you or the user told you to take it, move it to In Progress and start from the defect comment; otherwise ask the assignee first.
    Never reassign, move, close or edit an issue that belongs to someone else without their confirmation.
 5b. **Adding or changing a task - study first** (Instructions rule 28, owner decision 2026-10-26). Before you add a backlog row and Jira issue, search the backlog and Jira by area, files, goal and keywords (Done and Open rows; held tasks count as not open). If an existing task covers the work or can absorb it, **modify that task**: extend What to do and Done when in the workbook row and the Jira description, and comment what changed and why. Add a new row only when none fits, give it the next free Plan ID, and name the tasks you checked in its Evidence.
 6. **Research best practice before designing** ([chapter 03](03-libraries-tools-and-research.md) section 3) and look for what already
@@ -68,7 +69,7 @@ Never change the status of issues you were not asked to work on (except the pare
 
 Order (owner decision 2026-10-26): tests (if you can run them) -> PR -> **merge into `main`** -> In Review + `qa-pending` -> QA check, whose **line 1 is the local test run** -> Done. An issue never skips In Review.
 A task whose *Done when* needs the owner's or a member's approval of a document gets that approval as the review of the PR; the merge follows the approval.
-If the QA check fails, the issue goes back to In Progress and the fix reaches `main` through a new branch and PR (fix forward), then it goes to In Review again.
+If the QA check fails, the issue goes **back to To Do** with the label `qa-failed` and the defects listed in a comment (owner decision 2026-10-26); it keeps its assignee and its QA comments. Whoever takes it up again moves it to In Progress (section 2), the fix reaches `main` through a new branch and PR (fix forward), then it goes to In Review again.
 
 **Move to In Review (conditional done)** only when **all** are true:
 
@@ -80,7 +81,7 @@ If the QA check fails, the issue goes back to In Progress and the fix reaches `m
 Then:
 
 1. **Comment** with: what changed, files/areas touched, tests added, tests run and **not** run (and why), commit hash or PR link, evidence for each *Done when* item, Supportability Matrix rows added, guideline entries added, open items for the owner.
-2. **Transition to In Review** with `transitionJiraIssue` right after the merge, add the label `qa-pending` and add the merge commit to the comment; the QA check ([chapter 07](07-qa-check-in-the-ui.md)) then decides: `qa-passed` -> **Done**, `qa-failed` -> back to In Progress.
+2. **Transition to In Review** with `transitionJiraIssue` right after the merge, add the label `qa-pending` and add the merge commit to the comment; the QA check ([chapter 07](07-qa-check-in-the-ui.md)) then decides: `qa-passed` -> **Done**, `qa-failed` -> back to To Do.
 3. **Parent rules** (apply to Done, not In Review; Done means the QA check passed): a Story with Sub-tasks is Done only when all its Sub-tasks are Done; an Epic only when all child issues are Done. When you close the last open child, check the parent and close it too if its own "Done when" is met.
 4. **Clean up the branch.** When the work is merged into its target (this happens before In Review) (`main`; promotion to `staging` and `demo` is a separate merge the user directs, because those pushes deploy), **delete the working branch** locally (`git branch -d <name>`) and on the remote if it was pushed (`git push origin --delete <name>`); use `-d`, which refuses unmerged work, and never delete `main`, `staging`, `demo` or someone else's branch. Mention the deletion in the Jira comment. Then run `git branch --merged` to see leftovers and report them. **Since 2026-10-26 the repository deletes the head branch automatically when its pull request is merged** (GitHub setting "Automatically delete head branches"); a cloud session cannot delete remote branches, so it deletes only its local branch and checks with `git fetch --prune` that the remote one is gone.
 5. **Update the guideline** if the task produced a durable lesson, decision, helper or pattern (chapter 06).
