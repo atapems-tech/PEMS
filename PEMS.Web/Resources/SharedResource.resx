@@ -2491,4 +2491,8 @@
   <data name="Recovery Codes" xml:space="preserve"><value>Recovery Codes</value></data>
   <data name="Administrator Recovery" xml:space="preserve"><value>Administrator Recovery</value></data>
   <data name="Break-glass Recovery" xml:space="preserve"><value>Break-glass Recovery</value></data>
+  <data name="Search roles..." xml:space="preserve"><value>Search roles...</value></data>
+  <data name="No matching role" xml:space="preserve"><value>No matching role</value></data>
+  <data name="Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="Type to search; select several roles. Remove a role with its ×." xml:space="preserve"><value>Type to search; select several roles. Remove a role with its ×.</value></data>
 </root>

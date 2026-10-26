@@ -3,6 +3,15 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-26 - Searchable multi-select for user roles (SCRUM-407)
+
+### Added
+- Tom Select 2.6.2 (Apache-2.0) vendored offline in `PEMS.Web/wwwroot/lib/tom-select` (complete build, Bootstrap 5 theme, source maps, licence).
+- `wwwroot/js/pems-multiselect.js` + `wwwroot/css/pems-multiselect.css`: any `<select multiple data-pems-multiselect>` becomes a searchable multi-select with removable chips and option groups, in the PEMS themes and in RTL/LTR; the list opens on <body> so cards cannot clip it.
+
+### Changed
+- Admin > Users create/edit: the role checkboxes are one grouped multi-select (responsible, expert, custom roles) with search. The posted field (`SelectedRoles`) is unchanged and works without JavaScript. The old `_RoleCheckboxes` partial moved to `legacy-trash/views`.
+
 ## 2026-10-26 - Administrator recovery: one-time recovery codes and server break-glass (SCRUM-355, SCRUM-356)
 
 ### Added
