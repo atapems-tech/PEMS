@@ -95,6 +95,7 @@ Then:
 ## 6. Never
 
 - Never mark In Review or Done because the session is ending or the code "looks finished" without passing tests. Never mark In Review before the PR is merged into `main`, and never mark Done before the QA check passed.
+- Never delete, overwrite or collapse a QA checklist or QA result comment, not even after Done; they stay on the issue as organisational knowledge ([chapter 07](07-qa-check-in-the-ui.md) section 7).
 - Never leave an issue In Progress / In Review without an assignee.
 - Never change statuses of issues you were not asked to work on (parent rules and approved batches excepted).
 - Never set "Confirmed by PM" yourself except to record a decision the owner just gave (rule 19).

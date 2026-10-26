@@ -45,6 +45,20 @@ dotnet run --project PEMS.Web
 - **dotnet ef:** (project `PEMS.Migrations`) the design-time factory reads `ConnectionStrings__PEMSConnection` from the environment or from
   `env/<PEMS_ENV or local>.secrets.env`; it has no fallback and always prints its target database.
 
+## Verifying settings (manual checks)
+
+Run these after changing or adding a setting (QA procedure: [../docs/guidelines/07-qa-check-in-the-ui.md](../docs/guidelines/07-qa-check-in-the-ui.md)). A real environment variable overrides the file, so a local run can test a production value without editing it.
+
+| Check | How | Expected |
+|---|---|---|
+| Same keys everywhere | `dotnet test PEMS.Tests --filter "FullyQualifiedName~EnvironmentFilesTests"` | green; the key sets of all six files are identical and the policy test passes |
+| A bad value is refused | start with `Hosting__HstsMaxAgeDays=abc` (PowerShell: `$env:Hosting__HstsMaxAgeDays="abc"; dotnet run --project PEMS.Web`) | the app stops with "Setting 'Hosting:HstsMaxAgeDays' must be a number"; a missing key stops it with "Missing required setting" |
+| Password policy | start with `$env:Authentication__Password__RequiredLength="12"`; Admin > Users, set an 11-character password, then a 12-character one | 11 is rejected with the policy message, 12 is accepted (production-kangan ships 12, the others 8) |
+| Cookie lifetime and sliding | sign in; browser DevTools > Application > Cookies > `PEMS.Auth`; start with `$env:Authentication__Cookie__ExpireHours="0.1"` and use the site for more than 3 minutes | with `Authentication__Cookie__SlidingExpiration=true` the cookie expiry moves forward while you work; with `false` it stays fixed and you are signed out after 6 minutes |
+| HSTS | on a deployed HTTPS environment (not `localhost`, not Development): DevTools > Network > the page request > Response headers | `Strict-Transport-Security: max-age=2592000` for `Hosting__HstsMaxAgeDays=30` (days x 86400) |
+| Migration command timeout | Admin > Database Update on a database with pending migrations, with `Database__MigrationCommandTimeoutMinutes` at the default and with a very small value on a large database | the update completes with the default; a too-small value fails with a timeout message in the page and the log, and the next run after fixing the value completes |
+| Secrets are not in the settings file | read `env/<name>.env` | no password, token or connection string (the test enforces it) |
+
 ## Rules
 
 - A new setting is added to **all** `env/*.env` files (and to the secrets templates if it is secret), read through

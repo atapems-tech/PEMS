@@ -31,6 +31,7 @@ update and version operations to be UI-completable) and is recorded as a defect 
 
 1. **Prepare (10 min).** Read the issue (*Done when*), the PR description and the Test Plan rows of the backlog row. Fresh browser profile; open the console and network tab.
 2. **Write the checklist as a Jira comment "QA checklist"** (template in section 5) before testing: one line per *Done when* item, plus the standard lines below.
+   **Do not copy steps that already exist: refer to them** (section 5a). If the task introduces a manual check or a local test, add it to the right existing README (never a new file) and refer to it from the checklist.
 3. **Execute in the browser** and mark each line Pass / Fail / Blocked with evidence (screenshot file name, Test Plan case id, or the URL of the rendered page).
    Standard lines for any UI change: golden path; one edge case and one invalid input; every role that must be allowed and one that must be denied; **fa (RTL) and en**;
    **desktop and 375 px**; reload and back-button state; console and network free of errors; two neighbouring screens still work; keyboard focus and Escape on dialogs.
@@ -52,12 +53,31 @@ QA checklist - <issue key> - commit <hash> - environment <local|staging> - teste
 Verdict: qa-passed | qa-failed - defects: <keys>
 ```
 
+## 5a. Where the checks and local tests live (refer, do not copy)
+
+| What | Where (existing files only) |
+|---|---|
+| Local tests before the merge (build, database-free subset, full suite, known failures) | [README.md](../../README.md) section "Local tests"; commands also in [chapter 05](05-environment-and-commands.md) |
+| Manual UI checks of product behaviour (M-1 ... M-7: one-time password, password policy, tools, Docker ports, exposure report) | [README.md](../../README.md) section "Manual checks in the UI" |
+| Settings and policy checks (key parity, bad value, password policy, cookie, HSTS, migration timeout) | [env/README.md](../../env/README.md) section "Verifying settings (manual checks)" |
+| A deployed environment (health, sign-in, HSTS header, Database Update page, smoke in fa/en, 375 px) | [docs/deployment/DEPLOYMENT_README.md](../deployment/DEPLOYMENT_README.md) section 8 |
+| Credential rotation and exposure report | [docs/deployment/CREDENTIAL_ROTATION_RUNBOOK.md](../deployment/CREDENTIAL_ROTATION_RUNBOOK.md) |
+| Standard UI lines (RTL/LTR, widths, console) | [chapter 02](02-ui-and-components.md) section 5 "Verifying UI work" and section 4 of this chapter |
+
+In the checklist write "M-2 (README.md, Manual checks in the UI)" or "env/README.md, Verifying settings, HSTS" instead of repeating the steps. A new check gets the next free ID in the
+README table it belongs to.
+
 ## 6. Tasks without a screen (docs, plan, CI, design)
 
 The check is a read-through **in the UI that shows the result**: the rendered Markdown in the PR "Files changed" view, the Jira issue, the workflow run page, the board.
 Checklist lines: each *Done when* item found; links and tables render; no secret value, internal address or personal data; the text agrees with the guideline and the plan row;
 numbers and names are consistent between documents. Record it in the same template.
 
-## 7. Related
+## 7. Keep the record
+
+The "QA checklist" and the QA result comments stay on the Jira issue **after Done** (and after the issue is closed): they are organisational knowledge for the next release, the next tester and audits.
+Never delete, overwrite or collapse them; correct a mistake with a new comment that says what changed. The PR description keeps the same text. Re-run an old checklist when the area changes again.
+
+## 8. Related
 
 Test Plan sheet (cases and QA status), #200 UAT scripts per epic and role (they reuse these checklists), #376-#377 (automated test review and maintenance, the other half of verification).
