@@ -435,6 +435,48 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("AIReliabilityInsights");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.AdminRecoveryCode", b =>
+                {
+                    b.Property<int>("AdminRecoveryCodeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminRecoveryCodeId"));
+
+                    b.Property<Guid>("BatchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("CodeHash")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("varbinary(32)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RevokedAtUtc")
+                        .IsConcurrencyToken()
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("Salt")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varbinary(16)");
+
+                    b.Property<DateTime?>("UsedAtUtc")
+                        .IsConcurrencyToken()
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AdminRecoveryCodeId");
+
+                    b.HasIndex("UserId", "UsedAtUtc", "RevokedAtUtc");
+
+                    b.ToTable("AdminRecoveryCodes");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Alarm", b =>
                 {
                     b.Property<int>("AlarmId")

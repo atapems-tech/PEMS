@@ -386,3 +386,5 @@ plan/members.json
 # Runtime user uploads (documents, signatures, intake files): created by the running app, never committed or shipped in a package
 PEMS.Web/wwwroot/uploads/*
 !PEMS.Web/wwwroot/uploads/.gitkeep
+# SCRUM-356: break-glass request folder (an operator drops pems-recovery.request here on the server); never committed
+PEMS.Web/break-glass/

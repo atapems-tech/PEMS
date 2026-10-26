@@ -3,6 +3,21 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-26 - Administrator recovery: one-time recovery codes and server break-glass (SCRUM-355, SCRUM-356)
+
+### Added
+- One-time recovery codes for administrators (migration `AdminRecoveryCodes`): 10 codes per set, 80 bits each, stored only as PBKDF2 hash + salt, append-only rows (use/revoke recorded once). User menu > Recovery codes shows how many are left and generates a new set (current password required; unused old codes are revoked); the codes are shown once (no-store) with copy, print and download.
+- `/AccountRecovery` (link on the sign-in page): user name + recovery code + new password. The code is consumed once, the password is set, MFA is reset for re-enrolment, all sessions are revoked, the event is audited and all administrators are notified. Wrong codes count toward the Identity lockout; a locked account is refused even with a valid code.
+- Rate limit for the sign-in-free recovery pages: 5 POSTs per client IP per 15 minutes (`Security:Recovery:RateLimit:*`), answer 429.
+- Server break-glass (`/break-glass`): placing `pems-recovery.request` in `Security:BreakGlass:RequestFolder` opens the page for 15 minutes, reachable only from localhost or `Security:BreakGlass:ManagementNetworks` (every X-Forwarded-For/Forwarded hop must be allowed too); anything else is 404. One administrator is reset (temporary password shown once, forced change, MFA reset); the file is deleted after use or on expiry.
+- Optional vendor-signed recovery token (ECDSA P-256, at most 24 hours, bound to a machine fingerprint, single use), off by default (`Security:BreakGlass:VendorRecovery:Enabled=false`).
+
+### Changed
+- The MFA reset and unlock step of the second-admin reset moved into a shared helper used by all three recovery paths.
+
+### Notes
+- The first-run wizard (SCRUM-188) does not exist yet; it will call the same recovery-code service. Until a licence engine exists, the vendor-token machine fingerprint is a setting.
+
 ## 2026-10-25 - Administrator recovery: audit trail, last-admin guard, second-admin reset (SCRUM-357, SCRUM-354)
 
 ### Added
@@ -15,7 +30,7 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 - A password change of an administrator in the user edit form is audited (method `AdminConsole`) and its Identity result is no longer ignored.
 
 ### Notes
-- Recovery codes (SCRUM-355) and the server break-glass path (SCRUM-356) are not built yet; they will call the same service. `MfaEnrollmentRequired` is only a flag until MFA at sign-in exists (SCRUM-188 / SCRUM-206).
+- `MfaEnrollmentRequired` is only a flag until MFA at sign-in exists (SCRUM-188 / SCRUM-206).
 
 ## 2026-10-25 - Staging environment live
 

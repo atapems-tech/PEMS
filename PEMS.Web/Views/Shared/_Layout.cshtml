@@ -154,6 +154,10 @@
                     <li><h6 class="dropdown-header">@User.Identity?.Name</h6></li>
                     <li><a class="dropdown-item" asp-controller="MyProfile" asp-action="Index" asp-area=""><i class="bi bi-person-badge"></i> @Localizer["Shell_MyProfile"]</a></li>
                     <li><a class="dropdown-item" asp-controller="Account" asp-action="ManagePasskeys" asp-area=""><i class="bi bi-key"></i> @Localizer["Shell_Passkeys"]</a></li>
+                    @if (User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
+                    {
+                        <li><a class="dropdown-item" asp-controller="RecoveryCodes" asp-action="Index" asp-area=""><i class="bi bi-shield-lock"></i> @Localizer["Recovery codes"]</a></li>
+                    }
                     <li><hr class="dropdown-divider" /></li>
                     <li>
                         <form asp-controller="Account" asp-action="Logout" asp-area="" method="post">

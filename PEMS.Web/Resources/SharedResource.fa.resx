@@ -3235,4 +3235,44 @@
   <data name="The administrator must change it at the first sign-in and enroll MFA again. All of their sessions were signed out, and every active administrator was notified." xml:space="preserve"><value>مدیر باید در اولین ورود آن را عوض کند و MFA را دوباره ثبت کند. همه‌ی نشست‌های او بسته شد و همه‌ی مدیران فعال مطلع شدند.</value></data>
   <data name="Back to users" xml:space="preserve"><value>بازگشت به کاربران</value></data>
   <data name="Security Events" xml:space="preserve"><value>رویدادهای امنیتی</value></data>
+  <data name="Account recovered" xml:space="preserve"><value>حساب بازیابی شد</value></data>
+  <data name="The new password is set and the recovery code is used up. Sign in with the new password and enroll MFA again." xml:space="preserve"><value>رمز جدید تنظیم شد و کد بازیابی مصرف شد. با رمز جدید وارد شوید و MFA را دوباره ثبت کنید.</value></data>
+  <data name="Recovery codes left" xml:space="preserve"><value>کدهای بازیابی باقی‌مانده</value></data>
+  <data name="Few recovery codes are left. Generate a new set from your profile after signing in." xml:space="preserve"><value>کد بازیابی کمی باقی مانده است. پس از ورود، از پروفایل خود مجموعه‌ی جدید بسازید.</value></data>
+  <data name="Sign in" xml:space="preserve"><value>ورود</value></data>
+  <data name="Administrator recovery" xml:space="preserve"><value>بازیابی حساب مدیر</value></data>
+  <data name="Use one of your printed recovery codes to set a new password. Each code works only once." xml:space="preserve"><value>با یکی از کدهای بازیابی چاپ‌شده رمز جدید تنظیم کنید. هر کد فقط یک بار کار می‌کند.</value></data>
+  <data name="New password" xml:space="preserve"><value>رمز جدید</value></data>
+  <data name="Confirm new password" xml:space="preserve"><value>تکرار رمز جدید</value></data>
+  <data name="Recover account" xml:space="preserve"><value>بازیابی حساب</value></data>
+  <data name="After recovery, all sessions of the account are signed out, every administrator is notified and MFA must be enrolled again." xml:space="preserve"><value>پس از بازیابی، همه‌ی نشست‌های حساب بسته می‌شود، همه‌ی مدیران مطلع می‌شوند و MFA باید دوباره ثبت شود.</value></data>
+  <data name="Back to sign in" xml:space="preserve"><value>بازگشت به ورود</value></data>
+  <data name="New recovery codes" xml:space="preserve"><value>کدهای بازیابی جدید</value></data>
+  <data name="Print or download these codes now and keep them offline. They are shown only once; the previous codes no longer work." xml:space="preserve"><value>این کدها را همین حالا چاپ یا دانلود کنید و جای امن و آفلاین نگه دارید. فقط یک بار نمایش داده می‌شوند و کدهای قبلی دیگر کار نمی‌کنند.</value></data>
+  <data name="Download" xml:space="preserve"><value>دانلود</value></data>
+  <data name="Generated" xml:space="preserve"><value>زمان تولید</value></data>
+  <data name="Done" xml:space="preserve"><value>پایان</value></data>
+  <data name="Recovery codes" xml:space="preserve"><value>کدهای بازیابی</value></data>
+  <data name="If you lose your password or MFA device, one recovery code lets you set a new password from the sign-in page. Each code works once." xml:space="preserve"><value>اگر رمز یا دستگاه MFA خود را از دست بدهید، با یک کد بازیابی می‌توانید از صفحه‌ی ورود رمز جدید تنظیم کنید. هر کد یک بار کار می‌کند.</value></data>
+  <data name="You have no recovery codes. Generate a set now and keep it in a safe place." xml:space="preserve"><value>هیچ کد بازیابی‌ای ندارید. همین حالا یک مجموعه بسازید و جای امن نگه دارید.</value></data>
+  <data name="Current password" xml:space="preserve"><value>رمز فعلی</value></data>
+  <data name="Generate new codes" xml:space="preserve"><value>ساخت کدهای جدید</value></data>
+  <data name="Generating a new set invalidates every code you have not used yet." xml:space="preserve"><value>ساخت مجموعه‌ی جدید همه‌ی کدهای استفاده‌نشده‌ی قبلی را باطل می‌کند.</value></data>
+  <data name="Break-glass recovery" xml:space="preserve"><value>بازیابی اضطراری (break-glass)</value></data>
+  <data name="A recovery request file is present on the server. This page closes at" xml:space="preserve"><value>فایل درخواست بازیابی روی سرور قرار دارد. این صفحه بسته می‌شود در ساعت</value></data>
+  <data name="No recovery request file is present. Paste a vendor recovery token issued for this server." xml:space="preserve"><value>فایل درخواست بازیابی وجود ندارد. توکن بازیابی فروشنده که برای این سرور صادر شده را وارد کنید.</value></data>
+  <data name="There is no active administrator account to reset." xml:space="preserve"><value>هیچ حساب مدیر فعالی برای ریست وجود ندارد.</value></data>
+  <data name="Administrator account" xml:space="preserve"><value>حساب مدیر</value></data>
+  <data name="Vendor recovery token" xml:space="preserve"><value>توکن بازیابی فروشنده</value></data>
+  <data name="The reset issues a temporary password shown once, forces a password change, resets MFA, signs the account out everywhere and notifies every administrator. The request can be used only once." xml:space="preserve"><value>ریست یک رمز موقت یک‌بارنمایش صادر می‌کند، تغییر رمز را اجباری و MFA را ریست می‌کند، حساب را از همه‌جا خارج می‌کند و همه‌ی مدیران را مطلع می‌کند. درخواست فقط یک بار قابل استفاده است.</value></data>
+  <data name="The request was used up and the recovery page is closed." xml:space="preserve"><value>درخواست مصرف شد و صفحه‌ی بازیابی بسته است.</value></data>
+  <data name="Too many failed attempts. The account is locked for a while; try again later." xml:space="preserve"><value>تلاش‌های ناموفق زیاد بود. حساب مدتی قفل است؛ بعداً دوباره تلاش کنید.</value></data>
+  <data name="The user name or recovery code is not valid." xml:space="preserve"><value>نام کاربری یا کد بازیابی معتبر نیست.</value></data>
+  <data name="The current password is not correct." xml:space="preserve"><value>رمز فعلی درست نیست.</value></data>
+  <data name="Choose the administrator account to reset." xml:space="preserve"><value>حساب مدیری را که باید ریست شود انتخاب کنید.</value></data>
+  <data name="The vendor recovery token is not valid for this server, has expired or was already used." xml:space="preserve"><value>توکن بازیابی فروشنده برای این سرور معتبر نیست، منقضی شده یا قبلاً استفاده شده است.</value></data>
+  <data name="Only an active administrator account can be reset here." xml:space="preserve"><value>این‌جا فقط حساب مدیر فعال قابل ریست است.</value></data>
+  <data name="The password was changed but recording or session revocation failed. No temporary password is shown; place a new request file and run the reset again." xml:space="preserve"><value>رمز عوض شد اما ثبت رویداد یا بستن نشست‌ها ناموفق بود. رمز موقتی نمایش داده نمی‌شود؛ فایل درخواست جدید بگذارید و ریست را دوباره انجام دهید.</value></data>
+  <data name="The recovery window is closed. Place a new request file on the server." xml:space="preserve"><value>پنجره‌ی بازیابی بسته است. فایل درخواست جدیدی روی سرور بگذارید.</value></data>
+  <data name="Use a recovery code" xml:space="preserve"><value>استفاده از کد بازیابی</value></data>
 </root>

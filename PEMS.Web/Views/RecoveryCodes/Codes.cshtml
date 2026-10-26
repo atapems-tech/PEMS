@@ -1,0 +1,27 @@
+@model PEMS.Application.DTOs.RecoveryCodeSetResult
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+
+<div class="content-card" style="max-width:720px;" data-pems-secret-reveal>
+    <h2 class="h5 mb-3"><i class="bi bi-check-circle-fill text-success me-1"></i> @Localizer["New recovery codes"]: <strong>@Model.UserName</strong></h2>
+
+    <div class="alert alert-warning" role="alert">
+        @Localizer["Print or download these codes now and keep them offline. They are shown only once; the previous codes no longer work."]
+    </div>
+
+    <pre dir="ltr" class="fs-5 px-3 py-2 border rounded user-select-all" data-secret-value>@string.Join("\n", Model.Codes)</pre>
+
+    <div class="d-flex flex-wrap gap-2 mb-2">
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-secret-copy data-copied-text="@Localizer["Copied"]"><i class="bi bi-clipboard me-1"></i> @Localizer["Copy"]</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-secret-print><i class="bi bi-printer me-1"></i> @Localizer["Print"]</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-secret-download="pems-recovery-codes-@(Model.UserName).txt"><i class="bi bi-download me-1"></i> @Localizer["Download"]</button>
+    </div>
+    <p class="text-body-secondary small">@Localizer["Generated"]: <span dir="ltr">@Model.GeneratedAtUtc.ToString("yyyy-MM-dd HH:mm") UTC</span></p>
+
+    <a asp-action="Index" class="btn btn-pems-solid mt-2">@Localizer["Done"]</a>
+</div>
+
+@section Scripts {
+    <script src="~/js/pems-secret-reveal.js" asp-append-version="true"></script>
+}

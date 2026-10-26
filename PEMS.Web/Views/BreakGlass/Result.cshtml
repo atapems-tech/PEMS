@@ -1,0 +1,32 @@
+@model PEMS.Application.DTOs.BreakGlassResetResult
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = "Break-glass Recovery";
+    Layout = "_AuthLayout";
+}
+
+<div data-pems-secret-reveal>
+    <h2>@Localizer["Account reset"]: <strong>@Model.TargetUserName</strong></h2>
+    <div class="alert alert-warning small">
+        @Localizer["Copy or print this password now. It cannot be shown again; if it is lost, reset the account again."]
+    </div>
+
+    <div class="d-flex align-items-center gap-2 mb-2">
+        <code dir="ltr" class="fs-5 px-3 py-2 border rounded user-select-all" data-secret-value>@Model.TemporaryPassword</code>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-secret-copy data-copied-text="@Localizer["Copied"]">@Localizer["Copy"]</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-secret-print>@Localizer["Print"]</button>
+    </div>
+    <p class="small mb-1">@Localizer["Expires"]: <strong dir="ltr">@Model.ExpiresAtUtc?.ToString("yyyy-MM-dd HH:mm") UTC</strong></p>
+    <p class="small text-muted">@Localizer["The administrator must change it at the first sign-in and enroll MFA again. All of their sessions were signed out, and every active administrator was notified."]</p>
+    <p class="small text-muted">@Localizer["The request was used up and the recovery page is closed."]</p>
+
+    <div class="auth-links">
+        <a asp-controller="Account" asp-action="Login">@Localizer["Sign in"] &rarr;</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/pems-secret-reveal.js" asp-append-version="true"></script>
+}

@@ -525,6 +525,9 @@ public class PEMSDbContext
     /// <summary>رویدادهای امنیتی بازیابی حساب مدیر (SCRUM-357)؛ فقط‌افزودنی.</summary>
     public DbSet<SecurityEvent> SecurityEvents { get; set; }
 
+    /// <summary>کدهای بازیابی یکبارمصرف حساب مدیر (SCRUM-355)؛ فقط هش، فقط‌افزودنی.</summary>
+    public DbSet<AdminRecoveryCode> AdminRecoveryCodes { get; set; }
+
 
     /// <summary>
     /// SecurityEvent فقط‌افزودنی است: ویرایش یا حذف رد می‌شود. تنها فیلد قابل تغییر ForwardedToSiemAt است (علامت تحویل به SIEM، SCRUM-212).
@@ -539,6 +542,17 @@ public class PEMSDbContext
             if (entry.State == EntityState.Modified &&
                 entry.Properties.Any(p => p.IsModified && p.Metadata.Name != nameof(SecurityEvent.ForwardedToSiemAt)))
                 throw new InvalidOperationException("SecurityEvent records are append-only and cannot be modified.");
+        }
+
+        // SCRUM-355: کد بازیابی حذف نمی‌شود و هش/نمک/مالک آن عوض نمی‌شود؛ فقط مصرف یا ابطال (یک بار، از null) ثبت می‌شود.
+        foreach (var entry in ChangeTracker.Entries<AdminRecoveryCode>())
+        {
+            if (entry.State == EntityState.Deleted)
+                throw new InvalidOperationException("Recovery code records are append-only and cannot be deleted.");
+
+            if (entry.State == EntityState.Modified && entry.Properties.Any(p => p.IsModified &&
+                    (p.Metadata.Name is not (nameof(AdminRecoveryCode.UsedAtUtc) or nameof(AdminRecoveryCode.RevokedAtUtc)) || p.OriginalValue != null)))
+                throw new InvalidOperationException("Recovery code records can only be marked used or revoked once.");
         }
     }
 

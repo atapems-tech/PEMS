@@ -553,6 +553,31 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IRecoveryEventService, RecoveryEventService>();
 // SCRUM-354: محافظ آخرین مدیر فعال + ریست حساب مدیر توسط مدیر دیگر
 builder.Services.AddScoped<IAdminAccountService, AdminAccountService>();
+// SCRUM-355: کدهای بازیابی یکبارمصرف حساب مدیر
+builder.Services.AddScoped<IAdminRecoveryCodeService, AdminRecoveryCodeService>();
+
+// SCRUM-356: break-glass روی سرور (پوشه‌ی فایل درخواست، پنجره‌ی ۱۵ دقیقه، شبکه‌ی مدیریتی، توکن اختیاری فروشنده)
+var breakGlassFolder = PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Security:BreakGlass:RequestFolder");
+builder.Services.AddSingleton(new PEMS.Application.Common.BreakGlassOptions
+{
+    RequestFolder = Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, breakGlassFolder)),
+    WindowMinutes = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Security:BreakGlass:WindowMinutes"),
+    // خالی = فقط localhost
+    ManagementNetworks = PEMS.Application.Common.BreakGlassRules.ParseNetworks(builder.Configuration["Security:BreakGlass:ManagementNetworks"]),
+    VendorRecoveryEnabled = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Security:BreakGlass:VendorRecovery:Enabled"),
+    VendorPublicKey = builder.Configuration["Security:BreakGlass:VendorRecovery:PublicKey"],
+    MachineFingerprint = builder.Configuration["Security:BreakGlass:VendorRecovery:MachineFingerprint"]
+});
+builder.Services.AddScoped<IBreakGlassService, BreakGlassService>();
+
+// SCRUM-355/356: محدودیت نرخ صفحه‌های بازیابی بدون ورود (برای هر IP، فقط POST)
+var recoveryPermitLimit = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Security:Recovery:RateLimit:PermitLimit");
+var recoveryWindow = TimeSpan.FromMinutes(PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredDouble(builder.Configuration, "Security:Recovery:RateLimit:WindowMinutes"));
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.AddPolicy(RecoveryRateLimiting.PolicyName, context => RecoveryRateLimiting.Partition(context, recoveryPermitLimit, recoveryWindow));
+});
 builder.Services.AddScoped<IMyWorkService, PEMS.Persistence.Services.MyWorkService>();
 
 builder.Services.AddScoped<ILetterService, LetterService>();
@@ -1068,6 +1093,9 @@ app.UseRequestLocalization(localizationOptions);
 
 
 app.UseRouting();
+
+// SCRUM-355/356: فقط endpointهایی که [EnableRateLimiting] دارند (صفحه‌های بازیابی) محدود می‌شوند
+app.UseRateLimiter();
 
 
 // ترتیب مهم است: احراز هویت باید قبل از احراز دسترسی اجرا شود

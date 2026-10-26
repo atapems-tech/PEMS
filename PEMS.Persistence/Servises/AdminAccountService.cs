@@ -11,11 +11,6 @@ namespace PEMS.Persistence.Services;
 /// <summary>پیاده‌سازی <see cref="IAdminAccountService"/>: محافظ آخرین مدیر فعال + ریست حساب مدیر توسط مدیر دیگر (SCRUM-354).</summary>
 public class AdminAccountService : IAdminAccountService
 {
-    // نام ارائه‌دهنده/توکن‌های ذخیره‌ی خودِ Identity برای authenticator (TOTP) و کدهای بازیابی آن
-    private const string UserStoreProvider = "[AspNetUserStore]";
-    private const string AuthenticatorKeyToken = "AuthenticatorKey";
-    private const string RecoveryCodesToken = "RecoveryCodes";
-
     private readonly PEMSDbContext _ctx;
     private readonly UserManager<ApplicationUser> _users;
     private readonly IRecoveryEventService _events;
@@ -70,26 +65,15 @@ public class AdminAccountService : IAdminAccountService
 
         try
         {
-            // ۲) تغییر اجباری رمز + انقضای ۲۴ ساعته + پرچم ثبت‌نام مجدد MFA
+            // ۲) تغییر اجباری رمز + انقضای ۲۴ ساعته
             var now = _clock.GetUtcNow().UtcDateTime;
             target.MustChangePassword = true;
             target.TemporaryPasswordExpiresAt = AdminAccountRules.ExpiryFrom(now);
-            target.MfaEnrollmentRequired = true;
-            target.TwoFactorEnabled = false;
-            Require(await _users.UpdateAsync(target));
 
-            // ۳) باز کردن قفل حساب (مدیری که قفل شده همان کسی است که ریست می‌خواهد)
-            Require(await _users.SetLockoutEndDateAsync(target, null));
-            Require(await _users.ResetAccessFailedCountAsync(target));
+            // ۳) ریست MFA برای ثبت‌نام مجدد + باز کردن قفل (گام مشترک هر سه مسیر)
+            await AdminMfaReset.ApplyAsync(_ctx, _users, target, ct);
 
-            // ۴) ریست MFA: کلید authenticator و کدهای بازیابی آن حذف، passkeyها غیرفعال (نه حذف؛ سابقه می‌ماند)
-            Require(await _users.RemoveAuthenticationTokenAsync(target, UserStoreProvider, AuthenticatorKeyToken));
-            Require(await _users.RemoveAuthenticationTokenAsync(target, UserStoreProvider, RecoveryCodesToken));
-            var passkeys = await _ctx.WebAuthnCredentials.Where(c => c.UserId == target.Id && c.IsActive).ToListAsync(ct);
-            foreach (var key in passkeys) key.IsActive = false;
-            if (passkeys.Count > 0) await _ctx.SaveChangesAsync(ct);
-
-            // ۵) ممیزی + ابطال همه‌ی نشست‌ها + اعلان به مدیران (سرویس مشترک SCRUM-357)
+            // ۴) ممیزی + ابطال همه‌ی نشست‌ها + اعلان به مدیران (سرویس مشترک SCRUM-357)
             await _events.CompleteSuccessAsync(attempt with { TargetUserName = target.UserName }, ct);
         }
         catch (Exception ex) when (ex is InvalidOperationException or DbUpdateException)
@@ -111,11 +95,6 @@ public class AdminAccountService : IAdminAccountService
     {
         await _events.RecordFailureAsync(attempt, reason, ct);
         return new AdminResetResult { Status = status, TargetUserName = attempt.TargetUserName };
-    }
-
-    private static void Require(IdentityResult result)
-    {
-        if (!result.Succeeded) throw new InvalidOperationException("Identity update failed during admin reset.");
     }
 
     private async Task<List<int>> ActiveAdminIdsAsync(CancellationToken ct)
