@@ -24,11 +24,12 @@ if (!connectionString.Contains("PEMSDB", StringComparison.OrdinalIgnoreCase) ||
     return 1;
 }
 
-// SCRUM-17: no password in source. The same value must be given to the k6 script (tools/loadtest/pems-baseline.js).
-var testUserPassword = Environment.GetEnvironmentVariable("PEMS_LOADTEST_PASSWORD") ?? string.Empty;
+// SCRUM-17: no password in source. It comes from PEMS_LOADTEST_PASSWORD or from LoadTest__Password in env/local.secrets.env
+// (git-ignored, template in env/local.secrets.env.example); the same value must be given to the k6 script (tools/loadtest/pems-baseline.js).
+var testUserPassword = Environment.GetEnvironmentVariable("PEMS_LOADTEST_PASSWORD") ?? ReadLocalSecret("LoadTest:Password") ?? string.Empty;
 if (string.IsNullOrWhiteSpace(testUserPassword))
 {
-    Console.Error.WriteLine("Set PEMS_LOADTEST_PASSWORD (a throw-away password for the LoadTest accounts; never commit it).");
+    Console.Error.WriteLine("Set PEMS_LOADTEST_PASSWORD or LoadTest__Password in env/local.secrets.env (a throw-away password for the LoadTest accounts; never commit it).");
     return 1;
 }
 const int GeneralUserCount = 200; // یک VU مستقل به‌ازای هر سطح همزمانی تا ۲۰۰ کاربر
@@ -106,3 +107,12 @@ Console.WriteLine($"کاربران عمومی: loadtest001..loadtest{GeneralUser
 Console.WriteLine($"کاربران ادمین: loadtestadmin01..loadtestadmin{AdminUserCount:00} (نقش {SystemRoles.SystemAdmin})");
 
 return 0;
+
+static string? ReadLocalSecret(string key)
+{
+    var directory = PEMS.Shared.Configuration.EnvFiles.FindDirectory(null, AppContext.BaseDirectory, Directory.GetCurrentDirectory());
+    if (directory == null) return null;
+    var path = PEMS.Shared.Configuration.EnvFiles.SecretsPath(directory, "local");
+    if (!File.Exists(path)) return null;
+    return PEMS.Shared.Configuration.EnvFiles.Parse(File.ReadAllLines(path)).TryGetValue(key, out var value) && !string.IsNullOrWhiteSpace(value) ? value : null;
+}
