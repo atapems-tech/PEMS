@@ -14,6 +14,7 @@ First start on an empty database creates it, installs the schema and runs seeder
 ```bash
 dotnet build PEMS.slnx -c Release
 dotnet test PEMS.slnx                       # many tests need SQL Server; DB PEMSDB_RegressionTest; PEMS_TEST_CONNECTION overrides
+dotnet test PEMS.Tests --filter "FullyQualifiedName~EnvironmentFilesTests|FullyQualifiedName~TemporaryPasswordGeneratorTests"   # database-free: env files, compose ports, one-time passwords
 dotnet ef migrations add <Name> --project PEMS.Migrations --startup-project PEMS.Web
 dotnet ef migrations has-pending-model-changes --project PEMS.Migrations --startup-project PEMS.Web   # drift gate
 ```

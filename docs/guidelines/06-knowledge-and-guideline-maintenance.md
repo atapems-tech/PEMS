@@ -53,7 +53,8 @@ Four layers (README section 3). Maintainers check periodically:
 
 1. Instructions rule 27: the Jira report of a task is kept current during the work and at the end (chapter 00, section 3).
 2. A held task has workbook Status `Hold` and, in Jira, the status `On Hold` (added to the SCRUM workflow by the owner on 2026-10-26) plus the label `on-hold` (kept for the plan sync), with the reason and date in its Report.
-3. Secrets-audit follow-ups: history purge (#374) and FTPS certificate verification (#375) are held; test review (#376), test-maintenance procedure (#377) and review of Claude's roles and setup (#378) are open.
+3. Instructions rule 28: study existing tasks before adding one; modify a fitting task instead (chapter 00, step 5b). Held tasks count as not open.
+4. Secrets-audit follow-ups: history purge (#374) and FTPS certificate verification (#375) are held; test review (#376), test-maintenance procedure (#377) and review of Claude's roles and setup (#378) are open.
 
 ## 6. Open points
 

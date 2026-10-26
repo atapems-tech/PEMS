@@ -26,6 +26,7 @@ Field ownership between the plan workbook and Jira: [PLAN_TRACKER_WORKFLOW.md](.
    - the same applies to files and areas that another person's in-progress issue changes: if your task overlaps with it (same files, same migration, same component), stop and coordinate first.
    - an unassigned To Do issue may be taken; assign it to yourself in the same step.
    Never reassign, move, close or edit an issue that belongs to someone else without their confirmation.
+5b. **Adding or changing a task - study first** (Instructions rule 28, owner decision 2026-10-26). Before you add a backlog row and Jira issue, search the backlog and Jira by area, files, goal and keywords (Done and Open rows; held tasks count as not open). If an existing task covers the work or can absorb it, **modify that task**: extend What to do and Done when in the workbook row and the Jira description, and comment what changed and why. Add a new row only when none fits, give it the next free Plan ID, and name the tasks you checked in its Evidence.
 6. **Research best practice before designing** ([chapter 03](03-libraries-tools-and-research.md) section 3) and look for what already
    exists in the repo (section 3 below). Write the findings in the plan comment, not in your head.
 7. **Plan** in 3-5 lines. If the task is large, uncertain or touches shared engines, share the plan with the user first.
