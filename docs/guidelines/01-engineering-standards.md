@@ -55,6 +55,7 @@ Rules:
 - No environment-dependent value (URL, host, credential, port, lifetime, culture, policy flag) hard-coded. `appsettings.json` stays empty.
 - No real secret, key or connection string anywhere in the repo, package, log, Jira comment or chat. The licence-signing private key never touches a development machine.
 - A test keeps env key sets identical and scans committed files for secrets; a new setting that is missing from one file fails it.
+- Before moving a literal into settings, classify it ([docs/design/CONFIGURATION_CONSTANTS.md](../design/CONFIGURATION_CONSTANTS.md)): only environment- or customer-dependent values are settings; policy constants and domain rules stay in code.
 
 ## 5. Offline product [R1]
 

@@ -51,4 +51,5 @@ dotnet run --project PEMS.Web
   `IConfiguration`, and required with `Required*` (`PEMS.Web/Configuration`) instead of an in-code default.
 - A value that would be harmful if public (password, token, key, connection string) goes only into the secrets file.
 - No customer-specific code or branches: customer differences are the `production-<customer>.env` file and the licence.
+- Not every literal is a setting: classify it first with [../docs/design/CONFIGURATION_CONSTANTS.md](../docs/design/CONFIGURATION_CONSTANTS.md) (setting / policy constant / domain rule / tuning).
 - Rotate any secret that was ever pasted into chat, a ticket or a commit.

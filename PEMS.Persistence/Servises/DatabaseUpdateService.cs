@@ -15,11 +15,14 @@ public class DatabaseUpdateService : IDatabaseUpdateService
 
     private readonly PEMSDbContext _db;
     private readonly ILogger<DatabaseUpdateService> _logger;
+    private readonly int _migrationCommandTimeoutMinutes;
 
-    public DatabaseUpdateService(PEMSDbContext db, ILogger<DatabaseUpdateService> logger)
+    /// <param name="migrationCommandTimeoutMinutes">Setting Database:MigrationCommandTimeoutMinutes; the host always passes it. The default exists only so tests can build the service without the settings.</param>
+    public DatabaseUpdateService(PEMSDbContext db, ILogger<DatabaseUpdateService> logger, int migrationCommandTimeoutMinutes = 10)
     {
         _db = db;
         _logger = logger;
+        _migrationCommandTimeoutMinutes = migrationCommandTimeoutMinutes;
     }
 
     public async Task<DatabaseUpdateStatusDto> GetStatusAsync(CancellationToken ct = default)
@@ -88,7 +91,7 @@ public class DatabaseUpdateService : IDatabaseUpdateService
             {
                 _logger.LogInformation("Database {Mode}: applying {Count} migration(s), latest {Latest}.",
                     mode, status.PendingMigrations.Count, status.LatestKnownMigration);
-                _db.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
+                _db.Database.SetCommandTimeout(TimeSpan.FromMinutes(_migrationCommandTimeoutMinutes));
                 await _db.Database.MigrateAsync(ct);
             }
             catch (Exception ex)
