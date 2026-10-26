@@ -18,6 +18,33 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Notes
 - The first-run wizard (SCRUM-188) does not exist yet; it will call the same recovery-code service. Until a licence engine exists, the vendor-token machine fingerprint is a setting.
 
+## 2026-10-26 - QA check in the UI, merge before In Review (SCRUM-394)
+
+### Changed
+- Workflow (owner decision): the PR is merged into `main` right before the issue moves to In Review (label `qa-pending`); In Review means merged and waiting for the QA check; Done means the QA check in the UI passed.
+- Entering or re-entering In Review requires a QA checklist comment (how to test by README references) and a Tests paragraph, re-checked and updated after every failed QA (chapter 07 section 1a).
+- A failed QA check sends the issue back to To Do (label `qa-failed`, defects in a comment, assignee kept).
+- Tests and review are one step for now: the local test run is line 1 of every QA checklist, an issue may move to In Review with tests listed as not run, Done needs the tests green and the QA check passed.
+- Manual checks and local tests are documented in the existing READMEs (root `README.md` "Local tests" and "Manual checks in the UI", `env/README.md` "Verifying settings", `docs/deployment/DEPLOYMENT_README.md` section 8); QA checklists refer to them and stay on the Jira issue after Done.
+- New guideline chapter `docs/guidelines/07-qa-check-in-the-ui.md` (who, where, "fully in the UI", checklist template, defects, tasks without a screen); chapters 00, 01, 06, README, `AGENTS.md`, `PLAN_TRACKER_WORKFLOW.md` and the PR template updated.
+
+## 2026-10-26 - Configuration constants second pass (SCRUM-335)
+
+### Changed
+- New settings in every `env/*.env`: `Hosting__HstsMaxAgeDays` (30), `Authentication__Cookie__SlidingExpiration` (true), `Database__MigrationCommandTimeoutMinutes` (10); values equal the previous behaviour.
+- Production password policy: minimum length 12 in `env/production-kangan.env` (other environments stay at 8); the first administrator password must meet it.
+- `docs/design/CONFIGURATION_CONSTANTS.md` classifies the remaining literals (setting, policy constant, domain rule, tuning with trigger).
+
+## 2026-10-26 - Secrets audit: no built-in credentials (SCRUM-17)
+
+### Security
+- Removed every built-in password found in the audit: users created from an employee now get a random one-time password (`PEMS.Shared/Security/TemporaryPasswordGenerator.cs`); no default administrator password in the guides; the load-test password comes from `LoadTest__Password` in `env/local.secrets.env` or `PEMS_LOADTEST_PASSWORD`; the example administrator password is a placeholder.
+- `docker-compose.yml` publishes SQL Server, Ollama and the app on `127.0.0.1` only (a test keeps it so).
+- Audit report `docs/audits/SECRETS_AUDIT_2026-10.md` (HEAD plus all 202 commits of all refs), rotation runbook `docs/deployment/CREDENTIAL_ROTATION_RUNBOOK.md` and the read-only `scripts/security/Report-DefaultCredentialExposure.sql`. Environments created before 2026-10-23 still need rotation (plan row #317); the old values remain in git history (held, #374).
+
+### Changed
+- Workflow: the SCRUM project has an On Hold status; the Jira report is kept current during the work (Instructions rule 27); existing tasks are studied before a new one is added (rule 28).
+
 ## 2026-10-25 - Administrator recovery: audit trail, last-admin guard, second-admin reset (SCRUM-357, SCRUM-354)
 
 ### Added
@@ -31,7 +58,6 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 ### Notes
 - `MfaEnrollmentRequired` is only a flag until MFA at sign-in exists (SCRUM-188 / SCRUM-206).
-
 ## 2026-10-25 - Staging environment live
 
 ### Added

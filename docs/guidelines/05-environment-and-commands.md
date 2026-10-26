@@ -14,9 +14,13 @@ First start on an empty database creates it, installs the schema and runs seeder
 ```bash
 dotnet build PEMS.slnx -c Release
 dotnet test PEMS.slnx                       # many tests need SQL Server; DB PEMSDB_RegressionTest; PEMS_TEST_CONNECTION overrides
+dotnet test PEMS.Tests --filter "FullyQualifiedName~EnvironmentFilesTests|FullyQualifiedName~TemporaryPasswordGeneratorTests"   # database-free: env files, compose ports, one-time passwords
 dotnet ef migrations add <Name> --project PEMS.Migrations --startup-project PEMS.Web
 dotnet ef migrations has-pending-model-changes --project PEMS.Migrations --startup-project PEMS.Web   # drift gate
 ```
+
+## Verification pointers (no copies here)
+Local tests and the known failures: [../../README.md](../../README.md) "Local tests". Manual UI checks: README.md "Manual checks in the UI". Settings checks: [../../env/README.md](../../env/README.md) "Verifying settings". Deployed environment: [../deployment/DEPLOYMENT_README.md](../deployment/DEPLOYMENT_README.md) section 8. QA procedure: [07](07-qa-check-in-the-ui.md).
 
 ## Docker / deploy
 `docker compose --env-file env/docker.secrets.env up --build`; docs in `docs/deployment/` (CODE_FIRST_DATABASE, DEMO_DEPLOYMENT, LINUX_VM_DEPLOYMENT, PEMS_UAT_DEPLOYMENT_RUNBOOK). Pipelines in `.github/workflows`: only pushes to `demo` and `staging` start one (`deploy-demo.yml`, `deploy-staging.yml`, both calling the reusable `deploy-site.yml`); `build.yml` and `deploy-uat.yml` are manual; `main` and working branches run nothing. Full setup and manual deploy/reset: `docs/deployment/DEPLOYMENT_README.md`. Do not deploy, push to protected branches or change pipeline secrets without the user's explicit go-ahead.

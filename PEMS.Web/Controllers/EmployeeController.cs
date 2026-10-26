@@ -29,9 +29,6 @@ public class EmployeeController : Controller
     private readonly PEMS.Application.Organization.IOrganizationHierarchyService _hier;
     private readonly Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>? _l;
 
-    // طبق سیاست رمز عبور سیستم (RequiredLength=8, RequireDigit=true) - رمز پیش‌فرض جدید
-    public const string DefaultNewUserPassword = "Abc@123456";
-
     // طبق CMMS-10a ADR-01
     private static readonly string[] EmployeePersonnelTypes = { "Internal", "Contractor", "External", "Temporary" };
 
@@ -427,7 +424,7 @@ public class EmployeeController : Controller
 
         // ==============================================================================
         // ساخت هم‌زمان یوزر - دقیقاً مثل فرم مستقل ساخت یوزر (Admin/Users/Create)، فقط با
-        // رمز پیش‌فرض ثابت به‌جای رمز دستی، چون سازنده‌ی Employee معمولاً رمز واقعی کارمند
+        // رمز یک‌بارمصرفِ تصادفی به‌جای رمز دستی، چون سازنده‌ی Employee معمولاً رمز واقعی کارمند
         // رو نمی‌دونه. کاربر با MustChangePassword=true علامت می‌خوره.
         // ==============================================================================
         if (createUser && !string.IsNullOrWhiteSpace(userName))
@@ -444,7 +441,9 @@ public class EmployeeController : Controller
                 CreatedDate = DateTime.Now
             };
 
-            var result = await _userManager.CreateAsync(newUser, DefaultNewUserPassword);
+            // SCRUM-17: a random one-time password per user (shown once below), never a fixed default
+            var temporaryPassword = PEMS.Shared.Security.TemporaryPasswordGenerator.Generate();
+            var result = await _userManager.CreateAsync(newUser, temporaryPassword);
 
             if (!result.Succeeded)
             {
@@ -474,7 +473,7 @@ public class EmployeeController : Controller
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["Message"] = $"کارمند و یوزر «{userName}» ساخته شد (رمز پیش‌فرض: {DefaultNewUserPassword} - باید در اولین ورود عوض بشه).";
+            TempData["Message"] = $"کارمند و یوزر «{userName}» ساخته شد (رمز یک‌بارمصرف: {temporaryPassword} - فقط همین یک بار نمایش داده می‌شود و باید در اولین ورود عوض شود).";
         }
         else
         {

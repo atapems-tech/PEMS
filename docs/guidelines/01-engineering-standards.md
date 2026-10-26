@@ -23,7 +23,7 @@ Rules:
 
 - **Business logic never in controllers or views.** Controllers are thin: bind, authorize, call a service, map to a view model.
 - **Engines once** [R3]: metadata, forms, workflow, access/RLS, events, reporting and licensing each have exactly one implementation. Modules call it. Parallel concepts (a second workflow, a second permission model, a second grid) are forbidden.
-- **No new static modules** [R4]: a new module starts as metadata (form/view/workflow). If impossible, write an ADR stating the reason and the missing extension point *before* building.
+- **No new static modules** [R4]: a new module starts as metadata (form/view/workflow). If impossible, write an ADR ([plan/adr](../../plan/adr/README.md)) stating the reason and the missing extension point *before* building.
 - **Extend, don't duplicate.** Inspect existing entities and controllers first; follow existing folder structure and naming exactly. (Example: Equipment -> Instrument hierarchy is extended, not paralleled.)
 - **Central RLS** [R12]: every data path (list, search, report, export, API, AI) goes through the central row-level filter. No direct role checks.
 - **Go forward, not backward-compatible** [R6]: no compatibility shims unless a live customer needs one.
@@ -55,6 +55,7 @@ Rules:
 - No environment-dependent value (URL, host, credential, port, lifetime, culture, policy flag) hard-coded. `appsettings.json` stays empty.
 - No real secret, key or connection string anywhere in the repo, package, log, Jira comment or chat. The licence-signing private key never touches a development machine.
 - A test keeps env key sets identical and scans committed files for secrets; a new setting that is missing from one file fails it.
+- Before moving a literal into settings, classify it ([docs/design/CONFIGURATION_CONSTANTS.md](../design/CONFIGURATION_CONSTANTS.md)): only environment- or customer-dependent values are settings; policy constants and domain rules stay in code.
 
 ## 5. Offline product [R1]
 
@@ -80,10 +81,11 @@ A task is **done** only when:
 
 1. Every *Done when* item is met and demonstrated (file:line, commit, test name or screenshot) [R13].
 2. New behaviour has tests: unit tests for logic, integration tests for persistence/query paths, a regression test for each fixed bug. UI changes are verified in a real browser (EN + FA, desktop + 375 px) - not just compiled.
-3. `dotnet build PEMS.slnx -c Release` and `dotnet test PEMS.slnx` are green; the model-drift gate is clean; nothing previously passing is now skipped or deleted.
+3. `dotnet build PEMS.slnx -c Release` and `dotnet test PEMS.slnx` are green; the model-drift gate is clean; nothing previously passing is now skipped or deleted. If the author cannot run them (no SDK in a cloud session), the run is line 1 of the QA checklist and the issue is not Done until it is green ([chapter 07](07-qa-check-in-the-ui.md) section 2a).
 4. Offline, settings, RLS, localization checks above hold.
 5. The six artefacts (R22) are updated: guideline/memory, plan file, **Supportability Matrix** [R21], Instructions (only if a rule changed), `CHANGELOG.md`, commit.
 6. Test Plan: a Done row whose Test Plan status is "Needs QA" is not trustworthy [R14] - add or update the case.
+7. After the merge and the move to In Review, the QA check in the UI passes ([chapter 07](07-qa-check-in-the-ui.md)); only then the issue is Done.
 
 ## 9. Git
 

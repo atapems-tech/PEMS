@@ -25,7 +25,9 @@ Field ownership between the plan workbook and Jira: [PLAN_TRACKER_WORKFLOW.md](.
      and get an explicit yes before starting. Keep the confirmation in a comment (who agreed, when). Until then work on something else.
    - the same applies to files and areas that another person's in-progress issue changes: if your task overlaps with it (same files, same migration, same component), stop and coordinate first.
    - an unassigned To Do issue may be taken; assign it to yourself in the same step.
+   - a To Do issue labelled `qa-failed` keeps its previous assignee: if that is you or the user told you to take it, move it to In Progress and start from the defect comment; otherwise ask the assignee first.
    Never reassign, move, close or edit an issue that belongs to someone else without their confirmation.
+5b. **Adding or changing a task - study first** (Instructions rule 28, owner decision 2026-10-26). Before you add a backlog row and Jira issue, search the backlog and Jira by area, files, goal and keywords (Done and Open rows; held tasks count as not open). If an existing task covers the work or can absorb it, **modify that task**: extend What to do and Done when in the workbook row and the Jira description, and comment what changed and why. Add a new row only when none fits, give it the next free Plan ID, and name the tasks you checked in its Evidence.
 6. **Research best practice before designing** ([chapter 03](03-libraries-tools-and-research.md) section 3) and look for what already
    exists in the repo (section 3 below). Write the findings in the plan comment, not in your head.
 7. **Plan** in 3-5 lines. If the task is large, uncertain or touches shared engines, share the plan with the user first.
@@ -52,6 +54,7 @@ Never change the status of issues you were not asked to work on (except the pare
   - Commit `SCRUM-123 feat(scope): message`; PR title `SCRUM-123 ...`.
   - Keep the branch short-lived: merge as soon as the issue(s) meet *Done when*; do not stack unrelated work on it.
   Stage specific files only: `git add <path>`, never `git add -A` / `git add .` (the user may commit in another terminal - re-run `git status` before committing).
+- **Keep the Jira report current while you work** (Instructions rule 27, owner decision 2026-10-26). Besides the start comment (section 2) and the closing comment (section 4), add a short comment at every milestone, decision, blocker or change of scope and before any hand-over or stop: what is done, what is next, what blocks, tests run and not run. The report is the record the owner reads; the PR description repeats it. Never put a secret value in it (mask to two characters at most).
 - **Fix anti-patterns in scope** (rule 15). Large or risky fixes get their own issue - create or propose it, do not hide it in this one.
 - **Stay in scope; record discoveries.** Anything useful you notice outside scope goes to the user as a proposed new issue, not into the diff.
 - **Unclear requirement?** Ask the user one concrete question before building on a guess. Open decisions are listed in the plan (Decision Needed rows).
@@ -61,24 +64,27 @@ Never change the status of issues you were not asked to work on (except the pare
 
 | Level | Jira status | Meaning | Who/when |
 |---|---|---|---|
-| **Conditional done** | **In Review** | Work is complete and verified by the author: every *Done when* item met, build and tests green, committed, PR opened. Waiting for review and merge. | The agent or developer moves it when the PR is opened |
-| **Done** | **Done** | The PR is merged into its target branch and the closing PR updated the plan row Evidence. | Moved after merge (by the reviewer/merger, or by the agent when it performs the merge on the user's instruction) |
+| **Conditional done** | **In Review** | Work is complete and verified by the author: every *Done when* item met, **the PR is merged into `main`**, and the build and tests have run green **or** the comment says exactly why they could not run (see "Tests and review are one step" below). Waiting for the QA check in the UI ([chapter 07](07-qa-check-in-the-ui.md)). | The agent or developer moves it **right after the merge** and sets the label `qa-pending` |
+| **Done** | **Done** | The QA check passed (label `qa-passed`) and the plan row Evidence / Test Plan status are updated. | Moved by the tester or the owner after the QA verdict |
 
-An issue never skips In Review when a PR exists. If the user tells you to merge yourself, do both moves in order and say so in the comment.
+Order (owner decision 2026-10-26): tests (if you can run them) -> PR -> **merge into `main`** -> In Review + `qa-pending` -> QA check, whose **line 1 is the local test run** -> Done. An issue never skips In Review.
+A task whose *Done when* needs the owner's or a member's approval of a document gets that approval as the review of the PR; the merge follows the approval.
+If the QA check fails, the issue goes **back to To Do** with the label `qa-failed` and the defects listed in a comment (owner decision 2026-10-26); it keeps its assignee and its QA comments. Whoever takes it up again moves it to In Progress (section 2), the fix reaches `main` through a new branch and PR (fix forward), then it goes to In Review again.
 
 **Move to In Review (conditional done)** only when **all** are true:
 
 - every item in *Done when* is met (check them one by one in your closing comment);
-- build passes and **all** tests pass, including the new tests the issue asks for (chapter 01, "Definition of done");
-- changes are committed, pushed, and a PR is opened (our flow);
+- the build and **all** tests passed, including the new tests the issue asks for (chapter 01, "Definition of done"), **or** they could not be run in your session (for example a cloud session without the .NET SDK or SQL Server): then the comment says so, lists the commands that were not run, and the test run becomes line 1 of the QA checklist (README.md "Local tests"). **Tests and review are one step for now** (owner decision 2026-10-26, no CI gate exists yet, #7): a person runs the tests and the UI checks together; Done needs both green;
+- the issue carries the **QA checklist comment and a Tests paragraph** (how to test by README references; commands run or not run) - on the first move and on every re-entry after a failed QA, re-checked and updated as in [chapter 07](07-qa-check-in-the-ui.md) section 1a;
+- changes are committed, pushed, a PR is opened and **merged into `main`** (the merge is the step right before In Review; promotion to `staging`/`demo` stays a separate decision);
 - the six artefacts of rule 22 are updated (chapter 06): memory/guideline, plan file, Supportability Matrix, Instructions (only if a rule changed), CHANGELOG, commit.
 
 Then:
 
-1. **Comment** with: what changed, files/areas touched, tests added, commit hash or PR link, Supportability Matrix rows added, guideline entries added.
-2. **Transition to In Review** with `transitionJiraIssue`; after the merge, **transition to Done** (same comment rules: add the merge commit).
-3. **Parent rules** (apply to Done, not In Review): a Story with Sub-tasks is Done only when all its Sub-tasks are Done; an Epic only when all child issues are Done. When you close the last open child, check the parent and close it too if its own "Done when" is met.
-4. **Clean up the branch.** When the work is merged into its target (`main`; promotion to `staging` and `demo` is a separate merge the user directs, because those pushes deploy), **delete the working branch** locally (`git branch -d <name>`) and on the remote if it was pushed (`git push origin --delete <name>`); use `-d`, which refuses unmerged work, and never delete `main`, `staging`, `demo` or someone else's branch. Mention the deletion in the Jira comment. Then run `git branch --merged` to see leftovers and report them.
+1. **Comment** with: what changed, files/areas touched, tests added, tests run and **not** run (and why), commit hash or PR link, evidence for each *Done when* item, Supportability Matrix rows added, guideline entries added, open items for the owner.
+2. **Transition to In Review** with `transitionJiraIssue` right after the merge, add the label `qa-pending` and add the merge commit to the comment; the QA check ([chapter 07](07-qa-check-in-the-ui.md)) then decides: `qa-passed` -> **Done**, `qa-failed` -> back to To Do.
+3. **Parent rules** (apply to Done, not In Review; Done means the QA check passed): a Story with Sub-tasks is Done only when all its Sub-tasks are Done; an Epic only when all child issues are Done. When you close the last open child, check the parent and close it too if its own "Done when" is met.
+4. **Clean up the branch.** When the work is merged into its target (this happens before In Review) (`main`; promotion to `staging` and `demo` is a separate merge the user directs, because those pushes deploy), **delete the working branch** locally (`git branch -d <name>`) and on the remote if it was pushed (`git push origin --delete <name>`); use `-d`, which refuses unmerged work, and never delete `main`, `staging`, `demo` or someone else's branch. Mention the deletion in the Jira comment. Then run `git branch --merged` to see leftovers and report them. **Since 2026-10-26 the repository deletes the head branch automatically when its pull request is merged** (GitHub setting "Automatically delete head branches"); a cloud session cannot delete remote branches, so it deletes only its local branch and checks with `git fetch --prune` that the remote one is gone.
 5. **Update the guideline** if the task produced a durable lesson, decision, helper or pattern (chapter 06).
 6. **Finish, then stop** (rule 16): propose a short list of next tasks (mention batchable ones) and wait for the user's choice.
 
@@ -90,7 +96,8 @@ Then:
 
 ## 6. Never
 
-- Never mark In Review or Done because the session is ending or the code "looks finished" without passing tests. Never mark Done before the merge.
+- Never mark In Review because the session is ending or the code "looks finished" unless the tests passed or the comment states exactly which tests could not run and why. Never mark In Review before the PR is merged into `main`, and never mark Done before the tests are green and the QA check passed.
+- Never delete, overwrite or collapse a QA checklist or QA result comment, not even after Done; they stay on the issue as organisational knowledge ([chapter 07](07-qa-check-in-the-ui.md) section 7).
 - Never leave an issue In Progress / In Review without an assignee.
 - Never change statuses of issues you were not asked to work on (parent rules and approved batches excepted).
 - Never set "Confirmed by PM" yourself except to record a decision the owner just gave (rule 19).

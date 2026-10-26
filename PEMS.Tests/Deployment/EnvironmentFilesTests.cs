@@ -102,4 +102,30 @@ public class EnvironmentFilesTests
         Assert.Contains("env/*.secrets.env", gitignore);
         Assert.Contains("env/*.secrets.env", File.ReadAllText(Path.Combine(Path.GetDirectoryName(EnvDir())!, ".dockerignore")));
     }
+
+    [Fact]
+    public void Compose_publishes_ports_on_loopback_only_and_has_no_default_password()
+    {
+        var compose = File.ReadAllText(Path.Combine(Path.GetDirectoryName(EnvDir())!, "docker-compose.yml"));
+        var ports = Regex.Matches(compose, @"^\s*-\s*""(?<spec>[^""]+:\d+)""\s*$", RegexOptions.Multiline).Select(m => m.Groups["spec"].Value).ToList();
+        Assert.NotEmpty(ports);
+        foreach (var spec in ports)
+            Assert.True(spec.StartsWith("127.0.0.1:", StringComparison.Ordinal), $"compose port '{spec}' is published on all interfaces");
+        Assert.DoesNotMatch(new Regex(@"\$\{[A-Z_]*PASSWORD:-"), compose);   // a ${X_PASSWORD:-default} fallback is a built-in password
+    }
+
+    [Fact]
+    public void Policy_settings_parse_and_production_requires_the_longer_password_minimum()
+    {
+        foreach (var e in Environments)
+        {
+            var values = EnvFiles.Parse(File.ReadAllLines(Path.Combine(EnvDir(), e + ".env")));
+            var culture = System.Globalization.CultureInfo.InvariantCulture;
+            Assert.True(int.Parse(values["Database:MigrationCommandTimeoutMinutes"], culture) > 0, $"{e} migration timeout");
+            Assert.True(double.Parse(values["Hosting:HstsMaxAgeDays"], culture) > 0, $"{e} HSTS max age");
+            Assert.True(bool.TryParse(values["Authentication:Cookie:SlidingExpiration"], out _), $"{e} sliding expiration");
+            var minimum = int.Parse(values["Authentication:Password:RequiredLength"], culture);
+            Assert.True(minimum >= (e == "production-kangan" ? 12 : 8), $"{e} password minimum {minimum}");   // SCRUM-335: production default is 12
+        }
+    }
 }

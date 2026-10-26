@@ -83,7 +83,11 @@ builder.Services.AddSignalR();
 builder.Services.AddScoped<PEMS.Application.Interfaces.INotificationBroadcaster, PEMS.Web.Hubs.SignalRNotificationBroadcaster>();
 
 // Code-first install/update of the database (startup bootstrap + Admin > Database Update page)
-builder.Services.AddScoped<PEMS.Application.Interfaces.IDatabaseUpdateService, PEMS.Persistence.Services.DatabaseUpdateService>();
+var databaseMigrationTimeoutMinutes = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Database:MigrationCommandTimeoutMinutes");
+builder.Services.AddScoped<PEMS.Application.Interfaces.IDatabaseUpdateService>(sp => new PEMS.Persistence.Services.DatabaseUpdateService(
+    sp.GetRequiredService<PEMS.Persistence.Context.PEMSDbContext>(),
+    sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<PEMS.Persistence.Services.DatabaseUpdateService>>(),
+    databaseMigrationTimeoutMinutes));
 
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند
 // (مثل صفحه‌ی Login) بدون ورود قابل دسترسی هستند.
@@ -189,6 +193,9 @@ var authCookieName = PEMS.Web.Configuration.PemsConfigurationExtensions.Required
 var authCookieExpireHours = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredDouble(builder.Configuration, "Authentication:Cookie:ExpireHours");
 var securityStampValidationMinutes = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredDouble(builder.Configuration, "Authentication:SecurityStampValidationMinutes");
 var cookieSecurePolicy = builder.Environment.IsDevelopment() ? CookieSecurePolicy.SameAsRequest : CookieSecurePolicy.Always;
+var authCookieSlidingExpiration = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Authentication:Cookie:SlidingExpiration");
+var hstsMaxAgeDays = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredDouble(builder.Configuration, "Hosting:HstsMaxAgeDays");
+builder.Services.AddHsts(options => options.MaxAge = TimeSpan.FromDays(hstsMaxAgeDays));
 
 builder.Services
     .AddIdentity<ApplicationUser, ApplicationRole>(options =>
@@ -221,7 +228,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Account/AccessDenied";
 
     options.ExpireTimeSpan = TimeSpan.FromHours(authCookieExpireHours);
-    options.SlidingExpiration = true;
+    options.SlidingExpiration = authCookieSlidingExpiration;
 
     options.Cookie.Name = authCookieName;
     options.Cookie.HttpOnly = true;
