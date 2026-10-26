@@ -3275,4 +3275,7 @@
   <data name="The password was changed but recording or session revocation failed. No temporary password is shown; place a new request file and run the reset again." xml:space="preserve"><value>رمز عوض شد اما ثبت رویداد یا بستن نشست‌ها ناموفق بود. رمز موقتی نمایش داده نمی‌شود؛ فایل درخواست جدید بگذارید و ریست را دوباره انجام دهید.</value></data>
   <data name="The recovery window is closed. Place a new request file on the server." xml:space="preserve"><value>پنجره‌ی بازیابی بسته است. فایل درخواست جدیدی روی سرور بگذارید.</value></data>
   <data name="Use a recovery code" xml:space="preserve"><value>استفاده از کد بازیابی</value></data>
+  <data name="Recovery Codes" xml:space="preserve"><value>کدهای بازیابی</value></data>
+  <data name="Administrator Recovery" xml:space="preserve"><value>بازیابی حساب مدیر</value></data>
+  <data name="Break-glass Recovery" xml:space="preserve"><value>بازیابی اضطراری (break-glass)</value></data>
 </root>
