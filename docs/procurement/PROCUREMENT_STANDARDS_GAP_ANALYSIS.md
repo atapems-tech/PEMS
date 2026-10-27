@@ -22,7 +22,7 @@ PEMS بیشتر حلقه‌های اصلی چرخهٔ تدارکات را دار
 - نیاز خالص و پیشنهاد تأمین.
 
 شکاف‌های اصلی نسبت به رویهٔ جهانی (پروژه‌های EPC نفت و گاز، چرخهٔ CIPS، مدیریت تدارکات PMI و ISO 20400) این‌هاست:
-1. **سفارش خرید (PO) فقط سربرگ است:** ردیف کالا و پیوند به MR، مناقصه یا برنده ندارد. پیش‌فرض آن «صادرشده» است و تأیید ندارد. بنابراین ردیابی «ردیف MR ← پیشنهاد ← ردیف PO ← ردیف رسید» ممکن نیست.
+1. **سفارش خرید (PO) فقط سربرگ است:** ردیف کالا و پیوند به MR، مناقصه یا برنده ندارد. PO دستی از «پیش‌نویس» شروع می‌شود و با یک مرحلهٔ جدا صادر می‌شود، ولی گردش تأیید و حدود اختیار مبلغی ندارد. PO وارداتی مستقیم «صادرشده» ساخته می‌شود. بنابراین ردیابی «ردیف MR ← پیشنهاد ← ردیف PO ← ردیف رسید» ممکن نیست.
 2. **ثبت رسمی برنده (Award) و تأیید آن وجود ندارد:** پیشنهاد فقط مبلغ کل دارد و قیمت ردیفی ندارد. این‌ها هم نیست:
    - قفل پیشنهادها تا زمان بازگشایی؛
    - ارسال سؤال و پاسخ به همهٔ شرکت‌کنندگان؛
@@ -61,7 +61,7 @@ This model uses public, widely used frameworks. Only their structure is used her
 | Tender | tender with invited vendors (qualification check), bids (original, negotiated and final value), evaluations, negotiation rounds, award fields, contract from the winning bid | `Tender.cs`, `Bid*.cs`, `TenderService.cs` (verified fields) |
 | Vendor master and qualification | qualification status, category, validity dates, evidence, history; one contact email | `Vendor.cs`, `VendorQualificationHistory.cs` (verified `ContactEmail`) |
 | Contract | contract with revisions, discipline reviews, NTP, documents, workflow on the engine, approval authority rules by value and criticality | `Contract*.cs`, `ContractApprovalAuthorityRule.cs`, `PemsWorkflowContracts.cs` (verified) |
-| Purchase order | header only: number, project, vendor, optional contract, value, currency; status defaults to `Issued` | `PurchaseOrder.cs` (verified) |
+| Purchase order | header only: number, project, vendor, optional contract, value, currency. A manual PO starts as `Draft` and `IssueAsync` moves it to `Issued`; the import path creates `Issued` directly | `PurchaseOrder.cs`, `PurchaseOrderService.cs` (verified) |
 | Vendor documents | VDR per PO/MR with review workflow, commercial and engineering expeditor names | `VDRItem.cs` (verified expeditor fields) |
 | Inspection | ITP, ITP line items, inspection checklist and records (QC module); inspection gate on the package | `InspectionTestPlan.cs`, `ITPLineItem.cs`, `ProcurementPackageInspectionGateTests` |
 | Receiving | IRN with lines (per material item), status history, disposition record with an approval workflow, MRS import into stock | `IrnReceipt*.cs`, `IrnDispositionRecord.cs`, `MrsImport*.cs` |
@@ -92,7 +92,7 @@ Status: ✅ present · 🟡 partial · ❌ missing.
 | 14 | Award recommendation and approval by authority (DoA) | 🟡 | The award is three fields on the tender. Authority rules exist for contracts only. There is no award record, approval state or split award. |
 | 15 | Contract | ✅ | Workflow, discipline reviews, revisions, NTP and authority rules. Milestones and claims are "coming soon". |
 | 16 | Purchase order with lines | ❌ | The PO is header only, with no lines and no link to MR, package, tender or award (baseline audit P4, verified). |
-| 17 | PO approval before commitment | ❌ | New POs start as `Issued`; there is no approval and no authority by amount. |
+| 17 | PO approval before commitment | 🟡 | A manual PO starts as `Draft` and is issued in a separate step (`PurchaseOrderService.IssueAsync`). There is no approval workflow and no authority by amount; imported POs are created as `Issued`. (Corrected 2026-10-27: the first version said new POs start as `Issued`.) |
 | 18 | Document numbering under admin control | ❌ | Manual numbers for package, tender, PO and contract (SCRUM-40). |
 | 19 | Vendor documents (VDR) and approvals | ✅ | VDR register and review workflow per PO/MR. |
 | 20 | Expediting | 🟡 | Only expeditor names on VDR items. No PO delivery schedule, promised dates, expediting log or alert for late items. |
