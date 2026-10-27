@@ -8,6 +8,18 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - `PEMS.Web` references `PEMS.UI` (component registry and renderer registered, `<pems-field>` tag helper available, `_content/PEMS.UI/pems-ui.css` published but not linked, so no page changes). The shared partials `_KpiCard` and `_PemsLoadingOverlay` and `KpiCardViewModel` moved into `PEMS.UI`; their output is byte-identical (golden tests in `PEMS.Tests/Ui`). ADR-0007 accepted.
 
+## 2026-10-27 - Database upgrade from every supported release, pre-update backup (SCRUM-280)
+
+### Added
+- `deploy/db/supported-releases.json`: the database states PEMS must upgrade from (2026-10-22 self-installing build, 2026-10-25 demo), each as its exact migration set; `deploy/db/released-migrations.sha256` fixes the shipped migrations.
+- `DatabaseUpgradePathSqlTests` (category `DbUpgrade`): each supported release is upgraded with representative data through the real migrator and must equal a fresh install (schema) and keep its rows; also proves the pre-update backup and its restore. Runs in the Migration Chain Gate workflow after the chain script.
+- `MigrationCompatibilityRulesTests`: released migrations unchanged, manifest valid, unique ids with Designer files.
+- Automatic pre-update backup: `Database__BackupBeforeUpdate` (true in production/uat) and `Database__BackupDirectory` in every `env/*.env`; an update first writes a COPY_ONLY `<db>_preupdate_<utc>.bak` and is not started when that fails. The file is recorded in the run history (migration `DatabaseUpdateRunBackupFile`) and shown on Admin > Database Update.
+
+### Changed
+- Admin > Database Update: with the automatic backup on, the manual "backup taken" box is replaced by a notice; the run table shows the backup file.
+- `CODE_FIRST_DATABASE.md`: supported releases, compatibility rules (immutable released migrations, expand/contract) and the rollback (restore) procedure; guideline chapter 01 section 3 updated.
+
 ## 2026-10-27 - Component library spike (SCRUM-23)
 
 ### Added
