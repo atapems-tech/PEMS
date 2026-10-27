@@ -27,6 +27,20 @@ public sealed class SpikeHost : IAsyncLifetime
             .AddApplicationPart(typeof(SpikeController).Assembly)
             .AddApplicationPart(typeof(PemsTableViewComponent).Assembly);
         _app = builder.Build();
+        // Same setup as PEMS.Web (Program.cs): cultures "en" and "fa", and the Persian culture keeps the GREGORIAN calendar, because
+        // .NET's default for "fa" is the Persian calendar and every stored date is Gregorian. The culture is chosen with ?culture=fa&ui-culture=fa.
+        var cultures = new[] { "en", "fa" }.Select(name =>
+        {
+            var c = new System.Globalization.CultureInfo(name);
+            if (c.TwoLetterISOLanguageName == "fa") c.DateTimeFormat.Calendar = new System.Globalization.GregorianCalendar();
+            return c;
+        }).ToList();
+        _app.UseRequestLocalization(new Microsoft.AspNetCore.Builder.RequestLocalizationOptions
+        {
+            DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(cultures[0], cultures[0]),
+            SupportedCultures = cultures,
+            SupportedUICultures = cultures
+        });
         _app.UseRouting();
         _app.MapControllers();
         await _app.StartAsync();
