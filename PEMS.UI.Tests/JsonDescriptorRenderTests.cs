@@ -70,10 +70,13 @@ public sealed class JsonDescriptorRenderTests : IAsyncLifetime
     [Fact]
     public async Task Validation_errors_are_inputs_too_and_follow_the_language()
     {
-        var state = new FormState(new Dictionary<string, string?>(), new Dictionary<string, TranslatableText>
+        var state = new FormState
         {
-            ["tag"] = TranslatableText.Of(("fa", "تگ الزامی است"), ("en", "Tag is required"))
-        });
+            Errors = new Dictionary<string, TranslatableText>
+            {
+                ["tag"] = TranslatableText.Of(("fa", "تگ الزامی است"), ("en", "Tag is required"))
+            }
+        };
         var fa = Plain(await RenderForm("fa", state));
         var en = Plain(await RenderForm("en", state));
         Has("role=\"alert\">تگ الزامی است<", fa);
@@ -115,7 +118,7 @@ public sealed class JsonDescriptorRenderTests : IAsyncLifetime
     [Fact]
     public async Task Without_an_empty_text_an_empty_table_shows_none_instead_of_a_built_in_phrase()
     {
-        var view = new ViewDescriptor("v", "T", [new ColumnDescriptor("a", "A")]);
+        var view = new ViewDescriptor { Id = "v", Title = "T", Columns = [new ColumnDescriptor { Key = "a", Header = "A" }] };
         var html = await _renderer.RenderAsync("table", new Dictionary<string, object?> { ["View"] = view });
         HasNot("pems-table__empty", html);
     }

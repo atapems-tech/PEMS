@@ -22,6 +22,9 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register("button", typeof(PemsButton));
         Register("badge", typeof(PemsBadge));
         Register("skeleton", typeof(PemsSkeleton));
+        Register("empty-state", typeof(PemsEmptyState));
+        Register("error-state", typeof(PemsErrorState));
+        Register("loading-state", typeof(PemsLoadingState));
         Register("field", typeof(PemsField));
         Register("table", typeof(PemsTable));
         Register("form", typeof(PemsForm));

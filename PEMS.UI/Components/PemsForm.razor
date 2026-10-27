@@ -10,7 +10,7 @@
     {
         <PemsField Descriptor="f" Value="@State.ValueOf(f.Name)" Error="@State.ErrorOf(f.Name)" />
     }
-    <PemsButton Options="@(new ButtonOptions(Definition.SubmitLabel, Type: "submit"))" />
+    <PemsButton Options="@(new ButtonOptions { Label = Definition.SubmitLabel, Type = "submit" })" />
 </form>
 @code {
     [Parameter, EditorRequired] public FormDefinition Definition { get; set; } = default!;
