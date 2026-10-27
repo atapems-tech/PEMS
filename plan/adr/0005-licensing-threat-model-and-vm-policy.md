@@ -2,7 +2,8 @@
 
 - **Status:** Accepted
 - **Date:** 2026-10-18
-- **Decided by:** Project owner (plan rows #96 and #97, both "Confirmed by PM: Yes"; the timed-licence rule of 2026-10-15 is quoted in row #97)
+- **Decided by:** Hamid Maleki, project owner and Member A (plan rows #96 and #97, both "Confirmed by PM: Yes"; the timed-licence rule of 2026-10-15 is quoted in row #97)
+- **Approved by:** Hamid Maleki (Member A), 2026-10-27, in the SCRUM-14 session
 - **Plan rows:** #96 (threat model), #97 (VM/container policy); implemented by L_FP, L_CLONE, L_EULA and the licensing chain #98-#120; written under #2 (SCRUM-14)
 - **Sources:** `plan/backlog.csv` rows #96 and #97; workbook sheet *Licensing Design* (threat and defense table); Supportability Matrix SM-02, SM-03, SM-07; Instructions rules 10, 11, 20
 
