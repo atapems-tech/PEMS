@@ -18,7 +18,7 @@ Decision order, every time:
 3. Is it truly missing? -> add it to the library (`PEMS.UI` once it exists; until then the shared partials in `Views/Shared` and the shared CSS/JS) following section 4, then call it. Mention it in the Jira comment.
 4. Only if 1-3 are impossible: page-local markup with a written reason in the task comment. CI ratchet counts raw markup; the numbers may only go down.
 
-Where components live **today** (the audit found `PEMS.UI` does not exist yet): `_PageHeader`, `_Pagination`, `_KpiCard`, `_PemsLoadingOverlay`, `.vs-*` workspace CSS, `pems-ui.js`, tokens `--pems-*`.
+Where components live **today**: `PEMS.UI` (registry below; `PEMS.Web` references it and finds its views and `_content/PEMS.UI/` assets automatically), plus `_PageHeader`, `_Pagination`, `.vs-*` workspace CSS, `pems-ui.js` and the tokens `--pems-*` in `PEMS.Web`.
 Search `PEMS.Web/Views/Shared`, `wwwroot/css`, `wwwroot/js` before building anything. Once `PEMS.UI` ships (plan #319-#334), it is the only place; this chapter then shrinks to "use PEMS.UI".
 
 ### Component registry (check this before writing any markup)
@@ -37,8 +37,10 @@ Add a row in the same PR as every new component or parameter.
 | `PemsTable` (`table`) | read-only table; rows rendered in this one component | `ViewDescriptor`, `Rows` | spike |
 | `PemsForm` (`form`) | form from a `FormDefinition` with antiforgery and upload | `FormDefinition`, `FormState`, `RequestToken` | spike |
 | `PemsDescriptorHost` | render any registered component by key from data (BPMS, previews) | `Key`, `Parameters` | spike |
+| `_KpiCard` partial | KPI tile (`<partial name="_KpiCard" model="kpi" />`) | `KpiCardViewModel` (Title, Count, IconClass, ColorClass, Url, Hint) | **ready**, lives in `PEMS.UI/Views/Shared` |
+| `_PemsLoadingOverlay` partial | global loading overlay (in the layout; driven by `pems-loading.js`) | `ViewData["LoadingLabel"]` | **ready**, lives in `PEMS.UI/Views/Shared` |
 
-Planned and not yet built: page header, pagination, KPI card (move from `Views/Shared`, SCRUM-29), modal, tabs, stepper, empty/error states, data grid (SCRUM-352 and following).
+Still in `PEMS.Web/Views/Shared` (they need `PEMS.Web`'s localisation resource, so they move after PEMS.UI has its own localisation, SCRUM-29): `_PageHeader`, `_Pagination`. Planned and not yet built: modal, tabs, stepper, empty/error states, data grid (SCRUM-352 and following).
 
 **Shape of every component** (inputs / state / body): inputs are an immutable `*Options` record or a descriptor; state is a plain C# `*State`
 class that computes CSS classes, ids and ARIA from the inputs (unit-test it without rendering); the `.razor` body only prints that state
@@ -60,7 +62,7 @@ class that computes CSS classes, ids and ARIA from the inputs (unit-test it with
 ## 3. Modifying an existing component safely
 
 1. Find all callers (grep the partial/tag/CSS class). Note how many pages depend on it.
-2. Add the new behaviour behind an optional parameter or variant; default output must stay byte-identical for old callers.
+2. Add the new behaviour behind an optional parameter or variant; default output must stay byte-identical for old callers. **Prove it with a golden-output test** (`PEMS.Tests/Ui/SharedPartialsGoldenTests.cs`, files in `PEMS.Tests/Ui/Golden/`): record the HTML of the unchanged code with `PEMS_GOLDEN_RECORD=1`, make the change or move the file, and the test must pass without re-recording. Moving a partial between projects follows the same rule (`git mv`, keep the view-model namespace, no caller edits).
 3. Update the component's documentation (states, RTL/LTR example, accessibility note) and tests.
 4. Check at least two existing callers in a browser after the change.
 5. If the change alters defaults for everyone, that is a separate Jira issue with the user's approval.

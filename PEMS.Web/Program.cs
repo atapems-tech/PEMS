@@ -92,6 +92,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IDatabaseUpdateService>(s
 
 // Licensing (docs/design/LICENSING_TECHNICAL_DESIGN.md). Licensing:Enforce=false in every env file until the rollout tasks: nothing is checked or blocked.
 builder.Services.AddPemsLicensing(builder.Configuration);
+PEMS.UI.ServiceCollectionExtensions.AddPemsUi(builder.Services);   // component registry + request-free renderer (SCRUM-29)
 
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند
 // (مثل صفحه‌ی Login) بدون ورود قابل دسترسی هستند.

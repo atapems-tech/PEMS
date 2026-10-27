@@ -1,8 +1,9 @@
 # ADR-0007: Component technology: static Razor components with a Tag Helper facade
 
-- **Status:** Proposed (needs Member A's approval; until then ADR-0002 D3 stays open)
-- **Date:** 2026-10-27 (spike run; the decision date is the approval date)
-- **Decided by:** Not yet decided. Proposed by the SCRUM-23 spike (Claude Code, for Hamid), decision belongs to Member A.
+- **Status:** Accepted
+- **Date:** 2026-10-27
+- **Decided by:** Hamid Maleki (project owner, Member A), on the proposal of the SCRUM-23 spike
+- **Approved by:** Hamid Maleki (Member A), 2026-10-27, in the SCRUM-14 / SCRUM-23 session
 - **Plan rows:** #319 (spike, SCRUM-23); unblocks #320 (SCRUM-29) and #321 (SCRUM-336); updates row #5 / ADR-0002 D3
 - **Sources:** [COMPONENT_LIBRARY_PLAN.md](../../docs/design/COMPONENT_LIBRARY_PLAN.md) section 4.1; the spike code in `PEMS.UI.Abstractions`, `PEMS.UI`, `PEMS.UI.Tests`; measured by `PEMS.UI.Tests/SpikeTests.cs`
 
@@ -45,7 +46,7 @@ a View Component (equal within noise) and produce about a third less HTML; a com
 | Offline | Equal: no URL in markup or CSS (tested); static rendering needs no circuit or WebAssembly. | Equal. |
 | Testability | State is plain C#; rendering is testable with `HtmlRenderer` alone, no extra package (bUnit not needed). | Needs an MVC host or view-engine test setup. |
 
-## Decision (proposed)
+## Decision
 
 1. **Canonical components are static Razor components** (no circuits, no WebAssembly), rendered through the contract in `PEMS.UI.Abstractions`.
 2. **MVC pages use thin Tag Helper facades** (`<pems-field asp-for>`, later `<pems-table>`), so existing views migrate with a one-line change and keep model binding, validation and antiforgery.
