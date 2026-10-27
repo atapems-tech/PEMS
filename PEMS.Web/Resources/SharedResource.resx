@@ -2569,4 +2569,6 @@
   <data name="Lp_Total" xml:space="preserve"><value>Total</value></data>
   <data name="Lp_RemoveFilter" xml:space="preserve"><value>Remove filter</value></data>
   <data name="Lp_ResetAll" xml:space="preserve"><value>Reset all</value></data>
+  <data name="Nav_ProcurementSupplyChain" xml:space="preserve"><value>Procurement &amp; Supply Chain</value></data>
+  <data name="Nav_Proc_Purchasing" xml:space="preserve"><value>Purchasing</value></data>
 </root>

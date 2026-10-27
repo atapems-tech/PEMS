@@ -3356,4 +3356,6 @@
   <data name="Lp_Total" xml:space="preserve"><value>کل</value></data>
   <data name="Lp_RemoveFilter" xml:space="preserve"><value>حذف فیلتر</value></data>
   <data name="Lp_ResetAll" xml:space="preserve"><value>بازنشانی همه</value></data>
+  <data name="Nav_ProcurementSupplyChain" xml:space="preserve"><value>تدارکات و زنجیره تأمین</value></data>
+  <data name="Nav_Proc_Purchasing" xml:space="preserve"><value>خرید</value></data>
 </root>
