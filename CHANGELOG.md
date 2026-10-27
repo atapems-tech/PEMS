@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-27 - VDR list with the Engineering Documents look (SCRUM-409)
+
+### Added
+- VDR list: quick search (document number, description, vendor) and an Excel export of the filtered list (`VDR/Export`, same columns as the table, capped at 20,000 rows).
+
+### Changed
+- VDR list: same frame as Engineering Documents - full-page table, one icon toolbar, project/vendor/status filters in a dropdown with a count badge and chips, KPI chips and the vendor delay/risk view hidden until the KPI button is pressed (remembered per browser).
+
 ## 2026-10-26 - Engineering Documents list with the correspondence look (SCRUM-408)
 
 ### Changed

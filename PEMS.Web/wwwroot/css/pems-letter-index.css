@@ -154,3 +154,8 @@ body.lp-compact .lp-snippet, body.lp-compact .lp-badges { display: none; }
 @media (max-width: 991.98px) { .lp-page { height: auto; min-height: 0; } .lp-page .lp-scroll { max-height: 60vh; } }
 /* phones: tools that only make sense with a mouse (column resize reset) give their room to the title */
 @media (max-width: 575.98px) { .lp-hide-xs { display: none !important; } }
+/* a KPI chip that opens a small list (VDR vendor delay risk) without pushing the table down */
+.lp-kpi-pop { position: relative; }
+.lp-kpi-pop > summary { list-style: none; cursor: pointer; }
+.lp-kpi-pop > summary::-webkit-details-marker { display: none; }
+.lp-kpi-pop > .vs-list { position: absolute; top: calc(100% + 4px); inset-inline-start: 0; z-index: 6; min-width: 280px; max-height: 50vh; overflow: auto; margin: 0; padding: 6px 10px; background: var(--pems-surface); border: 1px solid var(--pems-surface-border); border-radius: 10px; box-shadow: 0 8px 24px rgba(0, 0, 0, .15); }

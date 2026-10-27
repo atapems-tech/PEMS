@@ -10,7 +10,14 @@ public interface IVDRService
     // Views/VDR/Index.cshtml - GetAllAsync بالا دست‌نخورده باقی می‌ماند (مصرف‌کننده‌ی دیگری
     // ندارد جز همین Index که حالا به این متد سوییچ می‌کند، اما حذف نشد تا ریسک بی‌ربط ایجاد نشود)
     Task<PagedResult<VDRListItemDto>> GetPagedAsync(
-        int? projectId, int? vendorId, string? workflowStatus, int page, int pageSize);
+        int? projectId, int? vendorId, string? workflowStatus, int page, int pageSize, string? search = null);
+
+    /// <summary>
+    /// SCRUM-409: همه‌ی ردیف‌های منطبق با همان فیلترهای فهرست (بدون صفحه‌بندی) برای خروجی Excel؛ حداکثر <paramref name="maxRows"/> ردیف
+    /// برگردانده می‌شود و Total تعداد واقعی منطبق است تا فراخواننده سقف را تشخیص دهد.
+    /// </summary>
+    Task<(List<VDRListItemDto> Items, int Total)> GetAllMatchingAsync(
+        int? projectId, int? vendorId, string? workflowStatus, string? search, int maxRows);
 
     Task<VDRItemDto?> GetByIdAsync(int id);
 
