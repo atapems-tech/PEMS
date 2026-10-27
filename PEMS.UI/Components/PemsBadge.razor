@@ -1,0 +1,5 @@
+@namespace PEMS.UI.Components
+<span class="pems-badge pems-badge--@Options.Tone.ToString().ToLowerInvariant()">@Options.Text</span>
+@code {
+    [Parameter, EditorRequired] public BadgeOptions Options { get; set; } = default!;
+}

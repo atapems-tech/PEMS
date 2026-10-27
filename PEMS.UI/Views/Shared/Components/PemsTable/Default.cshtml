@@ -1,0 +1,27 @@
+@model PEMS.UI.Rendering.PemsTableModel
+<table class="pems-table" id="@Model.View.Id">
+    <caption class="pems-table__caption">@Model.View.Title</caption>
+    <thead>
+        <tr>
+            @foreach (var c in Model.View.Columns)
+            {
+                <th scope="col" class="pems-align-@c.Alignment.ToString().ToLowerInvariant()">@c.Header</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Rows.Count == 0)
+        {
+            <tr><td colspan="@Model.View.Columns.Count" class="pems-table__empty">@Model.EmptyText</td></tr>
+        }
+        @foreach (var row in Model.Rows)
+        {
+            <tr>
+                @foreach (var c in Model.View.Columns)
+                {
+                    <td class="pems-align-@c.Alignment.ToString().ToLowerInvariant()">@(row.TryGetValue(c.Key, out var v) ? v : null)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

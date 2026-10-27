@@ -1,0 +1,29 @@
+/* PEMS.UI component styles. Tokens only (var(--pems-*)), logical properties only (RTL from the same markup), no URLs. */
+.pems-btn { display: inline-flex; align-items: center; gap: .5rem; padding-block: .4rem; padding-inline: 1rem; border: 1px solid transparent; border-radius: .375rem; font: inherit; cursor: pointer; text-decoration: none; }
+.pems-btn:disabled { opacity: .6; cursor: not-allowed; }
+.pems-btn:focus-visible, .pems-input:focus-visible { outline: 2px solid var(--pems-focus); outline-offset: 2px; }
+.pems-btn--neutral { background: var(--pems-surface); color: var(--pems-text); border-color: var(--pems-surface-border); }
+.pems-btn--primary { background: var(--pems-primary); color: var(--pems-surface); }
+.pems-btn--primary:hover { background: var(--pems-primary-hover); }
+.pems-btn--danger { background: var(--pems-chart-negative-text, var(--pems-primary)); color: var(--pems-surface); }
+.pems-btn--success { background: var(--pems-chart-positive-text, var(--pems-primary)); color: var(--pems-surface); }
+.pems-btn--warning { background: var(--pems-chart-warning-text, var(--pems-primary)); color: var(--pems-surface); }
+.pems-btn--small { padding-block: .2rem; padding-inline: .6rem; font-size: .85rem; }
+.pems-btn--large { padding-block: .6rem; padding-inline: 1.4rem; font-size: 1.1rem; }
+.pems-badge { display: inline-block; padding-block: .1rem; padding-inline: .5rem; border-radius: 999px; font-size: .8rem; background: var(--pems-selection); color: var(--pems-text); }
+.pems-field { margin-block-end: 1rem; }
+.pems-field__label { display: block; margin-block-end: .25rem; color: var(--pems-text); }
+.pems-field__required { margin-inline-start: .25rem; color: var(--pems-chart-negative-text, var(--pems-text)); }
+.pems-field__help { margin-block-start: .25rem; color: var(--pems-text-muted); font-size: .85rem; }
+.pems-field__error { margin-block-start: .25rem; color: var(--pems-chart-negative-text, var(--pems-text)); font-size: .85rem; }
+.pems-input { box-sizing: border-box; inline-size: 100%; padding-block: .4rem; padding-inline: .6rem; border: 1px solid var(--pems-surface-border); border-radius: .375rem; background: var(--pems-input-bg); color: var(--pems-text); font: inherit; }
+.pems-input--invalid { border-color: var(--pems-chart-negative-text, var(--pems-surface-border)); }
+.pems-table { inline-size: 100%; border-collapse: collapse; }
+.pems-table__caption { text-align: start; font-weight: 600; padding-block-end: .5rem; }
+.pems-table th, .pems-table td { padding-block: .4rem; padding-inline: .6rem; border-block-end: 1px solid var(--pems-surface-border); }
+.pems-table thead th { background: var(--pems-table-header-bg); }
+.pems-table tbody tr:hover { background: var(--pems-row-hover); }
+.pems-align-start { text-align: start; } .pems-align-center { text-align: center; } .pems-align-end { text-align: end; }
+.pems-skeleton__line { block-size: 1rem; margin-block-end: .5rem; border-radius: .25rem; background: var(--pems-row-hover); }
+@media (prefers-reduced-motion: no-preference) { .pems-skeleton__line { animation: pems-pulse 1.4s ease-in-out infinite; } }
+@keyframes pems-pulse { 50% { opacity: .5; } }

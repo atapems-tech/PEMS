@@ -1,0 +1,10 @@
+@namespace PEMS.UI.Components
+<div class="pems-skeleton" role="status" aria-busy="true" aria-live="polite">
+    @for (var i = 0; i < Lines; i++)
+    {
+        <div class="pems-skeleton__line"></div>
+    }
+</div>
+@code {
+    [Parameter] public int Lines { get; set; } = 3;
+}

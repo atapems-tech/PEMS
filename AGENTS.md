@@ -16,7 +16,7 @@ It is short on purpose. The rules live in [docs/guidelines/](docs/guidelines/REA
 ## Five rules you must never forget
 
 - Jira project `SCRUM` (https://atapems.atlassian.net). Never write code before the issue is In Progress, and never leave a started issue without an assignee (yourself, or Saber if it is not yours). Never mark Done before the tests are green and the QA check passed; never mark In Review before the merge into `main`, and when you could not run the tests say exactly which and why (tests and review are one step for now).
-- No new static module; no new hand-written UI markup when a component exists; no logic in controllers.
+- No new static module; no new hand-written UI markup when a component exists (check the [component registry](docs/guidelines/02-ui-and-components.md#component-registry-check-this-before-writing-any-markup) first; modify the component, never write it again); no logic in controllers.
 - Offline product: no CDN, no external call, no telemetry. Settings only in `env/*.env`, secrets only in `*.secrets.env`.
 - Schema only through new migrations (never edit an applied one). Stage specific files only (`git add <path>`, never `-A`).
 - Research before building, and a library before hand-written code (licence recorded).
