@@ -73,7 +73,7 @@ public sealed class SpikeController(IAntiforgery antiforgery) : Controller
     {
         var errors = string.Join(";", ModelState.Where(e => e.Value!.Errors.Count > 0).Select(e => $"{e.Key}={e.Value!.Errors[0].ErrorMessage}"));
         var inv = System.Globalization.CultureInfo.InvariantCulture;
-        return Content($"Quantity={m.Quantity}|OptionalCount={m.OptionalCount?.ToString(inv) ?? "null"}|Big={m.Big}|Price={m.Price.ToString(inv)}|OptionalPrice={m.OptionalPrice?.ToString(inv) ?? "null"}|Ratio={m.Ratio.ToString(inv)}|OptionalRatio={m.OptionalRatio?.ToString(inv) ?? "null"}|Due={m.Due?.ToString("yyyy-MM-dd HH:mm", inv) ?? "null"}|Day={m.Day?.ToString("yyyy-MM-dd", inv) ?? "null"}|errors={errors}");
+        return Content($"Quantity={m.Quantity.ToString(inv)}|OptionalCount={m.OptionalCount?.ToString(inv) ?? "null"}|Big={m.Big.ToString(inv)}|Price={m.Price.ToString(inv)}|OptionalPrice={m.OptionalPrice?.ToString(inv) ?? "null"}|Ratio={m.Ratio.ToString(inv)}|OptionalRatio={m.OptionalRatio?.ToString(inv) ?? "null"}|Due={m.Due?.ToString("yyyy-MM-dd HH:mm", inv) ?? "null"}|Day={m.Day?.ToString("yyyy-MM-dd", inv) ?? "null"}|errors={errors}");
     }
 
     public static int RowCount => Rows;

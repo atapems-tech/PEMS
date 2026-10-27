@@ -90,6 +90,60 @@ public sealed class PemsInputBindingTests(SpikeHost host) : IClassFixture<SpikeH
         Assert.Equal("1234", r["Big"]);
     }
 
+    // ---- edges that every page can hit (SCRUM-421 QA line 9): same behaviour in English and Persian
+    [Theory]
+    [InlineData("")]
+    [InlineData(Fa)]
+    public async Task Negative_numbers_signs_and_exponents_bind(string query)
+    {
+        var r = await PostTypedAsync(query, new Dictionary<string, string>
+            { ["Quantity"] = "-5", ["Big"] = "+7", ["Price"] = "-12.5", ["Ratio"] = "-3.5e2", ["OptionalPrice"] = "-0.01" });
+        Assert.Equal("", r["errors"]);
+        Assert.Equal("-5", r["Quantity"]);
+        Assert.Equal("7", r["Big"]);
+        Assert.Equal("-12.5", r["Price"]);
+        Assert.Equal("-350", r["Ratio"]);
+        Assert.Equal("-0.01", r["OptionalPrice"]);
+    }
+
+    [Fact]
+    public async Task Persian_negative_numbers_bind()
+    {
+        var r = await PostTypedAsync(Fa, new Dictionary<string, string> { ["Quantity"] = "-۵", ["Price"] = "-۱۲٫۵" });
+        Assert.Equal("", r["errors"]);
+        Assert.Equal("-5", r["Quantity"]);
+        Assert.Equal("-12.5", r["Price"]);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(Fa)]
+    public async Task A_latin_thousands_comma_is_refused_exactly_as_before(string query)
+    {
+        // The built-in converters do not accept a thousands separator for integers or decimals; the binder must not start to.
+        var r = await PostTypedAsync(query, new Dictionary<string, string> { ["Quantity"] = "1,234", ["Price"] = "1,234.5" });
+        Assert.Contains("Quantity=The value '1,234' is not valid for Quantity.", r["errors"]);
+        Assert.Contains("Price=The value '1,234.5' is not valid for Price.", r["errors"]);
+    }
+
+    [Fact]
+    public async Task Surrounding_spaces_are_ignored_and_inner_spaces_are_not()
+    {
+        var r = await PostTypedAsync("", new Dictionary<string, string> { ["Quantity"] = " 5 ", ["Price"] = "1 2" });
+        Assert.Equal("5", r["Quantity"]);
+        Assert.Contains("Price=The value '1 2' is not valid for Price.", r["errors"]);
+    }
+
+    [Fact]
+    public async Task A_value_that_was_not_posted_leaves_the_property_untouched()
+    {
+        var r = await PostTypedAsync(Fa, new Dictionary<string, string> { ["Quantity"] = "3" });          // everything else missing
+        Assert.Equal("", r["errors"]);
+        Assert.Equal("null", r["OptionalCount"]);
+        Assert.Equal("0", r["Price"]);
+        Assert.Equal("null", r["Due"]);
+    }
+
     // ---- garbage is still garbage, with MVC's own message
     [Theory]
     [InlineData("", "abc")]
