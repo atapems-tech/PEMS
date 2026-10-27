@@ -55,7 +55,7 @@ public sealed class SpikeTests(SpikeHost host, ITestOutputHelper output) : IClas
         var response = await host.PostFormAsync("/b/form", token, cookie,
             new Dictionary<string, string> { ["Name"] = "PT-0001", ["Quantity"] = "5", ["Due"] = "2026-10-27", ["Active"] = "true" },
             file: new byte[1234]);
-        Assert.Equal("saved:PT-0001:5:2026-10-27:True:1234", await response.Content.ReadAsStringAsync());
+        Assert.Equal("saved:PT-0001:5:2026-10-27:True:1234:0", await response.Content.ReadAsStringAsync());
     }
 
     // ---- antiforgery

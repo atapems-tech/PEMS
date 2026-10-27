@@ -12,6 +12,7 @@ public sealed class SpikeModel
     [Range(1, 100)] public int Quantity { get; set; }
     public DateTime? Due { get; set; }
     public bool Active { get; set; }
+    public decimal Price { get; set; }
     public IFormFile? Attachment { get; set; }
 }
 
@@ -36,7 +37,7 @@ public sealed class SpikeController(IAntiforgery antiforgery) : Controller
     public IActionResult FormPost(SpikeModel model)
     {
         if (!ModelState.IsValid) return View("Form", model);
-        return Content($"saved:{model.Name}:{model.Quantity}:{model.Due:yyyy-MM-dd}:{model.Active}:{model.Attachment?.Length}");
+        return Content($"saved:{model.Name}:{model.Quantity}:{model.Due:yyyy-MM-dd}:{model.Active}:{model.Attachment?.Length}:{model.Price}");
     }
 
     // Form rendered entirely from a FormDefinition; the antiforgery token is passed in as a parameter
