@@ -3350,4 +3350,5 @@
   <data name="Lic_Fail_NoLicenceInArchive" xml:space="preserve"><value>فایل zip مجوزی ندارد.</value></data>
   <data name="Lic_Fail_SealInvalid" xml:space="preserve"><value>مهر نصب وجود ندارد یا نامعتبر است. ابتدا یک درخواست دانلود کنید.</value></data>
   <data name="Licence" xml:space="preserve"><value>مجوز</value></data>
+  <data name="Password_Reused" xml:space="preserve"><value>رمز عبور جدید باید با رمز فعلی و {0} رمز قبلی شما متفاوت باشد.</value></data>
 </root>
