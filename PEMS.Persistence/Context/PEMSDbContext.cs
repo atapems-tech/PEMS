@@ -43,6 +43,8 @@ public class PEMSDbContext
 
     public DbSet<AuditLog> AuditLogs { get; set; }
     public DbSet<DatabaseUpdateRun> DatabaseUpdateRuns { get; set; }
+    public DbSet<LicenseSealRecord> LicenseSeals { get; set; }
+    public DbSet<LicenseEventRecord> LicenseEvents { get; set; }
     public DbSet<RolePermission> RolePermissions { get; set; }
 
     // طبق سند RBAC-ABAC Authorization Architecture (فاز ۱): مدل داده‌ی هسته‌ی مجوزدهی عمومی -

@@ -8698,6 +8698,56 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("LetterViewLogs");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.LicenseEventRecord", b =>
+                {
+                    b.Property<long>("Seq")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("DataHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("EntryHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("PrevHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<DateTime>("UtcAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Seq");
+
+                    b.ToTable("LicenseEvent", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.LicenseSealRecord", b =>
+                {
+                    b.Property<int>("LicenseSealRecordId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Bundle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("LicenseSealRecordId");
+
+                    b.ToTable("LicenseSeal", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.MDBDocument", b =>
                 {
                     b.Property<int>("MDBDocumentId")

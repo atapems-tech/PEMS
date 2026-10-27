@@ -53,6 +53,7 @@
     <ProjectReference Include="..\PEMS.AI\PEMS.AI.csproj" />
     <ProjectReference Include="..\PEMS.Application\PEMS.Application.csproj" />
     <ProjectReference Include="..\PEMS.Infrastructure\PEMS.Infrastructure.csproj" />
+    <ProjectReference Include="..\PEMS.Licensing\PEMS.Licensing.csproj" />
     <ProjectReference Include="..\PEMS.Persistence\PEMS.Persistence.csproj" />
     <ProjectReference Include="..\PEMS.Migrations\PEMS.Migrations.csproj" />
     <ProjectReference Include="..\PEMS.Shared\PEMS.Shared.csproj" />
