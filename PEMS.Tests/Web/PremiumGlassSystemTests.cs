@@ -14,6 +14,7 @@ public class PremiumGlassSystemTests
     private static string Root() => Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Here())!, "..", ".."));
     private static string Here([CallerFilePath] string p = "") => p;
     private static string Web(params string[] parts) => File.ReadAllText(Path.Combine(new[] { Root(), "PEMS.Web" }.Concat(parts).ToArray()));
+    private static string Ui(params string[] parts) => File.ReadAllText(Path.Combine(new[] { Root(), "PEMS.UI" }.Concat(parts).ToArray()));   // shared partials moved to PEMS.UI (SCRUM-29)
 
     [Fact]
     public void Layout_LoadsGlassLayer_AfterSiteCss_AndLoadingOverlayPartial()
@@ -116,7 +117,7 @@ public class PremiumGlassSystemTests
     [Fact]
     public void LoadingOverlayPartial_Exists_AndUsesPathLengthNormalizedTrace()
     {
-        var partial = Web("Views", "Shared", "_PemsLoadingOverlay.cshtml");
+        var partial = Ui("Views", "Shared", "_PemsLoadingOverlay.cshtml");
         Assert.Contains("pemsGlobalLoading", partial);
         Assert.Contains("pathLength=\"100\"", partial);
         Assert.Contains("hidden", partial);
