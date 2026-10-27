@@ -2571,4 +2571,41 @@
   <data name="Lp_ResetAll" xml:space="preserve"><value>Reset all</value></data>
   <data name="Nav_ProcurementSupplyChain" xml:space="preserve"><value>Procurement &amp; Supply Chain</value></data>
   <data name="Nav_Proc_Purchasing" xml:space="preserve"><value>Purchasing</value></data>
+  <data name="Num_Title" xml:space="preserve"><value>Document numbering</value></data>
+  <data name="Num_Intro" xml:space="preserve"><value>Procurement documents get their number automatically on save, from the pattern of their type. A change affects new documents only; existing numbers never change.</value></data>
+  <data name="Num_Tokens" xml:space="preserve"><value>Tokens: year ({YYYY}, {YY}), project code, discipline code, counter ({SEQ}, required once):</value></data>
+  <data name="Num_DocumentType" xml:space="preserve"><value>Document</value></data>
+  <data name="Num_Pattern" xml:space="preserve"><value>Pattern</value></data>
+  <data name="Num_Pad" xml:space="preserve"><value>Counter digits</value></data>
+  <data name="Num_Calendar" xml:space="preserve"><value>Year calendar</value></data>
+  <data name="Num_Reset" xml:space="preserve"><value>Counter restarts</value></data>
+  <data name="Num_AllowManual" xml:space="preserve"><value>Manual number allowed</value></data>
+  <data name="Num_Preview" xml:space="preserve"><value>Next number</value></data>
+  <data name="Num_Version" xml:space="preserve"><value>Version</value></data>
+  <data name="Num_Footnote" xml:space="preserve"><value>The counter is separate for each year (when it restarts yearly) and for each project and discipline used in the pattern. A number that already exists is skipped. The preview shows PRJ and MEC as sample codes while you type.</value></data>
+  <data name="Num_Saved" xml:space="preserve"><value>Numbering pattern saved.</value></data>
+  <data name="Num_Err_PatternRequired" xml:space="preserve"><value>Enter a pattern.</value></data>
+  <data name="Num_Err_PatternTooLong" xml:space="preserve"><value>The pattern is too long (60 characters at most).</value></data>
+  <data name="Num_Err_UnknownToken" xml:space="preserve"><value>The pattern has an unknown token. Use {YYYY}, {YY}, {PROJECT}, {DISC} and {SEQ}.</value></data>
+  <data name="Num_Err_SeqOnce" xml:space="preserve"><value>The pattern must contain {SEQ} exactly once.</value></data>
+  <data name="Num_Err_Literal" xml:space="preserve"><value>Outside the tokens, use only Latin letters, digits, dash, underscore and dot.</value></data>
+  <data name="Num_Err_Pad" xml:space="preserve"><value>Counter digits must be between 1 and 8.</value></data>
+  <data name="Num_Err_Calendar" xml:space="preserve"><value>Choose a calendar.</value></data>
+  <data name="Num_Err_Reset" xml:space="preserve"><value>Choose when the counter restarts.</value></data>
+  <data name="Num_Err_YearlyNeedsYear" xml:space="preserve"><value>A counter that restarts every year needs {YYYY} or {YY} in the pattern, otherwise numbers would repeat.</value></data>
+  <data name="Num_Err_DocumentType" xml:space="preserve"><value>Unknown document type.</value></data>
+  <data name="Num_Err_Concurrency" xml:space="preserve"><value>Someone else changed this pattern meanwhile. Reload the page and try again.</value></data>
+  <data name="Num_Err_Network" xml:space="preserve"><value>The preview could not be loaded.</value></data>
+  <data name="Num_Doc_MaterialRequisition" xml:space="preserve"><value>Material requisition (MR)</value></data>
+  <data name="Num_Doc_ProcurementPackage" xml:space="preserve"><value>Procurement package</value></data>
+  <data name="Num_Doc_Tender" xml:space="preserve"><value>Tender</value></data>
+  <data name="Num_Doc_Bid" xml:space="preserve"><value>Bid</value></data>
+  <data name="Num_Doc_PurchaseOrder" xml:space="preserve"><value>Purchase order</value></data>
+  <data name="Num_Doc_Contract" xml:space="preserve"><value>Contract</value></data>
+  <data name="Num_Cal_Jalali" xml:space="preserve"><value>Solar Hijri (Jalali)</value></data>
+  <data name="Num_Cal_Gregorian" xml:space="preserve"><value>Gregorian</value></data>
+  <data name="Num_Reset_Never" xml:space="preserve"><value>Never</value></data>
+  <data name="Num_Reset_Yearly" xml:space="preserve"><value>Every year</value></data>
+  <data name="Num_HintAuto" xml:space="preserve"><value>Assigned automatically on save; the next number is shown.</value></data>
+  <data name="Num_HintManual" xml:space="preserve"><value>Leave empty for the automatic number, or enter your own unique number.</value></data>
 </root>

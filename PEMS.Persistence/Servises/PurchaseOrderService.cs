@@ -10,9 +10,13 @@ public class PurchaseOrderService : IPurchaseOrderService
 {
     private readonly PEMSDbContext _context;
 
-    public PurchaseOrderService(PEMSDbContext context)
+    private readonly INumberingService _numbering;
+
+    // SCRUM-40: شماره‌گذاری اختیاری در سازنده تا تست‌های تک‌پارامتری سازگار بمانند؛ DI آن را می‌دهد
+    public PurchaseOrderService(PEMSDbContext context, INumberingService? numbering = null)
     {
         _context = context;
+        _numbering = numbering ?? new NumberingService(context);
     }
 
     public async Task<List<PurchaseOrderDto>> GetAllAsync()
@@ -51,7 +55,8 @@ public class PurchaseOrderService : IPurchaseOrderService
     {
         // P0 / شناسه‌ها: شماره‌ی PO دستی بود، بدون اعتبارسنجی و بدون یکتایی (ایندکس یکتا نیازمند Migration جداگانه است و
         // این‌جا اضافه نشده). تا آن زمان، بررسی در لایه‌ی سرویس انجام می‌شود (بدون محافظ در برابر رقابت هم‌زمان دقیق).
-        var normalizedNumber = poNumber?.Trim() ?? string.Empty;
+        // SCRUM-40: شماره خودکار از الگوی مدیر (شماره‌ی واردشده فقط اگر الگو ورود دستی را مجاز کرده باشد). مسیر Import جداست و دست نمی‌خورد.
+        var normalizedNumber = await _numbering.ResolveNumberAsync("PurchaseOrder", poNumber, projectId);
         if (normalizedNumber.Length == 0)
             throw new InvalidOperationException("شماره‌ی سفارش خرید الزامی است.");
         if (value.HasValue && value.Value < 0)

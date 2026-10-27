@@ -3358,4 +3358,41 @@
   <data name="Lp_ResetAll" xml:space="preserve"><value>بازنشانی همه</value></data>
   <data name="Nav_ProcurementSupplyChain" xml:space="preserve"><value>تدارکات و زنجیره تأمین</value></data>
   <data name="Nav_Proc_Purchasing" xml:space="preserve"><value>خرید</value></data>
+  <data name="Num_Title" xml:space="preserve"><value>شماره‌گذاری اسناد</value></data>
+  <data name="Num_Intro" xml:space="preserve"><value>اسناد تدارکات هنگام ثبت، شماره را خودکار از الگوی نوع خود می‌گیرند. تغییر الگو فقط روی اسناد تازه اثر دارد و شماره‌های موجود هرگز عوض نمی‌شوند.</value></data>
+  <data name="Num_Tokens" xml:space="preserve"><value>توکن‌ها: سال ({YYYY}، {YY})، کد پروژه، کد دیسیپلین، شمارنده ({SEQ}، یک بار الزامی):</value></data>
+  <data name="Num_DocumentType" xml:space="preserve"><value>سند</value></data>
+  <data name="Num_Pattern" xml:space="preserve"><value>الگو</value></data>
+  <data name="Num_Pad" xml:space="preserve"><value>ارقام شمارنده</value></data>
+  <data name="Num_Calendar" xml:space="preserve"><value>تقویم سال</value></data>
+  <data name="Num_Reset" xml:space="preserve"><value>شروع دوباره‌ی شمارنده</value></data>
+  <data name="Num_AllowManual" xml:space="preserve"><value>ورود دستی مجاز</value></data>
+  <data name="Num_Preview" xml:space="preserve"><value>شماره‌ی بعدی</value></data>
+  <data name="Num_Version" xml:space="preserve"><value>نسخه</value></data>
+  <data name="Num_Footnote" xml:space="preserve"><value>شمارنده برای هر سال (اگر سالانه از نو شروع شود) و برای هر پروژه و دیسیپلینی که در الگو آمده جداست. شماره‌ای که از قبل وجود دارد رد می‌شود. هنگام تایپ، پیش‌نمایش کدهای نمونه‌ی PRJ و MEC را نشان می‌دهد.</value></data>
+  <data name="Num_Saved" xml:space="preserve"><value>الگوی شماره‌گذاری ذخیره شد.</value></data>
+  <data name="Num_Err_PatternRequired" xml:space="preserve"><value>الگو را وارد کنید.</value></data>
+  <data name="Num_Err_PatternTooLong" xml:space="preserve"><value>الگو بیش از حد طولانی است (حداکثر ۶۰ نویسه).</value></data>
+  <data name="Num_Err_UnknownToken" xml:space="preserve"><value>الگو توکن ناشناخته دارد. از {YYYY}، {YY}، {PROJECT}، {DISC} و {SEQ} استفاده کنید.</value></data>
+  <data name="Num_Err_SeqOnce" xml:space="preserve"><value>الگو باید دقیقاً یک {SEQ} داشته باشد.</value></data>
+  <data name="Num_Err_Literal" xml:space="preserve"><value>بیرون از توکن‌ها فقط حروف لاتین، رقم، خط تیره، زیرخط و نقطه مجاز است.</value></data>
+  <data name="Num_Err_Pad" xml:space="preserve"><value>ارقام شمارنده باید بین ۱ و ۸ باشد.</value></data>
+  <data name="Num_Err_Calendar" xml:space="preserve"><value>تقویم را انتخاب کنید.</value></data>
+  <data name="Num_Err_Reset" xml:space="preserve"><value>زمان شروع دوباره‌ی شمارنده را انتخاب کنید.</value></data>
+  <data name="Num_Err_YearlyNeedsYear" xml:space="preserve"><value>شمارنده‌ای که هر سال از نو شروع می‌شود به {YYYY} یا {YY} در الگو نیاز دارد، وگرنه شماره‌ها تکرار می‌شوند.</value></data>
+  <data name="Num_Err_DocumentType" xml:space="preserve"><value>نوع سند ناشناخته است.</value></data>
+  <data name="Num_Err_Concurrency" xml:space="preserve"><value>کاربر دیگری هم‌زمان این الگو را تغییر داد. صفحه را دوباره باز کنید و دوباره امتحان کنید.</value></data>
+  <data name="Num_Err_Network" xml:space="preserve"><value>پیش‌نمایش بارگذاری نشد.</value></data>
+  <data name="Num_Doc_MaterialRequisition" xml:space="preserve"><value>درخواست مواد (MR)</value></data>
+  <data name="Num_Doc_ProcurementPackage" xml:space="preserve"><value>پکیج خرید</value></data>
+  <data name="Num_Doc_Tender" xml:space="preserve"><value>مناقصه</value></data>
+  <data name="Num_Doc_Bid" xml:space="preserve"><value>پیشنهاد مناقصه</value></data>
+  <data name="Num_Doc_PurchaseOrder" xml:space="preserve"><value>سفارش خرید</value></data>
+  <data name="Num_Doc_Contract" xml:space="preserve"><value>قرارداد</value></data>
+  <data name="Num_Cal_Jalali" xml:space="preserve"><value>شمسی</value></data>
+  <data name="Num_Cal_Gregorian" xml:space="preserve"><value>میلادی</value></data>
+  <data name="Num_Reset_Never" xml:space="preserve"><value>هرگز</value></data>
+  <data name="Num_Reset_Yearly" xml:space="preserve"><value>هر سال</value></data>
+  <data name="Num_HintAuto" xml:space="preserve"><value>هنگام ثبت خودکار داده می‌شود؛ شماره‌ی بعدی نمایش داده شده است.</value></data>
+  <data name="Num_HintManual" xml:space="preserve"><value>برای شماره‌ی خودکار خالی بگذارید، یا شماره‌ی یکتای خود را وارد کنید.</value></data>
 </root>

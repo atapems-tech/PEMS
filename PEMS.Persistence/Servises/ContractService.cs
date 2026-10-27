@@ -13,12 +13,15 @@ public class ContractService : IContractService
     private readonly IAccessControlService? _accessControl;
     private readonly ILogger<ContractService>? _logger;
     private readonly ContractCreationScope _scope;
+    private readonly INumberingService _numbering;
 
     // P0.4: پارامترهای اضافه اختیاری‌اند تا سازنده‌ی تک‌پارامتری موجود (تست‌ها) سازگار بماند؛ DI همه را تأمین می‌کند. بدون IAccessControlService مسیر
     // CreateWithCreatorEventAsync بسته (Fail-Closed) است. lockTimeoutMs مهلت قفل‌های کاربردی (پیش‌فرض ۱۵ ثانیه، هم‌اندازه با مسیر مناقصه)؛ فقط تست‌ها کوتاهش می‌کنند.
-    public ContractService(PEMSDbContext context, IAccessControlService? accessControl = null, ILogger<ContractService>? logger = null, int lockTimeoutMs = 15000)
+    public ContractService(PEMSDbContext context, IAccessControlService? accessControl = null, ILogger<ContractService>? logger = null, int lockTimeoutMs = 15000,
+        INumberingService? numbering = null)
     {
         _context = context;
+        _numbering = numbering ?? new NumberingService(context);
         _accessControl = accessControl;
         _logger = logger;
         _scope = new ContractCreationScope(context, logger, lockTimeoutMs);
@@ -118,7 +121,8 @@ public class ContractService : IContractService
         decimal? value, DateTime? startDate, DateTime? endDate, bool requiresInspection, int? creatorUserId, string? ipAddress)
     {
         // P0 / شناسه‌ها: اعتبارسنجی بدون دیتابیس (شماره‌ی خالی، مبلغ منفی، بازه‌ی تاریخ نامعتبر)
-        contractNo = contractNo?.Trim() ?? string.Empty;
+        // SCRUM-40: شماره یک بار پیش از تلاش‌های Execution Strategy گرفته می‌شود تا تلاش مجدد همان شماره را ببیند
+        contractNo = await _numbering.ResolveNumberAsync("Contract", contractNo, projectId);
         if (contractNo.Length == 0)
             return new ContractCreateResult(false, "شماره‌ی قرارداد الزامی است.", null);
         if (value.HasValue && value.Value < 0)

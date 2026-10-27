@@ -3,6 +3,16 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-28 - Automatic numbering of procurement documents (SCRUM-40)
+
+### Added
+- Admin > Numbering: the system administrator sets the numbering pattern of each procurement document (MR, procurement package, tender, bid, purchase order, contract): tokens `{YYYY}` `{YY}` (Jalali or Gregorian year), `{PROJECT}`, `{DISC}`, `{SEQ}`, counter digits, yearly or no reset, active, manual entry allowed. Live preview, validation, a version per change (and the generic audit log).
+- New table `NumberingSchemes` (migration `NumberingSchemes`); a startup seeder adds an active Jalali yearly default for each type that has none (`MR-1405-0001`, `PP-…`, `TND-…`, `BID-…`, `PO-…`, `CT-…`).
+
+### Changed
+- Procurement package, MR, purchase order and contract numbers (also the contract from a winning bid) are assigned automatically on save; tender and bid numbers follow the pattern too. A typed number is kept only when the pattern allows manual entry; with the pattern switched off the form asks for the number as before. The atomic counter is separate per year/project/discipline as the pattern says, a number that already exists is skipped, existing numbers never change, imports keep their numbers.
+- The create forms show the next number (or the pattern shape when it depends on the project) with the `DocumentNumberField` view component.
+
 ## 2026-10-27 - Procurement & supply chain section in the sidebar (SCRUM-423)
 
 ### Changed
