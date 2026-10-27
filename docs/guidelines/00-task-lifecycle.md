@@ -72,6 +72,8 @@ Order (owner decision 2026-10-26): tests (if you can run them) -> PR -> **merge 
 A task whose *Done when* needs the owner's or a member's approval of a document gets that approval as the review of the PR; the merge follows the approval.
 If the QA check fails, the issue goes **back to To Do** with the label `qa-failed` and the defects listed in a comment (owner decision 2026-10-26); it keeps its assignee and its QA comments. Whoever takes it up again moves it to In Progress (section 2), the fix reaches `main` through a new branch and PR (fix forward), then it goes to In Review again.
 
+**The author does not wait for QA** (owner decision 2026-10-27). In Review is the hand-over: after the merge the author moves the issue to In Review with `qa-pending` and **goes on to the next task**. The QA check and the Done are done by someone else, at the end of the sprint if need be, once all sprint tasks are In Review. The author's only duty at the hand-over is an honest test note in the move comment: **"Tests: passed"** with the commands and counts, or **"Tests: not run / not done"** with the exact commands and the reason (no SQL Server, no browser, needs a real deploy, ...). The author never moves an issue to Done, not even when every test passed, and never keeps a task open waiting for a reviewer.
+
 **Move to In Review (conditional done)** only when **all** are true:
 
 - every item in *Done when* is met (check them one by one in your closing comment);

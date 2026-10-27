@@ -11,6 +11,8 @@ Instructions rules 13 (no Done without evidence) and 14 (a row whose Test Plan s
 `In Progress` -> author finishes, runs the tests if the session can, PR open -> **merge into `main`** -> **`In Review` + label `qa-pending`** (right after the merge) -> QA check (this chapter) ->
 `qa-passed`: `Done` | `qa-failed`: back to **`To Do`** with the defects listed (owner decision 2026-10-26); whoever takes it up moves it to In Progress, the fix goes through a new branch and PR to `main`, then In Review again.
 
+**Timing (owner decision 2026-10-27):** the author does not wait for this check. The author hands over with `In Review` + `qa-pending` and a test note ("Tests: passed" with counts, or "Tests: not run / not done" with the reason), then continues with the next task. The QA checks are run by someone else, as a block at the end of the sprint once all sprint tasks are In Review; Done comes only from that verdict.
+
 Labels: `qa-pending`, `qa-passed`, `qa-failed` (one at a time; the author sets `qa-pending` when moving to In Review after the merge, the tester replaces it).
 
 ## 1a. Entering and re-entering In Review (author's duty)
