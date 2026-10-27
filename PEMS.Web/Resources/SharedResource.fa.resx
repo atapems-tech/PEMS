@@ -3351,4 +3351,9 @@
   <data name="Lic_Fail_SealInvalid" xml:space="preserve"><value>مهر نصب وجود ندارد یا نامعتبر است. ابتدا یک درخواست دانلود کنید.</value></data>
   <data name="Licence" xml:space="preserve"><value>مجوز</value></data>
   <data name="Password_Reused" xml:space="preserve"><value>رمز عبور جدید باید با رمز فعلی و {0} رمز قبلی شما متفاوت باشد.</value></data>
+  <data name="Lp_Kpis" xml:space="preserve"><value>شمارش‌ها</value></data>
+  <data name="Lp_ApplyFilters" xml:space="preserve"><value>اعمال</value></data>
+  <data name="Lp_Total" xml:space="preserve"><value>کل</value></data>
+  <data name="Lp_RemoveFilter" xml:space="preserve"><value>حذف فیلتر</value></data>
+  <data name="Lp_ResetAll" xml:space="preserve"><value>بازنشانی همه</value></data>
 </root>

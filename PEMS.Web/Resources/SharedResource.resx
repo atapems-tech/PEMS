@@ -2564,4 +2564,9 @@
   <data name="Lic_Fail_SealInvalid" xml:space="preserve"><value>The install seal is missing or invalid. Download a request first.</value></data>
   <data name="Licence" xml:space="preserve"><value>Licence</value></data>
   <data name="Password_Reused" xml:space="preserve"><value>The new password must differ from your current password and your last {0} passwords.</value></data>
+  <data name="Lp_Kpis" xml:space="preserve"><value>Summary counts</value></data>
+  <data name="Lp_ApplyFilters" xml:space="preserve"><value>Apply</value></data>
+  <data name="Lp_Total" xml:space="preserve"><value>Total</value></data>
+  <data name="Lp_RemoveFilter" xml:space="preserve"><value>Remove filter</value></data>
+  <data name="Lp_ResetAll" xml:space="preserve"><value>Reset all</value></data>
 </root>

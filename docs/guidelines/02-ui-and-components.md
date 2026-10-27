@@ -39,6 +39,7 @@ Add a row in the same PR as every new component or parameter.
 | `PemsDescriptorHost` | render any registered component by key from data (BPMS, previews) | `Key`, `Parameters` | spike |
 | `_KpiCard` partial | KPI tile (`<partial name="_KpiCard" model="kpi" />`) | `KpiCardViewModel` (Title, Count, IconClass, ColorClass, Url, Hint) | **ready**, lives in `PEMS.UI/Views/Shared` |
 | `_PemsLoadingOverlay` partial | global loading overlay (in the layout; driven by `pems-loading.js`) | `ViewData["LoadingLabel"]` | **ready**, lives in `PEMS.UI/Views/Shared` |
+| `<pems-list-page>` and `<pems-list-*>` tag helpers (SCRUM-337) | **every record list page**: full-window frame, one icon toolbar (search over the title, filters dropdown with badge, KPIs on demand, Excel, reset columns, New), chips, scrolling table, empty state, pager slot. The page keeps its own columns, filters, rows, actions and permissions | `PemsListTexts` (localised once by the host: `ListPageTexts.From(Localizer)`); page texts as attributes; CSS/JS `_content/PEMS.UI/pems-list.css` / `pems-list.js` | **ready** (wave 0: Engineering Documents, VDR); usage and waves: [LIST_PAGE_COMPONENT.md](../design/LIST_PAGE_COMPONENT.md) |
 
 Still in `PEMS.Web/Views/Shared` (they need `PEMS.Web`'s localisation resource, so they move after PEMS.UI has its own localisation, SCRUM-29): `_PageHeader`, `_Pagination`. Planned and not yet built: modal, tabs, stepper, empty/error states, data grid (SCRUM-352 and following).
 
