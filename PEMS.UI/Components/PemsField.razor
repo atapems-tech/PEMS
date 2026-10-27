@@ -1,18 +1,27 @@
 @namespace PEMS.UI.Components
-@{ var state = FieldState.From(Descriptor, Error); }
+@inject IPemsLocale Locale
+@{
+    var hasError = Error is { IsEmpty: false };
+    var state = FieldState.From(Descriptor, hasError);
+    var label = Locale.Text(Descriptor.Label);
+    var help = Locale.Text(Descriptor.HelpText);
+    var error = Locale.Text(Error);
+    var placeholder = Locale.Text(Descriptor.Placeholder);
+    string? placeholderAttr = placeholder.Length > 0 ? placeholder : null;
+}
 <div class="pems-field">
     @if (Descriptor.Kind == FieldKind.Checkbox)
     {
         <label class="pems-field__check">
             <input type="checkbox" id="@state.Id" name="@Descriptor.Name" value="true" checked="@(Value == "true")"
                    disabled="@Descriptor.ReadOnly" aria-describedby="@state.DescribedBy" aria-invalid="@(state.Invalid ? "true" : null)" />
-            @Descriptor.Label
+            @label
         </label>
     }
     else
     {
         <label class="pems-field__label" for="@state.Id">
-            @Descriptor.Label
+            @label
             @if (Descriptor.Required)
             {
                 <span class="pems-field__required" aria-hidden="true">*</span>
@@ -22,7 +31,7 @@
         {
             case FieldKind.TextArea:
                 <textarea id="@state.Id" name="@Descriptor.Name" class="@state.InputCss" maxlength="@Descriptor.MaxLength"
-                          required="@Descriptor.Required" readonly="@Descriptor.ReadOnly"
+                          placeholder="@placeholderAttr" required="@Descriptor.Required" readonly="@Descriptor.ReadOnly"
                           aria-describedby="@state.DescribedBy" aria-invalid="@(state.Invalid ? "true" : null)">@Value</textarea>
                 break;
             case FieldKind.Select:
@@ -30,7 +39,7 @@
                         disabled="@Descriptor.ReadOnly" aria-describedby="@state.DescribedBy" aria-invalid="@(state.Invalid ? "true" : null)">
                     @foreach (var o in Descriptor.Options ?? [])
                     {
-                        <option value="@o.Value" selected="@(o.Value == Value)">@o.Label</option>
+                        <option value="@o.Value" selected="@(o.Value == Value)">@Locale.Text(o.Label)</option>
                     }
                 </select>
                 break;
@@ -40,24 +49,25 @@
                 break;
             default:
                 <input type="@InputType" id="@state.Id" name="@Descriptor.Name" class="@state.InputCss" value="@Value"
-                       maxlength="@Descriptor.MaxLength" required="@Descriptor.Required" readonly="@Descriptor.ReadOnly"
+                       maxlength="@Descriptor.MaxLength" placeholder="@placeholderAttr" required="@Descriptor.Required" readonly="@Descriptor.ReadOnly"
                        aria-describedby="@state.DescribedBy" aria-invalid="@(state.Invalid ? "true" : null)" />
                 break;
         }
     }
-    @if (Descriptor.HelpText is not null)
+    @if (help.Length > 0)
     {
-        <div class="pems-field__help" id="@state.HelpId">@Descriptor.HelpText</div>
+        <div class="pems-field__help" id="@state.HelpId">@help</div>
     }
-    @if (Error is not null)
+    @if (hasError)
     {
-        <div class="pems-field__error" id="@state.ErrorId" role="alert">@Error</div>
+        <div class="pems-field__error" id="@state.ErrorId" role="alert">@error</div>
     }
 </div>
 @code {
     [Parameter, EditorRequired] public FieldDescriptor Descriptor { get; set; } = default!;
+    /// <summary>The value as an HTML input needs it (data, never translated; dates as yyyy-MM-dd).</summary>
     [Parameter] public string? Value { get; set; }
-    [Parameter] public string? Error { get; set; }
+    [Parameter] public TranslatableText? Error { get; set; }
 
     private string InputType => Descriptor.Kind switch
     {

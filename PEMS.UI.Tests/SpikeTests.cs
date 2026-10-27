@@ -192,7 +192,7 @@ public sealed class SpikeTests(SpikeHost host, ITestOutputHelper output) : IClas
         Assert.True(button.AsLink);
         Assert.False(ButtonState.From(new ButtonOptions("Save", Href: "/x", Disabled: true)).AsLink);
 
-        var field = FieldState.From(new FieldDescriptor("Items[0].Name", "Name", HelpText: "h"), error: "bad");
+        var field = FieldState.From(new FieldDescriptor("Items[0].Name", "Name", HelpText: "h"), hasError: true);
         Assert.Equal("f-Items-0--Name", field.Id);
         Assert.Equal("f-Items-0--Name-error", field.DescribedBy);
         Assert.True(field.Invalid);

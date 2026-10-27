@@ -14,8 +14,8 @@ public static class SpikeData
         new ColumnDescriptor("owner", "Owner")
     ]);
 
-    public static IReadOnlyList<IReadOnlyDictionary<string, string?>> Rows(int count) =>
-        Enumerable.Range(1, count).Select(i => (IReadOnlyDictionary<string, string?>)new Dictionary<string, string?>
+    public static IReadOnlyList<IReadOnlyDictionary<string, object?>> Rows(int count) =>
+        Enumerable.Range(1, count).Select(i => (IReadOnlyDictionary<string, object?>)new Dictionary<string, object?>
         {
             ["tag"] = $"PT-{i:0000}",
             ["name"] = $"Pressure transmitter {i}",
@@ -32,5 +32,5 @@ public static class SpikeData
         new FieldDescriptor("Due", "Due date", FieldKind.Date),
         new FieldDescriptor("Active", "Active", FieldKind.Checkbox),
         new FieldDescriptor("Attachment", "Datasheet", FieldKind.File)
-    ]);
+    ], "Save");
 }
