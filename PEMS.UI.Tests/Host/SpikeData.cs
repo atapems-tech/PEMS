@@ -4,15 +4,20 @@ namespace PEMS.UI.Tests.Host;
 
 public static class SpikeData
 {
-    public static ViewDescriptor Table { get; } = new("spike-table", "Instruments",
-    [
-        new ColumnDescriptor("tag", "Tag"),
-        new ColumnDescriptor("name", "Name"),
-        new ColumnDescriptor("area", "Area"),
-        new ColumnDescriptor("status", "Status", ColumnAlignment.Center),
-        new ColumnDescriptor("range", "Range", ColumnAlignment.End),
-        new ColumnDescriptor("owner", "Owner")
-    ]);
+    public static ViewDescriptor Table { get; } = new()
+    {
+        Id = "spike-table",
+        Title = "Instruments",
+        Columns =
+        [
+        new ColumnDescriptor { Key = "tag", Header = "Tag" },
+        new ColumnDescriptor { Key = "name", Header = "Name" },
+        new ColumnDescriptor { Key = "area", Header = "Area" },
+        new ColumnDescriptor { Key = "status", Header = "Status", Alignment = ColumnAlignment.Center },
+        new ColumnDescriptor { Key = "range", Header = "Range", Alignment = ColumnAlignment.End },
+        new ColumnDescriptor { Key = "owner", Header = "Owner" }
+        ]
+    };
 
     public static IReadOnlyList<IReadOnlyDictionary<string, object?>> Rows(int count) =>
         Enumerable.Range(1, count).Select(i => (IReadOnlyDictionary<string, object?>)new Dictionary<string, object?>
@@ -25,12 +30,19 @@ public static class SpikeData
             ["owner"] = $"Team {i % 9}"
         }).ToList();
 
-    public static FormDefinition Form { get; } = new("spike-form", "Register instrument", "/b/descriptor-form",
-    [
-        new FieldDescriptor("Name", "Name", Required: true, MaxLength: 50, HelpText: "Unique tag name"),
-        new FieldDescriptor("Quantity", "Quantity", FieldKind.Number, Required: true),
-        new FieldDescriptor("Due", "Due date", FieldKind.Date),
-        new FieldDescriptor("Active", "Active", FieldKind.Checkbox),
-        new FieldDescriptor("Attachment", "Datasheet", FieldKind.File)
-    ], "Save");
+    public static FormDefinition Form { get; } = new()
+    {
+        Id = "spike-form",
+        Title = "Register instrument",
+        Action = "/b/descriptor-form",
+        SubmitLabel = "Save",
+        Fields =
+        [
+        new FieldDescriptor { Name = "Name", Label = "Name", Required = true, MaxLength = 50, HelpText = "Unique tag name" },
+        new FieldDescriptor { Name = "Quantity", Label = "Quantity", Kind = FieldKind.Number, Required = true },
+        new FieldDescriptor { Name = "Due", Label = "Due date", Kind = FieldKind.Date },
+        new FieldDescriptor { Name = "Active", Label = "Active", Kind = FieldKind.Checkbox },
+        new FieldDescriptor { Name = "Attachment", Label = "Datasheet", Kind = FieldKind.File }
+        ]
+    };
 }

@@ -90,7 +90,7 @@ public sealed class DataEntryUnaffectedTests(SpikeHost host, ITestOutputHelper o
     {
         var provider = new ServiceCollection().AddPemsUi().BuildServiceProvider();
         var renderer = provider.CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>();
-        var view = new ViewDescriptor("v", "T", [new ColumnDescriptor("tag", "Tag"), new ColumnDescriptor("n", "N"), new ColumnDescriptor("d", "D")]);
+        var view = new ViewDescriptor { Id = "v", Title = "T", Columns = [new ColumnDescriptor { Key = "tag", Header = "Tag" }, new ColumnDescriptor { Key = "n", Header = "N" }, new ColumnDescriptor { Key = "d", Header = "D" }] };
         var rows = new List<IReadOnlyDictionary<string, object?>>
         {
             new Dictionary<string, object?> { ["tag"] = "PT-0001", ["n"] = "12.50", ["d"] = "2026-10-27" }       // text: shown exactly
@@ -108,7 +108,7 @@ public sealed class DataEntryUnaffectedTests(SpikeHost host, ITestOutputHelper o
         var provider = new ServiceCollection().AddPemsUi().BuildServiceProvider();
         var renderer = provider.CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>();
         async Task<string> Field(FieldKind kind, string value) => await renderer.RenderAsync("field", new Dictionary<string, object?>
-            { ["Descriptor"] = new FieldDescriptor("x", "X", kind), ["Value"] = value }, new CultureInfo("fa"));
+            { ["Descriptor"] = new FieldDescriptor { Name = "x", Label = "X", Kind = kind }, ["Value"] = value }, new CultureInfo("fa"));
         Has("value=\"1234.5\"", await Field(FieldKind.Number, "1234.5"));
         Has("value=\"2026-10-27\"", await Field(FieldKind.Date, "2026-10-27"));
         Has("value=\"PT-0001\"", await Field(FieldKind.Text, "PT-0001"));
@@ -119,7 +119,7 @@ public sealed class DataEntryUnaffectedTests(SpikeHost host, ITestOutputHelper o
     {
         var provider = new ServiceCollection().AddPemsUi().BuildServiceProvider();
         var renderer = provider.CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>();
-        var view = new ViewDescriptor("v", "T", [new ColumnDescriptor("d", "D"), new ColumnDescriptor("n", "N")]);
+        var view = new ViewDescriptor { Id = "v", Title = "T", Columns = [new ColumnDescriptor { Key = "d", Header = "D" }, new ColumnDescriptor { Key = "n", Header = "N" }] };
         var rows = new List<IReadOnlyDictionary<string, object?>>
             { new Dictionary<string, object?> { ["d"] = new DateOnly(2026, 10, 27), ["n"] = 1234 } };
         Task<string> Render(string c) => renderer.RenderAsync("table", new Dictionary<string, object?> { ["View"] = view, ["Rows"] = rows }, new CultureInfo(c));
