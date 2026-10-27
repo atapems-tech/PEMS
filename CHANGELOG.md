@@ -13,6 +13,24 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 - Engineering Documents and VDR lists are built from the component (same look and behaviour; about 80 lines less each, no page script).
 - The list styles and script moved into the component library: `PEMS.Web/wwwroot/css/pems-letter-index.css` -> `PEMS.UI/wwwroot/pems-list.css` (the Letter pages only changed the link), `pems-list-page.js` -> `PEMS.UI/wwwroot/pems-list.js` (now also wires the search autocomplete, column widths and reset-columns for every list page).
 
+## 2026-10-27 - Pagination footer moved into PEMS.UI (SCRUM-418)
+
+### Changed
+- The list pagination footer is now the component `_PemsPagination` in `PEMS.UI`; its texts are inputs (`PaginationTexts`). `_Pagination` in `PEMS.Web` stays as a thin adapter, so the 54 list pages are unchanged. The HTML output is byte-identical (8 golden cases, en and fa).
+
+## 2026-10-27 - Persian pages accept decimals and Persian digits (SCRUM-421)
+
+### Fixed
+- A decimal such as 12.5 posted by a number input, and Persian or Arabic-Indic digits typed by the user, are now accepted when the page language is Persian; one model binder (`PEMS.UI.Binding`) is registered for numeric and date types. English binding and MVC's error messages are unchanged. Known-issue tests became regression tests; ADR-0008, guideline chapter 02 and manual check M-19 updated.
+
+## 2026-10-27 - Bugs are normal tasks; gate works on Windows (SCRUM-422)
+
+### Changed
+- Guideline chapter 00 section 3a: a reported bug gets its own Jira issue and plan row first, a regression test, a PR and QA; chapter 07 and AGENTS.md point to it.
+
+### Fixed
+- `LiteralTextGateTests` no longer fails on Windows (CRLF) checkouts (fix merged in atapems-tech/PEMS#44).
+
 ## 2026-10-27 - Every module workflow editable in Workflow Management, guarded by module contracts (SCRUM-103)
 
 ### Added

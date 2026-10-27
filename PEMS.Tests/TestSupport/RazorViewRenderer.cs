@@ -31,6 +31,7 @@ public static class RazorViewRenderer
         services.AddSingleton<DiagnosticSource>(listener);
         services.AddLogging();
         services.AddLocalization();
+        PEMS.UI.ServiceCollectionExtensions.AddPemsUi(services);   // IPemsLocale etc., registered in Program.cs of the real app
         services.AddDataProtection().UseEphemeralDataProtectionProvider();
         services.AddControllersWithViews()
             .AddApplicationPart(controller.GetType().Assembly)
