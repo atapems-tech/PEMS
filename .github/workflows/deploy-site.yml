@@ -29,7 +29,18 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # SCRUM-413: the migration chain is applied to a real SQL Server (empty install, then upgrade from the previous release) before
+  # anything is built for upload, so a migration that fails on SQL Server stops the deploy instead of the site. No secrets, no deployment.
+  # Previous release = the commit the branch pointed to before this push; a new branch or a manual run falls back to origin/main.
+  migration-gate:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/migration-chain.yml
+    with:
+      base_ref: ${{ (github.event.before != '' && github.event.before != '0000000000000000000000000000000000000000') && github.event.before || 'origin/main' }}
+
   build-test-deploy:
+    needs: migration-gate
     runs-on: ubuntu-latest
     permissions:
       contents: write      # only to record the gate-pass tag (see 'Record that this exact tree passed the gate')

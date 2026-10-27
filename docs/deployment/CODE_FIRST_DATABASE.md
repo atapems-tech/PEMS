@@ -70,6 +70,7 @@ application does at start-up, on a throw-away SQL Server container (random passw
 2. **Upgrade**: apply the chain up to the last migration of the base ref (default `origin/main`, the previous release), then the rest, so the migrations of the change run on a database that already has the old schema.
 3. The model and the migrations still agree (no pending model changes).
 
+`deploy-site.yml` (staging and demo) runs it as its first job, so a failing chain blocks the upload; the base is the commit the branch had before the push (`origin/main` when unknown). When the base's newest migration is not in the build's chain (a rollback deploy of older code) the upgrade step is skipped with a warning and the install step still applies.
 A failure names the migration that was being applied. Run it from Actions > *PEMS Migration Chain Gate* > Run workflow (branch = the branch to
 check, `base_ref` = the previous release). It passes with no data; data-dependent upgrade tests from older releases remain
 plan row #262 (SCRUM-280). The same script runs on a developer machine with a local SQL Server:
