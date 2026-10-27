@@ -328,28 +328,15 @@ builder.Services.AddScoped<IWorkflowBusinessContextProvider, PEMS.Persistence.Wo
 
 // Phase 1 Hardening: نسخه‌بندی/Binding/اعتبارسنجی/رجیستری/مدل خواندنی. IWorkflowRuntime بدون تغییر امضا؛
 // پارامترهای اختیاری سازنده‌ی WorkflowRuntimeService از همین ثبت‌ها پر می‌شوند.
-builder.Services.AddSingleton<IWorkflowActionRegistry>(_ =>
-{
-    var registry = new WorkflowActionRegistry();
-    // اکشن‌های Legacy ماژول‌های موجود (فقط نام؛ بدون اجرای کد) تا Definition های Seed شده معتبر بمانند
-    var legacy = new (string Module, string[] Actions)[]
-    {
-        ("EngineeringDocument", new[] { "Issue" }),
-        ("MOC", new[] { "Assess", "Close" }),
-        ("TechnicalQuery", new[] { "Confirm", "Reopen", "Respond" }),
-        ("VendorDocument", new[] { "AC", "AP", "CO", "NC", "RE", "Issue" }),
-    };
-    foreach (var (module, actions) in legacy)
-        foreach (var a in actions)
-            registry.RegisterModuleAction(module, a, WorkflowActionKind.Outcome, "Legacy module action");
-    PEMS.Persistence.Workflow.WorkOrderWorkflow.Register(registry);   // Phase 3B: اکشن‌های ماژول WorkOrder (Hold, Comment)
-    return registry;
-});
+// legacy module action names live in PemsWorkflowContracts (one list for the app, the seeders and the tests)
+builder.Services.AddSingleton<IWorkflowActionRegistry>(_ => PEMS.Persistence.Workflow.PemsWorkflowContracts.CreateActionRegistry());
 // فیلدهای Fact ماژول‌ها (مثلاً Part Catalogue) به گرامر شرط‌ها اضافه می‌شود
 builder.Services.AddSingleton<IWorkflowConditionEvaluator>(_ => new WorkflowConditionEvaluator(PEMS.Persistence.Workflow.PartCatalogueWorkflow.Fields));
 builder.Services.AddSingleton<IWorkflowEventSink, NoOpWorkflowEventSink>();
 builder.Services.AddScoped<IWorkflowReferenceCatalog, PemsWorkflowReferenceCatalog>();
 builder.Services.AddScoped<IWorkflowAuthorizationHook, AccessControlWorkflowAuthorizationHook>();
+// SCRUM-103: what each module's code needs from its definition; the validator rejects a version that breaks it
+builder.Services.AddSingleton<IWorkflowModuleContractRegistry>(_ => PEMS.Persistence.Workflow.PemsWorkflowContracts.CreateRegistry());
 builder.Services.AddScoped<IWorkflowVersionValidator, WorkflowVersionValidator>();
 builder.Services.AddScoped<IWorkflowBindingService, WorkflowBindingService>();
 builder.Services.AddScoped<IWorkflowDefinitionService, WorkflowDefinitionService>();
@@ -979,6 +966,9 @@ using (var scope = app.Services.CreateScope())
 
     // طبق CMMS-10b: زنجیره‌ی تایید Permit to Work
     await PEMS.Persistence.Seed.PermitApprovalWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // SCRUM-103: explicit binding for every module workflow (after all workflow seeders), so Workflow Management can edit them
+    await PEMS.Persistence.Seed.WorkflowBindingBackfillSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق CMMS-10d: حد پذیرش پارامترهای گاز + قاعده‌ی مدت اعتبار تست گاز
     await PEMS.Persistence.Seed.GasTestSeeder.SeedAsync(scope.ServiceProvider);
