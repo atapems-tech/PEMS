@@ -26,6 +26,15 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 - `PEMS.UI.Abstractions` (descriptor contract), `PEMS.UI` (Razor class library: button, badge, skeleton, field, table, form, descriptor host, component registry, request-free renderer, `<pems-field>` Tag Helper facade, View Component for comparison) and `PEMS.UI.Tests` with an extension-pack fixture. Standalone: `PEMS.Web` does not reference them yet, so no page changes.
 - ADR-0007 (proposed): static Razor components with a Tag Helper facade, with the measured comparison.
 
+## 2026-10-27 - Offline PDF viewers and an external-URL check (SCRUM-20)
+
+### Changed
+- The PDF viewers of Engineering Documents and VDR load pdf.js 4.0.379 from `wwwroot/lib/pdfjs` through `wwwroot/js/pdfjs-loader.js` instead of cdnjs.cloudflare.com (the product is offline).
+
+### Added
+- `OfflineAssetsTests`: no view, component, script or stylesheet may reference an external host (XML namespaces and one placeholder text are allow-listed); `tools/UiAudit/pattern-audit.py` now exits with an error on a CDN reference.
+- README manual check M-17.
+
 ## 2026-10-27 - Migration chain gate (SCRUM-413)
 
 ### Added
