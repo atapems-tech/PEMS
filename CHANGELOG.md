@@ -11,6 +11,11 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - VDR list: same frame as Engineering Documents - full-page table, one icon toolbar, project/vendor/status filters in a dropdown with a count badge and chips, KPI chips and the vendor delay/risk view hidden until the KPI button is pressed (remembered per browser).
 
+## 2026-10-26 - Architecture decision log (SCRUM-14)
+
+### Added
+- `plan/adr`: ADR template, index and six accepted ADRs (hybrid storage, Razor + PEMS.UI library, code-first database, env/secrets files, licensing threat model and VM policy, demo/staging branch policy), linked from the docs that explain them.
+
 ## 2026-10-26 - Engineering Documents list with the correspondence look (SCRUM-408)
 
 ### Changed
