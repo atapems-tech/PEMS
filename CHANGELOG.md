@@ -6,7 +6,7 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ## 2026-10-27 - Component texts are inputs (SCRUM-416)
 
 ### Added
-- `TranslatableText` (JSON map of language slug to text, fallback chain, completeness check), `IPemsLocale` with the default `PemsLocale` (Jalali dates for Persian, number formatting, options), `PemsJson`, and a culture parameter on the request-free renderer. ADR-0008.
+- `TranslatableText` (JSON map of language slug to text, fallback chain, completeness check), `IPemsLocale` with the default `PemsLocale` (Jalali dates and Persian digits for Persian cultures, ISO dates otherwise, number formatting, options), `PemsJson`, and a culture parameter on the request-free renderer. ADR-0008.
 
 ### Changed
 - `PEMS.UI` descriptors and components take `TranslatableText` for every user-visible text and hold none; table rows carry values of any type formatted by the locale. A test fails when a literal word appears in a component. `PEMS.Web` pages are unchanged.
@@ -38,7 +38,7 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 ### Added
 - A new password must differ from the current one and from the last N (`Authentication__Password__HistoryCount`, default 5, 0 = off) on every path that sets a password: forced first change, voluntary change, administrator reset, second-administrator reset, recovery code and break-glass. Replaced hashes are kept in the new table `PasswordHistory` (migration `PasswordHistory`, hashes only). Message in fa and en.
-- README manual check M-18; `PasswordHistoryTests`.
+- README manual check M-19; `PasswordHistoryTests`.
 
 ## 2026-10-27 - Offline PDF viewers and an external-URL check (SCRUM-20)
 

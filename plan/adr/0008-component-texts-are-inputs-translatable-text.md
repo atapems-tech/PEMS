@@ -31,7 +31,7 @@ texts such a form shows (labels, placeholders, help, notes, errors, empty and lo
    - `MissingLanguages(required)` tells a designer what is still untranslated (the neutral text satisfies every language).
 3. **Data is never translated, only formatted.** Values a user entered or the system stored (names, tags, dates, amounts, ids, option
    values) pass through `IPemsLocale.Format`: dates are shown as `yyyy/MM/dd` in the Persian calendar for Persian cultures and as ISO
-   `yyyy-MM-dd` otherwise, with `HH:mm` when a time is present; numbers use the culture's separators. Table rows carry values of any type
+   `yyyy-MM-dd` otherwise, with `HH:mm` when a time is present; numbers use the culture's separators; digits follow the language (Persian digits ۱۲۳ for Persian, Latin digits 123 for English). This is display only: values users type, post or store are never rewritten (tested). Table rows carry values of any type
    (`object?`), not preformatted strings. A boolean shows the column's `TrueText` / `FalseText`, which are inputs like any other text.
 4. **`IPemsLocale` is the one service components ask** (`Text`, `Format`, `Culture`, `DefaultLanguage`, `IsRightToLeft`). The abstraction is in
    `PEMS.UI.Abstractions`, the default in `PEMS.UI` (current UI culture plus `PemsUiOptions`), and the host may register its own (for
@@ -72,11 +72,15 @@ texts such a form shows (labels, placeholders, help, notes, errors, empty and lo
 - The two partials moved in SCRUM-29 (`_KpiCard`, `_PemsLoadingOverlay`) still contain their existing text; the gate skips them until #388.
 - Not covered by this step: loading from and saving to the database (#387), the `PEMS.Web` settings for the default language, calendar and
   digits (read from the env files when the first page uses a component, #388), texts with parameters and plurals, time-zone conversion of
-  stored UTC values (callers pass values already converted).
+  stored UTC values (backlog #390, callers pass values already converted).
 
-## Open decisions (defaults in place; the owner can change them)
+## Decisions on the defaults (owner, 2026-10-27)
 
-1. Persian digits for Persian cultures: off (`PemsUiOptions.UseNativeDigits`).
-2. Date display for non-Persian cultures: ISO `yyyy-MM-dd`, not the culture's short date, to be unambiguous.
-3. Default language `fa` (Instructions rule 5), set by the host.
-4. Time-zone policy for displayed date-times.
+1. **Persian digits for Persian cultures: yes** (`PemsUiOptions.UseNativeDigits` is on by default; English and other cultures keep Latin digits).
+2. **Dates: Persian calendar for Persian cultures, ISO `yyyy-MM-dd` for everything else.** No other culture-specific date format for now.
+3. **Default language: `fa`**, set by the host.
+4. **Time zone of displayed date-times: not now.** Callers pass values already converted; a policy is a lowest-priority backlog task (#390, SCRUM-420).
+
+## Finding from the data-entry check (SCRUM-421)
+
+The check that display formatting leaves entered data alone also showed two existing problems on Persian pages, independent of PEMS.UI: a decimal with a dot (`12.5`) from a number input is rejected because the `fa` culture's decimal separator is `٫`, and typed Persian digits are rejected. Dates are safe because `PEMS.Web` keeps the Gregorian calendar on `fa`. Tracked as #391 (SCRUM-421); pinned by known-issue tests.

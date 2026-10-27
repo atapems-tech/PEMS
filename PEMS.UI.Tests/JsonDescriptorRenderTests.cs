@@ -22,7 +22,10 @@ public sealed class JsonDescriptorRenderTests : IAsyncLifetime
     public async Task DisposeAsync() => await _provider.DisposeAsync();
 
     private static string Sample(string name) => File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Samples", name));
-    private static string Plain(string html) => WebUtility.HtmlDecode(html);     // the renderer encodes non-Latin text
+    private static string Plain(string html) => WebUtility.HtmlDecode(html);
+    // ordinal on purpose: a culture-sensitive comparison can treat a Persian digit as equal to a Latin one
+    private static void Has(string expected, string actual) => Assert.Contains(expected, actual, StringComparison.Ordinal);
+    private static void HasNot(string unexpected, string actual) => Assert.DoesNotContain(unexpected, actual, StringComparison.Ordinal);     // the renderer encodes non-Latin text
 
     private Task<string> RenderForm(string culture, FormState? state = null) => _renderer.RenderAsync("form", new Dictionary<string, object?>
     {
@@ -34,34 +37,34 @@ public sealed class JsonDescriptorRenderTests : IAsyncLifetime
     public async Task Form_json_renders_in_persian()
     {
         var html = Plain(await RenderForm("fa-IR"));
-        Assert.Contains("ثبت ابزار", html);                      // title
-        Assert.Contains(">ذخیره</button>", html);               // submit label
-        Assert.Contains(">تگ", html);                          // field label
-        Assert.Contains("شناسه یکتا", html);                    // help text
-        Assert.Contains("placeholder=\"PT-0001\"", html);       // neutral placeholder is the same in every language
-        Assert.Contains(">واحد ۱</option>", html);
-        Assert.DoesNotContain("Register instrument", html);
+        Has("ثبت ابزار", html);                      // title
+        Has(">ذخیره</button>", html);               // submit label
+        Has(">تگ", html);                          // field label
+        Has("شناسه یکتا", html);                    // help text
+        Has("placeholder=\"PT-0001\"", html);       // neutral placeholder is the same in every language
+        Has(">واحد ۱</option>", html);
+        HasNot("Register instrument", html);
     }
 
     [Fact]
     public async Task Form_json_renders_in_english()
     {
         var html = Plain(await RenderForm("en"));
-        Assert.Contains("Register instrument", html);
-        Assert.Contains(">Save</button>", html);
-        Assert.Contains("Unique identifier", html);
-        Assert.Contains(">Unit 1</option>", html);
-        Assert.DoesNotContain("ثبت ابزار", html);
+        Has("Register instrument", html);
+        Has(">Save</button>", html);
+        Has("Unique identifier", html);
+        Has(">Unit 1</option>", html);
+        HasNot("ثبت ابزار", html);
     }
 
     [Fact]
     public async Task A_missing_translation_falls_back_instead_of_showing_nothing()
     {
         // option "u2" has only an English text: Persian users see it (default language fa is absent, so the first text is used)
-        Assert.Contains(">Unit 2</option>", Plain(await RenderForm("fa")));
+        Has(">Unit 2</option>", Plain(await RenderForm("fa")));
         // "Active" is a plain JSON string: the same neutral text in both languages
-        Assert.Contains("Active", Plain(await RenderForm("fa")));
-        Assert.Contains("Active", Plain(await RenderForm("en")));
+        Has("Active", Plain(await RenderForm("fa")));
+        Has("Active", Plain(await RenderForm("en")));
     }
 
     [Fact]
@@ -73,9 +76,9 @@ public sealed class JsonDescriptorRenderTests : IAsyncLifetime
         });
         var fa = Plain(await RenderForm("fa", state));
         var en = Plain(await RenderForm("en", state));
-        Assert.Contains("role=\"alert\">تگ الزامی است<", fa);
-        Assert.Contains("role=\"alert\">Tag is required<", en);
-        Assert.Contains("aria-invalid=\"true\"", en);
+        Has("role=\"alert\">تگ الزامی است<", fa);
+        Has("role=\"alert\">Tag is required<", en);
+        Has("aria-invalid=\"true\"", en);
     }
 
     [Fact]
@@ -91,22 +94,22 @@ public sealed class JsonDescriptorRenderTests : IAsyncLifetime
             new Dictionary<string, object?> { ["View"] = view, ["Rows"] = data }, new CultureInfo(culture));
 
         var fa = Plain(await Render("fa", rows));
-        Assert.Contains("<caption class=\"pems-table__caption\">ابزارها</caption>", fa);
-        Assert.Contains(">1405/08/05<", fa);                    // Jalali date
-        Assert.Contains(">1405/01/01<", fa);
-        Assert.Contains(">PT-0001<", fa);                       // data is not translated
-        Assert.Contains(">پمپ ۲<", fa);
-        Assert.Contains(">بله<", fa);                           // boolean texts are inputs
-        Assert.Contains(">خیر<", fa);
+        Has("<caption class=\"pems-table__caption\">ابزارها</caption>", fa);
+        Has(">۱۴۰۵/۰۸/۰۵<", fa);                    // Jalali date, Persian digits
+        Has(">۱۴۰۵/۰۱/۰۱<", fa);
+        Has(">PT-0001<", fa);                       // data is not translated
+        Has(">پمپ ۲<", fa);
+        Has(">بله<", fa);                           // boolean texts are inputs
+        Has(">خیر<", fa);
 
         var en = Plain(await Render("en", rows));
-        Assert.Contains(">2026-10-27<", en);
-        Assert.Contains(">1,234,567.5<", en);
-        Assert.Contains(">Yes<", en);
-        Assert.Contains(">No<", en);
+        Has(">2026-10-27<", en);
+        Has(">1,234,567.5<", en);
+        Has(">Yes<", en);
+        Has(">No<", en);
 
-        Assert.Contains(">رکوردی نیست<", Plain(await Render("fa", [])));           // empty text comes from the definition
-        Assert.Contains(">No records<", Plain(await Render("en", [])));
+        Has(">رکوردی نیست<", Plain(await Render("fa", [])));           // empty text comes from the definition
+        Has(">No records<", Plain(await Render("en", [])));
     }
 
     [Fact]
@@ -114,7 +117,7 @@ public sealed class JsonDescriptorRenderTests : IAsyncLifetime
     {
         var view = new ViewDescriptor("v", "T", [new ColumnDescriptor("a", "A")]);
         var html = await _renderer.RenderAsync("table", new Dictionary<string, object?> { ["View"] = view });
-        Assert.DoesNotContain("pems-table__empty", html);
+        HasNot("pems-table__empty", html);
     }
 
     [Fact]

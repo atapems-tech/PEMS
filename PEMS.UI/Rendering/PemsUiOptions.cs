@@ -19,6 +19,6 @@ public sealed class PemsUiOptions
 
     public CalendarMode Calendar { get; set; } = CalendarMode.Auto;
 
-    /// <summary>Show Persian digits for Persian cultures. Off by default; the owner decides (ADR-0008, open decisions).</summary>
-    public bool UseNativeDigits { get; set; }
+    /// <summary>Show Persian digits (۱۲۳) for Persian cultures. On by default (owner decision 2026-10-27, ADR-0008); other cultures keep Latin digits.</summary>
+    public bool UseNativeDigits { get; set; } = true;
 }
