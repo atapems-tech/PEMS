@@ -21,5 +21,16 @@ It is short on purpose. The rules live in [docs/guidelines/](docs/guidelines/REA
 - Schema only through new migrations (never edit an applied one). Stage specific files only (`git add <path>`, never `-A`).
 - Research before building, and a library before hand-written code (licence recorded).
 
+## Who did the work (shared GitHub account)
+
+Branches, commits and pull requests made through the shared GitHub account `atapems-tech` do not show which person asked for the work.
+When the GitHub user is `atapems-tech`, name the real user - **Saber** or **Hamid** - at the end of:
+
+- the **branch name**: `feature/SCRUM-123-short-name-hamid`, `fix/SCRUM-456-short-name-saber`;
+- the **commit subject**: `SCRUM-123: short summary (hamid)`.
+
+Find the real user from the Jira account the session works for or from the chat; if it is not clear, ask once before the first commit. Another GitHub user (their own account) needs no suffix.
+Owner decision 2026-10-27.
+
 If a rule here conflicts with what the user says in chat, the user wins - then tell them which rule you are overriding and offer to
 record the decision in the guideline.
