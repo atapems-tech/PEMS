@@ -18,7 +18,7 @@ Decision order, every time:
 3. Is it truly missing? -> add it to the library (`PEMS.UI` once it exists; until then the shared partials in `Views/Shared` and the shared CSS/JS) following section 4, then call it. Mention it in the Jira comment.
 4. Only if 1-3 are impossible: page-local markup with a written reason in the task comment. CI ratchet counts raw markup; the numbers may only go down.
 
-Where components live **today**: `PEMS.UI` (registry below; `PEMS.Web` references it and finds its views and `_content/PEMS.UI/` assets automatically), plus `_PageHeader`, `_Pagination`, `.vs-*` workspace CSS, `pems-ui.js` and the tokens `--pems-*` in `PEMS.Web`.
+Where components live **today**: `PEMS.UI` (registry below; `PEMS.Web` references it and finds its views and `_content/PEMS.UI/` assets automatically), plus `_PageHeader`, `.vs-*` workspace CSS, `pems-ui.js` and the tokens `--pems-*` in `PEMS.Web`.
 Search `PEMS.Web/Views/Shared`, `wwwroot/css`, `wwwroot/js` before building anything. Once `PEMS.UI` ships (plan #319-#334), it is the only place; this chapter then shrinks to "use PEMS.UI".
 
 ### Component registry (check this before writing any markup)
@@ -38,9 +38,10 @@ Add a row in the same PR as every new component or parameter.
 | `PemsForm` (`form`) | form from a `FormDefinition` with antiforgery and upload | `FormDefinition` (Title, SubmitLabel), `FormState` (values, error texts), `RequestToken` | spike |
 | `PemsDescriptorHost` | render any registered component by key from data (BPMS, previews) | `Key`, `Parameters` | spike |
 | `_KpiCard` partial | KPI tile (`<partial name="_KpiCard" model="kpi" />`) | `KpiCardViewModel` (Title, Count, IconClass, ColorClass, Url, Hint) | **ready**, lives in `PEMS.UI/Views/Shared` |
+| `_Pagination` partial (adapter) → `_PemsPagination` (PEMS.UI) | Footer of every list: range text, rows-per-page selector (only with `GridKey`), page links, RTL arrows. Call `<partial name="_Pagination" model="..." />` with a `PaginationViewModel` | `PaginationModel` (Page, TotalPages, TotalCount, BaseUrl, ExistingQueryString, GridKey, PageSize, AllowedPageSizes) in `PEMS.UI.Abstractions`; texts are `PaginationTexts` (`TranslatableText`s). `PEMS.Web.ViewModels.PaginationViewModel` derives from it and defaults the sizes | **ready**; markup lives in `PEMS.UI/Views/Shared/_PemsPagination.cshtml`, `_Pagination` only fills the texts from `SharedResource`. Counts keep Latin digits for now (golden-proven identical); Persian digits there is a separate owner decision |
 | `_PemsLoadingOverlay` partial | global loading overlay (in the layout; driven by `pems-loading.js`) | `ViewData["LoadingLabel"]` | **ready**, lives in `PEMS.UI/Views/Shared` |
 
-Still in `PEMS.Web/Views/Shared` (they need `PEMS.Web`'s localisation resource, so they move after PEMS.UI has its own localisation, SCRUM-29): `_PageHeader`, `_Pagination`. Planned and not yet built: modal, tabs, stepper, empty/error states, data grid (SCRUM-352 and following).
+Still in `PEMS.Web/Views/Shared` (`_PageHeader` has no callers; the owner decides whether it moves or goes to `legacy-trash/`). Planned and not yet built: modal, tabs, stepper, empty/error states, data grid (SCRUM-352 and following).
 
 **Hydration:** descriptors serialise with `PemsJson` (`FormDefinition`/`ViewDescriptor` as one JSON document), so a definition can come from code, from a JSON file or, later, from a database form row (#387). **Shape of every component** (inputs / state / body): inputs are an immutable `*Options` record or a descriptor; state is a plain C# `*State`
 class that computes CSS classes, ids and ARIA from the inputs (unit-test it without rendering); the `.razor` body only prints that state

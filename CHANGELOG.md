@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-27 - Pagination footer moved into PEMS.UI (SCRUM-418)
+
+### Changed
+- The list pagination footer is now the component `_PemsPagination` in `PEMS.UI`; its texts are inputs (`PaginationTexts`). `_Pagination` in `PEMS.Web` stays as a thin adapter, so the 54 list pages are unchanged. The HTML output is byte-identical (8 golden cases, en and fa).
+
 ## 2026-10-27 - Persian pages accept decimals and Persian digits (SCRUM-421)
 
 ### Fixed
