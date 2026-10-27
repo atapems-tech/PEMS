@@ -27,6 +27,7 @@ Rules: wrap third-party libraries behind an interface in `PEMS.Application`/`PEM
 | Test accounts / seed data for tests | `tools/TestAccountProvisioner`, `tools/LoadTestSeed` |
 | Load test | `tools/loadtest/pems-baseline.js` |
 | Linux/VM probes | `tools/PemsLinuxProbe` |
+| Licence issuing, ledger, vendor keys (owner computers only) | `tools/PemsVendorTool` (see chapter 05); libraries BouncyCastle.Cryptography (Ed25519) and Microsoft.Data.Sqlite, licences to be recorded in plan row L_OSS |
 | Deployment | `deploy/` kit and `deploy/deploy.ps1` |
 | Editing the xlsx | `openpyxl` (keeps validations/filters, clears cached formula values); the `xlsx` skill for agents |
 

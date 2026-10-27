@@ -27,6 +27,7 @@ using PEMS.WorkflowPlatform.Interfaces;
 using PEMS.WorkflowPlatform.Services;
 
 using Hangfire;
+using PEMS.Web.Licensing;
 using Hangfire.Dashboard;
 using Serilog;
 
@@ -88,6 +89,9 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IDatabaseUpdateService>(s
     sp.GetRequiredService<PEMS.Persistence.Context.PEMSDbContext>(),
     sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<PEMS.Persistence.Services.DatabaseUpdateService>>(),
     databaseMigrationTimeoutMinutes));
+
+// Licensing (docs/design/LICENSING_TECHNICAL_DESIGN.md). Licensing:Enforce=false in every env file until the rollout tasks: nothing is checked or blocked.
+builder.Services.AddPemsLicensing(builder.Configuration);
 
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند
 // (مثل صفحه‌ی Login) بدون ورود قابل دسترسی هستند.
@@ -1109,6 +1113,9 @@ app.UseRateLimiter();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+// Licence gate (verification point V2): added only when Licensing:Enforce=true.
+app.UsePemsLicensing();
 
 
 // Audit Log: قبل از رسیدن به هر Controller، اطلاعات کاربر جاری را روی PEMSDbContext (که Scoped است)
