@@ -68,6 +68,7 @@ Production has no internet: no CDN, no external call, no telemetry, no online li
 - No string-built SQL; use EF/parameters. Uploads: type/size/extension checks, stored outside `wwwroot` (FileStorage abstraction).
 - Never log secrets or personal data; use Serilog structured logging.
 - AI features run on-premise (Ollama/Tesseract); nothing leaves the organisation.
+- **A deploy, update or migration never creates, resets or changes a password** (owner decision 2026-10-27, SCRUM-410). This holds for staging, demo and every client server. The start-up seeder runs only on an empty user table (a fresh install or an explicit database reset, which restarts the first-install administrator flow with a forced password change); `DevAdminPasswordReset` needs Development plus `PEMS_DEV_RESET_ADMIN_PASSWORD=true`. Deploy workflows and the client update kit may write the secrets file, copy files and run schema migrations, nothing else. A new start-up step, workflow step or migration that touches `AspNetUsers` credentials breaks this rule; `AdminPasswordSurvivesUpdateTests` guards it and must stay green.
 
 ## 7. Localization [R5]
 

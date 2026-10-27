@@ -3,6 +3,12 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-27 - Deploys and updates never reset the administrator password (SCRUM-410)
+
+### Added
+- `AdminPasswordSurvivesUpdateTests`: the start-up seeder changes nothing when users exist and the development reset needs Development plus its variable.
+- Rule in guideline chapter 01 (security), `DEPLOYMENT_README.md` section 9, a note in `LINUX_VM_DEPLOYMENT.md` and manual check M-14.
+
 ## 2026-10-27 - VDR list with the Engineering Documents look (SCRUM-409)
 
 ### Added
