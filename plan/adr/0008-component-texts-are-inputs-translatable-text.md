@@ -81,6 +81,6 @@ texts such a form shows (labels, placeholders, help, notes, errors, empty and lo
 3. **Default language: `fa`**, set by the host.
 4. **Time zone of displayed date-times: not now.** Callers pass values already converted; a policy is a lowest-priority backlog task (#390, SCRUM-420).
 
-## Finding from the data-entry check (SCRUM-421)
+## Finding from the data-entry check (SCRUM-421), fixed
 
-The check that display formatting leaves entered data alone also showed two existing problems on Persian pages, independent of PEMS.UI: a decimal with a dot (`12.5`) from a number input is rejected because the `fa` culture's decimal separator is `٫`, and typed Persian digits are rejected. Dates are safe because `PEMS.Web` keeps the Gregorian calendar on `fa`. Tracked as #391 (SCRUM-421); pinned by known-issue tests.
+The check that display formatting leaves entered data alone also showed two existing problems on Persian pages, independent of PEMS.UI: a decimal with a dot (`12.5`) from a number input was rejected because the `fa` culture's decimal separator is `٫`, and typed Persian digits were rejected. Dates were safe because `PEMS.Web` keeps the Gregorian calendar on `fa`. Fixed by one model binder (`PEMS.UI.Binding.PemsNumericModelBinder`, registered once in `PEMS.Web` with `AddPemsInputBinding`): input is normalised (Persian and Arabic-Indic digits to Latin, `٫` to a dot, the thousands mark dropped), numbers are parsed with the invariant culture and dates as ISO first, then with the request culture; empty values, nullable types and MVC's error messages are unchanged. Input and display stay separate: the binder only reads, `IPemsLocale` only displays.

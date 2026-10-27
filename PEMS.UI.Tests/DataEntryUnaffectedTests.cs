@@ -69,21 +69,19 @@ public sealed class DataEntryUnaffectedTests(SpikeHost host, ITestOutputHelper o
         Assert.Equal(new DateTime(2026, 10, 27), right);
     }
 
-    // ---- known issues found by this check (not caused by PEMS.UI): SCRUM-421. When it is fixed these two tests are turned around.
+    // ---- SCRUM-421 (fixed): the binder accepts what a Persian page really posts and what a Persian user may type
     [Fact]
-    public async Task KnownIssue_SCRUM_421_a_decimal_with_a_dot_is_rejected_under_the_persian_culture()
+    public async Task A_decimal_with_a_dot_binds_under_the_persian_culture_as_it_does_in_English()
     {
-        var persian = Plain(await PostAsync(Fa, Valid(price: "12.5")));
-        Has("The value '12.5' is not valid for Price.", persian);
-        Assert.Equal("saved:PT-0001:5:2026-10-27:False::12.5", await PostAsync("", Valid(price: "12.5")));      // English binds it
+        Assert.Equal("saved:PT-0001:5:2026-10-27:False::12.5", await PostAsync(Fa, Valid(price: "12.5")));
+        Assert.Equal("saved:PT-0001:5:2026-10-27:False::12.5", await PostAsync("", Valid(price: "12.5")));
     }
 
     [Fact]
-    public async Task KnownIssue_SCRUM_421_typed_persian_digits_are_rejected()
+    public async Task Typed_persian_digits_bind_to_the_same_values_as_latin_digits()
     {
-        var html = Plain(await PostAsync(Fa, Valid(quantity: "۵", due: "۲۰۲۶-۱۰-۲۷", price: "۱۲")));
-        Has("pems-field__error", html);
-        HasNot("saved:", html);
+        var persian = await PostAsync(Fa, Valid(quantity: "۵", due: "۲۰۲۶-۱۰-۲۷", price: "۱۲"));
+        Assert.Equal("saved:PT-0001:5:2026-10-27:False::12", persian);
     }
 
     // ---- display formatting never rewrites stored text or input values
