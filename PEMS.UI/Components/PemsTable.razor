@@ -1,0 +1,32 @@
+@namespace PEMS.UI.Components
+<table class="pems-table" id="@View.Id">
+    <caption class="pems-table__caption">@View.Title</caption>
+    <thead>
+        <tr>
+            @foreach (var c in View.Columns)
+            {
+                <th scope="col" class="pems-align-@c.Alignment.ToString().ToLowerInvariant()">@c.Header</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (Rows.Count == 0)
+        {
+            <tr><td colspan="@View.Columns.Count" class="pems-table__empty">@EmptyText</td></tr>
+        }
+        @foreach (var row in Rows)
+        {
+            <tr>
+                @foreach (var c in View.Columns)
+                {
+                    <td class="pems-align-@c.Alignment.ToString().ToLowerInvariant()">@(row.TryGetValue(c.Key, out var v) ? v : null)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+@code {
+    [Parameter, EditorRequired] public ViewDescriptor View { get; set; } = default!;
+    [Parameter] public IReadOnlyList<IReadOnlyDictionary<string, string?>> Rows { get; set; } = [];
+    [Parameter] public string EmptyText { get; set; } = "No records";
+}

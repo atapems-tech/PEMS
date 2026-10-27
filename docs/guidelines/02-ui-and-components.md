@@ -21,6 +21,30 @@ Decision order, every time:
 Where components live **today** (the audit found `PEMS.UI` does not exist yet): `_PageHeader`, `_Pagination`, `_KpiCard`, `_PemsLoadingOverlay`, `.vs-*` workspace CSS, `pems-ui.js`, tokens `--pems-*`.
 Search `PEMS.Web/Views/Shared`, `wwwroot/css`, `wwwroot/js` before building anything. Once `PEMS.UI` ships (plan #319-#334), it is the only place; this chapter then shrinks to "use PEMS.UI".
 
+### Component registry (check this before writing any markup)
+
+Components of `PEMS.UI` ([ADR-0007](../../plan/adr/0007-component-technology-static-razor-components.md), SCRUM-23). **Status: spike** means it exists and is
+tested but `PEMS.Web` does not reference `PEMS.UI` yet (SCRUM-29); until then pages still use the shared partials above, but **extend the
+component listed here instead of writing a second one**. When SCRUM-29 lands, the status becomes **ready** and pages must use it.
+Add a row in the same PR as every new component or parameter.
+
+| Component (key) | Use it for | Inputs | Status |
+|---|---|---|---|
+| `PemsButton` (`button`) | button or link-button | `ButtonOptions(Label, Tone, Size, Disabled, Type, Href)` | spike |
+| `PemsBadge` (`badge`) | status pill | `BadgeOptions(Text, Tone)` | spike |
+| `PemsSkeleton` (`skeleton`) | loading state | `Lines` | spike |
+| `PemsField` (`field`) / `<pems-field asp-for>` | label, help, error and one input (text, textarea, number, date, select, checkbox, file) | `FieldDescriptor`, `Value`, `Error` | spike |
+| `PemsTable` (`table`) | read-only table; rows rendered in this one component | `ViewDescriptor`, `Rows` | spike |
+| `PemsForm` (`form`) | form from a `FormDefinition` with antiforgery and upload | `FormDefinition`, `FormState`, `RequestToken` | spike |
+| `PemsDescriptorHost` | render any registered component by key from data (BPMS, previews) | `Key`, `Parameters` | spike |
+
+Planned and not yet built: page header, pagination, KPI card (move from `Views/Shared`, SCRUM-29), modal, tabs, stepper, empty/error states, data grid (SCRUM-352 and following).
+
+**Shape of every component** (inputs / state / body): inputs are an immutable `*Options` record or a descriptor; state is a plain C# `*State`
+class that computes CSS classes, ids and ARIA from the inputs (unit-test it without rendering); the `.razor` body only prints that state
+- no queries, no service calls, no business rules in markup. A table renders all its rows in one component, never one component per cell
+(measured 5 to 8 times slower). Extension packs register components with `[PemsComponent("key")]`.
+
 ## 2. Rules for new and changed UI [R26, D6-D8]
 
 - No inline `style=`, no inline `<script>`/`<style>`, no inline `onclick`, no CDN or external URL, no hex colours: use `var(--pems-*)` tokens.
