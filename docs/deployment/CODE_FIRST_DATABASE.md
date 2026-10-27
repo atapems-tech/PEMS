@@ -60,12 +60,31 @@ Install the feature **before** the first run: an applied migration is not re-run
 connection string and `Database` settings, FTP upload, then poll `/health/database` until `UpToDate`
 (first deploy = install, later deploys = update).
 
+## Migration chain gate (SCRUM-413)
+
+The drift gate only proves that the model and the migrations agree; it opens no database. The **Migration Chain Gate**
+(`.github/workflows/migration-chain.yml`, script `scripts/ci/test-migration-chain.sh`) applies the chain the way the
+application does at start-up, on a throw-away SQL Server container (random password, no secrets, nothing deployed):
+
+1. **Install** the whole chain on an empty database.
+2. **Upgrade**: apply the chain up to the last migration of the base ref (default `origin/main`, the previous release), then the rest, so the migrations of the change run on a database that already has the old schema.
+3. The model and the migrations still agree (no pending model changes).
+
+`deploy-site.yml` (staging and demo) runs it as its first job, so a failing chain blocks the upload; the base is the commit the branch had before the push (`origin/main` when unknown). When the base's newest migration is not in the build's chain (a rollback deploy of older code) the upgrade step is skipped with a warning and the install step still applies.
+A failure names the migration that was being applied. Run it from Actions > *PEMS Migration Chain Gate* > Run workflow (branch = the branch to
+check, `base_ref` = the previous release). It passes with no data; data-dependent upgrade tests from older releases remain
+plan row #262 (SCRUM-280). The same script runs on a developer machine with a local SQL Server:
+`PEMS_CHAIN_SERVER_CONNECTION="Server=...;User Id=...;Password=...;TrustServerCertificate=True" bash scripts/ci/test-migration-chain.sh origin/main`.
+
+Migrations and pipelines never touch accounts or passwords; `AccountSafetyOfMigrationsAndPipelinesTests` fails if one does.
+
 ## Rules for developers
 
 - Change the model, then add a migration:
   `dotnet ef migrations add <Name> --project PEMS.Migrations --startup-project PEMS.Web`
+- A task that changes the model ships its migration in the same pull request, and the Migration Chain Gate is green before the change goes to `staging` or `demo`.
 - Never edit an applied migration; always add a new one (also for data fixes and non-model DDL such as the
-  full-text objects: use `migrationBuilder.Sql`).
+  full-text objects: use `migrationBuilder.Sql`). Never touch accounts or passwords in a migration.
 - CI fails (`Model drift gate`) when an entity change has no migration, and EF Core refuses to migrate a drifted
   model at startup.
 - Reference data belongs in the seeders (`PEMS.Persistence/Seed`), not in hand-run SQL.

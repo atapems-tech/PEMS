@@ -45,6 +45,9 @@ Rules:
 - **Schema only through migrations.** `dotnet ef migrations add <Name> --project PEMS.Migrations --startup-project PEMS.Web`. Never edit an applied migration; add a new one. DDL EF cannot model goes into `migrationBuilder.Sql`.
 - The app applies migrations itself (startup migrator / Admin > Database Update). No hand-run SQL for schema setup or update.
 - CI "model drift" gate: `dotnet ef migrations has-pending-model-changes` must be clean - an entity change without a migration fails the build.
+- **Every task that changes an entity or a mapping ships its migration in the same pull request** (owner decision 2026-10-27, SCRUM-413): the model, the migration and the snapshot move together, so the migrator applies the change on staging, demo and client servers and the database never lags behind the code.
+- **Migration chain gate** (`.github/workflows/migration-chain.yml`, `scripts/ci/test-migration-chain.sh`): the chain is applied to a real SQL Server (empty install, then upgrade from `origin/main`) and must pass before a change goes to `staging` or `demo`. Run it by hand from the Actions tab when your change adds a migration. A migration that fails there is fixed by a new migration, never by editing the applied one.
+- A migration or a pipeline step never inserts, changes or deletes accounts or passwords (section 6; `AccountSafetyOfMigrationsAndPipelinesTests`). Take a backup before updating a database that holds real data.
 - Seeders are idempotent. Reference data goes in seeders or migrations, not in hand scripts.
 - Dynamic/BPMS storage direction (hybrid: real tables for user-built entities, JSON column for custom fields) - see chapter 04.
 
