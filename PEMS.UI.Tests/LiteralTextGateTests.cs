@@ -17,7 +17,8 @@ public sealed class LiteralTextGateTests
     /// <summary>Returns the literal user-visible texts found in the markup (empty when the markup is clean).</summary>
     public static IReadOnlyList<string> FindLiteralTexts(string markup)
     {
-        var markupOnly = SwitchLabels.Replace(RemoveRazorCode(markup), "");
+        // Windows checkouts convert files to CRLF; in Multiline mode `$` matches before \n but not before \r, so the switch labels would survive as "text".
+        var markupOnly = SwitchLabels.Replace(RemoveRazorCode(markup.Replace("\r\n", "\n")), "");
         var found = new List<string>();
         foreach (Match m in TextAttribute.Matches(markupOnly)) found.Add($"{m.Groups[1].Value}=\"{m.Groups[2].Value}\"");
         foreach (Match m in TextNode.Matches(markupOnly))
@@ -115,6 +116,15 @@ public sealed class LiteralTextGateTests
     [InlineData("<div>@code { string x = \"Hello world\"; }</div>")]
     [InlineData("@{ var title = \"Hello world\"; }\r\n<h2>@title</h2>")]
     public void The_scanner_accepts_expressions_symbols_comments_and_code(string markup) => Assert.Empty(FindLiteralTexts(markup));
+
+    [Theory]
+    [InlineData("\n")]
+    [InlineData("\r\n")]                       // a Windows checkout (autocrlf) must give the same result
+    public void The_scanner_ignores_switch_labels_whatever_the_line_endings(string eol)
+    {
+        var markup = string.Join(eol, "@switch (Kind)", "{", "    case FieldKind.TextArea:", "        <textarea>@Value</textarea>", "        break;", "    default:", "        <input value=\"@Value\" />", "        break;", "}");
+        Assert.Empty(FindLiteralTexts(markup));
+    }
 
     [Fact]
     public void No_component_of_the_library_contains_literal_user_visible_text()
