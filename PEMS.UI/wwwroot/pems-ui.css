@@ -27,3 +27,9 @@
 .pems-skeleton__line { block-size: 1rem; margin-block-end: .5rem; border-radius: .25rem; background: var(--pems-row-hover); }
 @media (prefers-reduced-motion: no-preference) { .pems-skeleton__line { animation: pems-pulse 1.4s ease-in-out infinite; } }
 @keyframes pems-pulse { 50% { opacity: .5; } }
+.pems-state { display: flex; flex-direction: column; align-items: center; gap: .5rem; padding-block: 2rem; padding-inline: 1rem; text-align: center; color: var(--pems-text); }
+.pems-state__icon { font-size: 2rem; color: var(--pems-text-muted); }
+.pems-state__title { margin: 0; font-weight: 600; }
+.pems-state__text, .pems-state__detail { margin: 0; color: var(--pems-text-muted); font-size: .9rem; }
+.pems-state--error .pems-state__title { color: var(--pems-chart-negative-text, var(--pems-text)); }
+.pems-state--loading .pems-skeleton__line { inline-size: min(24rem, 100%); }

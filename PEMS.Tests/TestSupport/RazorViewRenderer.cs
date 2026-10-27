@@ -30,6 +30,7 @@ public static class RazorViewRenderer
         services.AddSingleton(listener);
         services.AddSingleton<DiagnosticSource>(listener);
         services.AddLogging();
+        services.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(new Microsoft.Extensions.Configuration.ConfigurationBuilder().Build());   // the real host has one; the component renderer needs it
         services.AddLocalization();
         PEMS.UI.ServiceCollectionExtensions.AddPemsUi(services);   // IPemsLocale etc., registered in Program.cs of the real app
         services.AddDataProtection().UseEphemeralDataProtectionProvider();

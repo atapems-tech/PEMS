@@ -25,10 +25,15 @@ public sealed class PemsFieldTagHelper(IPemsComponentRenderer renderer) : TagHel
         var meta = For.Metadata;
         var name = ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(For.Name);
         var kind = Kind ?? InferKind(meta.ModelType, meta.DataTypeName);
-        var descriptor = new FieldDescriptor(
-            name, TranslatableText.Literal(meta.DisplayName ?? meta.PropertyName ?? For.Name), kind,
-            Required: meta.IsRequired, ReadOnly: meta.IsReadOnly, HelpText: TranslatableText.Literal(Help),
-            MaxLength: null);
+        var descriptor = new FieldDescriptor
+        {
+            Name = name,
+            Label = TranslatableText.Literal(meta.DisplayName ?? meta.PropertyName ?? For.Name),
+            Kind = kind,
+            Required = meta.IsRequired,
+            ReadOnly = meta.IsReadOnly,
+            HelpText = TranslatableText.Literal(Help)
+        };
 
         TranslatableText? error = null;
         string? attempted = null;

@@ -5,6 +5,8 @@ using PEMS.Web.Areas.Admin.Controllers;
 using PEMS.Web.Models;
 using PEMS.Web.ViewModels;
 using System.Globalization;
+using PEMS.UI.Abstractions;
+using PEMS.UI.Components;
 
 namespace PEMS.Tests.Ui;
 
@@ -88,4 +90,23 @@ public class SharedPartialsGoldenTests
     [InlineData("fa", 0, 0, 0, "wo", "", "pagination-fa-empty-gridkey")]
     public async Task Pagination_RendersTheSameMarkup(string culture, int page, int pages, int total, string? gridKey, string query, string golden) =>
         AssertGolden(golden, await InCultureAsync(culture, () => RenderAsync("~/Views/Shared/_Pagination.cshtml", Pager(page, pages, total, gridKey, 25, query))));
+
+    // ---- _PemsState (SCRUM-424): the facade page authors call for loading, empty and error states
+    private static TranslatableText Tx(string fa, string en) => TranslatableText.Of(("fa", fa), ("en", en));
+
+    public static IEnumerable<object[]> StateCases()
+    {
+        var action = new StateAction { Label = Tx("افزودن", "Add"), Href = "/x/create" };
+        yield return new object[] { "en", new EmptyStateOptions { Title = Tx("رکوردی نیست", "No records"), Description = Tx("اولین رکورد را بسازید", "Create the first record"), Icon = "bi-inbox", Action = action }, "state-empty-en" };
+        yield return new object[] { "fa", new EmptyStateOptions { Title = Tx("رکوردی نیست", "No records"), Action = action }, "state-empty-fa" };
+        yield return new object[] { "en", new ErrorStateOptions { Title = Tx("بارگذاری نشد", "Could not load"), Description = Tx("دوباره تلاش کنید", "Try again later"), Detail = Tx("کد ۵۰۳", "Code 503"), Action = new StateAction { Label = Tx("تلاش دوباره", "Retry"), Href = "/x" } }, "state-error-en" };
+        yield return new object[] { "fa", new ErrorStateOptions { Title = Tx("بارگذاری نشد", "Could not load") }, "state-error-fa" };
+        yield return new object[] { "en", new LoadingStateOptions { Title = Tx("در حال بارگذاری", "Loading"), Lines = 3 }, "state-loading-en" };
+        yield return new object[] { "fa", new LoadingStateOptions { Title = Tx("در حال بارگذاری", "Loading") }, "state-loading-fa" };
+    }
+
+    [Theory]
+    [MemberData(nameof(StateCases))]
+    public async Task State_facade_renders_the_same_markup(string culture, object options, string golden) =>
+        AssertGolden(golden, await InCultureAsync(culture, () => RenderAsync("~/Views/Shared/_PemsState.cshtml", options)));
 }
