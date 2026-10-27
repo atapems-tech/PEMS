@@ -199,6 +199,8 @@ var passwordRequiredLength = PEMS.Web.Configuration.PemsConfigurationExtensions.
 var passwordRequireDigit = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Authentication:Password:RequireDigit");
 var passwordRequireUppercase = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Authentication:Password:RequireUppercase");
 var passwordRequireNonAlphanumeric = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Authentication:Password:RequireNonAlphanumeric");
+var passwordHistoryCount = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Authentication:Password:HistoryCount");
+builder.Services.Configure<PEMS.Web.Security.PasswordHistoryOptions>(o => o.Count = passwordHistoryCount);
 var authCookieName = PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Authentication:Cookie:Name");
 var authCookieExpireHours = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredDouble(builder.Configuration, "Authentication:Cookie:ExpireHours");
 var securityStampValidationMinutes = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredDouble(builder.Configuration, "Authentication:SecurityStampValidationMinutes");
@@ -223,7 +225,10 @@ builder.Services
         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(defaultLockoutMinutes);
     })
     .AddEntityFrameworkStores<PEMSDbContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    // SCRUM-412: a new password must differ from the current one and the last N; PemsUserManager records the replaced hash
+    .AddPasswordValidator<PEMS.Web.Security.PasswordHistoryValidator>()
+    .AddUserManager<PEMS.Web.Security.PemsUserManager>();
 
 
 // نقش‌های کاربر در Claim کوکی هستند؛ پیش‌فرض Identity فقط هر ۳۰ دقیقه آن‌ها را از دیتابیس تازه می‌کند و تغییر نقش/دسترسی

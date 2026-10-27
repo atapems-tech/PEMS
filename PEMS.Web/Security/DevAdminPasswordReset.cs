@@ -55,8 +55,11 @@ public static class DevAdminPasswordReset
             return;
         }
 
+        // its job is to put the documented seed password back; the password-history rule (SCRUM-412) must not stop it
         var token = await userManager.GeneratePasswordResetTokenAsync(admin);
-        var result = await userManager.ResetPasswordAsync(admin, token, seed.Password);
+        IdentityResult result;
+        using (PasswordHistoryBypass.Begin())
+            result = await userManager.ResetPasswordAsync(admin, token, seed.Password);
 
         if (!result.Succeeded)
         {

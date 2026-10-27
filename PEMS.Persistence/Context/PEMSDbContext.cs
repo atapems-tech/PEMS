@@ -530,6 +530,9 @@ public class PEMSDbContext
     /// <summary>کدهای بازیابی یکبارمصرف حساب مدیر (SCRUM-355)؛ فقط هش، فقط‌افزودنی.</summary>
     public DbSet<AdminRecoveryCode> AdminRecoveryCodes { get; set; }
 
+    /// <summary>Replaced password hashes for the password-history rule (SCRUM-412); hashes only.</summary>
+    public DbSet<PasswordHistoryEntry> PasswordHistory { get; set; }
+
 
     /// <summary>
     /// SecurityEvent فقط‌افزودنی است: ویرایش یا حذف رد می‌شود. تنها فیلد قابل تغییر ForwardedToSiemAt است (علامت تحویل به SIEM، SCRUM-212).

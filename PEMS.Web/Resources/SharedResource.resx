@@ -2563,4 +2563,5 @@
   <data name="Lic_Fail_NoLicenceInArchive" xml:space="preserve"><value>The zip file contains no licence.</value></data>
   <data name="Lic_Fail_SealInvalid" xml:space="preserve"><value>The install seal is missing or invalid. Download a request first.</value></data>
   <data name="Licence" xml:space="preserve"><value>Licence</value></data>
+  <data name="Password_Reused" xml:space="preserve"><value>The new password must differ from your current password and your last {0} passwords.</value></data>
 </root>
