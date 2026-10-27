@@ -2284,6 +2284,10 @@ namespace PEMS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DatabaseUpdateRunId"));
 
+                    b.Property<string>("BackupFile")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<DateTime>("CompletedAtUtc")
                         .HasColumnType("datetime2");
 

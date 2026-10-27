@@ -14,6 +14,7 @@ public interface IDatabaseUpdateService
     /// <summary>
     /// Applies the install or the pending updates. Safe to call repeatedly: when nothing is pending it
     /// returns NothingToDo. A schema without migration history is never modified.
+    /// With Database:BackupBeforeUpdate an update (not an install) first takes a COPY_ONLY backup and is not started when it fails.
     /// </summary>
     /// <param name="trigger">"Startup" or "Admin".</param>
     /// <param name="performedBy">User name for admin runs.</param>

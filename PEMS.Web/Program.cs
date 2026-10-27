@@ -85,10 +85,15 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.INotificationBroadcaster,
 
 // Code-first install/update of the database (startup bootstrap + Admin > Database Update page)
 var databaseMigrationTimeoutMinutes = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Database:MigrationCommandTimeoutMinutes");
+// SCRUM-280: rollback point of an update. BackupDirectory may be empty (= SQL Server default backup folder), so it is not Required.
+var databaseBackupBeforeUpdate = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Database:BackupBeforeUpdate");
+var databaseBackupDirectory = builder.Configuration["Database:BackupDirectory"];
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDatabaseUpdateService>(sp => new PEMS.Persistence.Services.DatabaseUpdateService(
     sp.GetRequiredService<PEMS.Persistence.Context.PEMSDbContext>(),
     sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<PEMS.Persistence.Services.DatabaseUpdateService>>(),
-    databaseMigrationTimeoutMinutes));
+    databaseMigrationTimeoutMinutes,
+    databaseBackupBeforeUpdate,
+    databaseBackupDirectory));
 
 // Licensing (docs/design/LICENSING_TECHNICAL_DESIGN.md). Licensing:Enforce=false in every env file until the rollout tasks: nothing is checked or blocked.
 builder.Services.AddPemsLicensing(builder.Configuration);

@@ -1,4 +1,5 @@
 using System.Data;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PEMS.Application.DTOs;
@@ -16,13 +17,20 @@ public class DatabaseUpdateService : IDatabaseUpdateService
     private readonly PEMSDbContext _db;
     private readonly ILogger<DatabaseUpdateService> _logger;
     private readonly int _migrationCommandTimeoutMinutes;
+    private readonly bool _backupBeforeUpdate;
+    private readonly string? _backupDirectory;
 
     /// <param name="migrationCommandTimeoutMinutes">Setting Database:MigrationCommandTimeoutMinutes; the host always passes it. The default exists only so tests can build the service without the settings.</param>
-    public DatabaseUpdateService(PEMSDbContext db, ILogger<DatabaseUpdateService> logger, int migrationCommandTimeoutMinutes = 10)
+    /// <param name="backupBeforeUpdate">SCRUM-280, setting Database:BackupBeforeUpdate: an update first takes a COPY_ONLY backup and is not started when the backup fails.</param>
+    /// <param name="backupDirectory">Setting Database:BackupDirectory: a folder on the SQL Server machine; empty = the instance's default backup folder.</param>
+    public DatabaseUpdateService(PEMSDbContext db, ILogger<DatabaseUpdateService> logger, int migrationCommandTimeoutMinutes = 10,
+        bool backupBeforeUpdate = false, string? backupDirectory = null)
     {
         _db = db;
         _logger = logger;
         _migrationCommandTimeoutMinutes = migrationCommandTimeoutMinutes;
+        _backupBeforeUpdate = backupBeforeUpdate;
+        _backupDirectory = string.IsNullOrWhiteSpace(backupDirectory) ? null : backupDirectory.Trim();
     }
 
     public async Task<DatabaseUpdateStatusDto> GetStatusAsync(CancellationToken ct = default)
@@ -31,7 +39,8 @@ public class DatabaseUpdateService : IDatabaseUpdateService
         var dto = new DatabaseUpdateStatusDto
         {
             KnownMigrationCount = known.Count,
-            LatestKnownMigration = known.LastOrDefault()
+            LatestKnownMigration = known.LastOrDefault(),
+            BackupBeforeUpdate = _backupBeforeUpdate
         };
 
         bool canConnect;
@@ -87,6 +96,38 @@ public class DatabaseUpdateService : IDatabaseUpdateService
             var mode = status.State == DatabaseSetupState.FirstRun ? "FirstRun" : "Update";
             var started = DateTime.UtcNow;
             string? error = null;
+
+            // SCRUM-280: the rollback point of an update is a backup taken right before it. An install has nothing to lose.
+            string? backupFile = null;
+            if (_backupBeforeUpdate && mode == "Update")
+            {
+                try
+                {
+                    backupFile = await BackupAsync(ct);
+                    _logger.LogInformation("Database pre-update backup written to {BackupFile}.", backupFile);
+                }
+                catch (Exception ex)
+                {
+                    var reason = ex.GetBaseException().Message;
+                    _logger.LogError(ex, "Database pre-update backup failed; the update was not started.");
+                    result.Message = "Database update was not started because the pre-update backup failed: " + reason +
+                        " Fix the backup (permissions, Database:BackupDirectory, disk space) or take a backup by hand and set Database:BackupBeforeUpdate=false.";
+                    await RecordRunAsync(new DatabaseUpdateRun
+                    {
+                        StartedAtUtc = started,
+                        CompletedAtUtc = DateTime.UtcNow,
+                        Trigger = trigger,
+                        Mode = mode,
+                        FromMigration = status.LastAppliedMigration,
+                        ToMigration = status.LastAppliedMigration,
+                        Succeeded = false,
+                        Error = Truncate("Pre-update backup failed: " + reason, 2000),
+                        PerformedBy = performedBy
+                    }, ct);
+                    return result;
+                }
+            }
+
             try
             {
                 _logger.LogInformation("Database {Mode}: applying {Count} migration(s), latest {Latest}.",
@@ -102,12 +143,15 @@ public class DatabaseUpdateService : IDatabaseUpdateService
 
             var succeeded = error is null;
             result.Succeeded = succeeded;
+            result.BackupFile = backupFile;
             result.MigrationsApplied = succeeded ? status.PendingMigrations.Count : 0;
             result.Message = succeeded
                 ? (mode == "FirstRun"
                     ? $"Database installed ({status.PendingMigrations.Count} migrations applied)."
                     : $"Database updated ({status.PendingMigrations.Count} migration(s) applied).")
                 : "Database " + (mode == "FirstRun" ? "install" : "update") + " failed: " + error;
+            if (backupFile is not null)
+                result.Message += " Pre-update backup: " + backupFile;
 
             await RecordRunAsync(new DatabaseUpdateRun
             {
@@ -120,7 +164,8 @@ public class DatabaseUpdateService : IDatabaseUpdateService
                 MigrationsApplied = result.MigrationsApplied,
                 Succeeded = succeeded,
                 Error = error is null ? null : Truncate(error, 2000),
-                PerformedBy = performedBy
+                PerformedBy = performedBy,
+                BackupFile = backupFile
             }, ct);
 
             result.StateAfter = (await GetStatusAsync(ct)).State;
@@ -146,6 +191,56 @@ public class DatabaseUpdateService : IDatabaseUpdateService
             "The database has migrations this application version does not contain. Deploy the matching or newer application version.",
         _ => "Unknown."
     };
+
+    /// <summary>
+    /// Full COPY_ONLY backup of the current database (does not break the customer's own backup chain), with CHECKSUM.
+    /// The folder is on the SQL Server machine: Database:BackupDirectory, or the instance default backup folder.
+    /// Restore: docs/deployment/CODE_FIRST_DATABASE.md "Rollback".
+    /// </summary>
+    private async Task<string> BackupAsync(CancellationToken ct)
+    {
+        var connection = _db.Database.GetDbConnection();
+        var wasClosed = connection.State != ConnectionState.Open;
+        if (wasClosed) await connection.OpenAsync(ct);
+        try
+        {
+            var directory = _backupDirectory;
+            if (directory is null)
+            {
+                await using var folder = connection.CreateCommand();
+                // InstanceDefaultBackupPath exists from SQL Server 2019; older instances fall back to the data folder.
+                folder.CommandText =
+                    "SELECT CAST(COALESCE(SERVERPROPERTY('InstanceDefaultBackupPath'), SERVERPROPERTY('InstanceDefaultDataPath')) AS nvarchar(4000))";
+                directory = await folder.ExecuteScalarAsync(ct) as string;
+                if (string.IsNullOrWhiteSpace(directory))
+                    throw new InvalidOperationException("The SQL Server default backup folder is unknown; set Database:BackupDirectory.");
+            }
+
+            var file = BackupFilePath(directory, connection.Database, DateTime.UtcNow);
+            await using var command = connection.CreateCommand();
+            command.CommandTimeout = _migrationCommandTimeoutMinutes * 60;
+            command.CommandText = "BACKUP DATABASE @database TO DISK = @file WITH COPY_ONLY, INIT, CHECKSUM";
+            command.Parameters.Add(new SqlParameter("@database", SqlDbType.NVarChar, 128) { Value = connection.Database });
+            command.Parameters.Add(new SqlParameter("@file", SqlDbType.NVarChar, 4000) { Value = file });
+            await command.ExecuteNonQueryAsync(ct);
+            return file;
+        }
+        finally
+        {
+            if (wasClosed) await connection.CloseAsync();
+        }
+    }
+
+    /// <summary>
+    /// "&lt;folder&gt;&lt;sep&gt;&lt;database&gt;_preupdate_yyyyMMdd_HHmmss.bak"; the separator follows the folder (a Linux SQL Server
+    /// in a container uses '/'). Characters other than letters, digits, '-' and '_' in the database name become '_'.
+    /// </summary>
+    public static string BackupFilePath(string directory, string database, DateTime utcNow)
+    {
+        var separator = directory.Contains('/') && !directory.Contains('\\') ? '/' : '\\';
+        var safeName = new string(database.Select(c => char.IsLetterOrDigit(c) || c is '-' or '_' ? c : '_').ToArray());
+        return directory.TrimEnd('/', '\\') + separator + $"{safeName}_preupdate_{utcNow:yyyyMMdd_HHmmss}.bak";
+    }
 
     private async Task<bool> HasUserTablesAsync(CancellationToken ct)
     {
@@ -184,7 +279,8 @@ public class DatabaseUpdateService : IDatabaseUpdateService
                     MigrationsApplied = r.MigrationsApplied,
                     Succeeded = r.Succeeded,
                     Error = r.Error,
-                    PerformedBy = r.PerformedBy
+                    PerformedBy = r.PerformedBy,
+                    BackupFile = r.BackupFile
                 })
                 .ToListAsync(ct);
         }

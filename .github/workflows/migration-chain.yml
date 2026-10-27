@@ -1,7 +1,10 @@
 # Migration chain gate (SCRUM-413 / #383): applies the EF migration chain to a real SQL Server before anything is uploaded.
 # Manual (Actions > PEMS Migration Chain Gate > Run workflow) and reusable (called by deploy-site.yml once proven).
 # The SQL Server is a throw-away container with a random password generated here; no secrets, no customer data, no deployment.
-# What it checks: scripts/ci/test-migration-chain.sh (install on empty, upgrade from the base ref, model agrees).
+# What it checks: scripts/ci/test-migration-chain.sh (install on empty, upgrade from the base ref, model agrees), then
+# SCRUM-280 (#262): an upgrade from every supported release (deploy/db/supported-releases.json) with data, compared with a
+# fresh install, the pre-update backup and its restore, and the released-migration rules (DatabaseUpgradePathSqlTests,
+# MigrationCompatibilityRulesTests).
 
 name: PEMS Migration Chain Gate
 
@@ -27,7 +30,7 @@ permissions:
 jobs:
   chain:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
@@ -64,6 +67,14 @@ jobs:
         run: |
           base="${{ inputs.base_ref }}"; base="${base:-origin/main}"
           bash scripts/ci/test-migration-chain.sh "$base"
+
+      - name: Upgrade from every supported release, with data (SCRUM-280)
+        env:
+          PEMS_TEST_CONNECTION: Server=127.0.0.1,1433;User Id=sa;Password=${{ env.SA_PASSWORD }};TrustServerCertificate=True
+        run: >
+          dotnet test PEMS.Tests/PEMS.Tests.csproj --configuration Release
+          --filter "Category=DbUpgrade|FullyQualifiedName~MigrationCompatibilityRulesTests"
+          --logger "console;verbosity=normal"
 
       - name: Stop SQL Server
         if: always()

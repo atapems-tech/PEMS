@@ -43,4 +43,8 @@ public class DatabaseUpdateRun
     /// <summary>User name for Admin runs; null for the automatic startup run.</summary>
     [MaxLength(256)]
     public string? PerformedBy { get; set; }
+
+    /// <summary>SCRUM-280: the COPY_ONLY backup taken just before an update (path on the SQL Server machine); null when no backup was taken.</summary>
+    [MaxLength(500)]
+    public string? BackupFile { get; set; }
 }
