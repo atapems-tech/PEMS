@@ -12998,6 +12998,32 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("PartCatalogueWorkflowSteps", (string)null);
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.PasswordHistoryEntry", b =>
+                {
+                    b.Property<int>("PasswordHistoryEntryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PasswordHistoryEntryId"));
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<DateTime>("ReplacedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PasswordHistoryEntryId");
+
+                    b.HasIndex("UserId", "ReplacedAtUtc");
+
+                    b.ToTable("PasswordHistory", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Permission", b =>
                 {
                     b.Property<int>("PermissionId")
@@ -24502,6 +24528,15 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("CommodityGroup");
 
                     b.Navigation("Section");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PasswordHistoryEntry", b =>
+                {
+                    b.HasOne("PEMS.Persistence.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.Permit", b =>

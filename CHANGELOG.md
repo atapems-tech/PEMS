@@ -34,6 +34,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 - `PEMS.UI.Abstractions` (descriptor contract), `PEMS.UI` (Razor class library: button, badge, skeleton, field, table, form, descriptor host, component registry, request-free renderer, `<pems-field>` Tag Helper facade, View Component for comparison) and `PEMS.UI.Tests` with an extension-pack fixture. Standalone: `PEMS.Web` does not reference them yet, so no page changes.
 - ADR-0007 (proposed): static Razor components with a Tag Helper facade, with the measured comparison.
 
+## 2026-10-27 - Password history (SCRUM-412)
+
+### Added
+- A new password must differ from the current one and from the last N (`Authentication__Password__HistoryCount`, default 5, 0 = off) on every path that sets a password: forced first change, voluntary change, administrator reset, second-administrator reset, recovery code and break-glass. Replaced hashes are kept in the new table `PasswordHistory` (migration `PasswordHistory`, hashes only). Message in fa and en.
+- README manual check M-19; `PasswordHistoryTests`.
+
 ## 2026-10-27 - Offline PDF viewers and an external-URL check (SCRUM-20)
 
 ### Changed
