@@ -3,6 +3,17 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-27 - Every module workflow editable in Workflow Management, guarded by module contracts (SCRUM-103)
+
+### Added
+- Module contracts on the workflow engine (`IWorkflowModuleContractRegistry`, `PemsWorkflowContracts`): for each of the 13 module workflows, the actions, stages, dynamic-participant hand-overs and BusinessStatus its code relies on. The validator refuses a version that breaks them (`CONTRACT_*` errors), so Validate/Publish cannot break a module.
+- Startup seeder `WorkflowBindingBackfillSeeder`: an explicit binding, pinned to today's published version, for every module workflow that had none (same version the legacy path started, so behaviour is unchanged).
+- `docs/workflow/WORKFLOW_PLATFORM_MODULE_CONTRACTS.md`.
+
+### Changed
+- Admin > Workflow Management: all 13 definitions are editable (was 3 by whitelist); the reason and the designer show which parts the module contract keeps.
+- The legacy module action names moved from `Program.cs` to `PemsWorkflowContracts.CreateActionRegistry()` (one list for the app, seeders and tests).
+
 ## 2026-10-27 - Database upgrade from every supported release, pre-update backup (SCRUM-280)
 
 ### Added

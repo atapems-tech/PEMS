@@ -84,6 +84,8 @@
         else
         {
             <div class="small text-muted mt-2"><i class="bi bi-people"></i> @Localizer["Four-eyes control: the last editor of this draft cannot publish it."]</div>
+            @* SCRUM-103: what the module code needs from this definition (checked on Validate/Publish) *@
+            <div class="small text-muted mt-1" data-contract-summary><i class="bi bi-shield-lock"></i> @Model.DefinitionEditableReason</div>
         }
     </div>
 
