@@ -67,7 +67,7 @@ public class VdrIndexLayoutTests
         Assert.Contains("class=\"lp-panel\"", html);
         Assert.Single(Regex.Matches(html, "class=\"lp-toolbar\""));
         Assert.Matches("<h2 title=\"Vendor document register[^\"]*\">Vendor Document Register</h2>", html);
-        Assert.Matches("<span class=\"lp-total\"[^>]*>2</span>", html);
+        Assert.Matches("<span [^>]*class=\"lp-total\"[^>]*>2</span>", html);
         Assert.Contains("lp-scroll", html);
         Assert.Contains("class=\"lp-footer\"", html);
         Assert.Matches("<table class=\"[^\"]*lp-table[^\"]*\" data-grid-key=\"VDR\"", html);
@@ -79,10 +79,10 @@ public class VdrIndexLayoutTests
 
         // toolbar: search, filters, KPIs, Excel, reset columns (hidden on phones), New
         Assert.Contains("data-lp-search-open", html);
-        Assert.Contains("id=\"vdrFiltersBtn\"", html);
+        Assert.Contains("id=\"vdrFilterFormBtn\"", html);
         Assert.Contains("data-lp-kpi-toggle", html);
         Assert.Contains("bi-file-earmark-excel", html);
-        Assert.Contains("class=\"lp-icon-btn lp-hide-xs\" onclick=\"PemsDataGrid.resetColumns('VDR')\"", html);
+        Assert.Contains("class=\"lp-icon-btn lp-hide-xs\" data-lp-reset-columns=\"VDR\"", html);   // SCRUM-337: pems-list.js resets
         Assert.Contains("New vendor document", html);
 
         // the old layout is gone
@@ -97,10 +97,12 @@ public class VdrIndexLayoutTests
     {
         var html = await RenderAsync(new[] { Row() }, projectId: 1, search: "datasheet");
 
-        var form = Regex.Match(html, "<form method=\"get\"[^>]*id=\"vdrSearchForm\"[^>]*>(.*?)</form>", RegexOptions.Singleline);
+        var form = Regex.Match(html, "<form [^>]*id=\"vdrSearchForm\"[^>]*>(.*?)</form>", RegexOptions.Singleline);
         Assert.True(form.Success);
         Assert.Contains("data-lp-search", form.Value);
-        Assert.Contains("name=\"search\" value=\"datasheet\"", form.Value);
+        var input = Regex.Match(form.Value, "<input [^>]*id=\"vdrSearchInput\"[^>]*>").Value;
+        Assert.Contains("name=\"search\"", input);
+        Assert.Contains("value=\"datasheet\"", input);
         Assert.Contains("data-search-type=\"VDRItem\"", form.Value);
         Assert.Contains("name=\"projectId\" value=\"1\"", form.Value);            // the other filters stay applied
     }
@@ -147,7 +149,7 @@ public class VdrIndexLayoutTests
         };
         var html = await RenderAsync(new[] { Row() }, dash: dash);
 
-        Assert.Matches("<div class=\"lp-kpis\" id=\"vdrKpis\" hidden>", html);
+        Assert.Matches("<div class=\"lp-kpis\" id=\"vdrKpis\" hidden(=\"hidden\")?>", html);
         Assert.Contains("aria-controls=\"vdrKpis\"", html);
         Assert.Contains("data-storage-key=\"pems.vdr.kpis\"", html);
         var kpis = html[html.IndexOf("id=\"vdrKpis\"", StringComparison.Ordinal)..];

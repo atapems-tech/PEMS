@@ -27,12 +27,12 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/pems-letter-index.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
-@* SCRUM-408: همان ظاهر فهرست نامه‌ها - جدول کل صفحه را پر می‌کند، نوار ابزار حداقلی با دکمه‌های آیکنی، فیلترها در منوی کشویی،
-   شمارش‌ها (KPI) پیش‌فرض پنهان و با دکمه نمایش داده می‌شوند. *@
-<div class="lp-page">
+@* SCRUM-408 look, built from the PEMS.UI list-page component (SCRUM-337): the table fills the page, one icon toolbar,
+   filters in a dropdown, KPI chips hidden until asked. This page keeps its own columns, filters, rows and actions. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
 
     @* ناوبری ماژول: MDR/VDR/Transmittal زیرمجموعه‌ی همان هسته‌ی Document هستند - Import عمداً این‌جا نیست (فقط Import Center) *@
     <nav class="vs-subnav" aria-label="@Localizer["Ed_Documents"]">
@@ -42,123 +42,72 @@
         <a asp-controller="Transmittal" asp-action="Index">@Localizer["Ed_Transmittals"]</a>
     </nav>
 
-    <div class="lp-panel">
+    <pems-list-panel>
 
-        @* تنها نوار ابزار: عنوان + تعداد، جستجو (روی عنوان باز می‌شود)، فیلترها، شمارش‌ها، اکسل، بازنشانی ستون‌ها، مدرک جدید *@
-        <div class="lp-toolbar" id="edToolbar" data-lp-toolbar>
-            <div class="lp-tabs lp-head">
-                <h2>@Localizer["Ed_Documents"]</h2>
-                <span class="lp-total" aria-label="@Localizer["Ed_Total"]: @Model.TotalCount">@Model.TotalCount</span>
-            </div>
-
+        <pems-list-toolbar id="edToolbar" heading="@Localizer["Ed_Documents"]" total="@Model.TotalCount">
             @* یک جستجوی اصلی: همان Autocomplete مشترک؛ Enter بدون انتخاب نتیجه همین فرم را Submit می‌کند *@
-            <form method="get" asp-action="Index" id="engDocSearchForm" class="lp-search" role="search" data-lp-search hidden>
-                <i class="bi bi-search" aria-hidden="true"></i>
-                <input type="search" id="engDocQuickSearch" name="Search" value="@filter.Search"
-                       placeholder="@Localizer["Ed_SearchPlaceholder"]" data-pems-search data-search-type="EngineeringDocument" autocomplete="off"
-                       aria-label="@Localizer["Ed_SearchAria"]" />
+            <pems-list-search id="engDocSearchForm" action="@Url.Action("Index")" input-id="engDocQuickSearch" name="Search" value="@filter.Search"
+                              placeholder="@Localizer["Ed_SearchPlaceholder"]" search-type="EngineeringDocument">
                 @if (filter.DisciplineId.HasValue) { <input type="hidden" name="DisciplineId" value="@filter.DisciplineId" /> }
                 @if (!string.IsNullOrEmpty(filter.Status)) { <input type="hidden" name="Status" value="@filter.Status" /> }
                 @if (!string.IsNullOrEmpty(filter.Area)) { <input type="hidden" name="Area" value="@filter.Area" /> }
-                <button type="submit" class="btn btn-sm btn-pems-solid">@Localizer["Search"]</button>
-                <button type="button" class="lp-icon-btn" data-lp-search-close aria-label="@Localizer["Lp_SearchClose"]"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
-            </form>
+            </pems-list-search>
 
-            <div class="lp-tools">
-                <button type="button" class="lp-icon-btn" data-lp-search-open aria-controls="engDocSearchForm" aria-expanded="false" title="@Localizer["Ed_SearchAria"]">
-                    <i class="bi bi-search" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Ed_SearchAria"]</span>
-                </button>
-
-                <div class="dropdown">
-                    <button type="button" class="lp-icon-btn" id="edFiltersBtn" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" title="@Localizer["Ed_Filters"]">
-                        <i class="bi bi-funnel" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Ed_Filters"]</span>
-                        @if (filterCount > 0) { <span class="lp-badge">@filterCount<span class="visually-hidden"> @Localizer["Lp_ActiveFilters"]</span></span> }
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end lp-filter-pop p-0">
-                        <form method="get" asp-action="Index" id="edFilterForm">
-                            <input type="hidden" name="Search" value="@filter.Search" />
-                            <div class="lp-fp-body">
-                                <div>
-                                    <label class="lp-lbl" for="edFilterDiscipline">@Localizer["Ed_Discipline"]</label>
-                                    <select id="edFilterDiscipline" name="DisciplineId" class="form-select form-select-sm">
-                                        <option value="">@Localizer["Ed_All"]</option>
-                                        @foreach (var d in disciplines)
-                                        { <option value="@d.DisciplineId" selected="@(filter.DisciplineId == d.DisciplineId)">@d.Name</option> }
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="lp-lbl" for="edFilterStatus">@Localizer["Ed_Status"]</label>
-                                    <select id="edFilterStatus" name="Status" class="form-select form-select-sm">
-                                        <option value="">@Localizer["Ed_All"]</option>
-                                        @foreach (var s in statusOptions)
-                                        { <option value="@s" selected="@(filter.Status == s)">@StatusText(s)</option> }
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="lp-lbl" for="edFilterArea">@Localizer["Ed_Area"]</label>
-                                    <input id="edFilterArea" name="Area" value="@filter.Area" type="text" class="form-control form-control-sm" />
-                                </div>
-                            </div>
-                            <div class="lp-fp-foot">
-                                <a asp-action="Index" asp-route-Search="@filter.Search" class="btn btn-sm btn-link">@Localizer["Reset"]</a>
-                                <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Ed_ApplyFilters"]</button>
-                            </div>
-                        </form>
+            <pems-list-tools search-for="engDocSearchForm">
+                <pems-list-filters form-id="edFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index", new { Search = filter.Search })">
+                    <input type="hidden" name="Search" value="@filter.Search" />
+                    <div>
+                        <label class="lp-lbl" for="edFilterDiscipline">@Localizer["Ed_Discipline"]</label>
+                        <select id="edFilterDiscipline" name="DisciplineId" class="form-select form-select-sm">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var d in disciplines)
+                            { <option value="@d.DisciplineId" selected="@(filter.DisciplineId == d.DisciplineId)">@d.Name</option> }
+                        </select>
                     </div>
-                </div>
-
-                <button type="button" class="lp-icon-btn" data-lp-kpi-toggle aria-controls="edKpis" aria-expanded="false" data-storage-key="pems.engdocs.kpis" title="@Localizer["Ed_Kpis"]">
-                    <i class="bi bi-bar-chart-line" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Ed_Kpis"]</span>
-                </button>
-                <a asp-action="Export" asp-route-Search="@filter.Search" asp-route-ProjectId="@filter.ProjectId" asp-route-DisciplineId="@filter.DisciplineId"
-                   asp-route-Status="@filter.Status" asp-route-Area="@filter.Area" asp-route-MinRevisionCount="@filter.MinRevisionCount"
-                   class="lp-icon-btn" title="@Localizer["ExportFilteredList"]" aria-label="@Localizer["ExportFilteredList"]"><i class="bi bi-file-earmark-excel" aria-hidden="true"></i></a>
-                <button type="button" class="lp-icon-btn lp-hide-xs" onclick="PemsDataGrid.resetColumns('EngineeringDocuments')" title="@Localizer["ResetColumns"]" aria-label="@Localizer["ResetColumns"]">
-                    <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
-                </button>
-                <a asp-action="Create" class="btn btn-sm btn-pems-solid lp-compose"><i class="bi bi-plus-lg" aria-hidden="true"></i> <span class="lp-compose-label">@Localizer["Ed_New"]</span></a>
-            </div>
-        </div>
+                    <div>
+                        <label class="lp-lbl" for="edFilterStatus">@Localizer["Ed_Status"]</label>
+                        <select id="edFilterStatus" name="Status" class="form-select form-select-sm">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var s in statusOptions)
+                            { <option value="@s" selected="@(filter.Status == s)">@StatusText(s)</option> }
+                        </select>
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="edFilterArea">@Localizer["Ed_Area"]</label>
+                        <input id="edFilterArea" name="Area" value="@filter.Area" type="text" class="form-control form-control-sm" />
+                    </div>
+                </pems-list-filters>
+                <pems-list-kpi-toggle target="edKpis" storage-key="pems.engdocs.kpis" />
+                <pems-list-export href="@Url.Action("Export", new { filter.Search, filter.ProjectId, filter.DisciplineId, filter.Status, filter.Area, filter.MinRevisionCount })" />
+                <pems-list-reset-columns grid-key="EngineeringDocuments" />
+                <pems-list-new href="@Url.Action("Create")" text="@Localizer["Ed_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
 
         @* شمارش‌ها از دیتابیس (GetSummaryCountsAsync) با همان محدودیت دیسیپلین، مستقل از فیلترها؛ پیش‌فرض پنهان (SCRUM-408).
            فقط مواردی که دقیقاً به یک مقدار فیلتر Status نگاشت می‌شوند کلیک‌پذیرند (Total/Approved/Rejected). *@
-        <div class="lp-kpis" id="edKpis" hidden>
+        <pems-list-kpis id="edKpis">
             <a class="vs-chip text-decoration-none" href="@Url.Action("Index")">@Localizer["Ed_Total"] <strong>@summary.Total</strong></a>
             <a class="vs-chip text-decoration-none" href="@Url.Action("Index", new { Status = "Approved" })">@StatusText("Approved") <strong>@summary.Approved</strong></a>
             <span class="vs-chip">@Localizer["Ed_Pending"] <strong>@summary.Pending</strong></span>
             <a class="vs-chip text-decoration-none @(summary.Rejected > 0 ? "vs-chip--danger" : "")" href="@Url.Action("Index", new { Status = "Rejected" })">@StatusText("Rejected") <strong>@summary.Rejected</strong></a>
             <span class="vs-chip"><i class="bi bi-snow" aria-hidden="true"></i> @Localizer["Ed_Frozen"] <strong>@summary.Frozen</strong></span>
             <span class="vs-chip @(summary.Overdue > 0 ? "vs-chip--danger" : "")">@Localizer["Ed_Overdue"] <strong>@summary.Overdue</strong></span>
-        </div>
+        </pems-list-kpis>
 
         @* فیلترهای فعال: این ردیف فقط وقتی فیلتری هست دیده می‌شود *@
-        @if (hasActiveAdvancedFilters)
-        {
-            <div class="lp-chips">
-                <ul class="pems-filter-chips list-unstyled mb-0" aria-label="@Localizer["Lp_ActiveFilters"]">
-                    @if (filter.DisciplineId.HasValue)
-                    {
-                        <li class="pems-filter-chip"><span>@Localizer["Ed_Discipline"]: @selectedDisciplineName</span>
-                            <a href="@Url.Action("Index", new { Search = filter.Search, Status = filter.Status, Area = filter.Area })" title="@Localizer["Ed_RemoveFilter"]" aria-label="@Localizer["Ed_RemoveFilter"]: @Localizer["Ed_Discipline"]"><i class="bi bi-x" aria-hidden="true"></i></a></li>
-                    }
-                    @if (!string.IsNullOrEmpty(filter.Status))
-                    {
-                        <li class="pems-filter-chip"><span>@Localizer["Ed_Status"]: @StatusText(filter.Status)</span>
-                            <a href="@Url.Action("Index", new { Search = filter.Search, DisciplineId = filter.DisciplineId, Area = filter.Area })" title="@Localizer["Ed_RemoveFilter"]" aria-label="@Localizer["Ed_RemoveFilter"]: @Localizer["Ed_Status"]"><i class="bi bi-x" aria-hidden="true"></i></a></li>
-                    }
-                    @if (!string.IsNullOrEmpty(filter.Area))
-                    {
-                        <li class="pems-filter-chip"><span>@Localizer["Ed_Area"]: @filter.Area</span>
-                            <a href="@Url.Action("Index", new { Search = filter.Search, DisciplineId = filter.DisciplineId, Status = filter.Status })" title="@Localizer["Ed_RemoveFilter"]" aria-label="@Localizer["Ed_RemoveFilter"]: @Localizer["Ed_Area"]"><i class="bi bi-x" aria-hidden="true"></i></a></li>
-                    }
-                </ul>
-                @if (filterCount > 1) { <a asp-action="Index" asp-route-Search="@filter.Search" class="small">@Localizer["Ed_ResetAll"]</a> }
-            </div>
-        }
+        <pems-list-chips reset-href="@Url.Action("Index", new { Search = filter.Search })">
+            @if (filter.DisciplineId.HasValue)
+            { <pems-list-chip label="@Localizer["Ed_Discipline"]" value="@selectedDisciplineName" remove-href="@Url.Action("Index", new { Search = filter.Search, Status = filter.Status, Area = filter.Area })" /> }
+            @if (!string.IsNullOrEmpty(filter.Status))
+            { <pems-list-chip label="@Localizer["Ed_Status"]" value="@StatusText(filter.Status)" remove-href="@Url.Action("Index", new { Search = filter.Search, DisciplineId = filter.DisciplineId, Area = filter.Area })" /> }
+            @if (!string.IsNullOrEmpty(filter.Area))
+            { <pems-list-chip label="@Localizer["Ed_Area"]" value="@filter.Area" remove-href="@Url.Action("Index", new { Search = filter.Search, DisciplineId = filter.DisciplineId, Status = filter.Status })" /> }
+        </pems-list-chips>
 
-        <div class="lp-tablewrap">
-            <div class="table-responsive pems-grid-scroll table-scroll-area lp-scroll">
-                <table class="table table-enterprise pems-grid-table pems-compact-rows mb-0 lp-table" data-grid-key="EngineeringDocuments">
+        <pems-list-grid>
+            <pems-list-table grid-key="EngineeringDocuments" empty="@(!Model.Items.Any())" empty-text="@Localizer["Ed_Empty"]"
+                             filtered="@(hasActiveAdvancedFilters || !string.IsNullOrEmpty(filter.Search))" clear-href="@Url.Action("Index")">
                     <thead>
                         <tr>
                             <th data-col-key="docNo" data-resizable="true" data-min-width="120" data-max-width="260" style="width:170px">@Localizer["Ed_DocNo"]</th>
@@ -212,22 +161,9 @@
                             </tr>
                         }
                     </tbody>
-                </table>
-                @if (!Model.Items.Any())
-                {
-                    <div class="lp-empty">
-                        <i class="bi bi-inbox" aria-hidden="true"></i>
-                        <strong>@Localizer["Ed_Empty"]</strong>
-                        @if (hasActiveAdvancedFilters || !string.IsNullOrEmpty(filter.Search))
-                        {
-                            <span>@Localizer["Lp_NoResultsHint"]</span>
-                            <a asp-action="Index" class="btn btn-sm btn-outline-secondary mt-2">@Localizer["Lt_ClearAll"]</a>
-                        }
-                    </div>
-                }
-            </div>
+            </pems-list-table>
 
-            <div class="lp-footer">
+            <pems-list-footer>
                 @{
                     var edQsParts = new List<string>();
                     if (!string.IsNullOrEmpty(filter.Search)) edQsParts.Add($"Search={Uri.EscapeDataString(filter.Search)}");
@@ -245,27 +181,12 @@
                     BaseUrl = Url.Action("Index") ?? "",
                     ExistingQueryString = string.Join("&", edQsParts)
                 })
-            </div>
-        </div>
-    </div>
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
 
-</div>
+</pems-list-page>
 
 @section Scripts {
-    <script src="~/js/pems-list-page.js" asp-append-version="true"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('EngineeringDocuments');
-
-            // انتخاب نتیجه در Autocomplete مستقیم به همان مدرک می‌رود؛ Enter بدون انتخاب، فرم جستجو را ارسال می‌کند
-            var input = document.getElementById('engDocQuickSearch');
-            var form = document.getElementById('engDocSearchForm');
-            input.addEventListener('pems:search-select', function (e) {
-                if (e.detail && e.detail.url) window.location.href = e.detail.url;
-            });
-            input.addEventListener('pems:search-enter', function () {
-                form.submit();
-            });
-        });
-    </script>
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
 }
