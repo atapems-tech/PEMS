@@ -22,12 +22,12 @@
 @{ ViewData["Title"] = Localizer["Vs_VdrRegisterHeading"].Value; ViewData["HidePageTitle"] = true; }
 @section Styles {
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/pems-letter-index.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
 @* SCRUM-409: دقیقاً همان قاب فهرست مدارک مهندسی (SCRUM-408) - جدول تمام‌صفحه، نوار ابزار آیکنی، فیلترها در منوی کشویی،
-   شمارش‌ها و ریسک تأخیر فروشنده پیش‌فرض پنهان. *@
-<div class="lp-page">
+   شمارش‌ها و ریسک تأخیر فروشنده پیش‌فرض پنهان. SCRUM-337: ساخته‌شده از کامپوننت فهرست PEMS.UI. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
 
     <nav class="vs-subnav" aria-label="@Localizer["Ed_Documents"]">
         <a asp-controller="EngineeringDocuments" asp-action="Index">@Localizer["Ed_Documents"]</a>
@@ -36,86 +36,52 @@
         <a asp-controller="Transmittal" asp-action="Index">@Localizer["Ed_Transmittals"]</a>
     </nav>
 
-    <div class="lp-panel">
+    <pems-list-panel>
 
-        <div class="lp-toolbar" id="vdrToolbar" data-lp-toolbar>
-            <div class="lp-tabs lp-head">
-                <h2 title="@Localizer["Vs_VdrSubtitle"]">@Localizer["Vs_VdrRegisterHeading"]</h2>
-                <span class="lp-total" aria-label="@Localizer["Vs_TotalItems"]: @Model.TotalCount">@Model.TotalCount</span>
-            </div>
-
+        <pems-list-toolbar id="vdrToolbar" heading="@Localizer["Vs_VdrRegisterHeading"]" heading-title="@Localizer["Vs_VdrSubtitle"]" total="@Model.TotalCount">
             @* جستجو در شماره، شرح و نام فروشنده؛ Autocomplete مشترک با نوع VDRItem *@
-            <form method="get" asp-action="Index" id="vdrSearchForm" class="lp-search" role="search" data-lp-search hidden>
-                <i class="bi bi-search" aria-hidden="true"></i>
-                <input type="search" id="vdrSearchInput" name="search" value="@search"
-                       placeholder="@Localizer["Vs_QuickSearchPlaceholder"]" data-pems-search data-search-type="VDRItem" autocomplete="off"
-                       aria-label="@Localizer["Vs_QuickSearchLabel"]" />
+            <pems-list-search id="vdrSearchForm" action="@Url.Action("Index")" input-id="vdrSearchInput" name="search" value="@search"
+                              placeholder="@Localizer["Vs_QuickSearchPlaceholder"]" search-type="VDRItem">
                 @if (selectedProjectId != null) { <input type="hidden" name="projectId" value="@selectedProjectId" /> }
                 @if (selectedVendorId != null) { <input type="hidden" name="vendorId" value="@selectedVendorId" /> }
                 @if (!string.IsNullOrEmpty(selectedStatus)) { <input type="hidden" name="status" value="@selectedStatus" /> }
-                <button type="submit" class="btn btn-sm btn-pems-solid">@Localizer["Search"]</button>
-                <button type="button" class="lp-icon-btn" data-lp-search-close aria-label="@Localizer["Lp_SearchClose"]"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
-            </form>
+            </pems-list-search>
 
-            <div class="lp-tools">
-                <button type="button" class="lp-icon-btn" data-lp-search-open aria-controls="vdrSearchForm" aria-expanded="false" title="@Localizer["Vs_QuickSearchLabel"]">
-                    <i class="bi bi-search" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Vs_QuickSearchLabel"]</span>
-                </button>
-
-                <div class="dropdown">
-                    <button type="button" class="lp-icon-btn" id="vdrFiltersBtn" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" title="@Localizer["Vs_FilterToggle"]">
-                        <i class="bi bi-funnel" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Vs_FilterToggle"]</span>
-                        @if (activeFilters > 0) { <span class="lp-badge">@activeFilters<span class="visually-hidden"> @Localizer["Vs_ActiveFilters"]</span></span> }
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end lp-filter-pop p-0">
-                        <form method="get" asp-action="Index" id="vdrFilterForm">
-                            <input type="hidden" name="search" value="@search" />
-                            <div class="lp-fp-body">
-                                <div>
-                                    <label class="lp-lbl" for="vdrFltProject">@Localizer["Vs_Project"]</label>
-                                    <select id="vdrFltProject" name="projectId" class="form-select form-select-sm">
-                                        <option value="">@Localizer["All"]</option>
-                                        @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == selectedProjectId)">@p.ProjectName</option> }
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="lp-lbl" for="vdrFltVendor">@Localizer["Vendor"]</label>
-                                    <select id="vdrFltVendor" name="vendorId" class="form-select form-select-sm">
-                                        <option value="">@Localizer["All"]</option>
-                                        @foreach (var v in vendors) { <option value="@v.VendorId" selected="@(v.VendorId == selectedVendorId)">@v.Name</option> }
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="lp-lbl" for="vdrFltStatus">@Localizer["Status"]</label>
-                                    <select id="vdrFltStatus" name="status" class="form-select form-select-sm">
-                                        <option value="">@Localizer["All"]</option>
-                                        @foreach (var s in new[] { "Planned", "Submitted", "UnderReview", "PendingResubmission", "Closed" })
-                                        { <option value="@s" selected="@(s == selectedStatus)">@VdrUi.Loc(Localizer, "St_", s)</option> }
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="lp-fp-foot">
-                                <a asp-action="Index" asp-route-search="@search" class="btn btn-sm btn-link">@Localizer["Reset"]</a>
-                                <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Ed_ApplyFilters"]</button>
-                            </div>
-                        </form>
+            <pems-list-tools search-for="vdrSearchForm">
+                <pems-list-filters form-id="vdrFilterForm" action="@Url.Action("Index")" count="@activeFilters" reset-href="@Url.Action("Index", new { search })">
+                    <input type="hidden" name="search" value="@search" />
+                    <div>
+                        <label class="lp-lbl" for="vdrFltProject">@Localizer["Vs_Project"]</label>
+                        <select id="vdrFltProject" name="projectId" class="form-select form-select-sm">
+                            <option value="">@Localizer["All"]</option>
+                            @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == selectedProjectId)">@p.ProjectName</option> }
+                        </select>
                     </div>
-                </div>
-
-                <button type="button" class="lp-icon-btn" data-lp-kpi-toggle aria-controls="vdrKpis" aria-expanded="false" data-storage-key="pems.vdr.kpis" title="@Localizer["Ed_Kpis"]">
-                    <i class="bi bi-bar-chart-line" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Ed_Kpis"]</span>
-                </button>
-                <a asp-action="Export" asp-route-projectId="@selectedProjectId" asp-route-vendorId="@selectedVendorId" asp-route-status="@selectedStatus" asp-route-search="@search"
-                   class="lp-icon-btn" title="@Localizer["ExportFilteredList"]" aria-label="@Localizer["ExportFilteredList"]"><i class="bi bi-file-earmark-excel" aria-hidden="true"></i></a>
-                <button type="button" class="lp-icon-btn lp-hide-xs" onclick="PemsDataGrid.resetColumns('VDR')" title="@Localizer["ResetColumns"]" aria-label="@Localizer["ResetColumns"]">
-                    <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
-                </button>
-                <a asp-action="Create" class="btn btn-sm btn-pems-solid lp-compose"><i class="bi bi-plus-lg" aria-hidden="true"></i> <span class="lp-compose-label">@Localizer["Vs_NewVendorDocument"]</span></a>
-            </div>
-        </div>
+                    <div>
+                        <label class="lp-lbl" for="vdrFltVendor">@Localizer["Vendor"]</label>
+                        <select id="vdrFltVendor" name="vendorId" class="form-select form-select-sm">
+                            <option value="">@Localizer["All"]</option>
+                            @foreach (var v in vendors) { <option value="@v.VendorId" selected="@(v.VendorId == selectedVendorId)">@v.Name</option> }
+                        </select>
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="vdrFltStatus">@Localizer["Status"]</label>
+                        <select id="vdrFltStatus" name="status" class="form-select form-select-sm">
+                            <option value="">@Localizer["All"]</option>
+                            @foreach (var s in new[] { "Planned", "Submitted", "UnderReview", "PendingResubmission", "Closed" })
+                            { <option value="@s" selected="@(s == selectedStatus)">@VdrUi.Loc(Localizer, "St_", s)</option> }
+                        </select>
+                    </div>
+                </pems-list-filters>
+                <pems-list-kpi-toggle target="vdrKpis" storage-key="pems.vdr.kpis" />
+                <pems-list-export href="@Url.Action("Export", new { projectId = selectedProjectId, vendorId = selectedVendorId, status = selectedStatus, search })" />
+                <pems-list-reset-columns grid-key="VDR" />
+                <pems-list-new href="@Url.Action("Create")" text="@Localizer["Vs_NewVendorDocument"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
 
         @* شمارش‌ها و ریسک تأخیر فروشنده؛ پیش‌فرض پنهان (SCRUM-409) *@
-        <div class="lp-kpis" id="vdrKpis" hidden>
+        <pems-list-kpis id="vdrKpis">
             <span class="vs-chip">@Localizer["Vs_TotalItems"] <strong>@dash.TotalItems</strong></span>
             <span class="vs-chip @(dash.OverdueItems > 0 ? "vs-chip--danger" : "")">@Localizer["Vs_Overdue"] <strong>@dash.OverdueItems</strong></span>
             <span class="vs-chip @(dash.SlaOverdueItems > 0 ? "vs-chip--danger" : "")">@Localizer["Vs_SlaOverdue"] <strong>@dash.SlaOverdueItems</strong></span>
@@ -138,35 +104,20 @@
                     </ul>
                 </details>
             }
-        </div>
+        </pems-list-kpis>
 
-        @if (activeFilters > 0)
-        {
-            <div class="lp-chips">
-                <ul class="pems-filter-chips list-unstyled mb-0" aria-label="@Localizer["Vs_ActiveFilters"]">
-                    @if (selectedProjectId != null)
-                    {
-                        <li class="pems-filter-chip"><span>@Localizer["Vs_Project"]: @projectName</span>
-                            <a href="@Url.Action("Index", new { vendorId = selectedVendorId, status = selectedStatus, search })" title="@Localizer["Ed_RemoveFilter"]" aria-label="@Localizer["Ed_RemoveFilter"]: @Localizer["Vs_Project"]"><i class="bi bi-x" aria-hidden="true"></i></a></li>
-                    }
-                    @if (selectedVendorId != null)
-                    {
-                        <li class="pems-filter-chip"><span>@Localizer["Vendor"]: @vendorName</span>
-                            <a href="@Url.Action("Index", new { projectId = selectedProjectId, status = selectedStatus, search })" title="@Localizer["Ed_RemoveFilter"]" aria-label="@Localizer["Ed_RemoveFilter"]: @Localizer["Vendor"]"><i class="bi bi-x" aria-hidden="true"></i></a></li>
-                    }
-                    @if (!string.IsNullOrEmpty(selectedStatus))
-                    {
-                        <li class="pems-filter-chip"><span>@Localizer["Status"]: @VdrUi.Loc(Localizer, "St_", selectedStatus)</span>
-                            <a href="@Url.Action("Index", new { projectId = selectedProjectId, vendorId = selectedVendorId, search })" title="@Localizer["Ed_RemoveFilter"]" aria-label="@Localizer["Ed_RemoveFilter"]: @Localizer["Status"]"><i class="bi bi-x" aria-hidden="true"></i></a></li>
-                    }
-                </ul>
-                @if (activeFilters > 1) { <a asp-action="Index" asp-route-search="@search" class="small">@Localizer["Ed_ResetAll"]</a> }
-            </div>
-        }
+        <pems-list-chips reset-href="@Url.Action("Index", new { search })">
+            @if (selectedProjectId != null)
+            { <pems-list-chip label="@Localizer["Vs_Project"]" value="@projectName" remove-href="@Url.Action("Index", new { vendorId = selectedVendorId, status = selectedStatus, search })" /> }
+            @if (selectedVendorId != null)
+            { <pems-list-chip label="@Localizer["Vendor"]" value="@vendorName" remove-href="@Url.Action("Index", new { projectId = selectedProjectId, status = selectedStatus, search })" /> }
+            @if (!string.IsNullOrEmpty(selectedStatus))
+            { <pems-list-chip label="@Localizer["Status"]" value="@VdrUi.Loc(Localizer, "St_", selectedStatus)" remove-href="@Url.Action("Index", new { projectId = selectedProjectId, vendorId = selectedVendorId, search })" /> }
+        </pems-list-chips>
 
-        <div class="lp-tablewrap">
-            <div class="table-responsive pems-grid-scroll table-scroll-area lp-scroll">
-                <table class="table table-enterprise pems-grid-table pems-compact-rows mb-0 lp-table" data-grid-key="VDR">
+        <pems-list-grid>
+            <pems-list-table grid-key="VDR" empty="@(!Model.Items.Any())" empty-text="@Localizer["Vs_NoVdrItems"]"
+                             filtered="@(activeFilters > 0 || !string.IsNullOrEmpty(search))" clear-href="@Url.Action("Index")">
                     <thead>
                         <tr>
                             <th data-col-key="docNo" data-resizable="true" data-min-width="110" data-max-width="260" style="width:170px">@Localizer["Vs_DocNo"]</th>
@@ -203,22 +154,9 @@
                             </tr>
                         }
                     </tbody>
-                </table>
-                @if (!Model.Items.Any())
-                {
-                    <div class="lp-empty">
-                        <i class="bi bi-inbox" aria-hidden="true"></i>
-                        <strong>@Localizer["Vs_NoVdrItems"]</strong>
-                        @if (activeFilters > 0 || !string.IsNullOrEmpty(search))
-                        {
-                            <span>@Localizer["Lp_NoResultsHint"]</span>
-                            <a asp-action="Index" class="btn btn-sm btn-outline-secondary mt-2">@Localizer["Lt_ClearAll"]</a>
-                        }
-                    </div>
-                }
-            </div>
+            </pems-list-table>
 
-            <div class="lp-footer">
+            <pems-list-footer>
                 @{
                     var vdrQsParts = new List<string>();
                     if (selectedProjectId != null) vdrQsParts.Add($"projectId={selectedProjectId}");
@@ -236,27 +174,12 @@
                     BaseUrl = Url.Action("Index") ?? "",
                     ExistingQueryString = string.Join("&", vdrQsParts)
                 })
-            </div>
-        </div>
-    </div>
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
 
-</div>
+</pems-list-page>
 
 @section Scripts {
-    <script src="~/js/pems-list-page.js" asp-append-version="true"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('VDR');
-
-            // انتخاب نتیجه در Autocomplete مستقیم به همان مدرک می‌رود؛ Enter بدون انتخاب، فرم جستجو را ارسال می‌کند
-            var input = document.getElementById('vdrSearchInput');
-            var form = document.getElementById('vdrSearchForm');
-            input.addEventListener('pems:search-select', function (e) {
-                if (e.detail && e.detail.url) window.location.href = e.detail.url;
-            });
-            input.addEventListener('pems:search-enter', function () {
-                form.submit();
-            });
-        });
-    </script>
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
 }

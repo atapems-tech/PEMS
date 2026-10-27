@@ -58,10 +58,10 @@ public class EngineeringDocumentsListLookTests
 
         // icon buttons of the toolbar: search, filters, KPIs, Excel, reset columns; New stays a labelled button
         Assert.Contains("data-lp-search-open", html);
-        Assert.Contains("id=\"edFiltersBtn\"", html);
+        Assert.Contains("id=\"edFilterFormBtn\"", html);
         Assert.Contains("data-lp-kpi-toggle", html);
         Assert.Contains("bi-file-earmark-excel", html);
-        Assert.Matches("class=\"lp-icon-btn lp-hide-xs\" onclick=\"PemsDataGrid.resetColumns\\('EngineeringDocuments'\\)\"", html);   // hidden on phones
+        Assert.Matches("class=\"lp-icon-btn lp-hide-xs\" data-lp-reset-columns=\"EngineeringDocuments\"", html);   // hidden on phones; pems-list.js resets
         Assert.Contains("lp-compose", html);
 
     }
@@ -77,7 +77,9 @@ public class EngineeringDocumentsListLookTests
         Assert.Contains("name=\"Status\"", pop.Value);
         Assert.Contains("name=\"Area\"", pop.Value);
         Assert.Contains("value=\"2\">Electrical</option>", pop.Value);
-        Assert.Matches("id=\"edFiltersBtn\" data-bs-toggle=\"dropdown\" data-bs-auto-close=\"outside\"", html);
+        var button = Regex.Match(html, "<button[^>]*id=\"edFilterFormBtn\"[^>]*>").Value;
+        Assert.Contains("data-bs-toggle=\"dropdown\"", button);
+        Assert.Contains("data-bs-auto-close=\"outside\"", button);
         Assert.DoesNotContain("lp-badge", html);                                // nothing filtered
         Assert.DoesNotContain("class=\"lp-chips\"", html);
     }
@@ -101,10 +103,10 @@ public class EngineeringDocumentsListLookTests
     {
         var html = await Render(new EngineeringDocumentListFilter());
 
-        Assert.Matches("<div class=\"lp-kpis\" id=\"edKpis\" hidden>", html);
+        Assert.Matches("<div class=\"lp-kpis\" id=\"edKpis\" hidden(=\"hidden\")?>", html);
         Assert.Contains("aria-controls=\"edKpis\"", html);
         Assert.Contains("data-storage-key=\"pems.engdocs.kpis\"", html);
-        var kpis = Regex.Match(html, "id=\"edKpis\" hidden>(.*?)</div>", RegexOptions.Singleline).Groups[1].Value;
+        var kpis = Regex.Match(html, "id=\"edKpis\" hidden(?:=\"hidden\")?>(.*?)</div>", RegexOptions.Singleline).Groups[1].Value;
         Assert.Equal(6, Regex.Matches(kpis, "class=\"vs-chip").Count);
         Assert.Contains("<strong>12</strong>", kpis);
         Assert.Contains("<strong>4</strong>", kpis);
@@ -126,8 +128,9 @@ public class EngineeringDocumentsListLookTests
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.slnx"))) dir = dir.Parent;
         Assert.NotNull(dir);
-        var css = File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.Web", "wwwroot", "css", "pems-letter-index.css"));
-        var js = File.ReadAllText(Path.Combine(dir.FullName, "PEMS.Web", "wwwroot", "js", "pems-list-page.js"));
+        // SCRUM-337: the list styles and script belong to the component library now
+        var css = File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.UI", "wwwroot", "pems-list.css"));
+        var js = File.ReadAllText(Path.Combine(dir.FullName, "PEMS.UI", "wwwroot", "pems-list.js"));
 
         Assert.Matches(@"\.lp-page \{[^}]*height: calc\(100dvh - 112px\)", css);
         Assert.Contains(".lp-page .lp-scroll", css);
@@ -135,9 +138,10 @@ public class EngineeringDocumentsListLookTests
         Assert.Contains("localStorage", js);
         Assert.Contains("data-lp-search-open", js);
 
-        // the page loads the correspondence stylesheet and the shared script (sections are not rendered without a layout)
+        // the page is built from the component and loads its stylesheet and script (sections are not rendered without a layout)
         var view = File.ReadAllText(Path.Combine(dir.FullName, "PEMS.Web", "Views", "EngineeringDocuments", "Index.cshtml"));
-        Assert.Contains("~/css/pems-letter-index.css", view);
-        Assert.Contains("~/js/pems-list-page.js", view);
+        Assert.Contains("<pems-list-page texts=", view);
+        Assert.Contains("~/_content/PEMS.UI/pems-list.css", view);
+        Assert.Contains("~/_content/PEMS.UI/pems-list.js", view);
     }
 }

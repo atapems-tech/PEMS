@@ -14,6 +14,16 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 - Component inputs are now named-property objects (`new ButtonOptions { Label = ... }`) instead of positional arguments, for buttons, badges, the new states and the field/column/view/form descriptors; one shared property-name table is in guideline chapter 02. Rendered output is unchanged (goldens identical).
 - `PemsEmptyState`, `PemsErrorState` and `PemsLoadingState` in `PEMS.UI` with a `_PemsState` partial for existing pages: one look, one accessibility contract (status, alert, busy), texts as inputs, registry keys `empty-state`, `error-state`, `loading-state`. No existing page changes yet.
 
+## 2026-10-27 - List page component, wave 0 (SCRUM-337)
+
+### Added
+- `PEMS.UI` list-page component: `<pems-list-page>`, `-panel`, `-toolbar`, `-search`, `-tools`, `-filters`, `-kpi-toggle`, `-export`, `-reset-columns`, `-new`, `-kpis`, `-chips`, `-chip`, `-grid`, `-table`, `-footer` tag helpers with the Engineering Documents look; texts are inputs (`PemsListTexts`, `ListPageTexts.From(Localizer)`). `docs/design/LIST_PAGE_COMPONENT.md` (usage, what stays with each page, waves).
+- Five generic resource keys (`Lp_Kpis`, `Lp_ApplyFilters`, `Lp_Total`, `Lp_RemoveFilter`, `Lp_ResetAll`).
+
+### Changed
+- Engineering Documents and VDR lists are built from the component (same look and behaviour; about 80 lines less each, no page script).
+- The list styles and script moved into the component library: `PEMS.Web/wwwroot/css/pems-letter-index.css` -> `PEMS.UI/wwwroot/pems-list.css` (the Letter pages only changed the link), `pems-list-page.js` -> `PEMS.UI/wwwroot/pems-list.js` (now also wires the search autocomplete, column widths and reset-columns for every list page).
+
 ## 2026-10-27 - Pagination footer moved into PEMS.UI (SCRUM-418)
 
 ### Changed

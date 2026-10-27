@@ -1,4 +1,4 @@
-/* Correspondence list: active-filter chips, bulk bar, optional columns. Uses theme tokens only (light/dark/turquoise). */
+/* List page component (SCRUM-337, PEMS.UI; look from the correspondence list and SCRUM-408): frame, toolbar, filters dropdown, KPI row, chips, grid. Theme tokens only (light/dark/turquoise). Also used by the Letter list. */
 .pems-col-hidden { display: none !important; }
 
 .pems-filter-chips { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin-top: .5rem; }

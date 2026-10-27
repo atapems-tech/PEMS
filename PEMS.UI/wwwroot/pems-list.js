@@ -1,7 +1,10 @@
-// List pages with the correspondence look (SCRUM-408): search opens over the toolbar title, and an optional KPI row
-// that is hidden by default and remembered per browser. Markup contract (one per page):
+// List page component (SCRUM-337; look from SCRUM-408), rendered by the <pems-list-*> tag helpers of PEMS.UI.
+// Search opens over the toolbar title; an optional KPI row is hidden by default and remembered per browser; the grid keeps
+// its column widths. Markup contract:
 //   [data-lp-toolbar]  [data-lp-search-open]  form[data-lp-search] (hidden) with input + [data-lp-search-close]
+//     input[data-pems-search] inside it: picking a result opens it, Enter without a pick submits the form
 //   [data-lp-kpi-toggle] (aria-controls = id of the KPI row, data-storage-key = localStorage key)
+//   table.lp-table[data-grid-key] (column resize, PemsDataGrid)   [data-lp-reset-columns="gridKey"]
 (function () {
     'use strict';
 
@@ -33,7 +36,26 @@
             });
             // an active search term keeps the field open so the user sees what is filtered
             if (input.value) open();
+            // the shared autocomplete (data-pems-search): a picked result opens that record, Enter without a pick searches
+            if (input.hasAttribute('data-pems-search')) {
+                input.addEventListener('pems:search-select', function (e) {
+                    if (e.detail && e.detail.url) window.location.href = e.detail.url;
+                });
+                input.addEventListener('pems:search-enter', function () { form.submit(); });
+            }
         }
+    }
+
+    function initGrid(table) {
+        if (window.PemsDataGrid && typeof window.PemsDataGrid.initColumnResize === 'function')
+            window.PemsDataGrid.initColumnResize(table.getAttribute('data-grid-key'));
+    }
+
+    function initResetColumns(btn) {
+        btn.addEventListener('click', function () {
+            if (window.PemsDataGrid && typeof window.PemsDataGrid.resetColumns === 'function')
+                window.PemsDataGrid.resetColumns(btn.getAttribute('data-lp-reset-columns'));
+        });
     }
 
     function initKpis(btn) {
@@ -61,6 +83,8 @@
     function boot() {
         document.querySelectorAll('[data-lp-toolbar]').forEach(initSearch);
         document.querySelectorAll('[data-lp-kpi-toggle]').forEach(initKpis);
+        document.querySelectorAll('table.lp-table[data-grid-key]').forEach(initGrid);
+        document.querySelectorAll('[data-lp-reset-columns]').forEach(initResetColumns);
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
