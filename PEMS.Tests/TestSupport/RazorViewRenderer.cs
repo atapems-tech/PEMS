@@ -32,7 +32,9 @@ public static class RazorViewRenderer
         services.AddLogging();
         services.AddLocalization();
         services.AddDataProtection().UseEphemeralDataProtectionProvider();
-        services.AddControllersWithViews().AddApplicationPart(controller.GetType().Assembly);
+        services.AddControllersWithViews()
+            .AddApplicationPart(controller.GetType().Assembly)
+            .AddApplicationPart(typeof(PEMS.UI.ServiceCollectionExtensions).Assembly);   // shared partials live in PEMS.UI (found automatically in the real app)
 
         await using var provider = services.BuildServiceProvider();
         var http = new DefaultHttpContext { RequestServices = provider };

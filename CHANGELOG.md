@@ -14,6 +14,19 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 - Admin > Workflow Management: all 13 definitions are editable (was 3 by whitelist); the reason and the designer show which parts the module contract keeps.
 - The legacy module action names moved from `Program.cs` to `PemsWorkflowContracts.CreateActionRegistry()` (one list for the app, seeders and tests).
 
+## 2026-10-27 - Component texts are inputs (SCRUM-416)
+
+### Added
+- `TranslatableText` (JSON map of language slug to text, fallback chain, completeness check), `IPemsLocale` with the default `PemsLocale` (Jalali dates and Persian digits for Persian cultures, ISO dates otherwise, number formatting, options), `PemsJson`, and a culture parameter on the request-free renderer. ADR-0008.
+
+### Changed
+- `PEMS.UI` descriptors and components take `TranslatableText` for every user-visible text and hold none; table rows carry values of any type formatted by the locale. A test fails when a literal word appears in a component. `PEMS.Web` pages are unchanged.
+
+## 2026-10-27 - PEMS.Web consumes PEMS.UI (SCRUM-29, step 1)
+
+### Changed
+- `PEMS.Web` references `PEMS.UI` (component registry and renderer registered, `<pems-field>` tag helper available, `_content/PEMS.UI/pems-ui.css` published but not linked, so no page changes). The shared partials `_KpiCard` and `_PemsLoadingOverlay` and `KpiCardViewModel` moved into `PEMS.UI`; their output is byte-identical (golden tests in `PEMS.Tests/Ui`). ADR-0007 accepted.
+
 ## 2026-10-27 - Database upgrade from every supported release, pre-update backup (SCRUM-280)
 
 ### Added
@@ -31,6 +44,15 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Added
 - `PEMS.UI.Abstractions` (descriptor contract), `PEMS.UI` (Razor class library: button, badge, skeleton, field, table, form, descriptor host, component registry, request-free renderer, `<pems-field>` Tag Helper facade, View Component for comparison) and `PEMS.UI.Tests` with an extension-pack fixture. Standalone: `PEMS.Web` does not reference them yet, so no page changes.
 - ADR-0007 (proposed): static Razor components with a Tag Helper facade, with the measured comparison.
+
+## 2026-10-27 - Offline PDF viewers and an external-URL check (SCRUM-20)
+
+### Changed
+- The PDF viewers of Engineering Documents and VDR load pdf.js 4.0.379 from `wwwroot/lib/pdfjs` through `wwwroot/js/pdfjs-loader.js` instead of cdnjs.cloudflare.com (the product is offline).
+
+### Added
+- `OfflineAssetsTests`: no view, component, script or stylesheet may reference an external host (XML namespaces and one placeholder text are allow-listed); `tools/UiAudit/pattern-audit.py` now exits with an error on a CDN reference.
+- README manual check M-17.
 
 ## 2026-10-27 - Migration chain gate (SCRUM-413)
 

@@ -26,15 +26,16 @@ public sealed class PemsFieldTagHelper(IPemsComponentRenderer renderer) : TagHel
         var name = ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(For.Name);
         var kind = Kind ?? InferKind(meta.ModelType, meta.DataTypeName);
         var descriptor = new FieldDescriptor(
-            name, meta.DisplayName ?? meta.PropertyName ?? For.Name, kind,
-            Required: meta.IsRequired, ReadOnly: meta.IsReadOnly, HelpText: Help,
+            name, TranslatableText.Literal(meta.DisplayName ?? meta.PropertyName ?? For.Name), kind,
+            Required: meta.IsRequired, ReadOnly: meta.IsReadOnly, HelpText: TranslatableText.Literal(Help),
             MaxLength: null);
 
-        string? error = null;
+        TranslatableText? error = null;
         string? attempted = null;
         if (ViewContext.ModelState.TryGetValue(name, out var entry))
         {
-            if (entry.Errors.Count > 0) error = entry.Errors[0].ErrorMessage;
+            // MVC has already localised the message (data annotations / validation attributes), so it enters as a language-neutral text.
+            if (entry.Errors.Count > 0) error = TranslatableText.Literal(entry.Errors[0].ErrorMessage);
             attempted = entry.AttemptedValue;                       // what the user typed, like the built-in input tag helper
         }
 

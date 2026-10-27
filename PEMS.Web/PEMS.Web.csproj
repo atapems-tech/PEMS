@@ -57,6 +57,7 @@
     <ProjectReference Include="..\PEMS.Persistence\PEMS.Persistence.csproj" />
     <ProjectReference Include="..\PEMS.Migrations\PEMS.Migrations.csproj" />
     <ProjectReference Include="..\PEMS.Shared\PEMS.Shared.csproj" />
+    <ProjectReference Include="..\PEMS.UI\PEMS.UI.csproj" />
     <ProjectReference Include="..\PEMS.WorkflowPlatform\PEMS.WorkflowPlatform.csproj" />
   </ItemGroup>
 

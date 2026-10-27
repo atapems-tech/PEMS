@@ -27,6 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Samples\*.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PEMS.UI\PEMS.UI.csproj" />
     <ProjectReference Include="..\PEMS.UI.Abstractions\PEMS.UI.Abstractions.csproj" />
     <ProjectReference Include="..\PEMS.UI.Tests.ExtensionPack\PEMS.UI.Tests.ExtensionPack.csproj" />

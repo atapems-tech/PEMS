@@ -1,4 +1,6 @@
-﻿namespace PEMS.Web.Models;
+﻿// Moved from PEMS.Web (SCRUM-29). The namespace is kept on purpose so that no controller, view model or view has to change in
+// this step; it moves to PEMS.UI.Abstractions together with a descriptor in a later step.
+namespace PEMS.Web.Models;
 
 public class KpiCardViewModel
 {
