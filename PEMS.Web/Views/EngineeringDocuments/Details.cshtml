@@ -886,10 +886,9 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.js"></script>
-    <script>
+    <script type="module" src="~/js/pdfjs-loader.js"></script>
+    <script type="module">
         (function () {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js';
 
             var pdfUrl = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Url.Action("Download", "Files", new { id = latestPdfAttachment.AttachmentId })));
             var wrapper = document.getElementById('pdfCanvasWrapper');
