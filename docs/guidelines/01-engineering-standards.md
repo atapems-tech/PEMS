@@ -69,6 +69,8 @@ Rules:
 
 Production has no internet: no CDN, no external call, no telemetry, no online licence/update check. A new library must run fully offline and must not need an online source at build time. Static assets are served from `wwwroot`. (Website and demo are the only online parts and are separate deployables [R18].)
 
+**Enforced** (SCRUM-20): `OfflineAssetsTests` fails when a view, area view, `PEMS.UI` file, script or stylesheet names an external host (allow-list: XML namespaces and documentation or placeholder text, in the test), and `tools/UiAudit/pattern-audit.py` exits with an error on a CDN reference. Vendor a library under `wwwroot/lib/<name>/` with its licence file and a `README-PEMS.txt` (source, version, SHA-256, upgrade steps) and add it to the licence inventory (row #121). Take the files from the package registry (npm tarball), not from a CDN. Libraries that ship only ES modules (pdf.js 4.x) are loaded through a small module in `wwwroot/js/` that sets the global and resolves worker paths relative to itself, so a virtual directory keeps working; the page scripts that use them become `type="module"` (they run after parsing, in order) and must be valid strict-mode code.
+
 ## 6. Security
 
 - Validate on the server; encode output (Razor does by default - never `Html.Raw` on user data); antiforgery on every state-changing request (including `fetch`).

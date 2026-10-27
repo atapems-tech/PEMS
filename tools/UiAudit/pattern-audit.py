@@ -157,6 +157,14 @@ def main() -> None:
     if "--md" in sys.argv:
         write_md(summary, rows)
 
+    # SCRUM-20 / #42: the product is offline. A view that references a CDN host fails the audit (exit code 1),
+    # so any pipeline that runs this script stops (the same check also runs as OfflineAssetsTests).
+    if summary["cdn_refs"]:
+        for r in rows:
+            if r["cdn_refs"]:
+                print(f"ERROR: {r['view']} references a CDN host ({r['cdn_refs']}x); vendor the file under wwwroot/lib", file=sys.stderr)
+        sys.exit(1)
+
 
 def write_md(s: dict, rows: list) -> None:
     pages = [r for r in rows if r["pattern"] != "partial"]
