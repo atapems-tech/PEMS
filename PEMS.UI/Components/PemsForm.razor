@@ -1,10 +1,11 @@
 @namespace PEMS.UI.Components
+@inject IPemsLocale Locale
 <form method="post" action="@Definition.Action" enctype="multipart/form-data" id="@Definition.Id" class="pems-form">
     @if (RequestToken is not null)
     {
         <input type="hidden" name="@RequestTokenName" value="@RequestToken" />
     }
-    <h2 class="pems-form__title">@Definition.Title</h2>
+    <h2 class="pems-form__title">@Locale.Text(Definition.Title)</h2>
     @foreach (var f in Definition.Fields)
     {
         <PemsField Descriptor="f" Value="@State.ValueOf(f.Name)" Error="@State.ErrorOf(f.Name)" />

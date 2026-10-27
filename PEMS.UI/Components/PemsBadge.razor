@@ -1,5 +1,6 @@
 @namespace PEMS.UI.Components
-<span class="pems-badge pems-badge--@Options.Tone.ToString().ToLowerInvariant()">@Options.Text</span>
+@inject IPemsLocale Locale
+<span class="pems-badge pems-badge--@Options.Tone.ToString().ToLowerInvariant()">@Locale.Text(Options.Text)</span>
 @code {
     [Parameter, EditorRequired] public BadgeOptions Options { get; set; } = default!;
 }

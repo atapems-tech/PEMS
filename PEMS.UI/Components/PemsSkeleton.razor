@@ -1,5 +1,7 @@
 @namespace PEMS.UI.Components
-<div class="pems-skeleton" role="status" aria-busy="true" aria-live="polite">
+@inject IPemsLocale Locale
+@{ var label = Locale.Text(Label); }
+<div class="pems-skeleton" role="status" aria-busy="true" aria-live="polite" aria-label="@(label.Length > 0 ? label : null)">
     @for (var i = 0; i < Lines; i++)
     {
         <div class="pems-skeleton__line"></div>
@@ -7,4 +9,6 @@
 </div>
 @code {
     [Parameter] public int Lines { get; set; } = 3;
+    /// <summary>The accessible name read by screen readers ("Loading ..."); an input like every other text.</summary>
+    [Parameter] public TranslatableText? Label { get; set; }
 }
