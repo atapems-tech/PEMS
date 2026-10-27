@@ -2,7 +2,8 @@
 
 - **Status:** Accepted
 - **Date:** 2026-10-22
-- **Decided by:** Project owner (Instructions rule 23, "Owner decision 2026-10-22"); implemented under plan row #309
+- **Decided by:** Hamid Maleki, project owner and Member A (Instructions rule 23, "Owner decision 2026-10-22"); implemented under plan row #309
+- **Approved by:** Hamid Maleki (Member A), 2026-10-27, in the SCRUM-14 session
 - **Plan rows:** #309 (implementation, Partial), #310 (update service), #311 (legacy SQL retired), #312 (demo install); written under #2 (SCRUM-14)
 - **Sources:** Instructions rules 6 and 23; `plan/backlog.csv` row #309; [CODE_FIRST_DATABASE.md](../../docs/deployment/CODE_FIRST_DATABASE.md)
 
