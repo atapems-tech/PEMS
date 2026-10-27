@@ -40,13 +40,13 @@ public class VDRController : Controller
         _permissionService = permissionService;
     }
 
-    public async Task<IActionResult> Index(int? projectId, int? vendorId, string? status, int page = 1, int? pageSize = null)
+    public async Task<IActionResult> Index(int? projectId, int? vendorId, string? status, string? search = null, int page = 1, int? pageSize = null)
     {
         ViewData["Title"] = "Vendor Document Register (VDR)";
         ViewData["Section"] = "Engineering Management";
         ViewData["HelpKey"] = "VDR.Index";
 
-        var result = await _service.GetPagedAsync(projectId, vendorId, status, page, PEMS.Application.Common.DataGridPageSize.Normalize(pageSize));
+        var result = await _service.GetPagedAsync(projectId, vendorId, status, page, PEMS.Application.Common.DataGridPageSize.Normalize(pageSize), search);
         var dashboard = await _service.GetDashboardAsync(projectId);
 
         ViewBag.Dashboard = dashboard;
@@ -57,8 +57,30 @@ public class VDRController : Controller
         ViewBag.SelectedProjectId = projectId;
         ViewBag.SelectedVendorId = vendorId;
         ViewBag.SelectedStatus = status;
+        ViewBag.Search = search;
 
         return View(result);
+    }
+
+    // سقف ردیف Export - همان مقدار Export فهرست مدارک مهندسی
+    private const int MaxListExportRows = 20000;
+
+    /// <summary>
+    /// SCRUM-409: Export فهرست فعلی Index به Excel - همان فیلترهای Index (پروژه، فروشنده، وضعیت، جستجو) بدون صفحه‌بندی؛
+    /// ستون‌ها = ستون‌های فهرست. بیش از سقف ⇒ پیام و بازگشت به فهرست با همان فیلترها.
+    /// </summary>
+    [HttpGet]
+    public async Task<IActionResult> Export(int? projectId, int? vendorId, string? status, string? search = null)
+    {
+        var (items, total) = await _service.GetAllMatchingAsync(projectId, vendorId, status, search, MaxListExportRows);
+        if (total > MaxListExportRows)
+        {
+            TempData["Error"] = $"Export limited to {MaxListExportRows:N0} rows; the current filter matches {total:N0}. Narrow the filter and try again.";
+            return RedirectToAction(nameof(Index), new { projectId, vendorId, status, search });
+        }
+
+        var bytes = PEMS.Web.Helpers.VdrListExport.Build(items);
+        return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"VDR_{DateTime.Now:yyyyMMdd}.xlsx");
     }
 
     public async Task<IActionResult> Details(int id)

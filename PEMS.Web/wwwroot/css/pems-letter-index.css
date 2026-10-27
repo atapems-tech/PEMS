@@ -133,3 +133,29 @@ body.lp-compact .lp-snippet, body.lp-compact .lp-badges { display: none; }
     .lp-compose-label { display: none; }
     .lp-panel { border-radius: 0; border-inline: 0; }
 }
+
+/* ------------------------------------------------------------------ full-page list without the cartable folders (SCRUM-408)
+   Same frame as .ct-shell in pems-cartable.css: the list fills the window, the table scrolls inside with a sticky header,
+   the pagination footer stays at the bottom. Used by list pages that follow the correspondence look (Engineering Documents). */
+.lp-page { display: flex; flex-direction: column; gap: 8px; height: calc(100dvh - 112px); min-height: 520px; }
+.lp-page > .vs-subnav { flex: none; margin-bottom: 0; }
+.lp-page > .lp-panel { flex: 1 1 auto; min-height: 0; }
+.lp-page .lp-tablewrap { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
+.lp-page .lp-scroll { flex: 1 1 auto; max-height: none; min-height: 0; overflow: auto; }
+.lp-page .lp-footer { flex: none; }
+.lp-head { display: flex; align-items: center; gap: 8px; min-width: 0; padding-inline: 6px; }
+.lp-head h2 { margin: 0; font-size: .98rem; font-weight: 700; white-space: nowrap; }
+.lp-head .lp-total { color: var(--pems-text-muted); font-size: .8rem; font-variant-numeric: tabular-nums; }
+/* KPI chips: a thin row under the toolbar, only when the user turns it on */
+.lp-kpis { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 12px; border-bottom: 1px solid var(--pems-surface-border); }
+.lp-kpis[hidden] { display: none; }
+.lp-kpis .vs-chip { margin: 0; }
+.lp-icon-btn.on { background: var(--pems-surface-hover); color: var(--pems-text); }
+@media (max-width: 991.98px) { .lp-page { height: auto; min-height: 0; } .lp-page .lp-scroll { max-height: 60vh; } }
+/* phones: tools that only make sense with a mouse (column resize reset) give their room to the title */
+@media (max-width: 575.98px) { .lp-hide-xs { display: none !important; } }
+/* a KPI chip that opens a small list (VDR vendor delay risk) without pushing the table down */
+.lp-kpi-pop { position: relative; }
+.lp-kpi-pop > summary { list-style: none; cursor: pointer; }
+.lp-kpi-pop > summary::-webkit-details-marker { display: none; }
+.lp-kpi-pop > .vs-list { position: absolute; top: calc(100% + 4px); inset-inline-start: 0; z-index: 6; min-width: 280px; max-height: 50vh; overflow: auto; margin: 0; padding: 6px 10px; background: var(--pems-surface); border: 1px solid var(--pems-surface-border); border-radius: 10px; box-shadow: 0 8px 24px rgba(0, 0, 0, .15); }

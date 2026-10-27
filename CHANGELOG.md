@@ -3,6 +3,20 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-27 - VDR list with the Engineering Documents look (SCRUM-409)
+
+### Added
+- VDR list: quick search (document number, description, vendor) and an Excel export of the filtered list (`VDR/Export`, same columns as the table, capped at 20,000 rows).
+
+### Changed
+- VDR list: same frame as Engineering Documents - full-page table, one icon toolbar, project/vendor/status filters in a dropdown with a count badge and chips, KPI chips and the vendor delay/risk view hidden until the KPI button is pressed (remembered per browser).
+
+## 2026-10-26 - Engineering Documents list with the correspondence look (SCRUM-408)
+
+### Changed
+- Engineering Documents list: same frame as the correspondence list - the table fills the window (sticky header, scrolls inside, pager at the bottom), one icon toolbar (title with count, search over the title, filters, KPIs, Excel, reset columns, New), filters in a dropdown with a count badge and chips instead of the side panel, KPI chips hidden by default and shown on demand (remembered per browser).
+- `pems-letter-index.css` gained a generic full-page frame `.lp-page` (the cartable frame without the folder column) and `wwwroot/js/pems-list-page.js` (search open/close, KPI toggle) for list pages that follow this look.
+
 ## 2026-10-26 - Searchable multi-select for user roles (SCRUM-407)
 
 ### Added
