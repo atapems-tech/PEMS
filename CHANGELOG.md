@@ -41,6 +41,11 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Notes
 - The first-run wizard (SCRUM-188) does not exist yet; it will call the same recovery-code service. Until a licence engine exists, the vendor-token machine fingerprint is a setting.
 
+## 2026-10-27 - Branch hygiene and local gates (SCRUM-394)
+
+### Changed
+- Guideline: weekly branch audit and rules for In Review/Done branches that are not on `main` (chapter 00 section 4a, chapter 05), no direct Done, restart cloud sessions from `main`, local gates and the verified cloud-session toolchain (SDK, `dotnet-ef --tool-path`, drift gate) in chapter 05; chapter 07 now expects cloud authors to run everything except the SQL Server tests.
+
 ## 2026-10-26 - QA check in the UI, merge before In Review (SCRUM-394)
 
 ### Changed
