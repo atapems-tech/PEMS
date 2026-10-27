@@ -2,7 +2,8 @@
 
 - **Status:** Accepted
 - **Date:** 2026-10-18
-- **Decided by:** Project owner (plan row #4, "Confirmed by PM: Yes")
+- **Decided by:** Hamid Maleki, project owner and Member A (plan row #4, "Confirmed by PM: Yes")
+- **Approved by:** Hamid Maleki (Member A), 2026-10-27, in the SCRUM-14 session
 - **Plan rows:** #4 (decision), prototype validation in D_DDL / D_SCHEMA; written under #2 (SCRUM-14)
 - **Sources:** `plan/backlog.csv` row #4 (Evidence, Prompt, Requirement, Report); [04-platform-direction.md](../../docs/guidelines/04-platform-direction.md)
 
