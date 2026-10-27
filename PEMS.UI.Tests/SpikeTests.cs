@@ -117,7 +117,7 @@ public sealed class SpikeTests(SpikeHost host, ITestOutputHelper output) : IClas
         var renderer = host.Services.CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>();
         var field = await renderer.RenderAsync("field", new Dictionary<string, object?>
         {
-            ["Descriptor"] = new FieldDescriptor("Due", "Due", FieldKind.Date), ["Value"] = "2026-10-27"
+            ["Descriptor"] = new FieldDescriptor { Name = "Due", Label = "Due", Kind = FieldKind.Date }, ["Value"] = "2026-10-27"
         });
         Assert.Contains("type=\"date\"", field);
         Assert.Contains("value=\"2026-10-27\"", field);
@@ -187,12 +187,12 @@ public sealed class SpikeTests(SpikeHost host, ITestOutputHelper output) : IClas
     [Fact]
     public void Component_state_is_plain_csharp_and_testable_without_rendering()
     {
-        var button = ButtonState.From(new ButtonOptions("Save", Tone.Danger, Size.Small, Href: "/x"));
+        var button = ButtonState.From(new ButtonOptions { Label = "Save", Tone = Tone.Danger, Size = Size.Small, Href = "/x" });
         Assert.Equal("pems-btn pems-btn--danger pems-btn--small", button.Css);
         Assert.True(button.AsLink);
-        Assert.False(ButtonState.From(new ButtonOptions("Save", Href: "/x", Disabled: true)).AsLink);
+        Assert.False(ButtonState.From(new ButtonOptions { Label = "Save", Href = "/x", Disabled = true }).AsLink);
 
-        var field = FieldState.From(new FieldDescriptor("Items[0].Name", "Name", HelpText: "h"), hasError: true);
+        var field = FieldState.From(new FieldDescriptor { Name = "Items[0].Name", Label = "Name", HelpText = "h" }, hasError: true);
         Assert.Equal("f-Items-0--Name", field.Id);
         Assert.Equal("f-Items-0--Name-error", field.DescribedBy);
         Assert.True(field.Invalid);
