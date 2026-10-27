@@ -11,6 +11,8 @@ Instructions rules 13 (no Done without evidence) and 14 (a row whose Test Plan s
 `In Progress` -> author finishes, runs the tests if the session can, PR open -> **merge into `main`** -> **`In Review` + label `qa-pending`** (right after the merge) -> QA check (this chapter) ->
 `qa-passed`: `Done` | `qa-failed`: back to **`To Do`** with the defects listed (owner decision 2026-10-26); whoever takes it up moves it to In Progress, the fix goes through a new branch and PR to `main`, then In Review again.
 
+**Timing (owner decision 2026-10-27):** the author does not wait for this check. The author hands over with `In Review` + `qa-pending` and a test note ("Tests: passed" with counts, or "Tests: not run / not done" with the reason), then continues with the next task. The QA checks are run by someone else, as a block at the end of the sprint once all sprint tasks are In Review; Done comes only from that verdict.
+
 Labels: `qa-pending`, `qa-passed`, `qa-failed` (one at a time; the author sets `qa-pending` when moving to In Review after the merge, the tester replaces it).
 
 ## 1a. Entering and re-entering In Review (author's duty)
@@ -18,7 +20,7 @@ Labels: `qa-pending`, `qa-passed`, `qa-failed` (one at a time; the author sets `
 Whoever moves the issue to In Review - the first time **and every time after a failed QA** - checks, in this order, and says so in the move comment:
 
 1. **QA checklist present.** The issue has a Jira comment "QA checklist" (template in section 5) with line 1 = local tests, one line per *Done when* item, the standard lines, and the **how to test** as references to the README sections of section 5a (never copied steps). The author drafts it; the tester completes and runs it.
-2. **Test note present.** The move comment has a "Tests" paragraph: the commands that were run with their counts, or the exact commands that were **not** run and why (section 2a). Docs-only tasks say "n/a (docs only)" and name the read-through of section 6.
+2. **Test note present, and the test lines marked.** The checklist contains the task's automated tests as lines and the author's results are posted as "QA checklist - author results" (section 5): `Pass (author, date)` for what ran, `not done - reason` for the rest. The move comment has a "Tests" paragraph: the commands that were run with their counts, or the exact commands that were **not** run and why (section 2a). Docs-only tasks say "n/a (docs only)" and name the read-through of section 6.
 3. **README up to date.** Any new manual check or local test of this task is already in the right existing README (section 5a) and the checklist refers to it.
 4. **Re-entry after `qa-failed`** (the issue came back through To Do): do not edit or delete the earlier checklist. Re-check it against the new commit and add a new comment "QA checklist - round N" with: every failed line to retest, one regression line per defect (Bug keys), lines for the areas the fix touched, and two neighbouring checks; update the Tests paragraph with the new commit and counts; replace `qa-failed` by `qa-pending`.
 5. If one of these is missing the issue is not ready: the tester starts nothing, marks the checklist line "Blocked: no QA/test note" and asks the author (the issue does not count as In Review for planning until fixed).
@@ -71,6 +73,8 @@ QA checklist - <issue key> - commit <hash> - environment <local|staging> - teste
 | 6 | Console and network clean | | |
 Verdict: qa-passed | qa-failed - defects: <keys>
 ```
+
+**Tests are lines of the checklist, and the author pre-marks what was run** (owner decision 2026-10-27). Every automated test that proves a *Done when* item gets its own line (class or filter, expected count) next to line 1, and a mechanical proof (a green and a red pipeline run, a mutation run) gets a line too. The author fills the `Result` column only for lines the author really ran, in the form `Pass (author, <date>)` or `Fail (author)` with the evidence (counts, run link, commit); every line not run says `not done - <reason>`. The tester re-runs the pre-marked lines that are cheap (line 1 always) and records `Pass (tester, <date>)`; a line the author could not run stays open until a tester runs it. Because a posted checklist is never edited (section 7), the author adds the marks as a new comment "QA checklist - author results" that repeats the table with the results filled in, and later rounds repeat it again.
 
 ## 5a. Where the checks and local tests live (refer, do not copy)
 
