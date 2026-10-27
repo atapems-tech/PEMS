@@ -61,6 +61,16 @@ Never change the status of issues you were not asked to work on (except the pare
 - **Unclear requirement?** Ask the user one concrete question before building on a guess. Open decisions are listed in the plan (Decision Needed rows).
 - **Never edit the issue's description** to make "Done when" easier to meet; propose the change to the user instead.
 
+## 3a. A reported bug is a normal task (owner decision 2026-10-27)
+
+A bug that a person reports (in chat, in Jira, in a pull request, in another session, or found by a tester or by you outside the task you are finishing) goes through the **same flow as any task**: no silent fixes and no fix that is only a comment on another issue.
+
+1. **Create the Jira issue first** (type `Bug`; until the project offers that type, a Task with the label `bug`), with a plan row in the workbook (Track `Bug Fix`, next free `#`, a Plan ID label) and the usual description: *Why* with the reproduction (steps, expected and actual result, culture/browser/role), *What to do*, *Done when* (the reproduction no longer fails), *Evidence* (a failing test, log or screenshot), priority and parent epic. Link the issue that exposed it.
+2. **Ownership and planning as for any task** (section 1, 5a): assignee, sprint decision, In Progress, "Started by" comment with the plan.
+3. **Reproduce with a test first**: a regression test that fails before the fix and passes after it; the bug is not fixed without one (a manual-only bug gets a manual check in the README table instead). If the test cannot run in your session, say so as an unchecked QA line (chapter 07 section 1b).
+4. **One branch and one PR** (`fix/SCRUM-n-short-name-<user>`), merge into `main`, then **In Review + `qa-pending` + the QA checklist** with a regression line for the bug and two neighbouring checks; **Done only after QA** ([chapter 07](07-qa-check-in-the-ui.md)).
+5. **Exception, only this one:** a bug you find in your own task *before* it is merged is fixed in that task's pull request and named in its comment. After the merge it is a Bug issue like any other. A defect found during a QA check follows chapter 07 section 4 (back to To Do) and is also linked as a Bug issue when it is more than a one-line fix.
+
 ## 4. Finishing the issue - two levels of "done"
 
 | Level | Jira status | Meaning | Who/when |
