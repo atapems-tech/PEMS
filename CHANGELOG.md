@@ -3,6 +3,13 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-27 - Migration chain gate (SCRUM-413)
+
+### Added
+- Workflow `migration-chain.yml` and script `scripts/ci/test-migration-chain.sh`: the migration chain is applied to a real SQL Server (empty install, upgrade from `origin/main`, model agrees) and a failure names the migration.
+- `AccountSafetyOfMigrationsAndPipelinesTests`: no migration, workflow or deploy script touches accounts or passwords.
+- Guideline chapter 01 rules (a model change ships its migration; the gate before staging/demo), `CODE_FIRST_DATABASE.md` section, `DEPLOYMENT_README.md` note, manual check M-15.
+
 ## 2026-10-27 - Deploys and updates never reset the administrator password (SCRUM-410)
 
 ### Added
