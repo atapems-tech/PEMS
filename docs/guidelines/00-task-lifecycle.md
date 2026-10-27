@@ -88,6 +88,16 @@ Then:
 5. **Update the guideline** if the task produced a durable lesson, decision, helper or pattern (chapter 06).
 6. **Finish, then stop** (rule 16): propose a short list of next tasks (mention batchable ones) and wait for the user's choice.
 
+## 4a. Branch hygiene and long-lived branches (owner decision 2026-10-27)
+
+Run the branch audit ([chapter 05](05-environment-and-commands.md)) at the start of a session and once a week, and compare it with Jira:
+
+- A branch **ahead of `main` whose issue is In Review or Done** is a violation: the work must be on `main`. Merge it now: open a PR, resolve the conflicts, run the local gates, merge; GitHub deletes the head branch. Do the same for a branch whose issue key you cannot find, but ask the owner first if it is not your own work.
+- **Merging a branch that is far behind `main`:** make a working branch from `origin/main`, merge the old branch into it, resolve conflicts by keeping both sides when both only added lines (`.gitignore`, `.resx`, guideline lists, learnings log), then re-check what auto-merged: EF migration order and the model snapshot (drift gate must be clean), `Program.cs`, env key parity in all six files, no duplicate resource keys. Never resolve a snapshot or a binary (`plan/*.xlsx`) conflict by guessing: regenerate it.
+- A branch with **0 commits ahead** of `main` is finished: delete it (never `main`, `staging`, `demo`; a branch named `fix` blocks every `fix/...` name, so delete such stale names).
+- **A cloud session started from an old brief must restart from `main`.** If its issue was already merged, it does not recreate the old branch name or redo the work: it reads the issue comments and the merged PR first (the Jira step 0 check) and continues from `main`. A branch that reappears after its PR was merged is audited like any other.
+- **No direct Done:** an issue never goes from To Do or In Progress to Done. The only way to Done is In Review, then the QA verdict. A parent whose children are all Done may be closed by the owner; say so in its comment. (Enforcement is a Jira workflow setting, see chapter 06 open points.)
+
 ## 5. When you cannot finish
 
 - Do **not** move the issue to In Review or Done. Leave it In Progress.
@@ -96,6 +106,7 @@ Then:
 
 ## 6. Never
 
+- Never move an issue to Done from To Do or In Progress; Done is reached only from In Review after the QA verdict (section 4a).
 - Never mark In Review because the session is ending or the code "looks finished" unless the tests passed or the comment states exactly which tests could not run and why. Never mark In Review before the PR is merged into `main`, and never mark Done before the tests are green and the QA check passed.
 - Never delete, overwrite or collapse a QA checklist or QA result comment, not even after Done; they stay on the issue as organisational knowledge ([chapter 07](07-qa-check-in-the-ui.md) section 7).
 - Never leave an issue In Progress / In Review without an assignee.

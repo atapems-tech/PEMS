@@ -397,3 +397,8 @@ PEMS.Web/filestore/
 *.key
 *.p12
 *.snk
+
+# Licence vendor tool: local settings, ledger and encrypted keys never go to git
+vendor.env
+vendor-data/
+vendor-key-*.json

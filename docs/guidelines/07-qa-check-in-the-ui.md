@@ -35,7 +35,7 @@ Whoever moves the issue to In Review - the first time **and every time after a f
 
 Owner decision 2026-10-26, until a CI gate exists (plan row #7): the local test run is **line 1 of every QA checklist** ([README.md](../../README.md) "Local tests"), done by the tester together with the UI checks.
 - An author who can run the tests does so before the merge and writes the counts in the report; the tester repeats the run (line 1).
-- An author who cannot (cloud session without the .NET SDK or SQL Server) merges, moves the issue to In Review and lists the exact commands that were not run; line 1 then carries the first run.
+- An author in a cloud session installs the SDK first ([chapter 05](05-environment-and-commands.md) "Cloud sessions") and runs everything that does not need SQL Server (build, database-free tests, drift gate). Only the tests that need SQL Server may be reported as not run: the author lists their exact commands and the failure reason, merges, and moves the issue to In Review; line 1 then carries the first SQL run.
 - **Done needs both**: line 1 green (only the known failures of README.md "Local tests" may stay red) and all other lines Pass. A red test is a defect like any other: `qa-failed`, back to To Do, fix by a new PR.
 - When CI runs the tests on every merge, line 1 becomes "CI run on the merge commit is green" and this section is removed.
 
