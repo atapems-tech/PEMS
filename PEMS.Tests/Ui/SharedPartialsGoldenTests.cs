@@ -30,8 +30,10 @@ public class SharedPartialsGoldenTests
             return;
         }
         Assert.True(File.Exists(path), $"Golden file missing: {path} (record it with PEMS_GOLDEN_RECORD=1)");
-        Assert.Equal(File.ReadAllText(path), actual);
+        Assert.Equal(Lf(File.ReadAllText(path)), Lf(actual));   // line-ending style only: Windows checkouts convert the files (autocrlf)
     }
+
+    private static string Lf(string s) => s.Replace("\r\n", "\n");
 
     private static string FindGoldenDirectory()
     {
