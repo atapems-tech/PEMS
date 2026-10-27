@@ -153,3 +153,13 @@ Used after a deploy and by the QA check ([../guidelines/07-qa-check-in-the-ui.md
 4. Admin > Database Update shows "up to date" and the latest migration.
 5. Smoke: open the home page, one list, one form and one dashboard in `fa` (RTL) and `en`, at desktop width and 375 px; the console has no errors.
 6. For a task being QA-checked: run its checklist (Jira comment; line 1 is the local test run, [../../README.md](../../README.md) "Local tests") and the README checks it references; record the result in the Jira issue.
+
+## 9. Administrator password and updates (rule, SCRUM-410)
+
+Owner decision 2026-10-27, for demo, staging and every client server:
+
+- **A deploy, a merge into `staging` or `demo`, an update of a client server and a schema migration never create, reset or change a password.** The application seeds the administrator only when the user table is empty. `Seed__Admin__Password` in the secrets file is used for that one moment only; rewriting the file on every deploy does not change an existing account.
+- **Only a fresh install or an explicit database reset (section 5) restarts the first-install flow:** the empty database gets the administrator from the seed settings and the first sign-in forces a new password. After a reset, tell the owner of the environment to sign in and change it at once.
+- The client update kit (`deploy/`) replaces the application and runs the schema migration script; it never touches accounts. `PEMS_DEV_RESET_ADMIN_PASSWORD` works only in Development and is never set on a server.
+- Guard: `AdminPasswordSurvivesUpdateTests` (build fails the tests if a start-up step starts changing an existing account). Manual check: M-14 in [../../README.md](../../README.md) "Manual checks in the UI".
+- Planned (rows #353, #169, #170): the reset-on-deploy baseline and the first-run wizard reuse this flow; the signed update package keeps this rule.
