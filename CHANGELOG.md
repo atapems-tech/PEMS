@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-27 - Bugs are normal tasks; gate works on Windows (SCRUM-422)
+
+### Changed
+- Guideline chapter 00 section 3a: a reported bug gets its own Jira issue and plan row first, a regression test, a PR and QA; chapter 07 and AGENTS.md point to it.
+
+### Fixed
+- `LiteralTextGateTests` no longer fails on Windows (CRLF) checkouts (fix merged in atapems-tech/PEMS#44).
+
 ## 2026-10-27 - Every module workflow editable in Workflow Management, guarded by module contracts (SCRUM-103)
 
 ### Added
