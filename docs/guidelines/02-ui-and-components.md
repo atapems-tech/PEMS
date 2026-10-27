@@ -30,19 +30,19 @@ Add a row in the same PR as every new component or parameter.
 
 | Component (key) | Use it for | Inputs | Status |
 |---|---|---|---|
-| `PemsButton` (`button`) | button or link-button | `ButtonOptions(Label, Tone, Size, Disabled, Type, Href)` | spike |
-| `PemsBadge` (`badge`) | status pill | `BadgeOptions(Text, Tone)` | spike |
-| `PemsSkeleton` (`skeleton`) | loading state | `Lines` | spike |
-| `PemsField` (`field`) / `<pems-field asp-for>` | label, help, error and one input (text, textarea, number, date, select, checkbox, file) | `FieldDescriptor`, `Value`, `Error` | spike |
-| `PemsTable` (`table`) | read-only table; rows rendered in this one component | `ViewDescriptor`, `Rows` | spike |
-| `PemsForm` (`form`) | form from a `FormDefinition` with antiforgery and upload | `FormDefinition`, `FormState`, `RequestToken` | spike |
+| `PemsButton` (`button`) | button or link-button | `ButtonOptions(Label: TranslatableText, Tone, Size, Disabled, Type, Href)` | spike |
+| `PemsBadge` (`badge`) | status pill | `BadgeOptions(Text: TranslatableText, Tone)` | spike |
+| `PemsSkeleton` (`skeleton`) | loading state | `Lines`, `Label` (accessible name, TranslatableText) | spike |
+| `PemsField` (`field`) / `<pems-field asp-for>` | label, help, error and one input (text, textarea, number, date, select, checkbox, file) | `FieldDescriptor` (Label, HelpText, Placeholder, Options: TranslatableText), `Value`, `Error: TranslatableText` | spike |
+| `PemsTable` (`table`) | read-only table; rows rendered in this one component | `ViewDescriptor` (Title, EmptyText, `ColumnDescriptor` Header/Kind/TrueText/FalseText), `Rows` (values of any type, formatted by the locale) | spike |
+| `PemsForm` (`form`) | form from a `FormDefinition` with antiforgery and upload | `FormDefinition` (Title, SubmitLabel), `FormState` (values, error texts), `RequestToken` | spike |
 | `PemsDescriptorHost` | render any registered component by key from data (BPMS, previews) | `Key`, `Parameters` | spike |
 | `_KpiCard` partial | KPI tile (`<partial name="_KpiCard" model="kpi" />`) | `KpiCardViewModel` (Title, Count, IconClass, ColorClass, Url, Hint) | **ready**, lives in `PEMS.UI/Views/Shared` |
 | `_PemsLoadingOverlay` partial | global loading overlay (in the layout; driven by `pems-loading.js`) | `ViewData["LoadingLabel"]` | **ready**, lives in `PEMS.UI/Views/Shared` |
 
 Still in `PEMS.Web/Views/Shared` (they need `PEMS.Web`'s localisation resource, so they move after PEMS.UI has its own localisation, SCRUM-29): `_PageHeader`, `_Pagination`. Planned and not yet built: modal, tabs, stepper, empty/error states, data grid (SCRUM-352 and following).
 
-**Shape of every component** (inputs / state / body): inputs are an immutable `*Options` record or a descriptor; state is a plain C# `*State`
+**Hydration:** descriptors serialise with `PemsJson` (`FormDefinition`/`ViewDescriptor` as one JSON document), so a definition can come from code, from a JSON file or, later, from a database form row (#387). **Shape of every component** (inputs / state / body): inputs are an immutable `*Options` record or a descriptor; state is a plain C# `*State`
 class that computes CSS classes, ids and ARIA from the inputs (unit-test it without rendering); the `.razor` body only prints that state
 - no queries, no service calls, no business rules in markup. A table renders all its rows in one component, never one component per cell
 (measured 5 to 8 times slower). Extension packs register components with `[PemsComponent("key")]`.
@@ -51,7 +51,7 @@ class that computes CSS classes, ids and ARIA from the inputs (unit-test it with
 
 - No inline `style=`, no inline `<script>`/`<style>`, no inline `onclick`, no CDN or external URL, no hex colours: use `var(--pems-*)` tokens.
 - Logical CSS only (`margin-inline-start`, `inset-inline-end`, `text-align:start`) so one stylesheet serves RTL and LTR; handle directional icons/transforms explicitly.
-- All text through localization keys. Dates Jalali in the UI (stored UTC/Gregorian).
+- **Texts in `PEMS.UI` components are inputs** ([ADR-0008](../../plan/adr/0008-component-texts-are-inputs-translatable-text.md)): label, help, placeholder, option, header, title, empty text, button text and error are `TranslatableText` parameters (JSON map of language slug to text, e.g. `{"fa":"ذخیره","en":"Save"}`), never literals or defaults in the component. A test fails the build when a literal word appears in a component. Resolve and format only through `IPemsLocale`. **Data is never translated, only formatted** (Jalali dates for Persian, numbers by culture). Pages in `PEMS.Web` that do not use a component yet keep localization keys (`SharedResource`); dates are Jalali in the UI (stored UTC/Gregorian).
 - Component contract is technology-neutral: describe fields/columns/views as **descriptors** so the same component can be rendered from code today and from metadata tomorrow (dynamic forms/modules). Do not hard-wire a screen to one entity when a descriptor can express it.
 - Use standard behaviours: loading state, empty state, error state, validation messages next to the field, state preserved on row actions (filters, sort, page, tab) - see the UI engineering standard sections 3-5.
 - Popups/dropdowns/lookups: follow the portal and stacking rules; never patch `z-index` per page.

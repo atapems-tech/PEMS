@@ -1,12 +1,13 @@
 @namespace PEMS.UI.Components
-@{ var state = ButtonState.From(Options); }
+@inject IPemsLocale Locale
+@{ var state = ButtonState.From(Options); var label = Locale.Text(Options.Label); }
 @if (state.AsLink)
 {
-    <a class="@state.Css" href="@Options.Href">@Options.Label</a>
+    <a class="@state.Css" href="@Options.Href">@label</a>
 }
 else
 {
-    <button type="@Options.Type" class="@state.Css" disabled="@Options.Disabled">@Options.Label</button>
+    <button type="@Options.Type" class="@state.Css" disabled="@Options.Disabled">@label</button>
 }
 @code {
     [Parameter, EditorRequired] public ButtonOptions Options { get; set; } = default!;
