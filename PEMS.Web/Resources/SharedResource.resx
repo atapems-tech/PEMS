@@ -1779,6 +1779,8 @@
   <data name="LtT_Token_SenderDepartment" xml:space="preserve"><value>your department</value></data>
   <data name="Lc_FolderSent" xml:space="preserve"><value>Sent</value></data>
   <data name="Lc_FolderArchived" xml:space="preserve"><value>Archived</value></data>
+  <data name="A backup is taken automatically before the update; the update stops if it fails." xml:space="preserve"><value>A backup is taken automatically before the update; the update stops if it fails.</value></data>
+  <data name="Backup file" xml:space="preserve"><value>Backup file</value></data>
   <data name="A database backup has been taken" xml:space="preserve"><value>A database backup has been taken</value></data>
   <data name="Applied" xml:space="preserve"><value>Applied</value></data>
   <data name="Database Update" xml:space="preserve"><value>Database Update</value></data>

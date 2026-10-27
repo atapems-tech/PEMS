@@ -2574,6 +2574,8 @@
   <data name="LtT_Token_SenderDepartment" xml:space="preserve"><value>واحد سازمانی شما</value></data>
   <data name="Lc_FolderSent" xml:space="preserve"><value>ارسال‌شده</value></data>
   <data name="Lc_FolderArchived" xml:space="preserve"><value>آرشیو</value></data>
+  <data name="A backup is taken automatically before the update; the update stops if it fails." xml:space="preserve"><value>پیش از به‌روزرسانی به‌طور خودکار نسخه پشتیبان گرفته می‌شود؛ اگر پشتیبان‌گیری ناموفق باشد، به‌روزرسانی انجام نمی‌شود.</value></data>
+  <data name="Backup file" xml:space="preserve"><value>فایل پشتیبان</value></data>
   <data name="A database backup has been taken" xml:space="preserve"><value>از پایگاه داده نسخه پشتیبان تهیه شده است</value></data>
   <data name="Applied" xml:space="preserve"><value>اعمال‌شده</value></data>
   <data name="Database Update" xml:space="preserve"><value>به‌روزرسانی پایگاه داده</value></data>

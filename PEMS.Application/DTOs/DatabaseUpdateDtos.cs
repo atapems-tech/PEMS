@@ -55,6 +55,9 @@ public class DatabaseUpdateStatusDto
     public List<string> PendingMigrations { get; set; } = new();
     public List<DatabaseUpdateRunDto> RecentRuns { get; set; } = new();
 
+    /// <summary>SCRUM-280: setting Database:BackupBeforeUpdate - an update first takes a COPY_ONLY backup and stops if it fails.</summary>
+    public bool BackupBeforeUpdate { get; set; }
+
     /// <summary>True when "Apply" would do something (install or update).</summary>
     public bool CanApply => State is DatabaseSetupState.FirstRun or DatabaseSetupState.UpdateAvailable;
 }
@@ -71,6 +74,7 @@ public class DatabaseUpdateRunDto
     public bool Succeeded { get; set; }
     public string? Error { get; set; }
     public string? PerformedBy { get; set; }
+    public string? BackupFile { get; set; }
 }
 
 public class DatabaseUpdateResultDto
@@ -81,4 +85,7 @@ public class DatabaseUpdateResultDto
     public int MigrationsApplied { get; set; }
     public DatabaseSetupState StateBefore { get; set; }
     public DatabaseSetupState StateAfter { get; set; }
+
+    /// <summary>SCRUM-280: the pre-update backup file (path on the SQL Server machine), when one was taken.</summary>
+    public string? BackupFile { get; set; }
 }
