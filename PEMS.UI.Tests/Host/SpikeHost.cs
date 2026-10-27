@@ -23,7 +23,8 @@ public sealed class SpikeHost : IAsyncLifetime
         });
         builder.WebHost.UseTestServer();
         builder.Services.AddPemsUi();
-        builder.Services.AddControllersWithViews()
+        // the same registration PEMS.Web does (SCRUM-421)
+        builder.Services.AddControllersWithViews(options => PEMS.UI.Binding.MvcOptionsExtensions.AddPemsInputBinding(options))
             .AddApplicationPart(typeof(SpikeController).Assembly)
             .AddApplicationPart(typeof(PemsTableViewComponent).Assembly);
         _app = builder.Build();

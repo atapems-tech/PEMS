@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-27 - Persian pages accept decimals and Persian digits (SCRUM-421)
+
+### Fixed
+- A decimal such as 12.5 posted by a number input, and Persian or Arabic-Indic digits typed by the user, are now accepted when the page language is Persian; one model binder (`PEMS.UI.Binding`) is registered for numeric and date types. English binding and MVC's error messages are unchanged. Known-issue tests became regression tests; ADR-0008, guideline chapter 02 and manual check M-19 updated.
+
 ## 2026-10-27 - Bugs are normal tasks; gate works on Windows (SCRUM-422)
 
 ### Changed

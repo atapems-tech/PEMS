@@ -113,6 +113,10 @@ builder.Services.AddControllersWithViews(options =>
     // طبق CMMS Production Baseline v1 بند P0-03: بعد از AuthorizeFilter اجرا می‌شود - اول
     // احراز هویت، بعد بررسی MustChangePassword روی همه‌ی درخواست‌ها (نه فقط لحظه‌ی Login).
     options.Filters.Add(new PEMS.Web.Security.PasswordChangeGateFilter());
+
+    // SCRUM-421: numbers and dates bind the way a browser submits them in every culture (12.5 on a Persian page, Persian digits typed by a
+    // Persian user); error messages and empty values behave as before.
+    PEMS.UI.Binding.MvcOptionsExtensions.AddPemsInputBinding(options);
 })
 .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
 .AddDataAnnotationsLocalization();
