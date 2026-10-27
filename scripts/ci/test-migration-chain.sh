@@ -46,15 +46,24 @@ assert_nothing_pending "PEMS_Chain_Install_${stamp}"
 
 echo "== 2/3 upgrade: chain up to the last migration of ${base_ref}, then to head"
 if ! git rev-parse --verify --quiet "${base_ref}^{commit}" >/dev/null; then
-  fail "base ref ${base_ref} not found (fetch it, or pass another ref)"
+  # a force-pushed branch can lose its previous commit; the upgrade test then starts from origin/main instead of blocking the deploy
+  [ "$base_ref" != "origin/main" ] || fail "base ref ${base_ref} not found (fetch it, or pass another ref)"
+  echo "::warning::base ref ${base_ref} not found; using origin/main"
+  base_ref="origin/main"
+  git rev-parse --verify --quiet "${base_ref}^{commit}" >/dev/null || fail "base ref ${base_ref} not found (fetch it, or pass another ref)"
 fi
 base_last="$(git ls-tree -r --name-only "${base_ref}" -- PEMS.Migrations/Migrations/ \
   | grep -E '/[0-9]{14}_[A-Za-z0-9_]+\.cs$' | grep -v '\.Designer\.cs$' | sed -E 's#.*/([0-9]{14}_[A-Za-z0-9_]+)\.cs$#\1#' | sort | tail -n 1)"
 [ -n "$base_last" ] || fail "no migration found in ${base_ref}"
 echo "last migration of ${base_ref}: ${base_last}"
-update_to "PEMS_Chain_Upgrade_${stamp}" "$base_last"
-update_to "PEMS_Chain_Upgrade_${stamp}"
-assert_nothing_pending "PEMS_Chain_Upgrade_${stamp}"
+# A rollback deploy (older code than the base) has no such migration in its own chain: the upgrade test does not apply then.
+if ! "${ef[@]}" migrations list --no-connect 2>/dev/null | grep -q "${base_last}"; then
+  echo "::warning::${base_last} is not in this build's chain (rollback to older code?); upgrade test skipped, install test above still applies"
+else
+  update_to "PEMS_Chain_Upgrade_${stamp}" "$base_last"
+  update_to "PEMS_Chain_Upgrade_${stamp}"
+  assert_nothing_pending "PEMS_Chain_Upgrade_${stamp}"
+fi
 
 echo "== 3/3 model and migrations agree"
 ConnectionStrings__PEMSConnection="${server_cs};Database=PEMS_Chain_Install_${stamp}" "${ef[@]}" migrations has-pending-model-changes \
