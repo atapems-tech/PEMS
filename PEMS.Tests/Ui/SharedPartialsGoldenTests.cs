@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using PEMS.Tests.TestSupport;
 using PEMS.Web.Areas.Admin.Controllers;
 using PEMS.Web.Models;
+using PEMS.Web.ViewModels;
+using System.Globalization;
 
 namespace PEMS.Tests.Ui;
 
@@ -60,4 +62,30 @@ public class SharedPartialsGoldenTests
     [Fact]
     public async Task LoadingOverlay_RendersTheSameMarkup() =>
         AssertGolden("loading-overlay", await RenderAsync("~/Views/Shared/_PemsLoadingOverlay.cshtml", null));
+
+    // ---- _Pagination (SCRUM-418): the markup the 54 list pages receive must not change when the partial moves into PEMS.UI
+    private static async Task<string> InCultureAsync(string culture, Func<Task<string>> render)
+    {
+        var (c, ui) = (CultureInfo.CurrentCulture, CultureInfo.CurrentUICulture);
+        CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = new CultureInfo(culture);
+        try { return await render(); }
+        finally { CultureInfo.CurrentCulture = c; CultureInfo.CurrentUICulture = ui; }
+    }
+
+    private static PaginationViewModel Pager(int page, int pages, int total, string? gridKey = null, int pageSize = 25, string query = "") => new()
+    {
+        Page = page, TotalPages = pages, TotalCount = total, BaseUrl = "/WorkOrders", ExistingQueryString = query, GridKey = gridKey, PageSize = pageSize
+    };
+
+    [Theory]
+    [InlineData("en", 1, 5, 120, null, "q=pump&status=open", "pagination-en-first")]
+    [InlineData("en", 3, 10, 250, "wo", "", "pagination-en-middle-gridkey")]
+    [InlineData("en", 10, 10, 250, "wo", "q=a", "pagination-en-last-gridkey")]
+    [InlineData("en", 0, 0, 0, null, "", "pagination-en-empty")]
+    [InlineData("en", 1, 1, 7, "wo", "", "pagination-en-single-gridkey")]
+    [InlineData("fa", 3, 10, 250, "wo", "", "pagination-fa-middle-gridkey")]
+    [InlineData("fa", 1, 5, 120, null, "q=pump", "pagination-fa-first")]
+    [InlineData("fa", 0, 0, 0, "wo", "", "pagination-fa-empty-gridkey")]
+    public async Task Pagination_RendersTheSameMarkup(string culture, int page, int pages, int total, string? gridKey, string query, string golden) =>
+        AssertGolden(golden, await InCultureAsync(culture, () => RenderAsync("~/Views/Shared/_Pagination.cshtml", Pager(page, pages, total, gridKey, 25, query))));
 }
