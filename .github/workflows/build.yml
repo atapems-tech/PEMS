@@ -13,6 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # The plan is markdown (plan/rows, plan/sheets): consistency check and the tool's own tests, standard library only.
+      - name: Plan check
+        run: |
+          python tools/plan-sync/plan_sync.py check
+          python -m unittest discover -s tools/plan-sync
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:

@@ -114,4 +114,4 @@ Never delete, overwrite or collapse them; correct a mistake with a new comment t
 
 ## 8. Related
 
-Test Plan sheet (cases and QA status), #200 UAT scripts per epic and role (they reuse these checklists), #376-#377 (automated test review and maintenance, the other half of verification).
+Test Plan page `plan/sheets/test-plan.md` (cases and QA status), #200 UAT scripts per epic and role (they reuse these checklists), #376-#377 (automated test review and maintenance, the other half of verification).

@@ -5,7 +5,7 @@
 - **Decided by:** Hamid Maleki, project owner and Member A (plan row #5, "Confirmed by PM: Yes")
 - **Approved by:** Hamid Maleki (Member A), 2026-10-27, in the SCRUM-14 session
 - **Plan rows:** #5 (decision); #319 (component technology spike); #320-#334 and #29-#43 (library work); written under #2 (SCRUM-14)
-- **Sources:** `plan/backlog.csv` row #5; [COMPONENT_LIBRARY_PLAN.md](../../docs/design/COMPONENT_LIBRARY_PLAN.md) section 4; Instructions rule 26
+- **Sources:** `plan/rows/0005.md`; [COMPONENT_LIBRARY_PLAN.md](../../docs/design/COMPONENT_LIBRARY_PLAN.md) section 4; Instructions rule 26
 
 ## Context
 
