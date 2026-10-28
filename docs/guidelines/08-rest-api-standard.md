@@ -26,3 +26,16 @@ The ADR holds the reasons; this chapter holds the rules and one good and one bad
 Display is not data: digits and calendars shown to a user are formatted by the page (ADR-0008, `IPemsLocale`); the API always sends canonical values.
 
 When a rule does not fit, change the ADR first (a new ADR if it reverses a decision), then this chapter, then the code.
+
+## Building an endpoint (the walking skeleton, SCRUM-435)
+
+The shared plumbing lives in `PEMS.Web/Api`; the pilot resource `DisciplinesApiController` (`/api/v1/disciplines`) is the example to copy.
+
+1. Derive from `ApiControllerBase` (it is `[ApiController]`, answers in `application/problem+json`) and give the class `[Route(Prefix + "/<plural-kebab-noun>")]`.
+2. Mark **every** action with `[ApiPermission("<Module>", "<Action>")]` (the permission matrix, `IPermissionService`); a test fails for an API action without it or with `[AllowAnonymous]`.
+3. Keep the controller thin: map HTTP to a service in `PEMS.Application`/`PEMS.Persistence` that the pages also use. Errors come from `ApiProblem` (never an ad hoc body); a field error needs a JSON Pointer and a message key.
+4. Lists use `ApiListQuery` (and `ApiFields` for `fields`); single reads set the `ETag` from the row version; PUT, PATCH and DELETE call `ApiETag.Evaluate` before writing and pass the row version to the service so the check is repeated on the database.
+5. A concurrency token needs a `[Timestamp] byte[] RowVersion` on the entity (new migration).
+6. Run `PEMS_GOLDEN_RECORD=1 dotnet test PEMS.Tests --filter OpenApiDocumentTests` and commit the changed `PEMS.Tests/Api/Snapshots/openapi-v1.json` in the same PR.
+
+Known gaps, tracked in other rows: the integration bearer token (issuing and validation, #195); the Idempotency-Key store is in memory and per server (durable store with #434); cursor paging (first export endpoint); HTTP-level tests of the real pipeline need SQL Server.

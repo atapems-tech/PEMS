@@ -1117,6 +1117,8 @@
   <data name="Disc_Err_DuplicateName" xml:space="preserve"><value>دیسیپلین دیگری با این نام وجود دارد.</value></data>
   <data name="Disc_Err_AliasConflict" xml:space="preserve"><value>یک Alias با کد، نام یا Alias دیسیپلین دیگری تداخل دارد.</value></data>
   <data name="Disc_Err_Generic" xml:space="preserve"><value>تغییر پذیرفته نشد.</value></data>
+  <data name="Disc_Err_Concurrency" xml:space="preserve"><value>این دیسیپلین را کاربر دیگری تغییر داده است؛ دوباره بخوانید.</value></data>
+  <data name="Disc_Err_InUse" xml:space="preserve"><value>رکوردهای دیگری از این دیسیپلین استفاده می‌کنند؛ به‌جای حذف، آن را غیرفعال کنید.</value></data>
   <data name="Import aliases" xml:space="preserve"><value>Aliasهای ایمپورت</value></data>
   <data name="Transmittal code" xml:space="preserve"><value>کد ترانسمیتال</value></data>
   <data name="Reactivate" xml:space="preserve"><value>فعال‌سازی مجدد</value></data>

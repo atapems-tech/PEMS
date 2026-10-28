@@ -99,6 +99,11 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IDatabaseUpdateService>(s
 builder.Services.AddPemsLicensing(builder.Configuration);
 PEMS.UI.ServiceCollectionExtensions.AddPemsUi(builder.Services);   // component registry + request-free renderer (SCRUM-29)
 
+// REST API /api/v1 (SCRUM-435, ADR-0009): permission policies, problem+json, OpenAPI 3.1, API-aware 401/403 for cookie sign-in.
+PEMS.Web.Api.ApiServiceCollectionExtensions.AddPemsApi(builder.Services);
+PEMS.Web.Api.ApiServiceCollectionExtensions.ConfigureApiAuthenticationResponses(builder.Services);
+builder.Services.AddSingleton<PEMS.Web.Api.ApiIdempotencyStore>();
+
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند
 // (مثل صفحه‌ی Login) بدون ورود قابل دسترسی هستند.
 builder.Services.AddControllersWithViews(options =>
@@ -113,6 +118,9 @@ builder.Services.AddControllersWithViews(options =>
     // طبق CMMS Production Baseline v1 بند P0-03: بعد از AuthorizeFilter اجرا می‌شود - اول
     // احراز هویت، بعد بررسی MustChangePassword روی همه‌ی درخواست‌ها (نه فقط لحظه‌ی Login).
     options.Filters.Add(new PEMS.Web.Security.PasswordChangeGateFilter());
+
+    // SCRUM-435: unhandled exceptions of API controllers become RFC 9457 problems, not the HTML error page.
+    options.Filters.Add<PEMS.Web.Api.ApiExceptionFilter>();
 
     // SCRUM-421: numbers and dates bind the way a browser submits them in every culture (12.5 on a Persian page, Persian digits typed by a
     // Persian user); error messages and empty values behave as before.
@@ -1040,7 +1048,9 @@ if (!app.Environment.IsDevelopment())
 
 // صفحه‌ی خطای دوستانه برای 4xx/5xx بدون بدنه (NotFound() و ...)؛ کد HTTP اصلی حفظ می‌شود و پاسخ‌های دارای بدنه
 // (مثلاً BadRequest(new { error })) دست‌نخورده می‌مانند.
-app.UseStatusCodePagesWithReExecute("/Home/StatusPage", "?code={0}");
+// Not for /api: API errors are problem+json bodies (SCRUM-435).
+app.UseWhen(ctx => !PEMS.Web.Api.ApiServiceCollectionExtensions.IsApiRequest(ctx.Request.Path),
+    branch => branch.UseStatusCodePagesWithReExecute("/Home/StatusPage", "?code={0}"));
 
 
 
@@ -1163,6 +1173,9 @@ app.MapControllerRoute(
 );
 
 app.MapHub<PEMS.Web.Hubs.NotificationHub>("/hubs/notifications");
+
+// OpenAPI 3.1 document, generated from the code and served from this server only (no CDN); signed-in users only.
+app.MapOpenApi("/api/v1/openapi.json").RequireAuthorization();
 
 // ==============================================================================
 // طبق بند ۲۰: نقطه‌ی Health Check سبک - بدون نیاز به احراز هویت (AuthorizeFilter سراسری فقط
