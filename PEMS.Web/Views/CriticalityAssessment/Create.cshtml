@@ -7,6 +7,8 @@
     string? preselectedLabel = ViewBag.PreselectedEquipmentLabel;
 }
 
+@await Html.PartialAsync("_PageHeader")
+
 <div class="d-flex justify-content-end align-items-center mb-2">
     <a asp-action="Index" class="small">← Assessment Queue</a>
 </div>
