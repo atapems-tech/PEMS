@@ -11,6 +11,1081 @@
     }
   ],
   "paths": {
+    "/api/v1/definitions": {
+      "get": {
+        "tags": [
+          "DefinitionsApi"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiPageOfDefinitionResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiPageOfDefinitionResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "DefinitionsApi"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionCreateInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionCreateInput"
+              }
+            },
+            "application/*\u002Bjson": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionCreateInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}": {
+      "get": {
+        "tags": [
+          "DefinitionsApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "DefinitionsApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag from the last read; a missing header gives 428, a stale one 412.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionEnvelopeInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionEnvelopeInput"
+              }
+            },
+            "application/*\u002Bjson": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionEnvelopeInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Precondition Failed",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "428": {
+            "description": "If-Match is required.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/versions/{number}": {
+      "get": {
+        "tags": [
+          "DefinitionsApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/draft": {
+      "get": {
+        "tags": [
+          "DefinitionsApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "DefinitionsApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag from the last read; a missing header gives 428, a stale one 412.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionDraftInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionDraftInput"
+              }
+            },
+            "application/*\u002Bjson": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionDraftInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Precondition Failed",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "428": {
+            "description": "If-Match is required.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "DefinitionsApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag from the last read; a missing header gives 428, a stale one 412.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {},
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "412": {
+            "description": "Precondition Failed",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "428": {
+            "description": "If-Match is required.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/export": {
+      "get": {
+        "tags": [
+          "DefinitionsApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionPackageResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionPackageResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/actions/create-draft": {
+      "post": {
+        "tags": [
+          "DefinitionsApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateDraftInput"
+                  }
+                ]
+              }
+            },
+            "text/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateDraftInput"
+                  }
+                ]
+              }
+            },
+            "application/*\u002Bjson": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateDraftInput"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/actions/validate": {
+      "post": {
+        "tags": [
+          "DefinitionsApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/actions/publish": {
+      "post": {
+        "tags": [
+          "DefinitionsApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/actions/rollback": {
+      "post": {
+        "tags": [
+          "DefinitionsApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RollbackInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RollbackInput"
+              }
+            },
+            "application/*\u002Bjson": {
+              "schema": {
+                "$ref": "#/components/schemas/RollbackInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/import": {
+      "post": {
+        "tags": [
+          "DefinitionsApi"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionPackageResource"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionPackageResource"
+              }
+            },
+            "application/*\u002Bjson": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionPackageResource"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionImportResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionImportResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
     "/api/v1/disciplines": {
       "get": {
         "tags": [
@@ -490,6 +1565,47 @@
           }
         }
       },
+      "ApiPageOfDefinitionResource": {
+        "required": [
+          "items",
+          "page",
+          "pageSize",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DefinitionResource"
+            }
+          },
+          "page": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "pageSize": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "total": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          }
+        }
+      },
       "ApiPageOfDisciplineResource": {
         "required": [
           "items",
@@ -572,6 +1688,407 @@
             "items": {
               "$ref": "#/components/schemas/ApiFieldError"
             }
+          }
+        }
+      },
+      "CreateDraftInput": {
+        "required": [
+          "fromVersion"
+        ],
+        "type": "object",
+        "properties": {
+          "fromVersion": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          }
+        }
+      },
+      "DefinitionCreateInput": {
+        "required": [
+          "kind",
+          "key",
+          "appKey",
+          "title",
+          "description",
+          "payload",
+          "changeSummary"
+        ],
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "key": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "appKey": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "title": {
+            "$ref": "#/components/schemas/JsonElement"
+          },
+          "description": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/JsonElement"
+              }
+            ]
+          },
+          "payload": {
+            "$ref": "#/components/schemas/JsonElement"
+          },
+          "changeSummary": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      },
+      "DefinitionDraftInput": {
+        "required": [
+          "payload",
+          "changeSummary"
+        ],
+        "type": "object",
+        "properties": {
+          "payload": {
+            "$ref": "#/components/schemas/JsonElement"
+          },
+          "changeSummary": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      },
+      "DefinitionEnvelopeInput": {
+        "required": [
+          "title",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "$ref": "#/components/schemas/JsonElement"
+          },
+          "description": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/JsonElement"
+              }
+            ]
+          }
+        }
+      },
+      "DefinitionImportResource": {
+        "required": [
+          "created",
+          "updated",
+          "ids"
+        ],
+        "type": "object",
+        "properties": {
+          "created": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "updated": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "ids": {
+            "type": "array",
+            "items": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "DefinitionPackageItemResource": {
+        "required": [
+          "kind",
+          "key",
+          "appKey",
+          "title",
+          "description",
+          "payload",
+          "contentHash",
+          "versionNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "appKey": {
+            "type": "string"
+          },
+          "title": {
+            "$ref": "#/components/schemas/JsonElement"
+          },
+          "description": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/JsonElement"
+              }
+            ]
+          },
+          "payload": {
+            "$ref": "#/components/schemas/JsonElement"
+          },
+          "contentHash": {
+            "type": "string"
+          },
+          "versionNumber": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          }
+        }
+      },
+      "DefinitionPackageResource": {
+        "required": [
+          "format",
+          "exportedAt",
+          "items"
+        ],
+        "type": "object",
+        "properties": {
+          "format": {
+            "type": "string"
+          },
+          "exportedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DefinitionPackageItemResource"
+            }
+          }
+        }
+      },
+      "DefinitionResource": {
+        "required": [
+          "id",
+          "kind",
+          "key",
+          "appKey",
+          "origin",
+          "title",
+          "description",
+          "publishedVersion",
+          "hasDraft",
+          "isCustomized",
+          "createdAt",
+          "versions",
+          "allowedActions"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "appKey": {
+            "type": "string"
+          },
+          "origin": {
+            "type": "string"
+          },
+          "title": {
+            "$ref": "#/components/schemas/JsonElement"
+          },
+          "description": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/JsonElement"
+              }
+            ]
+          },
+          "publishedVersion": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "hasDraft": {
+            "type": "boolean"
+          },
+          "isCustomized": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "versions": {
+            "type": [
+              "null",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/DefinitionVersionResource"
+            }
+          },
+          "allowedActions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "DefinitionVersionPayloadResource": {
+        "required": [
+          "version",
+          "payload"
+        ],
+        "type": "object",
+        "properties": {
+          "version": {
+            "$ref": "#/components/schemas/DefinitionVersionResource"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/JsonElement"
+          }
+        }
+      },
+      "DefinitionVersionResource": {
+        "required": [
+          "number",
+          "status",
+          "contentHash",
+          "changeSummary",
+          "clonedFromVersion",
+          "createdAt",
+          "validatedAt",
+          "publishedAt",
+          "publishedBy",
+          "retiredAt"
+        ],
+        "type": "object",
+        "properties": {
+          "number": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "status": {
+            "type": "string"
+          },
+          "contentHash": {
+            "type": "string"
+          },
+          "changeSummary": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "clonedFromVersion": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validatedAt": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "publishedAt": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "publishedBy": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "retiredAt": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
           }
         }
       },
@@ -685,10 +2202,30 @@
           }
         }
       },
-      "JsonElement": {}
+      "JsonElement": {},
+      "RollbackInput": {
+        "required": [
+          "toVersion"
+        ],
+        "type": "object",
+        "properties": {
+          "toVersion": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          }
+        }
+      }
     }
   },
   "tags": [
+    {
+      "name": "DefinitionsApi"
+    },
     {
       "name": "DisciplinesApi"
     }

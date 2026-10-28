@@ -2334,6 +2334,202 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("DatabaseUpdateRuns");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.Definitions.Definition", b =>
+                {
+                    b.Property<int>("DefinitionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DefinitionId"));
+
+                    b.Property<string>("AppKey")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("DescriptionJson")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsCustomized")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Origin")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PublishedVersionId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("ShippedVersionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TitleJson")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DefinitionId");
+
+                    b.HasIndex("PublishedVersionId");
+
+                    b.HasIndex("AppKey", "Kind", "Key")
+                        .IsUnique()
+                        .HasDatabaseName("UX_Definitions_AppKey_Kind_Key");
+
+                    b.ToTable("Definitions");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.Definitions.DefinitionReference", b =>
+                {
+                    b.Property<int>("DefinitionReferenceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DefinitionReferenceId"));
+
+                    b.Property<int>("FromVersionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ToKey")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ToKind")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("DefinitionReferenceId");
+
+                    b.HasIndex("FromVersionId");
+
+                    b.HasIndex("ToKind", "ToKey")
+                        .HasDatabaseName("IX_DefinitionReferences_Target");
+
+                    b.ToTable("DefinitionReferences");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.Definitions.DefinitionStamp", b =>
+                {
+                    b.Property<string>("Kind")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<long>("Value")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Kind");
+
+                    b.ToTable("DefinitionStamps");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.Definitions.DefinitionVersion", b =>
+                {
+                    b.Property<int>("DefinitionVersionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DefinitionVersionId"));
+
+                    b.Property<string>("ChangeSummary")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("ClonedFromVersionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ContentHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("DefinitionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PayloadJson")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PayloadSchemaVersion")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("PublishedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PublishedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime?>("RetiredAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ValidatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ValidatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("VersionNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("DefinitionVersionId");
+
+                    b.HasIndex("ContentHash")
+                        .HasDatabaseName("IX_DefinitionVersions_ContentHash");
+
+                    b.HasIndex("DefinitionId")
+                        .IsUnique()
+                        .HasDatabaseName("UX_DefinitionVersions_OneOpenDraft")
+                        .HasFilter("[Status] IN (0, 1)");
+
+                    b.HasIndex("DefinitionId", "VersionNumber")
+                        .IsUnique()
+                        .HasDatabaseName("UX_DefinitionVersions_Definition_Number");
+
+                    b.ToTable("DefinitionVersions");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Department", b =>
                 {
                     b.Property<int>("DepartmentId")
@@ -21811,6 +22007,38 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("CriticalityAssessment");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.Definitions.Definition", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Definitions.DefinitionVersion", "PublishedVersion")
+                        .WithMany()
+                        .HasForeignKey("PublishedVersionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("PublishedVersion");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.Definitions.DefinitionReference", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Definitions.DefinitionVersion", "FromVersion")
+                        .WithMany("References")
+                        .HasForeignKey("FromVersionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FromVersion");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.Definitions.DefinitionVersion", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Definitions.Definition", "Definition")
+                        .WithMany("Versions")
+                        .HasForeignKey("DefinitionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Definition");
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Department", b =>
                 {
                     b.HasOne("PEMS.Domain.Entities.Department", "ParentDepartment")
@@ -26841,6 +27069,16 @@ namespace PEMS.Persistence.Migrations
             modelBuilder.Entity("PEMS.Domain.Entities.CriticalityAssessment", b =>
                 {
                     b.Navigation("Evidence");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.Definitions.Definition", b =>
+                {
+                    b.Navigation("Versions");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.Definitions.DefinitionVersion", b =>
+                {
+                    b.Navigation("References");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.Document", b =>

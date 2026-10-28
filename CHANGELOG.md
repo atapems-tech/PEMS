@@ -3,6 +3,17 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-28 - Definition store REST API (SCRUM-434)
+
+### Added
+- Tables `Definitions`, `DefinitionVersions`, `DefinitionReferences`, `DefinitionStamps` (migration `DefinitionStore`) and the service behind them: draft, validate, publish (the old version is retired), rollback (an older version is published again as a new number), discard draft, export and import (hash-checked package), a runtime read side that serves the published version from a cache refreshed by a per-kind stamp.
+- `/api/v1/definitions`: list, get, versions, draft (GET/PUT/DELETE with If-Match), actions `create-draft`, `validate`, `publish`, `rollback`, `export`, `import`; two concurrent edits give 412 for the second.
+- Kinds `form` (the FormDefinition record) and `page` (regions of component instances, options checked against the component manifest); limits `Definitions__MaxPayloadBytes`, `Definitions__MaxInstancesPerPage`, `Definitions__MaxJsonDepth` in every `env/*.env`.
+- Permission module `Definitions` in the permission matrix (grant it to a role to use the API; publish and rollback need Approve).
+
+### Changed
+- The generic audit trail no longer stores the old/new text of `PayloadJson` columns.
+
 ## 2026-10-28 - The plan is markdown files, not an Excel workbook (SCRUM-446)
 
 ### Changed

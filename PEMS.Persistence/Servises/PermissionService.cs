@@ -17,7 +17,7 @@ public class PermissionService : IPermissionService
     private static readonly string[] Modules =
     {
         "EngineeringDocuments", "VDR", "Contracts", "Vendors",
-        "MaterialRequisition", "Equipment", "DisciplineWorkspace", "DisciplineMaster", "Correspondence", "WorkOrder",
+        "MaterialRequisition", "Equipment", "DisciplineWorkspace", "DisciplineMaster", "Definitions", "Correspondence", "WorkOrder",
         "StoreRequisition", "WorkRequest", "Inspection", "Transmittal",
         "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan",
         "ProcurementPackage",
