@@ -526,6 +526,9 @@ public class PEMSDbContext
     public DbSet<Tender> Tenders { get; set; }
     public DbSet<TenderInvitedVendor> TenderInvitedVendors { get; set; }
     public DbSet<Bid> Bids { get; set; }
+
+    // SCRUM-429: ارسال ایمیلی دعوت‌نامه‌ی مناقصه (سابقه‌ی ارسال)
+    public DbSet<TenderInvitationDispatch> TenderInvitationDispatches { get; set; }
     public DbSet<BidEvaluation> BidEvaluations { get; set; }
     public DbSet<BidNegotiation> BidNegotiations { get; set; }
     public DbSet<ContractNTP> ContractNTPs { get; set; }

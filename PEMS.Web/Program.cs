@@ -540,6 +540,11 @@ builder.Services.AddScoped<INumberingService, NumberingService>();
 // SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات (Admin > Numbering)
 builder.Services.AddScoped<INumberingSchemeService, NumberingSchemeService>();
 
+// SCRUM-429: ایمیل سازمانی (SMTP خود سازمان، MailKit) و ارسال دعوت‌نامه‌ی مناقصه؛ تنظیمات env Email__*، حساب فقط در secrets
+builder.Services.Configure<PEMS.Infrastructure.Email.EmailOptions>(builder.Configuration.GetSection("Email"));
+builder.Services.AddSingleton<IEmailSender, PEMS.Infrastructure.Email.SmtpEmailSender>();
+builder.Services.AddScoped<ITenderInvitationService, TenderInvitationService>();
+
 // Warehouse / Part Catalogue Request (درخواست کاتالوگ قطعه): تنظیمات + سرویس‌ها
 builder.Services.AddSingleton(builder.Configuration.GetSection(PartCatalogueOptions.SectionName).Get<PartCatalogueOptions>() ?? new PartCatalogueOptions());
 builder.Services.AddScoped<IPartCatalogueLookupService, PartCatalogueLookupService>();

@@ -2613,4 +2613,26 @@
   <data name="Sel_NoResults" xml:space="preserve"><value>No matching item</value></data>
   <data name="Sel_Loading" xml:space="preserve"><value>Searching…</value></data>
   <data name="Sel_Placeholder" xml:space="preserve"><value>Type to search…</value></data>
+  <data name="Tinv_Title" xml:space="preserve"><value>Invitations by email</value></data>
+  <data name="Tinv_SendAll" xml:space="preserve"><value>Send invitations</value></data>
+  <data name="Tinv_Hint" xml:space="preserve"><value>Sends one email per invited vendor that has not been invited by email yet, from the organisation's mail server. Vendors without a contact email are listed as skipped.</value></data>
+  <data name="Tinv_EmailOffHint" xml:space="preserve"><value>Email is switched off on this server (Email__Enabled in the env file) or the mail server is not set. Ask the system administrator.</value></data>
+  <data name="Tinv_StatusHint" xml:space="preserve"><value>Invitations can be sent while the tender is Draft or Open.</value></data>
+  <data name="Tinv_To" xml:space="preserve"><value>To</value></data>
+  <data name="Tinv_Attempts" xml:space="preserve"><value>Attempts</value></data>
+  <data name="Tinv_QueuedBy" xml:space="preserve"><value>Sent by</value></data>
+  <data name="Tinv_SentAt" xml:space="preserve"><value>Delivered to the mail server</value></data>
+  <data name="Tinv_Resend" xml:space="preserve"><value>Send again</value></data>
+  <data name="Tinv_Status_Queued" xml:space="preserve"><value>Queued</value></data>
+  <data name="Tinv_Status_Sent" xml:space="preserve"><value>Sent</value></data>
+  <data name="Tinv_Status_Failed" xml:space="preserve"><value>Failed</value></data>
+  <data name="Tinv_Status_Skipped" xml:space="preserve"><value>Skipped</value></data>
+  <data name="Tinv_Queued" xml:space="preserve"><value>{0} invitation(s) queued for sending; {1} vendor(s) skipped (no contact email).</value></data>
+  <data name="Tinv_Err_EmailOff" xml:space="preserve"><value>Email is switched off on this server.</value></data>
+  <data name="Tinv_Err_NotFound" xml:space="preserve"><value>Tender not found.</value></data>
+  <data name="Tinv_Err_Status" xml:space="preserve"><value>Invitations can be sent only while the tender is Draft or Open.</value></data>
+  <data name="Tinv_Err_NothingToSend" xml:space="preserve"><value>Every invited vendor has already been invited by email. Use "Send again" for a single vendor.</value></data>
+  <data name="Tinv_Err_NoVendorEmail" xml:space="preserve"><value>The vendor has no valid contact email (Vendors &gt; edit).</value></data>
+  <data name="Tinv_MailSubject" xml:space="preserve"><value>Invitation to tender {TenderNumber}: {Title}</value></data>
+  <data name="Tinv_MailBody" xml:space="preserve"><value>Dear {Vendor},&#xA;&#xA;{Company} invites you to submit a bid for the tender below.&#xA;&#xA;Tender: {TenderNumber}&#xA;Title: {Title}&#xA;Procurement package: {Package}&#xA;Issue date: {IssueDate}&#xA;Bid deadline: {Deadline}&#xA;&#xA;Requirements:&#xA;{Requirements}&#xA;&#xA;Please confirm receipt and send your bid before the deadline. The tender documents are provided by the procurement team.&#xA;&#xA;Regards,&#xA;{Company} procurement</value></data>
 </root>

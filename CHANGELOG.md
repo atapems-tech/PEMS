@@ -3,6 +3,13 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-29 - Tender invitations by the organisation's email (SCRUM-429)
+
+### Added
+- Email through the organisation's own SMTP server on MailKit 4.18.2 (MIT): `IEmailSender` with `SmtpEmailSender`; settings `Email__Enabled`, `Email__Host`, `Email__Port`, `Email__Security`, `Email__FromAddress`, `Email__FromName`, `Email__TimeoutSeconds` in every `env/*.env` (off everywhere), `Email__UserName` and `Email__Password` only in the secrets files.
+- Tender details: "Send invitations" (one email per invited vendor from a fa/en template) and "Resend" for failed or skipped vendors, with the Tender Edit permission; sending runs in the background (Hangfire, 3 attempts); with email off the page says so.
+- Table `TenderInvitationDispatches` (migration `TenderInvitationDispatches`): the send log on the tender (recipient, exact text, status Queued/Sent/Failed/Skipped, attempts, last error, who and when); an audit entry `SendInvitations`/`ResendInvitations` on the tender.
+
 ## 2026-10-28 - API quality gates (SCRUM-436)
 
 ### Added
