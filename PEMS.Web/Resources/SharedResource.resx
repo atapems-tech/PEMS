@@ -558,6 +558,8 @@
   <data name="Disc_Err_DuplicateName" xml:space="preserve"><value>Another discipline already uses this name.</value></data>
   <data name="Disc_Err_AliasConflict" xml:space="preserve"><value>An import alias clashes with another discipline code, name or alias.</value></data>
   <data name="Disc_Err_Generic" xml:space="preserve"><value>The change was rejected.</value></data>
+  <data name="Disc_Err_Concurrency" xml:space="preserve"><value>The discipline was changed by someone else; read it again.</value></data>
+  <data name="Disc_Err_InUse" xml:space="preserve"><value>Other records use this discipline; deactivate it instead of deleting it.</value></data>
   <data name="Import aliases" xml:space="preserve"><value>Import aliases</value></data>
   <data name="Transmittal code" xml:space="preserve"><value>Transmittal code</value></data>
   <data name="Deactivate" xml:space="preserve"><value>Deactivate</value></data>

@@ -1,0 +1,696 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "PEMS API",
+    "description": "Resource-oriented REST API (ADR-0009, guideline chapter 08).",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost/"
+    }
+  ],
+  "paths": {
+    "/api/v1/disciplines": {
+      "get": {
+        "tags": [
+          "DisciplinesApi"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiPageOfDisciplineResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiPageOfDisciplineResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "DisciplinesApi"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisciplineInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisciplineInput"
+              }
+            },
+            "application/*\u002Bjson": {
+              "schema": {
+                "$ref": "#/components/schemas/DisciplineInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisciplineResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisciplineResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/disciplines/{id}": {
+      "get": {
+        "tags": [
+          "DisciplinesApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisciplineResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisciplineResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "DisciplinesApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag from the last read; a missing header gives 428, a stale one 412.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisciplineInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisciplineInput"
+              }
+            },
+            "application/*\u002Bjson": {
+              "schema": {
+                "$ref": "#/components/schemas/DisciplineInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisciplineResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisciplineResource"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Precondition Failed",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "428": {
+            "description": "If-Match is required.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "DisciplinesApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag from the last read; a missing header gives 428, a stale one 412.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JsonElement"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisciplineResource"
+                }
+              },
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisciplineResource"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Precondition Failed",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "428": {
+            "description": "If-Match is required.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "DisciplinesApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag from the last read; a missing header gives 428, a stale one 412.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {},
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              },
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "412": {
+            "description": "The resource changed since it was read.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "428": {
+            "description": "If-Match is required.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiFieldError": {
+        "required": [
+          "pointer",
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "pointer": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "messageKey": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "message": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "params": {
+            "type": [
+              "null",
+              "object"
+            ]
+          }
+        }
+      },
+      "ApiPageOfDisciplineResource": {
+        "required": [
+          "items",
+          "page",
+          "pageSize",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DisciplineResource"
+            }
+          },
+          "page": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "pageSize": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "total": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          }
+        }
+      },
+      "ApiProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "title": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "status": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "detail": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "instance": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApiFieldError"
+            }
+          }
+        }
+      },
+      "DisciplineInput": {
+        "required": [
+          "code",
+          "name",
+          "description",
+          "importAliases",
+          "transmittalCode",
+          "isActive"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "name": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "description": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "importAliases": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "transmittalCode": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "isActive": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          }
+        }
+      },
+      "DisciplineResource": {
+        "required": [
+          "id",
+          "code",
+          "name",
+          "description",
+          "importAliases",
+          "transmittalCode",
+          "isActive",
+          "createdDate",
+          "allowedActions"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "importAliases": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "transmittalCode": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "allowedActions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "JsonElement": {}
+    }
+  },
+  "tags": [
+    {
+      "name": "DisciplinesApi"
+    }
+  ]
+}
