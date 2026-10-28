@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace PEMS.Web.Api;
 
-/// <summary>Base of every REST controller: problem+json errors, JSON only, route prefix <see cref="Prefix"/>.</summary>
+/// <summary>Base of every REST controller: problem+json errors, route prefix <see cref="Prefix"/>. No [Produces] here: it would override the problem+json content type of error results.</summary>
 [ApiController]
 [AutoValidateAntiforgeryToken]   // chapter 08, rule 14: cookie sign-in needs the antiforgery header on every unsafe verb
-[Produces("application/json", ApiProblem.ContentType)]
 public abstract class ApiControllerBase : ControllerBase
 {
     public const string Prefix = "api/v1";

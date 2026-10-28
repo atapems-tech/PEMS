@@ -18,6 +18,7 @@ public sealed class FakeDisciplineService : IDisciplineMasterService
     private long _version = 1;
     public List<DisciplineDetail> Rows { get; } = new();
     public bool DeleteInUse { get; set; }
+    public bool ThrowOnQuery { get; set; }
 
     private byte[] NextVersion() => BitConverter.GetBytes(_version++);
 
@@ -32,6 +33,7 @@ public sealed class FakeDisciplineService : IDisciplineMasterService
 
     public Task<DisciplinePageResult> QueryAsync(DisciplineQuery q, CancellationToken ct = default)
     {
+        if (ThrowOnQuery) throw new InvalidOperationException("boom: secret detail");
         IEnumerable<DisciplineDetail> rows = Rows;
         if (q.Q != null) rows = rows.Where(r => r.Name.Contains(q.Q, StringComparison.OrdinalIgnoreCase) || r.Code.Contains(q.Q, StringComparison.OrdinalIgnoreCase));
         if (q.IsActive is { } a) rows = rows.Where(r => r.IsActive == a);

@@ -37,6 +37,8 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [ApiPermission(Module, "View")]
     [ProducesResponseType<ApiPage<DefinitionResource>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status422UnprocessableEntity, ApiProblem.ContentType)]
+    [EndpointSummary("List definitions")]
+    [EndpointDescription("Pages through definitions. Supports q, sort, filter[kind], filter[appKey], filter[published], fields, page and pageSize.")]
     public async Task<IActionResult> List(CancellationToken ct)
     {
         var errors = new List<ApiFieldError>();
@@ -65,6 +67,8 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [ApiPermission(Module, "View")]
     [ProducesResponseType<DefinitionResource>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status404NotFound, ApiProblem.ContentType)]
+    [EndpointSummary("Get one definition")]
+    [EndpointDescription("Returns the envelope with its versions and the actions the user may take; the ETag is the envelope revision.")]
     public async Task<IActionResult> Get(int id, CancellationToken ct)
     {
         var r = await _service.GetAsync(id, ct);
@@ -77,6 +81,8 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [ApiPermission(Module, "View")]
     [ProducesResponseType<DefinitionVersionPayloadResource>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status404NotFound, ApiProblem.ContentType)]
+    [EndpointSummary("Get one version with its payload")]
+    [EndpointDescription("Returns any version (draft, published or retired) with its payload.")]
     public async Task<IActionResult> GetVersion(int id, int number, CancellationToken ct)
     {
         var r = await _service.GetVersionAsync(id, number, ct);
@@ -89,6 +95,8 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [ApiPermission(Module, "View")]
     [ProducesResponseType<DefinitionVersionPayloadResource>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status404NotFound, ApiProblem.ContentType)]
+    [EndpointSummary("Get the open draft")]
+    [EndpointDescription("Returns the open draft (Draft or Validated) with its payload; the ETag is the draft revision.")]
     public async Task<IActionResult> GetDraft(int id, CancellationToken ct)
     {
         var r = await _service.GetDraftAsync(id, ct);
@@ -101,6 +109,8 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [ApiPermission(Module, "View")]
     [ProducesResponseType<DefinitionPackageResource>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status404NotFound, ApiProblem.ContentType)]
+    [EndpointSummary("Export a definition")]
+    [EndpointDescription("Returns a hash-checked package of the published version, or of the version given in the query.")]
     public async Task<IActionResult> Export(int id, [FromQuery] int? version, CancellationToken ct)
     {
         var r = await _service.ExportAsync(id, version, ct);
@@ -116,6 +126,8 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [ApiPermission(Module, "Create")]
     [ProducesResponseType<DefinitionResource>(StatusCodes.Status201Created)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status422UnprocessableEntity, ApiProblem.ContentType)]
+    [EndpointSummary("Create a definition as a draft")]
+    [EndpointDescription("Creates the envelope and a draft version 1. The kind must be registered; the payload may be incomplete until validation.")]
     public async Task<IActionResult> Create([FromBody] DefinitionCreateInput input, CancellationToken ct)
     {
         var missing = Missing(("title", input.Title), ("payload", input.Payload));
@@ -131,12 +143,14 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [ApiPermission(Module, "Edit")]
     [ProducesResponseType<DefinitionResource>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status412PreconditionFailed, ApiProblem.ContentType)]
+    [EndpointSummary("Change title and description")]
+    [EndpointDescription("Changes the title and description of the envelope. Needs If-Match with the envelope ETag.")]
     public async Task<IActionResult> UpdateEnvelope(int id, [FromBody] DefinitionEnvelopeInput input, CancellationToken ct)
     {
+        var (gate, revision) = await EnvelopeGateAsync(id, ct);          // 404 and the precondition come before the body is judged
+        if (gate != null) return gate;
         var missing = Missing(("title", input.Title));
         if (missing.Count > 0) return ApiProblem.Validation(missing);
-        var (gate, revision) = await EnvelopeGateAsync(id, ct);
-        if (gate != null) return gate;
         var r = await _service.UpdateEnvelopeAsync(id, input.Title.GetRawText(), input.Description is { ValueKind: not JsonValueKind.Null } d ? d.GetRawText() : null, revision, Actor, ct);
         return await DetailResultAsync(r);
     }
@@ -145,12 +159,14 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [ApiPermission(Module, "Edit")]
     [ProducesResponseType<DefinitionVersionPayloadResource>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status412PreconditionFailed, ApiProblem.ContentType)]
+    [EndpointSummary("Edit the draft")]
+    [EndpointDescription("Replaces the payload of the open draft and sets it back to Draft status. Needs If-Match with the draft ETag.")]
     public async Task<IActionResult> SaveDraft(int id, [FromBody] DefinitionDraftInput input, CancellationToken ct)
     {
-        var missing = Missing(("payload", input.Payload));
-        if (missing.Count > 0) return ApiProblem.Validation(missing);
         var (gate, revision) = await DraftGateAsync(id, ct);
         if (gate != null) return gate;
+        var missing = Missing(("payload", input.Payload));
+        if (missing.Count > 0) return ApiProblem.Validation(missing);
         return VersionResult(await _service.SaveDraftAsync(id, input.Payload.GetRawText(), input.ChangeSummary, revision, Actor, ct));
     }
 
@@ -158,6 +174,8 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [ApiPermission(Module, "Edit")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status412PreconditionFailed, ApiProblem.ContentType)]
+    [EndpointSummary("Discard the draft")]
+    [EndpointDescription("Deletes the open draft; the only version of a definition cannot be discarded. Needs If-Match.")]
     public async Task<IActionResult> DiscardDraft(int id, CancellationToken ct)
     {
         var (gate, revision) = await DraftGateAsync(id, ct);
@@ -170,6 +188,8 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [ApiPermission(Module, "Edit")]
     [ProducesResponseType<DefinitionVersionPayloadResource>(StatusCodes.Status201Created)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status409Conflict, ApiProblem.ContentType)]
+    [EndpointSummary("Open a new draft")]
+    [EndpointDescription("Clones the published version (or the given version) into a new draft. Needs If-Match with the envelope ETag.")]
     public async Task<IActionResult> CreateDraft(int id, [FromBody] CreateDraftInput? input, CancellationToken ct)
     {
         var (gate, revision) = await EnvelopeGateAsync(id, ct);
@@ -184,6 +204,8 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [ApiPermission(Module, "Edit")]
     [ProducesResponseType<DefinitionVersionPayloadResource>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status422UnprocessableEntity, ApiProblem.ContentType)]
+    [EndpointSummary("Validate the draft")]
+    [EndpointDescription("Checks the draft against its kind (components, options, limits) and records its references; answers 422 with pointers when invalid. Needs If-Match with the draft ETag.")]
     public async Task<IActionResult> Validate(int id, CancellationToken ct)
     {
         var (gate, revision) = await DraftGateAsync(id, ct);
@@ -195,6 +217,8 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [ApiPermission(Module, "Approve")]
     [ProducesResponseType<DefinitionResource>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status422UnprocessableEntity, ApiProblem.ContentType)]
+    [EndpointSummary("Publish the draft")]
+    [EndpointDescription("Validates and publishes the draft as the current version; the previous version is retired. Needs permission Approve and If-Match with the draft ETag.")]
     public async Task<IActionResult> Publish(int id, CancellationToken ct)
     {
         var (gate, revision) = await DraftGateAsync(id, ct);
@@ -206,11 +230,13 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [ApiPermission(Module, "Approve")]
     [ProducesResponseType<DefinitionResource>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status409Conflict, ApiProblem.ContentType)]
+    [EndpointSummary("Roll back to an older version")]
+    [EndpointDescription("Publishes an older version again as a new version number; history is never rewritten. Needs permission Approve and If-Match with the envelope ETag.")]
     public async Task<IActionResult> Rollback(int id, [FromBody] RollbackInput input, CancellationToken ct)
     {
-        if (input.ToVersion is null or < 1) return ApiProblem.Validation(new[] { new ApiFieldError("/toVersion", "required", "Def_Err_Required", "Say which version to publish again.") });
         var (gate, revision) = await EnvelopeGateAsync(id, ct);
         if (gate != null) return gate;
+        if (input.ToVersion is null or < 1) return ApiProblem.Validation(new[] { new ApiFieldError("/toVersion", "required", "Def_Err_Required", "Say which version to publish again.") });
         return await DetailResultAsync(await _service.RollbackAsync(id, input.ToVersion.Value, revision, Actor, ct));
     }
 
@@ -218,6 +244,8 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [ApiPermission(Module, "Create")]
     [ProducesResponseType<DefinitionImportResource>(StatusCodes.Status201Created)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status422UnprocessableEntity, ApiProblem.ContentType)]
+    [EndpointSummary("Import definitions from a package")]
+    [EndpointDescription("Checks every item (kind, payload, content hash) and creates drafts; nothing is published.")]
     public async Task<IActionResult> Import([FromBody] DefinitionPackageResource package, CancellationToken ct)
     {
         var items = package.Items?.Select(i => new DefinitionPackageItem(i.Kind ?? "", i.Key ?? "", i.AppKey ?? "core", i.Title.ValueKind == JsonValueKind.Undefined ? "" : i.Title.GetRawText(),

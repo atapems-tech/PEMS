@@ -12,6 +12,40 @@ public sealed class ApiProblemDetails : ProblemDetails
     public IReadOnlyList<ApiFieldError> Errors { get; set; } = Array.Empty<ApiFieldError>();
 }
 
+/// <summary>
+/// Problems the framework builds itself (a bare 400 from the antiforgery check, 404 for a missing route, 405, 415 ...) get the same shape as ours:
+/// a <c>urn:pems:problem:</c> type, a title and an empty <c>errors</c> list (chapter 08, rule 8).
+/// </summary>
+public sealed class ApiProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory
+{
+    public override ProblemDetails CreateProblemDetails(HttpContext httpContext, int? statusCode = null, string? title = null, string? type = null, string? detail = null, string? instance = null)
+    {
+        var status = statusCode ?? 500;
+        return new ApiProblemDetails { Status = status, Title = title ?? Reason(status), Type = type?.StartsWith("urn:", StringComparison.Ordinal) == true ? type : "urn:pems:problem:" + Slug(status), Detail = detail, Instance = instance };
+    }
+
+    public override ValidationProblemDetails CreateValidationProblemDetails(HttpContext httpContext, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary modelStateDictionary,
+        int? statusCode = null, string? title = null, string? type = null, string? detail = null, string? instance = null)
+    {
+        var problem = new ValidationProblemDetails(modelStateDictionary) { Status = statusCode ?? 422, Title = title ?? "The request is not valid.", Type = "urn:pems:problem:validation", Detail = detail, Instance = instance };
+        return problem;
+    }
+
+    private static string Slug(int status) => status switch
+    {
+        400 => "bad-request", 401 => "unauthorized", 403 => "forbidden", 404 => "not-found", 405 => "method-not-allowed", 406 => "not-acceptable",
+        409 => "conflict", 412 => "precondition-failed", 415 => "unsupported-media-type", 422 => "validation", 428 => "precondition-required",
+        429 => "too-many-requests", 500 => "server-error", _ => "http-" + status,
+    };
+
+    private static string Reason(int status) => status switch
+    {
+        400 => "The request could not be understood.", 401 => "Sign in is required.", 403 => "You are not allowed to do this.", 404 => "The resource was not found.",
+        405 => "The method is not allowed.", 406 => "The requested format is not available.", 415 => "The content type is not supported.",
+        500 => "The server could not complete the request.", _ => "The request failed.",
+    };
+}
+
 /// <summary>Builds the problem responses of the standard; every API error goes through here, never an ad hoc body.</summary>
 public static class ApiProblem
 {

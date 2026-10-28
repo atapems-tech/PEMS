@@ -3,6 +3,19 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-28 - API quality gates (SCRUM-436)
+
+### Added
+- `tools/api-lint`: a Spectral ruleset of the REST standard (path form, no GET actions, 401/403 and problem+json on every operation, If-Match with 412/428 on writes, 201 on collection POST, camelCase names, declared security, summaries), `lint.sh` to lint the approved OpenAPI snapshot and `lint.sh selftest` to prove each rule fires on a deliberately bad document.
+- `ApiConformanceTests`: every operation of the OpenAPI document driven through the real pipeline (401, 403, antiforgery, 404, 428/412, 422, 500, problem+json shape); `ApiPipelineBaselineTests`: in-process p95 guard.
+- `tools/loadtest/pems-api-baseline.js` (k6, read-only API scenarios with per-endpoint budgets) and `docs/performance/API_PERFORMANCE_BASELINE.md` (budgets and the stored in-process baseline).
+- The OpenAPI document now has operation ids, tags, summaries and descriptions, the declared cookie security scheme and no server list.
+- The manual build workflow runs the API tests, the lint and its self-test as failing steps.
+
+### Fixed
+- Error responses of controller actions were sent as `application/json` instead of `application/problem+json` (the controller-level `[Produces]` overrode them); problems the framework builds itself (antiforgery 400, bare 404/405/415) now have the `urn:pems:problem:` type and an `errors` list.
+- `PUT`/`POST` actions on `/api/v1/definitions` judged the body before looking the resource up; an unknown id is now 404 first.
+
 ## 2026-10-28 - Definition store REST API (SCRUM-434)
 
 ### Added

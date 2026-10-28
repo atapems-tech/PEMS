@@ -37,6 +37,8 @@ public sealed class DisciplinesApiController : ApiControllerBase
     [ApiPermission(Module, "View")]
     [ProducesResponseType<ApiPage<DisciplineResource>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status422UnprocessableEntity, ApiProblem.ContentType)]
+    [EndpointSummary("List disciplines")]
+    [EndpointDescription("Pages through the discipline master data. Supports q, sort, filter[isActive], filter[transmittalCode], fields, page and pageSize (offset paging, at most 10,000 rows).")]
     public async Task<IActionResult> List(CancellationToken ct)
     {
         var errors = new List<ApiFieldError>();
@@ -67,6 +69,8 @@ public sealed class DisciplinesApiController : ApiControllerBase
     [ApiPermission(Module, "View")]
     [ProducesResponseType<DisciplineResource>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status404NotFound, ApiProblem.ContentType)]
+    [EndpointSummary("Get one discipline")]
+    [EndpointDescription("Returns one discipline with its ETag and the actions the signed-in user may take.")]
     public async Task<IActionResult> Get(int id, CancellationToken ct)
     {
         var d = await _service.GetAsync(id, ct);
@@ -81,6 +85,8 @@ public sealed class DisciplinesApiController : ApiControllerBase
     [ApiPermission(Module, "Create")]
     [ProducesResponseType<DisciplineResource>(StatusCodes.Status201Created)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status422UnprocessableEntity, ApiProblem.ContentType)]
+    [EndpointSummary("Create a discipline")]
+    [EndpointDescription("Creates a discipline and answers 201 with Location and ETag. A repeated Idempotency-Key with the same body returns the first response.")]
     public async Task<IActionResult> Create([FromBody] DisciplineInput input, CancellationToken ct)
     {
         var user = User.Identity?.Name ?? "";
@@ -110,6 +116,8 @@ public sealed class DisciplinesApiController : ApiControllerBase
     [ApiPermission(Module, "Edit")]
     [ProducesResponseType<DisciplineResource>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status412PreconditionFailed, ApiProblem.ContentType)]
+    [EndpointSummary("Replace a discipline")]
+    [EndpointDescription("Replaces all writable fields. Needs If-Match with the ETag of the last read.")]
     public async Task<IActionResult> Replace(int id, [FromBody] DisciplineInput input, CancellationToken ct)
     {
         var (gate, expected) = await CheckPreconditionAsync(id, ct);
@@ -122,6 +130,8 @@ public sealed class DisciplinesApiController : ApiControllerBase
     [ApiPermission(Module, "Edit")]
     [ProducesResponseType<DisciplineResource>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status412PreconditionFailed, ApiProblem.ContentType)]
+    [EndpointSummary("Change some fields of a discipline")]
+    [EndpointDescription("JSON Merge Patch (application/merge-patch+json): absent fields stay, null clears a nullable field. Needs If-Match.")]
     public async Task<IActionResult> Patch(int id, [FromBody] JsonElement patch, CancellationToken ct)
     {
         var (gate, expected) = await CheckPreconditionAsync(id, ct);
@@ -135,6 +145,8 @@ public sealed class DisciplinesApiController : ApiControllerBase
     [ApiPermission(Module, "Edit")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status409Conflict, ApiProblem.ContentType)]
+    [EndpointSummary("Delete a discipline")]
+    [EndpointDescription("Deletes an unused discipline; one that other records use gives 409 (deactivate it with PATCH isActive=false). Needs If-Match.")]
     public async Task<IActionResult> Delete(int id, CancellationToken ct)
     {
         var (gate, expected) = await CheckPreconditionAsync(id, ct);

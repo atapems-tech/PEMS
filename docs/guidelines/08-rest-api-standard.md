@@ -39,3 +39,20 @@ The shared plumbing lives in `PEMS.Web/Api`; the pilot resource `DisciplinesApiC
 6. Run `PEMS_GOLDEN_RECORD=1 dotnet test PEMS.Tests --filter OpenApiDocumentTests` and commit the changed `PEMS.Tests/Api/Snapshots/openapi-v1.json` in the same PR.
 
 Known gaps, tracked in other rows: the integration bearer token (issuing and validation, #195); the Idempotency-Key store is in memory and per server (durable store with #434); cursor paging (first export endpoint); HTTP-level tests of the real pipeline need SQL Server.
+
+## Quality gates (SCRUM-436)
+
+What fails, and where. Every API pull request runs all of it; a rule that is only a sentence in this chapter is not a rule.
+
+| Gate | What it checks | Rules | Where |
+| --- | --- | --- | --- |
+| Spectral ruleset | the OpenAPI document: path form, no GET actions, 401/403 and the problem+json error bodies on every operation, If-Match + 412/428 on PUT/PATCH/DELETE, 201 on collection POST, camelCase names, declared security, summary and description | 1, 2, 4, 5, 6, 8, 11, 13, 14 | `tools/api-lint/.spectral.yaml`, run by `tools/api-lint/lint.sh` on the approved snapshot; `lint.sh selftest` proves each rule fires on `samples-bad-api.json` |
+| OpenAPI snapshot | the document is exactly the approved one | 17 | `OpenApiDocumentTests` against `PEMS.Tests/Api/Snapshots/openapi-v1.json` |
+| Policy gate | every API action has `[ApiPermission]`, none is anonymous, none opts out of the antiforgery check, routes are lower-case kebab-case | 1, 2, 13, 14 | `ApiPolicyGateTests` |
+| Conformance suite | the real pipeline, for every operation of the document: anonymous gives 401, no permission gives 403, an unsafe verb without `X-CSRF-TOKEN` gives 400, an unknown id gives 404, a missing or stale `If-Match` gives 428 or 412, bad list queries give 422 with pointers, an exception gives a 500 without a stack trace; every error is `application/problem+json` with `status`, a `urn:pems:problem:` type, a title and an `errors` list | 1, 5, 6, 8, 9, 13, 14 | `ApiConformanceTests` (cases come from the document, so a new endpoint cannot skip them) |
+| Performance | the in-process pipeline stays far under its budget; the k6 scenarios hold the per-endpoint p95 and error rate | - | `ApiPipelineBaselineTests`, `tools/loadtest/pems-api-baseline.js`, [budgets](../performance/API_PERFORMANCE_BASELINE.md) |
+
+**Changing the API on purpose.** Change the code, run `PEMS_GOLDEN_RECORD=1 dotnet test PEMS.Tests --filter OpenApiDocumentTests`, read the diff of `openapi-v1.json`, run `tools/api-lint/lint.sh`, and commit the new snapshot in the same pull request. A snapshot diff that nobody can explain is a bug. Add the endpoint's budget to the performance document and the k6 script.
+
+**Run them.** `dotnet test PEMS.Tests --filter "FullyQualifiedName~PEMS.Tests.Api|FullyQualifiedName~PEMS.Tests.Definitions"` and `tools/api-lint/lint.sh` (Node 18+; Spectral 6.15 is fetched by `npx`, Apache-2.0, a development tool that never ships). The manual build workflow runs both.
+
