@@ -29,6 +29,8 @@ Decision order, every time:
 | icon-font class | `Icon` | on/off flags | `Required`, `ReadOnly`, `Disabled`, `Sortable` |
 | what a field or column is | `Kind` | identifies a field / column / definition | `Name` / `Key` / `Id` |
 
+**Component manifest (SCRUM-433).** Every registered component carries `@attribute [PemsComponent("<key>", Category = "...", Icon = "bi-...")]` and gets a machine-readable manifest generated from its code (`ComponentManifestGenerator`, `ComponentManifestCatalog`): key, category, icon, message key `component.<key>` (no visible text in the component), the JSON Schema of its options (from the options records; texts accept a string or a language map; unknown properties are rejected) and a sample. Stored options JSON is validated with `ComponentManifestCatalog.Validate(key, json)` (field errors with JSON Pointer and constraint code) and turned into parameters with `ToParameters`. A new component needs the attribute, a sample in `ComponentSamples`, and its approved snapshot in `PEMS.UI.Tests/Manifests` (record with `PEMS_GOLDEN_RECORD=1`); a test fails when any of them is missing.
+
 Registry and JSON keys are the component name without the `Pems` prefix, in kebab-case (`empty-state`, `error-state`, `loading-state`, `button`, `badge`). A new component reuses these names; add a new name here only when no existing one fits. (The Titan project's component names are not in this repository; if the owner supplies that list, align the table to it before the next component.)
 
 Where components live **today**: `PEMS.UI` (registry below; `PEMS.Web` references it and finds its views and `_content/PEMS.UI/` assets automatically), plus `_PageHeader`, `.vs-*` workspace CSS, `pems-ui.js` and the tokens `--pems-*` in `PEMS.Web`.

@@ -1,0 +1,251 @@
+{
+  "key": "form",
+  "component": "PEMS.UI.Components.PemsForm",
+  "category": "forms",
+  "icon": "bi-ui-checks",
+  "nameKey": "component.form",
+  "optionsParameter": null,
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "definition": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "action": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "label": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "minProperties": 1,
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "kind": {
+                  "enum": [
+                    "text",
+                    "textArea",
+                    "number",
+                    "date",
+                    "select",
+                    "checkbox",
+                    "file"
+                  ]
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "readOnly": {
+                  "type": "boolean"
+                },
+                "helpText": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "minProperties": 1,
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "maxLength": {
+                  "type": [
+                    "string",
+                    "integer",
+                    "null"
+                  ],
+                  "pattern": "^-?(?:0|[1-9]\\d*)$"
+                },
+                "options": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "object",
+                            "minProperties": 1,
+                            "additionalProperties": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "label"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "placeholder": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "minProperties": 1,
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "label"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "submitLabel": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "action",
+          "fields",
+          "submitLabel"
+        ],
+        "additionalProperties": false
+      },
+      "requestToken": {
+        "type": "string"
+      },
+      "requestTokenName": {
+        "type": "string"
+      },
+      "state": {
+        "type": "object",
+        "properties": {
+          "values": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "errors": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "definition"
+    ]
+  },
+  "parameters": [
+    {
+      "name": "definition",
+      "type": "FormDefinition",
+      "kind": "option",
+      "required": true
+    },
+    {
+      "name": "requestToken",
+      "type": "String",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "requestTokenName",
+      "type": "String",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "state",
+      "type": "FormState",
+      "kind": "option",
+      "required": false
+    }
+  ],
+  "sample": {
+    "definition": {
+      "id": "item",
+      "title": {
+        "en": "Item",
+        "fa": "مورد"
+      },
+      "action": "/items",
+      "fields": [
+        {
+          "name": "tag",
+          "label": {
+            "en": "Tag",
+            "fa": "تگ"
+          }
+        }
+      ],
+      "submitLabel": {
+        "en": "Save",
+        "fa": "ذخیره"
+      }
+    }
+  }
+}

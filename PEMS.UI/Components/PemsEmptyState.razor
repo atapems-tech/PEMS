@@ -1,4 +1,5 @@
 @namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("empty-state", Category = "feedback", Icon = "bi-inbox")]
 @inject IPemsLocale Locale
 <div class="pems-state pems-state--empty" role="status">
     @if (!string.IsNullOrWhiteSpace(Options.Icon))
