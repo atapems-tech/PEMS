@@ -14,6 +14,7 @@ public static class ApiServiceCollectionExtensions
     public static IServiceCollection AddPemsApi(this IServiceCollection services)
     {
         services.Configure<Microsoft.AspNetCore.Antiforgery.AntiforgeryOptions>(o => o.HeaderName = ApiControllerBase.AntiforgeryHeader);
+        services.AddSingleton<Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory, ApiProblemDetailsFactory>();
         services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
         services.AddScoped<IAuthorizationHandler, PermissionRequirementHandler>();
 
@@ -37,7 +38,23 @@ public static class ApiServiceCollectionExtensions
             o.AddOperationTransformer(ApiOpenApi.DescribeStandardParts);
             o.AddDocumentTransformer((doc, _, _) =>
             {
+                doc.Servers = new List<Microsoft.OpenApi.OpenApiServer>();      // paths are absolute (/api/v1/...); the host is wherever the document is served from
                 doc.Info = new() { Title = "PEMS API", Version = "v1", Description = "Resource-oriented REST API (ADR-0009, guideline chapter 08)." };
+                // Browser and integration calls today use the sign-in cookie (name: setting Authentication:Cookie:Name) plus the antiforgery header on unsafe verbs;
+                // a bearer token for integrations is planned with #195 and is not declared until it exists.
+                doc.Components ??= new Microsoft.OpenApi.OpenApiComponents();
+                doc.Components.SecuritySchemes ??= new Dictionary<string, Microsoft.OpenApi.IOpenApiSecurityScheme>();
+                doc.Components.SecuritySchemes["cookieAuth"] = new Microsoft.OpenApi.OpenApiSecurityScheme
+                {
+                    Type = Microsoft.OpenApi.SecuritySchemeType.ApiKey,
+                    In = Microsoft.OpenApi.ParameterLocation.Cookie,
+                    Name = "Authentication:Cookie:Name",
+                    Description = "The sign-in cookie issued by /Account/Login; its name is the setting Authentication:Cookie:Name. Unsafe verbs also need the X-CSRF-TOKEN header.",
+                };
+                doc.Security = new List<Microsoft.OpenApi.OpenApiSecurityRequirement>
+                {
+                    new() { [new Microsoft.OpenApi.OpenApiSecuritySchemeReference("cookieAuth", doc)] = new List<string>() },
+                };
                 return Task.CompletedTask;
             });
         });

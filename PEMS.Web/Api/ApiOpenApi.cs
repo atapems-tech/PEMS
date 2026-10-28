@@ -9,6 +9,12 @@ public static class ApiOpenApi
     public static Task DescribeStandardParts(OpenApiOperation operation, OpenApiOperationTransformerContext context, CancellationToken ct)
     {
         var method = context.Description.HttpMethod ?? "";
+        if (context.Description.ActionDescriptor is Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor action)
+        {
+            var controller = action.ControllerName.EndsWith("Api", StringComparison.Ordinal) ? action.ControllerName[..^3] : action.ControllerName;
+            operation.OperationId = controller + "_" + action.ActionName;                   // unique and stable: Definitions_Publish
+            operation.Tags = new HashSet<OpenApiTagReference> { new(controller) };
+        }
         var hasId = context.Description.RelativePath?.Contains("{id", StringComparison.Ordinal) == true;
         operation.Responses ??= new OpenApiResponses();
         AddProblem(operation, "401", "Not signed in.");
