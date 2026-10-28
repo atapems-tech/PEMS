@@ -108,3 +108,4 @@ A task is **done** only when:
 - Stage specific files only. Re-run `git status` before every commit.
 - Version bumps: system = CalVer `YYYY.MM.PATCH`, components = SemVer; editing the plan workbook does not change a version [R9].
 - Plan workbook changes only by pull request; regenerate `plan/backlog.csv` with `python tools/plan-sync/plan_sync.py export`.
+- **Feature branches do not edit `plan/PEMS_Backlog_Roadmap.xlsx` or `plan/backlog.csv`** (owner decision 2026-10-28). The workbook is binary, so every plan change merged into `main` conflicted with each open feature PR that also touched it. Hamid maintains the workbook. A task puts its plan-row update (new row, Status, Report) in its Jira comment, headed "Plan row update", and the workbook owner applies it in a plan-only PR. The workbook stays in git; it is not ignored.
