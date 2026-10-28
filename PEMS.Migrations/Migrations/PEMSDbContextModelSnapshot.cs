@@ -17721,6 +17721,85 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("Tenders");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.TenderInvitationDispatch", b =>
+                {
+                    b.Property<int>("TenderInvitationDispatchId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TenderInvitationDispatchId"));
+
+                    b.Property<int>("Attempts")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("LastError")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("QueuedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("QueuedByUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("SentAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ToAddress")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("ToName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("VendorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TenderInvitationDispatchId");
+
+                    b.HasIndex("VendorId");
+
+                    b.HasIndex("TenderId", "VendorId");
+
+                    b.ToTable("TenderInvitationDispatches", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.TenderInvitedVendor", b =>
                 {
                     b.Property<int>("TenderInvitedVendorId")
@@ -26155,6 +26234,25 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Contract");
 
                     b.Navigation("ProcurementPackage");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.TenderInvitationDispatch", b =>
+                {
+                    b.HasOne("PEMS.Domain.Entities.Tender", "Tender")
+                        .WithMany()
+                        .HasForeignKey("TenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PEMS.Domain.Entities.Vendor", "Vendor")
+                        .WithMany()
+                        .HasForeignKey("VendorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Tender");
+
+                    b.Navigation("Vendor");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.TenderInvitedVendor", b =>
