@@ -5,6 +5,8 @@
     var mismatch = (bool)ViewBag.Mismatch;
 }
 
+@await Html.PartialAsync("_PageHeader")
+
 <div class="content-card">
     @if (mismatch)
     {
