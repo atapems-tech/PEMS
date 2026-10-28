@@ -5,7 +5,7 @@
 - **Decided by:** Hamid Maleki, project owner and Member A (Instructions rule 24, "Owner decision 2026-10-23"; request recorded in plan row #315)
 - **Approved by:** Hamid Maleki (Member A), 2026-10-27, in the SCRUM-14 session
 - **Plan rows:** #315 (implementation, Done), #316, #317; written under #2 (SCRUM-14)
-- **Sources:** Instructions rules 10 and 24; `plan/backlog.csv` row #315; [env/README.md](../../env/README.md)
+- **Sources:** Instructions rules 10 and 24; `plan/rows/0315.md`; [env/README.md](../../env/README.md)
 
 ## Context
 

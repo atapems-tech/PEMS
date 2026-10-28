@@ -8,7 +8,7 @@ Jira: SCRUM-___    Plan ID (#): ___
 - [ ] Existing code/components were reused or modified; any new component was added to the library first
 - [ ] Guideline updated (`docs/guidelines/learnings-log.md` or a chapter), or: nothing to add
 - [ ] One branch for this task or approved batch; branch, commits and this title start with the Jira key (all batch keys listed here); the branch is deleted automatically after merge
-- [ ] Plan workbook row updated (Status via Jira; Evidence/Report written if closing) and `python tools/plan-sync/plan_sync.py export` rerun so `plan/backlog.csv` is current
+- [ ] Plan row file `plan/rows/NNNN.md` updated (Status via Jira; Evidence/Report written if closing; `plan_sync.py report <id> "..."` does it) and `python tools/plan-sync/plan_sync.py check` passes
 - [ ] Supportability Matrix row added or changed
 - [ ] CHANGELOG.md entry
 - [ ] Tests added or updated; the affected groups pass - or this PR lists the commands I could not run (they become line 1 of the QA checklist)

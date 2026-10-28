@@ -32,7 +32,7 @@ English; AI runs on-premise and nothing leaves the organization.
 | `PEMS.Tests` | unit and integration tests |
 
 Other folders: `docs/` (architecture, audits, deployment, per-module specs), `deploy/` (Docker deployment kit and
-scripts), `scripts/` (operator data-repair and report tools), `plan/` (backlog and roadmap workbook),
+scripts), `scripts/` (operator data-repair and report tools), `plan/` (backlog rows, roadmap and plan pages as markdown files),
 `env/` (settings and secret templates), `legacy-trash/` (retired material kept for reference), `tools/`, `dev/`.
 
 ## Settings and secrets
@@ -161,7 +161,7 @@ Used by the QA check ([guideline chapter 07](docs/guidelines/07-qa-check-in-the-
 
 - [CHANGELOG.md](CHANGELOG.md) - what changed and when.
 - [docs/deployment/DEPLOYMENT_README.md](docs/deployment/DEPLOYMENT_README.md) - demo and staging: subdomains, databases, secrets, GitHub Actions, manual deploy and reset.
-- `plan/PEMS_Backlog_Roadmap.xlsx` - backlog, roadmap, test plan, supportability matrix; `plan/backlog.csv` is its text mirror.
+- `plan/rows/NNNN.md` - one file per backlog row; `plan/sheets/*.md` - overview, instructions, roadmap, test plan, supportability matrix and the other plan pages; `python tools/plan-sync/plan_sync.py summary` gives the counts. The former Excel workbook is in `0 - trash/`.
 - [docs/design/COMPONENT_LIBRARY_PLAN.md](docs/design/COMPONENT_LIBRARY_PLAN.md) - UI component library plan; [docs/design/UI_PATTERN_AUDIT.md](docs/design/UI_PATTERN_AUDIT.md) - audit of all views.
 - [docs/process/PLAN_TRACKER_WORKFLOW.md](docs/process/PLAN_TRACKER_WORKFLOW.md) - how the plan file, Jira and developers stay consistent (`tools/plan-sync`).
 - `docs/` - architecture notes, audits and module specifications.

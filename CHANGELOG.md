@@ -3,6 +3,16 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-28 - The plan is markdown files, not an Excel workbook (SCRUM-446)
+
+### Changed
+- `plan/rows/NNNN.md`: one file per backlog row (front matter, then Evidence, Prompt, Requirement, Report); `plan/sheets/*.md`: the other former sheets. A row edit now changes only that file's lines; two people editing different rows no longer conflict.
+- `tools/plan-sync/plan_sync.py` reads the folder and gained `show`, `set`, `report`, `new` and `summary` (the old Summary sheet and Roadmap formulas, now over all rows); `export` no longer writes `plan/backlog.csv`. Standard library only (no openpyxl).
+- AGENTS.md, guidelines 00, 01, 03-07 and README, the PR template, the workflow doc, ADR sources and the plan pages point at the folder; the manual build workflow runs the plan check.
+
+### Removed
+- `plan/backlog.csv`; `plan/PEMS_Backlog_Roadmap.xlsx` moved to `0 - trash/` (history only).
+
 ## 2026-10-28 - REST API walking skeleton and first resource (SCRUM-435)
 
 ### Added

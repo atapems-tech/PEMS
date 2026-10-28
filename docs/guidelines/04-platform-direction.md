@@ -1,6 +1,6 @@
 # 04 - Platform direction (what we are building toward)
 
-Source: plan workbook (Overview, Roadmap, Instructions, Lessons) and owner decisions. Read before touching metadata, forms, workflow, licensing, deployment, demo or versioning. The workbook is authoritative; this is the working summary.
+Source: plan pages (`plan/sheets`: Overview, Roadmap, Instructions, Lessons) and owner decisions. Read before touching metadata, forms, workflow, licensing, deployment, demo or versioning. The plan is authoritative; this is the working summary.
 
 ## 1. Product
 
@@ -31,7 +31,7 @@ The reasoning behind each decision is in the ADR log: [plan/adr](../../plan/adr/
 
 ## 3. Supportability Matrix [R21]
 
-The plan sheet *Supportability Matrix* lists what is supported (capability or limit, component, supported value, version, verifying backlog row). **Every finished task adds or changes its rows** and records that in the task Report. Builder limits are read from it, never invented in code.
+The plan page *Supportability Matrix* (`plan/sheets/supportability-matrix.md`) lists what is supported (capability or limit, component, supported value, version, verifying backlog row). **Every finished task adds or changes its rows** and records that in the task Report. Builder limits are read from it, never invented in code.
 
 ## 4. Claims
 
@@ -39,7 +39,7 @@ Sales material, website and demo claim only Done capabilities with acceptance te
 
 ## 5. Where the roadmap lives
 
-`plan/PEMS_Backlog_Roadmap.xlsx` (Backlog, Roadmap, Test Plan, Licensing Design, Capability Checklist, Lessons, Old to New Map, Supportability Matrix, Sprint sheets) and its text mirror `plan/backlog.csv`. Areas (codes): FND, DYN, CMP, FRM, MOD, WFL, MIG, LIC, BRD, DEM, WEB, INS, SEC, INT, QA, LOC, RPT, AI, EDM, EAM, BIZ, OPS, DONE, DEV, CVM, SUP, HST.
+`plan/rows/NNNN.md` (the Backlog, one file per row) and `plan/sheets/*.md` (Roadmap, Test Plan, Licensing Design, Capability Checklist, Lessons, Old to New Map, Supportability Matrix, Sprint pages; counts: `plan_sync.py summary`). Areas (codes): FND, DYN, CMP, FRM, MOD, WFL, MIG, LIC, BRD, DEM, WEB, INS, SEC, INT, QA, LOC, RPT, AI, EDM, EAM, BIZ, OPS, DONE, DEV, CVM, SUP, HST.
 
 ## 6. Licensing in the code (SCRUM-26, 2026-10-26)
 

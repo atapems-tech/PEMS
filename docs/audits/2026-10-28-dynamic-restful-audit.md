@@ -1,7 +1,7 @@
 # Plan audit: a fully dynamic PEMS, REST, and front/back separation (2026-10-28)
 
 Requested by Hamid (owner). Scope: audit the backlog against the target "every page, component and form is creatable and editable from the UI and stored in the database", audit it for REST architecture, consider separating back end and front end, then propose the next batch.
-Rows 430-441 and the corrections below are the result. Workbook changes are in `plan/PEMS_Backlog_Roadmap.xlsx`; Jira keys equal the plan numbers from #430 on.
+Rows 430-441 and the corrections below are the result. Plan changes are the rows in `plan/rows` (then still an Excel workbook, now in `0 - trash/`); Jira keys equal the plan numbers from #430 on.
 
 ## 1. What exists today (measured on `main`, 2026-10-28)
 
