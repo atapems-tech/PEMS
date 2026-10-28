@@ -81,7 +81,7 @@
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
     var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
-    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "ContractApprovalAuthority", "Department", "Employee", "Authorization", "SoDPolicy", "AuthorizationAudit", "NavigationVisibility", "Organization", "OrganizationImport", "DatabaseUpdate" };
+    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "ContractApprovalAuthority", "Department", "Employee", "Authorization", "SoDPolicy", "AuthorizationAudit", "NavigationVisibility", "Organization", "OrganizationImport", "DatabaseUpdate", "Numbering" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
     // Warehouse یک Area مستقل است؛ کنترلرهای هم‌نام در Areaهای دیگر نباید بخش را فعال کنند
@@ -691,6 +691,14 @@
             <a class="nav-link @(IsActive("Settings") ? "active" : "")" asp-controller="Settings" asp-action="Index" asp-area="">
                 <i class="bi bi-gear"></i> @Localizer["Settings"]
             </a>
+
+            @* SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات؛ همان نقش کنترلر (SystemAdmin) *@
+            @if (canSeeAdminCore && User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
+            {
+                <a class="nav-link @(InArea("Admin") && IsActive("Numbering", "Admin") ? "active" : "")" asp-area="Admin" asp-controller="Numbering" asp-action="Index">
+                    <i class="bi bi-123"></i> @Localizer["Num_Title"]
+                </a>
+            }
 
             @if (canSeeAdminCore)
             {

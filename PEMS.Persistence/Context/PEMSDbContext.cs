@@ -190,6 +190,9 @@ public class PEMSDbContext
     public DbSet<MrsImportRowMetadata> MrsImportRowMetadata { get; set; }
     public DbSet<NumberingSequence> NumberingSequences { get; set; }
 
+    // SCRUM-40: الگوهای شماره‌گذاری که مدیر سامانه تعیین می‌کند
+    public DbSet<NumberingScheme> NumberingSchemes { get; set; }
+
     // طبق ممیزی Material Management (Gap A) + Step 1/Step 2: IRN - سند رسمی دریافت مادی،
     // جدا از MrsImportBatch/Row (که مکانیزم Import اکسل است).
     public DbSet<IrnReceipt> IrnReceipts { get; set; }

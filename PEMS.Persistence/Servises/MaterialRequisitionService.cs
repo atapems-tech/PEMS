@@ -26,9 +26,13 @@ public class MaterialRequisitionService : IMaterialRequisitionService
         ["Issued to Procurement"] = new[] { "Closed" },
     };
 
-    public MaterialRequisitionService(PEMSDbContext context)
+    private readonly INumberingService _numbering;
+
+    // SCRUM-40: شماره‌گذاری اختیاری در سازنده تا تست‌های تک‌پارامتری سازگار بمانند؛ DI آن را می‌دهد
+    public MaterialRequisitionService(PEMSDbContext context, INumberingService? numbering = null)
     {
         _context = context;
+        _numbering = numbering ?? new NumberingService(context);
     }
 
     // طبق سند «PEMS — Global Data Grid Standard» (فاز ۶B - Wave A): قبلاً کل جدول با ۳
@@ -135,7 +139,8 @@ public class MaterialRequisitionService : IMaterialRequisitionService
         string description, DateTime? requiredDate, int? responsibleEngineerId, int? relatedDocumentId,
         List<(string desc, string? part, double qty, string? unit)> items)
     {
-        mrNumber = mrNumber?.Trim() ?? string.Empty;
+        // SCRUM-40: شماره خودکار از الگوی مدیر (شماره‌ی واردشده فقط اگر الگو ورود دستی را مجاز کرده باشد)
+        mrNumber = await _numbering.ResolveNumberAsync("MaterialRequisition", mrNumber, projectId, disciplineId);
         if (string.IsNullOrWhiteSpace(mrNumber))
             return (false, "شماره MR الزامی است.", null);
 

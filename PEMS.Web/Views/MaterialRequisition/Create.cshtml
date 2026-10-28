@@ -11,8 +11,7 @@
     <form asp-action="Create" method="post" id="mrForm">
         <div class="row g-3">
             <div class="col-md-6">
-                <label class="form-label">@Localizer["MR Number"]</label>
-                <input name="mrNumber" class="form-control" placeholder="e.g. MR-2026-001" required />
+                @await Component.InvokeAsync("DocumentNumberField", new { documentType = "MaterialRequisition", name = "mrNumber", label = Localizer["MR Number"].Value })
             </div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Project"]</label>

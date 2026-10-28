@@ -168,6 +168,8 @@ public static class NavigationMenuDefaults
             "Settings,Users,Roles,PermissionMatrix,AuditLog,RoutingRules,ContractApprovalAuthority,Department,Employee,Authorization,SoDPolicy,AuthorizationAudit,NavigationVisibility,NavigationMenu,Organization,OrganizationImport,DatabaseUpdate,License,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
             activeArea: "Admin"),
         Link("admin.settings", "sec.admin", 10, "Settings", "bi-gear", "Settings", rule: "Module:Administration"),
+        // SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات (کنترلر فقط SystemAdmin)
+        Link("admin.numbering", "sec.admin", 15, "Num_Title", "bi-123", "Numbering", area: "Admin", rule: "Module:Administration&Role:SystemAdmin"),
         Sub("admin.sub.access", "sec.admin", 20, "User & Access"),
         Link("admin.users", "admin.sub.access", 10, "Users", "bi-people", "Users", area: "Admin", rule: "Module:Administration"),
         Link("admin.roles", "admin.sub.access", 20, "Roles", "bi-shield-check", "Roles", area: "Admin", rule: "Module:Administration"),

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Interfaces;
+using PEMS.Application.Numbering;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
 
@@ -87,11 +88,89 @@ public class NumberingService : INumberingService
 
     public async Task<string> GetNextNumberAsync(string documentType, string? scopeKey = null)
     {
+        // SCRUM-40: الگوی فعال مدیر بر قالب داخلی مقدم است (فقط وقتی فراخوان دامنه‌ی خودش را نداده؛ GetNextValueAsync/Production Run
+        // دامنه‌ی صریح دارند و قالبشان را خود ماژول می‌سازد)
+        if (string.IsNullOrWhiteSpace(scopeKey) && await ActiveSchemeAsync(documentType) is { } scheme)
+            return await NextFromSchemeAsync(scheme, NumberingContext.Empty);
+
         if (!Defaults.TryGetValue(documentType, out var config))
             throw new InvalidOperationException($"نوع سند '{documentType}' برای NumberingService تعریف نشده است.");
 
         var scope = string.IsNullOrWhiteSpace(scopeKey) ? config.DefaultScope() : scopeKey;
 
+        var value = await NextValueAsync(documentType, scope, config);
+        var padded = value.ToString().PadLeft(config.PadWidth, '0');
+
+        return config.IncludeScope
+            ? $"{config.Prefix}-{scope}-{padded}"
+            : $"{config.Prefix}-{padded}";
+    }
+
+    public async Task<string> GetNextNumberAsync(string documentType, NumberingContext context)
+    {
+        if (await ActiveSchemeAsync(documentType) is { } scheme)
+            return await NextFromSchemeAsync(scheme, context);
+        return await GetNextNumberAsync(documentType);
+    }
+
+    public async Task<string> ResolveNumberAsync(string documentType, string? enteredNumber, int? projectId = null, int? disciplineId = null)
+    {
+        var scheme = await ActiveSchemeAsync(documentType);
+        var entered = enteredNumber?.Trim() ?? string.Empty;
+        // بدون الگوی فعال همان رفتار قبلی می‌ماند: شماره‌ی تایپ‌شده (خالی‌اش را خود سرویس رد می‌کند، فرم هم آن را الزامی نشان می‌دهد)
+        if (scheme == null)
+            return entered;
+        // الگوی فعال بدون اجازه‌ی ورود دستی: شماره‌ی تایپ‌شده (مثلاً از فرم قدیمی یا دست‌کاری درخواست) نادیده گرفته می‌شود
+        if (entered.Length > 0 && scheme.AllowManualEntry)
+            return entered;
+        return await NextFromSchemeAsync(scheme, await ContextForAsync(projectId, disciplineId));
+    }
+
+    /// <summary>کدهای پروژه و دیسیپلین برای توکن‌های الگو.</summary>
+    public async Task<NumberingContext> ContextForAsync(int? projectId, int? disciplineId)
+    {
+        var project = projectId is int p ? await _context.Projects.AsNoTracking().Where(x => x.ProjectId == p).Select(x => x.ProjectCode).FirstOrDefaultAsync() : null;
+        var discipline = disciplineId is int d ? await _context.Disciplines.AsNoTracking().Where(x => x.DisciplineId == d).Select(x => x.Code).FirstOrDefaultAsync() : null;
+        return new NumberingContext(project, discipline);
+    }
+
+    private Task<NumberingScheme?> ActiveSchemeAsync(string documentType) =>
+        _context.NumberingSchemes.AsNoTracking().FirstOrDefaultAsync(x => x.DocumentType == documentType && x.IsActive);
+
+    /// <summary>
+    /// شمارنده‌ی دامنه‌ی الگو را اتمیک بالا می‌برد و شماره را می‌سازد. اگر شماره‌ی ساخته‌شده از قبل در جدول خودِ سند هست (شماره‌ی دستی،
+    /// واردشده یا قالب قدیمی هم‌شکل)، شماره‌ی بعدی گرفته می‌شود تا هرگز تکراری صادر نشود.
+    /// </summary>
+    private async Task<string> NextFromSchemeAsync(NumberingScheme scheme, NumberingContext context)
+    {
+        var now = DateTime.Now;
+        var scope = NumberingPattern.ScopeKey(scheme, now, context);
+        var config = new Config(scheme.DocumentType.Length <= 20 ? scheme.DocumentType : scheme.DocumentType[..20], scheme.PadWidth, false, () => scope);
+        for (var attempt = 0; attempt < MaxSkips; attempt++)
+        {
+            var number = NumberingPattern.Format(scheme, now, context, await NextValueAsync(scheme.DocumentType, scope, config));
+            if (!await NumberExistsAsync(scheme.DocumentType, number))
+                return number;
+        }
+        throw new InvalidOperationException($"شماره‌گذاری {scheme.DocumentType}: پس از {MaxSkips} تلاش شماره‌ی آزاد پیدا نشد؛ الگو را بررسی کنید.");
+    }
+
+    private const int MaxSkips = 500;
+
+    /// <summary>آیا این شماره در جدول خودِ نوع سند ثبت شده است؟ (برای نوع‌های بدون جدول شناخته‌شده: خیر)</summary>
+    private Task<bool> NumberExistsAsync(string documentType, string number) => documentType switch
+    {
+        "ProcurementPackage" => _context.ProcurementPackages.AnyAsync(x => x.PackageNumber == number),
+        "MaterialRequisition" => _context.MaterialRequisitions.AnyAsync(x => x.MRNumber == number),
+        "PurchaseOrder" => _context.PurchaseOrders.AnyAsync(x => x.PoNumber == number),
+        "Contract" => _context.Contracts.AnyAsync(x => x.ContractNo == number),
+        "Tender" => _context.Tenders.AnyAsync(x => x.TenderNumber == number),
+        "Bid" => _context.Bids.AnyAsync(x => x.BidNumber == number),
+        _ => Task.FromResult(false),
+    };
+
+    private async Task<int> NextValueAsync(string documentType, string scope, Config config)
+    {
         int value;
         if (_context.Database.CurrentTransaction != null)
         {
@@ -119,12 +198,7 @@ public class NumberingService : INumberingService
                 }
             });
         }
-
-        var padded = value.ToString().PadLeft(config.PadWidth, '0');
-
-        return config.IncludeScope
-            ? $"{config.Prefix}-{scope}-{padded}"
-            : $"{config.Prefix}-{padded}";
+        return value;
     }
 
     private async Task<int> IncrementAsync(string documentType, string scope, Config config, bool ambient = false)

@@ -522,6 +522,8 @@ builder.Services.AddScoped<IDocumentHoldService, DocumentHoldService>();
 // طبق CMMS Production Baseline v1 بند P0-04: سرویس شماره‌گذاری مرکزی و اتمیک -
 // جایگزین الگوهای Count()+1 پراکنده در WorkOrder/MaintenancePlan/Instrument/StoreRequisition.
 builder.Services.AddScoped<INumberingService, NumberingService>();
+// SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات (Admin > Numbering)
+builder.Services.AddScoped<INumberingSchemeService, NumberingSchemeService>();
 
 // Warehouse / Part Catalogue Request (درخواست کاتالوگ قطعه): تنظیمات + سرویس‌ها
 builder.Services.AddSingleton(builder.Configuration.GetSection(PartCatalogueOptions.SectionName).Get<PartCatalogueOptions>() ?? new PartCatalogueOptions());
@@ -991,6 +993,8 @@ using (var scope = app.Services.CreateScope())
     // طبق CMMS Production Baseline v1 بند P0-04: شمارنده‌ی WorkOrder را از روی شماره‌های قدیمی
     // (پیش از NumberingService) Seed می‌کند تا شماره‌ی بعدی با آن‌ها برخورد نکند.
     await PEMS.Persistence.Seed.NumberingBackfillSeeder.SeedAsync(scope.ServiceProvider);
+    // SCRUM-40: الگوی فعال پیش‌فرض برای هر سند تدارکاتی که هنوز الگو ندارد (الگوی ویرایش‌شده‌ی مدیر دست نمی‌خورد)
+    await PEMS.Persistence.Seed.NumberingSchemeSeeder.SeedAsync(scope.ServiceProvider);
 
     // سایدبار داده‌محور: همگام‌سازی افزایشی کاتالوگ کد (فقط وقتی پرچم فعال است؛ جدول تا اعمال Migration وجود ندارد)
     if (scope.ServiceProvider.GetRequiredService<PEMS.Web.Navigation.IDynamicSidebarAvailability>().IsEnabled)

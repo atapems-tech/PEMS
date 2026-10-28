@@ -73,7 +73,7 @@
                 <div class="modal-header"><h6 class="modal-title">@Localizer["New Contract"]</h6></div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-6"><label class="form-label">@Localizer["Contract No"]</label><input name="contractNo" class="form-control" required /></div>
+                        <div class="col-md-6">@await Component.InvokeAsync("DocumentNumberField", new { documentType = "Contract", name = "contractNo", label = Localizer["Contract No"].Value })</div>
                         <div class="col-md-6">
                             <label class="form-label">@Localizer["Project"]</label>
                             <select name="projectId" class="form-select" required>

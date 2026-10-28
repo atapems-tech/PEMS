@@ -1,0 +1,80 @@
+@model IReadOnlyList<PEMS.Application.Interfaces.NumberingSchemeView>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Domain.Entities
+@using PEMS.Application.Numbering
+@inject IStringLocalizer<SharedResource> Localizer
+@* SCRUM-40: numbering patterns of the procurement documents. Live preview: ~/js/admin-numbering.js *@
+
+<div class="admin-page-shell">
+    <div class="admin-hero">
+        <p>@Localizer["Num_Intro"]</p>
+        <p class="mb-0 small">@Localizer["Num_Tokens"]
+            @foreach (var t in NumberingPattern.Tokens) { <code class="me-1">@t</code> }
+        </p>
+    </div>
+
+    @if (TempData["Message"] is string msg) { <div class="alert alert-success" role="status">@Localizer[msg]</div> }
+    @if (TempData["Error"] is string err) { <div class="alert alert-danger" role="alert">@Localizer[err]</div> }
+
+    <div class="content-card">
+        <div class="table-responsive">
+            <table class="table table-enterprise align-middle" id="numberingTable" data-preview-url="@Url.Action("Preview")" data-err-network="@Localizer["Num_Err_Network"]">
+                <thead>
+                    <tr>
+                        <th>@Localizer["Num_DocumentType"]</th>
+                        <th>@Localizer["Num_Pattern"]</th>
+                        <th>@Localizer["Num_Pad"]</th>
+                        <th>@Localizer["Num_Calendar"]</th>
+                        <th>@Localizer["Num_Reset"]</th>
+                        <th>@Localizer["Active"]</th>
+                        <th>@Localizer["Num_AllowManual"]</th>
+                        <th>@Localizer["Num_Preview"]</th>
+                        <th>@Localizer["Num_Version"]</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in Model)
+                    {
+                        var formId = "num_" + s.DocumentType;
+                        <tr data-numbering-row>
+                            <td>
+                                <strong>@Localizer["Num_Doc_" + s.DocumentType]</strong>
+                                <form id="@formId" asp-action="Save" method="post" class="d-none">
+                                    <input type="hidden" name="DocumentType" value="@s.DocumentType" />
+                                    <input type="hidden" name="RowVersion" value="@s.RowVersion" />
+                                </form>
+                            </td>
+                            <td><input form="@formId" name="Pattern" value="@s.Pattern" class="form-control form-control-sm font-monospace" maxlength="@NumberingPattern.MaxPatternLength" required aria-label="@Localizer["Num_Pattern"]" data-num-input /></td>
+                            <td><input form="@formId" type="number" name="PadWidth" value="@s.PadWidth" min="@NumberingPattern.MinPad" max="@NumberingPattern.MaxPad" class="form-control form-control-sm" aria-label="@Localizer["Num_Pad"]" data-num-input /></td>
+                            <td>
+                                <select form="@formId" name="Calendar" class="form-select form-select-sm" aria-label="@Localizer["Num_Calendar"]" data-num-input>
+                                    @foreach (var c in NumberingCalendars.All) { <option value="@c" selected="@(c == s.Calendar)">@Localizer["Num_Cal_" + c]</option> }
+                                </select>
+                            </td>
+                            <td>
+                                <select form="@formId" name="ResetPeriod" class="form-select form-select-sm" aria-label="@Localizer["Num_Reset"]" data-num-input>
+                                    @foreach (var r in NumberingResetPeriods.All) { <option value="@r" selected="@(r == s.ResetPeriod)">@Localizer["Num_Reset_" + r]</option> }
+                                </select>
+                            </td>
+                            <td><input form="@formId" type="checkbox" name="IsActive" value="true" class="form-check-input" checked="@s.IsActive" aria-label="@Localizer["Active"]" /></td>
+                            <td><input form="@formId" type="checkbox" name="AllowManualEntry" value="true" class="form-check-input" checked="@s.AllowManualEntry" aria-label="@Localizer["Num_AllowManual"]" /></td>
+                            <td><code data-num-preview aria-live="polite">@s.Preview</code><div class="small text-danger" data-num-error></div></td>
+                            <td>
+                                @(s.Version == 0 ? "-" : s.Version.ToString())
+                                @if (s.ModifiedBy != null) { <div class="small text-muted">@s.ModifiedBy</div> }
+                            </td>
+                            <td><button type="submit" form="@formId" class="btn btn-sm btn-outline-primary">@Localizer["Save"]</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <p class="small text-muted mb-0">@Localizer["Num_Footnote"]</p>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/admin-numbering.js" asp-append-version="true"></script>
+}
