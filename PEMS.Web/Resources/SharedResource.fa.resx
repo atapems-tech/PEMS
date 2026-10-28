@@ -3398,4 +3398,12 @@
   <data name="Sel_NoResults" xml:space="preserve"><value>موردی پیدا نشد</value></data>
   <data name="Sel_Loading" xml:space="preserve"><value>در حال جستجو…</value></data>
   <data name="Sel_Placeholder" xml:space="preserve"><value>برای جستجو تایپ کنید…</value></data>
+  <data name="Mr_RequestNewPart" xml:space="preserve"><value>درخواست قطعه‌ی جدید</value></data>
+  <data name="Mr_PartLookupHint" xml:space="preserve"><value>شماره‌ی قطعه، شماره‌ی سازنده یا شرح را تایپ کنید تا قطعه‌ی ثبت‌شده در کاتالوگ قطعه انتخاب شود؛ شرح و واحد آن پر می‌شود. قطعه‌ای که هنوز ثبت نشده را می‌توانید همان‌طور که هست تایپ کنید.</value></data>
+  <data name="Mr_UseTypedPart" xml:space="preserve"><value>استفاده از {0} (کاتالوگ‌نشده)</value></data>
+  <data name="Mr_PartNotCatalogued" xml:space="preserve"><value>کاتالوگ‌نشده</value></data>
+  <data name="Mr_PartNotCataloguedHint" xml:space="preserve"><value>این شماره‌ی قطعه در کاتالوگ قطعه یا اطلاعات پایه‌ی مواد ثبت نشده است.</value></data>
+  <data name="Mr_PartCatalogued" xml:space="preserve"><value>کاتالوگ‌شده</value></data>
+  <data name="Mr_PartCataloguedHint" xml:space="preserve"><value>به قطعه‌ی ثبت‌شده در کاتالوگ قطعه یا اطلاعات پایه‌ی مواد پیوند دارد.</value></data>
+  <data name="Mr_AddItem" xml:space="preserve"><value>افزودن ردیف</value></data>
 </root>

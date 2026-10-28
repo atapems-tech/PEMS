@@ -37,7 +37,20 @@
         <tbody>
             @foreach (var i in Model.Items)
             {
-                <tr><td>@i.ItemDescription</td><td>@i.PartNumber</td><td>@i.Quantity</td><td>@i.Unit</td></tr>
+                <tr>
+                    <td>@i.ItemDescription</td>
+                    <td>
+                        @i.PartNumber
+                        @* SCRUM-428: linked to a registered part, or typed and not catalogued yet *@
+                        @if (!string.IsNullOrEmpty(i.PartNumber))
+                        {
+                            @if (i.IsCatalogued) { <span class="vs-pill vs-pill--success ms-1" title="@Localizer["Mr_PartCataloguedHint"]">@Localizer["Mr_PartCatalogued"]</span> }
+                            else { <span class="vs-pill vs-pill--warning ms-1" title="@Localizer["Mr_PartNotCataloguedHint"]">@Localizer["Mr_PartNotCatalogued"]</span> }
+                        }
+                    </td>
+                    <td>@i.Quantity</td>
+                    <td>@i.Unit</td>
+                </tr>
             }
         </tbody>
     </table>
