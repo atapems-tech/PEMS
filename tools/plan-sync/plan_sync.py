@@ -146,6 +146,34 @@ def export():
         print("note: Jira recommends at most ~1,500 work items per import file; split before importing")
 
 
+def dependency_findings(rows):
+    """Plan audit 2026-10-28: a row must not depend on a row planned in a LATER milestone, and dependencies must not form a cycle."""
+    def stage(r):
+        m = re.fullmatch(r"M(\d)", clean(r.get("Milestone")))
+        return int(m.group(1)) if m else None
+    by_id = {r["#"]: r for r in rows}
+    deps = {r["#"]: [d for d in (int(x) for x in re.findall(r"#(\d+)", clean(r.get("Depends")))) if d in by_id and d != r["#"]] for r in rows}
+    out = []
+    for pid, ds in deps.items():
+        for d in ds:
+            a, b = stage(by_id[pid]), stage(by_id[d])
+            if a is not None and b is not None and b > a:
+                out.append(f"#{pid}: planned in M{a} but depends on #{d} planned in M{b}")
+    state = {}
+    def visit(n, path):
+        state[n] = 1
+        for d in deps[n]:
+            if state.get(d) == 1:
+                out.append("dependency cycle: " + " -> ".join(f"#{x}" for x in path + [n, d]))
+            elif d not in state:
+                visit(d, path + [n])
+        state[n] = 2
+    for n in deps:
+        if n not in state:
+            visit(n, [])
+    return out
+
+
 def check():
     _, rows = load_rows()
     problems = []
@@ -170,6 +198,7 @@ def check():
                 problems.append(f"#{pid}: planned in {clean(r.get('Sprint'))} without an Owner")
             if len(clean(r.get("Prompt"))) < 60 or not clean(r.get("Requirement")).lower().startswith("done when"):
                 problems.append(f"#{pid}: planned in a sprint but 'What to do' is short or 'Done when' is missing")
+    problems += dependency_findings(rows)
     for p in problems:
         print("FINDING:", p)
     print(f"{len(rows)} rows checked, {len(problems)} finding(s)")
