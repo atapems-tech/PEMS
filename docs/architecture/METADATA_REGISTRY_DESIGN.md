@@ -1,6 +1,6 @@
 # Metadata registry and definition model: design
 
-Status: **Proposed - 2026-10-28** (plan rows #338 and #430; [ADR-0010](../../plan/adr/0010-metadata-registry-definition-envelope.md), [ADR-0011](../../plan/adr/0011-ui-definition-model.md)). Owner review pending.
+Status: **Accepted (ADR-0010 and ADR-0011) - 2026-10-28; the open questions in section 8 are still open** (plan rows #338 and #430; [ADR-0010](../../plan/adr/0010-metadata-registry-definition-envelope.md), [ADR-0011](../../plan/adr/0011-ui-definition-model.md)). Accepted by the owner on 2026-10-28.
 Scope: how PEMS stores everything that is *defined* rather than coded (data entities and fields, and the user interface: pages, forms, views, menus, themes, data sources, actions), how it is versioned and published, how shipped definitions coexist with customer-made ones, and how consumers cache it.
 
 ## 1. Principles
