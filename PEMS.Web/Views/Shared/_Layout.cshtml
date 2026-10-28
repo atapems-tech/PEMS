@@ -67,9 +67,13 @@
     }
 
     <link rel="stylesheet" href="~/PEMS.Web.styles.css" asp-append-version="true" />
+    @* SCRUM-57: searchable selects on every page (Tom Select, vendored) *@
+    <link rel="stylesheet" href="~/lib/tom-select/tom-select.bootstrap5.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-select.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body class="@(isAdminArea ? "admin-area" : "")" data-user-id="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value">
+<body class="@(isAdminArea ? "admin-area" : "")" data-user-id="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value"
+      data-pems-select-no-results="@Localizer["Sel_NoResults"]" data-pems-select-loading="@Localizer["Sel_Loading"]" data-pems-select-placeholder="@Localizer["Sel_Placeholder"]">
     <a class="pems-skip-link" href="#pemsMainContent">@Localizer["Shell_SkipToContent"]</a>
     <header class="pems-topbar">
         <div class="d-flex align-items-center gap-2">
@@ -216,6 +220,8 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/tom-select/tom-select.complete.min.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-select.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/pems-global-search.js" asp-append-version="true"></script>
     <script src="~/js/pems-data-grid.js" asp-append-version="true"></script>

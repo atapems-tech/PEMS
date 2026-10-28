@@ -81,12 +81,15 @@ public class UserRoleSelectTests
         Assert.True(File.Exists(Path.Combine(lib, "tom-select.bootstrap5.min.css")));
         Assert.Contains("Apache License", File.ReadAllText(Path.Combine(lib, "LICENSE")));
 
+        // SCRUM-57: the layout loads Tom Select once for every page; the user pages only add the multi-select initialiser
+        var layout = File.ReadAllText(RepoFile("PEMS.Web", "Views", "Shared", "_Layout.cshtml"));
+        Assert.Contains("~/lib/tom-select/tom-select.complete.min.js", layout);
+        Assert.Contains("~/lib/tom-select/tom-select.bootstrap5.min.css", layout);
         foreach (var page in new[] { "Create.cshtml", "Edit.cshtml" })
         {
             var view = File.ReadAllText(RepoFile("PEMS.Web", "Areas", "Admin", "Views", "Users", page));
             Assert.Contains("<partial name=\"_RoleSelect\"", view);
-            Assert.Contains("~/lib/tom-select/tom-select.complete.min.js", view);
-            Assert.Contains("~/lib/tom-select/tom-select.bootstrap5.min.css", view);
+            Assert.DoesNotContain("~/lib/tom-select/", view);                                     // not loaded twice
             Assert.Contains("~/js/pems-multiselect.js", view);
             Assert.DoesNotMatch("(src|href)=\"https?://", view);
         }

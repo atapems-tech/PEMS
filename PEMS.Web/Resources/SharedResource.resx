@@ -2608,4 +2608,7 @@
   <data name="Num_Reset_Yearly" xml:space="preserve"><value>Every year</value></data>
   <data name="Num_HintAuto" xml:space="preserve"><value>Assigned automatically on save; the next number is shown.</value></data>
   <data name="Num_HintManual" xml:space="preserve"><value>Leave empty for the automatic number, or enter your own unique number.</value></data>
+  <data name="Sel_NoResults" xml:space="preserve"><value>No matching item</value></data>
+  <data name="Sel_Loading" xml:space="preserve"><value>Searching…</value></data>
+  <data name="Sel_Placeholder" xml:space="preserve"><value>Type to search…</value></data>
 </root>

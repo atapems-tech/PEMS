@@ -3395,4 +3395,7 @@
   <data name="Num_Reset_Yearly" xml:space="preserve"><value>هر سال</value></data>
   <data name="Num_HintAuto" xml:space="preserve"><value>هنگام ثبت خودکار داده می‌شود؛ شماره‌ی بعدی نمایش داده شده است.</value></data>
   <data name="Num_HintManual" xml:space="preserve"><value>برای شماره‌ی خودکار خالی بگذارید، یا شماره‌ی یکتای خود را وارد کنید.</value></data>
+  <data name="Sel_NoResults" xml:space="preserve"><value>موردی پیدا نشد</value></data>
+  <data name="Sel_Loading" xml:space="preserve"><value>در حال جستجو…</value></data>
+  <data name="Sel_Placeholder" xml:space="preserve"><value>برای جستجو تایپ کنید…</value></data>
 </root>
