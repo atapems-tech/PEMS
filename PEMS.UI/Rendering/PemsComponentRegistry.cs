@@ -11,6 +11,8 @@ public interface IPemsComponentRegistry
     void Register(string key, Type componentType);
     int RegisterAssembly(Assembly assembly);
     Type Resolve(string key);
+    /// <summary>Every registered key (for the component manifests and the catalog).</summary>
+    IReadOnlyCollection<string> Keys { get; }
 }
 
 public sealed class PemsComponentRegistry : IPemsComponentRegistry
@@ -51,6 +53,8 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         }
         return count;
     }
+
+    public IReadOnlyCollection<string> Keys => _types.Keys.ToList();
 
     public Type Resolve(string key) => _types.TryGetValue(key, out var t)
         ? t
