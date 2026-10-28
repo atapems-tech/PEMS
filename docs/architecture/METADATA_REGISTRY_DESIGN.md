@@ -83,3 +83,38 @@ In-flight records (workflow instances, form drafts) stay pinned to the version t
 | 3 | Maximum payload size and instance counts above are starting values; measure with the page runtime (#438) | assistant |
 | 4 | When both an upstream shipped change and a customer change touch the same property, is a manual merge enough or is a 3-way merge tool needed? | owner |
 | 5 | Should `entity` definitions drive DDL directly (#13/#14) or only through reviewed migrations? Proposal: planner generates a migration script that is reviewed and applied, never silent DDL | owner |
+
+## 9. Retention of definition versions: decision and the options for later
+
+**Decision (owner, 2026-10-28, SCRUM-434 review):** retired definition versions are kept **forever**. The version table is the only readable history of a definition (the generic audit trail deliberately does not store `PayloadJson`), and a rollback needs the old payload. Nothing in the code deletes a `DefinitionVersion`; row #455 adds a storage report, a size warning and the setting `Definitions__RetainRetiredVersions`, whose only supported value is `forever`. Any other value must stop the start-up with a clear message (fail closed), so nobody believes a policy is active that is not.
+
+Size to expect: a payload is at most 1 MB (`Definitions:MaxPayloadBytes`); real forms and pages are usually 5-50 KB. A definition edited daily for a year is a few tens of MB at most, so "forever" is cheap until proven otherwise; #455 shows when it is not.
+
+### 9.1 Options if keeping everything stops being acceptable
+
+| Option | What it does | Good | Cost / risk | When to choose it |
+|---|---|---|---|---|
+| A. Keep forever (chosen) | nothing is deleted | full history, every rollback target exists, no code to get wrong | table growth, no upper bound | default; revisit when #455 warns |
+| B. Keep the last N retired versions | per definition keep Published + Draft + the last N Retired | simple, predictable size | old rollback targets disappear; version numbers get gaps | a few definitions edited very often |
+| C. Keep by age | delete retired versions older than X months, always keeping the protected ones (9.2) | matches audit/legal wording | an old but important version can go | when a records policy states a period |
+| D. Archive, then prune | move old payloads to a compressed archive table or file with their hash, keep the version row (number, hash, dates, who) without payload | history of who/when stays; payload restorable on demand | restore tooling needed; a rollback to an archived version needs a restore step | audit wants the trail but size matters |
+| E. Delta storage | store old versions as diffs against the next one | big saving for small edits | reconstruction cost and complexity; a damaged chain loses history | only with measured need; probably never |
+| F. Keep release points | keep versions that were published inside a promotion package (#23) or a release, plus the last N | the versions that mattered to a customer survive | needs the package registry (#23) and a release marker on the version | when #23 exists |
+| G. Per-kind policy and legal hold | policy per kind (for example menus and themes forever, forms last 20), and a hold flag that exempts a definition | fits different risk | more settings, more tests | combined with B, C or D |
+
+### 9.2 Rules every future policy must obey
+
+1. Never delete or archive the **Published** version, an open **Draft/Validated** version, the version the published one was cloned from, or the **shipped** version (`ShippedVersionId`, needed for reset and upstream-change diffs, #448).
+2. Never prune a version that something still points to: in-flight records pinned to a version (workflow instances, form drafts, section 3), a package awaiting promotion (#23), a legal hold.
+3. Version numbers are never reused; gaps are allowed, so the API, the manager screen (#449) and `ClonedFromNumber` must cope with a missing number (return 404 for the version, show 'archived/removed').
+4. A rollback target must exist: the API refuses a rollback to a pruned version with a clear problem+json (`version-pruned`), never a 500.
+5. Pruning is a **background job with a dry run**, writes an audit entry per deleted version (definition, number, hash, who started it) and runs in small batches; it never runs inside a request.
+6. The `DefinitionReferences` of a pruned version go with it (cascade is already configured), and the `DefinitionStamp` is not touched (published content does not change).
+7. A policy change is an ADR amendment and an owner decision, a new migration if it adds columns (archive, hold flag), a setting in every `env/*.env`, and a test that asserts rules 1-4.
+
+### 9.3 Where to change it
+
+- No prune path exists today: `DefinitionService` (PEMS.Persistence/Servises) only adds versions and removes an unpublished draft (`DiscardDraftAsync`).
+- The setting is read once at start-up (task #455); add the new values and the job there, in one place.
+- Update this section, the amendment in ADR-0010 and the row of the task that implements the policy.
+
