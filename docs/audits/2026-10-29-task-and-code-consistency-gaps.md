@@ -27,8 +27,8 @@ Not added: #45 -> #460, because #460 already depends on #45 (cycle). `plan_sync.
 | 7+ import batch/row entity pairs | Already covered by #25, #217, #360 |
 | Dashboards, searches and notifications built several times | Covered by the component work (#323, #326, #328 waves); no separate row |
 
-## 3. For the owner to decide (report only)
+## 3. Owner decisions (2026-10-29), applied
 
-* Higher-priority rows that depend on lower-priority ones: #223 -> #89, #309 -> #311, #327 -> #38, #328 -> #326, #442 -> #426.
-* 14 open rows depend on On Hold rows: #141, #146-#150, #292-#301, #347 depend on #139, #291, #305.
-* Four rows with no dependency and no dependants: #135, #443, #444, #462.
+* **Priority conflicts:** the dependencies were raised to the level of their dependants: #89, #426 to P1; #311, #38, #326, #436, #448 to P0. A scan finds no open row that depends on a lower-priority open row.
+* **On Hold dependencies:** #139 (own main host) and #291 (reverse proxy and isolation) are Obsolete, replaced by the shared Plesk/IIS host (#351 done). The dependency was removed from #141, #146, #147, #149, #150, #292, #294, #295, #296, #297, #298, #301. #347 no longer depends on #305; #305 stays On Hold. No open row depends on a Hold row any more.
+* **Orphans connected:** #135 -> #145 (demo licence); #443 -> #433, #326; #444 -> #325, #328; #462 -> #85, #445.
