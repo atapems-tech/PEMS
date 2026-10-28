@@ -33,6 +33,16 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - One sidebar section "Procurement & Supply Chain" (fa: تدارکات و زنجیره تأمین), like CMMS: Vendors, then the sub-headings Purchasing (Material Requisition, Procurement Package, Tender, Purchase Orders), Contracts (Contracts, Contract Milestones, Claims) and Warehouse (all former warehouse links). Engineering Management no longer lists the purchasing pages; the Contract Management and Warehouse sections are gone. Both sidebars changed (data-driven `NavigationMenuDefaults` and the classic `_SidebarMenu.cshtml` used in demo, UAT and production). Each link keeps its former gate plus its former section module, so no role sees more or less. Existing databases: the startup sync adds the new menu rows and deactivates the old system rows (not deleted); no migration.
 
+## 2026-10-28 - Metadata registry and UI definition model designed (SCRUM-25, SCRUM-430)
+
+### Added
+- `docs/architecture/METADATA_REGISTRY_DESIGN.md`, ADR-0010 (one definition envelope with Draft/Validated/Published/Retired versions, rollback by republish, shipped vs customer definitions, cache stamp) and ADR-0011 (pages, layouts, component instances, data sources and actions as definitions), with a compile-checked C# sketch. Status: proposed, waiting for the owner. Design only; no code or migration.
+
+## 2026-10-28 - REST API standard written (SCRUM-431)
+
+### Added
+- ADR-0009 and guideline chapter 08: resource-oriented JSON under `/api/v1`, verbs and status codes, ETag with If-Match, Idempotency-Key, RFC 9457 errors, one list query contract with offset paging for grids and cursor paging for exports and very large tables, OpenAPI 3.1 as the contract. Status: proposed, waiting for the owner to accept. No code yet (the walking skeleton is #435).
+
 ## 2026-10-28 - Title row on five pages that showed no heading (SCRUM-425)
 
 ### Changed
