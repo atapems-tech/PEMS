@@ -18,6 +18,11 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - One sidebar section "Procurement & Supply Chain" (fa: تدارکات و زنجیره تأمین), like CMMS: Vendors, then the sub-headings Purchasing (Material Requisition, Procurement Package, Tender, Purchase Orders), Contracts (Contracts, Contract Milestones, Claims) and Warehouse (all former warehouse links). Engineering Management no longer lists the purchasing pages; the Contract Management and Warehouse sections are gone. Both sidebars changed (data-driven `NavigationMenuDefaults` and the classic `_SidebarMenu.cshtml` used in demo, UAT and production). Each link keeps its former gate plus its former section module, so no role sees more or less. Existing databases: the startup sync adds the new menu rows and deactivates the old system rows (not deleted); no migration.
 
+## 2026-10-28 - Persian digits in the pagination footer (SCRUM-426)
+
+### Changed
+- On Persian pages the pagination footer shows Persian digits in the "showing X to Y of Z" text, the page numbers and the rows-per-page buttons (new `IPemsLocale.Digits`, which swaps digits without reformatting). Links, the `page` and `pageSize` parameters and `aria-label` numbers stay Latin; English pages are unchanged byte for byte.
+
 ## 2026-10-28 - Page title row moved into PEMS.UI (SCRUM-425)
 
 ### Changed

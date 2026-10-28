@@ -20,4 +20,10 @@ public interface IPemsLocale
 
     /// <summary>Formats a data value for display: dates (Jalali for Persian), numbers, other values as text. Never translates.</summary>
     string Format(object? value, ValueKind kind = ValueKind.Auto);
+
+    /// <summary>
+    /// Applies the language's digits to text that is already formatted for display (Persian digits for Persian when enabled, unchanged otherwise).
+    /// For counts and page numbers that must keep their plain format; never use it on URLs, ids or values that are posted back.
+    /// </summary>
+    string Digits(string text);
 }

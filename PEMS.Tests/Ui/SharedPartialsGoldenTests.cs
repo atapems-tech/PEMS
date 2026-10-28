@@ -127,4 +127,19 @@ public class SharedPartialsGoldenTests
             if (section is not null) vd["Section"] = section;
             if (hide) vd["HidePageTitle"] = true;
         })));
+
+    [Fact]
+    public async Task Pagination_PersianShowsPersianDigitsInTextButLinksStayLatin()
+    {
+        var html = System.Net.WebUtility.HtmlDecode(await InCultureAsync("fa", () => RenderAsync("~/Views/Shared/_Pagination.cshtml", Pager(3, 10, 250, "wo"))));
+        Assert.Contains("۵۱ تا ۷۵ از ۲۵۰", html, StringComparison.Ordinal);                       // range text
+        Assert.Contains(">۳</a>", html, StringComparison.Ordinal);                               // page number
+        Assert.Contains(">۵۰</a>", html, StringComparison.Ordinal);                              // page size button
+        Assert.Contains("href=\"/WorkOrders?page=4\"", html, StringComparison.Ordinal);          // links: Latin, so the page parameter still binds
+        Assert.Contains("href=\"/WorkOrders?pageSize=50&page=1\"", html, StringComparison.Ordinal);
+        Assert.Contains("aria-label=\"50\"", html, StringComparison.Ordinal);
+        Assert.DoesNotMatch("href=\"[^\"]*[۰-۹]", html);
+        var en = await InCultureAsync("en", () => RenderAsync("~/Views/Shared/_Pagination.cshtml", Pager(3, 10, 250, "wo")));
+        Assert.DoesNotMatch("[۰-۹]", en);                                                        // English: no Persian digit anywhere
+    }
 }

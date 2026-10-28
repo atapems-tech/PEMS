@@ -89,4 +89,14 @@ public sealed class PemsLocaleTests
         Assert.True(InCulture("fa", () => Locale().IsRightToLeft));
         Assert.False(InCulture("en", () => Locale().IsRightToLeft));
     }
+
+    [Fact]
+    public void Digits_swaps_digits_in_ready_text_without_reformatting_it()
+    {
+        Assert.Equal("نمایش ۵۱ تا ۷۵ از ۲۵۰ رکورد", InCulture("fa", () => Locale().Digits("نمایش 51 تا 75 از 250 رکورد")));
+        Assert.Equal("۱۲۳۴", InCulture("fa", () => Locale().Digits("1234")));                  // no thousands separator is added
+        Assert.Equal("Showing 51-75 of 250", InCulture("en", () => Locale().Digits("Showing 51-75 of 250")));   // English: unchanged
+        Assert.Equal("12", InCulture("fa", () => Locale(o => o.UseNativeDigits = false).Digits("12")));        // switched off: unchanged
+        Assert.Equal("", InCulture("fa", () => Locale().Digits("")));
+    }
 }

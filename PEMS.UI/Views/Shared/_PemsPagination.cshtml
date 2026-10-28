@@ -1,5 +1,5 @@
 @* Pagination footer (Data Grid Standard clauses 3, 7-10, 22). Texts are inputs (PaginationTexts); the row range keeps the
-   current-culture format so list pages show exactly what they showed before the move. *@
+   current-culture format; the language's digits are applied to displayed numbers only (hrefs and aria-labels stay Latin). *@
 @model PEMS.UI.Abstractions.PaginationView
 @using PEMS.UI.Abstractions
 @inject IPemsLocale Locale
@@ -19,7 +19,7 @@
         <span class="text-muted small">
             @if (state.TotalCount > 0 && state.PageSize > 0)
             {
-                @string.Format(Locale.Text(texts.ShowingRecords), rangeStart, rangeEnd, state.TotalCount)
+                @Locale.Digits(string.Format(Locale.Text(texts.ShowingRecords), rangeStart, rangeEnd, state.TotalCount))
             }
             else
             {
@@ -34,7 +34,7 @@
                 @foreach (var size in state.AllowedPageSizes)
                 {
                     <a class="btn btn-sm @(size == state.PageSize ? "btn-pems-solid" : "btn-outline-secondary")"
-                       href="@state.BuildPageSizeUrl(size)" aria-label="@size">@size</a>
+                       href="@state.BuildPageSizeUrl(size)" aria-label="@size">@Locale.Digits(size.ToString())</a>
                 }
             </div>
         }
@@ -55,7 +55,7 @@
                 }
                 @for (int p = start; p <= end; p++)
                 {
-                    <li class="page-item @(p == state.Page ? "active" : "")"><a class="page-link" href="@state.BuildUrl(p)">@p</a></li>
+                    <li class="page-item @(p == state.Page ? "active" : "")"><a class="page-link" href="@state.BuildUrl(p)">@Locale.Digits(p.ToString())</a></li>
                 }
                 @if (state.Page < state.TotalPages)
                 {
