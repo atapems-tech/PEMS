@@ -20,6 +20,7 @@ public static class ServiceCollectionExtensions
         services.TryAddScoped<IPemsLocale, PemsLocale>();
         services.TryAddSingleton<IPemsComponentRegistry, PemsComponentRegistry>();
         services.TryAddScoped<IPemsComponentRenderer, PemsComponentRenderer>();
+        services.TryAddSingleton<PEMS.UI.Manifest.ComponentManifestCatalog>();
         return services;
     }
 }

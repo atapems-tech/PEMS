@@ -26,6 +26,11 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - One sidebar section "Procurement & Supply Chain" (fa: تدارکات و زنجیره تأمین), like CMMS: Vendors, then the sub-headings Purchasing (Material Requisition, Procurement Package, Tender, Purchase Orders), Contracts (Contracts, Contract Milestones, Claims) and Warehouse (all former warehouse links). Engineering Management no longer lists the purchasing pages; the Contract Management and Warehouse sections are gone. Both sidebars changed (data-driven `NavigationMenuDefaults` and the classic `_SidebarMenu.cshtml` used in demo, UAT and production). Each link keeps its former gate plus its former section module, so no role sees more or less. Existing databases: the startup sync adds the new menu rows and deactivates the old system rows (not deleted); no migration.
 
+## 2026-10-28 - Component manifests (SCRUM-433)
+
+### Added
+- Every PEMS.UI component now describes itself from its code: `[PemsComponent]` with category and icon, a generated manifest with the JSON Schema of its options, and `ComponentManifestCatalog` to validate stored options JSON (field error list) and convert it to parameters. This is the base for the page and form designers; no page changes. New dependency in PEMS.UI: LateApexEarlySpeed.Json.Schema 4.2.2 (BSD-3-Clause).
+
 ## 2026-10-28 - REST inventory of the controllers (SCRUM-432)
 
 ### Added
