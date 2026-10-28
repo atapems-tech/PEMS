@@ -152,10 +152,12 @@ public class DefinitionsApiControllerTests
     {
         var id = await CreateAsync();
         var c = Api(); await c.Get(id, default);
-        var renamed = Assert.IsType<DefinitionResource>(Assert.IsType<OkObjectResult>(await Api(ETag(c)).UpdateEnvelope(id, new DefinitionEnvelopeInput(Json("""{"en":"Renamed"}"""), null), default)).Value);
+        var rename = Api(ETag(c));
+        var renamed = Assert.IsType<DefinitionResource>(Assert.IsType<OkObjectResult>(await rename.UpdateEnvelope(id, new DefinitionEnvelopeInput(Json("""{"en":"Renamed"}"""), null), default)).Value);
+        var renamedRead = rename;
         Assert.Contains("Renamed", renamed.Title.GetRawText());
         Problem(await Api(ETag(c)).UpdateEnvelope(id, new DefinitionEnvelopeInput(Json("\"x\""), null), default), 412);
-        Assert.Contains(Problem(await Api().UpdateEnvelope(id, new DefinitionEnvelopeInput(default, null), default), 422).Errors, e => e.Pointer == "/title");
+        Assert.Contains(Problem(await Api(ETag(renamedRead)).UpdateEnvelope(id, new DefinitionEnvelopeInput(default, null), default), 422).Errors, e => e.Pointer == "/title");
 
         // the only version cannot be discarded
         var d = Api(); await d.GetDraft(id, default);
