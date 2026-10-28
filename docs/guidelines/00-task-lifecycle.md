@@ -17,10 +17,10 @@ Field ownership between the plan files and Jira: [PLAN_TRACKER_WORKFLOW.md](../p
    library, same research), propose doing them together. **Ask the user and wait for approval before starting a batch.** State: which
    issues, why they belong together, what changes in scope, and what each issue's "Done when" will be checked against.
    Never silently widen the scope of one issue to swallow another.
-   **When the user approves a batch:** every issue in the package is moved into the **current (active) sprint** (`transitionJiraIssue` with the active sprint id from
-   `listJiraBoardSprints`, state `active`). **Assignee and In Progress come only when the batch is actually started** (owner decision 2026-10-29): at that moment all issues of the
-   batch are moved to In Progress and assigned in the same step to the person doing the work (the Jira user of the developer running the session; account id from `atlassianUserInfo`,
-   `editJiraIssue`). Planned, approved or newly created issues stay **unassigned** - never assign at creation or at approval. Do this before step 2 of section 2.
+   **When a batch starts** (owner decision 2026-10-29; approval alone changes nothing in Jira): in one step every issue of the batch is moved into the **current (active) sprint**
+   (`transitionJiraIssue` with the active sprint id from `listJiraBoardSprints`, state `active`), moved to **In Progress** and **assigned** to the person doing the work (the Jira user of the
+   developer running the session; account id from `atlassianUserInfo`, `editJiraIssue`). Planned, approved or newly created issues stay **unassigned and outside any sprint**: a To Do issue
+   is never in a sprint and never has an assignee (the exception is `qa-failed`, section 5a). Do this before step 2 of section 2.
 5a. **Ownership check - no collisions.** Before starting any issue (alone or in a batch) look at its assignee and status:
    - assignee is another person, **or** the issue is already In Progress / In Review, **or** a branch/PR for it exists -> **do not touch it**. Ask that person (through the user, or a Jira comment mentioning them)
      and get an explicit yes before starting. Keep the confirmation in a comment (who agreed, when). Until then work on something else.
