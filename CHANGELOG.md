@@ -18,6 +18,11 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - One sidebar section "Procurement & Supply Chain" (fa: تدارکات و زنجیره تأمین), like CMMS: Vendors, then the sub-headings Purchasing (Material Requisition, Procurement Package, Tender, Purchase Orders), Contracts (Contracts, Contract Milestones, Claims) and Warehouse (all former warehouse links). Engineering Management no longer lists the purchasing pages; the Contract Management and Warehouse sections are gone. Both sidebars changed (data-driven `NavigationMenuDefaults` and the classic `_SidebarMenu.cshtml` used in demo, UAT and production). Each link keeps its former gate plus its former section module, so no role sees more or less. Existing databases: the startup sync adds the new menu rows and deactivates the old system rows (not deleted); no migration.
 
+## 2026-10-28 - Page title row moved into PEMS.UI (SCRUM-425)
+
+### Changed
+- The page title row is now the `PEMS.UI` partial `_PemsPageHeader` (`PageHeaderModel`: Title, Section, texts as inputs); `_PageHeader` in `PEMS.Web` stays as an adapter that localizes the texts and honours `HidePageTitle`. Output is byte-identical (7 golden cases, en and fa). No page calls it yet: the layout does not render it by owner decision, so adding callers waits for the owner's choice of pages.
+
 ## 2026-10-27 - Unified loading, empty and error states (SCRUM-424)
 
 ### Added
