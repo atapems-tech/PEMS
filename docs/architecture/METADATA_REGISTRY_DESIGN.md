@@ -118,3 +118,13 @@ Size to expect: a payload is at most 1 MB (`Definitions:MaxPayloadBytes`); real 
 - The setting is read once at start-up (task #455); add the new values and the job there, in one place.
 - Update this section, the amendment in ADR-0010 and the row of the task that implements the policy.
 
+## 10. Changing definitions must be safe (owner requirement, 2026-10-28)
+
+Rules for every kind, built by tasks #457-#460 (not in the code yet; today publish checks the shape of the payload only):
+
+1. **Test first.** A publish is preceded by a compatibility analysis of the new version against the published one (safe / breaking / data-loss, with counts and samples from the real data) and a smoke test that renders or loads the new version with sample data. A failure blocks the publish (422 with the report). Breaking changes need an explicit acknowledgement; data loss is blocked unless a migration mapping exists. (#457, rules per kind: forms in #458.)
+2. **Roll back by itself.** The switch to the new version stays atomic. After it, a probe runs against the live definition; if it fails, the previous version is published again automatically (a new version number, change summary `auto-rollback: <reason>`, audit entry). If the version it would return to is also unsafe, it stops and raises an alert instead of looping. (#457)
+3. **A retired version is republished only after the same check** against today's data and today's referenced definitions: allowed, allowed with warnings, or blocked with reasons. Data loss can never be overridden. (#459)
+4. **A later rule never locks a record.** Making a field required (or tightening a rule) does not invalidate stored records and does not block the people who cannot edit that field. Validation is **state-scoped**: only the fields the current user can edit in the record's current state are judged; the rule is enforced at the step that can edit the field; records that violate the current definition in fields nobody can edit now are listed in a 'needs attention' report, not blocked. (#460, validation engine #356)
+5. **Type changes are decided by one matrix** of (old type, new type) verdicts shared by form changes and entity schema changes (#13): widening is safe, narrowing or conversion is data loss or breaking, and a type without verdicts fails the build. (#458)
+
