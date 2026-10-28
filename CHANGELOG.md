@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-28 - Searchable dropdowns on every form (SCRUM-57)
+
+### Added
+- `PEMS.UI` searchable select (`pems-select.js`/`.css`, on the vendored Tom Select), loaded once by the layout: every single `<select class="form-select">` with 8 or more options becomes searchable; `data-pems-select-source="<type>"` searches the permission-aware `/SearchApi` as you type for large lists; `data-pems-select` forces it, `data-pems-select="off"` opts out. Opens in place inside modals and dropdown panels, re-reads options a page replaces, keeps a "-- None --"/"All" choice only where the page has one, RTL and dark theme, fa/en texts from the layout (`Sel_*`).
+
+### Changed
+- The user Create/Edit pages no longer load Tom Select themselves (the layout does).
+
 ## 2026-10-28 - Automatic numbering of procurement documents (SCRUM-40)
 
 ### Added

@@ -1,0 +1,39 @@
+/* PEMS.UI searchable select (SCRUM-57): theme tokens on top of the vendored tom-select.bootstrap5 styles. The wrapper keeps the
+   .form-select look of Bootstrap (border, chevron, size, -sm variant); only the colours follow the light/dark themes.
+   Logical properties only (one sheet for RTL and LTR). */
+.ts-wrapper.form-select {
+    background-color: var(--pems-input-bg, var(--pems-surface));
+    color: var(--pems-text);
+    border-color: var(--pems-border-strong, var(--pems-surface-border));
+}
+.ts-wrapper.form-select.focus {
+    border-color: var(--pems-primary);
+    box-shadow: 0 0 0 .2rem var(--pems-focus, rgba(13, 110, 253, .25));
+}
+.ts-wrapper.form-select .ts-control,
+.ts-wrapper.form-select.single.input-active .ts-control {
+    background: transparent;
+    color: var(--pems-text);
+    cursor: pointer;
+}
+.ts-wrapper .ts-control input { color: var(--pems-text); }
+.ts-wrapper .ts-control input::placeholder { color: var(--pems-text-muted); }
+.ts-wrapper.disabled { opacity: .65; }
+
+.ts-dropdown {
+    background: var(--pems-surface);
+    color: var(--pems-text);
+    border: 1px solid var(--pems-surface-border);
+    box-shadow: var(--pems-elev-menu, var(--pems-elev-2, 0 .5rem 1rem rgba(0, 0, 0, .15)));
+    z-index: 1090;   /* above modals (1055) and sticky headers when the list lives in <body> */
+    text-align: start;
+}
+.ts-dropdown .option,
+.ts-dropdown .no-results,
+.ts-dropdown .spinner-text { padding-block: .375rem; padding-inline: .75rem; }
+.ts-dropdown .active { background: var(--pems-surface-hover); color: var(--pems-text); }
+.ts-dropdown .selected { font-weight: 600; }
+.ts-dropdown .no-results,
+.ts-dropdown .spinner-text { color: var(--pems-text-muted); }
+.ts-dropdown .highlight { background: color-mix(in srgb, var(--pems-accent) 30%, transparent); color: inherit; }
+.ts-dropdown-content { max-height: 18rem; }
