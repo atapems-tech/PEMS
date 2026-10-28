@@ -83,7 +83,7 @@ Order = unblock most work per unit of effort; decisions first, then one thin ver
 | --- | --- | --- | --- | --- |
 | 1 | #431 REST API standard ADR + guideline | unblocks #12, #195, #434, #435, #436 | M | no |
 | 2 | #338 registry design + #430 UI definition ADR (write together) | unblocks #10, #433, #434, #437, #438 | M + M | no |
-| 3 | #432 REST inventory of the controllers | sizes the API strangler, feeds #85 | M | no |
+| 3 | #432 REST inventory of the controllers (done: [REST_INVENTORY_2026-10-28.md](REST_INVENTORY_2026-10-28.md)) | sizes the API strangler, feeds #85 | M | no |
 | 4 | #433 component manifest from the options records | first code that makes components designer-ready; testable here | M | no |
 | 5 | #435 API walking skeleton, then #434 definition store API, then #436 gates | thin slice: first real REST resource, designers get a save path | L + L + M | tests need a database for #434 (QA line) |
 | later | #437 -> #438 -> #439, #440, #441 | the page runtime, the designer, governance, the separation decision | L, L, XL, M, L | browser checks |
