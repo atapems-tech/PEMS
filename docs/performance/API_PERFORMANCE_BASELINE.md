@@ -27,7 +27,7 @@ Measured by `PEMS.Tests/Api/ApiPipelineBaselineTests.cs` in a cloud container: t
 
 ## 3. k6 baseline against a real server (to be stored)
 
-Not measured yet: it needs SQL Server and the load-test accounts, which the cloud session that built this does not have. It is a QA line of SCRUM-436.
+Not measured yet: it needs SQL Server and the load-test accounts, which the cloud session that built this does not have. It is a QA line of SCRUM-436; the step-by-step procedure is manual check **M-27** in the [README](../../README.md) (accounts, permissions, command, what to store and what to do when a budget is missed).
 
 ```
 k6 run -e BASE_URL=http://localhost:5089 -e PEMS_LOADTEST_PASSWORD=... -e VUS=5 -e DURATION=60s \
