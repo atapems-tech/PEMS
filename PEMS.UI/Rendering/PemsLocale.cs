@@ -56,7 +56,7 @@ public sealed class PemsLocale(PemsUiOptions options) : IPemsLocale
         return withTime ? day + " " + date.ToString("HH:mm", CultureInfo.InvariantCulture) : day;
     }
 
-    private string Digits(string s)
+    public string Digits(string s)
     {
         if (!options.UseNativeDigits || Culture.TwoLetterISOLanguageName != "fa") return s;
         return string.Create(s.Length, s, static (span, src) =>

@@ -17,10 +17,11 @@ namespace PEMS.Tests.Ui;
 /// </summary>
 public class SharedPartialsGoldenTests
 {
-    private static async Task<string> RenderAsync(string view, object? model)
+    private static async Task<string> RenderAsync(string view, object? model, Action<ViewDataDictionary>? configure = null)
     {
         var host = new PermissionMatrixController(null!, null!, null!);
         host.ViewData.Model = model;
+        configure?.Invoke(host.ViewData);   // the renderer copies the controller's ViewData
         var result = new ViewResult { ViewData = new ViewDataDictionary(host.ViewData) { Model = model } };
         return await RazorViewRenderer.RenderAsync(host, result, view);
     }
@@ -109,4 +110,36 @@ public class SharedPartialsGoldenTests
     [MemberData(nameof(StateCases))]
     public async Task State_facade_renders_the_same_markup(string culture, object options, string golden) =>
         AssertGolden(golden, await InCultureAsync(culture, () => RenderAsync("~/Views/Shared/_PemsState.cshtml", options)));
+
+    // ---- _PageHeader (SCRUM-425): the title row must not change when its markup moves into PEMS.UI
+    [Theory]
+    [InlineData("en", "Equipment", null, false, "page-header-en-title-only")]
+    [InlineData("en", "Equipment", "Contracts", false, "page-header-en-with-section")]
+    [InlineData("en", "Dashboard", "dashboard", false, "page-header-en-section-same-as-title")]
+    [InlineData("fa", "Equipment", "Contracts", false, "page-header-fa-with-section")]
+    [InlineData("en", "Not In The Resource File", null, false, "page-header-en-untranslated-title")]
+    [InlineData("en", "", "Contracts", false, "page-header-en-empty-title")]
+    [InlineData("en", "Equipment", "Contracts", true, "page-header-en-hidden")]
+    public async Task PageHeader_RendersTheSameMarkup(string culture, string title, string? section, bool hide, string golden) =>
+        AssertGolden(golden, await InCultureAsync(culture, () => RenderAsync("~/Views/Shared/_PageHeader.cshtml", null, vd =>
+        {
+            vd["Title"] = title;
+            if (section is not null) vd["Section"] = section;
+            if (hide) vd["HidePageTitle"] = true;
+        })));
+
+    [Fact]
+    public async Task Pagination_PersianShowsPersianDigitsInTextButLinksStayLatin()
+    {
+        var html = System.Net.WebUtility.HtmlDecode(await InCultureAsync("fa", () => RenderAsync("~/Views/Shared/_Pagination.cshtml", Pager(3, 10, 250, "wo"))));
+        Assert.Contains("۵۱ تا ۷۵ از ۲۵۰", html, StringComparison.Ordinal);                       // range text
+        Assert.Contains(">۳</a>", html, StringComparison.Ordinal);                               // page number
+        Assert.Contains(">۵۰</a>", html, StringComparison.Ordinal);                              // page size button
+        Assert.Contains("href=\"/WorkOrders?page=4\"", html, StringComparison.Ordinal);          // links: Latin, so the page parameter still binds
+        Assert.Contains("href=\"/WorkOrders?pageSize=50&page=1\"", html, StringComparison.Ordinal);
+        Assert.Contains("aria-label=\"50\"", html, StringComparison.Ordinal);
+        Assert.DoesNotMatch("href=\"[^\"]*[۰-۹]", html);
+        var en = await InCultureAsync("en", () => RenderAsync("~/Views/Shared/_Pagination.cshtml", Pager(3, 10, 250, "wo")));
+        Assert.DoesNotMatch("[۰-۹]", en);                                                        // English: no Persian digit anywhere
+    }
 }
