@@ -86,6 +86,7 @@ public class TenderController : Controller
         // SCRUM-429: سابقه‌ی ارسال ایمیلی دعوت‌نامه و این‌که ایمیل سازمانی روشن است یا نه
         ViewBag.InvitationLog = await invitations.GetLogAsync(id);
         ViewBag.EmailEnabled = invitations.EmailEnabled;
+        ViewBag.CanSendInvitations = await _permissionService.HasPermissionAsync(_currentUser.Roles, "Tender", "Edit");
 
         return View(tender);
     }
