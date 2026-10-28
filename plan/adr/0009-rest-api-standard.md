@@ -1,8 +1,8 @@
 # ADR-0009: REST API standard: resource-oriented JSON under /api/v1, one contract for every client
 
-- **Status:** Proposed (owner review; the owner approved the batch and the "API-first" direction on 2026-10-28 and delegated the paging choice)
+- **Status:** Accepted (amended 2026-10-28)
 - **Date:** 2026-10-28
-- **Decided by:** Hamid Maleki (owner, Member A) for the direction and the paging delegation; the rules below are the assistant's proposal for the owner to accept
+- **Decided by:** Hamid Maleki (owner, Member A): direction, paging delegation, acceptance of the rules and the decimals change on 2026-10-28
 - **Plan rows:** #431 (SCRUM-431, this ADR); applies to #12, #18, #28, #195, #363, #387, #434, #435, #436
 - **Sources:** plan audit [2026-10-28-dynamic-restful-audit.md](../../docs/audits/2026-10-28-dynamic-restful-audit.md); owner messages 2026-10-28 ("API-first now, decide the split after #441", paging: "you decide")
 
@@ -24,7 +24,7 @@ We build an **API-first** REST surface inside the current application under `/ap
 5. **Errors.** `application/problem+json` (RFC 9457) with `type`, `title`, `status`, `detail`, `instance`, `traceId` and, for validation, an `errors` array of `{ pointer (JSON Pointer), code (constraint code), messageKey, message, params }` (the contract of #363). Messages follow `Accept-Language`; never a stack trace.
 6. **Lists.** One query contract (paging decision below): `sort=-createdAt,name`, `filter[status]=Open`, `filter[amount][gte]=100`, `q=` text search, `fields=a,b`. Response: `{ "items": [...], "paging": { ... } }`.
 7. **Versioning.** Major version in the path. Adding optional fields or endpoints is not breaking. A breaking change is `/api/v2` served next to v1 for at least two releases, announced with `Deprecation` and `Sunset` headers.
-8. **Data and formats.** JSON properties are camelCase; enum values are the domain names as strings (`"Draft"`); instants are ISO 8601 UTC (`2026-10-28T09:30:00Z`), dates `2026-10-28`; numbers are canonical and never formatted (digits and calendars are display, ADR-0008); decimal fields are strings so JavaScript cannot lose precision. Stored translations are the `TranslatableText` map `{ "fa": "...", "en": "..." }`; the definition store returns the whole map, business data returns the text resolved for `Accept-Language`.
+8. **Data and formats.** JSON properties are camelCase; enum values are the domain names as strings (`"Draft"`); instants are ISO 8601 UTC (`2026-10-28T09:30:00Z`), dates `2026-10-28`; numbers are canonical and never formatted (digits and calendars are display, ADR-0008); decimal fields are plain JSON numbers (owner decision 2026-10-28; fields that need more than about 15 significant digits are declared as strings in the OpenAPI document). Stored translations are the `TranslatableText` map `{ "fa": "...", "en": "..." }`; the definition store returns the whole map, business data returns the text resolved for `Accept-Language`.
 9. **Security.** Every endpoint has an authorization policy (a test fails otherwise); row-level security applies to lists, counts and single reads. Browser calls use the sign-in cookie plus the antiforgery header on unsafe verbs; integrations use bearer tokens (#195) and no cookies. CORS is deny by default, never `*`. Authenticated responses are `Cache-Control: private, no-cache` (revalidated with the ETag).
 10. **Allowed actions.** A single-resource response carries `allowedActions` (for example `["edit","approve"]`) computed from permissions and state, so a dynamic UI can hide what the user may not do. It is a hint; the server still enforces.
 11. **Bulk and long-running work.** `POST /{resource}/bulk` returns one result per item. Long work returns 202 and `Location: /api/v1/operations/{id}`; `GET` on it shows state and result.
@@ -61,4 +61,4 @@ Response shapes: offset `{ "mode": "offset", "page": 3, "pageSize": 25, "total":
 
 ## Amendments
 
-None yet.
+- 2026-10-28 (owner): decimals are plain JSON numbers, not strings. Reason: simpler JSON for every client. Cost accepted: JavaScript clients can lose precision beyond about 15 significant digits, so a field that needs more is declared as a string in the OpenAPI document and the contract tests check it.

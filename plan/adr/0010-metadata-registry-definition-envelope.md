@@ -1,8 +1,8 @@
 # ADR-0010: Metadata registry: one definition envelope with versions, publish and rollback
 
-- **Status:** Proposed (owner review)
+- **Status:** Accepted
 - **Date:** 2026-10-28
-- **Decided by:** Hamid Maleki (owner, Member A) approved the batch and the direction on 2026-10-28; the design is the assistant's proposal for acceptance
+- **Decided by:** Hamid Maleki (owner, Member A): approved the batch and the direction, and accepted this ADR on 2026-10-28
 - **Plan rows:** #338 (SCRUM-25, this ADR and the design document), #10, #11, #13, #28; extended by ADR-0011 (#430)
 - **Sources:** [METADATA_REGISTRY_DESIGN.md](../../docs/architecture/METADATA_REGISTRY_DESIGN.md); ADR-0001 (hybrid storage); the workflow platform (`WorkflowDefinition`, `WorkflowVersion`); the dynamic sidebar design
 

@@ -1,6 +1,6 @@
 # 08 - REST API standard
 
-Status: **Proposed - 2026-10-28** (plan row #431, [ADR-0009](../../plan/adr/0009-rest-api-standard.md)). Read this chapter when you add or change anything under `/api` or any JSON endpoint.
+Status: **Accepted - 2026-10-28** (plan row #431, [ADR-0009](../../plan/adr/0009-rest-api-standard.md)). Read this chapter when you add or change anything under `/api` or any JSON endpoint.
 The ADR holds the reasons; this chapter holds the rules and one good and one bad example for each. The API quality gates (#436) will check what can be checked by machine.
 
 | # | Rule | Good | Bad |
@@ -15,7 +15,7 @@ The ADR holds the reasons; this chapter holds the rules and one good and one bad
 | 8 | Errors are `application/problem+json` (RFC 9457) with an `errors` list (`pointer`, `code`, `messageKey`, `message`, `params`) | `{ "type": "...", "status": 422, "errors": [ { "pointer": "/title/en", "code": "required" } ] }` | a stack trace or an HTML error page |
 | 9 | Lists use the one query contract: `sort`, `filter[field]`, `q`, `fields`, and paging as below | `GET /work-orders?filter[status]=Open&sort=-createdAt&page=2&pageSize=25` | `GET /work-orders?statusOpen=1&orderby=created_desc&p=2` |
 | 10 | Human grids page by offset (total, jump to page; `pageSize ≤ 200`, first 10,000 rows); exports, sync and very large tables page by cursor (`limit`, opaque `cursor`, no total) | `GET /work-orders?limit=100&cursor=eyJ...` for an export | `page=5000` on a 500,000-row table |
-| 11 | JSON is camelCase; enum values are domain names as strings; instants are ISO 8601 UTC, dates `yyyy-MM-dd`; numbers are never formatted; decimals are strings | `{ "dueDate": "2026-10-28", "amount": "1250.50", "status": "Open" }` | `{ "DueDate": "۱۴۰۵/۰۸/۰۶", "amount": "1,250.50" }` |
+| 11 | JSON is camelCase; enum values are domain names as strings; instants are ISO 8601 UTC, dates `yyyy-MM-dd`; numbers are never formatted; decimals are plain JSON numbers (a field needing more than about 15 significant digits is declared a string in OpenAPI) | `{ "dueDate": "2026-10-28", "amount": 1250.50, "status": "Open" }` | `{ "DueDate": "۱۴۰۵/۰۸/۰۶", "amount": "1,250.50" }` (formatted text instead of a number) |
 | 12 | Stored translations are the `TranslatableText` map; message text follows `Accept-Language` | `"title": { "fa": "پمپ‌ها", "en": "Pumps" }` | a language-specific field per language |
 | 13 | Every endpoint has an authorization policy and applies row-level security to lists, counts and single reads | `[Authorize(Policy = "Definitions.Edit")]` | an endpoint with no attribute |
 | 14 | Browser calls: cookie plus antiforgery header on unsafe verbs; integrations: bearer token, no cookie; CORS deny by default | `X-CSRF-TOKEN` header on `PATCH` | `Access-Control-Allow-Origin: *` |

@@ -1,8 +1,8 @@
 # ADR-0011: UI definition model: pages, component instances, data sources and actions are definitions
 
-- **Status:** Proposed (owner review)
+- **Status:** Accepted
 - **Date:** 2026-10-28
-- **Decided by:** Hamid Maleki (owner, Member A) approved the batch and the direction on 2026-10-28; the model is the assistant's proposal for acceptance
+- **Decided by:** Hamid Maleki (owner, Member A): approved the batch and the direction, and accepted this ADR on 2026-10-28
 - **Plan rows:** #430 (SCRUM-430, this ADR); builds on ADR-0010 (#338); used by #433, #434, #437, #438, #439, #440, #44, #57, #20, #387
 - **Sources:** [METADATA_REGISTRY_DESIGN.md](../../docs/architecture/METADATA_REGISTRY_DESIGN.md); ADR-0007 and ADR-0008 (components, texts as inputs); owner message 2026-10-28 ("all pages and components and forms creatable and editable by the UI, changing the database")
 
