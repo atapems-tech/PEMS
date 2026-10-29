@@ -13,6 +13,10 @@ on:
         description: 'Run the test gate even if this exact source tree already passed it'
         type: boolean
         default: false
+      rollback_ref:
+        description: 'Roll back: commit, tag or branch of the previous good build to deploy instead of the branch head'
+        type: string
+        default: ''
 
 permissions:
   contents: write
@@ -24,4 +28,5 @@ jobs:
       target: staging
       prefix: STAGING
       force_gate: ${{ github.event.inputs.force_tests == 'true' }}
+      ref: ${{ github.event.inputs.rollback_ref }}
     secrets: inherit

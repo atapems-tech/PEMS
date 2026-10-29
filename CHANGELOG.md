@@ -3,6 +3,18 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-29 - Demo pipeline: backup, smoke test, rollback, staging-first rule, runbook (SCRUM-313, SCRUM-314, SCRUM-317)
+
+### Added
+- `scripts/ci/smoke-test.sh`: anonymous post-deploy smoke test (health, database state, login form, stylesheet, protected page redirect, 404) run by `deploy-site.yml` after the health wait.
+- `scripts/ci/backup-database.sh`: copy-only `BACKUP DATABASE` before a deploy when the optional secret `<P>_BACKUP_DIR` is set; a failing configured backup stops the deploy.
+- `deploy-site.yml` inputs `ref` (rollback), `require_staged`, `allow_unstaged`, `backup`; `deploy-demo.yml` / `deploy-staging.yml` accept `rollback_ref` on a manual run.
+- A staging run records the tag `staged/<tree hash>`; a demo run refuses a source tree without it (every demo deploy is preceded by a staging deploy of the same tree).
+- `docs/deployment/RUNBOOK_DEPLOY_SITES.md`: deploy, roll back, reset and restore per site, access and owner table.
+
+### Not built (follow-up task)
+- Sample data pack load, demo licence install from a secret and automatic rollback after a failed smoke test: their dependencies (#140, #145, #352/#353, #301) do not exist yet. The landing site has no pipeline (#294).
+
 ## 2026-10-29 - plan-sync: tracker reconcile, pull, check and push (SCRUM-350)
 
 ### Added
