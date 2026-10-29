@@ -3,6 +3,13 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-29 - plan-sync: tracker reconcile, pull, check and push (SCRUM-350)
+
+### Added
+- `tools/plan-sync/plan_sync.py`: `reconcile` (status differences, rows without issue, issues without row or Plan ID, duplicate titles), `pull` (tracker status into the plan rows), `tracker-check` (exit 1 on drift other than status) and `push` (summary, priority and plan-managed labels; dry run unless `--apply`). Issues come from the Jira REST API (standard library, `JIRA_*` environment variables, retry on 429/5xx) or offline from a Jira CSV/JSON export. `check` also fails on a duplicate task title.
+- `.github/workflows/plan-sync.yml`: nightly and manual run (reconcile report, pull with a pull request, tracker-check); inert without the four `JIRA_*` repository secrets.
+- 12 offline tests with a fake HTTP transport.
+
 ## 2026-10-29 - UI pattern audit: 30 heaviest pages reviewed (SCRUM-18)
 
 ### Added
