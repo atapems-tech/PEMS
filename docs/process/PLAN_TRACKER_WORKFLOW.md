@@ -36,10 +36,10 @@ pull from Jira **and** a closing PR that fills Evidence (rule 13: no Done withou
 ## 3. Developer workflow
 
 1. Pick the Jira issue (it carries the Plan ID). Transition it to In Progress (this is the "set the row In Progress" step of rule 7).
-2. Branch: `feature/PEMS-123-short-name` (key first).
-3. Commits start with the key: `PEMS-123 feat(ui): ...` (Jira links them; `#comment`/`#time` smart commands are optional;
+2. Branch: `feature/SCRUM-123-short-name` (key first; through the shared `atapems-tech` account add the person: `-hamid` / `-saber`).
+3. Commits start with the key: `SCRUM-123: short summary (hamid)` (Jira links them; `#comment`/`#time` smart commands are optional;
    avoid smart commands in squash-merge titles, which re-run them).
-4. Pull request title: `PEMS-123 ...`; description lists the Plan ID and ticks the checklist: plan row updated (Evidence/Report),
+4. Pull request title: `SCRUM-123: ...` (a batch PR lists every key); description lists the Plan ID and ticks the checklist: plan row updated (Evidence/Report),
    Supportability Matrix row, CHANGELOG, tests, migration/seed if the schema changed (rule 22).
 5. PR merged into `main`: Jira moves to In Review (conditional done, label `qa-pending`). QA check in the UI failed: Jira moves back to To Do (label `qa-failed`; the plan shows Not Started, the label tells why). QA check passed (`docs/guidelines/07-qa-check-in-the-ui.md`): Jira moves to Done; the nightly sync writes the status back; a small PR updates Evidence and the Test Plan status.
 6. Changing scope, priority or milestone happens **in the plan** by pull request; the sync pushes it to Jira. Never edit those
@@ -55,6 +55,8 @@ pull from Jira **and** a closing PR that fills Evidence (rule 13: no Done withou
 | `pull [--dry-run]` | writes the tracker status into the plan rows (Jira owns status: To Do=Not Started, In Progress, In Review=Partial, Done, On Hold=Hold, Backlog=Later, Won't Do=Cancelled); a plan status that already agrees (Partial for In Progress, Obsolete for Won't Do) is left alone |
 | `tracker-check` | exit 1 on: an issue without Plan ID, a duplicate title (a duplicate closed as Won't Do is resolved), an issue whose Plan ID has no row, a row without issue |
 | `check` (offline, CI) | fails when: a Plan ID or task title is duplicated; a Done row has no Evidence; unknown dependencies/status/priority; dependency cycles |
+
+**Commit-key check (live, SCRUM-349).** `.github/workflows/commit-key-check.yml` runs on every pull request (opened, edited, reopened, new commits; read-only token, no secrets, no deploy) and calls `tools/commit-key-check/check_commit_keys.py`. It fails when the Jira key `SCRUM-<n>` is missing from the PR title, from the head branch name, or from the subject of any commit of the PR. Exempt: merge commits, commits by bots and PRs opened by bots (`dependabot[bot]`), and PRs whose head branch is `main`, `staging` or `demo`. A key found in commits but missing from the title and branch (batch PR) is a warning, not a failure. To fix a failure: rename the PR title, rename the branch, or reword the commits (rebase/squash) and force-push your own branch. Offline test: `python3 -m unittest discover -s tools/commit-key-check`; dry run: `python3 tools/commit-key-check/check_commit_keys.py --title "SCRUM-1: x" --branch feature/SCRUM-1-x --base origin/main --head HEAD`. The check does not call Jira, so it does not verify that the issue exists; that stays in `plan_sync.py check` once the Jira credentials are set.
 
 `reconcile`, `pull`, `tracker-check` and `push` read the issues from the Jira REST API or offline from a Jira CSV export (`--csv file`) or a JSON list (`--json file`).
 Credentials are **CI secrets / environment variables, never app settings or files in git, never printed**: `JIRA_BASE_URL`, `JIRA_PROJECT_KEY`,

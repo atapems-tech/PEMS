@@ -4,7 +4,7 @@
 name: PEMS Build (manual)
 
 on:
-  workflow_dispatch:   # manual only: no pipeline runs on pushes or pull requests to main or any working branch (docs/guidelines/00, DEPLOYMENT_README.md)
+  workflow_dispatch:   # manual only: no build pipeline runs on pushes or pull requests to main or any working branch; the only pull request check is commit-key-check.yml (docs/guidelines/05)
 
 jobs:
   build:

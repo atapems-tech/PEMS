@@ -10,6 +10,24 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 - `.github/workflows/plan-sync.yml`: nightly and manual run (reconcile report, pull with a pull request, tracker-check); inert without the four `JIRA_*` repository secrets.
 - 12 offline tests with a fake HTTP transport.
 
+## 2026-10-29 - UI pattern audit: 30 heaviest pages reviewed (SCRUM-18)
+
+### Added
+- `docs/design/ui-pattern-review.csv`: hand review of the 30 heaviest pages (A convertible as is 13, B needs new components 16, C custom 1; 15 calls marked uncertain for the QA step).
+- `docs/design/UI_PATTERN_AUDIT.md`: the heaviest-pages table lists 30 pages, the review table, the missing components (RelatedList, PdfViewer, TreeView, SidePanelNav, CheckboxMatrix, CommentsThread replies) and the convertible percentage per wave W1-W5 (reviewed pages measured, the rest estimated by a rule).
+
+### Changed
+- `tools/UiAudit/pattern-audit.py` reads the review file, counts table rows holding forms and PDF.js use, and writes the review and per-wave sections; static totals refreshed.
+- Plan rows #322-#325 prompts list the components the audit found missing.
+
+## 2026-10-29 - Jira key check on pull requests (SCRUM-349)
+
+### Added
+- `.github/workflows/commit-key-check.yml` (pull_request only, read-only, no secrets, no deploy) fails a PR when `SCRUM-<n>` is missing from the PR title, the branch name or any commit subject; merge commits, bot commits/PRs and `main`/`staging`/`demo` heads are exempt; batch keys missing from the title only warn. Logic and unit tests (standard library, offline) in `tools/commit-key-check`.
+
+### Changed
+- `docs/process/PLAN_TRACKER_WORKFLOW.md` section 3 now uses the `SCRUM-123` branch/commit/title convention of AGENTS.md (was `PEMS-123`); chapter 5, README and the `build.yml` comment no longer say that pull requests run nothing.
+
 ## 2026-10-29 - Docker image restore layer (SCRUM-445)
 
 ### Fixed
