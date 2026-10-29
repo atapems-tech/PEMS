@@ -4,6 +4,7 @@ How the two online environments are built, deployed, secured, reset and recovere
 (`parmisata.ir`); the same steps apply to any Windows host with IIS, the ASP.NET Core Module and SQL Server.
 Background and failure history of the pipeline: [DEMO_DEPLOYMENT.md](DEMO_DEPLOYMENT.md). Database behaviour: [CODE_FIRST_DATABASE.md](CODE_FIRST_DATABASE.md).
 
+Short per-operation procedures and the access/owner table: [RUNBOOK_DEPLOY_SITES.md](RUNBOOK_DEPLOY_SITES.md).
 Decision record for the branch model: [ADR-0006](../../plan/adr/0006-demo-and-staging-branch-policy.md).
 
 ## 1. The model in one table
@@ -56,6 +57,7 @@ Repository > **Settings > Secrets and variables > Actions > New repository secre
 | `<P>_FTP_PORT` | optional, default 21 (set it to 21 explicitly, as demo does) |
 | `<P>_SQL_CONNECTION_STRING` | connection string of 2.2 |
 | `<P>_ADMIN_PASSWORD` | password of the first administrator, used only on an empty database; change it at first sign-in |
+| `<P>_BACKUP_DIR` | optional: a folder **on the database server** that the SQL Server service account may write (for example `D:/Backups/pems-demo`). When set, every deploy first takes a copy-only `BACKUP DATABASE` there (`scripts/ci/backup-database.sh`) and a failing backup stops the deploy; the path is in the run summary. When empty the run only warns that there is no pipeline backup |
 | `<P>_SITE_URL` | `https://demo.parmisata.ir` / `https://staging.parmisata.ir` (enables the post-deploy health check) |
 
 Rotate any secret that was ever pasted into chat, a ticket or a commit.
@@ -69,7 +71,12 @@ Rotate any secret that was ever pasted into chat, a ticket or a commit.
 2. `dotnet publish -r win-x64 --self-contained -p:PemsEnv=<target>` (ships `env/<target>.env`).
 3. Writes `env/<target>.secrets.env` from the `<P>_SQL_CONNECTION_STRING` and `<P>_ADMIN_PASSWORD` secrets and sets `PEMS_ENV=<target>` and a 15-minute startup limit in `web.config`.
 4. Uploads `app_offline.htm` (the app releases its file locks), uploads the files by FTP (180 s timeout, one retry), removes `app_offline.htm`.
-5. Polls `GET <SITE_URL>/health/database` until `200 UpToDate` (the first start installs the schema, later starts apply new migrations), then reports the TLS certificate state.
+5. Polls `GET <SITE_URL>/health/database` until `200 UpToDate` (the first start installs the schema, later starts apply new migrations).
+6. **Smoke test** (`scripts/ci/smoke-test.sh`, anonymous, writes nothing): `/health` = Healthy, `/health/database` = UpToDate, the login page has its form, a stylesheet is served, a protected page sends an anonymous visitor to the login page, an unknown path is 404. A `FAIL` line fails the run.
+7. On `staging`: records the tag `staged/<tree hash>`. A `demo` run (`require_staged`) refuses a tree without that tag, so every demo deploy is preceded by a staging deploy of the same source tree (SCRUM-314). Manual runs can tick `allow_unstaged` (rollback of a build that was never staged).
+8. Reports the TLS certificate state.
+
+Before step 1 of a run the optional database backup runs (secret `<P>_BACKUP_DIR`, section 2.4) after the runtime configuration and before the app is taken offline. A manual run accepts `rollback_ref` (commit, tag or branch to deploy instead of the branch head).
 
 **Identical code is not tested twice.** After build, drift gate and tests pass, the pipeline pushes the tag `gate-pass/<hash of the whole source tree>`. A later deploy of a tree with the same hash (typically `demo` right after `staging`, because the promotion is a plain merge) finds the tag, skips restore, build, drift gate and tests, and goes straight to publish and upload (about 6 minutes less). Any change in any file gives a new hash, so the gate runs again; a failed gate leaves no tag. To force the gate, run the workflow by hand with *Run workflow > force_tests* ticked, or delete the tag (`git push origin --delete gate-pass/<hash>`). NuGet packages are cached between runs. Old tags can be removed in bulk once a month: `git tag -l "gate-pass/*"`.
 
@@ -136,7 +143,8 @@ A reset returns demo or staging to an empty database that reinstalls itself. **I
 Not available yet (planned): a UI to export the current data as a versioned, hashed package, import it, and reset to a baseline package on every push, with a version-compatibility precheck (plan rows #352 and #353, SCRUM-369 and SCRUM-370; nightly/admin reset #141). Until they exist, use this manual procedure.
 
 ## 6. Roll back
-Re-run the deploy workflow on the previous good commit (`git revert` on the branch, or `gh workflow run ... --ref <branch>` after resetting the branch to the good commit). The schema moves forward only (rule 6): if a bad migration was applied, restore the database from the host's backup and redeploy the previous build.
+Run the deploy workflow by hand with **rollback_ref** = the previous good commit (`gh workflow run deploy-demo.yml --ref demo -f rollback_ref=<sha>`, add `-f allow_unstaged=true` if that build never went through staging); the difference upload sends only the files that differ. Step-by-step: [RUNBOOK_DEPLOY_SITES.md](RUNBOOK_DEPLOY_SITES.md). The schema moves forward only (rule 6): if a bad migration was applied, restore the database from the pre-deploy backup (`<P>_BACKUP_DIR`) or the host's backup and redeploy the previous build.
+Automatic rollback on a failed smoke test is not built yet (follow-up task); until then the run is red and the operator rolls back.
 
 ## 7. Checklist for a new environment
 - [ ] subdomain, DNS and certificate (2.1)

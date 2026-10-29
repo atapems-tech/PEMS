@@ -23,6 +23,26 @@ on:
         required: false
         type: boolean
         default: false
+      ref:
+        description: 'Commit, tag or branch to deploy instead of the one that triggered the run (roll back = deploy the previous good one)'
+        required: false
+        type: string
+        default: ''
+      require_staged:
+        description: 'Refuse to deploy unless this exact source tree was already deployed to staging (set for demo)'
+        required: false
+        type: boolean
+        default: false
+      allow_unstaged:
+        description: 'Deploy even though the staged/<tree> tag is missing (a rollback to a build that was never staged, or a first deploy)'
+        required: false
+        type: boolean
+        default: false
+      backup:
+        description: 'Back up the database before the deploy when <PREFIX>_BACKUP_DIR is set (scripts/ci/backup-database.sh)'
+        required: false
+        type: boolean
+        default: true
 
 concurrency:
   group: deploy-${{ inputs.target }}
@@ -103,6 +123,8 @@ jobs:
           exit 1
 
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}      # empty = the commit that triggered the run
 
       # Identical code is not tested twice. After the gate passes, the tag gate-pass/<hash of all tracked files except docs, plan and *.md> is pushed; a later deploy of a tree
       # with the same hash (for example demo after staging) finds the tag and skips restore, build, drift gate and tests. Any change gives a new hash,
@@ -121,6 +143,20 @@ jobs:
           else
             echo "skip=false" >> "$GITHUB_OUTPUT"
             echo "Gate needed for source tree $tree."
+          fi
+
+      # SCRUM-314: every demo deploy is preceded by a staging deploy of the same artifact. A successful staging deploy records the tag
+      # staged/<same tree hash as the gate-pass tag> (see 'Record the staging deploy' below); the demo run refuses a tree without it.
+      - name: Require a staging deploy of this exact source tree
+        if: inputs.require_staged && !inputs.allow_unstaged
+        env:
+          TREE: ${{ steps.gate.outputs.tree }}
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/staged/$TREE" > /dev/null 2>&1; then
+            echo "Source tree $TREE was deployed to staging first."
+          else
+            echo "::error::Source tree $TREE was never deployed to staging. Merge it into the staging branch first and wait for that run to pass (docs/deployment/RUNBOOK_DEPLOY_SITES.md). To deploy it anyway (rollback of a build that was never staged), run this workflow by hand with allow_unstaged ticked."
+            exit 1
           fi
 
       - name: Cache NuGet packages
@@ -198,6 +234,15 @@ jobs:
           grep -q 'stdoutLogEnabled="true"' publish/web.config
           grep -q "name=\"PEMS_ENV\" value=\"${TARGET}\"" publish/web.config
           grep -q 'startupTimeLimit="900"' publish/web.config
+
+      # SCRUM-313: copy-only backup of the target database before anything on the server changes. A configured backup that fails stops the deploy;
+      # without <PREFIX>_BACKUP_DIR it only warns (the hosting login often may not run BACKUP). The restore steps are in the runbook.
+      - name: Back up the database before the deploy
+        if: inputs.backup
+        env:
+          CONN: ${{ secrets[format('{0}_SQL_CONNECTION_STRING', inputs.prefix)] }}
+          BACKUP_DIR: ${{ secrets[format('{0}_BACKUP_DIR', inputs.prefix)] }}
+        run: bash scripts/ci/backup-database.sh
 
       # IIS keeps the application DLLs locked while the app runs (FTP error 550 "being used by another process").
       # Uploading app_offline.htm makes the ASP.NET Core Module stop the app and release the files; it is removed after a successful upload.
@@ -312,6 +357,26 @@ jobs:
           done
           echo "::error::${TARGET} database did not reach UpToDate (last: HTTP ${code:-000} ${state}). Read logs/stdout* and logs/pems-*.log on the server (Plesk > Files) and Admin > Database Update on the site."
           exit 1
+
+      # SCRUM-313: anonymous smoke test beyond /health/database (health, login page, static files, protected page, 404). A failure fails the run;
+      # the site stays on the new build, roll back by re-running this workflow with ref = the previous good commit (runbook).
+      - name: Smoke test the deployed site
+        env:
+          SITE: ${{ secrets[format('{0}_SITE_URL', inputs.prefix)] }}
+        run: |
+          if [ -z "$SITE" ]; then
+            echo "::warning::<PREFIX>_SITE_URL is not set; skipping the smoke test."
+            exit 0
+          fi
+          bash scripts/ci/smoke-test.sh "$SITE" "$TARGET"
+
+      - name: Record the staging deploy
+        if: inputs.target == 'staging'
+        env:
+          TREE: ${{ steps.gate.outputs.tree }}
+        run: |
+          git tag -f "staged/$TREE"
+          git push -f origin "refs/tags/staged/$TREE" || echo "::warning::could not record the staged tag (the demo deploy of this tree will refuse to run until it exists)"
 
       - name: TLS certificate of the site (informational)
         if: always()

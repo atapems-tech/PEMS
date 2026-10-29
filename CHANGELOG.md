@@ -15,6 +15,35 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 - Net demand: a work-order line supplied through linked requisition lines is counted on the requisition side (with its warehouse) and keeps only its unsourced quantity; only unlinked requisitions for the same work order and material are still an ambiguous overlap. Direct-purchase lines are excluded as `DirectPurchaseNotStockDemand` (informational, not blocking).
 - A work-order material line that a live store requisition supplies can no longer be removed or have its supply code changed.
 
+## 2026-10-29 - Demo pipeline: backup, smoke test, rollback, staging-first rule, runbook (SCRUM-313, SCRUM-314, SCRUM-317)
+
+### Added
+- `scripts/ci/smoke-test.sh`: anonymous post-deploy smoke test (health, database state, login form, stylesheet, protected page redirect, 404) run by `deploy-site.yml` after the health wait.
+- `scripts/ci/backup-database.sh`: copy-only `BACKUP DATABASE` before a deploy when the optional secret `<P>_BACKUP_DIR` is set; a failing configured backup stops the deploy.
+- `deploy-site.yml` inputs `ref` (rollback), `require_staged`, `allow_unstaged`, `backup`; `deploy-demo.yml` / `deploy-staging.yml` accept `rollback_ref` on a manual run.
+- A staging run records the tag `staged/<tree hash>`; a demo run refuses a source tree without it (every demo deploy is preceded by a staging deploy of the same tree).
+- `docs/deployment/RUNBOOK_DEPLOY_SITES.md`: deploy, roll back, reset and restore per site, access and owner table.
+
+### Not built (follow-up task)
+- Sample data pack load, demo licence install from a secret and automatic rollback after a failed smoke test: their dependencies (#140, #145, #352/#353, #301) do not exist yet. The landing site has no pipeline (#294).
+
+## 2026-10-29 - plan-sync: tracker reconcile, pull, check and push (SCRUM-350)
+
+### Added
+- `tools/plan-sync/plan_sync.py`: `reconcile` (status differences, rows without issue, issues without row or Plan ID, duplicate titles), `pull` (tracker status into the plan rows), `tracker-check` (exit 1 on drift other than status) and `push` (summary, priority and plan-managed labels; dry run unless `--apply`). Issues come from the Jira REST API (standard library, `JIRA_*` environment variables, retry on 429/5xx) or offline from a Jira CSV/JSON export. `check` also fails on a duplicate task title.
+- `.github/workflows/plan-sync.yml`: nightly and manual run (reconcile report, pull with a pull request, tracker-check); inert without the four `JIRA_*` repository secrets.
+- 12 offline tests with a fake HTTP transport.
+
+## 2026-10-29 - UI pattern audit: 30 heaviest pages reviewed (SCRUM-18)
+
+### Added
+- `docs/design/ui-pattern-review.csv`: hand review of the 30 heaviest pages (A convertible as is 13, B needs new components 16, C custom 1; 15 calls marked uncertain for the QA step).
+- `docs/design/UI_PATTERN_AUDIT.md`: the heaviest-pages table lists 30 pages, the review table, the missing components (RelatedList, PdfViewer, TreeView, SidePanelNav, CheckboxMatrix, CommentsThread replies) and the convertible percentage per wave W1-W5 (reviewed pages measured, the rest estimated by a rule).
+
+### Changed
+- `tools/UiAudit/pattern-audit.py` reads the review file, counts table rows holding forms and PDF.js use, and writes the review and per-wave sections; static totals refreshed.
+- Plan rows #322-#325 prompts list the components the audit found missing.
+
 ## 2026-10-29 - Jira key check on pull requests (SCRUM-349)
 
 ### Added
