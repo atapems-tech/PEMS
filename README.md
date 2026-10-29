@@ -149,7 +149,7 @@ Used by the QA check ([guideline chapter 07](docs/guidelines/07-qa-check-in-the-
 
 ## CI and demo
 
-- Only pushes to `demo` and `staging` start a pipeline; `main` and working branches run nothing.
+- Only pushes to `demo` and `staging` start a pipeline; pushes to `main` and working branches run nothing. Pull requests run one read-only check, `.github/workflows/commit-key-check.yml` (Jira key `SCRUM-<n>` in the PR title, branch name and every commit subject; SCRUM-349).
 - `.github/workflows/deploy-site.yml`: the reusable pipeline (restore, build, model-drift gate, tests, publish, FTP upload, wait for the database to report up to date).
   `deploy-demo.yml` (push to `demo`) and `deploy-staging.yml` (push to `staging`) call it; secrets are `DEMO_*` and `STAGING_*`.
 - `.github/workflows/build.yml`: manual build and test run (`workflow_dispatch`).

@@ -39,7 +39,7 @@ No single layer is reliable, so there are four:
 1. **`AGENTS.md` / `CLAUDE.md` at the repo root** - loaded automatically by agents at session start; they force "read the guideline first".
 2. **The Jira issue** - `tools/plan-sync` writes a *Step 0* line into every generated issue description pointing here.
 3. **The pull request template** - the author ticks "guideline read, guideline updated or nothing to add".
-4. **CI / hooks (optional, see chapter 6)** - a check can fail a PR whose template boxes are unticked.
+4. **CI / hooks (optional, see chapter 6)** - `commit-key-check.yml` fails a PR whose title, branch or commit subjects lack the Jira key (chapter 5, [PLAN_TRACKER_WORKFLOW.md](../process/PLAN_TRACKER_WORKFLOW.md) section 4); a further check can fail a PR whose template boxes are unticked.
 
 If you are an agent and the user's prompt names a Jira issue, do all of chapter 0 before touching code, even if the prompt does not say so.
 
