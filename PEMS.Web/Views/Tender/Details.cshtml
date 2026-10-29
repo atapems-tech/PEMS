@@ -84,6 +84,86 @@
     </div>
 }
 
+@* SCRUM-429: invitations by the organisation's email and their send log *@
+@{
+    var invitationLog = (IReadOnlyList<PEMS.Application.Interfaces.TenderInvitationDispatchDto>)(ViewBag.InvitationLog ?? Array.Empty<PEMS.Application.Interfaces.TenderInvitationDispatchDto>());
+    var emailEnabled = ViewBag.EmailEnabled is true;
+    var statusAllowsSend = Model.Status == "Draft" || Model.Status == "Open";
+    var mayEditTender = ViewBag.CanSendInvitations is true;   // Tender Edit; without it the page shows only the log
+    var canSend = mayEditTender && statusAllowsSend;
+}
+@if (Model.InvitedVendors.Any(v => v.IsActive) || invitationLog.Count > 0)
+{
+    <div class="content-card mt-3" id="tenderInvitations">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+            <h6 class="mb-0">@Localizer["Tinv_Title"]</h6>
+            @if (canSend && emailEnabled)
+            {
+                <form asp-action="SendInvitations" method="post" class="d-inline">
+                    <input type="hidden" name="tenderId" value="@Model.TenderId" />
+                    <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-envelope-paper"></i> @Localizer["Tinv_SendAll"]</button>
+                </form>
+            }
+        </div>
+        @if (!emailEnabled)
+        {
+            <div class="alert alert-secondary py-2 mb-2" role="status"><i class="bi bi-info-circle"></i> @Localizer["Tinv_EmailOffHint"]</div>
+        }
+        else if (mayEditTender && !statusAllowsSend)
+        {
+            <p class="small text-muted mb-2">@Localizer["Tinv_StatusHint"]</p>
+        }
+        else if (canSend)
+        {
+            <p class="small text-muted mb-2">@Localizer["Tinv_Hint"]</p>
+        }
+
+        @if (invitationLog.Count > 0)
+        {
+            <div class="table-responsive">
+                <table class="table table-sm align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>@Localizer["Vendor"]</th><th>@Localizer["Tinv_To"]</th><th>@Localizer["Status"]</th><th>@Localizer["Tinv_Attempts"]</th>
+                            <th>@Localizer["Tinv_QueuedBy"]</th><th>@Localizer["Tinv_SentAt"]</th><th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in invitationLog)
+                        {
+                            var pill = d.Status switch { "Sent" => "vs-pill--success", "Failed" => "vs-pill--danger", "Skipped" => "vs-pill--warning", _ => "vs-pill--info" };
+                            <tr>
+                                <td>@d.VendorName</td>
+                                <td dir="ltr">@(string.IsNullOrEmpty(d.ToAddress) ? "-" : d.ToAddress)</td>
+                                <td>
+                                    <span class="vs-pill @pill">@Localizer["Tinv_Status_" + d.Status]</span>
+                                    @if (!string.IsNullOrEmpty(d.LastError))
+                                    {
+                                        <div class="small text-muted">@(d.LastError.StartsWith("Tinv_") ? Localizer[d.LastError].Value : d.LastError)</div>
+                                    }
+                                </td>
+                                <td>@d.Attempts</td>
+                                <td>@d.QueuedBy<div class="small text-muted">@d.QueuedAt.ToString("yyyy-MM-dd HH:mm")</div></td>
+                                <td>@(d.SentAt?.ToString("yyyy-MM-dd HH:mm") ?? "-")</td>
+                                <td>
+                                    @if (canSend && emailEnabled && d.Status is "Failed" or "Skipped")
+                                    {
+                                        <form asp-action="SendInvitations" method="post" class="d-inline">
+                                            <input type="hidden" name="tenderId" value="@Model.TenderId" />
+                                            <input type="hidden" name="vendorIds" value="@d.VendorId" />
+                                            <button type="submit" class="btn btn-outline-secondary btn-sm">@Localizer["Tinv_Resend"]</button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+}
+
 <div class="content-card mt-3">
     <h6>@Localizer["Bids"]</h6>
     @foreach (var bid in Model.Bids)

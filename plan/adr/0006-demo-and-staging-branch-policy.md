@@ -5,7 +5,7 @@
 - **Decided by:** Hamid Maleki, project owner and Member A (requirement of 2026-10-18 recorded in plan row #300; Instructions rule 18). Row #300 itself is "Confirmed by PM: No" and "Not Started": the branch rules below are the plan text, the branch model change of 2026-10-25 is recorded in the deployment README
 - **Approved by:** Hamid Maleki (Member A), 2026-10-27, in the SCRUM-14 session
 - **Plan rows:** #300 (branch policy), #288, #258 (dependencies), #304 (demo content), #351 (staging); written under #2 (SCRUM-14)
-- **Sources:** `plan/backlog.csv` row #300; Instructions rule 18; [DEPLOYMENT_README.md](../../docs/deployment/DEPLOYMENT_README.md); [chapter 00 section 3](../../docs/guidelines/00-task-lifecycle.md); Supportability Matrix SM-34
+- **Sources:** `plan/rows/0300.md`; Instructions rule 18; [DEPLOYMENT_README.md](../../docs/deployment/DEPLOYMENT_README.md); [chapter 00 section 3](../../docs/guidelines/00-task-lifecycle.md); Supportability Matrix SM-34
 
 ## Context
 

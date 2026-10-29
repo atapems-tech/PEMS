@@ -1,6 +1,6 @@
 # 01 - Engineering standards (read for every task)
 
-Origin of each rule is given in brackets: `R<n>` = Instructions sheet rule n in `plan/PEMS_Backlog_Roadmap.xlsx`.
+Origin of each rule is given in brackets: `R<n>` = Instructions rule n in `plan/sheets/instructions.md`.
 
 ## 1. Architecture
 
@@ -106,6 +106,5 @@ A task is **done** only when:
 - One logical change per commit; message `SCRUM-123 type(scope): summary` (types: feat, fix, refactor, docs, test, chore, ci). *Note:* Instructions rule 7 still says `vX.Y.Z: description`; rule 25 (2026-10-23, issue key first) is newer and was confirmed by the owner on 2026-10-25 (chapter 06, decisions).
 - One short-lived working branch per task or approved batch, created from `main`; delete it (local and remote) once merged - details in chapter 00 sections 3-4.
 - Stage specific files only. Re-run `git status` before every commit.
-- Version bumps: system = CalVer `YYYY.MM.PATCH`, components = SemVer; editing the plan workbook does not change a version [R9].
-- Plan workbook changes only by pull request; regenerate `plan/backlog.csv` with `python tools/plan-sync/plan_sync.py export`.
-- **Feature branches do not edit `plan/PEMS_Backlog_Roadmap.xlsx` or `plan/backlog.csv`** (owner decision 2026-10-28). The workbook is binary, so every plan change merged into `main` conflicted with each open feature PR that also touched it. Hamid maintains the workbook. A task puts its plan-row update (new row, Status, Report) in its Jira comment, headed "Plan row update", and the workbook owner applies it in a plan-only PR. The workbook stays in git; it is not ignored.
+- Version bumps: system = CalVer `YYYY.MM.PATCH`, components = SemVer; editing the plan files does not change a version [R9].
+- Plan files (`plan/rows`, `plan/sheets`) change only by pull request; edit the file or use `plan_sync.py set/report/new`, then run `python tools/plan-sync/plan_sync.py check`.

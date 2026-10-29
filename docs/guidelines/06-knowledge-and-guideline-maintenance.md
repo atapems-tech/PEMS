@@ -6,10 +6,10 @@ Agent "memory" is per person and per machine - the team never sees it. Anything 
 
 | What you learned | Where it goes |
 |---|---|
-| A rule every task must follow | this guideline (right chapter); if it is a standing rule, also the workbook *Instructions* sheet (owner decides) |
-| A durable fact, pitfall or pattern from a task | [learnings-log.md](learnings-log.md) (append), and workbook *Lessons* if it is cross-cutting |
-| What is now supported / limited | workbook *Supportability Matrix* [R21] |
-| Scope, evidence, report of the task | workbook Backlog row (Evidence/Report) via PR; status stays in Jira |
+| A rule every task must follow | this guideline (right chapter); if it is a standing rule, also `plan/sheets/instructions.md` (owner decides) |
+| A durable fact, pitfall or pattern from a task | [learnings-log.md](learnings-log.md) (append), and the plan page *Lessons* if it is cross-cutting |
+| What is now supported / limited | plan page *Supportability Matrix* (`plan/sheets/supportability-matrix.md`) [R21] |
+| Scope, evidence, report of the task | plan row file `plan/rows/NNNN.md` (Evidence/Report, e.g. `plan_sync.py report <id>`) via PR; status stays in Jira |
 | A design decision | ADR under [plan/adr](../../plan/adr/README.md) (spec under `docs/`) + Decision row in the plan |
 | What changed for users/devs | `CHANGELOG.md` |
 | Personal preference of one developer | your own agent memory, not the repo |
@@ -21,7 +21,7 @@ At the end of each task ask: *did I discover something the next person would wan
 1. New lesson / gotcha / decision -> append to `learnings-log.md`: `YYYY-MM-DD | SCRUM-n | area | lesson | what to do`. Two or three lines.
 2. A lesson that repeats or became a rule -> promote it into the right chapter and replace the log entry with a pointer.
 3. A new shared helper, component, tool or command -> add to chapter 02 (components), 03 (tools) or 05 (commands).
-4. A rule in the guideline turned out wrong or outdated -> fix it, say why in the PR; if it contradicts the Instructions sheet, raise it with the owner instead of silently diverging.
+4. A rule in the guideline turned out wrong or outdated -> fix it, say why in the PR; if it contradicts the Instructions page, raise it with the owner instead of silently diverging.
 5. Nothing to add -> say "guideline: nothing to add" in the closing comment (the PR checkbox covers this).
 
 Keep entries factual and short; no task diaries. Delete or merge entries that are stale. Never record secrets or personal data.
@@ -44,7 +44,7 @@ Four layers (README section 3). Maintainers check periodically:
 ## 5. Decisions recorded on 2026-10-25 (owner)
 
 1. Issue key prefix is `SCRUM` everywhere (docs, templates, branches, commits).
-2. Commit messages and PR titles start with the Jira key (`SCRUM-123 feat(scope): ...`), following Instructions rule 25. Rule 7's `vX.Y.Z:` wording in the workbook is superseded; update the workbook Instructions sheet at the next plan PR.
+2. Commit messages and PR titles start with the Jira key (`SCRUM-123 feat(scope): ...`), following Instructions rule 25. Rule 7's `vX.Y.Z:` wording in the Instructions page is superseded; update `plan/sheets/instructions.md` at the next plan PR.
 3. Two levels of done (superseded in part on 2026-10-26, see section 5a item 6): **In Review** = conditional done; **Done** = finished. The SCRUM workflow today has the statuses To Do, In Progress, In Review, Done, Bugs.
 4. `.claude/CLAUDE.md` is a pointer to `AGENTS.md`; the old Instrument Passport directive moved to `docs/cmms/INSTRUMENT_PASSPORT_DIRECTIVE.md`.
 5. `.claude/settings.json` calls `graphify` from PATH instead of a per-user absolute path.
@@ -52,7 +52,7 @@ Four layers (README section 3). Maintainers check periodically:
 ## 5a. Decisions recorded on 2026-10-26 (owner)
 
 1. Instructions rule 27: the Jira report of a task is kept current during the work and at the end (chapter 00, section 3).
-2. A held task has workbook Status `Hold` and, in Jira, the status `On Hold` (added to the SCRUM workflow by the owner on 2026-10-26) plus the label `on-hold` (kept for the plan sync), with the reason and date in its Report.
+2. A held task has plan Status `Hold` and, in Jira, the status `On Hold` (added to the SCRUM workflow by the owner on 2026-10-26) plus the label `on-hold` (kept for the plan sync), with the reason and date in its Report.
 3. Instructions rule 28: study existing tasks before adding one; modify a fitting task instead (chapter 00, step 5b). Held tasks count as not open.
 4. Repository setting "Automatically delete head branches" is on (owner, 2026-10-26): merged pull-request branches disappear without anyone deleting them.
 5. Secrets-audit follow-ups: history purge (#374) and FTPS certificate verification (#375) are held; test review (#376), test-maintenance procedure (#377) and review of Claude's roles and setup (#378) are open.

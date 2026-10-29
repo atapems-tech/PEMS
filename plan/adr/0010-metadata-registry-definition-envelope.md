@@ -1,8 +1,8 @@
 # ADR-0010: Metadata registry: one definition envelope with versions, publish and rollback
 
-- **Status:** Proposed (owner review)
+- **Status:** Accepted
 - **Date:** 2026-10-28
-- **Decided by:** Hamid Maleki (owner, Member A) approved the batch and the direction on 2026-10-28; the design is the assistant's proposal for acceptance
+- **Decided by:** Hamid Maleki (owner, Member A): approved the batch and the direction, and accepted this ADR on 2026-10-28
 - **Plan rows:** #338 (SCRUM-25, this ADR and the design document), #10, #11, #13, #28; extended by ADR-0011 (#430)
 - **Sources:** [METADATA_REGISTRY_DESIGN.md](../../docs/architecture/METADATA_REGISTRY_DESIGN.md); ADR-0001 (hybrid storage); the workflow platform (`WorkflowDefinition`, `WorkflowVersion`); the dynamic sidebar design
 
@@ -42,4 +42,5 @@ We store every defined thing as a **definition** in one envelope (`Definitions`,
 
 ## Amendments
 
-None yet.
+- 2026-10-28 (SCRUM-434, first implementation): (1) the optimistic-concurrency token of `Definitions` and `DefinitionVersions` is an application-managed `Revision` number, not a SQL `rowversion` column, so the same code is testable on the in-memory provider and the ETag is stable; `ContentHash` stays the ETag of reads and packages. (2) The permission matrix has no "Publish" action; publish and rollback use the action `Approve` of the module `Definitions`, edit uses `Edit`, create and import use `Create`. A permission per kind (`Definitions.<Kind>.Edit/.Publish`) is not built yet: the module is granted as a whole (open item for the owner). (3) Drafts may be saved incomplete; kind validation runs at the validate and publish actions. (4) The export/import package is hash-checked; the signature arrives with #23. (5) `PayloadJson` is excluded from the generic audit trail (the version table is the history).
+- 2026-10-28 (owner decision, retention): retired definition versions are kept **forever**; no code deletes a `DefinitionVersion`. The other options (keep last N, by age, archive, delta storage, release points, per-kind policy and legal hold) and the rules any later policy must obey are recorded in [METADATA_REGISTRY_DESIGN.md](../../docs/architecture/METADATA_REGISTRY_DESIGN.md) section 9.

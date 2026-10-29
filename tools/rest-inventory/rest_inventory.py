@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """REST inventory of the MVC controllers (plan row #432, ADR-0009).
 
-Static scan of PEMS.Web/**/Controllers/*Controller.cs: one row per public action with its verb, return kind, authorization signal and a
+Static scan of PEMS.Web/**/Controllers/*Controller.cs (PEMS.Web/Api, the REST controllers, is skipped): one row per public action with its verb, return kind, authorization signal and a
 proposed target resource. It does not compile anything and never edits code. Run from the repository root:
 
     python3 tools/rest-inventory/rest_inventory.py            # writes docs/audits/rest-inventory.csv and prints a summary
@@ -202,6 +202,8 @@ def propose(r):
 
 def main():
     files = sorted(glob.glob(os.path.join(ROOT, "PEMS.Web", "**", "*Controller.cs"), recursive=True))
+    # PEMS.Web/Api holds the REST controllers (SCRUM-435): they are the target of the migration, not part of the map of what still has to move.
+    files = [f for f in files if os.sep + "Api" + os.sep not in os.path.relpath(f, os.path.join(ROOT, "PEMS.Web")).join([os.sep, ""])]
     files = [f for f in files if "/obj/" not in f.replace("\\", "/") and "/bin/" not in f.replace("\\", "/")]
     rows = []
     for f in files: rows += scan_file(f)

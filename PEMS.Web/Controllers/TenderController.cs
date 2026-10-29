@@ -1,3 +1,4 @@
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.DTOs;
@@ -51,7 +52,7 @@ public class TenderController : Controller
         return View(tenders);
     }
 
-    public async Task<IActionResult> Details(int id)
+    public async Task<IActionResult> Details(int id, [FromServices] ITenderInvitationService invitations)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Tender", "View"))
             return Forbid();
@@ -82,7 +83,43 @@ public class TenderController : Controller
             .OrderByDescending(x => x.RaisedDate)
             .ToListAsync();
 
+        // SCRUM-429: سابقه‌ی ارسال ایمیلی دعوت‌نامه و این‌که ایمیل سازمانی روشن است یا نه
+        ViewBag.InvitationLog = await invitations.GetLogAsync(id);
+        ViewBag.EmailEnabled = invitations.EmailEnabled;
+        ViewBag.CanSendInvitations = await _permissionService.HasPermissionAsync(_currentUser.Roles, "Tender", "Edit");
+
         return View(tender);
+    }
+
+    /// <summary>
+    /// SCRUM-429: invitations by the organisation's email to the invited vendors (all not yet invited, or the chosen ones = resend).
+    /// The text comes from the resources in the sender's language; sending runs in the background (Hangfire) with retry.
+    /// Same permission as managing the tender.
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SendInvitations(int tenderId, int[]? vendorIds,
+        [FromServices] ITenderInvitationService invitations, [FromServices] IBackgroundJobClient jobs,
+        [FromServices] Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource> localizer,
+        [FromServices] IConfiguration configuration)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Tender", "Edit"))
+            return Forbid();
+
+        var template = new TenderInvitationTemplate(localizer["Tinv_MailSubject"].Value, localizer["Tinv_MailBody"].Value,
+            System.Globalization.CultureInfo.CurrentUICulture, configuration["Letterhead:CompanyName"]);
+        var result = await invitations.QueueAsync(tenderId, template, _currentUser.UserName,
+            vendorIds is { Length: > 0 } ? vendorIds : null);
+        if (result.Error != null)
+        {
+            TempData["Error"] = localizer[result.Error].Value;
+            return RedirectToAction(nameof(Details), new { id = tenderId });
+        }
+
+        foreach (var dispatchId in result.QueuedDispatchIds)
+            jobs.Enqueue<ITenderInvitationService>(s => s.SendAsync(dispatchId));
+        TempData["Message"] = string.Format(localizer["Tinv_Queued"].Value, result.QueuedDispatchIds.Count, result.SkippedWithoutEmail);
+        return RedirectToAction(nameof(Details), new { id = tenderId });
     }
 
     [HttpPost]

@@ -1117,6 +1117,8 @@
   <data name="Disc_Err_DuplicateName" xml:space="preserve"><value>دیسیپلین دیگری با این نام وجود دارد.</value></data>
   <data name="Disc_Err_AliasConflict" xml:space="preserve"><value>یک Alias با کد، نام یا Alias دیسیپلین دیگری تداخل دارد.</value></data>
   <data name="Disc_Err_Generic" xml:space="preserve"><value>تغییر پذیرفته نشد.</value></data>
+  <data name="Disc_Err_Concurrency" xml:space="preserve"><value>این دیسیپلین را کاربر دیگری تغییر داده است؛ دوباره بخوانید.</value></data>
+  <data name="Disc_Err_InUse" xml:space="preserve"><value>رکوردهای دیگری از این دیسیپلین استفاده می‌کنند؛ به‌جای حذف، آن را غیرفعال کنید.</value></data>
   <data name="Import aliases" xml:space="preserve"><value>Aliasهای ایمپورت</value></data>
   <data name="Transmittal code" xml:space="preserve"><value>کد ترانسمیتال</value></data>
   <data name="Reactivate" xml:space="preserve"><value>فعال‌سازی مجدد</value></data>
@@ -3398,6 +3400,28 @@
   <data name="Sel_NoResults" xml:space="preserve"><value>موردی پیدا نشد</value></data>
   <data name="Sel_Loading" xml:space="preserve"><value>در حال جستجو…</value></data>
   <data name="Sel_Placeholder" xml:space="preserve"><value>برای جستجو تایپ کنید…</value></data>
+  <data name="Tinv_Title" xml:space="preserve"><value>ارسال دعوت‌نامه با ایمیل</value></data>
+  <data name="Tinv_SendAll" xml:space="preserve"><value>ارسال دعوت‌نامه</value></data>
+  <data name="Tinv_Hint" xml:space="preserve"><value>برای هر فروشنده‌ی دعوت‌شده‌ای که هنوز با ایمیل دعوت نشده، یک ایمیل از سرور ایمیل سازمان ارسال می‌شود. فروشنده‌ای که ایمیل تماس ندارد «ردشده» ثبت می‌شود.</value></data>
+  <data name="Tinv_EmailOffHint" xml:space="preserve"><value>ایمیل روی این سرور خاموش است (Email__Enabled در فایل env) یا سرور ایمیل تنظیم نشده است. با مدیر سامانه هماهنگ کنید.</value></data>
+  <data name="Tinv_StatusHint" xml:space="preserve"><value>دعوت‌نامه فقط وقتی مناقصه در وضعیت پیش‌نویس یا باز است ارسال می‌شود.</value></data>
+  <data name="Tinv_To" xml:space="preserve"><value>گیرنده</value></data>
+  <data name="Tinv_Attempts" xml:space="preserve"><value>تلاش</value></data>
+  <data name="Tinv_QueuedBy" xml:space="preserve"><value>ارسال‌کننده</value></data>
+  <data name="Tinv_SentAt" xml:space="preserve"><value>تحویل به سرور ایمیل</value></data>
+  <data name="Tinv_Resend" xml:space="preserve"><value>ارسال دوباره</value></data>
+  <data name="Tinv_Status_Queued" xml:space="preserve"><value>در صف</value></data>
+  <data name="Tinv_Status_Sent" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Tinv_Status_Failed" xml:space="preserve"><value>ناموفق</value></data>
+  <data name="Tinv_Status_Skipped" xml:space="preserve"><value>ردشده</value></data>
+  <data name="Tinv_Queued" xml:space="preserve"><value>{0} دعوت‌نامه در صف ارسال قرار گرفت؛ {1} فروشنده بدون ایمیل تماس رد شد.</value></data>
+  <data name="Tinv_Err_EmailOff" xml:space="preserve"><value>ایمیل روی این سرور خاموش است.</value></data>
+  <data name="Tinv_Err_NotFound" xml:space="preserve"><value>مناقصه پیدا نشد.</value></data>
+  <data name="Tinv_Err_Status" xml:space="preserve"><value>دعوت‌نامه فقط وقتی مناقصه در وضعیت پیش‌نویس یا باز است ارسال می‌شود.</value></data>
+  <data name="Tinv_Err_NothingToSend" xml:space="preserve"><value>همه‌ی فروشندگان دعوت‌شده قبلاً با ایمیل دعوت شده‌اند. برای یک فروشنده از «ارسال دوباره» استفاده کنید.</value></data>
+  <data name="Tinv_Err_NoVendorEmail" xml:space="preserve"><value>فروشنده ایمیل تماس معتبر ندارد (فروشندگان &gt; ویرایش).</value></data>
+  <data name="Tinv_MailSubject" xml:space="preserve"><value>دعوت به مناقصه‌ی {TenderNumber}: {Title}</value></data>
+  <data name="Tinv_MailBody" xml:space="preserve"><value>{Vendor} گرامی،&#xA;&#xA;{Company} از شما دعوت می‌کند برای مناقصه‌ی زیر پیشنهاد ارسال کنید.&#xA;&#xA;شماره‌ی مناقصه: {TenderNumber}&#xA;عنوان: {Title}&#xA;پکیج خرید: {Package}&#xA;تاریخ انتشار: {IssueDate}&#xA;مهلت ارسال پیشنهاد: {Deadline}&#xA;&#xA;الزامات:&#xA;{Requirements}&#xA;&#xA;لطفاً دریافت این دعوت‌نامه را تأیید کنید و پیشنهاد خود را پیش از مهلت ارسال کنید. اسناد مناقصه را واحد تدارکات در اختیار شما می‌گذارد.&#xA;&#xA;با احترام،&#xA;تدارکات {Company}</value></data>
   <data name="Mr_RequestNewPart" xml:space="preserve"><value>درخواست قطعه‌ی جدید</value></data>
   <data name="Mr_PartLookupHint" xml:space="preserve"><value>شماره‌ی قطعه، شماره‌ی سازنده یا شرح را تایپ کنید تا قطعه‌ی ثبت‌شده در کاتالوگ قطعه انتخاب شود؛ شرح و واحد آن پر می‌شود. قطعه‌ای که هنوز ثبت نشده را می‌توانید همان‌طور که هست تایپ کنید.</value></data>
   <data name="Mr_UseTypedPart" xml:space="preserve"><value>استفاده از {0} (کاتالوگ‌نشده)</value></data>
