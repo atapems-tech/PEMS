@@ -3422,4 +3422,12 @@
   <data name="Tinv_Err_NoVendorEmail" xml:space="preserve"><value>فروشنده ایمیل تماس معتبر ندارد (فروشندگان &gt; ویرایش).</value></data>
   <data name="Tinv_MailSubject" xml:space="preserve"><value>دعوت به مناقصه‌ی {TenderNumber}: {Title}</value></data>
   <data name="Tinv_MailBody" xml:space="preserve"><value>{Vendor} گرامی،&#xA;&#xA;{Company} از شما دعوت می‌کند برای مناقصه‌ی زیر پیشنهاد ارسال کنید.&#xA;&#xA;شماره‌ی مناقصه: {TenderNumber}&#xA;عنوان: {Title}&#xA;پکیج خرید: {Package}&#xA;تاریخ انتشار: {IssueDate}&#xA;مهلت ارسال پیشنهاد: {Deadline}&#xA;&#xA;الزامات:&#xA;{Requirements}&#xA;&#xA;لطفاً دریافت این دعوت‌نامه را تأیید کنید و پیشنهاد خود را پیش از مهلت ارسال کنید. اسناد مناقصه را واحد تدارکات در اختیار شما می‌گذارد.&#xA;&#xA;با احترام،&#xA;تدارکات {Company}</value></data>
+  <data name="Mr_RequestNewPart" xml:space="preserve"><value>درخواست قطعه‌ی جدید</value></data>
+  <data name="Mr_PartLookupHint" xml:space="preserve"><value>شماره‌ی قطعه، شماره‌ی سازنده یا شرح را تایپ کنید تا قطعه‌ی ثبت‌شده در کاتالوگ قطعه انتخاب شود؛ شرح و واحد آن پر می‌شود. قطعه‌ای که هنوز ثبت نشده را می‌توانید همان‌طور که هست تایپ کنید.</value></data>
+  <data name="Mr_UseTypedPart" xml:space="preserve"><value>استفاده از {0} (کاتالوگ‌نشده)</value></data>
+  <data name="Mr_PartNotCatalogued" xml:space="preserve"><value>کاتالوگ‌نشده</value></data>
+  <data name="Mr_PartNotCataloguedHint" xml:space="preserve"><value>این شماره‌ی قطعه در کاتالوگ قطعه یا اطلاعات پایه‌ی مواد ثبت نشده است.</value></data>
+  <data name="Mr_PartCatalogued" xml:space="preserve"><value>کاتالوگ‌شده</value></data>
+  <data name="Mr_PartCataloguedHint" xml:space="preserve"><value>به قطعه‌ی ثبت‌شده در کاتالوگ قطعه یا اطلاعات پایه‌ی مواد پیوند دارد.</value></data>
+  <data name="Mr_AddItem" xml:space="preserve"><value>افزودن ردیف</value></data>
 </root>

@@ -46,6 +46,25 @@ public class MaterialRequisitionConfiguration : IEntityTypeConfiguration<Materia
     }
 }
 
+/// <summary>SCRUM-428: optional links of an MR item to the registered part it was resolved to (never cascades).</summary>
+public class MaterialRequisitionItemConfiguration : IEntityTypeConfiguration<MaterialRequisitionItem>
+{
+    public void Configure(EntityTypeBuilder<MaterialRequisitionItem> builder)
+    {
+        builder.Ignore(x => x.IsCatalogued);
+
+        builder.HasOne(x => x.MaterialItem)
+            .WithMany()
+            .HasForeignKey(x => x.MaterialItemId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.PartCatalogueRequest)
+            .WithMany()
+            .HasForeignKey(x => x.PartCatalogueRequestId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+}
+
 public class MaterialRequisitionQuotationConfiguration : IEntityTypeConfiguration<MaterialRequisitionQuotation>
 {
     public void Configure(EntityTypeBuilder<MaterialRequisitionQuotation> builder)

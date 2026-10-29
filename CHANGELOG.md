@@ -3,6 +3,13 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-29 - Registered part numbers in material requisition items (SCRUM-428)
+
+### Added
+- MR items link to the registered part their part number resolves to: a completed part catalogue request (`PartCatalogueRequestId`) or Material Master (`MaterialItemId`); migration `MaterialRequisitionItemRegisteredPart` (two nullable columns, indexes, restrict FKs). The service resolves on the server (exact, normalised); a registered part fills an empty description and unit; a typed number that is not registered stays free text, shown "Not catalogued".
+- New MR form: the part number of each item is a searchable lookup over the registered parts (part number, manufacturer part number, description) that fills description and unit; a typed part can still be used; "Request a new part" opens the part catalogue. MR details show catalogued / not catalogued per item.
+- `pems-select`: `data-pems-select-url` (page endpoint source) and `data-pems-select-create` (allow a typed value).
+
 ## 2026-10-29 - Tender invitations by the organisation's email (SCRUM-429)
 
 ### Added

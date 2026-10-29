@@ -10580,6 +10580,12 @@ namespace PEMS.Persistence.Migrations
                     b.Property<int>("MRId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("MaterialItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PartCatalogueRequestId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PartNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -10595,6 +10601,10 @@ namespace PEMS.Persistence.Migrations
                     b.HasKey("MRItemId");
 
                     b.HasIndex("MRId");
+
+                    b.HasIndex("MaterialItemId");
+
+                    b.HasIndex("PartCatalogueRequestId");
 
                     b.ToTable("MaterialRequisitionItems");
                 });
@@ -24347,7 +24357,21 @@ namespace PEMS.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PEMS.Domain.Entities.MaterialItem", "MaterialItem")
+                        .WithMany()
+                        .HasForeignKey("MaterialItemId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PEMS.Domain.Entities.PartCatalogueRequest", "PartCatalogueRequest")
+                        .WithMany()
+                        .HasForeignKey("PartCatalogueRequestId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("MR");
+
+                    b.Navigation("MaterialItem");
+
+                    b.Navigation("PartCatalogueRequest");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.MaterialRequisitionQuotation", b =>

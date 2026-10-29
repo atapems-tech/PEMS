@@ -2635,4 +2635,12 @@
   <data name="Tinv_Err_NoVendorEmail" xml:space="preserve"><value>The vendor has no valid contact email (Vendors &gt; edit).</value></data>
   <data name="Tinv_MailSubject" xml:space="preserve"><value>Invitation to tender {TenderNumber}: {Title}</value></data>
   <data name="Tinv_MailBody" xml:space="preserve"><value>Dear {Vendor},&#xA;&#xA;{Company} invites you to submit a bid for the tender below.&#xA;&#xA;Tender: {TenderNumber}&#xA;Title: {Title}&#xA;Procurement package: {Package}&#xA;Issue date: {IssueDate}&#xA;Bid deadline: {Deadline}&#xA;&#xA;Requirements:&#xA;{Requirements}&#xA;&#xA;Please confirm receipt and send your bid before the deadline. The tender documents are provided by the procurement team.&#xA;&#xA;Regards,&#xA;{Company} procurement</value></data>
+  <data name="Mr_RequestNewPart" xml:space="preserve"><value>Request a new part</value></data>
+  <data name="Mr_PartLookupHint" xml:space="preserve"><value>Type a part number, manufacturer part number or description to pick a part registered in the part catalogue; its description and unit are filled in. A part that is not registered yet can be typed as it is.</value></data>
+  <data name="Mr_UseTypedPart" xml:space="preserve"><value>Use {0} (not catalogued)</value></data>
+  <data name="Mr_PartNotCatalogued" xml:space="preserve"><value>Not catalogued</value></data>
+  <data name="Mr_PartNotCataloguedHint" xml:space="preserve"><value>This part number is not registered in the part catalogue or Material Master.</value></data>
+  <data name="Mr_PartCatalogued" xml:space="preserve"><value>Catalogued</value></data>
+  <data name="Mr_PartCataloguedHint" xml:space="preserve"><value>Linked to a part registered in the part catalogue or Material Master.</value></data>
+  <data name="Mr_AddItem" xml:space="preserve"><value>Add item</value></data>
 </root>

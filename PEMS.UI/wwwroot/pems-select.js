@@ -6,6 +6,8 @@
 //   data-pems-select="off"     never enhance (a page that drives the select itself)
 //   data-pems-select-source="Vendor"   large list: options come from the server search (/SearchApi?type=Vendor), with the
 //                              same permission rules; the selected option of the markup stays as the initial value
+//   data-pems-select-url="/X/Lookup"   large list from a page endpoint (?q= → { items: [{ value, text, sub?, ... }] })
+//   data-pems-select-create    a typed value is allowed (data-create-text: localised "use {0}")
 // Texts are inputs: the layout puts the localised texts on <body data-pems-select-*>.
 // Multi-selects keep their own initialiser (pems-multiselect.js).
 (function () {
@@ -21,7 +23,7 @@
         if (select.tomselect || select.multiple || typeof window.TomSelect !== 'function') return false;
         var flag = select.getAttribute('data-pems-select');
         if (flag === 'off') return false;
-        if (flag !== null || select.hasAttribute('data-pems-select-source')) return true;
+        if (flag !== null || isRemote(select)) return true;
         return select.classList.contains('form-select') && select.options.length >= MIN_OPTIONS;
     }
 
@@ -36,7 +38,32 @@
         return div;
     }
 
+    function isRemote(select) {
+        return select.hasAttribute('data-pems-select-source') || select.hasAttribute('data-pems-select-url');
+    }
+
+    // data-pems-select-url: a page endpoint that answers ?q= with { items: [{ value, text, sub?, ...more }] }; the extra fields stay on
+    // the option (tomselect.options[value]) for the page script, e.g. the description and unit of a part
+    function urlOptions(select) {
+        var url = select.getAttribute('data-pems-select-url');
+        return {
+            valueField: 'value',
+            labelField: 'text',
+            searchField: [],
+            preload: false,
+            loadThrottle: 300,
+            shouldLoad: function (q) { return q.length >= 2; },
+            load: function (q, callback) {
+                fetch(url + (url.indexOf('?') < 0 ? '?' : '&') + 'q=' + encodeURIComponent(q), { headers: { 'Accept': 'application/json' } })
+                    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+                    .then(function (data) { callback(data.items || []); })
+                    .catch(function () { callback(); });
+            }
+        };
+    }
+
     function remoteOptions(select) {
+        if (select.hasAttribute('data-pems-select-url')) return urlOptions(select);
         var type = select.getAttribute('data-pems-select-source');
         var project = select.getAttribute('data-pems-select-project');
         return {
@@ -63,7 +90,7 @@
 
     function init(select) {
         if (!wanted(select)) return;
-        var remote = select.hasAttribute('data-pems-select-source');
+        var remote = isRemote(select);
         var hasBlank = Array.prototype.some.call(select.options, function (o) { return o.value === ''; });
         var settings = {
             // "-- None --" / "All" stay real, selectable choices; a select without one never offers an empty choice
@@ -90,6 +117,17 @@
             Object.assign(settings, remoteOptions(select));
             settings.render.option = function (item, escape) {
                 return '<div>' + escape(item.text) + (item.sub ? '<small class="d-block text-muted">' + escape(item.sub) + '</small>' : '') + '</div>';
+            };
+        }
+        // data-pems-select-create: a typed value is allowed (e.g. a part that is not catalogued yet); data-create-text is the
+        // localised "use …" line with {0} for the typed text
+        if (select.hasAttribute('data-pems-select-create')) {
+            settings.create = true;
+            settings.createOnBlur = true;
+            settings.persist = false;
+            var createText = select.getAttribute('data-create-text') || '{0}';
+            settings.render.option_create = function (data, escape) {
+                return '<div class="create">' + escape(createText).replace('{0}', '<strong>' + escape(data.input) + '</strong>') + '</div>';
             };
         }
         var ts = new window.TomSelect(select, settings);
