@@ -390,6 +390,8 @@ builder.Services.AddScoped<IWorkOrderSectionGuard, WorkOrderSectionGuard>();
 builder.Services.AddScoped<IPMGenerationService, PMGenerationService>();
 builder.Services.AddScoped<IRcmOperationalBridgeService, RcmOperationalBridgeService>();
 builder.Services.AddScoped<IStoreRequisitionLifecycleService, StoreRequisitionLifecycleService>();
+// SCRUM-472: warehouse intake of work-order materials (My Work queue, linked store requisitions)
+builder.Services.AddScoped<IWarehouseIntakeService, WarehouseIntakeService>();
 builder.Services.AddScoped<IIrnReceiptService, IrnReceiptService>();
 builder.Services.AddScoped<IReliabilityService, ReliabilityService>();
 builder.Services.AddScoped<IInspectionService, InspectionService>();
@@ -992,6 +994,9 @@ using (var scope = app.Services.CreateScope())
 
     // طبق CMMS-10b: زنجیره‌ی تایید Permit to Work
     await PEMS.Persistence.Seed.PermitApprovalWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // SCRUM-472: warehouse intake of work-order materials (task in the warehouse role queue of My Work)
+    await PEMS.Persistence.Seed.WarehouseIntakeWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 
     // SCRUM-103: explicit binding for every module workflow (after all workflow seeders), so Workflow Management can edit them
     await PEMS.Persistence.Seed.WorkflowBindingBackfillSeeder.SeedAsync(scope.ServiceProvider);

@@ -60,7 +60,11 @@ public enum NetDemandIssueCode
     // ---- سطح نتیجه
     ReservationExceedsRemainingDemand,
     IncomingSupplyNotModeled,
-    ReorderPolicyNotEvaluated
+    ReorderPolicyNotEvaluated,
+
+    // ---- SCRUM-472 (appended: existing values keep their numbers)
+    /// <summary>The work-order line has supply code DirectPurchase: it is bought for the work order and never netted against stock.</summary>
+    DirectPurchaseNotStockDemand
 }
 
 public static class NetDemandIssues
@@ -79,6 +83,7 @@ public static class NetDemandIssues
         NetDemandIssueCode.ReservationExceedsRemainingDemand => false,
         NetDemandIssueCode.IncomingSupplyNotModeled => false,
         NetDemandIssueCode.ReorderPolicyNotEvaluated => false,
+        NetDemandIssueCode.DirectPurchaseNotStockDemand => false,   // SCRUM-472: a deliberate choice, not bad data
         _ => true
     };
 }

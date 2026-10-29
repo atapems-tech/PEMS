@@ -62,6 +62,7 @@ public class PemsWorkflowContractTests : IDisposable
         await MaintenanceStrategyWorkflowSeeder.SeedAsync(sp);
         await ContractWorkflowSeeder.SeedAsync(sp);
         await PermitApprovalWorkflowSeeder.SeedAsync(sp);
+        await WarehouseIntakeWorkflowSeeder.SeedAsync(sp);
         await WorkflowBindingBackfillSeeder.SeedAsync(sp);
     }
 
@@ -83,11 +84,11 @@ public class PemsWorkflowContractTests : IDisposable
     }
 
     [Fact]
-    public void There_is_one_contract_per_module_workflow_and_thirteen_in_all()
+    public void There_is_one_contract_per_module_workflow_and_fourteen_in_all()
     {
-        Assert.Equal(13, PemsWorkflowContracts.All.Count);
-        Assert.Equal(13, PemsWorkflowContracts.All.Select(c => (c.Module, c.Category)).Distinct().Count());
-        Assert.Equal(13, PemsWorkflowContracts.CreateRegistry().All().Count);
+        Assert.Equal(14, PemsWorkflowContracts.All.Count);   // SCRUM-472 added the warehouse intake
+        Assert.Equal(14, PemsWorkflowContracts.All.Select(c => (c.Module, c.Category)).Distinct().Count());
+        Assert.Equal(14, PemsWorkflowContracts.CreateRegistry().All().Count);
     }
 
     [Theory]
@@ -137,7 +138,7 @@ public class PemsWorkflowContractTests : IDisposable
         var rows = await _admin.ListAsync(_actor);
         var moduleRows = rows.Where(r => PemsWorkflowContracts.All.Any(c => c.Module == r.Module && c.Category == r.Category) && r.IsActive).ToList();
 
-        Assert.Equal(13, moduleRows.Count);
+        Assert.Equal(14, moduleRows.Count);
         Assert.All(moduleRows, r => Assert.True(r.Editable, $"{r.Module}/{r.Category}: {r.EditableReason}"));
         var doc = moduleRows.Single(r => r.Module == EngineeringDocumentWorkflowSeeder.Module);
         Assert.Contains("IDC (Parallel)", doc.EditableReason);
