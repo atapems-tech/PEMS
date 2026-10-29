@@ -183,6 +183,18 @@ public sealed class SpikeTests(SpikeHost host, ITestOutputHelper output) : IClas
         Assert.DoesNotMatch(@"#[0-9a-fA-F]{3,8}\b", css);           // tokens only, no hex colours
     }
 
+    [Fact]
+    public async Task Token_file_is_offline_and_has_no_rules_only_custom_properties()
+    {
+        var css = await File.ReadAllTextAsync(FindFile("PEMS.UI/wwwroot/tokens.css"));
+        Assert.DoesNotContain("url(", css);
+        Assert.DoesNotContain("@import", css);
+        Assert.DoesNotContain("http", css);
+        Assert.Contains(":root {", css);
+        Assert.Contains(":root[data-theme=\"dark\"] {", css);
+        Assert.Contains("--pems-primary:", css);
+    }
+
     // ---- testability
     [Fact]
     public void Component_state_is_plain_csharp_and_testable_without_rendering()

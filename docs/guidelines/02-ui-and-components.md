@@ -33,7 +33,7 @@ Decision order, every time:
 
 Registry and JSON keys are the component name without the `Pems` prefix, in kebab-case (`empty-state`, `error-state`, `loading-state`, `button`, `badge`). A new component reuses these names; add a new name here only when no existing one fits. (The Titan project's component names are not in this repository; if the owner supplies that list, align the table to it before the next component.)
 
-Where components live **today**: `PEMS.UI` (registry below; `PEMS.Web` references it and finds its views and `_content/PEMS.UI/` assets automatically), plus `_PageHeader`, `.vs-*` workspace CSS, `pems-ui.js` and the tokens `--pems-*` in `PEMS.Web`.
+Where components live **today**: `PEMS.UI` (registry below; `PEMS.Web` references it and finds its views and `_content/PEMS.UI/` assets automatically), plus the `_PageHeader` adapter, `.vs-*` workspace CSS and `pems-ui.js` in `PEMS.Web`; the Light and Dark `--pems-*` tokens live in `PEMS.UI/wwwroot/tokens.css` (Turquoise: still `site.css`/`pems-glass.css`, task SCRUM-476).
 Search `PEMS.Web/Views/Shared`, `wwwroot/css`, `wwwroot/js` before building anything. Once `PEMS.UI` ships (plan #319-#334), it is the only place; this chapter then shrinks to "use PEMS.UI".
 
 ### Component registry (check this before writing any markup)

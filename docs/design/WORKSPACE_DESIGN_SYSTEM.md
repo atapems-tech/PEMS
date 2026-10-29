@@ -65,3 +65,6 @@ Loaded by `_Layout` for **every** page (after `admin.css`). Rule: *fix a shared 
 - **The accessibility helper must not leak a language.** `pems-ui.js` derives names from labels/titles; it never invents an English field name on a Persian page.
 - **Offline.** Runtime JS/CSS libraries are served from `wwwroot/lib` (Bootstrap Icons, Quill, Chart.js 4.4.1/4.4.4, SignalR 8.0.7) at the same versions that were on the CDN. pdf.js remains external (see report).
 - **Topbar.** Brand | search | tools never overlap at any width (search flexes and caps at 240px below 1200px).
+
+## Token file (`PEMS.UI/wwwroot/tokens.css`)
+The Light and Dark values of the `--pems-*` tokens (brand, surface, text, status, chart, Bootstrap bridge) are defined once in `PEMS.UI/wwwroot/tokens.css`, served as `/_content/PEMS.UI/tokens.css` and linked before `site.css` in every layout. Change a Light or Dark value there. The Turquoise theme and the typography, spacing, radius and density tokens are still spread over `site.css`, `pems-glass.css` and `admin.css` until SCRUM-476 moves them.

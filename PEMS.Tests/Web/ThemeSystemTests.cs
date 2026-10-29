@@ -36,10 +36,13 @@ public class ThemeSystemTests
         Assert.Equal(expected, ThemeController.Normalize(input));
     }
 
+    // Light/Dark token blocks moved from site.css to PEMS.UI/wwwroot/tokens.css (SCRUM-29)
+    private static string Tokens() => File.ReadAllText(Path.Combine(Root(), "PEMS.UI", "wwwroot", "tokens.css"));
+
     [Fact]
     public void SiteCss_DefinesTokensForAllThreeThemes()
     {
-        var css = Web("wwwroot", "css", "site.css");
+        var css = Tokens() + Web("wwwroot", "css", "site.css");
 
         Assert.Contains(":root {", css);
         Assert.Contains("[data-theme=\"dark\"]", css);
@@ -53,7 +56,7 @@ public class ThemeSystemTests
     [Fact]
     public void SiteCss_ChartTokens_ExistForRootAndTurquoise()
     {
-        var css = Web("wwwroot", "css", "site.css");
+        var css = Tokens() + Web("wwwroot", "css", "site.css");
         Assert.Contains("--pems-chart-primary:", css);
         Assert.Contains("--pems-chart-positive:", css);
         Assert.Contains("--pems-chart-negative:", css);
