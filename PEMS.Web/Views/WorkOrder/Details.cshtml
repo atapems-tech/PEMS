@@ -956,9 +956,10 @@ else
     @if (!requiredMaterials.Any()) { <p class="text-muted small">@Localizer["متریال موردنیازی ثبت نشده."]</p> }
 
     @* SCRUM-472: warehouse intake of the stock lines *@
-    @if (intake != null && intake.Lines.Any(l => l.SupplyCode == PEMS.Domain.Entities.WorkOrderMaterialSupplyCodes.Stock))
+    @if (intake != null && intake.Lines.Count > 0)
     {
         var unsourced = intake.Lines.Where(l => l.UnsourcedQuantity > 0).ToList();
+        var hasDirectPurchase = intake.Lines.Any(l => l.SupplyCode == PEMS.Domain.Entities.WorkOrderMaterialSupplyCodes.DirectPurchase);   // SCRUM-471
         <div class="d-flex flex-wrap align-items-center gap-2 small mb-3">
             <span class="fw-semibold"><i class="bi bi-inboxes" aria-hidden="true"></i> @Localizer["Whi_Title"]:</span>
             @if (intake.IsOpen)
@@ -966,7 +967,7 @@ else
                 <span class="vs-pill vs-pill--warning">@Localizer["Whi_State_Open"]</span>
                 <a href="/Warehouse/WarehouseIntake/Details/@Model.WorkOrderId">@Localizer["Whi_Open"]</a>
             }
-            else if (unsourced.Count == 0)
+            else if (unsourced.Count == 0 && !hasDirectPurchase)
             {
                 <span class="vs-pill vs-pill--success">@Localizer["Whi_State_Sourced"]</span>
             }

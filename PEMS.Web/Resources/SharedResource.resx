@@ -2653,7 +2653,7 @@
   <data name="Whi_Save" xml:space="preserve"><value>Save</value></data>
   <data name="Whi_SupplyCodeSaved" xml:space="preserve"><value>Supply code saved.</value></data>
   <data name="Whi_Request" xml:space="preserve"><value>Request from warehouse</value></data>
-  <data name="Whi_RequestHint" xml:space="preserve"><value>Sends the stock lines that are not sourced yet to the warehouse queue in My Work.</value></data>
+  <data name="Whi_RequestHint" xml:space="preserve"><value>Sends the stock lines that are not sourced yet to the warehouse queue and the direct-purchase lines to the procurement cartable.</value></data>
   <data name="Whi_Requested" xml:space="preserve"><value>The stock lines were sent to the warehouse queue.</value></data>
   <data name="Whi_Open" xml:space="preserve"><value>Open the intake</value></data>
   <data name="Whi_State_Open" xml:space="preserve"><value>Waiting for the warehouse</value></data>
@@ -2684,4 +2684,67 @@
   <data name="Whi_Err_NothingSelected" xml:space="preserve"><value>Enter a quantity for at least one line.</value></data>
   <data name="Whi_Err_NotStockLine" xml:space="preserve"><value>Only stock lines are sourced from a warehouse.</value></data>
   <data name="Whi_Err_Quantity" xml:space="preserve"><value>A quantity is negative or larger than what is left to source.</value></data>
+  <data name="MyWork_Module_PreProcurement" xml:space="preserve"><value>Pre-procurement</value></data>
+  <data name="MyWork_Stage_BuyerReview" xml:space="preserve"><value>Buyer review</value></data>
+  <data name="Role_PRC_Buyer_Name" xml:space="preserve"><value>Buyer</value></data>
+  <data name="Role_PRC_Buyer_Desc" xml:space="preserve"><value>Procurement expert: works the pre-procurement queue and turns each demand into a material requisition line, accepts engineering MRs or dismisses / returns them with a reason. Cannot approve purchase orders.</value></data>
+  <data name="Role_PRC_Manager_Name" xml:space="preserve"><value>Procurement Manager</value></data>
+  <data name="Role_PRC_Manager_Desc" xml:space="preserve"><value>Heads procurement: oversees the pre-procurement queue and can decide its items.</value></data>
+  <data name="Ppr_Title" xml:space="preserve"><value>Procurement cartable</value></data>
+  <data name="Ppr_Hint" xml:space="preserve"><value>Every purchase enters here first: shortages the warehouse sends, direct-purchase lines of work orders and engineering MRs issued to procurement. Open an item to decide it; the same items are in your My Work queue.</value></data>
+  <data name="Ppr_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Ppr_AllStatuses" xml:space="preserve"><value>All statuses</value></data>
+  <data name="Ppr_Source" xml:space="preserve"><value>Source</value></data>
+  <data name="Ppr_AllSources" xml:space="preserve"><value>All sources</value></data>
+  <data name="Ppr_Filter" xml:space="preserve"><value>Filter</value></data>
+  <data name="Ppr_Empty" xml:space="preserve"><value>Nothing in the queue.</value></data>
+  <data name="Ppr_Item" xml:space="preserve"><value>Item</value></data>
+  <data name="Ppr_Quantity" xml:space="preserve"><value>Quantity</value></data>
+  <data name="Ppr_Warehouse" xml:space="preserve"><value>Warehouse</value></data>
+  <data name="Ppr_Raised" xml:space="preserve"><value>Raised</value></data>
+  <data name="Ppr_Decided" xml:space="preserve"><value>Decided</value></data>
+  <data name="Ppr_Reason" xml:space="preserve"><value>Reason</value></data>
+  <data name="Ppr_Status_Open" xml:space="preserve"><value>Waiting for buyer</value></data>
+  <data name="Ppr_Status_Converted" xml:space="preserve"><value>Added to MR</value></data>
+  <data name="Ppr_Status_Accepted" xml:space="preserve"><value>Accepted</value></data>
+  <data name="Ppr_Status_Dismissed" xml:space="preserve"><value>Dismissed / returned</value></data>
+  <data name="Ppr_Source_Replenishment" xml:space="preserve"><value>Warehouse shortage</value></data>
+  <data name="Ppr_Source_WorkOrderDirectPurchase" xml:space="preserve"><value>Work-order direct purchase</value></data>
+  <data name="Ppr_Source_MaterialRequisition" xml:space="preserve"><value>Engineering MR</value></data>
+  <data name="Ppr_ToMr" xml:space="preserve"><value>Add to a material requisition</value></data>
+  <data name="Ppr_NewMr" xml:space="preserve"><value>New MR</value></data>
+  <data name="Ppr_ExistingMr" xml:space="preserve"><value>Existing draft MR</value></data>
+  <data name="Ppr_MrNumber" xml:space="preserve"><value>MR number</value></data>
+  <data name="Ppr_MrNumberHint" xml:space="preserve"><value>Leave the number empty when an automatic numbering scheme is active for MRs.</value></data>
+  <data name="Ppr_Project" xml:space="preserve"><value>Project</value></data>
+  <data name="Ppr_Discipline" xml:space="preserve"><value>Discipline</value></data>
+  <data name="Ppr_RequiredDate" xml:space="preserve"><value>Required date</value></data>
+  <data name="Ppr_Convert" xml:space="preserve"><value>Add to MR</value></data>
+  <data name="Ppr_AcceptHint" xml:space="preserve"><value>Accept this engineering MR into procurement. Packages, RFQs and tenders then follow from the MR as usual.</value></data>
+  <data name="Ppr_Accept" xml:space="preserve"><value>Accept into procurement</value></data>
+  <data name="Ppr_DismissReason" xml:space="preserve"><value>Reason for dismissing</value></data>
+  <data name="Ppr_Dismiss" xml:space="preserve"><value>Dismiss</value></data>
+  <data name="Ppr_ReturnReason" xml:space="preserve"><value>Reason for returning to engineering</value></data>
+  <data name="Ppr_Return" xml:space="preserve"><value>Return to engineering</value></data>
+  <data name="Ppr_Send" xml:space="preserve"><value>Send to procurement</value></data>
+  <data name="Ppr_SendHint" xml:space="preserve"><value>Hands this shortage to the procurement cartable; the next calculation does not recommend it again while procurement has it.</value></data>
+  <data name="Ppr_SentNote" xml:space="preserve"><value>This shortage was sent to procurement.</value></data>
+  <data name="Ppr_Sent" xml:space="preserve"><value>Sent to the procurement cartable.</value></data>
+  <data name="Ppr_Saved" xml:space="preserve"><value>Saved.</value></data>
+  <data name="Ppr_Accepted" xml:space="preserve"><value>The MR was accepted into procurement.</value></data>
+  <data name="Ppr_Dismissed" xml:space="preserve"><value>The item was dismissed.</value></data>
+  <data name="Ppr_DirectPurchaseRaised" xml:space="preserve"><value>{0} direct-purchase line(s) sent to the procurement cartable.</value></data>
+  <data name="Ppr_Err_Forbidden" xml:space="preserve"><value>You do not have permission for this action.</value></data>
+  <data name="Ppr_Err_NotFound" xml:space="preserve"><value>Item not found.</value></data>
+  <data name="Ppr_Err_RecommendationNotOpen" xml:space="preserve"><value>Only an open, definitive recommendation can be sent to procurement.</value></data>
+  <data name="Ppr_Err_AlreadyRaised" xml:space="preserve"><value>This is already in the procurement cartable.</value></data>
+  <data name="Ppr_Err_MrNotIssued" xml:space="preserve"><value>The MR is not issued to procurement.</value></data>
+  <data name="Ppr_Err_AlreadyDecided" xml:space="preserve"><value>This item has already been decided.</value></data>
+  <data name="Ppr_Err_NotMaterialDemand" xml:space="preserve"><value>An engineering MR is accepted or returned, not added to another MR.</value></data>
+  <data name="Ppr_Err_NotMrDemand" xml:space="preserve"><value>Only an engineering MR can be accepted.</value></data>
+  <data name="Ppr_Err_MrNotFound" xml:space="preserve"><value>MR not found.</value></data>
+  <data name="Ppr_Err_MrNotDraft" xml:space="preserve"><value>Lines can be added only to a Draft MR.</value></data>
+  <data name="Ppr_Err_NoTarget" xml:space="preserve"><value>Choose a new or an existing MR.</value></data>
+  <data name="Ppr_Err_ProjectDiscipline" xml:space="preserve"><value>Choose the project and the discipline of the new MR.</value></data>
+  <data name="Ppr_Err_ReasonRequired" xml:space="preserve"><value>A reason is required.</value></data>
 </root>

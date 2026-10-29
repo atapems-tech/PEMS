@@ -3,6 +3,23 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-29 - Pre-procurement intake in the procurement cartable (SCRUM-471)
+
+### Added
+- Every purchase now enters the **procurement cartable** first (owner decision 2026-10-29): table `ProcurementDemands` (migration `PreProcurementDemands`) with one live item per source (filtered unique index `UX_ProcurementDemands_LiveSource`), and `MaterialRequisitionItems.ProcurementDemandId` as the two-way origin link.
+- Sources:
+  - "Send to procurement" on an open replenishment recommendation (the recommendation becomes `Converted`, history `SentToProcurement`);
+  - direct-purchase lines of a released work order, raised with "Request from warehouse" (SCRUM-472);
+  - an engineering MR when it reaches "Issued to Procurement".
+- New workflow `PreProcurement`, one task per item in the procurement role queue of My Work (contract and binding; 15 module workflows now). New roles `PRC.Buyer` and `PRC.Manager` and permission module `PreProcurement`.
+- Procurement cartable page (`/PreProcurement`, sidebar Purchasing). On each item the buyer can:
+  - add a material demand to a new MR or an existing Draft MR, carrying the registered part;
+  - accept an engineering MR, or return it to engineering (back to Approved);
+  - dismiss an item with a reason.
+
+### Changed
+- Replenishment run: quantity already in procurement (open items, and converted items whose MR is not closed or cancelled) is subtracted before recommending (design §6.1 PlannedSupply), so a shortage is never recommended twice. A recommendation fully covered closes as `CoveredByProcurement`.
+
 ## 2026-10-29 - Warehouse intake of work-order materials (SCRUM-472)
 
 ### Added

@@ -69,7 +69,9 @@ public class PermissionMatrixController : Controller
         "ConditionReadingImport",
         // Phase 2 / P5: توصیه‌های تأمین. فقط برای دیده‌شدن/تخصیص در ماتریس فهرست شده؛ هیچ مجوزی به هیچ نقشی خودکار داده نمی‌شود
         // (View = مشاهده، Create = اجرای محاسبه، Edit = رد/بازگشایی). تخصیص نقش‌ها در انتظار تأیید مالک است.
-        "ReplenishmentRecommendation"
+        "ReplenishmentRecommendation",
+        // SCRUM-471: the pre-procurement queue (View = see, Edit = decide items, Approve = procurement manager).
+        "PreProcurement"
     };
 
     public async Task<IActionResult> Index()

@@ -760,12 +760,22 @@ public class WorkOrderController : Controller
     // SCRUM-472: send the unsourced stock lines to the warehouse queue of My Work.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RequestWarehouseMaterials(int workOrderId, [FromServices] IWarehouseIntakeService warehouseIntake)
+    public async Task<IActionResult> RequestWarehouseMaterials(int workOrderId, [FromServices] IWarehouseIntakeService warehouseIntake,
+        [FromServices] IPreProcurementService? preProcurement = null)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
 
-        var r = await warehouseIntake.RequestMaterialsAsync(workOrderId, await IntakeActorAsync());
-        if (r.Success) TempData["Message"] = Text("Whi_Requested"); else TempData["Error"] = Text(r.Error!);
+        var actor = await IntakeActorAsync();
+        // SCRUM-471: direct-purchase lines go to the procurement queue; stock lines go to the warehouse queue (SCRUM-472)
+        var purchase = preProcurement == null ? null
+            : await preProcurement.RaiseDirectPurchaseLinesAsync(workOrderId, new PreProcurementActor(actor.EmployeeId, actor.Roles, actor.UserName));
+        var stock = await warehouseIntake.RequestMaterialsAsync(workOrderId, actor);
+
+        var messages = new List<string>();
+        if (stock.Success) messages.Add(Text("Whi_Requested"));
+        if (purchase is { Success: true, Count: > 0 }) messages.Add(string.Format(Text("Ppr_DirectPurchaseRaised"), purchase.Count));
+        if (messages.Count > 0) TempData["Message"] = string.Join(" ", messages);
+        else TempData["Error"] = Text(purchase is { Success: false } ? purchase.Error! : stock.Error!);
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }
 

@@ -100,6 +100,8 @@ public static class NavigationMenuDefaults
             "ProcurementPackage,Tender,MaterialRequisition,Contract,Vendor,PurchaseOrder,Inventory,MaterialItem,IrnReceipt,InventoryMasterData,InventoryTransaction,StoreRequisition,Replenishment,PartCatalogueRequest,PartCatalogueAdmin"),
         Link("proc.vendors", "sec.procurement", 10, "Vendors", "bi-building", "Vendor", rule: "Module:ContractManagement&Perm:Vendors.View"),
         Sub("proc.sub.purchasing", "sec.procurement", 20, "Nav_Proc_Purchasing"),
+        // SCRUM-471: the procurement cartable (pre-procurement queue), first under Purchasing
+        Link("proc.preprocurement", "proc.sub.purchasing", 5, "Ppr_Title", "bi-inbox", "PreProcurement", rule: "Perm:PreProcurement.View"),
         Link("proc.mr", "proc.sub.purchasing", 10, "Material Requisition", "bi-cart-check", "MaterialRequisition", rule: "Module:EngineeringManagement&Perm:MaterialRequisition.View"),
         Link("proc.package", "proc.sub.purchasing", 20, "ProcurementPackage", "bi-folder2-open", "ProcurementPackage", rule: "Module:EngineeringManagement&Perm:ProcurementPackage.View"),
         Link("proc.tender", "proc.sub.purchasing", 30, "Tender", "bi-clipboard-check", "Tender", rule: "Module:EngineeringManagement&Perm:Tender.View"),
