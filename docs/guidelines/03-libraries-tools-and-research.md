@@ -22,7 +22,7 @@ Rules: wrap third-party libraries behind an interface in `PEMS.Application`/`PEM
 | Need | Use |
 |---|---|
 | Understand the code base, find relationships | `graphify query "<question>"`, `graphify path "A" "B"`, `graphify explain "<concept>"`; broad map `graphify-out/wiki/index.md`; `graphify update .` after code changes |
-| Plan files <-> Jira | `python tools/plan-sync/plan_sync.py check`, `summary`, `set`, `report`, `new`, `export` |
+| Plan files <-> Jira | `python tools/plan-sync/plan_sync.py check`, `summary`, `set`, `report`, `new`, `export`; against the tracker: `reconcile`, `pull`, `tracker-check`, `push` (Jira REST or `--csv` export; credentials only as `JIRA_*` environment variables / CI secrets) |
 | UI audit counts | `tools/UiAudit` (`pattern-audit.py`, probes) - rerun and compare; counts may only go down |
 | Test accounts / seed data for tests | `tools/TestAccountProvisioner`, `tools/LoadTestSeed` |
 | Load test | `tools/loadtest/pems-baseline.js` |

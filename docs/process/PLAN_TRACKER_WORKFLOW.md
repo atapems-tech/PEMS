@@ -50,12 +50,16 @@ pull from Jira **and** a closing PR that fills Evidence (rule 13: no Done withou
 | Command | What it does |
 |---|---|
 | `export` | writes `plan/jira-import.csv` (Jira CSV import format: Summary, Description, Priority, Issue type, Component, Fix version, labels, Plan ID, Work item key for updates; parents before children; max ~1,500 rows per file) |
-| `push` (needs Jira API) | creates/updates issues by Plan ID, sets links; writes the Plan ID -> issue key map to `plan/tracker-map.csv` (the plan itself is never given tracker fields) |
-| `pull` (needs Jira API) | reads Status (and key) of every issue and updates the plan Status column via a bot pull request |
-| `check` (CI, nightly + on PR) | fails when: a Plan ID is duplicated; a Done row has no Evidence; a plan row has no Jira issue (checked through `plan/tracker-map.csv`); a Jira issue has no Plan ID; statuses disagree; a commit/PR in the range has no Jira key |
+| `push [--apply]` | updates the issues matched by Plan ID (or `plan/tracker-map.csv`): summary, priority and the plan-managed labels (`plan-N`, `effort-*`, `doer-*`, `area-*`, `partial`, ...); foreign labels such as `qa-pending` and the status are never touched. A dry run unless `--apply` |
+| `reconcile` | reads every issue and lists: status differences, rows without issue, issues with a Plan ID but no row, issues without a Plan ID (no `plan-N` label, no `[#N]` title prefix), duplicate titles |
+| `pull [--dry-run]` | writes the tracker status into the plan rows (Jira owns status: To Do=Not Started, In Progress, In Review=Partial, Done, On Hold=Hold, Backlog=Later, Won't Do=Cancelled); a plan status that already agrees (Partial for In Progress, Obsolete for Won't Do) is left alone |
+| `tracker-check` | exit 1 on: an issue without Plan ID, a duplicate title (a duplicate closed as Won't Do is resolved), an issue whose Plan ID has no row, a row without issue |
+| `check` (offline, CI) | fails when: a Plan ID or task title is duplicated; a Done row has no Evidence; unknown dependencies/status/priority; dependency cycles |
 
-Today only `export` exists (no Jira connector is installed here). Credentials for push/pull/check are **CI secrets, never app settings or
-files in git**: `JIRA_BASE_URL`, `JIRA_PROJECT_KEY`, `JIRA_USER_EMAIL`, `JIRA_API_TOKEN`.
+`reconcile`, `pull`, `tracker-check` and `push` read the issues from the Jira REST API or offline from a Jira CSV export (`--csv file`) or a JSON list (`--json file`).
+Credentials are **CI secrets / environment variables, never app settings or files in git, never printed**: `JIRA_BASE_URL`, `JIRA_PROJECT_KEY`,
+`JIRA_USER_EMAIL`, `JIRA_API_TOKEN`. The workflow `.github/workflows/plan-sync.yml` runs nightly (22:30 UTC) and by hand: reconcile report in the job summary,
+`pull` with a pull request when rows changed, then `tracker-check`; without the four repository secrets it does nothing. The tests use a fake HTTP transport (no live call).
 
 ## 5. Keeping the plan trustworthy
 
