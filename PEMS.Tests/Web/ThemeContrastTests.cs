@@ -18,7 +18,9 @@ public class ThemeContrastTests
     private static string Here([CallerFilePath] string p = "") => p;
     private static string Root() => Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Here())!, "..", ".."));
     private static string Web(params string[] parts) => File.ReadAllText(Path.Combine(new[] { Root(), "PEMS.Web" }.Concat(parts).ToArray()));
-    private static string Css(string file) => StripComments(Web("wwwroot", "css", file));
+    private static string Css(string file) => StripComments(file == "tokens.css"
+        ? File.ReadAllText(Path.Combine(Root(), "PEMS.UI", "wwwroot", "tokens.css"))   // Light/Dark tokens live in PEMS.UI (SCRUM-29)
+        : Web("wwwroot", "css", file));
 
     private static string StripComments(string css) => Regex.Replace(css, @"/\*.*?\*/", "", RegexOptions.Singleline);
 
@@ -26,7 +28,7 @@ public class ThemeContrastTests
 
     /// <summary>ترتیب واقعی بارگذاری در _Layout.cshtml (فایل‌های RTL آخر).</summary>
     private static readonly string[] LayoutOrder =
-        { "site.css", "pems-global-search.css", "pems-data-grid.css", "admin.css", "pems-workspace.css", "pems-glass.css", "admin.rtl.css" };
+        { "tokens.css", "site.css", "pems-global-search.css", "pems-data-grid.css", "admin.css", "pems-workspace.css", "pems-glass.css", "admin.rtl.css" };
 
     private static readonly Regex Rule = new(@"(?<sel>[^{}]+)\{(?<body>[^{}]*)\}", RegexOptions.Compiled);
     private static readonly Regex Decl = new(@"(?<n>--[\w-]+)\s*:\s*(?<v>[^;]+?)\s*(;|$)", RegexOptions.Compiled);

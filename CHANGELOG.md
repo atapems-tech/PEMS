@@ -20,6 +20,14 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - Replenishment run: quantity already in procurement (open items, and converted items whose MR is not closed or cancelled) is subtracted before recommending (design §6.1 PlannedSupply), so a shortage is never recommended twice. A recommendation fully covered closes as `CoveredByProcurement`.
 
+## 2026-10-29 - Design token file moved into PEMS.UI (SCRUM-29, SCRUM-19)
+
+### Changed
+- The Light and Dark token blocks (`:root`, `[data-theme="dark"]`, `:root[data-theme="dark"]`) moved verbatim from `PEMS.Web/wwwroot/css/site.css` to `PEMS.UI/wwwroot/tokens.css`, served as `/_content/PEMS.UI/tokens.css` and linked right before `site.css` in `_Layout`, `_AuthLayout` and `_LayoutEmbed`. Same selectors and order, so no computed value changes. The theme and accessibility tests read the token file as well as `site.css`.
+
+### Not built (follow-up SCRUM-476)
+- Turquoise and the other theme blocks, hex colour and left/right replacement in the four shared CSS files, screenshot comparison.
+
 ## 2026-10-29 - Warehouse intake of work-order materials (SCRUM-472)
 
 ### Added
