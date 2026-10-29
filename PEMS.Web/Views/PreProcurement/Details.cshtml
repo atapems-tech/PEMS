@@ -1,0 +1,106 @@
+@model PEMS.Application.Interfaces.ProcurementDemandDetails
+@using Microsoft.Extensions.Localization
+@using PEMS.Domain.Entities
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    // SCRUM-471: one pre-procurement item and the buyer's decision
+    var d = Model.Row;
+    var canDecide = ViewBag.CanDecide is true && d.Status == ProcurementDemandStatuses.Open;
+    var isMr = d.SourceType == ProcurementDemandSources.MaterialRequisition;
+    var projects = (IEnumerable<dynamic>)ViewBag.Projects;
+    var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
+}
+
+@if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
+@if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
+
+<div class="content-card mb-3">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+        <div>
+            <h5 class="mb-1"><i class="bi bi-cart-check" aria-hidden="true"></i> @Localizer["Ppr_Item"] <span dir="ltr">#@d.ProcurementDemandId</span></h5>
+            <div class="small text-muted">
+                @Localizer["Ppr_Source"]: @Localizer["Ppr_Source_" + d.SourceType]
+                @if (d.SourceType == ProcurementDemandSources.Replenishment) { <a href="/Warehouse/Replenishment/Details/@d.SourceId" dir="ltr">@d.SourceNumber</a> }
+                else if (d.SourceType == ProcurementDemandSources.WorkOrderDirectPurchase && Model.WorkOrderId.HasValue) { <a href="/WorkOrder/Details/@Model.WorkOrderId" dir="ltr">@d.SourceNumber</a> }
+                else if (isMr) { <a href="/MaterialRequisition/Details/@d.SourceId" dir="ltr">@d.SourceNumber</a> }
+                · @Localizer["Ppr_Raised"] <span dir="ltr">@d.RaisedAt.ToString("yyyy-MM-dd HH:mm")</span> @d.RaisedBy
+            </div>
+        </div>
+        <span class="vs-pill @(d.Status == ProcurementDemandStatuses.Open ? "vs-pill--warning" : d.Status == ProcurementDemandStatuses.Dismissed ? "vs-pill--neutral" : "vs-pill--success")">@Localizer["Ppr_Status_" + d.Status]</span>
+    </div>
+
+    <dl class="row small mt-3 mb-0">
+        <dt class="col-sm-3">@Localizer["Ppr_Item"]</dt>
+        <dd class="col-sm-9">@if (d.MaterialCode != null) { <span dir="ltr">@d.MaterialCode</span><text> - </text> }@d.Description
+            @if (!isMr) { <span class="vs-pill @(Model.MaterialItemId.HasValue ? "vs-pill--success" : "vs-pill--warning") ms-1">@Localizer[Model.MaterialItemId.HasValue ? "Mr_PartCatalogued" : "Mr_PartNotCatalogued"]</span> }
+        </dd>
+        @if (!isMr)
+        {
+            <dt class="col-sm-3">@Localizer["Ppr_Quantity"]</dt><dd class="col-sm-9" dir="ltr">@d.Quantity.ToString("0.###") @d.UnitName</dd>
+        }
+        @if (d.WarehouseCode != null) { <dt class="col-sm-3">@Localizer["Ppr_Warehouse"]</dt><dd class="col-sm-9" dir="ltr">@d.WarehouseCode</dd> }
+        @if (d.MaterialRequisitionId.HasValue)
+        {
+            <dt class="col-sm-3">MR</dt><dd class="col-sm-9"><a href="/MaterialRequisition/Details/@d.MaterialRequisitionId" dir="ltr">@d.MaterialRequisitionNumber</a></dd>
+        }
+        @if (Model.DecidedAt.HasValue)
+        {
+            <dt class="col-sm-3">@Localizer["Ppr_Decided"]</dt><dd class="col-sm-9"><span dir="ltr">@Model.DecidedAt.Value.ToString("yyyy-MM-dd HH:mm")</span> @Model.DecidedBy</dd>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.DecisionReason)) { <dt class="col-sm-3">@Localizer["Ppr_Reason"]</dt><dd class="col-sm-9">@Model.DecisionReason</dd> }
+    </dl>
+</div>
+
+@if (canDecide && !isMr)
+{
+    <form asp-action="Convert" method="post" class="content-card mb-3">
+        <input type="hidden" name="id" value="@d.ProcurementDemandId" />
+        <h6 class="mb-2"><i class="bi bi-file-earmark-plus" aria-hidden="true"></i> @Localizer["Ppr_ToMr"]</h6>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="target" id="pprNew" value="new" checked />
+            <label class="form-check-label" for="pprNew">@Localizer["Ppr_NewMr"]</label>
+        </div>
+        <div class="row g-2 mb-2 ms-3">
+            <div class="col-md-3"><label class="form-label small" for="pprNumber">@Localizer["Ppr_MrNumber"]</label><input id="pprNumber" name="mrNumber" class="form-control form-control-sm" dir="ltr" /></div>
+            <div class="col-md-3"><label class="form-label small" for="pprProject">@Localizer["Ppr_Project"]</label>
+                <select id="pprProject" name="projectId" class="form-select form-select-sm"><option value="">—</option>@foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectCode - @p.ProjectName</option> }</select></div>
+            <div class="col-md-3"><label class="form-label small" for="pprDiscipline">@Localizer["Ppr_Discipline"]</label>
+                <select id="pprDiscipline" name="disciplineId" class="form-select form-select-sm"><option value="">—</option>@foreach (var x in disciplines) { <option value="@x.DisciplineId">@x.Code - @x.Name</option> }</select></div>
+            <div class="col-md-3"><label class="form-label small" for="pprRequired">@Localizer["Ppr_RequiredDate"]</label><input id="pprRequired" name="requiredDate" type="date" class="form-control form-control-sm" dir="ltr" /></div>
+            <div class="col-12 small text-muted">@Localizer["Ppr_MrNumberHint"]</div>
+        </div>
+        @if (Model.DraftRequisitions.Count > 0)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="target" id="pprExisting" value="existing" />
+                <label class="form-check-label" for="pprExisting">@Localizer["Ppr_ExistingMr"]</label>
+            </div>
+            <div class="ms-3 mb-2 col-md-6">
+                <select name="existingMrId" class="form-select form-select-sm" aria-label="@Localizer["Ppr_ExistingMr"]">
+                    @foreach (var m in Model.DraftRequisitions) { <option value="@m.Id">@m.Number - @m.Description</option> }
+                </select>
+            </div>
+        }
+        <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-check2" aria-hidden="true"></i> @Localizer["Ppr_Convert"]</button>
+    </form>
+}
+
+@if (canDecide && isMr)
+{
+    <form asp-action="Accept" method="post" class="content-card mb-3">
+        <input type="hidden" name="id" value="@d.ProcurementDemandId" />
+        <p class="small mb-2">@Localizer["Ppr_AcceptHint"]</p>
+        <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-check2" aria-hidden="true"></i> @Localizer["Ppr_Accept"]</button>
+    </form>
+}
+
+@if (canDecide)
+{
+    <form asp-action="Dismiss" method="post" class="content-card">
+        <input type="hidden" name="id" value="@d.ProcurementDemandId" />
+        <label class="form-label small" for="pprReason">@Localizer[isMr ? "Ppr_ReturnReason" : "Ppr_DismissReason"]</label>
+        <textarea id="pprReason" name="reason" class="form-control form-control-sm mb-2" rows="2" required></textarea>
+        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle" aria-hidden="true"></i> @Localizer[isMr ? "Ppr_Return" : "Ppr_Dismiss"]</button>
+    </form>
+}

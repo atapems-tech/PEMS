@@ -276,6 +276,8 @@ public class PEMSDbContext
 
     public DbSet<MaterialRequisition> MaterialRequisitions { get; set; }
     public DbSet<MaterialRequisitionItem> MaterialRequisitionItems { get; set; }
+    // SCRUM-471: pre-procurement items
+    public DbSet<ProcurementDemand> ProcurementDemands { get; set; }
     public DbSet<MaterialRequisitionQuotation> MaterialRequisitionQuotations { get; set; }
 
     public DbSet<AIExtractedTag> AIExtractedTags { get; set; }

@@ -29,6 +29,7 @@
     var canSeeReplenishment = ReplenishmentAvailability.IsEnabled && await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "ReplenishmentRecommendation", "View");
     // Discipline Master Data: مجوزمحور (ماژول DisciplineMaster)، نه نقش-محور؛ بدون دادن بخش Administration کامل به نقش‌های غیرادمین
     var canSeeDisciplineMaster = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "DisciplineMaster", "View");
+    var canSeePreProcurement = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "PreProcurement", "View");   // SCRUM-471
 
     // مرکز Import: ورودی واحد سایدبار برای همه‌ی Importها (ImportCatalog). فقط نقش را (بدون DB) می‌سنجد؛ کاربری که
     // قبلاً حداقل یک لینک Import پراکنده می‌دید، این ورودی را می‌بیند و برعکس. مجوز دقیق هر Import در خودِ صفحه‌ی مرکز
@@ -72,7 +73,7 @@
     var correspondenceControllers = new[] { "Letter", "DCC", "TechnicalQuery" };
     var qualityControllers = new[] { "QC", "MOC" };
     // SCRUM-423: خرید (از مدیریت مهندسی)، قرارداد و فروشنده (از مدیریت قرارداد) و انبار در یک بخش «تدارکات و زنجیره‌ی تأمین»
-    var procurementControllers = new[] { "ProcurementPackage", "Tender", "MaterialRequisition", "Contract", "Vendor", "PurchaseOrder" };
+    var procurementControllers = new[] { "ProcurementPackage", "Tender", "MaterialRequisition", "Contract", "Vendor", "PurchaseOrder", "PreProcurement" };
     var projectControlControllers = new[] { "Task", "TaskManager", "Tag", "Report", "Meeting" };
     var cmmsControllers = new[] { "Equipment", "Instrument", "Asset", "MaintenanceStrategy", "FailureModeCatalog", "StrategyImport", "MaintenancePlan", "MaintenanceCalendar", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "Barcode", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
     var inventoryControllers = new[] { "Inventory", "MaterialItem", "IrnReceipt", "InventoryMasterData", "InventoryTransaction", "StoreRequisition", "Replenishment" };
@@ -264,7 +265,7 @@
         var inventoryVisible = navVisibility.IsModuleVisible("Inventory");
         var warehouseControllers = inventoryControllers.Concat(new[] { "PartCatalogueRequest", "PartCatalogueAdmin" }).ToArray();
     }
-    @if (engProcurementVisible || contractVisible || inventoryVisible || canSeePartCatalogue)
+    @if (engProcurementVisible || contractVisible || inventoryVisible || canSeePartCatalogue || canSeePreProcurement)
     {
         var active = ContainsActive(procurementControllers) || ContainsActiveInArea("Warehouse", warehouseControllers);
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-procurement" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
@@ -281,9 +282,15 @@
                 </a>
             }
 
-            @if (engProcurementVisible || contractVisible)
+            @if (engProcurementVisible || contractVisible || canSeePreProcurement)
             {
                 <div class="nav-subheading">@Localizer["Nav_Proc_Purchasing"]</div>
+            }
+            @if (canSeePreProcurement)
+            {
+                <a class="nav-link @(IsActive("PreProcurement") ? "active" : "")" asp-controller="PreProcurement" asp-action="Index" asp-area="">
+                    <i class="bi bi-inbox"></i> @Localizer["Ppr_Title"]
+                </a>
             }
             @if (engProcurementVisible)
             {

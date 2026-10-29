@@ -1,0 +1,82 @@
+@model IReadOnlyList<PEMS.Application.Interfaces.ProcurementDemandRow>
+@using Microsoft.Extensions.Localization
+@using PEMS.Domain.Entities
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    // SCRUM-471: the procurement cartable (pre-procurement queue)
+    var status = ViewBag.Status as string;
+    var source = ViewBag.Source as string;
+    string Pill(string s) => s switch
+    {
+        ProcurementDemandStatuses.Open => "vs-pill--warning",
+        ProcurementDemandStatuses.Dismissed => "vs-pill--neutral",
+        _ => "vs-pill--success"
+    };
+}
+
+@if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
+@if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
+
+<section class="content-card">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+        <h5 class="mb-0"><i class="bi bi-cart-check" aria-hidden="true"></i> @Localizer["Ppr_Title"]</h5>
+        <form method="get" class="d-flex flex-wrap gap-2">
+            <select name="status" class="form-select form-select-sm" aria-label="@Localizer["Ppr_Status"]" data-pems-select="off">
+                <option value="" selected="@string.IsNullOrEmpty(status)">@Localizer["Ppr_AllStatuses"]</option>
+                @foreach (var s in new[] { ProcurementDemandStatuses.Open, ProcurementDemandStatuses.Converted, ProcurementDemandStatuses.Accepted, ProcurementDemandStatuses.Dismissed })
+                {
+                    <option value="@s" selected="@(status == s)">@Localizer["Ppr_Status_" + s]</option>
+                }
+            </select>
+            <select name="source" class="form-select form-select-sm" aria-label="@Localizer["Ppr_Source"]" data-pems-select="off">
+                <option value="" selected="@string.IsNullOrEmpty(source)">@Localizer["Ppr_AllSources"]</option>
+                @foreach (var s in new[] { ProcurementDemandSources.Replenishment, ProcurementDemandSources.WorkOrderDirectPurchase, ProcurementDemandSources.MaterialRequisition })
+                {
+                    <option value="@s" selected="@(source == s)">@Localizer["Ppr_Source_" + s]</option>
+                }
+            </select>
+            <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Ppr_Filter"]</button>
+        </form>
+    </div>
+    <p class="small text-muted">@Localizer["Ppr_Hint"]</p>
+
+    @if (Model.Count == 0)
+    {
+        <p class="text-muted small mb-0">@Localizer["Ppr_Empty"]</p>
+    }
+    else
+    {
+    <div class="table-responsive">
+        <table class="table table-enterprise table-sm align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>@Localizer["Ppr_Source"]</th>
+                    <th>@Localizer["Ppr_Item"]</th>
+                    <th class="text-end">@Localizer["Ppr_Quantity"]</th>
+                    <th>@Localizer["Ppr_Warehouse"]</th>
+                    <th>@Localizer["Ppr_Status"]</th>
+                    <th>@Localizer["Ppr_Raised"]</th>
+                    <th>MR</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var d in Model)
+            {
+                <tr>
+                    <td><a href="/PreProcurement/Details/@d.ProcurementDemandId" dir="ltr">#@d.ProcurementDemandId</a></td>
+                    <td class="small">@Localizer["Ppr_Source_" + d.SourceType] <span dir="ltr" class="text-muted">@d.SourceNumber</span></td>
+                    <td class="small">@if (d.MaterialCode != null) { <span dir="ltr">@d.MaterialCode</span><text> - </text> }@d.Description</td>
+                    <td class="text-end" dir="ltr">@(d.SourceType == ProcurementDemandSources.MaterialRequisition ? "—" : d.Quantity.ToString("0.###") + " " + d.UnitName)</td>
+                    <td dir="ltr">@(d.WarehouseCode ?? "—")</td>
+                    <td><span class="vs-pill @Pill(d.Status)">@Localizer["Ppr_Status_" + d.Status]</span></td>
+                    <td class="small text-nowrap" dir="ltr">@d.RaisedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@if (d.MaterialRequisitionId.HasValue) { <a href="/MaterialRequisition/Details/@d.MaterialRequisitionId" dir="ltr">@d.MaterialRequisitionNumber</a> } else { <span class="text-muted">—</span> }</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    }
+</section>

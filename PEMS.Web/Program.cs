@@ -392,6 +392,10 @@ builder.Services.AddScoped<IRcmOperationalBridgeService, RcmOperationalBridgeSer
 builder.Services.AddScoped<IStoreRequisitionLifecycleService, StoreRequisitionLifecycleService>();
 // SCRUM-472: warehouse intake of work-order materials (My Work queue, linked store requisitions)
 builder.Services.AddScoped<IWarehouseIntakeService, WarehouseIntakeService>();
+// SCRUM-471: pre-procurement intake; the same instance is the planned-supply source of the replenishment run
+builder.Services.AddScoped<PreProcurementService>();
+builder.Services.AddScoped<IPreProcurementService>(sp => sp.GetRequiredService<PreProcurementService>());
+builder.Services.AddScoped<IProcurementPipeline>(sp => sp.GetRequiredService<PreProcurementService>());
 builder.Services.AddScoped<IIrnReceiptService, IrnReceiptService>();
 builder.Services.AddScoped<IReliabilityService, ReliabilityService>();
 builder.Services.AddScoped<IInspectionService, InspectionService>();
@@ -997,6 +1001,8 @@ using (var scope = app.Services.CreateScope())
 
     // SCRUM-472: warehouse intake of work-order materials (task in the warehouse role queue of My Work)
     await PEMS.Persistence.Seed.WarehouseIntakeWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+    // SCRUM-471: pre-procurement review (task in the procurement role queue of My Work)
+    await PEMS.Persistence.Seed.PreProcurementWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 
     // SCRUM-103: explicit binding for every module workflow (after all workflow seeders), so Workflow Management can edit them
     await PEMS.Persistence.Seed.WorkflowBindingBackfillSeeder.SeedAsync(scope.ServiceProvider);

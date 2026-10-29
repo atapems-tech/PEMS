@@ -3440,7 +3440,7 @@
   <data name="Whi_Save" xml:space="preserve"><value>ذخیره</value></data>
   <data name="Whi_SupplyCodeSaved" xml:space="preserve"><value>نوع تأمین ذخیره شد.</value></data>
   <data name="Whi_Request" xml:space="preserve"><value>درخواست از انبار</value></data>
-  <data name="Whi_RequestHint" xml:space="preserve"><value>ردیف‌های انباری که هنوز تأمین نشده‌اند به صف انبار در «کارهای من» فرستاده می‌شوند.</value></data>
+  <data name="Whi_RequestHint" xml:space="preserve"><value>ردیف‌های انباریِ تأمین‌نشده به صف انبار و ردیف‌های خرید مستقیم به کارتابل تدارکات فرستاده می‌شوند.</value></data>
   <data name="Whi_Requested" xml:space="preserve"><value>ردیف‌های انباری به صف انبار فرستاده شد.</value></data>
   <data name="Whi_Open" xml:space="preserve"><value>باز کردن کارتابل انبار</value></data>
   <data name="Whi_State_Open" xml:space="preserve"><value>در انتظار انبار</value></data>
@@ -3471,4 +3471,67 @@
   <data name="Whi_Err_NothingSelected" xml:space="preserve"><value>دست‌کم برای یک ردیف مقدار وارد کنید.</value></data>
   <data name="Whi_Err_NotStockLine" xml:space="preserve"><value>فقط ردیف‌های انباری از انبار تأمین می‌شوند.</value></data>
   <data name="Whi_Err_Quantity" xml:space="preserve"><value>یک مقدار منفی است یا از باقی‌مانده‌ی تأمین بیشتر است.</value></data>
+  <data name="MyWork_Module_PreProcurement" xml:space="preserve"><value>پیش‌تدارکات</value></data>
+  <data name="MyWork_Stage_BuyerReview" xml:space="preserve"><value>بررسی کارشناس خرید</value></data>
+  <data name="Role_PRC_Buyer_Name" xml:space="preserve"><value>کارشناس خرید</value></data>
+  <data name="Role_PRC_Buyer_Desc" xml:space="preserve"><value>کارشناس تدارکات: صف پیش‌تدارکات را بررسی می‌کند، هر نیاز را به ردیف درخواست خرید (MR) تبدیل می‌کند، MRهای مهندسی را می‌پذیرد یا با ذکر دلیل رد یا برگشت می‌دهد. تأیید سفارش خرید با او نیست.</value></data>
+  <data name="Role_PRC_Manager_Name" xml:space="preserve"><value>مدیر خرید</value></data>
+  <data name="Role_PRC_Manager_Desc" xml:space="preserve"><value>سرپرست تدارکات: بر صف پیش‌تدارکات نظارت دارد و می‌تواند درباره‌ی موارد آن تصمیم بگیرد.</value></data>
+  <data name="Ppr_Title" xml:space="preserve"><value>کارتابل تدارکات</value></data>
+  <data name="Ppr_Hint" xml:space="preserve"><value>هر خریدی اول از این‌جا وارد می‌شود: کمبودهایی که انبار می‌فرستد، ردیف‌های خرید مستقیم دستورکارها و MRهای مهندسی ارسال‌شده به تدارکات. برای تصمیم، مورد را باز کنید؛ همین موارد در صف «کارهای من» شما هم هست.</value></data>
+  <data name="Ppr_Status" xml:space="preserve"><value>وضعیت</value></data>
+  <data name="Ppr_AllStatuses" xml:space="preserve"><value>همه‌ی وضعیت‌ها</value></data>
+  <data name="Ppr_Source" xml:space="preserve"><value>منبع</value></data>
+  <data name="Ppr_AllSources" xml:space="preserve"><value>همه‌ی منابع</value></data>
+  <data name="Ppr_Filter" xml:space="preserve"><value>فیلتر</value></data>
+  <data name="Ppr_Empty" xml:space="preserve"><value>صف خالی است.</value></data>
+  <data name="Ppr_Item" xml:space="preserve"><value>مورد</value></data>
+  <data name="Ppr_Quantity" xml:space="preserve"><value>مقدار</value></data>
+  <data name="Ppr_Warehouse" xml:space="preserve"><value>انبار</value></data>
+  <data name="Ppr_Raised" xml:space="preserve"><value>ثبت در</value></data>
+  <data name="Ppr_Decided" xml:space="preserve"><value>تصمیم در</value></data>
+  <data name="Ppr_Reason" xml:space="preserve"><value>دلیل</value></data>
+  <data name="Ppr_Status_Open" xml:space="preserve"><value>در انتظار کارشناس خرید</value></data>
+  <data name="Ppr_Status_Converted" xml:space="preserve"><value>افزوده به MR</value></data>
+  <data name="Ppr_Status_Accepted" xml:space="preserve"><value>پذیرفته‌شده</value></data>
+  <data name="Ppr_Status_Dismissed" xml:space="preserve"><value>ردشده / برگشتی</value></data>
+  <data name="Ppr_Source_Replenishment" xml:space="preserve"><value>کمبود انبار</value></data>
+  <data name="Ppr_Source_WorkOrderDirectPurchase" xml:space="preserve"><value>خرید مستقیم دستورکار</value></data>
+  <data name="Ppr_Source_MaterialRequisition" xml:space="preserve"><value>MR مهندسی</value></data>
+  <data name="Ppr_ToMr" xml:space="preserve"><value>افزودن به درخواست خرید (MR)</value></data>
+  <data name="Ppr_NewMr" xml:space="preserve"><value>MR جدید</value></data>
+  <data name="Ppr_ExistingMr" xml:space="preserve"><value>MR پیش‌نویس موجود</value></data>
+  <data name="Ppr_MrNumber" xml:space="preserve"><value>شماره‌ی MR</value></data>
+  <data name="Ppr_MrNumberHint" xml:space="preserve"><value>اگر شماره‌گذاری خودکار برای MR فعال است، شماره را خالی بگذارید.</value></data>
+  <data name="Ppr_Project" xml:space="preserve"><value>پروژه</value></data>
+  <data name="Ppr_Discipline" xml:space="preserve"><value>دیسیپلین</value></data>
+  <data name="Ppr_RequiredDate" xml:space="preserve"><value>تاریخ نیاز</value></data>
+  <data name="Ppr_Convert" xml:space="preserve"><value>افزودن به MR</value></data>
+  <data name="Ppr_AcceptHint" xml:space="preserve"><value>این MR مهندسی را در تدارکات بپذیرید. بسته‌ی خرید، استعلام و مناقصه مثل همیشه از روی MR ادامه پیدا می‌کند.</value></data>
+  <data name="Ppr_Accept" xml:space="preserve"><value>پذیرش در تدارکات</value></data>
+  <data name="Ppr_DismissReason" xml:space="preserve"><value>دلیل رد</value></data>
+  <data name="Ppr_Dismiss" xml:space="preserve"><value>رد</value></data>
+  <data name="Ppr_ReturnReason" xml:space="preserve"><value>دلیل برگشت به مهندسی</value></data>
+  <data name="Ppr_Return" xml:space="preserve"><value>برگشت به مهندسی</value></data>
+  <data name="Ppr_Send" xml:space="preserve"><value>ارسال به تدارکات</value></data>
+  <data name="Ppr_SendHint" xml:space="preserve"><value>این کمبود به کارتابل تدارکات می‌رود؛ تا وقتی در تدارکات است، محاسبه‌ی بعدی آن را دوباره پیشنهاد نمی‌دهد.</value></data>
+  <data name="Ppr_SentNote" xml:space="preserve"><value>این کمبود به تدارکات فرستاده شد.</value></data>
+  <data name="Ppr_Sent" xml:space="preserve"><value>به کارتابل تدارکات فرستاده شد.</value></data>
+  <data name="Ppr_Saved" xml:space="preserve"><value>ذخیره شد.</value></data>
+  <data name="Ppr_Accepted" xml:space="preserve"><value>MR در تدارکات پذیرفته شد.</value></data>
+  <data name="Ppr_Dismissed" xml:space="preserve"><value>مورد رد شد.</value></data>
+  <data name="Ppr_DirectPurchaseRaised" xml:space="preserve"><value>{0} ردیف خرید مستقیم به کارتابل تدارکات فرستاده شد.</value></data>
+  <data name="Ppr_Err_Forbidden" xml:space="preserve"><value>برای این کار مجوز ندارید.</value></data>
+  <data name="Ppr_Err_NotFound" xml:space="preserve"><value>مورد پیدا نشد.</value></data>
+  <data name="Ppr_Err_RecommendationNotOpen" xml:space="preserve"><value>فقط پیشنهاد تأمینِ باز و قطعی را می‌توان به تدارکات فرستاد.</value></data>
+  <data name="Ppr_Err_AlreadyRaised" xml:space="preserve"><value>این مورد از قبل در کارتابل تدارکات است.</value></data>
+  <data name="Ppr_Err_MrNotIssued" xml:space="preserve"><value>MR به تدارکات ارسال نشده است.</value></data>
+  <data name="Ppr_Err_AlreadyDecided" xml:space="preserve"><value>درباره‌ی این مورد قبلاً تصمیم گرفته شده است.</value></data>
+  <data name="Ppr_Err_NotMaterialDemand" xml:space="preserve"><value>MR مهندسی پذیرفته یا برگشت داده می‌شود، نه این‌که به MR دیگری افزوده شود.</value></data>
+  <data name="Ppr_Err_NotMrDemand" xml:space="preserve"><value>فقط MR مهندسی پذیرفته می‌شود.</value></data>
+  <data name="Ppr_Err_MrNotFound" xml:space="preserve"><value>MR پیدا نشد.</value></data>
+  <data name="Ppr_Err_MrNotDraft" xml:space="preserve"><value>فقط به MR پیش‌نویس می‌توان ردیف افزود.</value></data>
+  <data name="Ppr_Err_NoTarget" xml:space="preserve"><value>MR جدید یا موجود را انتخاب کنید.</value></data>
+  <data name="Ppr_Err_ProjectDiscipline" xml:space="preserve"><value>پروژه و دیسیپلین MR جدید را انتخاب کنید.</value></data>
+  <data name="Ppr_Err_ReasonRequired" xml:space="preserve"><value>ذکر دلیل الزامی است.</value></data>
 </root>

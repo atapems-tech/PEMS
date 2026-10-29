@@ -22,6 +22,10 @@ public class MaterialRequisitionItem
     public int? PartCatalogueRequestId { get; set; }
     public PartCatalogueRequest? PartCatalogueRequest { get; set; }
 
+    /// <summary>SCRUM-471: the pre-procurement item this line was added from (two-way origin link); null for lines typed by hand.</summary>
+    public int? ProcurementDemandId { get; set; }
+    public ProcurementDemand? ProcurementDemand { get; set; }
+
     public bool IsCatalogued => MaterialItemId != null || PartCatalogueRequestId != null;
 
     public double Quantity { get; set; } = 1;

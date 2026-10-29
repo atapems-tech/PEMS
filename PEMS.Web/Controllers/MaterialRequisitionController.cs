@@ -139,7 +139,7 @@ public class MaterialRequisitionController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ChangeStatus(int mrId, string status)
+    public async Task<IActionResult> ChangeStatus(int mrId, string status, [FromServices] IPreProcurementService? preProcurement = null)
     {
         // طبق الگوی WorkOrderController.AdvanceStatus: خودِ ویرایش نیازمند "Edit" است، اما
         // رسیدن به وضعیت تأییدی ("Approved") علاوه‌بر آن نیازمند "Approve" هم هست.
@@ -149,6 +149,15 @@ public class MaterialRequisitionController : Controller
 
         var (success, error) = await _service.ChangeStatusAsync(mrId, status);
         TempData[success ? "Message" : "Error"] = success ? "وضعیت MR به‌روزرسانی شد." : error;
+
+        // SCRUM-471: an MR issued to procurement enters the procurement queue of My Work for the buyer's review
+        if (success && status == "Issued to Procurement" && preProcurement != null)
+        {
+            int? employeeId = null;
+            if (_currentUser.UserId.HasValue)
+                employeeId = await _context.Users.Where(u => u.Id == _currentUser.UserId.Value).Select(u => u.EmployeeId).FirstOrDefaultAsync();
+            await preProcurement.RaiseMaterialRequisitionAsync(mrId, new PreProcurementActor(employeeId, _currentUser.Roles, _currentUser.UserName));
+        }
         return RedirectToAction(nameof(Details), new { id = mrId });
     }
 

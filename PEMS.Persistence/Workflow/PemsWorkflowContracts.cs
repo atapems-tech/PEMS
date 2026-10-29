@@ -87,6 +87,10 @@ public static class PemsWorkflowContracts
         new WorkflowModuleContract(WarehouseIntakeWorkflowSeeder.Module, WarehouseIntakeWorkflowSeeder.Category, WarehouseIntakeWorkflowSeeder.BusinessObjectType,
             new[] { "Complete", "Cancel" }, Array.Empty<WorkflowStageRequirement>(), Array.Empty<WorkflowTransitionRequirement>()),
 
+        // PreProcurementService (SCRUM-471): Complete when the buyer converts or accepts the demand; Cancel when dismissed or returned.
+        new WorkflowModuleContract(PreProcurementWorkflowSeeder.Module, PreProcurementWorkflowSeeder.Category, PreProcurementWorkflowSeeder.BusinessObjectType,
+            new[] { "Complete", "Cancel" }, Array.Empty<WorkflowStageRequirement>(), Array.Empty<WorkflowTransitionRequirement>()),
+
         // WorkRequestService: the request status is the stage's BusinessStatus; Complete converts it to a Work Order.
         new WorkflowModuleContract(WorkRequestService.WorkflowModule, WorkRequestService.WorkflowContext, WorkRequestService.WorkflowEntityType,
             new[] { "Approve", "Reject", "Cancel", "Complete" }, Array.Empty<WorkflowStageRequirement>(), Array.Empty<WorkflowTransitionRequirement>(),

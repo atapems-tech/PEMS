@@ -73,6 +73,20 @@
         <div class="small mt-2">@Localizer["Repl_ClosedReason"]: <code>@Model.ClosedReason</code></div>
     }
 
+    @* SCRUM-471: hand the shortage to the pre-procurement queue (the recommendation becomes Converted) *@
+    @if (canReview && s.Status == "Open" && s.IsCurrentlyDefinitive)
+    {
+        <form action="/PreProcurement/SendRecommendation" method="post" class="mt-3">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="recommendationId" value="@s.Id" />
+            <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-cart-plus" aria-hidden="true"></i> @Localizer["Ppr_Send"]</button>
+            <span class="small text-muted ms-2">@Localizer["Ppr_SendHint"]</span>
+        </form>
+    }
+    @if (s.Status == "Converted")
+    {
+        <div class="small mt-3"><i class="bi bi-cart-check" aria-hidden="true"></i> @Localizer["Ppr_SentNote"] <a href="/PreProcurement?status=">@Localizer["Ppr_Title"]</a></div>
+    }
     @if (canReview && s.Status == "Open")
     {
         <form asp-action="Dismiss" method="post" class="mt-3 d-flex gap-2 flex-wrap align-items-end">
