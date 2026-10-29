@@ -3430,4 +3430,45 @@
   <data name="Mr_PartCatalogued" xml:space="preserve"><value>کاتالوگ‌شده</value></data>
   <data name="Mr_PartCataloguedHint" xml:space="preserve"><value>به قطعه‌ی ثبت‌شده در کاتالوگ قطعه یا اطلاعات پایه‌ی مواد پیوند دارد.</value></data>
   <data name="Mr_AddItem" xml:space="preserve"><value>افزودن ردیف</value></data>
+  <data name="MyWork_Module_WarehouseIntake" xml:space="preserve"><value>ورودی انبار</value></data>
+  <data name="MyWork_Stage_WarehouseIntake" xml:space="preserve"><value>تأمین از انبار</value></data>
+  <data name="Whi_Title" xml:space="preserve"><value>کارتابل ورودی انبار</value></data>
+  <data name="Whi_SupplyCode" xml:space="preserve"><value>نوع تأمین</value></data>
+  <data name="Whi_Supply_Stock" xml:space="preserve"><value>از انبار</value></data>
+  <data name="Whi_Supply_DirectPurchase" xml:space="preserve"><value>خرید مستقیم</value></data>
+  <data name="Whi_Sourced" xml:space="preserve"><value>تأمین‌شده</value></data>
+  <data name="Whi_Save" xml:space="preserve"><value>ذخیره</value></data>
+  <data name="Whi_SupplyCodeSaved" xml:space="preserve"><value>نوع تأمین ذخیره شد.</value></data>
+  <data name="Whi_Request" xml:space="preserve"><value>درخواست از انبار</value></data>
+  <data name="Whi_RequestHint" xml:space="preserve"><value>ردیف‌های انباری که هنوز تأمین نشده‌اند به صف انبار در «کارهای من» فرستاده می‌شوند.</value></data>
+  <data name="Whi_Requested" xml:space="preserve"><value>ردیف‌های انباری به صف انبار فرستاده شد.</value></data>
+  <data name="Whi_Open" xml:space="preserve"><value>باز کردن کارتابل انبار</value></data>
+  <data name="Whi_State_Open" xml:space="preserve"><value>در انتظار انبار</value></data>
+  <data name="Whi_State_Sourced" xml:space="preserve"><value>همه‌ی ردیف‌های انباری تأمین شده</value></data>
+  <data name="Whi_State_NotRequested" xml:space="preserve"><value>درخواست نشده</value></data>
+  <data name="Whi_RequestedOn" xml:space="preserve"><value>درخواست در</value></data>
+  <data name="Whi_Hint" xml:space="preserve"><value>انبار تأمین‌کننده را انتخاب کنید. برای آن انبار یک درخواست انبار پیش‌نویس ساخته می‌شود که هر ردیفش به ردیف دستورکار وصل است؛ ارسال، تأیید، رزرو و تحویل آن مثل همیشه انجام می‌شود. ردیف‌های خرید مستقیم به تدارکات می‌روند، نه انبار.</value></data>
+  <data name="Whi_Requisitions" xml:space="preserve"><value>درخواست‌های انبار</value></data>
+  <data name="Whi_SourceNow" xml:space="preserve"><value>مقدار برای تأمین</value></data>
+  <data name="Whi_DirectPurchaseNote" xml:space="preserve"><value>برای این دستورکار توسط تدارکات خریده می‌شود</value></data>
+  <data name="Whi_NoPermission" xml:space="preserve"><value>برای تأمین ردیف‌ها مجوز «ایجاد درخواست انبار» لازم است.</value></data>
+  <data name="Whi_NothingLeft" xml:space="preserve"><value>همه‌ی ردیف‌های انباری تأمین شده‌اند.</value></data>
+  <data name="Whi_Warehouse" xml:space="preserve"><value>انبار تأمین‌کننده</value></data>
+  <data name="Whi_PickWarehouse" xml:space="preserve"><value>انبار را انتخاب کنید</value></data>
+  <data name="Whi_Source" xml:space="preserve"><value>ساخت درخواست انبار</value></data>
+  <data name="Whi_SourceHint" xml:space="preserve"><value>ردیف‌هایی که مقدارشان ۰ است وارد نمی‌شوند. باقی‌مانده را می‌توانید بعداً از انبار دیگری تأمین کنید.</value></data>
+  <data name="Whi_SourcedAll" xml:space="preserve"><value>درخواست انبار ساخته شد. همه‌ی ردیف‌های انباری تأمین شد و کار انبار بسته شد.</value></data>
+  <data name="Whi_SourcedPart" xml:space="preserve"><value>درخواست انبار ساخته شد. بعضی ردیف‌های انباری هنوز در صف انبار مانده‌اند.</value></data>
+  <data name="Whi_Err_SupplyCode" xml:space="preserve"><value>نوع تأمین نامعتبر است.</value></data>
+  <data name="Whi_Err_Forbidden" xml:space="preserve"><value>برای این کار مجوز ندارید.</value></data>
+  <data name="Whi_Err_NotFound" xml:space="preserve"><value>دستورکار یا ردیف متریال پیدا نشد.</value></data>
+  <data name="Whi_Err_AlreadySourced" xml:space="preserve"><value>یک درخواست انبار این ردیف را تأمین می‌کند. اول آن درخواست را لغو کنید.</value></data>
+  <data name="Whi_Err_NotReleased" xml:space="preserve"><value>متریال فقط وقتی دستورکار در وضعیت «واگذارشده»، «در حال انجام» یا «متوقف» است درخواست می‌شود.</value></data>
+  <data name="Whi_Err_AlreadyRequested" xml:space="preserve"><value>متریال این دستورکار از قبل در صف انبار است.</value></data>
+  <data name="Whi_Err_NothingToRequest" xml:space="preserve"><value>ردیف انباریِ تأمین‌نشده‌ای باقی نمانده است.</value></data>
+  <data name="Whi_Err_NoEmployee" xml:space="preserve"><value>هیچ کارمندی به حساب کاربری شما وصل نیست.</value></data>
+  <data name="Whi_Err_Warehouse" xml:space="preserve"><value>یک انبار فعال انتخاب کنید.</value></data>
+  <data name="Whi_Err_NothingSelected" xml:space="preserve"><value>دست‌کم برای یک ردیف مقدار وارد کنید.</value></data>
+  <data name="Whi_Err_NotStockLine" xml:space="preserve"><value>فقط ردیف‌های انباری از انبار تأمین می‌شوند.</value></data>
+  <data name="Whi_Err_Quantity" xml:space="preserve"><value>یک مقدار منفی است یا از باقی‌مانده‌ی تأمین بیشتر است.</value></data>
 </root>

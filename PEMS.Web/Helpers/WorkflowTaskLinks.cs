@@ -24,6 +24,7 @@ public static class WorkflowTaskLinks
             "IrnReceiptDisposition" => $"/Warehouse/IrnReceipt/Details/{id}",
             "WorkOrder" or "WorkOrderLifecycle" or "WorkOrderMultiDisciplineReview" => $"/WorkOrder/Details/{id}",
             "WorkRequest" => $"/WorkRequest/Details/{id}",
+            "WorkOrderMaterialIntake" => $"/Warehouse/WarehouseIntake/Details/{id}",   // SCRUM-472: id = work order
             _ => null
         };
     }

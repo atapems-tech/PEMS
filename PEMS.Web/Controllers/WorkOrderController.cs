@@ -281,6 +281,9 @@ public class WorkOrderController : Controller
 
         ViewBag.RequiredMaterials = await _context.WorkOrderMaterials.Include(x => x.MaterialItem)
             .Where(x => x.WorkOrderId == id).ToListAsync();
+        // SCRUM-472: supply code, sourced quantities and the warehouse task of the required materials
+        ViewBag.WarehouseIntake = HttpContext?.RequestServices?.GetService(typeof(IWarehouseIntakeService)) is IWarehouseIntakeService warehouseIntake
+            ? await warehouseIntake.GetAsync(id) : null;
 
         // H25/H26: تنها منبع حقیقت «کدام بخش در کدام فاز چه قابلیتی دارد»؛ Razor فقط همین را رندر می‌کند و POSTها همین را اعمال می‌کنند
         ViewBag.Sections = _sectionGuard == null ? null : await _sectionGuard.GetPageAsync(id, BuildCaller(await GetCurrentEmployeeIdAsync()));
@@ -713,11 +716,18 @@ public class WorkOrderController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RemoveRequiredMaterial(int workOrderMaterialId, int workOrderId)
+    public async Task<IActionResult> RemoveRequiredMaterial(int workOrderMaterialId, int workOrderId, [FromServices] IWarehouseIntakeService? warehouseIntake = null)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
         var denied = await GuardChildAsync(workOrderId, WoSection.RequiredMaterials, WoSectionAction.Remove, recordRef: workOrderMaterialId.ToString());
         if (denied != null) return denied;
+
+        // SCRUM-472: a line a live store requisition already supplies cannot be removed (the requisition would lose its origin)
+        if (warehouseIntake != null && !await warehouseIntake.CanRemoveMaterialAsync(workOrderMaterialId))
+        {
+            TempData["Error"] = Text("Whi_Err_AlreadySourced");
+            return RedirectToAction(nameof(Details), new { id = workOrderId });
+        }
 
         // H27: رکورد باید به همین Work Order تعلق داشته باشد (قبلاً فقط با شناسه‌ی خودش پیدا می‌شد - امکان حذف رکورد Work Order دیگر)
         var requiredMaterial = await _context.WorkOrderMaterials.FirstOrDefaultAsync(x => x.WorkOrderMaterialId == workOrderMaterialId && x.WorkOrderId == workOrderId);
@@ -731,6 +741,35 @@ public class WorkOrderController : Controller
 
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }
+
+    // SCRUM-472: supply code of a required material (Stock through the warehouse intake, or DirectPurchase to procurement).
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetMaterialSupplyCode(int workOrderMaterialId, int workOrderId, string supplyCode, [FromServices] IWarehouseIntakeService warehouseIntake)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
+        var denied = await GuardChildAsync(workOrderId, WoSection.RequiredMaterials, WoSectionAction.Edit, recordRef: workOrderMaterialId.ToString());
+        if (denied != null) return denied;
+        if (!await _context.WorkOrderMaterials.AnyAsync(x => x.WorkOrderMaterialId == workOrderMaterialId && x.WorkOrderId == workOrderId)) return NotFound();
+
+        var r = await warehouseIntake.SetSupplyCodeAsync(workOrderMaterialId, supplyCode, await IntakeActorAsync());
+        if (r.Success) TempData["Message"] = Text("Whi_SupplyCodeSaved"); else TempData["Error"] = Text(r.Error!);
+        return RedirectToAction(nameof(Details), new { id = workOrderId });
+    }
+
+    // SCRUM-472: send the unsourced stock lines to the warehouse queue of My Work.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> RequestWarehouseMaterials(int workOrderId, [FromServices] IWarehouseIntakeService warehouseIntake)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
+
+        var r = await warehouseIntake.RequestMaterialsAsync(workOrderId, await IntakeActorAsync());
+        if (r.Success) TempData["Message"] = Text("Whi_Requested"); else TempData["Error"] = Text(r.Error!);
+        return RedirectToAction(nameof(Details), new { id = workOrderId });
+    }
+
+    private async Task<WarehouseIntakeActor> IntakeActorAsync() => new(await GetCurrentEmployeeIdAsync(), _currentUser.Roles, _currentUser.UserName);
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -866,6 +905,14 @@ public class WorkOrderController : Controller
 
     private static string L(string fa, string en)
         => System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa" ? fa : en;
+
+    /// <summary>SCRUM-472: a localised message for TempData (the controller has no localizer field; tests build it without one).</summary>
+    private string Text(string key)
+    {
+        var localizer = HttpContext?.RequestServices?.GetService(typeof(Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>))
+            as Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>;
+        return localizer?[key].Value ?? key;
+    }
 
     private async Task<WorkOrderActor> BuildActorAsync() => new(await GetCurrentEmployeeIdAsync(), _currentUser.Roles);
 

@@ -2643,4 +2643,45 @@
   <data name="Mr_PartCatalogued" xml:space="preserve"><value>Catalogued</value></data>
   <data name="Mr_PartCataloguedHint" xml:space="preserve"><value>Linked to a part registered in the part catalogue or Material Master.</value></data>
   <data name="Mr_AddItem" xml:space="preserve"><value>Add item</value></data>
+  <data name="MyWork_Module_WarehouseIntake" xml:space="preserve"><value>Warehouse intake</value></data>
+  <data name="MyWork_Stage_WarehouseIntake" xml:space="preserve"><value>Source from warehouse</value></data>
+  <data name="Whi_Title" xml:space="preserve"><value>Warehouse intake</value></data>
+  <data name="Whi_SupplyCode" xml:space="preserve"><value>Supply</value></data>
+  <data name="Whi_Supply_Stock" xml:space="preserve"><value>From stock</value></data>
+  <data name="Whi_Supply_DirectPurchase" xml:space="preserve"><value>Direct purchase</value></data>
+  <data name="Whi_Sourced" xml:space="preserve"><value>Sourced</value></data>
+  <data name="Whi_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Whi_SupplyCodeSaved" xml:space="preserve"><value>Supply code saved.</value></data>
+  <data name="Whi_Request" xml:space="preserve"><value>Request from warehouse</value></data>
+  <data name="Whi_RequestHint" xml:space="preserve"><value>Sends the stock lines that are not sourced yet to the warehouse queue in My Work.</value></data>
+  <data name="Whi_Requested" xml:space="preserve"><value>The stock lines were sent to the warehouse queue.</value></data>
+  <data name="Whi_Open" xml:space="preserve"><value>Open the intake</value></data>
+  <data name="Whi_State_Open" xml:space="preserve"><value>Waiting for the warehouse</value></data>
+  <data name="Whi_State_Sourced" xml:space="preserve"><value>All stock lines sourced</value></data>
+  <data name="Whi_State_NotRequested" xml:space="preserve"><value>Not requested</value></data>
+  <data name="Whi_RequestedOn" xml:space="preserve"><value>requested</value></data>
+  <data name="Whi_Hint" xml:space="preserve"><value>Pick the warehouse that supplies the lines. A draft store requisition is raised for that warehouse with each line linked to its work-order line; submit, approve, reserve and issue it as usual. Direct-purchase lines go to procurement, not to the warehouse.</value></data>
+  <data name="Whi_Requisitions" xml:space="preserve"><value>Store requisitions</value></data>
+  <data name="Whi_SourceNow" xml:space="preserve"><value>Quantity to source</value></data>
+  <data name="Whi_DirectPurchaseNote" xml:space="preserve"><value>Bought by procurement for this work order</value></data>
+  <data name="Whi_NoPermission" xml:space="preserve"><value>You need the Store Requisition Create permission to source lines.</value></data>
+  <data name="Whi_NothingLeft" xml:space="preserve"><value>Every stock line is sourced.</value></data>
+  <data name="Whi_Warehouse" xml:space="preserve"><value>Supplying warehouse</value></data>
+  <data name="Whi_PickWarehouse" xml:space="preserve"><value>Pick a warehouse</value></data>
+  <data name="Whi_Source" xml:space="preserve"><value>Raise store requisition</value></data>
+  <data name="Whi_SourceHint" xml:space="preserve"><value>Lines left at 0 are not included. You can source the rest later from another warehouse.</value></data>
+  <data name="Whi_SourcedAll" xml:space="preserve"><value>Store requisition raised. Every stock line is sourced; the warehouse task is closed.</value></data>
+  <data name="Whi_SourcedPart" xml:space="preserve"><value>Store requisition raised. Some stock lines are still waiting in the warehouse queue.</value></data>
+  <data name="Whi_Err_SupplyCode" xml:space="preserve"><value>Unknown supply code.</value></data>
+  <data name="Whi_Err_Forbidden" xml:space="preserve"><value>You do not have permission for this action.</value></data>
+  <data name="Whi_Err_NotFound" xml:space="preserve"><value>Work order or material line not found.</value></data>
+  <data name="Whi_Err_AlreadySourced" xml:space="preserve"><value>A store requisition already supplies this line. Cancel that requisition first.</value></data>
+  <data name="Whi_Err_NotReleased" xml:space="preserve"><value>Materials can be requested only while the work order is Assigned, In Progress or On Hold.</value></data>
+  <data name="Whi_Err_AlreadyRequested" xml:space="preserve"><value>The materials are already waiting in the warehouse queue.</value></data>
+  <data name="Whi_Err_NothingToRequest" xml:space="preserve"><value>There is no stock line left to request.</value></data>
+  <data name="Whi_Err_NoEmployee" xml:space="preserve"><value>No employee is linked to your user account.</value></data>
+  <data name="Whi_Err_Warehouse" xml:space="preserve"><value>Pick an active warehouse.</value></data>
+  <data name="Whi_Err_NothingSelected" xml:space="preserve"><value>Enter a quantity for at least one line.</value></data>
+  <data name="Whi_Err_NotStockLine" xml:space="preserve"><value>Only stock lines are sourced from a warehouse.</value></data>
+  <data name="Whi_Err_Quantity" xml:space="preserve"><value>A quantity is negative or larger than what is left to source.</value></data>
 </root>

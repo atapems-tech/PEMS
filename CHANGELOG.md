@@ -3,6 +3,18 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-29 - Warehouse intake of work-order materials (SCRUM-472)
+
+### Added
+- Work-order materials have a supply code: **From stock** (default) or **Direct purchase** (SAP stock / non-stock component, IFS supply code). Migration `WarehouseIntakeSupplyCode`: `WorkOrderMaterials.SupplyCode` (default `Stock`) and `StoreRequisitionLines.WorkOrderMaterialId` (nullable link, no cascade).
+- "Request from warehouse" on a released work order (Assigned, In Progress, On Hold) puts one task in the warehouse role queue of My Work (`WH.Manager`, `WH.Storekeeper`); new workflow `WarehouseIntake` with its module contract (14 module workflows now) and binding.
+- Warehouse intake page (Warehouse area): the storekeeper picks the supplying warehouse (never pre-filled by inference) and the quantities; a Draft store requisition is raised for that warehouse with each line linked to its work-order line, and the task closes when every stock line is sourced. Submit, approve, reserve and issue stay in the existing store requisition flow.
+- `IWarehouseIntakeService.GetDirectPurchaseDemandAsync`: the direct-purchase lines of released work orders, for the procurement intake (SCRUM-471).
+
+### Changed
+- Net demand: a work-order line supplied through linked requisition lines is counted on the requisition side (with its warehouse) and keeps only its unsourced quantity; only unlinked requisitions for the same work order and material are still an ambiguous overlap. Direct-purchase lines are excluded as `DirectPurchaseNotStockDemand` (informational, not blocking).
+- A work-order material line that a live store requisition supplies can no longer be removed or have its supply code changed.
+
 ## 2026-10-29 - Demo pipeline: backup, smoke test, rollback, staging-first rule, runbook (SCRUM-313, SCRUM-314, SCRUM-317)
 
 ### Added

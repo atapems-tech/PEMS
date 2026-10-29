@@ -17032,6 +17032,9 @@ namespace PEMS.Persistence.Migrations
                     b.Property<int?>("UomId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WorkOrderMaterialId")
+                        .HasColumnType("int");
+
                     b.HasKey("StoreRequisitionLineId");
 
                     b.HasIndex("MaterialItemId");
@@ -17039,6 +17042,8 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("StoreRequisitionId");
 
                     b.HasIndex("UomId");
+
+                    b.HasIndex("WorkOrderMaterialId");
 
                     b.ToTable("StoreRequisitionLines", (string)null);
                 });
@@ -20056,6 +20061,13 @@ namespace PEMS.Persistence.Migrations
 
                     b.Property<decimal>("RequiredQuantity")
                         .HasColumnType("decimal(18,3)");
+
+                    b.Property<string>("SupplyCode")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("Stock");
 
                     b.Property<int?>("UomId")
                         .HasColumnType("int");
@@ -26006,11 +26018,17 @@ namespace PEMS.Persistence.Migrations
                         .HasForeignKey("UomId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("PEMS.Domain.Entities.WorkOrderMaterial", "WorkOrderMaterial")
+                        .WithMany()
+                        .HasForeignKey("WorkOrderMaterialId");
+
                     b.Navigation("MaterialItem");
 
                     b.Navigation("StoreRequisition");
 
                     b.Navigation("Uom");
+
+                    b.Navigation("WorkOrderMaterial");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.StoreRequisitionStatusHistory", b =>

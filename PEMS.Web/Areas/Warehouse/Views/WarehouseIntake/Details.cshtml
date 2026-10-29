@@ -1,0 +1,104 @@
+@model PEMS.Application.Interfaces.WarehouseIntakeDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Domain.Entities
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    // SCRUM-472: warehouse intake of one work order's stock lines
+    var canSource = ViewBag.CanSource is true;
+    var warehouses = (IEnumerable<dynamic>)ViewBag.Warehouses;
+    var stockLines = Model.Lines.Where(l => l.SupplyCode == WorkOrderMaterialSupplyCodes.Stock).ToList();
+    var open = stockLines.Where(l => l.UnsourcedQuantity > 0).ToList();
+}
+
+@if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
+@if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
+
+<div class="content-card mb-3">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+        <div>
+            <h5 class="mb-1"><i class="bi bi-inboxes" aria-hidden="true"></i> @Localizer["Whi_Title"]</h5>
+            <div class="small text-muted">
+                @Localizer["Work Order"]: <a href="/WorkOrder/Details/@Model.WorkOrderId" dir="ltr">@Model.WorkOrderNumber</a> · @Model.WorkOrderStatus
+                @if (Model.RequestedDate.HasValue) { <span> · @Localizer["Whi_RequestedOn"] <span dir="ltr">@Model.RequestedDate.Value.ToString("yyyy-MM-dd HH:mm")</span></span> }
+            </div>
+        </div>
+        <div>
+            @if (Model.IsOpen) { <span class="vs-pill vs-pill--warning">@Localizer["Whi_State_Open"]</span> }
+            else if (open.Count == 0) { <span class="vs-pill vs-pill--success">@Localizer["Whi_State_Sourced"]</span> }
+            else { <span class="vs-pill vs-pill--neutral">@Localizer["Whi_State_NotRequested"]</span> }
+        </div>
+    </div>
+    <p class="small text-muted mt-2 mb-0"><i class="bi bi-info-circle" aria-hidden="true"></i> @Localizer["Whi_Hint"]</p>
+</div>
+
+<form asp-action="Source" method="post" class="content-card">
+    <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
+    <div class="table-responsive">
+        <table class="table table-enterprise table-sm align-middle">
+            <thead>
+                <tr>
+                    <th>@Localizer["Material"]</th>
+                    <th>@Localizer["Whi_SupplyCode"]</th>
+                    <th class="text-end">@Localizer["Required Qty"]</th>
+                    <th class="text-end">@Localizer["Whi_Sourced"]</th>
+                    <th>@Localizer["Whi_Requisitions"]</th>
+                    <th class="text-end">@Localizer["Whi_SourceNow"]</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var l in Model.Lines)
+            {
+                <tr>
+                    <td class="small"><span dir="ltr">@l.MaterialCode</span> - @l.MaterialDescription</td>
+                    <td><span class="vs-pill @(l.SupplyCode == WorkOrderMaterialSupplyCodes.DirectPurchase ? "vs-pill--warning" : "vs-pill--neutral")">@Localizer["Whi_Supply_" + l.SupplyCode]</span></td>
+                    <td class="text-end" dir="ltr">@l.RequiredQuantity.ToString("0.###") @l.UnitName</td>
+                    <td class="text-end" dir="ltr">@(l.SupplyCode == WorkOrderMaterialSupplyCodes.Stock ? l.SourcedQuantity.ToString("0.###") : "—")</td>
+                    <td class="small">
+                        @foreach (var r in l.Requisitions)
+                        {
+                            <div><a href="/Warehouse/StoreRequisition/Details/@r.StoreRequisitionId" dir="ltr">@r.RequisitionNumber</a> · @r.WarehouseCode · @r.Status · <span dir="ltr">@r.Quantity.ToString("0.###")</span></div>
+                        }
+                        @if (l.SupplyCode == WorkOrderMaterialSupplyCodes.DirectPurchase) { <span class="text-muted">@Localizer["Whi_DirectPurchaseNote"]</span> }
+                    </td>
+                    <td class="text-end">
+                        @if (canSource && l.UnsourcedQuantity > 0)
+                        {
+                            <input type="number" name="quantities[@l.WorkOrderMaterialId]" class="form-control form-control-sm text-end" dir="ltr"
+                                   min="0" max="@l.UnsourcedQuantity.ToString(System.Globalization.CultureInfo.InvariantCulture)" step="any"
+                                   value="@l.UnsourcedQuantity.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                                   aria-label="@Localizer["Whi_SourceNow"] @l.MaterialCode" />
+                        }
+                        else { <span class="text-muted">—</span> }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+    @if (!canSource)
+    {
+        <p class="small text-muted mb-0"><i class="bi bi-lock" aria-hidden="true"></i> @Localizer["Whi_NoPermission"]</p>
+    }
+    else if (open.Count == 0)
+    {
+        <p class="small text-muted mb-0">@Localizer["Whi_NothingLeft"]</p>
+    }
+    else
+    {
+        <div class="row g-2 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label small" for="whiWarehouse">@Localizer["Whi_Warehouse"]</label>
+                <select id="whiWarehouse" name="warehouseId" class="form-select form-select-sm" required>
+                    <option value="">@Localizer["Whi_PickWarehouse"]</option>
+                    @foreach (var w in warehouses) { <option value="@w.WarehouseId">@w.Code - @w.Name</option> }
+                </select>
+            </div>
+            <div class="col-md-auto">
+                <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-box-arrow-in-down" aria-hidden="true"></i> @Localizer["Whi_Source"]</button>
+            </div>
+            <div class="col-12 small text-muted">@Localizer["Whi_SourceHint"]</div>
+        </div>
+    }
+</form>
