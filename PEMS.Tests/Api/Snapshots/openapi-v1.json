@@ -5,29 +5,32 @@
     "description": "Resource-oriented REST API (ADR-0009, guideline chapter 08).",
     "version": "v1"
   },
-  "servers": [
-    {
-      "url": "http://localhost/"
-    }
-  ],
   "paths": {
-    "/api/v1/disciplines": {
+    "/api/v1/definitions": {
       "get": {
         "tags": [
-          "DisciplinesApi"
+          "Definitions"
         ],
+        "summary": "List definitions",
+        "description": "Pages through definitions. Supports q, sort, filter[kind], filter[appKey], filter[published], fields, page and pageSize.",
+        "operationId": "Definitions_List",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiPageOfDisciplineResource"
+                  "$ref": "#/components/schemas/ApiPageOfDefinitionResource"
                 }
               },
-              "application/problem\u002Bjson": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiPageOfDisciplineResource"
+                  "$ref": "#/components/schemas/ApiPageOfDefinitionResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiPageOfDefinitionResource"
                 }
               }
             }
@@ -39,8 +42,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiProblemDetails"
                 }
-              },
-              "application/json": {}
+              }
             }
           },
           "401": {
@@ -59,8 +61,1175 @@
       },
       "post": {
         "tags": [
-          "DisciplinesApi"
+          "Definitions"
         ],
+        "summary": "Create a definition as a draft",
+        "description": "Creates the envelope and a draft version 1. The kind must be registered; the payload may be incomplete until validation.",
+        "operationId": "Definitions_Create",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionCreateInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionCreateInput"
+              }
+            },
+            "application/*\u002Bjson": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionCreateInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}": {
+      "get": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Get one definition",
+        "description": "Returns the envelope with its versions and the actions the user may take; the ETag is the envelope revision.",
+        "operationId": "Definitions_Get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Change title and description",
+        "description": "Changes the title and description of the envelope. Needs If-Match with the envelope ETag.",
+        "operationId": "Definitions_UpdateEnvelope",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag from the last read; a missing header gives 428, a stale one 412.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionEnvelopeInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionEnvelopeInput"
+              }
+            },
+            "application/*\u002Bjson": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionEnvelopeInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Precondition Failed",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "428": {
+            "description": "If-Match is required.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/versions/{number}": {
+      "get": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Get one version with its payload",
+        "description": "Returns any version (draft, published or retired) with its payload.",
+        "operationId": "Definitions_GetVersion",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/draft": {
+      "get": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Get the open draft",
+        "description": "Returns the open draft (Draft or Validated) with its payload; the ETag is the draft revision.",
+        "operationId": "Definitions_GetDraft",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Edit the draft",
+        "description": "Replaces the payload of the open draft and sets it back to Draft status. Needs If-Match with the draft ETag.",
+        "operationId": "Definitions_SaveDraft",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag from the last read; a missing header gives 428, a stale one 412.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionDraftInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionDraftInput"
+              }
+            },
+            "application/*\u002Bjson": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionDraftInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Precondition Failed",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "428": {
+            "description": "If-Match is required.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Discard the draft",
+        "description": "Deletes the open draft; the only version of a definition cannot be discarded. Needs If-Match.",
+        "operationId": "Definitions_DiscardDraft",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "The ETag from the last read; a missing header gives 428, a stale one 412.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "412": {
+            "description": "Precondition Failed",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "428": {
+            "description": "If-Match is required.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/export": {
+      "get": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Export a definition",
+        "description": "Returns a hash-checked package of the published version, or of the version given in the query.",
+        "operationId": "Definitions_Export",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionPackageResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionPackageResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionPackageResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/actions/create-draft": {
+      "post": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Open a new draft",
+        "description": "Clones the published version (or the given version) into a new draft. Needs If-Match with the envelope ETag.",
+        "operationId": "Definitions_CreateDraft",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateDraftInput"
+                  }
+                ]
+              }
+            },
+            "text/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateDraftInput"
+                  }
+                ]
+              }
+            },
+            "application/*\u002Bjson": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateDraftInput"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/actions/validate": {
+      "post": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Validate the draft",
+        "description": "Checks the draft against its kind (components, options, limits) and records its references; answers 422 with pointers when invalid. Needs If-Match with the draft ETag.",
+        "operationId": "Definitions_Validate",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionVersionPayloadResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/actions/publish": {
+      "post": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Publish the draft",
+        "description": "Validates and publishes the draft as the current version; the previous version is retired. Needs permission Approve and If-Match with the draft ETag.",
+        "operationId": "Definitions_Publish",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/actions/rollback": {
+      "post": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Roll back to an older version",
+        "description": "Publishes an older version again as a new version number; history is never rewritten. Needs permission Approve and If-Match with the envelope ETag.",
+        "operationId": "Definitions_Rollback",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RollbackInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RollbackInput"
+              }
+            },
+            "application/*\u002Bjson": {
+              "schema": {
+                "$ref": "#/components/schemas/RollbackInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/import": {
+      "post": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Import definitions from a package",
+        "description": "Checks every item (kind, payload, content hash) and creates drafts; nothing is published.",
+        "operationId": "Definitions_Import",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionPackageResource"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionPackageResource"
+              }
+            },
+            "application/*\u002Bjson": {
+              "schema": {
+                "$ref": "#/components/schemas/DefinitionPackageResource"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionImportResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionImportResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionImportResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/disciplines": {
+      "get": {
+        "tags": [
+          "Disciplines"
+        ],
+        "summary": "List disciplines",
+        "description": "Pages through the discipline master data. Supports q, sort, filter[isActive], filter[transmittalCode], fields, page and pageSize (offset paging, at most 10,000 rows).",
+        "operationId": "Disciplines_List",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiPageOfDisciplineResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiPageOfDisciplineResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiPageOfDisciplineResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Disciplines"
+        ],
+        "summary": "Create a discipline",
+        "description": "Creates a discipline and answers 201 with Location and ETag. A repeated Idempotency-Key with the same body returns the first response.",
+        "operationId": "Disciplines_Create",
         "parameters": [
           {
             "name": "Idempotency-Key",
@@ -95,12 +1264,17 @@
           "201": {
             "description": "Created",
             "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisciplineResource"
+                }
+              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DisciplineResource"
                 }
               },
-              "application/problem\u002Bjson": {
+              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DisciplineResource"
                 }
@@ -114,8 +1288,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiProblemDetails"
                 }
-              },
-              "application/json": {}
+              }
             }
           },
           "401": {
@@ -136,8 +1309,11 @@
     "/api/v1/disciplines/{id}": {
       "get": {
         "tags": [
-          "DisciplinesApi"
+          "Disciplines"
         ],
+        "summary": "Get one discipline",
+        "description": "Returns one discipline with its ETag and the actions the signed-in user may take.",
+        "operationId": "Disciplines_Get",
         "parameters": [
           {
             "name": "id",
@@ -154,12 +1330,17 @@
           "200": {
             "description": "OK",
             "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisciplineResource"
+                }
+              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DisciplineResource"
                 }
               },
-              "application/problem\u002Bjson": {
+              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DisciplineResource"
                 }
@@ -173,8 +1354,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiProblemDetails"
                 }
-              },
-              "application/json": {}
+              }
             }
           },
           "401": {
@@ -193,8 +1373,11 @@
       },
       "put": {
         "tags": [
-          "DisciplinesApi"
+          "Disciplines"
         ],
+        "summary": "Replace a discipline",
+        "description": "Replaces all writable fields. Needs If-Match with the ETag of the last read.",
+        "operationId": "Disciplines_Replace",
         "parameters": [
           {
             "name": "id",
@@ -240,12 +1423,17 @@
           "200": {
             "description": "OK",
             "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisciplineResource"
+                }
+              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DisciplineResource"
                 }
               },
-              "application/problem\u002Bjson": {
+              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DisciplineResource"
                 }
@@ -259,8 +1447,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiProblemDetails"
                 }
-              },
-              "application/json": {}
+              }
             }
           },
           "401": {
@@ -291,8 +1478,11 @@
       },
       "patch": {
         "tags": [
-          "DisciplinesApi"
+          "Disciplines"
         ],
+        "summary": "Change some fields of a discipline",
+        "description": "JSON Merge Patch (application/merge-patch\u002Bjson): absent fields stay, null clears a nullable field. Needs If-Match.",
+        "operationId": "Disciplines_Patch",
         "parameters": [
           {
             "name": "id",
@@ -328,12 +1518,17 @@
           "200": {
             "description": "OK",
             "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisciplineResource"
+                }
+              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DisciplineResource"
                 }
               },
-              "application/problem\u002Bjson": {
+              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DisciplineResource"
                 }
@@ -347,8 +1542,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiProblemDetails"
                 }
-              },
-              "application/json": {}
+              }
             }
           },
           "401": {
@@ -379,8 +1573,11 @@
       },
       "delete": {
         "tags": [
-          "DisciplinesApi"
+          "Disciplines"
         ],
+        "summary": "Delete a discipline",
+        "description": "Deletes an unused discipline; one that other records use gives 409 (deactivate it with PATCH isActive=false). Needs If-Match.",
+        "operationId": "Disciplines_Delete",
         "parameters": [
           {
             "name": "id",
@@ -404,11 +1601,7 @@
         ],
         "responses": {
           "204": {
-            "description": "No Content",
-            "content": {
-              "application/json": {},
-              "application/problem\u002Bjson": {}
-            }
+            "description": "No Content"
           },
           "409": {
             "description": "Conflict",
@@ -417,8 +1610,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiProblemDetails"
                 }
-              },
-              "application/json": {}
+              }
             }
           },
           "401": {
@@ -487,6 +1679,47 @@
               "null",
               "object"
             ]
+          }
+        }
+      },
+      "ApiPageOfDefinitionResource": {
+        "required": [
+          "items",
+          "page",
+          "pageSize",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DefinitionResource"
+            }
+          },
+          "page": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "pageSize": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "total": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
           }
         }
       },
@@ -572,6 +1805,407 @@
             "items": {
               "$ref": "#/components/schemas/ApiFieldError"
             }
+          }
+        }
+      },
+      "CreateDraftInput": {
+        "required": [
+          "fromVersion"
+        ],
+        "type": "object",
+        "properties": {
+          "fromVersion": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          }
+        }
+      },
+      "DefinitionCreateInput": {
+        "required": [
+          "kind",
+          "key",
+          "appKey",
+          "title",
+          "description",
+          "payload",
+          "changeSummary"
+        ],
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "key": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "appKey": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "title": {
+            "$ref": "#/components/schemas/JsonElement"
+          },
+          "description": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/JsonElement"
+              }
+            ]
+          },
+          "payload": {
+            "$ref": "#/components/schemas/JsonElement"
+          },
+          "changeSummary": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      },
+      "DefinitionDraftInput": {
+        "required": [
+          "payload",
+          "changeSummary"
+        ],
+        "type": "object",
+        "properties": {
+          "payload": {
+            "$ref": "#/components/schemas/JsonElement"
+          },
+          "changeSummary": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      },
+      "DefinitionEnvelopeInput": {
+        "required": [
+          "title",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "$ref": "#/components/schemas/JsonElement"
+          },
+          "description": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/JsonElement"
+              }
+            ]
+          }
+        }
+      },
+      "DefinitionImportResource": {
+        "required": [
+          "created",
+          "updated",
+          "ids"
+        ],
+        "type": "object",
+        "properties": {
+          "created": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "updated": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "ids": {
+            "type": "array",
+            "items": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "DefinitionPackageItemResource": {
+        "required": [
+          "kind",
+          "key",
+          "appKey",
+          "title",
+          "description",
+          "payload",
+          "contentHash",
+          "versionNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "appKey": {
+            "type": "string"
+          },
+          "title": {
+            "$ref": "#/components/schemas/JsonElement"
+          },
+          "description": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/JsonElement"
+              }
+            ]
+          },
+          "payload": {
+            "$ref": "#/components/schemas/JsonElement"
+          },
+          "contentHash": {
+            "type": "string"
+          },
+          "versionNumber": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          }
+        }
+      },
+      "DefinitionPackageResource": {
+        "required": [
+          "format",
+          "exportedAt",
+          "items"
+        ],
+        "type": "object",
+        "properties": {
+          "format": {
+            "type": "string"
+          },
+          "exportedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DefinitionPackageItemResource"
+            }
+          }
+        }
+      },
+      "DefinitionResource": {
+        "required": [
+          "id",
+          "kind",
+          "key",
+          "appKey",
+          "origin",
+          "title",
+          "description",
+          "publishedVersion",
+          "hasDraft",
+          "isCustomized",
+          "createdAt",
+          "versions",
+          "allowedActions"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "appKey": {
+            "type": "string"
+          },
+          "origin": {
+            "type": "string"
+          },
+          "title": {
+            "$ref": "#/components/schemas/JsonElement"
+          },
+          "description": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/JsonElement"
+              }
+            ]
+          },
+          "publishedVersion": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "hasDraft": {
+            "type": "boolean"
+          },
+          "isCustomized": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "versions": {
+            "type": [
+              "null",
+              "array"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/DefinitionVersionResource"
+            }
+          },
+          "allowedActions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "DefinitionVersionPayloadResource": {
+        "required": [
+          "version",
+          "payload"
+        ],
+        "type": "object",
+        "properties": {
+          "version": {
+            "$ref": "#/components/schemas/DefinitionVersionResource"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/JsonElement"
+          }
+        }
+      },
+      "DefinitionVersionResource": {
+        "required": [
+          "number",
+          "status",
+          "contentHash",
+          "changeSummary",
+          "clonedFromVersion",
+          "createdAt",
+          "validatedAt",
+          "publishedAt",
+          "publishedBy",
+          "retiredAt"
+        ],
+        "type": "object",
+        "properties": {
+          "number": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "status": {
+            "type": "string"
+          },
+          "contentHash": {
+            "type": "string"
+          },
+          "changeSummary": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "clonedFromVersion": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validatedAt": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "publishedAt": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "publishedBy": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "retiredAt": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
           }
         }
       },
@@ -685,10 +2319,43 @@
           }
         }
       },
-      "JsonElement": {}
+      "JsonElement": {},
+      "RollbackInput": {
+        "required": [
+          "toVersion"
+        ],
+        "type": "object",
+        "properties": {
+          "toVersion": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "description": "The sign-in cookie issued by /Account/Login; its name is the setting Authentication:Cookie:Name. Unsafe verbs also need the X-CSRF-TOKEN header.",
+        "name": "Authentication:Cookie:Name",
+        "in": "cookie"
+      }
     }
   },
+  "security": [
+    {
+      "cookieAuth": []
+    }
+  ],
   "tags": [
+    {
+      "name": "DefinitionsApi"
+    },
     {
       "name": "DisciplinesApi"
     }

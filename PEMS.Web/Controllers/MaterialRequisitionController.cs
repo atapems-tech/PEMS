@@ -62,6 +62,30 @@ public class MaterialRequisitionController : Controller
         return View(mr);
     }
 
+    /// <summary>
+    /// SCRUM-428: registered parts (completed part catalogue requests and Material Master) for the part-number lookup of the MR item
+    /// lines, in the item shape of the PEMS.UI searchable select. Same permission as creating an MR.
+    /// </summary>
+    [HttpGet]
+    public async Task<IActionResult> PartLookup(string? q, [FromServices] IPartCatalogueDuplicateService parts)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaterialRequisition", "Create"))
+            return Forbid();
+        Response.Headers.CacheControl = "no-store";
+        var hits = await parts.SearchExistingPartsAsync(q);
+        return Json(new
+        {
+            items = hits.Select(h => new
+            {
+                value = h.PartNumber,
+                text = string.IsNullOrWhiteSpace(h.Description) ? h.PartNumber : $"{h.PartNumber} — {h.Description}",
+                sub = string.Join(" · ", new[] { h.ManufacturerName, h.ManufacturerPartNumber }.Where(x => !string.IsNullOrWhiteSpace(x))),
+                description = h.Description,
+                unit = h.Unit,
+            })
+        });
+    }
+
     [HttpGet]
     public async Task<IActionResult> Create()
     {
@@ -89,10 +113,12 @@ public class MaterialRequisitionController : Controller
 
         for (int i = 0; i < itemDescriptions.Count; i++)
         {
-            if (string.IsNullOrWhiteSpace(itemDescriptions[i])) continue;
+            // SCRUM-428: a row with only a registered part number is kept; the service takes the description from the part
+            var part = i < itemParts.Count ? itemParts[i] : null;
+            if (string.IsNullOrWhiteSpace(itemDescriptions[i]) && string.IsNullOrWhiteSpace(part)) continue;
 
             items.Add((
-                itemDescriptions[i],
+                itemDescriptions[i] ?? string.Empty,
                 i < itemParts.Count ? itemParts[i] : null,
                 i < itemQty.Count ? itemQty[i] : 1,
                 i < itemUnits.Count ? itemUnits[i] : null));

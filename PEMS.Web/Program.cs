@@ -104,6 +104,13 @@ PEMS.Web.Api.ApiServiceCollectionExtensions.AddPemsApi(builder.Services);
 PEMS.Web.Api.ApiServiceCollectionExtensions.ConfigureApiAuthenticationResponses(builder.Services);
 builder.Services.AddSingleton<PEMS.Web.Api.ApiIdempotencyStore>();
 
+// Definition store (SCRUM-434, ADR-0010/0011): write service, cached runtime read side, the registered kinds and the limits (Definitions:* settings).
+builder.Services.AddSingleton(builder.Configuration.GetSection("Definitions").Get<PEMS.Application.Definitions.DefinitionLimits>() ?? new PEMS.Application.Definitions.DefinitionLimits());
+PEMS.Web.Definitions.DefinitionKindExtensions.AddPemsDefinitionKinds(builder.Services);
+builder.Services.AddScoped<PEMS.Persistence.Services.DefinitionStore>();
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionStore>(sp => sp.GetRequiredService<PEMS.Persistence.Services.DefinitionStore>());
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionService, PEMS.Persistence.Services.DefinitionService>();
+
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند
 // (مثل صفحه‌ی Login) بدون ورود قابل دسترسی هستند.
 builder.Services.AddControllersWithViews(options =>
@@ -532,6 +539,11 @@ builder.Services.AddScoped<IDocumentHoldService, DocumentHoldService>();
 builder.Services.AddScoped<INumberingService, NumberingService>();
 // SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات (Admin > Numbering)
 builder.Services.AddScoped<INumberingSchemeService, NumberingSchemeService>();
+
+// SCRUM-429: ایمیل سازمانی (SMTP خود سازمان، MailKit) و ارسال دعوت‌نامه‌ی مناقصه؛ تنظیمات env Email__*، حساب فقط در secrets
+builder.Services.Configure<PEMS.Infrastructure.Email.EmailOptions>(builder.Configuration.GetSection("Email"));
+builder.Services.AddSingleton<IEmailSender, PEMS.Infrastructure.Email.SmtpEmailSender>();
+builder.Services.AddScoped<ITenderInvitationService, TenderInvitationService>();
 
 // Warehouse / Part Catalogue Request (درخواست کاتالوگ قطعه): تنظیمات + سرویس‌ها
 builder.Services.AddSingleton(builder.Configuration.GetSection(PartCatalogueOptions.SectionName).Get<PartCatalogueOptions>() ?? new PartCatalogueOptions());

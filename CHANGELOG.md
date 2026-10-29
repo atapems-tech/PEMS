@@ -3,6 +3,54 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-29 - Registered part numbers in material requisition items (SCRUM-428)
+
+### Added
+- MR items link to the registered part their part number resolves to: a completed part catalogue request (`PartCatalogueRequestId`) or Material Master (`MaterialItemId`); migration `MaterialRequisitionItemRegisteredPart` (two nullable columns, indexes, restrict FKs). The service resolves on the server (exact, normalised); a registered part fills an empty description and unit; a typed number that is not registered stays free text, shown "Not catalogued".
+- New MR form: the part number of each item is a searchable lookup over the registered parts (part number, manufacturer part number, description) that fills description and unit; a typed part can still be used; "Request a new part" opens the part catalogue. MR details show catalogued / not catalogued per item.
+- `pems-select`: `data-pems-select-url` (page endpoint source) and `data-pems-select-create` (allow a typed value).
+
+## 2026-10-29 - Tender invitations by the organisation's email (SCRUM-429)
+
+### Added
+- Email through the organisation's own SMTP server on MailKit 4.18.2 (MIT): `IEmailSender` with `SmtpEmailSender`; settings `Email__Enabled`, `Email__Host`, `Email__Port`, `Email__Security`, `Email__FromAddress`, `Email__FromName`, `Email__TimeoutSeconds` in every `env/*.env` (off everywhere), `Email__UserName` and `Email__Password` only in the secrets files.
+- Tender details: "Send invitations" (one email per invited vendor from a fa/en template) and "Resend" for failed or skipped vendors, with the Tender Edit permission; sending runs in the background (Hangfire, 3 attempts); with email off the page says so.
+- Table `TenderInvitationDispatches` (migration `TenderInvitationDispatches`): the send log on the tender (recipient, exact text, status Queued/Sent/Failed/Skipped, attempts, last error, who and when); an audit entry `SendInvitations`/`ResendInvitations` on the tender.
+
+## 2026-10-28 - API quality gates (SCRUM-436)
+
+### Added
+- `tools/api-lint`: a Spectral ruleset of the REST standard (path form, no GET actions, 401/403 and problem+json on every operation, If-Match with 412/428 on writes, 201 on collection POST, camelCase names, declared security, summaries), `lint.sh` to lint the approved OpenAPI snapshot and `lint.sh selftest` to prove each rule fires on a deliberately bad document.
+- `ApiConformanceTests`: every operation of the OpenAPI document driven through the real pipeline (401, 403, antiforgery, 404, 428/412, 422, 500, problem+json shape); `ApiPipelineBaselineTests`: in-process p95 guard.
+- `tools/loadtest/pems-api-baseline.js` (k6, read-only API scenarios with per-endpoint budgets) and `docs/performance/API_PERFORMANCE_BASELINE.md` (budgets and the stored in-process baseline).
+- The OpenAPI document now has operation ids, tags, summaries and descriptions, the declared cookie security scheme and no server list.
+- The manual build workflow runs the API tests, the lint and its self-test as failing steps.
+
+### Fixed
+- Error responses of controller actions were sent as `application/json` instead of `application/problem+json` (the controller-level `[Produces]` overrode them); problems the framework builds itself (antiforgery 400, bare 404/405/415) now have the `urn:pems:problem:` type and an `errors` list.
+- `PUT`/`POST` actions on `/api/v1/definitions` judged the body before looking the resource up; an unknown id is now 404 first.
+
+## 2026-10-28 - Definition store REST API (SCRUM-434)
+
+### Added
+- Tables `Definitions`, `DefinitionVersions`, `DefinitionReferences`, `DefinitionStamps` (migration `DefinitionStore`) and the service behind them: draft, validate, publish (the old version is retired), rollback (an older version is published again as a new number), discard draft, export and import (hash-checked package), a runtime read side that serves the published version from a cache refreshed by a per-kind stamp.
+- `/api/v1/definitions`: list, get, versions, draft (GET/PUT/DELETE with If-Match), actions `create-draft`, `validate`, `publish`, `rollback`, `export`, `import`; two concurrent edits give 412 for the second.
+- Kinds `form` (the FormDefinition record) and `page` (regions of component instances, options checked against the component manifest); limits `Definitions__MaxPayloadBytes`, `Definitions__MaxInstancesPerPage`, `Definitions__MaxJsonDepth` in every `env/*.env`.
+- Permission module `Definitions` in the permission matrix (grant it to a role to use the API; publish and rollback need Approve).
+
+### Changed
+- The generic audit trail no longer stores the old/new text of `PayloadJson` columns.
+
+## 2026-10-28 - The plan is markdown files, not an Excel workbook (SCRUM-446)
+
+### Changed
+- `plan/rows/NNNN.md`: one file per backlog row (front matter, then Evidence, Prompt, Requirement, Report); `plan/sheets/*.md`: the other former sheets. A row edit now changes only that file's lines; two people editing different rows no longer conflict.
+- `tools/plan-sync/plan_sync.py` reads the folder and gained `show`, `set`, `report`, `new` and `summary` (the old Summary sheet and Roadmap formulas, now over all rows); `export` no longer writes `plan/backlog.csv`. Standard library only (no openpyxl).
+- AGENTS.md, guidelines 00, 01, 03-07 and README, the PR template, the workflow doc, ADR sources and the plan pages point at the folder; the manual build workflow runs the plan check.
+
+### Removed
+- `plan/backlog.csv`; `plan/PEMS_Backlog_Roadmap.xlsx` moved to `0 - trash/` (history only).
+
 ## 2026-10-28 - REST API walking skeleton and first resource (SCRUM-435)
 
 ### Added

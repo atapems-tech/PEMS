@@ -1,36 +1,36 @@
-# Plan workbook, Jira and developers: one consistent workflow
+# Plan files, Jira and developers: one consistent workflow
 
 Status: **decided 2026-10-23** (owner chose "field ownership + scripted sync"). Backlog rows #335-#337.
 
 ## 1. Principle
 
-Two systems, one record per task. The backlog row number is the permanent **Plan ID**; the Jira issue key is stored in the workbook
+Two systems, one record per task. The backlog row number is the permanent **Plan ID**; the Jira issue key is stored in the plan
 and the Plan ID is stored in Jira. Each field has exactly **one owner**; the other system only displays it. Anything that can drift is
 checked by a script in CI, not by memory.
 
 ## 2. Field ownership
 
-| Concept | Workbook column | Jira field | Owner | Direction |
+| Concept | Plan row field | Jira field | Owner | Direction |
 |---|---|---|---|---|
-| Identity | # (Plan ID) | custom field "Plan ID" (text, unique) | Workbook | workbook -> Jira |
-| Jira key | - (the workbook stays tracker-free) | issue key | Jira | kept in Jira and in `plan/tracker-map.csv` written by `push` |
-| Title | Task | Summary | Workbook | -> Jira |
-| What and why | Evidence, Prompt | Description | Workbook | -> Jira |
-| Acceptance criteria | Requirement | Description section "Acceptance" | Workbook | -> Jira |
-| Area | Area | Component (company-managed projects) or label `area-<name>` (team-managed, e.g. SCRUM) | Workbook | -> Jira |
-| Type | Track | Issue type (Feature->Story, Bug Fix->Bug, other->Task) | Workbook | -> Jira |
-| Priority | Priority P0-P3 | Priority Highest/High/Medium/Low | Workbook | -> Jira |
-| Milestone | Milestone M0-M6 | Fix version / Epic | Workbook | -> Jira |
-| Dependencies | Depends | Issue links "is blocked by" | Workbook | -> Jira |
-| Effort estimate | Effort S/M/L/XL | label `effort-M` (estimate), actuals stay in Jira | Workbook | -> Jira |
-| Doer | Doer | label `doer-user` / `doer-claude` | Workbook | -> Jira |
-| Status | Status | Status | **Jira** | Jira -> workbook |
+| Identity | # (Plan ID) | custom field "Plan ID" (text, unique) | Plan | plan -> Jira |
+| Jira key | - (the plan stays tracker-free) | issue key | Jira | kept in Jira and in `plan/tracker-map.csv` written by `push` |
+| Title | Task | Summary | Plan | -> Jira |
+| What and why | Evidence, Prompt | Description | Plan | -> Jira |
+| Acceptance criteria | Requirement | Description section "Acceptance" | Plan | -> Jira |
+| Area | Area | Component (company-managed projects) or label `area-<name>` (team-managed, e.g. SCRUM) | Plan | -> Jira |
+| Type | Track | Issue type (Feature->Story, Bug Fix->Bug, other->Task) | Plan | -> Jira |
+| Priority | Priority P0-P3 | Priority Highest/High/Medium/Low | Plan | -> Jira |
+| Milestone | Milestone M0-M6 | Fix version / Epic | Plan | -> Jira |
+| Dependencies | Depends | Issue links "is blocked by" | Plan | -> Jira |
+| Effort estimate | Effort S/M/L/XL | label `effort-M` (estimate), actuals stay in Jira | Plan | -> Jira |
+| Doer | Doer | label `doer-user` / `doer-claude` | Plan | -> Jira |
+| Status | Status | Status | **Jira** | Jira -> plan |
 | Assignee, sprint, time spent, comments | - | same | **Jira** | not copied |
-| Done evidence | Evidence/Report (written at close) | comment + development panel | Developer | workbook (in the closing PR) |
-| PM confirmation | Confirmed by PM | label `pm-confirmed` | Workbook | -> Jira |
+| Done evidence | Evidence/Report (written at close) | comment + development panel | Developer | plan row (in the closing PR) |
+| PM confirmation | Confirmed by PM | label `pm-confirmed` | Plan | -> Jira |
 
-Status mapping: In Review (conditional done: work verified, PR merged into `main`, waiting for the tests and the QA check in the UI, which are one step for now) = workbook In Progress; Not Started = To Do; In Progress and Partial = In Progress (Partial adds label `partial`); Done = Done;
-Hold = On Hold; Later = Backlog (label `later`); Cancelled and Obsolete = Won't Do. A row becomes Done in the workbook only through the
+Status mapping: In Review (conditional done: work verified, PR merged into `main`, waiting for the tests and the QA check in the UI, which are one step for now) = plan In Progress; Not Started = To Do; In Progress and Partial = In Progress (Partial adds label `partial`); Done = Done;
+Hold = On Hold; Later = Backlog (label `later`); Cancelled and Obsolete = Won't Do. A row becomes Done in the plan only through the
 pull from Jira **and** a closing PR that fills Evidence (rule 13: no Done without evidence).
 
 ## 3. Developer workflow
@@ -41,29 +41,29 @@ pull from Jira **and** a closing PR that fills Evidence (rule 13: no Done withou
    avoid smart commands in squash-merge titles, which re-run them).
 4. Pull request title: `PEMS-123 ...`; description lists the Plan ID and ticks the checklist: plan row updated (Evidence/Report),
    Supportability Matrix row, CHANGELOG, tests, migration/seed if the schema changed (rule 22).
-5. PR merged into `main`: Jira moves to In Review (conditional done, label `qa-pending`). QA check in the UI failed: Jira moves back to To Do (label `qa-failed`; the workbook shows Not Started, the label tells why). QA check passed (`docs/guidelines/07-qa-check-in-the-ui.md`): Jira moves to Done; the nightly sync writes the status back; a small PR updates Evidence and the Test Plan status.
-6. Changing scope, priority or milestone happens **in the workbook** by pull request; the sync pushes it to Jira. Never edit those
+5. PR merged into `main`: Jira moves to In Review (conditional done, label `qa-pending`). QA check in the UI failed: Jira moves back to To Do (label `qa-failed`; the plan shows Not Started, the label tells why). QA check passed (`docs/guidelines/07-qa-check-in-the-ui.md`): Jira moves to Done; the nightly sync writes the status back; a small PR updates Evidence and the Test Plan status.
+6. Changing scope, priority or milestone happens **in the plan** by pull request; the sync pushes it to Jira. Never edit those
    fields in Jira (the sync would overwrite them and report the conflict).
 
 ## 4. Automation (`tools/plan-sync`, backlog #336)
 
 | Command | What it does |
 |---|---|
-| `export` | writes `plan/backlog.csv` (text mirror, reviewable diff) and `plan/jira-import.csv` (Jira CSV import format: Summary, Description, Priority, Issue type, Component, Fix version, labels, Plan ID, Work item key for updates; parents before children; max ~1,500 rows per file) |
-| `push` (needs Jira API) | creates/updates issues by Plan ID, sets links; writes the Plan ID -> issue key map to `plan/tracker-map.csv` (the workbook itself is never given tracker fields) |
-| `pull` (needs Jira API) | reads Status (and key) of every issue and updates the workbook Status column via a bot pull request |
-| `check` (CI, nightly + on PR) | fails when: a Plan ID is duplicated; a Done row has no Evidence; a workbook row has no Jira issue (checked through `plan/tracker-map.csv`); a Jira issue has no Plan ID; statuses disagree; a commit/PR in the range has no Jira key |
+| `export` | writes `plan/jira-import.csv` (Jira CSV import format: Summary, Description, Priority, Issue type, Component, Fix version, labels, Plan ID, Work item key for updates; parents before children; max ~1,500 rows per file) |
+| `push` (needs Jira API) | creates/updates issues by Plan ID, sets links; writes the Plan ID -> issue key map to `plan/tracker-map.csv` (the plan itself is never given tracker fields) |
+| `pull` (needs Jira API) | reads Status (and key) of every issue and updates the plan Status column via a bot pull request |
+| `check` (CI, nightly + on PR) | fails when: a Plan ID is duplicated; a Done row has no Evidence; a plan row has no Jira issue (checked through `plan/tracker-map.csv`); a Jira issue has no Plan ID; statuses disagree; a commit/PR in the range has no Jira key |
 
 Today only `export` exists (no Jira connector is installed here). Credentials for push/pull/check are **CI secrets, never app settings or
 files in git**: `JIRA_BASE_URL`, `JIRA_PROJECT_KEY`, `JIRA_USER_EMAIL`, `JIRA_API_TOKEN`.
 
-## 5. Keeping the workbook trustworthy
+## 5. Keeping the plan trustworthy
 
-- The workbook changes only by pull request; two people never edit it in parallel branches (it is a binary file). `plan/backlog.csv`
-  is regenerated on every change so reviewers see a text diff, and a CI check fails if the CSV is stale.
-- A weekly plan review reads the `check` report; the Summary sheet and Roadmap formulas are the reporting view, Jira boards the execution view.
+- The plan changes only by pull request. A row is one file (`plan/rows/NNNN.md`), so two people editing different rows never conflict and a
+  reviewer sees exactly the lines that changed; `python tools/plan-sync/plan_sync.py check` must pass (it also runs in CI).
+- A weekly plan review reads the `check` report; `plan_sync.py summary` is the reporting view, Jira boards the execution view.
 - Rows are never reused or renumbered (permanent Plan ID); cancelled work stays as Cancelled/Obsolete.
-- If the workbook ever becomes the bottleneck, revisit: make `plan/backlog.csv` the canonical file and generate the workbook from it.
+- Edits can be made in the file or with `plan_sync.py set <id> key=value`, `report <id> "text"` and `new <id> "title"`; both end in the same file.
 
 ## 6. One-time Jira setup (owner task, #337)
 
@@ -78,11 +78,11 @@ for a bot user stored as the CI secrets above.
 
 ## 7. Sprints, owners and the generated import file
 
-The workbook is tracker-free: it carries only planning facts. Two planning columns exist on the Backlog sheet: **Sprint** (`Sprint 1`,
+The plan is tracker-free: it carries only planning facts. Two planning columns exist in the row front matter: **Sprint** (`Sprint 1`,
 `Sprint 1 stretch`, empty = backlog) and **Owner** (the accountable person, `Member A` / `Member B` until real names are mapped). The `Sprint 1`
-sheet holds the goal, dates, capacity and the committed list.
+page (`plan/sheets/sprint-1.md`) holds the goal, dates, capacity and the committed list.
 
-`python tools/plan-sync/plan_sync.py export` turns the workbook into the Jira import file (`plan/jira-import.csv`, not committed):
+`python tools/plan-sync/plan_sync.py export` turns the plan rows into the Jira import file (`plan/jira-import.csv`, not committed):
 - every row becomes a work item whose summary is `[#<Plan ID>] <task>` and whose description has fixed sections: identity line (area, group,
   milestone, priority, effort, owner), *Why*, *What to do*, *Done when*, *Depends on* (with the titles of the blocking tasks) and *Report*;
 - milestones M0-M6 become epics and parents; rows with Sprint `Sprint 1` get the Sprint field, `Sprint 1 stretch` rows stay in the backlog with

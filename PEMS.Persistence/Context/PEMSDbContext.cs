@@ -79,6 +79,12 @@ public class PEMSDbContext
     // OnModelCreating با ToTable("Users") مشخص شده) تا هیچ Migration/داده‌ی موجودی خراب نشود.
     public DbSet<User> LegacyUsers { get; set; }
     public DbSet<Discipline> Disciplines { get; set; }
+
+    // Definition store (SCRUM-434)
+    public DbSet<PEMS.Domain.Entities.Definitions.Definition> Definitions { get; set; }
+    public DbSet<PEMS.Domain.Entities.Definitions.DefinitionVersion> DefinitionVersions { get; set; }
+    public DbSet<PEMS.Domain.Entities.Definitions.DefinitionReference> DefinitionReferences { get; set; }
+    public DbSet<PEMS.Domain.Entities.Definitions.DefinitionStamp> DefinitionStamps { get; set; }
     public DbSet<DocumentTypeCode> DocumentTypeCodes { get; set; }
     public DbSet<VendorDocumentTypologyCode> VendorDocumentTypologyCodes { get; set; }
     public DbSet<Department> Departments { get; set; }
@@ -520,6 +526,9 @@ public class PEMSDbContext
     public DbSet<Tender> Tenders { get; set; }
     public DbSet<TenderInvitedVendor> TenderInvitedVendors { get; set; }
     public DbSet<Bid> Bids { get; set; }
+
+    // SCRUM-429: ارسال ایمیلی دعوت‌نامه‌ی مناقصه (سابقه‌ی ارسال)
+    public DbSet<TenderInvitationDispatch> TenderInvitationDispatches { get; set; }
     public DbSet<BidEvaluation> BidEvaluations { get; set; }
     public DbSet<BidNegotiation> BidNegotiations { get; set; }
     public DbSet<ContractNTP> ContractNTPs { get; set; }
@@ -653,7 +662,7 @@ public class PEMSDbContext
     }
 
 
-    private static readonly HashSet<string> NeverAuditedProperties = new(StringComparer.Ordinal) { "SecurityStamp", "ConcurrencyStamp", "RowVersion" };
+    private static readonly HashSet<string> NeverAuditedProperties = new(StringComparer.Ordinal) { "SecurityStamp", "ConcurrencyStamp", "RowVersion", "PayloadJson" };
     private static readonly HashSet<string> MaskedAuditProperties = new(StringComparer.Ordinal) { "PasswordHash" };
     private static readonly HashSet<string> SecuritySensitiveEntities = new(StringComparer.Ordinal) { "ApplicationUser", "IdentityUserRole`1", "RoleAssignment", "RolePermissionGrant", "ApplicationRole" };
 

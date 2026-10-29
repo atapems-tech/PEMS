@@ -7,13 +7,13 @@ Status: **v1.1 - 2026-10-26.** Owner: PM. Applies to every developer and every A
 One place that says *how we build PEMS*: the workflow around a task, the coding standards, how to use tools and libraries,
 how to reuse components, how to research, and how the knowledge gathered while working flows back. It consolidates:
 
-- the standing **Instructions** (rules 1-26) of `plan/PEMS_Backlog_Roadmap.xlsx`;
+- the standing **Instructions** (rules 1-26) in `plan/sheets/instructions.md`;
 - the Jira workflow and the plan/Jira field ownership ([PLAN_TRACKER_WORKFLOW.md](../process/PLAN_TRACKER_WORKFLOW.md));
 - the architecture and conventions that were scattered in `README.md`, `.claude/CLAUDE.md` and `docs/design/*`;
 - the owner's working preferences (reuse before build, research first, batch similar tasks with approval).
 
-The workbook stays the source of truth for **what** to build; this guideline is the source of truth for **how**.
-When they disagree, the Instructions sheet wins for rules 1-26 and this guideline must be corrected in the same pull request.
+The plan files stay the source of truth for **what** to build; this guideline is the source of truth for **how**.
+When they disagree, the Instructions page wins for rules 1-26 and this guideline must be corrected in the same pull request.
 
 ## 2. Reading map - what to read for which task
 

@@ -1,7 +1,7 @@
 # 05 - Environment and commands
 
 ## Prerequisites
-.NET 10 SDK, SQL Server (LocalDB, Express or container), Node only for tools in `tools/UiAudit`, Python 3 + `openpyxl` for plan scripts, `gh` CLI, graphify.
+.NET 10 SDK, SQL Server (LocalDB, Express or container), Node only for tools in `tools/UiAudit`, Python 3 (standard library only) for plan scripts, `gh` CLI, graphify.
 
 ## Run
 ```bash

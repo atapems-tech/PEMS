@@ -37,3 +37,5 @@
 .ts-dropdown .spinner-text { color: var(--pems-text-muted); }
 .ts-dropdown .highlight { background: color-mix(in srgb, var(--pems-accent) 30%, transparent); color: inherit; }
 .ts-dropdown-content { max-height: 18rem; }
+/* a narrow column (e.g. the part number of an item row) still gets a readable list */
+.ts-dropdown { min-width: min(22rem, 90vw); }
