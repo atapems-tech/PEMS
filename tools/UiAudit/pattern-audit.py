@@ -17,6 +17,8 @@ ROOT = Path(__file__).resolve().parents[2]
 WEB = ROOT / "PEMS.Web"
 OUT_CSV = ROOT / "docs" / "design" / "ui-pattern-audit.csv"
 OUT_MD = ROOT / "docs" / "design" / "UI_PATTERN_AUDIT.md"
+REVIEW_CSV = ROOT / "docs" / "design" / "ui-pattern-review.csv"  # hand review of the heaviest pages (SCRUM-18)
+HEAVIEST = 30
 
 # Domain -> migration wave (W1 is the pilot: Admin + Account + shared shell).
 WAVE_RULES = [
@@ -50,6 +52,8 @@ RE = {
     "empty_state": re.compile(r"empty-state|no (records|data|items)|\bEmptyState\b", re.I),
     "skeleton": re.compile(r"skeleton|placeholder-glow|spinner-border|_PemsLoadingOverlay", re.I),
     "cdn": re.compile(r"https?://(cdn\.|cdnjs|unpkg|fonts\.googleapis|code\.jquery|stackpath)", re.I),
+    "row_form": re.compile(r"<tr\b[^>]*>(?:(?!</tr>).)*?<(?:form|input|select)\b", re.I | re.S),
+    "pdfjs": re.compile(r"pdfjs", re.I),
     "partial": re.compile(r"<partial\b|Html\.(Partial|RenderPartial)", re.I),
 }
 
@@ -91,6 +95,56 @@ TARGETS = {
 }
 
 
+def write_review(lines: list, pages: list, worst: list, review: dict) -> None:
+    lines += ["", "## Hand review of the 30 heaviest pages (SCRUM-18)", "",
+              "Source: [ui-pattern-review.csv](ui-pattern-review.csv), read page by page. **A** = convertible to the planned components as the rows #322-#325 are written; "
+              "**B** = needs a component or capability those rows do not name yet (listed); **C** = stays custom. "
+              "The `pattern` column above is the script's guess and is often wrong for detail pages (it calls them `list`); the class below is the human call. "
+              "Calls marked `?` are uncertain and need confirmation in the QA step.", "",
+              "| View | Wave | Class | New components needed | Note |", "|---|---|---|---|---|"]
+    for r in worst:
+        rv = review[r["view"]]
+        mark = " ?" if rv["uncertain"] == "yes" else ""
+        lines.append(f"| {r['view']} | {r['wave'][:2]} | {rv['class']}{mark} | {rv['new_components'] or '-'} | {rv['note']} |")
+    cnt = Counter(review[r["view"]]["class"] for r in worst)
+    unsure = sum(1 for r in worst if review[r["view"]]["uncertain"] == "yes")
+    lines += ["", f"Totals for the 30: A {cnt['A']}, B {cnt['B']}, C {cnt['C']}; uncertain calls: {unsure}.", ""]
+    lines += ["### Missing components (feed rows #322-#325)", "", "| Component | Pages that need it | Goes into |", "|---|---|---|"]
+    need = defaultdict(list)
+    for r in worst:
+        for c in filter(None, (x.strip() for x in review[r["view"]]["new_components"].split(";"))):
+            need[c].append(r["view"].split("/")[-2] + "/" + r["view"].split("/")[-1].removesuffix(".cshtml"))
+    where = {"RelatedList": "#323 (DataTable row-form mode: child list with inline add form and per-row edit / status / remove; fields from #322)",
+             "PdfViewer": "#323 (PDF.js canvas viewer, page navigation, zoom; replaces the inline module script)",
+             "TreeView": "#323 (hierarchy display with node actions: add child, move, assign; TreeSelect in #322 is the field only)",
+             "SidePanelNav": "#324 (folder / shortcut rail with counts next to a ListPage)",
+             "CheckboxMatrix": "#322 (from x to checkbox grid field)",
+             "CommentsThread replies": "#325 (CommentsThread: replies, per-comment status and action, response record)"}
+    for c, v in sorted(need.items(), key=lambda kv: -len(kv[1])):
+        lines.append(f"| {c} | {len(v)}: {', '.join(v)} | {where.get(c, '?')} |")
+    lines += ["", "Also required of components already in the rows: **ConfirmDialog** takes a required reason field (work-order, permit, letter, contract actions) - #324; "
+              "**Stepper** absorbs `_PemsStageDiagram` / `_WorkOrderStagesDiagram` - #324; **WorkflowActionBar** renders the lifecycle buttons of a Details page - #325.", ""]
+    waves = wave_table(pages, review)
+    byview = {p["view"]: p for p in pages}
+    ok = [(review[v]["class"], estimate_class(byview[v])) for v in review if v in byview]
+    agree = sum(1 for a, b in ok if a == b or (a == "C" and b == "A"))
+    lines += ["### Convertible percentage per wave", "",
+              "`as is` = A pages / all pages; `after new components` = (A + B) / all pages; `custom` = C. Reviewed pages use the hand call. "
+              "The other pages are **estimated** by a rule (PDF viewer or two or more table rows holding a form / input = B, otherwise A); "
+              f"on the {len(ok)} reviewed pages the rule agrees with the hand call {agree}/{len(ok)} times (C counted as agreed with A). "
+              "The rule is weak (it was not checked on light pages) and the unreviewed share is the bulk of the total, so read the estimated columns as an upper bound on what converts as is, and the reviewed columns as the only measured ones.", "",
+              "| Wave | Pages | Reviewed A / B / C | Estimated A / B | Convertible as is | After new components | Custom |", "|---|---|---|---|---|---|---|"]
+    tot = Counter()
+    for w, c in sorted(waves.items()):
+        a, b = c["rev_A"] + c["est_A"], c["rev_B"] + c["est_B"]
+        tot.update(c)
+        n = c["pages"]
+        lines.append(f"| {w} | {n} | {c['rev_A']} / {c['rev_B']} / {c['rev_C']} | {c['est_A']} / {c['est_B']} | {a / n:.0%} | {(a + b) / n:.0%} | {c['rev_C'] / n:.0%} |")
+    n = tot["pages"]
+    a, b = tot["rev_A"] + tot["est_A"], tot["rev_B"] + tot["est_B"]
+    lines.append(f"| **All** | {n} | {tot['rev_A']} / {tot['rev_B']} / {tot['rev_C']} | {tot['est_A']} / {tot['est_B']} | {a / n:.0%} | {(a + b) / n:.0%} | {tot['rev_C'] / n:.0%} |")
+
+
 def main() -> None:
     rows = []
     for path in sorted(WEB.rglob("*.cshtml")):
@@ -118,6 +172,7 @@ def main() -> None:
             "badges": f["badge"], "inline_style_attrs": f["inline_style"], "style_blocks": f["style_block"],
             "inline_scripts": f["script_block"], "uses_vs": int(f["vs"] > 0), "has_page_header": int(f["page_header"] > 0),
             "has_empty_state": int(f["empty_state"] > 0), "has_loading": int(f["skeleton"] > 0), "cdn_refs": f["cdn"],
+            "row_forms": f["row_form"], "pdfjs": f["pdfjs"],
         })
 
     OUT_CSV.parent.mkdir(parents=True, exist_ok=True)
@@ -166,9 +221,35 @@ def main() -> None:
         sys.exit(1)
 
 
+def load_review() -> dict:
+    if not REVIEW_CSV.exists():
+        return {}
+    with REVIEW_CSV.open(encoding="utf-8") as fh:
+        return {r["view"]: r for r in csv.DictReader(fh)}
+
+
+def estimate_class(r: dict) -> str:
+    """Rule for pages nobody has read yet: B when the page shows a PDF viewer or has two or more table rows that
+    hold a form or input (inline add / row actions), otherwise A. Its agreement with the hand review is printed in the report."""
+    return "B" if r["pdfjs"] or r["row_forms"] >= 2 else "A"
+
+
+def wave_table(pages: list, review: dict) -> dict:
+    waves = defaultdict(Counter)
+    for r in pages:
+        rv = review.get(r["view"])
+        waves[r["wave"]]["pages"] += 1
+        if rv:
+            waves[r["wave"]]["rev_" + rv["class"]] += 1
+        else:
+            waves[r["wave"]]["est_" + estimate_class(r)] += 1
+    return waves
+
+
 def write_md(s: dict, rows: list) -> None:
     pages = [r for r in rows if r["pattern"] != "partial"]
-    worst = sorted(pages, key=lambda r: -(r["inputs"] + r["tables"] * 5 + r["inline_style_attrs"]))[:15]
+    worst = sorted(pages, key=lambda r: -(r["inputs"] + r["tables"] * 5 + r["inline_style_attrs"]))[:HEAVIEST]
+    review = load_review()
     lines = [
         "# UI pattern audit (static)", "",
         "Generated by `python tools/UiAudit/pattern-audit.py --md` from the Razor source. Per-view data: "
@@ -190,6 +271,8 @@ def write_md(s: dict, rows: list) -> None:
     lines += ["", "## Heaviest pages (inputs + 5 x tables + inline styles)", "", "| View | Pattern | Inputs | Tables | Inline styles |", "|---|---|---|---|---|"]
     for r in worst:
         lines.append(f"| {r['view']} | {r['pattern']} | {r['inputs']} | {r['tables']} | {r['inline_style_attrs']} |")
+    if review:
+        write_review(lines, pages, worst, review)
     OUT_MD.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
     print("wrote", OUT_MD)
 
