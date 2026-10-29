@@ -3,6 +3,11 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-29 - Docker image restore layer (SCRUM-445)
+
+### Fixed
+- `Dockerfile`: the restore layer now copies the project files of `PEMS.Licensing`, `PEMS.UI.Abstractions` and `PEMS.UI`, which `PEMS.Web` references; `dotnet restore` inside the image (also the Azure UAT build `az containerapp up --source .`) could not find them. `LinuxDeploymentArtifactsTests` is green again.
+
 ## 2026-10-29 - Registered part numbers in material requisition items (SCRUM-428)
 
 ### Added
