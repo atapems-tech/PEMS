@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-29 - Jira key check on pull requests (SCRUM-349)
+
+### Added
+- `.github/workflows/commit-key-check.yml` (pull_request only, read-only, no secrets, no deploy) fails a PR when `SCRUM-<n>` is missing from the PR title, the branch name or any commit subject; merge commits, bot commits/PRs and `main`/`staging`/`demo` heads are exempt; batch keys missing from the title only warn. Logic and unit tests (standard library, offline) in `tools/commit-key-check`.
+
+### Changed
+- `docs/process/PLAN_TRACKER_WORKFLOW.md` section 3 now uses the `SCRUM-123` branch/commit/title convention of AGENTS.md (was `PEMS-123`); chapter 5, README and the `build.yml` comment no longer say that pull requests run nothing.
+
 ## 2026-10-29 - Docker image restore layer (SCRUM-445)
 
 ### Fixed
