@@ -3,6 +3,23 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-30 - Rich text as a standard field type, sanitized on the server (SCRUM-59)
+
+### Added
+- Field kind `RichText` (JSON `"kind":"richText"`) in `FieldDescriptor`: a form from the form builder can hold formatted text. `PemsField` renders it as a labelled `<textarea data-pems-rte>` (a plain textarea without JavaScript).
+- `PEMS.UI/wwwroot/pems-rte.js` + `pems-rte.css`, loaded by the layout: the one rich-text editor of PEMS (vendored Quill 1.3.7, BSD-3-Clause, loaded only on pages with a rich-text field).
+  - A Persian page starts right-to-left, an English page left-to-right; the direction button switches a paragraph.
+  - Every toolbar control has a localised name (`Rte_*`); a required editor is checked on submit; the image button appears only when the field gives an upload URL.
+- `FormValueSanitizer` (`PEMS.Web/Definitions`): the server step for posted form values. Rich-text values go through `IRichTextSanitizerService`, an empty editor becomes empty, names the form does not declare are dropped, other values stay as posted.
+
+### Changed
+- `_RichTextEditorScripts` (Letters) is now an adapter over `pems-rte.js`: no inline script, same behaviour (editor under its textarea, image upload, `rte-change`).
+- `RichTextSanitizerService` is stricter:
+  - only the editor's `ql-*` classes are kept (no page CSS classes in stored content);
+  - links and images only use http, https, mailto or a relative URL;
+  - a link with a `target` gets `rel="noopener noreferrer"`.
+  It applies when content is saved; stored content is unchanged until it is saved again.
+
 ## 2026-10-30 - Purchase-order lines and approval by the PO authority table (SCRUM-470)
 
 ### Added
