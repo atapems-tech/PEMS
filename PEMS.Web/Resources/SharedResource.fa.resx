@@ -3693,4 +3693,157 @@
   <data name="Dw_Action" xml:space="preserve"><value>اقدام</value></data>
   <data name="Dw_By" xml:space="preserve"><value>توسط</value></data>
   <data name="Dw_Comment" xml:space="preserve"><value>توضیح</value></data>
+  <data name="Lp_Details" xml:space="preserve"><value>جزئیات</value></data>
+  <data name="Pri_Critical" xml:space="preserve"><value>بحرانی</value></data>
+  <data name="Pri_High" xml:space="preserve"><value>بالا</value></data>
+  <data name="Pri_Medium" xml:space="preserve"><value>متوسط</value></data>
+  <data name="Pri_Low" xml:space="preserve"><value>پایین</value></data>
+  <data name="Wo_Title" xml:space="preserve"><value>دستور کارها</value></data>
+  <data name="Wo_Empty" xml:space="preserve"><value>هنوز دستور کاری ثبت نشده.</value></data>
+  <data name="Wo_St_Open" xml:space="preserve"><value>باز</value></data>
+  <data name="Wo_St_Assigned" xml:space="preserve"><value>تخصیص‌یافته</value></data>
+  <data name="Wo_St_InProgress" xml:space="preserve"><value>در حال انجام</value></data>
+  <data name="Wo_St_Completed" xml:space="preserve"><value>تکمیل‌شده</value></data>
+  <data name="Wo_St_Closed" xml:space="preserve"><value>بسته</value></data>
+  <data name="Wr_Title" xml:space="preserve"><value>درخواست‌های کار</value></data>
+  <data name="Wr_New" xml:space="preserve"><value>درخواست جدید</value></data>
+  <data name="Wr_Empty" xml:space="preserve"><value>هنوز درخواست کاری ثبت نشده.</value></data>
+  <data name="Wr_RequestedBy" xml:space="preserve"><value>درخواست‌کننده</value></data>
+  <data name="Wr_St_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="Wr_St_Submitted" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Wr_St_UnderReview" xml:space="preserve"><value>در حال بررسی</value></data>
+  <data name="Wr_St_Approved" xml:space="preserve"><value>تأییدشده</value></data>
+  <data name="Wr_St_Planned" xml:space="preserve"><value>برنامه‌ریزی‌شده</value></data>
+  <data name="Wr_St_Converted" xml:space="preserve"><value>تبدیل به دستور کار</value></data>
+  <data name="Wr_St_Rejected" xml:space="preserve"><value>ردشده</value></data>
+  <data name="Wr_St_Cancelled" xml:space="preserve"><value>لغوشده</value></data>
+  <data name="Tg_Title" xml:space="preserve"><value>برچسب‌های نامه</value></data>
+  <data name="Tg_New" xml:space="preserve"><value>برچسب جدید</value></data>
+  <data name="Tg_Empty" xml:space="preserve"><value>هنوز برچسبی ساخته نشده.</value></data>
+  <data name="Tg_Tag" xml:space="preserve"><value>برچسب</value></data>
+  <data name="Tg_UsedOn" xml:space="preserve"><value>استفاده‌شده در</value></data>
+  <data name="Tg_LetterCount" xml:space="preserve"><value>{0} نامه</value></data>
+  <data name="Tg_DeleteConfirm" xml:space="preserve"><value>این برچسب حذف شود؟</value></data>
+  <data name="Tg_Name" xml:space="preserve"><value>نام برچسب</value></data>
+  <data name="Tg_Color" xml:space="preserve"><value>رنگ</value></data>
+  <data name="Ins_Title" xml:space="preserve"><value>بازرسی‌های پایش وضعیت</value></data>
+  <data name="Ins_Hint" xml:space="preserve"><value>بازرسی‌های دوره‌ای و کمّی تجهیزات (پایش وضعیت)، جدا از بازرسی‌های پذیرش ITP پیش از راه‌اندازی. موارد هشدار و سررسیدگذشته بالای لیست‌اند. برای ثبت بازرسی جدید، از تب «بازرسی‌ها» در صفحه‌ی هر تجهیز استفاده کنید.</value></data>
+  <data name="Ins_Empty" xml:space="preserve"><value>هنوز هیچ بازرسی‌ای ثبت نشده.</value></data>
+  <data name="Ins_Tag" xml:space="preserve"><value>شماره تگ</value></data>
+  <data name="Ins_Limits" xml:space="preserve"><value>حدود مجاز</value></data>
+  <data name="Ins_Alert" xml:space="preserve"><value>هشدار</value></data>
+  <data name="Ins_Normal" xml:space="preserve"><value>عادی</value></data>
+  <data name="Ins_NotApplicable" xml:space="preserve"><value>ندارد</value></data>
+  <data name="Ins_DueSoon" xml:space="preserve"><value>نزدیک سررسید</value></data>
+  <data name="Ins_Ok" xml:space="preserve"><value>در موعد</value></data>
+  <data name="Fn_Title" xml:space="preserve"><value>یافته‌ها</value></data>
+  <data name="Fn_Empty" xml:space="preserve"><value>هیچ یافته‌ای ثبت نشده.</value></data>
+  <data name="Fn_EquipmentId" xml:space="preserve"><value>شناسه‌ی تجهیز</value></data>
+  <data name="Fn_Source" xml:space="preserve"><value>منبع</value></data>
+  <data name="Fn_CmReading" xml:space="preserve"><value>قرائت پایش وضعیت</value></data>
+  <data name="Fn_Inspection" xml:space="preserve"><value>بازرسی</value></data>
+  <data name="Fn_FailureModeCause" xml:space="preserve"><value>حالت / علت خرابی</value></data>
+  <data name="Fn_Observed" xml:space="preserve"><value>تاریخ مشاهده</value></data>
+  <data name="Fn_WorkRequest" xml:space="preserve"><value>درخواست کار</value></data>
+  <data name="Fn_Close" xml:space="preserve"><value>بستن یافته</value></data>
+  <data name="Fn_CloseConfirm" xml:space="preserve"><value>این یافته بسته شود؟</value></data>
+  <data name="Fn_St_Open" xml:space="preserve"><value>باز</value></data>
+  <data name="Fn_St_Linked" xml:space="preserve"><value>مرتبط‌شده</value></data>
+  <data name="Fn_St_Closed" xml:space="preserve"><value>بسته</value></data>
+  <data name="Mp_Title" xml:space="preserve"><value>برنامه‌های نگهداری</value></data>
+  <data name="Mp_Empty" xml:space="preserve"><value>هنوز برنامه‌ی نگهداری‌ای ثبت نشده.</value></data>
+  <data name="Mp_PlanNo" xml:space="preserve"><value>شماره برنامه</value></data>
+  <data name="Mp_GenerateDue" xml:space="preserve"><value>ساخت دستور کار برای PMهای سررسیدشده</value></data>
+  <data name="Mp_GenerateDueConfirm" xml:space="preserve"><value>برای همه‌ی برنامه‌های سررسیدشده (که دستور کار فعال ندارند) دستور کار ساخته شود؟</value></data>
+  <data name="Mp_GenerateWo" xml:space="preserve"><value>ساخت دستور کار</value></data>
+  <data name="Mp_Deactivate" xml:space="preserve"><value>غیرفعال‌کردن برنامه</value></data>
+  <data name="Mp_EveryDays" xml:space="preserve"><value>هر {0} روز</value></data>
+  <data name="Mp_MeterEvery" xml:space="preserve"><value>{0}: هر {1}</value></data>
+  <data name="Mp_DueAtReading" xml:space="preserve"><value>(سررسید در {0})</value></data>
+  <data name="Mp_CurrentReading" xml:space="preserve"><value>قرائت فعلی</value></data>
+  <data name="Mp_Record" xml:space="preserve"><value>ثبت</value></data>
+  <data name="Jp_Title" xml:space="preserve"><value>دستورالعمل‌های کار</value></data>
+  <data name="Jp_Hint" xml:space="preserve"><value>دستورالعمل اجرایی قابل استفاده‌ی مجدد: یک بار ساخته می‌شود و چند برنامه‌ی نگهداری از آن استفاده می‌کنند.</value></data>
+  <data name="Jp_New" xml:space="preserve"><value>دستورالعمل کار جدید</value></data>
+  <data name="Jp_Empty" xml:space="preserve"><value>هنوز دستورالعمل کاری ثبت نشده.</value></data>
+  <data name="Jp_Number" xml:space="preserve"><value>شماره</value></data>
+  <data name="Jp_Duration" xml:space="preserve"><value>مدت تخمینی</value></data>
+  <data name="Jp_Hours" xml:space="preserve"><value>{0} ساعت</value></data>
+  <data name="Jp_Tasks" xml:space="preserve"><value>وظایف</value></data>
+  <data name="Jp_UsedByPlans" xml:space="preserve"><value>استفاده در برنامه‌ها</value></data>
+  <data name="Jp_Safety" xml:space="preserve"><value>ایمنی</value></data>
+  <data name="Jp_Permit" xml:space="preserve"><value>مجوز کار</value></data>
+  <data name="Jp_Loto" xml:space="preserve"><value>LOTO</value></data>
+  <data name="Pt_Title" xml:space="preserve"><value>مجوزهای کار</value></data>
+  <data name="Pt_Hint" xml:space="preserve"><value>چرخه‌ی عمر مجوز: پیش‌نویس، ارسال‌شده، در حال بررسی، تأییدشده، صادرشده، فعال، معلق یا بسته. ماتریس تأیید، LOTO، تست گاز، SIMOPS و دروازه‌ی اجرا در صفحه‌ی جزئیات هر مجوز هستند.</value></data>
+  <data name="Pt_New" xml:space="preserve"><value>مجوز جدید</value></data>
+  <data name="Pt_Empty" xml:space="preserve"><value>هنوز مجوزی ثبت نشده.</value></data>
+  <data name="Pt_EmptyPending" xml:space="preserve"><value>هیچ مجوزی در انتظار تأیید شما نیست.</value></data>
+  <data name="Pt_Number" xml:space="preserve"><value>شماره مجوز</value></data>
+  <data name="Pt_PendingMine" xml:space="preserve"><value>در انتظار تأیید من</value></data>
+  <data name="Pt_CurrentStage" xml:space="preserve"><value>مرحله‌ی فعلی</value></data>
+  <data name="Pt_WaitingSince" xml:space="preserve"><value>در انتظار از</value></data>
+  <data name="Pt_WaitingDays" xml:space="preserve"><value>{0} روز و {1} ساعت در انتظار</value></data>
+  <data name="Pt_WaitingHours" xml:space="preserve"><value>{0} ساعت و {1} دقیقه در انتظار</value></data>
+  <data name="Pt_WaitingUnderHour" xml:space="preserve"><value>کمتر از یک ساعت در انتظار</value></data>
+  <data name="Pt_Issuer" xml:space="preserve"><value>صادرکننده</value></data>
+  <data name="Pt_Receiver" xml:space="preserve"><value>دریافت‌کننده</value></data>
+  <data name="Pt_Valid" xml:space="preserve"><value>اعتبار از / تا</value></data>
+  <data name="Pt_St_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="Pt_St_Submitted" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Pt_St_UnderReview" xml:space="preserve"><value>در حال بررسی</value></data>
+  <data name="Pt_St_Approved" xml:space="preserve"><value>تأییدشده</value></data>
+  <data name="Pt_St_Issued" xml:space="preserve"><value>صادرشده</value></data>
+  <data name="Pt_St_Active" xml:space="preserve"><value>فعال</value></data>
+  <data name="Pt_St_Suspended" xml:space="preserve"><value>معلق</value></data>
+  <data name="Pt_St_Closed" xml:space="preserve"><value>بسته</value></data>
+  <data name="Pt_St_Cancelled" xml:space="preserve"><value>لغوشده</value></data>
+  <data name="Pt_St_Rejected" xml:space="preserve"><value>ردشده</value></data>
+  <data name="Pt_St_Revoked" xml:space="preserve"><value>ابطال‌شده</value></data>
+  <data name="Eq_Title" xml:space="preserve"><value>تجهیزات</value></data>
+  <data name="Eq_Empty" xml:space="preserve"><value>تجهیزی یافت نشد.</value></data>
+  <data name="Eq_Name" xml:space="preserve"><value>نام</value></data>
+  <data name="Eq_Docs" xml:space="preserve"><value>مدارک</value></data>
+  <data name="Fl_Title" xml:space="preserve"><value>محل‌های عملیاتی</value></data>
+  <data name="Fl_Hint" xml:space="preserve"><value>ساختار سلسله‌مراتبی محل نصب تجهیزات (سایت / ناحیه / واحد). تجهیزات و دارایی‌ها برای اتصال واقعی (نه متن آزاد) از همین لیست استفاده می‌کنند.</value></data>
+  <data name="Fl_New" xml:space="preserve"><value>محل عملیاتی جدید</value></data>
+  <data name="Fl_Edit" xml:space="preserve"><value>ویرایش محل عملیاتی</value></data>
+  <data name="Fl_Empty" xml:space="preserve"><value>هنوز هیچ محل عملیاتی‌ای ثبت نشده.</value></data>
+  <data name="Fl_Code" xml:space="preserve"><value>کد</value></data>
+  <data name="Fl_Path" xml:space="preserve"><value>مسیر</value></data>
+  <data name="Fl_Plant" xml:space="preserve"><value>سایت</value></data>
+  <data name="Fl_Unit" xml:space="preserve"><value>واحد</value></data>
+  <data name="In_Title" xml:space="preserve"><value>فهرست جامع ابزار دقیق</value></data>
+  <data name="In_New" xml:space="preserve"><value>ابزار دقیق جدید</value></data>
+  <data name="In_Empty" xml:space="preserve"><value>ابزار دقیقی یافت نشد.</value></data>
+  <data name="In_SearchPlaceholder" xml:space="preserve"><value>جستجوی تگ / لوپ</value></data>
+  <data name="In_CalStatus" xml:space="preserve"><value>کالیبراسیون</value></data>
+  <data name="In_DueSoon30" xml:space="preserve"><value>نزدیک سررسید (۳۰ روز)</value></data>
+  <data name="In_ExportAll" xml:space="preserve"><value>خروجی اکسل همه‌ی ابزار دقیق</value></data>
+  <data name="In_Loop" xml:space="preserve"><value>لوپ</value></data>
+  <data name="In_LastCal" xml:space="preserve"><value>آخرین کالیبراسیون</value></data>
+  <data name="In_Passport" xml:space="preserve"><value>شناسنامه</value></data>
+  <data name="In_St_Overdue" xml:space="preserve"><value>سررسیدگذشته</value></data>
+  <data name="In_St_DueSoon" xml:space="preserve"><value>نزدیک سررسید</value></data>
+  <data name="In_St_OK" xml:space="preserve"><value>در موعد</value></data>
+  <data name="In_St_Unknown" xml:space="preserve"><value>نامشخص</value></data>
+  <data name="Ms_Title" xml:space="preserve"><value>راهبردهای نگهداری</value></data>
+  <data name="Sp_Title" xml:space="preserve"><value>قطعات یدکی</value></data>
+  <data name="Sp_New" xml:space="preserve"><value>قطعه‌ی یدکی جدید</value></data>
+  <data name="Sp_Edit" xml:space="preserve"><value>ویرایش قطعه‌ی یدکی</value></data>
+  <data name="Sp_Empty" xml:space="preserve"><value>قطعه‌ی یدکی‌ای یافت نشد.</value></data>
+  <data name="Sp_SearchPlaceholder" xml:space="preserve"><value>جستجوی شماره یا نام قطعه</value></data>
+  <data name="Sp_LowStockOnly" xml:space="preserve"><value>فقط موجودی کم</value></data>
+  <data name="Sp_LowStockCount" xml:space="preserve"><value>قطعات با موجودی کم</value></data>
+  <data name="Sp_BelowReorder" xml:space="preserve"><value>زیر نقطه‌ی سفارش مجدد</value></data>
+  <data name="Sp_PartNo" xml:space="preserve"><value>شماره قطعه</value></data>
+  <data name="Sp_Manufacturer" xml:space="preserve"><value>سازنده</value></data>
+  <data name="Sp_Location" xml:space="preserve"><value>محل نگهداری</value></data>
+  <data name="Sp_Stock" xml:space="preserve"><value>موجودی</value></data>
+  <data name="Sp_Deactivate" xml:space="preserve"><value>غیرفعال‌کردن قطعه</value></data>
+  <data name="As_Title" xml:space="preserve"><value>دارایی‌ها</value></data>
+  <data name="As_Empty" xml:space="preserve"><value>دارایی‌ای یافت نشد.</value></data>
+  <data name="As_St_Active" xml:space="preserve"><value>فعال</value></data>
+  <data name="As_St_Standby" xml:space="preserve"><value>آماده‌به‌کار</value></data>
+  <data name="As_St_Retired" xml:space="preserve"><value>از رده خارج</value></data>
 </root>
