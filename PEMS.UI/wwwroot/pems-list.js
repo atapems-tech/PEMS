@@ -5,6 +5,8 @@
 //     input[data-pems-search] inside it: picking a result opens it, Enter without a pick submits the form
 //   [data-lp-kpi-toggle] (aria-controls = id of the KPI row, data-storage-key = localStorage key)
 //   table.lp-table[data-grid-key] (column resize, PemsDataGrid)   [data-lp-reset-columns="gridKey"]
+//   [data-lp-bulk="name"] bulk bar: shown while input[data-lp-select] rows are ticked (input[data-lp-select-all] ticks all);
+//     its forms get the ticked values as hidden inputs called "name" on submit; [data-lp-bulk-count] shows data-count-text
 (function () {
     'use strict';
 
@@ -80,7 +82,46 @@
         });
     }
 
+    function initBulk(bar) {
+        var scope = bar.closest('.lp-panel') || document;
+        var rows = Array.prototype.slice.call(scope.querySelectorAll('input[data-lp-select]'));
+        var all = scope.querySelector('input[data-lp-select-all]');
+        var count = bar.querySelector('[data-lp-bulk-count]');
+        var name = bar.getAttribute('data-lp-bulk') || 'ids';
+        var text = bar.getAttribute('data-count-text') || '{0}';
+
+        function ticked() { return rows.filter(function (c) { return c.checked; }); }
+        function update() {
+            var n = ticked().length;
+            bar.hidden = n === 0;
+            if (count) count.textContent = text.replace('{0}', n);
+            if (all) {
+                all.checked = n > 0 && n === rows.length;
+                all.indeterminate = n > 0 && n < rows.length;
+            }
+        }
+
+        rows.forEach(function (c) { c.addEventListener('change', update); });
+        if (all) all.addEventListener('change', function () {
+            rows.forEach(function (c) { c.checked = all.checked; });
+            update();
+        });
+        bar.querySelectorAll('form').forEach(function (form) {
+            form.addEventListener('submit', function () {
+                form.querySelectorAll('input[data-lp-bulk-id]').forEach(function (i) { i.remove(); });
+                ticked().forEach(function (c) {
+                    var i = document.createElement('input');
+                    i.type = 'hidden'; i.name = name; i.value = c.value;
+                    i.setAttribute('data-lp-bulk-id', '');
+                    form.appendChild(i);
+                });
+            });
+        });
+        update();
+    }
+
     function boot() {
+        document.querySelectorAll('[data-lp-bulk]').forEach(initBulk);
         document.querySelectorAll('[data-lp-toolbar]').forEach(initSearch);
         document.querySelectorAll('[data-lp-kpi-toggle]').forEach(initKpis);
         document.querySelectorAll('table.lp-table[data-grid-key]').forEach(initGrid);

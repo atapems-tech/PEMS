@@ -31,6 +31,45 @@ Owner decisions 2026-10-30:
 
 ### Changed
 - Pre-procurement planned supply no longer counts quantity already on an issued or closed PO line (it is incoming supply), so no unit is counted twice. The replenishment calculator version is now 2.
+## 2026-10-30 - Command palette and permission-checked global search (SCRUM-64)
+
+### Added
+- Command palette: Ctrl+K / Cmd+K on every page, a click in the top-bar search box, or the search icon on a phone. It finds:
+  - menus, read from the sidebar the server already filtered for the user;
+  - actions (new letter, document, VDR item, work request, work order, equipment, MR, contract; My work, notifications, help, change password, theme and language), each shown only when the user passes the check of its page;
+  - records of every module the user may open, five per type, with "Show all results".
+- Keyboard and screen-reader support (dialog, combobox, listbox, `aria-activedescendant`), Light, Dark and Turquoise themes, RTL, phone layout. Component `pems-command-palette.js/.css` in PEMS.UI; no library, no external call.
+- Security contract of search providers: every `ISearchableEntityProvider` declares `SearchAccessRule Access` (any user, module + action, or roles; lookup-only), equal to the page its results open. `GlobalSearchService` checks it before the provider runs; row scopes (letter confidentiality, own discipline, own notifications) stay in the providers.
+
+### Changed
+- `/GlobalSearch` (the top-bar search page) shows the same checked results as the palette. Before, it queried nine tables directly with no permission or row check, so work orders, confidential letters and documents of other disciplines could be found by any signed-in user.
+- Vendor and contract results now need Vendors View / Contracts View, discipline results DisciplineWorkspace View (palette and search page). Form pickers (`/SearchApi?type=`) are unchanged.
+
+## 2026-10-30 - Rich text as a standard field type, sanitized on the server (SCRUM-59)
+
+### Added
+- Field kind `RichText` (JSON `"kind":"richText"`) in `FieldDescriptor`: a form from the form builder can hold formatted text. `PemsField` renders it as a labelled `<textarea data-pems-rte>` (a plain textarea without JavaScript).
+- `PEMS.UI/wwwroot/pems-rte.js` + `pems-rte.css`, loaded by the layout: the one rich-text editor of PEMS (vendored Quill 1.3.7, BSD-3-Clause, loaded only on pages with a rich-text field).
+  - A Persian page starts right-to-left, an English page left-to-right; the direction button switches a paragraph.
+  - Every toolbar control has a localised name (`Rte_*`); a required editor is checked on submit; the image button appears only when the field gives an upload URL.
+- `FormValueSanitizer` (`PEMS.Web/Definitions`): the server step for posted form values. Rich-text values go through `IRichTextSanitizerService`, an empty editor becomes empty, names the form does not declare are dropped, other values stay as posted.
+
+### Changed
+- `_RichTextEditorScripts` (Letters) is now an adapter over `pems-rte.js`: no inline script, same behaviour (editor under its textarea, image upload, `rte-change`).
+- `RichTextSanitizerService` is stricter:
+  - only the editor's `ql-*` classes are kept (no page CSS classes in stored content);
+  - links and images only use http, https, mailto or a relative URL;
+  - a link with a `target` gets `rel="noopener noreferrer"`.
+  It applies when content is saved; stored content is unchanged until it is saved again.
+
+## 2026-10-30 - List page component, wave 1: document control (SCRUM-337)
+
+### Added
+- Two optional list-page tools in `PEMS.UI`: `<pems-list-menu>` (an icon tool with the page's own dropdown items) and `<pems-list-bulk>` (a bar shown while rows are ticked with `data-lp-select` / `data-lp-select-all`; its forms post the ticked ids). Three generic keys (`Lp_SelectedCount`, `Lp_SelectAll`, `Lp_SelectRow`).
+
+### Changed
+- Document Register, Document Revisions, Transmittal, TQ / TSR / RFI, MDB, MOC and Document Workflow are built from the list-page component: full-window table, one icon toolbar, filters in a dropdown with chips, counts as KPI chips on demand, the shared empty state. Each page keeps its filters, columns, actions and paging. The Document Register's saved and quick filters moved into one toolbar menu, and its row selection into the shared bulk bar (no page selection script). Document Workflow shows the queue and the recent history as two panels.
+- The English texts written in these pages (headings, columns, empty texts, TQ and MOC statuses and risk levels) are resource keys in both languages now (prefixes `Dr_`, `Rv_`, `Tq_`, `Moc_`, `Mdb_`, `Dw_`).
 
 ## 2026-10-30 - Purchase-order lines and approval by the PO authority table (SCRUM-470)
 

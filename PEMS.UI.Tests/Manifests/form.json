@@ -62,7 +62,8 @@
                     "date",
                     "select",
                     "checkbox",
-                    "file"
+                    "file",
+                    "richText"
                   ]
                 },
                 "required": {

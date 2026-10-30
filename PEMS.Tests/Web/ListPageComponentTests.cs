@@ -157,4 +157,48 @@ public class ListPageComponentTests
         Assert.Contains("aria-controls=\"edKpis\"", toggle);
         Assert.Contains("data-storage-key=\"pems.docs.kpis\"", toggle);
     }
+    [Fact]
+    public async Task Bulk_bar_starts_hidden_with_a_live_count_and_the_page_text_and_field_name()
+    {
+        // W1: the bar shows while rows are ticked (pems-list.js); the count text and the posted field name come from the page
+        var html = await Run(new PemsListBulkTagHelper { CountText = "{0} selected", Name = "ids" }, "pems-list-bulk");
+
+        Assert.StartsWith("<div class=\"lp-bulk\"", html);
+        Assert.Contains("data-lp-bulk=\"ids\"", html);
+        Assert.Contains("data-count-text=\"{0} selected\"", html);
+        Assert.Contains("hidden=\"hidden\"", html);
+        Assert.Contains("aria-live=\"polite\"", html);
+        Assert.Contains("data-lp-bulk-count", html);
+    }
+
+    [Fact]
+    public async Task Menu_tool_is_an_icon_button_with_a_label_that_opens_the_page_items()
+    {
+        var html = await Run(new PemsListMenuTagHelper { Id = "views", Icon = "bi-bookmark", Label = "Saved views" },
+            "pems-list-menu", "<li><a class=\"dropdown-item\" href=\"/x\">Approved</a></li>");
+
+        Assert.Contains("id=\"views\"", html);
+        Assert.Contains("data-bs-toggle=\"dropdown\"", html);
+        Assert.Contains("title=\"Saved views\"", html);
+        Assert.Contains("<span class=\"visually-hidden\">Saved views</span>", html);
+        Assert.Contains("bi-bookmark", html);
+        var menu = Regex.Match(html, "<ul[^>]*>").Value;
+        Assert.Contains("aria-labelledby=\"views\"", menu);
+        Assert.Contains("class=\"dropdown-menu dropdown-menu-end lp-menu\"", menu);
+        Assert.Contains("href=\"/x\">Approved</a>", html);
+        Assert.Single(Regex.Matches(html, "id=\"views\""));                 // the id is on the button only
+    }
+
+    [Fact]
+    public void List_script_drives_the_bulk_bar_and_posts_the_ticked_ids()
+    {
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.slnx"))) dir = dir.Parent;
+        Assert.NotNull(dir);
+        var js = File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.UI", "wwwroot", "pems-list.js"));
+        Assert.Contains("[data-lp-bulk]", js);
+        Assert.Contains("input[data-lp-select]", js);
+        Assert.Contains("input[data-lp-select-all]", js);
+        Assert.Contains("indeterminate", js);
+    }
 }

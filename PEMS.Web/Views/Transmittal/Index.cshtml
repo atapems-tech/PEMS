@@ -7,94 +7,86 @@
 @{ ViewData["Title"] = Localizer["Vs_TransmittalRegistry"].Value; }
 @section Styles {
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
-<div class="vs-page">
+@* SCRUM-337 W1: built from the PEMS.UI list-page component. The registry has no filters; it keeps its columns, the
+   overdue-response flag and paging. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
 
-    @* Stitch: transmittal_management - header, KPI mini-cards (real values), registry table *@
-    <div class="vs-header">
-        <span class="vs-cell-sub">@Localizer["Vs_TotalTransmittals"]: <strong>@Model.TotalCount</strong></span>
-        <div class="vs-actions">
-            <a asp-action="Create" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-plus-lg"></i> @Localizer["Vs_NewTransmittal"]</a>
-        </div>
-    </div>
+    <nav class="vs-subnav" aria-label="@Localizer["Ed_Documents"]">
+        <a asp-controller="EngineeringDocuments" asp-action="Index">@Localizer["Ed_Documents"]</a>
+        <a asp-controller="DocumentRegister" asp-action="Index">@Localizer["Ed_Register"]</a>
+        <a asp-controller="VDR" asp-action="Index">@Localizer["Ed_VendorDocs"]</a>
+        <a asp-controller="Transmittal" asp-action="Index" class="active" aria-current="page">@Localizer["Ed_Transmittals"]</a>
+    </nav>
 
-    <div class="vs-panel">
-        <div class="vs-panel__head">
-            <span></span>
-            <button type="button" class="vs-btn vs-btn--sm" onclick="PemsDataGrid.resetColumns('Transmittal')">
-                <i class="bi bi-arrow-counterclockwise"></i> @Localizer["ResetColumns"]
-            </button>
-        </div>
+    <pems-list-panel>
 
-        <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
-            <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="Transmittal">
+        <pems-list-toolbar heading="@Localizer["Vs_TransmittalRegistry"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-reset-columns grid-key="Transmittal" />
+                <pems-list-new href="@Url.Action("Create")" text="@Localizer["Vs_NewTransmittal"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="Transmittal" empty="@(!Model.Items.Any())" empty-text="@Localizer["Vs_NoTransmittals"]">
                 <thead>
                     <tr>
                         <th data-col-key="no" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Vs_TransmittalNo"]</th>
                         <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Vs_Project"]</th>
                         <th data-col-key="from" data-resizable="true" data-min-width="80" data-max-width="180" style="width:110px">@Localizer["Vs_From"]</th>
                         <th data-col-key="to" data-resizable="true" data-min-width="80" data-max-width="220" style="width:140px">@Localizer["Vs_To"]</th>
-                        <th data-col-key="purpose" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Vs_Purpose"]</th>
+                        <th data-col-key="purpose" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px" class="vs-hide-md">@Localizer["Vs_Purpose"]</th>
                         <th data-col-key="items" data-resizable="true" data-min-width="60" data-max-width="120" style="width:80px">@Localizer["Vs_Items"]</th>
-                        <th data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["Status"]</th>
+                        <th data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="240" style="width:170px">@Localizer["Status"]</th>
                         <th data-col-key="date" data-resizable="true" data-min-width="100" data-max-width="160" style="width:120px">@Localizer["Vs_Date"]</th>
-                        <th data-col-key="actions" data-resizable="false" style="width:70px"></th>
+                        <th data-col-key="actions" data-resizable="false" style="width:60px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var t in Model.Items)
                     {
-                        <tr>
-                            <td class="vs-mono vs-cell-strong">@t.TransmittalNo</td>
-                            <td>@t.ProjectName</td>
-                            <td>@t.From</td>
-                            <td>@t.To</td>
-                            <td>@t.Purpose</td>
-                            <td><span class="vs-pill vs-pill--neutral">@t.ItemsCount</span></td>
+                        <tr class="lp-row">
+                            <td class="lp-no"><a asp-action="Details" asp-route-id="@t.TransmittalId" class="lp-subject" title="@t.TransmittalNo">@t.TransmittalNo</a></td>
+                            <td class="small">@t.ProjectName</td>
+                            <td class="small">@t.From</td>
+                            <td class="small">@t.To</td>
+                            <td class="vs-hide-md small">@t.Purpose</td>
+                            <td><span class="vs-pill vs-pill--neutral vs-num">@t.ItemsCount</span></td>
                             <td>
                                 <span class="vs-pill @VdrUi.TransmittalTone(t.Status)">@VdrUi.Loc(Localizer, "St_", t.Status)</span>
                                 @if (t.IsResponseOverdue)
                                 {
-                                    <span class="vs-pill vs-pill--danger">@Localizer["Vs_ResponseOverdue"]</span>
+                                    <span class="vs-pill vs-pill--icon vs-pill--danger"><i class="bi bi-clock-history" aria-hidden="true"></i> @Localizer["Vs_ResponseOverdue"]</span>
                                 }
                             </td>
-                            <td>@t.TransmittalDate.ToString("yyyy-MM-dd")</td>
-                            <td>
-                                <a asp-action="Details" asp-route-id="@t.TransmittalId" class="vs-icon-btn" title="@Localizer["Vs_View"]">
-                                    <i class="bi bi-eye"></i>
-                                </a>
+                            <td class="small text-muted">@t.TransmittalDate.ToString("yyyy-MM-dd")</td>
+                            <td class="text-nowrap lp-actions">
+                                <a asp-action="Details" asp-route-id="@t.TransmittalId" class="lp-act lp-act--always" title="@Localizer["Vs_View"]"><i class="bi bi-eye" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Vs_View"]: @t.TransmittalNo</span></a>
                             </td>
                         </tr>
                     }
                 </tbody>
-            </table>
+            </pems-list-table>
 
-            @if (!Model.Items.Any())
-            {
-                <div class="vs-empty"><i class="bi bi-inbox"></i>@Localizer["Vs_NoTransmittals"]</div>
-            }
-        </div>
-
-        <div class="vs-panel__foot">
-            @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-            {
-                Page = Model.Page,
-                TotalPages = Model.TotalPages,
-                TotalCount = Model.TotalCount,
-                PageSize = Model.PageSize,
-                GridKey = "Transmittal",
-                BaseUrl = Url.Action("Index") ?? "",
-                ExistingQueryString = ""
-            })
-        </div>
-    </div>
-</div>
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "Transmittal",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = ""
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('Transmittal');
-        });
-    </script>
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
 }

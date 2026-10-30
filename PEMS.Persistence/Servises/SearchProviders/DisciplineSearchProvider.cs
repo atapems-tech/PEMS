@@ -12,6 +12,8 @@ public class DisciplineSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "Discipline";
     public string DisplayName => "دیسیپلین‌ها";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.Permission("DisciplineWorkspace");
 
     public DisciplineSearchProvider(PEMSDbContext context)
     {
