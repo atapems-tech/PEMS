@@ -463,3 +463,59 @@ public sealed class PemsListFooterTagHelper : TagHelper
 {
     public override void Process(TagHelperContext context, TagHelperOutput output) => PemsList.Become(output, "div", "lp-footer");
 }
+
+/// <summary>
+/// Bulk-action bar (SCRUM-337 W1): hidden until at least one row is ticked. Rows tick with <c>input[data-lp-select]</c> (value = record
+/// id), the header with <c>input[data-lp-select-all]</c>. Child content = the page's bulk actions; every <c>form</c> inside receives the
+/// ticked ids as hidden inputs named <c>name</c> when it is submitted. <c>count-text</c> is the localised count, "{0}" = number ticked.
+/// </summary>
+[HtmlTargetElement("pems-list-bulk")]
+public sealed class PemsListBulkTagHelper : TagHelper
+{
+    [HtmlAttributeName("count-text")] public string CountText { get; set; } = "{0}";
+    [HtmlAttributeName("name")] public string Name { get; set; } = "ids";
+
+    public override void Process(TagHelperContext context, TagHelperOutput output)
+    {
+        PemsList.Become(output, "div", "lp-bulk");
+        output.Attributes.SetAttribute("data-lp-bulk", Name);
+        output.Attributes.SetAttribute("data-count-text", CountText);
+        output.Attributes.SetAttribute("hidden", "hidden");
+        var count = new TagBuilder("span");
+        count.AddCssClass("lp-bulk-count");
+        count.Attributes["data-lp-bulk-count"] = "";
+        count.Attributes["aria-live"] = "polite";
+        output.PreContent.AppendHtml(count);
+    }
+}
+
+/// <summary>
+/// A toolbar tool that opens a dropdown of the page's own items (SCRUM-337 W1), e.g. quick filters and saved views. Child content =
+/// the <c>li</c> items (<c>dropdown-item</c>, <c>dropdown-header</c>, <c>dropdown-divider</c>). <c>icon</c> is a Bootstrap icon,
+/// <c>label</c> the localised tool tip and accessible name.
+/// </summary>
+[HtmlTargetElement("pems-list-menu")]
+public sealed class PemsListMenuTagHelper : TagHelper
+{
+    [HtmlAttributeName("id")] public string Id { get; set; } = "";
+    [HtmlAttributeName("icon")] public string Icon { get; set; } = "bi-three-dots";
+    [HtmlAttributeName("label")] public string Label { get; set; } = "";
+
+    public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+    {
+        PemsList.Become(output, "div", "dropdown");
+        output.Attributes.RemoveAll("id");
+        var button = PemsList.IconTool("button", Icon, Label);
+        if (!string.IsNullOrEmpty(Id)) button.Attributes["id"] = Id;
+        button.Attributes["data-bs-toggle"] = "dropdown";
+        button.Attributes["aria-expanded"] = "false";
+
+        var menu = new TagBuilder("ul");
+        menu.AddCssClass("dropdown-menu dropdown-menu-end lp-menu");
+        if (!string.IsNullOrEmpty(Id)) menu.Attributes["aria-labelledby"] = Id;
+        menu.InnerHtml.AppendHtml(await output.GetChildContentAsync());
+
+        output.Content.AppendHtml(button);
+        output.Content.AppendHtml(menu);
+    }
+}

@@ -2878,4 +2878,81 @@
   <data name="Palette_Group_VDRItem" xml:space="preserve"><value>Vendor documents (VDR)</value></data>
   <data name="Palette_Group_Vendor" xml:space="preserve"><value>Vendors</value></data>
   <data name="Palette_Group_WorkOrder" xml:space="preserve"><value>Work orders</value></data>
+  <data name="Lp_SelectedCount" xml:space="preserve"><value>{0} selected</value></data>
+  <data name="Lp_SelectAll" xml:space="preserve"><value>Select all rows</value></data>
+  <data name="Lp_SelectRow" xml:space="preserve"><value>Select</value></data>
+  <data name="Dr_SearchPlaceholder" xml:space="preserve"><value>Document no or title</value></data>
+  <data name="Dr_Views" xml:space="preserve"><value>Quick and saved filters</value></data>
+  <data name="Dr_QuickFilters" xml:space="preserve"><value>Quick filters</value></data>
+  <data name="Dr_PendingReview" xml:space="preserve"><value>Pending review</value></data>
+  <data name="Dr_SavedFilters" xml:space="preserve"><value>Saved filters</value></data>
+  <data name="Dr_DeleteFilter" xml:space="preserve"><value>Delete saved filter</value></data>
+  <data name="Dr_DeleteFilterConfirm" xml:space="preserve"><value>Delete this saved filter?</value></data>
+  <data name="Dr_SaveFilter" xml:space="preserve"><value>Save this filter</value></data>
+  <data name="Dr_SaveFilterTitle" xml:space="preserve"><value>Save the current filter</value></data>
+  <data name="Dr_FilterName" xml:space="preserve"><value>Filter name</value></data>
+  <data name="Dr_SetDefault" xml:space="preserve"><value>Set as my default view for this page</value></data>
+  <data name="Dr_Unassigned" xml:space="preserve"><value>Unassigned</value></data>
+  <data name="Dr_Empty" xml:space="preserve"><value>No documents in the register.</value></data>
+  <data name="Dr_ExportSelected" xml:space="preserve"><value>Export selected to Excel</value></data>
+  <data name="Dr_CommentStatus" xml:space="preserve"><value>Comment status</value></data>
+  <data name="Rv_Title" xml:space="preserve"><value>Document revisions</value></data>
+  <data name="Rv_Document" xml:space="preserve"><value>Document</value></data>
+  <data name="Rv_New" xml:space="preserve"><value>New revision</value></data>
+  <data name="Rv_Empty" xml:space="preserve"><value>No revisions recorded yet. Choose a document in the filters to add one.</value></data>
+  <data name="Rv_PreviousRev" xml:space="preserve"><value>Previous rev</value></data>
+  <data name="Rv_IssuePurpose" xml:space="preserve"><value>Issue purpose</value></data>
+  <data name="Rv_PreparedBy" xml:space="preserve"><value>Prepared by</value></data>
+  <data name="Rv_CheckedBy" xml:space="preserve"><value>Checked by</value></data>
+  <data name="Rv_ApprovedBy" xml:space="preserve"><value>Approved by</value></data>
+  <data name="Rv_Date" xml:space="preserve"><value>Date</value></data>
+  <data name="Tq_Title" xml:space="preserve"><value>Technical queries (TQ / TSR / RFI)</value></data>
+  <data name="Tq_New" xml:space="preserve"><value>New query</value></data>
+  <data name="Tq_OpenCount" xml:space="preserve"><value>Open / in progress</value></data>
+  <data name="Tq_Empty" xml:space="preserve"><value>No technical queries found.</value></data>
+  <data name="Tq_Number" xml:space="preserve"><value>Number</value></data>
+  <data name="Tq_Subject" xml:space="preserve"><value>Subject</value></data>
+  <data name="Tq_Priority" xml:space="preserve"><value>Priority</value></data>
+  <data name="Tq_Due" xml:space="preserve"><value>Response due</value></data>
+  <data name="Tq_St_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Tq_St_PendingConfirmation" xml:space="preserve"><value>Pending confirmation</value></data>
+  <data name="Tq_St_Reopened" xml:space="preserve"><value>Reopened</value></data>
+  <data name="Tq_St_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Moc_Title" xml:space="preserve"><value>Management of change (MOC)</value></data>
+  <data name="Moc_New" xml:space="preserve"><value>New MOC</value></data>
+  <data name="Moc_OpenCount" xml:space="preserve"><value>Open / in progress</value></data>
+  <data name="Moc_HighRiskOpen" xml:space="preserve"><value>High risk, open</value></data>
+  <data name="Moc_Empty" xml:space="preserve"><value>No MOCs found.</value></data>
+  <data name="Moc_Number" xml:space="preserve"><value>Number</value></data>
+  <data name="Moc_Risk" xml:space="preserve"><value>Risk</value></data>
+  <data name="Moc_Risk_Low" xml:space="preserve"><value>Low</value></data>
+  <data name="Moc_Risk_Medium" xml:space="preserve"><value>Medium</value></data>
+  <data name="Moc_Risk_High" xml:space="preserve"><value>High</value></data>
+  <data name="Moc_St_PendingRiskAssessment" xml:space="preserve"><value>Pending risk assessment</value></data>
+  <data name="Moc_St_PendingApproval" xml:space="preserve"><value>Pending approval</value></data>
+  <data name="Moc_St_PendingSeniorApproval" xml:space="preserve"><value>Pending senior approval</value></data>
+  <data name="Moc_St_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Moc_St_PendingClosure" xml:space="preserve"><value>Pending closure</value></data>
+  <data name="Moc_St_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Moc_St_Rejected" xml:space="preserve"><value>Rejected</value></data>
+  <data name="Mdb_Title" xml:space="preserve"><value>Manufacturer data books (MDB)</value></data>
+  <data name="Mdb_New" xml:space="preserve"><value>New MDB</value></data>
+  <data name="Mdb_Empty" xml:space="preserve"><value>No MDBs yet.</value></data>
+  <data name="Mdb_Po" xml:space="preserve"><value>PO</value></data>
+  <data name="Mdb_PlannedIssue" xml:space="preserve"><value>Planned final issue</value></data>
+  <data name="Mdb_IndexDue" xml:space="preserve"><value>Index due</value></data>
+  <data name="Mdb_HardCopy" xml:space="preserve"><value>Hard copy</value></data>
+  <data name="Mdb_SoftCopy" xml:space="preserve"><value>Soft copy</value></data>
+  <data name="Mdb_Shipped" xml:space="preserve"><value>Shipped</value></data>
+  <data name="Mdb_Delivered" xml:space="preserve"><value>Delivered</value></data>
+  <data name="Dw_Queue" xml:space="preserve"><value>Pending approval queue</value></data>
+  <data name="Dw_Empty" xml:space="preserve"><value>No documents are waiting for approval.</value></data>
+  <data name="Dw_Check" xml:space="preserve"><value>Check</value></data>
+  <data name="Dw_History" xml:space="preserve"><value>Recent workflow history</value></data>
+  <data name="Dw_HistoryEmpty" xml:space="preserve"><value>No workflow history yet.</value></data>
+  <data name="Dw_From" xml:space="preserve"><value>From</value></data>
+  <data name="Dw_To" xml:space="preserve"><value>To</value></data>
+  <data name="Dw_Action" xml:space="preserve"><value>Action</value></data>
+  <data name="Dw_By" xml:space="preserve"><value>By</value></data>
+  <data name="Dw_Comment" xml:space="preserve"><value>Comment</value></data>
 </root>
