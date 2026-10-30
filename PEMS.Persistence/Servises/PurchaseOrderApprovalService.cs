@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PEMS.Application.Interfaces;
@@ -140,6 +140,11 @@ public class PurchaseOrderApprovalService : IPurchaseOrderApprovalService
             if (awarded != null) { tenderId = awarded.TenderId; bidId = awarded.AwardedBidId; }
         }
 
+        // SCRUM-473: the delivery warehouse defaults to the warehouse of the item's pre-procurement demand (replenishment knows it)
+        var demandIds = items.Where(i => i.ProcurementDemandId.HasValue).Select(i => i.ProcurementDemandId!.Value).Distinct().ToList();
+        var demandWarehouse = demandIds.Count == 0 ? new Dictionary<int, int?>() : await _context.ProcurementDemands.AsNoTracking()
+            .Where(d => demandIds.Contains(d.ProcurementDemandId)).ToDictionaryAsync(d => d.ProcurementDemandId, d => d.WarehouseId);
+
         var next = po.Lines.Count == 0 ? 1 : po.Lines.Max(l => l.LineNo) + 1;
         foreach (var i in items)
         {
@@ -159,6 +164,7 @@ public class PurchaseOrderApprovalService : IPurchaseOrderApprovalService
                 IsStockLine = catalogued,          // a free-text line starts as non-stock; the buyer completes it
                 TenderId = tenderId,
                 BidId = bidId,
+                WarehouseId = i.ProcurementDemandId.HasValue ? demandWarehouse.GetValueOrDefault(i.ProcurementDemandId.Value) : null,
             });
         }
     }
@@ -173,8 +179,11 @@ public class PurchaseOrderApprovalService : IPurchaseOrderApprovalService
         if (line.PurchaseOrder.Status != PurchaseOrderStatuses.Draft) return PoResult.Fail("Po_Err_NotDraft");
         if (input.Quantity <= 0) return PoResult.Fail("Po_Err_Quantity");
         if (input.UnitPrice < 0) return PoResult.Fail("Po_Err_Price");
+        if (input.WarehouseId.HasValue && !await _context.Warehouses.AnyAsync(w => w.WarehouseId == input.WarehouseId.Value && w.IsActive))
+            return PoResult.Fail("Po_Err_Warehouse");
 
         line.Quantity = input.Quantity;
+        if (input.WarehouseId.HasValue) line.WarehouseId = input.WarehouseId;   // an empty field keeps the warehouse (a stock line always needs one)
         line.UnitPrice = input.UnitPrice;
         line.RequiredDate = input.RequiredDate;
         line.IsStockLine = input.IsStockLine;
@@ -203,12 +212,13 @@ public class PurchaseOrderApprovalService : IPurchaseOrderApprovalService
     {
         var po = await _context.PurchaseOrders.AsNoTracking().Include(p => p.MaterialRequisition).Include(p => p.AuthorityRule)
             .Include(p => p.Lines).ThenInclude(l => l.CommodityGroup)
+            .Include(p => p.Lines).ThenInclude(l => l.Warehouse)
             .FirstOrDefaultAsync(p => p.PoId == poId);
         if (po == null) return null;
         var lines = po.Lines.OrderBy(l => l.LineNo).Select(l => new PoLineView(l.PurchaseOrderLineId, l.LineNo, l.Description, l.PartNumber, l.IsCatalogued,
             l.Quantity, l.Unit, l.UnitPrice, l.LineAmount, l.RequiredDate, l.IsStockLine, l.CommodityGroupId,
             l.CommodityGroup == null ? null : $"{l.CommodityGroup.Code} - {l.CommodityGroup.Description}",
-            l.FreeTextReason, l.MaterialRequisitionItemId, l.TenderId, l.BidId)).ToList();
+            l.FreeTextReason, l.MaterialRequisitionItemId, l.TenderId, l.BidId, l.WarehouseId, l.Warehouse?.Code)).ToList();
         return new PoApprovalView(po.PoId, po.PoNumber, po.Status, po.Currency, lines.Sum(l => l.LineAmount), po.MaterialRequisitionId,
             po.MaterialRequisition?.MRNumber, po.ApproverRole, po.AuthorityRule?.Level, po.SubmittedAt, po.SubmittedByUserName, po.ApprovedAt,
             po.ApprovedByUserName, po.RejectionReason, po.CreatedBy, lines);
@@ -229,6 +239,7 @@ public class PurchaseOrderApprovalService : IPurchaseOrderApprovalService
         {
             if (l.Quantity <= 0) return PoResult.Fail("Po_Err_Quantity");
             if (l.UnitPrice < 0) return PoResult.Fail("Po_Err_Price");
+            if (l.IsStockLine && l.WarehouseId == null) return PoResult.Fail("Po_Err_LineWarehouse");   // SCRUM-473: incoming supply needs it
             if (!l.IsCatalogued)
             {
                 if (_options.CatalogueOnlyLines) return PoResult.Fail("Po_Err_CatalogueOnly");

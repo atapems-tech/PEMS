@@ -325,8 +325,21 @@ public class PreProcurementService : IPreProcurementService, IProcurementPipelin
             && (d.Status == ProcurementDemandStatuses.Open
                 || (d.Status == ProcurementDemandStatuses.Converted && d.MaterialRequisition != null && !EndedMrStatuses.Contains(d.MaterialRequisition.Status))));
         if (materialItemIds is { Count: > 0 }) q = q.Where(d => materialItemIds.Contains(d.MaterialItemId!.Value));
-        var rows = await q.Select(d => new { Item = d.MaterialItemId!.Value, Wh = d.WarehouseId!.Value, d.Quantity }).ToListAsync(ct);
-        return rows.GroupBy(r => (r.Item, r.Wh)).ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
+        var rows = await q.Select(d => new { d.ProcurementDemandId, Item = d.MaterialItemId!.Value, Wh = d.WarehouseId!.Value, d.Quantity }).ToListAsync(ct);
+
+        // SCRUM-473: once the MR item is on a line of an issued (or closed) PO, that quantity is incoming supply from the PO line
+        // (net demand, IIncomingSupplyProvider); it leaves planned supply so the same unit is never counted twice.
+        var ids = rows.Select(r => r.ProcurementDemandId).ToList();
+        var onIssuedPo = ids.Count == 0 ? new Dictionary<int, decimal>() : (await _context.PurchaseOrderLines.AsNoTracking()
+                .Where(l => l.MaterialRequisitionItem != null && l.MaterialRequisitionItem.ProcurementDemandId != null
+                            && ids.Contains(l.MaterialRequisitionItem.ProcurementDemandId.Value)
+                            && (l.PurchaseOrder!.Status == PurchaseOrderStatuses.Issued || l.PurchaseOrder.Status == PurchaseOrderStatuses.Closed))
+                .Select(l => new { DemandId = l.MaterialRequisitionItem!.ProcurementDemandId!.Value, l.Quantity })
+                .ToListAsync(ct))
+            .GroupBy(x => x.DemandId).ToDictionary(g => g.Key, g => g.Sum(x => x.Quantity));
+
+        return rows.GroupBy(r => (r.Item, r.Wh))
+            .ToDictionary(g => g.Key, g => g.Sum(x => Math.Max(0m, x.Quantity - onIssuedPo.GetValueOrDefault(x.ProcurementDemandId))));
     }
 
     // ================================================================== helpers

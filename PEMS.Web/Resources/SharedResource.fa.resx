@@ -3616,4 +3616,76 @@
   <data name="Po_Err_RuleIncomplete" xml:space="preserve"><value>ارز و نقش تأییدکننده را وارد کنید.</value></data>
   <data name="Po_Err_RuleRange" xml:space="preserve"><value>مبالغ نامعتبر است (از مبلغ باید صفر یا بیشتر و از «تا مبلغ» بیشتر نباشد).</value></data>
   <data name="Po_Err_RuleRole" xml:space="preserve"><value>نقش تأییدکننده وجود ندارد.</value></data>
+  <data name="Po_Err_LineWarehouse" xml:space="preserve"><value>ردیف انباری باید انبار تحویل داشته باشد.</value></data>
+  <data name="Po_Err_Warehouse" xml:space="preserve"><value>انبار انتخاب‌شده پیدا نشد یا غیرفعال است.</value></data>
+  <data name="Rcv_Action_Replace" xml:space="preserve"><value>جایگزین از فروشنده</value></data>
+  <data name="Rcv_Action_CloseShort" xml:space="preserve"><value>بستن با کسری</value></data>
+  <data name="Rcv_AddPoLines" xml:space="preserve"><value>افزودن ردیف‌های PO به این رسید</value></data>
+  <data name="Rcv_ConfirmHold" xml:space="preserve"><value>تعیین تکلیف این Hold؟ بخش پذیرفته‌شده به موجودی اضافه می‌شود.</value></data>
+  <data name="Rcv_Decision" xml:space="preserve"><value>تصمیم</value></data>
+  <data name="Rcv_Default" xml:space="preserve"><value>پیش‌فرض</value></data>
+  <data name="Rcv_DeliveryWarehouse" xml:space="preserve"><value>انبار تحویل</value></data>
+  <data name="Rcv_Err_Action" xml:space="preserve"><value>تصمیم نامعتبر است.</value></data>
+  <data name="Rcv_Err_AlreadyReleased" xml:space="preserve"><value>این ردیف قبلاً برای ارسال آزاد شده است.</value></data>
+  <data name="Rcv_Err_Duplicate" xml:space="preserve"><value>یک ردیف PO دو بار در ورودی آمده است.</value></data>
+  <data name="Rcv_Err_Forbidden" xml:space="preserve"><value>مجوز این کار را ندارید.</value></data>
+  <data name="Rcv_Err_HoldNotClosed" xml:space="preserve"><value>تعیین تکلیف Hold فقط پس از تأیید بازرسی ممکن است.</value></data>
+  <data name="Rcv_Err_HoldSplit" xml:space="preserve"><value>جمع پذیرفته و ردشده باید برابر مقدار Hold باشد.</value></data>
+  <data name="Rcv_Err_ItpNotFound" xml:space="preserve"><value>ITP انتخاب‌شده پیدا نشد.</value></data>
+  <data name="Rcv_Err_LineNotCatalogued" xml:space="preserve"><value>ردیف PO بدون کد کالا را نمی‌توان به انبار وارد کرد.</value></data>
+  <data name="Rcv_Err_LineNotOnPo" xml:space="preserve"><value>یکی از ردیف‌ها متعلق به PO این رسید نیست.</value></data>
+  <data name="Rcv_Err_Negative" xml:space="preserve"><value>مقدار نمی‌تواند منفی باشد.</value></data>
+  <data name="Rcv_Err_NoLines" xml:space="preserve"><value>حداقل برای یک ردیف مقدار وارد کنید.</value></data>
+  <data name="Rcv_Err_NoOpenHold" xml:space="preserve"><value>این ردیف Hold باز ندارد.</value></data>
+  <data name="Rcv_Err_NoPo" xml:space="preserve"><value>این رسید به سفارش خرید وصل نیست.</value></data>
+  <data name="Rcv_Err_NoPoLine" xml:space="preserve"><value>این ردیف رسید به ردیف PO وصل نیست.</value></data>
+  <data name="Rcv_Err_NotDispositioned" xml:space="preserve"><value>تصمیم پس از تأیید نتیجه‌ی بازرسی ممکن است.</value></data>
+  <data name="Rcv_Err_NotDraft" xml:space="preserve"><value>ردیف فقط در وضعیت پیش‌نویس رسید اضافه می‌شود.</value></data>
+  <data name="Rcv_Err_NotFound" xml:space="preserve"><value>پیدا نشد.</value></data>
+  <data name="Rcv_Err_NotWarehouseManager" xml:space="preserve"><value>فقط مدیر انبار Hold را تعیین تکلیف می‌کند.</value></data>
+  <data name="Rcv_Err_NothingRejected" xml:space="preserve"><value>در این ردیف مقداری رد نشده است.</value></data>
+  <data name="Rcv_Err_PoNotIssued" xml:space="preserve"><value>سفارش خرید صادر نشده است.</value></data>
+  <data name="Rcv_Err_VendorMismatch" xml:space="preserve"><value>فروشنده‌ی رسید با فروشنده‌ی PO یکی نیست.</value></data>
+  <data name="Rcv_FromHold" xml:space="preserve"><value>از Hold</value></data>
+  <data name="Rcv_HoldResolved" xml:space="preserve"><value>Hold تعیین تکلیف شد.</value></data>
+  <data name="Rcv_HoldResolvedBy" xml:space="preserve"><value>تعیین تکلیف توسط</value></data>
+  <data name="Rcv_HoldWaits" xml:space="preserve"><value>در انتظار مدیر انبار.</value></data>
+  <data name="Rcv_InQc" xml:space="preserve"><value>در QC</value></data>
+  <data name="Rcv_Inspection" xml:space="preserve"><value>آزادسازی بازرسی</value></data>
+  <data name="Rcv_InspectionReleased" xml:space="preserve"><value>ردیف برای ارسال آزاد شد.</value></data>
+  <data name="Rcv_LinesAdded" xml:space="preserve"><value>ردیف‌های PO به رسید اضافه شد.</value></data>
+  <data name="Rcv_NoItp" xml:space="preserve"><value>بدون ITP</value></data>
+  <data name="Rcv_NoPoLine" xml:space="preserve"><value>بدون ردیف PO</value></data>
+  <data name="Rcv_NotCatalogued" xml:space="preserve"><value>بدون کد کالا</value></data>
+  <data name="Rcv_NotReleased" xml:space="preserve"><value>بازرسی لازم است، آزاد نشده</value></data>
+  <data name="Rcv_Open" xml:space="preserve"><value>باز</value></data>
+  <data name="Rcv_Ordered" xml:space="preserve"><value>سفارش‌شده</value></data>
+  <data name="Rcv_OsdClean" xml:space="preserve"><value>این رسید مازاد، کسری یا آسیب‌دیدگی ندارد.</value></data>
+  <data name="Rcv_OsdNote" xml:space="preserve"><value>مازاد و کسری نسبت به مقدار باز ردیف PO پیش از این رسید سنجیده می‌شود. ردشده یعنی مقدار آسیب‌دیده یا نامنطبق.</value></data>
+  <data name="Rcv_OsdReport" xml:space="preserve"><value>گزارش OS&amp;D</value></data>
+  <data name="Rcv_OsdSubtitle" xml:space="preserve"><value>کالای مازاد، کسری و آسیب‌دیده نسبت به سفارش خرید</value></data>
+  <data name="Rcv_OsdTitle" xml:space="preserve"><value>گزارش مغایرت رسید (OS&amp;D)</value></data>
+  <data name="Rcv_Over" xml:space="preserve"><value>مازاد</value></data>
+  <data name="Rcv_PoLine" xml:space="preserve"><value>ردیف PO</value></data>
+  <data name="Rcv_PurchaseOrderOptional" xml:space="preserve"><value>سفارش خرید (اختیاری)</value></data>
+  <data name="Rcv_ReceiveFromPo" xml:space="preserve"><value>دریافت از PO</value></data>
+  <data name="Rcv_ReceiveHelp" xml:space="preserve"><value>مقدار رسیده برای هر ردیف را وارد کنید؛ برای ردیف‌هایی که نرسیده‌اند ۰ بگذارید. بیشتر از مقدار باز مجاز است ولی گزارش می‌شود.</value></data>
+  <data name="Rcv_ReceiveNow" xml:space="preserve"><value>دریافت اکنون</value></data>
+  <data name="Rcv_ReceivedBefore" xml:space="preserve"><value>دریافت قبلی</value></data>
+  <data name="Rcv_ReceivedSoFar" xml:space="preserve"><value>دریافت تاکنون</value></data>
+  <data name="Rcv_Receiving" xml:space="preserve"><value>دریافت کالا</value></data>
+  <data name="Rcv_ReceivingHelp" xml:space="preserve"><value>مقدار باز = سفارش‌شده − دریافت‌شده + ردشده‌ی جایگزین. مقدار در QC و مقدار باز جزو کالای در راه حساب می‌شوند.</value></data>
+  <data name="Rcv_RejectedDamaged" xml:space="preserve"><value>ردشده / آسیب‌دیده</value></data>
+  <data name="Rcv_RejectionDecided" xml:space="preserve"><value>تصمیم ثبت شد.</value></data>
+  <data name="Rcv_Release" xml:space="preserve"><value>آزادسازی</value></data>
+  <data name="Rcv_Released" xml:space="preserve"><value>آزاد شده</value></data>
+  <data name="Rcv_ResolveHold" xml:space="preserve"><value>تعیین تکلیف Hold</value></data>
+  <data name="Rcv_Short" xml:space="preserve"><value>کسری</value></data>
+  <data name="Rcv_ThisReceipt" xml:space="preserve"><value>این رسید</value></data>
+  <data name="Rcv_Warn_InspectionNotReleased" xml:space="preserve"><value>هشدار: بازرسی لازم است و ردیف آزاد نشده است.</value></data>
+  <data name="Rcv_Warn_OtherWarehouse" xml:space="preserve"><value>هشدار: کالا در انباری غیر از انبار تحویل ردیف PO دریافت شد.</value></data>
+  <data name="Rcv_Warn_OverReceipt" xml:space="preserve"><value>هشدار: بیشتر از مقدار باز دریافت شد؛ در گزارش OS&amp;D می‌آید.</value></data>
+  <data name="Rcv_Warn_TaskNotClosed" xml:space="preserve"><value>هشدار: Hold تعیین تکلیف شد ولی کار My Work بسته نشد.</value></data>
+  <data name="MyWork_Stage_HoldResolution" xml:space="preserve"><value>تعیین تکلیف کالای نگه‌داشته</value></data>
+  <data name="IRN" xml:space="preserve"><value>رسید کالا (IRN)</value></data>
 </root>

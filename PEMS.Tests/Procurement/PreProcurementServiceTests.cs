@@ -180,6 +180,29 @@ public class PreProcurementServiceTests
         Assert.Equal(1, (await RunAsync(e)).Created);
     }
 
+    [Theory]
+    [InlineData(PurchaseOrderStatuses.Draft, 5)]
+    [InlineData(PurchaseOrderStatuses.Approved, 5)]
+    [InlineData(PurchaseOrderStatuses.Issued, 1)]
+    [InlineData(PurchaseOrderStatuses.Closed, 1)]
+    public async Task SCRUM473_Quantity_on_an_issued_PO_line_leaves_planned_supply(string poStatus, decimal expectedPlanned)
+    {
+        // once ordered on an issued PO, the quantity is incoming supply of the PO line; counting it here too would count it twice
+        var e = await NewAsync();
+        var demandId = await SentDemandAsync(e);
+        var converted = await e.Service.ConvertToRequisitionAsync(demandId, null, NewMr(e), Buyer);
+        Assert.True(converted.Success, converted.Error);
+        var mrItem = await e.Db.MaterialRequisitionItems.SingleAsync(i => i.MRId == converted.Id);
+        var po = new PurchaseOrder { PoNumber = "PO-473", ProjectId = e.Project, VendorId = 1, Status = poStatus, IsActive = true };
+        po.Lines.Add(new PurchaseOrderLine { LineNo = 1, MaterialRequisitionItemId = mrItem.MRItemId, MaterialItemId = e.Item, Description = "x", Quantity = 4 });
+        e.Db.PurchaseOrders.Add(po);
+        await e.Db.SaveChangesAsync();
+
+        var planned = await e.Service.GetPlannedSupplyAsync(null);
+
+        Assert.Equal(expectedPlanned, Assert.Single(planned).Value);
+    }
+
     // ------------------------------------------------------------ buyer decisions on a material demand
 
     [Fact]

@@ -15,6 +15,12 @@
     var holdsRole = a?.ApproverRole != null && roles.Contains(a.ApproverRole, StringComparer.OrdinalIgnoreCase);
     var isOwnPo = !string.IsNullOrEmpty(userName) && (string.Equals(userName, a?.CreatedBy, StringComparison.OrdinalIgnoreCase)
                                                       || string.Equals(userName, a?.SubmittedBy, StringComparison.OrdinalIgnoreCase));
+    // SCRUM-473: delivery warehouse, receiving and inspection release
+    var receivingLines = ViewBag.Receiving as IReadOnlyList<PEMS.Application.Interfaces.PoLineReceivingView>;
+    var warehouses = (IEnumerable<dynamic>)(ViewBag.Warehouses ?? Array.Empty<object>());
+    var plans = (IEnumerable<dynamic>)(ViewBag.InspectionPlans ?? Array.Empty<object>());
+    var canRelease = ViewBag.CanReleaseInspection == true;
+    var isIssued = a?.Status == PEMS.Domain.Entities.PurchaseOrderStatuses.Issued || Model.Status == PEMS.Domain.Entities.PurchaseOrderStatuses.Issued;
 }
 
 @if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
@@ -78,7 +84,7 @@
                         <td class="text-end" dir="ltr">@l.Quantity.ToString("0.###") @l.Unit</td>
                         <td class="text-end" dir="ltr">@l.UnitPrice.ToString("N2")</td>
                         <td class="text-end" dir="ltr">@l.LineAmount.ToString("N2")</td>
-                        <td class="small">@Localizer[l.IsStockLine ? "Po_StockLine" : "Po_DirectLine"]</td>
+                        <td class="small">@Localizer[l.IsStockLine ? "Po_StockLine" : "Po_DirectLine"]@if (l.WarehouseCode != null) { <div class="text-muted" dir="ltr">@l.WarehouseCode</div> }</td>
                         @if (isDraft && canEdit)
                         {
                             <td class="text-end text-nowrap">
@@ -100,6 +106,8 @@
                                     <div class="col-md-2"><label class="form-label">@Localizer["Po_UnitPrice"]</label><input name="unitPrice" type="number" step="any" min="0" class="form-control form-control-sm" dir="ltr" value="@l.UnitPrice.ToString(System.Globalization.CultureInfo.InvariantCulture)" /></div>
                                     <div class="col-md-2"><label class="form-label">@Localizer["Po_RequiredDate"]</label><input name="requiredDate" type="date" class="form-control form-control-sm" dir="ltr" value="@l.RequiredDate?.ToString("yyyy-MM-dd")" /></div>
                                     <div class="col-md-2"><div class="form-check mt-4"><input class="form-check-input" type="checkbox" name="isStockLine" value="true" id="stock_@l.PurchaseOrderLineId" checked="@l.IsStockLine" /><label class="form-check-label" for="stock_@l.PurchaseOrderLineId">@Localizer["Po_StockLine"]</label></div></div>
+                                    <div class="col-md-2"><label class="form-label">@Localizer["Rcv_DeliveryWarehouse"]</label>
+                                        <select name="warehouseId" class="form-select form-select-sm"><option value="">—</option>@foreach (var w in warehouses) { <option value="@w.WarehouseId" selected="@(w.WarehouseId == l.WarehouseId)">@w.Code</option> }</select></div>
                                     @if (!l.IsCatalogued)
                                     {
                                         <div class="col-md-2"><label class="form-label">@Localizer["Po_CommodityGroup"]</label>
@@ -169,5 +177,58 @@
                 <div class="flex-grow-1"><label class="form-label small" for="poReject">@Localizer["Po_RejectReason"]</label><input id="poReject" name="reason" class="form-control form-control-sm" required /></div>
                 <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> @Localizer["Po_Reject"]</button></form>
         }
+    </div>
+}
+
+@if (receivingLines?.Count > 0 && isIssued)
+{
+    <div class="content-card mt-3">
+        <h6 class="mb-2"><i class="bi bi-box-arrow-in-down" aria-hidden="true"></i> @Localizer["Rcv_Receiving"]</h6>
+        <p class="small text-muted">@Localizer["Rcv_ReceivingHelp"]</p>
+        <div class="table-responsive">
+            <table class="table table-enterprise table-sm align-middle">
+                <thead>
+                    <tr>
+                        <th>#</th><th>@Localizer["Po_Item"]</th><th class="text-end">@Localizer["Rcv_Ordered"]</th><th class="text-end">@Localizer["Rcv_InQc"]</th>
+                        <th class="text-end">@Localizer["Accepted"]</th><th class="text-end">@Localizer["Hold"]</th><th class="text-end">@Localizer["Rejected"]</th>
+                        <th class="text-end">@Localizer["Rcv_Open"]</th><th>@Localizer["Rcv_Inspection"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var r in receivingLines)
+                {
+                    <tr>
+                        <td dir="ltr">@r.LineNo</td>
+                        <td class="small">@(r.MaterialCode ?? "-") - @r.Description @if (r.WarehouseCode != null) { <span class="text-muted" dir="ltr">(@r.WarehouseCode)</span> }</td>
+                        <td class="text-end" dir="ltr">@r.Ordered.ToString("0.###") @r.Unit</td>
+                        <td class="text-end" dir="ltr">@r.InQc.ToString("0.###")</td>
+                        <td class="text-end" dir="ltr">@r.Accepted.ToString("0.###")</td>
+                        <td class="text-end" dir="ltr">@r.OnHold.ToString("0.###")</td>
+                        <td class="text-end" dir="ltr">@((r.RejectedReplaced + r.RejectedClosedShort).ToString("0.###"))@if (r.RejectedClosedShort > 0) { <div class="small text-muted">@Localizer["Rcv_Action_CloseShort"]: @r.RejectedClosedShort.ToString("0.###")</div> }</td>
+                        <td class="text-end" dir="ltr">@r.Outstanding.ToString("0.###")@if (r.OverReceived > 0) { <div class="small text-danger">@Localizer["Rcv_Over"]: @r.OverReceived.ToString("0.###")</div> }</td>
+                        <td class="small">
+                            @if (r.InspectionReleasedAt != null)
+                            {
+                                <span class="text-success">@Localizer["Rcv_Released"]</span> <span class="text-muted">@r.InspectionReleasedBy @r.InspectionReleasedAt?.ToString("yyyy-MM-dd") @r.InspectionTestPlanNumber</span>
+                            }
+                            else if (canRelease)
+                            {
+                                <form asp-action="ReleaseInspection" method="post" class="d-flex gap-1">
+                                    <input type="hidden" name="id" value="@Model.PoId" /><input type="hidden" name="lineId" value="@r.PurchaseOrderLineId" />
+                                    <select name="inspectionTestPlanId" class="form-select form-select-sm"><option value="">@Localizer["Rcv_NoItp"]</option>@foreach (var p in plans) { <option value="@p.InspectionTestPlanId">@p.ITPNumber</option> }</select>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">@Localizer["Rcv_Release"]</button>
+                                </form>
+                                @if (r.InspectionRequired) { <div class="text-warning">@Localizer["Rcv_NotReleased"]</div> }
+                            }
+                            else
+                            {
+                                <span class="@(r.InspectionRequired ? "text-warning" : "text-muted")">@(r.InspectionRequired ? Localizer["Rcv_NotReleased"].Value : "-")</span>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
     </div>
 }
