@@ -19,6 +19,8 @@ public class HelpArticleSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "HelpArticle";
     public string DisplayName => "راهنما";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser(rowScope: "published articles only");
 
     public HelpArticleSearchProvider(PEMSDbContext context)
     {

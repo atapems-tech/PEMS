@@ -1,57 +1,44 @@
-﻿@model PEMS.Web.Controllers.GlobalSearchResults
+﻿@model IReadOnlyList<PEMS.Web.Navigation.CommandPaletteGroup>
 @using Microsoft.Extensions.Localization
+@using PEMS.UI.Components
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
+@* SCRUM-64: the same permission- and row-checked results as the command palette (CommandPaletteService). *@
+@{
+    var query = (string?)ViewBag.Query;
+}
 
 <div class="content-card mb-3">
-    <form asp-action="Index" method="get" class="d-flex gap-2">
-        <input type="search" name="q" value="@ViewBag.Query" class="form-control" placeholder="Search documents, equipment, vendors, letters, projects..." autofocus />
-        <button class="btn btn-pems-solid"><i class="bi bi-search"></i> @Localizer["Search"]</button>
+    <form asp-action="Index" method="get" class="d-flex gap-2" role="search">
+        <input type="search" name="q" value="@query" class="form-control" placeholder="@Localizer["GlobalSearch_Placeholder"]"
+               aria-label="@Localizer["GlobalSearch_Placeholder"]" minlength="2" autofocus />
+        <button class="btn btn-pems-solid"><i class="bi bi-search" aria-hidden="true"></i> @Localizer["Search"]</button>
     </form>
+    <p class="text-muted small mt-2 mb-0">@Localizer["GlobalSearch_PaletteHint"]</p>
 </div>
 
-@if (!string.IsNullOrEmpty((string?)ViewBag.Query))
+@if (!string.IsNullOrWhiteSpace(query))
 {
-    @if (Model.TotalCount == 0)
+    if (Model.Count == 0)
     {
-        <div class="content-card"><p class="text-muted text-center py-4">No results for "@ViewBag.Query".</p></div>
+        <partial name="_PemsState" model="@(new EmptyStateOptions { Title = Localizer["GlobalSearch_NoResults", query].Value, Icon = "bi-search" })" />
     }
     else
     {
-        var sections = new (string Title, string Icon, List<PEMS.Web.Controllers.GlobalSearchItem> Items, string Controller)[]
+        foreach (var g in Model)
         {
-            ("Permits", "bi-shield-check", Model.Permits, "Permit"),
-            ("Work Orders", "bi-tools", Model.WorkOrders, "WorkOrder"),
-            ("Projects", "bi-kanban", Model.Projects, "Projects"),
-            ("Engineering Documents", "bi-file-earmark-text", Model.Documents, "EngineeringDocuments"),
-            ("Vendor Documents (VDR)", "bi-journal-check", Model.VendorDocuments, "VDR"),
-            ("Equipment", "bi-gear", Model.Equipment, "Equipment"),
-            ("Vendors", "bi-building", Model.Vendors, "Vendor"),
-            ("Correspondence", "bi-envelope-paper", Model.Letters, "Letter"),
-            ("Help", "bi-life-preserver", Model.HelpArticles, "Help"),
-        };
-
-        foreach (var s in sections.Where(s => s.Items.Any()))
-        {
-            <div class="content-card mb-3">
-                <h6 class="mb-3"><i class="bi @s.Icon"></i> @s.Title <span class="badge bg-secondary">@s.Items.Count</span></h6>
+            <section class="content-card mb-3" aria-labelledby="gs-@g.Type">
+                <h2 class="h6 mb-3" id="gs-@g.Type"><i class="bi @g.Icon" aria-hidden="true"></i> @g.Title <span class="badge bg-secondary">@g.Total</span></h2>
                 <ul class="list-unstyled mb-0">
-                    @foreach (var item in s.Items)
+                    @foreach (var item in g.Items)
                     {
-                        <li class="mb-1 d-flex justify-content-between border-bottom pb-1">
-                            @if (item.Url != null)
-                            {
-                                <a href="@item.Url">@item.Title</a>
-                            }
-                            else
-                            {
-                                <a asp-controller="@s.Controller" asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
-                            }
-                            <span class="text-muted small">@item.SubTitle</span>
+                        <li class="mb-1 d-flex justify-content-between gap-3 border-bottom pb-1">
+                            <a href="@item.Url">@item.Label</a>
+                            <span class="text-muted small text-truncate">@item.Sub</span>
                         </li>
                     }
                 </ul>
-            </div>
+            </section>
         }
     }
 }

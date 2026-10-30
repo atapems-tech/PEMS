@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PEMS.Application.Interfaces;
+using PEMS.Web.Navigation;
 
 namespace PEMS.Web.Controllers;
 
@@ -15,11 +16,25 @@ namespace PEMS.Web.Controllers;
 public class SearchApiController : Controller
 {
     private readonly IGlobalSearchService _searchService;
+    private readonly CommandPaletteService _palette;
 
-    public SearchApiController(IGlobalSearchService searchService)
+    public SearchApiController(IGlobalSearchService searchService, CommandPaletteService palette)
     {
         _searchService = searchService;
+        _palette = palette;
     }
+
+    // SCRUM-64 command palette: records of every module the user may open (access rule + row scope), max 5 per type.
+    // GET /SearchApi/Palette?q=PI
+    [HttpGet]
+    public async Task<IActionResult> Palette(string? q, CancellationToken ct) =>
+        Json(new { groups = await _palette.SearchAsync(q, Url, 5, ct) });
+
+    // SCRUM-64: the actions the user may run (each checked against the rule of its page), theme and language switches.
+    // GET /SearchApi/PaletteActions?returnUrl=/current/page
+    [HttpGet]
+    public async Task<IActionResult> PaletteActions(string? returnUrl) =>
+        Json(new { items = await _palette.ActionsAsync(Url, returnUrl, CommandPaletteService.ThemeOf(Request)) });
 
     // GET /SearchApi?type=Equipment&q=PI&page=1&pageSize=20&projectId=
     [HttpGet]
