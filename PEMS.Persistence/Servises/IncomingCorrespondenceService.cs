@@ -123,7 +123,7 @@ public class IncomingCorrespondenceService : IIncomingCorrespondenceService
             if (file.Content == null || !file.Content.CanSeek) { issues.Add(new("FileEmpty", "files", file.FileName)); continue; }
 
             file.Content.Position = 0;
-            var head = new byte[8];
+            var head = new byte[PEMS.Application.Uploads.UploadPolicy.HeadLength];
             var read = await file.Content.ReadAsync(head.AsMemory(0, head.Length));
             if (!IncomingCorrespondenceRules.SignatureMatches(file.FileName, head.AsSpan(0, read)))
             {

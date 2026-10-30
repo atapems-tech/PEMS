@@ -237,6 +237,7 @@ public class VDRController : Controller
     // ثبت FtpUploadedDate این‌جا همان نقش تأییدیه را ایفا می‌کند.
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
     public async Task<IActionResult> UploadToFtp(int vdrItemId, int submissionId, IFormFile file)
     {
         if (!await EnsurePermissionAsync("Edit", vdrItemId, "شما مجاز به آپلود روی FTP برای این مدرک VDR نیستید."))
@@ -392,6 +393,7 @@ public class VDRController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
     public async Task<IActionResult> AddComment(int vdrItemId, int vdrSubmissionId, string commentText, string? raisedByName,
         string? sheet, string? zone, string? reference, string? category, string? severity, string? requiredAction,
         DateTime? dueDate, IFormFile? attachment, int? pageNumber, double? pinX, double? pinY)
@@ -416,6 +418,7 @@ public class VDRController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
     public async Task<IActionResult> RecordCommentResponse(int vdrItemId, int commentId, string? responseText, IFormFile? replyAttachment)
     {
         // طبق درخواست: کاربر نخواهد همه‌چیز را دستی تایپ کند - می‌تواند خودِ فایل پاسخ را
@@ -431,6 +434,7 @@ public class VDRController : Controller
     // قبلاً فقط شماره‌ی متنی این‌ها ثبت می‌شد، بدون امکان آپلود واقعی فایل
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
     public async Task<IActionResult> UploadCommentSheet(int vdrItemId, int submissionId, IFormFile file)
     {
         var attachmentId = await SaveVdrFileAsync(file, "comment-sheets");
@@ -448,6 +452,7 @@ public class VDRController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
     public async Task<IActionResult> UploadReplySheet(int vdrItemId, int submissionId, IFormFile file)
     {
         var attachmentId = await SaveVdrFileAsync(file, "reply-sheets");

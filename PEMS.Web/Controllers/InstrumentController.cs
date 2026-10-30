@@ -532,6 +532,7 @@ public class InstrumentController : Controller
     // ساخت خودکار Equipment جدید - همون قاعده‌ی «فقط با داده‌ی موجود، هرگز حدس نزن».
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Spreadsheet)]
     public async Task<IActionResult> Import(IFormFile file)
     {
         // Import Center parity: this action has no module permission, so enforce the same role gate that shows the Import Center card

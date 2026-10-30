@@ -2830,4 +2830,11 @@
   <data name="Po_Err_RuleIncomplete" xml:space="preserve"><value>Enter the currency and the approver role.</value></data>
   <data name="Po_Err_RuleRange" xml:space="preserve"><value>The amounts are invalid (from must be zero or more and not above to).</value></data>
   <data name="Po_Err_RuleRole" xml:space="preserve"><value>The approver role does not exist.</value></data>
+  <data name="Upload_Err_Empty" xml:space="preserve"><value>The file {0} is empty or has no name.</value></data>
+  <data name="Upload_Err_TypeNotAllowed" xml:space="preserve"><value>The file {0} has a type that is not allowed here.</value></data>
+  <data name="Upload_Err_TooLarge" xml:space="preserve"><value>The file {0} is larger than {1} MB.</value></data>
+  <data name="Upload_Err_ContentMismatch" xml:space="preserve"><value>The content of the file {0} does not match its type.</value></data>
+  <data name="Upload_Err_Infected" xml:space="preserve"><value>The file {0} was refused by the malware scanner.</value></data>
+  <data name="Upload_Err_ScanFailed" xml:space="preserve"><value>The file {0} could not be checked by the malware scanner; try again or ask the administrator.</value></data>
+  <data name="Upload_Err_NoPolicy" xml:space="preserve"><value>This page does not accept files.</value></data>
 </root>

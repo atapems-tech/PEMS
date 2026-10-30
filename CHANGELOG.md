@@ -3,6 +3,20 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-30 - One guard for every upload; sandboxed preview (SCRUM-202)
+
+### Added
+- `IUploadGuard` (PEMS.Application/Uploads): every uploaded file is checked against the action's profile (Attachment, Image, Spreadsheet, Csv, Pdf, LicenceFile) - extension allowlist, declared content type, first bytes, size, then the malware-scan hook. Executables, scripts, HTML and SVG are never accepted.
+- A global MVC filter runs the guard before model binding for all 34 upload actions (each carries `[UploadPolicy(...)]`); files sent to an action without a policy are refused. A refused page post returns to the page with the message; fetch/AJAX gets 400 JSON, `/api` a problem.
+- Malware-scan hook `IMalwareScanner`, offline only: `None` (default) or `Command` (a scanner installed on the server, e.g. ClamAV `clamscan` or Defender `MpCmdRun`, run on a quarantined copy; a failed or timed-out scan refuses the file).
+- Settings `Uploads__MaxFileSizeMb` (25), `Uploads__MaxRequestSizeMb` (100) and `Uploads__MalwareScan__*` in all six env files; Kestrel, IIS in-process and the form reader follow the request limit.
+- `Files/Preview/{id}`: same access check as Download; PDF, raster images and text are shown inline, every other type is downloaded.
+- Served files carry `X-Content-Type-Options: nosniff`, a `Content-Security-Policy` (sandbox; PDFs without `sandbox` because Chromium's viewer refuses it) and PEMS's own content type for the extension.
+
+### Changed
+- Profile photos, drawn signatures and letter editor images are stored in the file store (outside wwwroot) and served by `Files/Image`, which needs a login. Old `/uploads/profile-photos|signatures|letters/inline` URLs keep working through the same action; nothing under `/uploads` is served as a static file any more (old editor images, 404 since the containment work, show again).
+- The correspondence signature check uses the shared allowlist table.
+
 ## 2026-10-30 - Purchase-order lines and approval by the PO authority table (SCRUM-470)
 
 ### Added

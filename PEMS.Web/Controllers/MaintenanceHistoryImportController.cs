@@ -47,6 +47,7 @@ public class MaintenanceHistoryImportController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Spreadsheet)]
     public async Task<IActionResult> Upload(IFormFile file)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, Module, "Create"))

@@ -48,6 +48,7 @@ public class OrganizationImportController : Controller
     }
 
     [HttpPost, ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Spreadsheet)]
     public async Task<IActionResult> Validate(IFormFile? file)
     {
         if (!ImportCatalog.CanUse("OrganizationStructure", User)) return Forbid();

@@ -283,6 +283,7 @@ public class MOCController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [RequestSizeLimit(20_000_000)]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
     public async Task<IActionResult> UploadAttachment(int mocId, IFormFile file)
     {
         if (file == null || file.Length == 0)

@@ -27,34 +27,9 @@ public static class IncomingCorrespondenceRules
     public static readonly string[] AllowedExtensions =
         LetterComposeRules.AllowedAttachmentExtensions.Concat(new[] { ".tif", ".tiff", ".eml", ".msg" }).ToArray();
 
-    /// <summary>امضای (Magic Bytes) پسوندهایی که قابل بررسی‌اند؛ پسوند دیگر (متنی/DWG ...) فقط با فهرست پسوند مجاز کنترل می‌شود.</summary>
-    private static readonly Dictionary<string, byte[][]> Signatures = new()
-    {
-        [".pdf"] = new[] { new byte[] { 0x25, 0x50, 0x44, 0x46 } },
-        [".png"] = new[] { new byte[] { 0x89, 0x50, 0x4E, 0x47 } },
-        [".jpg"] = new[] { new byte[] { 0xFF, 0xD8, 0xFF } },
-        [".jpeg"] = new[] { new byte[] { 0xFF, 0xD8, 0xFF } },
-        [".gif"] = new[] { new byte[] { 0x47, 0x49, 0x46, 0x38 } },
-        [".tif"] = new[] { new byte[] { 0x49, 0x49, 0x2A, 0x00 }, new byte[] { 0x4D, 0x4D, 0x00, 0x2A } },
-        [".tiff"] = new[] { new byte[] { 0x49, 0x49, 0x2A, 0x00 }, new byte[] { 0x4D, 0x4D, 0x00, 0x2A } },
-        [".docx"] = new[] { new byte[] { 0x50, 0x4B } },
-        [".xlsx"] = new[] { new byte[] { 0x50, 0x4B } },
-        [".pptx"] = new[] { new byte[] { 0x50, 0x4B } },
-        [".zip"] = new[] { new byte[] { 0x50, 0x4B } },
-        [".doc"] = new[] { new byte[] { 0xD0, 0xCF, 0x11, 0xE0 } },
-        [".xls"] = new[] { new byte[] { 0xD0, 0xCF, 0x11, 0xE0 } },
-        [".ppt"] = new[] { new byte[] { 0xD0, 0xCF, 0x11, 0xE0 } },
-        [".msg"] = new[] { new byte[] { 0xD0, 0xCF, 0x11, 0xE0 } },
-    };
-
-    public static bool SignatureMatches(string fileName, ReadOnlySpan<byte> head)
-    {
-        var ext = Path.GetExtension(fileName ?? "").ToLowerInvariant();
-        if (!Signatures.TryGetValue(ext, out var options)) return true;
-        foreach (var sig in options)
-            if (head.Length >= sig.Length && head[..sig.Length].SequenceEqual(sig)) return true;
-        return false;
-    }
+    /// <summary>First bytes fit the extension; the signature table is the shared upload allowlist (SCRUM-202, <see cref="Uploads.UploadPolicy"/>).</summary>
+    public static bool SignatureMatches(string fileName, ReadOnlySpan<byte> head) =>
+        Uploads.UploadPolicy.SignatureMatches(Uploads.UploadPolicy.ExtensionOf(fileName), head);
 
     public static string? ValidateFile(string fileName, long length)
     {

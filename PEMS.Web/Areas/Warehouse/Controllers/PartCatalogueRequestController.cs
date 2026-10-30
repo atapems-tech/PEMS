@@ -277,6 +277,7 @@ public class PartCatalogueRequestController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [RequestSizeLimit(25_000_000)]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
     public async Task<IActionResult> UploadAttachment(int id, IFormFile? file, string? kind)
     {
         var actor = Actor;
