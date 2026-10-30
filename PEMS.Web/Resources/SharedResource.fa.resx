@@ -3534,4 +3534,86 @@
   <data name="Ppr_Err_NoTarget" xml:space="preserve"><value>MR جدید یا موجود را انتخاب کنید.</value></data>
   <data name="Ppr_Err_ProjectDiscipline" xml:space="preserve"><value>پروژه و دیسیپلین MR جدید را انتخاب کنید.</value></data>
   <data name="Ppr_Err_ReasonRequired" xml:space="preserve"><value>ذکر دلیل الزامی است.</value></data>
+  <data name="MyWork_Module_PurchaseOrder" xml:space="preserve"><value>سفارش خرید</value></data>
+  <data name="Po_Status_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="Po_Status_Submitted" xml:space="preserve"><value>ارسال برای تأیید</value></data>
+  <data name="Po_Status_Approved" xml:space="preserve"><value>تأییدشده</value></data>
+  <data name="Po_Status_Issued" xml:space="preserve"><value>صادرشده</value></data>
+  <data name="Po_Status_Closed" xml:space="preserve"><value>بسته‌شده</value></data>
+  <data name="Po_Status_Cancelled" xml:space="preserve"><value>لغوشده</value></data>
+  <data name="Po_Lines" xml:space="preserve"><value>ردیف‌ها</value></data>
+  <data name="Po_NoLines" xml:space="preserve"><value>هنوز ردیفی ندارد. ردیف‌ها را از یک MR ارسال‌شده به تدارکات اضافه کنید.</value></data>
+  <data name="Po_Item" xml:space="preserve"><value>قلم</value></data>
+  <data name="Po_Quantity" xml:space="preserve"><value>مقدار</value></data>
+  <data name="Po_UnitPrice" xml:space="preserve"><value>قیمت واحد</value></data>
+  <data name="Po_Amount" xml:space="preserve"><value>مبلغ</value></data>
+  <data name="Po_Total" xml:space="preserve"><value>جمع</value></data>
+  <data name="Po_Supply" xml:space="preserve"><value>نوع</value></data>
+  <data name="Po_StockLine" xml:space="preserve"><value>ورود به انبار</value></data>
+  <data name="Po_DirectLine" xml:space="preserve"><value>مصرف مستقیم / خدمات</value></data>
+  <data name="Po_RequiredDate" xml:space="preserve"><value>تاریخ نیاز</value></data>
+  <data name="Po_CommodityGroup" xml:space="preserve"><value>گروه کالا</value></data>
+  <data name="Po_FreeTextReason" xml:space="preserve"><value>دلیل (کاتالوگ‌نشده)</value></data>
+  <data name="Po_SaveLine" xml:space="preserve"><value>ذخیره‌ی ردیف</value></data>
+  <data name="Po_RemoveLine" xml:space="preserve"><value>حذف ردیف</value></data>
+  <data name="Po_FromAward" xml:space="preserve"><value>مناقصه‌ی برنده</value></data>
+  <data name="Po_AddFromMr" xml:space="preserve"><value>افزودن ردیف از MR</value></data>
+  <data name="Po_AddLines" xml:space="preserve"><value>افزودن ردیف‌ها</value></data>
+  <data name="Po_RejectedBecause" xml:space="preserve"><value>برگشت به پیش‌نویس</value></data>
+  <data name="Po_Approval" xml:space="preserve"><value>تأیید</value></data>
+  <data name="Po_Submitted" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Po_ApproverRole" xml:space="preserve"><value>نقش تأییدکننده</value></data>
+  <data name="Po_Level" xml:space="preserve"><value>سطح</value></data>
+  <data name="Po_ApprovedBy" xml:space="preserve"><value>تأیید</value></data>
+  <data name="Po_ResponsibleNotSet" xml:space="preserve"><value>مسئول تعیین نشده: هیچ سطح فعالِ جدول حد اختیار PO با این ارز و مبلغ جور نیست. از مدیر سیستم بخواهید یک سطح اضافه کند (مدیریت &gt; حد اختیار PO) و بعد دوباره ارجاع دهید.</value></data>
+  <data name="Po_RouteAgain" xml:space="preserve"><value>ارجاع دوباره</value></data>
+  <data name="Po_Submit" xml:space="preserve"><value>ارسال برای تأیید</value></data>
+  <data name="Po_SubmitHint" xml:space="preserve"><value>ردیف‌ها بررسی، مبلغ جمع و سفارش به تأییدکننده‌ی سطح حد اختیار مربوط فرستاده می‌شود.</value></data>
+  <data name="Po_Approve" xml:space="preserve"><value>تأیید</value></data>
+  <data name="Po_Reject" xml:space="preserve"><value>برگشت به پیش‌نویس</value></data>
+  <data name="Po_RejectReason" xml:space="preserve"><value>دلیل برگشت</value></data>
+  <data name="Po_CreateFromMr" xml:space="preserve"><value>سفارش خرید از این MR</value></data>
+  <data name="Po_Create" xml:space="preserve"><value>ساخت سفارش خرید</value></data>
+  <data name="Po_Currency" xml:space="preserve"><value>ارز</value></data>
+  <data name="Po_CreateHint" xml:space="preserve"><value>یک سفارش خرید پیش‌نویس با یک ردیف برای هر قلمِ سفارش‌نشده‌ی MR ساخته می‌شود. اگر شماره‌گذاری خودکار فعال است، شماره را خالی بگذارید.</value></data>
+  <data name="Po_Created" xml:space="preserve"><value>سفارش خرید پیش‌نویس از MR ساخته شد.</value></data>
+  <data name="Po_LinesAdded" xml:space="preserve"><value>ردیف‌ها اضافه شد.</value></data>
+  <data name="Po_Saved" xml:space="preserve"><value>ذخیره شد.</value></data>
+  <data name="Po_Approved" xml:space="preserve"><value>سفارش خرید تأیید شد.</value></data>
+  <data name="Po_Rejected" xml:space="preserve"><value>به پیش‌نویس برگشت.</value></data>
+  <data name="Po_AuthorityTitle" xml:space="preserve"><value>حد اختیار سفارش خرید</value></data>
+  <data name="Po_AuthorityHint" xml:space="preserve"><value>چه کسی سفارش خرید را بر اساس ارز و مبلغ تأیید می‌کند. سفارشِ ارسال‌شده به نقشِ پایین‌ترین سطح فعالی می‌رود که بازه‌اش مبلغ سفارش را در بر دارد. هیچ مقداری از پیش تعیین نشده؛ اگر سطحی جور نباشد سفارش با وضعیت «مسئول تعیین نشده» می‌ماند.</value></data>
+  <data name="Po_NoRules" xml:space="preserve"><value>هنوز سطحی تعریف نشده است.</value></data>
+  <data name="Po_From" xml:space="preserve"><value>از مبلغ</value></data>
+  <data name="Po_To" xml:space="preserve"><value>تا مبلغ</value></data>
+  <data name="Po_Active" xml:space="preserve"><value>فعال</value></data>
+  <data name="Po_Inactive" xml:space="preserve"><value>غیرفعال</value></data>
+  <data name="Po_Activate" xml:space="preserve"><value>فعال‌سازی</value></data>
+  <data name="Po_Deactivate" xml:space="preserve"><value>غیرفعال‌سازی</value></data>
+  <data name="Po_NewRule" xml:space="preserve"><value>سطح جدید حد اختیار</value></data>
+  <data name="Po_SaveRule" xml:space="preserve"><value>ذخیره</value></data>
+  <data name="Po_RuleSaved" xml:space="preserve"><value>سطح حد اختیار ذخیره شد.</value></data>
+  <data name="Po_Err_Forbidden" xml:space="preserve"><value>برای این کار مجوز ندارید.</value></data>
+  <data name="Po_Err_NotFound" xml:space="preserve"><value>سفارش خرید یا ردیف پیدا نشد.</value></data>
+  <data name="Po_Err_MrNotEligible" xml:space="preserve"><value>از این MR نمی‌توان سفارش خرید ساخت: باید به تدارکات ارسال شده باشد (و در کارتابل تدارکات پذیرفته شده باشد) یا از کارتابل تدارکات ساخته شده باشد.</value></data>
+  <data name="Po_Err_Currency" xml:space="preserve"><value>ارز را وارد کنید.</value></data>
+  <data name="Po_Err_Vendor" xml:space="preserve"><value>یک فروشنده‌ی فعال انتخاب کنید.</value></data>
+  <data name="Po_Err_NoFreeItems" xml:space="preserve"><value>همه‌ی اقلام این MR از قبل روی سفارش خرید هستند.</value></data>
+  <data name="Po_Err_NotDraft" xml:space="preserve"><value>ردیف‌ها فقط وقتی سفارش پیش‌نویس است تغییر می‌کنند.</value></data>
+  <data name="Po_Err_ProjectMismatch" xml:space="preserve"><value>این MR مال پروژه‌ی دیگری است.</value></data>
+  <data name="Po_Err_Quantity" xml:space="preserve"><value>مقدار باید بیشتر از صفر باشد.</value></data>
+  <data name="Po_Err_Price" xml:space="preserve"><value>قیمت واحد نمی‌تواند منفی باشد.</value></data>
+  <data name="Po_Err_NoLines" xml:space="preserve"><value>سفارش خرید دست‌کم یک ردیف لازم دارد.</value></data>
+  <data name="Po_Err_CatalogueOnly" xml:space="preserve"><value>روی سفارش خرید فقط قطعه‌ی کاتالوگ‌شده مجاز است (تنظیم Procurement__CatalogueOnlyLines).</value></data>
+  <data name="Po_Err_StockLineNotCatalogued" xml:space="preserve"><value>ردیفی که وارد انبار می‌شود باید قطعه‌ی کاتالوگ‌شده باشد؛ قطعه را ثبت کنید یا ردیف را «مصرف مستقیم / خدمات» کنید.</value></data>
+  <data name="Po_Err_FreeTextIncomplete" xml:space="preserve"><value>ردیف کاتالوگ‌نشده گروه کالا و دلیل لازم دارد.</value></data>
+  <data name="Po_Err_AlreadyRouted" xml:space="preserve"><value>این سفارش تأییدکننده دارد.</value></data>
+  <data name="Po_Err_NotSubmitted" xml:space="preserve"><value>این سفارش در انتظار تأیید نیست.</value></data>
+  <data name="Po_Err_NotApprover" xml:space="preserve"><value>فقط نقش تأییدکننده‌ی سطح حد اختیار این سفارش می‌تواند درباره‌ی آن تصمیم بگیرد.</value></data>
+  <data name="Po_Err_SoD" xml:space="preserve"><value>کسی که سفارش را ساخته یا ارسال کرده نمی‌تواند آن را تأیید کند (تفکیک وظایف).</value></data>
+  <data name="Po_Err_ReasonRequired" xml:space="preserve"><value>ذکر دلیل الزامی است.</value></data>
+  <data name="Po_Err_Concurrent" xml:space="preserve"><value>کاربر دیگری هم‌زمان این سفارش را تغییر داد؛ دوباره باز کنید.</value></data>
+  <data name="Po_Err_RuleIncomplete" xml:space="preserve"><value>ارز و نقش تأییدکننده را وارد کنید.</value></data>
+  <data name="Po_Err_RuleRange" xml:space="preserve"><value>مبالغ نامعتبر است (از مبلغ باید صفر یا بیشتر و از «تا مبلغ» بیشتر نباشد).</value></data>
+  <data name="Po_Err_RuleRole" xml:space="preserve"><value>نقش تأییدکننده وجود ندارد.</value></data>
 </root>

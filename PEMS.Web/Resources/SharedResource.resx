@@ -2747,4 +2747,87 @@
   <data name="Ppr_Err_NoTarget" xml:space="preserve"><value>Choose a new or an existing MR.</value></data>
   <data name="Ppr_Err_ProjectDiscipline" xml:space="preserve"><value>Choose the project and the discipline of the new MR.</value></data>
   <data name="Ppr_Err_ReasonRequired" xml:space="preserve"><value>A reason is required.</value></data>
+  <data name="MyWork_Module_PurchaseOrder" xml:space="preserve"><value>Purchase orders</value></data>
+  <data name="MyWork_Stage_Approval" xml:space="preserve"><value>Approval</value></data>
+  <data name="Po_Status_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Po_Status_Submitted" xml:space="preserve"><value>Submitted for approval</value></data>
+  <data name="Po_Status_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Po_Status_Issued" xml:space="preserve"><value>Issued</value></data>
+  <data name="Po_Status_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Po_Status_Cancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Po_Lines" xml:space="preserve"><value>Lines</value></data>
+  <data name="Po_NoLines" xml:space="preserve"><value>No lines yet. Add them from an MR issued to procurement.</value></data>
+  <data name="Po_Item" xml:space="preserve"><value>Item</value></data>
+  <data name="Po_Quantity" xml:space="preserve"><value>Quantity</value></data>
+  <data name="Po_UnitPrice" xml:space="preserve"><value>Unit price</value></data>
+  <data name="Po_Amount" xml:space="preserve"><value>Amount</value></data>
+  <data name="Po_Total" xml:space="preserve"><value>Total</value></data>
+  <data name="Po_Supply" xml:space="preserve"><value>Supply</value></data>
+  <data name="Po_StockLine" xml:space="preserve"><value>Into stock</value></data>
+  <data name="Po_DirectLine" xml:space="preserve"><value>Direct use / service</value></data>
+  <data name="Po_RequiredDate" xml:space="preserve"><value>Required date</value></data>
+  <data name="Po_CommodityGroup" xml:space="preserve"><value>Commodity group</value></data>
+  <data name="Po_FreeTextReason" xml:space="preserve"><value>Reason (not catalogued)</value></data>
+  <data name="Po_SaveLine" xml:space="preserve"><value>Save line</value></data>
+  <data name="Po_RemoveLine" xml:space="preserve"><value>Remove line</value></data>
+  <data name="Po_FromAward" xml:space="preserve"><value>awarded tender</value></data>
+  <data name="Po_AddFromMr" xml:space="preserve"><value>Add lines from MR</value></data>
+  <data name="Po_AddLines" xml:space="preserve"><value>Add lines</value></data>
+  <data name="Po_RejectedBecause" xml:space="preserve"><value>Returned to draft</value></data>
+  <data name="Po_Approval" xml:space="preserve"><value>Approval</value></data>
+  <data name="Po_Submitted" xml:space="preserve"><value>Submitted</value></data>
+  <data name="Po_ApproverRole" xml:space="preserve"><value>Approver role</value></data>
+  <data name="Po_Level" xml:space="preserve"><value>Level</value></data>
+  <data name="Po_ApprovedBy" xml:space="preserve"><value>Approved</value></data>
+  <data name="Po_ResponsibleNotSet" xml:space="preserve"><value>Responsible not set: no active PO authority rule matches this currency and amount. Ask the administrator to add one (Administration &gt; PO authority), then route again.</value></data>
+  <data name="Po_RouteAgain" xml:space="preserve"><value>Route again</value></data>
+  <data name="Po_Submit" xml:space="preserve"><value>Submit for approval</value></data>
+  <data name="Po_SubmitHint" xml:space="preserve"><value>Checks the lines, totals the value and sends the PO to the approver of the matching authority level.</value></data>
+  <data name="Po_Approve" xml:space="preserve"><value>Approve</value></data>
+  <data name="Po_Reject" xml:space="preserve"><value>Return to draft</value></data>
+  <data name="Po_RejectReason" xml:space="preserve"><value>Reason for returning</value></data>
+  <data name="Po_CreateFromMr" xml:space="preserve"><value>Purchase order from this MR</value></data>
+  <data name="Po_Create" xml:space="preserve"><value>Create PO</value></data>
+  <data name="Po_Currency" xml:space="preserve"><value>Currency</value></data>
+  <data name="Po_CreateHint" xml:space="preserve"><value>Creates a draft PO with one line per MR item not already ordered. Leave the number empty when automatic numbering is active.</value></data>
+  <data name="Po_Created" xml:space="preserve"><value>Draft purchase order created from the MR.</value></data>
+  <data name="Po_LinesAdded" xml:space="preserve"><value>Lines added.</value></data>
+  <data name="Po_Saved" xml:space="preserve"><value>Saved.</value></data>
+  <data name="Po_Approved" xml:space="preserve"><value>Purchase order approved.</value></data>
+  <data name="Po_Rejected" xml:space="preserve"><value>Returned to draft.</value></data>
+  <data name="Po_AuthorityTitle" xml:space="preserve"><value>PO authority</value></data>
+  <data name="Po_AuthorityHint" xml:space="preserve"><value>Who approves a purchase order, by currency and amount. A submitted PO goes to the role of the lowest active level whose range holds its value. Nothing is preset; with no matching rule the PO waits as 'responsible not set'.</value></data>
+  <data name="Po_NoRules" xml:space="preserve"><value>No authority levels yet.</value></data>
+  <data name="Po_From" xml:space="preserve"><value>From amount</value></data>
+  <data name="Po_To" xml:space="preserve"><value>To amount</value></data>
+  <data name="Po_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Po_Inactive" xml:space="preserve"><value>Inactive</value></data>
+  <data name="Po_Activate" xml:space="preserve"><value>Activate</value></data>
+  <data name="Po_Deactivate" xml:space="preserve"><value>Deactivate</value></data>
+  <data name="Po_NewRule" xml:space="preserve"><value>New authority level</value></data>
+  <data name="Po_SaveRule" xml:space="preserve"><value>Save</value></data>
+  <data name="Po_RuleSaved" xml:space="preserve"><value>Authority level saved.</value></data>
+  <data name="Po_Err_Forbidden" xml:space="preserve"><value>You do not have permission for this action.</value></data>
+  <data name="Po_Err_NotFound" xml:space="preserve"><value>Purchase order or line not found.</value></data>
+  <data name="Po_Err_MrNotEligible" xml:space="preserve"><value>This MR cannot feed a purchase order: it must be issued to procurement (and accepted in the procurement cartable) or raised from the cartable.</value></data>
+  <data name="Po_Err_Currency" xml:space="preserve"><value>Enter the currency.</value></data>
+  <data name="Po_Err_Vendor" xml:space="preserve"><value>Choose an active vendor.</value></data>
+  <data name="Po_Err_NoFreeItems" xml:space="preserve"><value>Every item of this MR is already on a purchase order.</value></data>
+  <data name="Po_Err_NotDraft" xml:space="preserve"><value>Lines can be changed only while the PO is a draft.</value></data>
+  <data name="Po_Err_ProjectMismatch" xml:space="preserve"><value>The MR belongs to another project.</value></data>
+  <data name="Po_Err_Quantity" xml:space="preserve"><value>The quantity must be greater than zero.</value></data>
+  <data name="Po_Err_Price" xml:space="preserve"><value>The unit price cannot be negative.</value></data>
+  <data name="Po_Err_NoLines" xml:space="preserve"><value>A purchase order needs at least one line.</value></data>
+  <data name="Po_Err_CatalogueOnly" xml:space="preserve"><value>Only catalogued parts are allowed on purchase orders (setting Procurement__CatalogueOnlyLines).</value></data>
+  <data name="Po_Err_StockLineNotCatalogued" xml:space="preserve"><value>A line that goes into stock must be a catalogued part; register the part or mark the line as direct use / service.</value></data>
+  <data name="Po_Err_FreeTextIncomplete" xml:space="preserve"><value>A line that is not catalogued needs a commodity group and a reason.</value></data>
+  <data name="Po_Err_AlreadyRouted" xml:space="preserve"><value>The PO already has an approver.</value></data>
+  <data name="Po_Err_NotSubmitted" xml:space="preserve"><value>The PO is not waiting for approval.</value></data>
+  <data name="Po_Err_NotApprover" xml:space="preserve"><value>Only the approver role of this PO's authority level can decide it.</value></data>
+  <data name="Po_Err_SoD" xml:space="preserve"><value>The person who created or submitted the PO cannot approve it (segregation of duties).</value></data>
+  <data name="Po_Err_ReasonRequired" xml:space="preserve"><value>A reason is required.</value></data>
+  <data name="Po_Err_Concurrent" xml:space="preserve"><value>Someone else changed this PO at the same time; open it again.</value></data>
+  <data name="Po_Err_RuleIncomplete" xml:space="preserve"><value>Enter the currency and the approver role.</value></data>
+  <data name="Po_Err_RuleRange" xml:space="preserve"><value>The amounts are invalid (from must be zero or more and not above to).</value></data>
+  <data name="Po_Err_RuleRole" xml:space="preserve"><value>The approver role does not exist.</value></data>
 </root>

@@ -59,6 +59,16 @@ public class MaterialRequisitionController : Controller
 
         ViewBag.RelatedLetters = await _letterService.GetRelatedToMRAsync(id);
 
+        // SCRUM-470: "Create PO" when this MR may feed a purchase order and the user may create one
+        if (HttpContext?.RequestServices?.GetService(typeof(IPurchaseOrderApprovalService)) is IPurchaseOrderApprovalService approval
+            && await _permissionService.HasPermissionAsync(_currentUser.Roles, "PurchaseOrder", "Create")
+            && (await approval.GetRequisitionsForPoAsync()).Any(m => m.Id == id))
+        {
+            ViewBag.CanCreatePo = true;
+            ViewBag.Vendors = await _context.Vendors.AsNoTracking().Where(v => v.IsActive).OrderBy(v => v.Name)
+                .Select(v => new { v.VendorId, v.Name }).ToListAsync();
+        }
+
         return View(mr);
     }
 

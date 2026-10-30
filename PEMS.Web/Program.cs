@@ -396,6 +396,9 @@ builder.Services.AddScoped<IWarehouseIntakeService, WarehouseIntakeService>();
 builder.Services.AddScoped<PreProcurementService>();
 builder.Services.AddScoped<IPreProcurementService>(sp => sp.GetRequiredService<PreProcurementService>());
 builder.Services.AddScoped<IProcurementPipeline>(sp => sp.GetRequiredService<PreProcurementService>());
+// SCRUM-470: PO lines, submission and approval by the PO authority table; Procurement__* settings from env
+builder.Services.Configure<PEMS.Application.Interfaces.ProcurementOptions>(builder.Configuration.GetSection("Procurement"));
+builder.Services.AddScoped<IPurchaseOrderApprovalService, PurchaseOrderApprovalService>();
 builder.Services.AddScoped<IIrnReceiptService, IrnReceiptService>();
 builder.Services.AddScoped<IReliabilityService, ReliabilityService>();
 builder.Services.AddScoped<IInspectionService, InspectionService>();
@@ -1003,6 +1006,8 @@ using (var scope = app.Services.CreateScope())
     await PEMS.Persistence.Seed.WarehouseIntakeWorkflowSeeder.SeedAsync(scope.ServiceProvider);
     // SCRUM-471: pre-procurement review (task in the procurement role queue of My Work)
     await PEMS.Persistence.Seed.PreProcurementWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+    // SCRUM-470: purchase-order approval by the PO authority table
+    await PEMS.Persistence.Seed.PurchaseOrderApprovalWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 
     // SCRUM-103: explicit binding for every module workflow (after all workflow seeders), so Workflow Management can edit them
     await PEMS.Persistence.Seed.WorkflowBindingBackfillSeeder.SeedAsync(scope.ServiceProvider);

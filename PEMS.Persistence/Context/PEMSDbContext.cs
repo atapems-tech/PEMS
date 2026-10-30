@@ -278,6 +278,9 @@ public class PEMSDbContext
     public DbSet<MaterialRequisitionItem> MaterialRequisitionItems { get; set; }
     // SCRUM-471: pre-procurement items
     public DbSet<ProcurementDemand> ProcurementDemands { get; set; }
+    // SCRUM-470: purchase-order lines and the PO authority table
+    public DbSet<PurchaseOrderLine> PurchaseOrderLines { get; set; }
+    public DbSet<PurchaseOrderAuthorityRule> PurchaseOrderAuthorityRules { get; set; }
     public DbSet<MaterialRequisitionQuotation> MaterialRequisitionQuotations { get; set; }
 
     public DbSet<AIExtractedTag> AIExtractedTags { get; set; }

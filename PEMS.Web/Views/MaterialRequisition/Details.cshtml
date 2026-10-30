@@ -152,3 +152,21 @@
         </div>
     </div>
 }
+
+@* SCRUM-470: purchase order from this MR (pre-procurement path) *@
+@if (ViewBag.CanCreatePo is true)
+{
+    var poVendors = (IEnumerable<dynamic>)ViewBag.Vendors;
+    <form asp-controller="PurchaseOrder" asp-action="CreateFromRequisition" method="post" class="content-card mt-3">
+        <input type="hidden" name="mrId" value="@Model.MRId" />
+        <h6 class="mb-2"><i class="bi bi-receipt" aria-hidden="true"></i> @Localizer["Po_CreateFromMr"]</h6>
+        <div class="row g-2 align-items-end small">
+            <div class="col-md-4"><label class="form-label" for="poVendor">@Localizer["Vendor"]</label>
+                <select id="poVendor" name="vendorId" class="form-select form-select-sm" required><option value="">—</option>@foreach (var v in poVendors) { <option value="@v.VendorId">@v.Name</option> }</select></div>
+            <div class="col-md-2"><label class="form-label" for="poCurrency">@Localizer["Po_Currency"]</label><input id="poCurrency" name="currency" class="form-control form-control-sm" dir="ltr" value="IRR" maxlength="10" required /></div>
+            <div class="col-md-3"><label class="form-label" for="poNumber">@Localizer["PO Number"]</label><input id="poNumber" name="poNumber" class="form-control form-control-sm" dir="ltr" /></div>
+            <div class="col-md-auto"><button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-plus" aria-hidden="true"></i> @Localizer["Po_Create"]</button></div>
+            <div class="col-12 text-muted">@Localizer["Po_CreateHint"]</div>
+        </div>
+    </form>
+}
