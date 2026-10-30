@@ -12,6 +12,8 @@ public class ProjectSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "Project";
     public string DisplayName => "پروژه‌ها";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser();
 
     public ProjectSearchProvider(PEMSDbContext context)
     {

@@ -3616,6 +3616,54 @@
   <data name="Po_Err_RuleIncomplete" xml:space="preserve"><value>ارز و نقش تأییدکننده را وارد کنید.</value></data>
   <data name="Po_Err_RuleRange" xml:space="preserve"><value>مبالغ نامعتبر است (از مبلغ باید صفر یا بیشتر و از «تا مبلغ» بیشتر نباشد).</value></data>
   <data name="Po_Err_RuleRole" xml:space="preserve"><value>نقش تأییدکننده وجود ندارد.</value></data>
+  <data name="GlobalSearch_Placeholder" xml:space="preserve"><value>جستجوی رکوردها، منوها و عملیات...</value></data>
+  <data name="GlobalSearch_PaletteHint" xml:space="preserve"><value>نکته: در هر صفحه Ctrl+K را بزنید تا پالت فرمان باز شود.</value></data>
+  <data name="GlobalSearch_NoResults" xml:space="preserve"><value>نتیجه‌ای برای «{0}» که اجازه‌ی دیدنش را داشته باشید یافت نشد.</value></data>
+  <data name="Palette_Title" xml:space="preserve"><value>پالت فرمان</value></data>
+  <data name="Palette_Placeholder" xml:space="preserve"><value>جستجوی منو، رکورد و عملیات...</value></data>
+  <data name="Palette_OpenHint" xml:space="preserve"><value>جستجو (Ctrl+K)</value></data>
+  <data name="Palette_Menus" xml:space="preserve"><value>منوها</value></data>
+  <data name="Palette_Actions" xml:space="preserve"><value>عملیات</value></data>
+  <data name="Palette_Empty" xml:space="preserve"><value>موردی یافت نشد.</value></data>
+  <data name="Palette_Loading" xml:space="preserve"><value>در حال جستجوی رکوردها...</value></data>
+  <data name="Palette_Error" xml:space="preserve"><value>جستجوی رکوردها انجام نشد. دوباره تلاش کنید.</value></data>
+  <data name="Palette_Keys" xml:space="preserve"><value>↑ ↓ جابه‌جایی · Enter باز کردن · Esc بستن</value></data>
+  <data name="Palette_MinChars" xml:space="preserve"><value>برای جستجوی رکوردها دست‌کم ۲ نویسه بنویسید.</value></data>
+  <data name="Palette_ShowAll" xml:space="preserve"><value>نمایش همه‌ی نتایج «{0}»</value></data>
+  <data name="Palette_Count" xml:space="preserve"><value>{0} نتیجه</value></data>
+  <data name="Palette_Action_NewLetter" xml:space="preserve"><value>نامه‌ی جدید</value></data>
+  <data name="Palette_Action_NewDocument" xml:space="preserve"><value>مدرک مهندسی جدید</value></data>
+  <data name="Palette_Action_NewVdr" xml:space="preserve"><value>آیتم VDR جدید</value></data>
+  <data name="Palette_Action_NewWorkRequest" xml:space="preserve"><value>درخواست کار جدید</value></data>
+  <data name="Palette_Action_NewWorkOrder" xml:space="preserve"><value>دستور کار جدید</value></data>
+  <data name="Palette_Action_NewEquipment" xml:space="preserve"><value>تجهیز جدید</value></data>
+  <data name="Palette_Action_NewMaterialRequisition" xml:space="preserve"><value>درخواست کالای جدید (MR)</value></data>
+  <data name="Palette_Action_NewContract" xml:space="preserve"><value>قرارداد جدید</value></data>
+  <data name="Palette_Action_MyWork" xml:space="preserve"><value>کارهای من</value></data>
+  <data name="Palette_Action_Notifications" xml:space="preserve"><value>اعلان‌ها</value></data>
+  <data name="Palette_Action_Help" xml:space="preserve"><value>مرکز راهنما</value></data>
+  <data name="Palette_Action_ChangePassword" xml:space="preserve"><value>تغییر رمز عبور</value></data>
+  <data name="Palette_Action_Theme" xml:space="preserve"><value>پوسته: {0}</value></data>
+  <data name="Palette_Action_Language" xml:space="preserve"><value>زبان: {0}</value></data>
+  <data name="Palette_Group_Attachment" xml:space="preserve"><value>پیوست‌ها</value></data>
+  <data name="Palette_Group_Contract" xml:space="preserve"><value>قراردادها</value></data>
+  <data name="Palette_Group_Discipline" xml:space="preserve"><value>دیسیپلین‌ها</value></data>
+  <data name="Palette_Group_DocumentRevision" xml:space="preserve"><value>بازنگری‌های مدرک</value></data>
+  <data name="Palette_Group_EngineeringDocument" xml:space="preserve"><value>مدارک مهندسی</value></data>
+  <data name="Palette_Group_Equipment" xml:space="preserve"><value>تجهیزات</value></data>
+  <data name="Palette_Group_EquipmentTag" xml:space="preserve"><value>تگ‌های تجهیز</value></data>
+  <data name="Palette_Group_HelpArticle" xml:space="preserve"><value>مقالات راهنما</value></data>
+  <data name="Palette_Group_Letter" xml:space="preserve"><value>نامه‌ها</value></data>
+  <data name="Palette_Group_MOC" xml:space="preserve"><value>مدیریت تغییر (MOC)</value></data>
+  <data name="Palette_Group_MaterialRequisition" xml:space="preserve"><value>درخواست‌های کالا (MR)</value></data>
+  <data name="Palette_Group_Notification" xml:space="preserve"><value>اعلان‌ها</value></data>
+  <data name="Palette_Group_PartCatalogueRequest" xml:space="preserve"><value>درخواست‌های کاتالوگ قطعه</value></data>
+  <data name="Palette_Group_Project" xml:space="preserve"><value>پروژه‌ها</value></data>
+  <data name="Palette_Group_SparePart" xml:space="preserve"><value>قطعات یدکی</value></data>
+  <data name="Palette_Group_TechnicalQuery" xml:space="preserve"><value>پرسش‌های فنی (TQ)</value></data>
+  <data name="Palette_Group_VDRItem" xml:space="preserve"><value>مدارک فروشنده (VDR)</value></data>
+  <data name="Palette_Group_Vendor" xml:space="preserve"><value>تأمین‌کنندگان</value></data>
+  <data name="Palette_Group_WorkOrder" xml:space="preserve"><value>دستورهای کار</value></data>
   <data name="Lp_SelectedCount" xml:space="preserve"><value>{0} مورد انتخاب شد</value></data>
   <data name="Lp_SelectAll" xml:space="preserve"><value>انتخاب همه‌ی ردیف‌ها</value></data>
   <data name="Lp_SelectRow" xml:space="preserve"><value>انتخاب</value></data>

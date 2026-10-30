@@ -456,6 +456,9 @@ builder.Services.AddScoped<IOperationsReportService, OperationsReportService>();
 // GlobalSearchService هیچ تغییری برای موجودیت جدید نیاز ندارد.
 // ==============================================================================
 builder.Services.AddScoped<IGlobalSearchService, GlobalSearchService>();
+// SCRUM-64: command palette (records through the provider security contract, permission-filtered actions)
+builder.Services.AddSingleton<PEMS.Web.Navigation.CommandPaletteActions>();
+builder.Services.AddScoped<PEMS.Web.Navigation.CommandPaletteService>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.EquipmentSearchProvider>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.EngineeringDocumentSearchProvider>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.VdrItemSearchProvider>();
