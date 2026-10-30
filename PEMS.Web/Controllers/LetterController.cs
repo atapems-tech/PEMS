@@ -677,30 +677,22 @@ public class LetterController : Controller
     }
 
     // آپلود تصویر داخل متن (طبق بررسی نوار ابزار CKEditor که فرستادید - تنها شکاف واقعی)
+    // SCRUM-202: type, size and content are checked by the upload guard; the image is stored outside wwwroot and served by Files/Image.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> UploadEditorImage(IFormFile file)
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Image)]
+    public async Task<IActionResult> UploadEditorImage(IFormFile file, [FromServices] PEMS.Application.Uploads.IProtectedImageStore images)
     {
         if (file == null || file.Length == 0) return BadRequest();
 
-        var allowedExt = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
-        var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
-        if (!allowedExt.Contains(ext)) return BadRequest("Unsupported image type");
-
-        var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "letters", "inline");
-        if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
-
-        var storedName = Guid.NewGuid() + ext;
-        var physicalPath = Path.Combine(uploadPath, storedName);
-
-        using (var stream = new FileStream(physicalPath, FileMode.Create))
-            await file.CopyToAsync(stream);
-
-        return Json(new { url = "/uploads/letters/inline/" + storedName });
+        await using var stream = file.OpenReadStream();
+        var url = await images.SaveAsync(PEMS.Application.Uploads.ProtectedImageStore.LetterImages, file.FileName, stream);
+        return Json(new { url });
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
     public async Task<IActionResult> UploadAttachment(int letterId, IFormFile file)
     {
         var denied = await DenyIfNoAccessAsync(letterId);

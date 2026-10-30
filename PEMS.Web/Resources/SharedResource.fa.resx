@@ -3616,6 +3616,13 @@
   <data name="Po_Err_RuleIncomplete" xml:space="preserve"><value>ارز و نقش تأییدکننده را وارد کنید.</value></data>
   <data name="Po_Err_RuleRange" xml:space="preserve"><value>مبالغ نامعتبر است (از مبلغ باید صفر یا بیشتر و از «تا مبلغ» بیشتر نباشد).</value></data>
   <data name="Po_Err_RuleRole" xml:space="preserve"><value>نقش تأییدکننده وجود ندارد.</value></data>
+  <data name="Upload_Err_Empty" xml:space="preserve"><value>فایل {0} خالی است یا نام ندارد.</value></data>
+  <data name="Upload_Err_TypeNotAllowed" xml:space="preserve"><value>نوع فایل {0} در این‌جا مجاز نیست.</value></data>
+  <data name="Upload_Err_TooLarge" xml:space="preserve"><value>حجم فایل {0} بیشتر از {1} مگابایت است.</value></data>
+  <data name="Upload_Err_ContentMismatch" xml:space="preserve"><value>محتوای فایل {0} با نوع آن هم‌خوانی ندارد.</value></data>
+  <data name="Upload_Err_Infected" xml:space="preserve"><value>فایل {0} را ضدبدافزار رد کرد.</value></data>
+  <data name="Upload_Err_ScanFailed" xml:space="preserve"><value>ضدبدافزار نتوانست فایل {0} را بررسی کند؛ دوباره تلاش کنید یا به مدیر سیستم اطلاع دهید.</value></data>
+  <data name="Upload_Err_NoPolicy" xml:space="preserve"><value>این صفحه فایل نمی‌پذیرد.</value></data>
   <data name="Po_Err_LineWarehouse" xml:space="preserve"><value>ردیف انباری باید انبار تحویل داشته باشد.</value></data>
   <data name="Po_Err_Warehouse" xml:space="preserve"><value>انبار انتخاب‌شده پیدا نشد یا غیرفعال است.</value></data>
   <data name="Rcv_Action_Replace" xml:space="preserve"><value>جایگزین از فروشنده</value></data>

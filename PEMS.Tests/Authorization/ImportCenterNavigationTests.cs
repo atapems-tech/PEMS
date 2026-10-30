@@ -85,6 +85,7 @@ public class ImportCenterNavigationTests
         ["VDR"] = "comment sheet / reply sheet / FTP upload on an existing VDR item",
         ["PartCatalogueRequest"] = "request attachments (drawings/documents)",
         ["PartCatalogueAdmin"] = "IFS reference-data upsert (gated by PartCatalogue.Admin on its own admin page, not role-set based)",
+        ["License"] = "licence file install on the Admin licence page (SCRUM-26); guarded by the SCRUM-202 upload guard as a LicenceFile upload",
     };
 
     [Fact]

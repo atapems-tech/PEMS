@@ -76,6 +76,7 @@ public class PartCatalogueAdminController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [RequestSizeLimit(16_000_000)]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Spreadsheet)]
     public async Task<IActionResult> Import(string kind, IFormFile? file)
     {
         var actor = await AdminActorAsync();

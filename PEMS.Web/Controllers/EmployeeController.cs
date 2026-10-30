@@ -620,6 +620,7 @@ public class EmployeeController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Spreadsheet)]
     public async Task<IActionResult> Import(IFormFile file)
     {
         if (file == null || file.Length == 0)

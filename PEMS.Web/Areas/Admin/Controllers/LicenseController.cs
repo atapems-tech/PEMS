@@ -44,6 +44,7 @@ public class LicenseController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [RequestSizeLimit(1024 * 1024)]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.LicenceFile)]
     public async Task<IActionResult> Upload(IFormFile? file, CancellationToken ct)
     {
         if (file is null || file.Length == 0)
