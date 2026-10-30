@@ -142,6 +142,26 @@ class TrackerTests(unittest.TestCase):
         clean_issues = [issue(f"SCRUM-{i}", f"[#{i}] T{i}", "To Do", [f"plan-{i}"]) for i in (1, 2, 3, 4)]
         self.assertEqual(ps.cmd_tracker_check(["--json", self.write_json(clean_issues)]), 0)
 
+    def test_hygiene_flags_the_creation_rules_and_skips_old_done_and_duplicates(self):
+        good = dict(issue("SCRUM-500", "[#500] Fine", "In Review", ["plan-500", "area-x", "doer-claude", "effort-S", "qa-pending"]), parent="SCRUM-5", type="Task")
+        self.assertEqual(ps.hygiene_findings([good]), [])
+        bad = dict(issue("SCRUM-501", "No prefix", "In Review", ["area-x"]), parent="", type="Task")
+        found = "\n".join(ps.hygiene_findings([bad]))
+        for text in ("no parent epic", "no [#N]", "no plan-N label", "no doer-* label", "no effort-* label", "without the label qa-pending"):
+            self.assertIn(text, found)
+        clash = issue("SCRUM-502", "[#7] Clash", "To Do", ["plan-8", "area-x", "doer-claude", "effort-S"])
+        self.assertIn("disagree", "\n".join(ps.hygiene_findings([clash])))
+        skipped = [dict(bad, key="SCRUM-399"), dict(bad, status="Done"), dict(bad, labels=["duplicate"]), dict(bad, type="Epic")]
+        self.assertEqual(ps.hygiene_findings(skipped), [])
+        unknown_parent = issue("SCRUM-503", "[#503] X", "To Do", ["plan-503", "area-x", "doer-claude", "effort-S"])   # source without parent data (CSV): not judged
+        self.assertEqual(ps.hygiene_findings([unknown_parent]), [])
+
+    def test_tracker_check_fails_on_a_hygiene_finding(self):
+        clean_issues = [issue(f"SCRUM-{i}", f"[#{i}] T{i}", "To Do", [f"plan-{i}"]) for i in (1, 2, 3, 4)]
+        clean_issues.append(dict(issue("SCRUM-600", "[#600] T", "To Do", ["plan-600"]), parent="SCRUM-5", type="Task"))
+        ps.cmd_new(["600", "T"])
+        self.assertEqual(ps.cmd_tracker_check(["--json", self.write_json(clean_issues)]), 1)
+
     def test_jira_csv_export_is_read_with_repeated_labels_columns(self):
         path = Path(self.tmp.name) / "export.csv"
         with path.open("w", newline="", encoding="utf-8") as fh:
