@@ -1,6 +1,6 @@
 # List page component (SCRUM-337)
 
-Status: 2026-10-27, wave 0. The look comes from the correspondence list and the Engineering Documents list (SCRUM-408).
+Status: 2026-10-30, waves 0 and 1. The look comes from the correspondence list and the Engineering Documents list (SCRUM-408).
 It lives in `PEMS.UI` (ADR-0007: Tag Helper facade for MVC pages). Texts are inputs (SCRUM-416).
 
 ## What the component gives every list page
@@ -74,6 +74,25 @@ A tool that the page does not render does not appear.
 @section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }
 ```
 
+Optional tools added in wave 1:
+
+```cshtml
+@* a tool with its own dropdown (quick filters, saved views, ...): li items only *@
+<pems-list-menu id="xViewsBtn" icon="bi-bookmark" label="@Localizer["..."]">
+    <li><a class="dropdown-item" href="...">...</a></li>
+</pems-list-menu>
+
+@* bulk bar, between the chips and the grid: shown while rows are ticked; every form inside gets the ticked ids *@
+<pems-list-bulk count-text="@Localizer["Lp_SelectedCount"]" name="ids">
+    <form asp-action="ExportSelected" method="post"><button type="submit" class="btn btn-sm btn-outline-success">...</button></form>
+</pems-list-bulk>
+@* header cell: <input type="checkbox" class="form-check-input" data-lp-select-all aria-label="@Localizer["Lp_SelectAll"]" />
+   row cell:    <input type="checkbox" class="form-check-input" value="@id" data-lp-select aria-label="..." />  (th/td class lp-select) *@
+```
+
+A page with a second list (for example a history under a queue) puts a second `<pems-list-panel>` in the same
+`<pems-list-page>`: the panels share the height and each table scrolls inside its own panel.
+
 Row and cell classes are shared too:
 - `lp-row`;
 - `lp-no` and `lp-subject` for the record number link;
@@ -88,8 +107,8 @@ Column resize needs `data-col-key` / `data-resizable` on the `th` elements; the 
 | Wave | Pages | State |
 |---|---|---|
 | W0 | component; Engineering Documents and VDR moved onto it | done |
-| W1 | document control: DocumentRegister, DocumentRevisions, Transmittal, TechnicalQuery, DCC, MDB, MOC, DocumentWorkflow | next |
-| W2 | CMMS: WorkOrder, WorkRequest, Equipment, FunctionalLocation, Instrument, Tag, MaintenancePlan, MaintenanceStrategy, JobPlan, SparePart, Permit, Inspection, Finding, Asset, ... | |
+| W1 | document control: DocumentRegister, DocumentRevisions, Transmittal, TechnicalQuery, MDB, MOC, DocumentWorkflow (DCC is a desk, not a list) | done |
+| W2 | CMMS: WorkOrder, WorkRequest, Equipment, FunctionalLocation, Instrument, Tag, MaintenancePlan, MaintenanceStrategy, JobPlan, SparePart, Permit, Inspection, Finding, Asset, ... | next |
 | W3 | warehouse and procurement: Inventory, MaterialItem, MaterialRequisition, StoreRequisition, PurchaseOrder, ProcurementPackage, Tender, Contract, Vendor, IrnReceipt, ... | |
 | W4 | admin and base data: Users, Roles, Department, Discipline, Employee, AuditLog, SecurityEvents, ... | |
 
@@ -99,4 +118,4 @@ keeps its own richer frame (folders, preview, bulk actions) but uses the same st
 ## Tests
 
 - `ListPageComponentTests` checks each tag on its own: texts, optional tools, badge, chips, empty state and accessibility.
-- The page tests (`EngineeringDocumentsListLookTests`, `VdrIndexLayoutTests`) render the real views.
+- The page tests (`EngineeringDocumentsListLookTests`, `VdrIndexLayoutTests`, `DocumentControlListPagesTests`) render the real views.

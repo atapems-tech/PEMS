@@ -1,132 +1,143 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.DocumentWorkflowPendingItemDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var history = (List<PEMS.Domain.Entities.DocumentWorkflow>)ViewBag.History;
     string? selectedStatus = ViewBag.SelectedStatus;
-    var existingQueryString = string.IsNullOrWhiteSpace(selectedStatus) ? "" : $"status={selectedStatus}";
+    var existingQueryString = string.IsNullOrWhiteSpace(selectedStatus) ? "" : $"status={Uri.EscapeDataString(selectedStatus)}";
+
+    string StatusText(string? s)
+    {
+        var l = Localizer[DocumentStatusBadge.ResourceKey(s)];
+        return l.ResourceNotFound ? (s ?? "") : l.Value;
+    }
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h6 class="mb-0">Pending Approval Queue</h6>
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('DocumentWorkflow')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-    </div>
+@* SCRUM-337 W1: built from the PEMS.UI list-page component. Two panels share the page: the approval queue (with its
+   check / approve / reject actions, unchanged) and the recent workflow history. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
 
-    <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="DocumentWorkflow">
-            <thead>
-                <tr>
-                    <th data-col-key="docNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["Document No"]</th>
-                    <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Title"]</th>
-                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Project"]</th>
-                    <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px">@Localizer["Discipline"]</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">@Localizer["Status"]</th>
-                    <th data-col-key="rev" data-resizable="true" data-min-width="60" data-max-width="100" style="width:70px">@Localizer["Rev"]</th>
-                    <th data-col-key="actions" data-resizable="false" style="width:170px"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var d in Model.Items)
-                {
+        <pems-list-toolbar heading="@Localizer["Dw_Queue"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-reset-columns grid-key="DocumentWorkflow" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-chips>
+            @if (!string.IsNullOrWhiteSpace(selectedStatus))
+            { <pems-list-chip label="@Localizer["Ed_Status"]" value="@StatusText(selectedStatus)" remove-href="@Url.Action("Index")" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="DocumentWorkflow" empty="@(!Model.Items.Any())" empty-text="@Localizer["Dw_Empty"]"
+                             filtered="@(!string.IsNullOrWhiteSpace(selectedStatus))" clear-href="@Url.Action("Index")">
+                <thead>
                     <tr>
-                        <td>@d.DocumentNo</td>
-                        <td>@d.Title</td>
-                        <td>@d.ProjectName</td>
-                        <td>@d.DisciplineName</td>
-                        <td><span class="badge @PEMS.Web.Helpers.DocumentStatusBadge.CssClass(d.Status)">@d.Status</span></td>
-                        <td>@d.RevisionNo</td>
-                        <td class="text-end">
-                            @if (d.Status == "Submitted")
-                            {
-                                <form asp-action="Check" method="post" class="d-inline">
-                                    <input type="hidden" name="documentId" value="@d.DocumentId" />
-                                    <button class="btn btn-sm btn-info"><i class="bi bi-clipboard-check"></i> Check</button>
-                                </form>
-                                <form asp-action="Reject" method="post" class="d-inline">
-                                    <input type="hidden" name="documentId" value="@d.DocumentId" />
-                                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i> @Localizer["Reject"]</button>
-                                </form>
-                            }
-                            else if (d.Status == "Checked")
-                            {
-                                <form asp-action="Approve" method="post" class="d-inline">
-                                    <input type="hidden" name="documentId" value="@d.DocumentId" />
-                                    <button class="btn btn-sm btn-success"><i class="bi bi-check-lg"></i> @Localizer["Approve"]</button>
-                                </form>
-                                <form asp-action="Reject" method="post" class="d-inline">
-                                    <input type="hidden" name="documentId" value="@d.DocumentId" />
-                                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i> @Localizer["Reject"]</button>
-                                </form>
-                            }
-                            <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId"
-                               class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a>
-                        </td>
+                        <th data-col-key="docNo" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["Ed_DocNo"]</th>
+                        <th data-col-key="title" data-resizable="true" data-min-width="140" data-max-width="400" style="width:240px">@Localizer["Ed_Title"]</th>
+                        <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px" class="vs-hide-md">@Localizer["Project"]</th>
+                        <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px" class="vs-hide-md">@Localizer["Ed_Discipline"]</th>
+                        <th data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["Ed_Status"]</th>
+                        <th data-col-key="rev" data-resizable="true" data-min-width="60" data-max-width="100" style="width:70px">@Localizer["Ed_Rev"]</th>
+                        <th data-col-key="actions" data-resizable="false" style="width:220px"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.Items)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no"><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId" class="lp-subject" title="@d.DocumentNo">@d.DocumentNo</a></td>
+                            <td><span class="vs-title-cell" title="@d.Title">@d.Title</span></td>
+                            <td class="vs-hide-md small">@d.ProjectName</td>
+                            <td class="vs-hide-md small">@d.DisciplineName</td>
+                            <td><span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(d.Status)"><i class="bi @DocumentStatusBadge.Icon(d.Status)" aria-hidden="true"></i> @StatusText(d.Status)</span></td>
+                            <td><span class="vs-num">@d.RevisionNo</span></td>
+                            <td class="text-nowrap text-end">
+                                @if (d.Status == "Submitted")
+                                {
+                                    <form asp-action="Check" method="post" class="d-inline">
+                                        <input type="hidden" name="documentId" value="@d.DocumentId" />
+                                        <button type="submit" class="btn btn-sm btn-outline-info"><i class="bi bi-clipboard-check" aria-hidden="true"></i> @Localizer["Dw_Check"]</button>
+                                    </form>
+                                    <form asp-action="Reject" method="post" class="d-inline">
+                                        <input type="hidden" name="documentId" value="@d.DocumentId" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg" aria-hidden="true"></i> @Localizer["Reject"]</button>
+                                    </form>
+                                }
+                                else if (d.Status == "Checked")
+                                {
+                                    <form asp-action="Approve" method="post" class="d-inline">
+                                        <input type="hidden" name="documentId" value="@d.DocumentId" />
+                                        <button type="submit" class="btn btn-sm btn-outline-success"><i class="bi bi-check-lg" aria-hidden="true"></i> @Localizer["Approve"]</button>
+                                    </form>
+                                    <form asp-action="Reject" method="post" class="d-inline">
+                                        <input type="hidden" name="documentId" value="@d.DocumentId" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg" aria-hidden="true"></i> @Localizer["Reject"]</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
 
-        @if (!Model.Items.Any())
-        {
-            <p class="text-muted text-center py-4">No documents are currently waiting for approval.</p>
-        }
-    </div>
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "DocumentWorkflow",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = existingQueryString
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
 
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "DocumentWorkflow",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = existingQueryString
-    })
-</div>
+    <pems-list-panel>
+        <pems-list-toolbar heading="@Localizer["Dw_History"]" />
+        <pems-list-grid>
+            <pems-list-table empty="@(!history.Any())" empty-text="@Localizer["Dw_HistoryEmpty"]">
+                <thead>
+                    <tr>
+                        <th>@Localizer["Rv_Document"]</th>
+                        <th>@Localizer["Dw_From"]</th>
+                        <th>@Localizer["Dw_To"]</th>
+                        <th>@Localizer["Dw_Action"]</th>
+                        <th>@Localizer["Dw_By"]</th>
+                        <th>@Localizer["Dw_Comment"]</th>
+                        <th>@Localizer["Rv_Date"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var h in history)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no">@h.Document?.DocumentNo</td>
+                            <td class="small">@StatusText(h.FromStatus)</td>
+                            <td class="small">@StatusText(h.ToStatus)</td>
+                            <td class="small">@h.ActionType</td>
+                            <td class="small">@(h.ActionBy != null ? h.ActionBy.FirstName + " " + h.ActionBy.LastName : "—")</td>
+                            <td class="small">@h.Comment</td>
+                            <td class="small text-muted">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('DocumentWorkflow');
-        });
-    </script>
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
 }
-
-<div class="content-card">
-    <h6 class="mb-3">Recent Workflow History</h6>
-
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
-            <thead>
-                <tr>
-                    <th>@Localizer["Document"]</th>
-                    <th>@Localizer["From"]</th>
-                    <th>To</th>
-                    <th>@Localizer["Action"]</th>
-                    <th>By</th>
-                    <th>@Localizer["Comment"]</th>
-                    <th>@Localizer["Date"]</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var h in history)
-                {
-                    <tr>
-                        <td>@h.Document?.DocumentNo</td>
-                        <td>@h.FromStatus</td>
-                        <td>@h.ToStatus</td>
-                        <td>@h.ActionType</td>
-                        <td>@(h.ActionBy != null ? h.ActionBy.FirstName + " " + h.ActionBy.LastName : "-")</td>
-                        <td>@h.Comment</td>
-                        <td>@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
