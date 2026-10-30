@@ -77,10 +77,16 @@ public class SiteWideUiSystemTests
             Assert.Contains($"for=\"{name}\"", view);
             Assert.Contains($"id=\"{name}\"", view);
         }
+        // SCRUM-59: the Letter partial is an adapter over the one editor of PEMS.UI; the editor code lives in pems-rte.js
         var rte = Web("Views", "Shared", "_RichTextEditorScripts.cshtml");
-        Assert.Contains("nameToolbar", rte);
-        Assert.Contains("aria-label", rte);
-        Assert.Contains("insertBefore(container", rte); // editor sits inside its field, not detached below the card
+        Assert.Contains("data-pems-rte-for=\"@Model\"", rte);
+        Assert.Contains("data-pems-rte-label=\"@Localizer[\"Rte_Editor\"]\"", rte);
+        Assert.Contains("pems-rte.js", rte);
+        Assert.DoesNotContain("<script>", rte);            // no inline editor code any more
+        var js = File.ReadAllText(Path.Combine(Root(), "PEMS.UI", "wwwroot", "pems-rte.js"));
+        Assert.Contains("nameToolbar", js);
+        Assert.Contains("aria-label", js);
+        Assert.Contains("insertBefore(holder, textarea.nextSibling)", js); // editor sits inside its field, not detached below the card
     }
 
     [Fact]
