@@ -3,6 +3,15 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-30 - List page component, wave 1: document control (SCRUM-337)
+
+### Added
+- Two optional list-page tools in `PEMS.UI`: `<pems-list-menu>` (an icon tool with the page's own dropdown items) and `<pems-list-bulk>` (a bar shown while rows are ticked with `data-lp-select` / `data-lp-select-all`; its forms post the ticked ids). Three generic keys (`Lp_SelectedCount`, `Lp_SelectAll`, `Lp_SelectRow`).
+
+### Changed
+- Document Register, Document Revisions, Transmittal, TQ / TSR / RFI, MDB, MOC and Document Workflow are built from the list-page component: full-window table, one icon toolbar, filters in a dropdown with chips, counts as KPI chips on demand, the shared empty state. Each page keeps its filters, columns, actions and paging. The Document Register's saved and quick filters moved into one toolbar menu, and its row selection into the shared bulk bar (no page selection script). Document Workflow shows the queue and the recent history as two panels.
+- The English texts written in these pages (headings, columns, empty texts, TQ and MOC statuses and risk levels) are resource keys in both languages now (prefixes `Dr_`, `Rv_`, `Tq_`, `Moc_`, `Mdb_`, `Dw_`).
+
 ## 2026-10-30 - Purchase-order lines and approval by the PO authority table (SCRUM-470)
 
 ### Added

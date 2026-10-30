@@ -3616,4 +3616,81 @@
   <data name="Po_Err_RuleIncomplete" xml:space="preserve"><value>ارز و نقش تأییدکننده را وارد کنید.</value></data>
   <data name="Po_Err_RuleRange" xml:space="preserve"><value>مبالغ نامعتبر است (از مبلغ باید صفر یا بیشتر و از «تا مبلغ» بیشتر نباشد).</value></data>
   <data name="Po_Err_RuleRole" xml:space="preserve"><value>نقش تأییدکننده وجود ندارد.</value></data>
+  <data name="Lp_SelectedCount" xml:space="preserve"><value>{0} مورد انتخاب شد</value></data>
+  <data name="Lp_SelectAll" xml:space="preserve"><value>انتخاب همه‌ی ردیف‌ها</value></data>
+  <data name="Lp_SelectRow" xml:space="preserve"><value>انتخاب</value></data>
+  <data name="Dr_SearchPlaceholder" xml:space="preserve"><value>شماره یا عنوان مدرک</value></data>
+  <data name="Dr_Views" xml:space="preserve"><value>فیلترهای آماده و ذخیره‌شده</value></data>
+  <data name="Dr_QuickFilters" xml:space="preserve"><value>فیلترهای آماده</value></data>
+  <data name="Dr_PendingReview" xml:space="preserve"><value>در انتظار بررسی</value></data>
+  <data name="Dr_SavedFilters" xml:space="preserve"><value>فیلترهای ذخیره‌شده</value></data>
+  <data name="Dr_DeleteFilter" xml:space="preserve"><value>حذف فیلتر ذخیره‌شده</value></data>
+  <data name="Dr_DeleteFilterConfirm" xml:space="preserve"><value>این فیلتر ذخیره‌شده حذف شود؟</value></data>
+  <data name="Dr_SaveFilter" xml:space="preserve"><value>ذخیره‌ی این فیلتر</value></data>
+  <data name="Dr_SaveFilterTitle" xml:space="preserve"><value>ذخیره‌ی فیلتر فعلی</value></data>
+  <data name="Dr_FilterName" xml:space="preserve"><value>نام فیلتر</value></data>
+  <data name="Dr_SetDefault" xml:space="preserve"><value>نمای پیش‌فرض من در این صفحه باشد</value></data>
+  <data name="Dr_Unassigned" xml:space="preserve"><value>تخصیص‌نیافته</value></data>
+  <data name="Dr_Empty" xml:space="preserve"><value>مدرکی در رجیستر نیست.</value></data>
+  <data name="Dr_ExportSelected" xml:space="preserve"><value>خروجی اکسل ردیف‌های انتخاب‌شده</value></data>
+  <data name="Dr_CommentStatus" xml:space="preserve"><value>وضعیت کامنت</value></data>
+  <data name="Rv_Title" xml:space="preserve"><value>ویرایش‌های مدرک</value></data>
+  <data name="Rv_Document" xml:space="preserve"><value>مدرک</value></data>
+  <data name="Rv_New" xml:space="preserve"><value>ویرایش جدید</value></data>
+  <data name="Rv_Empty" xml:space="preserve"><value>هنوز ویرایشی ثبت نشده. برای افزودن، از فیلترها یک مدرک را انتخاب کنید.</value></data>
+  <data name="Rv_PreviousRev" xml:space="preserve"><value>ویرایش قبلی</value></data>
+  <data name="Rv_IssuePurpose" xml:space="preserve"><value>هدف صدور</value></data>
+  <data name="Rv_PreparedBy" xml:space="preserve"><value>تهیه‌کننده</value></data>
+  <data name="Rv_CheckedBy" xml:space="preserve"><value>بررسی‌کننده</value></data>
+  <data name="Rv_ApprovedBy" xml:space="preserve"><value>تأییدکننده</value></data>
+  <data name="Rv_Date" xml:space="preserve"><value>تاریخ</value></data>
+  <data name="Tq_Title" xml:space="preserve"><value>پرسش‌های فنی (TQ / TSR / RFI)</value></data>
+  <data name="Tq_New" xml:space="preserve"><value>پرسش جدید</value></data>
+  <data name="Tq_OpenCount" xml:space="preserve"><value>باز / در جریان</value></data>
+  <data name="Tq_Empty" xml:space="preserve"><value>پرسش فنی‌ای یافت نشد.</value></data>
+  <data name="Tq_Number" xml:space="preserve"><value>شماره</value></data>
+  <data name="Tq_Subject" xml:space="preserve"><value>موضوع</value></data>
+  <data name="Tq_Priority" xml:space="preserve"><value>اولویت</value></data>
+  <data name="Tq_Due" xml:space="preserve"><value>مهلت پاسخ</value></data>
+  <data name="Tq_St_Open" xml:space="preserve"><value>باز</value></data>
+  <data name="Tq_St_PendingConfirmation" xml:space="preserve"><value>در انتظار تأیید</value></data>
+  <data name="Tq_St_Reopened" xml:space="preserve"><value>بازگشایی‌شده</value></data>
+  <data name="Tq_St_Closed" xml:space="preserve"><value>بسته</value></data>
+  <data name="Moc_Title" xml:space="preserve"><value>مدیریت تغییر (MOC)</value></data>
+  <data name="Moc_New" xml:space="preserve"><value>MOC جدید</value></data>
+  <data name="Moc_OpenCount" xml:space="preserve"><value>باز / در جریان</value></data>
+  <data name="Moc_HighRiskOpen" xml:space="preserve"><value>ریسک بالا - باز</value></data>
+  <data name="Moc_Empty" xml:space="preserve"><value>موردی یافت نشد.</value></data>
+  <data name="Moc_Number" xml:space="preserve"><value>شماره</value></data>
+  <data name="Moc_Risk" xml:space="preserve"><value>ریسک</value></data>
+  <data name="Moc_Risk_Low" xml:space="preserve"><value>کم</value></data>
+  <data name="Moc_Risk_Medium" xml:space="preserve"><value>متوسط</value></data>
+  <data name="Moc_Risk_High" xml:space="preserve"><value>زیاد</value></data>
+  <data name="Moc_St_PendingRiskAssessment" xml:space="preserve"><value>در انتظار ارزیابی ریسک</value></data>
+  <data name="Moc_St_PendingApproval" xml:space="preserve"><value>در انتظار تأیید</value></data>
+  <data name="Moc_St_PendingSeniorApproval" xml:space="preserve"><value>در انتظار تأیید ارشد</value></data>
+  <data name="Moc_St_Approved" xml:space="preserve"><value>تأییدشده</value></data>
+  <data name="Moc_St_PendingClosure" xml:space="preserve"><value>در انتظار بستن</value></data>
+  <data name="Moc_St_Closed" xml:space="preserve"><value>بسته</value></data>
+  <data name="Moc_St_Rejected" xml:space="preserve"><value>ردشده</value></data>
+  <data name="Mdb_Title" xml:space="preserve"><value>کتابچه‌های اطلاعات سازنده (MDB)</value></data>
+  <data name="Mdb_New" xml:space="preserve"><value>MDB جدید</value></data>
+  <data name="Mdb_Empty" xml:space="preserve"><value>هنوز MDB‌ای ثبت نشده.</value></data>
+  <data name="Mdb_Po" xml:space="preserve"><value>سفارش خرید</value></data>
+  <data name="Mdb_PlannedIssue" xml:space="preserve"><value>صدور نهایی برنامه‌ریزی‌شده</value></data>
+  <data name="Mdb_IndexDue" xml:space="preserve"><value>مهلت فهرست مطالب</value></data>
+  <data name="Mdb_HardCopy" xml:space="preserve"><value>نسخه‌ی چاپی</value></data>
+  <data name="Mdb_SoftCopy" xml:space="preserve"><value>نسخه‌ی الکترونیکی</value></data>
+  <data name="Mdb_Shipped" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Mdb_Delivered" xml:space="preserve"><value>تحویل‌شده</value></data>
+  <data name="Dw_Queue" xml:space="preserve"><value>صف در انتظار تأیید</value></data>
+  <data name="Dw_Empty" xml:space="preserve"><value>مدرکی در انتظار تأیید نیست.</value></data>
+  <data name="Dw_Check" xml:space="preserve"><value>بررسی</value></data>
+  <data name="Dw_History" xml:space="preserve"><value>آخرین تاریخچه‌ی گردش‌کار</value></data>
+  <data name="Dw_HistoryEmpty" xml:space="preserve"><value>هنوز تاریخچه‌ای ثبت نشده.</value></data>
+  <data name="Dw_From" xml:space="preserve"><value>از</value></data>
+  <data name="Dw_To" xml:space="preserve"><value>به</value></data>
+  <data name="Dw_Action" xml:space="preserve"><value>اقدام</value></data>
+  <data name="Dw_By" xml:space="preserve"><value>توسط</value></data>
+  <data name="Dw_Comment" xml:space="preserve"><value>توضیح</value></data>
 </root>
