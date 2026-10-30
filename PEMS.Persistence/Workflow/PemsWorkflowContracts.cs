@@ -97,6 +97,10 @@ public static class PemsWorkflowContracts
             new[] { S(PurchaseOrderApprovalWorkflowSeeder.StageName, Parallel) },
             new[] { T(null, "Start", PurchaseOrderApprovalWorkflowSeeder.StageName) }),
 
+        // PurchaseOrderReceivingService (SCRUM-473, D7): Complete when every Hold of the IRN is resolved; Cancel is not used by the service.
+        new WorkflowModuleContract(IrnHoldResolutionWorkflowSeeder.Module, IrnHoldResolutionWorkflowSeeder.Category, IrnHoldResolutionWorkflowSeeder.BusinessObjectType,
+            new[] { "Complete", "Cancel" }, Array.Empty<WorkflowStageRequirement>(), Array.Empty<WorkflowTransitionRequirement>()),
+
         // WorkRequestService: the request status is the stage's BusinessStatus; Complete converts it to a Work Order.
         new WorkflowModuleContract(WorkRequestService.WorkflowModule, WorkRequestService.WorkflowContext, WorkRequestService.WorkflowEntityType,
             new[] { "Approve", "Reject", "Cancel", "Complete" }, Array.Empty<WorkflowStageRequirement>(), Array.Empty<WorkflowTransitionRequirement>(),

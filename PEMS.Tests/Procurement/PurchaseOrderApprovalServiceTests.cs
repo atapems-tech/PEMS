@@ -25,7 +25,7 @@ public class PurchaseOrderApprovalServiceTests
         public required PurchaseOrderService Orders { get; init; }
         public required FakeWorkflowRuntime Runtime { get; init; }
         public required FakePermissionService Perms { get; init; }
-        public int Project, Vendor, Mr, Group, CataloguedItem, FreeItem;
+        public int Project, Vendor, Mr, Group, CataloguedItem, FreeItem, Warehouse;
     }
 
     private static readonly PoActor Buyer = new(30, new[] { "PRC.Buyer" }, "buyer");
@@ -43,7 +43,8 @@ public class PurchaseOrderApprovalServiceTests
         var vendor = new Vendor { Name = "Acme", IsActive = true };
         var group = new PartCatalogueCommodityGroup { Code = "SRV", Description = "Services", IsActive = true };
         var material = new MaterialItem { MaterialCode = "M-1", Description = "Bearing", IsStockItem = true };
-        db.AddRange(project, discipline, vendor, group, material);
+        var warehouse = new Warehouse { Code = "WH-1", Name = "Main", IsActive = true };
+        db.AddRange(project, discipline, vendor, group, material, warehouse);
         db.Roles.AddRange(new ApplicationRole("PRC.Manager") { NormalizedName = "PRC.MANAGER" }, new ApplicationRole("DIR") { NormalizedName = "DIR" });
         await db.SaveChangesAsync();
         var mr = new MaterialRequisition { MRNumber = "MR-1", ProjectId = project.ProjectId, DisciplineId = discipline.DisciplineId, Description = "Pump spares", Status = "Issued to Procurement" };
@@ -60,7 +61,7 @@ public class PurchaseOrderApprovalServiceTests
         return new Env
         {
             Db = db, Service = service, Orders = orders, Runtime = runtime, Perms = perms, Project = project.ProjectId, Vendor = vendor.VendorId,
-            Mr = mr.MRId, Group = group.CommodityGroupId,
+            Mr = mr.MRId, Group = group.CommodityGroupId, Warehouse = warehouse.WarehouseId,
             CataloguedItem = mr.Items.First().MRItemId, FreeItem = mr.Items.Last().MRItemId
         };
     }
@@ -75,6 +76,9 @@ public class PurchaseOrderApprovalServiceTests
     {
         var r = await e.Service.CreateFromRequisitionAsync(e.Mr, e.Vendor, "irr", "PO-1", Buyer);
         Assert.True(r.Success, r.Error);
+        // SCRUM-473: a stock line needs a delivery warehouse to be submitted
+        foreach (var line in e.Db.PurchaseOrderLines.Where(l => l.PoId == r.Id)) line.WarehouseId = e.Warehouse;
+        await e.Db.SaveChangesAsync();
         e.Db.ChangeTracker.Clear();
         return r.Id!.Value;
     }
@@ -146,6 +150,45 @@ public class PurchaseOrderApprovalServiceTests
         await e.Service.UpdateLineAsync(free.PurchaseOrderLineId, new PoLineInput(1, 5, null, true, e.Group, "x"), Buyer);
 
         Assert.Equal("Po_Err_StockLineNotCatalogued", (await e.Service.SubmitAsync(poId, Buyer)).Error);
+    }
+
+    [Fact]
+    public async Task SCRUM473_The_delivery_warehouse_comes_from_the_pre_procurement_demand()
+    {
+        var e = await NewAsync();
+        var demand = new ProcurementDemand { SourceType = ProcurementDemandSources.Replenishment, SourceId = 1, Description = "Bearing", Quantity = 4, WarehouseId = e.Warehouse, Status = ProcurementDemandStatuses.Converted };
+        e.Db.ProcurementDemands.Add(demand);
+        await e.Db.SaveChangesAsync();
+        var item = await e.Db.MaterialRequisitionItems.SingleAsync(i => i.MRItemId == e.CataloguedItem);
+        item.ProcurementDemandId = demand.ProcurementDemandId;
+        await e.Db.SaveChangesAsync();
+        e.Db.ChangeTracker.Clear();
+
+        var r = await e.Service.CreateFromRequisitionAsync(e.Mr, e.Vendor, "IRR", "PO-W", Buyer);
+
+        Assert.True(r.Success, r.Error);
+        var lines = await e.Db.PurchaseOrderLines.AsNoTracking().Where(l => l.PoId == r.Id).ToListAsync();
+        Assert.Equal(e.Warehouse, lines.Single(l => l.MaterialRequisitionItemId == e.CataloguedItem).WarehouseId);
+        Assert.Null(lines.Single(l => l.MaterialRequisitionItemId == e.FreeItem).WarehouseId);
+    }
+
+    [Fact]
+    public async Task SCRUM473_A_stock_line_needs_a_delivery_warehouse_and_a_blank_field_keeps_it()
+    {
+        var e = await NewAsync();
+        await RulesAsync(e);
+        var poId = await ReadyPoAsync(e);
+        var stock = await e.Db.PurchaseOrderLines.SingleAsync(l => l.MaterialRequisitionItemId == e.CataloguedItem);
+        Assert.Equal(e.Warehouse, stock.WarehouseId);   // the update without a warehouse kept it
+        stock.WarehouseId = null;
+        await e.Db.SaveChangesAsync();
+        e.Db.ChangeTracker.Clear();
+
+        Assert.Equal("Po_Err_LineWarehouse", (await e.Service.SubmitAsync(poId, Buyer)).Error);
+        Assert.Equal("Po_Err_Warehouse", (await e.Service.UpdateLineAsync(stock.PurchaseOrderLineId, new PoLineInput(4, 100, null, true, null, null, 999), Buyer)).Error);
+
+        Assert.True((await e.Service.UpdateLineAsync(stock.PurchaseOrderLineId, new PoLineInput(4, 100, null, true, null, null, e.Warehouse), Buyer)).Success);
+        Assert.True((await e.Service.SubmitAsync(poId, Buyer)).Success);
     }
 
     [Fact]

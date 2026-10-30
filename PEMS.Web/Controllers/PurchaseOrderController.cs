@@ -66,6 +66,17 @@ public class PurchaseOrderController : Controller
             ViewBag.UserRoles = _currentUser.Roles;
             ViewBag.UserName = _currentUser.UserName;
         }
+
+        // SCRUM-473: delivery warehouse per line, received / open quantities and inspection release
+        if (HttpContext?.RequestServices?.GetService(typeof(IPurchaseOrderReceivingService)) is IPurchaseOrderReceivingService receiving)
+        {
+            ViewBag.Receiving = await receiving.GetPoLinesAsync(id);
+            ViewBag.Warehouses = await _context.Warehouses.Where(w => w.IsActive).OrderBy(w => w.Code)
+                .Select(w => new { w.WarehouseId, w.Code }).ToListAsync();
+            ViewBag.CanReleaseInspection = await _permissionService.HasPermissionAsync(_currentUser.Roles, "IRN", "Approve");
+            ViewBag.InspectionPlans = await _context.InspectionTestPlans.Where(p => p.IsActive && p.ProjectId == po.ProjectId)
+                .OrderBy(p => p.ITPNumber).Select(p => new { p.InspectionTestPlanId, p.ITPNumber, p.Title }).ToListAsync();
+        }
         return View(po);
     }
 
@@ -99,8 +110,8 @@ public class PurchaseOrderController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateLine(int id, int lineId, decimal quantity, decimal unitPrice, DateTime? requiredDate, bool isStockLine,
-        int? commodityGroupId, string? freeTextReason, [FromServices] IPurchaseOrderApprovalService approval)
-        => Done(id, await approval.UpdateLineAsync(lineId, new PoLineInput(quantity, unitPrice, requiredDate, isStockLine, commodityGroupId, freeTextReason), await PoActorAsync()), "Po_Saved");
+        int? commodityGroupId, string? freeTextReason, int? warehouseId, [FromServices] IPurchaseOrderApprovalService approval)
+        => Done(id, await approval.UpdateLineAsync(lineId, new PoLineInput(quantity, unitPrice, requiredDate, isStockLine, commodityGroupId, freeTextReason, warehouseId), await PoActorAsync()), "Po_Saved");
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -126,6 +137,17 @@ public class PurchaseOrderController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Reject(int id, string? reason, [FromServices] IPurchaseOrderApprovalService approval)
         => Done(id, await approval.RejectAsync(id, reason ?? string.Empty, await PoActorAsync()), "Po_Rejected");
+
+    // ================================================================== SCRUM-473: inspection release before shipment
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ReleaseInspection(int id, int lineId, int? inspectionTestPlanId, [FromServices] IPurchaseOrderReceivingService receiving)
+    {
+        var a = await PoActorAsync();
+        var r = await receiving.ReleaseInspectionAsync(lineId, inspectionTestPlanId, new PoReceivingActor(a.EmployeeId, a.UserName, a.Roles));
+        return Done(id, new PoResult(r.Success, r.Error), "Rcv_InspectionReleased");
+    }
 
     /// <summary>Success may still carry a notice key (for example "responsible not set").</summary>
     private IActionResult Done(int id, PoResult r, string successKey)
