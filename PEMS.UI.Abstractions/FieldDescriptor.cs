@@ -9,7 +9,12 @@ public enum FieldKind
     Date,
     Select,
     Checkbox,
-    File
+    File,
+    /// <summary>
+    /// Formatted text (HTML) edited with the shared rich-text editor (SCRUM-59). The posted HTML is untrusted: the server must run it through
+    /// <c>FormValueSanitizer</c> / <c>IRichTextSanitizerService</c> before it is stored or shown.
+    /// </summary>
+    RichText
 }
 
 /// <summary>One choice of a <see cref="FieldKind.Select"/> field. <see cref="Value"/> is data and is never translated.</summary>

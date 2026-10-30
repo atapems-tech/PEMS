@@ -73,10 +73,13 @@
     <link rel="stylesheet" href="~/_content/PEMS.UI/pems-select.css" asp-append-version="true" />
     @* SCRUM-64: command palette (Ctrl+K) *@
     <link rel="stylesheet" href="~/_content/PEMS.UI/pems-command-palette.css" asp-append-version="true" />
+    @* SCRUM-59: the one rich-text editor (Quill, vendored, loaded by pems-rte.js only on pages with a rich-text field) *@
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-rte.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="@(isAdminArea ? "admin-area" : "")" data-user-id="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value"
-      data-pems-select-no-results="@Localizer["Sel_NoResults"]" data-pems-select-loading="@Localizer["Sel_Loading"]" data-pems-select-placeholder="@Localizer["Sel_Placeholder"]">
+      data-pems-select-no-results="@Localizer["Sel_NoResults"]" data-pems-select-loading="@Localizer["Sel_Loading"]" data-pems-select-placeholder="@Localizer["Sel_Placeholder"]"
+      data-pems-rte-texts="@PEMS.Web.Helpers.RichTextEditorTexts.Json(Localizer)" data-pems-rte-lib="@Url.Content("~/lib/quill/")">
     <a class="pems-skip-link" href="#pemsMainContent">@Localizer["Shell_SkipToContent"]</a>
     <header class="pems-topbar">
         <div class="d-flex align-items-center gap-2">
@@ -230,6 +233,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/tom-select/tom-select.complete.min.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-select.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-rte.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/pems-global-search.js" asp-append-version="true"></script>
     <script src="~/js/pems-data-grid.js" asp-append-version="true"></script>
