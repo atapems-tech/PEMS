@@ -2837,6 +2837,54 @@
   <data name="Upload_Err_Infected" xml:space="preserve"><value>The file {0} was refused by the malware scanner.</value></data>
   <data name="Upload_Err_ScanFailed" xml:space="preserve"><value>The file {0} could not be checked by the malware scanner; try again or ask the administrator.</value></data>
   <data name="Upload_Err_NoPolicy" xml:space="preserve"><value>This page does not accept files.</value></data>
+  <data name="GlobalSearch_Placeholder" xml:space="preserve"><value>Search records, menus and actions...</value></data>
+  <data name="GlobalSearch_PaletteHint" xml:space="preserve"><value>Tip: press Ctrl+K on any page to open the command palette.</value></data>
+  <data name="GlobalSearch_NoResults" xml:space="preserve"><value>No results for "{0}" that you can open.</value></data>
+  <data name="Palette_Title" xml:space="preserve"><value>Command palette</value></data>
+  <data name="Palette_Placeholder" xml:space="preserve"><value>Search menus, records and actions...</value></data>
+  <data name="Palette_OpenHint" xml:space="preserve"><value>Search (Ctrl+K)</value></data>
+  <data name="Palette_Menus" xml:space="preserve"><value>Menus</value></data>
+  <data name="Palette_Actions" xml:space="preserve"><value>Actions</value></data>
+  <data name="Palette_Empty" xml:space="preserve"><value>Nothing matches.</value></data>
+  <data name="Palette_Loading" xml:space="preserve"><value>Searching records...</value></data>
+  <data name="Palette_Error" xml:space="preserve"><value>Record search failed. Try again.</value></data>
+  <data name="Palette_Keys" xml:space="preserve"><value>↑ ↓ move · Enter open · Esc close</value></data>
+  <data name="Palette_MinChars" xml:space="preserve"><value>Type 2 or more characters to search records.</value></data>
+  <data name="Palette_ShowAll" xml:space="preserve"><value>Show all results for "{0}"</value></data>
+  <data name="Palette_Count" xml:space="preserve"><value>{0} results</value></data>
+  <data name="Palette_Action_NewLetter" xml:space="preserve"><value>New letter</value></data>
+  <data name="Palette_Action_NewDocument" xml:space="preserve"><value>New engineering document</value></data>
+  <data name="Palette_Action_NewVdr" xml:space="preserve"><value>New VDR item</value></data>
+  <data name="Palette_Action_NewWorkRequest" xml:space="preserve"><value>New work request</value></data>
+  <data name="Palette_Action_NewWorkOrder" xml:space="preserve"><value>New work order</value></data>
+  <data name="Palette_Action_NewEquipment" xml:space="preserve"><value>New equipment</value></data>
+  <data name="Palette_Action_NewMaterialRequisition" xml:space="preserve"><value>New material requisition</value></data>
+  <data name="Palette_Action_NewContract" xml:space="preserve"><value>New contract</value></data>
+  <data name="Palette_Action_MyWork" xml:space="preserve"><value>My work</value></data>
+  <data name="Palette_Action_Notifications" xml:space="preserve"><value>Notifications</value></data>
+  <data name="Palette_Action_Help" xml:space="preserve"><value>Help center</value></data>
+  <data name="Palette_Action_ChangePassword" xml:space="preserve"><value>Change password</value></data>
+  <data name="Palette_Action_Theme" xml:space="preserve"><value>Theme: {0}</value></data>
+  <data name="Palette_Action_Language" xml:space="preserve"><value>Language: {0}</value></data>
+  <data name="Palette_Group_Attachment" xml:space="preserve"><value>Attachments</value></data>
+  <data name="Palette_Group_Contract" xml:space="preserve"><value>Contracts</value></data>
+  <data name="Palette_Group_Discipline" xml:space="preserve"><value>Disciplines</value></data>
+  <data name="Palette_Group_DocumentRevision" xml:space="preserve"><value>Document revisions</value></data>
+  <data name="Palette_Group_EngineeringDocument" xml:space="preserve"><value>Engineering documents</value></data>
+  <data name="Palette_Group_Equipment" xml:space="preserve"><value>Equipment</value></data>
+  <data name="Palette_Group_EquipmentTag" xml:space="preserve"><value>Equipment tags</value></data>
+  <data name="Palette_Group_HelpArticle" xml:space="preserve"><value>Help articles</value></data>
+  <data name="Palette_Group_Letter" xml:space="preserve"><value>Correspondence</value></data>
+  <data name="Palette_Group_MOC" xml:space="preserve"><value>Management of change</value></data>
+  <data name="Palette_Group_MaterialRequisition" xml:space="preserve"><value>Material requisitions</value></data>
+  <data name="Palette_Group_Notification" xml:space="preserve"><value>Notifications</value></data>
+  <data name="Palette_Group_PartCatalogueRequest" xml:space="preserve"><value>Part catalogue requests</value></data>
+  <data name="Palette_Group_Project" xml:space="preserve"><value>Projects</value></data>
+  <data name="Palette_Group_SparePart" xml:space="preserve"><value>Spare parts</value></data>
+  <data name="Palette_Group_TechnicalQuery" xml:space="preserve"><value>Technical queries</value></data>
+  <data name="Palette_Group_VDRItem" xml:space="preserve"><value>Vendor documents (VDR)</value></data>
+  <data name="Palette_Group_Vendor" xml:space="preserve"><value>Vendors</value></data>
+  <data name="Palette_Group_WorkOrder" xml:space="preserve"><value>Work orders</value></data>
   <data name="Lp_SelectedCount" xml:space="preserve"><value>{0} selected</value></data>
   <data name="Lp_SelectAll" xml:space="preserve"><value>Select all rows</value></data>
   <data name="Lp_SelectRow" xml:space="preserve"><value>Select</value></data>

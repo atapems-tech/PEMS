@@ -17,6 +17,20 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 - Profile photos, drawn signatures and letter editor images are stored in the file store (outside wwwroot) and served by `Files/Image`, which needs a login. Old `/uploads/profile-photos|signatures|letters/inline` URLs keep working through the same action; nothing under `/uploads` is served as a static file any more (old editor images, 404 since the containment work, show again).
 - The correspondence signature check uses the shared allowlist table.
 
+## 2026-10-30 - Command palette and permission-checked global search (SCRUM-64)
+
+### Added
+- Command palette: Ctrl+K / Cmd+K on every page, a click in the top-bar search box, or the search icon on a phone. It finds:
+  - menus, read from the sidebar the server already filtered for the user;
+  - actions (new letter, document, VDR item, work request, work order, equipment, MR, contract; My work, notifications, help, change password, theme and language), each shown only when the user passes the check of its page;
+  - records of every module the user may open, five per type, with "Show all results".
+- Keyboard and screen-reader support (dialog, combobox, listbox, `aria-activedescendant`), Light, Dark and Turquoise themes, RTL, phone layout. Component `pems-command-palette.js/.css` in PEMS.UI; no library, no external call.
+- Security contract of search providers: every `ISearchableEntityProvider` declares `SearchAccessRule Access` (any user, module + action, or roles; lookup-only), equal to the page its results open. `GlobalSearchService` checks it before the provider runs; row scopes (letter confidentiality, own discipline, own notifications) stay in the providers.
+
+### Changed
+- `/GlobalSearch` (the top-bar search page) shows the same checked results as the palette. Before, it queried nine tables directly with no permission or row check, so work orders, confidential letters and documents of other disciplines could be found by any signed-in user.
+- Vendor and contract results now need Vendors View / Contracts View, discipline results DisciplineWorkspace View (palette and search page). Form pickers (`/SearchApi?type=`) are unchanged.
+
 ## 2026-10-30 - Rich text as a standard field type, sanitized on the server (SCRUM-59)
 
 ### Added
