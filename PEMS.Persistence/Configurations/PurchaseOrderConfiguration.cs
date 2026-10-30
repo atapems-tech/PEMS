@@ -59,6 +59,11 @@ public class PurchaseOrderLineConfiguration : IEntityTypeConfiguration<PurchaseO
         builder.HasOne(x => x.CommodityGroup).WithMany().HasForeignKey(x => x.CommodityGroupId).OnDelete(DeleteBehavior.Restrict);
         builder.HasIndex(x => new { x.PoId, x.LineNo }).IsUnique();
         builder.HasIndex(x => x.MaterialRequisitionItemId);
+
+        // SCRUM-473: delivery warehouse and inspection release
+        builder.Property(x => x.InspectionReleasedByUserName).HasMaxLength(256);
+        builder.HasOne(x => x.Warehouse).WithMany().HasForeignKey(x => x.WarehouseId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.InspectionTestPlan).WithMany().HasForeignKey(x => x.InspectionTestPlanId).OnDelete(DeleteBehavior.Restrict);
     }
 }
 

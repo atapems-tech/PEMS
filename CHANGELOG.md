@@ -17,6 +17,35 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 - Profile photos, drawn signatures and letter editor images are stored in the file store (outside wwwroot) and served by `Files/Image`, which needs a login. Old `/uploads/profile-photos|signatures|letters/inline` URLs keep working through the same action; nothing under `/uploads` is served as a static file any more (old editor images, 404 since the containment work, show again).
 - The correspondence signature check uses the shared allowlist table.
 
+
+## 2026-10-30 - Receiving against PO lines and incoming supply (SCRUM-473)
+
+Owner decisions 2026-10-30:
+- **D6a:** quantity in QC counts as incoming until the IRN is closed.
+- **D6b:** the buyer decides "replacement from vendor" (the default, the PO line reopens) or "close short" for a rejected quantity.
+- **D7:** the Warehouse Manager resolves Hold from My Work.
+- **Over-receipt:** allowed, with a warning and on the OS&D report.
+- **D8:** imported POs without lines stay out of incoming supply.
+
+### Added
+- **Receiving against a PO:** an IRN raised against an issued PO receives its lines ("Receive from PO"). Each IRN line links to its PO line (`IrnReceiptLines.PurchaseOrderLineId`, migration `PoLineReceivingAndIncomingSupply`). These are warnings, not errors:
+  - more than the open quantity;
+  - another warehouse than the line's delivery warehouse;
+  - inspection required and not released.
+
+  The vendor must be the PO's vendor.
+- **Delivery warehouse per PO line:** defaults from the pre-procurement demand. A stock line needs one to be submitted.
+- **Inspection release before shipment per PO line:** optionally against the project's ITP. A user with IRN Approve can release.
+- **OS&D report** per IRN, printable: over, short, rejected/damaged and Hold against the open quantity before the receipt.
+- **Quantity buckets per PO line** (`PoLineSupply`), shown on the PO page: ordered, in QC, accepted, Hold, rejected (replaced / closed short), open, over-received.
+- **Workflow `IRN / HoldResolution`** (17 module workflows): Hold left by an approved disposition is a task for `WH.Manager`. The accepted part is posted to stock; the rejected part follows the buyer's decision.
+- **Incoming supply in net demand:**
+  - open quantity of stock lines of issued POs at the delivery warehouse, plus quantity in QC at the receiving warehouse;
+  - the result is now `CompleteNetDemand` (Projected = Usable + Incoming - Unreserved);
+  - a line in another unit, or without a delivery warehouse, makes the result not definitive.
+
+### Changed
+- Pre-procurement planned supply no longer counts quantity already on an issued or closed PO line (it is incoming supply), so no unit is counted twice. The replenishment calculator version is now 2.
 ## 2026-10-30 - Command palette and permission-checked global search (SCRUM-64)
 
 ### Added

@@ -112,6 +112,19 @@ public class PurchaseOrderLine : BaseEntity
     public int? TenderId { get; set; }
     public int? BidId { get; set; }
 
+    /// <summary>SCRUM-473: the warehouse the goods are delivered to (SAP plant / IFS site). Required on a stock line at submit;
+    /// open quantity counts as incoming supply of this warehouse.</summary>
+    public int? WarehouseId { get; set; }
+    public Warehouse? Warehouse { get; set; }
+
+    /// <summary>SCRUM-473: inspection release before shipment, where the package requires inspection (optional link to its ITP).</summary>
+    public int? InspectionTestPlanId { get; set; }
+    public InspectionTestPlan? InspectionTestPlan { get; set; }
+    public DateTime? InspectionReleasedAt { get; set; }
+    public string? InspectionReleasedByUserName { get; set; }
+
+    public ICollection<IrnReceiptLine> ReceiptLines { get; set; } = new List<IrnReceiptLine>();
+
     public bool IsCatalogued => MaterialItemId != null || PartCatalogueRequestId != null;
     public decimal LineAmount => Quantity * UnitPrice;
 }

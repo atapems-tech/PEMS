@@ -112,6 +112,13 @@
                     </select>
                 </div>
                 <div class="mb-2">
+                    <label class="form-label small">@Localizer["Rcv_PurchaseOrderOptional"]</label>
+                    <select name="purchaseOrderId" class="form-select form-select-sm">
+                        <option value="">-</option>
+                        @foreach (var p in (IEnumerable<dynamic>)(ViewBag.PurchaseOrders ?? Array.Empty<object>())) { <option value="@p.PoId">@p.PoNumber - @p.VendorName</option> }
+                    </select>
+                </div>
+                <div class="mb-2">
                     <label class="form-label small">@Localizer["Receiving Date"]</label>
                     <input name="receivingDate" type="date" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-dd")" required />
                 </div>

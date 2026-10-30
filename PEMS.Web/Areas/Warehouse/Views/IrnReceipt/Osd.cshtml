@@ -1,0 +1,68 @@
+@model PEMS.Application.Interfaces.OsdReport
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@* SCRUM-473: OS&D (over, short and damaged) report of one goods receipt, for the vendor. Same print pattern as the passports. *@
+
+<div class="content-card mb-3 d-print-none">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <a asp-action="Details" asp-route-id="@Model.IrnReceiptId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> @Model.IrnNumber</a>
+        <button onclick="window.print()" class="btn btn-sm btn-outline-secondary"><i class="bi bi-printer"></i> @Localizer["Print"]</button>
+    </div>
+</div>
+
+<div class="content-card mb-3">
+    <h5 class="mb-1">@Localizer["Rcv_OsdTitle"]</h5>
+    <div class="small text-muted mb-3">@Localizer["Rcv_OsdSubtitle"]</div>
+    <div class="row small g-2">
+        <div class="col-6 col-md-3"><strong>@Localizer["IRN"]:</strong> @Model.IrnNumber (@Model.IrnStatus)</div>
+        <div class="col-6 col-md-3"><strong>@Localizer["Date"]:</strong> @Model.ReceivingDate.ToString("yyyy-MM-dd")</div>
+        <div class="col-6 col-md-3"><strong>@Localizer["Vendor"]:</strong> @Model.VendorName</div>
+        <div class="col-6 col-md-3"><strong>@Localizer["PO"]:</strong> @(Model.PoNumber ?? "-")</div>
+        <div class="col-6 col-md-3"><strong>@Localizer["Warehouse"]:</strong> @Model.WarehouseCode</div>
+        <div class="col-6 col-md-3"><strong>@Localizer["Received By"]:</strong> @(Model.ReceivedBy ?? "-")</div>
+    </div>
+</div>
+
+<div class="content-card mb-3">
+    @if (!Model.HasDiscrepancy)
+    {
+        <div class="alert alert-success py-2 px-3 small mb-3">@Localizer["Rcv_OsdClean"]</div>
+    }
+    <table class="table table-enterprise table-sm">
+        <thead>
+            <tr>
+                <th>@Localizer["Rcv_PoLine"]</th>
+                <th>@Localizer["Material"]</th>
+                <th>@Localizer["Rcv_Ordered"]</th>
+                <th>@Localizer["Rcv_ReceivedBefore"]</th>
+                <th>@Localizer["Rcv_ThisReceipt"]</th>
+                <th>@Localizer["Rcv_Over"]</th>
+                <th>@Localizer["Rcv_Short"]</th>
+                <th>@Localizer["Accepted"]</th>
+                <th>@Localizer["Rcv_RejectedDamaged"]</th>
+                <th>@Localizer["Hold"]</th>
+                <th>@Localizer["Rcv_Decision"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var l in Model.Lines)
+            {
+                <tr>
+                    <td>@(l.WithoutPoLine ? Localizer["Rcv_NoPoLine"].Value : l.PoLineNo?.ToString())</td>
+                    <td class="small">@l.MaterialCode - @l.Description</td>
+                    <td>@(l.WithoutPoLine ? "-" : $"{l.Ordered:0.###}") @l.Unit</td>
+                    <td>@(l.WithoutPoLine ? "-" : $"{l.ReceivedBefore:0.###}")</td>
+                    <td>@l.ThisReceipt.ToString("0.###")</td>
+                    <td class="@(l.Over > 0 ? "text-danger fw-semibold" : "")">@l.Over.ToString("0.###")</td>
+                    <td class="@(l.Short > 0 ? "text-warning fw-semibold" : "")">@l.Short.ToString("0.###")</td>
+                    <td>@(l.Accepted?.ToString("0.###") ?? "-")</td>
+                    <td class="@(l.Rejected > 0 ? "text-danger fw-semibold" : "")">@l.Rejected.ToString("0.###")</td>
+                    <td>@l.Hold.ToString("0.###")</td>
+                    <td class="small">@(l.Rejected > 0 && !l.WithoutPoLine ? Localizer["Rcv_Action_" + (l.RejectionAction ?? "Replace")].Value : "-")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p class="small text-muted mb-0">@Localizer["Rcv_OsdNote"]</p>
+</div>

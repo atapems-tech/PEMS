@@ -17,12 +17,14 @@ public sealed record PoResult(bool Success, string? Error, int? Id = null)
 }
 
 /// <summary>Editable values of a PO line in Draft.</summary>
-public sealed record PoLineInput(decimal Quantity, decimal UnitPrice, DateTime? RequiredDate, bool IsStockLine, int? CommodityGroupId, string? FreeTextReason);
+/// <param name="WarehouseId">SCRUM-473: delivery warehouse; required on a stock line at submit.</param>
+public sealed record PoLineInput(decimal Quantity, decimal UnitPrice, DateTime? RequiredDate, bool IsStockLine, int? CommodityGroupId, string? FreeTextReason,
+    int? WarehouseId = null);
 
 public sealed record PoLineView(
     int PurchaseOrderLineId, int LineNo, string Description, string? PartNumber, bool IsCatalogued, decimal Quantity, string? Unit,
     decimal UnitPrice, decimal LineAmount, DateTime? RequiredDate, bool IsStockLine, int? CommodityGroupId, string? CommodityGroup,
-    string? FreeTextReason, int? MaterialRequisitionItemId, int? TenderId, int? BidId);
+    string? FreeTextReason, int? MaterialRequisitionItemId, int? TenderId, int? BidId, int? WarehouseId = null, string? WarehouseCode = null);
 
 public sealed record PoApprovalView(
     int PoId, string PoNumber, string Status, string? Currency, decimal Total, int? MaterialRequisitionId, string? MaterialRequisitionNumber,

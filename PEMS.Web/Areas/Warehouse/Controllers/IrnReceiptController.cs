@@ -87,6 +87,9 @@ public class IrnReceiptController : Controller
         ViewBag.Warehouses = await _context.Warehouses.Where(x => x.IsActive)
             .OrderBy(x => x.Code).Select(x => new { x.WarehouseId, x.Code }).ToListAsync();
         ViewBag.SelectedStatus = status;
+        // SCRUM-473: an IRN can be raised against an issued PO and then receive its lines
+        ViewBag.PurchaseOrders = await _context.PurchaseOrders.Where(p => p.IsActive && p.Status == PurchaseOrderStatuses.Issued)
+            .OrderByDescending(p => p.PoId).Select(p => new { p.PoId, p.PoNumber, VendorName = p.Vendor!.Name }).Take(500).ToListAsync();
 
         return View(new PagedResult<IrnReceiptListDto>
         {
@@ -119,6 +122,13 @@ public class IrnReceiptController : Controller
         if (purchaseOrderId.HasValue && !await _context.PurchaseOrders.AnyAsync(x => x.PoId == purchaseOrderId.Value))
         {
             TempData["Error"] = "Selected purchase order was not found.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        // SCRUM-473: goods of a PO are received from the PO's vendor
+        if (purchaseOrderId.HasValue && !await _context.PurchaseOrders.AnyAsync(x => x.PoId == purchaseOrderId.Value && x.VendorId == vendorId))
+        {
+            TempData["Error"] = Text("Rcv_Err_VendorMismatch");
             return RedirectToAction(nameof(Index));
         }
 
@@ -173,6 +183,15 @@ public class IrnReceiptController : Controller
 
         ViewBag.DispositionRecords = await _context.IrnDispositionRecords.Include(x => x.DispositionedBy)
             .Where(x => x.IrnReceiptId == id).OrderByDescending(x => x.DispositionedDate).ToListAsync();
+
+        // SCRUM-473: receiving against PO lines, the buyer's rejection decision (D6b) and Hold resolution (D7)
+        if (receipt.PurchaseOrderId.HasValue
+            && HttpContext?.RequestServices?.GetService(typeof(IPurchaseOrderReceivingService)) is IPurchaseOrderReceivingService receiving)
+            ViewBag.PoLines = await receiving.GetPoLinesAsync(receipt.PurchaseOrderId.Value);
+        ViewBag.CanDecideRejection = await _permissionService.HasPermissionAsync(_currentUser.Roles, "PurchaseOrder", "Edit");
+        ViewBag.CanResolveHold = (_currentUser.Roles.Contains(PEMS.Persistence.Identity.RoleCatalog.WarehouseManager)
+                                  || _currentUser.Roles.Contains(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
+                                 && await _permissionService.HasPermissionAsync(_currentUser.Roles, "IRN", "Edit");
 
         return View(receipt);
     }
@@ -355,6 +374,11 @@ public class IrnReceiptController : Controller
             var approved = recoveringPosting ? instance.Status == "Completed" : decision == "Approve";
             var (success, error) = await _lifecycleService.CompleteDispositionAsync(id, approved, employeeId);
 
+            // SCRUM-473 / D7: Hold left on the approved receipt goes to the Warehouse Manager in My Work
+            if (success && approved
+                && HttpContext?.RequestServices?.GetService(typeof(IPurchaseOrderReceivingService)) is IPurchaseOrderReceivingService receiving)
+                await receiving.StartHoldResolutionAsync(id, employeeId);
+
             TempData[success ? "Message" : "Error"] = success
                 ? (approved ? "Disposition approved - accepted quantity posted to stock." : "Disposition rejected - IRN returned for re-inspection.")
                 : $"{error} (تصمیم گردش‌کار ثبت شده است؛ پس از رفع مشکل دوباره «تایید» را بزنید تا ثبت موجودی تکرار شود.)";
@@ -366,6 +390,63 @@ public class IrnReceiptController : Controller
 
         return RedirectToAction(nameof(Details), new { id });
     }
+
+    // ================================================================== SCRUM-473: receiving against PO lines
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ReceiveFromPo(int id, int[] poLineId, decimal[] quantity, [FromServices] IPurchaseOrderReceivingService receiving)
+    {
+        if (poLineId.Length != quantity.Length)
+        {
+            TempData["Error"] = "Input is malformed.";
+            return RedirectToAction(nameof(Details), new { id });
+        }
+        var lines = poLineId.Select((lineId, i) => new IrnPoLineInput(lineId, quantity[i])).ToList();
+        return Done(id, await receiving.ReceiveAgainstPoAsync(id, lines, await ActorAsync()), "Rcv_LinesAdded");
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DecideRejection(int id, int lineId, string action, [FromServices] IPurchaseOrderReceivingService receiving)
+        => Done(id, await receiving.DecideRejectionAsync(lineId, action, await ActorAsync()), "Rcv_RejectionDecided");
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ResolveHold(int id, int lineId, decimal accepted, decimal rejected, string? notes, [FromServices] IPurchaseOrderReceivingService receiving)
+        => Done(id, await receiving.ResolveHoldAsync(lineId, accepted, rejected, notes, await ActorAsync()), "Rcv_HoldResolved");
+
+    /// <summary>OS&amp;D report (over, short and damaged) for the vendor, printable.</summary>
+    public async Task<IActionResult> Osd(int id, [FromServices] IPurchaseOrderReceivingService receiving)
+    {
+        if (!await CanViewAsync()) return Forbid();
+        var report = await receiving.GetOsdReportAsync(id);
+        if (report == null) return NotFound();
+        ViewData["Title"] = "OS&D Report";
+        ViewData["Section"] = "Inventory & Materials";
+        return View(report);
+    }
+
+    private IActionResult Done(int id, PoReceivingResult r, string successKey)
+    {
+        if (!r.Success) TempData["Error"] = Text(r.Error!);
+        else
+        {
+            TempData["Message"] = Text(successKey);
+            if (r.Warnings.Count > 0) TempData["Warning"] = string.Join(" ", r.Warnings.Select(Text));
+        }
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    private string Text(string keyOrText)
+    {
+        var localizer = HttpContext?.RequestServices?.GetService(typeof(Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>))
+            as Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>;
+        var l = localizer?[keyOrText];
+        return l == null || l.ResourceNotFound ? keyOrText : l.Value;
+    }
+
+    private async Task<PoReceivingActor> ActorAsync() => new(await GetCurrentEmployeeIdAsync(), _currentUser.UserName, _currentUser.Roles);
 
     private async Task<int?> GetCurrentEmployeeIdAsync()
     {
