@@ -1,94 +1,120 @@
 @model List<PEMS.Domain.Entities.Finding>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
-    ViewData["Title"] = "Findings";
-    var failureModes = (List<PEMS.Domain.Entities.FailureMode>)ViewBag.FailureModes;
-    var failureCauses = (List<PEMS.Domain.Entities.FailureCause>)ViewBag.FailureCauses;
+    ViewData["Title"] = Localizer["Fn_Title"].Value;
+    var equipmentId = (int?)ViewBag.SelectedEquipmentId;
+    var status = (string?)ViewBag.SelectedStatus;
+    var statuses = new[] { "Open", "Linked", "Closed" };
+    var filterCount = (equipmentId.HasValue ? 1 : 0) + (string.IsNullOrEmpty(status) ? 0 : 1);
 
-    string ConditionBadge(string c) => c switch
+    string StatusText(string? s) => VdrUi.Loc(Localizer, "Fn_St_", s);
+    string StatusTone(string? s) => s == "Open" ? "vs-pill--warning" : s == "Closed" ? "vs-pill--neutral" : "vs-pill--success";
+    string ConditionTone(string? c) => c switch
     {
-        "Critical" => "bg-dark",
-        "Alarm" => "bg-danger",
-        "Warning" => "bg-warning text-dark",
-        "Reject" => "bg-danger",
-        "Poor" => "bg-warning text-dark",
-        _ => "bg-secondary"
+        "Critical" or "Alarm" or "Reject" => "vs-pill--danger",
+        "Warning" or "Poor" => "vs-pill--warning",
+        _ => "vs-pill--neutral"
     };
 }
 
-@await Html.PartialAsync("_PageHeader")
-
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
-<div class="content-card">
-    <form method="get" class="d-flex flex-wrap gap-2 mb-3">
-        <input type="number" name="equipmentId" value="@ViewBag.SelectedEquipmentId" class="form-control form-control-sm" style="max-width:160px;" placeholder="@Localizer["Equipment ID"]" />
-        <select name="status" class="form-select form-select-sm" style="max-width:160px;">
-            <option value="">@Localizer["All statuses"]</option>
-            @foreach (var s in new[] { "Open", "Linked", "Closed" })
-            {
-                <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option>
-            }
-        </select>
-        <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-funnel"></i> @Localizer["Filter"]</button>
-        <a asp-action="Index" class="btn btn-sm btn-outline-secondary">@Localizer["Reset"]</a>
-    </form>
+@* SCRUM-337 W2: built from the PEMS.UI list-page component; the page keeps its filters (equipment id, status) and its
+   raise-work-request / close actions. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
+    @if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
 
-    <table class="table table-enterprise table-sm">
-        <thead>
-            <tr>
-                <th>@Localizer["Equipment"]</th><th>@Localizer["Source"]</th><th>@Localizer["Condition"]</th><th>@Localizer["Description"]</th>
-                <th>@Localizer["Failure Mode / Cause"]</th><th>@Localizer["Status"]</th><th>@Localizer["Observed"]</th><th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var f in Model)
-            {
-                <tr>
-                    <td class="small">@(f.Equipment?.TagNumber ?? f.EquipmentId.ToString())</td>
-                    <td class="small">
-                        @if (f.ConditionReadingId.HasValue) { <span class="badge text-bg-light border">@Localizer["CM Reading"]</span> }
-                        else if (f.InspectionRecordId.HasValue) { <span class="badge text-bg-light border">@Localizer["Inspection"]</span> }
-                    </td>
-                    <td><span class="badge @ConditionBadge(f.Condition)">@f.Condition</span></td>
-                    <td class="small">@f.Description</td>
-                    <td class="small text-muted">@(f.FailureMode?.Name) @(f.FailureCause != null ? $"/ {f.FailureCause.Name}" : "")</td>
-                    <td>
-                        <span class="badge @(f.Status == "Open" ? "text-bg-warning" : f.Status == "Closed" ? "text-bg-secondary" : "text-bg-success")">@f.Status</span>
-                        @if (f.WorkRequest != null)
-                        {
-                            <div class="small text-muted">WR: @f.WorkRequest.RequestNumber</div>
-                        }
-                    </td>
-                    <td class="small">@f.ObservedAt.ToString("yyyy-MM-dd")</td>
-                    <td class="text-end text-nowrap">
-                        @if (f.Status == "Open")
-                        {
-                            <form asp-action="RaiseWorkRequest" method="post" class="d-inline">
-                                <input type="hidden" name="findingId" value="@f.FindingId" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger" title="@Localizer["Raise Work Request"]"><i class="bi bi-clipboard-plus"></i></button>
-                            </form>
-                        }
-                        @if (f.Status != "Closed")
-                        {
-                            <form asp-action="Close" method="post" class="d-inline">
-                                <input type="hidden" name="id" value="@f.FindingId" />
-                                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این یافته بسته بشه؟')" title="@Localizer["Close"]"><i class="bi bi-check-circle"></i></button>
-                            </form>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4">@Localizer["هیچ یافته‌ای ثبت نشده."]</p> }
-</div>
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["Fn_Title"]" total="@Model.Count">
+            <pems-list-tools>
+                <pems-list-filters form-id="fnFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    <div>
+                        <label class="lp-lbl" for="fnFilterEquipment">@Localizer["Fn_EquipmentId"]</label>
+                        <input type="number" id="fnFilterEquipment" name="equipmentId" value="@equipmentId" class="form-control form-control-sm" />
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="fnFilterStatus">@Localizer["Ed_Status"]</label>
+                        <select id="fnFilterStatus" name="status" class="form-select form-select-sm">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var s in statuses)
+                            { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
+                        </select>
+                    </div>
+                </pems-list-filters>
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (equipmentId.HasValue)
+            { <pems-list-chip label="@Localizer["Fn_EquipmentId"]" value="@equipmentId.ToString()" remove-href="@Url.Action("Index", new { status })" /> }
+            @if (!string.IsNullOrEmpty(status))
+            { <pems-list-chip label="@Localizer["Ed_Status"]" value="@StatusText(status)" remove-href="@Url.Action("Index", new { equipmentId })" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table empty="@(!Model.Any())" empty-text="@Localizer["Fn_Empty"]" filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
+                <thead>
+                    <tr>
+                        <th>@Localizer["Equipment"]</th>
+                        <th>@Localizer["Fn_Source"]</th>
+                        <th>@Localizer["Cm_Condition"]</th>
+                        <th>@Localizer["Cm_Description"]</th>
+                        <th class="vs-hide-md">@Localizer["Fn_FailureModeCause"]</th>
+                        <th>@Localizer["Ed_Status"]</th>
+                        <th>@Localizer["Fn_Observed"]</th>
+                        <th><span class="visually-hidden">@Localizer["Ed_Actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var f in Model)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no"><span class="vs-num">@(f.Equipment?.TagNumber ?? f.EquipmentId.ToString())</span></td>
+                            <td class="small">
+                                @if (f.ConditionReadingId.HasValue) { <span class="vs-pill vs-pill--neutral">@Localizer["Fn_CmReading"]</span> }
+                                else if (f.InspectionRecordId.HasValue) { <span class="vs-pill vs-pill--neutral">@Localizer["Fn_Inspection"]</span> }
+                            </td>
+                            <td><span class="vs-pill @ConditionTone(f.Condition)">@f.Condition</span></td>
+                            <td><span class="vs-title-cell" title="@f.Description">@f.Description</span></td>
+                            <td class="small text-muted vs-hide-md">@(f.FailureMode?.Name) @(f.FailureCause != null ? $"/ {f.FailureCause.Name}" : "")</td>
+                            <td>
+                                <span class="vs-pill @StatusTone(f.Status)">@StatusText(f.Status)</span>
+                                @if (f.WorkRequest != null)
+                                { <div class="small text-muted">@Localizer["Fn_WorkRequest"]: <span class="vs-num">@f.WorkRequest.RequestNumber</span></div> }
+                            </td>
+                            <td class="small"><span class="vs-num">@f.ObservedAt.ToString("yyyy-MM-dd")</span></td>
+                            <td class="lp-actions text-nowrap">
+                                @if (f.Status == "Open")
+                                {
+                                    <form asp-action="RaiseWorkRequest" method="post" class="d-inline">
+                                        <input type="hidden" name="findingId" value="@f.FindingId" />
+                                        <button type="submit" class="lp-act lp-act--always" title="@Localizer["Cm_RaiseWr"]" aria-label="@Localizer["Cm_RaiseWr"]"><i class="bi bi-clipboard-plus" aria-hidden="true"></i></button>
+                                    </form>
+                                }
+                                @if (f.Status != "Closed")
+                                {
+                                    <form asp-action="Close" method="post" class="d-inline" data-confirm="@Localizer["Fn_CloseConfirm"]" onsubmit="return confirm(this.dataset.confirm)">
+                                        <input type="hidden" name="id" value="@f.FindingId" />
+                                        <button type="submit" class="lp-act lp-act--always" title="@Localizer["Fn_Close"]" aria-label="@Localizer["Fn_Close"]"><i class="bi bi-check-circle" aria-hidden="true"></i></button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

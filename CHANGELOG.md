@@ -3,6 +3,15 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-31 - List page component, wave 2: CMMS (SCRUM-337)
+
+### Added
+- `<pems-list-new modal="...">` opens the page's own create modal (a button instead of a link); `<pems-list-export label="...">` names an export that is not the filtered list. A page's TempData message can sit inside the full-height list page.
+
+### Changed
+- Work Orders, Work Requests, Equipment, Functional Locations, Instruments, Letter Tags, Maintenance Plans, Maintenance Strategies, Job Plans, Spare Parts, Permits, Inspections, Findings and Assets are built from the list-page component. Each page keeps its filters, columns, modals, row actions and permissions. Count cards became KPI chips on demand; status button rows (Work Requests, Permits) became the status filter, and "pending my approval" a switch in it; page notes became the title tool tip; coverage, the failure-mode catalogue and bulk assignment moved into the strategies' "more" menu; status badges became tone pills.
+- The English and Persian texts written in these pages (headings, columns, empty texts, notes, confirmations and work-order, work-request, permit, finding, instrument and asset statuses, priorities) are resource keys in both languages now (prefixes `Wo_`, `Wr_`, `Tg_`, `Ins_`, `Fn_`, `Mp_`, `Jp_`, `Pt_`, `Eq_`, `Fl_`, `In_`, `Ms_`, `Sp_`, `As_`, `Pri_`).
+
 ## 2026-10-31 - Login page in one language (SCRUM-477)
 
 ### Fixed
