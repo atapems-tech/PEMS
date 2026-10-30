@@ -1,0 +1,26 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("tabs", Category = "navigation", Icon = "bi-segmented-nav")]
+@inject IPemsLocale Locale
+<div class="pems-tabs" id="@Options.Id" data-pems-tabs>
+    <div class="pems-tabs__list" role="tablist" aria-label="@Locale.Text(Options.Label)">
+        @foreach (var item in Options.Items)
+        {
+            <button type="button" role="tab" id="@(Options.Id)-tab-@item.Key" class="pems-tabs__tab" aria-controls="@(Options.Id)-panel-@item.Key"
+                    aria-selected="@(item.Key == Current ? "true" : "false")" tabindex="@(item.Key == Current ? 0 : -1)">@Locale.Text(item.Label)</button>
+        }
+    </div>
+    @foreach (var item in Options.Items)
+    {
+        <div role="tabpanel" id="@(Options.Id)-panel-@item.Key" class="pems-tabs__panel" aria-labelledby="@(Options.Id)-tab-@item.Key" hidden="@(item.Key != Current)">
+            @if (item.Content is not null)
+            {
+                <p>@Locale.Text(item.Content)</p>
+            }
+        </div>
+    }
+</div>
+@code {
+    [Parameter, EditorRequired] public TabsOptions Options { get; set; } = default!;
+    /// <summary>The selected tab: the requested one when it exists, else the first.</summary>
+    private string? Current => Options.Items.Any(i => i.Key == Options.Active) ? Options.Active : Options.Items.FirstOrDefault()?.Key;
+}

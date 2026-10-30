@@ -1,0 +1,115 @@
+{
+  "key": "action-bar",
+  "component": "PEMS.UI.Components.PemsActionBar",
+  "category": "forms",
+  "icon": "bi-layout-three-columns",
+  "nameKey": "component.action-bar",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "actions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "tone": {
+              "enum": [
+                "neutral",
+                "primary",
+                "danger",
+                "success",
+                "warning"
+              ]
+            },
+            "size": {
+              "enum": [
+                "small",
+                "medium",
+                "large"
+              ]
+            },
+            "disabled": {
+              "type": "boolean"
+            },
+            "type": {
+              "type": "string"
+            },
+            "href": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "opens": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "rowKey": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "sticky": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "actions"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "ActionBarOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "actions": [
+      {
+        "label": {
+          "en": "Save",
+          "fa": "ذخیره"
+        },
+        "type": "submit"
+      },
+      {
+        "label": {
+          "en": "Cancel",
+          "fa": "انصراف"
+        },
+        "tone": "neutral",
+        "href": "/x"
+      }
+    ],
+    "sticky": true
+  }
+}

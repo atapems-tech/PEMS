@@ -8,7 +8,7 @@
 }
 else
 {
-    <button type="@Options.Type" class="@state.Css" disabled="@Options.Disabled">@label</button>
+    <button type="@Options.Type" class="@state.Css" disabled="@Options.Disabled" data-pems-open="@(Options.Opens is null ? null : "#" + Options.Opens)" data-pems-row-key="@Options.RowKey" aria-haspopup="@(Options.Opens is null ? null : "dialog")">@label</button>
 }
 @code {
     [Parameter, EditorRequired] public ButtonOptions Options { get; set; } = default!;

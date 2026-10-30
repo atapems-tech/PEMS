@@ -1,0 +1,11 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("action-bar", Category = "forms", Icon = "bi-layout-three-columns")]
+<div class="@(Options.Sticky ? "pems-actionbar pems-actionbar--sticky" : "pems-actionbar")" role="group">
+    @foreach (var action in Options.Actions)
+    {
+        <PemsButton Options="action" />
+    }
+</div>
+@code {
+    [Parameter, EditorRequired] public ActionBarOptions Options { get; set; } = default!;
+}

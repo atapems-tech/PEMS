@@ -11,6 +11,8 @@ public sealed record FormDefinition
     public required string Action { get; init; }
     public required IReadOnlyList<FieldDescriptor> Fields { get; init; }
     public required TranslatableText SubmitLabel { get; init; }
+    /// <summary>Ask the browser to confirm leaving the page after a value changed (pems-form.js).</summary>
+    public bool WarnOnLeave { get; init; }
 }
 
 /// <summary>Per-request form state: current values (data) and validation error texts by field name.</summary>

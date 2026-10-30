@@ -1,0 +1,122 @@
+{
+  "key": "alert",
+  "component": "PEMS.UI.Components.PemsAlert",
+  "category": "feedback",
+  "icon": "bi-exclamation-circle",
+  "nameKey": "component.alert",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "message": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "tone": {
+        "enum": [
+          "info",
+          "success",
+          "warning",
+          "danger"
+        ]
+      },
+      "traceId": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "traceLabel": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "copyLabel": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "dismissLabel": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "required": [
+      "title"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "AlertOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "title": {
+      "en": "Could not save",
+      "fa": "ذخیره نشد"
+    },
+    "tone": "danger",
+    "traceId": "00-abc",
+    "copyLabel": {
+      "en": "Copy",
+      "fa": "کپی"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("modal", Category = "overlays", Icon = "bi-window")]
+@inject IPemsLocale Locale
+<dialog id="@Options.Id" class="pems-modal pems-modal--@Options.Size.ToString().ToLowerInvariant()" aria-labelledby="@(Options.Id)-title" data-pems-dialog>
+    <div class="pems-modal__panel">
+        <header class="pems-modal__header">
+            <h2 class="pems-modal__title" id="@(Options.Id)-title">@Locale.Text(Options.Title)</h2>
+            <button type="button" class="pems-modal__close" data-pems-close aria-label="@Locale.Text(Options.CloseLabel)"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+        </header>
+        <div class="pems-modal__body">
+            @if (Options.Body is not null)
+            {
+                <p>@Locale.Text(Options.Body)</p>
+            }
+            @ChildContent
+        </div>
+        @if (Footer is not null)
+        {
+            <footer class="pems-modal__footer">@Footer</footer>
+        }
+    </div>
+</dialog>
+@code {
+    [Parameter, EditorRequired] public ModalOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? Footer { get; set; }
+}

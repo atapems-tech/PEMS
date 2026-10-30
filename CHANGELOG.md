@@ -132,6 +132,16 @@ Owner decisions 2026-10-30:
 ### Changed
 - Replenishment run: quantity already in procurement (open items, and converted items whose MR is not closed or cancelled) is subtracted before recommending (design §6.1 PlannedSupply), so a shortage is never recommended twice. A recommendation fully covered closes as `CoveredByProcurement`.
 
+## 2026-10-31 - PEMS.UI: overlays, navigation, more field kinds and the form shell (SCRUM-336, SCRUM-338, SCRUM-352)
+
+### Added
+- Components in `PEMS.UI` (each with typed options, texts as inputs, a manifest snapshot, a sample, render tests in fa and en): `alert` (trace id + copy), `modal` (native dialog, one modal for many rows through the opener's row key), `drawer`, `confirm-dialog` (optional required reason, antiforgery token, posts the row key), `tabs`, `breadcrumb`, `stepper`, `menu`, `side-panel-nav`, `form-section`, `action-bar`.
+- Field kinds: Password (value never rendered back), Money, Time, Radio, Switch, Tags, CheckboxMatrix (`Options` rows x `Columns`, posts `row|column` pairs); `<pems-field>` maps DataType Password, Currency, Time.
+- `pems-overlay.js` (dialogs, tabs, menu, copy, dismiss) and `pems-form.js` (leave guard when `FormDefinition.WarnOnLeave`), both offline and idempotent; `ButtonOptions.Opens` / `RowKey` open a dialog for a row.
+
+### Not built (follow-ups)
+- No page uses the new components yet: adoption tasks per component are in the plan (see the adoption tasks of SCRUM-338). Lookup/TreeSelect fields stay with SCRUM-57 and the registry (#10).
+
 ## 2026-10-29 - Design token file moved into PEMS.UI (SCRUM-29, SCRUM-19)
 
 ### Changed
