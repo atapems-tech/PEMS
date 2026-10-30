@@ -16,6 +16,8 @@ public class VdrItemSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "VDRItem";
     public string DisplayName => "مدارک وندور (VDR)";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser();
 
     public VdrItemSearchProvider(PEMSDbContext context)
     {

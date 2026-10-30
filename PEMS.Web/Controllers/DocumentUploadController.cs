@@ -51,6 +51,7 @@ public class DocumentUploadController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
     public async Task<IActionResult> Upload(int projectId, List<IFormFile> files)
     {
         // Import Center parity: this action has no module permission, so enforce the same role gate that shows the Import Center card

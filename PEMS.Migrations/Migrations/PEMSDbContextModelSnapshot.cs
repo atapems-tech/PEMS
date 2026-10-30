@@ -7435,8 +7435,25 @@ namespace PEMS.Persistence.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal?>("HoldAcceptedQuantity")
+                        .HasColumnType("decimal(18,3)");
+
                     b.Property<decimal?>("HoldQuantity")
                         .HasColumnType("decimal(18,3)");
+
+                    b.Property<decimal?>("HoldRejectedQuantity")
+                        .HasColumnType("decimal(18,3)");
+
+                    b.Property<string>("HoldResolutionNotes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime?>("HoldResolvedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("HoldResolvedByUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("IrnReceiptId")
                         .HasColumnType("int");
@@ -7453,11 +7470,25 @@ namespace PEMS.Persistence.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PurchaseOrderLineId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("ReceivedQuantity")
                         .HasColumnType("decimal(18,3)");
 
                     b.Property<decimal?>("RejectedQuantity")
                         .HasColumnType("decimal(18,3)");
+
+                    b.Property<string>("RejectionAction")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime?>("RejectionDecidedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RejectionDecidedByUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -7478,6 +7509,8 @@ namespace PEMS.Persistence.Migrations
                     b.HasIndex("IrnReceiptId");
 
                     b.HasIndex("MaterialItemId");
+
+                    b.HasIndex("PurchaseOrderLineId");
 
                     b.HasIndex("StorageLocationId");
 
@@ -15197,6 +15230,16 @@ namespace PEMS.Persistence.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<DateTime?>("InspectionReleasedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InspectionReleasedByUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int?>("InspectionTestPlanId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsStockLine")
                         .HasColumnType("bit");
 
@@ -15247,13 +15290,20 @@ namespace PEMS.Persistence.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int?>("WarehouseId")
+                        .HasColumnType("int");
+
                     b.HasKey("PurchaseOrderLineId");
 
                     b.HasIndex("CommodityGroupId");
 
+                    b.HasIndex("InspectionTestPlanId");
+
                     b.HasIndex("MaterialItemId");
 
                     b.HasIndex("MaterialRequisitionItemId");
+
+                    b.HasIndex("WarehouseId");
 
                     b.HasIndex("PoId", "LineNo")
                         .IsUnique();
@@ -23754,6 +23804,11 @@ namespace PEMS.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("PEMS.Domain.Entities.PurchaseOrderLine", "PurchaseOrderLine")
+                        .WithMany("ReceiptLines")
+                        .HasForeignKey("PurchaseOrderLineId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("PEMS.Domain.Entities.StorageLocation", "StorageLocation")
                         .WithMany()
                         .HasForeignKey("StorageLocationId")
@@ -23767,6 +23822,8 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("IrnReceipt");
 
                     b.Navigation("MaterialItem");
+
+                    b.Navigation("PurchaseOrderLine");
 
                     b.Navigation("StorageLocation");
 
@@ -25916,6 +25973,11 @@ namespace PEMS.Persistence.Migrations
                         .HasForeignKey("CommodityGroupId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("PEMS.Domain.Entities.InspectionTestPlan", "InspectionTestPlan")
+                        .WithMany()
+                        .HasForeignKey("InspectionTestPlanId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("PEMS.Domain.Entities.MaterialItem", "MaterialItem")
                         .WithMany()
                         .HasForeignKey("MaterialItemId")
@@ -25932,13 +25994,22 @@ namespace PEMS.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PEMS.Domain.Entities.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("CommodityGroup");
+
+                    b.Navigation("InspectionTestPlan");
 
                     b.Navigation("MaterialItem");
 
                     b.Navigation("MaterialRequisitionItem");
 
                     b.Navigation("PurchaseOrder");
+
+                    b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.Qualification", b =>
@@ -27872,6 +27943,11 @@ namespace PEMS.Persistence.Migrations
                     b.Navigation("Lines");
 
                     b.Navigation("VDRItems");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.PurchaseOrderLine", b =>
+                {
+                    b.Navigation("ReceiptLines");
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.RCMAnalysis", b =>

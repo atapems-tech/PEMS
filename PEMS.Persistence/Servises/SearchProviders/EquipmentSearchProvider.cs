@@ -24,6 +24,8 @@ public class EquipmentSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "Equipment";
     public string DisplayName => "تجهیزات";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser();
 
     public EquipmentSearchProvider(PEMSDbContext context)
     {

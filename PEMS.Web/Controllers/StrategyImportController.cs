@@ -57,6 +57,7 @@ public class StrategyImportController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [RequestSizeLimit(MaxBytes)]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Spreadsheet)]
     public async Task<IActionResult> Preview(string kind, IFormFile? file)
     {
         kind = Normalize(kind);

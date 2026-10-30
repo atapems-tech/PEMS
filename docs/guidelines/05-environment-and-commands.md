@@ -48,6 +48,15 @@ Rules for what it shows are in [chapter 00](00-task-lifecycle.md) section 4a.
 ## Docker / deploy
 `docker compose --env-file env/docker.secrets.env up --build`; docs in `docs/deployment/` (CODE_FIRST_DATABASE, DEMO_DEPLOYMENT, LINUX_VM_DEPLOYMENT, PEMS_UAT_DEPLOYMENT_RUNBOOK). Pipelines in `.github/workflows`: only pushes to `demo` and `staging` start one (`deploy-demo.yml`, `deploy-staging.yml`, both calling the reusable `deploy-site.yml`); `build.yml` and `deploy-uat.yml` are manual; the only check that runs on pull requests is `commit-key-check.yml` (the Jira key `SCRUM-<n>` must be in the PR title, the branch name and every commit subject; merge and bot commits and `main`/`staging`/`demo` heads are exempt; logic and tests in `tools/commit-key-check`, no secrets, no deploy; SCRUM-349); pushes to `main` and working branches run nothing. Full setup and manual deploy/reset: `docs/deployment/DEPLOYMENT_README.md`. Do not deploy, push to protected branches or change pipeline secrets without the user's explicit go-ahead.
 
+## Letting an agent merge its own pull request (one-time setup per person)
+The owner rule ([chapter 0](00-task-lifecycle.md)) lets the author merge its own PR into `main`, but the Claude Code permission classifier can still deny the call as "Merge Without Review". An agent must not edit its own permissions, so the person who runs the agents allows it once in their user settings. Windows: `notepad %USERPROFILE%\.claude\settings.json`, add the line below to `permissions.allow` (create the block if it is missing), then start a new session:
+
+```json
+{ "permissions": { "allow": [ "Bash(gh api -X PUT repos/atapems-tech/PEMS/pulls/*/merge*)" ] } }
+```
+
+Merge by hand instead: `gh pr merge <branch-or-number> --squash`. If GitHub answers `TLS handshake timeout`, repeat the call; it is flaky, not refused.
+
 ## Windows notes
 Primary shell is PowerShell on Windows 11; Git Bash is available. Quote paths with spaces (`0 - refs`, `task manager`). Line endings follow `.gitattributes`.
 

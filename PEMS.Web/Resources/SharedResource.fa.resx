@@ -3616,6 +3616,133 @@
   <data name="Po_Err_RuleIncomplete" xml:space="preserve"><value>ارز و نقش تأییدکننده را وارد کنید.</value></data>
   <data name="Po_Err_RuleRange" xml:space="preserve"><value>مبالغ نامعتبر است (از مبلغ باید صفر یا بیشتر و از «تا مبلغ» بیشتر نباشد).</value></data>
   <data name="Po_Err_RuleRole" xml:space="preserve"><value>نقش تأییدکننده وجود ندارد.</value></data>
+  <data name="Upload_Err_Empty" xml:space="preserve"><value>فایل {0} خالی است یا نام ندارد.</value></data>
+  <data name="Upload_Err_TypeNotAllowed" xml:space="preserve"><value>نوع فایل {0} در این‌جا مجاز نیست.</value></data>
+  <data name="Upload_Err_TooLarge" xml:space="preserve"><value>حجم فایل {0} بیشتر از {1} مگابایت است.</value></data>
+  <data name="Upload_Err_ContentMismatch" xml:space="preserve"><value>محتوای فایل {0} با نوع آن هم‌خوانی ندارد.</value></data>
+  <data name="Upload_Err_Infected" xml:space="preserve"><value>فایل {0} را ضدبدافزار رد کرد.</value></data>
+  <data name="Upload_Err_ScanFailed" xml:space="preserve"><value>ضدبدافزار نتوانست فایل {0} را بررسی کند؛ دوباره تلاش کنید یا به مدیر سیستم اطلاع دهید.</value></data>
+  <data name="Upload_Err_NoPolicy" xml:space="preserve"><value>این صفحه فایل نمی‌پذیرد.</value></data>
+  <data name="Po_Err_LineWarehouse" xml:space="preserve"><value>ردیف انباری باید انبار تحویل داشته باشد.</value></data>
+  <data name="Po_Err_Warehouse" xml:space="preserve"><value>انبار انتخاب‌شده پیدا نشد یا غیرفعال است.</value></data>
+  <data name="Rcv_Action_Replace" xml:space="preserve"><value>جایگزین از فروشنده</value></data>
+  <data name="Rcv_Action_CloseShort" xml:space="preserve"><value>بستن با کسری</value></data>
+  <data name="Rcv_AddPoLines" xml:space="preserve"><value>افزودن ردیف‌های PO به این رسید</value></data>
+  <data name="Rcv_ConfirmHold" xml:space="preserve"><value>تعیین تکلیف این Hold؟ بخش پذیرفته‌شده به موجودی اضافه می‌شود.</value></data>
+  <data name="Rcv_Decision" xml:space="preserve"><value>تصمیم</value></data>
+  <data name="Rcv_Default" xml:space="preserve"><value>پیش‌فرض</value></data>
+  <data name="Rcv_DeliveryWarehouse" xml:space="preserve"><value>انبار تحویل</value></data>
+  <data name="Rcv_Err_Action" xml:space="preserve"><value>تصمیم نامعتبر است.</value></data>
+  <data name="Rcv_Err_AlreadyReleased" xml:space="preserve"><value>این ردیف قبلاً برای ارسال آزاد شده است.</value></data>
+  <data name="Rcv_Err_Duplicate" xml:space="preserve"><value>یک ردیف PO دو بار در ورودی آمده است.</value></data>
+  <data name="Rcv_Err_Forbidden" xml:space="preserve"><value>مجوز این کار را ندارید.</value></data>
+  <data name="Rcv_Err_HoldNotClosed" xml:space="preserve"><value>تعیین تکلیف Hold فقط پس از تأیید بازرسی ممکن است.</value></data>
+  <data name="Rcv_Err_HoldSplit" xml:space="preserve"><value>جمع پذیرفته و ردشده باید برابر مقدار Hold باشد.</value></data>
+  <data name="Rcv_Err_ItpNotFound" xml:space="preserve"><value>ITP انتخاب‌شده پیدا نشد.</value></data>
+  <data name="Rcv_Err_LineNotCatalogued" xml:space="preserve"><value>ردیف PO بدون کد کالا را نمی‌توان به انبار وارد کرد.</value></data>
+  <data name="Rcv_Err_LineNotOnPo" xml:space="preserve"><value>یکی از ردیف‌ها متعلق به PO این رسید نیست.</value></data>
+  <data name="Rcv_Err_Negative" xml:space="preserve"><value>مقدار نمی‌تواند منفی باشد.</value></data>
+  <data name="Rcv_Err_NoLines" xml:space="preserve"><value>حداقل برای یک ردیف مقدار وارد کنید.</value></data>
+  <data name="Rcv_Err_NoOpenHold" xml:space="preserve"><value>این ردیف Hold باز ندارد.</value></data>
+  <data name="Rcv_Err_NoPo" xml:space="preserve"><value>این رسید به سفارش خرید وصل نیست.</value></data>
+  <data name="Rcv_Err_NoPoLine" xml:space="preserve"><value>این ردیف رسید به ردیف PO وصل نیست.</value></data>
+  <data name="Rcv_Err_NotDispositioned" xml:space="preserve"><value>تصمیم پس از تأیید نتیجه‌ی بازرسی ممکن است.</value></data>
+  <data name="Rcv_Err_NotDraft" xml:space="preserve"><value>ردیف فقط در وضعیت پیش‌نویس رسید اضافه می‌شود.</value></data>
+  <data name="Rcv_Err_NotFound" xml:space="preserve"><value>پیدا نشد.</value></data>
+  <data name="Rcv_Err_NotWarehouseManager" xml:space="preserve"><value>فقط مدیر انبار Hold را تعیین تکلیف می‌کند.</value></data>
+  <data name="Rcv_Err_NothingRejected" xml:space="preserve"><value>در این ردیف مقداری رد نشده است.</value></data>
+  <data name="Rcv_Err_PoNotIssued" xml:space="preserve"><value>سفارش خرید صادر نشده است.</value></data>
+  <data name="Rcv_Err_VendorMismatch" xml:space="preserve"><value>فروشنده‌ی رسید با فروشنده‌ی PO یکی نیست.</value></data>
+  <data name="Rcv_FromHold" xml:space="preserve"><value>از Hold</value></data>
+  <data name="Rcv_HoldResolved" xml:space="preserve"><value>Hold تعیین تکلیف شد.</value></data>
+  <data name="Rcv_HoldResolvedBy" xml:space="preserve"><value>تعیین تکلیف توسط</value></data>
+  <data name="Rcv_HoldWaits" xml:space="preserve"><value>در انتظار مدیر انبار.</value></data>
+  <data name="Rcv_InQc" xml:space="preserve"><value>در QC</value></data>
+  <data name="Rcv_Inspection" xml:space="preserve"><value>آزادسازی بازرسی</value></data>
+  <data name="Rcv_InspectionReleased" xml:space="preserve"><value>ردیف برای ارسال آزاد شد.</value></data>
+  <data name="Rcv_LinesAdded" xml:space="preserve"><value>ردیف‌های PO به رسید اضافه شد.</value></data>
+  <data name="Rcv_NoItp" xml:space="preserve"><value>بدون ITP</value></data>
+  <data name="Rcv_NoPoLine" xml:space="preserve"><value>بدون ردیف PO</value></data>
+  <data name="Rcv_NotCatalogued" xml:space="preserve"><value>بدون کد کالا</value></data>
+  <data name="Rcv_NotReleased" xml:space="preserve"><value>بازرسی لازم است، آزاد نشده</value></data>
+  <data name="Rcv_Open" xml:space="preserve"><value>باز</value></data>
+  <data name="Rcv_Ordered" xml:space="preserve"><value>سفارش‌شده</value></data>
+  <data name="Rcv_OsdClean" xml:space="preserve"><value>این رسید مازاد، کسری یا آسیب‌دیدگی ندارد.</value></data>
+  <data name="Rcv_OsdNote" xml:space="preserve"><value>مازاد و کسری نسبت به مقدار باز ردیف PO پیش از این رسید سنجیده می‌شود. ردشده یعنی مقدار آسیب‌دیده یا نامنطبق.</value></data>
+  <data name="Rcv_OsdReport" xml:space="preserve"><value>گزارش OS&amp;D</value></data>
+  <data name="Rcv_OsdSubtitle" xml:space="preserve"><value>کالای مازاد، کسری و آسیب‌دیده نسبت به سفارش خرید</value></data>
+  <data name="Rcv_OsdTitle" xml:space="preserve"><value>گزارش مغایرت رسید (OS&amp;D)</value></data>
+  <data name="Rcv_Over" xml:space="preserve"><value>مازاد</value></data>
+  <data name="Rcv_PoLine" xml:space="preserve"><value>ردیف PO</value></data>
+  <data name="Rcv_PurchaseOrderOptional" xml:space="preserve"><value>سفارش خرید (اختیاری)</value></data>
+  <data name="Rcv_ReceiveFromPo" xml:space="preserve"><value>دریافت از PO</value></data>
+  <data name="Rcv_ReceiveHelp" xml:space="preserve"><value>مقدار رسیده برای هر ردیف را وارد کنید؛ برای ردیف‌هایی که نرسیده‌اند ۰ بگذارید. بیشتر از مقدار باز مجاز است ولی گزارش می‌شود.</value></data>
+  <data name="Rcv_ReceiveNow" xml:space="preserve"><value>دریافت اکنون</value></data>
+  <data name="Rcv_ReceivedBefore" xml:space="preserve"><value>دریافت قبلی</value></data>
+  <data name="Rcv_ReceivedSoFar" xml:space="preserve"><value>دریافت تاکنون</value></data>
+  <data name="Rcv_Receiving" xml:space="preserve"><value>دریافت کالا</value></data>
+  <data name="Rcv_ReceivingHelp" xml:space="preserve"><value>مقدار باز = سفارش‌شده − دریافت‌شده + ردشده‌ی جایگزین. مقدار در QC و مقدار باز جزو کالای در راه حساب می‌شوند.</value></data>
+  <data name="Rcv_RejectedDamaged" xml:space="preserve"><value>ردشده / آسیب‌دیده</value></data>
+  <data name="Rcv_RejectionDecided" xml:space="preserve"><value>تصمیم ثبت شد.</value></data>
+  <data name="Rcv_Release" xml:space="preserve"><value>آزادسازی</value></data>
+  <data name="Rcv_Released" xml:space="preserve"><value>آزاد شده</value></data>
+  <data name="Rcv_ResolveHold" xml:space="preserve"><value>تعیین تکلیف Hold</value></data>
+  <data name="Rcv_Short" xml:space="preserve"><value>کسری</value></data>
+  <data name="Rcv_ThisReceipt" xml:space="preserve"><value>این رسید</value></data>
+  <data name="Rcv_Warn_InspectionNotReleased" xml:space="preserve"><value>هشدار: بازرسی لازم است و ردیف آزاد نشده است.</value></data>
+  <data name="Rcv_Warn_OtherWarehouse" xml:space="preserve"><value>هشدار: کالا در انباری غیر از انبار تحویل ردیف PO دریافت شد.</value></data>
+  <data name="Rcv_Warn_OverReceipt" xml:space="preserve"><value>هشدار: بیشتر از مقدار باز دریافت شد؛ در گزارش OS&amp;D می‌آید.</value></data>
+  <data name="Rcv_Warn_TaskNotClosed" xml:space="preserve"><value>هشدار: Hold تعیین تکلیف شد ولی کار My Work بسته نشد.</value></data>
+  <data name="MyWork_Stage_HoldResolution" xml:space="preserve"><value>تعیین تکلیف کالای نگه‌داشته</value></data>
+  <data name="IRN" xml:space="preserve"><value>رسید کالا (IRN)</value></data>
+  <data name="GlobalSearch_Placeholder" xml:space="preserve"><value>جستجوی رکوردها، منوها و عملیات...</value></data>
+  <data name="GlobalSearch_PaletteHint" xml:space="preserve"><value>نکته: در هر صفحه Ctrl+K را بزنید تا پالت فرمان باز شود.</value></data>
+  <data name="GlobalSearch_NoResults" xml:space="preserve"><value>نتیجه‌ای برای «{0}» که اجازه‌ی دیدنش را داشته باشید یافت نشد.</value></data>
+  <data name="Palette_Title" xml:space="preserve"><value>پالت فرمان</value></data>
+  <data name="Palette_Placeholder" xml:space="preserve"><value>جستجوی منو، رکورد و عملیات...</value></data>
+  <data name="Palette_OpenHint" xml:space="preserve"><value>جستجو (Ctrl+K)</value></data>
+  <data name="Palette_Menus" xml:space="preserve"><value>منوها</value></data>
+  <data name="Palette_Actions" xml:space="preserve"><value>عملیات</value></data>
+  <data name="Palette_Empty" xml:space="preserve"><value>موردی یافت نشد.</value></data>
+  <data name="Palette_Loading" xml:space="preserve"><value>در حال جستجوی رکوردها...</value></data>
+  <data name="Palette_Error" xml:space="preserve"><value>جستجوی رکوردها انجام نشد. دوباره تلاش کنید.</value></data>
+  <data name="Palette_Keys" xml:space="preserve"><value>↑ ↓ جابه‌جایی · Enter باز کردن · Esc بستن</value></data>
+  <data name="Palette_MinChars" xml:space="preserve"><value>برای جستجوی رکوردها دست‌کم ۲ نویسه بنویسید.</value></data>
+  <data name="Palette_ShowAll" xml:space="preserve"><value>نمایش همه‌ی نتایج «{0}»</value></data>
+  <data name="Palette_Count" xml:space="preserve"><value>{0} نتیجه</value></data>
+  <data name="Palette_Action_NewLetter" xml:space="preserve"><value>نامه‌ی جدید</value></data>
+  <data name="Palette_Action_NewDocument" xml:space="preserve"><value>مدرک مهندسی جدید</value></data>
+  <data name="Palette_Action_NewVdr" xml:space="preserve"><value>آیتم VDR جدید</value></data>
+  <data name="Palette_Action_NewWorkRequest" xml:space="preserve"><value>درخواست کار جدید</value></data>
+  <data name="Palette_Action_NewWorkOrder" xml:space="preserve"><value>دستور کار جدید</value></data>
+  <data name="Palette_Action_NewEquipment" xml:space="preserve"><value>تجهیز جدید</value></data>
+  <data name="Palette_Action_NewMaterialRequisition" xml:space="preserve"><value>درخواست کالای جدید (MR)</value></data>
+  <data name="Palette_Action_NewContract" xml:space="preserve"><value>قرارداد جدید</value></data>
+  <data name="Palette_Action_MyWork" xml:space="preserve"><value>کارهای من</value></data>
+  <data name="Palette_Action_Notifications" xml:space="preserve"><value>اعلان‌ها</value></data>
+  <data name="Palette_Action_Help" xml:space="preserve"><value>مرکز راهنما</value></data>
+  <data name="Palette_Action_ChangePassword" xml:space="preserve"><value>تغییر رمز عبور</value></data>
+  <data name="Palette_Action_Theme" xml:space="preserve"><value>پوسته: {0}</value></data>
+  <data name="Palette_Action_Language" xml:space="preserve"><value>زبان: {0}</value></data>
+  <data name="Palette_Group_Attachment" xml:space="preserve"><value>پیوست‌ها</value></data>
+  <data name="Palette_Group_Contract" xml:space="preserve"><value>قراردادها</value></data>
+  <data name="Palette_Group_Discipline" xml:space="preserve"><value>دیسیپلین‌ها</value></data>
+  <data name="Palette_Group_DocumentRevision" xml:space="preserve"><value>بازنگری‌های مدرک</value></data>
+  <data name="Palette_Group_EngineeringDocument" xml:space="preserve"><value>مدارک مهندسی</value></data>
+  <data name="Palette_Group_Equipment" xml:space="preserve"><value>تجهیزات</value></data>
+  <data name="Palette_Group_EquipmentTag" xml:space="preserve"><value>تگ‌های تجهیز</value></data>
+  <data name="Palette_Group_HelpArticle" xml:space="preserve"><value>مقالات راهنما</value></data>
+  <data name="Palette_Group_Letter" xml:space="preserve"><value>نامه‌ها</value></data>
+  <data name="Palette_Group_MOC" xml:space="preserve"><value>مدیریت تغییر (MOC)</value></data>
+  <data name="Palette_Group_MaterialRequisition" xml:space="preserve"><value>درخواست‌های کالا (MR)</value></data>
+  <data name="Palette_Group_Notification" xml:space="preserve"><value>اعلان‌ها</value></data>
+  <data name="Palette_Group_PartCatalogueRequest" xml:space="preserve"><value>درخواست‌های کاتالوگ قطعه</value></data>
+  <data name="Palette_Group_Project" xml:space="preserve"><value>پروژه‌ها</value></data>
+  <data name="Palette_Group_SparePart" xml:space="preserve"><value>قطعات یدکی</value></data>
+  <data name="Palette_Group_TechnicalQuery" xml:space="preserve"><value>پرسش‌های فنی (TQ)</value></data>
+  <data name="Palette_Group_VDRItem" xml:space="preserve"><value>مدارک فروشنده (VDR)</value></data>
+  <data name="Palette_Group_Vendor" xml:space="preserve"><value>تأمین‌کنندگان</value></data>
+  <data name="Palette_Group_WorkOrder" xml:space="preserve"><value>دستورهای کار</value></data>
   <data name="Lp_SelectedCount" xml:space="preserve"><value>{0} مورد انتخاب شد</value></data>
   <data name="Lp_SelectAll" xml:space="preserve"><value>انتخاب همه‌ی ردیف‌ها</value></data>
   <data name="Lp_SelectRow" xml:space="preserve"><value>انتخاب</value></data>
@@ -3693,6 +3820,24 @@
   <data name="Dw_Action" xml:space="preserve"><value>اقدام</value></data>
   <data name="Dw_By" xml:space="preserve"><value>توسط</value></data>
   <data name="Dw_Comment" xml:space="preserve"><value>توضیح</value></data>
+  <data name="Login_Title" xml:space="preserve"><value>ورود</value></data>
+  <data name="Login_Welcome" xml:space="preserve"><value>خوش آمدید</value></data>
+  <data name="Login_Subtitle" xml:space="preserve"><value>برای دسترسی به مرکز فرماندهی مهندسی وارد شوید</value></data>
+  <data name="Login_UserName" xml:space="preserve"><value>نام کاربری</value></data>
+  <data name="Login_UserNamePlaceholder" xml:space="preserve"><value>مثلاً admin</value></data>
+  <data name="Login_Password" xml:space="preserve"><value>رمز عبور</value></data>
+  <data name="Login_PasswordPlaceholder" xml:space="preserve"><value>رمز عبور خود را وارد کنید</value></data>
+  <data name="Login_RememberMe" xml:space="preserve"><value>مرا به خاطر بسپار</value></data>
+  <data name="Login_SignIn" xml:space="preserve"><value>ورود</value></data>
+  <data name="Login_SigningIn" xml:space="preserve"><value>در حال ورود…</value></data>
+  <data name="Login_ForgotPassword" xml:space="preserve"><value>رمز عبور را فراموش کرده‌اید؟</value></data>
+  <data name="Login_Err_UserNameRequired" xml:space="preserve"><value>نام کاربری الزامی است.</value></data>
+  <data name="Login_Err_PasswordRequired" xml:space="preserve"><value>رمز عبور الزامی است.</value></data>
+  <data name="Login_Err_Invalid" xml:space="preserve"><value>نام کاربری یا رمز عبور نادرست است.</value></data>
+  <data name="Login_Err_LockedMinutes" xml:space="preserve"><value>حساب کاربری به دلیل تلاش‌های ناموفق متعدد موقتاً قفل شده است. لطفاً پس از {0} دقیقه مجدداً تلاش کنید.</value></data>
+  <data name="Login_Err_Locked" xml:space="preserve"><value>حساب کاربری به دلیل تلاش‌های ناموفق متعدد موقتاً قفل شده است.</value></data>
+  <data name="Auth_BrandName" xml:space="preserve"><value>سامانه مدیریت سازمانی پارمیس</value></data>
+  <data name="Auth_Footer" xml:space="preserve"><value>مرکز فرماندهی مهندسی</value></data>
   <data name="Lp_Details" xml:space="preserve"><value>جزئیات</value></data>
   <data name="Pri_Critical" xml:space="preserve"><value>بحرانی</value></data>
   <data name="Pri_High" xml:space="preserve"><value>بالا</value></data>

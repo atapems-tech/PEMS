@@ -1,7 +1,10 @@
 ﻿@using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
+@using System.Globalization
 @{
+    // SCRUM-477: the sign-in pages follow the current language like the main layout (Persian = right to left).
+    var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
     // طبق «PEMS Global Three-Theme Design System» (بند ۲۹): صفحه‌ی Login هم باید در هر سه تم
     // بررسی شود. قبلاً این Layout اصلاً data-theme تنظیم نمی‌کرد - auth.css فقط یک قاب برند
     // ثابت (گرادیان navy) داشت. همان Cookie/منطق ThemeController موجود این‌جا هم خوانده می‌شود -
@@ -9,12 +12,19 @@
     var currentTheme = PEMS.Web.Controllers.ThemeController.Normalize(Context.Request.Cookies[PEMS.Web.Controllers.ThemeController.CookieName]);
 }
 <!DOCTYPE html>
-<html lang="en" data-theme="@currentTheme" data-bs-theme="@(currentTheme is "turquoise" or "dark" ? "dark" : null)">
+<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" dir="@(isRtl ? "rtl" : "ltr")" data-theme="@currentTheme" data-bs-theme="@(currentTheme is "turquoise" or "dark" ? "dark" : null)">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PEMS</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @if (isRtl)
+    {
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" />
+    }
+    else
+    {
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    }
     <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.min.css" />
     @* طبق «PEMS Premium Three-Theme UI/UX Redesign» (بند ۲۸): صفحه‌ی ورود باید ویترین کامل
        هویت Persian Turquoise باشد - برای این کار به همون توکن‌های --pems-*/Glass/Persian
@@ -35,7 +45,7 @@
             </div>
             <div class="auth-brand-text">
                 <h1>@Localizer["PEMS"]</h1>
-                <span>Parmis Enterprise Management System</span>
+                <span>@Localizer["Auth_BrandName"]</span>
             </div>
         </div>
 
@@ -44,7 +54,7 @@
         </div>
 
         <div class="auth-footer">
-            &copy; @DateTime.Now.Year PEMS &mdash; Engineering Command Center
+            &copy; @DateTime.Now.Year PEMS &mdash; @Localizer["Auth_Footer"]
         </div>
 
     </div>

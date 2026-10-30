@@ -40,3 +40,11 @@ public class SearchEntityTypeDto
     public string EntityType { get; set; } = "";
     public string DisplayName { get; set; } = "";
 }
+
+/// <summary>SCRUM-64: one entity type's results in a search over every provider the user may open.</summary>
+public class GlobalSearchGroupDto
+{
+    public string EntityType { get; set; } = "";
+    public int TotalCount { get; set; }
+    public List<GlobalSearchResultItemDto> Items { get; set; } = new();
+}

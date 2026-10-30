@@ -3,7 +3,7 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
-## 2026-10-30 - List page component, wave 2: CMMS (SCRUM-337)
+## 2026-10-31 - List page component, wave 2: CMMS (SCRUM-337)
 
 ### Added
 - `<pems-list-new modal="...">` opens the page's own create modal (a button instead of a link); `<pems-list-export label="...">` names an export that is not the filtered list. A page's TempData message can sit inside the full-height list page.
@@ -11,6 +11,89 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - Work Orders, Work Requests, Equipment, Functional Locations, Instruments, Letter Tags, Maintenance Plans, Maintenance Strategies, Job Plans, Spare Parts, Permits, Inspections, Findings and Assets are built from the list-page component. Each page keeps its filters, columns, modals, row actions and permissions. Count cards became KPI chips on demand; status button rows (Work Requests, Permits) became the status filter, and "pending my approval" a switch in it; page notes became the title tool tip; coverage, the failure-mode catalogue and bulk assignment moved into the strategies' "more" menu; status badges became tone pills.
 - The English and Persian texts written in these pages (headings, columns, empty texts, notes, confirmations and work-order, work-request, permit, finding, instrument and asset statuses, priorities) are resource keys in both languages now (prefixes `Wo_`, `Wr_`, `Tg_`, `Ins_`, `Fn_`, `Mp_`, `Jp_`, `Pt_`, `Eq_`, `Fl_`, `In_`, `Ms_`, `Sp_`, `As_`, `Pri_`).
+
+## 2026-10-31 - Login page in one language (SCRUM-477)
+
+### Fixed
+- **Login page:** the page was partly hard-coded. With the Persian language cookie, only the link "Use a recovery code" was Persian among English text, and the sign-in errors were always Persian. Every text of the login page now comes from SharedResource in both languages: the title, hints, Remember me, Sign In, the loading text, Forgot password, the validation messages and the sign-in errors.
+- **Sign-in layout** (`_AuthLayout`): now takes `lang`, `dir` and the Bootstrap RTL stylesheet from the current language, so the Persian sign-in pages are right to left. The brand line and the footer are translated.
+
+### Changed
+- **Validation messages and `[Display]` names** of view models are now looked up in SharedResource (`AddDataAnnotationsLocalization` provider). A text without a key is shown as written, as before.
+
+## 2026-10-30 - One guard for every upload; sandboxed preview (SCRUM-202)
+
+### Added
+- `IUploadGuard` (PEMS.Application/Uploads): every uploaded file is checked against the action's profile (Attachment, Image, Spreadsheet, Csv, Pdf, LicenceFile) - extension allowlist, declared content type, first bytes, size, then the malware-scan hook. Executables, scripts, HTML and SVG are never accepted.
+- A global MVC filter runs the guard before model binding for all 34 upload actions (each carries `[UploadPolicy(...)]`); files sent to an action without a policy are refused. A refused page post returns to the page with the message; fetch/AJAX gets 400 JSON, `/api` a problem.
+- Malware-scan hook `IMalwareScanner`, offline only: `None` (default) or `Command` (a scanner installed on the server, e.g. ClamAV `clamscan` or Defender `MpCmdRun`, run on a quarantined copy; a failed or timed-out scan refuses the file).
+- Settings `Uploads__MaxFileSizeMb` (25), `Uploads__MaxRequestSizeMb` (100) and `Uploads__MalwareScan__*` in all six env files; Kestrel, IIS in-process and the form reader follow the request limit.
+- `Files/Preview/{id}`: same access check as Download; PDF, raster images and text are shown inline, every other type is downloaded.
+- Served files carry `X-Content-Type-Options: nosniff`, a `Content-Security-Policy` (sandbox; PDFs without `sandbox` because Chromium's viewer refuses it) and PEMS's own content type for the extension.
+
+### Changed
+- Profile photos, drawn signatures and letter editor images are stored in the file store (outside wwwroot) and served by `Files/Image`, which needs a login. Old `/uploads/profile-photos|signatures|letters/inline` URLs keep working through the same action; nothing under `/uploads` is served as a static file any more (old editor images, 404 since the containment work, show again).
+- The correspondence signature check uses the shared allowlist table.
+
+
+## 2026-10-30 - Receiving against PO lines and incoming supply (SCRUM-473)
+
+Owner decisions 2026-10-30:
+- **D6a:** quantity in QC counts as incoming until the IRN is closed.
+- **D6b:** the buyer decides "replacement from vendor" (the default, the PO line reopens) or "close short" for a rejected quantity.
+- **D7:** the Warehouse Manager resolves Hold from My Work.
+- **Over-receipt:** allowed, with a warning and on the OS&D report.
+- **D8:** imported POs without lines stay out of incoming supply.
+
+### Added
+- **Receiving against a PO:** an IRN raised against an issued PO receives its lines ("Receive from PO"). Each IRN line links to its PO line (`IrnReceiptLines.PurchaseOrderLineId`, migration `PoLineReceivingAndIncomingSupply`). These are warnings, not errors:
+  - more than the open quantity;
+  - another warehouse than the line's delivery warehouse;
+  - inspection required and not released.
+
+  The vendor must be the PO's vendor.
+- **Delivery warehouse per PO line:** defaults from the pre-procurement demand. A stock line needs one to be submitted.
+- **Inspection release before shipment per PO line:** optionally against the project's ITP. A user with IRN Approve can release.
+- **OS&D report** per IRN, printable: over, short, rejected/damaged and Hold against the open quantity before the receipt.
+- **Quantity buckets per PO line** (`PoLineSupply`), shown on the PO page: ordered, in QC, accepted, Hold, rejected (replaced / closed short), open, over-received.
+- **Workflow `IRN / HoldResolution`** (17 module workflows): Hold left by an approved disposition is a task for `WH.Manager`. The accepted part is posted to stock; the rejected part follows the buyer's decision.
+- **Incoming supply in net demand:**
+  - open quantity of stock lines of issued POs at the delivery warehouse, plus quantity in QC at the receiving warehouse;
+  - the result is now `CompleteNetDemand` (Projected = Usable + Incoming - Unreserved);
+  - a line in another unit, or without a delivery warehouse, makes the result not definitive.
+
+### Changed
+- Pre-procurement planned supply no longer counts quantity already on an issued or closed PO line (it is incoming supply), so no unit is counted twice. The replenishment calculator version is now 2.
+## 2026-10-30 - Command palette and permission-checked global search (SCRUM-64)
+
+### Added
+- Command palette: Ctrl+K / Cmd+K on every page, a click in the top-bar search box, or the search icon on a phone. It finds:
+  - menus, read from the sidebar the server already filtered for the user;
+  - actions (new letter, document, VDR item, work request, work order, equipment, MR, contract; My work, notifications, help, change password, theme and language), each shown only when the user passes the check of its page;
+  - records of every module the user may open, five per type, with "Show all results".
+- Keyboard and screen-reader support (dialog, combobox, listbox, `aria-activedescendant`), Light, Dark and Turquoise themes, RTL, phone layout. Component `pems-command-palette.js/.css` in PEMS.UI; no library, no external call.
+- Security contract of search providers: every `ISearchableEntityProvider` declares `SearchAccessRule Access` (any user, module + action, or roles; lookup-only), equal to the page its results open. `GlobalSearchService` checks it before the provider runs; row scopes (letter confidentiality, own discipline, own notifications) stay in the providers.
+
+### Changed
+- `/GlobalSearch` (the top-bar search page) shows the same checked results as the palette. Before, it queried nine tables directly with no permission or row check, so work orders, confidential letters and documents of other disciplines could be found by any signed-in user.
+- Vendor and contract results now need Vendors View / Contracts View, discipline results DisciplineWorkspace View (palette and search page). Form pickers (`/SearchApi?type=`) are unchanged.
+
+## 2026-10-30 - Rich text as a standard field type, sanitized on the server (SCRUM-59)
+
+### Added
+- Field kind `RichText` (JSON `"kind":"richText"`) in `FieldDescriptor`: a form from the form builder can hold formatted text. `PemsField` renders it as a labelled `<textarea data-pems-rte>` (a plain textarea without JavaScript).
+- `PEMS.UI/wwwroot/pems-rte.js` + `pems-rte.css`, loaded by the layout: the one rich-text editor of PEMS (vendored Quill 1.3.7, BSD-3-Clause, loaded only on pages with a rich-text field).
+  - A Persian page starts right-to-left, an English page left-to-right; the direction button switches a paragraph.
+  - Every toolbar control has a localised name (`Rte_*`); a required editor is checked on submit; the image button appears only when the field gives an upload URL.
+- `FormValueSanitizer` (`PEMS.Web/Definitions`): the server step for posted form values. Rich-text values go through `IRichTextSanitizerService`, an empty editor becomes empty, names the form does not declare are dropped, other values stay as posted.
+
+### Changed
+- `_RichTextEditorScripts` (Letters) is now an adapter over `pems-rte.js`: no inline script, same behaviour (editor under its textarea, image upload, `rte-change`).
+- `RichTextSanitizerService` is stricter:
+  - only the editor's `ql-*` classes are kept (no page CSS classes in stored content);
+  - links and images only use http, https, mailto or a relative URL;
+  - a link with a `target` gets `rel="noopener noreferrer"`.
+  It applies when content is saved; stored content is unchanged until it is saved again.
 
 ## 2026-10-30 - List page component, wave 1: document control (SCRUM-337)
 

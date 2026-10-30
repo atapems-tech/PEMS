@@ -343,6 +343,7 @@ public class LetterComposeController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Csv)]
     public async Task<IActionResult> ResolveRecipients(IFormFile? file, string? text)
     {
         if (!_currentUser.UserId.HasValue) return Unauthorized();
@@ -369,6 +370,7 @@ public class LetterComposeController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
     public async Task<IActionResult> UploadAttachment(int letterId, IFormFile file)
     {
         var actor = await BuildActorAsync();

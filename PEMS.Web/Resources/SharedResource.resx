@@ -2830,6 +2830,133 @@
   <data name="Po_Err_RuleIncomplete" xml:space="preserve"><value>Enter the currency and the approver role.</value></data>
   <data name="Po_Err_RuleRange" xml:space="preserve"><value>The amounts are invalid (from must be zero or more and not above to).</value></data>
   <data name="Po_Err_RuleRole" xml:space="preserve"><value>The approver role does not exist.</value></data>
+  <data name="Upload_Err_Empty" xml:space="preserve"><value>The file {0} is empty or has no name.</value></data>
+  <data name="Upload_Err_TypeNotAllowed" xml:space="preserve"><value>The file {0} has a type that is not allowed here.</value></data>
+  <data name="Upload_Err_TooLarge" xml:space="preserve"><value>The file {0} is larger than {1} MB.</value></data>
+  <data name="Upload_Err_ContentMismatch" xml:space="preserve"><value>The content of the file {0} does not match its type.</value></data>
+  <data name="Upload_Err_Infected" xml:space="preserve"><value>The file {0} was refused by the malware scanner.</value></data>
+  <data name="Upload_Err_ScanFailed" xml:space="preserve"><value>The file {0} could not be checked by the malware scanner; try again or ask the administrator.</value></data>
+  <data name="Upload_Err_NoPolicy" xml:space="preserve"><value>This page does not accept files.</value></data>
+  <data name="Po_Err_LineWarehouse" xml:space="preserve"><value>A stock line needs a delivery warehouse.</value></data>
+  <data name="Po_Err_Warehouse" xml:space="preserve"><value>The selected warehouse was not found or is inactive.</value></data>
+  <data name="Rcv_Action_Replace" xml:space="preserve"><value>Replacement from vendor</value></data>
+  <data name="Rcv_Action_CloseShort" xml:space="preserve"><value>Close short</value></data>
+  <data name="Rcv_AddPoLines" xml:space="preserve"><value>Add PO lines to this receipt</value></data>
+  <data name="Rcv_ConfirmHold" xml:space="preserve"><value>Resolve this Hold? The accepted part is posted to stock.</value></data>
+  <data name="Rcv_Decision" xml:space="preserve"><value>Decision</value></data>
+  <data name="Rcv_Default" xml:space="preserve"><value>default</value></data>
+  <data name="Rcv_DeliveryWarehouse" xml:space="preserve"><value>Delivery warehouse</value></data>
+  <data name="Rcv_Err_Action" xml:space="preserve"><value>Unknown decision.</value></data>
+  <data name="Rcv_Err_AlreadyReleased" xml:space="preserve"><value>This line is already released for shipment.</value></data>
+  <data name="Rcv_Err_Duplicate" xml:space="preserve"><value>A PO line appears twice in the input.</value></data>
+  <data name="Rcv_Err_Forbidden" xml:space="preserve"><value>You do not have permission for this action.</value></data>
+  <data name="Rcv_Err_HoldNotClosed" xml:space="preserve"><value>Hold can be resolved only after the disposition is approved.</value></data>
+  <data name="Rcv_Err_HoldSplit" xml:space="preserve"><value>Accepted plus rejected must equal the Hold quantity.</value></data>
+  <data name="Rcv_Err_ItpNotFound" xml:space="preserve"><value>The selected ITP was not found.</value></data>
+  <data name="Rcv_Err_LineNotCatalogued" xml:space="preserve"><value>A non-catalogued PO line cannot be received into stock.</value></data>
+  <data name="Rcv_Err_LineNotOnPo" xml:space="preserve"><value>A line does not belong to the PO of this receipt.</value></data>
+  <data name="Rcv_Err_Negative" xml:space="preserve"><value>Quantities cannot be negative.</value></data>
+  <data name="Rcv_Err_NoLines" xml:space="preserve"><value>Enter a quantity for at least one line.</value></data>
+  <data name="Rcv_Err_NoOpenHold" xml:space="preserve"><value>This line has no open Hold.</value></data>
+  <data name="Rcv_Err_NoPo" xml:space="preserve"><value>This receipt is not linked to a purchase order.</value></data>
+  <data name="Rcv_Err_NoPoLine" xml:space="preserve"><value>This receipt line is not linked to a PO line.</value></data>
+  <data name="Rcv_Err_NotDispositioned" xml:space="preserve"><value>The decision is possible after the disposition is approved.</value></data>
+  <data name="Rcv_Err_NotDraft" xml:space="preserve"><value>Lines can only be added while the receipt is in Draft.</value></data>
+  <data name="Rcv_Err_NotFound" xml:space="preserve"><value>Not found.</value></data>
+  <data name="Rcv_Err_NotWarehouseManager" xml:space="preserve"><value>Only the Warehouse Manager resolves Hold.</value></data>
+  <data name="Rcv_Err_NothingRejected" xml:space="preserve"><value>Nothing was rejected on this line.</value></data>
+  <data name="Rcv_Err_PoNotIssued" xml:space="preserve"><value>The purchase order is not issued.</value></data>
+  <data name="Rcv_Err_VendorMismatch" xml:space="preserve"><value>The receipt vendor differs from the PO vendor.</value></data>
+  <data name="Rcv_FromHold" xml:space="preserve"><value>from Hold</value></data>
+  <data name="Rcv_HoldResolved" xml:space="preserve"><value>Hold resolved.</value></data>
+  <data name="Rcv_HoldResolvedBy" xml:space="preserve"><value>Resolved by</value></data>
+  <data name="Rcv_HoldWaits" xml:space="preserve"><value>Waiting for the Warehouse Manager.</value></data>
+  <data name="Rcv_InQc" xml:space="preserve"><value>In QC</value></data>
+  <data name="Rcv_Inspection" xml:space="preserve"><value>Inspection release</value></data>
+  <data name="Rcv_InspectionReleased" xml:space="preserve"><value>Line released for shipment.</value></data>
+  <data name="Rcv_LinesAdded" xml:space="preserve"><value>PO lines added to the receipt.</value></data>
+  <data name="Rcv_NoItp" xml:space="preserve"><value>Without ITP</value></data>
+  <data name="Rcv_NoPoLine" xml:space="preserve"><value>No PO line</value></data>
+  <data name="Rcv_NotCatalogued" xml:space="preserve"><value>Not catalogued</value></data>
+  <data name="Rcv_NotReleased" xml:space="preserve"><value>Inspection required, not released</value></data>
+  <data name="Rcv_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Rcv_Ordered" xml:space="preserve"><value>Ordered</value></data>
+  <data name="Rcv_OsdClean" xml:space="preserve"><value>No over, short or damaged quantity on this receipt.</value></data>
+  <data name="Rcv_OsdNote" xml:space="preserve"><value>Over and short are measured against the open quantity of the PO line before this receipt. Rejected is the damaged or non-conforming quantity.</value></data>
+  <data name="Rcv_OsdReport" xml:space="preserve"><value>OS&amp;D report</value></data>
+  <data name="Rcv_OsdSubtitle" xml:space="preserve"><value>Over, short and damaged goods against the purchase order</value></data>
+  <data name="Rcv_OsdTitle" xml:space="preserve"><value>OS&amp;D report</value></data>
+  <data name="Rcv_Over" xml:space="preserve"><value>Over</value></data>
+  <data name="Rcv_PoLine" xml:space="preserve"><value>PO line</value></data>
+  <data name="Rcv_PurchaseOrderOptional" xml:space="preserve"><value>Purchase order (optional)</value></data>
+  <data name="Rcv_ReceiveFromPo" xml:space="preserve"><value>Receive from PO</value></data>
+  <data name="Rcv_ReceiveHelp" xml:space="preserve"><value>Enter the quantity that arrived for each line; leave 0 for lines that did not arrive. More than the open quantity is allowed but reported.</value></data>
+  <data name="Rcv_ReceiveNow" xml:space="preserve"><value>Receive now</value></data>
+  <data name="Rcv_ReceivedBefore" xml:space="preserve"><value>Received before</value></data>
+  <data name="Rcv_ReceivedSoFar" xml:space="preserve"><value>Received so far</value></data>
+  <data name="Rcv_Receiving" xml:space="preserve"><value>Receiving</value></data>
+  <data name="Rcv_ReceivingHelp" xml:space="preserve"><value>Open quantity = ordered − received + rejected for replacement. In QC and open quantity count as incoming supply.</value></data>
+  <data name="Rcv_RejectedDamaged" xml:space="preserve"><value>Rejected / damaged</value></data>
+  <data name="Rcv_RejectionDecided" xml:space="preserve"><value>Decision saved.</value></data>
+  <data name="Rcv_Release" xml:space="preserve"><value>Release</value></data>
+  <data name="Rcv_Released" xml:space="preserve"><value>Released</value></data>
+  <data name="Rcv_ResolveHold" xml:space="preserve"><value>Resolve Hold</value></data>
+  <data name="Rcv_Short" xml:space="preserve"><value>Short</value></data>
+  <data name="Rcv_ThisReceipt" xml:space="preserve"><value>This receipt</value></data>
+  <data name="Rcv_Warn_InspectionNotReleased" xml:space="preserve"><value>Warning: inspection is required and the line is not released.</value></data>
+  <data name="Rcv_Warn_OtherWarehouse" xml:space="preserve"><value>Warning: received into another warehouse than the PO line's delivery warehouse.</value></data>
+  <data name="Rcv_Warn_OverReceipt" xml:space="preserve"><value>Warning: more than the open quantity was received; it shows on the OS&amp;D report.</value></data>
+  <data name="Rcv_Warn_TaskNotClosed" xml:space="preserve"><value>Warning: Hold is resolved but the My Work task could not be closed.</value></data>
+  <data name="MyWork_Stage_HoldResolution" xml:space="preserve"><value>Resolve Hold</value></data>
+  <data name="IRN" xml:space="preserve"><value>IRN</value></data>
+  <data name="GlobalSearch_Placeholder" xml:space="preserve"><value>Search records, menus and actions...</value></data>
+  <data name="GlobalSearch_PaletteHint" xml:space="preserve"><value>Tip: press Ctrl+K on any page to open the command palette.</value></data>
+  <data name="GlobalSearch_NoResults" xml:space="preserve"><value>No results for "{0}" that you can open.</value></data>
+  <data name="Palette_Title" xml:space="preserve"><value>Command palette</value></data>
+  <data name="Palette_Placeholder" xml:space="preserve"><value>Search menus, records and actions...</value></data>
+  <data name="Palette_OpenHint" xml:space="preserve"><value>Search (Ctrl+K)</value></data>
+  <data name="Palette_Menus" xml:space="preserve"><value>Menus</value></data>
+  <data name="Palette_Actions" xml:space="preserve"><value>Actions</value></data>
+  <data name="Palette_Empty" xml:space="preserve"><value>Nothing matches.</value></data>
+  <data name="Palette_Loading" xml:space="preserve"><value>Searching records...</value></data>
+  <data name="Palette_Error" xml:space="preserve"><value>Record search failed. Try again.</value></data>
+  <data name="Palette_Keys" xml:space="preserve"><value>↑ ↓ move · Enter open · Esc close</value></data>
+  <data name="Palette_MinChars" xml:space="preserve"><value>Type 2 or more characters to search records.</value></data>
+  <data name="Palette_ShowAll" xml:space="preserve"><value>Show all results for "{0}"</value></data>
+  <data name="Palette_Count" xml:space="preserve"><value>{0} results</value></data>
+  <data name="Palette_Action_NewLetter" xml:space="preserve"><value>New letter</value></data>
+  <data name="Palette_Action_NewDocument" xml:space="preserve"><value>New engineering document</value></data>
+  <data name="Palette_Action_NewVdr" xml:space="preserve"><value>New VDR item</value></data>
+  <data name="Palette_Action_NewWorkRequest" xml:space="preserve"><value>New work request</value></data>
+  <data name="Palette_Action_NewWorkOrder" xml:space="preserve"><value>New work order</value></data>
+  <data name="Palette_Action_NewEquipment" xml:space="preserve"><value>New equipment</value></data>
+  <data name="Palette_Action_NewMaterialRequisition" xml:space="preserve"><value>New material requisition</value></data>
+  <data name="Palette_Action_NewContract" xml:space="preserve"><value>New contract</value></data>
+  <data name="Palette_Action_MyWork" xml:space="preserve"><value>My work</value></data>
+  <data name="Palette_Action_Notifications" xml:space="preserve"><value>Notifications</value></data>
+  <data name="Palette_Action_Help" xml:space="preserve"><value>Help center</value></data>
+  <data name="Palette_Action_ChangePassword" xml:space="preserve"><value>Change password</value></data>
+  <data name="Palette_Action_Theme" xml:space="preserve"><value>Theme: {0}</value></data>
+  <data name="Palette_Action_Language" xml:space="preserve"><value>Language: {0}</value></data>
+  <data name="Palette_Group_Attachment" xml:space="preserve"><value>Attachments</value></data>
+  <data name="Palette_Group_Contract" xml:space="preserve"><value>Contracts</value></data>
+  <data name="Palette_Group_Discipline" xml:space="preserve"><value>Disciplines</value></data>
+  <data name="Palette_Group_DocumentRevision" xml:space="preserve"><value>Document revisions</value></data>
+  <data name="Palette_Group_EngineeringDocument" xml:space="preserve"><value>Engineering documents</value></data>
+  <data name="Palette_Group_Equipment" xml:space="preserve"><value>Equipment</value></data>
+  <data name="Palette_Group_EquipmentTag" xml:space="preserve"><value>Equipment tags</value></data>
+  <data name="Palette_Group_HelpArticle" xml:space="preserve"><value>Help articles</value></data>
+  <data name="Palette_Group_Letter" xml:space="preserve"><value>Correspondence</value></data>
+  <data name="Palette_Group_MOC" xml:space="preserve"><value>Management of change</value></data>
+  <data name="Palette_Group_MaterialRequisition" xml:space="preserve"><value>Material requisitions</value></data>
+  <data name="Palette_Group_Notification" xml:space="preserve"><value>Notifications</value></data>
+  <data name="Palette_Group_PartCatalogueRequest" xml:space="preserve"><value>Part catalogue requests</value></data>
+  <data name="Palette_Group_Project" xml:space="preserve"><value>Projects</value></data>
+  <data name="Palette_Group_SparePart" xml:space="preserve"><value>Spare parts</value></data>
+  <data name="Palette_Group_TechnicalQuery" xml:space="preserve"><value>Technical queries</value></data>
+  <data name="Palette_Group_VDRItem" xml:space="preserve"><value>Vendor documents (VDR)</value></data>
+  <data name="Palette_Group_Vendor" xml:space="preserve"><value>Vendors</value></data>
+  <data name="Palette_Group_WorkOrder" xml:space="preserve"><value>Work orders</value></data>
   <data name="Lp_SelectedCount" xml:space="preserve"><value>{0} selected</value></data>
   <data name="Lp_SelectAll" xml:space="preserve"><value>Select all rows</value></data>
   <data name="Lp_SelectRow" xml:space="preserve"><value>Select</value></data>
@@ -2907,6 +3034,25 @@
   <data name="Dw_Action" xml:space="preserve"><value>Action</value></data>
   <data name="Dw_By" xml:space="preserve"><value>By</value></data>
   <data name="Dw_Comment" xml:space="preserve"><value>Comment</value></data>
+  <data name="PEMS" xml:space="preserve"><value>PEMS</value></data>
+  <data name="Login_Title" xml:space="preserve"><value>Sign in</value></data>
+  <data name="Login_Welcome" xml:space="preserve"><value>Welcome back</value></data>
+  <data name="Login_Subtitle" xml:space="preserve"><value>Sign in to access the Engineering Command Center</value></data>
+  <data name="Login_UserName" xml:space="preserve"><value>Username</value></data>
+  <data name="Login_UserNamePlaceholder" xml:space="preserve"><value>e.g. admin</value></data>
+  <data name="Login_Password" xml:space="preserve"><value>Password</value></data>
+  <data name="Login_PasswordPlaceholder" xml:space="preserve"><value>Enter your password</value></data>
+  <data name="Login_RememberMe" xml:space="preserve"><value>Remember me</value></data>
+  <data name="Login_SignIn" xml:space="preserve"><value>Sign In</value></data>
+  <data name="Login_SigningIn" xml:space="preserve"><value>Signing in…</value></data>
+  <data name="Login_ForgotPassword" xml:space="preserve"><value>Forgot password?</value></data>
+  <data name="Login_Err_UserNameRequired" xml:space="preserve"><value>Username is required.</value></data>
+  <data name="Login_Err_PasswordRequired" xml:space="preserve"><value>Password is required.</value></data>
+  <data name="Login_Err_Invalid" xml:space="preserve"><value>Invalid username or password.</value></data>
+  <data name="Login_Err_LockedMinutes" xml:space="preserve"><value>The account is temporarily locked after repeated failed attempts. Try again in {0} minutes.</value></data>
+  <data name="Login_Err_Locked" xml:space="preserve"><value>The account is temporarily locked after repeated failed attempts.</value></data>
+  <data name="Auth_BrandName" xml:space="preserve"><value>Parmis Enterprise Management System</value></data>
+  <data name="Auth_Footer" xml:space="preserve"><value>Engineering Command Center</value></data>
   <data name="Lp_Details" xml:space="preserve"><value>Details</value></data>
   <data name="Pri_Critical" xml:space="preserve"><value>Critical</value></data>
   <data name="Pri_High" xml:space="preserve"><value>High</value></data>

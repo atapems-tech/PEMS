@@ -71,10 +71,15 @@
     @* SCRUM-57: searchable selects on every page (Tom Select, vendored) *@
     <link rel="stylesheet" href="~/lib/tom-select/tom-select.bootstrap5.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/_content/PEMS.UI/pems-select.css" asp-append-version="true" />
+    @* SCRUM-64: command palette (Ctrl+K) *@
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-command-palette.css" asp-append-version="true" />
+    @* SCRUM-59: the one rich-text editor (Quill, vendored, loaded by pems-rte.js only on pages with a rich-text field) *@
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-rte.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="@(isAdminArea ? "admin-area" : "")" data-user-id="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value"
-      data-pems-select-no-results="@Localizer["Sel_NoResults"]" data-pems-select-loading="@Localizer["Sel_Loading"]" data-pems-select-placeholder="@Localizer["Sel_Placeholder"]">
+      data-pems-select-no-results="@Localizer["Sel_NoResults"]" data-pems-select-loading="@Localizer["Sel_Loading"]" data-pems-select-placeholder="@Localizer["Sel_Placeholder"]"
+      data-pems-rte-texts="@PEMS.Web.Helpers.RichTextEditorTexts.Json(Localizer)" data-pems-rte-lib="@Url.Content("~/lib/quill/")">
     <a class="pems-skip-link" href="#pemsMainContent">@Localizer["Shell_SkipToContent"]</a>
     <header class="pems-topbar">
         <div class="d-flex align-items-center gap-2">
@@ -89,9 +94,14 @@
 
         <div class="pems-search d-none d-md-block">
             <form class="d-flex" role="search" asp-controller="GlobalSearch" asp-action="Index" asp-area="" method="get">
-                <input type="search" name="q" class="form-control" placeholder="@Localizer["Search"]" />
+                <input type="search" name="q" class="form-control" placeholder="@Localizer["Palette_OpenHint"]"
+                       aria-label="@Localizer["Palette_OpenHint"]" aria-keyshortcuts="Control+K" data-pems-command-palette-trigger />
             </form>
         </div>
+        <button type="button" class="btn btn-link text-secondary d-md-none px-2" data-pems-command-palette-open
+                title="@Localizer["Palette_OpenHint"]" aria-label="@Localizer["Palette_OpenHint"]" aria-keyshortcuts="Control+K">
+            <i class="bi bi-search" aria-hidden="true"></i>
+        </button>
 
         <div class="d-flex align-items-center gap-3">
             <div class="dropdown">
@@ -223,12 +233,20 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/tom-select/tom-select.complete.min.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-select.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-rte.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/pems-global-search.js" asp-append-version="true"></script>
     <script src="~/js/pems-data-grid.js" asp-append-version="true"></script>
     <script src="~/js/pems-ui.js" asp-append-version="true"></script>
     <script src="~/js/pems-sidebar-search.js" asp-append-version="true"
             data-placeholder="@Localizer["Shell_SidebarSearch"]" data-results="@Localizer["Shell_SidebarSearchResults"]" data-empty="@Localizer["Shell_SidebarSearchEmpty"]"></script>
+    <script src="~/_content/PEMS.UI/pems-command-palette.js" asp-append-version="true"
+            data-search-url="@Url.Action("Palette", "SearchApi", new { area = "" })" data-actions-url="@Url.Action("PaletteActions", "SearchApi", new { area = "" })"
+            data-all-url="@Url.Action("Index", "GlobalSearch", new { area = "" })" data-title="@Localizer["Palette_Title"]"
+            data-placeholder="@Localizer["Palette_Placeholder"]" data-menus="@Localizer["Palette_Menus"]" data-actions="@Localizer["Palette_Actions"]"
+            data-empty="@Localizer["Palette_Empty"]" data-loading="@Localizer["Palette_Loading"]" data-error="@Localizer["Palette_Error"]"
+            data-keys="@Localizer["Palette_Keys"]" data-min-chars="@Localizer["Palette_MinChars"]" data-show-all="@Localizer["Palette_ShowAll"]"
+            data-count="@Localizer["Palette_Count"]"></script>
     <script src="~/js/pems-loading.js" asp-append-version="true"></script>
     <script src="~/js/admin.js" asp-append-version="true"></script>
     <script src="~/lib/signalr/signalr-8.0.7.min.js"></script>

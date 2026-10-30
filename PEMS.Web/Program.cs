@@ -129,12 +129,16 @@ builder.Services.AddControllersWithViews(options =>
     // SCRUM-435: unhandled exceptions of API controllers become RFC 9457 problems, not the HTML error page.
     options.Filters.Add<PEMS.Web.Api.ApiExceptionFilter>();
 
+    // SCRUM-202: every uploaded file of every action passes the shared upload guard (allowlist, size, content, malware scan).
+    options.Filters.Add<PEMS.Web.Security.Uploads.UploadGuardFilter>();
+
     // SCRUM-421: numbers and dates bind the way a browser submits them in every culture (12.5 on a Persian page, Persian digits typed by a
     // Persian user); error messages and empty values behave as before.
     PEMS.UI.Binding.MvcOptionsExtensions.AddPemsInputBinding(options);
 })
 .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
-.AddDataAnnotationsLocalization();
+// SCRUM-477: validation messages and display names are looked up in SharedResource (a text without a key is shown as written).
+.AddDataAnnotationsLocalization(o => o.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(PEMS.Web.Resources.SharedResource)));
 
 
 
@@ -399,6 +403,10 @@ builder.Services.AddScoped<IProcurementPipeline>(sp => sp.GetRequiredService<Pre
 // SCRUM-470: PO lines, submission and approval by the PO authority table; Procurement__* settings from env
 builder.Services.Configure<PEMS.Application.Interfaces.ProcurementOptions>(builder.Configuration.GetSection("Procurement"));
 builder.Services.AddScoped<IPurchaseOrderApprovalService, PurchaseOrderApprovalService>();
+// SCRUM-473: receiving against PO lines; the same class is the incoming-supply source of the net-demand calculation
+builder.Services.AddScoped<PurchaseOrderReceivingService>();
+builder.Services.AddScoped<IPurchaseOrderReceivingService>(sp => sp.GetRequiredService<PurchaseOrderReceivingService>());
+builder.Services.AddScoped<PEMS.Application.Inventory.IIncomingSupplyProvider>(sp => sp.GetRequiredService<PurchaseOrderReceivingService>());
 builder.Services.AddScoped<IIrnReceiptService, IrnReceiptService>();
 builder.Services.AddScoped<IReliabilityService, ReliabilityService>();
 builder.Services.AddScoped<IInspectionService, InspectionService>();
@@ -456,6 +464,9 @@ builder.Services.AddScoped<IOperationsReportService, OperationsReportService>();
 // GlobalSearchService هیچ تغییری برای موجودیت جدید نیاز ندارد.
 // ==============================================================================
 builder.Services.AddScoped<IGlobalSearchService, GlobalSearchService>();
+// SCRUM-64: command palette (records through the provider security contract, permission-filtered actions)
+builder.Services.AddSingleton<PEMS.Web.Navigation.CommandPaletteActions>();
+builder.Services.AddScoped<PEMS.Web.Navigation.CommandPaletteService>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.EquipmentSearchProvider>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.EngineeringDocumentSearchProvider>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.VdrItemSearchProvider>();
@@ -754,9 +765,43 @@ builder.Services.AddScoped<IEquipmentIntelligenceService, EquipmentIntelligenceS
 // طبق ممیزی امنیتی (P0 - Engineering File Security Containment): ریشه‌ی ذخیره‌سازی عمداً بیرون
 // از wwwroot (خواهر آن، نه زیرشاخه‌اش) - این همان چیزی است که آسیب‌پذیری اصلی را می‌بندد؛
 // UseStaticFiles فقط داخل wwwroot سرویس می‌دهد.
+// SCRUM-202: one upload guard for every upload (allowlist, size limit from Uploads__*, content check, malware-scan hook).
+var uploadOptions = new PEMS.Application.Uploads.UploadOptions
+{
+    MaxFileSizeMb = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Uploads:MaxFileSizeMb"),
+    MaxRequestSizeMb = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Uploads:MaxRequestSizeMb"),
+    MalwareScanMode = PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Uploads:MalwareScan:Mode"),
+    MalwareScanCommand = builder.Configuration["Uploads:MalwareScan:Command"] ?? "",
+    MalwareScanArguments = builder.Configuration["Uploads:MalwareScan:Arguments"] ?? "",
+    MalwareScanTimeoutSeconds = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Uploads:MalwareScan:TimeoutSeconds"),
+    MalwareScanQuarantineFolder = builder.Configuration["Uploads:MalwareScan:QuarantineFolder"] ?? "",
+};
+if (uploadOptions.MaxFileSizeMb <= 0 || uploadOptions.MaxRequestSizeMb < uploadOptions.MaxFileSizeMb)
+    throw new InvalidOperationException("Setting 'Uploads:MaxFileSizeMb' must be positive and not larger than 'Uploads:MaxRequestSizeMb'.");
+builder.Services.AddSingleton(uploadOptions);
+if (string.Equals(uploadOptions.MalwareScanMode, PEMS.Application.Uploads.MalwareScanModes.Command, StringComparison.OrdinalIgnoreCase))
+{
+    if (string.IsNullOrWhiteSpace(uploadOptions.MalwareScanCommand))
+        throw new InvalidOperationException("Setting 'Uploads:MalwareScan:Command' is required when 'Uploads:MalwareScan:Mode' is Command.");
+    builder.Services.AddSingleton<PEMS.Application.Uploads.IMalwareScanner, PEMS.Infrastructure.FileStorage.CommandLineMalwareScanner>();
+}
+else if (string.Equals(uploadOptions.MalwareScanMode, PEMS.Application.Uploads.MalwareScanModes.None, StringComparison.OrdinalIgnoreCase))
+    builder.Services.AddSingleton<PEMS.Application.Uploads.IMalwareScanner, PEMS.Application.Uploads.NoMalwareScanner>();
+else
+    throw new InvalidOperationException("Setting 'Uploads:MalwareScan:Mode' must be None or Command.");
+builder.Services.AddSingleton<PEMS.Application.Uploads.IUploadGuard, PEMS.Application.Uploads.UploadGuard>();
+// The request limits follow the setting, so a file the guard would accept is never cut off earlier by the server
+builder.WebHost.ConfigureKestrel(o => o.Limits.MaxRequestBodySize = uploadOptions.MaxRequestBytes);
+builder.Services.Configure<Microsoft.AspNetCore.Builder.IISServerOptions>(o => o.MaxRequestBodySize = uploadOptions.MaxRequestBytes);
+builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(o => o.MultipartBodyLengthLimit = uploadOptions.MaxRequestBytes);
+
 builder.Services.AddSingleton<PEMS.Application.Interfaces.IFileStorageService>(
     _ => new PEMS.Infrastructure.FileStorage.LocalFileStorageProvider(
         Path.Combine(Directory.GetCurrentDirectory(), "filestore")));
+// SCRUM-202: profile photos, signatures and editor images live in the file store too; wwwroot is only read for old files.
+builder.Services.AddSingleton<PEMS.Application.Uploads.IProtectedImageStore>(sp => new PEMS.Application.Uploads.ProtectedImageStore(
+    sp.GetRequiredService<PEMS.Application.Interfaces.IFileStorageService>(),
+    builder.Environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
 
 // طبق «PEMS — Enterprise File Storage Management»: زیرساخت جدید و کاملاً افزودنی چند-Provider -
 // IFileStorageService بالا دست‌نخورده باقی می‌ماند؛ این‌ها موازی آن ثبت می‌شوند (بند ۲۲).
@@ -1008,6 +1053,8 @@ using (var scope = app.Services.CreateScope())
     await PEMS.Persistence.Seed.PreProcurementWorkflowSeeder.SeedAsync(scope.ServiceProvider);
     // SCRUM-470: purchase-order approval by the PO authority table
     await PEMS.Persistence.Seed.PurchaseOrderApprovalWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+    // SCRUM-473: Hold resolution of goods receipts (task in the Warehouse Manager queue of My Work)
+    await PEMS.Persistence.Seed.IrnHoldResolutionWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 
     // SCRUM-103: explicit binding for every module workflow (after all workflow seeders), so Workflow Management can edit them
     await PEMS.Persistence.Seed.WorkflowBindingBackfillSeeder.SeedAsync(scope.ServiceProvider);
@@ -1103,7 +1150,9 @@ var blockedUploadFolders = new[]
 app.Use(async (context, next) =>
 {
     var path = context.Request.Path;
-    if (blockedUploadFolders.Any(f => path.StartsWithSegments(f, StringComparison.OrdinalIgnoreCase)))
+    // SCRUM-202: old letter editor images (/uploads/letters/inline) are served by the protected Files/Image action
+    if (blockedUploadFolders.Any(f => path.StartsWithSegments(f, StringComparison.OrdinalIgnoreCase))
+        && !path.StartsWithSegments("/uploads/letters/inline", StringComparison.OrdinalIgnoreCase))
     {
         context.Response.StatusCode = StatusCodes.Status404NotFound;
         return;
@@ -1111,7 +1160,10 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.UseStaticFiles();
+// SCRUM-202: nothing under /uploads is ever served as a static file. The few old image URLs that remain
+// (/uploads/profile-photos, /uploads/signatures, /uploads/letters/inline) go to the Files/Image action, which needs a login.
+app.UseWhen(ctx => !ctx.Request.Path.StartsWithSegments("/uploads", StringComparison.OrdinalIgnoreCase),
+    branch => branch.UseStaticFiles());
 
 
 // Bilingual Platform: زبان از یک Cookie خوانده می‌شود (پیش‌فرض انگلیسی)؛ سوییچر زبان در
