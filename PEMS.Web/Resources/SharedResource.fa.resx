@@ -1117,6 +1117,8 @@
   <data name="Disc_Err_DuplicateName" xml:space="preserve"><value>دیسیپلین دیگری با این نام وجود دارد.</value></data>
   <data name="Disc_Err_AliasConflict" xml:space="preserve"><value>یک Alias با کد، نام یا Alias دیسیپلین دیگری تداخل دارد.</value></data>
   <data name="Disc_Err_Generic" xml:space="preserve"><value>تغییر پذیرفته نشد.</value></data>
+  <data name="Disc_Err_Concurrency" xml:space="preserve"><value>این دیسیپلین را کاربر دیگری تغییر داده است؛ دوباره بخوانید.</value></data>
+  <data name="Disc_Err_InUse" xml:space="preserve"><value>رکوردهای دیگری از این دیسیپلین استفاده می‌کنند؛ به‌جای حذف، آن را غیرفعال کنید.</value></data>
   <data name="Import aliases" xml:space="preserve"><value>Aliasهای ایمپورت</value></data>
   <data name="Transmittal code" xml:space="preserve"><value>کد ترانسمیتال</value></data>
   <data name="Reactivate" xml:space="preserve"><value>فعال‌سازی مجدد</value></data>
@@ -2574,6 +2576,8 @@
   <data name="LtT_Token_SenderDepartment" xml:space="preserve"><value>واحد سازمانی شما</value></data>
   <data name="Lc_FolderSent" xml:space="preserve"><value>ارسال‌شده</value></data>
   <data name="Lc_FolderArchived" xml:space="preserve"><value>آرشیو</value></data>
+  <data name="A backup is taken automatically before the update; the update stops if it fails." xml:space="preserve"><value>پیش از به‌روزرسانی به‌طور خودکار نسخه پشتیبان گرفته می‌شود؛ اگر پشتیبان‌گیری ناموفق باشد، به‌روزرسانی انجام نمی‌شود.</value></data>
+  <data name="Backup file" xml:space="preserve"><value>فایل پشتیبان</value></data>
   <data name="A database backup has been taken" xml:space="preserve"><value>از پایگاه داده نسخه پشتیبان تهیه شده است</value></data>
   <data name="Applied" xml:space="preserve"><value>اعمال‌شده</value></data>
   <data name="Database Update" xml:space="preserve"><value>به‌روزرسانی پایگاه داده</value></data>
@@ -3191,4 +3195,629 @@
   <data name="Ct_ApproverEligible" xml:space="preserve"><value>دارندگان مجوز تایید</value></data>
   <data name="Ct_ApproverOthers" xml:space="preserve"><value>سایر کارکنان</value></data>
   <data name="Lc_Err_ReferralNeedsParent" xml:space="preserve"><value>ارجاع باید از روی یک نامه‌ی موجود انجام شود.</value></data>
+  <data name="Admin account recovery attempts: who, which method, from where, and whether it succeeded. Records are append-only." xml:space="preserve"><value>تلاش‌های بازیابی حساب مدیر: چه کسی، با چه روشی، از کجا و با چه نتیجه‌ای. رکوردها فقط‌افزودنی‌اند.</value></data>
+  <data name="Method" xml:space="preserve"><value>روش</value></data>
+  <data name="All methods" xml:space="preserve"><value>همه‌ی روش‌ها</value></data>
+  <data name="All results" xml:space="preserve"><value>همه‌ی نتایج</value></data>
+  <data name="Success" xml:space="preserve"><value>موفق</value></data>
+  <data name="Failure" xml:space="preserve"><value>ناموفق</value></data>
+  <data name="Actor" xml:space="preserve"><value>انجام‌دهنده</value></data>
+  <data name="IP address" xml:space="preserve"><value>نشانی IP</value></data>
+  <data name="Forwarded" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="No security events" xml:space="preserve"><value>رویداد امنیتی‌ای ثبت نشده است</value></data>
+  <data name="No admin recovery has been attempted, or the filters match nothing." xml:space="preserve"><value>هیچ بازیابی حساب مدیری انجام نشده یا فیلترها نتیجه‌ای ندارند.</value></data>
+  <data name="Reset by another administrator" xml:space="preserve"><value>ریست توسط مدیر دیگر</value></data>
+  <data name="Recovery code" xml:space="preserve"><value>کد بازیابی</value></data>
+  <data name="Server break-glass" xml:space="preserve"><value>break-glass روی سرور</value></data>
+  <data name="Vendor token" xml:space="preserve"><value>توکن فروشنده</value></data>
+  <data name="User edit in the admin panel" xml:space="preserve"><value>ویرایش کاربر در پنل مدیریت</value></data>
+  <data name="The password was changed but recording or session revocation failed." xml:space="preserve"><value>رمز عوض شد اما ثبت رویداد یا بستن نشست‌ها ناموفق بود.</value></data>
+  <data name="User updated, but the password was not changed" xml:space="preserve"><value>کاربر به‌روزرسانی شد اما رمز عوض نشد</value></data>
+  <data name="This is the last active administrator. It cannot be deactivated or removed from the SystemAdmin role. Create or activate another administrator first." xml:space="preserve"><value>این آخرین مدیر فعال است. نمی‌توان آن را غیرفعال کرد یا از نقش SystemAdmin خارج کرد. ابتدا مدیر دیگری بسازید یا فعال کنید.</value></data>
+  <data name="Only another administrator's account can be reset this way." xml:space="preserve"><value>فقط حساب مدیر دیگر را می‌توان از این راه ریست کرد.</value></data>
+  <data name="You cannot reset your own account this way. Ask another administrator." xml:space="preserve"><value>نمی‌توانید حساب خودتان را از این راه ریست کنید. از مدیر دیگری بخواهید.</value></data>
+  <data name="The account was not found." xml:space="preserve"><value>حساب پیدا نشد.</value></data>
+  <data name="Only an active administrator can reset an administrator account." xml:space="preserve"><value>فقط یک مدیر فعال می‌تواند حساب مدیر را ریست کند.</value></data>
+  <data name="The password was changed but recording or session revocation failed. No temporary password is shown; run the reset again." xml:space="preserve"><value>رمز عوض شد اما ثبت رویداد یا بستن نشست‌ها ناموفق بود. رمز موقتی نمایش داده نمی‌شود؛ ریست را دوباره انجام دهید.</value></data>
+  <data name="The reset failed. Nothing was shown; try again." xml:space="preserve"><value>ریست ناموفق بود. چیزی نمایش داده نشد؛ دوباره تلاش کنید.</value></data>
+  <data name="Reset the account of another administrator. This cannot be undone." xml:space="preserve"><value>حساب مدیر دیگری را ریست می‌کنید. این کار قابل بازگشت نیست.</value></data>
+  <data name="Reset administrator account" xml:space="preserve"><value>ریست حساب مدیر</value></data>
+  <data name="Confirming will:" xml:space="preserve"><value>با تأیید، این اتفاق‌ها می‌افتد:</value></data>
+  <data name="issue a random temporary password, shown once on the next page and valid for 24 hours;" xml:space="preserve"><value>یک رمز موقت تصادفی صادر می‌شود که فقط یک بار در صفحه‌ی بعد نمایش داده می‌شود و ۲۴ ساعت اعتبار دارد؛</value></data>
+  <data name="force a password change at the next sign-in;" xml:space="preserve"><value>در ورود بعدی تغییر رمز اجباری است؛</value></data>
+  <data name="unlock the account and reset MFA (passkeys and authenticator key are removed; the administrator must enroll again);" xml:space="preserve"><value>قفل حساب باز و MFA ریست می‌شود (passkeyها و کلید authenticator حذف می‌شوند و مدیر باید دوباره ثبت‌نام کند)؛</value></data>
+  <data name="sign the account out everywhere within about one minute;" xml:space="preserve"><value>ظرف حدود یک دقیقه حساب از همه‌ی نشست‌ها خارج می‌شود؛</value></data>
+  <data name="record the reset (who, when, from which IP) and notify every active administrator." xml:space="preserve"><value>ریست ثبت می‌شود (چه کسی، چه زمانی، از کدام IP) و همه‌ی مدیران فعال مطلع می‌شوند.</value></data>
+  <data name="You cannot reset your own account this way. Hand the temporary password to the administrator in person or over a trusted channel; it is not stored anywhere." xml:space="preserve"><value>نمی‌توانید حساب خودتان را از این راه ریست کنید. رمز موقت را حضوری یا از کانال مطمئن به مدیر بدهید؛ در هیچ‌جا ذخیره نمی‌شود.</value></data>
+  <data name="Reset account" xml:space="preserve"><value>ریست حساب</value></data>
+  <data name="The account was reset. The temporary password below is shown only now." xml:space="preserve"><value>حساب ریست شد. رمز موقت زیر فقط همین حالا نمایش داده می‌شود.</value></data>
+  <data name="Account reset" xml:space="preserve"><value>حساب ریست شد</value></data>
+  <data name="Copy or print this password now. It cannot be shown again; if it is lost, reset the account again." xml:space="preserve"><value>همین حالا این رمز را کپی یا چاپ کنید. دوباره نمایش داده نمی‌شود؛ اگر گم شد حساب را دوباره ریست کنید.</value></data>
+  <data name="Copied" xml:space="preserve"><value>کپی شد</value></data>
+  <data name="Copy" xml:space="preserve"><value>کپی</value></data>
+  <data name="Expires" xml:space="preserve"><value>انقضا</value></data>
+  <data name="The administrator must change it at the first sign-in and enroll MFA again. All of their sessions were signed out, and every active administrator was notified." xml:space="preserve"><value>مدیر باید در اولین ورود آن را عوض کند و MFA را دوباره ثبت کند. همه‌ی نشست‌های او بسته شد و همه‌ی مدیران فعال مطلع شدند.</value></data>
+  <data name="Back to users" xml:space="preserve"><value>بازگشت به کاربران</value></data>
+  <data name="Security Events" xml:space="preserve"><value>رویدادهای امنیتی</value></data>
+  <data name="Account recovered" xml:space="preserve"><value>حساب بازیابی شد</value></data>
+  <data name="The new password is set and the recovery code is used up. Sign in with the new password and enroll MFA again." xml:space="preserve"><value>رمز جدید تنظیم شد و کد بازیابی مصرف شد. با رمز جدید وارد شوید و MFA را دوباره ثبت کنید.</value></data>
+  <data name="Recovery codes left" xml:space="preserve"><value>کدهای بازیابی باقی‌مانده</value></data>
+  <data name="Few recovery codes are left. Generate a new set from your profile after signing in." xml:space="preserve"><value>کد بازیابی کمی باقی مانده است. پس از ورود، از پروفایل خود مجموعه‌ی جدید بسازید.</value></data>
+  <data name="Sign in" xml:space="preserve"><value>ورود</value></data>
+  <data name="Administrator recovery" xml:space="preserve"><value>بازیابی حساب مدیر</value></data>
+  <data name="Use one of your printed recovery codes to set a new password. Each code works only once." xml:space="preserve"><value>با یکی از کدهای بازیابی چاپ‌شده رمز جدید تنظیم کنید. هر کد فقط یک بار کار می‌کند.</value></data>
+  <data name="New password" xml:space="preserve"><value>رمز جدید</value></data>
+  <data name="Confirm new password" xml:space="preserve"><value>تکرار رمز جدید</value></data>
+  <data name="Recover account" xml:space="preserve"><value>بازیابی حساب</value></data>
+  <data name="After recovery, all sessions of the account are signed out, every administrator is notified and MFA must be enrolled again." xml:space="preserve"><value>پس از بازیابی، همه‌ی نشست‌های حساب بسته می‌شود، همه‌ی مدیران مطلع می‌شوند و MFA باید دوباره ثبت شود.</value></data>
+  <data name="Back to sign in" xml:space="preserve"><value>بازگشت به ورود</value></data>
+  <data name="New recovery codes" xml:space="preserve"><value>کدهای بازیابی جدید</value></data>
+  <data name="Print or download these codes now and keep them offline. They are shown only once; the previous codes no longer work." xml:space="preserve"><value>این کدها را همین حالا چاپ یا دانلود کنید و جای امن و آفلاین نگه دارید. فقط یک بار نمایش داده می‌شوند و کدهای قبلی دیگر کار نمی‌کنند.</value></data>
+  <data name="Download" xml:space="preserve"><value>دانلود</value></data>
+  <data name="Generated" xml:space="preserve"><value>زمان تولید</value></data>
+  <data name="Done" xml:space="preserve"><value>پایان</value></data>
+  <data name="Recovery codes" xml:space="preserve"><value>کدهای بازیابی</value></data>
+  <data name="If you lose your password or MFA device, one recovery code lets you set a new password from the sign-in page. Each code works once." xml:space="preserve"><value>اگر رمز یا دستگاه MFA خود را از دست بدهید، با یک کد بازیابی می‌توانید از صفحه‌ی ورود رمز جدید تنظیم کنید. هر کد یک بار کار می‌کند.</value></data>
+  <data name="You have no recovery codes. Generate a set now and keep it in a safe place." xml:space="preserve"><value>هیچ کد بازیابی‌ای ندارید. همین حالا یک مجموعه بسازید و جای امن نگه دارید.</value></data>
+  <data name="Current password" xml:space="preserve"><value>رمز فعلی</value></data>
+  <data name="Generate new codes" xml:space="preserve"><value>ساخت کدهای جدید</value></data>
+  <data name="Generating a new set invalidates every code you have not used yet." xml:space="preserve"><value>ساخت مجموعه‌ی جدید همه‌ی کدهای استفاده‌نشده‌ی قبلی را باطل می‌کند.</value></data>
+  <data name="Break-glass recovery" xml:space="preserve"><value>بازیابی اضطراری (break-glass)</value></data>
+  <data name="A recovery request file is present on the server. This page closes at" xml:space="preserve"><value>فایل درخواست بازیابی روی سرور قرار دارد. این صفحه بسته می‌شود در ساعت</value></data>
+  <data name="No recovery request file is present. Paste a vendor recovery token issued for this server." xml:space="preserve"><value>فایل درخواست بازیابی وجود ندارد. توکن بازیابی فروشنده که برای این سرور صادر شده را وارد کنید.</value></data>
+  <data name="There is no active administrator account to reset." xml:space="preserve"><value>هیچ حساب مدیر فعالی برای ریست وجود ندارد.</value></data>
+  <data name="Administrator account" xml:space="preserve"><value>حساب مدیر</value></data>
+  <data name="Vendor recovery token" xml:space="preserve"><value>توکن بازیابی فروشنده</value></data>
+  <data name="The reset issues a temporary password shown once, forces a password change, resets MFA, signs the account out everywhere and notifies every administrator. The request can be used only once." xml:space="preserve"><value>ریست یک رمز موقت یک‌بارنمایش صادر می‌کند، تغییر رمز را اجباری و MFA را ریست می‌کند، حساب را از همه‌جا خارج می‌کند و همه‌ی مدیران را مطلع می‌کند. درخواست فقط یک بار قابل استفاده است.</value></data>
+  <data name="The request was used up and the recovery page is closed." xml:space="preserve"><value>درخواست مصرف شد و صفحه‌ی بازیابی بسته است.</value></data>
+  <data name="Too many failed attempts. The account is locked for a while; try again later." xml:space="preserve"><value>تلاش‌های ناموفق زیاد بود. حساب مدتی قفل است؛ بعداً دوباره تلاش کنید.</value></data>
+  <data name="The user name or recovery code is not valid." xml:space="preserve"><value>نام کاربری یا کد بازیابی معتبر نیست.</value></data>
+  <data name="The current password is not correct." xml:space="preserve"><value>رمز فعلی درست نیست.</value></data>
+  <data name="Choose the administrator account to reset." xml:space="preserve"><value>حساب مدیری را که باید ریست شود انتخاب کنید.</value></data>
+  <data name="The vendor recovery token is not valid for this server, has expired or was already used." xml:space="preserve"><value>توکن بازیابی فروشنده برای این سرور معتبر نیست، منقضی شده یا قبلاً استفاده شده است.</value></data>
+  <data name="Only an active administrator account can be reset here." xml:space="preserve"><value>این‌جا فقط حساب مدیر فعال قابل ریست است.</value></data>
+  <data name="The password was changed but recording or session revocation failed. No temporary password is shown; place a new request file and run the reset again." xml:space="preserve"><value>رمز عوض شد اما ثبت رویداد یا بستن نشست‌ها ناموفق بود. رمز موقتی نمایش داده نمی‌شود؛ فایل درخواست جدید بگذارید و ریست را دوباره انجام دهید.</value></data>
+  <data name="The recovery window is closed. Place a new request file on the server." xml:space="preserve"><value>پنجره‌ی بازیابی بسته است. فایل درخواست جدیدی روی سرور بگذارید.</value></data>
+  <data name="Use a recovery code" xml:space="preserve"><value>استفاده از کد بازیابی</value></data>
+  <data name="Recovery Codes" xml:space="preserve"><value>کدهای بازیابی</value></data>
+  <data name="Administrator Recovery" xml:space="preserve"><value>بازیابی حساب مدیر</value></data>
+  <data name="Break-glass Recovery" xml:space="preserve"><value>بازیابی اضطراری (break-glass)</value></data>
+  <data name="Search roles..." xml:space="preserve"><value>جستجوی نقش...</value></data>
+  <data name="No matching role" xml:space="preserve"><value>نقشی پیدا نشد</value></data>
+  <data name="Remove" xml:space="preserve"><value>حذف</value></data>
+  <data name="Type to search; select several roles. Remove a role with its ×." xml:space="preserve"><value>برای جستجو تایپ کنید؛ می‌توانید چند نقش انتخاب کنید. هر نقش را با × کنارش حذف کنید.</value></data>
+  <data name="Ed_Kpis" xml:space="preserve"><value>شمارش‌ها</value></data>
+  <data name="Lic_Intro" xml:space="preserve"><value>وضعیت مجوز، درخواست فعال‌سازی و بارگذاری مجوز. همه‌ی مراحل در همین صفحه انجام می‌شود و نیازی به ترمینال نیست.</value></data>
+  <data name="Lic_EnforceOff" xml:space="preserve"><value>اجرای مجوز در این محیط خاموش است (Licensing:Enforce=false). می‌توانید درخواست بسازید و مجوز بارگذاری کنید؛ چیزی مسدود نمی‌شود.</value></data>
+  <data name="Lic_State_NotEnforced" xml:space="preserve"><value>اعمال نمی‌شود</value></data>
+  <data name="Lic_State_ActivationRequired" xml:space="preserve"><value>نیاز به فعال‌سازی</value></data>
+  <data name="Lic_State_Active" xml:space="preserve"><value>فعال</value></data>
+  <data name="Lic_State_ActiveWarning" xml:space="preserve"><value>فعال (نیاز به توجه)</value></data>
+  <data name="Lic_State_Restricted" xml:space="preserve"><value>محدود (فقط خواندنی)</value></data>
+  <data name="Lic_Reason_no_licence" xml:space="preserve"><value>مجوزی نصب نشده است</value></data>
+  <data name="Lic_Reason_seal_invalid" xml:space="preserve"><value>مهر نصب نامعتبر است یا به سخت‌افزار دیگری منتقل شده</value></data>
+  <data name="Lic_Reason_restore_suspected" xml:space="preserve"><value>بازیابی از پشتیبان یا ایمیج مشکوک است: فعال‌سازی مجدد را درخواست کنید</value></data>
+  <data name="Lic_Reason_restore_grace_expired" xml:space="preserve"><value>فعال‌سازی مجدد به‌موقع انجام نشد</value></data>
+  <data name="Lic_Reason_fingerprint_invalid" xml:space="preserve"><value>این دستگاه با دستگاه مجاز مطابقت ندارد</value></data>
+  <data name="Lic_Reason_fingerprint_degraded" xml:space="preserve"><value>چند قطعه‌ی سخت‌افزار تغییر کرده است: مجوز تازه‌شده درخواست کنید</value></data>
+  <data name="Lic_Reason_fingerprint_drift" xml:space="preserve"><value>یک قطعه‌ی سخت‌افزار تغییر کرده است (قابل‌تحمل)</value></data>
+  <data name="Lic_Reason_not_yet_valid" xml:space="preserve"><value>مجوز هنوز معتبر نشده است</value></data>
+  <data name="Lic_Reason_expired" xml:space="preserve"><value>مجوز منقضی شده است: تمدید را بارگذاری کنید</value></data>
+  <data name="Lic_Reason_expiring" xml:space="preserve"><value>مجوز به‌زودی منقضی می‌شود: تمدید درخواست کنید</value></data>
+  <data name="Lic_Reason_clock_backward" xml:space="preserve"><value>ساعت سیستم به عقب برگشته است</value></data>
+  <data name="Lic_Reason_licence_unverifiable" xml:space="preserve"><value>مجوز ذخیره‌شده قابل تایید نبود</value></data>
+  <data name="Lic_InstallId" xml:space="preserve"><value>شناسه‌ی نصب</value></data>
+  <data name="Lic_Fingerprint" xml:space="preserve"><value>اثر انگشت دستگاه (کوتاه)</value></data>
+  <data name="Lic_Type" xml:space="preserve"><value>نوع مجوز</value></data>
+  <data name="Lic_NoExpiry" xml:space="preserve"><value>بدون انقضا</value></data>
+  <data name="Lic_ValidUntil" xml:space="preserve"><value>معتبر تا (شمسی)</value></data>
+  <data name="Lic_UpdatesUntil" xml:space="preserve"><value>به‌روزرسانی تا (شمسی)</value></data>
+  <data name="Lic_RequestTitle" xml:space="preserve"><value>درخواست مجوز</value></data>
+  <data name="Lic_RequestHelp" xml:space="preserve"><value>فایل درخواست را دانلود و برای فروشنده بفرستید. محصول هرگز خودش با فروشنده تماس نمی‌گیرد.</value></data>
+  <data name="Lic_RequestType" xml:space="preserve"><value>نوع درخواست</value></data>
+  <data name="Lic_Req_activation" xml:space="preserve"><value>فعال‌سازی اولیه</value></data>
+  <data name="Lic_Req_renewal" xml:space="preserve"><value>تمدید</value></data>
+  <data name="Lic_Req_refresh" xml:space="preserve"><value>تازه‌سازی پس از تغییر سخت‌افزار</value></data>
+  <data name="Lic_Req_transfer" xml:space="preserve"><value>انتقال به سخت‌افزار جدید</value></data>
+  <data name="Lic_Req_restore" xml:space="preserve"><value>فعال‌سازی مجدد پس از بازیابی</value></data>
+  <data name="Lic_CustomerRef" xml:space="preserve"><value>شناسه‌ی مشتری</value></data>
+  <data name="Lic_OrderRef" xml:space="preserve"><value>شناسه‌ی سفارش</value></data>
+  <data name="Lic_Reason" xml:space="preserve"><value>دلیل (اختیاری)</value></data>
+  <data name="Lic_DownloadRequest" xml:space="preserve"><value>دانلود فایل درخواست</value></data>
+  <data name="Lic_UploadTitle" xml:space="preserve"><value>بارگذاری مجوز</value></data>
+  <data name="Lic_UploadHelp" xml:space="preserve"><value>فایل pemslic. (یا فایل zip) را که فروشنده برگردانده بارگذاری کنید.</value></data>
+  <data name="Lic_Upload" xml:space="preserve"><value>بارگذاری و فعال‌سازی</value></data>
+  <data name="Lic_Applied" xml:space="preserve"><value>مجوز نصب شد.</value></data>
+  <data name="Lic_Err_RequestFields" xml:space="preserve"><value>نوع درخواست را انتخاب و شناسه‌ی مشتری را وارد کنید.</value></data>
+  <data name="Lic_Err_NoFile" xml:space="preserve"><value>یک فایل انتخاب کنید.</value></data>
+  <data name="Lic_Fail_UnknownFormat" xml:space="preserve"><value>این فایل یک مجوز PEMS نیست.</value></data>
+  <data name="Lic_Fail_UnknownVersion" xml:space="preserve"><value>نسخه‌ی این فایل مجوز توسط این نسخه از محصول پشتیبانی نمی‌شود.</value></data>
+  <data name="Lic_Fail_BadEncoding" xml:space="preserve"><value>فایل آسیب دیده است.</value></data>
+  <data name="Lic_Fail_TooLarge" xml:space="preserve"><value>حجم فایل بیش از حد است.</value></data>
+  <data name="Lic_Fail_UnknownAlgorithm" xml:space="preserve"><value>الگوریتم امضای مجوز پشتیبانی نمی‌شود.</value></data>
+  <data name="Lic_Fail_UnknownKey" xml:space="preserve"><value>مجوز با کلید ناشناخته امضا شده است.</value></data>
+  <data name="Lic_Fail_BadSignature" xml:space="preserve"><value>امضا نامعتبر است؛ فایل تغییر کرده یا اصل نیست.</value></data>
+  <data name="Lic_Fail_KeyRetired" xml:space="preserve"><value>کلید امضای این مجوز بازنشسته شده است.</value></data>
+  <data name="Lic_Fail_UnsupportedCriticalField" xml:space="preserve"><value>این مجوز به نسخه‌ی جدیدتر محصول نیاز دارد.</value></data>
+  <data name="Lic_Fail_NotYetValid" xml:space="preserve"><value>مجوز هنوز معتبر نشده است.</value></data>
+  <data name="Lic_Fail_Expired" xml:space="preserve"><value>مجوز قبلاً منقضی شده است.</value></data>
+  <data name="Lic_Fail_NonceMismatch" xml:space="preserve"><value>این مجوز پاسخ درخواست دیگری است. از آخرین درخواست دانلودشده استفاده کنید.</value></data>
+  <data name="Lic_Fail_NonceUnknown" xml:space="preserve"><value>درخواستی در انتظار پاسخ نیست. ابتدا یک درخواست دانلود کنید.</value></data>
+  <data name="Lic_Fail_RequestMismatch" xml:space="preserve"><value>این مجوز با درخواست شما مطابقت ندارد.</value></data>
+  <data name="Lic_Fail_InstallMismatch" xml:space="preserve"><value>این مجوز برای نصب دیگری صادر شده است.</value></data>
+  <data name="Lic_Fail_FingerprintInvalid" xml:space="preserve"><value>این دستگاه با دستگاهی که مجوز برایش صادر شده مطابقت ندارد.</value></data>
+  <data name="Lic_Fail_DeploymentNotAllowed" xml:space="preserve"><value>مجوز این نوع استقرار (فیزیکی، ماشین مجازی یا کانتینر) را مجاز نکرده است.</value></data>
+  <data name="Lic_Fail_NotNewer" xml:space="preserve"><value>مجوز جدیدتری قبلاً نصب شده است.</value></data>
+  <data name="Lic_Fail_UnsafeArchive" xml:space="preserve"><value>فایل zip قابل قبول نیست.</value></data>
+  <data name="Lic_Fail_NoLicenceInArchive" xml:space="preserve"><value>فایل zip مجوزی ندارد.</value></data>
+  <data name="Lic_Fail_SealInvalid" xml:space="preserve"><value>مهر نصب وجود ندارد یا نامعتبر است. ابتدا یک درخواست دانلود کنید.</value></data>
+  <data name="Licence" xml:space="preserve"><value>مجوز</value></data>
+  <data name="Password_Reused" xml:space="preserve"><value>رمز عبور جدید باید با رمز فعلی و {0} رمز قبلی شما متفاوت باشد.</value></data>
+  <data name="Lp_Kpis" xml:space="preserve"><value>شمارش‌ها</value></data>
+  <data name="Lp_ApplyFilters" xml:space="preserve"><value>اعمال</value></data>
+  <data name="Lp_Total" xml:space="preserve"><value>کل</value></data>
+  <data name="Lp_RemoveFilter" xml:space="preserve"><value>حذف فیلتر</value></data>
+  <data name="Lp_ResetAll" xml:space="preserve"><value>بازنشانی همه</value></data>
+  <data name="Nav_ProcurementSupplyChain" xml:space="preserve"><value>تدارکات و زنجیره تأمین</value></data>
+  <data name="Nav_Proc_Purchasing" xml:space="preserve"><value>خرید</value></data>
+  <data name="Num_Title" xml:space="preserve"><value>شماره‌گذاری اسناد</value></data>
+  <data name="Num_Intro" xml:space="preserve"><value>اسناد تدارکات هنگام ثبت، شماره را خودکار از الگوی نوع خود می‌گیرند. تغییر الگو فقط روی اسناد تازه اثر دارد و شماره‌های موجود هرگز عوض نمی‌شوند.</value></data>
+  <data name="Num_Tokens" xml:space="preserve"><value>توکن‌ها: سال ({YYYY}، {YY})، کد پروژه، کد دیسیپلین، شمارنده ({SEQ}، یک بار الزامی):</value></data>
+  <data name="Num_DocumentType" xml:space="preserve"><value>سند</value></data>
+  <data name="Num_Pattern" xml:space="preserve"><value>الگو</value></data>
+  <data name="Num_Pad" xml:space="preserve"><value>ارقام شمارنده</value></data>
+  <data name="Num_Calendar" xml:space="preserve"><value>تقویم سال</value></data>
+  <data name="Num_Reset" xml:space="preserve"><value>شروع دوباره‌ی شمارنده</value></data>
+  <data name="Num_AllowManual" xml:space="preserve"><value>ورود دستی مجاز</value></data>
+  <data name="Num_Preview" xml:space="preserve"><value>شماره‌ی بعدی</value></data>
+  <data name="Num_Version" xml:space="preserve"><value>نسخه</value></data>
+  <data name="Num_Footnote" xml:space="preserve"><value>شمارنده برای هر سال (اگر سالانه از نو شروع شود) و برای هر پروژه و دیسیپلینی که در الگو آمده جداست. شماره‌ای که از قبل وجود دارد رد می‌شود. هنگام تایپ، پیش‌نمایش کدهای نمونه‌ی PRJ و MEC را نشان می‌دهد.</value></data>
+  <data name="Num_Saved" xml:space="preserve"><value>الگوی شماره‌گذاری ذخیره شد.</value></data>
+  <data name="Num_Err_PatternRequired" xml:space="preserve"><value>الگو را وارد کنید.</value></data>
+  <data name="Num_Err_PatternTooLong" xml:space="preserve"><value>الگو بیش از حد طولانی است (حداکثر ۶۰ نویسه).</value></data>
+  <data name="Num_Err_UnknownToken" xml:space="preserve"><value>الگو توکن ناشناخته دارد. از {YYYY}، {YY}، {PROJECT}، {DISC} و {SEQ} استفاده کنید.</value></data>
+  <data name="Num_Err_SeqOnce" xml:space="preserve"><value>الگو باید دقیقاً یک {SEQ} داشته باشد.</value></data>
+  <data name="Num_Err_Literal" xml:space="preserve"><value>بیرون از توکن‌ها فقط حروف لاتین، رقم، خط تیره، زیرخط و نقطه مجاز است.</value></data>
+  <data name="Num_Err_Pad" xml:space="preserve"><value>ارقام شمارنده باید بین ۱ و ۸ باشد.</value></data>
+  <data name="Num_Err_Calendar" xml:space="preserve"><value>تقویم را انتخاب کنید.</value></data>
+  <data name="Num_Err_Reset" xml:space="preserve"><value>زمان شروع دوباره‌ی شمارنده را انتخاب کنید.</value></data>
+  <data name="Num_Err_YearlyNeedsYear" xml:space="preserve"><value>شمارنده‌ای که هر سال از نو شروع می‌شود به {YYYY} یا {YY} در الگو نیاز دارد، وگرنه شماره‌ها تکرار می‌شوند.</value></data>
+  <data name="Num_Err_DocumentType" xml:space="preserve"><value>نوع سند ناشناخته است.</value></data>
+  <data name="Num_Err_Concurrency" xml:space="preserve"><value>کاربر دیگری هم‌زمان این الگو را تغییر داد. صفحه را دوباره باز کنید و دوباره امتحان کنید.</value></data>
+  <data name="Num_Err_Network" xml:space="preserve"><value>پیش‌نمایش بارگذاری نشد.</value></data>
+  <data name="Num_Doc_MaterialRequisition" xml:space="preserve"><value>درخواست مواد (MR)</value></data>
+  <data name="Num_Doc_ProcurementPackage" xml:space="preserve"><value>پکیج خرید</value></data>
+  <data name="Num_Doc_Tender" xml:space="preserve"><value>مناقصه</value></data>
+  <data name="Num_Doc_Bid" xml:space="preserve"><value>پیشنهاد مناقصه</value></data>
+  <data name="Num_Doc_PurchaseOrder" xml:space="preserve"><value>سفارش خرید</value></data>
+  <data name="Num_Doc_Contract" xml:space="preserve"><value>قرارداد</value></data>
+  <data name="Num_Cal_Jalali" xml:space="preserve"><value>شمسی</value></data>
+  <data name="Num_Cal_Gregorian" xml:space="preserve"><value>میلادی</value></data>
+  <data name="Num_Reset_Never" xml:space="preserve"><value>هرگز</value></data>
+  <data name="Num_Reset_Yearly" xml:space="preserve"><value>هر سال</value></data>
+  <data name="Num_HintAuto" xml:space="preserve"><value>هنگام ثبت خودکار داده می‌شود؛ شماره‌ی بعدی نمایش داده شده است.</value></data>
+  <data name="Num_HintManual" xml:space="preserve"><value>برای شماره‌ی خودکار خالی بگذارید، یا شماره‌ی یکتای خود را وارد کنید.</value></data>
+  <data name="Sel_NoResults" xml:space="preserve"><value>موردی پیدا نشد</value></data>
+  <data name="Sel_Loading" xml:space="preserve"><value>در حال جستجو…</value></data>
+  <data name="Sel_Placeholder" xml:space="preserve"><value>برای جستجو تایپ کنید…</value></data>
+  <data name="Tinv_Title" xml:space="preserve"><value>ارسال دعوت‌نامه با ایمیل</value></data>
+  <data name="Tinv_SendAll" xml:space="preserve"><value>ارسال دعوت‌نامه</value></data>
+  <data name="Tinv_Hint" xml:space="preserve"><value>برای هر فروشنده‌ی دعوت‌شده‌ای که هنوز با ایمیل دعوت نشده، یک ایمیل از سرور ایمیل سازمان ارسال می‌شود. فروشنده‌ای که ایمیل تماس ندارد «ردشده» ثبت می‌شود.</value></data>
+  <data name="Tinv_EmailOffHint" xml:space="preserve"><value>ایمیل روی این سرور خاموش است (Email__Enabled در فایل env) یا سرور ایمیل تنظیم نشده است. با مدیر سامانه هماهنگ کنید.</value></data>
+  <data name="Tinv_StatusHint" xml:space="preserve"><value>دعوت‌نامه فقط وقتی مناقصه در وضعیت پیش‌نویس یا باز است ارسال می‌شود.</value></data>
+  <data name="Tinv_To" xml:space="preserve"><value>گیرنده</value></data>
+  <data name="Tinv_Attempts" xml:space="preserve"><value>تلاش</value></data>
+  <data name="Tinv_QueuedBy" xml:space="preserve"><value>ارسال‌کننده</value></data>
+  <data name="Tinv_SentAt" xml:space="preserve"><value>تحویل به سرور ایمیل</value></data>
+  <data name="Tinv_Resend" xml:space="preserve"><value>ارسال دوباره</value></data>
+  <data name="Tinv_Status_Queued" xml:space="preserve"><value>در صف</value></data>
+  <data name="Tinv_Status_Sent" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Tinv_Status_Failed" xml:space="preserve"><value>ناموفق</value></data>
+  <data name="Tinv_Status_Skipped" xml:space="preserve"><value>ردشده</value></data>
+  <data name="Tinv_Queued" xml:space="preserve"><value>{0} دعوت‌نامه در صف ارسال قرار گرفت؛ {1} فروشنده بدون ایمیل تماس رد شد.</value></data>
+  <data name="Tinv_Err_EmailOff" xml:space="preserve"><value>ایمیل روی این سرور خاموش است.</value></data>
+  <data name="Tinv_Err_NotFound" xml:space="preserve"><value>مناقصه پیدا نشد.</value></data>
+  <data name="Tinv_Err_Status" xml:space="preserve"><value>دعوت‌نامه فقط وقتی مناقصه در وضعیت پیش‌نویس یا باز است ارسال می‌شود.</value></data>
+  <data name="Tinv_Err_NothingToSend" xml:space="preserve"><value>همه‌ی فروشندگان دعوت‌شده قبلاً با ایمیل دعوت شده‌اند. برای یک فروشنده از «ارسال دوباره» استفاده کنید.</value></data>
+  <data name="Tinv_Err_NoVendorEmail" xml:space="preserve"><value>فروشنده ایمیل تماس معتبر ندارد (فروشندگان &gt; ویرایش).</value></data>
+  <data name="Tinv_MailSubject" xml:space="preserve"><value>دعوت به مناقصه‌ی {TenderNumber}: {Title}</value></data>
+  <data name="Tinv_MailBody" xml:space="preserve"><value>{Vendor} گرامی،&#xA;&#xA;{Company} از شما دعوت می‌کند برای مناقصه‌ی زیر پیشنهاد ارسال کنید.&#xA;&#xA;شماره‌ی مناقصه: {TenderNumber}&#xA;عنوان: {Title}&#xA;پکیج خرید: {Package}&#xA;تاریخ انتشار: {IssueDate}&#xA;مهلت ارسال پیشنهاد: {Deadline}&#xA;&#xA;الزامات:&#xA;{Requirements}&#xA;&#xA;لطفاً دریافت این دعوت‌نامه را تأیید کنید و پیشنهاد خود را پیش از مهلت ارسال کنید. اسناد مناقصه را واحد تدارکات در اختیار شما می‌گذارد.&#xA;&#xA;با احترام،&#xA;تدارکات {Company}</value></data>
+  <data name="Mr_RequestNewPart" xml:space="preserve"><value>درخواست قطعه‌ی جدید</value></data>
+  <data name="Mr_PartLookupHint" xml:space="preserve"><value>شماره‌ی قطعه، شماره‌ی سازنده یا شرح را تایپ کنید تا قطعه‌ی ثبت‌شده در کاتالوگ قطعه انتخاب شود؛ شرح و واحد آن پر می‌شود. قطعه‌ای که هنوز ثبت نشده را می‌توانید همان‌طور که هست تایپ کنید.</value></data>
+  <data name="Mr_UseTypedPart" xml:space="preserve"><value>استفاده از {0} (کاتالوگ‌نشده)</value></data>
+  <data name="Mr_PartNotCatalogued" xml:space="preserve"><value>کاتالوگ‌نشده</value></data>
+  <data name="Mr_PartNotCataloguedHint" xml:space="preserve"><value>این شماره‌ی قطعه در کاتالوگ قطعه یا اطلاعات پایه‌ی مواد ثبت نشده است.</value></data>
+  <data name="Mr_PartCatalogued" xml:space="preserve"><value>کاتالوگ‌شده</value></data>
+  <data name="Mr_PartCataloguedHint" xml:space="preserve"><value>به قطعه‌ی ثبت‌شده در کاتالوگ قطعه یا اطلاعات پایه‌ی مواد پیوند دارد.</value></data>
+  <data name="Mr_AddItem" xml:space="preserve"><value>افزودن ردیف</value></data>
+  <data name="MyWork_Module_WarehouseIntake" xml:space="preserve"><value>ورودی انبار</value></data>
+  <data name="MyWork_Stage_WarehouseIntake" xml:space="preserve"><value>تأمین از انبار</value></data>
+  <data name="Whi_Title" xml:space="preserve"><value>کارتابل ورودی انبار</value></data>
+  <data name="Whi_SupplyCode" xml:space="preserve"><value>نوع تأمین</value></data>
+  <data name="Whi_Supply_Stock" xml:space="preserve"><value>از انبار</value></data>
+  <data name="Whi_Supply_DirectPurchase" xml:space="preserve"><value>خرید مستقیم</value></data>
+  <data name="Whi_Sourced" xml:space="preserve"><value>تأمین‌شده</value></data>
+  <data name="Whi_Save" xml:space="preserve"><value>ذخیره</value></data>
+  <data name="Whi_SupplyCodeSaved" xml:space="preserve"><value>نوع تأمین ذخیره شد.</value></data>
+  <data name="Whi_Request" xml:space="preserve"><value>درخواست از انبار</value></data>
+  <data name="Whi_RequestHint" xml:space="preserve"><value>ردیف‌های انباریِ تأمین‌نشده به صف انبار و ردیف‌های خرید مستقیم به کارتابل تدارکات فرستاده می‌شوند.</value></data>
+  <data name="Whi_Requested" xml:space="preserve"><value>ردیف‌های انباری به صف انبار فرستاده شد.</value></data>
+  <data name="Whi_Open" xml:space="preserve"><value>باز کردن کارتابل انبار</value></data>
+  <data name="Whi_State_Open" xml:space="preserve"><value>در انتظار انبار</value></data>
+  <data name="Whi_State_Sourced" xml:space="preserve"><value>همه‌ی ردیف‌های انباری تأمین شده</value></data>
+  <data name="Whi_State_NotRequested" xml:space="preserve"><value>درخواست نشده</value></data>
+  <data name="Whi_RequestedOn" xml:space="preserve"><value>درخواست در</value></data>
+  <data name="Whi_Hint" xml:space="preserve"><value>انبار تأمین‌کننده را انتخاب کنید. برای آن انبار یک درخواست انبار پیش‌نویس ساخته می‌شود که هر ردیفش به ردیف دستورکار وصل است؛ ارسال، تأیید، رزرو و تحویل آن مثل همیشه انجام می‌شود. ردیف‌های خرید مستقیم به تدارکات می‌روند، نه انبار.</value></data>
+  <data name="Whi_Requisitions" xml:space="preserve"><value>درخواست‌های انبار</value></data>
+  <data name="Whi_SourceNow" xml:space="preserve"><value>مقدار برای تأمین</value></data>
+  <data name="Whi_DirectPurchaseNote" xml:space="preserve"><value>برای این دستورکار توسط تدارکات خریده می‌شود</value></data>
+  <data name="Whi_NoPermission" xml:space="preserve"><value>برای تأمین ردیف‌ها مجوز «ایجاد درخواست انبار» لازم است.</value></data>
+  <data name="Whi_NothingLeft" xml:space="preserve"><value>همه‌ی ردیف‌های انباری تأمین شده‌اند.</value></data>
+  <data name="Whi_Warehouse" xml:space="preserve"><value>انبار تأمین‌کننده</value></data>
+  <data name="Whi_PickWarehouse" xml:space="preserve"><value>انبار را انتخاب کنید</value></data>
+  <data name="Whi_Source" xml:space="preserve"><value>ساخت درخواست انبار</value></data>
+  <data name="Whi_SourceHint" xml:space="preserve"><value>ردیف‌هایی که مقدارشان ۰ است وارد نمی‌شوند. باقی‌مانده را می‌توانید بعداً از انبار دیگری تأمین کنید.</value></data>
+  <data name="Whi_SourcedAll" xml:space="preserve"><value>درخواست انبار ساخته شد. همه‌ی ردیف‌های انباری تأمین شد و کار انبار بسته شد.</value></data>
+  <data name="Whi_SourcedPart" xml:space="preserve"><value>درخواست انبار ساخته شد. بعضی ردیف‌های انباری هنوز در صف انبار مانده‌اند.</value></data>
+  <data name="Whi_Err_SupplyCode" xml:space="preserve"><value>نوع تأمین نامعتبر است.</value></data>
+  <data name="Whi_Err_Forbidden" xml:space="preserve"><value>برای این کار مجوز ندارید.</value></data>
+  <data name="Whi_Err_NotFound" xml:space="preserve"><value>دستورکار یا ردیف متریال پیدا نشد.</value></data>
+  <data name="Whi_Err_AlreadySourced" xml:space="preserve"><value>یک درخواست انبار این ردیف را تأمین می‌کند. اول آن درخواست را لغو کنید.</value></data>
+  <data name="Whi_Err_NotReleased" xml:space="preserve"><value>متریال فقط وقتی دستورکار در وضعیت «واگذارشده»، «در حال انجام» یا «متوقف» است درخواست می‌شود.</value></data>
+  <data name="Whi_Err_AlreadyRequested" xml:space="preserve"><value>متریال این دستورکار از قبل در صف انبار است.</value></data>
+  <data name="Whi_Err_NothingToRequest" xml:space="preserve"><value>ردیف انباریِ تأمین‌نشده‌ای باقی نمانده است.</value></data>
+  <data name="Whi_Err_NoEmployee" xml:space="preserve"><value>هیچ کارمندی به حساب کاربری شما وصل نیست.</value></data>
+  <data name="Whi_Err_Warehouse" xml:space="preserve"><value>یک انبار فعال انتخاب کنید.</value></data>
+  <data name="Whi_Err_NothingSelected" xml:space="preserve"><value>دست‌کم برای یک ردیف مقدار وارد کنید.</value></data>
+  <data name="Whi_Err_NotStockLine" xml:space="preserve"><value>فقط ردیف‌های انباری از انبار تأمین می‌شوند.</value></data>
+  <data name="Whi_Err_Quantity" xml:space="preserve"><value>یک مقدار منفی است یا از باقی‌مانده‌ی تأمین بیشتر است.</value></data>
+  <data name="MyWork_Module_PreProcurement" xml:space="preserve"><value>پیش‌تدارکات</value></data>
+  <data name="MyWork_Stage_BuyerReview" xml:space="preserve"><value>بررسی کارشناس خرید</value></data>
+  <data name="Role_PRC_Buyer_Name" xml:space="preserve"><value>کارشناس خرید</value></data>
+  <data name="Role_PRC_Buyer_Desc" xml:space="preserve"><value>کارشناس تدارکات: صف پیش‌تدارکات را بررسی می‌کند، هر نیاز را به ردیف درخواست خرید (MR) تبدیل می‌کند، MRهای مهندسی را می‌پذیرد یا با ذکر دلیل رد یا برگشت می‌دهد. تأیید سفارش خرید با او نیست.</value></data>
+  <data name="Role_PRC_Manager_Name" xml:space="preserve"><value>مدیر خرید</value></data>
+  <data name="Role_PRC_Manager_Desc" xml:space="preserve"><value>سرپرست تدارکات: بر صف پیش‌تدارکات نظارت دارد و می‌تواند درباره‌ی موارد آن تصمیم بگیرد.</value></data>
+  <data name="Ppr_Title" xml:space="preserve"><value>کارتابل تدارکات</value></data>
+  <data name="Ppr_Hint" xml:space="preserve"><value>هر خریدی اول از این‌جا وارد می‌شود: کمبودهایی که انبار می‌فرستد، ردیف‌های خرید مستقیم دستورکارها و MRهای مهندسی ارسال‌شده به تدارکات. برای تصمیم، مورد را باز کنید؛ همین موارد در صف «کارهای من» شما هم هست.</value></data>
+  <data name="Ppr_Status" xml:space="preserve"><value>وضعیت</value></data>
+  <data name="Ppr_AllStatuses" xml:space="preserve"><value>همه‌ی وضعیت‌ها</value></data>
+  <data name="Ppr_Source" xml:space="preserve"><value>منبع</value></data>
+  <data name="Ppr_AllSources" xml:space="preserve"><value>همه‌ی منابع</value></data>
+  <data name="Ppr_Filter" xml:space="preserve"><value>فیلتر</value></data>
+  <data name="Ppr_Empty" xml:space="preserve"><value>صف خالی است.</value></data>
+  <data name="Ppr_Item" xml:space="preserve"><value>مورد</value></data>
+  <data name="Ppr_Quantity" xml:space="preserve"><value>مقدار</value></data>
+  <data name="Ppr_Warehouse" xml:space="preserve"><value>انبار</value></data>
+  <data name="Ppr_Raised" xml:space="preserve"><value>ثبت در</value></data>
+  <data name="Ppr_Decided" xml:space="preserve"><value>تصمیم در</value></data>
+  <data name="Ppr_Reason" xml:space="preserve"><value>دلیل</value></data>
+  <data name="Ppr_Status_Open" xml:space="preserve"><value>در انتظار کارشناس خرید</value></data>
+  <data name="Ppr_Status_Converted" xml:space="preserve"><value>افزوده به MR</value></data>
+  <data name="Ppr_Status_Accepted" xml:space="preserve"><value>پذیرفته‌شده</value></data>
+  <data name="Ppr_Status_Dismissed" xml:space="preserve"><value>ردشده / برگشتی</value></data>
+  <data name="Ppr_Source_Replenishment" xml:space="preserve"><value>کمبود انبار</value></data>
+  <data name="Ppr_Source_WorkOrderDirectPurchase" xml:space="preserve"><value>خرید مستقیم دستورکار</value></data>
+  <data name="Ppr_Source_MaterialRequisition" xml:space="preserve"><value>MR مهندسی</value></data>
+  <data name="Ppr_ToMr" xml:space="preserve"><value>افزودن به درخواست خرید (MR)</value></data>
+  <data name="Ppr_NewMr" xml:space="preserve"><value>MR جدید</value></data>
+  <data name="Ppr_ExistingMr" xml:space="preserve"><value>MR پیش‌نویس موجود</value></data>
+  <data name="Ppr_MrNumber" xml:space="preserve"><value>شماره‌ی MR</value></data>
+  <data name="Ppr_MrNumberHint" xml:space="preserve"><value>اگر شماره‌گذاری خودکار برای MR فعال است، شماره را خالی بگذارید.</value></data>
+  <data name="Ppr_Project" xml:space="preserve"><value>پروژه</value></data>
+  <data name="Ppr_Discipline" xml:space="preserve"><value>دیسیپلین</value></data>
+  <data name="Ppr_RequiredDate" xml:space="preserve"><value>تاریخ نیاز</value></data>
+  <data name="Ppr_Convert" xml:space="preserve"><value>افزودن به MR</value></data>
+  <data name="Ppr_AcceptHint" xml:space="preserve"><value>این MR مهندسی را در تدارکات بپذیرید. بسته‌ی خرید، استعلام و مناقصه مثل همیشه از روی MR ادامه پیدا می‌کند.</value></data>
+  <data name="Ppr_Accept" xml:space="preserve"><value>پذیرش در تدارکات</value></data>
+  <data name="Ppr_DismissReason" xml:space="preserve"><value>دلیل رد</value></data>
+  <data name="Ppr_Dismiss" xml:space="preserve"><value>رد</value></data>
+  <data name="Ppr_ReturnReason" xml:space="preserve"><value>دلیل برگشت به مهندسی</value></data>
+  <data name="Ppr_Return" xml:space="preserve"><value>برگشت به مهندسی</value></data>
+  <data name="Ppr_Send" xml:space="preserve"><value>ارسال به تدارکات</value></data>
+  <data name="Ppr_SendHint" xml:space="preserve"><value>این کمبود به کارتابل تدارکات می‌رود؛ تا وقتی در تدارکات است، محاسبه‌ی بعدی آن را دوباره پیشنهاد نمی‌دهد.</value></data>
+  <data name="Ppr_SentNote" xml:space="preserve"><value>این کمبود به تدارکات فرستاده شد.</value></data>
+  <data name="Ppr_Sent" xml:space="preserve"><value>به کارتابل تدارکات فرستاده شد.</value></data>
+  <data name="Ppr_Saved" xml:space="preserve"><value>ذخیره شد.</value></data>
+  <data name="Ppr_Accepted" xml:space="preserve"><value>MR در تدارکات پذیرفته شد.</value></data>
+  <data name="Ppr_Dismissed" xml:space="preserve"><value>مورد رد شد.</value></data>
+  <data name="Ppr_DirectPurchaseRaised" xml:space="preserve"><value>{0} ردیف خرید مستقیم به کارتابل تدارکات فرستاده شد.</value></data>
+  <data name="Ppr_Err_Forbidden" xml:space="preserve"><value>برای این کار مجوز ندارید.</value></data>
+  <data name="Ppr_Err_NotFound" xml:space="preserve"><value>مورد پیدا نشد.</value></data>
+  <data name="Ppr_Err_RecommendationNotOpen" xml:space="preserve"><value>فقط پیشنهاد تأمینِ باز و قطعی را می‌توان به تدارکات فرستاد.</value></data>
+  <data name="Ppr_Err_AlreadyRaised" xml:space="preserve"><value>این مورد از قبل در کارتابل تدارکات است.</value></data>
+  <data name="Ppr_Err_MrNotIssued" xml:space="preserve"><value>MR به تدارکات ارسال نشده است.</value></data>
+  <data name="Ppr_Err_AlreadyDecided" xml:space="preserve"><value>درباره‌ی این مورد قبلاً تصمیم گرفته شده است.</value></data>
+  <data name="Ppr_Err_NotMaterialDemand" xml:space="preserve"><value>MR مهندسی پذیرفته یا برگشت داده می‌شود، نه این‌که به MR دیگری افزوده شود.</value></data>
+  <data name="Ppr_Err_NotMrDemand" xml:space="preserve"><value>فقط MR مهندسی پذیرفته می‌شود.</value></data>
+  <data name="Ppr_Err_MrNotFound" xml:space="preserve"><value>MR پیدا نشد.</value></data>
+  <data name="Ppr_Err_MrNotDraft" xml:space="preserve"><value>فقط به MR پیش‌نویس می‌توان ردیف افزود.</value></data>
+  <data name="Ppr_Err_NoTarget" xml:space="preserve"><value>MR جدید یا موجود را انتخاب کنید.</value></data>
+  <data name="Ppr_Err_ProjectDiscipline" xml:space="preserve"><value>پروژه و دیسیپلین MR جدید را انتخاب کنید.</value></data>
+  <data name="Ppr_Err_ReasonRequired" xml:space="preserve"><value>ذکر دلیل الزامی است.</value></data>
+  <data name="MyWork_Module_PurchaseOrder" xml:space="preserve"><value>سفارش خرید</value></data>
+  <data name="Po_Status_Draft" xml:space="preserve"><value>پیش‌نویس</value></data>
+  <data name="Po_Status_Submitted" xml:space="preserve"><value>ارسال برای تأیید</value></data>
+  <data name="Po_Status_Approved" xml:space="preserve"><value>تأییدشده</value></data>
+  <data name="Po_Status_Issued" xml:space="preserve"><value>صادرشده</value></data>
+  <data name="Po_Status_Closed" xml:space="preserve"><value>بسته‌شده</value></data>
+  <data name="Po_Status_Cancelled" xml:space="preserve"><value>لغوشده</value></data>
+  <data name="Po_Lines" xml:space="preserve"><value>ردیف‌ها</value></data>
+  <data name="Po_NoLines" xml:space="preserve"><value>هنوز ردیفی ندارد. ردیف‌ها را از یک MR ارسال‌شده به تدارکات اضافه کنید.</value></data>
+  <data name="Po_Item" xml:space="preserve"><value>قلم</value></data>
+  <data name="Po_Quantity" xml:space="preserve"><value>مقدار</value></data>
+  <data name="Po_UnitPrice" xml:space="preserve"><value>قیمت واحد</value></data>
+  <data name="Po_Amount" xml:space="preserve"><value>مبلغ</value></data>
+  <data name="Po_Total" xml:space="preserve"><value>جمع</value></data>
+  <data name="Po_Supply" xml:space="preserve"><value>نوع</value></data>
+  <data name="Po_StockLine" xml:space="preserve"><value>ورود به انبار</value></data>
+  <data name="Po_DirectLine" xml:space="preserve"><value>مصرف مستقیم / خدمات</value></data>
+  <data name="Po_RequiredDate" xml:space="preserve"><value>تاریخ نیاز</value></data>
+  <data name="Po_CommodityGroup" xml:space="preserve"><value>گروه کالا</value></data>
+  <data name="Po_FreeTextReason" xml:space="preserve"><value>دلیل (کاتالوگ‌نشده)</value></data>
+  <data name="Po_SaveLine" xml:space="preserve"><value>ذخیره‌ی ردیف</value></data>
+  <data name="Po_RemoveLine" xml:space="preserve"><value>حذف ردیف</value></data>
+  <data name="Po_FromAward" xml:space="preserve"><value>مناقصه‌ی برنده</value></data>
+  <data name="Po_AddFromMr" xml:space="preserve"><value>افزودن ردیف از MR</value></data>
+  <data name="Po_AddLines" xml:space="preserve"><value>افزودن ردیف‌ها</value></data>
+  <data name="Po_RejectedBecause" xml:space="preserve"><value>برگشت به پیش‌نویس</value></data>
+  <data name="Po_Approval" xml:space="preserve"><value>تأیید</value></data>
+  <data name="Po_Submitted" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Po_ApproverRole" xml:space="preserve"><value>نقش تأییدکننده</value></data>
+  <data name="Po_Level" xml:space="preserve"><value>سطح</value></data>
+  <data name="Po_ApprovedBy" xml:space="preserve"><value>تأیید</value></data>
+  <data name="Po_ResponsibleNotSet" xml:space="preserve"><value>مسئول تعیین نشده: هیچ سطح فعالِ جدول حد اختیار PO با این ارز و مبلغ جور نیست. از مدیر سیستم بخواهید یک سطح اضافه کند (مدیریت &gt; حد اختیار PO) و بعد دوباره ارجاع دهید.</value></data>
+  <data name="Po_RouteAgain" xml:space="preserve"><value>ارجاع دوباره</value></data>
+  <data name="Po_Submit" xml:space="preserve"><value>ارسال برای تأیید</value></data>
+  <data name="Po_SubmitHint" xml:space="preserve"><value>ردیف‌ها بررسی، مبلغ جمع و سفارش به تأییدکننده‌ی سطح حد اختیار مربوط فرستاده می‌شود.</value></data>
+  <data name="Po_Approve" xml:space="preserve"><value>تأیید</value></data>
+  <data name="Po_Reject" xml:space="preserve"><value>برگشت به پیش‌نویس</value></data>
+  <data name="Po_RejectReason" xml:space="preserve"><value>دلیل برگشت</value></data>
+  <data name="Po_CreateFromMr" xml:space="preserve"><value>سفارش خرید از این MR</value></data>
+  <data name="Po_Create" xml:space="preserve"><value>ساخت سفارش خرید</value></data>
+  <data name="Po_Currency" xml:space="preserve"><value>ارز</value></data>
+  <data name="Po_CreateHint" xml:space="preserve"><value>یک سفارش خرید پیش‌نویس با یک ردیف برای هر قلمِ سفارش‌نشده‌ی MR ساخته می‌شود. اگر شماره‌گذاری خودکار فعال است، شماره را خالی بگذارید.</value></data>
+  <data name="Po_Created" xml:space="preserve"><value>سفارش خرید پیش‌نویس از MR ساخته شد.</value></data>
+  <data name="Po_LinesAdded" xml:space="preserve"><value>ردیف‌ها اضافه شد.</value></data>
+  <data name="Po_Saved" xml:space="preserve"><value>ذخیره شد.</value></data>
+  <data name="Po_Approved" xml:space="preserve"><value>سفارش خرید تأیید شد.</value></data>
+  <data name="Po_Rejected" xml:space="preserve"><value>به پیش‌نویس برگشت.</value></data>
+  <data name="Po_AuthorityTitle" xml:space="preserve"><value>حد اختیار سفارش خرید</value></data>
+  <data name="Po_AuthorityHint" xml:space="preserve"><value>چه کسی سفارش خرید را بر اساس ارز و مبلغ تأیید می‌کند. سفارشِ ارسال‌شده به نقشِ پایین‌ترین سطح فعالی می‌رود که بازه‌اش مبلغ سفارش را در بر دارد. هیچ مقداری از پیش تعیین نشده؛ اگر سطحی جور نباشد سفارش با وضعیت «مسئول تعیین نشده» می‌ماند.</value></data>
+  <data name="Po_NoRules" xml:space="preserve"><value>هنوز سطحی تعریف نشده است.</value></data>
+  <data name="Po_From" xml:space="preserve"><value>از مبلغ</value></data>
+  <data name="Po_To" xml:space="preserve"><value>تا مبلغ</value></data>
+  <data name="Po_Active" xml:space="preserve"><value>فعال</value></data>
+  <data name="Po_Inactive" xml:space="preserve"><value>غیرفعال</value></data>
+  <data name="Po_Activate" xml:space="preserve"><value>فعال‌سازی</value></data>
+  <data name="Po_Deactivate" xml:space="preserve"><value>غیرفعال‌سازی</value></data>
+  <data name="Po_NewRule" xml:space="preserve"><value>سطح جدید حد اختیار</value></data>
+  <data name="Po_SaveRule" xml:space="preserve"><value>ذخیره</value></data>
+  <data name="Po_RuleSaved" xml:space="preserve"><value>سطح حد اختیار ذخیره شد.</value></data>
+  <data name="Po_Err_Forbidden" xml:space="preserve"><value>برای این کار مجوز ندارید.</value></data>
+  <data name="Po_Err_NotFound" xml:space="preserve"><value>سفارش خرید یا ردیف پیدا نشد.</value></data>
+  <data name="Po_Err_MrNotEligible" xml:space="preserve"><value>از این MR نمی‌توان سفارش خرید ساخت: باید به تدارکات ارسال شده باشد (و در کارتابل تدارکات پذیرفته شده باشد) یا از کارتابل تدارکات ساخته شده باشد.</value></data>
+  <data name="Po_Err_Currency" xml:space="preserve"><value>ارز را وارد کنید.</value></data>
+  <data name="Po_Err_Vendor" xml:space="preserve"><value>یک فروشنده‌ی فعال انتخاب کنید.</value></data>
+  <data name="Po_Err_NoFreeItems" xml:space="preserve"><value>همه‌ی اقلام این MR از قبل روی سفارش خرید هستند.</value></data>
+  <data name="Po_Err_NotDraft" xml:space="preserve"><value>ردیف‌ها فقط وقتی سفارش پیش‌نویس است تغییر می‌کنند.</value></data>
+  <data name="Po_Err_ProjectMismatch" xml:space="preserve"><value>این MR مال پروژه‌ی دیگری است.</value></data>
+  <data name="Po_Err_Quantity" xml:space="preserve"><value>مقدار باید بیشتر از صفر باشد.</value></data>
+  <data name="Po_Err_Price" xml:space="preserve"><value>قیمت واحد نمی‌تواند منفی باشد.</value></data>
+  <data name="Po_Err_NoLines" xml:space="preserve"><value>سفارش خرید دست‌کم یک ردیف لازم دارد.</value></data>
+  <data name="Po_Err_CatalogueOnly" xml:space="preserve"><value>روی سفارش خرید فقط قطعه‌ی کاتالوگ‌شده مجاز است (تنظیم Procurement__CatalogueOnlyLines).</value></data>
+  <data name="Po_Err_StockLineNotCatalogued" xml:space="preserve"><value>ردیفی که وارد انبار می‌شود باید قطعه‌ی کاتالوگ‌شده باشد؛ قطعه را ثبت کنید یا ردیف را «مصرف مستقیم / خدمات» کنید.</value></data>
+  <data name="Po_Err_FreeTextIncomplete" xml:space="preserve"><value>ردیف کاتالوگ‌نشده گروه کالا و دلیل لازم دارد.</value></data>
+  <data name="Po_Err_AlreadyRouted" xml:space="preserve"><value>این سفارش تأییدکننده دارد.</value></data>
+  <data name="Po_Err_NotSubmitted" xml:space="preserve"><value>این سفارش در انتظار تأیید نیست.</value></data>
+  <data name="Po_Err_NotApprover" xml:space="preserve"><value>فقط نقش تأییدکننده‌ی سطح حد اختیار این سفارش می‌تواند درباره‌ی آن تصمیم بگیرد.</value></data>
+  <data name="Po_Err_SoD" xml:space="preserve"><value>کسی که سفارش را ساخته یا ارسال کرده نمی‌تواند آن را تأیید کند (تفکیک وظایف).</value></data>
+  <data name="Po_Err_ReasonRequired" xml:space="preserve"><value>ذکر دلیل الزامی است.</value></data>
+  <data name="Po_Err_Concurrent" xml:space="preserve"><value>کاربر دیگری هم‌زمان این سفارش را تغییر داد؛ دوباره باز کنید.</value></data>
+  <data name="Po_Err_RuleIncomplete" xml:space="preserve"><value>ارز و نقش تأییدکننده را وارد کنید.</value></data>
+  <data name="Po_Err_RuleRange" xml:space="preserve"><value>مبالغ نامعتبر است (از مبلغ باید صفر یا بیشتر و از «تا مبلغ» بیشتر نباشد).</value></data>
+  <data name="Po_Err_RuleRole" xml:space="preserve"><value>نقش تأییدکننده وجود ندارد.</value></data>
+  <data name="Upload_Err_Empty" xml:space="preserve"><value>فایل {0} خالی است یا نام ندارد.</value></data>
+  <data name="Upload_Err_TypeNotAllowed" xml:space="preserve"><value>نوع فایل {0} در این‌جا مجاز نیست.</value></data>
+  <data name="Upload_Err_TooLarge" xml:space="preserve"><value>حجم فایل {0} بیشتر از {1} مگابایت است.</value></data>
+  <data name="Upload_Err_ContentMismatch" xml:space="preserve"><value>محتوای فایل {0} با نوع آن هم‌خوانی ندارد.</value></data>
+  <data name="Upload_Err_Infected" xml:space="preserve"><value>فایل {0} را ضدبدافزار رد کرد.</value></data>
+  <data name="Upload_Err_ScanFailed" xml:space="preserve"><value>ضدبدافزار نتوانست فایل {0} را بررسی کند؛ دوباره تلاش کنید یا به مدیر سیستم اطلاع دهید.</value></data>
+  <data name="Upload_Err_NoPolicy" xml:space="preserve"><value>این صفحه فایل نمی‌پذیرد.</value></data>
+  <data name="Po_Err_LineWarehouse" xml:space="preserve"><value>ردیف انباری باید انبار تحویل داشته باشد.</value></data>
+  <data name="Po_Err_Warehouse" xml:space="preserve"><value>انبار انتخاب‌شده پیدا نشد یا غیرفعال است.</value></data>
+  <data name="Rcv_Action_Replace" xml:space="preserve"><value>جایگزین از فروشنده</value></data>
+  <data name="Rcv_Action_CloseShort" xml:space="preserve"><value>بستن با کسری</value></data>
+  <data name="Rcv_AddPoLines" xml:space="preserve"><value>افزودن ردیف‌های PO به این رسید</value></data>
+  <data name="Rcv_ConfirmHold" xml:space="preserve"><value>تعیین تکلیف این Hold؟ بخش پذیرفته‌شده به موجودی اضافه می‌شود.</value></data>
+  <data name="Rcv_Decision" xml:space="preserve"><value>تصمیم</value></data>
+  <data name="Rcv_Default" xml:space="preserve"><value>پیش‌فرض</value></data>
+  <data name="Rcv_DeliveryWarehouse" xml:space="preserve"><value>انبار تحویل</value></data>
+  <data name="Rcv_Err_Action" xml:space="preserve"><value>تصمیم نامعتبر است.</value></data>
+  <data name="Rcv_Err_AlreadyReleased" xml:space="preserve"><value>این ردیف قبلاً برای ارسال آزاد شده است.</value></data>
+  <data name="Rcv_Err_Duplicate" xml:space="preserve"><value>یک ردیف PO دو بار در ورودی آمده است.</value></data>
+  <data name="Rcv_Err_Forbidden" xml:space="preserve"><value>مجوز این کار را ندارید.</value></data>
+  <data name="Rcv_Err_HoldNotClosed" xml:space="preserve"><value>تعیین تکلیف Hold فقط پس از تأیید بازرسی ممکن است.</value></data>
+  <data name="Rcv_Err_HoldSplit" xml:space="preserve"><value>جمع پذیرفته و ردشده باید برابر مقدار Hold باشد.</value></data>
+  <data name="Rcv_Err_ItpNotFound" xml:space="preserve"><value>ITP انتخاب‌شده پیدا نشد.</value></data>
+  <data name="Rcv_Err_LineNotCatalogued" xml:space="preserve"><value>ردیف PO بدون کد کالا را نمی‌توان به انبار وارد کرد.</value></data>
+  <data name="Rcv_Err_LineNotOnPo" xml:space="preserve"><value>یکی از ردیف‌ها متعلق به PO این رسید نیست.</value></data>
+  <data name="Rcv_Err_Negative" xml:space="preserve"><value>مقدار نمی‌تواند منفی باشد.</value></data>
+  <data name="Rcv_Err_NoLines" xml:space="preserve"><value>حداقل برای یک ردیف مقدار وارد کنید.</value></data>
+  <data name="Rcv_Err_NoOpenHold" xml:space="preserve"><value>این ردیف Hold باز ندارد.</value></data>
+  <data name="Rcv_Err_NoPo" xml:space="preserve"><value>این رسید به سفارش خرید وصل نیست.</value></data>
+  <data name="Rcv_Err_NoPoLine" xml:space="preserve"><value>این ردیف رسید به ردیف PO وصل نیست.</value></data>
+  <data name="Rcv_Err_NotDispositioned" xml:space="preserve"><value>تصمیم پس از تأیید نتیجه‌ی بازرسی ممکن است.</value></data>
+  <data name="Rcv_Err_NotDraft" xml:space="preserve"><value>ردیف فقط در وضعیت پیش‌نویس رسید اضافه می‌شود.</value></data>
+  <data name="Rcv_Err_NotFound" xml:space="preserve"><value>پیدا نشد.</value></data>
+  <data name="Rcv_Err_NotWarehouseManager" xml:space="preserve"><value>فقط مدیر انبار Hold را تعیین تکلیف می‌کند.</value></data>
+  <data name="Rcv_Err_NothingRejected" xml:space="preserve"><value>در این ردیف مقداری رد نشده است.</value></data>
+  <data name="Rcv_Err_PoNotIssued" xml:space="preserve"><value>سفارش خرید صادر نشده است.</value></data>
+  <data name="Rcv_Err_VendorMismatch" xml:space="preserve"><value>فروشنده‌ی رسید با فروشنده‌ی PO یکی نیست.</value></data>
+  <data name="Rcv_FromHold" xml:space="preserve"><value>از Hold</value></data>
+  <data name="Rcv_HoldResolved" xml:space="preserve"><value>Hold تعیین تکلیف شد.</value></data>
+  <data name="Rcv_HoldResolvedBy" xml:space="preserve"><value>تعیین تکلیف توسط</value></data>
+  <data name="Rcv_HoldWaits" xml:space="preserve"><value>در انتظار مدیر انبار.</value></data>
+  <data name="Rcv_InQc" xml:space="preserve"><value>در QC</value></data>
+  <data name="Rcv_Inspection" xml:space="preserve"><value>آزادسازی بازرسی</value></data>
+  <data name="Rcv_InspectionReleased" xml:space="preserve"><value>ردیف برای ارسال آزاد شد.</value></data>
+  <data name="Rcv_LinesAdded" xml:space="preserve"><value>ردیف‌های PO به رسید اضافه شد.</value></data>
+  <data name="Rcv_NoItp" xml:space="preserve"><value>بدون ITP</value></data>
+  <data name="Rcv_NoPoLine" xml:space="preserve"><value>بدون ردیف PO</value></data>
+  <data name="Rcv_NotCatalogued" xml:space="preserve"><value>بدون کد کالا</value></data>
+  <data name="Rcv_NotReleased" xml:space="preserve"><value>بازرسی لازم است، آزاد نشده</value></data>
+  <data name="Rcv_Open" xml:space="preserve"><value>باز</value></data>
+  <data name="Rcv_Ordered" xml:space="preserve"><value>سفارش‌شده</value></data>
+  <data name="Rcv_OsdClean" xml:space="preserve"><value>این رسید مازاد، کسری یا آسیب‌دیدگی ندارد.</value></data>
+  <data name="Rcv_OsdNote" xml:space="preserve"><value>مازاد و کسری نسبت به مقدار باز ردیف PO پیش از این رسید سنجیده می‌شود. ردشده یعنی مقدار آسیب‌دیده یا نامنطبق.</value></data>
+  <data name="Rcv_OsdReport" xml:space="preserve"><value>گزارش OS&amp;D</value></data>
+  <data name="Rcv_OsdSubtitle" xml:space="preserve"><value>کالای مازاد، کسری و آسیب‌دیده نسبت به سفارش خرید</value></data>
+  <data name="Rcv_OsdTitle" xml:space="preserve"><value>گزارش مغایرت رسید (OS&amp;D)</value></data>
+  <data name="Rcv_Over" xml:space="preserve"><value>مازاد</value></data>
+  <data name="Rcv_PoLine" xml:space="preserve"><value>ردیف PO</value></data>
+  <data name="Rcv_PurchaseOrderOptional" xml:space="preserve"><value>سفارش خرید (اختیاری)</value></data>
+  <data name="Rcv_ReceiveFromPo" xml:space="preserve"><value>دریافت از PO</value></data>
+  <data name="Rcv_ReceiveHelp" xml:space="preserve"><value>مقدار رسیده برای هر ردیف را وارد کنید؛ برای ردیف‌هایی که نرسیده‌اند ۰ بگذارید. بیشتر از مقدار باز مجاز است ولی گزارش می‌شود.</value></data>
+  <data name="Rcv_ReceiveNow" xml:space="preserve"><value>دریافت اکنون</value></data>
+  <data name="Rcv_ReceivedBefore" xml:space="preserve"><value>دریافت قبلی</value></data>
+  <data name="Rcv_ReceivedSoFar" xml:space="preserve"><value>دریافت تاکنون</value></data>
+  <data name="Rcv_Receiving" xml:space="preserve"><value>دریافت کالا</value></data>
+  <data name="Rcv_ReceivingHelp" xml:space="preserve"><value>مقدار باز = سفارش‌شده − دریافت‌شده + ردشده‌ی جایگزین. مقدار در QC و مقدار باز جزو کالای در راه حساب می‌شوند.</value></data>
+  <data name="Rcv_RejectedDamaged" xml:space="preserve"><value>ردشده / آسیب‌دیده</value></data>
+  <data name="Rcv_RejectionDecided" xml:space="preserve"><value>تصمیم ثبت شد.</value></data>
+  <data name="Rcv_Release" xml:space="preserve"><value>آزادسازی</value></data>
+  <data name="Rcv_Released" xml:space="preserve"><value>آزاد شده</value></data>
+  <data name="Rcv_ResolveHold" xml:space="preserve"><value>تعیین تکلیف Hold</value></data>
+  <data name="Rcv_Short" xml:space="preserve"><value>کسری</value></data>
+  <data name="Rcv_ThisReceipt" xml:space="preserve"><value>این رسید</value></data>
+  <data name="Rcv_Warn_InspectionNotReleased" xml:space="preserve"><value>هشدار: بازرسی لازم است و ردیف آزاد نشده است.</value></data>
+  <data name="Rcv_Warn_OtherWarehouse" xml:space="preserve"><value>هشدار: کالا در انباری غیر از انبار تحویل ردیف PO دریافت شد.</value></data>
+  <data name="Rcv_Warn_OverReceipt" xml:space="preserve"><value>هشدار: بیشتر از مقدار باز دریافت شد؛ در گزارش OS&amp;D می‌آید.</value></data>
+  <data name="Rcv_Warn_TaskNotClosed" xml:space="preserve"><value>هشدار: Hold تعیین تکلیف شد ولی کار My Work بسته نشد.</value></data>
+  <data name="MyWork_Stage_HoldResolution" xml:space="preserve"><value>تعیین تکلیف کالای نگه‌داشته</value></data>
+  <data name="IRN" xml:space="preserve"><value>رسید کالا (IRN)</value></data>
+  <data name="GlobalSearch_Placeholder" xml:space="preserve"><value>جستجوی رکوردها، منوها و عملیات...</value></data>
+  <data name="GlobalSearch_PaletteHint" xml:space="preserve"><value>نکته: در هر صفحه Ctrl+K را بزنید تا پالت فرمان باز شود.</value></data>
+  <data name="GlobalSearch_NoResults" xml:space="preserve"><value>نتیجه‌ای برای «{0}» که اجازه‌ی دیدنش را داشته باشید یافت نشد.</value></data>
+  <data name="Palette_Title" xml:space="preserve"><value>پالت فرمان</value></data>
+  <data name="Palette_Placeholder" xml:space="preserve"><value>جستجوی منو، رکورد و عملیات...</value></data>
+  <data name="Palette_OpenHint" xml:space="preserve"><value>جستجو (Ctrl+K)</value></data>
+  <data name="Palette_Menus" xml:space="preserve"><value>منوها</value></data>
+  <data name="Palette_Actions" xml:space="preserve"><value>عملیات</value></data>
+  <data name="Palette_Empty" xml:space="preserve"><value>موردی یافت نشد.</value></data>
+  <data name="Palette_Loading" xml:space="preserve"><value>در حال جستجوی رکوردها...</value></data>
+  <data name="Palette_Error" xml:space="preserve"><value>جستجوی رکوردها انجام نشد. دوباره تلاش کنید.</value></data>
+  <data name="Palette_Keys" xml:space="preserve"><value>↑ ↓ جابه‌جایی · Enter باز کردن · Esc بستن</value></data>
+  <data name="Palette_MinChars" xml:space="preserve"><value>برای جستجوی رکوردها دست‌کم ۲ نویسه بنویسید.</value></data>
+  <data name="Palette_ShowAll" xml:space="preserve"><value>نمایش همه‌ی نتایج «{0}»</value></data>
+  <data name="Palette_Count" xml:space="preserve"><value>{0} نتیجه</value></data>
+  <data name="Palette_Action_NewLetter" xml:space="preserve"><value>نامه‌ی جدید</value></data>
+  <data name="Palette_Action_NewDocument" xml:space="preserve"><value>مدرک مهندسی جدید</value></data>
+  <data name="Palette_Action_NewVdr" xml:space="preserve"><value>آیتم VDR جدید</value></data>
+  <data name="Palette_Action_NewWorkRequest" xml:space="preserve"><value>درخواست کار جدید</value></data>
+  <data name="Palette_Action_NewWorkOrder" xml:space="preserve"><value>دستور کار جدید</value></data>
+  <data name="Palette_Action_NewEquipment" xml:space="preserve"><value>تجهیز جدید</value></data>
+  <data name="Palette_Action_NewMaterialRequisition" xml:space="preserve"><value>درخواست کالای جدید (MR)</value></data>
+  <data name="Palette_Action_NewContract" xml:space="preserve"><value>قرارداد جدید</value></data>
+  <data name="Palette_Action_MyWork" xml:space="preserve"><value>کارهای من</value></data>
+  <data name="Palette_Action_Notifications" xml:space="preserve"><value>اعلان‌ها</value></data>
+  <data name="Palette_Action_Help" xml:space="preserve"><value>مرکز راهنما</value></data>
+  <data name="Palette_Action_ChangePassword" xml:space="preserve"><value>تغییر رمز عبور</value></data>
+  <data name="Palette_Action_Theme" xml:space="preserve"><value>پوسته: {0}</value></data>
+  <data name="Palette_Action_Language" xml:space="preserve"><value>زبان: {0}</value></data>
+  <data name="Palette_Group_Attachment" xml:space="preserve"><value>پیوست‌ها</value></data>
+  <data name="Palette_Group_Contract" xml:space="preserve"><value>قراردادها</value></data>
+  <data name="Palette_Group_Discipline" xml:space="preserve"><value>دیسیپلین‌ها</value></data>
+  <data name="Palette_Group_DocumentRevision" xml:space="preserve"><value>بازنگری‌های مدرک</value></data>
+  <data name="Palette_Group_EngineeringDocument" xml:space="preserve"><value>مدارک مهندسی</value></data>
+  <data name="Palette_Group_Equipment" xml:space="preserve"><value>تجهیزات</value></data>
+  <data name="Palette_Group_EquipmentTag" xml:space="preserve"><value>تگ‌های تجهیز</value></data>
+  <data name="Palette_Group_HelpArticle" xml:space="preserve"><value>مقالات راهنما</value></data>
+  <data name="Palette_Group_Letter" xml:space="preserve"><value>نامه‌ها</value></data>
+  <data name="Palette_Group_MOC" xml:space="preserve"><value>مدیریت تغییر (MOC)</value></data>
+  <data name="Palette_Group_MaterialRequisition" xml:space="preserve"><value>درخواست‌های کالا (MR)</value></data>
+  <data name="Palette_Group_Notification" xml:space="preserve"><value>اعلان‌ها</value></data>
+  <data name="Palette_Group_PartCatalogueRequest" xml:space="preserve"><value>درخواست‌های کاتالوگ قطعه</value></data>
+  <data name="Palette_Group_Project" xml:space="preserve"><value>پروژه‌ها</value></data>
+  <data name="Palette_Group_SparePart" xml:space="preserve"><value>قطعات یدکی</value></data>
+  <data name="Palette_Group_TechnicalQuery" xml:space="preserve"><value>پرسش‌های فنی (TQ)</value></data>
+  <data name="Palette_Group_VDRItem" xml:space="preserve"><value>مدارک فروشنده (VDR)</value></data>
+  <data name="Palette_Group_Vendor" xml:space="preserve"><value>تأمین‌کنندگان</value></data>
+  <data name="Palette_Group_WorkOrder" xml:space="preserve"><value>دستورهای کار</value></data>
+  <data name="Lp_SelectedCount" xml:space="preserve"><value>{0} مورد انتخاب شد</value></data>
+  <data name="Lp_SelectAll" xml:space="preserve"><value>انتخاب همه‌ی ردیف‌ها</value></data>
+  <data name="Lp_SelectRow" xml:space="preserve"><value>انتخاب</value></data>
+  <data name="Dr_SearchPlaceholder" xml:space="preserve"><value>شماره یا عنوان مدرک</value></data>
+  <data name="Dr_Views" xml:space="preserve"><value>فیلترهای آماده و ذخیره‌شده</value></data>
+  <data name="Dr_QuickFilters" xml:space="preserve"><value>فیلترهای آماده</value></data>
+  <data name="Dr_PendingReview" xml:space="preserve"><value>در انتظار بررسی</value></data>
+  <data name="Dr_SavedFilters" xml:space="preserve"><value>فیلترهای ذخیره‌شده</value></data>
+  <data name="Dr_DeleteFilter" xml:space="preserve"><value>حذف فیلتر ذخیره‌شده</value></data>
+  <data name="Dr_DeleteFilterConfirm" xml:space="preserve"><value>این فیلتر ذخیره‌شده حذف شود؟</value></data>
+  <data name="Dr_SaveFilter" xml:space="preserve"><value>ذخیره‌ی این فیلتر</value></data>
+  <data name="Dr_SaveFilterTitle" xml:space="preserve"><value>ذخیره‌ی فیلتر فعلی</value></data>
+  <data name="Dr_FilterName" xml:space="preserve"><value>نام فیلتر</value></data>
+  <data name="Dr_SetDefault" xml:space="preserve"><value>نمای پیش‌فرض من در این صفحه باشد</value></data>
+  <data name="Dr_Unassigned" xml:space="preserve"><value>تخصیص‌نیافته</value></data>
+  <data name="Dr_Empty" xml:space="preserve"><value>مدرکی در رجیستر نیست.</value></data>
+  <data name="Dr_ExportSelected" xml:space="preserve"><value>خروجی اکسل ردیف‌های انتخاب‌شده</value></data>
+  <data name="Dr_CommentStatus" xml:space="preserve"><value>وضعیت کامنت</value></data>
+  <data name="Rv_Title" xml:space="preserve"><value>ویرایش‌های مدرک</value></data>
+  <data name="Rv_Document" xml:space="preserve"><value>مدرک</value></data>
+  <data name="Rv_New" xml:space="preserve"><value>ویرایش جدید</value></data>
+  <data name="Rv_Empty" xml:space="preserve"><value>هنوز ویرایشی ثبت نشده. برای افزودن، از فیلترها یک مدرک را انتخاب کنید.</value></data>
+  <data name="Rv_PreviousRev" xml:space="preserve"><value>ویرایش قبلی</value></data>
+  <data name="Rv_IssuePurpose" xml:space="preserve"><value>هدف صدور</value></data>
+  <data name="Rv_PreparedBy" xml:space="preserve"><value>تهیه‌کننده</value></data>
+  <data name="Rv_CheckedBy" xml:space="preserve"><value>بررسی‌کننده</value></data>
+  <data name="Rv_ApprovedBy" xml:space="preserve"><value>تأییدکننده</value></data>
+  <data name="Rv_Date" xml:space="preserve"><value>تاریخ</value></data>
+  <data name="Tq_Title" xml:space="preserve"><value>پرسش‌های فنی (TQ / TSR / RFI)</value></data>
+  <data name="Tq_New" xml:space="preserve"><value>پرسش جدید</value></data>
+  <data name="Tq_OpenCount" xml:space="preserve"><value>باز / در جریان</value></data>
+  <data name="Tq_Empty" xml:space="preserve"><value>پرسش فنی‌ای یافت نشد.</value></data>
+  <data name="Tq_Number" xml:space="preserve"><value>شماره</value></data>
+  <data name="Tq_Subject" xml:space="preserve"><value>موضوع</value></data>
+  <data name="Tq_Priority" xml:space="preserve"><value>اولویت</value></data>
+  <data name="Tq_Due" xml:space="preserve"><value>مهلت پاسخ</value></data>
+  <data name="Tq_St_Open" xml:space="preserve"><value>باز</value></data>
+  <data name="Tq_St_PendingConfirmation" xml:space="preserve"><value>در انتظار تأیید</value></data>
+  <data name="Tq_St_Reopened" xml:space="preserve"><value>بازگشایی‌شده</value></data>
+  <data name="Tq_St_Closed" xml:space="preserve"><value>بسته</value></data>
+  <data name="Moc_Title" xml:space="preserve"><value>مدیریت تغییر (MOC)</value></data>
+  <data name="Moc_New" xml:space="preserve"><value>MOC جدید</value></data>
+  <data name="Moc_OpenCount" xml:space="preserve"><value>باز / در جریان</value></data>
+  <data name="Moc_HighRiskOpen" xml:space="preserve"><value>ریسک بالا - باز</value></data>
+  <data name="Moc_Empty" xml:space="preserve"><value>موردی یافت نشد.</value></data>
+  <data name="Moc_Number" xml:space="preserve"><value>شماره</value></data>
+  <data name="Moc_Risk" xml:space="preserve"><value>ریسک</value></data>
+  <data name="Moc_Risk_Low" xml:space="preserve"><value>کم</value></data>
+  <data name="Moc_Risk_Medium" xml:space="preserve"><value>متوسط</value></data>
+  <data name="Moc_Risk_High" xml:space="preserve"><value>زیاد</value></data>
+  <data name="Moc_St_PendingRiskAssessment" xml:space="preserve"><value>در انتظار ارزیابی ریسک</value></data>
+  <data name="Moc_St_PendingApproval" xml:space="preserve"><value>در انتظار تأیید</value></data>
+  <data name="Moc_St_PendingSeniorApproval" xml:space="preserve"><value>در انتظار تأیید ارشد</value></data>
+  <data name="Moc_St_Approved" xml:space="preserve"><value>تأییدشده</value></data>
+  <data name="Moc_St_PendingClosure" xml:space="preserve"><value>در انتظار بستن</value></data>
+  <data name="Moc_St_Closed" xml:space="preserve"><value>بسته</value></data>
+  <data name="Moc_St_Rejected" xml:space="preserve"><value>ردشده</value></data>
+  <data name="Mdb_Title" xml:space="preserve"><value>کتابچه‌های اطلاعات سازنده (MDB)</value></data>
+  <data name="Mdb_New" xml:space="preserve"><value>MDB جدید</value></data>
+  <data name="Mdb_Empty" xml:space="preserve"><value>هنوز MDB‌ای ثبت نشده.</value></data>
+  <data name="Mdb_Po" xml:space="preserve"><value>سفارش خرید</value></data>
+  <data name="Mdb_PlannedIssue" xml:space="preserve"><value>صدور نهایی برنامه‌ریزی‌شده</value></data>
+  <data name="Mdb_IndexDue" xml:space="preserve"><value>مهلت فهرست مطالب</value></data>
+  <data name="Mdb_HardCopy" xml:space="preserve"><value>نسخه‌ی چاپی</value></data>
+  <data name="Mdb_SoftCopy" xml:space="preserve"><value>نسخه‌ی الکترونیکی</value></data>
+  <data name="Mdb_Shipped" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Mdb_Delivered" xml:space="preserve"><value>تحویل‌شده</value></data>
+  <data name="Dw_Queue" xml:space="preserve"><value>صف در انتظار تأیید</value></data>
+  <data name="Dw_Empty" xml:space="preserve"><value>مدرکی در انتظار تأیید نیست.</value></data>
+  <data name="Dw_Check" xml:space="preserve"><value>بررسی</value></data>
+  <data name="Dw_History" xml:space="preserve"><value>آخرین تاریخچه‌ی گردش‌کار</value></data>
+  <data name="Dw_HistoryEmpty" xml:space="preserve"><value>هنوز تاریخچه‌ای ثبت نشده.</value></data>
+  <data name="Dw_From" xml:space="preserve"><value>از</value></data>
+  <data name="Dw_To" xml:space="preserve"><value>به</value></data>
+  <data name="Dw_Action" xml:space="preserve"><value>اقدام</value></data>
+  <data name="Dw_By" xml:space="preserve"><value>توسط</value></data>
+  <data name="Dw_Comment" xml:space="preserve"><value>توضیح</value></data>
 </root>

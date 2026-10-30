@@ -9,6 +9,9 @@ public static class RoleCatalog
 {
     public const string WarehouseManager = "WH.Manager";
     public const string WarehouseStorekeeper = "WH.Storekeeper";
+    // SCRUM-471 (owner decision 2026-10-29): the procurement roles behind the pre-procurement queue
+    public const string ProcurementBuyer = "PRC.Buyer";
+    public const string ProcurementManager = "PRC.Manager";
 
     public static class Domains
     {
@@ -99,6 +102,22 @@ public static class RoleCatalog
                 new ModuleGrant("Barcode", Create: true),
             },
             VisibleModules: new[] { "Inventory" }),
+        new(ProcurementBuyer, "Buyer", "Procurement expert: works the pre-procurement queue and turns each demand into a material requisition line, accepts engineering MRs or dismisses / returns them with a reason. Cannot approve purchase orders.", Domains.Contracts, Categories.Functional, 500,
+            DefaultPermissions: new[]
+            {
+                new ModuleGrant("PreProcurement", Edit: true),
+                new ModuleGrant("MaterialRequisition", Create: true, Edit: true),
+                new ModuleGrant("ProcurementPackage"),
+                new ModuleGrant("PurchaseOrder", Create: true, Edit: true),   // SCRUM-470: builds and submits POs (approval comes from the PO authority table)
+            }),
+        new(ProcurementManager, "Procurement Manager", "Heads procurement: oversees the pre-procurement queue and can decide its items. Approval of purchase orders by amount comes from the purchase-order authority table; this role issues approved purchase orders (SCRUM-470).", Domains.Contracts, Categories.Domain, 510,
+            DefaultPermissions: new[]
+            {
+                new ModuleGrant("PreProcurement", Edit: true, Approve: true),
+                new ModuleGrant("MaterialRequisition", Edit: true),
+                new ModuleGrant("ProcurementPackage"),
+                new ModuleGrant("PurchaseOrder", Approve: true),   // SCRUM-470 owner decision 2026-10-30: issues approved POs (the approval itself comes from the PO authority table)
+            }),
     };
 
     public static RoleDefinition? Find(string? name) =>

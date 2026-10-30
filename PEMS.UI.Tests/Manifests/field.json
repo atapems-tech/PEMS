@@ -1,0 +1,179 @@
+{
+  "key": "field",
+  "component": "PEMS.UI.Components.PemsField",
+  "category": "forms",
+  "icon": "bi-input-cursor-text",
+  "nameKey": "component.field",
+  "optionsParameter": null,
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "descriptor": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "label": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "kind": {
+            "enum": [
+              "text",
+              "textArea",
+              "number",
+              "date",
+              "select",
+              "checkbox",
+              "file",
+              "richText"
+            ]
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "readOnly": {
+            "type": "boolean"
+          },
+          "helpText": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "maxLength": {
+            "type": [
+              "string",
+              "integer",
+              "null"
+            ],
+            "pattern": "^-?(?:0|[1-9]\\d*)$"
+          },
+          "options": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string"
+                },
+                "label": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "minProperties": 1,
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "label"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "placeholder": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "label"
+        ],
+        "additionalProperties": false
+      },
+      "error": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "value": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "descriptor"
+    ]
+  },
+  "parameters": [
+    {
+      "name": "descriptor",
+      "type": "FieldDescriptor",
+      "kind": "option",
+      "required": true
+    },
+    {
+      "name": "error",
+      "type": "TranslatableText",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "value",
+      "type": "String",
+      "kind": "option",
+      "required": false
+    }
+  ],
+  "sample": {
+    "descriptor": {
+      "name": "tag",
+      "label": {
+        "en": "Tag",
+        "fa": "تگ"
+      }
+    },
+    "value": "PT-0001"
+  }
+}

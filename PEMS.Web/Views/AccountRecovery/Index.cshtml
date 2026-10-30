@@ -1,0 +1,48 @@
+@model PEMS.Web.Models.Account.RecoveryCodeRedeemViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = "Administrator Recovery";
+    Layout = "_AuthLayout";
+}
+
+<h2>@Localizer["Administrator recovery"]</h2>
+<p class="subtitle">@Localizer["Use one of your printed recovery codes to set a new password. Each code works only once."]</p>
+
+<div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 px-3 small" style="@(ViewData.ModelState.ErrorCount == 0 ? "display:none;" : "")"></div>
+
+<form asp-controller="AccountRecovery" asp-action="Index" method="post" autocomplete="off">
+    <div class="mb-3">
+        <label asp-for="UserName" class="form-label">@Localizer["Username"]</label>
+        <input asp-for="UserName" class="form-control" autocomplete="username" autofocus />
+        <span asp-validation-for="UserName" class="text-danger small"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Code" class="form-label">@Localizer["Recovery code"]</label>
+        <input asp-for="Code" class="form-control" dir="ltr" autocomplete="one-time-code" placeholder="XXXX-XXXX-XXXX-XXXX" spellcheck="false" />
+        <span asp-validation-for="Code" class="text-danger small"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="NewPassword" class="form-label">@Localizer["New password"]</label>
+        <input asp-for="NewPassword" class="form-control" autocomplete="new-password" />
+        <span asp-validation-for="NewPassword" class="text-danger small"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ConfirmPassword" class="form-label">@Localizer["Confirm new password"]</label>
+        <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+    </div>
+
+    <button type="submit" class="btn btn-pems">@Localizer["Recover account"]</button>
+</form>
+
+<p class="small text-muted mt-3">@Localizer["After recovery, all sessions of the account are signed out, every administrator is notified and MFA must be enrolled again."]</p>
+
+<div class="auth-links">
+    <a asp-controller="Account" asp-action="Login">&larr; @Localizer["Back to sign in"]</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

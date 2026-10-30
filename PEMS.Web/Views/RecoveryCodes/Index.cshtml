@@ -1,0 +1,27 @@
+@model PEMS.Web.Models.Account.RecoveryCodesViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+
+<div class="content-card" style="max-width:720px;">
+    <h2 class="h5 mb-3"><i class="bi bi-shield-lock me-1"></i> @Localizer["Recovery codes"]</h2>
+    <p>@Localizer["If you lose your password or MFA device, one recovery code lets you set a new password from the sign-in page. Each code works once."]</p>
+
+    <p class="mb-3">@Localizer["Recovery codes left"]: <strong>@Model.Remaining</strong></p>
+    @if (Model.Remaining == 0)
+    {
+        <div class="alert alert-warning small" role="alert">@Localizer["You have no recovery codes. Generate a set now and keep it in a safe place."]</div>
+    }
+
+    <form asp-action="Generate" method="post" class="row g-2 align-items-end" autocomplete="off">
+        <div class="col-sm-6">
+            <label asp-for="CurrentPassword" class="form-label small">@Localizer["Current password"]</label>
+            <input asp-for="CurrentPassword" class="form-control form-control-sm" autocomplete="current-password" />
+            <span asp-validation-for="CurrentPassword" class="text-danger small"></span>
+        </div>
+        <div class="col-sm-6">
+            <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-arrow-repeat me-1"></i> @Localizer["Generate new codes"]</button>
+        </div>
+    </form>
+    <p class="text-body-secondary small mt-2">@Localizer["Generating a new set invalidates every code you have not used yet."]</p>
+</div>

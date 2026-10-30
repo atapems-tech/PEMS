@@ -30,9 +30,13 @@ public static class RazorViewRenderer
         services.AddSingleton(listener);
         services.AddSingleton<DiagnosticSource>(listener);
         services.AddLogging();
+        services.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(new Microsoft.Extensions.Configuration.ConfigurationBuilder().Build());   // the real host has one; the component renderer needs it
         services.AddLocalization();
+        PEMS.UI.ServiceCollectionExtensions.AddPemsUi(services);   // IPemsLocale etc., registered in Program.cs of the real app
         services.AddDataProtection().UseEphemeralDataProtectionProvider();
-        services.AddControllersWithViews().AddApplicationPart(controller.GetType().Assembly);
+        services.AddControllersWithViews()
+            .AddApplicationPart(controller.GetType().Assembly)
+            .AddApplicationPart(typeof(PEMS.UI.ServiceCollectionExtensions).Assembly);   // shared partials live in PEMS.UI (found automatically in the real app)
 
         await using var provider = services.BuildServiceProvider();
         var http = new DefaultHttpContext { RequestServices = provider };

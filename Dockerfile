@@ -18,6 +18,9 @@ COPY PEMS.Infrastructure/*.csproj PEMS.Infrastructure/
 COPY PEMS.AI/*.csproj PEMS.AI/
 COPY PEMS.Shared/*.csproj PEMS.Shared/
 COPY PEMS.WorkflowPlatform/*.csproj PEMS.WorkflowPlatform/
+COPY PEMS.Licensing/*.csproj PEMS.Licensing/
+COPY PEMS.UI.Abstractions/*.csproj PEMS.UI.Abstractions/
+COPY PEMS.UI/*.csproj PEMS.UI/
 COPY PEMS.Web/*.csproj PEMS.Web/
 COPY PEMS.Tests/*.csproj PEMS.Tests/
 COPY *.slnx ./

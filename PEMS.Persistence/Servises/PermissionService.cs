@@ -17,7 +17,7 @@ public class PermissionService : IPermissionService
     private static readonly string[] Modules =
     {
         "EngineeringDocuments", "VDR", "Contracts", "Vendors",
-        "MaterialRequisition", "Equipment", "DisciplineWorkspace", "DisciplineMaster", "Correspondence", "WorkOrder",
+        "MaterialRequisition", "Equipment", "DisciplineWorkspace", "DisciplineMaster", "Definitions", "Correspondence", "WorkOrder",
         "StoreRequisition", "WorkRequest", "Inspection", "Transmittal",
         "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan",
         "ProcurementPackage",
@@ -503,7 +503,11 @@ public class PermissionService : IPermissionService
         await SeedMissingRolesAsync("PurchaseOrder", new List<RolePermission>
         {
             New(SystemRoles.ContractManager, "PurchaseOrder", create: true, edit: true),
-            New(SystemRoles.Viewer, "PurchaseOrder")
+            New(SystemRoles.Viewer, "PurchaseOrder"),
+            // SCRUM-470: RoleCatalog defaults reach only newly created roles, so procurement roles that already exist get their PO rows here
+            // (the buyer builds and submits; Procurement Manager issues approved POs - owner decision 2026-10-30). A row an admin already set is kept.
+            New(RoleCatalog.ProcurementBuyer, "PurchaseOrder", create: true, edit: true),
+            New(RoleCatalog.ProcurementManager, "PurchaseOrder", approve: true)
         });
 
         // ==============================================================================

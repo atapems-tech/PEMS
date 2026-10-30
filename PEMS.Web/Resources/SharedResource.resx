@@ -558,6 +558,8 @@
   <data name="Disc_Err_DuplicateName" xml:space="preserve"><value>Another discipline already uses this name.</value></data>
   <data name="Disc_Err_AliasConflict" xml:space="preserve"><value>An import alias clashes with another discipline code, name or alias.</value></data>
   <data name="Disc_Err_Generic" xml:space="preserve"><value>The change was rejected.</value></data>
+  <data name="Disc_Err_Concurrency" xml:space="preserve"><value>The discipline was changed by someone else; read it again.</value></data>
+  <data name="Disc_Err_InUse" xml:space="preserve"><value>Other records use this discipline; deactivate it instead of deleting it.</value></data>
   <data name="Import aliases" xml:space="preserve"><value>Import aliases</value></data>
   <data name="Transmittal code" xml:space="preserve"><value>Transmittal code</value></data>
   <data name="Deactivate" xml:space="preserve"><value>Deactivate</value></data>
@@ -1779,6 +1781,8 @@
   <data name="LtT_Token_SenderDepartment" xml:space="preserve"><value>your department</value></data>
   <data name="Lc_FolderSent" xml:space="preserve"><value>Sent</value></data>
   <data name="Lc_FolderArchived" xml:space="preserve"><value>Archived</value></data>
+  <data name="A backup is taken automatically before the update; the update stops if it fails." xml:space="preserve"><value>A backup is taken automatically before the update; the update stops if it fails.</value></data>
+  <data name="Backup file" xml:space="preserve"><value>Backup file</value></data>
   <data name="A database backup has been taken" xml:space="preserve"><value>A database backup has been taken</value></data>
   <data name="Applied" xml:space="preserve"><value>Applied</value></data>
   <data name="Database Update" xml:space="preserve"><value>Database Update</value></data>
@@ -2400,4 +2404,634 @@
   <data name="Ct_ApproverEligible" xml:space="preserve"><value>Holders of the approve permission</value></data>
   <data name="Ct_ApproverOthers" xml:space="preserve"><value>Other staff</value></data>
   <data name="Lc_Err_ReferralNeedsParent" xml:space="preserve"><value>A referral must be made from an existing letter.</value></data>
+  <data name="Admin account recovery attempts: who, which method, from where, and whether it succeeded. Records are append-only." xml:space="preserve"><value>Admin account recovery attempts: who, which method, from where, and whether it succeeded. Records are append-only.</value></data>
+  <data name="Method" xml:space="preserve"><value>Method</value></data>
+  <data name="All methods" xml:space="preserve"><value>All methods</value></data>
+  <data name="All results" xml:space="preserve"><value>All results</value></data>
+  <data name="Success" xml:space="preserve"><value>Success</value></data>
+  <data name="Failure" xml:space="preserve"><value>Failure</value></data>
+  <data name="Actor" xml:space="preserve"><value>Actor</value></data>
+  <data name="Target" xml:space="preserve"><value>Target</value></data>
+  <data name="IP address" xml:space="preserve"><value>IP address</value></data>
+  <data name="Forwarded" xml:space="preserve"><value>Forwarded</value></data>
+  <data name="Pending" xml:space="preserve"><value>Pending</value></data>
+  <data name="No security events" xml:space="preserve"><value>No security events</value></data>
+  <data name="No admin recovery has been attempted, or the filters match nothing." xml:space="preserve"><value>No admin recovery has been attempted, or the filters match nothing.</value></data>
+  <data name="Reset by another administrator" xml:space="preserve"><value>Reset by another administrator</value></data>
+  <data name="Recovery code" xml:space="preserve"><value>Recovery code</value></data>
+  <data name="Server break-glass" xml:space="preserve"><value>Server break-glass</value></data>
+  <data name="Vendor token" xml:space="preserve"><value>Vendor token</value></data>
+  <data name="User edit in the admin panel" xml:space="preserve"><value>User edit in the admin panel</value></data>
+  <data name="The password was changed but recording or session revocation failed." xml:space="preserve"><value>The password was changed but recording or session revocation failed.</value></data>
+  <data name="User updated, but the password was not changed" xml:space="preserve"><value>User updated, but the password was not changed</value></data>
+  <data name="Password" xml:space="preserve"><value>Password</value></data>
+  <data name="This is the last active administrator. It cannot be deactivated or removed from the SystemAdmin role. Create or activate another administrator first." xml:space="preserve"><value>This is the last active administrator. It cannot be deactivated or removed from the SystemAdmin role. Create or activate another administrator first.</value></data>
+  <data name="Only another administrator's account can be reset this way." xml:space="preserve"><value>Only another administrator's account can be reset this way.</value></data>
+  <data name="You cannot reset your own account this way. Ask another administrator." xml:space="preserve"><value>You cannot reset your own account this way. Ask another administrator.</value></data>
+  <data name="The account was not found." xml:space="preserve"><value>The account was not found.</value></data>
+  <data name="Only an active administrator can reset an administrator account." xml:space="preserve"><value>Only an active administrator can reset an administrator account.</value></data>
+  <data name="The password was changed but recording or session revocation failed. No temporary password is shown; run the reset again." xml:space="preserve"><value>The password was changed but recording or session revocation failed. No temporary password is shown; run the reset again.</value></data>
+  <data name="The reset failed. Nothing was shown; try again." xml:space="preserve"><value>The reset failed. Nothing was shown; try again.</value></data>
+  <data name="Reset the account of another administrator. This cannot be undone." xml:space="preserve"><value>Reset the account of another administrator. This cannot be undone.</value></data>
+  <data name="Reset administrator account" xml:space="preserve"><value>Reset administrator account</value></data>
+  <data name="Confirming will:" xml:space="preserve"><value>Confirming will:</value></data>
+  <data name="issue a random temporary password, shown once on the next page and valid for 24 hours;" xml:space="preserve"><value>issue a random temporary password, shown once on the next page and valid for 24 hours;</value></data>
+  <data name="force a password change at the next sign-in;" xml:space="preserve"><value>force a password change at the next sign-in;</value></data>
+  <data name="unlock the account and reset MFA (passkeys and authenticator key are removed; the administrator must enroll again);" xml:space="preserve"><value>unlock the account and reset MFA (passkeys and authenticator key are removed; the administrator must enroll again);</value></data>
+  <data name="sign the account out everywhere within about one minute;" xml:space="preserve"><value>sign the account out everywhere within about one minute;</value></data>
+  <data name="record the reset (who, when, from which IP) and notify every active administrator." xml:space="preserve"><value>record the reset (who, when, from which IP) and notify every active administrator.</value></data>
+  <data name="You cannot reset your own account this way. Hand the temporary password to the administrator in person or over a trusted channel; it is not stored anywhere." xml:space="preserve"><value>You cannot reset your own account this way. Hand the temporary password to the administrator in person or over a trusted channel; it is not stored anywhere.</value></data>
+  <data name="Reset account" xml:space="preserve"><value>Reset account</value></data>
+  <data name="The account was reset. The temporary password below is shown only now." xml:space="preserve"><value>The account was reset. The temporary password below is shown only now.</value></data>
+  <data name="Account reset" xml:space="preserve"><value>Account reset</value></data>
+  <data name="Copy or print this password now. It cannot be shown again; if it is lost, reset the account again." xml:space="preserve"><value>Copy or print this password now. It cannot be shown again; if it is lost, reset the account again.</value></data>
+  <data name="Copied" xml:space="preserve"><value>Copied</value></data>
+  <data name="Copy" xml:space="preserve"><value>Copy</value></data>
+  <data name="Print" xml:space="preserve"><value>Print</value></data>
+  <data name="Expires" xml:space="preserve"><value>Expires</value></data>
+  <data name="The administrator must change it at the first sign-in and enroll MFA again. All of their sessions were signed out, and every active administrator was notified." xml:space="preserve"><value>The administrator must change it at the first sign-in and enroll MFA again. All of their sessions were signed out, and every active administrator was notified.</value></data>
+  <data name="Back to users" xml:space="preserve"><value>Back to users</value></data>
+  <data name="Security Events" xml:space="preserve"><value>Security Events</value></data>
+  <data name="Account recovered" xml:space="preserve"><value>Account recovered</value></data>
+  <data name="The new password is set and the recovery code is used up. Sign in with the new password and enroll MFA again." xml:space="preserve"><value>The new password is set and the recovery code is used up. Sign in with the new password and enroll MFA again.</value></data>
+  <data name="Recovery codes left" xml:space="preserve"><value>Recovery codes left</value></data>
+  <data name="Few recovery codes are left. Generate a new set from your profile after signing in." xml:space="preserve"><value>Few recovery codes are left. Generate a new set from your profile after signing in.</value></data>
+  <data name="Sign in" xml:space="preserve"><value>Sign in</value></data>
+  <data name="Administrator recovery" xml:space="preserve"><value>Administrator recovery</value></data>
+  <data name="Use one of your printed recovery codes to set a new password. Each code works only once." xml:space="preserve"><value>Use one of your printed recovery codes to set a new password. Each code works only once.</value></data>
+  <data name="New password" xml:space="preserve"><value>New password</value></data>
+  <data name="Confirm new password" xml:space="preserve"><value>Confirm new password</value></data>
+  <data name="Recover account" xml:space="preserve"><value>Recover account</value></data>
+  <data name="After recovery, all sessions of the account are signed out, every administrator is notified and MFA must be enrolled again." xml:space="preserve"><value>After recovery, all sessions of the account are signed out, every administrator is notified and MFA must be enrolled again.</value></data>
+  <data name="Back to sign in" xml:space="preserve"><value>Back to sign in</value></data>
+  <data name="New recovery codes" xml:space="preserve"><value>New recovery codes</value></data>
+  <data name="Print or download these codes now and keep them offline. They are shown only once; the previous codes no longer work." xml:space="preserve"><value>Print or download these codes now and keep them offline. They are shown only once; the previous codes no longer work.</value></data>
+  <data name="Download" xml:space="preserve"><value>Download</value></data>
+  <data name="Generated" xml:space="preserve"><value>Generated</value></data>
+  <data name="Done" xml:space="preserve"><value>Done</value></data>
+  <data name="Recovery codes" xml:space="preserve"><value>Recovery codes</value></data>
+  <data name="If you lose your password or MFA device, one recovery code lets you set a new password from the sign-in page. Each code works once." xml:space="preserve"><value>If you lose your password or MFA device, one recovery code lets you set a new password from the sign-in page. Each code works once.</value></data>
+  <data name="You have no recovery codes. Generate a set now and keep it in a safe place." xml:space="preserve"><value>You have no recovery codes. Generate a set now and keep it in a safe place.</value></data>
+  <data name="Current password" xml:space="preserve"><value>Current password</value></data>
+  <data name="Generate new codes" xml:space="preserve"><value>Generate new codes</value></data>
+  <data name="Generating a new set invalidates every code you have not used yet." xml:space="preserve"><value>Generating a new set invalidates every code you have not used yet.</value></data>
+  <data name="Break-glass recovery" xml:space="preserve"><value>Break-glass recovery</value></data>
+  <data name="A recovery request file is present on the server. This page closes at" xml:space="preserve"><value>A recovery request file is present on the server. This page closes at</value></data>
+  <data name="No recovery request file is present. Paste a vendor recovery token issued for this server." xml:space="preserve"><value>No recovery request file is present. Paste a vendor recovery token issued for this server.</value></data>
+  <data name="There is no active administrator account to reset." xml:space="preserve"><value>There is no active administrator account to reset.</value></data>
+  <data name="Administrator account" xml:space="preserve"><value>Administrator account</value></data>
+  <data name="Vendor recovery token" xml:space="preserve"><value>Vendor recovery token</value></data>
+  <data name="The reset issues a temporary password shown once, forces a password change, resets MFA, signs the account out everywhere and notifies every administrator. The request can be used only once." xml:space="preserve"><value>The reset issues a temporary password shown once, forces a password change, resets MFA, signs the account out everywhere and notifies every administrator. The request can be used only once.</value></data>
+  <data name="The request was used up and the recovery page is closed." xml:space="preserve"><value>The request was used up and the recovery page is closed.</value></data>
+  <data name="Too many failed attempts. The account is locked for a while; try again later." xml:space="preserve"><value>Too many failed attempts. The account is locked for a while; try again later.</value></data>
+  <data name="The user name or recovery code is not valid." xml:space="preserve"><value>The user name or recovery code is not valid.</value></data>
+  <data name="The current password is not correct." xml:space="preserve"><value>The current password is not correct.</value></data>
+  <data name="Choose the administrator account to reset." xml:space="preserve"><value>Choose the administrator account to reset.</value></data>
+  <data name="The vendor recovery token is not valid for this server, has expired or was already used." xml:space="preserve"><value>The vendor recovery token is not valid for this server, has expired or was already used.</value></data>
+  <data name="Only an active administrator account can be reset here." xml:space="preserve"><value>Only an active administrator account can be reset here.</value></data>
+  <data name="The password was changed but recording or session revocation failed. No temporary password is shown; place a new request file and run the reset again." xml:space="preserve"><value>The password was changed but recording or session revocation failed. No temporary password is shown; place a new request file and run the reset again.</value></data>
+  <data name="The recovery window is closed. Place a new request file on the server." xml:space="preserve"><value>The recovery window is closed. Place a new request file on the server.</value></data>
+  <data name="Use a recovery code" xml:space="preserve"><value>Use a recovery code</value></data>
+  <data name="Recovery Codes" xml:space="preserve"><value>Recovery Codes</value></data>
+  <data name="Administrator Recovery" xml:space="preserve"><value>Administrator Recovery</value></data>
+  <data name="Break-glass Recovery" xml:space="preserve"><value>Break-glass Recovery</value></data>
+  <data name="Search roles..." xml:space="preserve"><value>Search roles...</value></data>
+  <data name="No matching role" xml:space="preserve"><value>No matching role</value></data>
+  <data name="Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="Type to search; select several roles. Remove a role with its ×." xml:space="preserve"><value>Type to search; select several roles. Remove a role with its ×.</value></data>
+  <data name="Ed_Kpis" xml:space="preserve"><value>Summary counts</value></data>
+  <data name="Lic_Intro" xml:space="preserve"><value>Licence status, activation request and licence upload. Everything happens in this page; no terminal step is needed.</value></data>
+  <data name="Lic_EnforceOff" xml:space="preserve"><value>Licence enforcement is switched off for this environment (Licensing:Enforce=false). You can still create a request and upload a licence to try the flow; nothing is blocked.</value></data>
+  <data name="Lic_State_NotEnforced" xml:space="preserve"><value>Not enforced</value></data>
+  <data name="Lic_State_ActivationRequired" xml:space="preserve"><value>Activation required</value></data>
+  <data name="Lic_State_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Lic_State_ActiveWarning" xml:space="preserve"><value>Active (attention needed)</value></data>
+  <data name="Lic_State_Restricted" xml:space="preserve"><value>Restricted (read-only)</value></data>
+  <data name="Lic_Reason_no_licence" xml:space="preserve"><value>No licence is installed</value></data>
+  <data name="Lic_Reason_seal_invalid" xml:space="preserve"><value>The install seal is invalid or was moved to other hardware</value></data>
+  <data name="Lic_Reason_restore_suspected" xml:space="preserve"><value>A restore from backup or image is suspected: request re-activation</value></data>
+  <data name="Lic_Reason_restore_grace_expired" xml:space="preserve"><value>Re-activation was not completed in time</value></data>
+  <data name="Lic_Reason_fingerprint_invalid" xml:space="preserve"><value>This machine does not match the licensed machine</value></data>
+  <data name="Lic_Reason_fingerprint_degraded" xml:space="preserve"><value>Several hardware parts changed: request a refreshed licence</value></data>
+  <data name="Lic_Reason_fingerprint_drift" xml:space="preserve"><value>One hardware part changed (tolerated)</value></data>
+  <data name="Lic_Reason_not_yet_valid" xml:space="preserve"><value>The licence is not valid yet</value></data>
+  <data name="Lic_Reason_expired" xml:space="preserve"><value>The licence has expired: upload a renewal</value></data>
+  <data name="Lic_Reason_expiring" xml:space="preserve"><value>The licence expires soon: request a renewal</value></data>
+  <data name="Lic_Reason_clock_backward" xml:space="preserve"><value>The system clock moved backwards</value></data>
+  <data name="Lic_Reason_licence_unverifiable" xml:space="preserve"><value>The stored licence could not be verified</value></data>
+  <data name="Lic_InstallId" xml:space="preserve"><value>Install ID</value></data>
+  <data name="Lic_Fingerprint" xml:space="preserve"><value>Fingerprint (short)</value></data>
+  <data name="Lic_Type" xml:space="preserve"><value>Licence type</value></data>
+  <data name="Lic_NoExpiry" xml:space="preserve"><value>No expiry</value></data>
+  <data name="Lic_ValidUntil" xml:space="preserve"><value>Valid until (Jalali)</value></data>
+  <data name="Lic_UpdatesUntil" xml:space="preserve"><value>Updates until (Jalali)</value></data>
+  <data name="Lic_RequestTitle" xml:space="preserve"><value>Request a licence</value></data>
+  <data name="Lic_RequestHelp" xml:space="preserve"><value>Download the request file and send it to the vendor. The product never contacts the vendor by itself.</value></data>
+  <data name="Lic_RequestType" xml:space="preserve"><value>Request type</value></data>
+  <data name="Lic_Req_activation" xml:space="preserve"><value>First activation</value></data>
+  <data name="Lic_Req_renewal" xml:space="preserve"><value>Renewal</value></data>
+  <data name="Lic_Req_refresh" xml:space="preserve"><value>Refresh after hardware change</value></data>
+  <data name="Lic_Req_transfer" xml:space="preserve"><value>Transfer to new hardware</value></data>
+  <data name="Lic_Req_restore" xml:space="preserve"><value>Re-activation after a restore</value></data>
+  <data name="Lic_CustomerRef" xml:space="preserve"><value>Customer reference</value></data>
+  <data name="Lic_OrderRef" xml:space="preserve"><value>Order reference</value></data>
+  <data name="Lic_Reason" xml:space="preserve"><value>Reason (optional)</value></data>
+  <data name="Lic_DownloadRequest" xml:space="preserve"><value>Download request file</value></data>
+  <data name="Lic_UploadTitle" xml:space="preserve"><value>Upload a licence</value></data>
+  <data name="Lic_UploadHelp" xml:space="preserve"><value>Upload the .pemslic file (or the zip) the vendor sent back.</value></data>
+  <data name="Lic_Upload" xml:space="preserve"><value>Upload and activate</value></data>
+  <data name="Lic_Applied" xml:space="preserve"><value>Licence installed.</value></data>
+  <data name="Lic_Err_RequestFields" xml:space="preserve"><value>Choose a request type and enter the customer reference.</value></data>
+  <data name="Lic_Err_NoFile" xml:space="preserve"><value>Choose a file.</value></data>
+  <data name="Lic_Fail_UnknownFormat" xml:space="preserve"><value>This is not a PEMS licence file.</value></data>
+  <data name="Lic_Fail_UnknownVersion" xml:space="preserve"><value>This licence file version is not supported by this product version.</value></data>
+  <data name="Lic_Fail_BadEncoding" xml:space="preserve"><value>The file is damaged.</value></data>
+  <data name="Lic_Fail_TooLarge" xml:space="preserve"><value>The file is too large.</value></data>
+  <data name="Lic_Fail_UnknownAlgorithm" xml:space="preserve"><value>The licence uses an unsupported signature algorithm.</value></data>
+  <data name="Lic_Fail_UnknownKey" xml:space="preserve"><value>The licence was signed with an unknown key.</value></data>
+  <data name="Lic_Fail_BadSignature" xml:space="preserve"><value>The signature is invalid; the file was changed or is not genuine.</value></data>
+  <data name="Lic_Fail_KeyRetired" xml:space="preserve"><value>The signing key of this licence is retired.</value></data>
+  <data name="Lic_Fail_UnsupportedCriticalField" xml:space="preserve"><value>The licence needs a newer product version.</value></data>
+  <data name="Lic_Fail_NotYetValid" xml:space="preserve"><value>The licence is not valid yet.</value></data>
+  <data name="Lic_Fail_Expired" xml:space="preserve"><value>The licence has already expired.</value></data>
+  <data name="Lic_Fail_NonceMismatch" xml:space="preserve"><value>This licence answers a different request. Use the latest request you downloaded.</value></data>
+  <data name="Lic_Fail_NonceUnknown" xml:space="preserve"><value>No request is waiting for an answer. Download a request first.</value></data>
+  <data name="Lic_Fail_RequestMismatch" xml:space="preserve"><value>This licence does not match the request you made.</value></data>
+  <data name="Lic_Fail_InstallMismatch" xml:space="preserve"><value>This licence was issued for another installation.</value></data>
+  <data name="Lic_Fail_FingerprintInvalid" xml:space="preserve"><value>This machine does not match the one the licence was issued for.</value></data>
+  <data name="Lic_Fail_DeploymentNotAllowed" xml:space="preserve"><value>The licence does not allow this kind of deployment (physical, virtual machine or container).</value></data>
+  <data name="Lic_Fail_NotNewer" xml:space="preserve"><value>A newer licence is already installed.</value></data>
+  <data name="Lic_Fail_UnsafeArchive" xml:space="preserve"><value>The zip file is not acceptable.</value></data>
+  <data name="Lic_Fail_NoLicenceInArchive" xml:space="preserve"><value>The zip file contains no licence.</value></data>
+  <data name="Lic_Fail_SealInvalid" xml:space="preserve"><value>The install seal is missing or invalid. Download a request first.</value></data>
+  <data name="Licence" xml:space="preserve"><value>Licence</value></data>
+  <data name="Password_Reused" xml:space="preserve"><value>The new password must differ from your current password and your last {0} passwords.</value></data>
+  <data name="Lp_Kpis" xml:space="preserve"><value>Summary counts</value></data>
+  <data name="Lp_ApplyFilters" xml:space="preserve"><value>Apply</value></data>
+  <data name="Lp_Total" xml:space="preserve"><value>Total</value></data>
+  <data name="Lp_RemoveFilter" xml:space="preserve"><value>Remove filter</value></data>
+  <data name="Lp_ResetAll" xml:space="preserve"><value>Reset all</value></data>
+  <data name="Nav_ProcurementSupplyChain" xml:space="preserve"><value>Procurement &amp; Supply Chain</value></data>
+  <data name="Nav_Proc_Purchasing" xml:space="preserve"><value>Purchasing</value></data>
+  <data name="Num_Title" xml:space="preserve"><value>Document numbering</value></data>
+  <data name="Num_Intro" xml:space="preserve"><value>Procurement documents get their number automatically on save, from the pattern of their type. A change affects new documents only; existing numbers never change.</value></data>
+  <data name="Num_Tokens" xml:space="preserve"><value>Tokens: year ({YYYY}, {YY}), project code, discipline code, counter ({SEQ}, required once):</value></data>
+  <data name="Num_DocumentType" xml:space="preserve"><value>Document</value></data>
+  <data name="Num_Pattern" xml:space="preserve"><value>Pattern</value></data>
+  <data name="Num_Pad" xml:space="preserve"><value>Counter digits</value></data>
+  <data name="Num_Calendar" xml:space="preserve"><value>Year calendar</value></data>
+  <data name="Num_Reset" xml:space="preserve"><value>Counter restarts</value></data>
+  <data name="Num_AllowManual" xml:space="preserve"><value>Manual number allowed</value></data>
+  <data name="Num_Preview" xml:space="preserve"><value>Next number</value></data>
+  <data name="Num_Version" xml:space="preserve"><value>Version</value></data>
+  <data name="Num_Footnote" xml:space="preserve"><value>The counter is separate for each year (when it restarts yearly) and for each project and discipline used in the pattern. A number that already exists is skipped. The preview shows PRJ and MEC as sample codes while you type.</value></data>
+  <data name="Num_Saved" xml:space="preserve"><value>Numbering pattern saved.</value></data>
+  <data name="Num_Err_PatternRequired" xml:space="preserve"><value>Enter a pattern.</value></data>
+  <data name="Num_Err_PatternTooLong" xml:space="preserve"><value>The pattern is too long (60 characters at most).</value></data>
+  <data name="Num_Err_UnknownToken" xml:space="preserve"><value>The pattern has an unknown token. Use {YYYY}, {YY}, {PROJECT}, {DISC} and {SEQ}.</value></data>
+  <data name="Num_Err_SeqOnce" xml:space="preserve"><value>The pattern must contain {SEQ} exactly once.</value></data>
+  <data name="Num_Err_Literal" xml:space="preserve"><value>Outside the tokens, use only Latin letters, digits, dash, underscore and dot.</value></data>
+  <data name="Num_Err_Pad" xml:space="preserve"><value>Counter digits must be between 1 and 8.</value></data>
+  <data name="Num_Err_Calendar" xml:space="preserve"><value>Choose a calendar.</value></data>
+  <data name="Num_Err_Reset" xml:space="preserve"><value>Choose when the counter restarts.</value></data>
+  <data name="Num_Err_YearlyNeedsYear" xml:space="preserve"><value>A counter that restarts every year needs {YYYY} or {YY} in the pattern, otherwise numbers would repeat.</value></data>
+  <data name="Num_Err_DocumentType" xml:space="preserve"><value>Unknown document type.</value></data>
+  <data name="Num_Err_Concurrency" xml:space="preserve"><value>Someone else changed this pattern meanwhile. Reload the page and try again.</value></data>
+  <data name="Num_Err_Network" xml:space="preserve"><value>The preview could not be loaded.</value></data>
+  <data name="Num_Doc_MaterialRequisition" xml:space="preserve"><value>Material requisition (MR)</value></data>
+  <data name="Num_Doc_ProcurementPackage" xml:space="preserve"><value>Procurement package</value></data>
+  <data name="Num_Doc_Tender" xml:space="preserve"><value>Tender</value></data>
+  <data name="Num_Doc_Bid" xml:space="preserve"><value>Bid</value></data>
+  <data name="Num_Doc_PurchaseOrder" xml:space="preserve"><value>Purchase order</value></data>
+  <data name="Num_Doc_Contract" xml:space="preserve"><value>Contract</value></data>
+  <data name="Num_Cal_Jalali" xml:space="preserve"><value>Solar Hijri (Jalali)</value></data>
+  <data name="Num_Cal_Gregorian" xml:space="preserve"><value>Gregorian</value></data>
+  <data name="Num_Reset_Never" xml:space="preserve"><value>Never</value></data>
+  <data name="Num_Reset_Yearly" xml:space="preserve"><value>Every year</value></data>
+  <data name="Num_HintAuto" xml:space="preserve"><value>Assigned automatically on save; the next number is shown.</value></data>
+  <data name="Num_HintManual" xml:space="preserve"><value>Leave empty for the automatic number, or enter your own unique number.</value></data>
+  <data name="Sel_NoResults" xml:space="preserve"><value>No matching item</value></data>
+  <data name="Sel_Loading" xml:space="preserve"><value>Searching…</value></data>
+  <data name="Sel_Placeholder" xml:space="preserve"><value>Type to search…</value></data>
+  <data name="Tinv_Title" xml:space="preserve"><value>Invitations by email</value></data>
+  <data name="Tinv_SendAll" xml:space="preserve"><value>Send invitations</value></data>
+  <data name="Tinv_Hint" xml:space="preserve"><value>Sends one email per invited vendor that has not been invited by email yet, from the organisation's mail server. Vendors without a contact email are listed as skipped.</value></data>
+  <data name="Tinv_EmailOffHint" xml:space="preserve"><value>Email is switched off on this server (Email__Enabled in the env file) or the mail server is not set. Ask the system administrator.</value></data>
+  <data name="Tinv_StatusHint" xml:space="preserve"><value>Invitations can be sent while the tender is Draft or Open.</value></data>
+  <data name="Tinv_To" xml:space="preserve"><value>To</value></data>
+  <data name="Tinv_Attempts" xml:space="preserve"><value>Attempts</value></data>
+  <data name="Tinv_QueuedBy" xml:space="preserve"><value>Sent by</value></data>
+  <data name="Tinv_SentAt" xml:space="preserve"><value>Delivered to the mail server</value></data>
+  <data name="Tinv_Resend" xml:space="preserve"><value>Send again</value></data>
+  <data name="Tinv_Status_Queued" xml:space="preserve"><value>Queued</value></data>
+  <data name="Tinv_Status_Sent" xml:space="preserve"><value>Sent</value></data>
+  <data name="Tinv_Status_Failed" xml:space="preserve"><value>Failed</value></data>
+  <data name="Tinv_Status_Skipped" xml:space="preserve"><value>Skipped</value></data>
+  <data name="Tinv_Queued" xml:space="preserve"><value>{0} invitation(s) queued for sending; {1} vendor(s) skipped (no contact email).</value></data>
+  <data name="Tinv_Err_EmailOff" xml:space="preserve"><value>Email is switched off on this server.</value></data>
+  <data name="Tinv_Err_NotFound" xml:space="preserve"><value>Tender not found.</value></data>
+  <data name="Tinv_Err_Status" xml:space="preserve"><value>Invitations can be sent only while the tender is Draft or Open.</value></data>
+  <data name="Tinv_Err_NothingToSend" xml:space="preserve"><value>Every invited vendor has already been invited by email. Use "Send again" for a single vendor.</value></data>
+  <data name="Tinv_Err_NoVendorEmail" xml:space="preserve"><value>The vendor has no valid contact email (Vendors &gt; edit).</value></data>
+  <data name="Tinv_MailSubject" xml:space="preserve"><value>Invitation to tender {TenderNumber}: {Title}</value></data>
+  <data name="Tinv_MailBody" xml:space="preserve"><value>Dear {Vendor},&#xA;&#xA;{Company} invites you to submit a bid for the tender below.&#xA;&#xA;Tender: {TenderNumber}&#xA;Title: {Title}&#xA;Procurement package: {Package}&#xA;Issue date: {IssueDate}&#xA;Bid deadline: {Deadline}&#xA;&#xA;Requirements:&#xA;{Requirements}&#xA;&#xA;Please confirm receipt and send your bid before the deadline. The tender documents are provided by the procurement team.&#xA;&#xA;Regards,&#xA;{Company} procurement</value></data>
+  <data name="Mr_RequestNewPart" xml:space="preserve"><value>Request a new part</value></data>
+  <data name="Mr_PartLookupHint" xml:space="preserve"><value>Type a part number, manufacturer part number or description to pick a part registered in the part catalogue; its description and unit are filled in. A part that is not registered yet can be typed as it is.</value></data>
+  <data name="Mr_UseTypedPart" xml:space="preserve"><value>Use {0} (not catalogued)</value></data>
+  <data name="Mr_PartNotCatalogued" xml:space="preserve"><value>Not catalogued</value></data>
+  <data name="Mr_PartNotCataloguedHint" xml:space="preserve"><value>This part number is not registered in the part catalogue or Material Master.</value></data>
+  <data name="Mr_PartCatalogued" xml:space="preserve"><value>Catalogued</value></data>
+  <data name="Mr_PartCataloguedHint" xml:space="preserve"><value>Linked to a part registered in the part catalogue or Material Master.</value></data>
+  <data name="Mr_AddItem" xml:space="preserve"><value>Add item</value></data>
+  <data name="MyWork_Module_WarehouseIntake" xml:space="preserve"><value>Warehouse intake</value></data>
+  <data name="MyWork_Stage_WarehouseIntake" xml:space="preserve"><value>Source from warehouse</value></data>
+  <data name="Whi_Title" xml:space="preserve"><value>Warehouse intake</value></data>
+  <data name="Whi_SupplyCode" xml:space="preserve"><value>Supply</value></data>
+  <data name="Whi_Supply_Stock" xml:space="preserve"><value>From stock</value></data>
+  <data name="Whi_Supply_DirectPurchase" xml:space="preserve"><value>Direct purchase</value></data>
+  <data name="Whi_Sourced" xml:space="preserve"><value>Sourced</value></data>
+  <data name="Whi_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Whi_SupplyCodeSaved" xml:space="preserve"><value>Supply code saved.</value></data>
+  <data name="Whi_Request" xml:space="preserve"><value>Request from warehouse</value></data>
+  <data name="Whi_RequestHint" xml:space="preserve"><value>Sends the stock lines that are not sourced yet to the warehouse queue and the direct-purchase lines to the procurement cartable.</value></data>
+  <data name="Whi_Requested" xml:space="preserve"><value>The stock lines were sent to the warehouse queue.</value></data>
+  <data name="Whi_Open" xml:space="preserve"><value>Open the intake</value></data>
+  <data name="Whi_State_Open" xml:space="preserve"><value>Waiting for the warehouse</value></data>
+  <data name="Whi_State_Sourced" xml:space="preserve"><value>All stock lines sourced</value></data>
+  <data name="Whi_State_NotRequested" xml:space="preserve"><value>Not requested</value></data>
+  <data name="Whi_RequestedOn" xml:space="preserve"><value>requested</value></data>
+  <data name="Whi_Hint" xml:space="preserve"><value>Pick the warehouse that supplies the lines. A draft store requisition is raised for that warehouse with each line linked to its work-order line; submit, approve, reserve and issue it as usual. Direct-purchase lines go to procurement, not to the warehouse.</value></data>
+  <data name="Whi_Requisitions" xml:space="preserve"><value>Store requisitions</value></data>
+  <data name="Whi_SourceNow" xml:space="preserve"><value>Quantity to source</value></data>
+  <data name="Whi_DirectPurchaseNote" xml:space="preserve"><value>Bought by procurement for this work order</value></data>
+  <data name="Whi_NoPermission" xml:space="preserve"><value>You need the Store Requisition Create permission to source lines.</value></data>
+  <data name="Whi_NothingLeft" xml:space="preserve"><value>Every stock line is sourced.</value></data>
+  <data name="Whi_Warehouse" xml:space="preserve"><value>Supplying warehouse</value></data>
+  <data name="Whi_PickWarehouse" xml:space="preserve"><value>Pick a warehouse</value></data>
+  <data name="Whi_Source" xml:space="preserve"><value>Raise store requisition</value></data>
+  <data name="Whi_SourceHint" xml:space="preserve"><value>Lines left at 0 are not included. You can source the rest later from another warehouse.</value></data>
+  <data name="Whi_SourcedAll" xml:space="preserve"><value>Store requisition raised. Every stock line is sourced; the warehouse task is closed.</value></data>
+  <data name="Whi_SourcedPart" xml:space="preserve"><value>Store requisition raised. Some stock lines are still waiting in the warehouse queue.</value></data>
+  <data name="Whi_Err_SupplyCode" xml:space="preserve"><value>Unknown supply code.</value></data>
+  <data name="Whi_Err_Forbidden" xml:space="preserve"><value>You do not have permission for this action.</value></data>
+  <data name="Whi_Err_NotFound" xml:space="preserve"><value>Work order or material line not found.</value></data>
+  <data name="Whi_Err_AlreadySourced" xml:space="preserve"><value>A store requisition already supplies this line. Cancel that requisition first.</value></data>
+  <data name="Whi_Err_NotReleased" xml:space="preserve"><value>Materials can be requested only while the work order is Assigned, In Progress or On Hold.</value></data>
+  <data name="Whi_Err_AlreadyRequested" xml:space="preserve"><value>The materials are already waiting in the warehouse queue.</value></data>
+  <data name="Whi_Err_NothingToRequest" xml:space="preserve"><value>There is no stock line left to request.</value></data>
+  <data name="Whi_Err_NoEmployee" xml:space="preserve"><value>No employee is linked to your user account.</value></data>
+  <data name="Whi_Err_Warehouse" xml:space="preserve"><value>Pick an active warehouse.</value></data>
+  <data name="Whi_Err_NothingSelected" xml:space="preserve"><value>Enter a quantity for at least one line.</value></data>
+  <data name="Whi_Err_NotStockLine" xml:space="preserve"><value>Only stock lines are sourced from a warehouse.</value></data>
+  <data name="Whi_Err_Quantity" xml:space="preserve"><value>A quantity is negative or larger than what is left to source.</value></data>
+  <data name="MyWork_Module_PreProcurement" xml:space="preserve"><value>Pre-procurement</value></data>
+  <data name="MyWork_Stage_BuyerReview" xml:space="preserve"><value>Buyer review</value></data>
+  <data name="Role_PRC_Buyer_Name" xml:space="preserve"><value>Buyer</value></data>
+  <data name="Role_PRC_Buyer_Desc" xml:space="preserve"><value>Procurement expert: works the pre-procurement queue and turns each demand into a material requisition line, accepts engineering MRs or dismisses / returns them with a reason. Cannot approve purchase orders.</value></data>
+  <data name="Role_PRC_Manager_Name" xml:space="preserve"><value>Procurement Manager</value></data>
+  <data name="Role_PRC_Manager_Desc" xml:space="preserve"><value>Heads procurement: oversees the pre-procurement queue and can decide its items.</value></data>
+  <data name="Ppr_Title" xml:space="preserve"><value>Procurement cartable</value></data>
+  <data name="Ppr_Hint" xml:space="preserve"><value>Every purchase enters here first: shortages the warehouse sends, direct-purchase lines of work orders and engineering MRs issued to procurement. Open an item to decide it; the same items are in your My Work queue.</value></data>
+  <data name="Ppr_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Ppr_AllStatuses" xml:space="preserve"><value>All statuses</value></data>
+  <data name="Ppr_Source" xml:space="preserve"><value>Source</value></data>
+  <data name="Ppr_AllSources" xml:space="preserve"><value>All sources</value></data>
+  <data name="Ppr_Filter" xml:space="preserve"><value>Filter</value></data>
+  <data name="Ppr_Empty" xml:space="preserve"><value>Nothing in the queue.</value></data>
+  <data name="Ppr_Item" xml:space="preserve"><value>Item</value></data>
+  <data name="Ppr_Quantity" xml:space="preserve"><value>Quantity</value></data>
+  <data name="Ppr_Warehouse" xml:space="preserve"><value>Warehouse</value></data>
+  <data name="Ppr_Raised" xml:space="preserve"><value>Raised</value></data>
+  <data name="Ppr_Decided" xml:space="preserve"><value>Decided</value></data>
+  <data name="Ppr_Reason" xml:space="preserve"><value>Reason</value></data>
+  <data name="Ppr_Status_Open" xml:space="preserve"><value>Waiting for buyer</value></data>
+  <data name="Ppr_Status_Converted" xml:space="preserve"><value>Added to MR</value></data>
+  <data name="Ppr_Status_Accepted" xml:space="preserve"><value>Accepted</value></data>
+  <data name="Ppr_Status_Dismissed" xml:space="preserve"><value>Dismissed / returned</value></data>
+  <data name="Ppr_Source_Replenishment" xml:space="preserve"><value>Warehouse shortage</value></data>
+  <data name="Ppr_Source_WorkOrderDirectPurchase" xml:space="preserve"><value>Work-order direct purchase</value></data>
+  <data name="Ppr_Source_MaterialRequisition" xml:space="preserve"><value>Engineering MR</value></data>
+  <data name="Ppr_ToMr" xml:space="preserve"><value>Add to a material requisition</value></data>
+  <data name="Ppr_NewMr" xml:space="preserve"><value>New MR</value></data>
+  <data name="Ppr_ExistingMr" xml:space="preserve"><value>Existing draft MR</value></data>
+  <data name="Ppr_MrNumber" xml:space="preserve"><value>MR number</value></data>
+  <data name="Ppr_MrNumberHint" xml:space="preserve"><value>Leave the number empty when an automatic numbering scheme is active for MRs.</value></data>
+  <data name="Ppr_Project" xml:space="preserve"><value>Project</value></data>
+  <data name="Ppr_Discipline" xml:space="preserve"><value>Discipline</value></data>
+  <data name="Ppr_RequiredDate" xml:space="preserve"><value>Required date</value></data>
+  <data name="Ppr_Convert" xml:space="preserve"><value>Add to MR</value></data>
+  <data name="Ppr_AcceptHint" xml:space="preserve"><value>Accept this engineering MR into procurement. Packages, RFQs and tenders then follow from the MR as usual.</value></data>
+  <data name="Ppr_Accept" xml:space="preserve"><value>Accept into procurement</value></data>
+  <data name="Ppr_DismissReason" xml:space="preserve"><value>Reason for dismissing</value></data>
+  <data name="Ppr_Dismiss" xml:space="preserve"><value>Dismiss</value></data>
+  <data name="Ppr_ReturnReason" xml:space="preserve"><value>Reason for returning to engineering</value></data>
+  <data name="Ppr_Return" xml:space="preserve"><value>Return to engineering</value></data>
+  <data name="Ppr_Send" xml:space="preserve"><value>Send to procurement</value></data>
+  <data name="Ppr_SendHint" xml:space="preserve"><value>Hands this shortage to the procurement cartable; the next calculation does not recommend it again while procurement has it.</value></data>
+  <data name="Ppr_SentNote" xml:space="preserve"><value>This shortage was sent to procurement.</value></data>
+  <data name="Ppr_Sent" xml:space="preserve"><value>Sent to the procurement cartable.</value></data>
+  <data name="Ppr_Saved" xml:space="preserve"><value>Saved.</value></data>
+  <data name="Ppr_Accepted" xml:space="preserve"><value>The MR was accepted into procurement.</value></data>
+  <data name="Ppr_Dismissed" xml:space="preserve"><value>The item was dismissed.</value></data>
+  <data name="Ppr_DirectPurchaseRaised" xml:space="preserve"><value>{0} direct-purchase line(s) sent to the procurement cartable.</value></data>
+  <data name="Ppr_Err_Forbidden" xml:space="preserve"><value>You do not have permission for this action.</value></data>
+  <data name="Ppr_Err_NotFound" xml:space="preserve"><value>Item not found.</value></data>
+  <data name="Ppr_Err_RecommendationNotOpen" xml:space="preserve"><value>Only an open, definitive recommendation can be sent to procurement.</value></data>
+  <data name="Ppr_Err_AlreadyRaised" xml:space="preserve"><value>This is already in the procurement cartable.</value></data>
+  <data name="Ppr_Err_MrNotIssued" xml:space="preserve"><value>The MR is not issued to procurement.</value></data>
+  <data name="Ppr_Err_AlreadyDecided" xml:space="preserve"><value>This item has already been decided.</value></data>
+  <data name="Ppr_Err_NotMaterialDemand" xml:space="preserve"><value>An engineering MR is accepted or returned, not added to another MR.</value></data>
+  <data name="Ppr_Err_NotMrDemand" xml:space="preserve"><value>Only an engineering MR can be accepted.</value></data>
+  <data name="Ppr_Err_MrNotFound" xml:space="preserve"><value>MR not found.</value></data>
+  <data name="Ppr_Err_MrNotDraft" xml:space="preserve"><value>Lines can be added only to a Draft MR.</value></data>
+  <data name="Ppr_Err_NoTarget" xml:space="preserve"><value>Choose a new or an existing MR.</value></data>
+  <data name="Ppr_Err_ProjectDiscipline" xml:space="preserve"><value>Choose the project and the discipline of the new MR.</value></data>
+  <data name="Ppr_Err_ReasonRequired" xml:space="preserve"><value>A reason is required.</value></data>
+  <data name="MyWork_Module_PurchaseOrder" xml:space="preserve"><value>Purchase orders</value></data>
+  <data name="MyWork_Stage_Approval" xml:space="preserve"><value>Approval</value></data>
+  <data name="Po_Status_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Po_Status_Submitted" xml:space="preserve"><value>Submitted for approval</value></data>
+  <data name="Po_Status_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Po_Status_Issued" xml:space="preserve"><value>Issued</value></data>
+  <data name="Po_Status_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Po_Status_Cancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Po_Lines" xml:space="preserve"><value>Lines</value></data>
+  <data name="Po_NoLines" xml:space="preserve"><value>No lines yet. Add them from an MR issued to procurement.</value></data>
+  <data name="Po_Item" xml:space="preserve"><value>Item</value></data>
+  <data name="Po_Quantity" xml:space="preserve"><value>Quantity</value></data>
+  <data name="Po_UnitPrice" xml:space="preserve"><value>Unit price</value></data>
+  <data name="Po_Amount" xml:space="preserve"><value>Amount</value></data>
+  <data name="Po_Total" xml:space="preserve"><value>Total</value></data>
+  <data name="Po_Supply" xml:space="preserve"><value>Supply</value></data>
+  <data name="Po_StockLine" xml:space="preserve"><value>Into stock</value></data>
+  <data name="Po_DirectLine" xml:space="preserve"><value>Direct use / service</value></data>
+  <data name="Po_RequiredDate" xml:space="preserve"><value>Required date</value></data>
+  <data name="Po_CommodityGroup" xml:space="preserve"><value>Commodity group</value></data>
+  <data name="Po_FreeTextReason" xml:space="preserve"><value>Reason (not catalogued)</value></data>
+  <data name="Po_SaveLine" xml:space="preserve"><value>Save line</value></data>
+  <data name="Po_RemoveLine" xml:space="preserve"><value>Remove line</value></data>
+  <data name="Po_FromAward" xml:space="preserve"><value>awarded tender</value></data>
+  <data name="Po_AddFromMr" xml:space="preserve"><value>Add lines from MR</value></data>
+  <data name="Po_AddLines" xml:space="preserve"><value>Add lines</value></data>
+  <data name="Po_RejectedBecause" xml:space="preserve"><value>Returned to draft</value></data>
+  <data name="Po_Approval" xml:space="preserve"><value>Approval</value></data>
+  <data name="Po_Submitted" xml:space="preserve"><value>Submitted</value></data>
+  <data name="Po_ApproverRole" xml:space="preserve"><value>Approver role</value></data>
+  <data name="Po_Level" xml:space="preserve"><value>Level</value></data>
+  <data name="Po_ApprovedBy" xml:space="preserve"><value>Approved</value></data>
+  <data name="Po_ResponsibleNotSet" xml:space="preserve"><value>Responsible not set: no active PO authority rule matches this currency and amount. Ask the administrator to add one (Administration &gt; PO authority), then route again.</value></data>
+  <data name="Po_RouteAgain" xml:space="preserve"><value>Route again</value></data>
+  <data name="Po_Submit" xml:space="preserve"><value>Submit for approval</value></data>
+  <data name="Po_SubmitHint" xml:space="preserve"><value>Checks the lines, totals the value and sends the PO to the approver of the matching authority level.</value></data>
+  <data name="Po_Approve" xml:space="preserve"><value>Approve</value></data>
+  <data name="Po_Reject" xml:space="preserve"><value>Return to draft</value></data>
+  <data name="Po_RejectReason" xml:space="preserve"><value>Reason for returning</value></data>
+  <data name="Po_CreateFromMr" xml:space="preserve"><value>Purchase order from this MR</value></data>
+  <data name="Po_Create" xml:space="preserve"><value>Create PO</value></data>
+  <data name="Po_Currency" xml:space="preserve"><value>Currency</value></data>
+  <data name="Po_CreateHint" xml:space="preserve"><value>Creates a draft PO with one line per MR item not already ordered. Leave the number empty when automatic numbering is active.</value></data>
+  <data name="Po_Created" xml:space="preserve"><value>Draft purchase order created from the MR.</value></data>
+  <data name="Po_LinesAdded" xml:space="preserve"><value>Lines added.</value></data>
+  <data name="Po_Saved" xml:space="preserve"><value>Saved.</value></data>
+  <data name="Po_Approved" xml:space="preserve"><value>Purchase order approved.</value></data>
+  <data name="Po_Rejected" xml:space="preserve"><value>Returned to draft.</value></data>
+  <data name="Po_AuthorityTitle" xml:space="preserve"><value>PO authority</value></data>
+  <data name="Po_AuthorityHint" xml:space="preserve"><value>Who approves a purchase order, by currency and amount. A submitted PO goes to the role of the lowest active level whose range holds its value. Nothing is preset; with no matching rule the PO waits as 'responsible not set'.</value></data>
+  <data name="Po_NoRules" xml:space="preserve"><value>No authority levels yet.</value></data>
+  <data name="Po_From" xml:space="preserve"><value>From amount</value></data>
+  <data name="Po_To" xml:space="preserve"><value>To amount</value></data>
+  <data name="Po_Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Po_Inactive" xml:space="preserve"><value>Inactive</value></data>
+  <data name="Po_Activate" xml:space="preserve"><value>Activate</value></data>
+  <data name="Po_Deactivate" xml:space="preserve"><value>Deactivate</value></data>
+  <data name="Po_NewRule" xml:space="preserve"><value>New authority level</value></data>
+  <data name="Po_SaveRule" xml:space="preserve"><value>Save</value></data>
+  <data name="Po_RuleSaved" xml:space="preserve"><value>Authority level saved.</value></data>
+  <data name="Po_Err_Forbidden" xml:space="preserve"><value>You do not have permission for this action.</value></data>
+  <data name="Po_Err_NotFound" xml:space="preserve"><value>Purchase order or line not found.</value></data>
+  <data name="Po_Err_MrNotEligible" xml:space="preserve"><value>This MR cannot feed a purchase order: it must be issued to procurement (and accepted in the procurement cartable) or raised from the cartable.</value></data>
+  <data name="Po_Err_Currency" xml:space="preserve"><value>Enter the currency.</value></data>
+  <data name="Po_Err_Vendor" xml:space="preserve"><value>Choose an active vendor.</value></data>
+  <data name="Po_Err_NoFreeItems" xml:space="preserve"><value>Every item of this MR is already on a purchase order.</value></data>
+  <data name="Po_Err_NotDraft" xml:space="preserve"><value>Lines can be changed only while the PO is a draft.</value></data>
+  <data name="Po_Err_ProjectMismatch" xml:space="preserve"><value>The MR belongs to another project.</value></data>
+  <data name="Po_Err_Quantity" xml:space="preserve"><value>The quantity must be greater than zero.</value></data>
+  <data name="Po_Err_Price" xml:space="preserve"><value>The unit price cannot be negative.</value></data>
+  <data name="Po_Err_NoLines" xml:space="preserve"><value>A purchase order needs at least one line.</value></data>
+  <data name="Po_Err_CatalogueOnly" xml:space="preserve"><value>Only catalogued parts are allowed on purchase orders (setting Procurement__CatalogueOnlyLines).</value></data>
+  <data name="Po_Err_StockLineNotCatalogued" xml:space="preserve"><value>A line that goes into stock must be a catalogued part; register the part or mark the line as direct use / service.</value></data>
+  <data name="Po_Err_FreeTextIncomplete" xml:space="preserve"><value>A line that is not catalogued needs a commodity group and a reason.</value></data>
+  <data name="Po_Err_AlreadyRouted" xml:space="preserve"><value>The PO already has an approver.</value></data>
+  <data name="Po_Err_NotSubmitted" xml:space="preserve"><value>The PO is not waiting for approval.</value></data>
+  <data name="Po_Err_NotApprover" xml:space="preserve"><value>Only the approver role of this PO's authority level can decide it.</value></data>
+  <data name="Po_Err_SoD" xml:space="preserve"><value>The person who created or submitted the PO cannot approve it (segregation of duties).</value></data>
+  <data name="Po_Err_ReasonRequired" xml:space="preserve"><value>A reason is required.</value></data>
+  <data name="Po_Err_Concurrent" xml:space="preserve"><value>Someone else changed this PO at the same time; open it again.</value></data>
+  <data name="Po_Err_RuleIncomplete" xml:space="preserve"><value>Enter the currency and the approver role.</value></data>
+  <data name="Po_Err_RuleRange" xml:space="preserve"><value>The amounts are invalid (from must be zero or more and not above to).</value></data>
+  <data name="Po_Err_RuleRole" xml:space="preserve"><value>The approver role does not exist.</value></data>
+  <data name="Upload_Err_Empty" xml:space="preserve"><value>The file {0} is empty or has no name.</value></data>
+  <data name="Upload_Err_TypeNotAllowed" xml:space="preserve"><value>The file {0} has a type that is not allowed here.</value></data>
+  <data name="Upload_Err_TooLarge" xml:space="preserve"><value>The file {0} is larger than {1} MB.</value></data>
+  <data name="Upload_Err_ContentMismatch" xml:space="preserve"><value>The content of the file {0} does not match its type.</value></data>
+  <data name="Upload_Err_Infected" xml:space="preserve"><value>The file {0} was refused by the malware scanner.</value></data>
+  <data name="Upload_Err_ScanFailed" xml:space="preserve"><value>The file {0} could not be checked by the malware scanner; try again or ask the administrator.</value></data>
+  <data name="Upload_Err_NoPolicy" xml:space="preserve"><value>This page does not accept files.</value></data>
+  <data name="Po_Err_LineWarehouse" xml:space="preserve"><value>A stock line needs a delivery warehouse.</value></data>
+  <data name="Po_Err_Warehouse" xml:space="preserve"><value>The selected warehouse was not found or is inactive.</value></data>
+  <data name="Rcv_Action_Replace" xml:space="preserve"><value>Replacement from vendor</value></data>
+  <data name="Rcv_Action_CloseShort" xml:space="preserve"><value>Close short</value></data>
+  <data name="Rcv_AddPoLines" xml:space="preserve"><value>Add PO lines to this receipt</value></data>
+  <data name="Rcv_ConfirmHold" xml:space="preserve"><value>Resolve this Hold? The accepted part is posted to stock.</value></data>
+  <data name="Rcv_Decision" xml:space="preserve"><value>Decision</value></data>
+  <data name="Rcv_Default" xml:space="preserve"><value>default</value></data>
+  <data name="Rcv_DeliveryWarehouse" xml:space="preserve"><value>Delivery warehouse</value></data>
+  <data name="Rcv_Err_Action" xml:space="preserve"><value>Unknown decision.</value></data>
+  <data name="Rcv_Err_AlreadyReleased" xml:space="preserve"><value>This line is already released for shipment.</value></data>
+  <data name="Rcv_Err_Duplicate" xml:space="preserve"><value>A PO line appears twice in the input.</value></data>
+  <data name="Rcv_Err_Forbidden" xml:space="preserve"><value>You do not have permission for this action.</value></data>
+  <data name="Rcv_Err_HoldNotClosed" xml:space="preserve"><value>Hold can be resolved only after the disposition is approved.</value></data>
+  <data name="Rcv_Err_HoldSplit" xml:space="preserve"><value>Accepted plus rejected must equal the Hold quantity.</value></data>
+  <data name="Rcv_Err_ItpNotFound" xml:space="preserve"><value>The selected ITP was not found.</value></data>
+  <data name="Rcv_Err_LineNotCatalogued" xml:space="preserve"><value>A non-catalogued PO line cannot be received into stock.</value></data>
+  <data name="Rcv_Err_LineNotOnPo" xml:space="preserve"><value>A line does not belong to the PO of this receipt.</value></data>
+  <data name="Rcv_Err_Negative" xml:space="preserve"><value>Quantities cannot be negative.</value></data>
+  <data name="Rcv_Err_NoLines" xml:space="preserve"><value>Enter a quantity for at least one line.</value></data>
+  <data name="Rcv_Err_NoOpenHold" xml:space="preserve"><value>This line has no open Hold.</value></data>
+  <data name="Rcv_Err_NoPo" xml:space="preserve"><value>This receipt is not linked to a purchase order.</value></data>
+  <data name="Rcv_Err_NoPoLine" xml:space="preserve"><value>This receipt line is not linked to a PO line.</value></data>
+  <data name="Rcv_Err_NotDispositioned" xml:space="preserve"><value>The decision is possible after the disposition is approved.</value></data>
+  <data name="Rcv_Err_NotDraft" xml:space="preserve"><value>Lines can only be added while the receipt is in Draft.</value></data>
+  <data name="Rcv_Err_NotFound" xml:space="preserve"><value>Not found.</value></data>
+  <data name="Rcv_Err_NotWarehouseManager" xml:space="preserve"><value>Only the Warehouse Manager resolves Hold.</value></data>
+  <data name="Rcv_Err_NothingRejected" xml:space="preserve"><value>Nothing was rejected on this line.</value></data>
+  <data name="Rcv_Err_PoNotIssued" xml:space="preserve"><value>The purchase order is not issued.</value></data>
+  <data name="Rcv_Err_VendorMismatch" xml:space="preserve"><value>The receipt vendor differs from the PO vendor.</value></data>
+  <data name="Rcv_FromHold" xml:space="preserve"><value>from Hold</value></data>
+  <data name="Rcv_HoldResolved" xml:space="preserve"><value>Hold resolved.</value></data>
+  <data name="Rcv_HoldResolvedBy" xml:space="preserve"><value>Resolved by</value></data>
+  <data name="Rcv_HoldWaits" xml:space="preserve"><value>Waiting for the Warehouse Manager.</value></data>
+  <data name="Rcv_InQc" xml:space="preserve"><value>In QC</value></data>
+  <data name="Rcv_Inspection" xml:space="preserve"><value>Inspection release</value></data>
+  <data name="Rcv_InspectionReleased" xml:space="preserve"><value>Line released for shipment.</value></data>
+  <data name="Rcv_LinesAdded" xml:space="preserve"><value>PO lines added to the receipt.</value></data>
+  <data name="Rcv_NoItp" xml:space="preserve"><value>Without ITP</value></data>
+  <data name="Rcv_NoPoLine" xml:space="preserve"><value>No PO line</value></data>
+  <data name="Rcv_NotCatalogued" xml:space="preserve"><value>Not catalogued</value></data>
+  <data name="Rcv_NotReleased" xml:space="preserve"><value>Inspection required, not released</value></data>
+  <data name="Rcv_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Rcv_Ordered" xml:space="preserve"><value>Ordered</value></data>
+  <data name="Rcv_OsdClean" xml:space="preserve"><value>No over, short or damaged quantity on this receipt.</value></data>
+  <data name="Rcv_OsdNote" xml:space="preserve"><value>Over and short are measured against the open quantity of the PO line before this receipt. Rejected is the damaged or non-conforming quantity.</value></data>
+  <data name="Rcv_OsdReport" xml:space="preserve"><value>OS&amp;D report</value></data>
+  <data name="Rcv_OsdSubtitle" xml:space="preserve"><value>Over, short and damaged goods against the purchase order</value></data>
+  <data name="Rcv_OsdTitle" xml:space="preserve"><value>OS&amp;D report</value></data>
+  <data name="Rcv_Over" xml:space="preserve"><value>Over</value></data>
+  <data name="Rcv_PoLine" xml:space="preserve"><value>PO line</value></data>
+  <data name="Rcv_PurchaseOrderOptional" xml:space="preserve"><value>Purchase order (optional)</value></data>
+  <data name="Rcv_ReceiveFromPo" xml:space="preserve"><value>Receive from PO</value></data>
+  <data name="Rcv_ReceiveHelp" xml:space="preserve"><value>Enter the quantity that arrived for each line; leave 0 for lines that did not arrive. More than the open quantity is allowed but reported.</value></data>
+  <data name="Rcv_ReceiveNow" xml:space="preserve"><value>Receive now</value></data>
+  <data name="Rcv_ReceivedBefore" xml:space="preserve"><value>Received before</value></data>
+  <data name="Rcv_ReceivedSoFar" xml:space="preserve"><value>Received so far</value></data>
+  <data name="Rcv_Receiving" xml:space="preserve"><value>Receiving</value></data>
+  <data name="Rcv_ReceivingHelp" xml:space="preserve"><value>Open quantity = ordered − received + rejected for replacement. In QC and open quantity count as incoming supply.</value></data>
+  <data name="Rcv_RejectedDamaged" xml:space="preserve"><value>Rejected / damaged</value></data>
+  <data name="Rcv_RejectionDecided" xml:space="preserve"><value>Decision saved.</value></data>
+  <data name="Rcv_Release" xml:space="preserve"><value>Release</value></data>
+  <data name="Rcv_Released" xml:space="preserve"><value>Released</value></data>
+  <data name="Rcv_ResolveHold" xml:space="preserve"><value>Resolve Hold</value></data>
+  <data name="Rcv_Short" xml:space="preserve"><value>Short</value></data>
+  <data name="Rcv_ThisReceipt" xml:space="preserve"><value>This receipt</value></data>
+  <data name="Rcv_Warn_InspectionNotReleased" xml:space="preserve"><value>Warning: inspection is required and the line is not released.</value></data>
+  <data name="Rcv_Warn_OtherWarehouse" xml:space="preserve"><value>Warning: received into another warehouse than the PO line's delivery warehouse.</value></data>
+  <data name="Rcv_Warn_OverReceipt" xml:space="preserve"><value>Warning: more than the open quantity was received; it shows on the OS&amp;D report.</value></data>
+  <data name="Rcv_Warn_TaskNotClosed" xml:space="preserve"><value>Warning: Hold is resolved but the My Work task could not be closed.</value></data>
+  <data name="MyWork_Stage_HoldResolution" xml:space="preserve"><value>Resolve Hold</value></data>
+  <data name="IRN" xml:space="preserve"><value>IRN</value></data>
+  <data name="GlobalSearch_Placeholder" xml:space="preserve"><value>Search records, menus and actions...</value></data>
+  <data name="GlobalSearch_PaletteHint" xml:space="preserve"><value>Tip: press Ctrl+K on any page to open the command palette.</value></data>
+  <data name="GlobalSearch_NoResults" xml:space="preserve"><value>No results for "{0}" that you can open.</value></data>
+  <data name="Palette_Title" xml:space="preserve"><value>Command palette</value></data>
+  <data name="Palette_Placeholder" xml:space="preserve"><value>Search menus, records and actions...</value></data>
+  <data name="Palette_OpenHint" xml:space="preserve"><value>Search (Ctrl+K)</value></data>
+  <data name="Palette_Menus" xml:space="preserve"><value>Menus</value></data>
+  <data name="Palette_Actions" xml:space="preserve"><value>Actions</value></data>
+  <data name="Palette_Empty" xml:space="preserve"><value>Nothing matches.</value></data>
+  <data name="Palette_Loading" xml:space="preserve"><value>Searching records...</value></data>
+  <data name="Palette_Error" xml:space="preserve"><value>Record search failed. Try again.</value></data>
+  <data name="Palette_Keys" xml:space="preserve"><value>↑ ↓ move · Enter open · Esc close</value></data>
+  <data name="Palette_MinChars" xml:space="preserve"><value>Type 2 or more characters to search records.</value></data>
+  <data name="Palette_ShowAll" xml:space="preserve"><value>Show all results for "{0}"</value></data>
+  <data name="Palette_Count" xml:space="preserve"><value>{0} results</value></data>
+  <data name="Palette_Action_NewLetter" xml:space="preserve"><value>New letter</value></data>
+  <data name="Palette_Action_NewDocument" xml:space="preserve"><value>New engineering document</value></data>
+  <data name="Palette_Action_NewVdr" xml:space="preserve"><value>New VDR item</value></data>
+  <data name="Palette_Action_NewWorkRequest" xml:space="preserve"><value>New work request</value></data>
+  <data name="Palette_Action_NewWorkOrder" xml:space="preserve"><value>New work order</value></data>
+  <data name="Palette_Action_NewEquipment" xml:space="preserve"><value>New equipment</value></data>
+  <data name="Palette_Action_NewMaterialRequisition" xml:space="preserve"><value>New material requisition</value></data>
+  <data name="Palette_Action_NewContract" xml:space="preserve"><value>New contract</value></data>
+  <data name="Palette_Action_MyWork" xml:space="preserve"><value>My work</value></data>
+  <data name="Palette_Action_Notifications" xml:space="preserve"><value>Notifications</value></data>
+  <data name="Palette_Action_Help" xml:space="preserve"><value>Help center</value></data>
+  <data name="Palette_Action_ChangePassword" xml:space="preserve"><value>Change password</value></data>
+  <data name="Palette_Action_Theme" xml:space="preserve"><value>Theme: {0}</value></data>
+  <data name="Palette_Action_Language" xml:space="preserve"><value>Language: {0}</value></data>
+  <data name="Palette_Group_Attachment" xml:space="preserve"><value>Attachments</value></data>
+  <data name="Palette_Group_Contract" xml:space="preserve"><value>Contracts</value></data>
+  <data name="Palette_Group_Discipline" xml:space="preserve"><value>Disciplines</value></data>
+  <data name="Palette_Group_DocumentRevision" xml:space="preserve"><value>Document revisions</value></data>
+  <data name="Palette_Group_EngineeringDocument" xml:space="preserve"><value>Engineering documents</value></data>
+  <data name="Palette_Group_Equipment" xml:space="preserve"><value>Equipment</value></data>
+  <data name="Palette_Group_EquipmentTag" xml:space="preserve"><value>Equipment tags</value></data>
+  <data name="Palette_Group_HelpArticle" xml:space="preserve"><value>Help articles</value></data>
+  <data name="Palette_Group_Letter" xml:space="preserve"><value>Correspondence</value></data>
+  <data name="Palette_Group_MOC" xml:space="preserve"><value>Management of change</value></data>
+  <data name="Palette_Group_MaterialRequisition" xml:space="preserve"><value>Material requisitions</value></data>
+  <data name="Palette_Group_Notification" xml:space="preserve"><value>Notifications</value></data>
+  <data name="Palette_Group_PartCatalogueRequest" xml:space="preserve"><value>Part catalogue requests</value></data>
+  <data name="Palette_Group_Project" xml:space="preserve"><value>Projects</value></data>
+  <data name="Palette_Group_SparePart" xml:space="preserve"><value>Spare parts</value></data>
+  <data name="Palette_Group_TechnicalQuery" xml:space="preserve"><value>Technical queries</value></data>
+  <data name="Palette_Group_VDRItem" xml:space="preserve"><value>Vendor documents (VDR)</value></data>
+  <data name="Palette_Group_Vendor" xml:space="preserve"><value>Vendors</value></data>
+  <data name="Palette_Group_WorkOrder" xml:space="preserve"><value>Work orders</value></data>
+  <data name="Lp_SelectedCount" xml:space="preserve"><value>{0} selected</value></data>
+  <data name="Lp_SelectAll" xml:space="preserve"><value>Select all rows</value></data>
+  <data name="Lp_SelectRow" xml:space="preserve"><value>Select</value></data>
+  <data name="Dr_SearchPlaceholder" xml:space="preserve"><value>Document no or title</value></data>
+  <data name="Dr_Views" xml:space="preserve"><value>Quick and saved filters</value></data>
+  <data name="Dr_QuickFilters" xml:space="preserve"><value>Quick filters</value></data>
+  <data name="Dr_PendingReview" xml:space="preserve"><value>Pending review</value></data>
+  <data name="Dr_SavedFilters" xml:space="preserve"><value>Saved filters</value></data>
+  <data name="Dr_DeleteFilter" xml:space="preserve"><value>Delete saved filter</value></data>
+  <data name="Dr_DeleteFilterConfirm" xml:space="preserve"><value>Delete this saved filter?</value></data>
+  <data name="Dr_SaveFilter" xml:space="preserve"><value>Save this filter</value></data>
+  <data name="Dr_SaveFilterTitle" xml:space="preserve"><value>Save the current filter</value></data>
+  <data name="Dr_FilterName" xml:space="preserve"><value>Filter name</value></data>
+  <data name="Dr_SetDefault" xml:space="preserve"><value>Set as my default view for this page</value></data>
+  <data name="Dr_Unassigned" xml:space="preserve"><value>Unassigned</value></data>
+  <data name="Dr_Empty" xml:space="preserve"><value>No documents in the register.</value></data>
+  <data name="Dr_ExportSelected" xml:space="preserve"><value>Export selected to Excel</value></data>
+  <data name="Dr_CommentStatus" xml:space="preserve"><value>Comment status</value></data>
+  <data name="Rv_Title" xml:space="preserve"><value>Document revisions</value></data>
+  <data name="Rv_Document" xml:space="preserve"><value>Document</value></data>
+  <data name="Rv_New" xml:space="preserve"><value>New revision</value></data>
+  <data name="Rv_Empty" xml:space="preserve"><value>No revisions recorded yet. Choose a document in the filters to add one.</value></data>
+  <data name="Rv_PreviousRev" xml:space="preserve"><value>Previous rev</value></data>
+  <data name="Rv_IssuePurpose" xml:space="preserve"><value>Issue purpose</value></data>
+  <data name="Rv_PreparedBy" xml:space="preserve"><value>Prepared by</value></data>
+  <data name="Rv_CheckedBy" xml:space="preserve"><value>Checked by</value></data>
+  <data name="Rv_ApprovedBy" xml:space="preserve"><value>Approved by</value></data>
+  <data name="Rv_Date" xml:space="preserve"><value>Date</value></data>
+  <data name="Tq_Title" xml:space="preserve"><value>Technical queries (TQ / TSR / RFI)</value></data>
+  <data name="Tq_New" xml:space="preserve"><value>New query</value></data>
+  <data name="Tq_OpenCount" xml:space="preserve"><value>Open / in progress</value></data>
+  <data name="Tq_Empty" xml:space="preserve"><value>No technical queries found.</value></data>
+  <data name="Tq_Number" xml:space="preserve"><value>Number</value></data>
+  <data name="Tq_Subject" xml:space="preserve"><value>Subject</value></data>
+  <data name="Tq_Priority" xml:space="preserve"><value>Priority</value></data>
+  <data name="Tq_Due" xml:space="preserve"><value>Response due</value></data>
+  <data name="Tq_St_Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Tq_St_PendingConfirmation" xml:space="preserve"><value>Pending confirmation</value></data>
+  <data name="Tq_St_Reopened" xml:space="preserve"><value>Reopened</value></data>
+  <data name="Tq_St_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Moc_Title" xml:space="preserve"><value>Management of change (MOC)</value></data>
+  <data name="Moc_New" xml:space="preserve"><value>New MOC</value></data>
+  <data name="Moc_OpenCount" xml:space="preserve"><value>Open / in progress</value></data>
+  <data name="Moc_HighRiskOpen" xml:space="preserve"><value>High risk, open</value></data>
+  <data name="Moc_Empty" xml:space="preserve"><value>No MOCs found.</value></data>
+  <data name="Moc_Number" xml:space="preserve"><value>Number</value></data>
+  <data name="Moc_Risk" xml:space="preserve"><value>Risk</value></data>
+  <data name="Moc_Risk_Low" xml:space="preserve"><value>Low</value></data>
+  <data name="Moc_Risk_Medium" xml:space="preserve"><value>Medium</value></data>
+  <data name="Moc_Risk_High" xml:space="preserve"><value>High</value></data>
+  <data name="Moc_St_PendingRiskAssessment" xml:space="preserve"><value>Pending risk assessment</value></data>
+  <data name="Moc_St_PendingApproval" xml:space="preserve"><value>Pending approval</value></data>
+  <data name="Moc_St_PendingSeniorApproval" xml:space="preserve"><value>Pending senior approval</value></data>
+  <data name="Moc_St_Approved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Moc_St_PendingClosure" xml:space="preserve"><value>Pending closure</value></data>
+  <data name="Moc_St_Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Moc_St_Rejected" xml:space="preserve"><value>Rejected</value></data>
+  <data name="Mdb_Title" xml:space="preserve"><value>Manufacturer data books (MDB)</value></data>
+  <data name="Mdb_New" xml:space="preserve"><value>New MDB</value></data>
+  <data name="Mdb_Empty" xml:space="preserve"><value>No MDBs yet.</value></data>
+  <data name="Mdb_Po" xml:space="preserve"><value>PO</value></data>
+  <data name="Mdb_PlannedIssue" xml:space="preserve"><value>Planned final issue</value></data>
+  <data name="Mdb_IndexDue" xml:space="preserve"><value>Index due</value></data>
+  <data name="Mdb_HardCopy" xml:space="preserve"><value>Hard copy</value></data>
+  <data name="Mdb_SoftCopy" xml:space="preserve"><value>Soft copy</value></data>
+  <data name="Mdb_Shipped" xml:space="preserve"><value>Shipped</value></data>
+  <data name="Mdb_Delivered" xml:space="preserve"><value>Delivered</value></data>
+  <data name="Dw_Queue" xml:space="preserve"><value>Pending approval queue</value></data>
+  <data name="Dw_Empty" xml:space="preserve"><value>No documents are waiting for approval.</value></data>
+  <data name="Dw_Check" xml:space="preserve"><value>Check</value></data>
+  <data name="Dw_History" xml:space="preserve"><value>Recent workflow history</value></data>
+  <data name="Dw_HistoryEmpty" xml:space="preserve"><value>No workflow history yet.</value></data>
+  <data name="Dw_From" xml:space="preserve"><value>From</value></data>
+  <data name="Dw_To" xml:space="preserve"><value>To</value></data>
+  <data name="Dw_Action" xml:space="preserve"><value>Action</value></data>
+  <data name="Dw_By" xml:space="preserve"><value>By</value></data>
+  <data name="Dw_Comment" xml:space="preserve"><value>Comment</value></data>
 </root>

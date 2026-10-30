@@ -16,7 +16,16 @@ public static class NavigationMenuDefaults
     /// کلیدهای سیستمیِ حذف‌شده از منو. همگام‌سازی پیش‌فرض‌ها ردیف قدیمی آن‌ها را در دیتابیس غیرفعال می‌کند (حذف نمی‌شود).
     /// «برچسب‌ها» از منو رفت: درخت برچسب حالا داخل کارتابل نامه‌نگاری (پنل کناری و تنظیمات) مدیریت می‌شود.
     /// </summary>
-    public static readonly IReadOnlyList<string> RetiredKeys = new[] { "proj.tags" };
+    public static readonly IReadOnlyList<string> RetiredKeys = new[]
+    {
+        "proj.tags",
+        // SCRUM-423: تدارکات، قرارداد و انبار زیر بخش واحد «تدارکات و زنجیره‌ی تأمین» (sec.procurement) رفتند. والدِ ردیف موجود را
+        // همگام‌سازی عوض نمی‌کند (مالکیت مدیر)، پس کلیدها تازه‌اند و ردیف‌های قدیمی غیرفعال می‌شوند.
+        "eng.package", "eng.tender", "eng.mr",
+        "sec.contract", "contract.contracts", "contract.vendors", "contract.po", "contract.milestones", "contract.claims",
+        "sec.inventory", "wh.dashboard", "wh.material", "wh.irn", "wh.ledger", "wh.sr", "wh.replenishment", "wh.masterdata",
+        "wh.partcatalogue", "wh.partcatalogue.admin",
+    };
 
     private const string S = NavigationMenuItemKinds.Section;
     private const string H = NavigationMenuItemKinds.Subheading;
@@ -33,8 +42,8 @@ public static class NavigationMenuDefaults
     private static NavigationMenuItemDefinition Sub(string key, string parent, int order, string titleKey)
         => new(key, parent, H, order, titleKey, null, Always);
 
-    private static NavigationMenuItemDefinition ComingSoon(string key, string parent, int order, string titleKey, string icon, string title, string section)
-        => new(key, parent, L, order, titleKey, icon, Always,
+    private static NavigationMenuItemDefinition ComingSoon(string key, string parent, int order, string titleKey, string icon, string title, string section, string rule = Always)
+        => new(key, parent, L, order, titleKey, icon, rule,
             ExternalPath: "/ComingSoon?title=" + Uri.EscapeDataString(title) + "&section=" + Uri.EscapeDataString(section));
 
     public static IReadOnlyList<NavigationMenuItemDefinition> All { get; } = Build();
@@ -51,7 +60,7 @@ public static class NavigationMenuDefaults
 
         // ---- مدیریت مهندسی
         Section("sec.eng", 100, "EngineeringManagement", "bi-building", "Module:EngineeringManagement",
-            "EngineeringDashboard,Projects,EngineeringDocuments,DocumentRegister,DocumentRevisions,DocumentWorkflow,VDR,Transmittal,MDB,ProcurementPackage,Tender,MaterialRequisition"),
+            "EngineeringDashboard,Projects,EngineeringDocuments,DocumentRegister,DocumentRevisions,DocumentWorkflow,VDR,Transmittal,MDB"),
         Link("eng.dashboard", "sec.eng", 10, "EngineeringDashboard", "bi-speedometer2", "EngineeringDashboard"),
         Link("eng.projects", "sec.eng", 20, "Projects", "bi-kanban", "Projects"),
         Link("eng.documents", "sec.eng", 30, "EngineeringDocuments", "bi-file-earmark-text", "EngineeringDocuments"),
@@ -61,9 +70,6 @@ public static class NavigationMenuDefaults
         Link("eng.vdr", "sec.eng", 70, "VDR", "bi-journal-check", "VDR"),
         Link("eng.transmittal", "sec.eng", 80, "Transmittal", "bi-send", "Transmittal"),
         Link("eng.mdb", "sec.eng", 90, "MDB", "bi-collection", "MDB"),
-        Link("eng.package", "sec.eng", 100, "ProcurementPackage", "bi-folder2-open", "ProcurementPackage", rule: "Perm:ProcurementPackage.View"),
-        Link("eng.tender", "sec.eng", 110, "Tender", "bi-clipboard-check", "Tender", rule: "Perm:Tender.View"),
-        Link("eng.mr", "sec.eng", 120, "Material Requisition", "bi-cart-check", "MaterialRequisition", rule: "Perm:MaterialRequisition.View"),
         Link("eng.disciplines", "sec.eng", 130, "Disciplines", "bi-diagram-3", "Discipline", rule: "Perm:DisciplineWorkspace.View", isDefault: true),
 
         // ---- هوش مصنوعی و دانش
@@ -87,13 +93,33 @@ public static class NavigationMenuDefaults
         Link("quality.qc", "sec.quality", 10, "QC / QA", "bi-patch-check", "QC"),
         Link("quality.moc", "sec.quality", 20, "MOC", "bi-arrow-repeat", "MOC"),
 
-        // ---- مدیریت قرارداد
-        Section("sec.contract", 500, "ContractManagement", "bi-file-earmark-ruled", "Module:ContractManagement", "Contract,Vendor,PurchaseOrder"),
-        Link("contract.contracts", "sec.contract", 10, "Contracts", "bi-file-earmark-ruled", "Contract", rule: "Perm:Contracts.View"),
-        Link("contract.vendors", "sec.contract", 20, "Vendors", "bi-folder2-open", "Vendor", rule: "Perm:Vendors.View"),
-        Link("contract.po", "sec.contract", 30, "Purchase Orders", "bi-receipt", "PurchaseOrder", rule: "Perm:PurchaseOrder.View"),
-        ComingSoon("contract.milestones", "sec.contract", 40, "Contract Milestones", "bi-flag", "Contract Milestones", "Contract Management"),
-        ComingSoon("contract.claims", "sec.contract", 50, "Claims", "bi-exclamation-diamond", "Claims", "Contract Management"),
+        // ---- تدارکات و زنجیره‌ی تأمین (SCRUM-423): خرید، قرارداد، فروشنده و انبار در یک بخش، مثل CMMS. هر پیوند همان دروازه‌ی
+        // قبلی‌اش را دارد به‌اضافه‌ی ماژولِ بخشِ قبلی‌اش (مهندسی/قرارداد/انبار)، پس هیچ نقشی پیوندی بیشتر یا کمتر نمی‌بیند؛ بخش وقتی
+        // دیده می‌شود که کاربر یکی از آن ماژول‌ها را ببیند.
+        Section("sec.procurement", 500, "Nav_ProcurementSupplyChain", "bi-cart3", "Module:EngineeringManagement|Module:ContractManagement|Module:Inventory|Flag:PartCatalogue",
+            "ProcurementPackage,Tender,MaterialRequisition,Contract,Vendor,PurchaseOrder,Inventory,MaterialItem,IrnReceipt,InventoryMasterData,InventoryTransaction,StoreRequisition,Replenishment,PartCatalogueRequest,PartCatalogueAdmin"),
+        Link("proc.vendors", "sec.procurement", 10, "Vendors", "bi-building", "Vendor", rule: "Module:ContractManagement&Perm:Vendors.View"),
+        Sub("proc.sub.purchasing", "sec.procurement", 20, "Nav_Proc_Purchasing"),
+        // SCRUM-471: the procurement cartable (pre-procurement queue), first under Purchasing
+        Link("proc.preprocurement", "proc.sub.purchasing", 5, "Ppr_Title", "bi-inbox", "PreProcurement", rule: "Perm:PreProcurement.View"),
+        Link("proc.mr", "proc.sub.purchasing", 10, "Material Requisition", "bi-cart-check", "MaterialRequisition", rule: "Module:EngineeringManagement&Perm:MaterialRequisition.View"),
+        Link("proc.package", "proc.sub.purchasing", 20, "ProcurementPackage", "bi-folder2-open", "ProcurementPackage", rule: "Module:EngineeringManagement&Perm:ProcurementPackage.View"),
+        Link("proc.tender", "proc.sub.purchasing", 30, "Tender", "bi-clipboard-check", "Tender", rule: "Module:EngineeringManagement&Perm:Tender.View"),
+        Link("proc.po", "proc.sub.purchasing", 40, "Purchase Orders", "bi-receipt", "PurchaseOrder", rule: "Module:ContractManagement&Perm:PurchaseOrder.View"),
+        Sub("proc.sub.contracts", "sec.procurement", 30, "Contracts"),
+        Link("proc.contracts", "proc.sub.contracts", 10, "Contracts", "bi-file-earmark-ruled", "Contract", rule: "Module:ContractManagement&Perm:Contracts.View"),
+        ComingSoon("proc.milestones", "proc.sub.contracts", 20, "Contract Milestones", "bi-flag", "Contract Milestones", "Contract Management", "Module:ContractManagement"),
+        ComingSoon("proc.claims", "proc.sub.contracts", 30, "Claims", "bi-exclamation-diamond", "Claims", "Contract Management", "Module:ContractManagement"),
+        Sub("proc.sub.warehouse", "sec.procurement", 40, "Warehouse"),
+        Link("proc.wh.dashboard", "proc.sub.warehouse", 10, "Dashboard", "bi-speedometer2", "Inventory", area: "Warehouse", rule: "Module:Inventory&Perm:MaterialItem.View"),
+        Link("proc.wh.material", "proc.sub.warehouse", 20, "Material Master", "bi-box-seam", "MaterialItem", area: "Warehouse", rule: "Module:Inventory&Perm:MaterialItem.View"),
+        Link("proc.wh.irn", "proc.sub.warehouse", 30, "Incoming Receipts (IRN)", "bi-truck", "IrnReceipt", area: "Warehouse", rule: "Module:Inventory&Perm:IRN.View"),
+        Link("proc.wh.ledger", "proc.sub.warehouse", 40, "Transaction Ledger", "bi-list-ul", "InventoryTransaction", area: "Warehouse", rule: "Module:Inventory&Perm:MaterialItem.View"),
+        Link("proc.wh.sr", "proc.sub.warehouse", 50, "Store Requisitions", "bi-clipboard-check", "StoreRequisition", area: "Warehouse", rule: "Module:Inventory&Perm:StoreRequisition.View", badge: NavigationBadges.StoreRequisitionsAwaitingApproval),
+        Link("proc.wh.replenishment", "proc.sub.warehouse", 60, "Repl_Menu", "bi-cart-plus", "Replenishment", area: "Warehouse", rule: "Module:Inventory&Flag:Replenishment"),
+        Link("proc.wh.masterdata", "proc.sub.warehouse", 70, "Master Data", "bi-collection", "InventoryMasterData", area: "Warehouse", rule: "Module:Inventory&Perm:InventoryMasterData.View"),
+        Link("proc.wh.partcatalogue", "proc.sub.warehouse", 80, "Pc_Menu", "bi-journal-plus", "PartCatalogueRequest", area: "Warehouse", rule: "Flag:PartCatalogue", badge: NavigationBadges.MyWorkPartCatalogue),
+        Link("proc.wh.partcatalogue.admin", "proc.sub.warehouse", 90, "Pc_Title_Admin", "bi-sliders", "PartCatalogueAdmin", area: "Warehouse", rule: "Flag:PartCatalogueAdmin"),
 
         // ---- کنترل پروژه
         Section("sec.projctrl", 600, "ProjectControls", "bi-sliders", "Module:ProjectControls", "Task,TaskManager,Tag,Report,Meeting"),
@@ -139,24 +165,13 @@ public static class NavigationMenuDefaults
         Link("ops.dashboard", "sec.operations", 10, "Dashboard", "bi-speedometer2", "Production", "Dashboard", rule: "Perm:Production.View"),
         Link("ops.orders", "sec.operations", 20, "Production Orders", "bi-clipboard-data", "ProductionOrder", rule: "Perm:Production.View"),
 
-        // ---- انبار (بخش برای درخواست‌دهنده‌های کاتالوگ قطعه هم دیده می‌شود)
-        Section("sec.inventory", 900, "Warehouse", "bi-boxes", "Module:Inventory|Flag:PartCatalogue",
-            "Inventory,MaterialItem,IrnReceipt,InventoryMasterData,InventoryTransaction,StoreRequisition,Replenishment,PartCatalogueRequest,PartCatalogueAdmin"),
-        Link("wh.dashboard", "sec.inventory", 10, "Dashboard", "bi-speedometer2", "Inventory", area: "Warehouse", rule: "Module:Inventory&Perm:MaterialItem.View"),
-        Link("wh.material", "sec.inventory", 20, "Material Master", "bi-box-seam", "MaterialItem", area: "Warehouse", rule: "Module:Inventory&Perm:MaterialItem.View"),
-        Link("wh.irn", "sec.inventory", 30, "Incoming Receipts (IRN)", "bi-truck", "IrnReceipt", area: "Warehouse", rule: "Module:Inventory&Perm:IRN.View"),
-        Link("wh.ledger", "sec.inventory", 40, "Transaction Ledger", "bi-list-ul", "InventoryTransaction", area: "Warehouse", rule: "Module:Inventory&Perm:MaterialItem.View"),
-        Link("wh.sr", "sec.inventory", 50, "Store Requisitions", "bi-clipboard-check", "StoreRequisition", area: "Warehouse", rule: "Module:Inventory&Perm:StoreRequisition.View", badge: NavigationBadges.StoreRequisitionsAwaitingApproval),
-        Link("wh.replenishment", "sec.inventory", 60, "Repl_Menu", "bi-cart-plus", "Replenishment", area: "Warehouse", rule: "Module:Inventory&Flag:Replenishment"),
-        Link("wh.masterdata", "sec.inventory", 70, "Master Data", "bi-collection", "InventoryMasterData", area: "Warehouse", rule: "Module:Inventory&Perm:InventoryMasterData.View"),
-        Link("wh.partcatalogue", "sec.inventory", 80, "Pc_Menu", "bi-journal-plus", "PartCatalogueRequest", area: "Warehouse", rule: "Flag:PartCatalogue", badge: NavigationBadges.MyWorkPartCatalogue),
-        Link("wh.partcatalogue.admin", "sec.inventory", 90, "Pc_Title_Admin", "bi-sliders", "PartCatalogueAdmin", area: "Warehouse", rule: "Flag:PartCatalogueAdmin"),
-
         // ---- مدیریت سیستم (برای دارنده‌ی DisciplineMaster بدون Administration فقط زیرگروه سازمان/دیسیپلین دیده می‌شود)
         Section("sec.admin", 1000, "Administration", "bi-gear", "Module:Administration|Flag:DisciplineMaster",
-            "Settings,Users,Roles,PermissionMatrix,AuditLog,RoutingRules,ContractApprovalAuthority,Department,Employee,Authorization,SoDPolicy,AuthorizationAudit,NavigationVisibility,NavigationMenu,Organization,OrganizationImport,DatabaseUpdate,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
+            "Settings,Users,Roles,PermissionMatrix,AuditLog,RoutingRules,ContractApprovalAuthority,PurchaseOrderAuthority,Department,Employee,Authorization,SoDPolicy,AuthorizationAudit,NavigationVisibility,NavigationMenu,Organization,OrganizationImport,DatabaseUpdate,License,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
             activeArea: "Admin"),
         Link("admin.settings", "sec.admin", 10, "Settings", "bi-gear", "Settings", rule: "Module:Administration"),
+        // SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات (کنترلر فقط SystemAdmin)
+        Link("admin.numbering", "sec.admin", 15, "Num_Title", "bi-123", "Numbering", area: "Admin", rule: "Module:Administration&Role:SystemAdmin"),
         Sub("admin.sub.access", "sec.admin", 20, "User & Access"),
         Link("admin.users", "admin.sub.access", 10, "Users", "bi-people", "Users", area: "Admin", rule: "Module:Administration"),
         Link("admin.roles", "admin.sub.access", 20, "Roles", "bi-shield-check", "Roles", area: "Admin", rule: "Module:Administration"),
@@ -177,10 +192,13 @@ public static class NavigationMenuDefaults
         Link("admin.relationship", "admin.sub.ai", 50, "RelationshipExplorer", "bi-diagram-3", "Relationship", rule: "Module:Administration&Perm:Relationship.View"),
         Link("admin.routing", "admin.sub.ai", 60, "AI Routing Rules", "bi-signpost-split", "RoutingRules", area: "Admin", rule: "Module:Administration"),
         Link("admin.contractauthority", "admin.sub.ai", 70, "Contract Approval Authority", "bi-shield-check", "ContractApprovalAuthority", area: "Admin", rule: "Module:Administration"),
+        // SCRUM-470: the PO authority table
+        Link("admin.poauthority", "admin.sub.ai", 75, "Po_AuthorityTitle", "bi-receipt-cutoff", "PurchaseOrderAuthority", area: "Admin", rule: "Module:Administration"),
         Sub("admin.sub.monitoring", "sec.admin", 50, "System Monitoring"),
         Link("admin.auditlog", "admin.sub.monitoring", 10, "AuditLog", "bi-clock-history", "AuditLog", area: "Admin", rule: "Module:Administration"),
         Link("admin.authaudit", "admin.sub.monitoring", 20, "Authorization Audit", "bi-journal-check", "AuthorizationAudit", area: "Admin", rule: "Module:Administration"),
         Link("admin.dbupdate", "admin.sub.monitoring", 25, "Database Update", "bi-database-up", "DatabaseUpdate", area: "Admin", rule: "Module:Administration"),
+        Link("admin.license", "admin.sub.monitoring", 26, "Licence", "bi-key", "License", area: "Admin", rule: "Module:Administration"),
         Link("admin.performance", "admin.sub.monitoring", 30, "Performance Testing", "bi-speedometer2", "Performance", rule: "Module:Administration"),
         new("admin.hangfire", "admin.sub.monitoring", L, 40, "Background Jobs Dashboard", "bi-hdd-stack", "Module:Administration",
             ExternalPath: "/hangfire", OpenInNewTab: true),

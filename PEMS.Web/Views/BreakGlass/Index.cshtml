@@ -1,0 +1,53 @@
+@model PEMS.Web.Models.Account.BreakGlassViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = "Break-glass Recovery";
+    Layout = "_AuthLayout";
+}
+
+<h2>@Localizer["Break-glass recovery"]</h2>
+@if (Model.Window.IsOpen)
+{
+    <p class="subtitle">@Localizer["A recovery request file is present on the server. This page closes at"] <span dir="ltr">@Model.Window.ExpiresAtUtc?.ToString("HH:mm") UTC</span>.</p>
+}
+else
+{
+    <p class="subtitle">@Localizer["No recovery request file is present. Paste a vendor recovery token issued for this server."]</p>
+}
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="alert alert-danger py-2 px-3 small">@Model.Error</div>
+}
+
+@if (Model.Admins.Count == 0)
+{
+    <div class="alert alert-warning small">@Localizer["There is no active administrator account to reset."]</div>
+}
+else
+{
+    <form asp-controller="BreakGlass" asp-action="Index" method="post" autocomplete="off">
+        <div class="mb-3">
+            <label for="TargetUserId" class="form-label">@Localizer["Administrator account"]</label>
+            <select id="TargetUserId" name="TargetUserId" class="form-select" required>
+                <option value="">-</option>
+                @foreach (var a in Model.Admins)
+                {
+                    <option value="@a.UserId">@a.UserName @(string.IsNullOrWhiteSpace(a.FullName) ? "" : $"({a.FullName})")</option>
+                }
+            </select>
+        </div>
+        @if (!Model.Window.IsOpen)
+        {
+            <div class="mb-3">
+                <label for="VendorToken" class="form-label">@Localizer["Vendor recovery token"]</label>
+                <textarea id="VendorToken" name="VendorToken" class="form-control" dir="ltr" rows="4" required spellcheck="false"></textarea>
+            </div>
+        }
+        <button type="submit" class="btn btn-danger">@Localizer["Reset account"]</button>
+    </form>
+}
+
+<p class="small text-muted mt-3">@Localizer["The reset issues a temporary password shown once, forces a password change, resets MFA, signs the account out everywhere and notifies every administrator. The request can be used only once."]</p>

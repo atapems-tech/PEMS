@@ -29,6 +29,7 @@
     var canSeeReplenishment = ReplenishmentAvailability.IsEnabled && await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "ReplenishmentRecommendation", "View");
     // Discipline Master Data: مجوزمحور (ماژول DisciplineMaster)، نه نقش-محور؛ بدون دادن بخش Administration کامل به نقش‌های غیرادمین
     var canSeeDisciplineMaster = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "DisciplineMaster", "View");
+    var canSeePreProcurement = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "PreProcurement", "View");   // SCRUM-471
 
     // مرکز Import: ورودی واحد سایدبار برای همه‌ی Importها (ImportCatalog). فقط نقش را (بدون DB) می‌سنجد؛ کاربری که
     // قبلاً حداقل یک لینک Import پراکنده می‌دید، این ورودی را می‌بیند و برعکس. مجوز دقیق هر Import در خودِ صفحه‌ی مرکز
@@ -67,11 +68,12 @@
     // Maintenance History/MRS/Document Upload) از بخش‌های دامنه حذف و زیر ورودی واحد «Import Center» جمع شدند
     // (ImportCatalog). Import همچنان قابلیتِ متعلق به ماژول خودش است: Controller/Action/مسیر/مجوز/گردش‌کار
     // هیچ‌کدام تغییر نکرد - فقط ناوبری متمرکز شد. شرط دیدن هر Import همان شرط قبلی لینک پراکنده‌ی آن است.
-    var engineeringControllers = new[] { "EngineeringDashboard", "Projects", "EngineeringDocuments", "DocumentRegister", "DocumentRevisions", "DocumentWorkflow", "VDR", "Transmittal", "MDB", "ProcurementPackage", "Tender", "MaterialRequisition", "Discipline" };
+    var engineeringControllers = new[] { "EngineeringDashboard", "Projects", "EngineeringDocuments", "DocumentRegister", "DocumentRevisions", "DocumentWorkflow", "VDR", "Transmittal", "MDB", "Discipline" };
     var aiControllers = new[] { "EngineeringDocumentIntelligence", "KnowledgeBase", "AISearch", "ChatAssistant", "AIInsights" };
     var correspondenceControllers = new[] { "Letter", "DCC", "TechnicalQuery" };
     var qualityControllers = new[] { "QC", "MOC" };
-    var contractControllers = new[] { "Contract", "Vendor", "PurchaseOrder" };
+    // SCRUM-423: خرید (از مدیریت مهندسی)، قرارداد و فروشنده (از مدیریت قرارداد) و انبار در یک بخش «تدارکات و زنجیره‌ی تأمین»
+    var procurementControllers = new[] { "ProcurementPackage", "Tender", "MaterialRequisition", "Contract", "Vendor", "PurchaseOrder", "PreProcurement" };
     var projectControlControllers = new[] { "Task", "TaskManager", "Tag", "Report", "Meeting" };
     var cmmsControllers = new[] { "Equipment", "Instrument", "Asset", "MaintenanceStrategy", "FailureModeCatalog", "StrategyImport", "MaintenancePlan", "MaintenanceCalendar", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "Barcode", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
     var inventoryControllers = new[] { "Inventory", "MaterialItem", "IrnReceipt", "InventoryMasterData", "InventoryTransaction", "StoreRequisition", "Replenishment" };
@@ -80,7 +82,7 @@
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
     var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
-    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "ContractApprovalAuthority", "Department", "Employee", "Authorization", "SoDPolicy", "AuthorizationAudit", "NavigationVisibility", "Organization", "OrganizationImport", "DatabaseUpdate" };
+    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "ContractApprovalAuthority", "PurchaseOrderAuthority", "Department", "Employee", "Authorization", "SoDPolicy", "AuthorizationAudit", "NavigationVisibility", "Organization", "OrganizationImport", "DatabaseUpdate", "Numbering" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
     // Warehouse یک Area مستقل است؛ کنترلرهای هم‌نام در Areaهای دیگر نباید بخش را فعال کنند
@@ -161,18 +163,6 @@
 
             <a class="nav-link @(IsActive("MDB") ? "active" : "")" asp-controller="MDB" asp-action="Index" asp-area="">
                 <i class="bi bi-collection"></i> @Localizer["MDB"]
-            </a>
-
-            <a class="nav-link @(IsActive("ProcurementPackage") ? "active" : "")" asp-controller="ProcurementPackage" asp-action="Index" asp-area="">
-                <i class="bi bi-folder2-open"></i> @Localizer["ProcurementPackage"]
-            </a>
-
-            <a class="nav-link @(IsActive("Tender") ? "active" : "")" asp-controller="Tender" asp-action="Index" asp-area="">
-                <i class="bi bi-clipboard-check"></i> @Localizer["Tender"]
-            </a>
-
-            <a class="nav-link @(IsActive("MaterialRequisition") ? "active" : "")" asp-controller="MaterialRequisition" asp-action="Index" asp-area="">
-                <i class="bi bi-cart-check"></i> @Localizer["Material Requisition"]
             </a>
 
             <a class="nav-link @(IsActive("Discipline") ? "active" : "")" asp-controller="Discipline" asp-action="Index" asp-area="">
@@ -267,35 +257,125 @@
     }
 
 
-    @if (navVisibility.IsModuleVisible("ContractManagement"))
+    @* SCRUM-423: تدارکات و زنجیره‌ی تأمین، مثل CMMS یک بخش با زیرعنوان. هر پیوند همان شرط قبلی‌اش را دارد (ماژول بخش قبلی:
+       مهندسی برای MR/بسته/مناقصه، قرارداد برای قرارداد/فروشنده/PO، انبار و کاتالوگ قطعه برای انبار)؛ زیرعنوانِ بی‌پیوند رندر نمی‌شود. *@
+    @{
+        var engProcurementVisible = navVisibility.IsModuleVisible("EngineeringManagement");
+        var contractVisible = navVisibility.IsModuleVisible("ContractManagement");
+        var inventoryVisible = navVisibility.IsModuleVisible("Inventory");
+        var warehouseControllers = inventoryControllers.Concat(new[] { "PartCatalogueRequest", "PartCatalogueAdmin" }).ToArray();
+    }
+    @if (engProcurementVisible || contractVisible || inventoryVisible || canSeePartCatalogue || canSeePreProcurement)
     {
-        var active = ContainsActive(contractControllers);
-        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-contract" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
-            <i class="bi bi-file-earmark-ruled nav-section-icon"></i>
-            <span>@Localizer["ContractManagement"]</span>
+        var active = ContainsActive(procurementControllers) || ContainsActiveInArea("Warehouse", warehouseControllers);
+        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-procurement" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
+            <i class="bi bi-cart3 nav-section-icon"></i>
+            <span>@Localizer["Nav_ProcurementSupplyChain"]</span>
             <i class="@ChevronClass(active)"></i>
         </div>
-        <div class="@SectionClass(active)" id="sec-contract">
+        <div class="@SectionClass(active)" id="sec-procurement">
 
-            <a class="nav-link @(IsActive("Contract") ? "active" : "")" asp-controller="Contract" asp-action="Index" asp-area="">
-                <i class="bi bi-file-earmark-ruled"></i> @Localizer["Contracts"]
-            </a>
+            @if (contractVisible)
+            {
+                <a class="nav-link @(IsActive("Vendor") ? "active" : "")" asp-controller="Vendor" asp-action="Index" asp-area="">
+                    <i class="bi bi-building"></i> @Localizer["Vendors"]
+                </a>
+            }
 
-            <a class="nav-link @(IsActive("Vendor") ? "active" : "")" asp-controller="Vendor" asp-action="Index" asp-area="">
-                <i class="bi bi-folder2-open"></i> @Localizer["Vendors"]
-            </a>
+            @if (engProcurementVisible || contractVisible || canSeePreProcurement)
+            {
+                <div class="nav-subheading">@Localizer["Nav_Proc_Purchasing"]</div>
+            }
+            @if (canSeePreProcurement)
+            {
+                <a class="nav-link @(IsActive("PreProcurement") ? "active" : "")" asp-controller="PreProcurement" asp-action="Index" asp-area="">
+                    <i class="bi bi-inbox"></i> @Localizer["Ppr_Title"]
+                </a>
+            }
+            @if (engProcurementVisible)
+            {
+                <a class="nav-link @(IsActive("MaterialRequisition") ? "active" : "")" asp-controller="MaterialRequisition" asp-action="Index" asp-area="">
+                    <i class="bi bi-cart-check"></i> @Localizer["Material Requisition"]
+                </a>
 
-            <a class="nav-link @(IsActive("PurchaseOrder") ? "active" : "")" asp-controller="PurchaseOrder" asp-action="Index" asp-area="">
-                <i class="bi bi-receipt"></i> @Localizer["Purchase Orders"]
-            </a>
+                <a class="nav-link @(IsActive("ProcurementPackage") ? "active" : "")" asp-controller="ProcurementPackage" asp-action="Index" asp-area="">
+                    <i class="bi bi-folder2-open"></i> @Localizer["ProcurementPackage"]
+                </a>
 
-            <a class="nav-link" href="@ComingSoon("Contract Milestones", "Contract Management")">
-                <i class="bi bi-flag"></i> @Localizer["Contract Milestones"]
-            </a>
+                <a class="nav-link @(IsActive("Tender") ? "active" : "")" asp-controller="Tender" asp-action="Index" asp-area="">
+                    <i class="bi bi-clipboard-check"></i> @Localizer["Tender"]
+                </a>
+            }
+            @if (contractVisible)
+            {
+                <a class="nav-link @(IsActive("PurchaseOrder") ? "active" : "")" asp-controller="PurchaseOrder" asp-action="Index" asp-area="">
+                    <i class="bi bi-receipt"></i> @Localizer["Purchase Orders"]
+                </a>
 
-            <a class="nav-link" href="@ComingSoon("Claims", "Contract Management")">
-                <i class="bi bi-exclamation-diamond"></i> @Localizer["Claims"]
-            </a>
+                <div class="nav-subheading">@Localizer["Contracts"]</div>
+
+                <a class="nav-link @(IsActive("Contract") ? "active" : "")" asp-controller="Contract" asp-action="Index" asp-area="">
+                    <i class="bi bi-file-earmark-ruled"></i> @Localizer["Contracts"]
+                </a>
+
+                <a class="nav-link" href="@ComingSoon("Contract Milestones", "Contract Management")">
+                    <i class="bi bi-flag"></i> @Localizer["Contract Milestones"]
+                </a>
+
+                <a class="nav-link" href="@ComingSoon("Claims", "Contract Management")">
+                    <i class="bi bi-exclamation-diamond"></i> @Localizer["Claims"]
+                </a>
+            }
+
+            @if (inventoryVisible || canSeePartCatalogue)
+            {
+                <div class="nav-subheading">@Localizer["Warehouse"]</div>
+            }
+            @if (inventoryVisible)
+            {
+                <a class="nav-link @(IsActive("Inventory", "Warehouse") ? "active" : "")" asp-controller="Inventory" asp-action="Index" asp-area="Warehouse">
+                    <i class="bi bi-speedometer2"></i> @Localizer["Dashboard"]
+                </a>
+
+                <a class="nav-link @(IsActive("MaterialItem", "Warehouse") ? "active" : "")" asp-controller="MaterialItem" asp-action="Index" asp-area="Warehouse">
+                    <i class="bi bi-box-seam"></i> @Localizer["Material Master"]
+                </a>
+
+                <a class="nav-link @(IsActive("IrnReceipt", "Warehouse") ? "active" : "")" asp-controller="IrnReceipt" asp-action="Index" asp-area="Warehouse">
+                    <i class="bi bi-truck"></i> @Localizer["Incoming Receipts (IRN)"]
+                </a>
+
+                <a class="nav-link @(IsActive("InventoryTransaction", "Warehouse") ? "active" : "")" asp-controller="InventoryTransaction" asp-action="Index" asp-area="Warehouse">
+                    <i class="bi bi-list-ul"></i> @Localizer["Transaction Ledger"]
+                </a>
+
+                <a class="nav-link @(IsActive("StoreRequisition", "Warehouse") ? "active" : "")" asp-controller="StoreRequisition" asp-action="Index" asp-area="Warehouse">
+                    <i class="bi bi-clipboard-check"></i> @Localizer["Store Requisitions"]
+                </a>
+
+                @if (canSeeReplenishment)
+                {
+                    <a class="nav-link @(IsActive("Replenishment", "Warehouse") ? "active" : "")" asp-controller="Replenishment" asp-action="Index" asp-area="Warehouse">
+                        <i class="bi bi-cart-plus"></i> @Localizer["Repl_Menu"]
+                    </a>
+                }
+
+                <a class="nav-link @(IsActive("InventoryMasterData", "Warehouse") ? "active" : "")" asp-controller="InventoryMasterData" asp-action="Index" asp-area="Warehouse">
+                    <i class="bi bi-collection"></i> @Localizer["Master Data"]
+                </a>
+            }
+            @if (canSeePartCatalogue)
+            {
+                <a class="nav-link @(IsActive("PartCatalogueRequest", "Warehouse") ? "active" : "")" asp-controller="PartCatalogueRequest" asp-action="Index" asp-area="Warehouse">
+                    <i class="bi bi-journal-plus"></i> @Localizer["Pc_Menu"]
+                </a>
+            }
+            @if (canAdminPartCatalogue)
+            {
+                <a class="nav-link @(IsActive("PartCatalogueAdmin", "Warehouse") ? "active" : "")" asp-controller="PartCatalogueAdmin" asp-action="Index" asp-area="Warehouse">
+                    <i class="bi bi-sliders"></i> @Localizer["Pc_Title_Admin"]
+                </a>
+            }
         </div>
     }
 
@@ -583,67 +663,6 @@
     }
 
 
-    @if (navVisibility.IsModuleVisible("Inventory") || canSeePartCatalogue)
-    {
-        var inventoryVisible = navVisibility.IsModuleVisible("Inventory");
-        var active = ContainsActiveInArea("Warehouse", inventoryControllers.Concat(new[] { "PartCatalogueRequest", "PartCatalogueAdmin" }).ToArray());
-        <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-inventory" role="button" tabindex="0" aria-expanded="@active.ToString().ToLower()">
-            <i class="bi bi-boxes nav-section-icon"></i>
-            <span>@Localizer["Warehouse"]</span>
-            <i class="@ChevronClass(active)"></i>
-        </div>
-        <div class="@SectionClass(active)" id="sec-inventory">
-
-            @if (inventoryVisible)
-            {
-            <a class="nav-link @(IsActive("Inventory", "Warehouse") ? "active" : "")" asp-controller="Inventory" asp-action="Index" asp-area="Warehouse">
-                <i class="bi bi-speedometer2"></i> @Localizer["Dashboard"]
-            </a>
-
-            <a class="nav-link @(IsActive("MaterialItem", "Warehouse") ? "active" : "")" asp-controller="MaterialItem" asp-action="Index" asp-area="Warehouse">
-                <i class="bi bi-box-seam"></i> @Localizer["Material Master"]
-            </a>
-
-            <a class="nav-link @(IsActive("IrnReceipt", "Warehouse") ? "active" : "")" asp-controller="IrnReceipt" asp-action="Index" asp-area="Warehouse">
-                <i class="bi bi-truck"></i> @Localizer["Incoming Receipts (IRN)"]
-            </a>
-
-            <a class="nav-link @(IsActive("InventoryTransaction", "Warehouse") ? "active" : "")" asp-controller="InventoryTransaction" asp-action="Index" asp-area="Warehouse">
-                <i class="bi bi-list-ul"></i> @Localizer["Transaction Ledger"]
-            </a>
-
-            <a class="nav-link @(IsActive("StoreRequisition", "Warehouse") ? "active" : "")" asp-controller="StoreRequisition" asp-action="Index" asp-area="Warehouse">
-                <i class="bi bi-clipboard-check"></i> @Localizer["Store Requisitions"]
-            </a>
-
-            @if (canSeeReplenishment)
-            {
-            <a class="nav-link @(IsActive("Replenishment", "Warehouse") ? "active" : "")" asp-controller="Replenishment" asp-action="Index" asp-area="Warehouse">
-                <i class="bi bi-cart-plus"></i> @Localizer["Repl_Menu"]
-            </a>
-            }
-
-            <a class="nav-link @(IsActive("InventoryMasterData", "Warehouse") ? "active" : "")" asp-controller="InventoryMasterData" asp-action="Index" asp-area="Warehouse">
-                <i class="bi bi-collection"></i> @Localizer["Master Data"]
-            </a>
-            }
-
-            @if (canSeePartCatalogue)
-            {
-                <a class="nav-link @(IsActive("PartCatalogueRequest", "Warehouse") ? "active" : "")" asp-controller="PartCatalogueRequest" asp-action="Index" asp-area="Warehouse">
-                    <i class="bi bi-journal-plus"></i> @Localizer["Pc_Menu"]
-                </a>
-            }
-            @if (canAdminPartCatalogue)
-            {
-                <a class="nav-link @(IsActive("PartCatalogueAdmin", "Warehouse") ? "active" : "")" asp-controller="PartCatalogueAdmin" asp-action="Index" asp-area="Warehouse">
-                    <i class="bi bi-sliders"></i> @Localizer["Pc_Title_Admin"]
-                </a>
-            }
-        </div>
-    }
-
-
     @{
         // طبق «PEMS — Centralized Import Center»: Importها زیر ورودی سطح‌بالای «Import Center» هستند (نه زیر
         // Administration و نه پراکنده در بخش‌ها). Administration فقط برای SystemAdmin است - هر زیربخش (User & Access/
@@ -679,6 +698,14 @@
             <a class="nav-link @(IsActive("Settings") ? "active" : "")" asp-controller="Settings" asp-action="Index" asp-area="">
                 <i class="bi bi-gear"></i> @Localizer["Settings"]
             </a>
+
+            @* SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات؛ همان نقش کنترلر (SystemAdmin) *@
+            @if (canSeeAdminCore && User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
+            {
+                <a class="nav-link @(InArea("Admin") && IsActive("Numbering", "Admin") ? "active" : "")" asp-area="Admin" asp-controller="Numbering" asp-action="Index">
+                    <i class="bi bi-123"></i> @Localizer["Num_Title"]
+                </a>
+            }
 
             @if (canSeeAdminCore)
             {
@@ -770,6 +797,11 @@
                 <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("ContractApprovalAuthority") ? "active" : "")"
                    asp-area="Admin" asp-controller="ContractApprovalAuthority" asp-action="Index">
                     <i class="bi bi-shield-check"></i> @Localizer["Contract Approval Authority"]
+                </a>
+
+                <a class="nav-link nav-subitem @(InArea("Admin") && IsActive("PurchaseOrderAuthority") ? "active" : "")"
+                   asp-area="Admin" asp-controller="PurchaseOrderAuthority" asp-action="Index">
+                    <i class="bi bi-receipt-cutoff"></i> @Localizer["Po_AuthorityTitle"]
                 </a>
 
                 <div class="nav-subheading">@Localizer["System Monitoring"]</div>

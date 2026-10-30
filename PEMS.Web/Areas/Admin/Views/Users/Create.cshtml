@@ -87,7 +87,7 @@
         </div>
 
         <hr />
-        <partial name="_RoleCheckboxes" model="Model" />
+        <partial name="_RoleSelect" model="Model" />
 
         <div class="form-check mb-4">
             <input asp-for="IsActive" class="form-check-input" />
@@ -101,7 +101,12 @@
 
 </div>
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-multiselect.css" asp-append-version="true" />
+}
+
 @section Scripts {
+    <script src="~/js/pems-multiselect.js" asp-append-version="true"></script>
     <partial name="_ValidationScriptsPartial" />
     <script>
         var existingSelect = document.getElementById('existingEmployeeSelect');

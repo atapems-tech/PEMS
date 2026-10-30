@@ -9,7 +9,7 @@
 <div class="content-card" style="max-width:700px;">
     <form asp-action="Create" method="post">
         <div class="row g-3">
-            <div class="col-md-6"><label class="form-label">@Localizer["Package Number"]</label><input name="packageNumber" class="form-control" placeholder="e.g. PP-2026-001" required /></div>
+            <div class="col-md-6">@await Component.InvokeAsync("DocumentNumberField", new { documentType = "ProcurementPackage", name = "packageNumber", label = Localizer["Package Number"].Value })</div>
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Project"]</label>
                 <select name="projectId" class="form-select" required>

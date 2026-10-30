@@ -893,16 +893,52 @@ else
 </div>
 
 <div class="content-card mt-3">
-    @{ var requiredMaterials = (List<PEMS.Domain.Entities.WorkOrderMaterial>)ViewBag.RequiredMaterials; }
+    @{
+        var requiredMaterials = (List<PEMS.Domain.Entities.WorkOrderMaterial>)ViewBag.RequiredMaterials;
+        var intake = ViewBag.WarehouseIntake as PEMS.Application.Interfaces.WarehouseIntakeDto;   // SCRUM-472
+    }
     <h6 class="mb-3"><i class="bi bi-box-seam"></i> @Localizer["Required Materials"]</h6>
     <table class="table table-enterprise table-sm">
-        <thead><tr><th>@Localizer["Material"]</th><th>@Localizer["Required Qty"]</th><th></th></tr></thead>
+        <thead><tr><th>@Localizer["Material"]</th><th>@Localizer["Required Qty"]</th><th>@Localizer["Whi_SupplyCode"]</th><th>@Localizer["Whi_Sourced"]</th><th></th></tr></thead>
         <tbody>
             @foreach (var rm in requiredMaterials)
             {
+                var il = intake?.Lines.FirstOrDefault(l => l.WorkOrderMaterialId == rm.WorkOrderMaterialId);
+                var sourcedAlready = il != null && il.Requisitions.Count > 0;
                 <tr>
                     <td class="small">@rm.MaterialItem?.MaterialCode - @rm.MaterialItem?.Description</td>
                     <td>@rm.RequiredQuantity</td>
+                    <td class="small">
+                        @if (Ctl(WoSection.RequiredMaterials) && !sourcedAlready)
+                        {
+                        <form asp-action="SetMaterialSupplyCode" method="post" class="d-flex gap-1">
+                            <input type="hidden" name="workOrderMaterialId" value="@rm.WorkOrderMaterialId" />
+                            <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
+                            <select name="supplyCode" class="form-select form-select-sm" aria-label="@Localizer["Whi_SupplyCode"]" data-pems-select="off">
+                                @foreach (var code in PEMS.Domain.Entities.WorkOrderMaterialSupplyCodes.All)
+                                {
+                                    <option value="@code" selected="@(code == rm.SupplyCode)">@Localizer["Whi_Supply_" + code]</option>
+                                }
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["Whi_Save"]"><i class="bi bi-check2"></i></button>
+                        </form>
+                        }
+                        else
+                        {
+                            <span class="vs-pill @(rm.SupplyCode == PEMS.Domain.Entities.WorkOrderMaterialSupplyCodes.DirectPurchase ? "vs-pill--warning" : "vs-pill--neutral")">@Localizer["Whi_Supply_" + rm.SupplyCode]</span>
+                        }
+                    </td>
+                    <td class="small">
+                        @if (il != null && rm.SupplyCode == PEMS.Domain.Entities.WorkOrderMaterialSupplyCodes.Stock)
+                        {
+                            <span dir="ltr">@il.SourcedQuantity.ToString("0.###") / @il.RequiredQuantity.ToString("0.###")</span>
+                            @foreach (var r in il.Requisitions)
+                            {
+                                <a class="ms-1" href="/Warehouse/StoreRequisition/Details/@r.StoreRequisitionId" dir="ltr">@r.RequisitionNumber (@r.WarehouseCode)</a>
+                            }
+                        }
+                        else { <span class="text-muted">—</span> }
+                    </td>
                     <td class="text-end">
                         @if (Ctl(WoSection.RequiredMaterials))
                         {
@@ -918,6 +954,37 @@ else
         </tbody>
     </table>
     @if (!requiredMaterials.Any()) { <p class="text-muted small">@Localizer["متریال موردنیازی ثبت نشده."]</p> }
+
+    @* SCRUM-472: warehouse intake of the stock lines *@
+    @if (intake != null && intake.Lines.Count > 0)
+    {
+        var unsourced = intake.Lines.Where(l => l.UnsourcedQuantity > 0).ToList();
+        var hasDirectPurchase = intake.Lines.Any(l => l.SupplyCode == PEMS.Domain.Entities.WorkOrderMaterialSupplyCodes.DirectPurchase);   // SCRUM-471
+        <div class="d-flex flex-wrap align-items-center gap-2 small mb-3">
+            <span class="fw-semibold"><i class="bi bi-inboxes" aria-hidden="true"></i> @Localizer["Whi_Title"]:</span>
+            @if (intake.IsOpen)
+            {
+                <span class="vs-pill vs-pill--warning">@Localizer["Whi_State_Open"]</span>
+                <a href="/Warehouse/WarehouseIntake/Details/@Model.WorkOrderId">@Localizer["Whi_Open"]</a>
+            }
+            else if (unsourced.Count == 0 && !hasDirectPurchase)
+            {
+                <span class="vs-pill vs-pill--success">@Localizer["Whi_State_Sourced"]</span>
+            }
+            else
+            {
+                <span class="vs-pill vs-pill--neutral">@Localizer["Whi_State_NotRequested"]</span>
+                @if (canEditWo)
+                {
+                    <form asp-action="RequestWarehouseMaterials" method="post" class="d-inline">
+                        <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
+                        <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-send" aria-hidden="true"></i> @Localizer["Whi_Request"]</button>
+                    </form>
+                }
+                <span class="text-muted">@Localizer["Whi_RequestHint"]</span>
+            }
+        </div>
+    }
 
     @if (!Ctl(WoSection.RequiredMaterials))
     {

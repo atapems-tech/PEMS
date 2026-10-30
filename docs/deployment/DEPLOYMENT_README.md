@@ -4,6 +4,9 @@ How the two online environments are built, deployed, secured, reset and recovere
 (`parmisata.ir`); the same steps apply to any Windows host with IIS, the ASP.NET Core Module and SQL Server.
 Background and failure history of the pipeline: [DEMO_DEPLOYMENT.md](DEMO_DEPLOYMENT.md). Database behaviour: [CODE_FIRST_DATABASE.md](CODE_FIRST_DATABASE.md).
 
+Short per-operation procedures and the access/owner table: [RUNBOOK_DEPLOY_SITES.md](RUNBOOK_DEPLOY_SITES.md).
+Decision record for the branch model: [ADR-0006](../../plan/adr/0006-demo-and-staging-branch-policy.md).
+
 ## 1. The model in one table
 
 | Branch | What a push does | Subdomain | Database | Settings file | Secrets prefix |
@@ -54,6 +57,7 @@ Repository > **Settings > Secrets and variables > Actions > New repository secre
 | `<P>_FTP_PORT` | optional, default 21 (set it to 21 explicitly, as demo does) |
 | `<P>_SQL_CONNECTION_STRING` | connection string of 2.2 |
 | `<P>_ADMIN_PASSWORD` | password of the first administrator, used only on an empty database; change it at first sign-in |
+| `<P>_BACKUP_DIR` | optional: a folder **on the database server** that the SQL Server service account may write (for example `D:/Backups/pems-demo`). When set, every deploy first takes a copy-only `BACKUP DATABASE` there (`scripts/ci/backup-database.sh`) and a failing backup stops the deploy; the path is in the run summary. When empty the run only warns that there is no pipeline backup |
 | `<P>_SITE_URL` | `https://demo.parmisata.ir` / `https://staging.parmisata.ir` (enables the post-deploy health check) |
 
 Rotate any secret that was ever pasted into chat, a ticket or a commit.
@@ -67,9 +71,16 @@ Rotate any secret that was ever pasted into chat, a ticket or a commit.
 2. `dotnet publish -r win-x64 --self-contained -p:PemsEnv=<target>` (ships `env/<target>.env`).
 3. Writes `env/<target>.secrets.env` from the `<P>_SQL_CONNECTION_STRING` and `<P>_ADMIN_PASSWORD` secrets and sets `PEMS_ENV=<target>` and a 15-minute startup limit in `web.config`.
 4. Uploads `app_offline.htm` (the app releases its file locks), uploads the files by FTP (180 s timeout, one retry), removes `app_offline.htm`.
-5. Polls `GET <SITE_URL>/health/database` until `200 UpToDate` (the first start installs the schema, later starts apply new migrations), then reports the TLS certificate state.
+5. Polls `GET <SITE_URL>/health/database` until `200 UpToDate` (the first start installs the schema, later starts apply new migrations).
+6. **Smoke test** (`scripts/ci/smoke-test.sh`, anonymous, writes nothing): `/health` = Healthy, `/health/database` = UpToDate, the login page has its form, a stylesheet is served, a protected page sends an anonymous visitor to the login page, an unknown path is 404. A `FAIL` line fails the run.
+7. On `staging`: records the tag `staged/<tree hash>`. A `demo` run (`require_staged`) refuses a tree without that tag, so every demo deploy is preceded by a staging deploy of the same source tree (SCRUM-314). Manual runs can tick `allow_unstaged` (rollback of a build that was never staged).
+8. Reports the TLS certificate state.
+
+Before step 1 of a run the optional database backup runs (secret `<P>_BACKUP_DIR`, section 2.4) after the runtime configuration and before the app is taken offline. A manual run accepts `rollback_ref` (commit, tag or branch to deploy instead of the branch head).
 
 **Identical code is not tested twice.** After build, drift gate and tests pass, the pipeline pushes the tag `gate-pass/<hash of the whole source tree>`. A later deploy of a tree with the same hash (typically `demo` right after `staging`, because the promotion is a plain merge) finds the tag, skips restore, build, drift gate and tests, and goes straight to publish and upload (about 6 minutes less). Any change in any file gives a new hash, so the gate runs again; a failed gate leaves no tag. To force the gate, run the workflow by hand with *Run workflow > force_tests* ticked, or delete the tag (`git push origin --delete gate-pass/<hash>`). NuGet packages are cached between runs. Old tags can be removed in bulk once a month: `git tag -l "gate-pass/*"`.
+
+**Migration chain gate (required step).** The drift gate opens no database, so `deploy-site.yml` first runs the job `migration-gate` (`migration-chain.yml`): it applies the whole chain on a throw-away SQL Server (empty install, then upgrade from the commit the branch pointed to before this push; `origin/main` for a new branch or a manual run) and names the failing migration. If it fails nothing is built or uploaded. You can run it earlier by hand: Actions > *PEMS Migration Chain Gate* > **Run workflow** on your branch (SCRUM-413, [CODE_FIRST_DATABASE.md](CODE_FIRST_DATABASE.md)). It runs on every deploy, also when the gate-pass tag skips the build, and with the data upgrade tests of SCRUM-280 one run took about 8 minutes (run 40493228708). The deploy itself never connects to SQL Server; the migrator inside the application applies the migrations at start-up, and the post-deploy poll of `/health/database` confirms it.
 
 Watch a run: GitHub > **Actions**, or `gh run watch`. Slack (`#pems-github`) posts every run. Documentation-only pushes (`docs/**`, `plan/**`, `*.md`) do not redeploy.
 Run it by hand: Actions > the workflow > **Run workflow** (choose the branch), or `gh workflow run deploy-staging.yml --ref staging`.
@@ -132,7 +143,8 @@ A reset returns demo or staging to an empty database that reinstalls itself. **I
 Not available yet (planned): a UI to export the current data as a versioned, hashed package, import it, and reset to a baseline package on every push, with a version-compatibility precheck (plan rows #352 and #353, SCRUM-369 and SCRUM-370; nightly/admin reset #141). Until they exist, use this manual procedure.
 
 ## 6. Roll back
-Re-run the deploy workflow on the previous good commit (`git revert` on the branch, or `gh workflow run ... --ref <branch>` after resetting the branch to the good commit). The schema moves forward only (rule 6): if a bad migration was applied, restore the database from the host's backup and redeploy the previous build.
+Run the deploy workflow by hand with **rollback_ref** = the previous good commit (`gh workflow run deploy-demo.yml --ref demo -f rollback_ref=<sha>`, add `-f allow_unstaged=true` if that build never went through staging); the difference upload sends only the files that differ. Step-by-step: [RUNBOOK_DEPLOY_SITES.md](RUNBOOK_DEPLOY_SITES.md). The schema moves forward only (rule 6): if a bad migration was applied, restore the database from the pre-deploy backup (`<P>_BACKUP_DIR`) or the host's backup and redeploy the previous build.
+Automatic rollback on a failed smoke test is not built yet (follow-up task); until then the run is red and the operator rolls back.
 
 ## 7. Checklist for a new environment
 - [ ] subdomain, DNS and certificate (2.1)
@@ -140,3 +152,24 @@ Re-run the deploy workflow on the previous good commit (`git revert` on the bran
 - [ ] `env/<name>.env` and `env/<name>.secrets.env.example` exist and have the same keys as the others (a test checks this)
 - [ ] seven required GitHub secrets (2.4; protocol and port are optional), branch created and protected (2.5)
 - [ ] first push -> green run -> `/health/database` is `UpToDate` -> administrator signs in
+
+## 8. Verifying a deployed environment in the browser (manual checks)
+
+Used after a deploy and by the QA check ([../guidelines/07-qa-check-in-the-ui.md](../guidelines/07-qa-check-in-the-ui.md)). Everything is done in the browser.
+
+1. Open `<SITE_URL>/health/database`: `200 UpToDate`.
+2. Sign in as the administrator; the first sign-in forces a password change that follows the environment's password policy ([../../env/README.md](../../env/README.md) "Verifying settings").
+3. DevTools > Network > the page request: the response has `Strict-Transport-Security` with `max-age` = `Hosting__HstsMaxAgeDays` x 86400, and the padlock shows a valid certificate.
+4. Admin > Database Update shows "up to date" and the latest migration.
+5. Smoke: open the home page, one list, one form and one dashboard in `fa` (RTL) and `en`, at desktop width and 375 px; the console has no errors.
+6. For a task being QA-checked: run its checklist (Jira comment; line 1 is the local test run, [../../README.md](../../README.md) "Local tests") and the README checks it references; record the result in the Jira issue.
+
+## 9. Administrator password and updates (rule, SCRUM-410)
+
+Owner decision 2026-10-27, for demo, staging and every client server:
+
+- **A deploy, a merge into `staging` or `demo`, an update of a client server and a schema migration never create, reset or change a password.** The application seeds the administrator only when the user table is empty. `Seed__Admin__Password` in the secrets file is used for that one moment only; rewriting the file on every deploy does not change an existing account.
+- **Only a fresh install or an explicit database reset (section 5) restarts the first-install flow:** the empty database gets the administrator from the seed settings and the first sign-in forces a new password. After a reset, tell the owner of the environment to sign in and change it at once.
+- The client update kit (`deploy/`) replaces the application and runs the schema migration script; it never touches accounts. `PEMS_DEV_RESET_ADMIN_PASSWORD` works only in Development and is never set on a server.
+- Guard: `AdminPasswordSurvivesUpdateTests` (build fails the tests if a start-up step starts changing an existing account). Manual check: M-14 in [../../README.md](../../README.md) "Manual checks in the UI".
+- Planned (rows #353, #169, #170): the reset-on-deploy baseline and the first-run wizard reuse this flow; the signed update package keeps this rule.

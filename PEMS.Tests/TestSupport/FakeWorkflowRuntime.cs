@@ -59,7 +59,7 @@ public class FakeWorkflowRuntime : IWorkflowRuntime
         var entry = _instances.Values.FirstOrDefault(x => x.WorkflowInstanceId == workflowInstanceId);
         if (entry != null)
         {
-            entry.Status = actionType == "Approve" ? "Completed" : "Rejected";
+            entry.Status = actionType switch { "Approve" or "Complete" => "Completed", "Cancel" => "Cancelled", _ => "Rejected" };   // SCRUM-472: Complete/Cancel
             entry.CompletionDate = DateTime.Now;
         }
         return Task.CompletedTask;

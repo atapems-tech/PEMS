@@ -59,7 +59,41 @@ public class MaterialRequisitionController : Controller
 
         ViewBag.RelatedLetters = await _letterService.GetRelatedToMRAsync(id);
 
+        // SCRUM-470: "Create PO" when this MR may feed a purchase order and the user may create one
+        if (HttpContext?.RequestServices?.GetService(typeof(IPurchaseOrderApprovalService)) is IPurchaseOrderApprovalService approval
+            && await _permissionService.HasPermissionAsync(_currentUser.Roles, "PurchaseOrder", "Create")
+            && (await approval.GetRequisitionsForPoAsync()).Any(m => m.Id == id))
+        {
+            ViewBag.CanCreatePo = true;
+            ViewBag.Vendors = await _context.Vendors.AsNoTracking().Where(v => v.IsActive).OrderBy(v => v.Name)
+                .Select(v => new { v.VendorId, v.Name }).ToListAsync();
+        }
+
         return View(mr);
+    }
+
+    /// <summary>
+    /// SCRUM-428: registered parts (completed part catalogue requests and Material Master) for the part-number lookup of the MR item
+    /// lines, in the item shape of the PEMS.UI searchable select. Same permission as creating an MR.
+    /// </summary>
+    [HttpGet]
+    public async Task<IActionResult> PartLookup(string? q, [FromServices] IPartCatalogueDuplicateService parts)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaterialRequisition", "Create"))
+            return Forbid();
+        Response.Headers.CacheControl = "no-store";
+        var hits = await parts.SearchExistingPartsAsync(q);
+        return Json(new
+        {
+            items = hits.Select(h => new
+            {
+                value = h.PartNumber,
+                text = string.IsNullOrWhiteSpace(h.Description) ? h.PartNumber : $"{h.PartNumber} — {h.Description}",
+                sub = string.Join(" · ", new[] { h.ManufacturerName, h.ManufacturerPartNumber }.Where(x => !string.IsNullOrWhiteSpace(x))),
+                description = h.Description,
+                unit = h.Unit,
+            })
+        });
     }
 
     [HttpGet]
@@ -89,10 +123,12 @@ public class MaterialRequisitionController : Controller
 
         for (int i = 0; i < itemDescriptions.Count; i++)
         {
-            if (string.IsNullOrWhiteSpace(itemDescriptions[i])) continue;
+            // SCRUM-428: a row with only a registered part number is kept; the service takes the description from the part
+            var part = i < itemParts.Count ? itemParts[i] : null;
+            if (string.IsNullOrWhiteSpace(itemDescriptions[i]) && string.IsNullOrWhiteSpace(part)) continue;
 
             items.Add((
-                itemDescriptions[i],
+                itemDescriptions[i] ?? string.Empty,
                 i < itemParts.Count ? itemParts[i] : null,
                 i < itemQty.Count ? itemQty[i] : 1,
                 i < itemUnits.Count ? itemUnits[i] : null));
@@ -113,7 +149,7 @@ public class MaterialRequisitionController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ChangeStatus(int mrId, string status)
+    public async Task<IActionResult> ChangeStatus(int mrId, string status, [FromServices] IPreProcurementService? preProcurement = null)
     {
         // طبق الگوی WorkOrderController.AdvanceStatus: خودِ ویرایش نیازمند "Edit" است، اما
         // رسیدن به وضعیت تأییدی ("Approved") علاوه‌بر آن نیازمند "Approve" هم هست.
@@ -123,6 +159,15 @@ public class MaterialRequisitionController : Controller
 
         var (success, error) = await _service.ChangeStatusAsync(mrId, status);
         TempData[success ? "Message" : "Error"] = success ? "وضعیت MR به‌روزرسانی شد." : error;
+
+        // SCRUM-471: an MR issued to procurement enters the procurement queue of My Work for the buyer's review
+        if (success && status == "Issued to Procurement" && preProcurement != null)
+        {
+            int? employeeId = null;
+            if (_currentUser.UserId.HasValue)
+                employeeId = await _context.Users.Where(u => u.Id == _currentUser.UserId.Value).Select(u => u.EmployeeId).FirstOrDefaultAsync();
+            await preProcurement.RaiseMaterialRequisitionAsync(mrId, new PreProcurementActor(employeeId, _currentUser.Roles, _currentUser.UserName));
+        }
         return RedirectToAction(nameof(Details), new { id = mrId });
     }
 

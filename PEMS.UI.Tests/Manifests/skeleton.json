@@ -1,0 +1,53 @@
+{
+  "key": "skeleton",
+  "component": "PEMS.UI.Components.PemsSkeleton",
+  "category": "feedback",
+  "icon": "bi-hourglass-split",
+  "nameKey": "component.skeleton",
+  "optionsParameter": null,
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "label": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "lines": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "label",
+      "type": "TranslatableText",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "lines",
+      "type": "Int32",
+      "kind": "option",
+      "required": false
+    }
+  ],
+  "sample": {
+    "lines": 3
+  }
+}

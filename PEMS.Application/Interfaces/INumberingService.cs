@@ -20,4 +20,18 @@ public interface INumberingService
     /// </summary>
     Task<int> GetNextValueAsync(string documentType, string scopeKey) =>
         throw new NotSupportedException("GetNextValueAsync is not supported by this numbering implementation.");
+
+    /// <summary>
+    /// SCRUM-40: شماره‌ی بعدی با الگوی مدیر سامانه (NumberingScheme) اگر برای این نوع سند فعال باشد؛ وگرنه قالب داخلی.
+    /// context کدهای پروژه/دیسیپلین را برای توکن‌های {PROJECT}/{DISC} می‌دهد.
+    /// </summary>
+    Task<string> GetNextNumberAsync(string documentType, PEMS.Application.Numbering.NumberingContext context) =>
+        GetNextNumberAsync(documentType);
+
+    /// <summary>
+    /// SCRUM-40: شماره‌ی نهایی سند تازه. با الگوی فعال: شماره‌ی خودکار، مگر الگو ورود دستی را مجاز کرده و شماره‌ای وارد شده باشد.
+    /// بدون الگوی فعال: همان شماره‌ی واردشده (Trim‌شده؛ خالی بودنش را سرویس سند مثل قبل رد می‌کند).
+    /// </summary>
+    Task<string> ResolveNumberAsync(string documentType, string? enteredNumber, int? projectId = null, int? disciplineId = null) =>
+        Task.FromResult(enteredNumber?.Trim() ?? string.Empty);
 }

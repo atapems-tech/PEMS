@@ -4,6 +4,8 @@ Status: **proposed, 2026-10-23.** Decisions marked *decided* come from the owner
 gate. Backlog rows: #319 to #334 (plus the existing #29-#43 of area CMP). Standard it must satisfy:
 [PEMS_UI_ENGINEERING_STANDARD.md](PEMS_UI_ENGINEERING_STANDARD.md), [WORKSPACE_DESIGN_SYSTEM.md](WORKSPACE_DESIGN_SYSTEM.md).
 
+Decision record: [ADR-0002](../../plan/adr/0002-razor-with-separate-pems-ui-library.md) (D1, D2, D4 and rule 26; D3 stays open until spike #319).
+
 ## 1. Goal
 
 Every visible element of the application is a component from one library: a field, a button, a badge, a table, a
@@ -54,7 +56,7 @@ component API. That is why the same field, table and badge exist in hundreds of 
 |---|---|---|
 | D1 | Keep Razor; build a reusable component library; designers as embedded JavaScript components | *decided* 2026-10-18 (#5) |
 | D2 | Separate Razor Class Library **`PEMS.UI`** (components, tokens, CSS/JS, localization, catalog, tests); `PEMS.Web` only consumes it | *decided* 2026-10-23 |
-| D3 | **Component technology** - see 4.1 | recommendation, gated by spike #319 |
+| D3 | **Component technology** - see 4.1 | recommendation; spike #319 run 2026-10-27, result in [ADR-0007](../../plan/adr/0007-component-technology-static-razor-components.md) (accepted 2026-10-27) |
 | D4 | Study the whole project first (done: audit), then pilot on the **Admin area** (+ account pages and the shared shell) | *decided* 2026-10-23 |
 | D5 | Plan workbook, Jira and developers stay consistent through field ownership and a scripted sync | *decided* 2026-10-23, see [../process/PLAN_TRACKER_WORKFLOW.md](../process/PLAN_TRACKER_WORKFLOW.md) |
 | D6 | No CDN or internet dependency in any component (Instructions rule 1) | standing |

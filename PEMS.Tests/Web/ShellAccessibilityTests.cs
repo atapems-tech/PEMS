@@ -89,7 +89,7 @@ public class ShellAccessibilityTests
     [MemberData(nameof(Themes))]
     public void StatusTextTokens_MeetWcagAA_OnEveryBackgroundOfTheTheme(string theme, string selector)
     {
-        var tokens = ThemeTokens(Read("PEMS.Web/wwwroot/css/site.css"), selector);
+        var tokens = ThemeTokens(Read("PEMS.UI/wwwroot/tokens.css") + Read("PEMS.Web/wwwroot/css/site.css"), selector);
 
         var backgrounds = new[] { "--pems-surface", "--pems-bg" }
             .Select(n => tokens.TryGetValue(n, out var v) ? v : null)
@@ -109,7 +109,7 @@ public class ShellAccessibilityTests
     public void TheOldFillColours_AreStillBelowAA_WhichIsWhyTextUsesTheNewTokens()
     {
         // documents the measured problem: the fill tokens are fine for bars/graphics but not for text on the light surface
-        var tokens = ThemeTokens(Read("PEMS.Web/wwwroot/css/site.css"), ":root");
+        var tokens = ThemeTokens(Read("PEMS.UI/wwwroot/tokens.css") + Read("PEMS.Web/wwwroot/css/site.css"), ":root");
 
         Assert.True(Contrast(tokens["--pems-chart-warning"], tokens["--pems-surface"]) < 3.0);
         Assert.True(Contrast(tokens["--pems-chart-positive"], tokens["--pems-surface"]) < 3.0);

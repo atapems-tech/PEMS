@@ -1,128 +1,138 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.TechnicalQueryListItemDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
+@{
+    var projects = ((IEnumerable<dynamic>)ViewBag.Projects).ToList();
+    var queryType = (string?)ViewBag.SelectedQueryType;
+    var status = (string?)ViewBag.SelectedStatus;
+    var projectId = (int?)ViewBag.SelectedProjectId;
+    string? projectName = null;
+    foreach (var p in projects) { if (p.ProjectId == projectId) { projectName = p.ProjectName; } }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="Raise" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> @Localizer["New"]</a>
-</div>
+    var queryTypes = new[] { "TQ", "TSR", "RFI" };
+    var statuses = new[] { "Open", "PendingConfirmation", "Reopened", "Closed" };
+    var filterCount = (string.IsNullOrEmpty(queryType) ? 0 : 1) + (string.IsNullOrEmpty(status) ? 0 : 1) + (projectId.HasValue ? 1 : 0);
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold">@Model.TotalCount</div>
-            <div class="text-muted small">@Localizer["کل"]</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-warning">@ViewBag.OpenCount</div>
-            <div class="text-muted small">@Localizer["باز / در جریان"]</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-danger">@ViewBag.OverdueCount</div>
-            <div class="text-muted small"><i class="bi bi-clock-history"></i> @Localizer["از مهلت گذشته"]</div>
-        </div>
-    </div>
-</div>
+    // display text of a status; the stored value never changes (no key => the raw value)
+    string StatusText(string? s) => VdrUi.Loc(Localizer, "Tq_St_", s);
+    string StatusTone(string? s) => s == "Closed" ? "vs-pill--success" : s == "PendingConfirmation" ? "vs-pill--info" : "vs-pill--warning";
+}
 
-<div class="content-card mb-3">
-    <form method="get" class="row g-2">
-        <div class="col-md-2">
-            <select name="queryType" class="form-select form-select-sm">
-                <option value="">All Types</option>
-                <option value="TQ" selected="@("TQ" == (string?)ViewBag.SelectedQueryType)">TQ</option>
-                <option value="TSR" selected="@("TSR" == (string?)ViewBag.SelectedQueryType)">TSR</option>
-                <option value="RFI" selected="@("RFI" == (string?)ViewBag.SelectedQueryType)">RFI</option>
-            </select>
-        </div>
-        <div class="col-md-2">
-            <select name="status" class="form-select form-select-sm">
-                <option value="">@Localizer["All statuses"]</option>
-                @foreach (var s in new[] { "Open", "PendingConfirmation", "Reopened", "Closed" })
-                {
-                    <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option>
-                }
-            </select>
-        </div>
-        <div class="col-md-3">
-            <select name="projectId" class="form-select form-select-sm">
-                <option value="">@Localizer["All Projects"]</option>
-                @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == (int?)ViewBag.SelectedProjectId)">@p.ProjectName</option> }
-            </select>
-        </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-funnel"></i> @Localizer["Filter"]</button>
-        </div>
-    </form>
-</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('TechnicalQuery')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["ResetColumns"]
-        </button>
-    </div>
-    <div class="pems-grid-scroll">
-        <table class="table table-enterprise mb-0 pems-grid-table" data-grid-key="TechnicalQuery">
-            <thead>
-                <tr>
-                    <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">@Localizer["Number"]</th>
-                    <th data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="140" style="width:90px">@Localizer["Type"]</th>
-                    <th data-col-key="subject" data-resizable="true" data-min-width="180" data-max-width="500" style="width:320px">@Localizer["Subject"]</th>
-                    <th data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["Discipline"]</th>
-                    <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="150" style="width:100px">@Localizer["Priority"]</th>
-                    <th data-col-key="due" data-resizable="true" data-min-width="110" data-max-width="220" style="width:150px">@Localizer["Due"]</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="200" style="width:140px">@Localizer["Status"]</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var t in Model.Items)
-                {
+@* SCRUM-337 W1: built from the PEMS.UI list-page component; the page keeps its filters (type, status, project), its counts and columns. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["Tq_Title"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-filters form-id="tqFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    <div>
+                        <label class="lp-lbl" for="tqFilterType">@Localizer["Ed_Type"]</label>
+                        <select id="tqFilterType" name="queryType" class="form-select form-select-sm">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var t in queryTypes)
+                            { <option value="@t" selected="@(t == queryType)">@t</option> }
+                        </select>
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="tqFilterStatus">@Localizer["Ed_Status"]</label>
+                        <select id="tqFilterStatus" name="status" class="form-select form-select-sm">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var s in statuses)
+                            { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
+                        </select>
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="tqFilterProject">@Localizer["Project"]</label>
+                        <select id="tqFilterProject" name="projectId" class="form-select form-select-sm">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var p in projects)
+                            { <option value="@p.ProjectId" selected="@(p.ProjectId == projectId)">@p.ProjectName</option> }
+                        </select>
+                    </div>
+                </pems-list-filters>
+                <pems-list-kpi-toggle target="tqKpis" storage-key="pems.tq.kpis" />
+                <pems-list-reset-columns grid-key="TechnicalQuery" />
+                <pems-list-new href="@Url.Action("Raise")" text="@Localizer["Tq_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-kpis id="tqKpis">
+            <span class="vs-chip">@Localizer["Lp_Total"] <strong>@Model.TotalCount</strong></span>
+            <span class="vs-chip">@Localizer["Tq_OpenCount"] <strong>@ViewBag.OpenCount</strong></span>
+            <span class="vs-chip @(((int?)ViewBag.OverdueCount ?? 0) > 0 ? "vs-chip--danger" : "")"><i class="bi bi-clock-history" aria-hidden="true"></i> @Localizer["Overdue"] <strong>@ViewBag.OverdueCount</strong></span>
+        </pems-list-kpis>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (!string.IsNullOrEmpty(queryType))
+            { <pems-list-chip label="@Localizer["Ed_Type"]" value="@queryType" remove-href="@Url.Action("Index", new { status, projectId })" /> }
+            @if (!string.IsNullOrEmpty(status))
+            { <pems-list-chip label="@Localizer["Ed_Status"]" value="@StatusText(status)" remove-href="@Url.Action("Index", new { queryType, projectId })" /> }
+            @if (projectId.HasValue)
+            { <pems-list-chip label="@Localizer["Project"]" value="@projectName" remove-href="@Url.Action("Index", new { queryType, status })" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="TechnicalQuery" empty="@(!Model.Items.Any())" empty-text="@Localizer["Tq_Empty"]"
+                             filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
+                <thead>
                     <tr>
-                        <td><a asp-action="Details" asp-route-id="@t.TechnicalQueryId">@t.QueryNumber</a></td>
-                        <td><span class="badge bg-secondary">@t.QueryType</span></td>
-                        <td class="small" title="@t.Subject">@t.Subject</td>
-                        <td class="small" title="@t.DisciplineName">@t.DisciplineName</td>
-                        <td>
-                            <span class="badge @(t.Priority is "High" or "Urgent" ? "bg-danger" : "bg-light text-dark")">@t.Priority</span>
-                        </td>
-                        <td class="small">
-                            @(t.RequiredResponseDate?.ToString("yyyy-MM-dd"))
-                            @if (t.IsOverdue) { <span class="badge bg-danger ms-1">@Localizer["Overdue"]</span> }
-                        </td>
-                        <td><span class="badge @(t.Status == "Closed" ? "bg-success" : t.Status == "PendingConfirmation" ? "bg-info text-dark" : "bg-warning text-dark")">@t.Status</span></td>
+                        <th data-col-key="number" data-resizable="true" data-min-width="100" data-max-width="200" style="width:130px">@Localizer["Tq_Number"]</th>
+                        <th data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="140" style="width:90px">@Localizer["Ed_Type"]</th>
+                        <th data-col-key="subject" data-resizable="true" data-min-width="180" data-max-width="500" style="width:320px">@Localizer["Tq_Subject"]</th>
+                        <th data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px" class="vs-hide-md">@Localizer["Ed_Discipline"]</th>
+                        <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="150" style="width:100px">@Localizer["Tq_Priority"]</th>
+                        <th data-col-key="due" data-resizable="true" data-min-width="110" data-max-width="240" style="width:170px">@Localizer["Tq_Due"]</th>
+                        <th data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["Ed_Status"]</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-        @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["موردی یافت نشد."]</p> }
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var t in Model.Items)
+                    {
+                        <tr class="lp-row">
+                            <td class="lp-no"><a asp-action="Details" asp-route-id="@t.TechnicalQueryId" class="lp-subject" title="@t.QueryNumber">@t.QueryNumber</a></td>
+                            <td><span class="vs-pill vs-pill--neutral">@t.QueryType</span></td>
+                            <td><span class="vs-title-cell" title="@t.Subject">@t.Subject</span></td>
+                            <td class="vs-hide-md small" title="@t.DisciplineName">@t.DisciplineName</td>
+                            <td><span class="vs-pill @(t.Priority is "High" or "Urgent" ? "vs-pill--danger" : "vs-pill--neutral")">@t.Priority</span></td>
+                            <td class="small">
+                                @(t.RequiredResponseDate?.ToString("yyyy-MM-dd"))
+                                @if (t.IsOverdue) { <span class="vs-pill vs-pill--icon vs-pill--danger ms-1"><i class="bi bi-clock-history" aria-hidden="true"></i> @Localizer["Overdue"]</span> }
+                            </td>
+                            <td><span class="vs-pill @StatusTone(t.Status)">@StatusText(t.Status)</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </pems-list-table>
 
-    @{
-        var tqQsParts = new List<string>();
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedQueryType)) tqQsParts.Add($"queryType={Uri.EscapeDataString((string)ViewBag.SelectedQueryType)}");
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus)) tqQsParts.Add($"status={Uri.EscapeDataString((string)ViewBag.SelectedStatus)}");
-        if (ViewBag.SelectedProjectId != null) tqQsParts.Add($"projectId={ViewBag.SelectedProjectId}");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "TechnicalQuery",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", tqQsParts)
-    })
-</div>
+            <pems-list-footer>
+                @{
+                    var tqQsParts = new List<string>();
+                    if (!string.IsNullOrEmpty(queryType)) tqQsParts.Add($"queryType={Uri.EscapeDataString(queryType)}");
+                    if (!string.IsNullOrEmpty(status)) tqQsParts.Add($"status={Uri.EscapeDataString(status)}");
+                    if (projectId.HasValue) tqQsParts.Add($"projectId={projectId}");
+                }
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "TechnicalQuery",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = string.Join("&", tqQsParts)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('TechnicalQuery');
-        });
-    </script>
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
 }

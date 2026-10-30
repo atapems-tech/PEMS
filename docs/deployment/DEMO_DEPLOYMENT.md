@@ -7,6 +7,10 @@ uploads by FTP and waits for `GET /health/database` to report `UpToDate` (first 
 Secrets: `DEMO_FTP_HOST`, `DEMO_FTP_USER`, `DEMO_FTP_PASSWORD`, `DEMO_FTP_DIR` (`/`), `DEMO_FTP_PROTOCOL` (`ftp`; FTPS fails on this host),
 `DEMO_FTP_PORT`, `DEMO_SQL_CONNECTION_STRING`, `DEMO_ADMIN_PASSWORD`, `DEMO_SITE_URL`.
 
+## Added by SCRUM-313 / SCRUM-314 (2026-10-29, not yet run on GitHub)
+
+Pre-deploy database backup (optional `DEMO_BACKUP_DIR`), anonymous smoke test after the health check, manual rollback by `rollback_ref`, and the rule that a demo deploy needs a staging deploy of the same source tree first. Procedures: [RUNBOOK_DEPLOY_SITES.md](RUNBOOK_DEPLOY_SITES.md). **Not built (depend on tasks that do not exist yet):** loading the sample data pack (#140, #352/#353), installing the demo licence from a secret (#145), automatic rollback after a failed smoke test, pre-flight/manual-fallback artifact (#301), the landing site (#294).
+
 ## Status on 2026-10-24 (updated after run 5)
 
 | Step | Result |

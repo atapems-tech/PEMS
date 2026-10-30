@@ -72,8 +72,11 @@ public class VDRControllerAuthorizationTests
         public Task<List<VDRItemDto>> GetAllAsync(int? projectId = null, int? vendorId = null, string? workflowStatus = null) =>
             Task.FromResult(new List<VDRItemDto>());
 
-        public Task<PagedResult<VDRListItemDto>> GetPagedAsync(int? projectId, int? vendorId, string? workflowStatus, int page, int pageSize) =>
+        public Task<PagedResult<VDRListItemDto>> GetPagedAsync(int? projectId, int? vendorId, string? workflowStatus, int page, int pageSize, string? search = null) =>
             Task.FromResult(new PagedResult<VDRListItemDto> { Page = page, PageSize = pageSize });
+
+        public Task<(List<VDRListItemDto> Items, int Total)> GetAllMatchingAsync(int? projectId, int? vendorId, string? workflowStatus, string? search, int maxRows) =>
+            Task.FromResult((new List<VDRListItemDto>(), 0));
 
         public Task<VDRItemDto?> GetByIdAsync(int id) => Task.FromResult(ItemToReturn);
 

@@ -43,6 +43,8 @@ public class PEMSDbContext
 
     public DbSet<AuditLog> AuditLogs { get; set; }
     public DbSet<DatabaseUpdateRun> DatabaseUpdateRuns { get; set; }
+    public DbSet<LicenseSealRecord> LicenseSeals { get; set; }
+    public DbSet<LicenseEventRecord> LicenseEvents { get; set; }
     public DbSet<RolePermission> RolePermissions { get; set; }
 
     // طبق سند RBAC-ABAC Authorization Architecture (فاز ۱): مدل داده‌ی هسته‌ی مجوزدهی عمومی -
@@ -77,6 +79,12 @@ public class PEMSDbContext
     // OnModelCreating با ToTable("Users") مشخص شده) تا هیچ Migration/داده‌ی موجودی خراب نشود.
     public DbSet<User> LegacyUsers { get; set; }
     public DbSet<Discipline> Disciplines { get; set; }
+
+    // Definition store (SCRUM-434)
+    public DbSet<PEMS.Domain.Entities.Definitions.Definition> Definitions { get; set; }
+    public DbSet<PEMS.Domain.Entities.Definitions.DefinitionVersion> DefinitionVersions { get; set; }
+    public DbSet<PEMS.Domain.Entities.Definitions.DefinitionReference> DefinitionReferences { get; set; }
+    public DbSet<PEMS.Domain.Entities.Definitions.DefinitionStamp> DefinitionStamps { get; set; }
     public DbSet<DocumentTypeCode> DocumentTypeCodes { get; set; }
     public DbSet<VendorDocumentTypologyCode> VendorDocumentTypologyCodes { get; set; }
     public DbSet<Department> Departments { get; set; }
@@ -188,6 +196,9 @@ public class PEMSDbContext
     public DbSet<MrsImportRowMetadata> MrsImportRowMetadata { get; set; }
     public DbSet<NumberingSequence> NumberingSequences { get; set; }
 
+    // SCRUM-40: الگوهای شماره‌گذاری که مدیر سامانه تعیین می‌کند
+    public DbSet<NumberingScheme> NumberingSchemes { get; set; }
+
     // طبق ممیزی Material Management (Gap A) + Step 1/Step 2: IRN - سند رسمی دریافت مادی،
     // جدا از MrsImportBatch/Row (که مکانیزم Import اکسل است).
     public DbSet<IrnReceipt> IrnReceipts { get; set; }
@@ -265,6 +276,11 @@ public class PEMSDbContext
 
     public DbSet<MaterialRequisition> MaterialRequisitions { get; set; }
     public DbSet<MaterialRequisitionItem> MaterialRequisitionItems { get; set; }
+    // SCRUM-471: pre-procurement items
+    public DbSet<ProcurementDemand> ProcurementDemands { get; set; }
+    // SCRUM-470: purchase-order lines and the PO authority table
+    public DbSet<PurchaseOrderLine> PurchaseOrderLines { get; set; }
+    public DbSet<PurchaseOrderAuthorityRule> PurchaseOrderAuthorityRules { get; set; }
     public DbSet<MaterialRequisitionQuotation> MaterialRequisitionQuotations { get; set; }
 
     public DbSet<AIExtractedTag> AIExtractedTags { get; set; }
@@ -515,6 +531,9 @@ public class PEMSDbContext
     public DbSet<Tender> Tenders { get; set; }
     public DbSet<TenderInvitedVendor> TenderInvitedVendors { get; set; }
     public DbSet<Bid> Bids { get; set; }
+
+    // SCRUM-429: ارسال ایمیلی دعوت‌نامه‌ی مناقصه (سابقه‌ی ارسال)
+    public DbSet<TenderInvitationDispatch> TenderInvitationDispatches { get; set; }
     public DbSet<BidEvaluation> BidEvaluations { get; set; }
     public DbSet<BidNegotiation> BidNegotiations { get; set; }
     public DbSet<ContractNTP> ContractNTPs { get; set; }
@@ -522,12 +541,50 @@ public class PEMSDbContext
 
     public DbSet<DisciplineTask> DisciplineTasks { get; set; }
 
+    /// <summary>رویدادهای امنیتی بازیابی حساب مدیر (SCRUM-357)؛ فقط‌افزودنی.</summary>
+    public DbSet<SecurityEvent> SecurityEvents { get; set; }
+
+    /// <summary>کدهای بازیابی یکبارمصرف حساب مدیر (SCRUM-355)؛ فقط هش، فقط‌افزودنی.</summary>
+    public DbSet<AdminRecoveryCode> AdminRecoveryCodes { get; set; }
+
+    /// <summary>Replaced password hashes for the password-history rule (SCRUM-412); hashes only.</summary>
+    public DbSet<PasswordHistoryEntry> PasswordHistory { get; set; }
+
+
+    /// <summary>
+    /// SecurityEvent فقط‌افزودنی است: ویرایش یا حذف رد می‌شود. تنها فیلد قابل تغییر ForwardedToSiemAt است (علامت تحویل به SIEM، SCRUM-212).
+    /// </summary>
+    private void EnforceSecurityEventAppendOnly()
+    {
+        foreach (var entry in ChangeTracker.Entries<SecurityEvent>())
+        {
+            if (entry.State == EntityState.Deleted)
+                throw new InvalidOperationException("SecurityEvent records are append-only and cannot be deleted.");
+
+            if (entry.State == EntityState.Modified &&
+                entry.Properties.Any(p => p.IsModified && p.Metadata.Name != nameof(SecurityEvent.ForwardedToSiemAt)))
+                throw new InvalidOperationException("SecurityEvent records are append-only and cannot be modified.");
+        }
+
+        // SCRUM-355: کد بازیابی حذف نمی‌شود و هش/نمک/مالک آن عوض نمی‌شود؛ فقط مصرف یا ابطال (یک بار، از null) ثبت می‌شود.
+        foreach (var entry in ChangeTracker.Entries<AdminRecoveryCode>())
+        {
+            if (entry.State == EntityState.Deleted)
+                throw new InvalidOperationException("Recovery code records are append-only and cannot be deleted.");
+
+            if (entry.State == EntityState.Modified && entry.Properties.Any(p => p.IsModified &&
+                    (p.Metadata.Name is not (nameof(AdminRecoveryCode.UsedAtUtc) or nameof(AdminRecoveryCode.RevokedAtUtc)) || p.OriginalValue != null)))
+                throw new InvalidOperationException("Recovery code records can only be marked used or revoked once.");
+        }
+    }
 
 
     public override int SaveChanges()
     {
         // Phase 1 Hardening: نسخه‌ی Published/Retired گردش‌کار تغییرناپذیر است (ساختار، مراحل، گذارها)
         WorkflowVersionImmutabilityGuard.Enforce(this);
+
+        EnforceSecurityEventAppendOnly();
 
         ApplyCreatedDate();
 
@@ -548,6 +605,8 @@ public class PEMSDbContext
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         await WorkflowVersionImmutabilityGuard.EnforceAsync(this, cancellationToken);
+
+        EnforceSecurityEventAppendOnly();
 
         ApplyCreatedDate();
 
@@ -608,7 +667,7 @@ public class PEMSDbContext
     }
 
 
-    private static readonly HashSet<string> NeverAuditedProperties = new(StringComparer.Ordinal) { "SecurityStamp", "ConcurrencyStamp", "RowVersion" };
+    private static readonly HashSet<string> NeverAuditedProperties = new(StringComparer.Ordinal) { "SecurityStamp", "ConcurrencyStamp", "RowVersion", "PayloadJson" };
     private static readonly HashSet<string> MaskedAuditProperties = new(StringComparer.Ordinal) { "PasswordHash" };
     private static readonly HashSet<string> SecuritySensitiveEntities = new(StringComparer.Ordinal) { "ApplicationUser", "IdentityUserRole`1", "RoleAssignment", "RolePermissionGrant", "ApplicationRole" };
 

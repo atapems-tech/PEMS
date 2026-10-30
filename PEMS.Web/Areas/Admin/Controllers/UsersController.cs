@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Identity;
 using PEMS.Web.Areas.Admin.Models;
 using PEMS.Web.Helpers;
+using PEMS.Web.Resources;
 using PEMS.Web.Security;
 
 namespace PEMS.Web.Areas.Admin.Controllers;
@@ -27,6 +29,9 @@ public class UsersController : Controller
     private readonly IUserRoleAssignmentSynchronizer _roleSync;
     private readonly PEMS.Application.Organization.IOrganizationHierarchyService? _hierarchy;
     private readonly IRolePermissionAdminService _permissionAdmin;
+    private readonly IRecoveryEventService _recoveryEvents;
+    private readonly IAdminAccountService _adminAccounts;
+    private readonly IStringLocalizer<SharedResource>? _localizer;
 
     // سقف امن برای یک درخواست دسته‌ای تب Effective (کل کاتالوگ مجوزها کمتر از این است)
     private const int MaxPermissionChangesPerRequest = 1000;
@@ -50,7 +55,10 @@ public class UsersController : Controller
         NavigationVisibilityResolver navigationResolver,
         IUserRoleAssignmentSynchronizer? roleSync = null,
         PEMS.Application.Organization.IOrganizationHierarchyService? hierarchy = null,
-        IRolePermissionAdminService? permissionAdmin = null)
+        IRolePermissionAdminService? permissionAdmin = null,
+        IRecoveryEventService? recoveryEvents = null,
+        IAdminAccountService? adminAccounts = null,
+        IStringLocalizer<SharedResource>? localizer = null)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -62,7 +70,17 @@ public class UsersController : Controller
         _roleSync = roleSync ?? new PEMS.Persistence.Services.UserRoleAssignmentSynchronizer(context);
         _hierarchy = hierarchy;
         _permissionAdmin = permissionAdmin ?? new PEMS.Persistence.Services.RolePermissionAdminService(context);
+        _recoveryEvents = recoveryEvents ?? new PEMS.Persistence.Services.RecoveryEventService(context, userManager);
+        _adminAccounts = adminAccounts ?? new PEMS.Persistence.Services.AdminAccountService(context, userManager, _recoveryEvents);
+        _localizer = localizer;
     }
+
+    // پیام وقتی تغییر، آخرین مدیر فعال را از بین می‌برد (کلید ترجمه = همین متن انگلیسی)
+    private const string LastAdminMessageKey =
+        "This is the last active administrator. It cannot be deactivated or removed from the SystemAdmin role. Create or activate another administrator first.";
+
+    // ترجمه‌ی پیام کاربر؛ بدون Localizer (تست‌های واحد) خودِ کلید انگلیسی برمی‌گردد
+    private string T(string key) => _localizer?[key].Value ?? key;
 
     private async Task<int> CreateEmployeeFromModelAsync(UserFormViewModel model)
     {
@@ -433,6 +451,19 @@ public class UsersController : Controller
         if (user == null)
             return NotFound();
 
+        // SCRUM-354: آخرین مدیر فعال نه غیرفعال می‌شود و نه از نقش SystemAdmin خارج می‌شود (سمت سرور، نه فقط UI)
+        var staysAdmin = model.SelectedRoles.Contains(SystemRoles.SystemAdmin, StringComparer.OrdinalIgnoreCase);
+        if (await _adminAccounts.WouldLeaveNoActiveAdminAsync(user.Id, model.IsActive, staysAdmin))
+        {
+            ModelState.AddModelError(string.Empty, T(LastAdminMessageKey));
+
+            ViewData["Title"] = "Edit User";
+            ViewData["Section"] = "Administration";
+
+            await LoadEmployeeDropdownsAsync(model);
+            return View(model);
+        }
+
         user.Email = model.Email;
         user.FullName = model.FullName;
         user.IsActive = model.IsActive;
@@ -451,11 +482,35 @@ public class UsersController : Controller
         await _userManager.UpdateAsync(user);
 
 
+        string? passwordError = null;
         if (!string.IsNullOrWhiteSpace(model.Password))
         {
+            // SCRUM-357: ریست رمز یک حساب مدیر ممیزی/ابطال نشست/اعلان مشترک دارد؛ نقش پیش از تغییر نقش‌های همین درخواست سنجیده می‌شود
+            var targetIsAdmin = await _userManager.IsInRoleAsync(user, SystemRoles.SystemAdmin);
+            var attempt = new RecoveryAttempt(
+                RecoveryMethods.AdminConsole, user.Id, user.UserName,
+                int.TryParse(_userManager.GetUserId(User), out var actorId) ? actorId : null,
+                User.Identity?.Name,
+                HttpContext.Connection.RemoteIpAddress?.ToString());
+
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            await _userManager.ResetPasswordAsync(user, token, model.Password);
+            var resetResult = await _userManager.ResetPasswordAsync(user, token, model.Password);
+
+            if (!resetResult.Succeeded)
+            {
+                passwordError = string.Join(", ", resetResult.Errors.Select(e => e.Description));
+                if (targetIsAdmin)
+                    await _recoveryEvents.RecordFailureAsync(attempt, RecoveryFailureReasons.PasswordRejected);
+            }
+            else if (targetIsAdmin)
+            {
+                try { await _recoveryEvents.CompleteSuccessAsync(attempt); }
+                catch (InvalidOperationException)
+                {
+                    passwordError = T("The password was changed but recording or session revocation failed.");
+                }
+            }
         }
 
 
@@ -479,7 +534,14 @@ public class UsersController : Controller
         if (roleResult != null && !roleResult.Succeeded)
         {
             TempData["Error"] = "User updated, but some role assignments failed: "
-                + string.Join(", ", roleResult.Errors.Select(e => e.Description));
+                + string.Join(", ", roleResult.Errors.Select(e => e.Description))
+                + (passwordError == null ? "" : " " + T("Password") + ": " + passwordError);
+            return RedirectToAction(nameof(Index));
+        }
+
+        if (passwordError != null)
+        {
+            TempData["Error"] = T("User updated, but the password was not changed") + ": " + passwordError;
             return RedirectToAction(nameof(Index));
         }
 
@@ -499,11 +561,69 @@ public class UsersController : Controller
         if (user == null)
             return NotFound();
 
+        // SCRUM-354: آخرین مدیر فعال را نمی‌شود غیرفعال کرد
+        if (user.IsActive && await _adminAccounts.WouldLeaveNoActiveAdminAsync(
+                user.Id, willBeActive: false, willBeAdmin: await _userManager.IsInRoleAsync(user, SystemRoles.SystemAdmin)))
+        {
+            TempData["Error"] = T(LastAdminMessageKey);
+            return RedirectToAction(nameof(Index));
+        }
+
         user.IsActive = !user.IsActive;
 
         await _userManager.UpdateAsync(user);
 
         return RedirectToAction(nameof(Index));
+    }
+
+
+    // SCRUM-354 / ۳۵۳.۱: مدیر دیگر حساب مدیر را ریست می‌کند (رمز موقت یک‌بارنمایش، تغییر اجباری، ریست MFA). خودِ مدیر نمی‌تواند.
+    [HttpGet]
+    public async Task<IActionResult> ResetAdmin(int id)
+    {
+        var target = await _userManager.FindByIdAsync(id.ToString());
+        if (target == null) return NotFound();
+
+        if (target.Id.ToString() == _userManager.GetUserId(User) || !await _userManager.IsInRoleAsync(target, SystemRoles.SystemAdmin))
+        {
+            TempData["Error"] = T("Only another administrator's account can be reset this way.");
+            return RedirectToAction(nameof(Index));
+        }
+
+        ViewData["Title"] = "Reset Administrator Account";
+        ViewData["Section"] = "Administration";
+        return View(new AdminResetViewModel { Id = target.Id, UserName = target.UserName ?? "", FullName = target.FullName });
+    }
+
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ResetAdmin(int id, bool confirm)
+    {
+        if (!int.TryParse(_userManager.GetUserId(User), out var actorId)) return Forbid();
+
+        var result = await _adminAccounts.ResetAdminAsync(actorId, id, HttpContext.Connection.RemoteIpAddress?.ToString());
+
+        if (!result.Succeeded)
+        {
+            TempData["Error"] = result.Status switch
+            {
+                AdminResetStatus.SelfResetNotAllowed => T("You cannot reset your own account this way. Ask another administrator."),
+                AdminResetStatus.TargetNotFound => T("The account was not found."),
+                AdminResetStatus.TargetNotAdmin => T("Only another administrator's account can be reset this way."),
+                AdminResetStatus.ActorNotAdmin => T("Only an active administrator can reset an administrator account."),
+                AdminResetStatus.AuditFailed => T("The password was changed but recording or session revocation failed. No temporary password is shown; run the reset again."),
+                _ => T("The reset failed. Nothing was shown; try again.")
+            };
+            return RedirectToAction(nameof(Index));
+        }
+
+        // رمز موقت فقط در همین پاسخ نمایش داده می‌شود: نه redirect، نه TempData/کوکی، و نه cache
+        Response.Headers.CacheControl = "no-store, no-cache";
+        Response.Headers.Pragma = "no-cache";
+        ViewData["Title"] = "Administrator Account Reset";
+        ViewData["Section"] = "Administration";
+        return View("ResetAdminResult", result);
     }
 
 

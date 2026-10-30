@@ -1,0 +1,35 @@
+@model PEMS.Application.DTOs.AdminResetResult
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+
+<div class="admin-page-shell">
+    <div class="admin-hero">
+        <div class="d-flex align-items-center gap-3"><div><p>@Localizer["The account was reset. The temporary password below is shown only now."]</p></div></div>
+    </div>
+
+    <div class="content-card" data-pems-secret-reveal>
+        <h2 class="h5 mb-3"><i class="bi bi-check-circle-fill text-success me-1"></i> @Localizer["Account reset"]: <strong>@Model.TargetUserName</strong></h2>
+
+        <div class="alert alert-warning" role="alert">
+            @Localizer["Copy or print this password now. It cannot be shown again; if it is lost, reset the account again."]
+        </div>
+
+        <div class="d-flex align-items-center gap-2 mb-2">
+            <code id="tempPassword" dir="ltr" class="fs-5 px-3 py-2 border rounded user-select-all" data-secret-value>@Model.TemporaryPassword</code>
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-secret-copy data-copied-text="@Localizer["Copied"]"><i class="bi bi-clipboard me-1"></i> @Localizer["Copy"]</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-secret-print><i class="bi bi-printer me-1"></i> @Localizer["Print"]</button>
+        </div>
+        <p class="mb-1">@Localizer["Expires"]: <strong dir="ltr">@Model.ExpiresAtUtc?.ToString("yyyy-MM-dd HH:mm") UTC</strong></p>
+        <p class="text-body-secondary small">@Localizer["The administrator must change it at the first sign-in and enroll MFA again. All of their sessions were signed out, and every active administrator was notified."]</p>
+
+        <div class="d-flex gap-2 mt-3">
+            <a asp-action="Index" class="btn btn-pems-solid">@Localizer["Back to users"]</a>
+            <a asp-controller="SecurityEvents" asp-action="Index" class="btn btn-outline-secondary">@Localizer["Security Events"]</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/pems-secret-reveal.js" asp-append-version="true"></script>
+}

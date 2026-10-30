@@ -7,6 +7,7 @@ using PEMS.Application.DTOs;
 using PEMS.Persistence.Context;
 using PEMS.Persistence.Initialization;
 using PEMS.Persistence.Services;
+using PEMS.Tests.TestSupport;
 
 namespace PEMS.Tests.Deployment;
 
@@ -14,38 +15,15 @@ namespace PEMS.Tests.Deployment;
 /// Real SQL Server proof of the code-first migrator, on throw-away databases (never PEMSDB):
 /// empty database -> first run (install) -> up to date -> rolled back two migrations -> update;
 /// and a database that has tables but no migration history is left untouched.
-/// Server: PEMS_TEST_CONNECTION (server part is used) or LocalDB. Like the other SQL tests it fails loudly
-/// when no SQL Server is reachable instead of silently passing.
+/// Server: <see cref="ThrowawaySqlServer"/> (PEMS_TEST_CONNECTION or LocalDB).
 /// </summary>
 public class DatabaseUpdateServiceSqlTests
 {
-    private static string ServerConnection()
-    {
-        var env = Environment.GetEnvironmentVariable("PEMS_TEST_CONNECTION");
-        var csb = env is null
-            ? new SqlConnectionStringBuilder { DataSource = "(localdb)\\MSSQLLocalDB", IntegratedSecurity = true }
-            : new SqlConnectionStringBuilder(env);
-        csb.TrustServerCertificate = true;
-        csb.ConnectTimeout = 30;
-        csb.InitialCatalog = "master";
-        try
-        {
-            using var conn = new SqlConnection(csb.ConnectionString);
-            conn.Open();
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException(
-                "This test needs a reachable SQL Server (LocalDB by default, or PEMS_TEST_CONNECTION).", ex);
-        }
-        return csb.ConnectionString;
-    }
+    private static string ServerConnection() => ThrowawaySqlServer.ServerConnection();
 
-    private static string DatabaseConnection(string master, string db)
-        => new SqlConnectionStringBuilder(master) { InitialCatalog = db }.ConnectionString;
+    private static string DatabaseConnection(string master, string db) => ThrowawaySqlServer.DatabaseConnection(master, db);
 
-    private static PEMSDbContext NewContext(string connectionString)
-        => new(new DbContextOptionsBuilder<PEMSDbContext>().UseSqlServer(connectionString).Options);
+    private static PEMSDbContext NewContext(string connectionString) => ThrowawaySqlServer.NewContext(connectionString);
 
     private static DatabaseUpdateService NewService(PEMSDbContext ctx)
         => new(ctx, NullLogger<DatabaseUpdateService>.Instance);
@@ -157,14 +135,5 @@ public class DatabaseUpdateServiceSqlTests
         }
     }
 
-    private static async Task DropAsync(string master, string dbName)
-    {
-        SqlConnection.ClearAllPools();
-        await using var conn = new SqlConnection(master);
-        await conn.OpenAsync();
-        await using var cmd = conn.CreateCommand();
-        cmd.CommandText =
-            $"IF DB_ID(N'{dbName}') IS NOT NULL BEGIN ALTER DATABASE [{dbName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [{dbName}]; END";
-        await cmd.ExecuteNonQueryAsync();
-    }
+    private static Task DropAsync(string master, string dbName) => ThrowawaySqlServer.DropAsync(master, dbName);
 }

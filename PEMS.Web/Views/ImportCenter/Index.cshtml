@@ -5,6 +5,8 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @{ ViewData["Title"] = Localizer["IC_Title"].Value; }
 
+@await Html.PartialAsync("_PageHeader")
+
 <p class="text-muted small mb-3">@Localizer["IC_Subtitle"]</p>
 
 @if (!Model.Any())

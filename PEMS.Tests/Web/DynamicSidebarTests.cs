@@ -95,7 +95,7 @@ public class DynamicSidebarTests
     private static string Target(NavigationMenuItemDefinition d) => d.ExternalPath ?? $"{d.Area ?? ""}/{d.Controller}/{d.Action}";
 
     /// <summary>تنها پیوند تازه‌ی کاتالوگ نسبت به سایدبار قدیمی: ورودی همین صفحه‌ی مدیریت منو.</summary>
-    private static readonly string[] IntentionalAdditions = { "admin.navmenu" };
+    private static readonly string[] IntentionalAdditions = { "admin.navmenu", "admin.license" };
 
     [Fact]
     public void Catalog_ReproducesEveryLegacyLink_WithTheSameTargetIconTitleAndOrder()
@@ -231,9 +231,9 @@ public class DynamicSidebarTests
     {
         var env = await EnvAsync(nameof(SystemAdmin_SeesEveryBuiltInLink_ExceptTheDisabledReplenishmentFeature));
         var keys = Keys(await BuildAsync(env, new[] { SystemRoles.SystemAdmin }));
-        var expected = NavigationMenuDefaults.All.Where(d => d.Kind == NavigationMenuItemKinds.Link && d.Key != "wh.replenishment").Select(d => d.Key);
+        var expected = NavigationMenuDefaults.All.Where(d => d.Kind == NavigationMenuItemKinds.Link && d.Key != "proc.wh.replenishment").Select(d => d.Key);
         Assert.Empty(expected.Except(keys));
-        Assert.DoesNotContain("wh.replenishment", keys);
+        Assert.DoesNotContain("proc.wh.replenishment", keys);
     }
 
     [Fact]
@@ -247,11 +247,82 @@ public class DynamicSidebarTests
 
         var keys = Keys(await BuildAsync(env, new[] { "Test.Contracts" }));
 
-        Assert.Contains("sec.contract", keys);
-        Assert.Contains("contract.contracts", keys);
-        Assert.DoesNotContain("contract.vendors", keys);    // بدون Vendors.View
-        Assert.DoesNotContain("contract.po", keys);         // بدون PurchaseOrder.View
-        Assert.Contains("contract.milestones", keys);       // بدون سیگنال مجوز: مثل امروز نمایان
+        Assert.Contains("sec.procurement", keys);
+        Assert.Contains("proc.sub.contracts", keys);
+        Assert.Contains("proc.contracts", keys);
+        Assert.DoesNotContain("proc.vendors", keys);    // بدون Vendors.View
+        Assert.DoesNotContain("proc.po", keys);         // بدون PurchaseOrder.View
+        Assert.Contains("proc.milestones", keys);       // بدون سیگنال مجوز: مثل امروز نمایان
+        // SCRUM-423: پیوندهای خریدِ مهندسی و انبار در همان بخش، بدون ماژول خودشان دیده نمی‌شوند
+        Assert.DoesNotContain("proc.sub.purchasing", keys);
+        Assert.DoesNotContain("proc.mr", keys);
+        Assert.DoesNotContain("proc.sub.warehouse", keys);
+    }
+
+    /// <summary>
+    /// SCRUM-423: پیوندهای منتقل‌شده به «تدارکات و زنجیره‌ی تأمین» همان دروازه‌ی قبلی را دارند به‌اضافه‌ی ماژول بخش قبلی‌شان،
+    /// پس هیچ نقشی پیوندی بیشتر یا کمتر از قبل نمی‌بیند؛ و هیچ کنترلر تدارکاتی دیگر بخش مهندسی را باز نمی‌کند.
+    /// </summary>
+    [Theory]
+    [InlineData("proc.mr", "Module:EngineeringManagement&Perm:MaterialRequisition.View")]
+    [InlineData("proc.package", "Module:EngineeringManagement&Perm:ProcurementPackage.View")]
+    [InlineData("proc.tender", "Module:EngineeringManagement&Perm:Tender.View")]
+    [InlineData("proc.po", "Module:ContractManagement&Perm:PurchaseOrder.View")]
+    [InlineData("proc.vendors", "Module:ContractManagement&Perm:Vendors.View")]
+    [InlineData("proc.contracts", "Module:ContractManagement&Perm:Contracts.View")]
+    [InlineData("proc.milestones", "Module:ContractManagement")]
+    [InlineData("proc.claims", "Module:ContractManagement")]
+    [InlineData("proc.wh.irn", "Module:Inventory&Perm:IRN.View")]
+    [InlineData("proc.wh.partcatalogue", "Flag:PartCatalogue")]
+    public void ProcurementSection_KeepsEveryLinksFormerGate(string key, string rule)
+    {
+        var all = NavigationMenuDefaults.All;
+        Assert.Equal(rule, all.Single(d => d.Key == key).VisibilityRule);
+        var section = all.Single(d => d.Key == "sec.procurement");
+        Assert.Equal("Module:EngineeringManagement|Module:ContractManagement|Module:Inventory|Flag:PartCatalogue", section.VisibilityRule);
+        string? parent = all.Single(d => d.Key == key).ParentKey;
+        while (parent != null && parent != "sec.procurement") parent = all.Single(d => d.Key == parent).ParentKey;
+        Assert.Equal("sec.procurement", parent);
+
+        foreach (var c in new[] { "ProcurementPackage", "Tender", "MaterialRequisition" })
+            Assert.DoesNotContain(c, all.Single(d => d.Key == "sec.eng").ExtraActiveControllers!.Split(','));
+        Assert.DoesNotContain(all, d => d.Key is "sec.contract" or "sec.inventory");
+        Assert.Contains("sec.contract", NavigationMenuDefaults.RetiredKeys);
+        Assert.Contains("wh.material", NavigationMenuDefaults.RetiredKeys);
+    }
+
+    [Fact]
+    public void ClassicSidebar_HasOneProcurementSection_AndTheEngineeringSectionNoLongerLinksPurchasing()
+    {
+        var src = File.ReadAllText(Path.Combine(Root(), "PEMS.Web", "Views", "Shared", "_SidebarMenu.cshtml"));
+        Assert.Contains("id=\"sec-procurement\"", src);
+        Assert.DoesNotContain("sec-contract", src);
+        Assert.DoesNotContain("sec-inventory", src);
+        var eng = src[src.IndexOf("id=\"sec-eng\"", StringComparison.Ordinal)..src.IndexOf("IsModuleVisible(\"AIIntelligence\")", StringComparison.Ordinal)];
+        foreach (var c in new[] { "ProcurementPackage", "Tender", "MaterialRequisition" })
+            Assert.DoesNotContain($"asp-controller=\"{c}\"", eng);
+        var proc = src[src.IndexOf("id=\"sec-procurement\"", StringComparison.Ordinal)..src.IndexOf("IsModuleVisible(\"ProjectControls\")", StringComparison.Ordinal)];
+        foreach (var c in new[] { "Vendor", "MaterialRequisition", "ProcurementPackage", "Tender", "PurchaseOrder", "Contract", "Inventory", "MaterialItem", "IrnReceipt", "StoreRequisition", "PartCatalogueRequest" })
+            Assert.Contains($"asp-controller=\"{c}\"", proc);
+    }
+
+    [Fact]
+    public async Task Sync_RetiresTheOldProcurementContractAndWarehouseRows_AndAddsTheNewSection()
+    {
+        var env = await EnvAsync(nameof(Sync_RetiresTheOldProcurementContractAndWarehouseRows_AndAddsTheNewSection));
+        foreach (var key in new[] { "sec.contract", "contract.vendors", "eng.tender", "sec.inventory", "wh.material" })
+            env.Ctx.NavigationMenuItems.Add(new NavigationMenuItem { Key = key, Kind = NavigationMenuItemKinds.Link, TitleKey = key, VisibilityRule = "Always", IsActive = true, IsSystem = true, CreatedDate = DateTime.Now });
+        await env.Ctx.SaveChangesAsync();
+
+        await env.Menu.SyncDefaultsAsync(NavigationMenuDefaults.All, default, NavigationMenuDefaults.RetiredKeys);
+
+        Assert.All(env.Ctx.NavigationMenuItems.Where(x => x.Key == "sec.contract" || x.Key == "contract.vendors" || x.Key == "eng.tender" || x.Key == "sec.inventory" || x.Key == "wh.material").ToList(),
+            r => Assert.False(r.IsActive, r.Key));
+        var keys = Keys(await BuildAsync(env, new[] { SystemRoles.SystemAdmin }));
+        Assert.Contains("proc.tender", keys);
+        Assert.Contains("proc.wh.material", keys);
+        Assert.DoesNotContain("eng.tender", keys);
+        Assert.DoesNotContain("sec.contract", keys);
     }
 
     [Fact]
@@ -290,9 +361,9 @@ public class DynamicSidebarTests
         await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
 
         var roots = await BuildAsync(env, new[] { "Test.Requester" });
-        var wh = Assert.Single(roots, n => n.Key == "sec.inventory");
+        var proc = Assert.Single(roots, n => n.Key == "sec.procurement");
 
-        Assert.Equal(new[] { "wh.partcatalogue" }, wh.Descendants().Select(d => d.Key));
+        Assert.Equal(new[] { "proc.sub.warehouse", "proc.wh.partcatalogue" }, proc.Descendants().Select(d => d.Key));
     }
 
     [Fact]
@@ -328,7 +399,8 @@ public class DynamicSidebarTests
     [InlineData("Organization", "Positions", "Admin", "admin.positions", "admin.org")]
     [InlineData("Organization", "Index", "Admin", "admin.org", "admin.positions")]
     [InlineData("Discipline", "Manage", null, "admin.disciplines", "eng.disciplines")]
-    [InlineData("MaterialItem", "Details", "Warehouse", "wh.material", "wh.dashboard")]
+    [InlineData("MaterialItem", "Details", "Warehouse", "proc.wh.material", "proc.wh.dashboard")]
+    [InlineData("Tender", "Details", null, "proc.tender", "proc.package")]
     public async Task ActiveLink_FollowsControllerActionAndDefaultRules(string controller, string action, string? area, string active, string inactive)
     {
         var env = await EnvAsync($"active_{controller}_{action}");
@@ -434,9 +506,9 @@ public class DynamicSidebarTests
 
         var before = await env.Menu.GetMenuAsync();
         Assert.Contains(before, i => i.Key == "eng.vdr");
-        Assert.True((await env.Menu.UpdateAsync(new NavigationMenuItemEditInput { Key = "eng.vdr", ParentKey = "sec.contract", IsActive = true, Icon = "bi-journal-check" })).Success);
+        Assert.True((await env.Menu.UpdateAsync(new NavigationMenuItemEditInput { Key = "eng.vdr", ParentKey = "sec.procurement", IsActive = true, Icon = "bi-journal-check" })).Success);
         var moved = (await env.Menu.GetMenuAsync()).Single(i => i.Key == "eng.vdr");
-        Assert.Equal("sec.contract", moved.ParentKey);   // کش باطل شده است
+        Assert.Equal("sec.procurement", moved.ParentKey);   // کش باطل شده است
     }
 
     [Fact]

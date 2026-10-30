@@ -348,7 +348,10 @@ public class TenderService : ITenderService
     public async Task<TenderContractResult> CreateContractFromWinningBidAsync(
         int tenderId, string contractNo, DateTime? startDate, DateTime? endDate, int? creatorUserId = null, string? ipAddress = null)
     {
-        contractNo = contractNo?.Trim() ?? string.Empty;
+        // SCRUM-40: شماره‌ی قرارداد از الگوی مدیر (پروژه‌ی بسته‌ی مناقصه برای توکن {PROJECT})؛ یک بار، پیش از تلاش‌های Execution Strategy
+        var projectId = await _context.Tenders.AsNoTracking().Where(t => t.TenderId == tenderId)
+            .Select(t => (int?)t.ProcurementPackage!.ProjectId).FirstOrDefaultAsync();
+        contractNo = projectId == null ? contractNo?.Trim() ?? string.Empty : await _numbering.ResolveNumberAsync("Contract", contractNo, projectId);
 
         // P0.3: ساخت قرارداد + اتصال به مناقصه + هر دو ذخیره‌ی AuditLog عمومی + رویداد «Contracts.Create» (و AuditLog عمومی آن) روی SQL Server
         // یک تراکنش صریح داخل Execution Strategy است. هر شکست پیش از Commit همه‌ی این‌ها را با هم Rollback می‌کند؛ بدنه‌ی هر تلاش، مناقصه را

@@ -43,7 +43,8 @@ public class MyProfileController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [RequestSizeLimit(10_000_000)]
-    public async Task<IActionResult> UploadPhoto(IFormFile file)
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Image)]
+    public async Task<IActionResult> UploadPhoto(IFormFile file, [FromServices] PEMS.Application.Uploads.IProtectedImageStore images)
     {
         var employee = await GetMyEmployeeAsync();
         if (employee == null) return NotFound();
@@ -54,24 +55,9 @@ public class MyProfileController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
-        var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
-        if (!allowedExtensions.Contains(ext))
-        {
-            TempData["Error"] = "فقط فایل تصویری (jpg/png/webp) مجاز است.";
-            return RedirectToAction(nameof(Index));
-        }
-
-        var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "profile-photos");
-        if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
-
-        var storedName = $"emp{employee.EmployeeId}_{Guid.NewGuid()}{ext}";
-        var physicalPath = Path.Combine(uploadPath, storedName);
-
-        using (var stream = new FileStream(physicalPath, FileMode.Create))
-            await file.CopyToAsync(stream);
-
-        employee.PhotoPath = "/uploads/profile-photos/" + storedName;
+        // SCRUM-202: type, size and content are checked by the upload guard; stored outside wwwroot, served by Files/Image (login required)
+        await using (var stream = file.OpenReadStream())
+            employee.PhotoPath = await images.SaveAsync(PEMS.Application.Uploads.ProtectedImageStore.ProfilePhotos, file.FileName, stream);
         await _context.SaveChangesAsync();
 
         TempData["Message"] = "عکس پروفایل ذخیره شد.";
@@ -85,7 +71,7 @@ public class MyProfileController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [RequestSizeLimit(5_000_000)]
-    public async Task<IActionResult> SaveSignature(string signatureDataUrl)
+    public async Task<IActionResult> SaveSignature(string signatureDataUrl, [FromServices] PEMS.Application.Uploads.IProtectedImageStore images)
     {
         var employee = await GetMyEmployeeAsync();
         if (employee == null) return NotFound();
@@ -108,15 +94,15 @@ public class MyProfileController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "signatures");
-        if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
+        // SCRUM-202: the drawn signature is not a form file, so it is checked here with the same allowlist (PNG bytes)
+        if (!PEMS.Application.Uploads.UploadPolicy.SignatureMatches(".png", bytes.AsSpan(0, Math.Min(bytes.Length, PEMS.Application.Uploads.UploadPolicy.HeadLength))))
+        {
+            TempData["Error"] = "امضا قابل‌پردازش نبود - دوباره تلاش کن.";
+            return RedirectToAction(nameof(Index));
+        }
 
-        var storedName = $"emp{employee.EmployeeId}_{Guid.NewGuid()}.png";
-        var physicalPath = Path.Combine(uploadPath, storedName);
-
-        await System.IO.File.WriteAllBytesAsync(physicalPath, bytes);
-
-        employee.SignaturePath = "/uploads/signatures/" + storedName;
+        using (var stream = new MemoryStream(bytes))
+            employee.SignaturePath = await images.SaveAsync(PEMS.Application.Uploads.ProtectedImageStore.Signatures, "signature.png", stream);
         await _context.SaveChangesAsync();
 
         TempData["Message"] = "امضای دیجیتال ذخیره شد.";
