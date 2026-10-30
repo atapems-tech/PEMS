@@ -3,12 +3,12 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = Localizer["Login_Title"];
     Layout = "_AuthLayout";
 }
 
-<h2>Welcome back</h2>
-<p class="subtitle">Sign in to access the Engineering Command Center</p>
+<h2>@Localizer["Login_Welcome"]</h2>
+<p class="subtitle">@Localizer["Login_Subtitle"]</p>
 
 <div asp-validation-summary="All" class="alert alert-danger py-2 px-3 small" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></div>
 
@@ -16,28 +16,28 @@
     <input type="hidden" asp-for="ReturnUrl" />
 
     <div class="mb-3">
-        <label asp-for="UserName" class="form-label">@Localizer["Username"]</label>
-        <input asp-for="UserName" class="form-control" placeholder="e.g. admin" autofocus />
+        <label asp-for="UserName" class="form-label">@Localizer["Login_UserName"]</label>
+        <input asp-for="UserName" class="form-control" placeholder="@Localizer["Login_UserNamePlaceholder"]" autofocus />
         <span asp-validation-for="UserName" class="text-danger small"></span>
     </div>
 
     <div class="mb-2">
-        <label asp-for="Password" class="form-label">@Localizer["Password"]</label>
-        <input asp-for="Password" class="form-control" placeholder="Enter Your Password" />
+        <label asp-for="Password" class="form-label">@Localizer["Login_Password"]</label>
+        <input asp-for="Password" class="form-control" placeholder="@Localizer["Login_PasswordPlaceholder"]" />
         <span asp-validation-for="Password" class="text-danger small"></span>
     </div>
 
     <div class="form-check mb-3 mt-2">
         <input asp-for="RememberMe" class="form-check-input" />
-        <label asp-for="RememberMe" class="form-check-label small">Remember Me</label>
+        <label asp-for="RememberMe" class="form-check-label small">@Localizer["Login_RememberMe"]</label>
     </div>
 
     <button type="submit" class="btn btn-pems" id="loginSubmitBtn">
-        <span id="loginSubmitLabel">Sign In</span>
+        <span id="loginSubmitLabel">@Localizer["Login_SignIn"]</span>
     </button>
 
     <div class="auth-links">
-        <a asp-action="ForgotPassword">Forgot Password?</a>
+        <a asp-action="ForgotPassword">@Localizer["Login_ForgotPassword"]</a>
         <a asp-controller="AccountRecovery" asp-action="Index">@Localizer["Use a recovery code"]</a>
         <span class="text-muted">PEMS v1.0</span>
     </div>
@@ -58,7 +58,7 @@
             form.addEventListener('submit', function () {
                 if (!form.checkValidity || form.checkValidity()) {
                     btn.disabled = true;
-                    label.innerHTML = '<span class="pems-inline-progress" style="color:#fff"><span class="pems-dot"></span><span class="pems-dot"></span><span class="pems-dot"></span></span> Signing in…';
+                    label.innerHTML = '<span class="pems-inline-progress" style="color:#fff"><span class="pems-dot"></span><span class="pems-dot"></span><span class="pems-dot"></span></span> ' + @Json.Serialize(Localizer["Login_SigningIn"].Value);
                 }
             });
         })();

@@ -3034,4 +3034,23 @@
   <data name="Dw_Action" xml:space="preserve"><value>Action</value></data>
   <data name="Dw_By" xml:space="preserve"><value>By</value></data>
   <data name="Dw_Comment" xml:space="preserve"><value>Comment</value></data>
+  <data name="PEMS" xml:space="preserve"><value>PEMS</value></data>
+  <data name="Login_Title" xml:space="preserve"><value>Sign in</value></data>
+  <data name="Login_Welcome" xml:space="preserve"><value>Welcome back</value></data>
+  <data name="Login_Subtitle" xml:space="preserve"><value>Sign in to access the Engineering Command Center</value></data>
+  <data name="Login_UserName" xml:space="preserve"><value>Username</value></data>
+  <data name="Login_UserNamePlaceholder" xml:space="preserve"><value>e.g. admin</value></data>
+  <data name="Login_Password" xml:space="preserve"><value>Password</value></data>
+  <data name="Login_PasswordPlaceholder" xml:space="preserve"><value>Enter your password</value></data>
+  <data name="Login_RememberMe" xml:space="preserve"><value>Remember me</value></data>
+  <data name="Login_SignIn" xml:space="preserve"><value>Sign In</value></data>
+  <data name="Login_SigningIn" xml:space="preserve"><value>Signing in…</value></data>
+  <data name="Login_ForgotPassword" xml:space="preserve"><value>Forgot password?</value></data>
+  <data name="Login_Err_UserNameRequired" xml:space="preserve"><value>Username is required.</value></data>
+  <data name="Login_Err_PasswordRequired" xml:space="preserve"><value>Password is required.</value></data>
+  <data name="Login_Err_Invalid" xml:space="preserve"><value>Invalid username or password.</value></data>
+  <data name="Login_Err_LockedMinutes" xml:space="preserve"><value>The account is temporarily locked after repeated failed attempts. Try again in {0} minutes.</value></data>
+  <data name="Login_Err_Locked" xml:space="preserve"><value>The account is temporarily locked after repeated failed attempts.</value></data>
+  <data name="Auth_BrandName" xml:space="preserve"><value>Parmis Enterprise Management System</value></data>
+  <data name="Auth_Footer" xml:space="preserve"><value>Engineering Command Center</value></data>
 </root>

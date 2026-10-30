@@ -137,7 +137,8 @@ builder.Services.AddControllersWithViews(options =>
     PEMS.UI.Binding.MvcOptionsExtensions.AddPemsInputBinding(options);
 })
 .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
-.AddDataAnnotationsLocalization();
+// SCRUM-477: validation messages and display names are looked up in SharedResource (a text without a key is shown as written).
+.AddDataAnnotationsLocalization(o => o.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(PEMS.Web.Resources.SharedResource)));
 
 
 

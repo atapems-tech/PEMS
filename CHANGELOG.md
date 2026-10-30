@@ -3,6 +3,15 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-10-31 - Login page in one language (SCRUM-477)
+
+### Fixed
+- **Login page:** the page was partly hard-coded. With the Persian language cookie, only the link "Use a recovery code" was Persian among English text, and the sign-in errors were always Persian. Every text of the login page now comes from SharedResource in both languages: the title, hints, Remember me, Sign In, the loading text, Forgot password, the validation messages and the sign-in errors.
+- **Sign-in layout** (`_AuthLayout`): now takes `lang`, `dir` and the Bootstrap RTL stylesheet from the current language, so the Persian sign-in pages are right to left. The brand line and the footer are translated.
+
+### Changed
+- **Validation messages and `[Display]` names** of view models are now looked up in SharedResource (`AddDataAnnotationsLocalization` provider). A text without a key is shown as written, as before.
+
 ## 2026-10-30 - One guard for every upload; sandboxed preview (SCRUM-202)
 
 ### Added

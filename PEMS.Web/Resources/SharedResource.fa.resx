@@ -3820,4 +3820,22 @@
   <data name="Dw_Action" xml:space="preserve"><value>اقدام</value></data>
   <data name="Dw_By" xml:space="preserve"><value>توسط</value></data>
   <data name="Dw_Comment" xml:space="preserve"><value>توضیح</value></data>
+  <data name="Login_Title" xml:space="preserve"><value>ورود</value></data>
+  <data name="Login_Welcome" xml:space="preserve"><value>خوش آمدید</value></data>
+  <data name="Login_Subtitle" xml:space="preserve"><value>برای دسترسی به مرکز فرماندهی مهندسی وارد شوید</value></data>
+  <data name="Login_UserName" xml:space="preserve"><value>نام کاربری</value></data>
+  <data name="Login_UserNamePlaceholder" xml:space="preserve"><value>مثلاً admin</value></data>
+  <data name="Login_Password" xml:space="preserve"><value>رمز عبور</value></data>
+  <data name="Login_PasswordPlaceholder" xml:space="preserve"><value>رمز عبور خود را وارد کنید</value></data>
+  <data name="Login_RememberMe" xml:space="preserve"><value>مرا به خاطر بسپار</value></data>
+  <data name="Login_SignIn" xml:space="preserve"><value>ورود</value></data>
+  <data name="Login_SigningIn" xml:space="preserve"><value>در حال ورود…</value></data>
+  <data name="Login_ForgotPassword" xml:space="preserve"><value>رمز عبور را فراموش کرده‌اید؟</value></data>
+  <data name="Login_Err_UserNameRequired" xml:space="preserve"><value>نام کاربری الزامی است.</value></data>
+  <data name="Login_Err_PasswordRequired" xml:space="preserve"><value>رمز عبور الزامی است.</value></data>
+  <data name="Login_Err_Invalid" xml:space="preserve"><value>نام کاربری یا رمز عبور نادرست است.</value></data>
+  <data name="Login_Err_LockedMinutes" xml:space="preserve"><value>حساب کاربری به دلیل تلاش‌های ناموفق متعدد موقتاً قفل شده است. لطفاً پس از {0} دقیقه مجدداً تلاش کنید.</value></data>
+  <data name="Login_Err_Locked" xml:space="preserve"><value>حساب کاربری به دلیل تلاش‌های ناموفق متعدد موقتاً قفل شده است.</value></data>
+  <data name="Auth_BrandName" xml:space="preserve"><value>سامانه مدیریت سازمانی پارمیس</value></data>
+  <data name="Auth_Footer" xml:space="preserve"><value>مرکز فرماندهی مهندسی</value></data>
 </root>
