@@ -108,6 +108,7 @@ public static class RoleCatalog
                 new ModuleGrant("PreProcurement", Edit: true),
                 new ModuleGrant("MaterialRequisition", Create: true, Edit: true),
                 new ModuleGrant("ProcurementPackage"),
+                new ModuleGrant("PurchaseOrder", Create: true, Edit: true),   // SCRUM-470: builds and submits POs (approval comes from the PO authority table)
             }),
         new(ProcurementManager, "Procurement Manager", "Heads procurement: oversees the pre-procurement queue and can decide its items. Approval of purchase orders by amount comes with the purchase-order authority table (SCRUM-470).", Domains.Contracts, Categories.Domain, 510,
             DefaultPermissions: new[]

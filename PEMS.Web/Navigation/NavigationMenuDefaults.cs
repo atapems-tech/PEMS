@@ -167,7 +167,7 @@ public static class NavigationMenuDefaults
 
         // ---- مدیریت سیستم (برای دارنده‌ی DisciplineMaster بدون Administration فقط زیرگروه سازمان/دیسیپلین دیده می‌شود)
         Section("sec.admin", 1000, "Administration", "bi-gear", "Module:Administration|Flag:DisciplineMaster",
-            "Settings,Users,Roles,PermissionMatrix,AuditLog,RoutingRules,ContractApprovalAuthority,Department,Employee,Authorization,SoDPolicy,AuthorizationAudit,NavigationVisibility,NavigationMenu,Organization,OrganizationImport,DatabaseUpdate,License,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
+            "Settings,Users,Roles,PermissionMatrix,AuditLog,RoutingRules,ContractApprovalAuthority,PurchaseOrderAuthority,Department,Employee,Authorization,SoDPolicy,AuthorizationAudit,NavigationVisibility,NavigationMenu,Organization,OrganizationImport,DatabaseUpdate,License,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
             activeArea: "Admin"),
         Link("admin.settings", "sec.admin", 10, "Settings", "bi-gear", "Settings", rule: "Module:Administration"),
         // SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات (کنترلر فقط SystemAdmin)
@@ -192,6 +192,8 @@ public static class NavigationMenuDefaults
         Link("admin.relationship", "admin.sub.ai", 50, "RelationshipExplorer", "bi-diagram-3", "Relationship", rule: "Module:Administration&Perm:Relationship.View"),
         Link("admin.routing", "admin.sub.ai", 60, "AI Routing Rules", "bi-signpost-split", "RoutingRules", area: "Admin", rule: "Module:Administration"),
         Link("admin.contractauthority", "admin.sub.ai", 70, "Contract Approval Authority", "bi-shield-check", "ContractApprovalAuthority", area: "Admin", rule: "Module:Administration"),
+        // SCRUM-470: the PO authority table
+        Link("admin.poauthority", "admin.sub.ai", 75, "Po_AuthorityTitle", "bi-receipt-cutoff", "PurchaseOrderAuthority", area: "Admin", rule: "Module:Administration"),
         Sub("admin.sub.monitoring", "sec.admin", 50, "System Monitoring"),
         Link("admin.auditlog", "admin.sub.monitoring", 10, "AuditLog", "bi-clock-history", "AuditLog", area: "Admin", rule: "Module:Administration"),
         Link("admin.authaudit", "admin.sub.monitoring", 20, "Authorization Audit", "bi-journal-check", "AuthorizationAudit", area: "Admin", rule: "Module:Administration"),

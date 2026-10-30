@@ -91,6 +91,12 @@ public static class PemsWorkflowContracts
         new WorkflowModuleContract(PreProcurementWorkflowSeeder.Module, PreProcurementWorkflowSeeder.Category, PreProcurementWorkflowSeeder.BusinessObjectType,
             new[] { "Complete", "Cancel" }, Array.Empty<WorkflowStageRequirement>(), Array.Empty<WorkflowTransitionRequirement>()),
 
+        // PurchaseOrderApprovalService (SCRUM-470): the approver role of the PO authority rule is passed at start; Approve or Reject.
+        new WorkflowModuleContract(PurchaseOrderApprovalWorkflowSeeder.Module, PurchaseOrderApprovalWorkflowSeeder.Category, PurchaseOrderApprovalWorkflowSeeder.BusinessObjectType,
+            new[] { "Approve", "Reject" },
+            new[] { S(PurchaseOrderApprovalWorkflowSeeder.StageName, Parallel) },
+            new[] { T(null, "Start", PurchaseOrderApprovalWorkflowSeeder.StageName) }),
+
         // WorkRequestService: the request status is the stage's BusinessStatus; Complete converts it to a Work Order.
         new WorkflowModuleContract(WorkRequestService.WorkflowModule, WorkRequestService.WorkflowContext, WorkRequestService.WorkflowEntityType,
             new[] { "Approve", "Reject", "Cancel", "Complete" }, Array.Empty<WorkflowStageRequirement>(), Array.Empty<WorkflowTransitionRequirement>(),

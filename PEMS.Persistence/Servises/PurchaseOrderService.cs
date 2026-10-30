@@ -97,15 +97,26 @@ public class PurchaseOrderService : IPurchaseOrderService
         if (!po.IsActive)
             throw new InvalidOperationException("Purchase Order غیرفعال است و قابل صدور نیست.");
 
-        if (po.Status != PurchaseOrderStatuses.Draft)
+        // SCRUM-470 (owner decision 2026-10-29): a PO is issued only after approval by the PO authority table
+        // (Draft → Submitted → Approved → Issued); a Draft can no longer be issued directly.
+        if (po.Status != PurchaseOrderStatuses.Approved)
             throw new InvalidOperationException(
-                $"فقط Purchase Order در وضعیت Draft قابل صدور است (وضعیت فعلی: {po.Status}).");
+                $"فقط Purchase Order تأییدشده (Approved) قابل صدور است (وضعیت فعلی: {po.Status}).");
 
         if (string.IsNullOrWhiteSpace(po.PoNumber))
             throw new InvalidOperationException("Purchase Order بدون شماره قابل صدور نیست.");
 
         po.Status = PurchaseOrderStatuses.Issued;
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            // R6: a concurrent Issue changed the row first; a clear message instead of the generic error page
+            _context.ChangeTracker.Clear();
+            throw new InvalidOperationException("این Purchase Order هم‌زمان توسط کاربر دیگری تغییر کرد؛ صفحه را دوباره باز کنید.");
+        }
     }
 
     // Import/Reconciliation-only (نگاه کنید به IPurchaseOrderService): ساخت PO با Issued بدون Approve/SoD است.
