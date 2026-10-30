@@ -17,7 +17,7 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 - The PO authority table, separate from the contract rules (table `PurchaseOrderAuthorityRules`, admin page Administration > PO authority). Nothing is preset.
 - Workflow `PurchaseOrderApproval` (16 module workflows): on submit the PO goes to the role of the lowest active level whose currency and amount range match, as a task in My Work. With no match the PO waits as "responsible not set" and "Route again" retries.
 - The approver must hold the routed role, and the creator or submitter can never approve. A rejection returns the PO to draft with the reason.
-- `PRC.Buyer` gets PurchaseOrder Create/Edit.
+- `PRC.Buyer` gets PurchaseOrder Create/Edit; `PRC.Manager` (Procurement Manager) gets PurchaseOrder Approve and issues approved POs (owner decision 2026-10-30). Both rows are also added at startup on databases where these roles already exist; a row an admin already set is kept.
 
 ### Changed
 - `PurchaseOrderService.IssueAsync` issues only an **approved** PO (Draft → Submitted → Approved → Issued). The issue action keeps its guard (PurchaseOrder Approve permission, creator cannot issue, SystemAdmin rule). Imported POs still arrive as Issued.
