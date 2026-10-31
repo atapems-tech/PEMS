@@ -8,6 +8,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - Chapter 0 section 5d and AGENTS.md: until the nightly `tracker-check` runs, an agent reads each issue back after creating it and sweeps the open issues from SCRUM-400 on (parent epic, `[#N]` title, labels, `qa-pending`) at the start of a session and before any In Review, fixes metadata findings and reports the rest.
 
+## 2026-10-31 - PEMS.UI components render today's look (SCRUM-480)
+
+### Changed
+- **PEMS.UI:** alert, modal, drawer, confirm-dialog, tabs and breadcrumb take `Skin`; the default `Bootstrap` renders the Bootstrap markup the pages use now, `Pems` keeps the library classes and native dialog. `pems-overlay.js` copies the row key of a Bootstrap modal opener.
+- **Layouts** (`_Layout`, `_LayoutEmbed`, `_AuthLayout`): load `pems-ui.css`, `pems-overlay.js` and `pems-form.js` from PEMS.UI.
+
 ## 2026-10-31 - List page component, wave 2: CMMS (SCRUM-337)
 
 ### Added

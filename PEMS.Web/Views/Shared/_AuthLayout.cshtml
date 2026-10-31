@@ -31,6 +31,7 @@
        Geometry سراسری (site.css + pems-glass.css) نیاز دارد، نه یک نسخه‌ی موازی. auth.css بعد
        از این‌ها بارگذاری می‌شود تا سبک‌های اختصاصی خودش (قاب برند) برنده بمانند. *@
     <link rel="stylesheet" href="~/_content/PEMS.UI/tokens.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-ui.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-glass.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
@@ -61,6 +62,7 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/_content/PEMS.UI/pems-form.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
