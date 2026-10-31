@@ -16,7 +16,7 @@
         <div class="col-md-3"><strong>@Localizer["Project:"]</strong> @Model.ProjectName</div>
         <div class="col-md-2"><strong>@Localizer["Total:"]</strong> @Model.Rows.Count</div>
         <div class="col-md-2"><strong>Updates:</strong> @Model.Rows.Count(x => x.IsUpdate)</div>
-        <div class="col-md-2"><strong>@Localizer["Status:"]</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
+        <div class="col-md-2"><strong>@Localizer["Status:"]</strong> <pems-badge tone="@(Model.Status == "Committed" ? "success" : "neutral")">@Model.Status</pems-badge></div>
     </div>
 
     @if (Model.Status == "Staging")
@@ -73,9 +73,9 @@
                             <strong>@r.TagNumber</strong>
                             @if (r.ValidationStatus == "Warning")
                             {
-                                <div class="badge bg-warning text-dark d-block mt-1" style="white-space:normal; text-align:right;">
+                                <pems-badge tone="warning" css="d-block mt-1" style="white-space:normal; text-align:right;">
                                     <i class="bi bi-exclamation-triangle"></i> @r.ValidationMessage
-                                </div>
+                                </pems-badge>
                             }
                         </td>
                         <td class="small">@r.Name</td>

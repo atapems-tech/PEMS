@@ -61,7 +61,7 @@
                             @{
                                 var ab = i.AIStatus switch { "Completed" => "bg-success", "Processing" => "bg-info text-dark", "Failed" => "bg-danger", _ => "bg-secondary" };
                             }
-                            <span class="badge @ab">@i.AIStatus</span>
+                            <pems-badge tone="none" css="@ab">@i.AIStatus</pems-badge>
                         </td>
                         <td>
                             @{
@@ -74,7 +74,7 @@
                                     _ => "bg-secondary"
                                 };
                             }
-                            <span class="badge @sb">@i.IntakeStage</span>
+                            <pems-badge tone="none" css="@sb">@i.IntakeStage</pems-badge>
                         </td>
                         <td>@i.RoutedModule</td>
                         <td>@i.UploadDate.ToString("yyyy-MM-dd HH:mm")</td>

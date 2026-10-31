@@ -24,10 +24,10 @@
 
     string StatusBadge(string status) => status switch
     {
-        "READY" => "text-bg-success",
-        "PARTIAL" => "text-bg-warning",
-        "NOT_READY" => "text-bg-secondary",
-        _ => "text-bg-light border"
+        "READY" => "success",
+        "PARTIAL" => "warning",
+        "NOT_READY" => "neutral",
+        _ => "light"
     };
 }
 
@@ -44,13 +44,13 @@
     <div class="col-md-3">
         <div class="content-card h-100 text-center">
             <div class="text-muted small">Foundation</div>
-            <span class="badge @StatusBadge(foundation.FoundationStatus)">@foundation.FoundationStatus</span>
+            <pems-badge tone="@StatusBadge(foundation.FoundationStatus)">@foundation.FoundationStatus</pems-badge>
         </div>
     </div>
     <div class="col-md-3">
         <div class="content-card h-100 text-center">
             <div class="text-muted small">Live Telemetry</div>
-            <span class="badge @StatusBadge(foundation.LiveTelemetryStatus)">@foundation.LiveTelemetryStatus</span>
+            <pems-badge tone="@StatusBadge(foundation.LiveTelemetryStatus)">@foundation.LiveTelemetryStatus</pems-badge>
         </div>
     </div>
     <div class="col-md-3">
@@ -102,7 +102,7 @@
                         <td>
                             @if (p.EvaluationProfileId.HasValue)
                             {
-                                <span class="badge @EvalBadge(p.LastReadingEvaluationStatus)">@p.LastReadingEvaluationStatus</span>
+                                <pems-badge tone="@EvalBadge(p.LastReadingEvaluationStatus)">@p.LastReadingEvaluationStatus</pems-badge>
                                 <div class="small text-muted">@p.EvaluationProfileCode</div>
                                 @if (p.LastReadingId.HasValue && (p.LastReadingEvaluationStatus == "Warning" || p.LastReadingEvaluationStatus == "Alarm" || p.LastReadingEvaluationStatus == "Critical"))
                                 {
@@ -142,7 +142,7 @@
                         <td>
                             @if (pointsWithCbmStrategy.Contains(p.ConditionMonitoringPointId))
                             {
-                                <span class="badge text-bg-success">@Localizer["Linked"]</span>
+                                <pems-badge tone="success">@Localizer["Linked"]</pems-badge>
                             }
                             else
                             {

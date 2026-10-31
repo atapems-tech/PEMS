@@ -8,12 +8,12 @@
 
     string StateBadge(string state) => state switch
     {
-        "READY" => "text-bg-success",
-        "NOT_APPLICABLE" => "text-bg-light border",
-        "MISSING_MASTER_DATA" => "text-bg-warning",
-        "BLOCKED_BY_SAFETY" => "text-bg-danger",
-        "REQUIRES_REVIEW" => "text-bg-warning",
-        _ => "text-bg-secondary"
+        "READY" => "success",
+        "NOT_APPLICABLE" => "light",
+        "MISSING_MASTER_DATA" => "warning",
+        "BLOCKED_BY_SAFETY" => "danger",
+        "REQUIRES_REVIEW" => "warning",
+        _ => "neutral"
     };
 }
 
@@ -48,22 +48,22 @@
             {
                 <tr class="@(r.ExecutionReady ? "table-success" : "")">
                     <td class="fw-bold small">@r.TagNumber</td>
-                    <td><span class="badge @StateBadge(r.Classification)">@r.Classification</span></td>
+                    <td><pems-badge tone="@StateBadge(r.Classification)">@r.Classification</pems-badge></td>
                     <td>
-                        <span class="badge @StateBadge(r.Criticality)">@r.Criticality</span>
+                        <pems-badge tone="@StateBadge(r.Criticality)">@r.Criticality</pems-badge>
                         @if (r.Criticality == "NOT_READY")
                         {
                             <a asp-controller="CriticalityAssessment" asp-action="Create" asp-route-equipmentId="@r.EquipmentId" class="small d-block">Assess →</a>
                         }
                     </td>
-                    <td><span class="badge @StateBadge(r.Strategy)">@r.Strategy</span></td>
-                    <td><span class="badge @StateBadge(r.PmPlan)">@r.PmPlan</span></td>
-                    <td><span class="badge @StateBadge(r.JobPlan)">@r.JobPlan</span></td>
-                    <td><span class="badge @StateBadge(r.Safety)">@r.Safety</span></td>
+                    <td><pems-badge tone="@StateBadge(r.Strategy)">@r.Strategy</pems-badge></td>
+                    <td><pems-badge tone="@StateBadge(r.PmPlan)">@r.PmPlan</pems-badge></td>
+                    <td><pems-badge tone="@StateBadge(r.JobPlan)">@r.JobPlan</pems-badge></td>
+                    <td><pems-badge tone="@StateBadge(r.Safety)">@r.Safety</pems-badge></td>
                     <td>
                         @if (r.ExecutionReady)
                         {
-                            <span class="badge text-bg-success"><i class="bi bi-check-lg"></i> @Localizer["Ready"]</span>
+                            <pems-badge tone="success"><i class="bi bi-check-lg"></i> @Localizer["Ready"]</pems-badge>
                         }
                         else
                         {

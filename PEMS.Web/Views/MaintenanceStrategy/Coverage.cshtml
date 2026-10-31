@@ -34,7 +34,7 @@
                 <tbody>
                 @foreach (var r in Model.ByCriticality)
                 {
-                    <tr><td><span class="badge @RcmDisplay.CriticalityBadge(r.Key)">@Localizer.Label("Criticality", r.Key)</span></td><td>@r.TotalEquipment.ToString("N0")</td><td>@r.WithApprovedStrategy.ToString("N0")</td><td>@r.WithoutStrategy.ToString("N0")</td><td>@r.CoveragePercent</td></tr>
+                    <tr><td><pems-badge tone="none" css="@RcmDisplay.CriticalityBadge(r.Key)">@Localizer.Label("Criticality", r.Key)</pems-badge></td><td>@r.TotalEquipment.ToString("N0")</td><td>@r.WithApprovedStrategy.ToString("N0")</td><td>@r.WithoutStrategy.ToString("N0")</td><td>@r.CoveragePercent</td></tr>
                 }
                 </tbody>
             </table>

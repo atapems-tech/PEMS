@@ -303,8 +303,8 @@
             <span class="text-muted small">این مدرک P&amp;ID تجهیزات زیر است:</span>
             @foreach (var e in equipmentUsingThisAsPID)
             {
-                <a asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId" class="badge bg-info text-dark text-decoration-none">
-                    <i class="bi bi-gear"></i> @e.TagNumber
+                <a asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId" class="text-decoration-none">
+                    <pems-badge tone="info"><i class="bi bi-gear"></i> @e.TagNumber</pems-badge>
                 </a>
             }
         </div>
@@ -372,7 +372,7 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
             <i class="bi bi-chat-square-text"></i> @Localizer["Ed_TabComments"]
-            @if (engComments.Any()) { <span class="badge @(commentsOpenCount > 0 ? "bg-danger" : "bg-secondary")">@commentsOpenCount<span class="visually-hidden"> @Localizer["Ed_OpenComments"]</span></span> }
+            @if (engComments.Any()) { <pems-badge tone="@(commentsOpenCount > 0 ? "danger" : "neutral")">@commentsOpenCount<span class="visually-hidden"> @Localizer["Ed_OpenComments"]</span></pems-badge> }
         </button>
     </li>
     <li class="nav-item" role="presentation">
@@ -554,7 +554,7 @@
                                         else { <span class="vs-sub">@Localizer["Ed_PreviousRevFile"]</span> }
                                         @if (file.IsOfficial)
                                         {
-                                            <span class="badge bg-success" data-bs-toggle="tooltip" title="Official file for this revision">Official</span>
+                                            <pems-badge tone="success" data-bs-toggle="tooltip" title="Official file for this revision">Official</pems-badge>
                                         }
                                         @if (!string.IsNullOrEmpty(file.FileRole))
                                         {
@@ -568,7 +568,7 @@
                                 </td>
                                 <td>@file.FileExtension</td>
                                 <td>@(file.FileSize / 1024) KB</td>
-                                <td><span class="badge @badgeClass">@file.AIStatus</span></td>
+                                <td><pems-badge tone="none" css="@badgeClass">@file.AIStatus</pems-badge></td>
                                 <td class="small text-muted">@file.UploadDate.ToString("yyyy-MM-dd")</td>
                                 <td class="text-end">
                                     <div class="d-flex gap-1 justify-content-end flex-wrap">
@@ -635,7 +635,7 @@
                             };
                             <tr>
                                 <td>@idc.DisciplineName</td>
-                                <td><span class="badge @idcBadge"><i class="bi @idcIcon"></i> @idcLabel</span></td>
+                                <td><pems-badge tone="none" css="@idcBadge"><i class="bi @idcIcon"></i> @idcLabel</pems-badge></td>
                                 <td class="small">@(idc.Comment ?? "—")</td>
                                 <td class="small">@(idc.RespondedByName ?? "—")</td>
                                 <td class="small">@(idc.RespondedDate?.ToString("yyyy-MM-dd HH:mm") ?? "—")</td>
@@ -692,7 +692,7 @@
                                     }
                                     @if (clientBadge != null)
                                     {
-                                        <span class="badge @clientBadge" title="@rev.ClientReviewComment">@rev.ClientReviewStatus @(rev.ClientReviewDate.HasValue ? $"({rev.ClientReviewDate:yyyy-MM-dd})" : "")</span>
+                                        <pems-badge tone="none" css="@clientBadge" title="@rev.ClientReviewComment">@rev.ClientReviewStatus @(rev.ClientReviewDate.HasValue ? $"({rev.ClientReviewDate:yyyy-MM-dd})" : "")</pems-badge>
                                     }
                                     else
                                     {
@@ -1021,7 +1021,7 @@
                                 _ => "bg-danger"
                             };
                         }
-                        <span class="badge @eab">@c.ActionStatus</span>
+                        <pems-badge tone="none" css="@eab">@c.ActionStatus</pems-badge>
                         <form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="documentId" value="@Model.DocumentId" />
                             <input type="hidden" name="commentId" value="@c.VDRCommentId" />

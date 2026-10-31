@@ -79,7 +79,7 @@
                 @foreach (var t in Model.TopTags)
                 {
                     <li class="d-flex justify-content-between border-bottom py-1">
-                        <span class="badge bg-@t.Color">@t.TagName</span>
+                        <pems-badge tone="none" css="bg-@t.Color">@t.TagName</pems-badge>
                         <span class="text-muted small">@t.Count</span>
                     </li>
                 }

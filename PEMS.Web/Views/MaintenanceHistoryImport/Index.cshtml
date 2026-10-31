@@ -51,7 +51,7 @@
                     <td class="text-end">@if (b.DuplicateCount > 0) { <pems-badge tone="warning">@b.DuplicateCount</pems-badge> } else { @b.DuplicateCount }</td>
                     <td class="text-end">@if (b.UnresolvedCount > 0) { <pems-badge tone="danger">@b.UnresolvedCount</pems-badge> } else { @b.UnresolvedCount }</td>
                     <td class="text-end">@if (b.ConflictCount > 0) { <pems-badge tone="danger">@b.ConflictCount</pems-badge> } else { @b.ConflictCount }</td>
-                    <td><span class="badge @(b.Status == "Committed" ? "bg-success" : "bg-secondary")">@b.Status</span></td>
+                    <td><pems-badge tone="@(b.Status == "Committed" ? "success" : "neutral")">@b.Status</pems-badge></td>
                     <td>
                         <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Review" asp-route-batchId="@b.MaintenanceHistoryImportBatchId">Review</pems-button>
                     </td>

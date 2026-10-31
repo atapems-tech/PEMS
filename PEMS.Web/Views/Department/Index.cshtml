@@ -24,8 +24,8 @@
                     <td>@d.Code</td>
                     <td>@d.Name</td>
                     <td class="small text-muted">@d.Description</td>
-                    <td><a asp-controller="Employee" asp-action="Index" asp-route-departmentId="@d.DepartmentId" class="badge bg-secondary text-decoration-none">@empCount</a></td>
-                    <td><span class="badge @(d.IsActive ? "bg-success" : "bg-secondary")">@(d.IsActive ? "Active" : "Inactive")</span></td>
+                    <td><a asp-controller="Employee" asp-action="Index" asp-route-departmentId="@d.DepartmentId" class="text-decoration-none"><pems-badge tone="neutral">@empCount</pems-badge></a></td>
+                    <td><pems-badge tone="@(d.IsActive ? "success" : "neutral")">@(d.IsActive ? "Active" : "Inactive")</pems-badge></td>
                     <td class="text-end">
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#editDeptModal_@d.DepartmentId">
                             <i class="bi bi-pencil"></i>

@@ -28,7 +28,7 @@
         </div>
         <div class="col-md-1">
             <div class="text-muted">@Localizer["Rcm_Criticality"]</div>
-            <span class="badge @RcmDisplay.CriticalityBadge(Model.CriticalityClass)">@Localizer.Label("Criticality", Model.CriticalityClass ?? "Unrated")</span>
+            <pems-badge tone="none" css="@RcmDisplay.CriticalityBadge(Model.CriticalityClass)">@Localizer.Label("Criticality", Model.CriticalityClass ?? "Unrated")</pems-badge>
         </div>
     </div>
 </div>

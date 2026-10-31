@@ -8,7 +8,7 @@
         <h5 class="mb-0">@Model.NCRNumber</h5>
         <span class="text-muted small">@Model.QCDiscipline?.Name @(Model.Equipment != null ? " | " + Model.Equipment.TagNumber : "")</span>
     </div>
-    <span class="badge @(Model.Status == "Closed" ? "bg-success" : Model.Status == "Dispositioned" ? "bg-info" : Model.Status == "PendingApproval" ? "bg-warning text-dark" : "bg-secondary") fs-6">@Model.Status</span>
+    <pems-badge tone="none" css="@(Model.Status == "Closed" ? "bg-success" : Model.Status == "Dispositioned" ? "bg-info" : Model.Status == "PendingApproval" ? "bg-warning text-dark" : "bg-secondary") fs-6">@Model.Status</pems-badge>
 </div>
 
 <div class="content-card mb-3">

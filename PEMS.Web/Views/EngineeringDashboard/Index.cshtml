@@ -166,7 +166,7 @@
                             <td><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@q.DocumentId">@q.DocumentNo</a></td>
                             <td class="small">@(q.DisciplineName ?? "-")</td>
                             <td class="small">@(q.VendorName ?? "-")</td>
-                            <td><span class="badge badge-status-@q.Status">@q.Status</span></td>
+                            <td><pems-badge tone="none" css="badge-status-@q.Status">@q.Status</pems-badge></td>
                             <td><pems-badge tone="danger">@q.RejectionCount</pems-badge></td>
                             <td class="small">@q.RevisionCount</td>
                         </tr>
@@ -203,7 +203,7 @@
                         <tr>
                             <td><a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@q.DocumentId">@q.DocumentNo</a></td>
                             <td class="small">@(q.DisciplineName ?? "-")</td>
-                            <td><span class="badge badge-status-@q.Status">@q.Status</span></td>
+                            <td><pems-badge tone="none" css="badge-status-@q.Status">@q.Status</pems-badge></td>
                             <td><pems-badge tone="warning">@q.RevisionCount</pems-badge></td>
                             <td class="small">
                                 @if (q.FirstPassApproved == true) { <i class="bi bi-check-circle text-success" title="@Localizer["FirstPass"]" aria-label="@Localizer["FirstPass"]"></i> }

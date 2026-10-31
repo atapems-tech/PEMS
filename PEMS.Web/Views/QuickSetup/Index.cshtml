@@ -14,9 +14,9 @@
                 How ready is PEMS for operational use? This page reads real data - nothing here is estimated.
             </p>
         </div>
-        <span class="badge @(Model.IsFullyComplete ? "text-bg-success" : "text-bg-secondary") fs-6">
+        <pems-badge tone="@(Model.IsFullyComplete ? "success" : "neutral")" css="fs-6">
             @Model.CompletedCount of @Model.TotalCount areas ready
-        </span>
+        </pems-badge>
     </div>
 
     <div class="progress" style="height: 22px;" role="progressbar" aria-label="Setup progress"
@@ -43,16 +43,16 @@
     {
         var (badgeClass, icon, statusText) = step.Status switch
         {
-            PEMS.Application.DTOs.SetupStepStatus.Complete => ("text-bg-success", "bi-check-circle-fill", "Ready"),
-            PEMS.Application.DTOs.SetupStepStatus.Blocked => ("text-bg-warning", "bi-exclamation-triangle-fill", "Blocked"),
-            _ => ("text-bg-secondary", "bi-circle", "Not started")
+            PEMS.Application.DTOs.SetupStepStatus.Complete => ("success", "bi-check-circle-fill", "Ready"),
+            PEMS.Application.DTOs.SetupStepStatus.Blocked => ("warning", "bi-exclamation-triangle-fill", "Blocked"),
+            _ => ("neutral", "bi-circle", "Not started")
         };
 
         <div class="col-md-6 col-lg-4">
             <div class="content-card h-100">
                 <div class="d-flex justify-content-between align-items-start mb-2">
                     <h6 class="mb-0">@step.Title</h6>
-                    <span class="badge @badgeClass"><i class="bi @icon"></i> @statusText</span>
+                    <pems-badge tone="@badgeClass"><i class="bi @icon"></i> @statusText</pems-badge>
                 </div>
                 <p class="text-muted small mb-2">@step.Description</p>
 

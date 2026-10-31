@@ -212,7 +212,7 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
 
                                         <div class="border rounded p-2 mb-2">
                                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                                <span class="small fw-bold"><i class="bi bi-gear"></i> @typeGroup.Key <span class="badge bg-light text-dark">@typeGroup.Count()</span></span>
+                                                <span class="small fw-bold"><i class="bi bi-gear"></i> @typeGroup.Key <pems-badge tone="none" css="bg-light text-dark">@typeGroup.Count()</pems-badge></span>
                                                 <pems-button tone="neutral" size="small" outline="true" css="py-0" type="button"
                                                         onclick="document.querySelectorAll('.type-@typeSafeId').forEach(c => c.checked = true)">
                                                     انتخاب این نوع
@@ -229,10 +229,10 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                                             </td>
                                                             <td class="small">@eq.TagNumber — @eq.Name</td>
                                                             <td>
-                                                                <span class="badge @RcmDisplay.CriticalityBadge(string.IsNullOrEmpty(cls) ? "Unrated" : cls)">@Localizer.Label("Criticality", string.IsNullOrEmpty(cls) ? "Unrated" : cls)</span>
+                                                                <pems-badge tone="none" css="@RcmDisplay.CriticalityBadge(string.IsNullOrEmpty(cls) ? "Unrated" : cls)">@Localizer.Label("Criticality", string.IsNullOrEmpty(cls) ? "Unrated" : cls)</pems-badge>
                                                                 @if (bulk.Candidates.TryGetValue(eq.EquipmentId, out var cand) && !cand.WillReceive)
                                                                 {
-                                                                    <span class="badge bg-warning text-dark" title="@Localizer["Rcm_Bulk_" + cand.Conflict]">@Localizer["Rcm_Bulk_" + cand.Conflict]</span>
+                                                                    <pems-badge tone="warning" title="@Localizer["Rcm_Bulk_" + cand.Conflict]">@Localizer["Rcm_Bulk_" + cand.Conflict]</pems-badge>
                                                                 }
                                                             </td>
                                                         </tr>

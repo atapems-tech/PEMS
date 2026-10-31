@@ -20,7 +20,7 @@
                     <td class="small">@i.Title</td>
                     <td class="small">@i.QCDiscipline?.Name</td>
                     <td class="small">@i.Equipment?.TagNumber</td>
-                    <td><span class="badge @(i.Status == "Active" ? "bg-success" : i.Status == "Draft" ? "bg-secondary" : "bg-info")">@i.Status</span></td>
+                    <td><pems-badge tone="none" css="@(i.Status == "Active" ? "bg-success" : i.Status == "Draft" ? "bg-secondary" : "bg-info")">@i.Status</pems-badge></td>
                     <td>@i.Revision</td>
                 </tr>
             }

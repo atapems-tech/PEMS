@@ -9,9 +9,9 @@
 
     string ReviewBadge(string status) => status switch
     {
-        "Approved" => "text-bg-success",
-        "Rejected" => "text-bg-danger",
-        _ => "text-bg-warning"
+        "Approved" => "success",
+        "Rejected" => "danger",
+        _ => "warning"
     };
 }
 
@@ -66,8 +66,8 @@
                     <td class="small">@insight.InsightType</td>
                     <td class="small">@insight.SuggestionText</td>
                     <td class="small text-muted">@insight.SourceDataSummary</td>
-                    <td class="small">@insight.ModelName <span class="badge text-bg-light border">AI_SUGGESTED</span></td>
-                    <td><span class="badge @ReviewBadge(insight.ReviewStatus)">@insight.ReviewStatus</span></td>
+                    <td class="small">@insight.ModelName <pems-badge tone="light">AI_SUGGESTED</pems-badge></td>
+                    <td><pems-badge tone="@ReviewBadge(insight.ReviewStatus)">@insight.ReviewStatus</pems-badge></td>
                     <td class="small">@insight.ReviewedByName</td>
                     <td>
                         @if (canReview && insight.ReviewStatus == "Draft")

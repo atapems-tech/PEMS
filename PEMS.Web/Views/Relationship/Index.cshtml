@@ -62,7 +62,7 @@ else
                 }
                 @if (Model.RootType == "Equipment")
                 {
-                    <span class="badge @(Model.RootIsActive ? "bg-success" : "bg-secondary")">@(Model.RootIsActive ? "Active" : "Inactive")</span>
+                    <pems-badge tone="@(Model.RootIsActive ? "success" : "neutral")">@(Model.RootIsActive ? "Active" : "Inactive")</pems-badge>
                 }
             </div>
         </div>
@@ -160,12 +160,12 @@ else
                                         }
                                         else if (!string.IsNullOrWhiteSpace(item.Priority))
                                         {
-                                            <span class="badge bg-light text-dark ms-1">@item.Priority</span>
+                                            <pems-badge tone="none" css="bg-light text-dark ms-1">@item.Priority</pems-badge>
                                         }
 
                                         @if (item.DelayDays.HasValue && item.DelayDays > 0)
                                         {
-                                            <span class="badge bg-danger ms-1" title="@Localizer["روزهای تاخیر"]"><i class="bi bi-clock-history"></i> @item.DelayDays روز تاخیر</span>
+                                            <pems-badge tone="danger" css="ms-1" title="@Localizer["روزهای تاخیر"]"><i class="bi bi-clock-history"></i> @item.DelayDays روز تاخیر</pems-badge>
                                         }
                                         else if (item.PlannedOrDueDate.HasValue)
                                         {
@@ -177,15 +177,15 @@ else
                                         <span class="d-flex justify-content-end gap-1">
                                             @if (!item.IsConfirmed)
                                             {
-                                                <span class="badge bg-warning text-dark" title="فقط طبق تطبیق متنی - رابطه‌ی رسمی/تاییدشده نیست">
+                                                <pems-badge tone="warning" title="فقط طبق تطبیق متنی - رابطه‌ی رسمی/تاییدشده نیست">
                                                     <i class="bi bi-question-circle"></i> احتمالی
-                                                </span>
+                                                </pems-badge>
                                             }
                                             @if (item.IsAIProposed)
                                             {
-                                                <span class="badge bg-info text-dark" title="AI-detected, not from a direct database link">
+                                                <pems-badge tone="info" title="AI-detected, not from a direct database link">
                                                     <i class="bi bi-robot"></i> AI
-                                                </span>
+                                                </pems-badge>
                                             }
                                         </span>
                                     </span>

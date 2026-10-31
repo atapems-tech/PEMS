@@ -75,7 +75,7 @@
                     <td class="small">@e.DisciplineName</td>
                     <td class="small">@e.PersonnelType@(e.PersonnelType != "Internal" && e.VendorId.HasValue ? $" ({e.VendorName})" : "")</td>
                     <td class="small">@e.Email</td>
-                    <td><span class="badge @(e.IsActive ? "bg-success" : "bg-secondary")">@(e.IsActive ? "Active" : "Inactive")</span></td>
+                    <td><pems-badge tone="@(e.IsActive ? "success" : "neutral")">@(e.IsActive ? "Active" : "Inactive")</pems-badge></td>
                     <td class="text-end">
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#editEmpModal_@e.EmployeeId">
                             <i class="bi bi-pencil"></i>
